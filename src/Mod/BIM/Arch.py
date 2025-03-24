@@ -1344,7 +1344,6 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
             elif height and not length:
                 obj.Width = w
                 obj.Length = h
-
     if not height and not length:
         obj.IfcType = "Building Element Proxy"
         obj.Label = name if name else translate("Arch","Structure")
@@ -1354,6 +1353,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
     elif obj.Height > obj.Length:
         obj.IfcType = "Column"
         obj.Label = name if name else translate("Arch","Column")
+    obj.Proxy.set_nodes(obj)
     return obj
 
 def makeStructuralSystem(objects=[],axes=[],name=None):

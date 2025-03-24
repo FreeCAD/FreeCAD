@@ -21,6 +21,7 @@
 # Modified 2016-01-03 JAndersM
 
 import FreeCAD
+import FreeCADGui
 import Draft
 import ArchComponent
 import DraftVecUtils
@@ -307,7 +308,7 @@ class Structure(ArchComponent.Component):
             obj.addProperty(
                 "App::PropertyPlacement",
                 "EndingStart",
-                "Wall",
+                "Structure",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "A placement, relative to the main wall placement,,describing"
@@ -318,7 +319,7 @@ class Structure(ArchComponent.Component):
             obj.addProperty(
                 "App::PropertyPlacement",
                 "EndingEnd",
-                "Wall",
+                "Structure",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "A placement, relative to the main wall placement,,describing"
@@ -428,7 +429,7 @@ class Structure(ArchComponent.Component):
                 pli = pla[i]
             else:
                 pli = pla[-1].copy()
-            pli, evi = self.extend_endpoints(obj, pli, evi)
+            pli, evi = self.extend_endings(obj, pli, evi)
             shi.Placement = pli.multiply(shi.Placement)
             if isinstance(evi, FreeCAD.Vector):
                 extv = pla[0].Rotation.multVec(evi)
@@ -873,10 +874,16 @@ class Structure(ArchComponent.Component):
                 # else:  # Seems no need ...
                 # obj.PropertySet = 'Default'
 
+    def set_nodes(self, obj):
+        """Sets/resets the structural nodes"""
+
+        self.onChanged(obj, "ResetNodes")
+
     def extend_endings(self, obj, pli, evi, ending=None):
         """
         Extends the given placement and extrusion vector so they
-        meet the object End placements"""
+        meet the object End placements
+        """
 
         if ending not in ["Start", "End"]:
             if getattr(obj, "EndingStart", None):
@@ -886,23 +893,25 @@ class Structure(ArchComponent.Component):
         else:
             if getattr(obj, "Ending" + ending).isNull():
                 return pli, evi
-            plength = evi.Length * 2  # security margin
-            compl = FreeCAD.Placement(getattr(obj, "Ending" + ending)).multiply(pli)
+            compl = FreeCAD.Placement(getattr(obj, "Ending" + ending))
+            evi2 = FreeCAD.Vector(evi).multiply(2)
             if ending == "Start":
                 basep = pli.Base
-                endp = pli.Base + evi
+                endp = pli.Base + evi2
             else:
-                basep = pli.Base + evi
+                basep = pli.Base + evi2
                 endp = pli.Base
             target = compl.Base
             chord = target.sub(basep)
-            addvec = DraftVecUtils.project(chord, evi)
+            addvec = DraftVecUtils.project(chord, evi2)
             if ending == "Start":
                 pli.Base = basep.add(addvec)
-                evi = endp.sub(pli.Base)
+                evi2 = endp.sub(pli.Base)
             else:
-                evi = (basep.add(addvec)).sub(endp)
-            return pli, evi
+                evi2 = (basep.add(addvec)).sub(endp)
+            if evi2.Length > 0.00000000001:
+                evi = evi2
+        return pli, evi
 
     def process_endings(self, obj, base, pl, ending=None):
         """
@@ -911,25 +920,28 @@ class Structure(ArchComponent.Component):
         are processed.
         """
 
+        import Part
+
         if ending not in ["Start", "End"]:
             if getattr(obj, "EndingStart", None):
-                base = self.process_endings(base, obj, pl, "Start")
+                base = self.process_endings(obj, base, pl, "Start")
             if getattr(obj, "EndingStart", None):
-                base = self.process_endings(base, obj, pl, "End")
+                base = self.process_endings(obj, base, pl, "End")
         else:
             if getattr(obj, "Ending" + ending).isNull():
                 return base
             plength = base.BoundBox.DiagonalLength * 2  # security margin
-            plane = Part.makePlane(plength, plength)
-            compl = FreeCAD.Placement(getattr(obj, "Ending" + ending)).multiply(pl)
+            plane = Part.makePlane(plength, plength, FreeCAD.Vector(-plength/2, -plength/2, 0))
+            compl = FreeCAD.Placement(getattr(obj, "Ending" + ending))
             plane.Placement = compl
-            extv = compl.multVec(Vector(0, 0, plength))
+            extv = compl.Rotation.multVec(Vector(0, 0, plength))
             subsolid = plane.extrude(extv)
+            FreeCAD.sub = subsolid
             if base.ShapeType == "Compound":
                 newcomp = []
                 for ss in base.SubShapes:
                     newcomp.append(ss.cut(subsolid))
-                base = newcomp
+                base = Part.makeCompound(newcomp)
             else:
                 base = base.cut(subsolid)
         return base
@@ -1121,6 +1133,8 @@ class ViewProviderStructure(ArchComponent.ViewProviderComponent):
 class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
 
     def __init__(self, obj):
+
+        from PySide import QtCore, QtGui
 
         ArchComponent.ComponentTaskPanel.__init__(self)
         self.nodes_widget = QtGui.QWidget()
