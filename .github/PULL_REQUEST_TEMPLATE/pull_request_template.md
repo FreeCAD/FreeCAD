@@ -1,30 +1,35 @@
 ## Description
 
-<!-- Please include a brief summary of the changes. -->
-<!-- Link individual issues this PR closes (e.g., fixes #1234, closes #4321). -->
-<!-- Attach before-and-after visuals to illustrate the changes if the PR affects the GUI. -->
-<!-- Optionally, add more information, potential impacts (API / compatibility) or suggested improvements. -->
+The FreeCAD community and maintainers thank you for your contribution!
 
-## Type
+Please include a brief summary of the changes and link to individual issues this PR closes (e.g., fixes #1234, closes #4321).
 
-- [ ] Bug fix 🐛
-- [ ] New feature 🚀
-- [ ] Code refactoring 🔧
-- [ ] Other: <!-- Specify here (e.g., Backport) -->
+By creating a PR you agree to the contributing guidelines (https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
 
-## Checklist
+## Review Process
 
-<!-- The following is a checklist of considerations.  While these are not necessarily required, addressing these will speed up the approval of your PR greatly. -->
-<!-- You can find additional documentation about these requirements in the developers handbook (https://freecad.github.io/DevelopersHandbook). -->
+The following is a checklist of items that the maintainers consider when reviewing Pull Requests.  While these are not necessarily required, addressing them may speed up the approval of your PR.
+You can find additional documentation about these requirements in the [Developers handbook](https://freecad.github.io/DevelopersHandbook).
 
-- [ ] There is at least one issue linked, which this PR closes. The discussion should happen in the original issue(s).
-- [ ] The PR is rebased on the current main branch and unnecessary commits have been squashed.
-- [ ] This change includes tests to ensure functionality and all tests passed locally.
-- [ ] If the PR affects the GUI, I have requested review by / worked with the Design Working Group (DWG) and added images.
-- [ ] If the PR affects standards and workflow, I have requested review by / worked with the CAD Working Group (CWG).
-- [ ] I have, to the best of my ability considered Code Quality and requested help if necessary (CQWG).
-- [ ] The documentation has been or will be updated if necessary (Wiki and Release Notes).
-- [ ] I have considered the implications on translations and taken appropriate action.
-- [ ] This PR should and can be backported to the latest release branch.
 
-<!-- By creating a PR you agree to the contributing guidelines (https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md) -->
+Alignment (Does the PR align with the goals and interests of the project?)
+  - Does the PR have at least one issue linked, which this PR closes?
+  - Has the conversation on the PR and related issue(s) reached consensus?
+  - If the PR affects the GUI, is the Design Working Group (DWG) aware and have they had time to review and comment?
+  - If the PR affects the GUI, did the contributor include before/after images?
+  - If the PR affects standards and workflow, is the CWG aware and have they had time to review/comment?
+
+Impact (Does the change affect other parts of the project?)
+  - Has the impact on documentation been considered and appropriate action taken?
+  - Has the impact on translation been considered appropriate action taken?
+  - Will the PR affect existing user documents?
+
+Code Quality (Is code well-written and maintainable?)
+  - Does the PR warrant a review by the Code Quality Working Group (CQWG)?
+  - Does the change includes tests?
+  - Is the PR rebased on the current main branch with unnecessary commits squashed?
+
+Release (Are there considerations related to release timing?)
+  - Has the PR been considered for backporting?
+  - Have the release notes been considered/updated?
+
