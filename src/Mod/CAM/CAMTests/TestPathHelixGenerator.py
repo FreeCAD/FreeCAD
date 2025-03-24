@@ -35,8 +35,6 @@ def _resetArgs():
     v1 = FreeCAD.Vector(5, 5, 20)
     v2 = FreeCAD.Vector(5, 5, 18)
 
-    # edg = Part.makeLine(v1, v2)
-
     return {
         "edge": Part.makeLine(v1, v2),
         "hole_radius": 10.0,
@@ -59,8 +57,9 @@ G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z18.500000\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.000000\
 G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z18.000000\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.000000\
-G0 X5.000000 Y5.000000 Z18.000000\
-G0 Z20.000000G0 X10.000000 Y5.000000\
+G1 X5.000000 Y5.000000\
+G0 Z20.000000\
+G0 X10.000000 Y5.000000\
 G1 Z20.000000\
 G2 I-5.000000 J0.000000 X0.000000 Y5.000000 Z19.500000\
 G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z19.000000\
@@ -68,8 +67,8 @@ G2 I-5.000000 J0.000000 X0.000000 Y5.000000 Z18.500000\
 G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z18.000000\
 G2 I-5.000000 J0.000000 X0.000000 Y5.000000 Z18.000000\
 G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z18.000000\
-G0 X5.000000 Y5.000000 Z18.000000\
-G0 Z20.000000G0 X12.500000 Y5.000000\
+G1 X8.750000 Y5.000000G0 Z20.000000\
+G0 X12.500000 Y5.000000\
 G1 Z20.000000\
 G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z19.500000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z19.000000\
@@ -77,7 +76,8 @@ G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.500000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
 G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.000000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
-G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
+G1 X11.250000 Y5.000000\
+G0 Z20.000000"
 
     def test00(self):
         """Test Basic Helix Generator Return"""
@@ -87,9 +87,8 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         self.assertTrue(type(result[0]) is Path.Command)
 
         gcode = "".join([r.toGCode() for r in result])
-        ### print(gcode)
-        ### don't be silly, this is not a useful test, nothing is allowed to change
-        ### self.assertTrue(gcode == self.expectedHelixGCode, "Incorrect helix g-code generated")
+        print(gcode)
+        self.assertTrue(gcode == self.expectedHelixGCode, "Incorrect helix g-code generated")
 
     def test01(self):
         """Test Value and Type checking"""
@@ -130,22 +129,13 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         # 2. Extra Offset does not leave room for tool, should raise an error
         args = _resetArgs()
         designed_hole_diameter = 10.0
-        extra_offset = 2.5
+        extra_offset = 2.50
         args["hole_radius"] = designed_hole_diameter / 2 - extra_offset
         args["inner_radius"] = extra_offset
-        args["tool_diameter"] = 5.001
+        args["tool_diameter"] = 5.0
         self.assertRaises(ValueError, generator.generate, **args)
 
-        # 2b. tool == hole should be allowed.
-        args = _resetArgs()
-        designed_hole_diameter = 10.0
-        extra_offset = 2.5
-        args["hole_radius"] = designed_hole_diameter / 2 - extra_offset
-        args["inner_radius"] = extra_offset
-        args["tool_diameter"] = 5.00
-        self.assertRaises(ValueError, generator.generate, **args)
-
-        # step_over is a percent value between 0 and 100
+        # step_over is a percent value between 0 and 1
         args = _resetArgs()
         args["step_over"] = 50
         self.assertRaises(ValueError, generator.generate, **args)
@@ -167,16 +157,14 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         args = _resetArgs()
         v1 = FreeCAD.Vector(5, 5, 20)
         v2 = FreeCAD.Vector(5.0001, 5, 10)
-        edg = Part.makeLine(v1, v2)
-        args["edge"] = edg
+        args["edge"] = Part.makeLine(v1, v2)
         self.assertRaises(ValueError, generator.generate, **args)
 
         # verify linear edge is vertical: Y
         args = _resetArgs()
         v1 = FreeCAD.Vector(5, 5.0001, 20)
         v2 = FreeCAD.Vector(5, 5, 10)
-        edg = Part.makeLine(v1, v2)
-        args["edge"] = edg
+        args["edge"] = Part.makeLine(v1, v2)
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test08(self):
@@ -184,8 +172,7 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         args = _resetArgs()
         v1 = FreeCAD.Vector(10, 5, 5)
         v2 = FreeCAD.Vector(20, 5, 5)
-        edg = Part.makeLine(v1, v2)
-        args["edge"] = edg
+        args["edge"] = Part.makeLine(v1, v2)
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test09(self):
@@ -193,8 +180,7 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         args = _resetArgs()
         v1 = FreeCAD.Vector(5, 5, 18)
         v2 = FreeCAD.Vector(5, 5, 20)
-        edg = Part.makeLine(v1, v2)
-        args["edge"] = edg
+        args["edge"] = Part.makeLine(v1, v2)
 
         self.assertRaises(ValueError, generator.generate, **args)
 
@@ -207,8 +193,7 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         v1 = FreeCAD.Vector(0, 0, 20)
         v2 = FreeCAD.Vector(0, 0, 18)
         edg = Part.makeLine(v1, v2)
-        args["edge"] = edg
-        args["inner_radius"] = 0.0
+        args["edge"] = Part.makeLine(v1, v2)
         args["tool_diameter"] = 5.0
         result = generator.generate(**args)
         self.assertTrue(result[-2].Name == "G1")
@@ -219,8 +204,7 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         args["hole_radius"] = 7.0
         args["inner_radius"] = 2.0
         result = generator.generate(**args)
-        print(result[-2])
-        self.assertTrue(result[-2].Name == "G2")
+        self.assertTrue(result[-2].Name == "G2")        
 
         # if center is not clear, multiple helical paths
         # retraction is one straight up on the last move.
