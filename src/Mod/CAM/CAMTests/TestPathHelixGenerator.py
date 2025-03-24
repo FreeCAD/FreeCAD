@@ -204,7 +204,7 @@ G0 Z20.000000"
         args["hole_radius"] = 7.0
         args["inner_radius"] = 2.0
         result = generator.generate(**args)
-        self.assertTrue(result[-2].Name == "G2")        
+        self.assertTrue(result[-2].Name == "G2")
 
         # if center is not clear, multiple helical paths
         # retraction is one straight up on the last move.
