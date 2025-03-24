@@ -209,9 +209,9 @@ def generate(
             # hole centre is already clear (hole inner radius<=tool_radius)
 
         # use G1 since tool tip still in contact with workpiece.
-        if center_clear and (prev_r == None):
+        if center_clear and (prev_r is None):
             retractcommands.append(Path.Command("G1", {"X": endPoint.x, "Y": endPoint.y}))
-        elif prev_r != None:
+        elif prev_r is not None:
             dwell_r = (r + prev_r) / 2
             retractcommands.append(
                 Path.Command(
