@@ -148,7 +148,8 @@ macro(generate_from_py BASE_NAME)
     file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
     file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.pyi" SOURCE_NATIVE_PATH)
 
-    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp" )
+    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py.cpp" )
+    set(SOURCE_H_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py.h" )
 
     # BASE_NAME may include also a path name
     GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
@@ -161,14 +162,14 @@ macro(generate_from_py BASE_NAME)
         )
     endif()
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}_.h" "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}_.cpp"
+        OUTPUT "${SOURCE_H_PATH}" "${SOURCE_CPP_PATH}"
         COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.pyi
         MAIN_DEPENDENCY "${BASE_NAME}.pyi"
         DEPENDS
         "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"
         "${TOOL_PATH}"
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-        COMMENT "Building ${BASE_NAME}.h/.cpp out of ${BASE_NAME}.pyi"
+        COMMENT "Building ${BASE_NAME}Py.h/.cpp out of ${BASE_NAME}.pyi"
     )
 endmacro(generate_from_py)
 
