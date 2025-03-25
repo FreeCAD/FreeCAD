@@ -922,7 +922,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="304"/>
       <source>Number of threads used for analysis</source>
-      <translation type="unfinished">Number of threads used for analysis</translation>
+      <translation>Número de hilos utilizados para el análisis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
@@ -1138,17 +1138,17 @@ se fusionarán para que los límites de volumen sean invisibles.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="300"/>
       <source>Use binary format</source>
-      <translation type="unfinished">Use binary format</translation>
+      <translation>Utilizar formato binario</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
       <source>Save the index of geometric entities</source>
-      <translation type="unfinished">Save the index of geometric entities</translation>
+      <translation>Guardar el índice de las entidades geométricas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="319"/>
       <source>Save geometry IDs</source>
-      <translation type="unfinished">Save geometry IDs</translation>
+      <translation>Guardar ID de geometría</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
@@ -1464,22 +1464,22 @@ añadir un contenedor de análisis</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="131"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Verbosidad del registro</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Nivel de verbosidad impreso en el panel de tareas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Número de hilos</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="167"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Cantidad de hilos utilizados para la malla</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
@@ -2694,7 +2694,7 @@ Especifique otro archivo, por favor.</translation>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density:</source>
-      <translation type="unfinished">Density:</translation>
+      <translation>Densidad:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
@@ -3246,32 +3246,32 @@ Nota: no tiene efecto si un sólido fue seleccionado</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
       <source>Axis1 Length:</source>
-      <translation type="unfinished">Axis1 Length:</translation>
+      <translation>Longitud del eje 1:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="236"/>
       <source>Axis2 Length:</source>
-      <translation type="unfinished">Axis2 Length:</translation>
+      <translation>Longitud del eje 2:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="343"/>
       <source>T1 Thickness:</source>
-      <translation type="unfinished">T1 Thickness:</translation>
+      <translation>Espesor T1:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="375"/>
       <source>T2 Thickness:</source>
-      <translation type="unfinished">T2 Thickness:</translation>
+      <translation>Espesor T2:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="407"/>
       <source>T3 Thickness:</source>
-      <translation type="unfinished">T3 Thickness:</translation>
+      <translation>Espesor T3:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="439"/>
       <source>T4 Thickness:</source>
-      <translation type="unfinished">T4 Thickness:</translation>
+      <translation>Espesor T4:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
@@ -3517,28 +3517,28 @@ Nota: para 2D solo la configuración para x es posible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element Dimension:</source>
-      <translation type="unfinished">Element Dimension:</translation>
+      <translation>Dimensión del elemento:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
       <source>Maximum Size:</source>
-      <translation type="unfinished">Maximum Size:</translation>
+      <translation>Tamaño máximo:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="57"/>
       <location filename="../ui/MeshGmsh.ui" line="95"/>
       <source>Use 0.0 to set size automatically</source>
-      <translation type="unfinished">Use 0.0 to set size automatically</translation>
+      <translation>Utilice 0.0 para establecer el tamaño automáticamente</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="85"/>
       <source>Minimum Size:</source>
-      <translation type="unfinished">Minimum Size:</translation>
+      <translation>Tamaño mínimo:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="126"/>
       <source>Element Order:</source>
-      <translation type="unfinished">Element Order:</translation>
+      <translation>Orden del elemento:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="144"/>
@@ -6117,7 +6117,7 @@ Por favor, primero seleccione un tipo de resultado.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="116"/>
       <source>No Color</source>
-      <translation type="unfinished">No Color</translation>
+      <translation>Sin color</translation>
     </message>
   </context>
   <context>
@@ -6673,7 +6673,7 @@ Por favor, primero seleccione un tipo de resultado.</translation>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Erase elements</source>
-      <translation type="unfinished">Erase elements</translation>
+      <translation>Borrar elementos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
@@ -6728,12 +6728,12 @@ Por favor, primero seleccione un tipo de resultado.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximum Size:</source>
-      <translation type="unfinished">Maximum Size:</translation>
+      <translation>Tamaño máximo:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
       <source>Minimum Size:</source>
-      <translation type="unfinished">Minimum Size:</translation>
+      <translation>Tamaño mínimo:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="117"/>
@@ -6797,22 +6797,22 @@ Por favor, primero seleccione un tipo de resultado.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="59"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Verbosidad del registro</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Nivel de verbosidad impreso en el panel de tareas</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Número de hilos</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="95"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Cantidad de hilos utilizados para la malla</translation>
     </message>
   </context>
 </TS>

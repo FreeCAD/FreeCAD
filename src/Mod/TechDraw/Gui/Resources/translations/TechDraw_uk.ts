@@ -6516,7 +6516,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="34"/>
       <source>View</source>
-      <translation>Вид</translation>
+      <translation>Перегляд</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
@@ -7521,7 +7521,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLineDecor.ui" line="92"/>
       <source>View</source>
-      <translation>Вид</translation>
+      <translation>Перегляд</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="52"/>
@@ -9056,7 +9056,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
-      <translation>Вид</translation>
+      <translation>Перегляд</translation>
     </message>
   </context>
   <context>
@@ -9064,7 +9064,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>View</source>
-      <translation>Вид</translation>
+      <translation>Перегляд</translation>
     </message>
   </context>
   <context>
@@ -9197,7 +9197,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="34"/>
       <source>View</source>
-      <translation>Вид</translation>
+      <translation>Перегляд</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="90"/>
@@ -9730,7 +9730,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="992"/>
       <source>OK</source>
-      <translation>Підтвердити</translation>
+      <translation>Гаразд</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="993"/>

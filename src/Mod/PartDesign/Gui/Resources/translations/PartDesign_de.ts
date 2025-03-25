@@ -302,7 +302,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="609"/>
       <source>Duplicate selected &amp;object</source>
-      <translation type="unfinished">Duplicate selected &amp;object</translation>
+      <translation>Ausgewähltes &amp;Objekt duplizieren</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
@@ -2100,12 +2100,12 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
       <source>ANSI pipe profile</source>
-      <translation type="unfinished">ANSI pipe profile</translation>
+      <translation>ANSI-Rohrprofil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>BSP pipe profile</source>
-      <translation type="unfinished">BSP pipe profile</translation>
+      <translation>BSP-Rohrprofil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
@@ -2718,7 +2718,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="40"/>
       <source>Pocket parameters</source>
-      <translation>Parameter der Tasche</translation>
+      <translation>Parameter der Vertiefung</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
@@ -2728,7 +2728,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Reverses pocket direction</source>
-      <translation>Kehrt die Richtung der Tasche um</translation>
+      <translation>Kehrt die Richtung der Vertiefung um</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="71"/>
@@ -3873,7 +3873,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="48"/>
       <source>Edit pocket</source>
-      <translation>Tasche bearbeiten</translation>
+      <translation>Vertiefung bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
@@ -4290,7 +4290,7 @@ Steht nur für Durchgangsbohrungen (Bohrungen ohne Gewinde) zur Verfügung</tran
       <location filename="../../TaskHoleParameters.cpp" line="669"/>
       <location filename="../../TaskHoleParameters.cpp" line="686"/>
       <source>Close</source>
-      <translation>Eng</translation>
+      <translation>Fein</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>

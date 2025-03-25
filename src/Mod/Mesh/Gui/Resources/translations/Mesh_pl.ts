@@ -785,7 +785,7 @@
       <location filename="../../ViewProvider.cpp" line="963"/>
       <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
-      <translation>Przetnij</translation>
+      <translation>Wytnij</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="973"/>

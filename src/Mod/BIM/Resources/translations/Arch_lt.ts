@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Pirminis</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="38"/>
       <source>Connect</source>
-      <translation type="unfinished">Connect</translation>
+      <translation>Jungtis</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
@@ -149,12 +149,12 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>BIM Server</source>
-      <translation type="unfinished">BIM Server</translation>
+      <translation>BIM Serveris</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the BIM Server</source>
-      <translation type="unfinished">The list of projects present on the BIM Server</translation>
+      <translation>Projektų sąrašas BIM Serveryje</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -4942,7 +4942,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="411"/>
       <source>Error computing shape of</source>
-      <translation type="unfinished">Error computing shape of</translation>
+      <translation>Įvyko klaida skaičiuojant pavidalą, priklausantį</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1067"/>
@@ -9099,7 +9099,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="491"/>
       <source>Error in entity</source>
-      <translation type="unfinished">Error in entity</translation>
+      <translation>Klaida naryje</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="124"/>
@@ -9299,7 +9299,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="640"/>
       <source>Error: Unable to download</source>
-      <translation type="unfinished">Error: Unable to download</translation>
+      <translation>Klaida: neįmanoma atsisiųsti</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="681"/>
@@ -9693,7 +9693,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="163"/>
       <source>Error: Please select exactly one base face</source>
-      <translation type="unfinished">Error: Please select exactly one base face</translation>
+      <translation>Klaida: Prašome pasirinkti tik vieną sieną pagrindui</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReorder.py" line="53"/>

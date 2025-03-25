@@ -1566,7 +1566,7 @@ l'ombrage Phong conduit à un aspect plus lisse.</translation>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
-      <translation>Quadrangle frontal</translation>
+      <translation>Quadrilatéral frontal</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>

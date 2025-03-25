@@ -2240,12 +2240,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="52"/>
       <source>OK</source>
-      <translation>Підтвердити</translation>
+      <translation>Гаразд</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="71"/>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редагувати</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
@@ -5474,7 +5474,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="722"/>
       <source>Groove parameters</source>
-      <translation type="unfinished">Groove parameters</translation>
+      <translation>Параметри канавок</translation>
     </message>
   </context>
 </TS>

@@ -29,7 +29,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
-      <translation>Llengua</translation>
+      <translation>Idioma</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
@@ -47,17 +47,17 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Start</source>
-      <translation>Inicia</translation>
+      <translation>Inici</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>&amp;Pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start Page</source>
-      <translation type="unfinished">Displays the Start Page</translation>
+      <translation>Mostra la pàgina d'inici</translation>
     </message>
   </context>
   <context>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../StartView.cpp" line="519"/>
       <source>Start</source>
-      <translation>Inicia</translation>
+      <translation>Inici</translation>
     </message>
   </context>
   <context>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>Busques més temes? En pots obtenir utilitzant el &lt;a href="freecad:Std_AddonMgr"&gt;Gestor de Complements&lt;/a&gt;.</translation>
+      <translation>Cerqueu més temes? Podeu trobar-los al &lt;a href="freecad:Std_AddonMgr"&gt;Gestor de complements&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>

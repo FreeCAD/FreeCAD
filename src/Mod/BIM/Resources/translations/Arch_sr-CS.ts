@@ -301,7 +301,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation>Ako je čekirano, povezana tabela koja sadrži rezultate biće održavana zajedno sa ovim objektom rasporeda</translation>
+      <translation>Ako je potvrđeno, povezana tabela koja sadrži rezultate biće održavana zajedno sa ovim objektom rasporeda</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="129"/>
@@ -2347,7 +2347,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
       <source>If this is checked, a dialog will be shown at each import</source>
-      <translation>Ako je označeno, prilikom svakog uvoza otvoriće se prozor sa opcijama</translation>
+      <translation>Ako je potvrđeno, prilikom svakog uvoza otvoriće se prozor sa opcijama</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="186"/>
@@ -2421,17 +2421,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation>Ako je ovo označeno, kada se dva slična zida spajaju, njihove skice osnova će biti spojene u jednu i dva zida će postati jedan</translation>
+      <translation>Ako je ovo potvrđeno, kada se dva slična zida spajaju, njihove skice osnova će biti spojene u jednu i dva zida će postati jedan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="58"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation>Dve moguće strategije za izbegavanje kružne zavisnosti: Napravi još jedan objekat (nije označeno) ili ukloni spoljnu geometriju osnovne skice (označeno)</translation>
+      <translation>Dve moguće strategije za izbegavanje kružne zavisnosti: Napravi još jedan objekat (nije potvrđeno) ili ukloni spoljnu geometriju osnovne skice (potvrđeno)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation>Ako je označeno, kada objekat nastane oduzimanjem ili dodavanjem objekta okruženja Arhitektura, dobiće boju pomoćne geometrije okruženja Crtanje.</translation>
+      <translation>Ako je potvrđeno, kada objekat nastane oduzimanjem ili dodavanjem objekta okruženja Arhitektura, dobiće boju pomoćne geometrije okruženja Crtanje.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="96"/>
@@ -2471,7 +2471,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation>Ako je ovo označeno, kada objekat okruženja Arhitektura ima materijal, objekat će poprimiti boju materijala. Ovo se može zameniti za svaki objekat.</translation>
+      <translation>Ako je ovo potvrđeno, kada objekat okruženja Arhitektura ima materijal, objekat će poprimiti boju materijala. Ovo se može zameniti za svaki objekat.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="77"/>
@@ -2506,7 +2506,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="254"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation>Ako je označeno, konverzija je brža, ali rezultat može i dalje da sadrži trougaone stranice</translation>
+      <translation>Ako je potvrđeno, konverzija je brža, ali rezultat može i dalje da sadrži trougaone stranice</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="257"/>
@@ -2521,7 +2521,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="276"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation>Ako je označeno, grupe ravnih stranica će biti silom izravnane, što će rezultirati mogućim procepima i zbog toga objektima koji ne mogu postati puna tela</translation>
+      <translation>Ako je potvrđeno, grupe ravnih stranica će biti silom izravnane, što će rezultirati mogućim procepima i zbog toga objektima koji ne mogu postati puna tela</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
@@ -2546,7 +2546,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation>Ako je označeno, rupe u stranicama će biti izvedene radije oduzimanjem, nego pomoću orijentacije žičanog rama</translation>
+      <translation>Ako je potvrđeno, rupe u stranicama će biti izvedene radije oduzimanjem, nego pomoću orijentacije žičanog okvira</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="298"/>
@@ -2649,7 +2649,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="571"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation>Ako je ovo označeno, tekst koji se stavlja u privremenu memoriju će uključivati i jedinicu. U suprotnom, to će biti jednostavan broj izražen u unutrašnjim jedinicama (milimetrima)</translation>
+      <translation>Ako je ovo potvrđeno, tekst koji se stavlja u privremenu memoriju će uključivati i jedinicu. U suprotnom, to će biti jednostavan broj izražen u unutrašnjim jedinicama (milimetrima)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="574"/>
@@ -3133,7 +3133,7 @@ oni će se tretirati kao jedan materijal.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="374"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation>IFC datoteke mogu da sadrže objekte koja nisu puna tela. Ako je ova opcija čekirana, uvozi se sva geometrija, bez obzira na njenu validnost.</translation>
+      <translation>IFC datoteke mogu da sadrže objekte koja nisu puna tela. Ako je ova opcija potvrđena, uvozi se sva geometrija, bez obzira na njenu validnost.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="377"/>
@@ -3247,12 +3247,12 @@ Ako koristiš Netgen, uverite se da je dostupan.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
-      <translation>Popločavanje</translation>
+      <translation>Aproksimacija prikazanog oblika</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
       <source>Tessellation value to use with the Builtin and the Mefisto meshing program.</source>
-      <translation>Vrednost popločavanja za korišćenje sa ugrađenim i Mefisto generatorom mreže.</translation>
+      <translation type="unfinished">Tessellation value to use with the Builtin and the Mefisto meshing program.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
@@ -3400,13 +3400,13 @@ Koristite ovo da prisiliš sve objekte da budu izvezeni kao BREP geometrija.</tr
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
       <translation>Zakrivljeni oblici koji se ne mogu predstaviti kao krive u IFC-u
-biće zapisani kao skup ravanskih faseta.
-Ako je ovo označeno, vrši se dodatni proračun za spajanje komplanarnih faseta.</translation>
+biće zapisani kao skup ravanskih pljosni.
+Ako je ovo potvrđeno, vrši se dodatni proračun za spajanje komplanarnih pljosni.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation>Spoji koplanarne fasete prilikom triangulacije</translation>
+      <translation>Spoji koplanarne pljosni prilikom triangulacije</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="153"/>
@@ -3882,7 +3882,7 @@ jedinicama treba raditi prilikom otvaranja datoteke.</translation>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="121"/>
       <source>This mesh has more than 1000 facets.</source>
-      <translation type="unfinished">This mesh has more than 1000 facets.</translation>
+      <translation>Ova mreža ima više od 1000 pljosni.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="122"/>
@@ -3892,7 +3892,7 @@ jedinicama treba raditi prilikom otvaranja datoteke.</translation>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="129"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
-      <translation type="unfinished">The mesh has more than 500 facets. This will take a couple of minutes...</translation>
+      <translation>Ova mreža ima više od 500 pljosni. Ovo će potrajati nekoliko minuta...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="130"/>
@@ -8177,7 +8177,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimRoof.py" line="44"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation>Od izabranog žičanog rama pravi objekat krov.</translation>
+      <translation>Od izabranog žičanog okvira pravi objekat krov.</translation>
     </message>
   </context>
   <context>
@@ -10648,7 +10648,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="40"/>
       <source>Rewire</source>
-      <translation>Napravi žičani ram</translation>
+      <translation>Napravi žičani okvir</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="43"/>

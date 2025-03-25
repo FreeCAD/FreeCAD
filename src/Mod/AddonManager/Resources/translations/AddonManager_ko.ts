@@ -368,12 +368,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="131"/>
       <location filename="../../expanded_view.ui" line="178"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>유지관리자</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="134"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>갱신 가능</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
@@ -391,7 +391,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>면허</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -513,17 +513,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="83"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>매일</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="88"/>
       <source>Weekly</source>
-      <translation type="unfinished">Weekly</translation>
+      <translation>매주</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
-      <translation type="unfinished">Hide Addons without a license</translation>
+      <translation>면허가 없는 애드온 숨김</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="114"/>
@@ -558,7 +558,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="254"/>
       <source>Proxy</source>
-      <translation type="unfinished">Proxy</translation>
+      <translation>프록시</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="260"/>
@@ -631,12 +631,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_details.ui" line="52"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>설치</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="59"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>설치 제거</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="66"/>
@@ -795,7 +795,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>하위 디렉토리</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
@@ -860,7 +860,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>이름 표시</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
@@ -914,17 +914,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>저작권 정보</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>저작권 보유자:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>저작권 년도:</translation>
     </message>
   </context>
   <context>
@@ -990,12 +990,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../proxy_authentication.ui" line="67"/>
       <source>Username</source>
-      <translation type="unfinished">Username</translation>
+      <translation>사용자 이름</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="77"/>
       <source>Password</source>
-      <translation type="unfinished">Password</translation>
+      <translation>암호</translation>
     </message>
   </context>
   <context>
@@ -1003,7 +1003,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>면허 선택</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
@@ -1013,17 +1013,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>면허 이름:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation type="unfinished">Path to license file:</translation>
+      <translation>면허 파일 경로:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation type="unfinished">(if required by license)</translation>
+      <translation>(면허에 따라 필요한 경우)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
@@ -1033,7 +1033,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>생성...</translation>
     </message>
   </context>
   <context>
@@ -1115,22 +1115,22 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="414"/>
       <source>Addon manager</source>
-      <translation type="unfinished">Addon manager</translation>
+      <translation>애드온 관리자</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="421"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>변경된 내용을 반영하려면 프리캐드를 다시 시작해야 합니다.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="430"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>지금 다시 시작</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="431"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>나중에 다시 시작</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="497"/>
@@ -1141,17 +1141,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="524"/>
       <source>Creating addon list</source>
-      <translation type="unfinished">Creating addon list</translation>
+      <translation>애드온 목록 생성중</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="534"/>
       <source>Loading addon list</source>
-      <translation type="unfinished">Loading addon list</translation>
+      <translation>애드온 목록 올리는 중</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="570"/>
       <source>Creating macro list</source>
-      <translation type="unfinished">Creating macro list</translation>
+      <translation>매크로 목록 생성중</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1178,7 +1178,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="96"/>
       <source>Update all addons</source>
-      <translation type="unfinished">Update all addons</translation>
+      <translation>모든 애드온 갱신</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="97"/>
@@ -1193,7 +1193,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="99"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>개발자 도구...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
@@ -1203,7 +1203,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>갱신할 것이 없음</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="819"/>
@@ -1218,7 +1218,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../package_list.py" line="395"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>유지관리자</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
@@ -1289,36 +1289,36 @@ installed addons will be checked for available updates</translation>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="61"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="71"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>제거 확인</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="80"/>
       <source>Are you sure you want to uninstall {}?</source>
-      <translation type="unfinished">Are you sure you want to uninstall {}?</translation>
+      <translation>{} 설치를 정말로 제거 할까요?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="90"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="81"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="94"/>
       <source>Removing Addon</source>
-      <translation type="unfinished">Removing Addon</translation>
+      <translation>애드온 제거중</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="91"/>
       <source>Removing {}</source>
-      <translation type="unfinished">Removing {}</translation>
+      <translation>{} 제거중</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="114"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="109"/>
       <source>Uninstall complete</source>
-      <translation type="unfinished">Uninstall complete</translation>
+      <translation>설치제거 완료</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="126"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="118"/>
       <source>Uninstall failed</source>
-      <translation type="unfinished">Uninstall failed</translation>
+      <translation>설치 제거 실패</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="278"/>
@@ -1438,12 +1438,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="111"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>설치</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="112"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>설치 제거</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="114"/>
@@ -1502,7 +1502,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="94"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>연결 실패</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="100"/>
@@ -1725,7 +1725,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
-      <translation type="unfinished">Installing Addon</translation>
+      <translation>애드온 설치중</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="436"/>
@@ -1735,7 +1735,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
-      <translation type="unfinished">Cancelling</translation>
+      <translation>취소중</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="451"/>
@@ -1745,7 +1745,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="477"/>
       <source>{} was installed successfully</source>
-      <translation type="unfinished">{} was installed successfully</translation>
+      <translation>{}가 잘 설치되었습니다</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="489"/>
@@ -1815,7 +1815,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_devmode.py" line="272"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>하위 디렉토리</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="275"/>

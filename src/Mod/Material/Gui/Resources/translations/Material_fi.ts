@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Inspect Appearance...</source>
-      <translation type="unfinished">Inspect Appearance...</translation>
+      <translation>Tutki Ulkonäköä...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="148"/>
@@ -806,12 +806,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Ylätaso</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Tagit</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="91"/>
@@ -1192,7 +1192,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>&amp;Appearance...</source>
-      <translation type="unfinished">&amp;Appearance...</translation>
+      <translation>&amp;Ulkoasu...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1206,7 +1206,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <translation>&amp;Materiaali...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

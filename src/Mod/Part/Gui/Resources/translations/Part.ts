@@ -1174,14 +1174,14 @@
 <context>
     <name>CmdBoxSelection</name>
     <message>
-        <location filename="../../Command.cpp" line="2125"/>
+        <location filename="../../Command.cpp" line="2117"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2126"/>
-        <location filename="../../Command.cpp" line="2127"/>
-        <location filename="../../Command.cpp" line="2129"/>
+        <location filename="../../Command.cpp" line="2118"/>
+        <location filename="../../Command.cpp" line="2119"/>
+        <location filename="../../Command.cpp" line="2121"/>
         <source>Box selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1189,17 +1189,17 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="2053"/>
+        <location filename="../../Command.cpp" line="2046"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2054"/>
+        <location filename="../../Command.cpp" line="2047"/>
         <source>Check Geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2055"/>
+        <location filename="../../Command.cpp" line="2048"/>
         <source>Analyzes Geometry For Errors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1207,17 +1207,17 @@
 <context>
     <name>CmdColorPerFace</name>
     <message>
-        <location filename="../../Command.cpp" line="2086"/>
+        <location filename="../../Command.cpp" line="2079"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2087"/>
+        <location filename="../../Command.cpp" line="2080"/>
         <source>Appearance per &amp;face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2088"/>
+        <location filename="../../Command.cpp" line="2081"/>
         <source>Set the appearance of each individual face of the selected object.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1225,17 +1225,17 @@
 <context>
     <name>CmdPartBoolean</name>
     <message>
-        <location filename="../../Command.cpp" line="1236"/>
+        <location filename="../../Command.cpp" line="1230"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1237"/>
+        <location filename="../../Command.cpp" line="1231"/>
         <source>Boolean...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1238"/>
+        <location filename="../../Command.cpp" line="1232"/>
         <source>Run a boolean operation with two shapes selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1299,17 +1299,17 @@
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location filename="../../Command.cpp" line="1527"/>
+        <location filename="../../Command.cpp" line="1521"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1528"/>
+        <location filename="../../Command.cpp" line="1522"/>
         <source>Shape builder...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1529"/>
+        <location filename="../../Command.cpp" line="1523"/>
         <source>Advanced utility to create shapes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1317,17 +1317,17 @@
 <context>
     <name>CmdPartChamfer</name>
     <message>
-        <location filename="../../Command.cpp" line="1432"/>
+        <location filename="../../Command.cpp" line="1426"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1433"/>
+        <location filename="../../Command.cpp" line="1427"/>
         <source>Chamfer...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1434"/>
+        <location filename="../../Command.cpp" line="1428"/>
         <source>Chamfer the selected edges of a shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1335,17 +1335,17 @@
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location filename="../../Command.cpp" line="360"/>
+        <location filename="../../Command.cpp" line="359"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="361"/>
+        <location filename="../../Command.cpp" line="360"/>
         <source>Intersection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="362"/>
+        <location filename="../../Command.cpp" line="361"/>
         <source>Make an intersection of two shapes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1353,17 +1353,17 @@
 <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-        <location filename="../../Command.cpp" line="724"/>
+        <location filename="../../Command.cpp" line="721"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="725"/>
+        <location filename="../../Command.cpp" line="722"/>
         <source>Compound tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="726"/>
+        <location filename="../../Command.cpp" line="723"/>
         <source>Compound tools: working with lists of shapes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1371,17 +1371,17 @@
 <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-        <location filename="../../Command.cpp" line="500"/>
+        <location filename="../../Command.cpp" line="497"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="501"/>
+        <location filename="../../Command.cpp" line="498"/>
         <source>Join objects...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="502"/>
+        <location filename="../../Command.cpp" line="499"/>
         <source>Join walled objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1389,17 +1389,17 @@
 <context>
     <name>CmdPartCompOffset</name>
     <message>
-        <location filename="../../Command.cpp" line="1726"/>
+        <location filename="../../Command.cpp" line="1720"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1727"/>
+        <location filename="../../Command.cpp" line="1721"/>
         <source>Offset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1728"/>
+        <location filename="../../Command.cpp" line="1722"/>
         <source>Tools to offset shapes (construct parallel shapes)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1407,17 +1407,17 @@
 <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-        <location filename="../../Command.cpp" line="606"/>
+        <location filename="../../Command.cpp" line="603"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="607"/>
+        <location filename="../../Command.cpp" line="604"/>
         <source>Split objects...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="608"/>
+        <location filename="../../Command.cpp" line="605"/>
         <source>Shape splitting and Compsolid creation tools.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1425,17 +1425,17 @@
 <context>
     <name>CmdPartCompound</name>
     <message>
-        <location filename="../../Command.cpp" line="831"/>
+        <location filename="../../Command.cpp" line="828"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="832"/>
+        <location filename="../../Command.cpp" line="829"/>
         <source>Make compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="833"/>
+        <location filename="../../Command.cpp" line="830"/>
         <source>Make a compound of several shapes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1463,17 +1463,17 @@
 <context>
     <name>CmdPartCrossSections</name>
     <message>
-        <location filename="../../Command.cpp" line="1488"/>
+        <location filename="../../Command.cpp" line="1482"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1489"/>
+        <location filename="../../Command.cpp" line="1483"/>
         <source>Cross-sections...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1490"/>
+        <location filename="../../Command.cpp" line="1484"/>
         <source>Cross-sections</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1519,17 +1519,17 @@
 <context>
     <name>CmdPartDefeaturing</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="412"/>
+        <location filename="../../CommandSimple.cpp" line="410"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="413"/>
+        <location filename="../../CommandSimple.cpp" line="411"/>
         <source>Defeaturing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="414"/>
+        <location filename="../../CommandSimple.cpp" line="412"/>
         <source>Remove feature from a shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1537,17 +1537,17 @@
 <context>
     <name>CmdPartElementCopy</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="324"/>
+        <location filename="../../CommandSimple.cpp" line="322"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="325"/>
+        <location filename="../../CommandSimple.cpp" line="323"/>
         <source>Create shape element copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="326"/>
+        <location filename="../../CommandSimple.cpp" line="324"/>
         <source>Create a non-parametric copy of the selected shape element</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1555,17 +1555,17 @@
 <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="999"/>
+        <location filename="../../Command.cpp" line="994"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1000"/>
+        <location filename="../../Command.cpp" line="995"/>
         <source>Export CAD file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1001"/>
+        <location filename="../../Command.cpp" line="996"/>
         <source>Exports to a CAD file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1573,17 +1573,17 @@
 <context>
     <name>CmdPartExtrude</name>
     <message>
-        <location filename="../../Command.cpp" line="1267"/>
+        <location filename="../../Command.cpp" line="1261"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1268"/>
+        <location filename="../../Command.cpp" line="1262"/>
         <source>Extrude...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1269"/>
+        <location filename="../../Command.cpp" line="1263"/>
         <source>Extrude a selected sketch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1591,17 +1591,17 @@
 <context>
     <name>CmdPartFillet</name>
     <message>
-        <location filename="../../Command.cpp" line="1404"/>
+        <location filename="../../Command.cpp" line="1398"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1405"/>
+        <location filename="../../Command.cpp" line="1399"/>
         <source>Fillet...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1406"/>
+        <location filename="../../Command.cpp" line="1400"/>
         <source>Fillet the selected edges of a shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1609,17 +1609,17 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location filename="../../Command.cpp" line="420"/>
+        <location filename="../../Command.cpp" line="418"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="421"/>
+        <location filename="../../Command.cpp" line="419"/>
         <source>Union</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="422"/>
+        <location filename="../../Command.cpp" line="420"/>
         <source>Make a union of several shapes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1627,17 +1627,17 @@
 <context>
     <name>CmdPartImport</name>
     <message>
-        <location filename="../../Command.cpp" line="936"/>
+        <location filename="../../Command.cpp" line="931"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="937"/>
+        <location filename="../../Command.cpp" line="932"/>
         <source>Import CAD file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="938"/>
+        <location filename="../../Command.cpp" line="933"/>
         <source>Imports a CAD file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1645,17 +1645,17 @@
 <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-        <location filename="../../Command.cpp" line="1047"/>
+        <location filename="../../Command.cpp" line="1042"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1048"/>
+        <location filename="../../Command.cpp" line="1043"/>
         <source>Import curve network...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1049"/>
+        <location filename="../../Command.cpp" line="1044"/>
         <source>Import a curve network</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1663,17 +1663,17 @@
 <context>
     <name>CmdPartLoft</name>
     <message>
-        <location filename="../../Command.cpp" line="1556"/>
+        <location filename="../../Command.cpp" line="1550"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1557"/>
+        <location filename="../../Command.cpp" line="1551"/>
         <source>Loft...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1558"/>
+        <location filename="../../Command.cpp" line="1552"/>
         <source>Utility to loft</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1681,17 +1681,17 @@
 <context>
     <name>CmdPartMakeFace</name>
     <message>
-        <location filename="../../Command.cpp" line="1324"/>
+        <location filename="../../Command.cpp" line="1318"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1325"/>
+        <location filename="../../Command.cpp" line="1319"/>
         <source>Make face from wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1326"/>
+        <location filename="../../Command.cpp" line="1320"/>
         <source>Make face from set of wires (e.g. from a sketch)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1699,17 +1699,17 @@
 <context>
     <name>CmdPartMakeSolid</name>
     <message>
-        <location filename="../../Command.cpp" line="1095"/>
+        <location filename="../../Command.cpp" line="1090"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1096"/>
+        <location filename="../../Command.cpp" line="1091"/>
         <source>Convert to solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1097"/>
+        <location filename="../../Command.cpp" line="1092"/>
         <source>Create solid from a shell or compound</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1717,17 +1717,17 @@
 <context>
     <name>CmdPartMirror</name>
     <message>
-        <location filename="../../Command.cpp" line="1460"/>
+        <location filename="../../Command.cpp" line="1454"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1461"/>
+        <location filename="../../Command.cpp" line="1455"/>
         <source>Mirroring...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1462"/>
+        <location filename="../../Command.cpp" line="1456"/>
         <source>Mirroring a selected shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1735,17 +1735,17 @@
 <context>
     <name>CmdPartOffset</name>
     <message>
-        <location filename="../../Command.cpp" line="1614"/>
+        <location filename="../../Command.cpp" line="1608"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1615"/>
+        <location filename="../../Command.cpp" line="1609"/>
         <source>3D Offset...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1616"/>
+        <location filename="../../Command.cpp" line="1610"/>
         <source>Utility to offset in 3D</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1753,17 +1753,17 @@
 <context>
     <name>CmdPartOffset2D</name>
     <message>
-        <location filename="../../Command.cpp" line="1671"/>
+        <location filename="../../Command.cpp" line="1665"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1672"/>
+        <location filename="../../Command.cpp" line="1666"/>
         <source>2D Offset...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1673"/>
+        <location filename="../../Command.cpp" line="1667"/>
         <source>Utility to offset planar shapes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1789,17 +1789,17 @@
 <context>
     <name>CmdPartPointsFromMesh</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="134"/>
+        <location filename="../../CommandSimple.cpp" line="133"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="135"/>
+        <location filename="../../CommandSimple.cpp" line="134"/>
         <source>Create points object from geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="136"/>
+        <location filename="../../CommandSimple.cpp" line="135"/>
         <source>Create selectable points object from selected geometric object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1825,17 +1825,17 @@
 <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-        <location filename="../../Command.cpp" line="2155"/>
+        <location filename="../../Command.cpp" line="2147"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2156"/>
+        <location filename="../../Command.cpp" line="2148"/>
         <source>Create projection on surface...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2157"/>
+        <location filename="../../Command.cpp" line="2149"/>
         <source>Project edges, wires, or faces of one object
 onto a face of another object.
 The camera view determines the direction
@@ -1846,17 +1846,17 @@ of projection.</source>
 <context>
     <name>CmdPartRefineShape</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="352"/>
+        <location filename="../../CommandSimple.cpp" line="350"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="353"/>
+        <location filename="../../CommandSimple.cpp" line="351"/>
         <source>Refine shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="354"/>
+        <location filename="../../CommandSimple.cpp" line="352"/>
         <source>Refine the copy of a shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1864,17 +1864,17 @@ of projection.</source>
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="1174"/>
+        <location filename="../../Command.cpp" line="1168"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1175"/>
+        <location filename="../../Command.cpp" line="1169"/>
         <source>Reverse shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1176"/>
+        <location filename="../../Command.cpp" line="1170"/>
         <source>Reverse orientation of shapes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1882,17 +1882,17 @@ of projection.</source>
 <context>
     <name>CmdPartRevolve</name>
     <message>
-        <location filename="../../Command.cpp" line="1376"/>
+        <location filename="../../Command.cpp" line="1370"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1377"/>
+        <location filename="../../Command.cpp" line="1371"/>
         <source>Revolve...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1378"/>
+        <location filename="../../Command.cpp" line="1372"/>
         <source>Revolve a selected shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1900,17 +1900,17 @@ of projection.</source>
 <context>
     <name>CmdPartRuledSurface</name>
     <message>
-        <location filename="../../Command.cpp" line="1948"/>
+        <location filename="../../Command.cpp" line="1941"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1949"/>
+        <location filename="../../Command.cpp" line="1942"/>
         <source>Create ruled surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1950"/>
+        <location filename="../../Command.cpp" line="1943"/>
         <source>Create a ruled surface from either two Edges or two wires</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1918,17 +1918,17 @@ of projection.</source>
 <context>
     <name>CmdPartSection</name>
     <message>
-        <location filename="../../Command.cpp" line="888"/>
+        <location filename="../../Command.cpp" line="883"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="889"/>
+        <location filename="../../Command.cpp" line="884"/>
         <source>Section</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="890"/>
+        <location filename="../../Command.cpp" line="885"/>
         <source>Make a section of two shapes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1936,12 +1936,12 @@ of projection.</source>
 <context>
     <name>CmdPartSectionCut</name>
     <message>
-        <location filename="../../Command.cpp" line="2189"/>
+        <location filename="../../Command.cpp" line="2181"/>
         <source>Persiste&amp;nt section cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2190"/>
+        <location filename="../../Command.cpp" line="2182"/>
         <source>Creates a persistent section cut of visible part objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1967,17 +1967,17 @@ of projection.</source>
 <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="221"/>
+        <location filename="../../CommandSimple.cpp" line="219"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="222"/>
+        <location filename="../../CommandSimple.cpp" line="220"/>
         <source>Create simple copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="223"/>
+        <location filename="../../CommandSimple.cpp" line="221"/>
         <source>Create a simple non-parametric copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2023,17 +2023,17 @@ of projection.</source>
 <context>
     <name>CmdPartSweep</name>
     <message>
-        <location filename="../../Command.cpp" line="1585"/>
+        <location filename="../../Command.cpp" line="1579"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1586"/>
+        <location filename="../../Command.cpp" line="1580"/>
         <source>Sweep...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1587"/>
+        <location filename="../../Command.cpp" line="1581"/>
         <source>Utility to sweep</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2041,27 +2041,27 @@ of projection.</source>
 <context>
     <name>CmdPartThickness</name>
     <message>
-        <location filename="../../Command.cpp" line="1818"/>
+        <location filename="../../Command.cpp" line="1812"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1819"/>
+        <location filename="../../Command.cpp" line="1813"/>
         <source>Thickness...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1820"/>
+        <location filename="../../Command.cpp" line="1814"/>
         <source>Utility to apply a thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1869"/>
+        <location filename="../../Command.cpp" line="1863"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1870"/>
+        <location filename="../../Command.cpp" line="1864"/>
         <source>Selected shape is not a solid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2089,17 +2089,17 @@ of projection.</source>
 <context>
     <name>CmdPartTransformedCopy</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="296"/>
+        <location filename="../../CommandSimple.cpp" line="294"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="297"/>
+        <location filename="../../CommandSimple.cpp" line="295"/>
         <source>Create transformed copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="298"/>
+        <location filename="../../CommandSimple.cpp" line="296"/>
         <source>Create a non-parametric copy with transformed placement</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2118,82 +2118,82 @@ of projection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="397"/>
+        <location filename="../../Command.cpp" line="396"/>
         <source>Common</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="476"/>
+        <location filename="../../Command.cpp" line="474"/>
         <source>Fusion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="866"/>
+        <location filename="../../Command.cpp" line="862"/>
         <source>Compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="911"/>
+        <location filename="../../Command.cpp" line="906"/>
         <source>Section</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="963"/>
+        <location filename="../../Command.cpp" line="958"/>
         <source>Import Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1070"/>
+        <location filename="../../Command.cpp" line="1065"/>
         <source>Part Import Curve Net</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1187"/>
+        <location filename="../../Command.cpp" line="1181"/>
         <source>Reverse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1338"/>
+        <location filename="../../Command.cpp" line="1332"/>
         <source>Make face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1638"/>
+        <location filename="../../Command.cpp" line="1632"/>
         <source>Make Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1696"/>
+        <location filename="../../Command.cpp" line="1690"/>
         <source>Make 2D Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1876"/>
+        <location filename="../../Command.cpp" line="1870"/>
         <source>Make Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2028"/>
+        <location filename="../../Command.cpp" line="2021"/>
         <source>Create ruled surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2257"/>
+        <location filename="../../Command.cpp" line="2249"/>
         <source>Add a coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2291"/>
+        <location filename="../../Command.cpp" line="2283"/>
         <source>Add a datum plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2324"/>
+        <location filename="../../Command.cpp" line="2316"/>
         <source>Add a datum line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2357"/>
+        <location filename="../../Command.cpp" line="2349"/>
         <source>Add a datum point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2203,17 +2203,17 @@ of projection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="181"/>
+        <location filename="../../CommandSimple.cpp" line="180"/>
         <source>Points from geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="369"/>
+        <location filename="../../CommandSimple.cpp" line="367"/>
         <source>Refine shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="426"/>
+        <location filename="../../CommandSimple.cpp" line="424"/>
         <source>Defeaturing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2223,12 +2223,12 @@ of projection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="1247"/>
+        <location filename="../../TaskAttacher.cpp" line="1256"/>
         <source>Edit attachment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskFaceAppearances.cpp" line="454"/>
+        <location filename="../../TaskFaceAppearances.cpp" line="455"/>
         <source>Change face colors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2238,33 +2238,33 @@ of projection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="263"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="259"/>
         <source>Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="304"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="300"/>
         <source>Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="356"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="408"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="352"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="404"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="469"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="465"/>
         <source>Shell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="521"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="517"/>
         <source>Solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="368"/>
+        <location filename="../../TaskSweep.cpp" line="369"/>
         <source>Sweep</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2274,7 +2274,7 @@ of projection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
+        <location filename="../../DlgProjectionOnSurface.cpp" line="1558"/>
         <source>Project on surface</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2502,42 +2502,42 @@ Note: The placement is expressed in local space of object being attached.</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="387"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="386"/>
         <source>Select a shape on the left side, first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="392"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="391"/>
         <source>Select a shape on the right side, first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="397"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="396"/>
         <source>Cannot perform a boolean operation with the same shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="407"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="406"/>
         <source>No active document available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="417"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="416"/>
         <source>One of the selected objects doesn&apos;t exist anymore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="424"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="423"/>
         <source>Performing union on non-solids is not possible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="432"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="431"/>
         <source>Performing intersection on non-solids is not possible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="440"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="439"/>
         <source>Performing difference on non-solids is not possible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2553,27 +2553,27 @@ Note: The placement is expressed in local space of object being attached.</sourc
 <context>
     <name>PartGui::DlgExportHeaderStep</name>
     <message>
-        <location filename="../../DlgExportHeaderStep.ui" line="20"/>
+        <location filename="../../DlgExportHeaderStep.ui" line="23"/>
         <source>If not empty, field contents will be used in the STEP file header.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExportHeaderStep.ui" line="23"/>
+        <location filename="../../DlgExportHeaderStep.ui" line="26"/>
         <source>Header</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExportHeaderStep.ui" line="29"/>
+        <location filename="../../DlgExportHeaderStep.ui" line="32"/>
         <source>Company</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExportHeaderStep.ui" line="39"/>
+        <location filename="../../DlgExportHeaderStep.ui" line="42"/>
         <source>Author</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExportHeaderStep.ui" line="49"/>
+        <location filename="../../DlgExportHeaderStep.ui" line="52"/>
         <source>Product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2705,7 +2705,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
         <location filename="../../DlgExtrusion.ui" line="71"/>
-        <location filename="../../DlgExtrusion.cpp" line="232"/>
+        <location filename="../../DlgExtrusion.cpp" line="235"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2811,63 +2811,63 @@ If both lengths are zero, magnitude of direction is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="206"/>
+        <location filename="../../DlgExtrusion.cpp" line="209"/>
         <source>Selecting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="454"/>
+        <location filename="../../DlgExtrusion.cpp" line="457"/>
         <source>The document &apos;%1&apos; doesn&apos;t exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="502"/>
-        <location filename="../../DlgExtrusion.cpp" line="508"/>
+        <location filename="../../DlgExtrusion.cpp" line="505"/>
+        <location filename="../../DlgExtrusion.cpp" line="511"/>
         <source>Creating Extrusion failed.
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="575"/>
+        <location filename="../../DlgExtrusion.cpp" line="578"/>
         <source>Object not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="637"/>
+        <location filename="../../DlgExtrusion.cpp" line="640"/>
         <source>No shapes selected for extrusion. Select some, first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="654"/>
+        <location filename="../../DlgExtrusion.cpp" line="657"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="658"/>
+        <location filename="../../DlgExtrusion.cpp" line="661"/>
         <source>Extrusion direction link is invalid.
 
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="660"/>
+        <location filename="../../DlgExtrusion.cpp" line="663"/>
         <source>Direction mode is to use an edge, but no edge is linked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="683"/>
+        <location filename="../../DlgExtrusion.cpp" line="686"/>
         <source>Can&apos;t determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="693"/>
+        <location filename="../../DlgExtrusion.cpp" line="696"/>
         <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="704"/>
+        <location filename="../../DlgExtrusion.cpp" line="707"/>
         <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2895,7 +2895,7 @@ If both lengths are zero, magnitude of direction is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="280"/>
+        <location filename="../../DlgFilletEdges.cpp" line="281"/>
         <source>Fillet Parameter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2950,17 +2950,17 @@ If both lengths are zero, magnitude of direction is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="270"/>
+        <location filename="../../DlgFilletEdges.cpp" line="271"/>
         <source>Chamfer type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="271"/>
+        <location filename="../../DlgFilletEdges.cpp" line="272"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="275"/>
+        <location filename="../../DlgFilletEdges.cpp" line="276"/>
         <source>Edges to chamfer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2970,48 +2970,48 @@ If both lengths are zero, magnitude of direction is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="272"/>
+        <location filename="../../DlgFilletEdges.cpp" line="273"/>
         <source>Equal distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="269"/>
+        <location filename="../../DlgFilletEdges.cpp" line="270"/>
         <source>Chamfer Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="273"/>
+        <location filename="../../DlgFilletEdges.cpp" line="274"/>
         <source>Two distances</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="276"/>
+        <location filename="../../DlgFilletEdges.cpp" line="277"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="277"/>
+        <location filename="../../DlgFilletEdges.cpp" line="278"/>
         <source>Size2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="281"/>
+        <location filename="../../DlgFilletEdges.cpp" line="282"/>
         <source>Fillet type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="282"/>
+        <location filename="../../DlgFilletEdges.cpp" line="283"/>
         <source>Edges to fillet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="283"/>
+        <location filename="../../DlgFilletEdges.cpp" line="284"/>
         <location filename="../../DlgFilletEdges.cpp" line="916"/>
         <source>Start radius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="284"/>
+        <location filename="../../DlgFilletEdges.cpp" line="285"/>
         <source>End radius</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3160,109 +3160,109 @@ Please check one or more edge entities first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="20"/>
+        <location filename="../../DlgImportStep.ui" line="23"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="26"/>
+        <location filename="../../DlgImportStep.ui" line="29"/>
         <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="30"/>
+        <location filename="../../DlgImportStep.ui" line="33"/>
         <source>Enable STEP Compound merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="43"/>
+        <location filename="../../DlgImportStep.ui" line="46"/>
         <source>Select this to use App::LinkGroup as group container, or else use App::Part.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="46"/>
+        <location filename="../../DlgImportStep.ui" line="49"/>
         <source>Use LinkGroup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="59"/>
+        <location filename="../../DlgImportStep.ui" line="62"/>
         <source>Select this to import invisible objects.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="62"/>
+        <location filename="../../DlgImportStep.ui" line="65"/>
         <source>Import invisible objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="75"/>
+        <location filename="../../DlgImportStep.ui" line="78"/>
         <source>Reduce number of objects using Link array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="78"/>
+        <location filename="../../DlgImportStep.ui" line="81"/>
         <source>Reduce number of objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="91"/>
+        <location filename="../../DlgImportStep.ui" line="94"/>
         <source>Expand compound shape with multiple solids</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="94"/>
+        <location filename="../../DlgImportStep.ui" line="97"/>
         <source>Expand compound shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="107"/>
         <location filename="../../DlgImportStep.ui" line="110"/>
+        <location filename="../../DlgImportStep.ui" line="113"/>
         <source>Show progress bar when importing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="123"/>
+        <location filename="../../DlgImportStep.ui" line="126"/>
         <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="126"/>
+        <location filename="../../DlgImportStep.ui" line="129"/>
         <source>Ignore instance names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="150"/>
+        <location filename="../../DlgImportStep.ui" line="153"/>
         <source>CodePage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="177"/>
+        <location filename="../../DlgImportStep.ui" line="180"/>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="197"/>
+        <location filename="../../DlgImportStep.ui" line="200"/>
         <source>Single document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="202"/>
+        <location filename="../../DlgImportStep.ui" line="205"/>
         <source>Assembly per document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="207"/>
+        <location filename="../../DlgImportStep.ui" line="210"/>
         <source>Assembly per document in sub-directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="212"/>
+        <location filename="../../DlgImportStep.ui" line="215"/>
         <source>Object per document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgImportStep.ui" line="217"/>
+        <location filename="../../DlgImportStep.ui" line="220"/>
         <source>Object per document in sub-directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3424,79 +3424,79 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="33"/>
-        <location filename="../../DlgPrimitives.cpp" line="279"/>
+        <location filename="../../DlgPrimitives.cpp" line="275"/>
         <source>Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="42"/>
-        <location filename="../../DlgPrimitives.cpp" line="354"/>
+        <location filename="../../DlgPrimitives.cpp" line="350"/>
         <source>Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="51"/>
-        <location filename="../../DlgPrimitives.cpp" line="444"/>
+        <location filename="../../DlgPrimitives.cpp" line="440"/>
         <source>Cylinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="60"/>
-        <location filename="../../DlgPrimitives.cpp" line="540"/>
+        <location filename="../../DlgPrimitives.cpp" line="536"/>
         <source>Cone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="69"/>
-        <location filename="../../DlgPrimitives.cpp" line="631"/>
+        <location filename="../../DlgPrimitives.cpp" line="627"/>
         <source>Sphere</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="78"/>
-        <location filename="../../DlgPrimitives.cpp" line="735"/>
+        <location filename="../../DlgPrimitives.cpp" line="731"/>
         <source>Ellipsoid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="87"/>
-        <location filename="../../DlgPrimitives.cpp" line="842"/>
+        <location filename="../../DlgPrimitives.cpp" line="838"/>
         <source>Torus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="96"/>
-        <location filename="../../DlgPrimitives.cpp" line="940"/>
+        <location filename="../../DlgPrimitives.cpp" line="936"/>
         <source>Prism</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="105"/>
-        <location filename="../../DlgPrimitives.cpp" line="1082"/>
+        <location filename="../../DlgPrimitives.cpp" line="1078"/>
         <source>Wedge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="114"/>
-        <location filename="../../DlgPrimitives.cpp" line="1208"/>
+        <location filename="../../DlgPrimitives.cpp" line="1204"/>
         <source>Helix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="123"/>
-        <location filename="../../DlgPrimitives.cpp" line="1297"/>
+        <location filename="../../DlgPrimitives.cpp" line="1293"/>
         <source>Spiral</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="132"/>
-        <location filename="../../DlgPrimitives.cpp" line="1377"/>
+        <location filename="../../DlgPrimitives.cpp" line="1373"/>
         <source>Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="141"/>
-        <location filename="../../DlgPrimitives.cpp" line="1463"/>
+        <location filename="../../DlgPrimitives.cpp" line="1459"/>
         <source>Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3507,13 +3507,13 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="159"/>
-        <location filename="../../DlgPrimitives.cpp" line="1639"/>
+        <location filename="../../DlgPrimitives.cpp" line="1635"/>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="168"/>
-        <location filename="../../DlgPrimitives.cpp" line="1540"/>
+        <location filename="../../DlgPrimitives.cpp" line="1536"/>
         <source>Regular polygon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3751,25 +3751,25 @@ during file reading (slower but higher details).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="1737"/>
+        <location filename="../../DlgPrimitives.cpp" line="1733"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="1915"/>
-        <location filename="../../DlgPrimitives.cpp" line="1925"/>
+        <location filename="../../DlgPrimitives.cpp" line="1911"/>
+        <location filename="../../DlgPrimitives.cpp" line="1921"/>
+        <location filename="../../DlgPrimitives.cpp" line="1936"/>
         <location filename="../../DlgPrimitives.cpp" line="1940"/>
-        <location filename="../../DlgPrimitives.cpp" line="1944"/>
         <source>Create %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="1916"/>
+        <location filename="../../DlgPrimitives.cpp" line="1912"/>
         <source>No active document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="2209"/>
+        <location filename="../../DlgPrimitives.cpp" line="2205"/>
         <source>&amp;Create</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3862,7 +3862,7 @@ during file reading (slower but higher details).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+        <location filename="../../DlgProjectionOnSurface.cpp" line="170"/>
         <source>Can not create a projection object!!!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3922,7 +3922,7 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
         <location filename="../../DlgRevolution.ui" line="250"/>
-        <location filename="../../DlgRevolution.cpp" line="465"/>
+        <location filename="../../DlgRevolution.cpp" line="466"/>
         <source>Select reference</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3952,49 +3952,49 @@ during file reading (slower but higher details).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="185"/>
+        <location filename="../../DlgRevolution.cpp" line="186"/>
         <source>Object not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="266"/>
+        <location filename="../../DlgRevolution.cpp" line="267"/>
         <source>Select a shape for revolution, first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="282"/>
-        <location filename="../../DlgRevolution.cpp" line="287"/>
-        <location filename="../../DlgRevolution.cpp" line="292"/>
+        <location filename="../../DlgRevolution.cpp" line="283"/>
+        <location filename="../../DlgRevolution.cpp" line="288"/>
+        <location filename="../../DlgRevolution.cpp" line="293"/>
         <source>Revolution axis link is invalid.
 
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="292"/>
+        <location filename="../../DlgRevolution.cpp" line="293"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="301"/>
+        <location filename="../../DlgRevolution.cpp" line="302"/>
         <source>Revolution axis direction is zero-length. It must be non-zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="311"/>
+        <location filename="../../DlgRevolution.cpp" line="312"/>
         <source>Revolution angle span is zero. It must be non-zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="445"/>
-        <location filename="../../DlgRevolution.cpp" line="449"/>
+        <location filename="../../DlgRevolution.cpp" line="446"/>
+        <location filename="../../DlgRevolution.cpp" line="450"/>
         <source>Creating Revolve failed.
 
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="461"/>
+        <location filename="../../DlgRevolution.cpp" line="462"/>
         <source>Selecting... (line or arc)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4205,12 +4205,6 @@ during file reading (slower but higher details).</source>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="295"/>
         <source>The default line thickness for new shapes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsObjectColor.ui" line="298"/>
-        <location filename="../../DlgSettingsObjectColor.ui" line="366"/>
-        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4438,7 +4432,7 @@ the sketch plane&apos;s normal vector will be used</source>
     </message>
     <message>
         <location filename="../../Mirroring.ui" line="150"/>
-        <location filename="../../Mirroring.cpp" line="215"/>
+        <location filename="../../Mirroring.cpp" line="216"/>
         <source>Selecting</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4468,17 +4462,17 @@ the sketch plane&apos;s normal vector will be used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="211"/>
+        <location filename="../../Mirroring.cpp" line="212"/>
         <source>Select reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="280"/>
+        <location filename="../../Mirroring.cpp" line="281"/>
         <source>Select a shape for mirroring, first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="287"/>
+        <location filename="../../Mirroring.cpp" line="288"/>
         <source>No such document &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4494,17 +4488,17 @@ the sketch plane&apos;s normal vector will be used</source>
 <context>
     <name>PartGui::ResultModel</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="340"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="341"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="342"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="343"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="345"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4591,7 +4585,7 @@ have the same values.</source>
     </message>
     <message>
         <location filename="../../SectionCutting.ui" line="371"/>
-        <source>Allows to cut objects intersecting each other
+        <source>Allows cutting objects intersecting each other
 for the price that all cut objects
 will get the same color</source>
         <translation type="unfinished"></translation>
@@ -4628,7 +4622,7 @@ only created cuts will be visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SectionCutting.cpp" line="1103"/>
+        <location filename="../../SectionCutting.cpp" line="1093"/>
         <source>Sliders are disabled for assemblies</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4636,80 +4630,80 @@ only created cuts will be visible</source>
 <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="222"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="218"/>
         <source>Unsupported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="222"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="218"/>
         <source>Box selection for shells is not supported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="231"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="250"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="278"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="319"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="371"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="423"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="484"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="246"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="274"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="315"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="367"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="419"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="480"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="231"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="250"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="246"/>
         <source>Select two vertices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="278"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="371"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="274"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="367"/>
         <source>Select one or more edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="319"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="315"/>
         <source>Select three or more vertices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="423"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="419"/>
         <source>Select two or more faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="484"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="480"/>
         <source>Select only one part object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="536"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="532"/>
         <source>Select two vertices to create an edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="543"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="539"/>
         <source>Select adjacent edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="550"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="546"/>
         <source>Select a list of vertices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="557"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="553"/>
         <source>Select a closed set of edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="564"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="560"/>
         <source>Select adjacent faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="571"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="567"/>
         <source>All shape types can be selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4735,79 +4729,79 @@ only created cuts will be visible</source>
 <context>
     <name>PartGui::SweepWidget</name>
     <message>
-        <location filename="../../TaskSweep.cpp" line="131"/>
+        <location filename="../../TaskSweep.cpp" line="132"/>
         <source>Available profiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="132"/>
+        <location filename="../../TaskSweep.cpp" line="133"/>
         <source>Selected profiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="331"/>
+        <location filename="../../TaskSweep.cpp" line="332"/>
         <source>Too few elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="331"/>
+        <location filename="../../TaskSweep.cpp" line="332"/>
         <source>At least one edge or wire is required.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="335"/>
+        <location filename="../../TaskSweep.cpp" line="336"/>
         <source>Invalid selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="335"/>
+        <location filename="../../TaskSweep.cpp" line="336"/>
         <source>Select one or more edges from a single object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="342"/>
+        <location filename="../../TaskSweep.cpp" line="343"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="342"/>
+        <location filename="../../TaskSweep.cpp" line="343"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="380"/>
+        <location filename="../../TaskSweep.cpp" line="381"/>
         <source>Input error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="413"/>
+        <location filename="../../TaskSweep.cpp" line="414"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="415"/>
+        <location filename="../../TaskSweep.cpp" line="416"/>
         <source>Select one or more connected edges in the 3D view and press &apos;Done&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="437"/>
-        <location filename="../../TaskSweep.cpp" line="445"/>
+        <location filename="../../TaskSweep.cpp" line="438"/>
+        <location filename="../../TaskSweep.cpp" line="446"/>
         <source>Sweep path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="437"/>
-        <location filename="../../TaskSweep.cpp" line="445"/>
+        <location filename="../../TaskSweep.cpp" line="438"/>
+        <location filename="../../TaskSweep.cpp" line="446"/>
         <source>The selected sweep path is invalid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="457"/>
+        <location filename="../../TaskSweep.cpp" line="458"/>
         <source>Vertex/Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="458"/>
+        <location filename="../../TaskSweep.cpp" line="459"/>
         <source>Sweep</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4998,189 +4992,189 @@ of object being attached.</source>
 <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1094"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1074"/>
         <source>Shape Content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
-        <location filename="../../TaskCheckGeometry.cpp" line="1297"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1082"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1277"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
         <source>Skip this settings page and run the geometry check automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1110"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
         <source>Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1117"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
         <source>Run boolean operation check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1098"/>
         <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
         <source>Single-threaded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1109"/>
         <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
         <source>Log errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
         <source>Log errors to report view.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1146"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1126"/>
         <source>Expand shape content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1147"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
         <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1156"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
         <source>Advanced shape content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1157"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
         <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1165"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1145"/>
         <source>
 Individual boolean operation checks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1168"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1148"/>
         <source>Bad type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1176"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1156"/>
         <source>Self-intersect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1184"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1164"/>
         <source>Too small edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1192"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1172"/>
         <source>Nonrecoverable face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1180"/>
         <source>Continuity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1188"/>
         <source>Incompatibility of face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1216"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1196"/>
         <source>Incompatibility of vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1224"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
         <source>Incompatibility of edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1232"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1212"/>
         <source>Invalid curve on surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1169"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1149"/>
         <source>Check for bad argument types.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1106"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1086"/>
         <source>Skip this settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1177"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1157"/>
         <source>Check for self-intersections.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1185"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1165"/>
         <source>Check for edges that are too small.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1193"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1173"/>
         <source>Check for nonrecoverable faces.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1181"/>
         <source>Check for continuity.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1189"/>
         <source>Check for incompatible faces.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1197"/>
         <source>Check for incompatible vertices.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1225"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
         <source>Check for incompatible edges.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1233"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1213"/>
         <source>Check for invalid curves on surfaces.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1296"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1276"/>
         <source>Run check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1302"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1282"/>
         <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5188,96 +5182,95 @@ Individual boolean operation checks:</source>
 <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="375"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="376"/>
         <source>Check Geometry Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="398"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="399"/>
         <source>Check is running...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="423"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="424"/>
         <source>Boolean operation check...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="425"/>
-        <location filename="../../TaskCheckGeometry.cpp" line="430"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="426"/>
         <source>Check geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="456"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="451"/>
         <source>Null shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="457"/>
-        <location filename="../../TaskCheckGeometry.cpp" line="468"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="452"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="463"/>
         <source>Skipped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="467"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="462"/>
         <source>Infinite shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="494"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="489"/>
         <source>Invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="515"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="510"/>
         <source>Checking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="542"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="529"/>
         <source>No errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="553"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="540"/>
         <source>%1 processed out of %2 selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../../TaskCheckGeometry.cpp" line="554"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="541"/>
         <source>%n invalid shapes.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="555"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="542"/>
         <source>To Report view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="654"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="641"/>
         <source>Checked object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="671"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="658"/>
         <source>Tolerance information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="676"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="663"/>
         <source>Global Minimum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="681"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="668"/>
         <source>Global Average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="686"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="673"/>
         <source>Global Maximum</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5285,12 +5278,12 @@ Individual boolean operation checks:</source>
 <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="1234"/>
+        <location filename="../../TaskAttacher.cpp" line="1235"/>
         <source>Attachment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="1289"/>
+        <location filename="../../TaskAttacher.cpp" line="1299"/>
         <source>Datum dialog: Input error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5483,7 +5476,7 @@ Individual boolean operation checks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="483"/>
+        <location filename="../../TaskSweep.cpp" line="484"/>
         <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
         <translation type="unfinished"></translation>
@@ -5520,24 +5513,24 @@ in the 3D view for the sweep path.</source>
 <context>
     <name>PartGui::ThicknessWidget</name>
     <message>
-        <location filename="../../TaskThickness.cpp" line="89"/>
-        <location filename="../../TaskThickness.cpp" line="290"/>
-        <location filename="../../TaskThickness.cpp" line="300"/>
+        <location filename="../../TaskThickness.cpp" line="90"/>
+        <location filename="../../TaskThickness.cpp" line="291"/>
+        <location filename="../../TaskThickness.cpp" line="301"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskThickness.cpp" line="187"/>
+        <location filename="../../TaskThickness.cpp" line="188"/>
         <source>Select faces of the source object and press &apos;Done&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskThickness.cpp" line="190"/>
+        <location filename="../../TaskThickness.cpp" line="191"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskThickness.cpp" line="255"/>
+        <location filename="../../TaskThickness.cpp" line="256"/>
         <source>Input error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5547,8 +5540,8 @@ in the 3D view for the sweep path.</source>
     <message>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
+        <location filename="../../ViewProvider.cpp" line="51"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
-        <location filename="../../ViewProvider.cpp" line="49"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5572,62 +5565,62 @@ in the 3D view for the sweep path.</source>
     </message>
     <message>
         <location filename="../../Command.cpp" line="315"/>
-        <location filename="../../Command.cpp" line="375"/>
-        <location filename="../../Command.cpp" line="454"/>
-        <location filename="../../Command.cpp" line="845"/>
-        <location filename="../../Command.cpp" line="902"/>
-        <location filename="../../Command.cpp" line="2023"/>
+        <location filename="../../Command.cpp" line="374"/>
+        <location filename="../../Command.cpp" line="452"/>
+        <location filename="../../Command.cpp" line="841"/>
+        <location filename="../../Command.cpp" line="897"/>
+        <location filename="../../Command.cpp" line="2016"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="316"/>
-        <location filename="../../Command.cpp" line="903"/>
+        <location filename="../../Command.cpp" line="898"/>
         <source>Select two shapes please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="326"/>
-        <location filename="../../Command.cpp" line="386"/>
-        <location filename="../../Command.cpp" line="465"/>
+        <location filename="../../Command.cpp" line="385"/>
+        <location filename="../../Command.cpp" line="463"/>
         <source>Non-solids selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="327"/>
-        <location filename="../../Command.cpp" line="387"/>
-        <location filename="../../Command.cpp" line="466"/>
+        <location filename="../../Command.cpp" line="386"/>
+        <location filename="../../Command.cpp" line="464"/>
         <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="376"/>
+        <location filename="../../Command.cpp" line="375"/>
         <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="455"/>
+        <location filename="../../Command.cpp" line="453"/>
         <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="846"/>
+        <location filename="../../Command.cpp" line="842"/>
         <source>Select one shape or more, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1060"/>
+        <location filename="../../Command.cpp" line="1055"/>
         <source>All CAD Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1065"/>
+        <location filename="../../Command.cpp" line="1060"/>
         <source>All Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2024"/>
+        <location filename="../../Command.cpp" line="2017"/>
         <source>You have to select either two edges or two wires.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5638,292 +5631,292 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="82"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="84"/>
         <source>Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="85"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="78"/>
         <source>Compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="79"/>
         <source>Compound Solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="80"/>
         <source>Solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="81"/>
         <source>Shell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="83"/>
         <source>Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="86"/>
         <source>Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="100"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="101"/>
         <source>No Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="102"/>
         <source>Invalid Point On Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="103"/>
         <source>Invalid Point On Curve On Surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="104"/>
         <source>Invalid Point On Surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="105"/>
         <source>No 3D Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="106"/>
         <source>Multiple 3D Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="107"/>
         <source>Invalid 3D Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="108"/>
         <source>No Curve On Surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="109"/>
         <source>Invalid Curve On Surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="110"/>
         <source>Invalid Curve On Closed Surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="111"/>
         <source>Invalid Same Range Flag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="112"/>
         <source>Invalid Same Parameter Flag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="113"/>
         <source>Invalid Degenerated Flag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="114"/>
         <source>Free Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="115"/>
         <source>Invalid MultiConnexity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="116"/>
         <source>Invalid Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="117"/>
         <source>Empty Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="118"/>
         <source>Redundant Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="119"/>
         <source>Self Intersecting Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="120"/>
         <source>No Surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="121"/>
         <source>Invalid Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="122"/>
         <source>Redundant Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="123"/>
         <source>Intersecting Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="124"/>
         <source>Invalid Imbrication Of Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="125"/>
         <source>Empty Shell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="126"/>
         <source>Redundant Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="127"/>
         <source>Unorientable Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="128"/>
         <source>Not Closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="129"/>
         <source>Not Connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="130"/>
         <source>Sub Shape Not In Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="131"/>
         <source>Bad Orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="132"/>
         <source>Bad Orientation Of Sub Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="133"/>
         <source>Invalid Tolerance Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="134"/>
         <source>Check Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="143"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="144"/>
         <source>No Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="147"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="148"/>
         <source>Out Of Enum Range:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="159"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="160"/>
         <source>Boolean operation: Unknown check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="161"/>
         <source>Boolean operation: Bad type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="162"/>
         <source>Boolean operation: Self-intersection found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="163"/>
         <source>Boolean operation: Edge too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="164"/>
         <source>Boolean operation: Non-recoverable face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="165"/>
         <source>Boolean operation: Incompatibility of vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="166"/>
         <source>Boolean operation: Incompatibility of edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="167"/>
         <source>Boolean operation: Incompatibility of face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="168"/>
         <source>Boolean operation: Aborted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="169"/>
         <source>Boolean operation: GeomAbs_C0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="169"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="170"/>
         <source>Boolean operation: Invalid curve on surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="170"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="171"/>
         <source>Boolean operation: Not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="785"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="765"/>
         <source>Invalid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5968,12 +5961,12 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="173"/>
+        <location filename="../../CommandSimple.cpp" line="172"/>
         <source>Distance in parameter space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="174"/>
+        <location filename="../../CommandSimple.cpp" line="173"/>
         <source>Enter distance:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5983,7 +5976,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="885"/>
+        <location filename="../../ViewProviderExt.cpp" line="884"/>
         <source>Set appearance per face...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6624,17 +6617,17 @@ A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</sour
 <context>
     <name>CmdPartScale</name>
     <message>
-        <location filename="../../Command.cpp" line="1295"/>
+        <location filename="../../Command.cpp" line="1289"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1296"/>
+        <location filename="../../Command.cpp" line="1290"/>
         <source>Scale...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1297"/>
+        <location filename="../../Command.cpp" line="1291"/>
         <source>Scale a selected shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6879,90 +6872,90 @@ by dragging a selection rectangle in the 3D view</source>
 <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-        <location filename="../../Command.cpp" line="2245"/>
+        <location filename="../../Command.cpp" line="2237"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2246"/>
-        <source>Create a coordinate system</source>
+        <location filename="../../Command.cpp" line="2238"/>
+        <source>Create coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2247"/>
-        <source>A coordinate system object that can be attached to other objects.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdPartPlane</name>
-    <message>
-        <location filename="../../Command.cpp" line="2279"/>
-        <source>Part</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="2280"/>
-        <source>Create a datum plane</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="2281"/>
-        <source>A plane object that can be attached to other objects.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdPartLine</name>
-    <message>
-        <location filename="../../Command.cpp" line="2312"/>
-        <source>Part</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="2313"/>
-        <source>Create a datum line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="2314"/>
-        <source>A line object that can be attached to other objects.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdPartPoint</name>
-    <message>
-        <location filename="../../Command.cpp" line="2345"/>
-        <source>Part</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="2346"/>
-        <source>Create a datum point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="2347"/>
-        <source>A point object that can be attached to other objects.</source>
+        <location filename="../../Command.cpp" line="2239"/>
+        <source>Create a coordinate system object that can be attached to other objects.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdPartDatums</name>
     <message>
-        <location filename="../../Command.cpp" line="2380"/>
+        <location filename="../../Command.cpp" line="2372"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2381"/>
-        <source>Create a datum</source>
+        <location filename="../../Command.cpp" line="2373"/>
+        <source>Create datum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2382"/>
-        <source>Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</source>
+        <location filename="../../Command.cpp" line="2374"/>
+        <source>Create a datum object (coordinate system, plane, line, point) that can be attached to other objects.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDatumPlane</name>
+    <message>
+        <location filename="../../Command.cpp" line="2271"/>
+        <source>Part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="2272"/>
+        <source>Create datum plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="2273"/>
+        <source>Create a datum plane object that can be attached to other objects.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDatumLine</name>
+    <message>
+        <location filename="../../Command.cpp" line="2304"/>
+        <source>Part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="2305"/>
+        <source>Create datum line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="2306"/>
+        <source>Create a datum line object that can be attached to other objects.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDatumPoint</name>
+    <message>
+        <location filename="../../Command.cpp" line="2337"/>
+        <source>Part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="2338"/>
+        <source>Create datum point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="2339"/>
+        <source>Create a datum point object that can be attached to other objects.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -592,7 +592,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-spline curve</source>
-      <translation type="unfinished">Fit B-spline curve</translation>
+      <translation>Підігнати B-сплайнової кривої</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

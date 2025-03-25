@@ -3044,7 +3044,7 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
     <message>
       <location filename="../../Command.cpp" line="1833"/>
       <source>No Drawing Page</source>
-      <translation type="unfinished">No Drawing Page</translation>
+      <translation>Keine Zeichnungsseite</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
@@ -3236,17 +3236,17 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2109"/>
       <source>Selection contains both 2D and 3D geometry</source>
-      <translation type="unfinished">Selection contains both 2D and 3D geometry</translation>
+      <translation>Die Auswahl enthält sowohl 2D als auch 3D Geometrie</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2134"/>
       <source>Can not make 2D extent dimension from selection</source>
-      <translation type="unfinished">Can not make 2D extent dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 2D-Maß für die Gesamtausdehnung erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2149"/>
       <source>Can not make 3D extent dimension from selection</source>
-      <translation type="unfinished">Can not make 3D extent dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 3D-Maß für die Gesamtausdehnung erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2280"/>
@@ -3503,7 +3503,7 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
       <source>Can not attach leader. No base View selected.</source>
-      <translation type="unfinished">Can not attach leader. No base View selected.</translation>
+      <translation>Kann die Hinweislinie nicht hinzufügen. Es wurde keine Basisansicht ausgewählt.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1224"/>
@@ -3548,7 +3548,7 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
     <message>
       <location filename="../../CommandDecorate.cpp" line="112"/>
       <source>Some Faces in selection are already hatched. Replace?</source>
-      <translation type="unfinished">Some Faces in selection are already hatched. Replace?</translation>
+      <translation>Einige Flächen in der Auswahl sind bereits schraffiert. Ersetzen?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="335"/>
@@ -3715,7 +3715,7 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
     <message>
       <location filename="../../TaskSectionView.cpp" line="153"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Keine Richtung festgelegt</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="159"/>
@@ -3952,7 +3952,7 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
       <location filename="../../TaskDimension.cpp" line="147"/>
       <location filename="../../TaskDimension.cpp" line="162"/>
       <source>Dimension not found. Was it deleted? Can not continue.</source>
-      <translation type="unfinished">Dimension not found. Was it deleted? Can not continue.</translation>
+      <translation>Maß nicht gefunden. Wurde es gelöscht? Kann nicht fortfahren.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="443"/>
@@ -4182,7 +4182,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
       <source>Use 3D Background</source>
-      <translation type="unfinished">Use 3D Background</translation>
+      <translation>3D-Hintergrund verwenden</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
@@ -4398,7 +4398,7 @@ Dieses Verzeichnis wird für die Symbolauswahl verwendet.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
       <source>FreeCAD could not determine which Page to use. Please select a Page.</source>
-      <translation type="unfinished">FreeCAD could not determine which Page to use. Please select a Page.</translation>
+      <translation>FreeCAD konnte nicht feststellen, welches Blatt verwendet werden soll. Bitte ein Blatt auswählen.</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
@@ -4451,7 +4451,7 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="37"/>
       <source>Switch Workbench on Click</source>
-      <translation type="unfinished">Switch Workbench on Click</translation>
+      <translation>Arbeitsfläche bei Klick wechseln</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="62"/>
@@ -4461,7 +4461,7 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="82"/>
       <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</source>
-      <translation type="unfinished">If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</translation>
+      <translation>Wenn diese Option aktiviert ist, verwendet FreeCAD den neuen Algorithmus für die Flächensuche. Wenn diese Option nicht aktiviert ist, verwendet FreeCAD den älteren Algorithmus.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="107"/>
@@ -4476,7 +4476,7 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>
       <source>If checked, the system will attempt to automatically correct dimension references when the model changes.</source>
-      <translation type="unfinished">If checked, the system will attempt to automatically correct dimension references when the model changes.</translation>
+      <translation>Wenn aktiviert, wird das System versuchen, Maßreferenzen automatisch zu korrigieren, wenn sich das Modell ändert.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="173"/>
@@ -4503,7 +4503,7 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="308"/>
       <source>If checked, shapes that fail validation will be saved as BREP files for later analysis.</source>
-      <translation type="unfinished">If checked, shapes that fail validation will be saved as BREP files for later analysis.</translation>
+      <translation>Wenn aktiviert, werden Formen, die nicht validiert werden können, für eine spätere Analyse als BREP-Dateien gespeichert.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
@@ -4525,19 +4525,19 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings, you might get an error about too many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings, you might get an error about too many SVG tiles.
-Then you need to increase the tile limit.</translation>
+      <translation>Maximale Anzahl von SVG-Kacheln einer Größe von 64x64 Pixeln zum Schraffieren einer einzelnen Fläche.
+Bei starken Vergrößerungen könnte es zu einer Fehlermeldung wegen zu vieler SVG-Kacheln kommen.
+Dann muss das Kachellimit erhöht werden.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="501"/>
       <source>Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.</source>
-      <translation type="unfinished">Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.</translation>
+      <translation>Einige Tastenkombinationen des Betriebssystems oder des Navigationsstils können in Konflikt mit den voreingestellten Modifikatortasten für das Ziehen des Hinweisfeldes oder der Aufhebung des Einrastens der Ansicht stehen. Hier kannst du die Tastenbindungen so anpassen, dass sie nicht miteinander in Konflikt stehen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="512"/>
       <source>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</source>
-      <translation type="unfinished">Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</translation>
+      <translation>Aktivieren, um die standardmäßigen Modifikatortasten zu verwenden. Deaktivieren, um andere Tastenkombinationen zu verwenden.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="75"/>
@@ -4795,9 +4795,9 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
 always be the right choice.  Flat or square caps are useful
 if you are planning to use a drawing as a 1:1 cutting guide.
 </source>
-      <translation type="unfinished">Shape of line end caps.  The default (round) should almost
-always be the right choice.  Flat or square caps are useful
-if you are planning to use a drawing as a 1:1 cutting guide.
+      <translation>Form der Linien Endkappen. Die Standardeinstellung (Rund) sollte fast
+immer die richtige Wahl sein. Flache- oder quadratische Kappen sind nützlich 
+für eine Zeichnung als 1:1 Schnittvorlage.
 </translation>
     </message>
     <message>
@@ -5162,7 +5162,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
       <source>If checked, FreeCAD will use a single color for all text and lines.</source>
-      <translation type="unfinished">If checked, FreeCAD will use a single color for all text and lines.</translation>
+      <translation>Wenn aktiviert, wird FreeCAD eine einzelne Farbe für alle Texte und Linien verwenden.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="87"/>
@@ -5233,21 +5233,21 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
- Value * linewidth is the gap.
- Normally, no gap is used. If using a gap, the recommended value is 8.</translation>
+      <translation>Bestimmt die Weite der Lücke zwischen Messstelle und Beginn der Maßhilfslinie für ISO-Maße.
+Dieser Wert * Linienbreite ergibt die Lücke.
+Normalerweise wird keine Lücke gelassen. Wird eine Lücke gelassen, ist der empfohlene Wert 8.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="461"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
- Normally, no gap is used. If using a gap, the recommended value is 6.</translation>
+      <translation>Bestimmt die Weite der Lücke zwischen Messstelle und Beginn der Maßhilfslinie für ASME-Maße. Dieser Wert * Linienbreite ergibt die Lücke.
+Normalerweise wird keine Lücke gelassen. Wird eine Lücke gelassen, ist der empfohlene Wert 6.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
       <source>Controls the gap size between dimension line and dimension text for ISO dimensions.</source>
-      <translation type="unfinished">Controls the gap size between dimension line and dimension text for ISO dimensions.</translation>
+      <translation>Steuert die Grösse des Abstandes zwischen Bemassungslinie und Bemassungstext für ISO-Bemassungen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
@@ -5258,8 +5258,8 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="493"/>
       <source>Controls the gap size between dimension line and dimension text.
  Value * linewidth is the line spacing.</source>
-      <translation type="unfinished">Controls the gap size between dimension line and dimension text.
- Value * linewidth is the line spacing.</translation>
+      <translation>Steuert den Abstand zwischen Maßlinie und Maßtext.
+Wert * linewidth ergibt den Maßlinienabstand.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="537"/>
@@ -5328,7 +5328,7 @@ Diese Einstellung ist nur für die Werkzeugleiste. Unabhängig von der Auswahl s
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="405"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</translation>
+      <translation>Bestimmt die Weite der Lücke zwischen Maßpunkt und Beginn der Maßhilfslinie für ISO-Maße.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="408"/>
@@ -5395,7 +5395,7 @@ Ein Vielfaches der &apos;Schrifthöhe&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</translation>
+      <translation>Bestimmt die Weite der Lücke zwischen Maßpunkt und Beginn der Maßhilfslinie für ASME-Maße.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="436"/>
@@ -5556,12 +5556,12 @@ für Ansichtengruppen verteilen</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
       <source>If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</source>
-      <translation type="unfinished">If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</translation>
+      <translation>Wenn diese Option aktiviert ist, wird die Richtung der 3D-Kamera (oder die Normale einer ausgewählten Fläche) als Ausrichtung der Ansicht verwendet. Wenn nicht aktiviert, werden Ansichten als Vorderansichten erstellt.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>Use 3D Camera Direction</source>
-      <translation type="unfinished">Use 3D Camera Direction</translation>
+      <translation>3D-Kamerarichtung verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
@@ -6574,13 +6574,13 @@ Do you want to continue?</source>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
       <location filename="../../TaskCosmeticLine.ui" line="140"/>
       <source>2D Point</source>
-      <translation type="unfinished">2D Point</translation>
+      <translation>2D-Punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="77"/>
       <location filename="../../TaskCosmeticLine.ui" line="156"/>
       <source>3D Point</source>
-      <translation type="unfinished">3D Point</translation>
+      <translation>3D-Punkt</translation>
     </message>
   </context>
   <context>
@@ -7027,13 +7027,13 @@ Benutzerdefiniert: Der benutzerdefinierte Maßstab wird verwendet</translation>
       <location filename="../../TaskDimension.ui" line="137"/>
       <source>If checked, the content of &apos;Format Spec&apos; will
 be used instead of the dimension value</source>
-      <translation type="unfinished">If checked, the content of &apos;Format Spec&apos; will
-be used instead of the dimension value</translation>
+      <translation>Wenn aktiviert, wird der Inhalt von &apos;Format Spec&apos;
+anstatt der Maßzahl verwendet</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn aktiviert, wird der Inhalt von tolerance format spec&lt;/p&gt;&lt;p&gt;anstatt des Toleranzwertes verwendet&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="199"/>
@@ -7368,7 +7368,7 @@ by negative value of &apos;Over Tolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
       <source>SVG Line Color</source>
-      <translation type="unfinished">SVG Line Color</translation>
+      <translation>SVG-Linienfarbe</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
@@ -7578,7 +7578,7 @@ Weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="99"/>
       <source>The use of the Qt line style is being phased out. Please use a standard line style instead.</source>
-      <translation type="unfinished">The use of the Qt line style is being phased out. Please use a standard line style instead.</translation>
+      <translation>Die Verwendung des Qt-Linienstils wird bald nicht mehr unterstützt. Bitte stattdessen einen Standard-Linienstil verwenden.</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
@@ -9277,22 +9277,22 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="61"/>
       <source>Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</source>
-      <translation type="unfinished">Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</translation>
+      <translation>Behandelt den Mittelpunkt als 2D-Punkt innerhalb der übergeordneten Ansicht. Z-Koordinate wird ignoriert.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
       <source>2D Point</source>
-      <translation type="unfinished">2D Point</translation>
+      <translation>2D-Punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
       <source>Treat the center point as a 3D point and project it onto the parent View.</source>
-      <translation type="unfinished">Treat the center point as a 3D point and project it onto the parent View.</translation>
+      <translation>Behandelt den Mittelpunkt als 3D-Punkt und projiziert ihn auf die übergeordnete Ansicht.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="80"/>
       <source>3D Point</source>
-      <translation type="unfinished">3D Point</translation>
+      <translation>3D-Punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="188"/>

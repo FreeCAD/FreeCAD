@@ -52,12 +52,12 @@
     <message>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>&amp;Page Start</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start Page</source>
-      <translation type="unfinished">Displays the Start Page</translation>
+      <translation>Afficher la page Start</translation>
     </message>
   </context>
   <context>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../StartView.cpp" line="301"/>
       <source>Assembly</source>
-      <translation>Assembly</translation>
+      <translation>Assemblage</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="302"/>

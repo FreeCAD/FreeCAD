@@ -2050,7 +2050,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>Перацягнуць геаметрыю</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -4067,12 +4067,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>Калі птушка, знешняя геаметрыя заўсёды дадаецца ў якасці апорнай, у адваротным выпадку яна дадаецца ў адпаведнасці з бягучым будаўнічым рэжымам.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>Заўсёды дадаваць вонкавую геаметрыю ў якасці апорнай</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4469,20 +4469,20 @@ Then objects are only visible behind the sketch plane.</source>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>Выяўлена %1 зваротныя дугі вонкавай геаметрыі. Іх канчатковыя кропкі абведзеныя ў трохмерным прадстаўленні.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 абмежаванняў звязана з канчатковымі кропкамі. Гэтыя абмежаванні пералічаныя ў Праглядзе справаздачы (меню Від -&gt; Панэлі -&gt; Прагляд справаздачы).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Націсніце кнопку "Памяняць месцамі канчатковыя кропкі ў абмежаваннях", каб памяняць месцамі канчатковыя кропкі. Зрабіце гэта толькі адзін раз для эскізаў, якія створаны ў FreeCAD версіі старэй за 0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>Выяўлена %1 зваротныя дугі вонкавай геаметрыі. Іх канчатковыя кропкі абведзеныя ў трохмерным прадстаўленні.
 
-However, no constraints linking to the endpoints were found.</translation>
+Аднак ніякіх абмежаванняў, якія звязаныя з канчатковымі кропкамі, выяўлена не было.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -5979,12 +5979,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>Некіраваная змена ўласцівасці геаметрыі прыводзіць да недапушчальных індэксах абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>Некіраваная змена ўласцівасці абмежавання прыводзіць да недапушчальных індэксах абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -7394,12 +7394,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>Стварыць вонкавы</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>Стварыць вонкавыя рэбры, якія звязаныя з вонкавай геаметрыяй.</translation>
     </message>
   </context>
   <context>
@@ -7407,16 +7407,16 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>Стварыць вонкавую праекцыю геаметрыі</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Стварыць рэбры праекцыі вонкавай геаметрыі.
+Вонкавыя рэбры могуць быць як вызначальнымі, так і канструктыўнымі.
+Вы можаце ўжываць інструмент пераключэння канструкцыі.</translation>
     </message>
   </context>
   <context>
@@ -7424,16 +7424,16 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>Стварыць вонкавую геаметрыю скрыжавання</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Стварыць рэбры скрыжавання вонкавай геаметрыі з плоскасцю эскіза.
+Вонкавыя рэбры могуць быць як вызначальнымі, так і канструктыўнымі.
+Вы можаце ўжываць інструмент пераключэння канструкцыі.</translation>
     </message>
   </context>
 </TS>

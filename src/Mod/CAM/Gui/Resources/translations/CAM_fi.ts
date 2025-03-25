@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>CAM</source>
-      <translation type="unfinished">CAM</translation>
+      <translation>CmdPathAlue['CAM']</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="48"/>
@@ -1108,12 +1108,12 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>VP</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>Vastapäivään</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
@@ -2126,7 +2126,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="65"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Sovita</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="85"/>
@@ -2277,7 +2277,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="36"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>Näyttönimi</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="57"/>
@@ -2751,7 +2751,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="261"/>
       <source>Default pathline width</source>
-      <translation type="unfinished">Default pathline width</translation>
+      <translation>Polkuviivojen oletusleveys</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="42"/>
@@ -3481,7 +3481,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="61"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>Näyttönimi</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="68"/>
@@ -4215,7 +4215,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="82"/>
       <source>Save Project As</source>
-      <translation type="unfinished">Save Project As</translation>
+      <translation>Tallenna projekti nimellä</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
@@ -4282,12 +4282,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="181"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>VP</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="182"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>Vastapäivään</translation>
     </message>
   </context>
   <context>
@@ -5932,12 +5932,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="209"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>VP</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="210"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>Vastapäivään</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="213"/>
@@ -6704,7 +6704,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/TagPreferences.py" line="82"/>
       <source>Holding Tag</source>
-      <translation type="unfinished">Holding Tag</translation>
+      <translation>Pitokannas</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="550"/>
@@ -7061,17 +7061,17 @@ For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema:
-     &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
+      <translation>Tällä hetkellä valittu yksikköjärjestelmä:
+     &apos;{}&apos; tälle asiakirjalle
+ Ei käytä &apos;minuutteja&apos; nopeuden arvoille.
 
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
-Select a minute-based schema in preferences.
-For example:
-    &apos;Metric, Small Parts &amp; CNC&apos;
-    &apos;US Customary&apos;
-    &apos;Imperial Decimal&apos;</translation>
+CNC-koneet vaativat syöttönopeuden ilmaistuna
+yksikkönä/minuutti. Oikean G-koodin varmistamiseksi:
+Valitse jokin minuutti pohjainen kaavio asetuksista.
+Esimerkiksi:
+    &apos;Metrinen, pienet osat &amp; CNC&apos;
+    &apos;USA:n yksikköjärjestelmä&apos;
+    &apos;Englantilainen desimaaliluku&apos;</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="75"/>
@@ -7350,7 +7350,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
@@ -7770,12 +7770,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Helix.py" line="101"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>VP</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="102"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>Vastapäivään</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="109"/>
@@ -8328,7 +8328,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="448"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Matriisi</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="449"/>
@@ -8411,7 +8411,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="74"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="75"/>

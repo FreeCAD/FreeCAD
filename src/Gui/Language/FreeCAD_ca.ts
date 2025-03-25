@@ -2407,7 +2407,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Unit System:</source>
-      <translation>Sistema d'Unitats:</translation>
+      <translation>Sistema d'unitats:</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
@@ -6534,7 +6534,7 @@ How do you want to proceed?</source>
       <location filename="../PropertyView.cpp" line="90"/>
       <location filename="../PropertyView.cpp" line="550"/>
       <source>View</source>
-      <translation>Vista</translation>
+      <translation>Visualització</translation>
     </message>
     <message>
       <location filename="../PropertyView.cpp" line="96"/>
@@ -7703,7 +7703,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../MainWindow.cpp" line="582"/>
       <source>Report view</source>
-      <translation>Visualització de l'informe</translation>
+      <translation>Visualització d'informes</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="602"/>
@@ -9065,7 +9065,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="112"/>
       <source>&amp;Close</source>
-      <translation>Tan&amp;ca</translation>
+      <translation>&amp;Tanca</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="113"/>
@@ -9079,7 +9079,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close A&amp;ll</source>
-      <translation type="unfinished">Close A&amp;ll</translation>
+      <translation>Tanca'&amp;ls tots</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
@@ -9257,7 +9257,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="406"/>
       <source>Prefere&amp;nces ...</source>
-      <translation type="unfinished">Prefere&amp;nces ...</translation>
+      <translation>&amp;Preferències...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
@@ -9703,7 +9703,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="570"/>
       <source>&amp;Merge document...</source>
-      <translation type="unfinished">&amp;Merge document...</translation>
+      <translation>&amp;Fusiona un document...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="571"/>
@@ -9721,7 +9721,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="593"/>
       <source>Cannot merge document with itself.</source>
-      <translation>No es pot fusionar el document amb si mateix.</translation>
+      <translation>No es pot fusionar un document amb sí mateix.</translation>
     </message>
   </context>
   <context>
@@ -9815,7 +9815,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
       <location filename="../CommandDoc.cpp" line="1207"/>
       <location filename="../CommandDoc.cpp" line="1209"/>
       <source>Paste operation</source>
-      <translation>Apega l'operació</translation>
+      <translation>Operació d'enganxada</translation>
     </message>
   </context>
   <context>
@@ -9851,7 +9851,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="998"/>
       <source>Export P&amp;DF...</source>
-      <translation type="unfinished">Export P&amp;DF...</translation>
+      <translation>E&amp;xporta com a PDF...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="999"/>
@@ -9865,7 +9865,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="968"/>
       <source>Print previe&amp;w...</source>
-      <translation type="unfinished">Print previe&amp;w...</translation>
+      <translation>Previsualització de la i&amp;mpressió...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="969"/>
@@ -9925,7 +9925,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="140"/>
       <source>Open &amp;Recent</source>
-      <translation type="unfinished">Open &amp;Recent</translation>
+      <translation>Obre fitxers &amp;recents</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="141"/>
@@ -9981,7 +9981,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="839"/>
       <source>Rever&amp;t</source>
-      <translation type="unfinished">Rever&amp;t</translation>
+      <translation>Restablei&amp;x</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="840"/>
@@ -10009,7 +10009,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="811"/>
       <source>Sa&amp;ve All</source>
-      <translation type="unfinished">Sa&amp;ve All</translation>
+      <translation>D&amp;esa'ls tots</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="812"/>
@@ -10037,7 +10037,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="784"/>
       <source>Save a Cop&amp;y...</source>
-      <translation type="unfinished">Save a Cop&amp;y...</translation>
+      <translation>Desa una &amp;còpia...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="785"/>
@@ -10387,7 +10387,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="865"/>
       <source>Edit &amp;mode</source>
-      <translation type="unfinished">Edit &amp;mode</translation>
+      <translation>Mode d'e&amp;dició</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="866"/>
@@ -12286,7 +12286,7 @@ Actualment, el vostre sistema disposa dels bancs de treball següents:&lt;/p&gt;
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="41"/>
       <source>Language:</source>
-      <translation>Llengua:</translation>
+      <translation>Idioma:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="48"/>
@@ -12384,7 +12384,7 @@ dot/period will always be printed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>Busques més temes? Els pots obtenir utilitzant el &lt;a href="freecad:Std_AddonMgr"&gt;Gestor de Complements&lt;/a&gt;.</translation>
+      <translation>Cerqueu més temes? Podeu trobar-los al &lt;a href="freecad:Std_AddonMgr"&gt;Gestor de complements&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
@@ -12589,7 +12589,7 @@ quan arrenca FreeCAD. Si aquesta opció està marcada, FreeCAD en mostrarà una<
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="14"/>
       <source>Report view</source>
-      <translation>Visualització de l'informe</translation>
+      <translation>Visualització d'informes</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="20"/>

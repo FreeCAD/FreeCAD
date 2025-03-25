@@ -185,7 +185,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Close wire</source>
-      <translation>Zatvori žičani ram</translation>
+      <translation>Zatvori žičani okvir</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
@@ -227,7 +227,7 @@ Ova komanda radi samo sa objektom koji je mreža, a ne sa običnom stranicom ili
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Žičani ram</translation>
+      <translation>Žičani okvir</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -275,7 +275,7 @@ Ova komanda radi samo sa objektom koji je mreža, a ne sa običnom stranicom ili
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation>Popločavanje</translation>
+      <translation>Aproksimacija prikazanog oblika</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
@@ -448,7 +448,7 @@ Vrednost u opsegu od 0,2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius:</source>
-      <translation>Elementi po radijusu zakrivljenja:</translation>
+      <translation>Elementi po poluprečniku zakrivljenosti:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>

@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Ако је ово означено, објекти ће приказивати себи подређене објекте у стаблу документа</translation>
+      <translation>Ако је ово потврђено, објекти ће приказивати себи подређене објекте у стаблу документа</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Ако је означено, Multmatrix објекат ће бити параметарcки</translation>
+      <translation>Ако је потврђено, Multmatrix објекат ће бити параметарcки</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>

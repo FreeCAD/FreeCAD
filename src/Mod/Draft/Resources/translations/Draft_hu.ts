@@ -710,7 +710,7 @@ A elrendezés összekötés hatékonyabb több példány létrehozásakor, de ne
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>3D pont kiválasztás alaphelyzetbe állítása</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -2326,8 +2326,8 @@ Ez sikertelen lehet a DXF R12 utáni sablonokon.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Ha bejelölt, akkor egy emberi alak körvonala jelenik meg a rács bal 
+alsó sarkában. Csak akkor érvényes, ha a "Rácshatár megjelenítése" engedélyezve van.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -2823,12 +2823,12 @@ ha a globális koordináta-rendszer X, Y vagy Z tengelyekkel megegyeznek</transl
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>Ha bejelölt, a illeszt modul megjelenik a tervrajz állapotsoron</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>Ha bejelölt, a megjegyzés skála modul megjelenik a tervrajz állapotsoron</translation>
     </message>
   </context>
   <context>
@@ -3470,7 +3470,7 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Tervrajz méretarány modul</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3480,7 +3480,7 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Tervrajz illesztés modul</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -4943,7 +4943,7 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>Két él szükséges.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
@@ -5608,22 +5608,22 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>Felülettároló építése nem lehetséges</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>Felülettárolóhoz nincsenek érvényes felületek</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>Felülettároló építése nem lehetséges, folytatás összefűz letiltásával</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>Felülettároló lapos B-görbe felületeinek sík felületekre való átalakítása nem sikerült</translation>
     </message>
   </context>
   <context>

@@ -120,13 +120,13 @@
     <message>
       <location filename="../../Command.cpp" line="1090"/>
       <source>Face info</source>
-      <translation>Informacije o stranici</translation>
+      <translation>Informacije o pljosni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1091"/>
       <location filename="../../Command.cpp" line="1093"/>
       <source>Information about face</source>
-      <translation>Informacije o stranici</translation>
+      <translation>Informacije o pljosni</translation>
     </message>
   </context>
   <context>
@@ -548,13 +548,13 @@
     <message>
       <location filename="../../Command.cpp" line="1657"/>
       <source>Create mesh segments from best-fit surfaces...</source>
-      <translation>Napravi segmente mreže od stranica koje najbolje odgovaraju...</translation>
+      <translation>Napravi segmente mreže od površi koje najbolje odgovaraju...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1658"/>
       <location filename="../../Command.cpp" line="1660"/>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Napravi segmente mreže od stranica koje najbolje odgovaraju</translation>
+      <translation>Napravi segmente mreže od površi koje najbolje odgovaraju</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@
     <message>
       <location filename="../../Command.cpp" line="558"/>
       <source>Curvature plot</source>
-      <translation>Grafikon zakrivljenosti</translation>
+      <translation>Grafik zakrivljenosti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="559"/>
@@ -749,12 +749,12 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="832"/>
       <source>Remove degenerated faces</source>
-      <translation>Ukloni degenerisane stranice</translation>
+      <translation>Ukloni degenerisane pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
       <source>Remove duplicated faces</source>
-      <translation>Ukloni duplirane stranice</translation>
+      <translation>Ukloni duplirane pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
@@ -868,7 +868,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="46"/>
       <source>Number of faces:</source>
-      <translation>Broj stranica:</translation>
+      <translation>Broj pljosni:</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="69"/>
@@ -934,7 +934,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="267"/>
       <source>Duplicated faces</source>
-      <translation>Duplirane stranice</translation>
+      <translation>Duplirane pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="347"/>
@@ -949,12 +949,12 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="507"/>
       <source>Degenerated faces</source>
-      <translation>Degenerisane stranice</translation>
+      <translation>Degenerisane pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="587"/>
       <source>Face indices</source>
-      <translation>Indeksi stranica</translation>
+      <translation>Indeksi pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="667"/>
@@ -1044,7 +1044,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
       <source>Invalid face indices</source>
-      <translation>Nevažeći indeksi površi</translation>
+      <translation>Nevažeći indeksi pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
@@ -1079,7 +1079,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="814"/>
       <source>%1 degenerated faces</source>
-      <translation>%1 degenerisane stranice</translation>
+      <translation>%1 degenerisane pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="841"/>
@@ -1089,17 +1089,17 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="878"/>
       <source>No duplicated faces</source>
-      <translation>Nema dupliranih stranica</translation>
+      <translation>Nema dupliranih pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="884"/>
       <source>%1 duplicated faces</source>
-      <translation>%1 duplirane stranice</translation>
+      <translation>%1 duplirane pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="912"/>
       <source>Duplicated faces</source>
-      <translation>Duplirane stranice</translation>
+      <translation>Duplirane pljosni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
@@ -1164,12 +1164,12 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="33"/>
       <source>Enable check for folds on surface</source>
-      <translation>Omogući proveru nabora na površini</translation>
+      <translation>Omogući proveru nabora na površi</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="40"/>
       <source>Only consider zero area faces as degenerated</source>
-      <translation>Smatrajte degenerisanima samo delove sa nultom površinom</translation>
+      <translation>Smatrajte degenerisanima samo pljosni sa nultom površinom</translation>
     </message>
   </context>
   <context>
@@ -1318,7 +1318,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation>Odstupanje popločavanja u odnosu na stvarnu površinu</translation>
+      <translation>Odstupanje prikazanog aproksimiranog oblika površi u odnosu na stvarnu površ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
@@ -1426,8 +1426,8 @@ is used when writing a file in AMF format</source>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation>Donja strana površine će biti prikazana na isti način kao gornja strana.
-Ako nije označeno, zavisi od opcije „Omogući boju pozadinskog osvetljenja“
+      <translation>Donja strana površi će biti prikazana na isti način kao gornja strana.
+Ako nije potvrđeno, zavisi od opcije „Omogući boju pozadinskog osvetljenja“
 (Podešavanja -&gt; Prikaz -&gt; 3D prikaz). Ili će se koristiti boja pozadinskog
 osvetljenja ili crna boja.</translation>
     </message>
@@ -1439,12 +1439,12 @@ osvetljenja ili crna boja.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
       <source>A bounding box will be displayed</source>
-      <translation>Prikazaće se kutijasti okvir</translation>
+      <translation>Prikazaće se granična kutija</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Prikaži kutijasti okvir za istaknute, ili izabrane mreže</translation>
+      <translation>Prikaži graničnu kutiju za istaknute, ili izabrane mreže</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
@@ -1767,7 +1767,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="79"/>
       <source>&lt; faces than</source>
-      <translation>&lt; stranica od</translation>
+      <translation>&lt; pljosni od</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="89"/>
@@ -1788,7 +1788,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="165"/>
       <source>&gt; faces than</source>
-      <translation>&gt; stranica od</translation>
+      <translation>&gt; pljosni od</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="182"/>
@@ -1842,7 +1842,7 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="206"/>
       <location filename="../../Segmentation.ui" line="303"/>
       <source>Minimum number of faces</source>
-      <translation>Minimalni broj stranica</translation>
+      <translation>Minimalni broj pljosni</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
@@ -1917,7 +1917,7 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Minimalni broj stranica</translation>
+      <translation>Minimalni broj pljosni</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -2021,7 +2021,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>Number of facets:</source>
-      <translation>Broj faseta:</translation>
+      <translation>Broj pljosni:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="77"/>
@@ -2283,7 +2283,7 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="77"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation>[Tačke: %1, Ivice: %2, Stranice: %3]</translation>
+      <translation>[Tačke: %1, Ivice: %2, Pljosni: %3]</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="809"/>
@@ -2324,12 +2324,12 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
-      <translation>Izbriši odabrane stranice</translation>
+      <translation>Izbriši odabrane pljosni</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
-      <translation>Očisti izabrane stranice</translation>
+      <translation>Očisti izabrane pljosni</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="519"/>

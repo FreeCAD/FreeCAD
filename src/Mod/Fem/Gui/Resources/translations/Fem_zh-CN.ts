@@ -565,7 +565,7 @@
     <message>
       <location filename="../../Command.cpp" line="2290"/>
       <source>Scalar clip filter</source>
-      <translation type="unfinished">Scalar clip filter</translation>
+      <translation>标量裁剪过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2292"/>
@@ -1465,12 +1465,12 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="131"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>记录详细程度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>任务面板上打印的详细级别</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
@@ -2123,7 +2123,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="332"/>
       <source>Turbulence</source>
-      <translation type="unfinished">Turbulence</translation>
+      <translation>湍流</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="333"/>
@@ -2658,7 +2658,7 @@ Specify another file please.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
-      <translation type="unfinished">FEM material</translation>
+      <translation>有限元材料</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
@@ -2675,7 +2675,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="394"/>
       <source>Use this task panel</source>
-      <translation type="unfinished">Use this task panel</translation>
+      <translation>使用此任务面板</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="29"/>
@@ -2695,7 +2695,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density:</source>
-      <translation type="unfinished">Density:</translation>
+      <translation>密度:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
@@ -2715,7 +2715,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="252"/>
       <source>Thermal Properties</source>
-      <translation type="unfinished">Thermal Properties</translation>
+      <translation>热属性</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="343"/>
@@ -3336,7 +3336,7 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="34"/>
       <source>Max Layers</source>
-      <translation type="unfinished">Max Layers</translation>
+      <translation>最大层数</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="51"/>
@@ -3346,7 +3346,7 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="77"/>
       <source>Growth ratio</source>
-      <translation type="unfinished">Growth ratio</translation>
+      <translation>增长比率</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
@@ -3485,7 +3485,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
       <source>Heat Source</source>
-      <translation type="unfinished">Heat Source</translation>
+      <translation>热源</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
@@ -3813,7 +3813,7 @@ and colors the result mesh accordingly</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="336"/>
       <source>Calculate</source>
-      <translation type="unfinished">Calculate</translation>
+      <translation>计算</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="355"/>
@@ -5262,7 +5262,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Mechanical boundary conditions and loads</source>
-      <translation type="unfinished">Mechanical boundary conditions and loads</translation>
+      <translation>机械边界条件和载荷</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -5514,7 +5514,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="457"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>通量方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="458"/>
@@ -5540,7 +5540,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="468"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>热方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="469"/>
@@ -5618,7 +5618,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>固体材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="639"/>
@@ -5735,12 +5735,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="892"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>清除结果</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="896"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>从当前分析中清除所有结果</translation>
     </message>
   </context>
   <context>
@@ -6405,12 +6405,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="321"/>
       <source>Gravity load</source>
-      <translation type="unfinished">Gravity load</translation>
+      <translation>引力载荷</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="322"/>
       <source>Creates a gravity load</source>
-      <translation type="unfinished">Creates a gravity load</translation>
+      <translation>创建引力载荷</translation>
     </message>
   </context>
   <context>
@@ -6418,7 +6418,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="332"/>
       <source>Tie constraint</source>
-      <translation type="unfinished">Tie constraint</translation>
+      <translation>结合约束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="333"/>
@@ -6431,7 +6431,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="865"/>
       <source>FEM mesh refinement</source>
-      <translation type="unfinished">FEM mesh refinement</translation>
+      <translation>有限元网格细化</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="866"/>
@@ -6464,7 +6464,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="77"/>
       <source>Reference Node</source>
-      <translation type="unfinished">Reference Node</translation>
+      <translation>参考节点</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="83"/>
@@ -6502,7 +6502,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="177"/>
       <source>Translational Mode</source>
-      <translation type="unfinished">Translational Mode</translation>
+      <translation>平移模式</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="225"/>
@@ -6517,12 +6517,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="394"/>
       <source>Rotational Mode</source>
-      <translation type="unfinished">Rotational Mode</translation>
+      <translation>旋转模式</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>旋转</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
@@ -6532,7 +6532,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="531"/>
       <source>Moment</source>
-      <translation type="unfinished">Moment</translation>
+      <translation>力矩</translation>
     </message>
   </context>
   <context>
@@ -6545,12 +6545,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Rigid body constraint</source>
-      <translation type="unfinished">Rigid body constraint</translation>
+      <translation>刚体约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="459"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
-      <translation type="unfinished">Creates a rigid body constraint for a geometric entity</translation>
+      <translation>为几何实体创建刚体约束条件</translation>
     </message>
   </context>
   <context>
@@ -6610,7 +6610,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
       <source>Restore</source>
-      <translation type="unfinished">Restore</translation>
+      <translation>恢复</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
@@ -6798,12 +6798,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="59"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>记录详细程度</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>任务面板上打印的详细级别</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>

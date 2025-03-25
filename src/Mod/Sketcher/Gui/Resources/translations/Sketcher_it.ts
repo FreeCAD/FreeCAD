@@ -2054,7 +2054,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>Trascina geometrie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -4068,12 +4068,12 @@ Per ottenere l'effetto è necessario accedere nuovamente alla modalità di modif
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>Se è selezionata, la geometria esterna viene sempre aggiunta come riferimento, altrimenti viene aggiunta in base alla modalità di costruzione corrente.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>Aggiungere sempre la geometria esterna come riferimento</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4470,20 +4470,20 @@ Quindi gli oggetti sono visibili solo dietro il piano dello schizzo.</translatio
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>Sono stati trovati %1 archi di geometria esterna invertiti. I loro punti finali sono cerchiati nella vista 3D.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 vincoli sono collegati agli endpoint. I vincoli sono stati elencati nella vista Report (menu Visualizza -&gt; Pannelli -&gt; Vista Report).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Fare clic sul pulsante “Scambia i punti finali nei vincoli” per riassegnare i punti finali. Eseguire questa operazione solo una volta per gli schizzi creati in FreeCAD precedenti alla versione 0.15.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>Sono stati trovati %1 archi di geometria esterna invertiti. I loro punti finali sono cerchiati nella vista 3D.
 
-However, no constraints linking to the endpoints were found.</translation>
+Tuttavia, non sono stati trovati vincoli che su questi punti finali.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -5973,12 +5973,12 @@ La spaziatura della griglia cambia se diventa più piccola di questo numero di p
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>La modifica non gestita della proprietà Geometria comporta indici di vincolo non validi</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>La modifica non gestita della proprietà di un vincolo comporta indici di vincolo non validi</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -7375,12 +7375,12 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>Crea geometria esterna</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>Creare bordi esterni collegati a geometrie esterne.</translation>
     </message>
   </context>
   <context>
@@ -7388,16 +7388,16 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>Creare geometria di proiezione esterna</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Crea i bordi proiettati di una geometria esterna.
+I bordi esterni possono essere geometrie di definizione o di costruzione.
+È possibile utilizzare lo strumento di costruzione alternativo.</translation>
     </message>
   </context>
   <context>
@@ -7405,16 +7405,16 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>Creare la geometria di intersezione esterna</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Crea i bordi di intersezione di una geometria esterna con il piano di schizzo.
+I bordi esterni possono essere geometrie di definizione o di costruzione.
+È possibile utilizzare lo strumento di costruzione alternativo.</translation>
     </message>
   </context>
 </TS>

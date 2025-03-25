@@ -52,12 +52,12 @@
     <message>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>&amp;Strona startowa</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start Page</source>
-      <translation type="unfinished">Displays the Start Page</translation>
+      <translation>Wyświetla stronę startową</translation>
     </message>
   </context>
   <context>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="294"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation>Otwórz plik CAD lub model 3D</translation>
+      <translation>Otwórz istniejący plik CAD lub model 3D</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="297"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../StartView.cpp" line="298"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Utwórz część w środowisku pracy Projekt Części</translation>
+      <translation>Utwórz część w środowisku Projekt Części</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="301"/>

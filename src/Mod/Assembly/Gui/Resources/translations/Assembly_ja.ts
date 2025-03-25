@@ -402,37 +402,37 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="415"/>
       <source>Export:</source>
-      <translation type="unfinished">Export:</translation>
+      <translation>エクスポート:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="422"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences.</source>
-      <translation type="unfinished">The exported file format can be customized in the Spreadsheet workbench preferences.</translation>
+      <translation>エクスポートするファイル形式はスプレッドシートワークベンチの設定でカスタマイズできます。</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="84"/>
       <source>Part name</source>
-      <translation type="unfinished">Part name</translation>
+      <translation>パーツ名</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="89"/>
       <source>Part</source>
-      <translation>部品</translation>
+      <translation>パーツ</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="94"/>
       <source>Create part in new file</source>
-      <translation type="unfinished">Create part in new file</translation>
+      <translation>新しいファイルにパーツを作成</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="101"/>
       <source>Joint new part origin</source>
-      <translation type="unfinished">Joint new part origin</translation>
+      <translation>ジョイントの新しいパーツの原点</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="135"/>
       <source>Save Document</source>
-      <translation type="unfinished">Save Document</translation>
+      <translation>ドキュメントを保存</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="137"/>
@@ -442,68 +442,68 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="140"/>
       <source>Don't link</source>
-      <translation type="unfinished">Don't link</translation>
+      <translation>リンクしない</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="467"/>
       <source>Enter your formula...</source>
-      <translation type="unfinished">Enter your formula...</translation>
+      <translation>数式を入力してください...</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="520"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.</translation>
+      <translation>大文字は実際の値に置き換える必要がある変数です。ツールチップ内に各例の詳しい説明があります。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="523"/>
       <source> - Linear: C + VEL*time</source>
-      <translation type="unfinished"> - Linear: C + VEL*time</translation>
+      <translation> - 1次方程式: C + VEL*time</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="525"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
-      <translation type="unfinished"> - Quadratic: C + VEL*time + ACC*time^2</translation>
+      <translation> - 2次方程式: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="528"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
-      <translation type="unfinished"> - Harmonic: C + AMP*sin(VEL*time - PHASE)</translation>
+      <translation> - 調波: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="531"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
-      <translation type="unfinished"> - Exponential: C*exp(time/TIMEC)</translation>
+      <translation> - 指数: C*exp(time/TIMEC)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="537"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
-      <translation type="unfinished"> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
+      <translation> - 平滑ステップ: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="544"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
-      <translation type="unfinished"> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
+      <translation> - 平滑方形インパルス：(H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
-      <translation type="unfinished"> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
+      <translation> - 平滑ランプトップインパルス: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="561"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
-      <translation type="unfinished">C is a constant offset.
-VEL is a velocity or slope or gradient of the straight line.</translation>
+      <translation>Cは定数オフセットです。
+VELは速度、または直線の傾き、勾配です。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="569"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
-      <translation type="unfinished">C is a constant offset.
-VEL is the velocity or slope or gradient of the straight line.
-ACC is the acceleration or coefficient of the second order. The function is a parabola.</translation>
+      <translation>Cは定数オフセットです。
+VELは速度、または直線の傾き、勾配です。
+ACCは加速度、または2次の係数です。この関数は放物線です。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="578"/>
@@ -511,26 +511,26 @@ ACC is the acceleration or coefficient of the second order. The function is a pa
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
 PHASE is the phase of the sine wave.</source>
-      <translation type="unfinished">C is a constant offset.
-AMP is the amplitude of the sine wave.
-VEL is the angular velocity in radians per second.
-PHASE is the phase of the sine wave.</translation>
+      <translation>Cは定数オフセットです。
+AMPは正弦波の振幅です。
+VELはラジアン/秒単位の角速度です。
+PHASEは正弦波の位相です。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="585"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
-      <translation type="unfinished">C is a constant.
-TIMEC is the time constant of the exponential function.</translation>
+      <translation>Cは定数です。
+TIMECは指数関数の時定数です。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="593"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">L1 is step level before time = T0.
-L2 is step level after time = T0.
-SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>L1は時間 = T0より前のステップ値です。
+L2は時間 = T0より後のステップ値です。
+SLOPE は時間 = T0付近でのL1とL2間の遷移の勾配を定義します。値が大きいほど角の鋭いステップになります。SLOPE = 1000以上が適しています。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="602"/>
@@ -538,10 +538,10 @@ SLOPE defines the steepness of the transition between L1 and L2 about time = T0.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">H is the height of the impulse.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>Hはインパルスの高さです。
+T1はインパルスの開始時間です。
+T2はインパルスの終了時間です。
+SLOPEは時間 = T1とT2付近での0とHの間の遷移の勾配を定義します。値が大きいほど角の鋭いインパルスになります。SLOPE = 1000以上が適しています。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="613"/>
@@ -551,12 +551,12 @@ T2 is the end of the impulse.
 H1 is the height at T1 at the beginning of the ramp.
 H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-H1 is the height at T1 at the beginning of the ramp.
-H2 is the height at T2 at the end of the ramp.
-SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>方形インパルスに似ていますが、上部に傾斜ランプがあります。一連のランプを追加することで滑らかな区分線形関数の構築に適しています。
+T1はインパルスの開始時間です。
+T2はインパルスの終了時間です。
+H1はランプの開始時のT1の高さです。
+H2はランプの終了時のT2の高さです。
+SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から0への遷移の勾配を定義します。値が大きいほど角の鋭いインパルスになります。SLOPE = 1000以上が適しています。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="651"/>
@@ -567,7 +567,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="666"/>
       <source>Hide help</source>
-      <translation type="unfinished">Hide help</translation>
+      <translation>ヘルプを非表示</translation>
     </message>
   </context>
   <context>
@@ -708,47 +708,47 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="107"/>
       <source>Simulation start time.</source>
-      <translation type="unfinished">Simulation start time.</translation>
+      <translation>シミュレーションの開始時間</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="118"/>
       <source>Simulation end time.</source>
-      <translation type="unfinished">Simulation end time.</translation>
+      <translation>シミュレーションの終了時間</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="129"/>
       <source>Simulation time step for output.</source>
-      <translation type="unfinished">Simulation time step for output.</translation>
+      <translation>出力のシミュレーション時間刻み</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="140"/>
       <source>Integration global error tolerance.</source>
-      <translation type="unfinished">Integration global error tolerance.</translation>
+      <translation>グローバルな誤差許容値の積分値</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="151"/>
       <source>Frames Per Second.</source>
-      <translation type="unfinished">Frames Per Second.</translation>
+      <translation>1秒あたりのフレーム数</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="203"/>
       <source>The number of decimals to use for calculated texts</source>
-      <translation type="unfinished">The number of decimals to use for calculated texts</translation>
+      <translation>計算結果テキストで使用する小数点以下桁数</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="299"/>
       <source>The joint that is moved by the motion</source>
-      <translation type="unfinished">The joint that is moved by the motion</translation>
+      <translation>運動によって動作するジョイント</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="310"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
-      <translation type="unfinished">This is the formula of the motion. For example '1.0*time'.</translation>
+      <translation>これが運動式です。例えば「1.0*time」となります。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="318"/>
       <source>The type of the motion</source>
-      <translation type="unfinished">The type of the motion</translation>
+      <translation>運動のタイプ</translation>
     </message>
   </context>
   <context>
@@ -791,17 +791,17 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="144"/>
       <source>By clicking this button, you can set the attachment offset of the first marker (coordinate system) of the joint.</source>
-      <translation type="unfinished">By clicking this button, you can set the attachment offset of the first marker (coordinate system) of the joint.</translation>
+      <translation>このボタンをクリックすると、ジョイントの1つ目のマーカー (座標系) のアタッチメントオフセットを設定できます。</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="165"/>
       <source>By clicking this button, you can set the attachment offset of the second marker (coordinate system) of the joint.</source>
-      <translation type="unfinished">By clicking this button, you can set the attachment offset of the second marker (coordinate system) of the joint.</translation>
+      <translation>このボタンをクリックすると、ジョイントの2つ目のマーカー (座標系) のアタッチメントオフセットを設定できます。</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="177"/>
       <source>Show advanced offsets</source>
-      <translation type="unfinished">Show advanced offsets</translation>
+      <translation>高度なオフセットを表示</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="193"/>
@@ -883,11 +883,10 @@ Rigid means that the added sub-assembly will be considered as a solid unit withi
 Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
 Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</source>
-      <translation type="unfinished">Sets whether the inserted sub-assemblies will be rigid or flexible.
-Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
-Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
-You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
-Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</translation>
+      <translation>挿入されたサブアセンブリがリジッドかフレキシブルかを設定します。
+リジッドとは、追加されたサブアセンブリが親アセンブリ内でソリッド単位として扱われることを意味します。
+フレキシブルとは、追加されたサブアセンブリが親アセンブリ内で個々のコンポーネントのジョイントを移動できることを意味します。
+この動作は、ドキュメント ツリーでサブアセンブリを右クリックして「リジッドに切り替え」「フレキシブルに切り替え」のコマンド切り替えを行うか、プロパティエディターでRigidプロパティを編集することでいつでも変更できます。</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
@@ -1227,12 +1226,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>Insert a new part</source>
-      <translation type="unfinished">Insert a new part</translation>
+      <translation>新しいパーツを挿入</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="61"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation type="unfinished">Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</translation>
+      <translation>アクティブなアセンブリに新しいパーツを挿入します。新しいパーツの原点をアセンブリ内に配置できます。</translation>
     </message>
   </context>
   <context>
@@ -1240,12 +1239,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="67"/>
       <source>Create Simulation</source>
-      <translation type="unfinished">Create Simulation</translation>
+      <translation>シミュレーションを作成</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="74"/>
       <source>Create a simulation of the current assembly.</source>
-      <translation type="unfinished">Create a simulation of the current assembly.</translation>
+      <translation>現在のアセンブリのシミュレーションを作成します。</translation>
     </message>
   </context>
   <context>
@@ -1261,27 +1260,27 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="14"/>
       <source>Create Simulation</source>
-      <translation type="unfinished">Create Simulation</translation>
+      <translation>シミュレーションを作成</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="20"/>
       <source>Motions</source>
-      <translation type="unfinished">Motions</translation>
+      <translation>運動</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="50"/>
       <source>Add a prescribed motion</source>
-      <translation type="unfinished">Add a prescribed motion</translation>
+      <translation>所定の運動を追加</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="70"/>
       <source>Delete selected motions</source>
-      <translation type="unfinished">Delete selected motions</translation>
+      <translation>選択した運動を削除</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation settings</source>
-      <translation type="unfinished">Simulation settings</translation>
+      <translation>シミュレーション設定</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
@@ -1292,18 +1291,18 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="105"/>
       <source>Start time of the simulation</source>
-      <translation type="unfinished">Start time of the simulation</translation>
+      <translation>シミュレーションの開始時間</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="112"/>
       <source>End</source>
-      <translation type="unfinished">End</translation>
+      <translation>終了</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="115"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="122"/>
       <source>End time of the simulation</source>
-      <translation type="unfinished">End time of the simulation</translation>
+      <translation>シミュレーションの終了時間</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="129"/>
@@ -1314,7 +1313,7 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time Step</source>
-      <translation type="unfinished">Time Step</translation>
+      <translation>時間刻み</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1325,42 +1324,42 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global Error Tolerance</source>
-      <translation type="unfinished">Global Error Tolerance</translation>
+      <translation>グローバルな誤差許容値</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
       <source>Generate</source>
-      <translation type="unfinished">Generate</translation>
+      <translation>生成</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
       <source>Animation player</source>
-      <translation type="unfinished">Animation player</translation>
+      <translation>アニメーション再生</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>フレーム</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
       <source>0.00 s</source>
-      <translation type="unfinished">0.00 s</translation>
+      <translation>0.00 秒</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
       <source>Frames Per Second</source>
-      <translation type="unfinished">Frames Per Second</translation>
+      <translation>1秒あたりのフレーム数</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
       <source>Step backward</source>
-      <translation type="unfinished">Step backward</translation>
+      <translation>1ステップ戻る</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
       <source>Play backward</source>
-      <translation type="unfinished">Play backward</translation>
+      <translation>逆再生</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="272"/>
@@ -1370,12 +1369,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="292"/>
       <source>Play forward</source>
-      <translation type="unfinished">Play forward</translation>
+      <translation>通常再生</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
       <source>Step forward</source>
-      <translation type="unfinished">Step forward</translation>
+      <translation>1ステップ進む</translation>
     </message>
   </context>
 </TS>

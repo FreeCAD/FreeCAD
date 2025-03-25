@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <translation>&amp;Ustvari preglednico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="949"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Align &amp;bottom</source>
-      <translation type="unfinished">Align &amp;bottom</translation>
+      <translation>Poravnaj na &amp;dno</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Align &amp;center</source>
-      <translation type="unfinished">Align &amp;center</translation>
+      <translation>Poravnaj na &amp;sredino</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Align &amp;left</source>
-      <translation type="unfinished">Align &amp;left</translation>
+      <translation>Poravnaj &amp;levo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="284"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="397"/>
       <source>Align &amp;right</source>
-      <translation type="unfinished">Align &amp;right</translation>
+      <translation>Poravnaj d&amp;esno</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="398"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Align &amp;top</source>
-      <translation type="unfinished">Align &amp;top</translation>
+      <translation>Poravnaj na &amp;vrh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="455"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="568"/>
       <source>&amp;Vertically center-align</source>
-      <translation type="unfinished">&amp;Vertically center-align</translation>
+      <translation>S&amp;redinso poravnaj po navpičnici</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="569"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>&amp;Export spreadsheet</source>
-      <translation type="unfinished">&amp;Export spreadsheet</translation>
+      <translation>&amp;Izvozi preglednico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="238"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>&amp;Import spreadsheet</source>
-      <translation type="unfinished">&amp;Import spreadsheet</translation>
+      <translation>&amp;Uvozi preglednico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>&amp;Merge cells</source>
-      <translation type="unfinished">&amp;Merge cells</translation>
+      <translation>&amp;Združi polja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>Raz&amp;cepi polje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>&amp;Bold text</source>
-      <translation type="unfinished">&amp;Bold text</translation>
+      <translation>&amp;Krepko besedilo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="626"/>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../Command.cpp" line="709"/>
       <source>&amp;Italic text</source>
-      <translation type="unfinished">&amp;Italic text</translation>
+      <translation>&amp;Ležeče besedilo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="710"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>&amp;Underline text</source>
-      <translation type="unfinished">&amp;Underline text</translation>
+      <translation>&amp;Podčrtaj besedilo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
@@ -289,7 +289,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>Raz&amp;cepi polje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="305"/>
@@ -378,7 +378,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="142"/>
       <source>Set text color</source>
-      <translation type="unfinished">Set text color</translation>
+      <translation>Nastavi barvo besedila</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="176"/>
@@ -662,7 +662,7 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Napis enote</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -681,7 +681,7 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
       <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Vse (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="197"/>
@@ -702,12 +702,12 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
       <location filename="../../Workbench.cpp" line="94"/>
       <location filename="../../Workbench.cpp" line="96"/>
       <source>Set cell(s) text color</source>
-      <translation type="unfinished">Set cell(s) text color</translation>
+      <translation>Nastavi barvo besedila polj</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="95"/>
       <source>Sets the Spreadsheet cell(s) text color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) text color</translation>
+      <translation>Nastavi barvo pisave v poljih preglednice</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="114"/>
@@ -881,12 +881,12 @@ Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
@@ -914,7 +914,7 @@ Ali želite nadaljevati?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Napaka:
 </translation>
     </message>
     <message>
@@ -948,17 +948,17 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Set a zoom level for table view from 60% to 160%.</source>
-      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
+      <translation>Nastavi povečavo pregledničnega pogleda od 60% do 160%.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="51"/>
       <source>%</source>
-      <translation type="unfinished">%</translation>
+      <translation>%</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level:</source>
-      <translation type="unfinished">Default zoom level:</translation>
+      <translation>Prvzeta povečava:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="83"/>
@@ -981,17 +981,17 @@ Privzeto: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="131"/>
       <source>Delimiter Character:</source>
-      <translation type="unfinished">Delimiter Character:</translation>
+      <translation>Ločilni znak:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Quote Character:</source>
-      <translation type="unfinished">Quote Character:</translation>
+      <translation>Narekovaj:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="223"/>
       <source>Escape Character:</source>
-      <translation type="unfinished">Escape Character:</translation>
+      <translation>Ubežni znak:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="151"/>
@@ -1220,12 +1220,12 @@ Privzeto: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom level</source>
-      <translation type="unfinished">Zoom level</translation>
+      <translation>Povečava</translation>
     </message>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <translation>Nova povečava:</translation>
     </message>
   </context>
 </TS>

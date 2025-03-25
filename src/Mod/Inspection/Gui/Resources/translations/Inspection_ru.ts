@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation>Инспекция</translation>
+      <translation>Сверка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection...</source>
-      <translation>Проверка...</translation>
+      <translation>Сверка...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
@@ -24,18 +24,18 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation>Инспекция</translation>
+      <translation>Сверка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual inspection...</source>
-      <translation>Визуальная проверка...</translation>
+      <translation>Визуальная сверка...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <location filename="../../Command.cpp" line="51"/>
       <source>Visual inspection</source>
-      <translation>Визуальная проверка</translation>
+      <translation>Визуальная сверка</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="237"/>
       <source>Visual Inspection</source>
-      <translation>Визуальная проверка</translation>
+      <translation>Визуальная сверка</translation>
     </message>
   </context>
   <context>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>Визуальная проверка</translation>
+      <translation>Визуальная сверка</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation>Номинальный</translation>
+      <translation>Эталон</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation>Поиск расстояния</translation>
+      <translation>Расстояние поиска</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
@@ -96,12 +96,12 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="489"/>
       <source>Remove annotations</source>
-      <translation>Удалить аннотации</translation>
+      <translation>Удалить заметки</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="490"/>
       <source>Do you want to remove all annotations?</source>
-      <translation>Вы хотите удалить все аннотации?</translation>
+      <translation>Вы хотите удалить все заметки?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="548"/>

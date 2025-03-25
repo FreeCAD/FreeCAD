@@ -13,7 +13,7 @@ that reference the same configurable object</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Application.cpp" line="468"/>
+        <location filename="../../Application.cpp" line="454"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -29,7 +29,7 @@ that reference the same configurable object</source>
 <context>
     <name>Notifications</name>
     <message>
-        <location filename="../../Document.cpp" line="1163"/>
+        <location filename="../../Document.cpp" line="1170"/>
         <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -40,37 +40,37 @@ The user should then click the Refresh button in the main toolbar.
 <context>
     <name>App::LocalCoordinateSystem</name>
     <message>
-        <location filename="../../Datums.cpp" line="209"/>
+        <location filename="../../Datums.cpp" line="248"/>
         <source>X-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Datums.cpp" line="210"/>
+        <location filename="../../Datums.cpp" line="249"/>
         <source>Y-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Datums.cpp" line="211"/>
+        <location filename="../../Datums.cpp" line="250"/>
         <source>Z-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Datums.cpp" line="212"/>
+        <location filename="../../Datums.cpp" line="251"/>
         <source>XY-plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Datums.cpp" line="213"/>
+        <location filename="../../Datums.cpp" line="252"/>
         <source>XZ-plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Datums.cpp" line="214"/>
+        <location filename="../../Datums.cpp" line="253"/>
         <source>YZ-plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Datums.cpp" line="215"/>
+        <location filename="../../Datums.cpp" line="254"/>
         <source>Origin</source>
         <translation type="unfinished"></translation>
     </message>

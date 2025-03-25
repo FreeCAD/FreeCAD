@@ -494,7 +494,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires Git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
+      <translation>Automatski provjeri ima li ažuriranja kod pokretanja (zahtjeva Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="43"/>
@@ -594,17 +594,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the Git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Git executable. Autodetected if needed and not specified.</translation>
+      <translation>Putanja k izvršnoj git datoteci. Automatski detektirano ako je potrebno i nije specificirano.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires Git)</source>
-      <translation type="unfinished">Show option to change branches (requires Git)</translation>
+      <translation>Prikaži opciju za promjenu grana (zahtjeva Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable Git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable Git (fall back to ZIP downloads only)</translation>
+      <translation>Onemogući git (povratak na ZIP preuzimanja)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="390"/>
@@ -1142,17 +1142,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="524"/>
       <source>Creating addon list</source>
-      <translation type="unfinished">Creating addon list</translation>
+      <translation>Kreiranje popisa dodataka</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="534"/>
       <source>Loading addon list</source>
-      <translation type="unfinished">Loading addon list</translation>
+      <translation>Učitavanje popisa dodataka</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="570"/>
       <source>Creating macro list</source>
-      <translation type="unfinished">Creating macro list</translation>
+      <translation>Kreiranje popisa makronaredbi</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1469,11 +1469,11 @@ Moved
 from: {}
 to: {}
 Please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded.
-Moved
-from: {}
-to: {}
-Please restart to use the new version.</translation>
+      <translation>Promjena grane je uspjela.
+Premješteno
+od: {}
+u: {}
+Ponovo pokreni program da bi koristio novu verziju.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -2102,7 +2102,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="184"/>
       <source>Downloaded {} for {}</source>
-      <translation type="unfinished">Downloaded {} for {}</translation>
+      <translation>Preuzeto {} za {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="243"/>
@@ -2208,13 +2208,13 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="281"/>
       <source>Git is disabled, skipping Git macros</source>
-      <translation type="unfinished">Git is disabled, skipping Git macros</translation>
+      <translation>Git je onemogućen, preskaču se Git makronaredbe</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="328"/>
       <source>Attempting to change non-Git Macro setup to use Git
 </source>
-      <translation type="unfinished">Attempting to change non-Git Macro setup to use Git
+      <translation>Pokušaj promjene postavki ne-Git makronaredbe da koristi Git
 </translation>
     </message>
     <message>
@@ -2245,27 +2245,27 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="548"/>
       <source>Checking {} for update</source>
-      <translation type="unfinished">Checking {} for update</translation>
+      <translation>Provjera nadogradnji za {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="606"/>
       <source>Unable to fetch Git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch Git updates for workbench {}</translation>
+      <translation>Nije moguće dohvatiti Git ažuriranja za radnu površinu {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="619"/>
       <source>Git status failed for {}</source>
-      <translation type="unfinished">Git status failed for {}</translation>
+      <translation>Git status neuspješan za {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Caching {} macro</source>
-      <translation type="unfinished">Caching {} macro</translation>
+      <translation>Makronaredbe za predmemoriranje {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="849"/>
       <source>Caching macros</source>
-      <translation type="unfinished">Caching macros</translation>
+      <translation>Makronaredbe za predmemoriranje</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="687"/>
@@ -2330,7 +2330,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic Git update failed with the following message:</source>
-      <translation type="unfinished">Basic Git update failed with the following message:</translation>
+      <translation>Osnovno Git ažuriranje nije uspjelo sa sljedećom porukom:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="161"/>
@@ -2340,7 +2340,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using Git</source>
-      <translation type="unfinished">Failed to clone {} into {} using Git</translation>
+      <translation>Neuspješno kloniranje {} u {} pomoću Git-a</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>

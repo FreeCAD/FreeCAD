@@ -440,7 +440,7 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si cette case est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
+      <translation>Si cette option est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
 Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
@@ -669,7 +669,7 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si cette case est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
+      <translation>Si cette option est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
 Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
@@ -710,7 +710,7 @@ Un réseau lié est plus efficace lors de la création de plusieurs copies mais 
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>Réinitialiser la sélection du point 3D</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -759,8 +759,7 @@ Un réseau lié est plus efficace lors de la création de plusieurs copies mais 
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
 Or choose one of the options below.</source>
-      <translation>Sélectionner 3 sommets, une ou plusieurs formes ou un proxy de plan de travail. Confirmer ensuite en cliquant dans la vue 3D.
-Ou choisir l'une des options ci-dessous.</translation>
+      <translation>Sélectionner 3 sommets, une ou plusieurs formes ou un proxy de plan de travail. Confirmer ensuite en cliquant dans la vue 3D ou choisir l'une des options ci-dessous :</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
@@ -2213,7 +2212,7 @@ au lieu de la taille qu'ils ont dans le document DXF.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Si cette case est cochée, les calques DXF seront importés sous forme de calques de Draft.</translation>
+      <translation>Si cette option est cochée est cochée, les calques DXF seront importés sous forme de calques de Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
@@ -2323,8 +2322,8 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Si cette option est cochée, le contour d'une figure humaine sera affiché en bas à gauche
+de la grille. Cette option n'est active que si "Afficher la bordure de la grille" est activée.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -2823,12 +2822,12 @@ soit nécessaire d'appuyer sur la touche pour l'aimantation.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>Si cette option est cochée, le widget d'aimantation sera affiché dans la barre d'état de Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>Si cette option est cochée, le widget de mise à l'échelle d'annotation sera affiché dans la barre d'état de Draft.</translation>
     </message>
   </context>
   <context>
@@ -3470,7 +3469,7 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Widget de mise à l'échelle de Draft</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3480,7 +3479,7 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Widget d'aimantation de Draft</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -3981,7 +3980,7 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation>Sélectionnez un objet à faire pivoter</translation>
+      <translation>Sélectionner un objet à faire pivoter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="99"/>
@@ -4064,7 +4063,7 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="302"/>
       <source>Add to construction group</source>
-      <translation>Ajouter au groupe de construction</translation>
+      <translation>Ajouter à un groupe de construction</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="352"/>
@@ -4439,7 +4438,7 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
       <location filename="../../draftguitools/gui_layers.py" line="63"/>
       <location filename="../../draftmake/make_layer.py" line="155"/>
       <source>Layer</source>
-      <translation>Créer un calque</translation>
+      <translation>Donner un nom</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="95"/>
@@ -4943,7 +4942,7 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>Deux arêtes sont nécessaires.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
@@ -5608,22 +5607,22 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, répondez Oui.</t
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>Impossible de construire une surface liée</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>Aucune face valide pour la surface liée</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>Impossible de construire une surface liée, reprise avec la propriété "Sew" désactivée</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>La conversion des faces B-spline plates de la face liée en faces planes a échoué.</translation>
     </message>
   </context>
   <context>
@@ -6076,7 +6075,7 @@ Si plusieurs objets ou sous-éléments sont sélectionnés, seul le premier dans
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation>Créer une ligne par 2 points.
+      <translation>Créer une ligne par 2 points
 Ctrl pour aimanter, Maj pour contraindre.</translation>
     </message>
   </context>
@@ -6090,7 +6089,7 @@ Ctrl pour aimanter, Maj pour contraindre.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation>Créer une ligne brisée (polyligne).
+      <translation>Créer une ligne brisée (polyligne)
 Ctrl pour aimanter, Maj pour contraindre.</translation>
     </message>
   </context>
@@ -6389,7 +6388,7 @@ Ctrl pour aimanter, Maj pour contraindre.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="66"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Créer un arc circulaire à partir d'un centre et d'un rayon.
+      <translation>Créer un arc circulaire à partir d'un centre et d'un rayon
 Ctrl pour aimanter, Maj pour contraindre.</translation>
     </message>
   </context>
@@ -6404,7 +6403,7 @@ Ctrl pour aimanter, Maj pour contraindre.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="480"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Créer un arc circulaire en prenant 3 points.
+      <translation>Créer un arc circulaire en prenant 3 points
 Ctrl pour aimanter, Maj pour contraindre.</translation>
     </message>
   </context>
@@ -6519,9 +6518,10 @@ Le réseau peut être transformé en un réseau orthogonal ou polaire en changea
       <source>Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
 If the "copy" option is active, it will create rotated copies.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation>Fait pivoter les objets sélectionnés. Choisir le centre de rotation puis l'angle initial et ensuite l'angle final.
+      <translation>Faire pivoter les objets sélectionnés. Choisir le centre de rotation puis l'angle initial et ensuite l'angle final.
 Si l'option "copier" est active, elle créera des copies pivotées.
-Ctrl pour aimanter, Maj pour contraindre. Maintenir Alt et cliquer pour créer une copie à chaque clic.</translation>
+Ctrl pour aimanter, Maj pour contraindre.
+Maintenir Alt et cliquer pour créer une copie à chaque clic.</translation>
     </message>
   </context>
   <context>
@@ -6572,14 +6572,14 @@ Pour les objets non groupés sélectionnés, le contenu du groupe dans lequel il
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="307"/>
       <source>Add to construction group</source>
-      <translation>Ajouter au groupe de construction</translation>
+      <translation>Ajouter à un groupe de construction</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="310"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
-      <translation>Ajouter les objets sélectionnés au groupe de construction et changer leur apparence
+      <translation>Ajouter les objets sélectionnés à un groupe de construction et changer leur apparence
 en style de construction. Cela crée un groupe de construction s'il n'existe pas.</translation>
     </message>
   </context>
@@ -6588,12 +6588,12 @@ en style de construction. Cela crée un groupe de construction s'il n'existe pas
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="358"/>
       <source>Add a new named group</source>
-      <translation>Ajouter un nouveau groupe nommé</translation>
+      <translation>Créer un nouveau groupe nommé</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="362"/>
       <source>Add a new group with a given name.</source>
-      <translation>Ajouter un nouveau groupe avec un nom donné.</translation>
+      <translation>Créer un nouveau groupe avec un nom donné.</translation>
     </message>
   </context>
   <context>
@@ -6725,7 +6725,8 @@ Ctrl pour aimanter, Maj pour contraindre au segment en cours ou à la normale, A
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation>Créer une B-spline à points multiples. Ctrl pour aimanter, Maj pour contraindre.</translation>
+      <translation>Créer une B-spline à points multiples
+Ctrl pour aimanter, Maj pour contraindre</translation>
     </message>
   </context>
   <context>
@@ -6752,8 +6753,9 @@ Ctrl pour aimanter, Maj pour contraindre au segment en cours ou à la normale, A
       <location filename="../../draftguitools/gui_beziers.py" line="69"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Créer une courbe de Bézier de degré N. Plus vous prenez de points, plus le degré est élevé.
-Ctrl pour aimanter, Maj pour contraindre.</translation>
+      <translation>Créer une courbe de Bézier de degré N
+Plus vous prenez de points, plus le degré est élevé.
+Ctrl pour aimanter, Maj pour contraindre</translation>
     </message>
   </context>
   <context>
@@ -6859,8 +6861,8 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
       <source>Scales the selected objects from a base point.
 CTRL to snap, SHIFT to constrain, ALT to copy.</source>
-      <translation>Mettre à l'échelle des objets sélectionnés à partir d'un point de référence.
-Ctrl pour aimanter, Maj pour contraindre, Alt pour copier.</translation>
+      <translation>Mettre à l'échelle des objets sélectionnés à partir d'un point de référence
+Ctrl pour aimanter, Maj pour contraindre, Alt pour copier</translation>
     </message>
   </context>
   <context>
@@ -6868,7 +6870,7 @@ Ctrl pour aimanter, Maj pour contraindre, Alt pour copier.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="68"/>
       <source>Layer</source>
-      <translation>Créer un calque</translation>
+      <translation>Donner un nom</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="71"/>
@@ -6977,16 +6979,15 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation>Créer une dimension.
+      <translation>Créer une dimension:
+- choisir trois points pour créer une simple dimension linéaire
+- sélectionner une ligne droite pour créer une dimension linéaire liée à cette ligne
+- sélectionner un arc ou un cercle pour créer un rayon ou une dimension du diamètre liée à cet arc
+- sélectionner deux lignes droites pour créer une dimension angulaire entre elles
+Ctrl pour aimanter, Maj pour contraindre, Alt pour sélectionner une arête ou un arc
 
-- Choisir trois points pour créer une simple dimension linéaire.
-- Sélectionner une ligne droite pour créer une dimension linéaire liée à cette ligne.
-- Sélectionner un arc ou un cercle pour créer un rayon ou une dimension du diamètre liée à cet arc.
-- Sélectionner deux lignes droites pour créer une dimension angulaire entre elles.
-Ctrl pour aimanter, Maj pour contraindre, Alt pour sélectionner une arête ou un arc.
-
-Vous pouvez sélectionner une seule ligne ou un seul arc circulaire avant de lancer cette commande pour créer la dimension associée.
-Vous pouvez également sélectionner un objet "App::MeasureDistance" avant de lancer cette commande pour la transformer en un objet "Draft Dimension".</translation>
+Vous pouvez sélectionner une seule ligne ou un seul arc circulaire avant d'appliquer cette commande pour créer la dimension associée.
+Vous pouvez également sélectionner un objet "App::MeasureDistance" avant d'appliquer cette commande pour le transformer en un objet "Draft Dimension".</translation>
     </message>
   </context>
   <context>
@@ -7152,9 +7153,10 @@ et fusionner les faces en une seule face.</translation>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation>Décaler l'objet sélectionné.
+      <translation>Décaler l'objet sélectionné
 La commande peut également créer une copie décalée de l'objet original.
-Ctrl pour aimanter, Maj pour contraindre. Maintenir Alt et cliquer pour créer une copie à chaque clic.</translation>
+Ctrl pour aimanter, Maj pour contraindre
+Maintenir Alt et cliquer pour créer une copie à chaque clic.</translation>
     </message>
   </context>
   <context>

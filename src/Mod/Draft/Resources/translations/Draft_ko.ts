@@ -170,7 +170,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
       <source>Font size</source>
-      <translation>폰트 크기</translation>
+      <translation>글꼴 크기</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="263"/>
@@ -192,7 +192,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>Units</source>
-      <translation>유닛</translation>
+      <translation>단위</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
       <source>Show unit</source>
-      <translation>유닛 표시</translation>
+      <translation>단위 표시</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
@@ -683,7 +683,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="26"/>
       <source>ShapeString</source>
-      <translation type="unfinished">ShapeString</translation>
+      <translation>글자형상</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="46"/>
@@ -725,7 +725,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="138"/>
       <source>Text to be made into ShapeString</source>
-      <translation>문자 형상으로 만들 문자</translation>
+      <translation>글자형상으로 만들 글자</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="149"/>
@@ -745,7 +745,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="183"/>
       <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
-      <translation type="unfinished">Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
+      <translation>글꼴 파일(*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
     </message>
   </context>
   <context>
@@ -1044,7 +1044,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>1점 쇄선</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
@@ -1059,7 +1059,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
       <source>Wireframe</source>
-      <translation>와이어프레임</translation>
+      <translation>철사틀</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
@@ -1115,7 +1115,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="473"/>
       <source>Dimensions</source>
-      <translation>면적</translation>
+      <translation>치수</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
@@ -1202,7 +1202,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
       <source>Font size</source>
-      <translation>폰트 크기</translation>
+      <translation>글꼴 크기</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
@@ -1283,7 +1283,7 @@ for linear dimensions.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="479"/>
       <source>Show unit</source>
-      <translation>유닛 표시</translation>
+      <translation>단위 표시</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="496"/>
@@ -1622,7 +1622,7 @@ pattern definitions to be added to the standard patterns</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="106"/>
       <source>Font size</source>
-      <translation>폰트 크기</translation>
+      <translation>글꼴 크기</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="209"/>
@@ -1801,7 +1801,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="381"/>
       <source>Units</source>
-      <translation>유닛</translation>
+      <translation>단위</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="387"/>
@@ -1811,7 +1811,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="390"/>
       <source>Show unit</source>
-      <translation>유닛 표시</translation>
+      <translation>단위 표시</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="406"/>
@@ -1874,12 +1874,12 @@ used for linear dimensions.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="642"/>
       <source>ShapeStrings</source>
-      <translation type="unfinished">ShapeStrings</translation>
+      <translation>글자형상</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="655"/>
       <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
-      <translation type="unfinished">Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
+      <translation>글꼴 파일(*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="607"/>
@@ -1894,7 +1894,7 @@ used for linear dimensions.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="648"/>
       <source>Default ShapeString font file</source>
-      <translation type="unfinished">Default ShapeString font file</translation>
+      <translation>기본 글자형상 글꼴 파일</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="658"/>
@@ -2251,12 +2251,12 @@ as closed wires with correct width</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation type="unfinished">Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
+      <translation>타원 내보내기는 불완전하게 지원됩니다. 대신에 이것을 사용하여 꺾은선으로 내보내기 하세요.．</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation>타원과 스플라인을 폴리라인으로 처리</translation>
+      <translation>타원과 조절곡선을 꺾은선으로 처리</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="562"/>
@@ -2267,8 +2267,8 @@ as closed wires with correct width</source>
       <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation>각 폴리선 세그먼트의 최대 길이입니다.
-'0'으로 설정하면 전체 스플라인이 직선 세그먼트로 처리됩니다.</translation>
+      <translation>꺾은선의 각 분절의 최대 길이입니다.
+'0'으로 설정하면 전체 조절곡선이 직선 분절로 처리됩니다.．</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
@@ -3373,7 +3373,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>구배</translation>
+      <translation>제도</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="288"/>
@@ -3677,7 +3677,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="367"/>
       <source>Polyline</source>
-      <translation>곡선</translation>
+      <translation>꺾은선</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="229"/>
@@ -4344,7 +4344,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
       <source>Bézier curve</source>
-      <translation type="unfinished">Bézier curve</translation>
+      <translation>베지에 곡선</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="136"/>
@@ -4411,7 +4411,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_scale.py" line="236"/>
       <location filename="../../draftguitools/gui_scale.py" line="359"/>
       <source>Scale</source>
-      <translation>크기</translation>
+      <translation>척도</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="209"/>
@@ -4534,7 +4534,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="62"/>
       <source>Rectangle</source>
-      <translation>사각형</translation>
+      <translation>직사각형</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="124"/>
@@ -4636,7 +4636,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="165"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Create ShapeString</translation>
+      <translation>글자형상 생성</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="51"/>
@@ -4775,7 +4775,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="54"/>
       <source>ShapeString</source>
-      <translation type="unfinished">ShapeString</translation>
+      <translation>글자형상</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="68"/>
@@ -4857,7 +4857,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="231"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>글자형상: 한 글자의 면 생성 실패</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="79"/>
@@ -5787,7 +5787,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="152"/>
       <source>Scale</source>
-      <translation>크기</translation>
+      <translation>척도</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="153"/>
@@ -6092,7 +6092,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="310"/>
       <source>Polyline</source>
-      <translation>곡선</translation>
+      <translation>꺾은선</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="313"/>
@@ -6105,7 +6105,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="40"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>선무늬</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="44"/>
@@ -6629,7 +6629,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+      <translation>선택한 꺾은선을 B-조절곡선으로 변환하거나 B-조절곡선을 꺾은선으로 변환합니다.．</translation>
     </message>
   </context>
   <context>
@@ -6751,7 +6751,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="66"/>
       <source>Bézier curve</source>
-      <translation type="unfinished">Bézier curve</translation>
+      <translation>베지에 곡선</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="69"/>
@@ -6856,7 +6856,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="71"/>
       <source>Scale</source>
-      <translation>크기</translation>
+      <translation>척도</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
@@ -7013,7 +7013,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="54"/>
       <source>Rectangle</source>
-      <translation>사각형</translation>
+      <translation>직사각형</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
@@ -7181,14 +7181,14 @@ These projections can be used to create technical drawings with the TechDraw Wor
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="66"/>
       <source>Shape from text</source>
-      <translation>글꼴모양</translation>
+      <translation>글자 형상</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="68"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
-      <translation type="unfinished">Creates a shape from a text string by choosing a specific font and a placement.
-The closed shapes can be used for extrusions and boolean operations.</translation>
+      <translation>특정 글꼴과 위치를 선택하여 글자형상을 만듭니다.
+만들어진 형상은 돌출 및 부울 연산에 사용할 수 있습니다.．</translation>
     </message>
   </context>
   <context>
@@ -7247,17 +7247,17 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="60"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>글꼴 파일 이름</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="64"/>
       <source>Height of text</source>
-      <translation type="unfinished">Height of text</translation>
+      <translation>글자 높이</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="68"/>
       <source>Horizontal and vertical alignment</source>
-      <translation type="unfinished">Horizontal and vertical alignment</translation>
+      <translation>수평 수직 정렬</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="76"/>
@@ -7277,12 +7277,12 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="90"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>글자 간격</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="94"/>
       <source>Oblique (slant) angle</source>
-      <translation type="unfinished">Oblique (slant) angle</translation>
+      <translation>기울기</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="98"/>
@@ -8324,7 +8324,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="126"/>
       <source>Font size</source>
-      <translation>폰트 크기</translation>
+      <translation>글꼴 크기</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="124"/>
@@ -8442,7 +8442,7 @@ beyond the dimension line</translation>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>구배</translation>
+      <translation>제도</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="209"/>

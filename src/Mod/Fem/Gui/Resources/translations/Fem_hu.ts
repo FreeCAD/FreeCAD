@@ -923,7 +923,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="304"/>
       <source>Number of threads used for analysis</source>
-      <translation type="unfinished">Number of threads used for analysis</translation>
+      <translation>Az elemzéshez használt szálak száma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
@@ -948,7 +948,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>SPOOLES equation solver</source>
-      <translation type="unfinished">SPOOLES equation solver</translation>
+      <translation>Spooles egyenletmegoldó</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
@@ -1134,22 +1134,22 @@ will be merged to make the volume boundaries invisible.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
       <source>Save result in binary format</source>
-      <translation type="unfinished">Save result in binary format</translation>
+      <translation>Eredmény mentése bináris formátumban</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="300"/>
       <source>Use binary format</source>
-      <translation type="unfinished">Use binary format</translation>
+      <translation>Bináris formátum használata</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
       <source>Save the index of geometric entities</source>
-      <translation type="unfinished">Save the index of geometric entities</translation>
+      <translation>Geometriai egységek indexének mentése</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="319"/>
       <source>Save geometry IDs</source>
-      <translation type="unfinished">Save geometry IDs</translation>
+      <translation>Geometriai azonosítók mentése</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
@@ -1462,22 +1462,22 @@ elemzési konténer hozzáadásakor</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="131"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Napló szóbeliség</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>A feladatpanelre nyomtatott szóbeliség szintje</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Szálak száma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="167"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>A hálózáshoz használt szálak száma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
@@ -1559,12 +1559,12 @@ FreeCAD eredményobjektum: Az importált adatok FreeCAD VEM eredményobjektumokk
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
       <source>Mesh elements to export</source>
-      <translation type="unfinished">Mesh elements to export</translation>
+      <translation>Hálóelemek exportálása</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="102"/>
       <source>Mesh element level to export</source>
-      <translation type="unfinished">Mesh element level to export</translation>
+      <translation>Exportálandó hálóelem szintje</translation>
     </message>
   </context>
   <context>
@@ -2685,7 +2685,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density:</source>
-      <translation type="unfinished">Density:</translation>
+      <translation>Sűrűség:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
@@ -3237,32 +3237,32 @@ Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
       <source>Axis1 Length:</source>
-      <translation type="unfinished">Axis1 Length:</translation>
+      <translation>Tengely1 hossza:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="236"/>
       <source>Axis2 Length:</source>
-      <translation type="unfinished">Axis2 Length:</translation>
+      <translation>Tengely2 hossza:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="343"/>
       <source>T1 Thickness:</source>
-      <translation type="unfinished">T1 Thickness:</translation>
+      <translation>T1 Vastagság:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="375"/>
       <source>T2 Thickness:</source>
-      <translation type="unfinished">T2 Thickness:</translation>
+      <translation>T2 Vastagság:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="407"/>
       <source>T3 Thickness:</source>
-      <translation type="unfinished">T3 Thickness:</translation>
+      <translation>T3 Vastagság:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="439"/>
       <source>T4 Thickness:</source>
-      <translation type="unfinished">T4 Thickness:</translation>
+      <translation>T4 Vastagság:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
@@ -3508,28 +3508,28 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element Dimension:</source>
-      <translation type="unfinished">Element Dimension:</translation>
+      <translation>Elem mérete:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
       <source>Maximum Size:</source>
-      <translation type="unfinished">Maximum Size:</translation>
+      <translation>Maximális méret:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="57"/>
       <location filename="../ui/MeshGmsh.ui" line="95"/>
       <source>Use 0.0 to set size automatically</source>
-      <translation type="unfinished">Use 0.0 to set size automatically</translation>
+      <translation>Automatikus méretbeállításhoz használja a 0.0 értéket</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="85"/>
       <source>Minimum Size:</source>
-      <translation type="unfinished">Minimum Size:</translation>
+      <translation>Minimális méret:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="126"/>
       <source>Element Order:</source>
-      <translation type="unfinished">Element Order:</translation>
+      <translation>Elem sorrend:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="144"/>
@@ -6087,7 +6087,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="77"/>
       <source>Enable Laplacian smoothing</source>
-      <translation type="unfinished">Enable Laplacian smoothing</translation>
+      <translation>Laplacián simítás engedélyezése</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="80"/>
@@ -6097,7 +6097,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="97"/>
       <source>Factor to control vertex displacement</source>
-      <translation type="unfinished">Factor to control vertex displacement</translation>
+      <translation>Tényező a csúcspont elmozdulás szabályozásához</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="113"/>
@@ -6107,7 +6107,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="116"/>
       <source>No Color</source>
-      <translation type="unfinished">No Color</translation>
+      <translation>Szín nélkül</translation>
     </message>
   </context>
   <context>
@@ -6663,7 +6663,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Erase elements</source>
-      <translation type="unfinished">Erase elements</translation>
+      <translation>Elemek törlése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
@@ -6718,12 +6718,12 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximum Size:</source>
-      <translation type="unfinished">Maximum Size:</translation>
+      <translation>Maximális méret:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
       <source>Minimum Size:</source>
-      <translation type="unfinished">Minimum Size:</translation>
+      <translation>Minimális méret:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="117"/>
@@ -6787,22 +6787,22 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="59"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Napló szóbeliség</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>A feladatpanelre nyomtatott szóbeliség szintje</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Szálak száma</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="95"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>A hálózáshoz használt szálak száma</translation>
     </message>
   </context>
 </TS>

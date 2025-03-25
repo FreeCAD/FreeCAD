@@ -1214,12 +1214,12 @@
     <message>
       <location filename="../../Command.cpp" line="2087"/>
       <source>Appearance per &amp;face</source>
-      <translation type="unfinished">Appearance per &amp;face</translation>
+      <translation>Aparença per cara</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2088"/>
       <source>Set the appearance of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the appearance of each individual face of the selected object.</translation>
+      <translation>Estableix l'aparença de cada cara individual de l'objecte seleccionat.</translation>
     </message>
   </context>
   <context>
@@ -1941,7 +1941,7 @@ de projecció.</translation>
     <message>
       <location filename="../../Command.cpp" line="2189"/>
       <source>Persiste&amp;nt section cut</source>
-      <translation type="unfinished">Persiste&amp;nt section cut</translation>
+      <translation>Tall de secció persiste&amp;nt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2190"/>
@@ -2183,7 +2183,7 @@ de projecció.</translation>
     <message>
       <location filename="../../Command.cpp" line="2257"/>
       <source>Add a coordinate system</source>
-      <translation type="unfinished">Add a coordinate system</translation>
+      <translation>Afegeix un sistema de coordenades</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2291"/>

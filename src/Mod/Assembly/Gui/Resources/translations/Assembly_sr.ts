@@ -19,12 +19,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="77"/>
       <source>Create a Fixed Joint</source>
-      <translation>Направи фиксни спој</translation>
+      <translation>Направи чврсти спој</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="84"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
-      <translation>1 - Ако је активан склоп: Направи спој који трајно закључа два дела заједно, спречавајуц́и било какво кретање или ротацију.</translation>
+      <translation>1 - Ако је активан склоп: Направи спој који трајно учврсти два дела заједно, спречавајући било какво кретање или ротацију.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="90"/>
@@ -68,7 +68,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="173"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation>Направи транслациони спој (Кинематски пар V класе) између изабраних делова: Дозвољава једну транслацију.</translation>
+      <translation>Направи транслациони спој (Кинематски пар V класе) између изабраних делова: Дозвољава транслацију само дуж једне осе.</translation>
     </message>
   </context>
   <context>
@@ -107,12 +107,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="502"/>
       <source>Toggle grounded</source>
-      <translation>Учврсти</translation>
+      <translation>Непокретни</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="509"/>
       <source>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation>Учвршћавање трајно фиксира позицију дела у склопу, спречавајући било какву транслацију или ротацију. Потребан је најмање један учвршћен део пре него што се почне формирати склоп.</translation>
+      <translation>Прављење дела непокретним трајно учврсти позицију дела у склопу, спречавајући било какву транслацију или ротацију. Потребан је најмање један непокретни део пре него што се почне формирати склоп.</translation>
     </message>
   </context>
   <context>
@@ -225,7 +225,7 @@
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Fixed</source>
-      <translation>Фиксни</translation>
+      <translation>Учвршћен</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
@@ -367,17 +367,17 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="380"/>
       <source>Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</source>
-      <translation>Компоненте унутар подсклопова: Ако је означено, у саставници ће се појавити и компоненте подсклопова.</translation>
+      <translation>Компоненте унутар подсклопова: Ако је потврђено, у саставници ће се појавити и компоненте подсклопова.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Parts children : If checked, Parts children will be added to the bill of materials.</source>
-      <translation>Компоненте унутар контејнера Део: Ако је означено, у саставници ће се појавити контејнери Део и компоненте унутар њих.</translation>
+      <translation>Компоненте унутар контејнера Део: Ако је потврђено, у саставници ће се појавити контејнери Део и компоненте унутар њих.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="392"/>
       <source>Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation>Само контејнери Део: Ако је означено, у саставници ће се појавити само контејнери Део и подсклопови. Компоненте као што су контејнери Тело, компоненте из гвожђаре или објекти из окружења Делови биће игнорисани.</translation>
+      <translation>Само контејнери Део: Ако је потврђено, у саставници ће се појавити само контејнери Део и подсклопови. Компоненте као што су контејнери Тело, компоненте из гвожђаре или објекти из окружења Делови биће игнорисани.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="394"/>
@@ -402,37 +402,37 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="415"/>
       <source>Export:</source>
-      <translation type="unfinished">Export:</translation>
+      <translation>Извези:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="422"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences.</source>
-      <translation type="unfinished">The exported file format can be customized in the Spreadsheet workbench preferences.</translation>
+      <translation>Формат извезене датотеке можете прилагодити у подешавањима радног окружења Табеле.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="84"/>
       <source>Part name</source>
-      <translation type="unfinished">Part name</translation>
+      <translation>Назив дела</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="89"/>
       <source>Part</source>
-      <translation>Део</translation>
+      <translation>Делови</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="94"/>
       <source>Create part in new file</source>
-      <translation type="unfinished">Create part in new file</translation>
+      <translation>Направи део унутар нове датотеке</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="101"/>
       <source>Joint new part origin</source>
-      <translation type="unfinished">Joint new part origin</translation>
+      <translation>Задај спој координатног почетка новог дела</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="135"/>
       <source>Save Document</source>
-      <translation type="unfinished">Save Document</translation>
+      <translation>Сачувај документ</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="137"/>
@@ -442,12 +442,12 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="140"/>
       <source>Don't link</source>
-      <translation type="unfinished">Don't link</translation>
+      <translation>Не повезуј</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="467"/>
       <source>Enter your formula...</source>
-      <translation type="unfinished">Enter your formula...</translation>
+      <translation>Унеси своју формулу...</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="520"/>
@@ -567,7 +567,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="666"/>
       <source>Hide help</source>
-      <translation type="unfinished">Hide help</translation>
+      <translation>Сакриј помоћ</translation>
     </message>
   </context>
   <context>
@@ -687,7 +687,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../JointObject.py" line="954"/>
       <source>The object to ground</source>
-      <translation>Објекат који треба учврстити</translation>
+      <translation>Објекат који треба направити непокретним</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="255"/>
@@ -708,27 +708,27 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="107"/>
       <source>Simulation start time.</source>
-      <translation type="unfinished">Simulation start time.</translation>
+      <translation>Време почетка симулације.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="118"/>
       <source>Simulation end time.</source>
-      <translation type="unfinished">Simulation end time.</translation>
+      <translation>Време завршетка симулације.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="129"/>
       <source>Simulation time step for output.</source>
-      <translation type="unfinished">Simulation time step for output.</translation>
+      <translation>Временски корак за излазну симулацију.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="140"/>
       <source>Integration global error tolerance.</source>
-      <translation type="unfinished">Integration global error tolerance.</translation>
+      <translation>Интегрисана глобална толеранција грешака.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="151"/>
       <source>Frames Per Second.</source>
-      <translation type="unfinished">Frames Per Second.</translation>
+      <translation>Кадрова по секунди.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="203"/>
@@ -748,7 +748,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="318"/>
       <source>The type of the motion</source>
-      <translation type="unfinished">The type of the motion</translation>
+      <translation>Врста померања</translation>
     </message>
   </context>
   <context>
@@ -801,7 +801,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="177"/>
       <source>Show advanced offsets</source>
-      <translation type="unfinished">Show advanced offsets</translation>
+      <translation>Прикажи поставке одмака</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="193"/>
@@ -869,7 +869,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="55"/>
       <source>If checked, the list will show only Parts.</source>
-      <translation>Ako je čekirano lista će pokazivati samo delove.</translation>
+      <translation>Ako je потврђено, lista će pokazivati samo delove.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="58"/>
@@ -883,11 +883,10 @@ Rigid means that the added sub-assembly will be considered as a solid unit withi
 Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
 Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</source>
-      <translation type="unfinished">Sets whether the inserted sub-assemblies will be rigid or flexible.
-Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
-Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
-You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
-Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</translation>
+      <translation>Подешавање да ли ће уметнути подсклопови бити крути или флексибилни.
+Крути значи да ће уметнути подсклоп бити један објекат унутар склопа.
+Флексибилан значи да ће и компоненте подсклопа бити објекти унутар склопа т. ј. постојаће могућност њиховог померања променом параметара спојева.
+Ову особину подсклопова можете да промените у било ком тренутку тако што ћете у Стаблу документа кликнути на њих десним тастером миша и изабрати Задај крутост/Задај флексибилност, или уређивањем ставке Подешавање крутости у Уреднику својстава.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
@@ -927,12 +926,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
       <source>Ground first part:</source>
-      <translation>Учврсти први део:</translation>
+      <translation>Направи први део непокретним:</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="66"/>
       <source>When you insert the first part in the assembly, you can choose to ground the part automatically.</source>
-      <translation>Да ли да први део који се умеће у склоп треба да буде учвршћен.</translation>
+      <translation>Да ли први део који се умеће у склоп треба да буде непокретан.</translation>
     </message>
   </context>
   <context>
@@ -1062,7 +1061,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="20"/>
       <source>If checked, Parts will be selected as a single solid.</source>
-      <translation>Ако је чекирано, делови ће бити изабрани као једно тело.</translation>
+      <translation>Ако је потврђено, делови ће бити изабрани као једно тело.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="23"/>
@@ -1096,7 +1095,7 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
       <source>If checked, Sub assemblies children will be added to the bill of materials.</source>
-      <translation>Ако је означено, у саставници ће се појавити и компоненте подсклопова.</translation>
+      <translation>Ако је потврђено, у саставници ће се појавити и компоненте подсклопова.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
@@ -1106,7 +1105,7 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
       <source>If checked, Parts children will be added to the bill of materials.</source>
-      <translation>Ако је означено, у саставници ће се појавити контејнери Део и компоненте унутар њих.</translation>
+      <translation>Ако је потврђено, у саставници ће се појавити контејнери Део и компоненте унутар њих.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
@@ -1116,7 +1115,7 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation>Ако је означено, у саставници ће се појавити само контејнери Део и подсклопови. Компоненте као што су контејнери Тело, компоненте из гвожђаре или објекти из окружења Делови биће игнорисани.</translation>
+      <translation>Ако је потврђено, у саставници ће се појавити само контејнери Део и подсклопови. Компоненте као што су контејнери Тело, компоненте из гвожђаре или објекти из окружења Делови биће игнорисани.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -1180,7 +1179,7 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="311"/>
       <source>Create an Angle Joint: Fix the angle between the Z axis of selected coordinate systems.</source>
-      <translation>Направи угаони спој: Фиксира задани угао између З оса координатних система изабраних делова.</translation>
+      <translation>Направи угаони спој: Направи непроменљивим задани угао између З оса координатних система изабраних делова.</translation>
     </message>
   </context>
   <context>
@@ -1227,12 +1226,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>Insert a new part</source>
-      <translation type="unfinished">Insert a new part</translation>
+      <translation>Уметни нови део</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="61"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation type="unfinished">Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</translation>
+      <translation>Уметните нови контејнер Део у активни склоп. Координатни систем новог Дела је могуће позиционирати у склопу.</translation>
     </message>
   </context>
   <context>
@@ -1240,12 +1239,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="67"/>
       <source>Create Simulation</source>
-      <translation type="unfinished">Create Simulation</translation>
+      <translation>Направи симулацију</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="74"/>
       <source>Create a simulation of the current assembly.</source>
-      <translation type="unfinished">Create a simulation of the current assembly.</translation>
+      <translation>Направи симулацију активног склопа.</translation>
     </message>
   </context>
   <context>
@@ -1261,27 +1260,27 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="14"/>
       <source>Create Simulation</source>
-      <translation type="unfinished">Create Simulation</translation>
+      <translation>Направи симулацију</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="20"/>
       <source>Motions</source>
-      <translation type="unfinished">Motions</translation>
+      <translation>Померања</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="50"/>
       <source>Add a prescribed motion</source>
-      <translation type="unfinished">Add a prescribed motion</translation>
+      <translation>Додај померање на спојеве</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="70"/>
       <source>Delete selected motions</source>
-      <translation type="unfinished">Delete selected motions</translation>
+      <translation>Обриши изабрана померања</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation settings</source>
-      <translation type="unfinished">Simulation settings</translation>
+      <translation>Подешавања симулације</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
@@ -1292,18 +1291,18 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="105"/>
       <source>Start time of the simulation</source>
-      <translation type="unfinished">Start time of the simulation</translation>
+      <translation>Време почетка симулације</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="112"/>
       <source>End</source>
-      <translation type="unfinished">End</translation>
+      <translation>Крај</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="115"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="122"/>
       <source>End time of the simulation</source>
-      <translation type="unfinished">End time of the simulation</translation>
+      <translation>Време завршетка симулације</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="129"/>
@@ -1314,7 +1313,7 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time Step</source>
-      <translation type="unfinished">Time Step</translation>
+      <translation>Временски корак</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1325,42 +1324,42 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global Error Tolerance</source>
-      <translation type="unfinished">Global Error Tolerance</translation>
+      <translation>Глобална толеранција грешака</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
       <source>Generate</source>
-      <translation type="unfinished">Generate</translation>
+      <translation>Генериши</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
       <source>Animation player</source>
-      <translation type="unfinished">Animation player</translation>
+      <translation>Плејер анимације</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Frame</source>
-      <translation>Оквир</translation>
+      <translation>Кадар</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
       <source>0.00 s</source>
-      <translation type="unfinished">0.00 s</translation>
+      <translation>0.00 s</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
       <source>Frames Per Second</source>
-      <translation type="unfinished">Frames Per Second</translation>
+      <translation>Кадрова по секунди</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
       <source>Step backward</source>
-      <translation type="unfinished">Step backward</translation>
+      <translation>Корак уназад</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
       <source>Play backward</source>
-      <translation type="unfinished">Play backward</translation>
+      <translation>Пусти уназад</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="272"/>
@@ -1370,12 +1369,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="292"/>
       <source>Play forward</source>
-      <translation type="unfinished">Play forward</translation>
+      <translation>Пусти</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
       <source>Step forward</source>
-      <translation type="unfinished">Step forward</translation>
+      <translation>Корак напред</translation>
     </message>
   </context>
 </TS>

@@ -416,7 +416,7 @@
     <message>
       <location filename="../Application.h" line="267"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>&amp;Domyślny</translation>
     </message>
     <message>
       <location filename="../Application.h" line="268"/>
@@ -426,12 +426,12 @@
     <message>
       <location filename="../Application.h" line="272"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>&amp;Przekształć</translation>
     </message>
     <message>
       <location filename="../Application.h" line="277"/>
       <source>Cu&amp;tting</source>
-      <translation type="unfinished">Cu&amp;tting</translation>
+      <translation>&amp;Wytnij</translation>
     </message>
     <message>
       <location filename="../Application.h" line="282"/>
@@ -749,7 +749,7 @@ podczas kliknięcia lewym lub prawym przyciskiem myszki i przesuwaj kursor w gó
     <message>
       <location filename="../DlgAbout.cpp" line="734"/>
       <source>Copied!</source>
-      <translation type="unfinished">Copied!</translation>
+      <translation>Skopiowano!</translation>
     </message>
   </context>
   <context>
@@ -1106,7 +1106,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>Przeglądaj</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="60"/>
@@ -1119,7 +1119,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="163"/>
       <source>Export Config</source>
-      <translation type="unfinished">Export Config</translation>
+      <translation>Eksportuj konfigurację</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="171"/>
@@ -3305,8 +3305,8 @@ oprócz paska kolorów</translation>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 7 = default)</source>
-      <translation type="unfinished">Document save compression level
-(0 = none, 9 = highest, 7 = default)</translation>
+      <translation>Poziom kompresji podczas zapisu dokumentu 
+(0 = brak, 9 = najwyższy, 7 = domyślny)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
@@ -3868,7 +3868,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="195"/>
       <source>Show script commands in Python console</source>
-      <translation type="unfinished">Show script commands in Python console</translation>
+      <translation>Pokaż polecenia skryptu w konsoli Python</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
@@ -4152,12 +4152,12 @@ Wartością jest średnica kuli, która ma zmieścić się na ekranie.</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="727"/>
       <source>Space mouse</source>
-      <translation type="unfinished">Space mouse</translation>
+      <translation>Space mouse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="733"/>
       <source>Enable support of legacy space mouse devices</source>
-      <translation type="unfinished">Enable support of legacy space mouse devices</translation>
+      <translation>Włącz obsługę starszych urządzeń Space mouse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
@@ -4359,7 +4359,7 @@ Ustaw wartość 0, aby wyłączyć.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="94"/>
       <source> ms</source>
-      <translation type="unfinished"> ms</translation>
+      <translation> ms</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="119"/>
@@ -4783,7 +4783,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../DocumentRecovery.cpp" line="343"/>
       <source>&amp;Finish</source>
-      <translation type="unfinished">&amp;Finish</translation>
+      <translation>&amp;Zakończ</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="501"/>
@@ -5225,12 +5225,12 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../Placement.ui" line="20"/>
       <source>Translation</source>
-      <translation type="unfinished">Translation</translation>
+      <translation>Przesunięcie</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="95"/>
       <source>Axial</source>
-      <translation type="unfinished">Axial</translation>
+      <translation>Osiowe</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="118"/>
@@ -5255,7 +5255,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../Placement.ui" line="400"/>
       <source>Roll (around x-axis)</source>
-      <translation type="unfinished">Roll (around x-axis)</translation>
+      <translation>Obrót (wokół osi x)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="407"/>
@@ -5410,12 +5410,12 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No 3D view</source>
-      <translation type="unfinished">No 3D view</translation>
+      <translation>Brak widoku 3D</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No active 3D view found.</source>
-      <translation type="unfinished">No active 3D view found.</translation>
+      <translation>Brak aktywnego widoku 3D.</translation>
     </message>
   </context>
   <context>
@@ -5694,12 +5694,12 @@ wstępnie wybranymi przed otwarciem tego okna</translation>
     <message>
       <location filename="../SelectionView.cpp" line="659"/>
       <source>To Python console</source>
-      <translation type="unfinished">To Python console</translation>
+      <translation>Do konsoli Python</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="662"/>
       <source>Reveals this object and its subelements in the Python console.</source>
-      <translation type="unfinished">Reveals this object and its subelements in the Python console.</translation>
+      <translation>Pokazuje ten obiekt i jego elementy podrzędne w konsoli Python.</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="668"/>
@@ -7490,12 +7490,12 @@ Opis elementu można ustawić, naciskając klawisz F2
     <message>
       <location filename="../VectorListEditor.cpp" line="326"/>
       <source>Copy table</source>
-      <translation type="unfinished">Copy table</translation>
+      <translation>Kopiuj tabelę</translation>
     </message>
     <message>
       <location filename="../VectorListEditor.cpp" line="330"/>
       <source>Paste table</source>
-      <translation type="unfinished">Paste table</translation>
+      <translation>Wklej tabelę</translation>
     </message>
   </context>
   <context>
@@ -7797,7 +7797,7 @@ Opis elementu można ustawić, naciskając klawisz F2
     <message>
       <location filename="../Application.cpp" line="987"/>
       <source>Recomputation required</source>
-      <translation>Wymagane ponowne obliczenie</translation>
+      <translation>Wymagane ponowne przeliczenie</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="988"/>
@@ -7805,10 +7805,10 @@ Opis elementu można ustawić, naciskając klawisz F2
 
 Do you want to recompute now?</source>
       <translation>Niektóre dokumenty wymagają ponownego przeliczenia do celów migracji. 
-Zalecane jest ponowne przeliczenie przed modyfikacją, 
+Zalecane jest ponowne przeliczenie przed wykonaniem modyfikacji, 
 w celu uniknięcia problemów kompatybilności.
 
-Czy chcesz przeliczyć teraz?</translation>
+Czy chcesz uruchomić przeliczanie teraz?</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1005"/>
@@ -7876,21 +7876,21 @@ na temat obiektów, których to dotyczy.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="127"/>
       <source>File Migration Warning</source>
-      <translation type="unfinished">File Migration Warning</translation>
+      <translation>Ostrzeżenie o migracji pliku</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="128"/>
       <source>This file was created with an older version of %1. Origin axes had incorrect placements, which have now been corrected.
 
 However, if you save this file in the current version and reopen it in an older version of %1, the origin axes will be misaligned. Additionally, if your file references these origin axes, your file will likely be broken.</source>
-      <translation type="unfinished">This file was created with an older version of %1. Origin axes had incorrect placements, which have now been corrected.
+      <translation>Ten plik został utworzony przy użyciu starszej wersji %1. Osie początkowe miały nieprawidłowe położenie, które zostało teraz poprawione.
 
-However, if you save this file in the current version and reopen it in an older version of %1, the origin axes will be misaligned. Additionally, if your file references these origin axes, your file will likely be broken.</translation>
+Jeśli jednak zapiszesz ten plik w bieżącej wersji i otworzysz go ponownie w starszej wersji %1, osie początkowe będą źle wyrównane. Ponadto, jeśli plik odwołuje się do tych osi pochodzenia, plik prawdopodobnie zostanie uszkodzony.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="136"/>
       <source>Don't show this warning again</source>
-      <translation type="unfinished">Don't show this warning again</translation>
+      <translation>Nie pokazuj ponownie tego ostrzeżenia</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="280"/>
@@ -8001,25 +8001,25 @@ Sprawdź widok raportu, aby uzyskać więcej informacji.</translation>
       <location filename="../CommandView.cpp" line="338"/>
       <location filename="../CommandView.cpp" line="571"/>
       <source>&amp;Save views...</source>
-      <translation type="unfinished">&amp;Save views...</translation>
+      <translation>&amp;Zapisz widoki ...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
       <location filename="../CommandView.cpp" line="572"/>
       <source>&amp;Load views...</source>
-      <translation type="unfinished">&amp;Load views...</translation>
+      <translation>&amp;Wczytaj widoki ...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
       <location filename="../CommandView.cpp" line="573"/>
       <source>F&amp;reeze view</source>
-      <translation type="unfinished">F&amp;reeze view</translation>
+      <translation>Z&amp;amroź widoki</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="574"/>
       <source>&amp;Clear views</source>
-      <translation type="unfinished">&amp;Clear views</translation>
+      <translation>&amp;Wyczyść widoki</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="392"/>
@@ -8829,7 +8829,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="447"/>
       <source>Delay mouse wheel pass through</source>
-      <translation type="unfinished">Delay mouse wheel pass through</translation>
+      <translation>Opóźnienie przejścia kółka myszy</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="450"/>
@@ -8894,17 +8894,17 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="485"/>
       <source>Hint delay</source>
-      <translation type="unfinished">Hint delay</translation>
+      <translation>Opóźnienie podpowiedzi</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="488"/>
       <source>Splitter auto hide delay</source>
-      <translation type="unfinished">Splitter auto hide delay</translation>
+      <translation>Opóźnienie automatycznego ukrywania separatora</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="493"/>
       <source>Layout delay</source>
-      <translation type="unfinished">Layout delay</translation>
+      <translation>Opóźnienie układu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="496"/>
@@ -8934,12 +8934,13 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="191"/>
       <source>Add a property to %1</source>
-      <translation type="unfinished">Add a property to %1</translation>
+      <translation>Dodaj właściwość do %1</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="402"/>
       <source>The property name must only contain alpha numericals, underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property name must only contain alpha numericals, underscore, and must not start with a digit.</translation>
+      <translation>Nazwa właściwości może zawierać tylko znaki alfanumeryczne i podkreślenia,
+nie może zaczynać się cyfrą.</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="434"/>
@@ -8978,7 +8979,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2979"/>
       <source>Bo&amp;x element selection</source>
-      <translation type="unfinished">Bo&amp;x element selection</translation>
+      <translation>Wy&amp;bór elementów ramką zaznaczenia</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2980"/>
@@ -8992,7 +8993,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2753"/>
       <source>&amp;Box selection</source>
-      <translation type="unfinished">&amp;Box selection</translation>
+      <translation>&amp;Zaznacz obszarem</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2754"/>
@@ -9011,7 +9012,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="223"/>
       <source>Displays important information About %1</source>
-      <translation type="unfinished">Displays important information About %1</translation>
+      <translation>Wyświetla ważne informacje dotyczące %1</translation>
     </message>
   </context>
   <context>
@@ -9033,7 +9034,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <source>&amp;Next</source>
-      <translation type="unfinished">&amp;Next</translation>
+      <translation>&amp;Następny</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>
@@ -9047,7 +9048,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
       <source>&amp;Previous</source>
-      <translation type="unfinished">&amp;Previous</translation>
+      <translation>&amp;Poprzedni</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="202"/>
@@ -9061,7 +9062,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1674"/>
       <source>Ali&amp;gnment...</source>
-      <translation type="unfinished">Ali&amp;gnment...</translation>
+      <translation>W&amp;yrównanie ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1675"/>
@@ -9075,7 +9076,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2221"/>
       <source>Toggle a&amp;xis cross</source>
-      <translation type="unfinished">Toggle a&amp;xis cross</translation>
+      <translation>Przełącz krz&amp;yż osi</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2222"/>
@@ -9117,7 +9118,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close A&amp;ll</source>
-      <translation type="unfinished">Close A&amp;ll</translation>
+      <translation>Zamknij wszys&amp;tkie</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
@@ -9159,7 +9160,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1143"/>
       <source>Cu&amp;t</source>
-      <translation type="unfinished">Cu&amp;t</translation>
+      <translation>Wy&amp;tnij</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1144"/>
@@ -9187,7 +9188,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3212"/>
       <source>View &amp;turntable...</source>
-      <translation type="unfinished">View &amp;turntable...</translation>
+      <translation>Widok &amp;obrotowy ...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3213"/>
@@ -9201,7 +9202,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="623"/>
       <source>Dependency gra&amp;ph...</source>
-      <translation type="unfinished">Dependency gra&amp;ph...</translation>
+      <translation>Gra&amp;f zależności ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="624"/>
@@ -9229,7 +9230,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="94"/>
       <source>Ma&amp;cros...</source>
-      <translation type="unfinished">Ma&amp;cros...</translation>
+      <translation>Ma&amp;krodefinicje ...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="95"/>
@@ -9243,7 +9244,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="123"/>
       <source>&amp;Execute macro</source>
-      <translation type="unfinished">&amp;Execute macro</translation>
+      <translation>&amp;Wykonaj makrodefinicję</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="124"/>
@@ -9257,7 +9258,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="51"/>
       <source>&amp;Macro recording...</source>
-      <translation type="unfinished">&amp;Macro recording...</translation>
+      <translation>&amp;Rejestrator makrodefinicji ...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="52"/>
@@ -9281,7 +9282,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="381"/>
       <source>E&amp;dit parameters...</source>
-      <translation type="unfinished">E&amp;dit parameters...</translation>
+      <translation>E&amp;dycja parametrów...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="382"/>
@@ -9295,7 +9296,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="406"/>
       <source>Prefere&amp;nces ...</source>
-      <translation type="unfinished">Prefere&amp;nces ...</translation>
+      <translation>Usta&amp;wienia ...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
@@ -9309,7 +9310,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
       <source>&amp;Panels</source>
-      <translation type="unfinished">&amp;Panels</translation>
+      <translation>&amp;Panele</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="282"/>
@@ -9323,7 +9324,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandView.cpp" line="648"/>
       <source>&amp;Draw style</source>
-      <translation type="unfinished">&amp;Draw style</translation>
+      <translation>&amp;Styl rysowania</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="649"/>
@@ -9337,7 +9338,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1246"/>
       <source>Duplicate selecti&amp;on</source>
-      <translation type="unfinished">Duplicate selecti&amp;on</translation>
+      <translation>Powiel &amp;zaznaczone</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1247"/>
@@ -9421,7 +9422,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="688"/>
       <source>FreeCAD &amp;Forum</source>
-      <translation type="unfinished">FreeCAD &amp;Forum</translation>
+      <translation>Forum &amp;FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="689"/>
@@ -9434,7 +9435,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandView.cpp" line="323"/>
       <source>F&amp;reeze display</source>
-      <translation type="unfinished">F&amp;reeze display</translation>
+      <translation>Z&amp;amroź widok</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="324"/>
@@ -9461,7 +9462,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1234"/>
       <source>Hide all &amp;objects</source>
-      <translation type="unfinished">Hide all &amp;objects</translation>
+      <translation>Ukryj wszystkie obiekty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1235"/>
@@ -9475,7 +9476,7 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1086"/>
       <source>&amp;Hide selection</source>
-      <translation type="unfinished">&amp;Hide selection</translation>
+      <translation>&amp;Ukryj zaznaczone</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1087"/>
@@ -9607,7 +9608,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandLink.cpp" line="852"/>
       <source>&amp;Link navigation</source>
-      <translation type="unfinished">&amp;Link navigation</translation>
+      <translation>&amp;Nawigacja przy użyciu linków</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="853"/>
@@ -9621,7 +9622,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandLink.cpp" line="812"/>
       <source>Select &amp;all links</source>
-      <translation type="unfinished">Select &amp;all links</translation>
+      <translation>Wybierz wszystkie linki</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="813"/>
@@ -9634,7 +9635,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandLink.cpp" line="649"/>
       <source>&amp;Go to linked object</source>
-      <translation type="unfinished">&amp;Go to linked object</translation>
+      <translation>&amp;Przejdź do połączonego obiektu</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="650"/>
@@ -9647,7 +9648,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the &amp;deepest linked object</source>
-      <translation type="unfinished">Go to the &amp;deepest linked object</translation>
+      <translation>Przejdź do &amp;najgłębiej połączonego obiektu</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="778"/>
@@ -9673,7 +9674,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandMacro.cpp" line="149"/>
       <source>&amp;Attach to remote debugger...</source>
-      <translation type="unfinished">&amp;Attach to remote debugger...</translation>
+      <translation>&amp;Przełącz na debugger zewnętrzny …</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="150"/>
@@ -9687,7 +9688,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandMacro.cpp" line="174"/>
       <source>&amp;Debug macro</source>
-      <translation type="unfinished">&amp;Debug macro</translation>
+      <translation>&amp;Debugowanie makrodefinicji</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="175"/>
@@ -9701,7 +9702,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandMacro.cpp" line="258"/>
       <source>Step &amp;into</source>
-      <translation type="unfinished">Step &amp;into</translation>
+      <translation>Wejdź do</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="259"/>
@@ -9715,7 +9716,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandMacro.cpp" line="231"/>
       <source>Step &amp;over</source>
-      <translation type="unfinished">Step &amp;over</translation>
+      <translation>Przesunięcie n&amp;arzędzia</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="232"/>
@@ -9729,7 +9730,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandMacro.cpp" line="204"/>
       <source>&amp;Stop debugging</source>
-      <translation type="unfinished">&amp;Stop debugging</translation>
+      <translation>&amp;Zatrzymaj debugowanie</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="205"/>
@@ -9743,7 +9744,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandDoc.cpp" line="570"/>
       <source>&amp;Merge document...</source>
-      <translation type="unfinished">&amp;Merge document...</translation>
+      <translation>&amp;Połącz dokument …</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="571"/>
@@ -9794,7 +9795,7 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandStd.cpp" line="551"/>
       <source>Opens the help documentation</source>
-      <translation type="unfinished">Opens the help documentation</translation>
+      <translation>Otwiera dokumentację pomocy</translation>
     </message>
   </context>
   <context>
@@ -9866,7 +9867,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandDoc.cpp" line="1592"/>
       <source>P&amp;lacement...</source>
-      <translation type="unfinished">P&amp;lacement...</translation>
+      <translation>U&amp;miejscowienie …</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1593"/>
@@ -9894,7 +9895,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandDoc.cpp" line="998"/>
       <source>Export P&amp;DF...</source>
-      <translation type="unfinished">Export P&amp;DF...</translation>
+      <translation>Eksportuj do PDF ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="999"/>
@@ -9908,7 +9909,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandDoc.cpp" line="968"/>
       <source>Print previe&amp;w...</source>
-      <translation type="unfinished">Print previe&amp;w...</translation>
+      <translation>Podgląd wydruku ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="969"/>
@@ -9954,7 +9955,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandFeat.cpp" line="80"/>
       <source>Random &amp;color</source>
-      <translation type="unfinished">Random &amp;color</translation>
+      <translation>Losowy kolor</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="81"/>
@@ -9968,7 +9969,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandStd.cpp" line="140"/>
       <source>Open &amp;Recent</source>
-      <translation type="unfinished">Open &amp;Recent</translation>
+      <translation>Ostatnio otwierane</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="141"/>
@@ -9982,7 +9983,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandStd.cpp" line="181"/>
       <source>&amp;Recent macros</source>
-      <translation type="unfinished">&amp;Recent macros</translation>
+      <translation>&amp;Najnowsze makra</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="182"/>
@@ -10010,7 +10011,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandDoc.cpp" line="1512"/>
       <source>Refres&amp;h</source>
-      <translation type="unfinished">Refres&amp;h</translation>
+      <translation>Odśwież</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1513"/>
@@ -10024,7 +10025,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandDoc.cpp" line="839"/>
       <source>Rever&amp;t</source>
-      <translation type="unfinished">Rever&amp;t</translation>
+      <translation>Przy&amp;wróć</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="840"/>
@@ -10052,7 +10053,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandDoc.cpp" line="811"/>
       <source>Sa&amp;ve All</source>
-      <translation type="unfinished">Sa&amp;ve All</translation>
+      <translation>Zapisz wszystkie</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="812"/>
@@ -10080,7 +10081,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandDoc.cpp" line="784"/>
       <source>Save a Cop&amp;y...</source>
-      <translation type="unfinished">Save a Cop&amp;y...</translation>
+      <translation>Zapisz jako &amp;kopię ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="785"/>
@@ -10094,7 +10095,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3152"/>
       <source>Scene i&amp;nspector...</source>
-      <translation type="unfinished">Scene i&amp;nspector...</translation>
+      <translation>I&amp;nspektor sceny …</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3153"/>
@@ -10136,7 +10137,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1114"/>
       <source>&amp;Select visible objects</source>
-      <translation type="unfinished">&amp;Select visible objects</translation>
+      <translation>&amp;Wybierz widoczne obiekty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1115"/>
@@ -10164,7 +10165,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1197"/>
       <source>Show &amp;all objects</source>
-      <translation type="unfinished">Show &amp;all objects</translation>
+      <translation>Wyświetl &amp;wszystkie obiekty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1198"/>
@@ -10178,7 +10179,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1058"/>
       <source>Sho&amp;w selection</source>
-      <translation type="unfinished">Sho&amp;w selection</translation>
+      <translation>&amp;Pokaż zaznaczone</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1059"/>
@@ -10206,7 +10207,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandStd.cpp" line="796"/>
       <source>Add te&amp;xt document</source>
-      <translation type="unfinished">Add te&amp;xt document</translation>
+      <translation>Dodaj dokument &amp;tekstowy</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="797"/>
@@ -10220,7 +10221,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3185"/>
       <source>Text&amp;ure mapping...</source>
-      <translation type="unfinished">Text&amp;ure mapping...</translation>
+      <translation>O&amp;dwzorowanie tekstury …</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3186"/>
@@ -10248,7 +10249,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandMacro.cpp" line="285"/>
       <source>Toggle &amp;breakpoint</source>
-      <translation type="unfinished">Toggle &amp;breakpoint</translation>
+      <translation>Przełącz punkt &amp;przerwania</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="286"/>
@@ -10262,7 +10263,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="595"/>
       <source>Clippin&amp;g plane</source>
-      <translation type="unfinished">Clippin&amp;g plane</translation>
+      <translation>Płaszczyzna t&amp;nąca</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="596"/>
@@ -10276,7 +10277,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2172"/>
       <source>Toggle navigation/&amp;Edit mode</source>
-      <translation type="unfinished">Toggle navigation/&amp;Edit mode</translation>
+      <translation>Przełącz tryb nawigacji / &amp;edycji</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2173"/>
@@ -10290,7 +10291,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1156"/>
       <source>To&amp;ggle all objects</source>
-      <translation type="unfinished">To&amp;ggle all objects</translation>
+      <translation>Prz&amp;ełącz widoczność wszystkich obiektów</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1157"/>
@@ -10304,7 +10305,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggle se&amp;lectability</source>
-      <translation type="unfinished">Toggle se&amp;lectability</translation>
+      <translation>Przełącz m&amp;ożliwość zaznaczenia</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1007"/>
@@ -10318,7 +10319,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="868"/>
       <source>Toggle &amp;visibility</source>
-      <translation type="unfinished">Toggle &amp;visibility</translation>
+      <translation>Przełącz &amp;widoczność</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="869"/>
@@ -10332,7 +10333,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandWindow.cpp" line="317"/>
       <source>&amp;Toolbars</source>
-      <translation type="unfinished">&amp;Toolbars</translation>
+      <translation>Paski narzędzi</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="318"/>
@@ -10430,7 +10431,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandStd.cpp" line="865"/>
       <source>Edit &amp;mode</source>
-      <translation type="unfinished">Edit &amp;mode</translation>
+      <translation>Tryb edycji</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="866"/>
@@ -10458,7 +10459,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1299"/>
       <source>&amp;5 Bottom</source>
-      <translation type="unfinished">&amp;5 Bottom</translation>
+      <translation>&amp;5 Od dołu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1300"/>
@@ -10486,7 +10487,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1468"/>
       <source>&amp;Dimetric</source>
-      <translation type="unfinished">&amp;Dimetric</translation>
+      <translation>&amp;Dimetryczny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1469"/>
@@ -10542,7 +10543,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1564"/>
       <source>&amp;Fit all</source>
-      <translation type="unfinished">&amp;Fit all</translation>
+      <translation>Dopasuj &amp;wszystko</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1565"/>
@@ -10556,7 +10557,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1595"/>
       <source>Fit &amp;selection</source>
-      <translation type="unfinished">Fit &amp;selection</translation>
+      <translation>Dopasuj do wy&amp;boru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1596"/>
@@ -10570,7 +10571,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1323"/>
       <source>&amp;1 Front</source>
-      <translation type="unfinished">&amp;1 Front</translation>
+      <translation>&amp;1 Od przodu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1324"/>
@@ -10584,7 +10585,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1271"/>
       <source>&amp;Home</source>
-      <translation type="unfinished">&amp;Home</translation>
+      <translation>&amp;Widok domyślny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1272"/>
@@ -10598,7 +10599,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1444"/>
       <source>&amp;Isometric</source>
-      <translation type="unfinished">&amp;Isometric</translation>
+      <translation>&amp;Izometryczny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1445"/>
@@ -10612,7 +10613,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2494"/>
       <source>Issue camera &amp;position</source>
-      <translation type="unfinished">Issue camera &amp;position</translation>
+      <translation>Pokaż pozycję &amp;ujęcia widoku</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2495"/>
@@ -10626,7 +10627,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2465"/>
       <source>Stereo Interleaved &amp;Columns</source>
-      <translation type="unfinished">Stereo Interleaved &amp;Columns</translation>
+      <translation>Widok z przeplotem &amp;kolumn</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2466"/>
@@ -10640,7 +10641,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2437"/>
       <source>Stereo Interleaved &amp;Rows</source>
-      <translation type="unfinished">Stereo Interleaved &amp;Rows</translation>
+      <translation>Widok z przeplotem &amp;wierszy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2438"/>
@@ -10654,7 +10655,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2352"/>
       <source>Stereo &amp;Off</source>
-      <translation type="unfinished">Stereo &amp;Off</translation>
+      <translation>Wyłącz widok &amp;trójwymiarowy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2353"/>
@@ -10668,7 +10669,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2409"/>
       <source>Stereo &amp;quad buffer</source>
-      <translation type="unfinished">Stereo &amp;quad buffer</translation>
+      <translation>Poczwórny &amp;bufor stereo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2410"/>
@@ -10682,7 +10683,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2381"/>
       <source>Stereo re&amp;d/cyan</source>
-      <translation type="unfinished">Stereo re&amp;d/cyan</translation>
+      <translation>Stereo czer&amp;wony / cyjan</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2382"/>
@@ -10696,7 +10697,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1347"/>
       <source>&amp;6 Left</source>
-      <translation type="unfinished">&amp;6 Left</translation>
+      <translation>&amp;6 Od lewej</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1348"/>
@@ -10710,7 +10711,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1371"/>
       <source>&amp;4 Rear</source>
-      <translation type="unfinished">&amp;4 Rear</translation>
+      <translation>&amp;4 Od tyłu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1372"/>
@@ -10738,7 +10739,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1395"/>
       <source>&amp;3 Right</source>
-      <translation type="unfinished">&amp;3 Right</translation>
+      <translation>&amp;3 Od prawej</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1396"/>
@@ -10752,7 +10753,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1514"/>
       <source>Rotate &amp;Left</source>
-      <translation type="unfinished">Rotate &amp;Left</translation>
+      <translation>Obróć w &amp;lewo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1515"/>
@@ -10766,7 +10767,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1539"/>
       <source>Rotate &amp;Right</source>
-      <translation type="unfinished">Rotate &amp;Right</translation>
+      <translation>Obrót w &amp;prawo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1540"/>
@@ -10794,7 +10795,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1419"/>
       <source>&amp;2 Top</source>
-      <translation type="unfinished">&amp;2 Top</translation>
+      <translation>&amp;2 Od góry</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1420"/>
@@ -10808,7 +10809,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1491"/>
       <source>&amp;Trimetric</source>
-      <translation type="unfinished">&amp;Trimetric</translation>
+      <translation>&amp;Trimetryczny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1492"/>
@@ -10841,7 +10842,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandStd.cpp" line="311"/>
       <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+      <translation>Otwiera dokumentację odpowiadającą wyborowi</translation>
     </message>
   </context>
   <context>
@@ -10877,7 +10878,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandStd.cpp" line="75"/>
       <source>&amp;Workbench</source>
-      <translation type="unfinished">&amp;Workbench</translation>
+      <translation>&amp;Środowisko pracy</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="76"/>
@@ -10933,7 +10934,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3914"/>
       <source>R&amp;ecall working view</source>
-      <translation type="unfinished">R&amp;ecall working view</translation>
+      <translation>Przy&amp;wróć widok roboczy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3915"/>
@@ -10947,7 +10948,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3884"/>
       <source>St&amp;ore working view</source>
-      <translation type="unfinished">St&amp;ore working view</translation>
+      <translation>&amp;Zachowaj widok roboczy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3885"/>
@@ -10961,7 +10962,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3363"/>
       <source>Collapse/E&amp;xpand</source>
-      <translation type="unfinished">Collapse/E&amp;xpand</translation>
+      <translation>Zwiń / Ro&amp;zwiń</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3364"/>
@@ -10975,7 +10976,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3492"/>
       <source>Initiate &amp;dragging</source>
-      <translation type="unfinished">Initiate &amp;dragging</translation>
+      <translation>Rozpocznij p&amp;rzeciąganie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3493"/>
@@ -10988,7 +10989,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3346"/>
       <source>&amp;Multi document</source>
-      <translation type="unfinished">&amp;Multi document</translation>
+      <translation>&amp;Wiele dokumentów</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3347"/>
@@ -11002,7 +11003,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3456"/>
       <source>&amp;4 Pre-selection</source>
-      <translation type="unfinished">&amp;4 Pre-selection</translation>
+      <translation>&amp;4 Wybór wstępny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3457"/>
@@ -11015,7 +11016,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3474"/>
       <source>&amp;5 Record selection</source>
-      <translation type="unfinished">&amp;5 Record selection</translation>
+      <translation>&amp;5 Zapisz zaznaczenie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3475"/>
@@ -11028,7 +11029,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3024"/>
       <source>&amp;Go to selection</source>
-      <translation type="unfinished">&amp;Go to selection</translation>
+      <translation>&amp;Przejdź do wyboru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3025"/>
@@ -11042,7 +11043,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3329"/>
       <source>&amp;Single document</source>
-      <translation type="unfinished">&amp;Single document</translation>
+      <translation>&amp;Jeden dokument</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3330"/>
@@ -11056,7 +11057,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3438"/>
       <source>&amp;3 Sync placement</source>
-      <translation type="unfinished">&amp;3 Sync placement</translation>
+      <translation>&amp;3 Synchronizuj położenie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3439"/>
@@ -11069,7 +11070,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3420"/>
       <source>&amp;2 Sync selection</source>
-      <translation type="unfinished">&amp;2 Sync selection</translation>
+      <translation>&amp;2 Synchronizuj wybrane</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3421"/>
@@ -11082,7 +11083,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="3402"/>
       <source>&amp;1 Sync view</source>
-      <translation type="unfinished">&amp;1 Sync view</translation>
+      <translation>&amp;1 Synchronizuj widok</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3403"/>
@@ -11095,7 +11096,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2719"/>
       <source>&amp;Box zoom</source>
-      <translation type="unfinished">&amp;Box zoom</translation>
+      <translation>&amp;Powiększ obszar</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2720"/>
@@ -11109,7 +11110,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1664"/>
       <source>&amp;Docked</source>
-      <translation type="unfinished">&amp;Docked</translation>
+      <translation>&amp;Zadokowany</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1665"/>
@@ -11123,7 +11124,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1784"/>
       <source>D&amp;ocument window</source>
-      <translation type="unfinished">D&amp;ocument window</translation>
+      <translation>Okn&amp;o dokumentu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1785"/>
@@ -11137,7 +11138,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1754"/>
       <source>&amp;Fullscreen</source>
-      <translation type="unfinished">&amp;Fullscreen</translation>
+      <translation>&amp;Pełny ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1755"/>
@@ -11151,7 +11152,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1926"/>
       <source>Save &amp;image...</source>
-      <translation type="unfinished">Save &amp;image...</translation>
+      <translation>Zap&amp;isz obraz ...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1927"/>
@@ -11165,7 +11166,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="1693"/>
       <source>&amp;Undocked</source>
-      <translation type="unfinished">&amp;Undocked</translation>
+      <translation>&amp;Niezadokowany</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1694"/>
@@ -11179,7 +11180,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2544"/>
       <source>Zoom &amp;In</source>
-      <translation type="unfinished">Zoom &amp;In</translation>
+      <translation>Przy&amp;bliż</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2545"/>
@@ -11193,7 +11194,7 @@ takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Proj
     <message>
       <location filename="../CommandView.cpp" line="2573"/>
       <source>Zoom &amp;Out</source>
-      <translation type="unfinished">Zoom &amp;Out</translation>
+      <translation>O&amp;ddal</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2574"/>
@@ -11234,7 +11235,7 @@ Czy na pewno kontynuować?
     <message>
       <location filename="../CommandView.cpp" line="727"/>
       <source>&amp;1 As is</source>
-      <translation type="unfinished">&amp;1 As is</translation>
+      <translation>&amp;1 Domyślny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="729"/>
@@ -11244,32 +11245,32 @@ Czy na pewno kontynuować?
     <message>
       <location filename="../CommandView.cpp" line="732"/>
       <source>&amp;2 Points</source>
-      <translation type="unfinished">&amp;2 Points</translation>
+      <translation>&amp;2 Punkty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="737"/>
       <source>&amp;3 Wireframe</source>
-      <translation type="unfinished">&amp;3 Wireframe</translation>
+      <translation>&amp;3 Szkieletowy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="742"/>
       <source>&amp;4 Hidden line</source>
-      <translation type="unfinished">&amp;4 Hidden line</translation>
+      <translation>&amp;4 Cieniowany z ukrytymi krawędziami</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="747"/>
       <source>&amp;5 No shading</source>
-      <translation type="unfinished">&amp;5 No shading</translation>
+      <translation>&amp;5 Jednolity z krawędziami</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="752"/>
       <source>&amp;6 Shaded</source>
-      <translation type="unfinished">&amp;6 Shaded</translation>
+      <translation>&amp;6 Cieniowany</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="757"/>
       <source>&amp;7 Flat lines</source>
-      <translation type="unfinished">&amp;7 Flat lines</translation>
+      <translation>&amp;7 Cieniowany z krawędziami</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="734"/>
@@ -11452,17 +11453,17 @@ Po kliknięciu widoczność jest przełączana.</translation>
     <message>
       <location filename="../Workbench.cpp" line="539"/>
       <source>Standard &amp;views</source>
-      <translation type="unfinished">Standard &amp;views</translation>
+      <translation>Widoki &amp;standardowe</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
       <source>A&amp;xonometric</source>
-      <translation type="unfinished">A&amp;xonometric</translation>
+      <translation>&amp;Aksonometryczne</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="544"/>
       <source>V&amp;isibility</source>
-      <translation type="unfinished">V&amp;isibility</translation>
+      <translation>W&amp;idoczność</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="545"/>
@@ -11548,41 +11549,41 @@ Po kliknięciu widoczność jest przełączana.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jeśli opcja jest zaznaczona, obszar powiadomień będzie wyświetlany na pasku stanu: przycisk z bieżącą liczbą powiadomień, który może rozwinąć szczegółową listę powiadomień. Opcjonalnie z dodatkowymi powiadomieniami wyskakującymi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="23"/>
       <source>Enable notification area</source>
-      <translation type="unfinished">Enable notification area</translation>
+      <translation>Włącz obszar powiadomień</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
       <source>If checked, non-intrusive pop-up notifications will appear above the status bar, around the notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
 
 Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</source>
-      <translation type="unfinished">If checked, non-intrusive pop-up notifications will appear above the status bar, around the notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
+      <translation>Jeśli ta opcja jest zaznaczona, nieinwazyjne powiadomienia wyskakujące będą wyświetlane nad paskiem stanu, wokół obszaru powiadomień. Wyskakujące powiadomienia można ręcznie odrzucić, klikając je, a także automatycznie odrzucić, określając maksymalny i minimalny czas ich wyświetlania.
 
-Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</translation>
+Ponadto powiadomienia wyskakujące można wyłączyć. W takim przypadku użytkownik może nadal korzystać z obszaru powiadomień jako miejsca szybkiego dostępu do powiadomień, bez rozpraszania się dodatkowym wyskakującym okienkiem.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="37"/>
       <source>Enable pop-up notifications</source>
-      <translation type="unfinished">Enable pop-up notifications</translation>
+      <translation>Włącz powiadomienia</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="49"/>
       <source>Minimum duration:</source>
-      <translation type="unfinished">Minimum duration:</translation>
+      <translation>Najkrótszy czas trwania:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="59"/>
       <source>Maximum duration:</source>
-      <translation type="unfinished">Maximum duration:</translation>
+      <translation>Najdłuższy czas trwania:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maksymalny czas wyświetlania powiadomienia (o ile nie zostaną kliknięte przyciski myszy). Kontroluje również, kiedy powiadomienia użytkownika zostaną usunięte, jeśli ustawienie "Automatyczne usuwanie powiadomień użytkownika" jest aktywne.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="69"/>
@@ -11593,27 +11594,27 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="91"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimalny czas wyświetlania powiadomienia (chyba że okienko powiadomienia zostanie odrzucone przez kliknięcie).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="110"/>
       <source>Maximum concurrent notification count:</source>
-      <translation type="unfinished">Maximum concurrent notification count:</translation>
+      <translation>Maksymalna liczba równoczesnych powiadomień:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="117"/>
       <source>Maximum number of notifications that will be simultaneously present on the notification bubble.</source>
-      <translation type="unfinished">Maximum number of notifications that will be simultaneously present on the notification bubble.</translation>
+      <translation>Maksymalna liczba powiadomień, które będą jednocześnie wyświetlane w okienku powiadomień.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="133"/>
       <source>Notification bubble width:</source>
-      <translation type="unfinished">Notification bubble width:</translation>
+      <translation>Szerokość okienka powiadomień:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
       <source>Width of the pop-up notification bubble in pixels.</source>
-      <translation type="unfinished">Width of the pop-up notification bubble in pixels.</translation>
+      <translation>Szerokość wyskakującego okienka powiadomień w pikselach.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="143"/>
@@ -11623,62 +11624,62 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="168"/>
       <source>Any open pop-up notifications will disappear when another window is activated.</source>
-      <translation type="unfinished">Any open pop-up notifications will disappear when another window is activated.</translation>
+      <translation>Wszelkie otwarte powiadomienia wyskakujące znikną po aktywacji innego okna.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="187"/>
       <source>Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</source>
-      <translation type="unfinished">Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</translation>
+      <translation>Zapobieganie wyświetlaniu wyskakujących powiadomień, gdy okno programu FreeCAD nie jest aktywnym oknem.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="190"/>
       <source>Do not show when window is inactive</source>
-      <translation type="unfinished">Do not show when window is inactive</translation>
+      <translation>Nie pokazuj, gdy okno jest nieaktywne</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="209"/>
       <source>Additional notification sources to show in the notification area.</source>
-      <translation type="unfinished">Additional notification sources to show in the notification area.</translation>
+      <translation>Dodatkowe źródła powiadomień do wyświetlania w obszarze powiadomień.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
       <source>Errors intended for developers will appear in the notification area.</source>
-      <translation type="unfinished">Errors intended for developers will appear in the notification area.</translation>
+      <translation>Błędy przeznaczone dla programistów będą wyświetlane w obszarze powiadomień.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="237"/>
       <source>Warnings intended for developers will appear in the notification area.</source>
-      <translation type="unfinished">Warnings intended for developers will appear in the notification area.</translation>
+      <translation>Ostrzeżenia przeznaczone dla programistów będą wyświetlane w obszarze powiadomień.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="259"/>
       <source>Controls the amount of notifications to show in the list.</source>
-      <translation type="unfinished">Controls the amount of notifications to show in the list.</translation>
+      <translation>Kontroluje ilość powiadomień do wyświetlenia na liście.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
       <source>Notifications list</source>
-      <translation type="unfinished">Notifications list</translation>
+      <translation>Lista powiadomień</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
       <source>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</source>
-      <translation type="unfinished">Limits the number of notifications that will be kept in the list. If 0, there is no limit.</translation>
+      <translation>Ograniczenie liczby wiadomości, które będą przechowywane na liście. Jeśli 0 to nie ma limitu.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
       <source>Maximum notification count:</source>
-      <translation type="unfinished">Maximum notification count:</translation>
+      <translation>Maksymalna liczba powiadomień:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="294"/>
       <source>Removes the user notifications from the notifications list after the maximum duration for pop-up notifications has lapsed.</source>
-      <translation type="unfinished">Removes the user notifications from the notifications list after the maximum duration for pop-up notifications has lapsed.</translation>
+      <translation>Usuwa powiadomienia użytkownika z listy powiadomień po upływie maksymalnego czasu trwania powiadomień wyskakujących.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="297"/>
       <source>Auto-remove user notifications</source>
-      <translation type="unfinished">Auto-remove user notifications</translation>
+      <translation>Automatyczne usuwanie powiadomień użytkownika</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
@@ -12051,7 +12052,7 @@ zostanie załadowane automatycznie po uruchomieniu programu FreeCAD</translation
     <message>
       <location filename="../CommandView.cpp" line="2097"/>
       <source>&amp;Load image...</source>
-      <translation type="unfinished">&amp;Load image...</translation>
+      <translation>Zała&amp;duj obraz …</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2098"/>
@@ -12827,7 +12828,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="655"/>
       <source>Export dependency &amp;graph...</source>
-      <translation type="unfinished">Export dependency &amp;graph...</translation>
+      <translation>Eksportuj &amp;wykres zależności …</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="656"/>
@@ -12841,7 +12842,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     <message>
       <location filename="../CommandView.cpp" line="3241"/>
       <source>Selection &amp;back</source>
-      <translation type="unfinished">Selection &amp;back</translation>
+      <translation>&amp;Cofnij zaznaczenie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3243"/>
@@ -12854,7 +12855,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     <message>
       <location filename="../CommandView.cpp" line="3275"/>
       <source>Selection &amp;forward</source>
-      <translation type="unfinished">Selection &amp;forward</translation>
+      <translation>P&amp;onów zaznaczenie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3277"/>
@@ -12910,7 +12911,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     <message>
       <location filename="../CommandView.cpp" line="899"/>
       <source>Toggle transparenc&amp;y</source>
-      <translation type="unfinished">Toggle transparenc&amp;y</translation>
+      <translation>Przełącz p&amp;rzezroczystość</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="901"/>
@@ -12923,7 +12924,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     <message>
       <location filename="../CommandView.cpp" line="3612"/>
       <source>Toggle overl&amp;ay for all</source>
-      <translation type="unfinished">Toggle overl&amp;ay for all</translation>
+      <translation>Włącz / wyłącz nakła&amp;dkę dla wszystkich</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3613"/>
@@ -12936,7 +12937,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     <message>
       <location filename="../CommandView.cpp" line="3636"/>
       <source>Toggle tra&amp;nsparent for all</source>
-      <translation type="unfinished">Toggle tra&amp;nsparent for all</translation>
+      <translation>Przełącz przezroczystość d&amp;la wszystkiego</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3637"/>
@@ -12951,7 +12952,7 @@ Dzięki temu zadokowane okna pozostaną przezroczyste przez cały czas.</transla
     <message>
       <location filename="../CommandView.cpp" line="3661"/>
       <source>Toggle &amp;overlay</source>
-      <translation type="unfinished">Toggle &amp;overlay</translation>
+      <translation>Włącz / wyłącz &amp;nakładkę</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3662"/>
@@ -12964,7 +12965,7 @@ Dzięki temu zadokowane okna pozostaną przezroczyste przez cały czas.</transla
     <message>
       <location filename="../CommandView.cpp" line="3685"/>
       <source>Toggle tran&amp;sparent mode</source>
-      <translation type="unfinished">Toggle tran&amp;sparent mode</translation>
+      <translation>Włącz / wyłącz tryb &amp;przezroczysty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3686"/>
@@ -12979,7 +12980,7 @@ Dzięki temu zadokowane okno pozostanie przezroczyste przez cały czas.</transla
     <message>
       <location filename="../CommandView.cpp" line="3710"/>
       <source>Toggle &amp;left</source>
-      <translation type="unfinished">Toggle &amp;left</translation>
+      <translation>Przełącz w &amp;lewo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3711"/>
@@ -12992,7 +12993,7 @@ Dzięki temu zadokowane okno pozostanie przezroczyste przez cały czas.</transla
     <message>
       <location filename="../CommandView.cpp" line="3735"/>
       <source>Toggle &amp;right</source>
-      <translation type="unfinished">Toggle &amp;right</translation>
+      <translation>Przełącz w &amp;prawo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3736"/>
@@ -13005,7 +13006,7 @@ Dzięki temu zadokowane okno pozostanie przezroczyste przez cały czas.</transla
     <message>
       <location filename="../CommandView.cpp" line="3760"/>
       <source>Toggle &amp;top</source>
-      <translation type="unfinished">Toggle &amp;top</translation>
+      <translation>Przełącz w &amp;górę</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3761"/>
@@ -13018,7 +13019,7 @@ Dzięki temu zadokowane okno pozostanie przezroczyste przez cały czas.</transla
     <message>
       <location filename="../CommandView.cpp" line="3785"/>
       <source>Toggle &amp;bottom</source>
-      <translation type="unfinished">Toggle &amp;bottom</translation>
+      <translation>Przełącz w &amp;dół</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3786"/>
@@ -13031,7 +13032,7 @@ Dzięki temu zadokowane okno pozostanie przezroczyste przez cały czas.</transla
     <message>
       <location filename="../CommandView.cpp" line="3810"/>
       <source>Bypass &amp;mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass &amp;mouse events in docked overlay windows</translation>
+      <translation>Pomijanie zdarzeń &amp;myszki w zadokowanych oknach nakładki</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3811"/>
@@ -13273,7 +13274,7 @@ Ustaw zero, aby wypełnić miejsce.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="878"/>
       <source>Doc&amp;ument information...</source>
-      <translation type="unfinished">Doc&amp;ument information...</translation>
+      <translation>Informacje o dok&amp;umencie ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="879"/>
@@ -13287,7 +13288,7 @@ Ustaw zero, aby wypełnić miejsce.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="909"/>
       <source>Do&amp;cument utility...</source>
-      <translation type="unfinished">Do&amp;cument utility...</translation>
+      <translation>Narzędzie do&amp;kumentu …</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="910"/>
@@ -13315,7 +13316,7 @@ Ustaw zero, aby wypełnić miejsce.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1784"/>
       <source>Propert&amp;ies</source>
-      <translation type="unfinished">Propert&amp;ies</translation>
+      <translation>Właśc&amp;iwości</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1785"/>
@@ -13343,7 +13344,7 @@ gdy zmieniają się jego obiekty nadrzędne.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1625"/>
       <source>Standard &amp;views</source>
-      <translation type="unfinished">Standard &amp;views</translation>
+      <translation>Widoki &amp;standardowe</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1626"/>
@@ -13387,7 +13388,7 @@ gdy zmieniają się jego obiekty nadrzędne.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3946"/>
       <source>&amp;Align to selection</source>
-      <translation type="unfinished">&amp;Align to selection</translation>
+      <translation>&amp;Wyrównaj do zaznaczenia</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3947"/>
@@ -13530,7 +13531,7 @@ gdy zmieniają się jego obiekty nadrzędne.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="435"/>
       <source>Automatically hide overlaid dock panels when in non 3D view (like TechDraw or Spreadsheet).</source>
-      <translation type="unfinished">Automatically hide overlaid dock panels when in non 3D view (like TechDraw or Spreadsheet).</translation>
+      <translation>Automatyczne ukrywanie nałożonych paneli dokujących w widoku innym niż 3D (np. Rysunku Technicznym lub Arkuszu kalkulacyjnym).</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
@@ -13687,7 +13688,11 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../VectorListEditor.cpp" line="203"/>
       <source>Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</source>
-      <translation type="unfinished">Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</translation>
+      <translation>Format nie jest obsługiwany. 
+W każdym wierszu muszą znajdować się 3 wartości oddzielone:
+ tabulatorami,
+ średnikami lub
+ przecinkami:</translation>
     </message>
   </context>
   <context>
@@ -13695,12 +13700,12 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
       <source>Automatic Python &amp;Modules Documentation</source>
-      <translation type="unfinished">Automatic Python &amp;Modules Documentation</translation>
+      <translation>Dokumentacja automatyczna &amp;modułów Python</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
       <source>Opens the Python Modules documentation</source>
-      <translation type="unfinished">Opens the Python Modules documentation</translation>
+      <translation>Otwiera dokumentację modułów Python</translation>
     </message>
   </context>
   <context>
@@ -13708,12 +13713,12 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="334"/>
       <source>Restart in Safe Mode</source>
-      <translation type="unfinished">Restart in Safe Mode</translation>
+      <translation>Uruchom ponownie w trybie awaryjnym</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="335"/>
       <source>Starts FreeCAD without any modules or plugins loaded</source>
-      <translation type="unfinished">Starts FreeCAD without any modules or plugins loaded</translation>
+      <translation>Uruchamia FreeCAD bez załadowanych modułów lub wtyczek</translation>
     </message>
   </context>
   <context>
@@ -13726,7 +13731,7 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="526"/>
       <source>Opens the Help documentation</source>
-      <translation type="unfinished">Opens the Help documentation</translation>
+      <translation>Otwiera dokumentację pomocy</translation>
     </message>
   </context>
   <context>
@@ -13734,12 +13739,12 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="577"/>
       <source>Support FreeCA&amp;D</source>
-      <translation type="unfinished">Support FreeCA&amp;D</translation>
+      <translation>Wspomóż FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="578"/>
       <source>Support FreeCAD development</source>
-      <translation type="unfinished">Support FreeCAD development</translation>
+      <translation>Wesprzyj rozwój FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -13747,12 +13752,12 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="604"/>
       <source>FreeCAD W&amp;ebsite</source>
-      <translation type="unfinished">FreeCAD W&amp;ebsite</translation>
+      <translation>W&amp;itryna FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="605"/>
       <source>Navigates to the official FreeCAD website</source>
-      <translation type="unfinished">Navigates to the official FreeCAD website</translation>
+      <translation>Przejdź do oficjalnej strony FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -13760,12 +13765,12 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="632"/>
       <source>&amp;User Documentation</source>
-      <translation type="unfinished">&amp;User Documentation</translation>
+      <translation>&amp;Dokumentacja użytkownika</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="633"/>
       <source>Opens the documentation for users</source>
-      <translation type="unfinished">Opens the documentation for users</translation>
+      <translation>Otwiera dokumentację dla użytkowników</translation>
     </message>
   </context>
   <context>
@@ -13773,12 +13778,12 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="660"/>
       <source>&amp;Python Scripting Documentation</source>
-      <translation type="unfinished">&amp;Python Scripting Documentation</translation>
+      <translation>Dokumentacja skryptów środowiska &amp;Python</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="661"/>
       <source>Opens the Python Scripting documentation</source>
-      <translation type="unfinished">Opens the Python Scripting documentation</translation>
+      <translation>Otwiera dokumentację skryptów Python</translation>
     </message>
   </context>
   <context>
@@ -13786,12 +13791,12 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="716"/>
       <source>FreeCAD FA&amp;Q</source>
-      <translation type="unfinished">FreeCAD FA&amp;Q</translation>
+      <translation>Często &amp;zadawane pytania dotyczące FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="717"/>
       <source>Opens the Frequently Asked Questions</source>
-      <translation type="unfinished">Opens the Frequently Asked Questions</translation>
+      <translation>Otwiera sekcję Często zadawane pytania</translation>
     </message>
   </context>
   <context>
@@ -13799,12 +13804,12 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="769"/>
       <source>Report an &amp;Issue</source>
-      <translation type="unfinished">Report an &amp;Issue</translation>
+      <translation>Zgłoś problem</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="770"/>
       <source>Report an issue or suggest a new feature</source>
-      <translation type="unfinished">Report an issue or suggest a new feature</translation>
+      <translation>Zgłoś błąd lub zaproponuj nową funkcjonalność</translation>
     </message>
   </context>
   <context>
@@ -13812,13 +13817,13 @@ który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1639"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>&amp;Przekształć</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1640"/>
       <location filename="../CommandDoc.cpp" line="1641"/>
       <source>Transform the selected object in the 3D view</source>
-      <translation type="unfinished">Transform the selected object in the 3D view</translation>
+      <translation>Przekształć wybrany obiekt w widoku 3D</translation>
     </message>
   </context>
 </TS>

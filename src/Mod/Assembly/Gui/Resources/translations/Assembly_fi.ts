@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="192"/>
       <source>Create Ball Joint</source>
-      <translation type="unfinished">Create Ball Joint</translation>
+      <translation>Kokoonpano_LuoLiitosPallo['Luo Pallo Liitos']</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="199"/>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="47"/>
       <source>Export ASMT File</source>
-      <translation type="unfinished">Export ASMT File</translation>
+      <translation>Kokoonpano_TuoASMT['Tuo ASMT Tiedosto']</translation>
     </message>
     <message>
       <location filename="../../../CommandExportASMT.py" line="51"/>
@@ -133,7 +133,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="90"/>
       <source>Insert Component</source>
-      <translation type="unfinished">Insert Component</translation>
+      <translation>Kokoonpano_LisääLinkki['Lisää Komponentti']</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="52"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="51"/>
       <source>Solve Assembly</source>
-      <translation type="unfinished">Solve Assembly</translation>
+      <translation>Kokoonpano_RatkaiseKokoonpano['Ratkaise Kokoonpano']</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="58"/>
@@ -179,7 +179,7 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="126"/>
       <source>Active object</source>
-      <translation type="unfinished">Active object</translation>
+      <translation>Aktivoi objekti</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../../../InitGui.py" line="113"/>
       <source>&amp;Assembly</source>
-      <translation type="unfinished">&amp;Assembly</translation>
+      <translation>Työtila['&amp;Kokoonpano']</translation>
     </message>
   </context>
   <context>
@@ -240,12 +240,12 @@
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Slider</source>
-      <translation type="unfinished">Slider</translation>
+      <translation>Kokoonpano['Liuku']</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
       <source>Ball</source>
-      <translation type="unfinished">Ball</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
@@ -277,17 +277,17 @@
     <message>
       <location filename="../../../JointObject.py" line="60"/>
       <source>Screw</source>
-      <translation type="unfinished">Screw</translation>
+      <translation>Kokoonpano['Ruuvit']</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="61"/>
       <source>Gears</source>
-      <translation type="unfinished">Gears</translation>
+      <translation>Kokoonpano['Hammaspyörät']</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="62"/>
       <source>Belt</source>
-      <translation type="unfinished">Belt</translation>
+      <translation>Kokoonpano['Hihnat']</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1320"/>
@@ -297,12 +297,12 @@
     <message>
       <location filename="../../../JointObject.py" line="1480"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Kokoonpano['Säde 1']</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1482"/>
       <source>Pitch radius</source>
-      <translation type="unfinished">Pitch radius</translation>
+      <translation>Kokoonpano['Nousun säde']</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
       <source>Name (auto)</source>
-      <translation type="unfinished">Name (auto)</translation>
+      <translation>Kokoonpano['Nimi (auto)']</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="48"/>
@@ -337,7 +337,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="49"/>
       <source>File Name (auto)</source>
-      <translation type="unfinished">File Name (auto)</translation>
+      <translation>Kokoonpano['Tiedosto Nimi (auto)']</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="50"/>
@@ -417,7 +417,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="89"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="94"/>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="135"/>
       <source>Save Document</source>
-      <translation type="unfinished">Save Document</translation>
+      <translation>Tallenna asiakirja</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="137"/>
@@ -849,7 +849,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="14"/>
       <source>Insert Component</source>
-      <translation type="unfinished">Insert Component</translation>
+      <translation>Kokoonpano_LisääLinkki['Lisää Komponentti']</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
@@ -1126,7 +1126,7 @@ Press ESC to cancel.</translation>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Pilarit</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="86"/>

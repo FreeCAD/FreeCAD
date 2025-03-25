@@ -82,7 +82,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="110"/>
       <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
-      <translation type="unfinished">Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</translation>
+      <translation>Tolérance de l'union pour l'hélice, augmenter la si la forme hélicoïdale ne s'intègre pas bien dans la pièce.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
@@ -147,7 +147,7 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="1510"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation>Balayer une esquisse sélectionnée le long d'une hélice</translation>
+      <translation>Créer un balayage d'une esquisse sélectionnée selon une hélice</translation>
     </message>
   </context>
   <context>
@@ -165,7 +165,7 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Lisser un profil sélectionné à travers d'autres sections de profil</translation>
+      <translation>Créer un lissage d'un profil sélectionné par d'autres sections de profil</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="1319"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Balayer une esquisse sélectionnée sur un chemin ou vers d’autres profils</translation>
+      <translation>Créer un balayage d'une esquisse sélectionnée selon une trajectoire ou d’autres profils</translation>
     </message>
   </context>
   <context>
@@ -214,12 +214,12 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="2322"/>
       <source>Boolean operation</source>
-      <translation>Opération booléenne</translation>
+      <translation>Créer une opération booléenne</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2323"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation>Opération Booléenne entre deux ou plusieurs corps</translation>
+      <translation>Opération booléenne entre deux ou plusieurs corps</translation>
     </message>
   </context>
   <context>
@@ -304,7 +304,7 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="609"/>
       <source>Duplicate selected &amp;object</source>
-      <translation type="unfinished">Duplicate selected &amp;object</translation>
+      <translation>Dupliquer l'&amp;objet sélectionné</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
@@ -701,7 +701,7 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="1584"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation>Balayer une esquisse sélectionnée le long d'une hélice et la soustraire au corps</translation>
+      <translation>Créer un balayage d'une esquisse sélectionnée selon une hélice et le soustraire au corps</translation>
     </message>
   </context>
   <context>
@@ -719,7 +719,7 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="1463"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Lisser un profil sélectionné à travers d'autres sections de profil et soustraire du corps</translation>
+      <translation>Créer un lissage d'un profil sélectionné par d'autres sections de profil et le soustraire du corps</translation>
     </message>
   </context>
   <context>
@@ -737,7 +737,7 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="1367"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Balayer une esquisse sélectionnée sur un chemin et à travers d’autres profils et soustraire du corps</translation>
+      <translation>Créer un balayage d'une esquisse sélectionnée selon une trajectoire ou d’autres profils et le soustraire du corps</translation>
     </message>
   </context>
   <context>
@@ -1461,7 +1461,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="53"/>
       <source>Boolean parameters</source>
-      <translation>Paramètres Booléens</translation>
+      <translation>Paramètres booléens</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="86"/>
@@ -1586,12 +1586,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="393"/>
       <source>The body list cannot be empty</source>
-      <translation>La liste de corps ne peut pas être vide</translation>
+      <translation>La liste de corps ne peut pas être vide.</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
       <source>Boolean: Accept: Input error</source>
-      <translation>Booléen : Accepter : erreur de saisie</translation>
+      <translation>Opération booléenne : Accepter : erreur de saisie</translation>
     </message>
   </context>
   <context>
@@ -2097,22 +2097,22 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
       <source>ANSI pipe profile</source>
-      <translation type="unfinished">ANSI pipe profile</translation>
+      <translation>Filetage de tuyau ANSI</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>BSP pipe profile</source>
-      <translation type="unfinished">BSP pipe profile</translation>
+      <translation>Filetage de tuyau BSP</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>BSW whitworth profile</source>
-      <translation type="unfinished">BSW whitworth profile</translation>
+      <translation>Filetage Whitworth BSW</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>BSF whitworth fine profile</source>
-      <translation type="unfinished">BSF whitworth fine profile</translation>
+      <translation>Filetage Whitworth BSF</translation>
     </message>
   </context>
   <context>
@@ -2204,7 +2204,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
       <source>Loft parameters</source>
-      <translation>Paramètres de lissage</translation>
+      <translation>Paramètres du lissage</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="74"/>
@@ -2288,7 +2288,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="40"/>
       <source>Pad parameters</source>
-      <translation>Paramètres de protrusion</translation>
+      <translation>Paramètres de la protrusion</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
@@ -2313,7 +2313,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
       <source>To first</source>
-      <translation>La plus proche</translation>
+      <translation>Au plus proche</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
@@ -2630,7 +2630,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation>Trajectoire à balayer tout le long</translation>
+      <translation>Trajectoire pour le balayage</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2645,7 +2645,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
-      <translation>Paramètres de balayage</translation>
+      <translation>Paramètres du balayage</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="88"/>
@@ -2737,7 +2737,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
       <source>To first</source>
-      <translation>La plus proche</translation>
+      <translation>Au plus proche</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="74"/>
@@ -2908,7 +2908,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
       <source>To first</source>
-      <translation>La plus proche</translation>
+      <translation>Au plus proche</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="196"/>
@@ -3243,7 +3243,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderMirrored.h" line="37"/>
       <source>Mirrored parameters</source>
-      <translation>Paramètres de la symétrie</translation>
+      <translation>Paramètres de la fonction Miroir</translation>
     </message>
   </context>
   <context>
@@ -3564,7 +3564,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="120"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 appartient déjà à un corps, ne peut pas être utilisé comme fonction de base pour un autre corps.</translation>
+      <translation>%1 appartient déjà à un corps et ne peut pas être utilisé comme fonction de base pour un autre corps.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="133"/>
@@ -3711,7 +3711,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="264"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Il n’est pas possible de créer une fonction soustractive sans une fonction de base présente</translation>
+      <translation>Il n’est pas possible de créer une fonction soustractive sans une fonction de base présente.</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="445"/>
@@ -3790,7 +3790,7 @@ Si vous avez un vieux document avec des objets PartDesign sans corps, utilisez l
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="62"/>
       <source>Edit boolean</source>
-      <translation>Modifier la fonction Booléenne</translation>
+      <translation>Modifier l'opération booléenne</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="113"/>
@@ -4183,7 +4183,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="34"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Filetage</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="290"/>
@@ -4209,7 +4209,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <location filename="../../TaskHoleParameters.ui" line="466"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
-      <translation>Mise à jour en temps réel des modifications apportées au taraudage.
+      <translation>Mise à jour en temps réel des modifications apportées au filetage.
 Notez que le calcul peut prendre un certain temps.</translation>
     </message>
     <message>
@@ -4261,7 +4261,7 @@ Notez que le calcul peut prendre un certain temps.</translation>
       <location filename="../../TaskHoleParameters.ui" line="103"/>
       <source>Hole clearance
 Only available for holes without thread</source>
-      <translation>Jeu du trou. Uniquement disponible pour les trous sans filetage</translation>
+      <translation>Jeu du trou. Uniquement disponible pour les trous sans filetage.</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
@@ -4290,7 +4290,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="321"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
-      <translation>Tolérance d'ajustement pour les trous filetés selon le profil du trou</translation>
+      <translation>Tolérance d'ajustement pour les trous filetés selon le filetage du trou</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="692"/>
@@ -4339,7 +4339,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="543"/>
       <source>Cut type for screw heads</source>
-      <translation>Type de coupe pour les têtes de vis</translation>
+      <translation>Type de découpe pour les têtes de vis</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="665"/>
@@ -4705,22 +4705,22 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="64"/>
       <source>BaseFeature link is not set</source>
-      <translation>Le lien BaseFeature n'est pas défini</translation>
+      <translation>Le lien de la fonction de base n'est pas défini.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="69"/>
       <source>BaseFeature must be a Part::Feature</source>
-      <translation>BaseFeature doit être une Part::Feature</translation>
+      <translation>La fonction de base doit être une Part::Feature.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="78"/>
       <source>BaseFeature has an empty shape</source>
-      <translation>BaseFeature a une forme vide</translation>
+      <translation>La fonction de base a une forme vide.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="81"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation>Impossible de faire une soustraction booléenne sans BaseFeature</translation>
+      <translation>Il est impossible de faire une soustraction booléenne sans une fonction de base.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="95"/>
@@ -4848,8 +4848,8 @@ over 90: larger hole radius at the bottom</source>
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>La fonction demandée ne peut pas être créée. La raison peut en être la suivante :
-  - le corps actif ne contient pas de forme de base, il n'y a donc pas de matière à enlever ;
-  - l'esquisse sélectionnée n'appartient pas au corps actif.</translation>
+- le corps actif ne contient pas de forme de base, il n'y a donc pas de matière à enlever,
+- l'esquisse sélectionnée n'appartient pas au corps actif.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="488"/>
@@ -5373,7 +5373,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="794"/>
       <source>Fusion with base feature failed</source>
-      <translation>La fusion avec la fonction de base a échoué</translation>
+      <translation>L'union avec la fonction de base a échoué.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="108"/>

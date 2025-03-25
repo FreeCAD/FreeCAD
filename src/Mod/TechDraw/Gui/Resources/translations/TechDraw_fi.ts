@@ -134,12 +134,12 @@
     <message>
       <location filename="../../Command.cpp" line="1663"/>
       <source>Insert BIM Workbench Object</source>
-      <translation type="unfinished">Insert BIM Workbench Object</translation>
+      <translation>Lisää BIM-työtilan objekti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>Insert a View of a Section Plane from BIM Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from BIM Workbench</translation>
+      <translation>Lisää BIM-työpöydän Leikkaustason näkymän</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="886"/>
       <source>Insert a Complex Section View</source>
-      <translation type="unfinished">Insert a Complex Section View</translation>
+      <translation>Lisää Complex Section View</translation>
     </message>
   </context>
   <context>
@@ -350,7 +350,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1600"/>
       <source>Insert Draft Workbench Object</source>
-      <translation>Lisää työpöydän luonnosobjekti</translation>
+      <translation>Lisää Draft- työtilan objekti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1601"/>
@@ -1419,7 +1419,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="173"/>
       <source>Apply Geometric Hatch to Face</source>
-      <translation>Tee Alueelle Geometrinen Kuviointi</translation>
+      <translation>Aseta pinnalle täytekuvio</translation>
     </message>
   </context>
   <context>
@@ -1432,7 +1432,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
       <source>Hatch a Face using Image File</source>
-      <translation>Kuvioi Alue käyttäen kuvatiedostoa</translation>
+      <translation>Aseta pinnalle täytekuvio kuvatiedostosta</translation>
     </message>
   </context>
   <context>
@@ -2219,22 +2219,22 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskHatch.cpp" line="202"/>
       <source>Create Hatch</source>
-      <translation>Luo Kuviointi</translation>
+      <translation>Luo täytekuvio</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="239"/>
       <source>Update Hatch</source>
-      <translation>Päivitä kuviointi</translation>
+      <translation>Päivitä täytekuvio</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="123"/>
       <source>Remove old Hatch</source>
-      <translation>Poista vanhat kuvioinnit</translation>
+      <translation>Poista vanha täytekuvio</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="202"/>
       <source>Create GeomHatch</source>
-      <translation>Luo Geometrinen Kuviointi</translation>
+      <translation>Luo täytekuvio</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="273"/>
@@ -3490,7 +3490,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandDecorate.cpp" line="112"/>
       <source>Some Faces in selection are already hatched. Replace?</source>
-      <translation type="unfinished">Some Faces in selection are already hatched. Replace?</translation>
+      <translation>Joillakin valituilla pinnoilla on jo täytekuvio. Korvataanko?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="335"/>
@@ -3920,12 +3920,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskHatch.cpp" line="97"/>
       <source>Create Face Hatch</source>
-      <translation type="unfinished">Create Face Hatch</translation>
+      <translation>Luo pinnalle täytekuvio</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="109"/>
       <source>Edit Face Hatch</source>
-      <translation type="unfinished">Edit Face Hatch</translation>
+      <translation>Muokkaa pinnan täytekuviota</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="277"/>
@@ -5014,7 +5014,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="60"/>
       <source>Geometric Hatch</source>
-      <translation>Geometrinen kuviointi</translation>
+      <translation>Geometrinen kuvio</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="367"/>
@@ -5229,7 +5229,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="561"/>
       <source>Dimension tool diameter/radius mode:</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode:</translation>
+      <translation>Mittatyökalun toiminta halkaisijoitten ja säteitten suhteen:</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="568"/>
@@ -5296,7 +5296,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="252"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
-      <translation>Toleranssi-tekstin skaala
+      <translation>Toleranssitekstin skaala
 Kertoimena &apos;Fonttikoosta&apos;</translation>
     </message>
     <message>
@@ -5352,12 +5352,12 @@ Kertoimena &apos;Fonttikoosta&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="162"/>
       <source>Single tool</source>
-      <translation type="unfinished">Single tool</translation>
+      <translation>Yksi työkalu</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
       <source>Separated tools</source>
-      <translation type="unfinished">Separated tools</translation>
+      <translation>Erilliset työkalut</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="164"/>
@@ -5441,7 +5441,7 @@ Näkymät projektioryhmissä</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="167"/>
       <source>Labels</source>
-      <translation>Nimikkeet</translation>
+      <translation>Selitteet</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="181"/>
@@ -5453,7 +5453,7 @@ Näkymät projektioryhmissä</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="185"/>
       <source>Label Font*</source>
-      <translation>Nimikkeen fontti*</translation>
+      <translation>Selitteen fontti*</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="220"/>
@@ -5668,7 +5668,7 @@ Näkymät projektioryhmissä</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="898"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>Tarttuminen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="906"/>
@@ -5683,7 +5683,7 @@ Näkymät projektioryhmissä</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="938"/>
       <source>View Snapping Factor</source>
-      <translation type="unfinished">View Snapping Factor</translation>
+      <translation>Näytä tarttumisen kerroin</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="945"/>
@@ -5816,7 +5816,7 @@ Nopea, mutta tulos on kokoelma lyhyitä suoria viivoja.</translation>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="47"/>
       <source>Scale</source>
-      <translation>Mittakaava</translation>
+      <translation>Skaalaa</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
@@ -5978,7 +5978,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="518"/>
       <source>Save PDF file</source>
-      <translation type="unfinished">Save PDF file</translation>
+      <translation>Tallenna PDF-tiedosto</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1061"/>
@@ -6337,7 +6337,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="127"/>
       <source>Scale</source>
-      <translation>Mittakaava</translation>
+      <translation>Skaalaa</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="134"/>
@@ -6373,12 +6373,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="223"/>
       <source>Identifier for this section</source>
-      <translation>Tämän Poikkileikkauksen tunniste</translation>
+      <translation>Tämän poikkileikkauksen tunniste</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="230"/>
       <source>BaseView</source>
-      <translation>PerusNäkymä</translation>
+      <translation>Perusnäkymä</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="255"/>
@@ -7206,7 +7206,7 @@ Jos &apos;Yhtäsuuret toleranssit&apos; on valittu, tämä arvo korvaantuu &apos
     <message>
       <location filename="../../TaskGeomHatch.ui" line="26"/>
       <source>Apply Geometric Hatch to Face</source>
-      <translation>Tee Alueelle Geometrinen Kuviointi</translation>
+      <translation>Aseta pinnalle geometrinen kuvio</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="38"/>
@@ -7246,7 +7246,7 @@ Jos &apos;Yhtäsuuret toleranssit&apos; on valittu, tämä arvo korvaantuu &apos
     <message>
       <location filename="../../TaskGeomHatch.ui" line="124"/>
       <source>Line Width</source>
-      <translation type="unfinished">Line Width</translation>
+      <translation>Viivan leveys</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="223"/>
@@ -7284,7 +7284,7 @@ Jos &apos;Yhtäsuuret toleranssit&apos; on valittu, tämä arvo korvaantuu &apos
     <message>
       <location filename="../../TaskHatch.ui" line="26"/>
       <source>Apply Hatch to Face</source>
-      <translation>Tee Alueelle Kuviointi</translation>
+      <translation>Aseta pinnalle täytekuvio</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="41"/>
@@ -7314,7 +7314,7 @@ Jos &apos;Yhtäsuuret toleranssit&apos; on valittu, tämä arvo korvaantuu &apos
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
       <source>SVG Line Color</source>
-      <translation type="unfinished">SVG Line Color</translation>
+      <translation>SVG-viivan väri</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
@@ -7324,7 +7324,7 @@ Jos &apos;Yhtäsuuret toleranssit&apos; on valittu, tämä arvo korvaantuu &apos
     <message>
       <location filename="../../TaskHatch.ui" line="159"/>
       <source>SVG Pattern Scale</source>
-      <translation type="unfinished">SVG Pattern Scale</translation>
+      <translation>SVG-kuvion skaala</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="166"/>
@@ -7497,7 +7497,7 @@ Valitsemalla lisäpisteitä syntyy viivasegmenttejä.</translation>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="644"/>
       <source>Press OK or Cancel to continue</source>
-      <translation>Paina OK tai Peruuta jatkaaksesi</translation>
+      <translation>Paina OK tai Kumoa jatkaaksesi</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="776"/>
@@ -7657,7 +7657,7 @@ Valitsemalla lisäpisteitä syntyy viivasegmenttejä.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="34"/>
       <source>Scale</source>
-      <translation>Mittakaava</translation>
+      <translation>Skaalaa</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="41"/>
@@ -8069,7 +8069,7 @@ käyttäen annettuja X/Y-välimatkoja</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="28"/>
       <source>BaseView</source>
-      <translation>PerusNäkymä</translation>
+      <translation>Perusnäkymä</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="61"/>
@@ -8079,7 +8079,7 @@ käyttäen annettuja X/Y-välimatkoja</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="74"/>
       <source>Identifier for this section</source>
-      <translation>Tämän Poikkileikkauksen tunniste</translation>
+      <translation>Tämän poikkileikkauksen tunniste</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="81"/>
@@ -8109,7 +8109,7 @@ käyttäen annettuja X/Y-välimatkoja</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="116"/>
       <source>Scale</source>
-      <translation>Mittakaava</translation>
+      <translation>Skaalaa</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="123"/>
@@ -8119,27 +8119,27 @@ käyttäen annettuja X/Y-välimatkoja</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="150"/>
       <source>Set View Direction</source>
-      <translation>Aseta Näkymän Suunta</translation>
+      <translation>Aseta näkymän suunta</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="167"/>
       <source>Preset view direction looking up.</source>
-      <translation>Katselusuunnan esiasetus ylös.</translation>
+      <translation>Aseta katselusuunta ylöspäin.</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="203"/>
       <source>Preset view direction looking down.</source>
-      <translation>Katselusuunnan esiasetus alas.</translation>
+      <translation>Aseta katselusuunta alaspäin.</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="233"/>
       <source>Preset view direction looking left.</source>
-      <translation>Katselusuunnan esiasetus vasen.</translation>
+      <translation>Aseta katselusuunta vasemmalle.</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="263"/>
       <source>Preset view direction looking right.</source>
-      <translation>Katselusuunnan esiasetus oikea.</translation>
+      <translation>Aseta katselusuunta oikealle.</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="447"/>
@@ -8631,7 +8631,7 @@ käyttäen annettuja X/Y-välimatkoja</translation>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>Hatching</source>
-      <translation type="unfinished">Hatching</translation>
+      <translation>Täytekuviointi</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="64"/>
@@ -8931,7 +8931,7 @@ käyttäen annettuja X/Y-välimatkoja</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="34"/>
       <source>Tick</source>
-      <translation>Rasti</translation>
+      <translation>Vinoviiva</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="35"/>
@@ -9127,7 +9127,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Draft</source>
-      <translation>Syväys (vesirajasta pohjaan)</translation>
+      <translation>Draft</translation>
     </message>
   </context>
   <context>
@@ -9167,7 +9167,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Hatch</source>
-      <translation>Kuviointi</translation>
+      <translation>Täytekuvio</translation>
     </message>
   </context>
   <context>
@@ -9726,7 +9726,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="993"/>
       <source>Cancel</source>
-      <translation>Peruuta</translation>
+      <translation>Kumoa</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="999"/>
@@ -9744,7 +9744,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1449"/>
       <source>Dimension tools.</source>
-      <translation type="unfinished">Dimension tools.</translation>
+      <translation>Mittatyökalut.</translation>
     </message>
   </context>
   <context>

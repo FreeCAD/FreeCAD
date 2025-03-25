@@ -2052,7 +2052,7 @@ restriccions invàlides, geometries degenerades, etc.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>Arrossegar geometries</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -4061,12 +4061,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>Si està marcat, aleshores la geometria externa sempre s'afegeix com a referència, en cas contrari s'afegeix segons el mode de construcció actual.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>Afegeix sempre la geometria externa com a referència</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4462,20 +4462,15 @@ Llavors, els objectes només són visibles darrere del pla del croquis.</transla
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
-
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
-
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+      <translation>S'han trobat %1 arcs de geometria externa inversa. Els seus extrems estan encerclats en la vista 3D.
+%2 restriccions estan lligades als extrems. Les restriccions s'han llistat en la vista d'informe (menú Vista -&gt; Panells -&gt; Vista d'informe). Feu clic al botó «Intercanvia els extrems en les restriccions» per a reassignar els extrems. Feu això només una vegada en esbossos creats en una versió del FreeCAD anterior a la v0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
-
-However, no constraints linking to the endpoints were found.</translation>
+      <translation>S'han trobat %1 arcs de geometria externa inversa. Els seus extrems estan encerclats en la vista 3D. Tanmateix, no s'ha trobat cap restricció vinculada als extrems.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -5082,7 +5077,7 @@ El solucionador no ha pogut convergir</translation>
       <source>%n DoF(s)</source>
       <translation>
         <numerusform>%n Grau(s) de llibertat</numerusform>
-        <numerusform>%n Graus de llivbertat</numerusform>
+        <numerusform>%n Graus de llibertat</numerusform>
       </translation>
     </message>
     <message>
@@ -5969,12 +5964,12 @@ L'espaiat de la quadrícula canvia si esdevé menor que aquest número de píxel
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>El canvi no gestionat de la propietat de geometria dona lloc a índexs de restricció no vàlids</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>El canvi no gestionat de la propietat de geometria dona lloc a índexs de restricció no vàlids</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -7370,12 +7365,12 @@ En el seu lloc, s'aplicaran restriccions d'igualtat entre els objectes originals
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>Crea extern</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>Crear vèrtex externs vinculats geometries externes.</translation>
     </message>
   </context>
   <context>
@@ -7383,16 +7378,16 @@ En el seu lloc, s'aplicaran restriccions d'igualtat entre els objectes originals
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>Crea una geometria de projecció externa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Crear les vores de projecció d'una geometria externa.
+Les vores externes poden ser geometries definitòries o constructives.
+Podeu utilitzar l'eina de canvi de construcció.</translation>
     </message>
   </context>
   <context>
@@ -7400,16 +7395,16 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>Crea geometria d'intersecció externa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Creeu les vores d'intersecció d'una geometria externa amb el pla d'esbós.
+Les vores externes poden ser geometries definitòries o constructives.
+Podeu utilitzar l'eina de canvi de construcció.</translation>
     </message>
   </context>
 </TS>

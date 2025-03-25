@@ -1214,12 +1214,12 @@
     <message>
       <location filename="../../Command.cpp" line="2087"/>
       <source>Appearance per &amp;face</source>
-      <translation type="unfinished">Appearance per &amp;face</translation>
+      <translation>面ごとの外観(&amp;F)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2088"/>
       <source>Set the appearance of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the appearance of each individual face of the selected object.</translation>
+      <translation>選択したオブジェクトの個々の面の外観を設定します。</translation>
     </message>
   </context>
   <context>
@@ -1941,7 +1941,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2189"/>
       <source>Persiste&amp;nt section cut</source>
-      <translation type="unfinished">Persiste&amp;nt section cut</translation>
+      <translation>永続的な断面カット(&amp;N)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2190"/>
@@ -2183,22 +2183,22 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2257"/>
       <source>Add a coordinate system</source>
-      <translation type="unfinished">Add a coordinate system</translation>
+      <translation>座標系を追加</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Add a datum plane</source>
-      <translation type="unfinished">Add a datum plane</translation>
+      <translation>データム平面を追加</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2324"/>
       <source>Add a datum line</source>
-      <translation type="unfinished">Add a datum line</translation>
+      <translation>データム直線を追加</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
       <source>Add a datum point</source>
-      <translation type="unfinished">Add a datum point</translation>
+      <translation>データム点を追加</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
@@ -2624,7 +2624,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation type="unfinished">STEP Export Settings</translation>
+      <translation>STEP エクスポート設定</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="104"/>
@@ -2709,7 +2709,7 @@ STEPファイルに書き込む必要があります。このパラメータは�
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Click to start selecting an edge in 3D view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3D view.</translation>
+      <translation>クリックして3Dビューでのエッジ選択を開始。</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
@@ -3172,7 +3172,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP Import Settings</source>
-      <translation type="unfinished">STEP Import Settings</translation>
+      <translation>STEP インポートの設定</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
@@ -4056,17 +4056,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="84"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>小さすぎる偏差を設定すると、テッセレーションに時間がかかり、GUIがフリーズしたり遅くなったりします。</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="104"/>
       <source>Angle Deflection</source>
-      <translation type="unfinished">Angle Deflection</translation>
+      <translation>角度偏差</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="105"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>小さすぎる角度を設定すると、テッセレーションに時間がかかり、GUIがフリーズしたり遅くなったりします。</translation>
     </message>
   </context>
   <context>
@@ -4094,7 +4094,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>スケッチ ベースの操作の後に自動でモデルを高精度化</translation>
+      <translation>スケッチベースの操作後に自動でモデルを高精度化</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
@@ -4109,7 +4109,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Experimental</source>
-      <translation>実験的</translation>
+      <translation>実験的機能</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="117"/>
@@ -4119,7 +4119,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="127"/>
       <source>Allow multiple solids in Part Design Body by default (experimental)</source>
-      <translation>デフォルトでパートデザインのボディー内に複数ソリッドを配置することを許可 (実験的)</translation>
+      <translation>デフォルトでパートデザインのボディー内に複数ソリッドを配置することを許可 (実験的機能)</translation>
     </message>
   </context>
   <context>
@@ -4808,7 +4808,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
+      <translation>3Dビューで1つまたは複数の接続エッジを選択して「終了」を押してください</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="437"/>
@@ -5238,18 +5238,18 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="456"/>
       <source>Null shape</source>
-      <translation type="unfinished">Null shape</translation>
+      <translation>空の形状</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="457"/>
       <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Skipped</source>
-      <translation type="unfinished">Skipped</translation>
+      <translation>スキップ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="467"/>
       <source>Infinite shape</source>
-      <translation type="unfinished">Infinite shape</translation>
+      <translation>無限形状</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="494"/>
@@ -5264,7 +5264,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="542"/>
       <source>No errors</source>
-      <translation type="unfinished">No errors</translation>
+      <translation>エラーなし</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="553"/>
@@ -5281,7 +5281,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>To Report view.</source>
-      <translation type="unfinished">To Report view.</translation>
+      <translation>レポートビューへ。</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="654"/>
@@ -6924,12 +6924,12 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2246"/>
       <source>Create a coordinate system</source>
-      <translation type="unfinished">Create a coordinate system</translation>
+      <translation>座標系を作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2247"/>
       <source>A coordinate system object that can be attached to other objects.</source>
-      <translation type="unfinished">A coordinate system object that can be attached to other objects.</translation>
+      <translation>他のオブジェクトにアタッチできる座標系オブジェクト。</translation>
     </message>
   </context>
   <context>
@@ -6947,7 +6947,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2281"/>
       <source>A plane object that can be attached to other objects.</source>
-      <translation type="unfinished">A plane object that can be attached to other objects.</translation>
+      <translation>他のオブジェクトにアタッチできる平面オブジェクト。</translation>
     </message>
   </context>
   <context>
@@ -6965,7 +6965,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2314"/>
       <source>A line object that can be attached to other objects.</source>
-      <translation type="unfinished">A line object that can be attached to other objects.</translation>
+      <translation>他のオブジェクトにアタッチできる直線オブジェクト。</translation>
     </message>
   </context>
   <context>
@@ -6983,7 +6983,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2347"/>
       <source>A point object that can be attached to other objects.</source>
-      <translation type="unfinished">A point object that can be attached to other objects.</translation>
+      <translation>他のオブジェクトにアタッチできる点オブジェクト。</translation>
     </message>
   </context>
   <context>
@@ -7001,7 +7001,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2382"/>
       <source>Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</source>
-      <translation type="unfinished">Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</translation>
+      <translation>他のオブジェクトにアタッチできるデータムオブジェクト (LCS、平面、直線、点) を作成</translation>
     </message>
   </context>
 </TS>

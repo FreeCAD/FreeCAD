@@ -7,13 +7,13 @@
       <location filename="../../AttacherTexts.cpp" line="320"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation>Quelconque</translation>
+      <translation>Tout</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="321"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
-      <translation>Sommet</translation>
+      <translation>un sommet</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="322"/>
@@ -148,7 +148,8 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Le point est placé à la position de l'objet. Cela fonctionne sur les objets avec des placements et les arêtes des ellipses/paraboles/hyperboles.</translation>
+      <translation>Le point est placé à la position de l'objet. Cela fonctionne sur les objets
+avec des placements et les arêtes des ellipses/paraboles/hyperboles.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -184,7 +185,8 @@
       <location filename="../../AttacherTexts.cpp" line="290"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Le point est placé sur l’arête, la position exacte est contrôlée par MapPathParameter. De plus, un sommet peut être lié pour permettre une projection.</translation>
+      <translation>Le point est placé sur l’arête, la position exacte est contrôlée par MapPathParameter
+De plus, un sommet peut être lié pour permettre une projection.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="292"/>
@@ -196,19 +198,20 @@
       <location filename="../../AttacherTexts.cpp" line="293"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Centre du cercle osculateur d'une arête. Un lien facultatif vers un sommet définit où.</translation>
+      <translation>Le centre du cercle osculateur d'une arête.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="295"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Centre de masse</translation>
+      <translation>Centre d'inertie</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Centre de masse de toutes les références (on suppose des densités égales).</translation>
+      <translation>Centre d'inertie de toutes les références (les densités sont supposées égales)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="298"/>
@@ -226,7 +229,7 @@
       <location filename="../../AttacherTexts.cpp" line="301"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Sommet</translation>
+      <translation>un sommet</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="302"/>
@@ -284,7 +287,8 @@
       <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>La ligne est alignée sur l'axe X local de l'objet. Cela fonctionne avec les objets avec des positions et les arêtes des ellipses/paraboles/hyperboles.</translation>
+      <translation>La ligne est alignée sur l'axe X local de l'objet. Cela fonctionne avec les objets
+avec des positions et les arêtes des ellipses/paraboles/hyperboles.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="214"/>
@@ -296,7 +300,8 @@
       <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>La ligne est alignée sur l'axe Y local de l'objet. Cela fonctionne avec les objets avec des positions et les arêtes des ellipses/paraboles/hyperboles.</translation>
+      <translation>La ligne est alignée sur l'axe Y local de l'objet. Cela fonctionne avec les objets
+avec des positions et les arêtes des ellipses/paraboles/hyperboles.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="217"/>
@@ -314,7 +319,8 @@
       <location filename="../../AttacherTexts.cpp" line="221"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Ligne qui est un axe de cercle osculateur d'une arête incurvée. Un sommet facultatif définit la position.</translation>
+      <translation>La ligne qui est un axe du cercle osculateur d'une arête courbe.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="223"/>
@@ -356,7 +362,7 @@
       <location filename="../../AttacherTexts.cpp" line="232"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Asymptote2</translation>
+      <translation>Asymptote 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
@@ -374,7 +380,8 @@
       <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Ligne tangente à une arête. Le lien optionnel vers un sommet définit où.</translation>
+      <translation>La ligne tangente à une arête.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="238"/>
@@ -386,7 +393,8 @@
       <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Aligner au vecteur N du système de coordonnées Frenet-Serret d'une arête courbe. Le lien facultatif à un sommet définit où.</translation>
+      <translation>Aligner au vecteur N du repère de Serret-Frenet d'une arête incurvée.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="241"/>
@@ -398,7 +406,8 @@
       <location filename="../../AttacherTexts.cpp" line="242"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Aligner au vecteur B du système de coordonnées Frenet-Serret d'une arête courbe. Le lien facultatif à un sommet définit où.</translation>
+      <translation>Aligner au vecteur B du repère de Serret-Frenet d'une arête incurvée.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="244"/>
@@ -411,7 +420,8 @@
       <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Tangent à la surface, le long du paramètre U. Le lien vers le sommet définit où.</translation>
+      <translation>Tangent à la surface, le long du paramètre U.
+Une référence de sommet définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="247"/>
@@ -612,7 +622,8 @@
       <location filename="../../AttacherTexts.cpp" line="155"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan est tangent à l'arête. Le lien facultatif entre les sommets définit l'endroit où le plan est tangent.</translation>
+      <translation>Le plan est tangent à l'arête.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="157"/>
@@ -626,7 +637,8 @@
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Aligner au repère de Frenet-Serret de l'arête courbe. Un lien facultatif à un sommet définit où.</translation>
+      <translation>Aligner au repère de Serret-Frenet de l'arête incurvée.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="160"/>
@@ -650,7 +662,8 @@
       <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Aligner le plan sur le cercle osculateur d'une arête. L'origine est alignée sur le point de courbure. Un lien optionnel d'un sommet définit où.</translation>
+      <translation>Aligner le plan sur le cercle osculateur d'une arête. L'origine est alignée sur le point de courbure.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="169"/>
@@ -662,7 +675,8 @@
       <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan est perpendiculaire à l'arête, et l'axe Y correspond à l'axe du cercle osculateur. Un lien optionnel d'un sommet définit où.</translation>
+      <translation>Le plan est perpendiculaire à l'arête, et l'axe Y correspond à l'axe du cercle osculateur.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="172"/>
@@ -686,7 +700,8 @@
       <location filename="../../AttacherTexts.cpp" line="176"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan traversera deux premiers sommets et sera perpendiculaire au plan qui passe par les trois sommets.</translation>
+      <translation>Le plan traversera deux premiers sommets et sera perpendiculaire
+au plan qui passe par les trois sommets.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="178"/>
@@ -698,7 +713,9 @@
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Mode spécialisé pour le pliage des polyèdres. Sélectionnez les 4 arêtes dans l’ordre : arête pliable, pliure, autre ligne de pliage, autre arête pliable. Le plan sera aligné sur le premier pli.</translation>
+      <translation>Mode spécialisé pour le pliage des polyèdres. Sélectionner les 4 arêtes dans
+l’ordre : arête pliable, une ligne de pliage, autre ligne de pliage, autre arête pliable.
+Le plan sera aligné sur la première arête.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="181"/>
@@ -710,7 +727,7 @@
       <location filename="../../AttacherTexts.cpp" line="182"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plan construit sur les deuxième et troisième axes principaux d'inertie (passe par le centre de la masse).</translation>
+      <translation>Plan construit sur les deuxième et troisième axes principaux d'inertie (passe par le centre d'inertie)</translation>
     </message>
   </context>
   <context>
@@ -821,7 +838,8 @@
       <location filename="../../AttacherTexts.cpp" line="77"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>L'axe Z est aligné pour être tangent à l'arête. Le lien facultatif vers un sommet définit où.</translation>
+      <translation>L'axe Z' est aligné pour être tangent à l'arête.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="79"/>
@@ -835,7 +853,8 @@
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Aligner au repère de Frenet-Serret de l'arête courbe. Un lien facultatif à un sommet définit où.</translation>
+      <translation>Aligner au repère de Serret-Frenet de l'arête incurvée.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="82"/>
@@ -859,7 +878,8 @@
       <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Aligner le plan XY au cercle osculateur d'une arête. Un lien facultatif à un sommet définit où.</translation>
+      <translation>Aligner le plan XY au cercle osculateur d'une arête.
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="91"/>
@@ -871,7 +891,8 @@
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Aligner l'axe Y au cercle osculateur d'une arête. Un lien facultatif à un sommet définit où.</translation>
+      <translation>Aligner l'axe Y' sur l'axe du cercle osculateur d'une arête. 
+Une référence de sommet supplémentaire définit le point de contact.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="94"/>
@@ -895,7 +916,8 @@
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Aligner le plan XZ pour qu'il passe par 3 points ; l'axe X passera par les deux premiers points.</translation>
+      <translation>Aligner le plan XZ pour qu'il passe par 3 points.
+L'axe X passera par les deux premiers points.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="100"/>
@@ -907,7 +929,9 @@
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Mode spécialisé pour le pliage des polyèdres. Sélectionnez les 4 arêtes dans l’ordre : arête pliable, pliure, autre ligne de pliage, autre arête pliable. Le plan XY sera aligné sur le premier pli.</translation>
+      <translation>Mode spécialisé pour le pliage des polyèdres. Sélectionnez les 4 arêtes dans l’ordre :
+arête pliable, pliure, autre ligne de pliage, autre arête pliable.
+Le plan XY sera aligné sur le premier pli.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="103"/>
@@ -919,141 +943,153 @@
       <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Système de coordonnées inertiel, construit sur les axes principaux d’inertie et de centre de masse.</translation>
+      <translation>Système de coordonnées inertiel, construit sur les axes principaux d’inertie et de centre d'inertie</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="106"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-Z-X</translation>
+      <translation>Aligner selon Origine-Z-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="107"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes Z' et X' avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner
+les axes Z' et X' avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="109"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-Z-Y</translation>
+      <translation>Aligner selon Origine-Z-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="110"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes Z' et Y' avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner
+les axes Z' et Y' avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-X-Y</translation>
+      <translation>Aligner selon Origine-X-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="113"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes X' et Y' avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner
+les axes X' et Y' avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="115"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-X-Z</translation>
+      <translation>Aligner selon Origine-X-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="116"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes X' et Z' avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner
+les axes X' et Z' avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="118"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-Y-Z</translation>
+      <translation>Aligner selon Origine-Y-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="119"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes Y' et Z' avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner
+les axes Y' et Z' avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="121"/>
       <location filename="../../AttacherTexts.cpp" line="199"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-Y-X</translation>
+      <translation>Aligner selon Origine-Y-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes Y' et X' avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner
+les axes Y' et X' avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="184"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-N-X</translation>
+      <translation>Aligner selon Origine-Normale-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner la normale et le plan horizontal avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner la normale
+et le plan horizontal avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="187"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-N-Y</translation>
+      <translation>Aligner selon Origine-Normale-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="188"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner la normale et le plan vertical avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner la normale
+et le plan vertical avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes des plans horizontal et vertical avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes
+des plans horizontal et vertical avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="193"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-X-N</translation>
+      <translation>Aligner selon Origine-X-Normale</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="194"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner le plan horizontal et la normale avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner le plan
+horizontal et la normale avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="196"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Aligner O-Y-N</translation>
+      <translation>Aligner selon Origine-Y-Normale</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="197"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner le plan vertical et la normale avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner le plan
+vertical et la normale avec un sommet ou le long d'une ligne.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes des plans vertical et horizontal avec un sommet ou le long d'une ligne.</translation>
+      <translation>Faire correspondre l'origine avec le premier sommet. Aligner les axes
+des plans vertical et horizontal avec un sommet ou le long d'une ligne.</translation>
     </message>
   </context>
   <context>
@@ -1214,12 +1250,12 @@
     <message>
       <location filename="../../Command.cpp" line="2087"/>
       <source>Appearance per &amp;face</source>
-      <translation type="unfinished">Appearance per &amp;face</translation>
+      <translation>Apparence par &amp;face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2088"/>
       <source>Set the appearance of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the appearance of each individual face of the selected object.</translation>
+      <translation>Définir l'apparence de chaque face de l'objet sélectionné</translation>
     </message>
   </context>
   <context>
@@ -1237,7 +1273,7 @@
     <message>
       <location filename="../../Command.cpp" line="1238"/>
       <source>Run a boolean operation with two shapes selected</source>
-      <translation>Exécuter une opération booléenne sur deux formes sélectionnées</translation>
+      <translation>Appliquer une opération booléenne sur deux formes sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -1270,12 +1306,12 @@
     <message>
       <location filename="../../Command.cpp" line="133"/>
       <source>Box fix 1</source>
-      <translation>Boîte correctif 1</translation>
+      <translation>Cube correctif 1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Create a box solid without dialog</source>
-      <translation>Créer une boîte sans fenêtre de dialogue</translation>
+      <translation>Créer un cube sans utiliser la fenêtre de dialogue</translation>
     </message>
   </context>
   <context>
@@ -1288,12 +1324,12 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Box fix 2</source>
-      <translation>Boîte correctif 2</translation>
+      <translation>Cube correctif 2</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <source>Create a box solid without dialog</source>
-      <translation>Créer une boîte sans fenêtre de dialogue</translation>
+      <translation>Créer un cube sans utiliser la fenêtre de dialogue</translation>
     </message>
   </context>
   <context>
@@ -1675,7 +1711,7 @@
     <message>
       <location filename="../../Command.cpp" line="1558"/>
       <source>Utility to loft</source>
-      <translation>Lisser une série de profils</translation>
+      <translation>Créer un lissage d'une série de profils</translation>
     </message>
   </context>
   <context>
@@ -1926,7 +1962,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="889"/>
       <source>Section</source>
-      <translation>Créer une section</translation>
+      <translation>Section</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="890"/>
@@ -1939,12 +1975,12 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2189"/>
       <source>Persiste&amp;nt section cut</source>
-      <translation type="unfinished">Persiste&amp;nt section cut</translation>
+      <translation>Créer une coupe persista&amp;nte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2190"/>
       <source>Creates a persistent section cut of visible part objects</source>
-      <translation>Crée une coupe persistante des objets de la partie visible</translation>
+      <translation>Créer une coupe persistante des objets de la partie visible</translation>
     </message>
   </context>
   <context>
@@ -2036,7 +2072,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1587"/>
       <source>Utility to sweep</source>
-      <translation>Balayer une ou plusieurs section(s) le long d'un chemin</translation>
+      <translation>Créer un balayage entre une ou plusieurs section(s) le long d'un chemin</translation>
     </message>
   </context>
   <context>
@@ -2181,22 +2217,22 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2257"/>
       <source>Add a coordinate system</source>
-      <translation type="unfinished">Add a coordinate system</translation>
+      <translation>Ajouter un système de coordonnées</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Add a datum plane</source>
-      <translation type="unfinished">Add a datum plane</translation>
+      <translation>Ajouter un plan de référence</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2324"/>
       <source>Add a datum line</source>
-      <translation type="unfinished">Add a datum line</translation>
+      <translation>Ajouter une ligne de référence</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
       <source>Add a datum point</source>
-      <translation type="unfinished">Add a datum point</translation>
+      <translation>Ajouter un point de référence</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
@@ -2464,7 +2500,7 @@ Remarque : la position est exprimée localement par rapport à l'objet auquel il
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation>Créer une section</translation>
+      <translation>Section</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -2518,7 +2554,7 @@ Remarque : la position est exprimée localement par rapport à l'objet auquel il
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="397"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>Impossible d'effectuer une opération booléenne sur une seule forme</translation>
+      <translation>Il n'est pas possible d'effectuer une opération booléenne sur une seule forme.</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="407"/>
@@ -2622,7 +2658,7 @@ Remarque : la position est exprimée localement par rapport à l'objet auquel il
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation type="unfinished">STEP Export Settings</translation>
+      <translation>Paramètres d'exportation de fichiers STEP</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="104"/>
@@ -2708,7 +2744,7 @@ Astuce : pour tenir compte de la longueur de l’arête, définir les deux long
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Click to start selecting an edge in 3D view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3D view.</translation>
+      <translation>Cliquer pour commencer à sélectionner une arête dans la vue 3D.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
@@ -2806,7 +2842,7 @@ Si les deux longueurs sont nulles, la norme de la direction est utilisée.</tran
     <message>
       <location filename="../../DlgExtrusion.ui" line="340"/>
       <source>Create solid</source>
-      <translation>Créer le solide</translation>
+      <translation>Créer un solide</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
@@ -3170,7 +3206,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP Import Settings</source>
-      <translation type="unfinished">STEP Import Settings</translation>
+      <translation>Paramètres d'importation de fichiers STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
@@ -3445,7 +3481,7 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgPrimitives.ui" line="42"/>
       <location filename="../../DlgPrimitives.cpp" line="354"/>
       <source>Box</source>
-      <translation>Boîte</translation>
+      <translation>Cube</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
@@ -3623,7 +3659,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="872"/>
       <source>V parameters:</source>
-      <translation>Paramètres V :</translation>
+      <translation>Paramètre V :</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1015"/>
@@ -4046,7 +4082,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Maximum angular deflection</source>
-      <translation>Déviation angulaire maximale</translation>
+      <translation>Déflexion angulaire maximale</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="83"/>
@@ -4056,17 +4092,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="84"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Si l'écart est trop faible, la tessellation prend plus de temps et l'interface graphique se fige ou se ralentit.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="104"/>
       <source>Angle Deflection</source>
-      <translation type="unfinished">Angle Deflection</translation>
+      <translation>Angle de déflexion</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="105"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Si l'écart angulaire est trop faible, la tessellation prend plus de temps et l'interface graphique se fige ou se ralentit.</translation>
     </message>
   </context>
   <context>
@@ -4615,13 +4651,13 @@ Fonctionne uniquement si tous les objets ont les mêmes valeurs.</translation>
       <source>Allows to cut objects intersecting each other
 for the price that all cut objects
 will get the same color</source>
-      <translation>Permet de couper des objets se recoupant les uns les autres
-au risque que tous les objets coupés auront la même couleur.</translation>
+      <translation>Permet de couper des objets s'intersectant entre eux au
+risque que tous les objets coupés aient la même couleur.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="376"/>
       <source>Cut intersecting objects</source>
-      <translation>Couper des objets se recoupant</translation>
+      <translation>Couper des objets s'intersectant</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="419"/>
@@ -4809,7 +4845,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
+      <translation>Sélectionner une ou plusieurs arêtes connectées dans la vue 3D et appuyer sur "Valider".</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="437"/>
@@ -5046,16 +5082,16 @@ Remarque : la position est exprimée dans le système de coordonnées local de l
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1117"/>
       <source>Run boolean operation check</source>
-      <translation>Exécuter la vérification de l’opération booléenne</translation>
+      <translation>Exécuter la vérification des opérations booléennes</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation>La vérification supplémentaire des opérations booléennes peut parfois
-trouver des erreurs que la vérification standard de la géométrie BRep aura 
-manqué. Ces erreurs ne signifient pas toujours que l’objet vérifié est inutilisable.
+      <translation>Une vérification supplémentaire des opérations booléennes peut parfois trouver
+des erreurs que la vérification standard de la géométrie B-Rep aura manqué. Ces
+erreurs ne signifient pas toujours que l’objet vérifié est inutilisable.
 Valeur par défaut : faux</translation>
     </message>
     <message>
@@ -5079,7 +5115,7 @@ Valeur par défaut : false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation>Les logs d'erreurs vers la Vue rapport.
+      <translation>Les logs d'erreurs dans la vue rapport.
 Valeur par défaut : true</translation>
     </message>
     <message>
@@ -5256,18 +5292,18 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="456"/>
       <source>Null shape</source>
-      <translation type="unfinished">Null shape</translation>
+      <translation>Forme nulle</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="457"/>
       <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Skipped</source>
-      <translation type="unfinished">Skipped</translation>
+      <translation>Ignoré</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="467"/>
       <source>Infinite shape</source>
-      <translation type="unfinished">Infinite shape</translation>
+      <translation>Forme infinie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="494"/>
@@ -5282,7 +5318,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="542"/>
       <source>No errors</source>
-      <translation type="unfinished">No errors</translation>
+      <translation>Pas d'erreurs</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="553"/>
@@ -5300,7 +5336,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>To Report view.</source>
-      <translation type="unfinished">To Report view.</translation>
+      <translation>Vers la vue du rapport</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="654"/>
@@ -5521,7 +5557,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
       <source>Create solid</source>
-      <translation>Créer le solide</translation>
+      <translation>Créer un solide</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
@@ -5532,7 +5568,7 @@ Valeur par défaut : true</translation>
       <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Sélectionnez au moins un profil dans la liste, puis une arête ou une polyligne dans la vue 3D comme trajectoire.</translation>
+      <translation>Sélectionner au moins un profil dans la liste, puis une arête ou une polyligne dans la vue 3D comme trajectoire.</translation>
     </message>
   </context>
   <context>
@@ -5697,7 +5733,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation>Sommet</translation>
+      <translation>un sommet</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -6183,7 +6219,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Créer une découpe dans un objet pour l'adapter à un autre objet.</translation>
+      <translation>Créer une découpe dans un objet pour l'adapter à un autre objet</translation>
     </message>
   </context>
   <context>
@@ -6505,7 +6541,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="163"/>
       <source>Center of mass</source>
-      <translation>Centre de masse</translation>
+      <translation>Centre d'inertie</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
@@ -6520,7 +6556,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation>Centre de masse global</translation>
+      <translation>Centre d'inertie global</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
@@ -6943,12 +6979,12 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2246"/>
       <source>Create a coordinate system</source>
-      <translation type="unfinished">Create a coordinate system</translation>
+      <translation>Créer un système de coordonnées</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2247"/>
       <source>A coordinate system object that can be attached to other objects.</source>
-      <translation type="unfinished">A coordinate system object that can be attached to other objects.</translation>
+      <translation>Un objet système de coordonnées qui peut être attaché à d'autres objets.</translation>
     </message>
   </context>
   <context>
@@ -6966,7 +7002,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2281"/>
       <source>A plane object that can be attached to other objects.</source>
-      <translation type="unfinished">A plane object that can be attached to other objects.</translation>
+      <translation>Un objet plan qui peut être attaché à d'autres objets.</translation>
     </message>
   </context>
   <context>
@@ -6984,7 +7020,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2314"/>
       <source>A line object that can be attached to other objects.</source>
-      <translation type="unfinished">A line object that can be attached to other objects.</translation>
+      <translation>Un objet ligne qui peut être attaché à d'autres objets.</translation>
     </message>
   </context>
   <context>
@@ -7002,7 +7038,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2347"/>
       <source>A point object that can be attached to other objects.</source>
-      <translation type="unfinished">A point object that can be attached to other objects.</translation>
+      <translation>Un objet point qui peut être attaché à d'autres objets.</translation>
     </message>
   </context>
   <context>
@@ -7020,7 +7056,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2382"/>
       <source>Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</source>
-      <translation type="unfinished">Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</translation>
+      <translation>Créer un objet de référence (système de coordonnées locales, plan, ligne, point) qui peut être attaché à d'autres objets</translation>
     </message>
   </context>
 </TS>

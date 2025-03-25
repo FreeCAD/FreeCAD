@@ -1998,12 +1998,12 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../Command.cpp" line="1430"/>
       <source>Add clip group</source>
-      <translation type="unfinished">Add clip group</translation>
+      <translation>Дадаць суполку выразак</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1501"/>
       <source>Remove clip group</source>
-      <translation type="unfinished">Remove clip group</translation>
+      <translation>Выдаліць суполку выразак</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1635"/>
@@ -2925,12 +2925,13 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../Command.cpp" line="430"/>
       <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
-      <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
+      <translation>Калі вы жадаеце ўставіць выгляд з існуючых аб'ектаў, калі ласка, абярыце іх перад запускам гэтага інструмента.
+Без выбару адчыніцца акно прагляду файлаў для ўстаўкі файла SVG ці файла выявы.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="433"/>
       <source>Do not show this message again</source>
-      <translation type="unfinished">Do not show this message again</translation>
+      <translation>Больш не паказваць гэтае паведамленне</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -2986,12 +2987,12 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../Command.cpp" line="1833"/>
       <source>No Drawing Page</source>
-      <translation type="unfinished">No Drawing Page</translation>
+      <translation>Без старонкі чарцяжа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
       <source>FreeCAD could not find a page to export</source>
-      <translation type="unfinished">FreeCAD could not find a page to export</translation>
+      <translation>FreeCAD не атрымалася знайсці старонку для экспартавання</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="387"/>
@@ -3150,7 +3151,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2443"/>
       <source>B-spline Curve Warning</source>
-      <translation type="unfinished">B-spline Curve Warning</translation>
+      <translation>Папярэджанне крывой B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2444"/>
@@ -3162,7 +3163,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2454"/>
       <source>B-spline Curve Error</source>
-      <translation type="unfinished">B-spline Curve Error</translation>
+      <translation>Памылка крывой B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2455"/>
@@ -3182,17 +3183,17 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2109"/>
       <source>Selection contains both 2D and 3D geometry</source>
-      <translation type="unfinished">Selection contains both 2D and 3D geometry</translation>
+      <translation>Вылучэнне змяшчае дзвюхмерную і трохмерную геаметрыю</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2134"/>
       <source>Can not make 2D extent dimension from selection</source>
-      <translation type="unfinished">Can not make 2D extent dimension from selection</translation>
+      <translation>Не атрымалася зрабіць двухмернае габарытнае вымярэнне з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2149"/>
       <source>Can not make 3D extent dimension from selection</source>
-      <translation type="unfinished">Can not make 3D extent dimension from selection</translation>
+      <translation>Не атрымалася зрабіць трохмернае габарытнае вымярэнне з абранага</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2280"/>
@@ -3449,7 +3450,8 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
       <source>Can not attach leader. No base View selected.</source>
-      <translation type="unfinished">Can not attach leader. No base View selected.</translation>
+      <translation>Не атрымалася прымацаваць зноску.
+Асноўны выгляд не абраны.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1224"/>
@@ -3494,7 +3496,8 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandDecorate.cpp" line="112"/>
       <source>Some Faces in selection are already hatched. Replace?</source>
-      <translation type="unfinished">Some Faces in selection are already hatched. Replace?</translation>
+      <translation>Некаторыя грані ў абраным ужо заштрыхаваныя.
+Ці замяніць?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="335"/>
@@ -3661,7 +3664,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../TaskSectionView.cpp" line="153"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Напрамак не зададзены</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="159"/>
@@ -3898,7 +3901,9 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <location filename="../../TaskDimension.cpp" line="147"/>
       <location filename="../../TaskDimension.cpp" line="162"/>
       <source>Dimension not found. Was it deleted? Can not continue.</source>
-      <translation type="unfinished">Dimension not found. Was it deleted? Can not continue.</translation>
+      <translation>Вымярэнне не знойдзена.
+Ці было яно выдаленае?
+Не атрымалася працягнуць.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="443"/>
@@ -4127,7 +4132,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
       <source>Use 3D Background</source>
-      <translation type="unfinished">Use 3D Background</translation>
+      <translation>Ужыць трохмерны фон</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
@@ -4341,7 +4346,8 @@ This directory will be used for the symbol selection.</source>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
       <source>FreeCAD could not determine which Page to use. Please select a Page.</source>
-      <translation type="unfinished">FreeCAD could not determine which Page to use. Please select a Page.</translation>
+      <translation>FreeCAD не змог вызначыць, якую старонку ўжываць.
+Калі ласка, абярыце старонку.</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
@@ -4389,12 +4395,12 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="34"/>
       <source>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</source>
-      <translation type="unfinished">If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</translation>
+      <translation>Калі птушка, падвоеная пстрычка па старонцы ў дрэве аўтаматычна пераключыць яе ў рэжым Тэхнічнага чарцяжа, і старонка стане бачнай.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="37"/>
       <source>Switch Workbench on Click</source>
-      <translation type="unfinished">Switch Workbench on Click</translation>
+      <translation>Пераключыць варштат пстрычкай мышы</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="62"/>
@@ -4404,7 +4410,8 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="82"/>
       <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</source>
-      <translation type="unfinished">If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</translation>
+      <translation>Калі птушка, FreeCAD будзе ўжываць новы алгарытм пошуку граней.
+Калі не птушка, FreeCAD будзе ўжываць састарэлы алгарытм пошуку граней.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="107"/>
@@ -4419,19 +4426,20 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>
       <source>If checked, the system will attempt to automatically correct dimension references when the model changes.</source>
-      <translation type="unfinished">If checked, the system will attempt to automatically correct dimension references when the model changes.</translation>
+      <translation>Калі птушка, сістэма паспрабуе аўтаматычна выправіць спасылкі на вымярэнні пры змене мадэлі.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="173"/>
       <source>If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
 </source>
-      <translation type="unfinished">If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
+      <translation>Калі птушка, уводныя фігуры будуць правярацца на наяўнасць памылак перад ужываннем, а недапушчальныя фігуры будуць прапушчаны сродкам выняцца фігур.
+Праверка памылак адбываецца павольней, але можа прадухіліць памылкі з-за некаторых праблем з геаметрыяй.
 </translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="177"/>
       <source>Validate Shapes</source>
-      <translation type="unfinished">Validate Shapes</translation>
+      <translation>Праверка правільнасці фігур</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="196"/>
@@ -4446,12 +4454,12 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="308"/>
       <source>If checked, shapes that fail validation will be saved as BREP files for later analysis.</source>
-      <translation type="unfinished">If checked, shapes that fail validation will be saved as BREP files for later analysis.</translation>
+      <translation>Калі птушка, фігуры, якія не прайшлі праверку, будуць захаваны ў выглядзе файлаў BREP для наступнага аналізу.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
       <source>Debug Bad Shape</source>
-      <translation type="unfinished">Debug Bad Shape</translation>
+      <translation>Адладка дрэнных фігур</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="335"/>
@@ -4468,19 +4476,21 @@ can be a performance penalty in complex models.</source>
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings, you might get an error about too many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings, you might get an error about too many SVG tiles.
-Then you need to increase the tile limit.</translation>
+      <translation>Абмежаванне ў 64x64 пікселяў для фрагментаў SVG, якія ўжываюцца для штрыхоўкі адной грані.
+Пры вялікіх маштабах вы можаце атрымаць паведамленне пра памылку для многіх файлаў SVG.
+Таму вам трэба павялічыць абмежаванне.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="501"/>
       <source>Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.</source>
-      <translation type="unfinished">Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.</translation>
+      <translation>Некаторыя камбінацыі клавіш аперацыйнай сістэмы і стылю навігацыі могуць канфліктаваць з першапачатковымі клавішамі-мадыфікатарамі для перацягвання пазіцыйнай зноскі і перавызначэння прывязкі да выгляду. 
+Вы можаце ўнесці змены тут, каб знайсці прывязку клавіш, якія не канфліктуюць.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="512"/>
       <source>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</source>
-      <translation type="unfinished">Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</translation>
+      <translation>Калі птушка, ужываюцца першапачатковыя клавішы-мадыфікатары.
+Калі не птушка, можна задаць іншую камбінацыю клавіш.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="75"/>
@@ -4719,12 +4729,12 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="482"/>
       <source>If this box is checked, templates will auto fill date fields using ccyy-mm-dd format even if that is not the standard format for the current locale.</source>
-      <translation type="unfinished">If this box is checked, templates will auto fill date fields using ccyy-mm-dd format even if that is not the standard format for the current locale.</translation>
+      <translation>Калі птушка, шаблоны будуць аўтаматычна запаўняць палі дадзеных у фармаце ccyy-mm-dd, нават калі гэта не стандартны фармат для бягучага моўнага стандарту.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
       <source>Enforce ISO 8601 Date Format</source>
-      <translation type="unfinished">Enforce ISO 8601 Date Format</translation>
+      <translation>Прымяненне фармату даты ISO 8601</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="509"/>
@@ -4742,9 +4752,9 @@ when hatching a face with a PAT pattern</source>
 always be the right choice.  Flat or square caps are useful
 if you are planning to use a drawing as a 1:1 cutting guide.
 </source>
-      <translation type="unfinished">Shape of line end caps.  The default (round) should almost
-always be the right choice.  Flat or square caps are useful
-if you are planning to use a drawing as a 1:1 cutting guide.
+      <translation>Фігура канцавых вечак лініі.
+Амаль заўсёды правільным выбарам павінна быць стандартная (круглая).
+Плоскія ці квадратныя вечкі карысныя, калі вы плануеце ўжываць чарцёж у якасці кіраўніцтва для рэзкі ў суадносінах 1:1.
 </translation>
     </message>
     <message>
@@ -5111,7 +5121,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
       <source>If checked, FreeCAD will use a single color for all text and lines.</source>
-      <translation type="unfinished">If checked, FreeCAD will use a single color for all text and lines.</translation>
+      <translation>Калі птушка, FreeCAD будзе ўжываць адзін колер для ўсіх тэкстаў і радкоў.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="87"/>
@@ -5182,21 +5192,24 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
- Value * linewidth is the gap.
- Normally, no gap is used. If using a gap, the recommended value is 8.</translation>
+      <translation>Вызначае памер адлегласці паміж кропкай вымярэння і пачаткам вынасной лініі для вымярэнняў ISO.
+Велічыня зазору = значэнне * шырыня лініі.
+Зазор звычайна не ўжываецца.
+Пры ўжыванні зазору, прапануецца ўжываць значэнне 8.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="461"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
- Normally, no gap is used. If using a gap, the recommended value is 6.</translation>
+      <translation>Вызначае памер адлегласці паміж кропкай вымярэння і пачаткам вынасной лініі для вымярэнняў ASME.
+Велічыня зазору = значэнне * шырыня лініі.
+Звычайна зазор не ўжываецца.
+Пры ўжыванні зазору, прапануецца ўжываць значэнне 6.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
       <source>Controls the gap size between dimension line and dimension text for ISO dimensions.</source>
-      <translation type="unfinished">Controls the gap size between dimension line and dimension text for ISO dimensions.</translation>
+      <translation>Вызначае памер адлегласці паміж лініяй вымярэння і тэкстам вымярэння для вымярэнняў ISO.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
@@ -5207,8 +5220,8 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="493"/>
       <source>Controls the gap size between dimension line and dimension text.
  Value * linewidth is the line spacing.</source>
-      <translation type="unfinished">Controls the gap size between dimension line and dimension text.
- Value * linewidth is the line spacing.</translation>
+      <translation>Вызначае памер адлегласці паміж лініяй вымярэння і тэкстам вымярэння.
+Міжрадковы інтэрвал = Значэнне * Шырыня радка.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="537"/>
@@ -5277,7 +5290,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="405"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</translation>
+      <translation>Вызначае памер зазору паміж кропкай вымярэння і пачаткам вынасной лініі для вымярэнняў ISO.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="408"/>
@@ -5345,7 +5358,7 @@ Multiplier of &apos;Font Size&apos;</source>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</translation>
+      <translation>Вызначае памер зазору паміж кропкай вымярэння і пачаткам вынасной лініі для вымярэнняў ASME.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="436"/>
@@ -5506,12 +5519,13 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
       <source>If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</source>
-      <translation type="unfinished">If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</translation>
+      <translation>Калі птушка, у якасці напрамку агляду будзе ўжывацца напрамак трохмернай камеры (ці нармаль да абранай грані). 
+Калі не птушка, выгляды будуць стварацца як выгляды спераду.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>Use 3D Camera Direction</source>
-      <translation type="unfinished">Use 3D Camera Direction</translation>
+      <translation>Ужываць напрамак трохмернай камеры</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
@@ -6527,13 +6541,13 @@ Do you want to continue?</source>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
       <location filename="../../TaskCosmeticLine.ui" line="140"/>
       <source>2D Point</source>
-      <translation type="unfinished">2D Point</translation>
+      <translation>Дзвюхмерная кропка</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="77"/>
       <location filename="../../TaskCosmeticLine.ui" line="156"/>
       <source>3D Point</source>
-      <translation type="unfinished">3D Point</translation>
+      <translation>Трохмерная кропка</translation>
     </message>
   </context>
   <context>
@@ -6979,13 +6993,12 @@ Custom: custom scale factor is used</source>
       <location filename="../../TaskDimension.ui" line="137"/>
       <source>If checked, the content of &apos;Format Spec&apos; will
 be used instead of the dimension value</source>
-      <translation type="unfinished">If checked, the content of &apos;Format Spec&apos; will
-be used instead of the dimension value</translation>
+      <translation>Калі птушка, замест &apos;Колькасць дзесятковых знакаў&apos; будзе ўжывацца замест значэння вымярэння</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Калі птушка, змест спецыфікацыі фармату дакладнасці будзе ўжыты замест значэння дакладнасці</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="199"/>
@@ -7323,7 +7336,7 @@ by negative value of &apos;Over Tolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
       <source>SVG Line Color</source>
-      <translation type="unfinished">SVG Line Color</translation>
+      <translation>Колер лініі SVG</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
@@ -7533,7 +7546,8 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLineDecor.ui" line="99"/>
       <source>The use of the Qt line style is being phased out. Please use a standard line style instead.</source>
-      <translation type="unfinished">The use of the Qt line style is being phased out. Please use a standard line style instead.</translation>
+      <translation>Ужыванне лінейнага стылю Qt паступова спыняецца.
+Калі ласка, ужывайце стандартны лінейны стыль.</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
@@ -9231,22 +9245,22 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="61"/>
       <source>Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</source>
-      <translation type="unfinished">Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</translation>
+      <translation>Разглядаць цэнтральную кропку як дзвюхмерную кропку ў бацькоўскім выглядзе. Каардыната Z ігнаруецца.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
       <source>2D Point</source>
-      <translation type="unfinished">2D Point</translation>
+      <translation>Дзвюхмерная кропка</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
       <source>Treat the center point as a 3D point and project it onto the parent View.</source>
-      <translation type="unfinished">Treat the center point as a 3D point and project it onto the parent View.</translation>
+      <translation>Разглядаць цэнтральную кропку як трохмерную кропку і праецыраваць яе на бацькоўскі выгляд.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="80"/>
       <source>3D Point</source>
-      <translation type="unfinished">3D Point</translation>
+      <translation>Трохмерная кропка</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="188"/>

@@ -493,7 +493,7 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires Git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
+      <translation>Automaticky kontrolovat aktualizace při startu (vyžaduje Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="43"/>
@@ -1453,7 +1453,7 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="113"/>
       <source>Disable</source>
-      <translation>Vypnout</translation>
+      <translation>Zakázat</translation>
     </message>
     <message>
       <location filename="../../addonmanager_package_details_controller.py" line="129"/>
@@ -1975,7 +1975,7 @@ Please restart to use the new version.</translation>
       <location filename="../../package_list.py" line="475"/>
       <location filename="../../package_list.py" line="533"/>
       <source>DISABLED</source>
-      <translation>VYPNOUT</translation>
+      <translation>ZAKÁZÁNO</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="490"/>
@@ -2099,7 +2099,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="184"/>
       <source>Downloaded {} for {}</source>
-      <translation type="unfinished">Downloaded {} for {}</translation>
+      <translation>Stoženo {} pro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="243"/>
@@ -2242,7 +2242,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="548"/>
       <source>Checking {} for update</source>
-      <translation type="unfinished">Checking {} for update</translation>
+      <translation>Kontrola aktualizace</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="606"/>

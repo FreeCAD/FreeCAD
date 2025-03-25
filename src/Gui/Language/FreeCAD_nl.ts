@@ -416,7 +416,7 @@
     <message>
       <location filename="../Application.h" line="267"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>&amp;Standaard</translation>
     </message>
     <message>
       <location filename="../Application.h" line="268"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../Application.h" line="272"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Trans&amp;formeren</translation>
     </message>
     <message>
       <location filename="../Application.h" line="277"/>
@@ -748,7 +748,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgAbout.cpp" line="734"/>
       <source>Copied!</source>
-      <translation type="unfinished">Copied!</translation>
+      <translation>Gekopiëerd!</translation>
     </message>
   </context>
   <context>
@@ -8932,7 +8932,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2979"/>
       <source>Bo&amp;x element selection</source>
-      <translation type="unfinished">Bo&amp;x element selection</translation>
+      <translation>Rechthoek onderdeel selectie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2980"/>
@@ -8946,7 +8946,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2753"/>
       <source>&amp;Box selection</source>
-      <translation type="unfinished">&amp;Box selection</translation>
+      <translation>&amp;Rechthoekselectie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2754"/>
@@ -9015,7 +9015,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1674"/>
       <source>Ali&amp;gnment...</source>
-      <translation type="unfinished">Ali&amp;gnment...</translation>
+      <translation>Uitlijnin&amp;g...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1675"/>
@@ -9071,7 +9071,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close A&amp;ll</source>
-      <translation type="unfinished">Close A&amp;ll</translation>
+      <translation>A&amp;lles sluiten</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
@@ -9695,7 +9695,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="570"/>
       <source>&amp;Merge document...</source>
-      <translation type="unfinished">&amp;Merge document...</translation>
+      <translation>Docu&amp;menten samenvoegen...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="571"/>
@@ -9815,7 +9815,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1592"/>
       <source>P&amp;lacement...</source>
-      <translation type="unfinished">P&amp;lacement...</translation>
+      <translation>P&amp;laatsing...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1593"/>
@@ -9843,7 +9843,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="998"/>
       <source>Export P&amp;DF...</source>
-      <translation type="unfinished">Export P&amp;DF...</translation>
+      <translation>Exporteer als P&amp;DF...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="999"/>
@@ -9857,7 +9857,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="968"/>
       <source>Print previe&amp;w...</source>
-      <translation type="unfinished">Print previe&amp;w...</translation>
+      <translation>Afdruk&amp;voorbeeld...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="969"/>
@@ -9959,7 +9959,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1512"/>
       <source>Refres&amp;h</source>
-      <translation type="unfinished">Refres&amp;h</translation>
+      <translation>&amp;Vernieuwen</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1513"/>
@@ -9973,13 +9973,13 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="839"/>
       <source>Rever&amp;t</source>
-      <translation type="unfinished">Rever&amp;t</translation>
+      <translation>&amp;Terugdraaien</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="840"/>
       <location filename="../CommandDoc.cpp" line="842"/>
       <source>Reverts to the saved version of this file</source>
-      <translation>Keer terug naar de bewaarde versie van dit bestand</translation>
+      <translation>Keert terug naar de opgeslagen versie van dit bestand</translation>
     </message>
   </context>
   <context>
@@ -10001,7 +10001,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="811"/>
       <source>Sa&amp;ve All</source>
-      <translation type="unfinished">Sa&amp;ve All</translation>
+      <translation>&amp;Alles opslaan</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="812"/>
@@ -10029,7 +10029,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="784"/>
       <source>Save a Cop&amp;y...</source>
-      <translation type="unfinished">Save a Cop&amp;y...</translation>
+      <translation>&amp;Kopie opslaan...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="785"/>
@@ -10099,7 +10099,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="217"/>
       <source>&amp;Send to Python Console</source>
-      <translation>&amp;Verzenden naar Python-console</translation>
+      <translation>V&amp;erzenden naar Python-console</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="218"/>
@@ -11044,7 +11044,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2719"/>
       <source>&amp;Box zoom</source>
-      <translation type="unfinished">&amp;Box zoom</translation>
+      <translation>&amp;Inzoomen rechthoek</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2720"/>
@@ -13210,7 +13210,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="878"/>
       <source>Doc&amp;ument information...</source>
-      <translation type="unfinished">Doc&amp;ument information...</translation>
+      <translation>Doc&amp;ument informatie...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="879"/>
@@ -13743,7 +13743,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1639"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Trans&amp;formeren</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1640"/>

@@ -104,7 +104,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation>Modules nécessaires de Python</translation>
+      <translation>Modules de Python requis</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
@@ -281,7 +281,8 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../first_run.ui" line="62"/>
       <source>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</source>
-      <translation>Le gestionnaire d'extensions donne accès à une vaste bibliothèque d'extensions tierces de FreeCAD. Aucune garantie ne peut être donnée quant à leur sécurité ou leur fonctionnalité.</translation>
+      <translation>Le gestionnaire d'extensions donne accès à une bibliothèque d'extensions tierces de FreeCAD.
+Il n'y a aucune garantie quant à leur sécurité ou à leur fonctionnalité.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="96"/>
@@ -493,7 +494,7 @@ les extensions installées seront vérifiées pour les mises à jour disponibles
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires Git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
+      <translation>Vérifier automatiquement les mises à jour au démarrage (nécessite Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="43"/>
@@ -593,17 +594,17 @@ les extensions installées seront vérifiées pour les mises à jour disponibles
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the Git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Git executable. Autodetected if needed and not specified.</translation>
+      <translation>Le chemin d'accès vers l'exécutable de Git. Il est automatiquement détecté s'il est nécessaire et non défini.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires Git)</source>
-      <translation type="unfinished">Show option to change branches (requires Git)</translation>
+      <translation>Afficher l'option pour changer de branche (nécessite Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable Git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable Git (fall back to ZIP downloads only)</translation>
+      <translation>Désactiver Git (revenir aux téléchargements ZIP uniquement)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="390"/>
@@ -664,7 +665,7 @@ les extensions installées seront vérifiées pour les mises à jour disponibles
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation>Les paquets Python suivants ont été installés localement par le gestionnaire des extensions pour satisfaire les dépendances de l'extension. Emplacement de l'installation :</translation>
+      <translation>Les paquets Python suivants ont été installés localement par le gestionnaire d'extensions pour les dépendances des extensions. Le chemin d'accès est :</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
@@ -690,8 +691,7 @@ les extensions installées seront vérifiées pour les mises à jour disponibles
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
       <translation>Un astérisque (*) dans la colonne "Utilisé par" indique une dépendance facultative.
-Remarque : "Utilisé par" n'enregistre que les importations directes dans l'extension.
-D'autres paquets Python dont dépendent ces paquets peuvent également avoir été installés.</translation>
+Remarque : "Utilisé par" n'affiche que les importations directes liées à l'extension. D'autres paquets Python dont ces paquets dépendent peuvent également avoir été installés.</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
@@ -1141,17 +1141,17 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../AddonManager.py" line="524"/>
       <source>Creating addon list</source>
-      <translation type="unfinished">Creating addon list</translation>
+      <translation>Création de la liste des extensions</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="534"/>
       <source>Loading addon list</source>
-      <translation type="unfinished">Loading addon list</translation>
+      <translation>Chargement de la liste des extensions</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="570"/>
       <source>Creating macro list</source>
-      <translation type="unfinished">Creating macro list</translation>
+      <translation>Création de la liste des macros</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1371,7 +1371,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="205"/>
       <source>Changed to branch &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation>A changé pour la branche "{}". Redémarrer pour utiliser l'extension.</translation>
+      <translation>Modifié pour la branche "{}". Redémarrer pour utiliser l'extension.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="216"/>
@@ -1468,11 +1468,10 @@ Moved
 from: {}
 to: {}
 Please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded.
-Moved
-from: {}
-to: {}
-Please restart to use the new version.</translation>
+      <translation>Le changement de branche a réussi. Elle a été déplacée
+de : {}
+vers : {}
+Redémarrer pour utiliser la nouvelle version.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -1512,7 +1511,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation>Impossible d'importer QtNetwork -- voir la Vue rapport pour plus de détails. Le gestionnaire des extensions n'est pas disponible.</translation>
+      <translation>Impossible d'importer QtNetwork. Voir la vue rapport pour plus de détails. Le gestionnaire des extensions n'est pas disponible.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
@@ -1697,12 +1696,12 @@ Please restart to use the new version.</translation>
       <location filename="../../addonmanager_installer_gui.py" line="363"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="86"/>
       <source>Cannot execute pip</source>
-      <translation>Impossible d'exécuter la commande pip</translation>
+      <translation>Impossible d'exécuter le gestionnaire de paquets pip</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
-      <translation>Impossible d'exécuter le pip. Il peut être absent de votre installation Python. Assurez-vous que pip est installé sur votre système et réessayez. La commande qui a échoué était :</translation>
+      <translation>Impossible d'exécuter le gestionnaire de paquets pip. Il peut être absent de votre installation Python. Assurez-vous que pip est installé sur votre système et réessayez. La commande qui a échoué était :</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="373"/>
@@ -1719,7 +1718,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
-      <translation>Voir la Vue rapport pour pour les logs détaillés des défaillances.</translation>
+      <translation>Voir la vue rapport pour les logs détaillés des erreurs.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="435"/>
@@ -2036,7 +2035,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="249"/>
       <source>Filter</source>
-      <translation>Filtre</translation>
+      <translation>Filtre </translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="86"/>
@@ -2099,7 +2098,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="184"/>
       <source>Downloaded {} for {}</source>
-      <translation type="unfinished">Downloaded {} for {}</translation>
+      <translation>{} téléchargé pour {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="243"/>
@@ -2205,14 +2204,13 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="281"/>
       <source>Git is disabled, skipping Git macros</source>
-      <translation type="unfinished">Git is disabled, skipping Git macros</translation>
+      <translation>Git est désactivé, ce qui permet d'ignorer les macros sous Git.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="328"/>
       <source>Attempting to change non-Git Macro setup to use Git
 </source>
-      <translation type="unfinished">Attempting to change non-Git Macro setup to use Git
-</translation>
+      <translation>Tentative de modification de la configuration d'une macro non présente sous Git pour utiliser Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="345"/>
@@ -2242,27 +2240,27 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="548"/>
       <source>Checking {} for update</source>
-      <translation type="unfinished">Checking {} for update</translation>
+      <translation>Vérification de la mise à jour de {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="606"/>
       <source>Unable to fetch Git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch Git updates for workbench {}</translation>
+      <translation>Impossible de récupérer les mises à jour sous Git pour l'atelier {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="619"/>
       <source>Git status failed for {}</source>
-      <translation type="unfinished">Git status failed for {}</translation>
+      <translation>Le statut de Git a échoué pour {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Caching {} macro</source>
-      <translation type="unfinished">Caching {} macro</translation>
+      <translation>Mise en cache de {} macro</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="849"/>
       <source>Caching macros</source>
-      <translation type="unfinished">Caching macros</translation>
+      <translation>Mise en cache des macros</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="687"/>
@@ -2327,7 +2325,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic Git update failed with the following message:</source>
-      <translation type="unfinished">Basic Git update failed with the following message:</translation>
+      <translation>La mise à jour de base de Git a échoué avec le message suivant :</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="161"/>
@@ -2337,7 +2335,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using Git</source>
-      <translation type="unfinished">Failed to clone {} into {} using Git</translation>
+      <translation>Impossible de cloner {} dans {} en utilisant Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>

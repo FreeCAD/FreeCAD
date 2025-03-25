@@ -1592,7 +1592,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
       <source>Boolean: Accept: Input error</source>
-      <translation type="unfinished">Boolean: Accept: Input error</translation>
+      <translation>Loginis: Priėmimas: Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1621,7 +1621,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="412"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -2663,7 +2663,7 @@ measured along the specified direction</translation>
       <location filename="../../TaskPipeParameters.cpp" line="451"/>
       <location filename="../../TaskPipeParameters.cpp" line="563"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="451"/>
@@ -3650,7 +3650,7 @@ This may lead to unexpected results.</translation>
       <location filename="../../CommandBody.cpp" line="863"/>
       <location filename="../../CommandBody.cpp" line="870"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="558"/>
@@ -4985,7 +4985,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="203"/>
       <source>Error: Face must be planar</source>
-      <translation type="unfinished">Error: Face must be planar</translation>
+      <translation>Klaida: Siena turi būti plokščia</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2516"/>
@@ -5044,7 +5044,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2003"/>
       <source>Hole error: Invalid taper angle</source>
-      <translation type="unfinished">Hole error: Invalid taper angle</translation>
+      <translation>Kylės klaida: netinkamas kūgio kampas</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2024"/>
@@ -5054,7 +5054,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2028"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be less than hole depth</translation>
+      <translation>Skylės klaida: Skylės išpjovos gylis turi būti mažesnis už skylės gylį</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2032"/>
@@ -5069,7 +5069,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2087"/>
       <source>Hole error: Invalid drill point angle</source>
-      <translation type="unfinished">Hole error: Invalid drill point angle</translation>
+      <translation>Kylės klaida: netinkamas grąžto posvyrio kampas</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2097"/>

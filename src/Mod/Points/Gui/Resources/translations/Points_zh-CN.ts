@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="240"/>
       <source>Convert to points...</source>
-      <translation>将转换为点...</translation>
+      <translation>转换为点…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="241"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Import points...</source>
-      <translation>导入点群...</translation>
+      <translation>导入点...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
@@ -268,7 +268,7 @@
       <location filename="../../DlgPointsRead.ui" line="260"/>
       <location filename="../../DlgPointsRead.ui" line="296"/>
       <source>R,G,B (color)</source>
-      <translation>RGB颜色</translation>
+      <translation>R,G,B (颜色)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="229"/>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>Points not at Origin</source>
-      <translation type="unfinished">Points not at Origin</translation>
+      <translation>点不在原点</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
-      <translation type="unfinished">The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</translation>
+      <translation>导入点的边界框不包含原点。是否要将其平移至原点？</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>

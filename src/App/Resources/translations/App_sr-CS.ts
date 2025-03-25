@@ -35,9 +35,9 @@ that reference the same configurable object</translation>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
-      <translation type="unfinished">
-It is recommended that the user right-click the root of the document and select Mark to recompute.
-The user should then click the Refresh button in the main toolbar.
+      <translation>
+Preporučuje se da korisnik klikne desnim tasterom miša na koren dokumenta i izabere Označi za ponovno izračunavanje.
+Zatim korisnik treba da klikne na dugme Osveži koje se nalzi na glavnoj paleti sa alatkama.
 </translation>
     </message>
   </context>
@@ -46,32 +46,32 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="209"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>X-osa</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="210"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Y-osa</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="211"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Z-osa</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="212"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY ravan</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="213"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ ravan</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="214"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ ravan</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="215"/>

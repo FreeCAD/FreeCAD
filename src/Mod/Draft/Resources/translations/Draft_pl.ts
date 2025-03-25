@@ -707,7 +707,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>Zresetuj wybór punktu 3D</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -2328,8 +2328,8 @@ Eksport może zawieść w przypadku szablonów DXF w wersji nowszej od R12.</tra
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Jeśli opcja jest zaznaczona, sylwetka postaci ludzkiej jest wyświetlana w lewym dolnym rogu siatki.
+Ta opcja jest skuteczna tylko wtedy, gdy opcja "Pokaż obramowanie siatki" jest włączona.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -2828,12 +2828,12 @@ będzie widoczny tylko podczas wykonywania poleceń</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, widżet przyciągania jest wyświetlany na pasku stanu środowiska Rysunek Roboczy</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, widżet skali adnotacji jest wyświetlany na pasku stanu środowiska Rysunek Roboczy</translation>
     </message>
   </context>
   <context>
@@ -3475,7 +3475,7 @@ lub spróbuj zapisać do niższej wersji DWG.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Widżet skali Rysunku Roboczego</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3485,7 +3485,7 @@ lub spróbuj zapisać do niższej wersji DWG.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Widżet przyciągania Rysunku Roboczego</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -4950,7 +4950,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>Potrzebne są dwie krawędzie.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
@@ -5616,22 +5616,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>Nie można zbudować Łącznika kształtu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>Brak prawidłowych ścian dla Łącznika kształtu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>Nie można zbudować Łącznika kształtu, wznawianie z wyłączonym zszywaniem</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>Konwersja płaskich ścian krzywych złożonych Łącznika kształtu na płaskie ściany nie powiodła się</translation>
     </message>
   </context>
   <context>

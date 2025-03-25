@@ -493,7 +493,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires Git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
+      <translation>Аўтаматычна правяраць абнаўленні пры запуску (патрабуецца Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="43"/>
@@ -593,17 +593,18 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the Git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Git executable. Autodetected if needed and not specified.</translation>
+      <translation>Шлях да двайковага файла Git.
+Аўтаматычна вызначаецца, калі гэта неабходна і не пазначана.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires Git)</source>
-      <translation type="unfinished">Show option to change branches (requires Git)</translation>
+      <translation>Паказаць наладу змены галіны (патрабуецца Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable Git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable Git (fall back to ZIP downloads only)</translation>
+      <translation>Адключыць Git (вярнуцца да спампоўкі толькі ZIP)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="390"/>
@@ -1142,17 +1143,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="524"/>
       <source>Creating addon list</source>
-      <translation type="unfinished">Creating addon list</translation>
+      <translation>Ствараецца спіс дадаткаў</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="534"/>
       <source>Loading addon list</source>
-      <translation type="unfinished">Loading addon list</translation>
+      <translation>Загружаецца спіс дадаткаў</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="570"/>
       <source>Creating macro list</source>
-      <translation type="unfinished">Creating macro list</translation>
+      <translation>Ствараецца спіс макрасаў</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1470,11 +1471,11 @@ Moved
 from: {}
 to: {}
 Please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded.
-Moved
-from: {}
-to: {}
-Please restart to use the new version.</translation>
+      <translation>Змена галіны прайшло паспяхова.
+Перамешчана
+з: {}
+у: {}
+Калі ласка, запусціце нанова, каб ужыць новую версію.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -2106,7 +2107,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="184"/>
       <source>Downloaded {} for {}</source>
-      <translation type="unfinished">Downloaded {} for {}</translation>
+      <translation>Спампаваць {} для {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="243"/>
@@ -2212,13 +2213,13 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="281"/>
       <source>Git is disabled, skipping Git macros</source>
-      <translation type="unfinished">Git is disabled, skipping Git macros</translation>
+      <translation>Git адключаны, прапушчаны макрасы Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="328"/>
       <source>Attempting to change non-Git Macro setup to use Git
 </source>
-      <translation type="unfinished">Attempting to change non-Git Macro setup to use Git
+      <translation>Спроба змяніць наладу макраса, які адрозніваецца ад Git, на ўжыванне Git
 </translation>
     </message>
     <message>
@@ -2249,27 +2250,27 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="548"/>
       <source>Checking {} for update</source>
-      <translation type="unfinished">Checking {} for update</translation>
+      <translation>Праверыць {} абнаўленні</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="606"/>
       <source>Unable to fetch Git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch Git updates for workbench {}</translation>
+      <translation>Немагчыма атрымаць абнаўленні Git для варштату {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="619"/>
       <source>Git status failed for {}</source>
-      <translation type="unfinished">Git status failed for {}</translation>
+      <translation>Памылка git status для {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Caching {} macro</source>
-      <translation type="unfinished">Caching {} macro</translation>
+      <translation>Кэшаваць макрас {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="849"/>
       <source>Caching macros</source>
-      <translation type="unfinished">Caching macros</translation>
+      <translation>Кэшаваць макрас</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="687"/>
@@ -2337,7 +2338,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic Git update failed with the following message:</source>
-      <translation type="unfinished">Basic Git update failed with the following message:</translation>
+      <translation>Не атрымалася базавае абнаўленне Git з наступным паведамленнем:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="161"/>
@@ -2347,7 +2348,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using Git</source>
-      <translation type="unfinished">Failed to clone {} into {} using Git</translation>
+      <translation>Не атрымалася кланаваць {} у {} з дапамогай Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>

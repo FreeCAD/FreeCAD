@@ -82,7 +82,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="110"/>
       <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
-      <translation type="unfinished">Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</translation>
+      <translation>らせんの結合トレランス。らせん形状がパーツとうまく結合しない場合には増やしてください。</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
@@ -302,7 +302,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="609"/>
       <source>Duplicate selected &amp;object</source>
-      <translation type="unfinished">Duplicate selected &amp;object</translation>
+      <translation>選択したオブジェクトを複製(&amp;O)</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
@@ -482,12 +482,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="530"/>
       <source>Set tip</source>
-      <translation>チップ設定</translation>
+      <translation>先端を設定</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="531"/>
       <source>Move the tip of the body</source>
-      <translation>ボディーのチップを移動</translation>
+      <translation>ボディーの先端を移動</translation>
     </message>
   </context>
   <context>
@@ -927,7 +927,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="577"/>
       <source>Move tip to selected feature</source>
-      <translation>選択したフィーチャーにチップを移動</translation>
+      <translation>選択したフィーチャーに先端を移動</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="622"/>
@@ -1000,7 +1000,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>フィーチャーはチップフィーチャーの後に位置しています。</translation>
+      <translation>フィーチャーは先端のフィーチャーの後に位置しています。</translation>
     </message>
   </context>
   <context>
@@ -1846,7 +1846,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Feature is located after the tip feature</source>
-      <translation>フィーチャーはチップフィーチャーの後に位置しています。</translation>
+      <translation>フィーチャーは先端のフィーチャーの後に位置しています。</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="89"/>
@@ -2101,22 +2101,22 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
       <source>ANSI pipe profile</source>
-      <translation type="unfinished">ANSI pipe profile</translation>
+      <translation>ANSI パイププロファイル</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>BSP pipe profile</source>
-      <translation type="unfinished">BSP pipe profile</translation>
+      <translation>BSPパイププロファイル</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>BSW whitworth profile</source>
-      <translation type="unfinished">BSW whitworth profile</translation>
+      <translation>BSW ウィットウォースプロファイル</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>BSF whitworth fine profile</source>
-      <translation type="unfinished">BSF whitworth fine profile</translation>
+      <translation>BSW ウィットウォース高精度プロファイル</translation>
     </message>
   </context>
   <context>
@@ -3264,7 +3264,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="202"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation>半径、高さ、角度から加算円筒を作成</translation>
+      <translation>半径、高さ、角度から加算円柱を作成</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="206"/>
@@ -3373,7 +3373,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="963"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation>移動したフィーチャは、現在設定されているチップの後に表示されます。</translation>
+      <translation>移動したフィーチャは、現在設定されている先端の後に表示されます。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="964"/>
@@ -3660,7 +3660,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="567"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>ボディーのチップにできるのはソリッドフィーチャーだけです。</translation>
+      <translation>ボディーの先端にできるのはソリッドフィーチャーだけです。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="689"/>

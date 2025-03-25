@@ -195,7 +195,7 @@ Tämä komento toimii vain 'verkkopinta' -objektin kanssa.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Cancel</source>
-      <translation>Peruuta</translation>
+      <translation>Kumoa</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="624"/>
@@ -222,7 +222,7 @@ Tämä komento toimii vain 'verkkopinta' -objektin kanssa.</translation>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Paina 'Aloita', valitse sitten pisteet verkkoon; kun on asetettu tarpeeksi pisteitä, niin napsauta hiiren kakkospainikkeella ja valitse 'Luo'. Toista tämä prosessi luodaksesi lisää käyriä. Sulje lopuksi tämä tehtäväpaneeli suorittaaksesi toiminnon loppuun.
 
-Tämä komento toimii vain verkkopinta-objektin kanssa, ei tavallisen näkymäpinnan tai ulkopinnan kanssa. Voit muuntaa objektin verkkopinnaksi käyttämällä Verkkopinta työpenkki (Mesh Workbench) työkaluja.</translation>
+Tämä komento toimii vain verkkopinta-objektin kanssa, ei tavallisen näkymäpinnan tai ulkopinnan kanssa. Voit muuntaa objektin verkkopinnaksi käyttämällä Mesh-työtila (Mesh Workbench) työkaluja.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>

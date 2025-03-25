@@ -1454,7 +1454,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>重新整理</translation>
+      <translation>重新運算</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>

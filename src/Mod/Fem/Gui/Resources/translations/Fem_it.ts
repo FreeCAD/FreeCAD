@@ -1134,12 +1134,12 @@ saranno unite per rendere i limiti del volume invisibili.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
       <source>Save result in binary format</source>
-      <translation type="unfinished">Save result in binary format</translation>
+      <translation>Salva risultato in formato binario</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="300"/>
       <source>Use binary format</source>
-      <translation type="unfinished">Use binary format</translation>
+      <translation>Usa formato binario</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
@@ -1470,7 +1470,7 @@ si aggiunge un contenitore di analisi</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Livello di verbosità sul pannello delle attività</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
@@ -1567,7 +1567,7 @@ esportati da FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
       <source>Mesh elements to export</source>
-      <translation type="unfinished">Mesh elements to export</translation>
+      <translation>Elementi mesh da esportare</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="102"/>
@@ -2695,7 +2695,7 @@ Specificare un altro file.</translation>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density:</source>
-      <translation type="unfinished">Density:</translation>
+      <translation>Densità:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
@@ -6118,7 +6118,7 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="116"/>
       <source>No Color</source>
-      <translation type="unfinished">No Color</translation>
+      <translation>Nessun Colore</translation>
     </message>
   </context>
   <context>
@@ -6674,7 +6674,7 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Erase elements</source>
-      <translation type="unfinished">Erase elements</translation>
+      <translation>Cancella elementi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
@@ -6803,7 +6803,7 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Livello di verbosità sul pannello delle attività</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>

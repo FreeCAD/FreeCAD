@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="64"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation>Imperiální desetinné (in, lb)</translation>
+      <translation>Imperiální desetinné (palce, libry)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="66"/>

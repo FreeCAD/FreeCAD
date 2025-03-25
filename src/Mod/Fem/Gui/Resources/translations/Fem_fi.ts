@@ -3631,7 +3631,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../../AppFemGui.cpp" line="189"/>
       <location filename="../../AppFemGui.cpp" line="190"/>
       <source>Import-Export</source>
-      <translation>Tuo/Vie</translation>
+      <translation>Tuonti/Vienti</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="314"/>
@@ -4737,7 +4737,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="56"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Rajoitteen tyyppi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="66"/>

@@ -16,7 +16,7 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation>Ramo</translation>
+      <translation>Ramificação</translation>
     </message>
   </context>
   <context>
@@ -92,9 +92,9 @@
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation>Este complemento tem as seguintes dependências obrigatórias e opcionais. Você deve instalá-las antes que este complemento possa ser usado.
+      <translation>Esta extensão tem as seguintes dependências obrigatórias e opcionais. Você deve instalá-las antes que esta extensão possa ser usado.
 
-Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha &quot;Ignorar&quot; para instalar o Complemento sem instalar as dependências.</translation>
+Você quer que o gerenciador de extensões os instale automaticamente? Escolha &quot;Ignorar&quot; para instalar a extensão sem instalar as dependências.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
@@ -117,12 +117,12 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation>Ferramentas do Desenvolvedor de Complementos (Addon)</translation>
+      <translation>Ferramentas do Desenvolvedor de extensão</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation>Caminho para o Complemento (addon)</translation>
+      <translation>Caminho para o Addon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -144,7 +144,7 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation>Explicação do que este Complemento fornece. Exibido no Gerenciador de Complementos. Não é necessário que isso declare que este é um Complemento do FreeCAD.</translation>
+      <translation>Explicação do que esta extensão fornece. Exibido no Gerenciador de Extensão. Não é necessário que isso declare que este é um extensão do FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -169,7 +169,7 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>Estilos semânticos (1.2.3-beta) ou calendário (2022.08.30) suportados</translation>
+      <translation>Estilos semânticos (1.2.3-beta) ou CalVer (2022.08.30) suportados</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
@@ -188,7 +188,7 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation>Exibido na lista de Complementos &apos;s de Complementos. Não deve incluir a palavra &quot;FreeCAD&quot;, e deve ser um nome de diretório válido em todos os sistemas operacionais de suporte.</translation>
+      <translation>Exibido na lista de extensões &apos;s de extensões. Não deve incluir a palavra &quot;FreeCAD&quot;, e deve ser um nome de diretório válido em todos os sistemas operacionais de suporte.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
@@ -266,12 +266,12 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation>Lista de tags separadas por vírgulas descrevendo este item:</translation>
+      <translation>Lista de marcações separadas por vírgulas descrevendo este item:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>DICA: Tags comuns incluem &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>DICA: Marcações comuns incluem &quot;Montagem&quot;, &quot;MEF&quot;, &quot;Malha&quot;, &quot;NURBS&quot;, etc.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
@@ -378,7 +378,7 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
       <source>labelSort</source>
-      <translation>labelSort</translation>
+      <translation>Ordenar por rótulo</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="193"/>
@@ -434,7 +434,7 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation>Versões futuras do gerenciador de extensões permitirão que desenvolvedores definam um branch ou tag específico para uso com uma versão específica do FreeCAD (ex. definindo uma tag específica como a última versão da sua extensão que suporte o FreeCAD v0.19, etc.)</translation>
+      <translation>Versões futuras do gerenciador de extensões permitirão que desenvolvedores definam uma ramificação ou marca específica para uso com uma versão específica do FreeCAD (ex. definindo uma marca específica como a última versão da sua extensão que suporte o FreeCAD v0.19, etc.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -444,7 +444,7 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation>Branch, tag ou commit mais apropriado</translation>
+      <translation>Ramificação, marca ou commit mais apropriado</translation>
     </message>
   </context>
   <context>
@@ -487,13 +487,13 @@ Você quer que o Gerenciador de Complementos os instale automaticamente? Escolha
       <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation>Se esta opção for selecionada, ao iniciar o Addon Manager,
+      <translation>Se esta opção for selecionada, ao iniciar o gerenciador de extensões,
 será verificado se há atualizações disponíveis</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires Git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
+      <translation>Verificar automaticamente por atualizações ao iniciar (requer Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="43"/>
@@ -593,17 +593,17 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the Git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Git executable. Autodetected if needed and not specified.</translation>
+      <translation>O caminho para o Git executável. Detectar automaticamente se necessário e não especificado.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires Git)</source>
-      <translation type="unfinished">Show option to change branches (requires Git)</translation>
+      <translation>Exibir opção para alterar a ramificação (requer Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable Git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable Git (fall back to ZIP downloads only)</translation>
+      <translation>Desabilitar Git (retornar para baixar ZIP somente)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="390"/>
@@ -815,7 +815,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation>Etiquetas...</translation>
+      <translation>Marcações...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
@@ -850,7 +850,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>Estilos semânticos (1.2.3-beta) ou calendário (2022.08.30) suportados</translation>
+      <translation>Estilos semânticos (1.2.3-beta) ou CalVer (2022.08.30) suportados</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
@@ -1141,17 +1141,17 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../AddonManager.py" line="524"/>
       <source>Creating addon list</source>
-      <translation type="unfinished">Creating addon list</translation>
+      <translation>Criando a lista de addon</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="534"/>
       <source>Loading addon list</source>
-      <translation type="unfinished">Loading addon list</translation>
+      <translation>Carregando a lista de addon</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="570"/>
       <source>Creating macro list</source>
-      <translation type="unfinished">Creating macro list</translation>
+      <translation>Criando a lista de macro</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1351,7 +1351,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="304"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
-      <translation>Tag do Git &apos;{}&apos; verificada, nenhuma atualização possivel</translation>
+      <translation>Marca do Git &apos;{}&apos; verificada, nenhuma atualização possível</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="297"/>
@@ -1468,11 +1468,11 @@ Moved
 from: {}
 to: {}
 Please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded.
-Moved
-from: {}
-to: {}
-Please restart to use the new version.</translation>
+      <translation>Mudança de ramificação bem-sucedida.
+Movido
+de: {}
+para {}
+Por favor, reinicie para usar a nova versão.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -1924,7 +1924,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../package_list.py" line="349"/>
       <source>Tags</source>
-      <translation>Etiquetas</translation>
+      <translation>Marcações</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
@@ -2100,7 +2100,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="184"/>
       <source>Downloaded {} for {}</source>
-      <translation type="unfinished">Downloaded {} for {}</translation>
+      <translation>Baixou {} para {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="243"/>
@@ -2206,14 +2206,13 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="281"/>
       <source>Git is disabled, skipping Git macros</source>
-      <translation type="unfinished">Git is disabled, skipping Git macros</translation>
+      <translation>Git está desabilitado, ignorando macros do Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="328"/>
       <source>Attempting to change non-Git Macro setup to use Git
 </source>
-      <translation type="unfinished">Attempting to change non-Git Macro setup to use Git
-</translation>
+      <translation>Tentando alterar a configuração de Macro não-Git para usar Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="345"/>
@@ -2243,27 +2242,27 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="548"/>
       <source>Checking {} for update</source>
-      <translation type="unfinished">Checking {} for update</translation>
+      <translation>Verificando {} por atualização</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="606"/>
       <source>Unable to fetch Git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch Git updates for workbench {}</translation>
+      <translation>Impossível de recuperar atualizações Git para a bancada de trabalho {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="619"/>
       <source>Git status failed for {}</source>
-      <translation type="unfinished">Git status failed for {}</translation>
+      <translation>Estado do Git falhou para {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Caching {} macro</source>
-      <translation type="unfinished">Caching {} macro</translation>
+      <translation>Armazenando cache de {} macro</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="849"/>
       <source>Caching macros</source>
-      <translation type="unfinished">Caching macros</translation>
+      <translation>Armazenando cache de macros</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="687"/>
@@ -2331,7 +2330,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic Git update failed with the following message:</source>
-      <translation type="unfinished">Basic Git update failed with the following message:</translation>
+      <translation>Atualização básica do Git falhou com a seguinte mensagem:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="161"/>
@@ -2341,7 +2340,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using Git</source>
-      <translation type="unfinished">Failed to clone {} into {} using Git</translation>
+      <translation>Falhou em clonar {} em {} usando o Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>

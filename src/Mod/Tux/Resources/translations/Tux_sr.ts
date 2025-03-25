@@ -86,7 +86,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="574"/>
       <source>Free Turntable</source>
-      <translation>Слободно обртни сто</translation>
+      <translation>Слободни обртни сто</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="575"/>

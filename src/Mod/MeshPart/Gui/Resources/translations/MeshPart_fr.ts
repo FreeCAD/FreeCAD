@@ -267,7 +267,7 @@ Cette commande ne fonctionne qu'avec un objet "Mesh", pas avec une face ou une s
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation>Démarrer</translation>
+      <translation>Début</translation>
     </message>
   </context>
   <context>
@@ -340,7 +340,7 @@ spécifiée multipliée par la longueur du segment de maillage en cours (arête)
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>Les segments de maillage seront regroupés en fonction de la couleur des faces de l'objet.
-Ces groupes seront exportés pour les formats de sortie de maillage prenant en charge
+Ces groupes seront exportés pour les formats des résultats du maillage prenant en charge
 cette fonction (par exemple le format OBJ).</translation>
     </message>
     <message>

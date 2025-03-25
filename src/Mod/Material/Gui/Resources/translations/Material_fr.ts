@@ -347,7 +347,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to clipboard</source>
-      <translation>Copier dans le Presse-papiers</translation>
+      <translation>Copier dans le presse-papiers</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -636,7 +636,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="111"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Épaisseur</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="195"/>
@@ -850,7 +850,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
-      <translation>Hériter du nouveau</translation>
+      <translation>Hériter</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
@@ -1129,7 +1129,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <location filename="../../AppMatGui.cpp" line="108"/>
       <location filename="../../AppMatGui.cpp" line="110"/>
       <source>Material</source>
-      <translation>Gérer les matériaux</translation>
+      <translation>Material</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="187"/>
@@ -1191,7 +1191,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>&amp;Appearance...</source>
-      <translation type="unfinished">&amp;Appearance...</translation>
+      <translation>Définir l'&amp;apparence...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1205,7 +1205,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <translation>Définir le &amp;matériau...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

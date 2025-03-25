@@ -894,7 +894,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <source>OK</source>
-      <translation>Підтвердити</translation>
+      <translation>Гаразд</translation>
     </message>
     <message>
       <location filename="../ui/dialogMaterialChooser.ui" line="14"/>

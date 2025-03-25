@@ -1779,7 +1779,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraint.cpp" line="215"/>
       <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="216"/>
@@ -1792,7 +1792,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="372"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1800,7 +1800,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="548"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1808,7 +1808,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="602"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1816,7 +1816,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1090"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1824,7 +1824,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="457"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1832,7 +1832,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="333"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1840,7 +1840,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="515"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1848,7 +1848,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="115"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1856,7 +1856,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="308"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1864,7 +1864,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="218"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1872,7 +1872,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="317"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1880,7 +1880,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="385"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1888,7 +1888,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="594"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1909,7 +1909,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="334"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>
@@ -1943,7 +1943,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintBearing.cpp" line="208"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="170"/>
@@ -2003,7 +2003,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="404"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="132"/>
@@ -2064,7 +2064,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
@@ -2093,7 +2093,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="181"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="190"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
@@ -2222,7 +2222,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="891"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="901"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="819"/>
@@ -2251,7 +2251,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="197"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="206"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
@@ -2289,7 +2289,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="157"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="164"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="150"/>
@@ -2317,7 +2317,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="331"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="341"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="257"/>
@@ -2350,7 +2350,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="217"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
@@ -2390,7 +2390,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintPressure.cpp" line="185"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="131"/>
@@ -2432,7 +2432,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintSpring.cpp" line="183"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="192"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="129"/>
@@ -2460,7 +2460,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="240"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="250"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="189"/>
@@ -2499,7 +2499,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="419"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="428"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="293"/>
@@ -6562,7 +6562,7 @@ Please select a result type first.</translation>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="346"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="356"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="273"/>
@@ -6587,7 +6587,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="741"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Įvesties klaida</translation>
     </message>
   </context>
   <context>

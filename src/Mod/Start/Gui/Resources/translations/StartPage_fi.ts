@@ -21,7 +21,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation>Näitä asetuksia (ja monia muita) voidaan muuttaa myöhemmin ohjelman asetuksista.</translation>
+      <translation>Näitä (ja monia muita) voidaan muuttaa myöhemmin ohjelman asetuksista.</translation>
     </message>
   </context>
   <context>
@@ -39,7 +39,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
-      <translation>Navigaatiotyyli</translation>
+      <translation>Navigointityyli</translation>
     </message>
   </context>
   <context>
@@ -47,17 +47,17 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Start</source>
-      <translation>Aloita</translation>
+      <translation>Aloitus</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>&amp;Aloitussivu</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start Page</source>
-      <translation type="unfinished">Displays the Start Page</translation>
+      <translation>Näyttää aloitussivun</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../StartView.cpp" line="290"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation>Luo uusi tyhjä FreeCAD tiedosto</translation>
+      <translation>Luo uusi FreeCAD tiedosto</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="293"/>
@@ -80,17 +80,17 @@
     <message>
       <location filename="../../StartView.cpp" line="294"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation>Avaa olemassa oleva CAD-tiedosto tai 3D-malli</translation>
+      <translation>Avaa CAD-tiedosto tai 3D-malli</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="297"/>
       <source>Parametric Part</source>
-      <translation>Parametrinen osa</translation>
+      <translation>Parametrinen Part</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="298"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Luo osa Part Design työpöydällä</translation>
+      <translation>Luo uusi osa Part Design- työtilassa</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="301"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../StartView.cpp" line="302"/>
       <source>Create an assembly project</source>
-      <translation>Luo kokoonpanoprojekti</translation>
+      <translation>Luo uusi kokoonpanoprojekti</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="305"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../StartView.cpp" line="306"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Luo 2D-piirustus Draft-työpöydällä</translation>
+      <translation>Luo uusi 2D-piirustus Draft-työtilassa</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="309"/>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../../StartView.cpp" line="310"/>
       <source>Create an architectural project</source>
-      <translation>Luo arkkitehtoninen projekti</translation>
+      <translation>Luo uusi arkkitehtuuriprojekti</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="525"/>
@@ -140,7 +140,7 @@
     <message>
       <location filename="../../StartView.cpp" line="530"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>Avaa ensimmäisen käynnistyksen asetukset</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="532"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../StartView.cpp" line="519"/>
       <source>Start</source>
-      <translation>Aloita</translation>
+      <translation>Aloitus</translation>
     </message>
   </context>
   <context>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="113"/>
       <source>FreeCAD Classic</source>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>Klassinen FreeCAD</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
@@ -187,19 +187,19 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation>FreeCAD, tumma</translation>
+      <translation>Tumma FreeCAD</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation>FreeCAD, vaalea</translation>
+      <translation>Vaalea FreeCAD</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>Klassinen FreeCAD</translation>
     </message>
   </context>
 </TS>

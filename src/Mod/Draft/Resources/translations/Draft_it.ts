@@ -710,7 +710,7 @@ Una serie di link è più efficiente quando si creano più copie, ma non può es
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>Azzera la selezione del punto 3D</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -2331,8 +2331,8 @@ Questo potrebbe fallire per i modelli DXF dopo la versione R12.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Se selezionato, il contorno di una figura umana viene visualizzato nell'angolo in basso a sinistra della griglia.
+Questa opzione ha effetto solo se l'ambiente di lavoro Bim è installato e se "Mostra bordo griglia" è abilitato.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -2827,12 +2827,12 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>Se selezionato, il widget di aggancio viene visualizzato nella barra di stato Draft</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>Se questa opzione è selezionata, il widget della scala delle annotazioni viene visualizzato nella barra di stato di Draft</translation>
     </message>
   </context>
   <context>
@@ -3368,7 +3368,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="1775"/>
       <source>Facebinder elements</source>
-      <translation>Elementi di Lega facce (Facebinder)</translation>
+      <translation>Elementi di Lega facce</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="46"/>
@@ -3471,7 +3471,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Widget scala di Draft</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3481,7 +3481,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Widget aggancio di Draft</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -4944,7 +4944,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>Sono necessari due spigoli.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
@@ -5607,22 +5607,22 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>Impossibile creare Facce legate</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>Nessuna faccia valida per Facce legate</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>Impossibile generare Facce legate, riprendo con Sew disabilitato</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>Fallita la conversione delle facce piane B-spline di Facce legate in facce planari</translation>
     </message>
   </context>
   <context>
@@ -6249,7 +6249,7 @@ Tuttavia, un singolo schizzo con tracce disconnesse sarà convertito in diversi 
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="166"/>
       <source>Snap angle</source>
-      <translation>Aggancia Angolo</translation>
+      <translation>Aggancia punti cardinali</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>

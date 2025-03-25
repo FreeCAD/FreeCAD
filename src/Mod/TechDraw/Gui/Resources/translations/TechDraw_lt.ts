@@ -3158,7 +3158,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2454"/>
       <source>B-spline Curve Error</source>
-      <translation type="unfinished">B-spline Curve Error</translation>
+      <translation>B-splaininės kreivės klaida</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2455"/>
@@ -4430,7 +4430,7 @@ can be a performance penalty in complex models.</translation>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="173"/>
       <source>If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
 </source>
-      <translation type="unfinished">If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
+      <translation>Jei pažymėta, prieš naudojimą įvesti pavidalai bus patikrinti, ar juose nėra klaidų, o netinkami bus praleisti pavidalų ištraukiklio. Klaidų tikrinimas vyksta lėčiau, bet gali užkirsti kelią gedimams dėl kai kurių geometrijos problemų.
 </translation>
     </message>
     <message>

@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>Polynomial surface</source>
-      <translation>Polinomska površina</translation>
+      <translation>Polinomska površ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="366"/>
       <source>Approximate a polynomial surface</source>
-      <translation>Aproksimiraj polinomsku površinu</translation>
+      <translation>Aproksimiraj polinomsku površ</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Aproksimiraj B-splajn površinu...</translation>
+      <translation>Aproksimiraj B-splajn površ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Aproksimiraj B-splajn površinu</translation>
+      <translation>Aproksimiraj B-splajn površ</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Žičani ram od ivica mreže...</translation>
+      <translation>Žičani okvir od mreže...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="538"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Napravi žičani ram od ivica mreže</translation>
+      <translation>Napravi žičani okvir od mreže</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="605"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poasonova rekonstrukcija površine</translation>
+      <translation>Poasonova rekonstrukcija površi</translation>
     </message>
   </context>
   <context>
@@ -220,7 +220,7 @@
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Fit polynomial surface</source>
-      <translation>Uklopi polinomsku površinu</translation>
+      <translation>Uklopi polinomsku površ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="650"/>
@@ -254,7 +254,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation>Uklopi B-Splajn površinu</translation>
+      <translation>Uklopi B-Splajn površ</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
@@ -444,7 +444,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation>Minimalni broj stranica</translation>
+      <translation>Minimalni broj pljosni</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>&lt; stranica od</translation>
+      <translation>&lt; pljosni od</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
@@ -528,7 +528,7 @@
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Minimalni broj stranica</translation>
+      <translation>Minimalni broj pljosni</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -592,7 +592,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-spline curve</source>
-      <translation type="unfinished">Fit B-spline curve</translation>
+      <translation>Uklopi B-Splajn krivu</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

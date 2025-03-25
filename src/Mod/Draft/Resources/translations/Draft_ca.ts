@@ -709,7 +709,7 @@ Una matriu d'enllaç és més eficient quan es creen diverses còpies, però no 
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>Restablir selecció de punts 3D</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -2295,8 +2295,7 @@ This might fail for post DXF R12 templates.</source>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Si està marcat, el contorn d'una figura humana es mostra a l'extrem inferior esquerre de la quadrícula. Aquesta opció només és efectiva si "Mostra la vora de la quadrícula" està activada.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -2790,12 +2789,12 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>Si està marcat, el giny Ajust es mostra a la barra d'estat d'Esbós</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>Si està marcat, el giny Escala d'anotació es mostra a la barra d'estat d'Esbós</translation>
     </message>
   </context>
   <context>
@@ -3431,7 +3430,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Giny d'escala d'esbós</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3441,7 +3440,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Giny d'ajust d'esbós</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -4904,7 +4903,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>Es necessiten dues vores.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
@@ -5569,22 +5568,22 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>No s'ha pogut construir l'Ajunta-cares</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>No hi ha cares vàlides per a l'Ajunta-cares</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>No s'ha pogut construir l'Ajunta-cares, continuant amb "Cosir" desactivat</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>Ha fallat la conversió de cares planes B-spline de l'Ajunta-cares en cares planes</translation>
     </message>
   </context>
   <context>

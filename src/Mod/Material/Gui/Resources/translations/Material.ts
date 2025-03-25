@@ -30,24 +30,6 @@
     </message>
 </context>
 <context>
-    <name>CmdMaterialsEdit</name>
-    <message>
-        <location filename="../../Command.cpp" line="52"/>
-        <source>Material</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="53"/>
-        <source>Edit...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="54"/>
-        <source>Edit material properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>MatGui::Array2D</name>
     <message>
         <location filename="../../Array2D.ui" line="14"/>
@@ -1223,6 +1205,24 @@ If unchecked, they will be sorted by their name.</source>
     <message>
         <location filename="../../Workbench.cpp" line="35"/>
         <source>Materials</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdMaterialEdit</name>
+    <message>
+        <location filename="../../Command.cpp" line="52"/>
+        <source>Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="53"/>
+        <source>Edit...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="54"/>
+        <source>Edit material properties</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -281,7 +281,7 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
     <message>
       <location filename="../../first_run.ui" line="62"/>
       <source>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</source>
-      <translation>Add-on Manager tarjoaa pääsyn laajaan kirjastoon hyödyllisiä kolmannen osapuolen FreeCAD -laajennuksia. Turvallisuudesta tai toiminnallisuudesta ei voida antaa takuita.</translation>
+      <translation>Lisäosien hallinnasta löytyy paljon hyödyllisiä kolmannen osapuolen FreeCAD -laajennuksia. Niitten turvallisuutta tai toiminnallisuutta ei voida taata.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="96"/>
@@ -291,7 +291,7 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
     <message>
       <location filename="../../first_run.ui" line="103"/>
       <source>Cancel</source>
-      <translation>Peruuta</translation>
+      <translation>Kumoa</translation>
     </message>
   </context>
   <context>
@@ -319,12 +319,12 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
       <source>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</source>
-      <translation type="unfinished">NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</translation>
+      <translation>HUOM: Jos &quot;muu...&quot; on valittuna, paketti ei ole ALLOWED_PYTHON_PACKAGES.txt tiedostossa, eikä Addon Manager asenna sitä automaattisesti. Lähetä pyyntö osoitteessa &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; pyytääksesi paketin lisäämistä.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation type="unfinished">If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</translation>
+      <translation>Jos tämä on valinnainen riippuvuus, Addon Manager tarjoaa sen asennusta (mikäli mahdollista), mutta ei estä asennusta, jos käyttäjä ei halua tai voi asentaa sitä.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
@@ -356,7 +356,7 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
       <location filename="../../expanded_view.py" line="127"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation type="unfinished">(tags)</translation>
+      <translation>(tagit)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="130"/>
@@ -378,7 +378,7 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
       <source>labelSort</source>
-      <translation type="unfinished">labelSort</translation>
+      <translation>labelSort</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="193"/>
@@ -429,12 +429,12 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="14"/>
       <source>Advanced Version Mapping</source>
-      <translation type="unfinished">Advanced Version Mapping</translation>
+      <translation>Tarkempi versiointi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation type="unfinished">Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</translation>
+      <translation>Tulevissa FreeCAD -versioisa Addon Manager mahdollistaa kehittäjien määrittämän tietyn haaran tai tagin käytettäväksi tietyn FreeCAD version kanssa (esim. asettaa tietyn tagin lisäosan viimeisenä versiona tukemaan v0.19, jne.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -444,7 +444,7 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation type="unfinished">Best-available branch, tag, or commit</translation>
+      <translation>Paras saatavana oleva haara, tagi tai päivitys</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
       <source>Advanced version mapping...</source>
-      <translation type="unfinished">Advanced version mapping...</translation>
+      <translation>Tarkempi versiointi...</translation>
     </message>
   </context>
   <context>
@@ -487,13 +487,13 @@ Haluatko Addon Manager asentaa ne automaattisesti? Valitse &quot;Ohita&quot; ase
       <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>Jos tämä valinta on valittuna, asennettujen lisäosien
+saatavilla olevat päivitykset tarkistetaan kun lisäosien hallinta avataan</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires Git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
+      <translation>Tarkista päivitykset automaattisesti avattaessa (vaatii Git -versionhallinnan)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="43"/>
@@ -553,7 +553,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="200"/>
       <source>Custom repositories</source>
-      <translation type="unfinished">Custom repositories</translation>
+      <translation>Mukautetut repot</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="254"/>
@@ -578,12 +578,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
-      <translation type="unfinished">Score source URL</translation>
+      <translation>Pisteiden lähde URL</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
-      <translation type="unfinished">The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</translation>
+      <translation>Addon Score tietojen URL-osoite (katso Addon Manager wiki sivun muotoiluohje ja hosting tiedot).</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="350"/>
@@ -593,17 +593,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the Git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Git executable. Autodetected if needed and not specified.</translation>
+      <translation>Polku suoritettavaan git -ohjelmatiedostoon. Tunnistetaan tarvittaessa, jos sitä ei ole määritetty.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires Git)</source>
-      <translation type="unfinished">Show option to change branches (requires Git)</translation>
+      <translation>Näytä haarojen vaihtoehdot (vaatii Git -versionhallinnan)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable Git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable Git (fall back to ZIP downloads only)</translation>
+      <translation>Poista Git käytöstä (siirry vain ZIP-lataukseen)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="390"/>
@@ -618,7 +618,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>Lisäosien kehittäjän tila</translation>
     </message>
   </context>
   <context>
@@ -626,7 +626,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation type="unfinished">Uninstalls a selected macro or workbench</translation>
+      <translation>Poistaa valitun makron tai työpöydän</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="52"/>
@@ -664,7 +664,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation type="unfinished">The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</translation>
+      <translation>Lisäosien hallinta on asentanut seuraavat Python -paketit lisäosien riippuvuuksien vuoksi. Asennussijainti:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
@@ -684,12 +684,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
       <source>Used by</source>
-      <translation type="unfinished">Used by</translation>
+      <translation>Tarvitsee</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation type="unfinished">An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</translation>
+      <translation>Asteriski (*) &quot;Tarvitsee&quot; -sarakkeessa osoittaa valinnaisen riippuvuuden. Huomaa, että ainoastaan lisäosan suora tuonti näkyy tässä. Muitakin tämän paketin tarvitsemia Python-paketteja on saatettu asentaa.</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
@@ -743,22 +743,22 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
       <source>Preference Pack</source>
-      <translation type="unfinished">Preference Pack</translation>
+      <translation>Ensisijainen Paketti</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Työpöytä</translation>
+      <translation>Työtila</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
       <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
-      <translation type="unfinished">If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</translation>
+      <translation>Jos tämä on Addonin ainoa sisältö, kaikki muut metatiedot voidaan periä ylimmältä tasolta, eikä sitä tarvitse täsmentää täällä.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
       <source>This is the only item in the Addon</source>
-      <translation type="unfinished">This is the only item in the Addon</translation>
+      <translation>Tämä on lisäosan ainoa kohde</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
@@ -785,22 +785,22 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation type="unfinished">Workbench class name</translation>
+      <translation>Työtilan luokan nimi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation type="unfinished">Class that defines &quot;Icon&quot; data member</translation>
+      <translation>Luokka, joka määrittelee &quot;Kuvake&quot; -työtilassa</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>Alihakemisto</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
       <source>Optional, defaults to name of content item</source>
-      <translation type="unfinished">Optional, defaults to name of content item</translation>
+      <translation>Valinnainen, oletusarvoisesti tietueen nimi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
@@ -810,7 +810,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
-      <translation type="unfinished">Optional, defaults to inheriting from top-level Addon</translation>
+      <translation>Valinnainen, oletusarvoisesti peritty päätason lisäosalta</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
@@ -835,7 +835,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</translation>
+      <translation>Näytetään Lisäosien hallinnan luettelossa. Älä käytä nimessä sanaa &quot;FreeCAD&quot;.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -860,12 +860,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>Näyttönimi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+      <translation>Tyhjäksi jätetyt kentät periytyvät ylimmän tason Addon-metatiedoista, joten teknisesti ne ovat kaikki valinnaisia. Lisäosissa, joissa on useita sisältökohteita, jokaisen kohteen tulee tarjota yksilöllinen näytönimi ja kuvaus.</translation>
     </message>
   </context>
   <context>
@@ -906,7 +906,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../change_branch.ui" line="23"/>
       <source>Change to branch:</source>
-      <translation type="unfinished">Change to branch:</translation>
+      <translation>Vaihda haaraan:</translation>
     </message>
   </context>
   <context>
@@ -965,7 +965,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../proxy_authentication.ui" line="20"/>
       <source>Proxy requires authentication</source>
-      <translation type="unfinished">Proxy requires authentication</translation>
+      <translation>Välityspalvelin vaatii todennuksen</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="29"/>
@@ -975,12 +975,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../proxy_authentication.ui" line="42"/>
       <source>Placeholder for proxy address</source>
-      <translation type="unfinished">Placeholder for proxy address</translation>
+      <translation>Välityspalvelimen osoitteen paikka</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="49"/>
       <source>Realm:</source>
-      <translation type="unfinished">Realm:</translation>
+      <translation>Alue:</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="56"/>
@@ -1141,17 +1141,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="524"/>
       <source>Creating addon list</source>
-      <translation type="unfinished">Creating addon list</translation>
+      <translation>Luodaan lisäosaluetteloa</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="534"/>
       <source>Loading addon list</source>
-      <translation type="unfinished">Loading addon list</translation>
+      <translation>Ladataan lisäosaluetteloa</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="570"/>
       <source>Creating macro list</source>
-      <translation type="unfinished">Creating macro list</translation>
+      <translation>Luodaan makroluetteloa</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1198,7 +1198,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
       <source>Apply %n available update(s)</source>
-      <translation type="unfinished">Apply %n available update(s)</translation>
+      <translation>Ota %n päivitys(tä) käyttöön</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
@@ -1236,7 +1236,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_python_deps_gui.py" line="239"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
-      <translation type="unfinished">This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</translation>
+      <translation>Tämä näyttää olevan ensimmäinen kerta, kun tätä Pythonin versiota käytetään Lisäosien hallinnassa. Haluatko asentaa samat automaattisesti asennetut riippuvuudet sitä varten?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_python_deps_gui.py" line="268"/>
@@ -1401,17 +1401,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="355"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+      <translation>VAROITUS: Tämä lisäosa on vanhentunut</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="357"/>
       <source>WARNING: This addon is Python 2 only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 only</translation>
+      <translation>VAROITUS: Tämä lisäosa on vain Python -versiolle 2</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="358"/>
       <source>WARNING: This addon requires FreeCAD {}</source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD {}</translation>
+      <translation>VAROITUS: Tämä lisäosa vaatii FreeCAD {}</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="353"/>
@@ -1482,12 +1482,12 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="117"/>
       <source>Change branch...</source>
-      <translation type="unfinished">Change branch...</translation>
+      <translation>Vaihda haaraa...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="118"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>Palaa pakettilistalle</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="70"/>
@@ -1512,13 +1512,13 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>QtNetwork ei voitu tuoda -- katso raporttinäkymä yksityiskohtiin. Lisäosien hallinta ei ole käytettävissä.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
       <source>Other...</source>
       <comment>For providing a license other than one listed</comment>
-      <translation type="unfinished">Other...</translation>
+      <translation>Muu...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
@@ -1533,12 +1533,12 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer.py" line="364"/>
       <source>Received {} response code from server</source>
-      <translation type="unfinished">Received {} response code from server</translation>
+      <translation>Vastaus {} saatu palvelimelta</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="532"/>
       <source>Failed to install macro {}</source>
-      <translation type="unfinished">Failed to install macro {}</translation>
+      <translation>Makron {} asentaminen ei onnistunut</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="566"/>
@@ -1583,7 +1583,7 @@ Please restart to use the new version.</translation>
       <location filename="../../addonmanager_devmode_add_content.py" line="428"/>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="108"/>
       <source>Workbench</source>
-      <translation>Työpöytä</translation>
+      <translation>Työtila</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="429"/>
@@ -1603,12 +1603,12 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="494"/>
       <source>Internal Workbench</source>
-      <translation type="unfinished">Internal Workbench</translation>
+      <translation>Sisäinen työtila</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="496"/>
       <source>External Addon</source>
-      <translation type="unfinished">External Addon</translation>
+      <translation>Ulkoinen lisäosa</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="497"/>
@@ -1624,7 +1624,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>Liian monta lueteltavaksi</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="164"/>
@@ -1634,12 +1634,12 @@ Please restart to use the new version.</translation>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="148"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="159"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>Puuttuva riippuvuus</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="184"/>
       <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
-      <translation type="unfinished">Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</translation>
+      <translation>Lisäosa &apos;{}&apos; tarvitsee toimiakseen osan &apos;{}&apos;, joka ei ole saatavilla FreeCAD-versioosi.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
@@ -1665,12 +1665,12 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="246"/>
       <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+      <translation>Tämä lisäys (tai yksi sen riippuvuuksista) vaatii Pythonin {}.{}, ja järjestelmässäsi on versio {}.{}. Asennus peruutettiin.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="267"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
-      <translation type="unfinished">Optional dependency on {} ignored because it is not in the allow-list</translation>
+      <translation>Valinnainen riippuvuus {} ohitetaan, koska se ei ole sallittujen luettelossa</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="313"/>
@@ -1682,34 +1682,34 @@ Please restart to use the new version.</translation>
       <location filename="../../addonmanager_installer_gui.py" line="339"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Pythonia ei voi suorittaa</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation type="unfinished">Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</translation>
+      <translation>Python-ohjelman automaattisesti paikantaminen epäonnistui tai polku on asetettu väärin. Tarkista Lisäosien halllinnan asetukset ja määritä polku Python- suoritustiedostoon.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="348"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
-      <translation type="unfinished">Dependencies could not be installed. Continue with installation of {} anyway?</translation>
+      <translation>Riippuvuuksia ei voitu asentaa. Jatketaanko silti {} asennusta?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="363"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="86"/>
       <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
+      <translation>Ei voi suorittaa pip</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
-      <translation type="unfinished">Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</translation>
+      <translation>Pipin suorittaminen epäonnistui, Pip saattaa puuttua. Varmista, että järjestelmässäsi on pip asennettu ja yritä uudelleen. Epäonnistunut komento oli:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="373"/>
       <location filename="../../addonmanager_installer_gui.py" line="398"/>
       <source>Continue with installation of {} anyway?</source>
-      <translation type="unfinished">Continue with installation of {} anyway?</translation>
+      <translation>Jatketaanko silti {} asennusta?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="390"/>
@@ -1720,17 +1720,17 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Katso raporttinäkymästä tarkempi virheloki.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
-      <translation type="unfinished">Installing Addon</translation>
+      <translation>Lisäosaa asennetaan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
-      <translation type="unfinished">Installing FreeCAD Addon &apos;{}&apos;</translation>
+      <translation>Asennetaan FreeCAD -lisäosaa &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="450"/>
@@ -1740,7 +1740,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
-      <translation type="unfinished">Cancelling installation of &apos;{}&apos;</translation>
+      <translation>Peruutetaan &apos;{}&apos; asennus</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="477"/>
@@ -1756,7 +1756,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <source>Failed to install {}</source>
-      <translation type="unfinished">Failed to install {}</translation>
+      <translation>Ei voitu asentaa {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="605"/>
@@ -1768,7 +1768,7 @@ Please restart to use the new version.</translation>
       <location filename="../../addonmanager_installer_gui.py" line="731"/>
       <location filename="../../install_to_toolbar.py" line="251"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>FreeCADin Lisäosien hallinnassa asennettu makro</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="733"/>
@@ -1780,22 +1780,22 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="76"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
-      <translation type="unfinished">Unable to read data from GitHub: check your internet connection and proxy settings and try again.</translation>
+      <translation>GitHubista ei voitu lukea tietoja: tarkista internet-yhteytesi ja välityspalvelimen asetukset ja yritä uudelleen.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="192"/>
       <source>XML failure while reading metadata from file {}</source>
-      <translation type="unfinished">XML failure while reading metadata from file {}</translation>
+      <translation>XML-virhe luettaessa metatietoja tiedostosta {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="199"/>
       <source>Invalid metadata in file {}</source>
-      <translation type="unfinished">Invalid metadata in file {}</translation>
+      <translation>Virheellinen metadata tiedostossa {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="241"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
-      <translation type="unfinished">WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</translation>
+      <translation>VAROITUS: Paketissa määritelty polku.xml metatiedot eivät vastaa tällä hetkellä tarkistettua haaraa.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="263"/>
@@ -1815,7 +1815,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_devmode.py" line="272"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>Alihakemisto</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="275"/>
@@ -1825,13 +1825,13 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_devmode.py" line="433"/>
       <source>Select the folder containing your Addon</source>
-      <translation type="unfinished">Select the folder containing your Addon</translation>
+      <translation>Valitse kansio joka sisältää lisäosan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="562"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
-      <translation type="unfinished">No Vermin, cancelling operation.</translation>
+      <translation>Ei Verminiä, peruutetaan toiminto.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="567"/>
@@ -1861,7 +1861,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_devmode.py" line="620"/>
       <source>Attempting to install Vermin from PyPi</source>
-      <translation type="unfinished">Attempting to install Vermin from PyPi</translation>
+      <translation>Yritetään asentaa Vermin PyPistä</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="645"/>
@@ -1884,7 +1884,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_devmode.py" line="678"/>
       <source>Select an icon file for this package</source>
-      <translation type="unfinished">Select an icon file for this package</translation>
+      <translation>Valitse kuvaketiedosto tälle paketille</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_search.py" line="87"/>
@@ -1919,22 +1919,22 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../package_list.py" line="400"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Ylläpitäjät:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="349"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Tagit</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
       <source>{} ★ on GitHub</source>
-      <translation type="unfinished">{} ★ on GitHub</translation>
+      <translation>{} ★ on GitHub</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="430"/>
       <source>No ★, or not on GitHub</source>
-      <translation type="unfinished">No ★, or not on GitHub</translation>
+      <translation>Ei ★, tai ei GitHubissa</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="435"/>
@@ -1949,7 +1949,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../package_list.py" line="446"/>
       <source>Score: </source>
-      <translation type="unfinished">Score: </translation>
+      <translation>Pisteet: </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="468"/>
@@ -1970,13 +1970,13 @@ Please restart to use the new version.</translation>
       <location filename="../../package_list.py" line="473"/>
       <location filename="../../package_list.py" line="530"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>Odottaa uudelleenkäynnistystä</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="475"/>
       <location filename="../../package_list.py" line="533"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>POISTETTU KÄYTÖSTÄ</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="490"/>
@@ -2001,7 +2001,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="100"/>
       <source>Filter by...</source>
-      <translation type="unfinished">Filter by...</translation>
+      <translation>Suodatus...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="102"/>
@@ -2022,7 +2022,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="116"/>
       <source>Preference Pack</source>
-      <translation type="unfinished">Preference Pack</translation>
+      <translation>Ensisijainen Paketti</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="120"/>
@@ -2042,22 +2042,22 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../change_branch.py" line="86"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>VAARA: Kehittäjien ominaisuus</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="93"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation type="unfinished">DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</translation>
+      <translation>DANGER: Haarojen vaihtaminen on tarkoitettu kehittäjille ja beetatestaajille, ja se voi johtaa asiakirjojen vahingoittumiseen, ei-taaksepäin yhteensopiviin asiakirjoihin, epävakauteen, kaatumisiin ja/tai universumin räjähdykseen. Oletko varma, että haluat jatkaa?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="102"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>Paikallisia muutoksia havaittu</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="107"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation type="unfinished">WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</translation>
+      <translation>VAROITUS: Tällä repolla on lähettämättömiä paikallisia muutoksia. Oletko varma, että haluat vaihtaa brancheja (tuot muutokset mukanasi)?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="206"/>
@@ -2069,7 +2069,7 @@ Please restart to use the new version.</translation>
       <location filename="../../change_branch.py" line="212"/>
       <source>Remote tracking</source>
       <comment>Table header for git remote tracking branch name</comment>
-      <translation type="unfinished">Remote tracking</translation>
+      <translation>Etäseuranta</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="218"/>
@@ -2080,27 +2080,27 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="131"/>
       <source>Installation of Python package {} failed</source>
-      <translation type="unfinished">Installation of Python package {} failed</translation>
+      <translation>Python-paketin {} asennus epäonnistui</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="157"/>
       <source>Installation of optional package failed</source>
-      <translation type="unfinished">Installation of optional package failed</translation>
+      <translation>Valinnaisen paketin asennus epäonnistui</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="185"/>
       <source>Installing required dependency {}</source>
-      <translation type="unfinished">Installing required dependency {}</translation>
+      <translation>Asennetaan tarvittava riippuvuus {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="195"/>
       <source>Installation of Addon {} failed</source>
-      <translation type="unfinished">Installation of Addon {} failed</translation>
+      <translation>Lisäosan {} asennus epäonnistui</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="184"/>
       <source>Downloaded {} for {}</source>
-      <translation type="unfinished">Downloaded {} for {}</translation>
+      <translation>Ladattu {} {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="243"/>
@@ -2161,17 +2161,17 @@ Please restart to use the new version.</translation>
       <location filename="../../Addon.py" line="840"/>
       <location filename="../../Addon.py" line="856"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Tapahtui virhe tuotaessa {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>
       <source>An unknown error occurred</source>
-      <translation type="unfinished">An unknown error occurred</translation>
+      <translation>Tapahtui tuntematon virhe</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="127"/>
       <source>Could not find addon {} to remove it.</source>
-      <translation type="unfinished">Could not find addon {} to remove it.</translation>
+      <translation>Lisäosaa {} ei löytynyt poistettavaksi.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="151"/>
@@ -2228,7 +2228,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="361"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Kuittaus onnistui</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="371"/>
@@ -2243,7 +2243,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="548"/>
       <source>Checking {} for update</source>
-      <translation type="unfinished">Checking {} for update</translation>
+      <translation>Tarkistetaan lisäosan {} päivityksiä</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="606"/>
@@ -2253,17 +2253,17 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="619"/>
       <source>Git status failed for {}</source>
-      <translation type="unfinished">Git status failed for {}</translation>
+      <translation>Git -tilailmoitus epäonnistui osalle {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Caching {} macro</source>
-      <translation type="unfinished">Caching {} macro</translation>
+      <translation>Puskuroidaan makroa {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="849"/>
       <source>Caching macros</source>
-      <translation type="unfinished">Caching macros</translation>
+      <translation>Ladataan makroja välimuistiin</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="687"/>
@@ -2299,7 +2299,7 @@ Please restart to use the new version.</translation>
       <location filename="../../addonmanager_workers_startup.py" line="883"/>
       <source>Failed to kill process for macro {}!
 </source>
-      <translation type="unfinished">Failed to kill process for macro {}!
+      <translation>Makron {} prosessin sulkeminen epäonnistui!
 </translation>
     </message>
     <message>
@@ -2371,7 +2371,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>joitakin lisäosia on saatettu päivittää</translation>
     </message>
     <message>
       <location filename="../../addonmanager_readme_controller.py" line="82"/>
@@ -2391,17 +2391,17 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="159"/>
       <source>Composite view</source>
-      <translation type="unfinished">Composite view</translation>
+      <translation>Yhdistetty näkymä</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="160"/>
       <source>Expanded view</source>
-      <translation type="unfinished">Expanded view</translation>
+      <translation>Laajennettu näkymä</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="161"/>
       <source>Compact view</source>
-      <translation type="unfinished">Compact view</translation>
+      <translation>Tiivistetty näkymä</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="155"/>
@@ -2431,7 +2431,7 @@ Please restart to use the new version.</translation>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="168"/>
       <source>Score</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Score</translation>
+      <translation>Pisteet</translation>
     </message>
   </context>
   <context>
@@ -2452,12 +2452,12 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="115"/>
       <source>Finished removing {}</source>
-      <translation type="unfinished">Finished removing {}</translation>
+      <translation>Poisto valmis {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="127"/>
       <source>Failed to remove some files</source>
-      <translation type="unfinished">Failed to remove some files</translation>
+      <translation>Joidenkin tiedostojen poistaminen epäonnistui</translation>
     </message>
   </context>
   <context>
@@ -2473,7 +2473,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="650"/>
       <source>Auto-Created Macro Toolbar</source>
-      <translation type="unfinished">Auto-Created Macro Toolbar</translation>
+      <translation>Automaattisesti Luotu Makrotyökalurivi</translation>
     </message>
   </context>
   <context>

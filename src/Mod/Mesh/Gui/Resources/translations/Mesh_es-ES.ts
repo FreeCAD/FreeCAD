@@ -341,12 +341,12 @@
     <message>
       <location filename="../../Command.cpp" line="1693"/>
       <source>Merge</source>
-      <translation>Fusionar</translation>
+      <translation>Combinar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>
       <source>Merges selected meshes into one</source>
-      <translation>Fusionar las mallas seleccionadas en una sola</translation>
+      <translation>Combina las mallas seleccionadas en una sola</translation>
     </message>
   </context>
   <context>
@@ -714,7 +714,7 @@
     <message>
       <location filename="../../Command.cpp" line="1707"/>
       <source>Mesh merge</source>
-      <translation>Unir malla</translation>
+      <translation>Combinar malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
@@ -2038,7 +2038,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh info</source>
-      <translation>Info de la malla</translation>
+      <translation>Información de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="121"/>

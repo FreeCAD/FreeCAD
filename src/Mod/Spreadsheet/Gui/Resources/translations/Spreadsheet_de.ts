@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <translation>&amp;Kalkulationstabelle erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="949"/>
       <source>Create a new spreadsheet</source>
-      <translation>Eine neue Kalkulationstabelle erstellen</translation>
+      <translation>Erstellt eine neue Kalkulationstabelle</translation>
     </message>
   </context>
   <context>
@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Crowdin prüfen 13</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Align &amp;bottom</source>
-      <translation type="unfinished">Align &amp;bottom</translation>
+      <translation>Ausrichtung &amp;unten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -42,12 +42,12 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Crowdin prüfen 12</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Align &amp;center</source>
-      <translation type="unfinished">Align &amp;center</translation>
+      <translation>&amp;Zentriert</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
@@ -60,12 +60,12 @@
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Crowdin prüfen 11</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Align &amp;left</source>
-      <translation type="unfinished">Align &amp;left</translation>
+      <translation>&amp;Linksbündig</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="284"/>
@@ -78,12 +78,12 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Crowdin prüfen 10</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
       <source>Align &amp;right</source>
-      <translation type="unfinished">Align &amp;right</translation>
+      <translation>&amp;Rechtsbündig</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="398"/>
@@ -96,12 +96,12 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Crowdin prüfen 9</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Align &amp;top</source>
-      <translation type="unfinished">Align &amp;top</translation>
+      <translation>Ausrichtung &amp;oben</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="455"/>
@@ -114,12 +114,12 @@
     <message>
       <location filename="../../Command.cpp" line="567"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Crowdin prüfen 8</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="568"/>
       <source>&amp;Vertically center-align</source>
-      <translation type="unfinished">&amp;Vertically center-align</translation>
+      <translation>Ausrichtung &amp;vertikal-zentriert</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="569"/>
@@ -132,12 +132,12 @@
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Crowdin prüfen 7</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>&amp;Export spreadsheet</source>
-      <translation type="unfinished">&amp;Export spreadsheet</translation>
+      <translation>Tabelle &amp;exportieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="238"/>
@@ -150,12 +150,12 @@
     <message>
       <location filename="../../Command.cpp" line="183"/>
       <source>Spreadsheet</source>
-      <translation>Sprea dsheet</translation>
+      <translation>Crowdin prüfen 6</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>&amp;Import spreadsheet</source>
-      <translation type="unfinished">&amp;Import spreadsheet</translation>
+      <translation>Tabelle &amp;importieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
@@ -168,12 +168,12 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Spreadsheet</source>
-      <translation>Spread sheet</translation>
+      <translation>Crowdin prüfen 5</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>&amp;Merge cells</source>
-      <translation type="unfinished">&amp;Merge cells</translation>
+      <translation>Zellen &amp;verbinden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="876"/>
       <source>Spreadsheet</source>
-      <translation>Spreads heet</translation>
+      <translation>Crowdin prüfen 4</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
@@ -204,12 +204,12 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsh eet</translation>
+      <translation>Crowdin prüfen 3</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>Zelle auftei&amp;len</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -222,12 +222,12 @@
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>Spreadsheet</source>
-      <translation>Spreadshe et</translation>
+      <translation>Crowdin prüfen 2</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>&amp;Bold text</source>
-      <translation type="unfinished">&amp;Bold text</translation>
+      <translation>&amp;Fettgedruckter Text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="626"/>
@@ -240,12 +240,12 @@
     <message>
       <location filename="../../Command.cpp" line="708"/>
       <source>Spreadsheet</source>
-      <translation>Spreadshee t</translation>
+      <translation>Crowdin prüfen 1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
       <source>&amp;Italic text</source>
-      <translation type="unfinished">&amp;Italic text</translation>
+      <translation>&amp;Kursiver Text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="710"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>&amp;Underline text</source>
-      <translation type="unfinished">&amp;Underline text</translation>
+      <translation>Text &amp;unterstreichen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
@@ -289,7 +289,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>Zelle auftei&amp;len</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="305"/>
@@ -378,7 +378,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="142"/>
       <source>Set text color</source>
-      <translation type="unfinished">Set text color</translation>
+      <translation>Textfarbe festlegen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="176"/>
@@ -701,12 +701,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Workbench.cpp" line="94"/>
       <location filename="../../Workbench.cpp" line="96"/>
       <source>Set cell(s) text color</source>
-      <translation type="unfinished">Set cell(s) text color</translation>
+      <translation>Zell(en)-Textfarbe festlegen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="95"/>
       <source>Sets the Spreadsheet cell(s) text color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) text color</translation>
+      <translation>Textfarbe der Tabellen-Zelle(n) festlegen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="114"/>
@@ -880,12 +880,12 @@ Tabelle.mein_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
@@ -946,7 +946,7 @@ Trotzdem fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Set a zoom level for table view from 60% to 160%.</source>
-      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
+      <translation>Setze einen Zoom-Level für die Tabellenansicht von 60% bis 160%.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="51"/>
@@ -956,7 +956,7 @@ Trotzdem fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level:</source>
-      <translation type="unfinished">Default zoom level:</translation>
+      <translation>Standard-Zoomstufe:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="83"/>
@@ -1202,12 +1202,12 @@ Standard: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom level</source>
-      <translation type="unfinished">Zoom level</translation>
+      <translation>Zoomstufe</translation>
     </message>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <translation>Neue Zoomstufe:</translation>
     </message>
   </context>
 </TS>

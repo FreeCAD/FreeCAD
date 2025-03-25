@@ -294,14 +294,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../importCSG.py" line="549"/>
-        <location filename="../../importCSG.py" line="1434"/>
+        <location filename="../../importCSG.py" line="517"/>
+        <location filename="../../importCSG.py" line="1391"/>
         <source>Unsupported Function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../importCSG.py" line="549"/>
-        <location filename="../../importCSG.py" line="1434"/>
+        <location filename="../../importCSG.py" line="517"/>
+        <location filename="../../importCSG.py" line="1391"/>
         <source>Press OK</source>
         <translation type="unfinished"></translation>
     </message>

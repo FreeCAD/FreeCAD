@@ -189,17 +189,17 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
-      <translation>Текущая подсистема на данный момент жёсткая. Этот параметр сделает её гибкой.</translation>
+      <translation>Ваша подсборка в настоящее время жесткая. Это сделает ее гибкой.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="132"/>
       <source>Turn rigid</source>
-      <translation>Сделать жёстким</translation>
+      <translation>Сделать жесткой</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation>Текущая подсистема на данный момент гибкая. Этот параметр сделает её жёсткой.</translation>
+      <translation>Ваша подсборка в настоящее время гибкая. Это сделает ее жесткой.</translation>
     </message>
   </context>
   <context>
@@ -225,7 +225,7 @@
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Fixed</source>
-      <translation>Неподвижное</translation>
+      <translation>Исправлено</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
@@ -261,13 +261,13 @@
     <message>
       <location filename="../../../JointObject.py" line="57"/>
       <source>Perpendicular</source>
-      <translation>Перпендикулярное</translation>
+      <translation>Нормаль</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
       <location filename="../../../JointObject.py" line="1478"/>
       <source>Angle</source>
-      <translation>Угловое</translation>
+      <translation>Угол</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="59"/>
@@ -402,17 +402,17 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="415"/>
       <source>Export:</source>
-      <translation type="unfinished">Export:</translation>
+      <translation>Экспорт:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="422"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences.</source>
-      <translation type="unfinished">The exported file format can be customized in the Spreadsheet workbench preferences.</translation>
+      <translation>Экспортируемый формат файла может быть настроен в настройках рабочего стола приложений.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="84"/>
       <source>Part name</source>
-      <translation type="unfinished">Part name</translation>
+      <translation>Наименование детали</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="89"/>
@@ -422,17 +422,17 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="94"/>
       <source>Create part in new file</source>
-      <translation type="unfinished">Create part in new file</translation>
+      <translation>Создать часть в новом файле</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="101"/>
       <source>Joint new part origin</source>
-      <translation type="unfinished">Joint new part origin</translation>
+      <translation>Создание новой детали соединения</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="135"/>
       <source>Save Document</source>
-      <translation type="unfinished">Save Document</translation>
+      <translation>Сохранить документ</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="137"/>
@@ -442,68 +442,68 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="140"/>
       <source>Don't link</source>
-      <translation type="unfinished">Don't link</translation>
+      <translation>Не связывать</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="467"/>
       <source>Enter your formula...</source>
-      <translation type="unfinished">Enter your formula...</translation>
+      <translation>Введите вашу формулу...</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="520"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.</translation>
+      <translation>В заглавных переменных необходимо заменить фактическими значениями. Более подробно о каждом примере в подсказке.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="523"/>
       <source> - Linear: C + VEL*time</source>
-      <translation type="unfinished"> - Linear: C + VEL*time</translation>
+      <translation> - Линейка: C + VEL*time</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="525"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
-      <translation type="unfinished"> - Quadratic: C + VEL*time + ACC*time^2</translation>
+      <translation> - Квадратичный: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="528"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
-      <translation type="unfinished"> - Harmonic: C + AMP*sin(VEL*time - PHASE)</translation>
+      <translation> - Гармоничный: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="531"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
-      <translation type="unfinished"> - Exponential: C*exp(time/TIMEC)</translation>
+      <translation> - Экспоненциальный: C*exp(время/TIMEC)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="537"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
-      <translation type="unfinished"> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
+      <translation> - Плавный шаг: L1 + (L2 - L1)*(1/2) + (1/pi)*arctan(SLOPE*(время - T0)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="544"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
-      <translation type="unfinished"> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
+      <translation> - Плавный квадратный импульс: (H/pi)*(арктан(SLOPE*(время - T1)) - арктан(SLOPE*(время - T2)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
-      <translation type="unfinished"> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
+      <translation> Плавный верхний импульс рампы: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="561"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
-      <translation type="unfinished">C is a constant offset.
-VEL is a velocity or slope or gradient of the straight line.</translation>
+      <translation>C - константа.
+VEL - это скорость или уклон или градиент прямой линии.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="569"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
-      <translation type="unfinished">C is a constant offset.
-VEL is the velocity or slope or gradient of the straight line.
-ACC is the acceleration or coefficient of the second order. The function is a parabola.</translation>
+      <translation>C — постоянное смещение.
+VEL — скорость или наклон или градиент прямой линии.
+ACC — ускорение или коэффициент второго порядка. Функция — парабола.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="578"/>
@@ -511,26 +511,26 @@ ACC is the acceleration or coefficient of the second order. The function is a pa
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
 PHASE is the phase of the sine wave.</source>
-      <translation type="unfinished">C is a constant offset.
-AMP is the amplitude of the sine wave.
-VEL is the angular velocity in radians per second.
-PHASE is the phase of the sine wave.</translation>
+      <translation>C — постоянное смещение.
+AMP — амплитуда синусоиды.
+VEL — угловая скорость в радианах в секунду.
+PHASE — фаза синусоиды.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="585"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
-      <translation type="unfinished">C is a constant.
-TIMEC is the time constant of the exponential function.</translation>
+      <translation>C — константа.
+TIMEC — константа времени экспоненциальной функции.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="593"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">L1 is step level before time = T0.
-L2 is step level after time = T0.
-SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>L1 — уровень ступени до времени = T0.
+L2 — уровень ступени после времени = T0.
+SLOPE определяет крутизну перехода между L1 и L2 около времени = T0. Более высокие значения дают более острые угловые ступени. Подходят SLOPE = 1000 или больше.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="602"/>
@@ -538,10 +538,10 @@ SLOPE defines the steepness of the transition between L1 and L2 about time = T0.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">H is the height of the impulse.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>H — высота импульса.
+T1 — начало импульса.
+T2 — конец импульса.
+SLOPE определяет крутизну перехода между 0 и H относительно времени = T1 и T2. Более высокие значения дают более острые угловые импульсы. Подходят SLOPE = 1000 или больше.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="613"/>
@@ -551,12 +551,12 @@ T2 is the end of the impulse.
 H1 is the height at T1 at the beginning of the ramp.
 H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-H1 is the height at T1 at the beginning of the ramp.
-H2 is the height at T2 at the end of the ramp.
-SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>Это похоже на квадратный импульс, но сверху есть наклонный скат. Это хорошо для построения плавной кусочно-линейной функции путем добавления ряда из них.
+T1 — начало импульса.
+T2 — конец импульса.
+H1 — высота в точке T1 в начале ската.
+H2 — высота в точке T2 в конце ската.
+SLOPE определяет крутизну перехода между 0 и H1 и H2 к 0 примерно за время = T1 и T2 соответственно. Более высокие значения дают более острые угловые импульсы. SLOPE = 1000 или больше подходят.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="651"/>
@@ -567,7 +567,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="666"/>
       <source>Hide help</source>
-      <translation type="unfinished">Hide help</translation>
+      <translation>Скрыть справку</translation>
     </message>
   </context>
   <context>
@@ -708,27 +708,27 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="107"/>
       <source>Simulation start time.</source>
-      <translation type="unfinished">Simulation start time.</translation>
+      <translation>Время начала моделирования.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="118"/>
       <source>Simulation end time.</source>
-      <translation type="unfinished">Simulation end time.</translation>
+      <translation>Время окончания моделирования.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="129"/>
       <source>Simulation time step for output.</source>
-      <translation type="unfinished">Simulation time step for output.</translation>
+      <translation>Шаг времени моделирования для вывода.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="140"/>
       <source>Integration global error tolerance.</source>
-      <translation type="unfinished">Integration global error tolerance.</translation>
+      <translation>Интегральная глобальная ошибка допусков.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="151"/>
       <source>Frames Per Second.</source>
-      <translation type="unfinished">Frames Per Second.</translation>
+      <translation>Кадров в секунду.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="203"/>
@@ -738,17 +738,17 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="299"/>
       <source>The joint that is moved by the motion</source>
-      <translation type="unfinished">The joint that is moved by the motion</translation>
+      <translation>Шарнир, который перемещается при движении</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="310"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
-      <translation type="unfinished">This is the formula of the motion. For example '1.0*time'.</translation>
+      <translation>Это формула движения. Например, «1.0 * время».</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="318"/>
       <source>The type of the motion</source>
-      <translation type="unfinished">The type of the motion</translation>
+      <translation>Тип движения</translation>
     </message>
   </context>
   <context>
@@ -776,7 +776,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="113"/>
       <source>Rotation</source>
-      <translation>Вращение</translation>
+      <translation>Поворот</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="137"/>
@@ -791,17 +791,17 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="144"/>
       <source>By clicking this button, you can set the attachment offset of the first marker (coordinate system) of the joint.</source>
-      <translation type="unfinished">By clicking this button, you can set the attachment offset of the first marker (coordinate system) of the joint.</translation>
+      <translation>Нажав на эту кнопку, можно задать смещение присоединения первого маркера (системы координат) стыка.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="165"/>
       <source>By clicking this button, you can set the attachment offset of the second marker (coordinate system) of the joint.</source>
-      <translation type="unfinished">By clicking this button, you can set the attachment offset of the second marker (coordinate system) of the joint.</translation>
+      <translation>Нажав на эту кнопку, можно задать смещение присоединения второго маркера (системы координат) стыка.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="177"/>
       <source>Show advanced offsets</source>
-      <translation type="unfinished">Show advanced offsets</translation>
+      <translation>Показать дополнительные смещения</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="193"/>
@@ -883,11 +883,11 @@ Rigid means that the added sub-assembly will be considered as a solid unit withi
 Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
 Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</source>
-      <translation type="unfinished">Sets whether the inserted sub-assemblies will be rigid or flexible.
-Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
-Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
-You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
-Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</translation>
+      <translation>Устанавливает, будут ли вставленные подсборки жесткими или гибкими.
+Жесткий означает, что добавленный подсборочный узел будет рассматриваться как сплошной блок в родительской сборке.
+Гибкий означает, что добавленный подсборочный узел будет допускать перемещение соединений его отдельных компонентов в родительской сборке.
+Вы можете изменить это поведение в любое время, щелкнув правой кнопкой мыши подсборку в дереве документа и переключив команду
+Повернуть жестким/Повернуть гибким там, или отредактировав ее свойство Жесткий в Редакторе свойств.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
@@ -1227,12 +1227,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>Insert a new part</source>
-      <translation type="unfinished">Insert a new part</translation>
+      <translation>Вставить новую деталь</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="61"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation type="unfinished">Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</translation>
+      <translation>Вставить новую часть в активный монтаж. Источник новой части может находиться в монтаже.</translation>
     </message>
   </context>
   <context>
@@ -1240,12 +1240,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="67"/>
       <source>Create Simulation</source>
-      <translation type="unfinished">Create Simulation</translation>
+      <translation>Создать моделирование</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="74"/>
       <source>Create a simulation of the current assembly.</source>
-      <translation type="unfinished">Create a simulation of the current assembly.</translation>
+      <translation>Создать имитацию текущей сборки.</translation>
     </message>
   </context>
   <context>
@@ -1261,27 +1261,27 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="14"/>
       <source>Create Simulation</source>
-      <translation type="unfinished">Create Simulation</translation>
+      <translation>Создать моделирование</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="20"/>
       <source>Motions</source>
-      <translation type="unfinished">Motions</translation>
+      <translation>Движения</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="50"/>
       <source>Add a prescribed motion</source>
-      <translation type="unfinished">Add a prescribed motion</translation>
+      <translation>Добавить предписанное движение</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="70"/>
       <source>Delete selected motions</source>
-      <translation type="unfinished">Delete selected motions</translation>
+      <translation>Удалить выбранные движения</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation settings</source>
-      <translation type="unfinished">Simulation settings</translation>
+      <translation>Настройки симулятора</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
@@ -1292,18 +1292,18 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="105"/>
       <source>Start time of the simulation</source>
-      <translation type="unfinished">Start time of the simulation</translation>
+      <translation>Время начала моделирования</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="112"/>
       <source>End</source>
-      <translation type="unfinished">End</translation>
+      <translation>Конец</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="115"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="122"/>
       <source>End time of the simulation</source>
-      <translation type="unfinished">End time of the simulation</translation>
+      <translation>Время окончания моделирования</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="129"/>
@@ -1314,7 +1314,7 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time Step</source>
-      <translation type="unfinished">Time Step</translation>
+      <translation>Шаг времени</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1325,17 +1325,17 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global Error Tolerance</source>
-      <translation type="unfinished">Global Error Tolerance</translation>
+      <translation>Глобальная ошибка допуска</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
       <source>Generate</source>
-      <translation type="unfinished">Generate</translation>
+      <translation>Генерировать</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
       <source>Animation player</source>
-      <translation type="unfinished">Animation player</translation>
+      <translation>Проигрыватель анимации</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
@@ -1345,22 +1345,22 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
       <source>0.00 s</source>
-      <translation type="unfinished">0.00 s</translation>
+      <translation>0.00 с</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
       <source>Frames Per Second</source>
-      <translation type="unfinished">Frames Per Second</translation>
+      <translation>Кадров в секунду</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
       <source>Step backward</source>
-      <translation type="unfinished">Step backward</translation>
+      <translation>Шаг назад</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
       <source>Play backward</source>
-      <translation type="unfinished">Play backward</translation>
+      <translation>Воспроизвести назад</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="272"/>
@@ -1370,12 +1370,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="292"/>
       <source>Play forward</source>
-      <translation type="unfinished">Play forward</translation>
+      <translation>Играть вперед</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
       <source>Step forward</source>
-      <translation type="unfinished">Step forward</translation>
+      <translation>Шаг вперед</translation>
     </message>
   </context>
 </TS>

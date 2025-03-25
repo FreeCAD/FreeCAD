@@ -57,7 +57,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>
       <source>Select all</source>
-      <translation>Alles auswählen</translation>
+      <translation>Alle auswählen</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
@@ -115,7 +115,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="332"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="342"/>
       <source>The width of the lines</source>
-      <translation>Die Breite der Linien</translation>
+      <translation>Die Strichstärke der Linien</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
@@ -165,7 +165,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="558"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="568"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
-      <translation>Die Strecke, um die die Maßhilfslinien zusätzlich über die Maßlinie hinaus erweitert werden</translation>
+      <translation>Die Länge, um die die Maßhilfslinien zusätzlich über die Maßlinie hinaus erweitert werden</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
@@ -176,7 +176,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="263"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="273"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation>Der Zeilenabstand für mehrzeilige Texte und Hinweise (relativ zur Schrifthöhe)</translation>
+      <translation>Der Zeilenabstand für mehrzeilige Texte und Hinweise (relativ zur Schriftgröße)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="280"/>
@@ -220,7 +220,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation>Lege eine gültige Längeneinheit wie mm, m, in, ft, fest, um die Anzeige des Maßwertes in dieser Einheit zu erzwingen</translation>
+      <translation>Eine gültige Längeneinheit, wie mm, m, in, ft, festlegen, um die Anzeige des Maßwertes in dieser Einheit zu erzwingen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="478"/>
@@ -237,7 +237,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="578"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="588"/>
       <source>The distance between the dimension text and the dimension line</source>
-      <translation>Der Abstand zwischen der Maßlinie und dem Bemaßungstext</translation>
+      <translation>Der Abstand zwischen der Maßlinie und dem Maßtext</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="581"/>
@@ -248,12 +248,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="306"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="316"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation>Wenn dies angehakt ist, wird die Maßlinie angezeigt</translation>
+      <translation>Wenn aktiviert, wird die Maßlinie angezeigt</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
       <source>Annotations</source>
-      <translation>Anmerkungen</translation>
+      <translation>Beschriftungen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="208"/>
@@ -663,7 +663,7 @@ Dies funktioniert nur, wenn "Verknüpfungsanordnung" deaktiviert ist.</translati
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>Vereinigung</translation>
+      <translation>Vereinigen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
@@ -710,7 +710,7 @@ Eine Verknüpfungsanordnung ist effizienter, wenn mehrere Kopien erstellt werden
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>3D-Punkt-Auswahl zurücksetzen</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -780,7 +780,7 @@ Oder eine der folgenden Möglichkeiten auswählen.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
       <source>Front (XZ)</source>
-      <translation>Front (XZ)</translation>
+      <translation>Vorderansicht (XZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
@@ -790,7 +790,7 @@ Oder eine der folgenden Möglichkeiten auswählen.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
       <source>Side (YZ)</source>
-      <translation>Seite (YZ)</translation>
+      <translation>Seitenansicht (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
@@ -1023,7 +1023,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
       <source>Draw style</source>
-      <translation>Darstellungsart</translation>
+      <translation>Linienart</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
@@ -1211,7 +1211,7 @@ Anmerkungsskala-Widget. Bei einer Skala von 1:100 beträgt der Multiplikator 100
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation>Der Zeilenabstand für mehrzeilige Texte und Hinweise (relativ zur Schrifthöhe)</translation>
+      <translation>Der Zeilenabstand für mehrzeilige Texte und Hinweise (relativ zur Schriftgröße)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
@@ -1226,7 +1226,7 @@ Anmerkungsskala-Widget. Bei einer Skala von 1:100 beträgt der Multiplikator 100
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
       <source>Arrow type</source>
-      <translation>Pfeiltyp</translation>
+      <translation>Pfeilart</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="445"/>
@@ -1261,7 +1261,7 @@ Ein positiver Wert legt die maximale Länge der Maßhilfslinien fest. Wird nur f
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="554"/>
       <source>The length of extension lines above the dimension line</source>
-      <translation>Die Länge der Erweiterungslinien oberhalb der Bemaßungslinie</translation>
+      <translation>Die Länge der Maßhilfslinien über die Maßlinie hinaus</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="571"/>
@@ -1498,7 +1498,7 @@ wird die Bewegung der Maus so lange deaktiviert, bis der Befehl beendet ist.</tr
     <message>
       <location filename="../ui/preferences-draft.ui" line="386"/>
       <source>Construction group label</source>
-      <translation>Hilfsgeometriegruppen-Benennung</translation>
+      <translation>Benennung der Hilfsgeometriegruppe</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="399"/>
@@ -1508,7 +1508,7 @@ wird die Bewegung der Maus so lange deaktiviert, bis der Befehl beendet ist.</tr
     <message>
       <location filename="../ui/preferences-draft.ui" line="422"/>
       <source>The default color for Draft objects in construction mode</source>
-      <translation>Die Standardfarbe für Draft-Objekte im Konstruktionsmodus</translation>
+      <translation>Die Standardfarbe für Draft-Objekte im Hilfsgeometriemodus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="26"/>
@@ -1528,7 +1528,7 @@ wird die Bewegung der Maus so lange deaktiviert, bis der Befehl beendet ist.</tr
     <message>
       <location filename="../ui/preferences-draft.ui" line="402"/>
       <source>Construction</source>
-      <translation>Konstruktion</translation>
+      <translation>Hilfsgeometrie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="415"/>
@@ -1563,7 +1563,7 @@ wird die Bewegung der Maus so lange deaktiviert, bis der Befehl beendet ist.</tr
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="39"/>
       <source>The default size for SVG patterns. A higher value results in a denser pattern.</source>
-      <translation>Die default Größe für SVG-Muster. Ein höherer Wert führt zu einem dichteren Muster.</translation>
+      <translation>Die Standardgröße für SVG-Muster. Ein höherer Wert ergibt ein dichteres Muster.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="65"/>
@@ -1574,17 +1574,18 @@ wird die Bewegung der Maus so lange deaktiviert, bis der Befehl beendet ist.</tr
       <location filename="../ui/preferences-draftvisual.ui" line="75"/>
       <source>An optional directory with custom SVG files containing
 pattern definitions to be added to the standard patterns</source>
-      <translation>Ein optionales Verzeichnis mit benutzerdefinierten SVG-Dateien, das Muster enthält, die zu den Standardmustern hinzugefügt werden sollen</translation>
+      <translation>Ein optionales Verzeichnis mit benutzerdefinierten SVG-Dateien, das
+Muster enthält, die zu den Standardmustern hinzugefügt werden sollen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="92"/>
       <source>Drawing view line definitions</source>
-      <translation>Definition sichtbarer Linien der Zeichnung</translation>
+      <translation>Definitionen der Linien in Zeichnungsansichten</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="98"/>
       <source>Dashed line definition</source>
-      <translation>Gestrichelte Linien-Definition</translation>
+      <translation>Strichlinien-Definition</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="111"/>
@@ -1601,7 +1602,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="163"/>
       <source>Dotted line definition</source>
-      <translation>Gepunktete-Linien-Definition</translation>
+      <translation>Punktlinien-Definition</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -1683,7 +1684,7 @@ wie "Arial", ein Stil wie "sans", "serif" oder "mono", eine Familie wie
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Scale multiplier</source>
-      <translation>Skalenfaktor</translation>
+      <translation>Größenfaktor</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="20"/>
@@ -1741,7 +1742,7 @@ des Maßstabs im Widget Beschriftungsmaßstab. Ist der Maßstab 1:100, ist der M
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="268"/>
       <source>Arrow type</source>
-      <translation>Pfeiltyp</translation>
+      <translation>Pfeilart</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="281"/>
@@ -2196,7 +2197,7 @@ Andernfalls werden Standardfarben verwendet.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
-      <translation>Gruppiere Ebenen in Blöcken</translation>
+      <translation>Ebenen in Blöcken gruppieren</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="418"/>
@@ -2212,7 +2213,7 @@ instead of the size they have in the DXF document</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Wenn dies aktiviert ist, werden DXF-Layer als Draft-Layer importiert</translation>
+      <translation>Wenn dies aktiviert ist, werden DXF-Ebenen als Draft-Ebenen importiert</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
@@ -2322,8 +2323,8 @@ Dies kann bei neueren als DXF R12 Vorlagen fehlschlagen.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Wenn aktiviert, wird der Umriss einer menschlichen Figur in der linken unteren
+Ecke des Rasters angezeigt. Nur wirksam, wenn "Rasterrahmen anzeigen" aktiviert ist.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -2819,12 +2820,12 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>Wenn aktiviert, wird das Widget Einrasten in der Draft-Statusleiste angezeigt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>Wenn aktiviert, wird das Widget Beschriftungsmaßstab in der Draft-Statusleiste angezeigt</translation>
     </message>
   </context>
   <context>
@@ -3234,7 +3235,7 @@ Nicht verfügbar, wenn die Option "Part-Grundkörper erstellen, wenn möglich" a
     <message>
       <location filename="../../DraftGui.py" line="618"/>
       <source>Toggle construction mode</source>
-      <translation>Konstruktionsmodus umschalten</translation>
+      <translation>Hilfsgeometriemodus umschalten</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="619"/>
@@ -3464,7 +3465,7 @@ Bitte die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-lateinis
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Draft-Widget Skalieren</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3474,7 +3475,7 @@ Bitte die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-lateinis
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Draft-Widget Einrasten</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -4453,7 +4454,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
       <source>Construction mode</source>
-      <translation>Konstruktionsmodus</translation>
+      <translation>Hilfsgeometriemodus</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="129"/>
@@ -4937,7 +4938,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>Zwei Kanten sind erforderlich.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
@@ -5165,7 +5166,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="318"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation>Falsche Eingabe: Das Objekt verfügt nicht über mindestens einen 'Scheitelpunkt', der zum Messen verwendet werden kann.</translation>
+      <translation>Falsche Eingabe: Das Objekt verfügt nicht über mindestens einen „Knoten“, der zum Messen verwendet werden kann.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="324"/>
@@ -5182,12 +5183,12 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <location filename="../../draftmake/make_dimension.py" line="333"/>
       <location filename="../../draftmake/make_dimension.py" line="348"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation>Falsche Eingabe: Kein Scheitelpunkt im Objekt.</translation>
+      <translation>Falsche Eingabe: Kein Knoten im Objekt.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="344"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation>i2: Werte unter 1 sind nicht erlaubt; werden auf den letzten Scheitelpunkt des Objekts gesetzt.</translation>
+      <translation>i2: Werte unter 1 sind nicht erlaubt; werden auf den letzten Knoten des Objekts gesetzt.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="434"/>
@@ -5601,22 +5602,22 @@ Ein Klick auf "Ja", gestattet FreeCAD den automatischen Download der Bibliotheke
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>Konnte Flächenbinder nicht erstellen</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>Keine gültigen Flächen für Flächenbinder</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>Flächenbinder kann nicht erstellt werden, fortsetzen ohne topologischen Nähvorgang</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>Die Umwandlung von ebenen B-Spline-Flächen des Flächenbinders in ebene Flächen ist fehlgeschlagen</translation>
     </message>
   </context>
   <context>
@@ -5689,9 +5690,9 @@ Ein Klick auf "Ja", gestattet FreeCAD den automatischen Download der Bibliotheke
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation>Download der dxf Bibliotheken fehlgeschlagen.
-Bitte installieren Sie das dxf Library Addon manuell
-aus dem Menü Extras -&gt; Addon Manager</translation>
+      <translation>Herunterladen der DXF-Bibliotheken fehlgeschlagen.
+Bitte das DXF-Bibliotheken-Addon manuell installieren
+über das Menü Werkzeuge → Addon-Manager</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="51"/>
@@ -5862,7 +5863,7 @@ aus dem Menü Extras -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="286"/>
       <source>Draw style</source>
-      <translation>Darstellungsart</translation>
+      <translation>Linienart</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="287"/>
@@ -5877,7 +5878,7 @@ aus dem Menü Extras -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="289"/>
       <source>Transparency</source>
-      <translation>Tranparenz</translation>
+      <translation>Transparenz</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="290"/>
@@ -6244,7 +6245,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="166"/>
       <source>Snap angle</source>
-      <translation>Einrastwinkel</translation>
+      <translation>Einrasten auf Winkel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>
@@ -6791,7 +6792,7 @@ STRG zum Einrasten, SHIFT zum Setzen von Randbedingungen.</translation>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
       <translation>Erstellt einen Kreis (geschlossener Kreisbogen).
-STRG zum Fangen, ALT zum Auswählen von tangenten Objekten.</translation>
+STRG zum Einrasten, ALT zum Auswählen tangierender Objekte.</translation>
     </message>
   </context>
   <context>
@@ -6812,12 +6813,12 @@ STRG zum Fangen, ALT zum Auswählen von tangenten Objekten.</translation>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="60"/>
       <source>Facebinder</source>
-      <translation>Flächenverbinder</translation>
+      <translation>Flächenbinder</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="63"/>
       <source>Creates a facebinder object from selected faces.</source>
-      <translation>Erzeugt ein Facebinder-Objekt aus den ausgewählten Flächen.</translation>
+      <translation>Erstellt ein Flächenbinder-Objekt aus den ausgewählten Flächen.</translation>
     </message>
   </context>
   <context>
@@ -6917,13 +6918,13 @@ Eine 'Punkt-Verknüpfungsanordnung' ist effizienter, wenn viele Kopien verarbeit
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="99"/>
       <source>Toggle construction mode</source>
-      <translation>Konstruktionsmodus umschalten</translation>
+      <translation>Hilfsgeometriemodus umschalten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation>Schaltet den Konstruktionsmodus um.
+      <translation>Schaltet den Hilfsgeometriemodus um.
 Wenn dieser aktiv ist, werden die folgenden Objekte in die Hilfsgeometriegruppe aufgenommen und mit den festgelegten Farben und Eigenschaften dargestellt.</translation>
     </message>
   </context>
@@ -8373,7 +8374,7 @@ Leer lassen für die Standardeinstellung des Systems.
       <location filename="../../draftviewproviders/view_label.py" line="108"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="209"/>
       <source>Arrow type</source>
-      <translation>Pfeiltyp</translation>
+      <translation>Pfeilart</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="219"/>

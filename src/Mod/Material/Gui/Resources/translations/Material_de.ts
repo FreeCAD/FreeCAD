@@ -299,7 +299,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="248"/>
       <source>Transparency</source>
-      <translation>Tranparenz</translation>
+      <translation>Transparenz</translation>
     </message>
   </context>
   <context>
@@ -1192,7 +1192,7 @@ Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>&amp;Appearance...</source>
-      <translation type="unfinished">&amp;Appearance...</translation>
+      <translation>&amp;Darstellung...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1206,7 +1206,7 @@ Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <translation>&amp;Material...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

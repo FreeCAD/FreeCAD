@@ -4071,7 +4071,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>总是添加外部几何元素作为参考</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -6971,7 +6971,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="692"/>
       <source>Reference constraint</source>
-      <translation>参考约束</translation>
+      <translation>参照约束</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="699"/>

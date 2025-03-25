@@ -2235,17 +2235,17 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PointEdit.ui" line="22"/>
       <source>Global X</source>
-      <translation>X 전체</translation>
+      <translation>전역 X</translation>
     </message>
     <message>
       <location filename="../panels/PointEdit.ui" line="29"/>
       <source>Global Y</source>
-      <translation>Y 전체</translation>
+      <translation>전역 Y</translation>
     </message>
     <message>
       <location filename="../panels/PointEdit.ui" line="39"/>
       <source>Global Z</source>
-      <translation>Z 전체</translation>
+      <translation>전역 Z</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="14"/>
@@ -2275,7 +2275,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="36"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>이름 표시</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="57"/>
@@ -3431,7 +3431,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation type="unfinished">Job:</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
@@ -3479,7 +3479,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="61"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>이름 표시</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="68"/>
@@ -3739,7 +3739,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
       <source>Split Output</source>
-      <translation>쫍게서 출력</translation>
+      <translation>쪼개어 출력</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="433"/>
@@ -4194,7 +4194,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../InitGui.py" line="262"/>
       <source>Utils</source>
-      <translation type="unfinished">Utils</translation>
+      <translation/>
     </message>
   </context>
   <context>
@@ -6181,7 +6181,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="111"/>
       <location filename="../../../Path/Op/Waterline.py" line="124"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>원형</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="112"/>
@@ -8120,7 +8120,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="447"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>원형</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="448"/>

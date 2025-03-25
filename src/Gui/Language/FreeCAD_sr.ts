@@ -416,7 +416,7 @@
     <message>
       <location filename="../Application.h" line="267"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>Унапред подешено</translation>
     </message>
     <message>
       <location filename="../Application.h" line="268"/>
@@ -426,12 +426,12 @@
     <message>
       <location filename="../Application.h" line="272"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Помери</translation>
     </message>
     <message>
       <location filename="../Application.h" line="277"/>
       <source>Cu&amp;tting</source>
-      <translation type="unfinished">Cu&amp;tting</translation>
+      <translation>Сечење</translation>
     </message>
     <message>
       <location filename="../Application.h" line="282"/>
@@ -749,7 +749,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgAbout.cpp" line="734"/>
       <source>Copied!</source>
-      <translation type="unfinished">Copied!</translation>
+      <translation>Копирано!</translation>
     </message>
   </context>
   <context>
@@ -866,7 +866,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Clipping.ui" line="155"/>
       <source>Clipping custom direction</source>
-      <translation>Произвољни смер исечка</translation>
+      <translation>Сопствени смер исецања</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="190"/>
@@ -1075,7 +1075,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCheckableMessageBox.ui" line="69"/>
       <source>CheckBox</source>
-      <translation>Поље за чекирање</translation>
+      <translation>Поље за потврду</translation>
     </message>
   </context>
   <context>
@@ -1106,7 +1106,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>Прегледај</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="60"/>
@@ -1119,7 +1119,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="163"/>
       <source>Export Config</source>
-      <translation type="unfinished">Export Config</translation>
+      <translation>Извоз Конфигурације</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="171"/>
@@ -1455,7 +1455,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgToolbars.ui" line="110"/>
       <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Премести изабрану ставку на нижи ниво.&lt;/b&gt; &lt;p&gt; Ово ће променити и ниво родитеља ставке. &lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Премести изабрану ставку на нижи ниво.&lt;/b&gt; &lt;p&gt; Ово ће променити и ниво надређене ставке. &lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="133"/>
@@ -1465,7 +1465,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgToolbars.ui" line="136"/>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Премести изабрану ставку за један ниво више.&lt;/b&gt; &lt;p&gt; Ово ће променити и ниво родитеља ставке. &lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Премести изабрану ставку за један ниво више.&lt;/b&gt; &lt;p&gt; Ово ће променити и ниво надређене ставке. &lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="165"/>
@@ -2017,12 +2017,12 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../DlgMaterialProperties.ui" line="47"/>
       <source>Diffuse color:</source>
-      <translation>Дифузна боја:</translation>
+      <translation>Расута боја:</translation>
     </message>
     <message>
       <location filename="../DlgMaterialProperties.ui" line="148"/>
       <source>Emissive color:</source>
-      <translation>Емитујућа боја:</translation>
+      <translation>Зрачећа боја:</translation>
     </message>
     <message>
       <location filename="../DlgMaterialProperties.ui" line="114"/>
@@ -2908,7 +2908,7 @@ The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
       <translation>Растојање између очију које се користи за стереоскопске пројекције.
 Наведена вредност је kоефицијент који ће бити помножен са
-величином граничног оквира 3Д објекта који је тренутно приказан.</translation>
+величином граничне кутије 3Д објекта који је тренутно приказан.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="388"/>
@@ -2949,7 +2949,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="544"/>
       <source>Objects will be projected in orthographic projection</source>
-      <translation>Објекти ће бити пројектовани у ортографској пројекцији</translation>
+      <translation>Објекти ће бити ортогонално пројицирани</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="547"/>
@@ -3107,7 +3107,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="14"/>
       <source>Color-gradient settings</source>
-      <translation>Боја-преливање подешавања</translation>
+      <translation>Подешавање прелива боја</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="26"/>
@@ -3293,8 +3293,8 @@ besides the color bar</source>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 7 = default)</source>
-      <translation type="unfinished">Document save compression level
-(0 = none, 9 = highest, 7 = default)</translation>
+      <translation>Ниво компресије за чување документа
+(0 = ништа, 9 = највише, 7 = подразумевано)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
@@ -3519,32 +3519,32 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="42"/>
       <source>Creative Commons Attribution</source>
-      <translation>Creative Commons лиценца «С указивањем на аутора», скраћено Cc By</translation>
+      <translation>Creative Commons лиценца «Ауторство», скраћено Cc By</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="43"/>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation>Creative Commons лиценца «С указивањем на аутора — Дели под истим условима», скраћено Cc By-Sa</translation>
+      <translation>Creative Commons лиценца «Ауторство — Делити под истим условима», скраћено Cc By-Sa</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="44"/>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation>Creative Commons лиценца «С указивањем на аутора — Нема деривата», скраћено Cc By-Nd</translation>
+      <translation>Creative Commons лиценца «Ауторство — Нема прерада», скраћено Cc By-Nd</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="45"/>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation>Creative Commons лиценца «С указивањем на аутора — Некомерцијална», скраћено Cc By-Nc</translation>
+      <translation>Creative Commons лиценца «Ауторство — Некомерцијално», скраћено Cc By-Nc</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="46"/>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation>Creative Commons лиценца «С указивањем на аутора — Некомерцијална - Дели под истим условима», скраћено Cc By-Nc-Sa</translation>
+      <translation>Creative Commons лиценца «Ауторство — Некомерцијално - Делити под истим условима», скраћено Cc By-Nc-Sa</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="47"/>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation>Creative Commons лиценца «С указивањем на аутора — Некомерцијална - Нема деривата», скраћено Cc By-Nc-Nd</translation>
+      <translation>Creative Commons лиценца «Ауторство — Некомерцијално - Нема прерада», скраћено Cc By-Nc-Nd</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="48"/>
@@ -3661,7 +3661,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsImage.ui" line="272"/>
       <source>Aspect ratio:</source>
-      <translation>Однос ширине и висине:</translation>
+      <translation>Пропорција:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="279"/>
@@ -3857,7 +3857,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="195"/>
       <source>Show script commands in Python console</source>
-      <translation type="unfinished">Show script commands in Python console</translation>
+      <translation>Прикажи извршене наредбе у python конзоли</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
@@ -4084,7 +4084,7 @@ Trackball: померање миша хоризонтално ће ротира�
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="492"/>
       <source>Free Turntable</source>
-      <translation>Слободно обртни сто</translation>
+      <translation>Слободни обртни сто</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
@@ -4141,12 +4141,12 @@ The value is the diameter of the sphere to fit on the screen.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="727"/>
       <source>Space mouse</source>
-      <translation type="unfinished">Space mouse</translation>
+      <translation>3Д миш</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="733"/>
       <source>Enable support of legacy space mouse devices</source>
-      <translation type="unfinished">Enable support of legacy space mouse devices</translation>
+      <translation>Омогући подршку за старе 3Д мишеве</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
@@ -4347,7 +4347,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="94"/>
       <source> ms</source>
-      <translation type="unfinished"> ms</translation>
+      <translation> мс</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="119"/>
@@ -4390,7 +4390,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="83"/>
       <source>Enable selection</source>
-      <translation>Омогући дизбор</translation>
+      <translation>Омогући избор</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="121"/>
@@ -4403,7 +4403,7 @@ horizontal space in Python console</source>
 Larger value eases to pick things, but can make small features impossible to select.
       </source>
       <translation>Област за бирање елемената у 3Д погледу.
-Већа вредност олакшава одабир ствари, али може онемогућити одабир малих ствари.
+Већа вредност олакшава одабир ствари, али може онемогућити одабир малих елемената.
       </translation>
     </message>
     <message>
@@ -4419,7 +4419,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="205"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation>Направи преизбор објекта у 3Д погледу лебдењем миша изнад ставке у Стаблу документа</translation>
+      <translation>Направи предизбор објекта у 3Д погледу лебдењем миша изнад ставке у Стаблу документа</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="218"/>
@@ -4429,7 +4429,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="231"/>
       <source>Add checkboxes for selection in document tree</source>
-      <translation>Додај поља за чекирање у стаблу документа</translation>
+      <translation>Додај поља за потврду у стаблу документа</translation>
     </message>
   </context>
   <context>
@@ -4491,7 +4491,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="412"/>
       <source>Color Bar</source>
-      <translation>Панел боја</translation>
+      <translation>Трака боја</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="459"/>
@@ -4770,7 +4770,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DocumentRecovery.cpp" line="343"/>
       <source>&amp;Finish</source>
-      <translation type="unfinished">&amp;Finish</translation>
+      <translation>&amp;Заврши</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="501"/>
@@ -5124,17 +5124,17 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgParameterImp.cpp" line="702"/>
       <source>New float item</source>
-      <translation>Нова ставка са покретним зарезом</translation>
+      <translation>Нова децимална ставка</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="703"/>
       <source>New integer item</source>
-      <translation>Нова бројчана ставка</translation>
+      <translation>Нова целобројна ставка</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="705"/>
       <source>New unsigned item</source>
-      <translation>Нова неозначена ставка</translation>
+      <translation>Нова целобројна ставка без предзнака</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="706"/>
@@ -5212,12 +5212,12 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="20"/>
       <source>Translation</source>
-      <translation type="unfinished">Translation</translation>
+      <translation>Транслација</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="95"/>
       <source>Axial</source>
-      <translation type="unfinished">Axial</translation>
+      <translation>Аксијално</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="118"/>
@@ -5242,7 +5242,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="400"/>
       <source>Roll (around x-axis)</source>
-      <translation type="unfinished">Roll (around x-axis)</translation>
+      <translation>Ваљање (око x-осе)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="407"/>
@@ -5262,7 +5262,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.cpp" line="717"/>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Изабери 1, 2 или 3 тачке пре него што кликнеш на ово дугме. Тачка може бити на темену, страници или ивици. Ако је на страници или ивици, коришћена тачка ће бити тачка на позицији миша дуж странице или ивице. Ако се изабере 1 тачка, она ће се користити као центар ротације. Ако се изаберу 2 тачке, средина између њих ће бити центар ротације и нова прилагођена оса ће бити направљена, ако је потребно. Ако су изабране 3 тачке, прва тачка постаје центар ротације и лежи на вектору који је нормалан на раван дефинисану са 3 тачке. Неке информације о удаљености и угловима су дате у приказу извештаја, што може бити корисно при поравнавању објеката. Ради ваше удобности када се користи Shift + click, одговарајућа удаљеност или угао се копирају у привремену меморију.</translation>
+      <translation>Изабери 1, 2 или 3 тачке пре него што кликнеш на ово дугме. Тачка може бити на темену, страници или ивици. Ако је на страници или ивици, коришћена тачка ће бити тачка на позицији миша дуж странице или ивице. Ако се изабере 1 тачка, она ће се користити као центар ротације. Ако се изаберу 2 тачке, средина између њих ће бити центар ротације и нова прилагођена оса ће бити направљена, ако је потребно. Ако су изабране 3 тачке, прва тачка постаје центар ротације и лежи на вектору који је управан на раван дефинисану са 3 тачке. Неке информације о удаљености и угловима су дате у pregledaču objava, што може бити корисно при поравнавању објеката. Ради ваше удобности када се користи Shift + click, одговарајућа удаљеност или угао се копирају у привремену меморију.</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="809"/>
@@ -5397,12 +5397,12 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No 3D view</source>
-      <translation type="unfinished">No 3D view</translation>
+      <translation>Нема 3Д погледа</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No active 3D view found.</source>
-      <translation type="unfinished">No active 3D view found.</translation>
+      <translation>Није пронађен активан 3Д поглед.</translation>
     </message>
   </context>
   <context>
@@ -5514,25 +5514,25 @@ originally selected prior to opening this dialog</source>
       <location filename="../ReportView.cpp" line="596"/>
       <location filename="../ReportView.cpp" line="620"/>
       <source>Normal messages</source>
-      <translation>Уобичајене поруке</translation>
+      <translation>Обичне поруке</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="600"/>
       <location filename="../ReportView.cpp" line="624"/>
       <source>Log messages</source>
-      <translation>Поруке дневника</translation>
+      <translation>Дневничке поруке</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="604"/>
       <location filename="../ReportView.cpp" line="628"/>
       <source>Warnings</source>
-      <translation>Упозорења</translation>
+      <translation>Поруке упозорења</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="608"/>
       <location filename="../ReportView.cpp" line="632"/>
       <source>Errors</source>
-      <translation>Грешке</translation>
+      <translation>Поруке о грешкама</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="612"/>
@@ -5681,12 +5681,12 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../SelectionView.cpp" line="659"/>
       <source>To Python console</source>
-      <translation type="unfinished">To Python console</translation>
+      <translation>Према Python конзоли</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="662"/>
       <source>Reveals this object and its subelements in the Python console.</source>
-      <translation type="unfinished">Reveals this object and its subelements in the Python console.</translation>
+      <translation>Открива овај објекат и његове поделементе у Пyтхон конзоли.</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="668"/>
@@ -7481,12 +7481,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../VectorListEditor.cpp" line="326"/>
       <source>Copy table</source>
-      <translation type="unfinished">Copy table</translation>
+      <translation>Копирај табелу</translation>
     </message>
     <message>
       <location filename="../VectorListEditor.cpp" line="330"/>
       <source>Paste table</source>
-      <translation type="unfinished">Paste table</translation>
+      <translation>Налепи табелу</translation>
     </message>
   </context>
   <context>
@@ -7695,7 +7695,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../MainWindow.cpp" line="651"/>
       <source>Property view</source>
-      <translation>Особине приказа</translation>
+      <translation>Прегледач својстава</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="564"/>
@@ -7822,7 +7822,7 @@ Please check report view for more details.</source>
     <message>
       <location filename="../StartupProcess.cpp" line="331"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation>Овај систем користи OpenGL %1.%2. FreeCAD захтева OpenGL 2.0 или новији. Надоградите свој графички драјвер и/или картицу по потреби.</translation>
+      <translation>Овај систем користи OpenGL %1.%2. FreeCAD захтева OpenGL 2.0 или новији. Ажурирај свој графички драјвер и/или картицу по потреби.</translation>
     </message>
     <message>
       <location filename="../StartupProcess.cpp" line="340"/>
@@ -7848,7 +7848,7 @@ Please check report view for more details.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="103"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Дошло је до грешака приликом учитавања датотеке. Неки подаци су можда измењени или уопште нису опорављени. У приказу извештаја потражи одређеније информације на ову тему.</translation>
+      <translation>Дошло је до грешака приликом учитавања датотеке. Неки подаци су можда измењени или уопште нису опорављени. За више детаља погледај Прегледач објава.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="112"/>
@@ -7858,21 +7858,21 @@ Please check report view for more details.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="127"/>
       <source>File Migration Warning</source>
-      <translation type="unfinished">File Migration Warning</translation>
+      <translation>Упозорење о миграцији датотека</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="128"/>
       <source>This file was created with an older version of %1. Origin axes had incorrect placements, which have now been corrected.
 
 However, if you save this file in the current version and reopen it in an older version of %1, the origin axes will be misaligned. Additionally, if your file references these origin axes, your file will likely be broken.</source>
-      <translation type="unfinished">This file was created with an older version of %1. Origin axes had incorrect placements, which have now been corrected.
+      <translation>Ова датотека је направљена у старијој верзији %1. Координатне осе су имале погрешне положаје, који су сада исправљени.
 
-However, if you save this file in the current version and reopen it in an older version of %1, the origin axes will be misaligned. Additionally, if your file references these origin axes, your file will likely be broken.</translation>
+Ако сачувате ову датотеку у овој верзији и поново је отворите у старијој верзији %1, координатне осе ће бити погрешно поравнате. Такође, ако у датотеци постоје референце у односу на ове осе, датотека ће вероватно бити покварена.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="136"/>
       <source>Don't show this warning again</source>
-      <translation type="unfinished">Don't show this warning again</translation>
+      <translation>Не приказуј поново ово упозорење</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="280"/>
@@ -7939,14 +7939,14 @@ However, if you save this file in the current version and reopen it in an older 
     <message>
       <location filename="../CommandDoc.cpp" line="1971"/>
       <source>Expression error</source>
-      <translation>Грешка израза</translation>
+      <translation>Грешка у изразу</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1972"/>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
       <translation>Рашчлањивање неких израза није успело.
-Погледај извештај за више детаља.</translation>
+За више детаља погледај Прегледач објава.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1996"/>
@@ -7983,25 +7983,25 @@ Please check the Report View for more details.</source>
       <location filename="../CommandView.cpp" line="338"/>
       <location filename="../CommandView.cpp" line="571"/>
       <source>&amp;Save views...</source>
-      <translation type="unfinished">&amp;Save views...</translation>
+      <translation>&amp;Сними запамћен поглед...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
       <location filename="../CommandView.cpp" line="572"/>
       <source>&amp;Load views...</source>
-      <translation type="unfinished">&amp;Load views...</translation>
+      <translation>&amp;Учитај запамћен поглед...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
       <location filename="../CommandView.cpp" line="573"/>
       <source>F&amp;reeze view</source>
-      <translation type="unfinished">F&amp;reeze view</translation>
+      <translation>Замрзни тренутни поглед</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="574"/>
       <source>&amp;Clear views</source>
-      <translation type="unfinished">&amp;Clear views</translation>
+      <translation>&amp;Обриши запамћене погледе</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="392"/>
@@ -8013,19 +8013,19 @@ Please check the Report View for more details.</source>
     <message>
       <location filename="../CommandView.cpp" line="421"/>
       <source>Save frozen views</source>
-      <translation>Снимање погледа</translation>
+      <translation>Сачувај запамћене погледе</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="422"/>
       <location filename="../CommandView.cpp" line="472"/>
       <source>Frozen views</source>
-      <translation>Замрзнути погледи</translation>
+      <translation>Запамћени погледи</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="462"/>
       <location filename="../CommandView.cpp" line="477"/>
       <source>Restore views</source>
-      <translation>Врати погледе на претходно стање</translation>
+      <translation>Обнови погледе</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="463"/>
@@ -8037,7 +8037,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../CommandView.cpp" line="471"/>
       <source>Restore frozen views</source>
-      <translation>Врати замрзнуте погледе на претходно стање</translation>
+      <translation>Обнови запамћене погледе</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="478"/>
@@ -8090,7 +8090,7 @@ Do you want to continue?</source>
       <location filename="../DlgParameterImp.cpp" line="843"/>
       <location filename="../DlgParameterImp.cpp" line="865"/>
       <source>New integer item</source>
-      <translation>Нова бројчана ставка</translation>
+      <translation>Нова целобројна ставка</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="866"/>
@@ -8106,13 +8106,13 @@ Do you want to continue?</source>
       <location filename="../DlgParameterImp.cpp" line="885"/>
       <location filename="../DlgParameterImp.cpp" line="910"/>
       <source>New unsigned item</source>
-      <translation>Нова неозначена ставка</translation>
+      <translation>Нова целобројна ставка без предзнака</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="929"/>
       <location filename="../DlgParameterImp.cpp" line="951"/>
       <source>New float item</source>
-      <translation>Нова ставка са покретним зарезом</translation>
+      <translation>Нова децимална ставка</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="970"/>
@@ -8219,7 +8219,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="1315"/>
       <source>Please check report view for more...</source>
-      <translation>Погледајте извештај за више...</translation>
+      <translation>За више детаља погледај Прегледач објава...</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1318"/>
@@ -8875,7 +8875,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="485"/>
       <source>Hint delay</source>
-      <translation type="unfinished">Hint delay</translation>
+      <translation>Кашњење показивача</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="488"/>
@@ -8915,12 +8915,12 @@ the current copy will be lost.
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="191"/>
       <source>Add a property to %1</source>
-      <translation type="unfinished">Add a property to %1</translation>
+      <translation>Додај својство %1</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="402"/>
       <source>The property name must only contain alpha numericals, underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property name must only contain alpha numericals, underscore, and must not start with a digit.</translation>
+      <translation>Име својства не сме да почиње бројем и може да садржи само алфанумеричке бројеве и доњу црту.</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="434"/>
@@ -8958,7 +8958,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2979"/>
       <source>Bo&amp;x element selection</source>
-      <translation type="unfinished">Bo&amp;x element selection</translation>
+      <translation>Правоугаони избор елемената</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2980"/>
@@ -8972,7 +8972,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2753"/>
       <source>&amp;Box selection</source>
-      <translation type="unfinished">&amp;Box selection</translation>
+      <translation>&amp;Правоугаони избор</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2754"/>
@@ -8991,7 +8991,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="223"/>
       <source>Displays important information About %1</source>
-      <translation type="unfinished">Displays important information About %1</translation>
+      <translation>Приказује важне информације о %1</translation>
     </message>
   </context>
   <context>
@@ -9013,7 +9013,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <source>&amp;Next</source>
-      <translation type="unfinished">&amp;Next</translation>
+      <translation>&amp;Следећи</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>
@@ -9027,7 +9027,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
       <source>&amp;Previous</source>
-      <translation type="unfinished">&amp;Previous</translation>
+      <translation>&amp;Претходни</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="202"/>
@@ -9041,7 +9041,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1674"/>
       <source>Ali&amp;gnment...</source>
-      <translation type="unfinished">Ali&amp;gnment...</translation>
+      <translation>Поравнај...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1675"/>
@@ -9055,7 +9055,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2221"/>
       <source>Toggle a&amp;xis cross</source>
-      <translation type="unfinished">Toggle a&amp;xis cross</translation>
+      <translation>Прикажи/сакриј координатни систем</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2222"/>
@@ -9097,7 +9097,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close A&amp;ll</source>
-      <translation type="unfinished">Close A&amp;ll</translation>
+      <translation>Затвори све</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
@@ -9139,7 +9139,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1143"/>
       <source>Cu&amp;t</source>
-      <translation type="unfinished">Cu&amp;t</translation>
+      <translation>Исеци</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1144"/>
@@ -9167,7 +9167,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3212"/>
       <source>View &amp;turntable...</source>
-      <translation type="unfinished">View &amp;turntable...</translation>
+      <translation>Прикажи обртни сто...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3213"/>
@@ -9181,7 +9181,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="623"/>
       <source>Dependency gra&amp;ph...</source>
-      <translation type="unfinished">Dependency gra&amp;ph...</translation>
+      <translation>Графикон завиcноcти...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="624"/>
@@ -9209,7 +9209,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="94"/>
       <source>Ma&amp;cros...</source>
-      <translation type="unfinished">Ma&amp;cros...</translation>
+      <translation>Макро-и...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="95"/>
@@ -9223,7 +9223,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="123"/>
       <source>&amp;Execute macro</source>
-      <translation type="unfinished">&amp;Execute macro</translation>
+      <translation>&amp;Изврши макро</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="124"/>
@@ -9237,7 +9237,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="51"/>
       <source>&amp;Macro recording...</source>
-      <translation type="unfinished">&amp;Macro recording...</translation>
+      <translation>&amp;Снимање Макро-а...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="52"/>
@@ -9261,7 +9261,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="381"/>
       <source>E&amp;dit parameters...</source>
-      <translation type="unfinished">E&amp;dit parameters...</translation>
+      <translation>Уреди параметре...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="382"/>
@@ -9275,7 +9275,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="406"/>
       <source>Prefere&amp;nces ...</source>
-      <translation type="unfinished">Prefere&amp;nces ...</translation>
+      <translation>Подешавања ...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
@@ -9289,7 +9289,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
       <source>&amp;Panels</source>
-      <translation type="unfinished">&amp;Panels</translation>
+      <translation>&amp;Панели</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="282"/>
@@ -9303,7 +9303,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="648"/>
       <source>&amp;Draw style</source>
-      <translation type="unfinished">&amp;Draw style</translation>
+      <translation>&amp;Cтилови приказа</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="649"/>
@@ -9317,7 +9317,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1246"/>
       <source>Duplicate selecti&amp;on</source>
-      <translation type="unfinished">Duplicate selecti&amp;on</translation>
+      <translation>Дуплирај изабрано</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1247"/>
@@ -9349,7 +9349,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="320"/>
       <source>&amp;Export...</source>
-      <translation>&amp;Извоз...</translation>
+      <translation>&amp;Извези...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="321"/>
@@ -9401,7 +9401,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="688"/>
       <source>FreeCAD &amp;Forum</source>
-      <translation type="unfinished">FreeCAD &amp;Forum</translation>
+      <translation>FreeCAD Форум</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="689"/>
@@ -9414,13 +9414,13 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="323"/>
       <source>F&amp;reeze display</source>
-      <translation type="unfinished">F&amp;reeze display</translation>
+      <translation>Запамти погледе</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="324"/>
       <location filename="../CommandView.cpp" line="326"/>
       <source>Freezes the current view position</source>
-      <translation>Замрзни и сачувај тренутне погледе</translation>
+      <translation>Запамти тренутни поглед</translation>
     </message>
   </context>
   <context>
@@ -9441,7 +9441,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1234"/>
       <source>Hide all &amp;objects</source>
-      <translation type="unfinished">Hide all &amp;objects</translation>
+      <translation>Cакриј cве објекте</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1235"/>
@@ -9455,7 +9455,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1086"/>
       <source>&amp;Hide selection</source>
-      <translation type="unfinished">&amp;Hide selection</translation>
+      <translation>&amp;Сакриј изабрано</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1087"/>
@@ -9585,7 +9585,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandLink.cpp" line="852"/>
       <source>&amp;Link navigation</source>
-      <translation type="unfinished">&amp;Link navigation</translation>
+      <translation>&amp;Навигација повезаним објектима</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="853"/>
@@ -9599,7 +9599,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandLink.cpp" line="812"/>
       <source>Select &amp;all links</source>
-      <translation type="unfinished">Select &amp;all links</translation>
+      <translation>Изабери све везе ка објекту</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="813"/>
@@ -9612,7 +9612,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandLink.cpp" line="649"/>
       <source>&amp;Go to linked object</source>
-      <translation type="unfinished">&amp;Go to linked object</translation>
+      <translation>&amp;Иди на повезани објекат</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="650"/>
@@ -9625,7 +9625,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the &amp;deepest linked object</source>
-      <translation type="unfinished">Go to the &amp;deepest linked object</translation>
+      <translation>Иди до најдубље повезаног објекта</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="778"/>
@@ -9651,7 +9651,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="149"/>
       <source>&amp;Attach to remote debugger...</source>
-      <translation type="unfinished">&amp;Attach to remote debugger...</translation>
+      <translation>&amp;Повежи се са удаљеним програмом за отклањање грешака...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="150"/>
@@ -9665,7 +9665,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="174"/>
       <source>&amp;Debug macro</source>
-      <translation type="unfinished">&amp;Debug macro</translation>
+      <translation>&amp;Уклони грешке макро-а</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="175"/>
@@ -9707,7 +9707,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="204"/>
       <source>&amp;Stop debugging</source>
-      <translation type="unfinished">&amp;Stop debugging</translation>
+      <translation>&amp;Заустави отклањање грешака</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="205"/>
@@ -9721,7 +9721,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="570"/>
       <source>&amp;Merge document...</source>
-      <translation type="unfinished">&amp;Merge document...</translation>
+      <translation>&amp;Обједини документ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="571"/>
@@ -9842,7 +9842,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1592"/>
       <source>P&amp;lacement...</source>
-      <translation type="unfinished">P&amp;lacement...</translation>
+      <translation>Положај...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1593"/>
@@ -9870,7 +9870,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="998"/>
       <source>Export P&amp;DF...</source>
-      <translation type="unfinished">Export P&amp;DF...</translation>
+      <translation>Извези PDF...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="999"/>
@@ -9884,7 +9884,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="968"/>
       <source>Print previe&amp;w...</source>
-      <translation type="unfinished">Print previe&amp;w...</translation>
+      <translation>Приказ штампе...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="969"/>
@@ -9930,7 +9930,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandFeat.cpp" line="80"/>
       <source>Random &amp;color</source>
-      <translation type="unfinished">Random &amp;color</translation>
+      <translation>Насумична боја</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="81"/>
@@ -9944,7 +9944,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="140"/>
       <source>Open &amp;Recent</source>
-      <translation type="unfinished">Open &amp;Recent</translation>
+      <translation>Отвори недавне</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="141"/>
@@ -9958,7 +9958,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="181"/>
       <source>&amp;Recent macros</source>
-      <translation type="unfinished">&amp;Recent macros</translation>
+      <translation>&amp;Недавни макро-и</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="182"/>
@@ -9986,7 +9986,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1512"/>
       <source>Refres&amp;h</source>
-      <translation type="unfinished">Refres&amp;h</translation>
+      <translation>Освежи</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1513"/>
@@ -10000,7 +10000,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="839"/>
       <source>Rever&amp;t</source>
-      <translation type="unfinished">Rever&amp;t</translation>
+      <translation>Врати се</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="840"/>
@@ -10028,7 +10028,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="811"/>
       <source>Sa&amp;ve All</source>
-      <translation type="unfinished">Sa&amp;ve All</translation>
+      <translation>Сачувај све</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="812"/>
@@ -10056,7 +10056,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="784"/>
       <source>Save a Cop&amp;y...</source>
-      <translation type="unfinished">Save a Cop&amp;y...</translation>
+      <translation>Сачувај копију...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="785"/>
@@ -10070,7 +10070,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3152"/>
       <source>Scene i&amp;nspector...</source>
-      <translation type="unfinished">Scene i&amp;nspector...</translation>
+      <translation>Преглед сцене...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3153"/>
@@ -10112,7 +10112,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1114"/>
       <source>&amp;Select visible objects</source>
-      <translation type="unfinished">&amp;Select visible objects</translation>
+      <translation>&amp;Изабери видљиве објекте</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1115"/>
@@ -10140,7 +10140,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1197"/>
       <source>Show &amp;all objects</source>
-      <translation type="unfinished">Show &amp;all objects</translation>
+      <translation>Прикажи cве објекте</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1198"/>
@@ -10154,7 +10154,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1058"/>
       <source>Sho&amp;w selection</source>
-      <translation type="unfinished">Sho&amp;w selection</translation>
+      <translation>Прикажи изабрано</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1059"/>
@@ -10182,7 +10182,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="796"/>
       <source>Add te&amp;xt document</source>
-      <translation type="unfinished">Add te&amp;xt document</translation>
+      <translation>Додај текстуални документ</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="797"/>
@@ -10196,7 +10196,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3185"/>
       <source>Text&amp;ure mapping...</source>
-      <translation type="unfinished">Text&amp;ure mapping...</translation>
+      <translation>Мапирање текcтура...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3186"/>
@@ -10216,7 +10216,7 @@ underscore, and must not start with a digit.</source>
       <location filename="../CommandWindow.cpp" line="57"/>
       <location filename="../CommandWindow.cpp" line="59"/>
       <source>Tile the windows</source>
-      <translation>Поплочај прозор</translation>
+      <translation>Поплочај прозорима</translation>
     </message>
   </context>
   <context>
@@ -10238,7 +10238,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="595"/>
       <source>Clippin&amp;g plane</source>
-      <translation type="unfinished">Clippin&amp;g plane</translation>
+      <translation>Раван исецања</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="596"/>
@@ -10252,7 +10252,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2172"/>
       <source>Toggle navigation/&amp;Edit mode</source>
-      <translation type="unfinished">Toggle navigation/&amp;Edit mode</translation>
+      <translation>Навигациони/уређивачки режим</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2173"/>
@@ -10266,7 +10266,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1156"/>
       <source>To&amp;ggle all objects</source>
-      <translation type="unfinished">To&amp;ggle all objects</translation>
+      <translation>Прикажи/сакриј све објекте</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1157"/>
@@ -10280,7 +10280,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggle se&amp;lectability</source>
-      <translation type="unfinished">Toggle se&amp;lectability</translation>
+      <translation>Укључи/Искључи могућност избора</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1007"/>
@@ -10294,7 +10294,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="868"/>
       <source>Toggle &amp;visibility</source>
-      <translation type="unfinished">Toggle &amp;visibility</translation>
+      <translation>Прикажи/Сакриј</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="869"/>
@@ -10308,7 +10308,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="317"/>
       <source>&amp;Toolbars</source>
-      <translation type="unfinished">&amp;Toolbars</translation>
+      <translation>&amp;Палете алатки</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="318"/>
@@ -10406,7 +10406,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="865"/>
       <source>Edit &amp;mode</source>
-      <translation type="unfinished">Edit &amp;mode</translation>
+      <translation>Режим за уређивање</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="866"/>
@@ -10434,7 +10434,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1299"/>
       <source>&amp;5 Bottom</source>
-      <translation type="unfinished">&amp;5 Bottom</translation>
+      <translation>&amp;5 Одоздо</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1300"/>
@@ -10462,7 +10462,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1468"/>
       <source>&amp;Dimetric</source>
-      <translation type="unfinished">&amp;Dimetric</translation>
+      <translation>&amp;Диметријски</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1469"/>
@@ -10518,7 +10518,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1564"/>
       <source>&amp;Fit all</source>
-      <translation type="unfinished">&amp;Fit all</translation>
+      <translation>&amp;Смести све</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1565"/>
@@ -10532,7 +10532,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1595"/>
       <source>Fit &amp;selection</source>
-      <translation type="unfinished">Fit &amp;selection</translation>
+      <translation>Смести изабрано</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1596"/>
@@ -10546,7 +10546,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1323"/>
       <source>&amp;1 Front</source>
-      <translation type="unfinished">&amp;1 Front</translation>
+      <translation>&amp;1 Спреда</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1324"/>
@@ -10560,7 +10560,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1271"/>
       <source>&amp;Home</source>
-      <translation type="unfinished">&amp;Home</translation>
+      <translation>&amp;Почетни</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1272"/>
@@ -10574,7 +10574,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1444"/>
       <source>&amp;Isometric</source>
-      <translation type="unfinished">&amp;Isometric</translation>
+      <translation>&amp;Изометријски</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1445"/>
@@ -10630,7 +10630,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2352"/>
       <source>Stereo &amp;Off</source>
-      <translation type="unfinished">Stereo &amp;Off</translation>
+      <translation>Искључи sтереоскопију</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2353"/>
@@ -10644,7 +10644,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2409"/>
       <source>Stereo &amp;quad buffer</source>
-      <translation type="unfinished">Stereo &amp;quad buffer</translation>
+      <translation>Стереоскопско четвороструко баферовање</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2410"/>
@@ -10658,7 +10658,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2381"/>
       <source>Stereo re&amp;d/cyan</source>
-      <translation type="unfinished">Stereo re&amp;d/cyan</translation>
+      <translation>Стереоскопија црвена/цијан</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2382"/>
@@ -10672,7 +10672,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1347"/>
       <source>&amp;6 Left</source>
-      <translation type="unfinished">&amp;6 Left</translation>
+      <translation>&amp;6 Слева</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1348"/>
@@ -10686,7 +10686,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1371"/>
       <source>&amp;4 Rear</source>
-      <translation type="unfinished">&amp;4 Rear</translation>
+      <translation>&amp;4 Страга</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1372"/>
@@ -10714,7 +10714,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1395"/>
       <source>&amp;3 Right</source>
-      <translation type="unfinished">&amp;3 Right</translation>
+      <translation>&amp;3 Сдесна</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1396"/>
@@ -10728,7 +10728,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1514"/>
       <source>Rotate &amp;Left</source>
-      <translation type="unfinished">Rotate &amp;Left</translation>
+      <translation>Окрени улево</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1515"/>
@@ -10742,7 +10742,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1539"/>
       <source>Rotate &amp;Right</source>
-      <translation type="unfinished">Rotate &amp;Right</translation>
+      <translation>Окрени удесно</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1540"/>
@@ -10770,7 +10770,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1419"/>
       <source>&amp;2 Top</source>
-      <translation type="unfinished">&amp;2 Top</translation>
+      <translation>&amp;2 Одозго</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1420"/>
@@ -10784,7 +10784,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1491"/>
       <source>&amp;Trimetric</source>
-      <translation type="unfinished">&amp;Trimetric</translation>
+      <translation>&amp;Триметријски</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1492"/>
@@ -10817,7 +10817,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="311"/>
       <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+      <translation>Отворите документацију која одговара избору</translation>
     </message>
   </context>
   <context>
@@ -10853,7 +10853,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="75"/>
       <source>&amp;Workbench</source>
-      <translation type="unfinished">&amp;Workbench</translation>
+      <translation>&amp;Радно окружење</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="76"/>
@@ -10881,13 +10881,13 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="132"/>
       <source>Orthographic view</source>
-      <translation>Ортографски поглед</translation>
+      <translation>Ортогонални поглед</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="133"/>
       <location filename="../CommandView.cpp" line="135"/>
       <source>Switches to orthographic view mode</source>
-      <translation>Пребацује на режим ортографског приказа</translation>
+      <translation>Пребацује на режим ортогоналног приказа</translation>
     </message>
   </context>
   <context>
@@ -10909,7 +10909,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3914"/>
       <source>R&amp;ecall working view</source>
-      <translation type="unfinished">R&amp;ecall working view</translation>
+      <translation>Опозови радни поглед</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3915"/>
@@ -10923,7 +10923,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3884"/>
       <source>St&amp;ore working view</source>
-      <translation type="unfinished">St&amp;ore working view</translation>
+      <translation>Сачувај радни поглед</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3885"/>
@@ -10937,7 +10937,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3363"/>
       <source>Collapse/E&amp;xpand</source>
-      <translation type="unfinished">Collapse/E&amp;xpand</translation>
+      <translation>Скупи/Прошири</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3364"/>
@@ -10951,7 +10951,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3492"/>
       <source>Initiate &amp;dragging</source>
-      <translation type="unfinished">Initiate &amp;dragging</translation>
+      <translation>Покрени превлачење</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3493"/>
@@ -10964,7 +10964,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3346"/>
       <source>&amp;Multi document</source>
-      <translation type="unfinished">&amp;Multi document</translation>
+      <translation>&amp;Више докумената</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3347"/>
@@ -10978,12 +10978,12 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3456"/>
       <source>&amp;4 Pre-selection</source>
-      <translation type="unfinished">&amp;4 Pre-selection</translation>
+      <translation>&amp;4 Предизбор</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3457"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation>Направи преизбор објекта у 3Д погледу лебдењем миша изнад ставке у Стаблу документа</translation>
+      <translation>Направи предизбор објекта у 3Д погледу лебдењем миша изнад ставке у Стаблу документа</translation>
     </message>
   </context>
   <context>
@@ -10991,7 +10991,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3474"/>
       <source>&amp;5 Record selection</source>
-      <translation type="unfinished">&amp;5 Record selection</translation>
+      <translation>&amp;5 Сними избор</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3475"/>
@@ -11004,7 +11004,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3024"/>
       <source>&amp;Go to selection</source>
-      <translation type="unfinished">&amp;Go to selection</translation>
+      <translation>&amp;Иди на изабрано</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3025"/>
@@ -11018,7 +11018,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3329"/>
       <source>&amp;Single document</source>
-      <translation type="unfinished">&amp;Single document</translation>
+      <translation>&amp;Један документ</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3330"/>
@@ -11032,7 +11032,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3438"/>
       <source>&amp;3 Sync placement</source>
-      <translation type="unfinished">&amp;3 Sync placement</translation>
+      <translation>&amp;3 Синхронизуј положај</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3439"/>
@@ -11045,7 +11045,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3420"/>
       <source>&amp;2 Sync selection</source>
-      <translation type="unfinished">&amp;2 Sync selection</translation>
+      <translation>&amp;2 Синхронизуј избор</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3421"/>
@@ -11058,7 +11058,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="3402"/>
       <source>&amp;1 Sync view</source>
-      <translation type="unfinished">&amp;1 Sync view</translation>
+      <translation>&amp;1 Синхронизуј приказ</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3403"/>
@@ -11071,7 +11071,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2719"/>
       <source>&amp;Box zoom</source>
-      <translation type="unfinished">&amp;Box zoom</translation>
+      <translation>&amp;Зумирај оквиром</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2720"/>
@@ -11085,7 +11085,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1664"/>
       <source>&amp;Docked</source>
-      <translation type="unfinished">&amp;Docked</translation>
+      <translation>&amp;Уcидрен</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1665"/>
@@ -11099,7 +11099,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1784"/>
       <source>D&amp;ocument window</source>
-      <translation type="unfinished">D&amp;ocument window</translation>
+      <translation>Прозор документа</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1785"/>
@@ -11113,7 +11113,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1754"/>
       <source>&amp;Fullscreen</source>
-      <translation type="unfinished">&amp;Fullscreen</translation>
+      <translation>Цео екран</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1755"/>
@@ -11127,7 +11127,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1926"/>
       <source>Save &amp;image...</source>
-      <translation type="unfinished">Save &amp;image...</translation>
+      <translation>Сачувај слику...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1927"/>
@@ -11141,7 +11141,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1693"/>
       <source>&amp;Undocked</source>
-      <translation type="unfinished">&amp;Undocked</translation>
+      <translation>&amp;Одcидрен</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1694"/>
@@ -11155,13 +11155,13 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2544"/>
       <source>Zoom &amp;In</source>
-      <translation type="unfinished">Zoom &amp;In</translation>
+      <translation>Увећај</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2545"/>
       <location filename="../CommandView.cpp" line="2547"/>
       <source>Increase the zoom factor by a fixed amount</source>
-      <translation>Повећај фактор зумирања за фиксни износ</translation>
+      <translation>Повећај коефицијент зумирања за непроменљиви износ</translation>
     </message>
   </context>
   <context>
@@ -11169,13 +11169,13 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2573"/>
       <source>Zoom &amp;Out</source>
-      <translation type="unfinished">Zoom &amp;Out</translation>
+      <translation>Смањи</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2574"/>
       <location filename="../CommandView.cpp" line="2576"/>
       <source>Decrease the zoom factor by a fixed amount</source>
-      <translation>Смањи фактор зумирања за фиксни износ</translation>
+      <translation>Смањи коефицијент зумирања за непроменљиви износ</translation>
     </message>
   </context>
   <context>
@@ -11210,7 +11210,7 @@ Are you sure you want to continue?
     <message>
       <location filename="../CommandView.cpp" line="727"/>
       <source>&amp;1 As is</source>
-      <translation type="unfinished">&amp;1 As is</translation>
+      <translation>&amp;1 Као што је</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="729"/>
@@ -11220,32 +11220,32 @@ Are you sure you want to continue?
     <message>
       <location filename="../CommandView.cpp" line="732"/>
       <source>&amp;2 Points</source>
-      <translation type="unfinished">&amp;2 Points</translation>
+      <translation>&amp;2 Тачке</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="737"/>
       <source>&amp;3 Wireframe</source>
-      <translation type="unfinished">&amp;3 Wireframe</translation>
+      <translation>&amp;3 Жичани оквир</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="742"/>
       <source>&amp;4 Hidden line</source>
-      <translation type="unfinished">&amp;4 Hidden line</translation>
+      <translation>&amp;4 Као троугаона мрежа</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="747"/>
       <source>&amp;5 No shading</source>
-      <translation type="unfinished">&amp;5 No shading</translation>
+      <translation>&amp;5 Без сенчења</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="752"/>
       <source>&amp;6 Shaded</source>
-      <translation type="unfinished">&amp;6 Shaded</translation>
+      <translation>&amp;6 Невидљиве ивице, са сенчењем</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="757"/>
       <source>&amp;7 Flat lines</source>
-      <translation type="unfinished">&amp;7 Flat lines</translation>
+      <translation>&amp;7 Видљиве ивице са сенчењем</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="734"/>
@@ -11310,7 +11310,7 @@ Please check the Report View for more details.
 
 Do you still want to proceed?</source>
       <translation>Документ садржи циклусе зависности.
-Погледај извештај за више детаља.
+За више детаља погледај Прегледач објава.
 
 Да ли и даље желиш да наставиш?</translation>
     </message>
@@ -11426,17 +11426,17 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../Workbench.cpp" line="539"/>
       <source>Standard &amp;views</source>
-      <translation type="unfinished">Standard &amp;views</translation>
+      <translation>Погледи</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
       <source>A&amp;xonometric</source>
-      <translation type="unfinished">A&amp;xonometric</translation>
+      <translation>Аксонометријски</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="544"/>
       <source>V&amp;isibility</source>
-      <translation type="unfinished">V&amp;isibility</translation>
+      <translation>Видљивост</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="545"/>
@@ -11522,12 +11522,12 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ако је потврђено, Област за обавештења ће се приказивати у Статусној траци у облику дугмета са тренутним бројем обавештења које се кликом проширује у детаљну листу обавештења. Обавештења могу искакати у посебном прозору, али ту опцију треба додатно укључити.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="23"/>
       <source>Enable notification area</source>
-      <translation type="unfinished">Enable notification area</translation>
+      <translation>Омогући област за обавештења</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
@@ -11541,17 +11541,17 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="37"/>
       <source>Enable pop-up notifications</source>
-      <translation type="unfinished">Enable pop-up notifications</translation>
+      <translation>Омогући ненаметљива обавештења</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="49"/>
       <source>Minimum duration:</source>
-      <translation type="unfinished">Minimum duration:</translation>
+      <translation>Минимално трајање:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="59"/>
       <source>Maximum duration:</source>
-      <translation type="unfinished">Maximum duration:</translation>
+      <translation>Максимално трајање:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
@@ -11597,17 +11597,17 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="168"/>
       <source>Any open pop-up notifications will disappear when another window is activated.</source>
-      <translation type="unfinished">Any open pop-up notifications will disappear when another window is activated.</translation>
+      <translation>Сва отворена ненаметљива обавештења ће нестати када се активира други прозор.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="187"/>
       <source>Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</source>
-      <translation type="unfinished">Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</translation>
+      <translation>Спречи појављивање ненаметљивих обавештења када FreeCAD прозор није активан прозор.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="190"/>
       <source>Do not show when window is inactive</source>
-      <translation type="unfinished">Do not show when window is inactive</translation>
+      <translation>Не приказуј када је неактиван</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="209"/>
@@ -11632,17 +11632,17 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
       <source>Notifications list</source>
-      <translation type="unfinished">Notifications list</translation>
+      <translation>Листа обавештења</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
       <source>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</source>
-      <translation type="unfinished">Limits the number of notifications that will be kept in the list. If 0, there is no limit.</translation>
+      <translation>Ограничи број обавештења које ће се налазити у листи. Ако је 0, нема ограничења.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
       <source>Maximum notification count:</source>
-      <translation type="unfinished">Maximum notification count:</translation>
+      <translation>Максималан број обавештења:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="294"/>
@@ -11652,7 +11652,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="297"/>
       <source>Auto-remove user notifications</source>
-      <translation type="unfinished">Auto-remove user notifications</translation>
+      <translation>Аутоматско уклањање корисничких обавештења</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
@@ -11724,7 +11724,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation>Ако је означено, FreeCAD ће запамтити које је радно окружење активно за сваку картицу прозора главне графичке области</translation>
+      <translation>Ако је потврђено, FreeCAD ће запамтити које је радно окружење активно за сваку картицу прозора главне графичке области</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="115"/>
@@ -11845,7 +11845,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../TaskView/TaskImage.ui" line="234"/>
       <source>Keep aspect ratio</source>
-      <translation>Задржи сразмеру</translation>
+      <translation>Очувај пропорцију</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="244"/>
@@ -11878,7 +11878,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="87"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
-      <translation>Ако није означено, %1 се неће појавити у доступним радним окружењима.</translation>
+      <translation>Ако није потврђено, %1 се неће појавити у доступним радним окружењима.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
@@ -11898,7 +11898,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="131"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
-      <translation>Ако је означено, %1 ће се аутоматски учитати када се FreeCAD покрене</translation>
+      <translation>Ако је потврђено, %1 ће се аутоматски учитати када се FreeCAD покрене</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
@@ -12023,7 +12023,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../CommandView.cpp" line="2097"/>
       <source>&amp;Load image...</source>
-      <translation type="unfinished">&amp;Load image...</translation>
+      <translation>&amp;Учитај слику...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2098"/>
@@ -12474,7 +12474,7 @@ See the FreeCAD Wiki for details about the image.</source>
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
       <translation>Почетни екран је мали прозор за учитавање који се приказује
-када се FreeCAD покреће. Ако је ова опција чекирана, FreeCAD ће
+када се FreeCAD покреће. Ако је ова опција потврђена, FreeCAD ће
 приказати почетни екран</translation>
     </message>
     <message>
@@ -12623,37 +12623,37 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="38"/>
       <source>Normal messages will be recorded</source>
-      <translation>Уобичајене поруке ће бити снимљене</translation>
+      <translation>Обичне поруке ће бити снимљене</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="41"/>
       <source>Record normal messages</source>
-      <translation>Сними уобичајене поруке</translation>
+      <translation>Сними обичне поруке</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="57"/>
       <source>Log messages will be recorded</source>
-      <translation>Поруке о грешкама ће бити снимљене</translation>
+      <translation>Дневничке поруке ће бити снимљене</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="60"/>
       <source>Record log messages</source>
-      <translation>Сними поруке у дневник</translation>
+      <translation>Сними дневничке поруке</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="73"/>
       <source>Warnings will be recorded</source>
-      <translation>Упозорења ће бити снимљена</translation>
+      <translation>Поруке упозорења ће бити снимљена</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="76"/>
       <source>Record warnings</source>
-      <translation>Сними упозорења</translation>
+      <translation>Сними поруке упозорења</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="92"/>
       <source>Error messages will be recorded</source>
-      <translation>Поруке о грешци ће бити снимљене</translation>
+      <translation>Поруке о грешкама ће бити снимљене</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="95"/>
@@ -12664,55 +12664,55 @@ display the splash screen</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="111"/>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation>Када дође до грешке, на екрану ће бити видљив Преглед Извештаја док се приказује грешка</translation>
+      <translation>Када се појави порука о грешци, док се се она приказује, на екрану ће бити видљив и Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="115"/>
       <source>Show report view on error</source>
-      <translation>Прикажи преглед извештаја о грешци</translation>
+      <translation>Са поруком о грешци прикажи и Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="131"/>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation>Када дође до упозорења, на екрану ће бити видљив Преглед Извештаја док се приказује упозорење</translation>
+      <translation>Када се појави порука упозорења, док се се она приказује, на екрану ће бити видљив и Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="135"/>
       <source>Show report view on warning</source>
-      <translation>Прикажи извештај уз упозорење</translation>
+      <translation>Са поруком упозорења прикажи и Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="148"/>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>Када настане обична порука, на екрану ће бити видљив Преглед Извештаја док се приказује порука</translation>
+      <translation>Када се појави обична порука, док се се она приказује, на екрану ће бити видљив и Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="152"/>
       <source>Show report view on normal message</source>
-      <translation>Прикажи извештај уз обичну поруку</translation>
+      <translation>Са обичном поруком прикажи и Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="168"/>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>Када настане порука у дневнику, на екрану ће бити видљив Преглед Извештаја док се приказује порука из дневника</translation>
+      <translation>Када се појави дневничка порука, док се се она приказује, на екрану ће бити видљив и Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="172"/>
       <source>Show report view on log message</source>
-      <translation>Прикажи извештај уз поруку дневника</translation>
+      <translation>Са дневничком поруком прикажи и Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="188"/>
       <source>Include a timecode for each report</source>
-      <translation>Укључи временски код за сваки извештај</translation>
+      <translation>Укључи временски код за сваки извештај у Прегледачу објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="191"/>
       <source>Include a timecode for each entry</source>
-      <translation>Укључи временски код за сваки унос</translation>
+      <translation>Укључи временски код за сваки унос у Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="210"/>
@@ -12722,42 +12722,42 @@ on-screen while displaying the log message</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="248"/>
       <source>Normal messages:</source>
-      <translation>Уобичајене поруке:</translation>
+      <translation>Обичне поруке:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="283"/>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>Боја фонта за обичне поруке на табли за приказ извештаја</translation>
+      <translation>Боја фонта у Прегледачу објава за обичне поруке</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="306"/>
       <source>Log messages:</source>
-      <translation>Поруке дневника:</translation>
+      <translation>Дневничке поруке:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="341"/>
       <source>Font color for log messages in Report view panel</source>
-      <translation>Боја фонта за поруке из дневника на табли за приказ извештаја</translation>
+      <translation>Боја фонта у Прегледачу објава за дневничке поруке</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="364"/>
       <source>Warnings:</source>
-      <translation>Упозорења:</translation>
+      <translation>Поруке упозорења:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="399"/>
       <source>Font color for warning messages in Report view panel</source>
-      <translation>Боја фонта за поруке упозорења на табли за приказ извештаја</translation>
+      <translation>Боја фонта у Прегледачу објава за поруке упозорења</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="422"/>
       <source>Errors:</source>
-      <translation>Грешке:</translation>
+      <translation>Поруке о грешкама:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="457"/>
       <source>Font color for error messages in Report view panel</source>
-      <translation>Боја фонта за поруке о грешкама на табли за приказ извештаја</translation>
+      <translation>Боја фонта у Прегледачу објава за поруке о грешкама</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="501"/>
@@ -12769,24 +12769,24 @@ on-screen while displaying the log message</source>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
       <translation>Интерни Python излаз ће бити преусмерен
-са Python конзоле на таблу за приказ извештаја</translation>
+са Python конзоле ка Прегледачу објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="511"/>
       <source>Redirect internal Python output to report view</source>
-      <translation>Преусмери интерни Python излаз ка извештају</translation>
+      <translation>Преусмери интерни Python излаз ка Прегледачу објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="527"/>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
       <translation>Интерне поруке о Python грешкама бити преусмерене
-са Python конзоле на таблу за приказ извештаја</translation>
+са Python конзоле на Прегледач објава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="531"/>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Преусмери интерне Python грешке у извештај</translation>
+      <translation>Преусмери интерне Python грешке у Прегледач објава</translation>
     </message>
   </context>
   <context>
@@ -12794,7 +12794,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandDoc.cpp" line="655"/>
       <source>Export dependency &amp;graph...</source>
-      <translation type="unfinished">Export dependency &amp;graph...</translation>
+      <translation>Извези графикон зависности...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="656"/>
@@ -12808,7 +12808,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3241"/>
       <source>Selection &amp;back</source>
-      <translation type="unfinished">Selection &amp;back</translation>
+      <translation>Избор назад</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3243"/>
@@ -12821,7 +12821,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3275"/>
       <source>Selection &amp;forward</source>
-      <translation type="unfinished">Selection &amp;forward</translation>
+      <translation>Избор напред</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3277"/>
@@ -12877,7 +12877,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="899"/>
       <source>Toggle transparenc&amp;y</source>
-      <translation type="unfinished">Toggle transparenc&amp;y</translation>
+      <translation>Укључи/исклучи провидност</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="901"/>
@@ -12890,7 +12890,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3612"/>
       <source>Toggle overl&amp;ay for all</source>
-      <translation type="unfinished">Toggle overl&amp;ay for all</translation>
+      <translation>Сви обични/прекривајући</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3613"/>
@@ -12903,7 +12903,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3636"/>
       <source>Toggle tra&amp;nsparent for all</source>
-      <translation type="unfinished">Toggle tra&amp;nsparent for all</translation>
+      <translation>Укључи/исклучи провидност за све</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3637"/>
@@ -12918,7 +12918,7 @@ This makes the docked windows stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="3661"/>
       <source>Toggle &amp;overlay</source>
-      <translation type="unfinished">Toggle &amp;overlay</translation>
+      <translation>Укључи/Искључи прекривање</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3662"/>
@@ -12931,7 +12931,7 @@ This makes the docked windows stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="3685"/>
       <source>Toggle tran&amp;sparent mode</source>
-      <translation type="unfinished">Toggle tran&amp;sparent mode</translation>
+      <translation>Укључи/исклучи провидни режим</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3686"/>
@@ -12946,7 +12946,7 @@ This makes the docked window stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="3710"/>
       <source>Toggle &amp;left</source>
-      <translation type="unfinished">Toggle &amp;left</translation>
+      <translation>Сакриј/Прикажи леви</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3711"/>
@@ -12959,7 +12959,7 @@ This makes the docked window stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="3735"/>
       <source>Toggle &amp;right</source>
-      <translation type="unfinished">Toggle &amp;right</translation>
+      <translation>Сакриј/Прикажи десни</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3736"/>
@@ -12972,7 +12972,7 @@ This makes the docked window stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="3760"/>
       <source>Toggle &amp;top</source>
-      <translation type="unfinished">Toggle &amp;top</translation>
+      <translation>Сакриј/Прикажи горњи</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3761"/>
@@ -12985,7 +12985,7 @@ This makes the docked window stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="3785"/>
       <source>Toggle &amp;bottom</source>
-      <translation type="unfinished">Toggle &amp;bottom</translation>
+      <translation>Сакриј/Прикажи доњи</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3786"/>
@@ -12998,7 +12998,7 @@ This makes the docked window stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="3810"/>
       <source>Bypass &amp;mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass &amp;mouse events in docked overlay windows</translation>
+      <translation>Заобиђи активност миша у усидреном прекривајућем прозору</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3811"/>
@@ -13124,12 +13124,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="853"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation>Прикажи траку са језичцима на показивачу аутоматски сакривених панела</translation>
+      <translation>Прикажи траку са картицама на показивачу аутоматски сакривених панела</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="881"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation>Сакриј траку с картицама прекривајућег сидришта</translation>
+      <translation>Сакриј траку са картицама прекривајућег сидришта</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="909"/>
@@ -13238,7 +13238,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="878"/>
       <source>Doc&amp;ument information...</source>
-      <translation type="unfinished">Doc&amp;ument information...</translation>
+      <translation>Подаци о документу...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="879"/>
@@ -13252,7 +13252,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="909"/>
       <source>Do&amp;cument utility...</source>
-      <translation type="unfinished">Do&amp;cument utility...</translation>
+      <translation>Услужне алатке документа...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="910"/>
@@ -13280,12 +13280,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1784"/>
       <source>Propert&amp;ies</source>
-      <translation type="unfinished">Propert&amp;ies</translation>
+      <translation>Својства</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1785"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
-      <translation>Прикажи панел Особине приказа, у коме се приказују особине изабраног објекта.</translation>
+      <translation>Прикажи панел Прегледач својстава, у коме се приказују особине изабраног објекта.</translation>
     </message>
   </context>
   <context>
@@ -13306,7 +13306,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1625"/>
       <source>Standard &amp;views</source>
-      <translation type="unfinished">Standard &amp;views</translation>
+      <translation>Погледи</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1626"/>
@@ -13328,7 +13328,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PropertyView.cpp" line="562"/>
       <source>Property view</source>
-      <translation>Особине приказа</translation>
+      <translation>Прегледач својстава</translation>
     </message>
   </context>
   <context>
@@ -13350,7 +13350,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3946"/>
       <source>&amp;Align to selection</source>
-      <translation type="unfinished">&amp;Align to selection</translation>
+      <translation>&amp;Поравнај са изабраним</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3947"/>
@@ -13548,22 +13548,22 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="384"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation>Сакриј траку с картицама прекривајућег сидришта</translation>
+      <translation>Сакриј траку са картицама прекривајућег сидришта</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="387"/>
       <source>Hide tab bar</source>
-      <translation>Сакриј траку са језичцима</translation>
+      <translation>Сакриј траку са картицама</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="403"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation>Прикажи траку са језичцима на показивачу аутоматски сакривених панела</translation>
+      <translation>Прикажи траку са картицама на показивачу аутоматски сакривених панела</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="406"/>
       <source>Hint show tab bar</source>
-      <translation>Показивач приказује траку са језичцима</translation>
+      <translation>Показивач приказује траку са картицама</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="419"/>
@@ -13573,7 +13573,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="422"/>
       <source>Hide property view scroll bar</source>
-      <translation>Сакриј клизну траку панела Особине приказа</translation>
+      <translation>Сакриј клизну траку панела Прегледач својстава</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="438"/>
@@ -13646,7 +13646,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../VectorListEditor.cpp" line="203"/>
       <source>Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</source>
-      <translation type="unfinished">Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</translation>
+      <translation>Неподржан формат.  Морају да постоје 3 вредности по реду, одвојене табулаторима, тачка зарезом или зарезом:</translation>
     </message>
   </context>
   <context>
@@ -13654,12 +13654,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
       <source>Automatic Python &amp;Modules Documentation</source>
-      <translation type="unfinished">Automatic Python &amp;Modules Documentation</translation>
+      <translation>Документација аутоматcких Python модула</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
       <source>Opens the Python Modules documentation</source>
-      <translation type="unfinished">Opens the Python Modules documentation</translation>
+      <translation>Отвара документацију Python модула</translation>
     </message>
   </context>
   <context>
@@ -13667,12 +13667,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="334"/>
       <source>Restart in Safe Mode</source>
-      <translation type="unfinished">Restart in Safe Mode</translation>
+      <translation>Покрени поново у безбедном режиму</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="335"/>
       <source>Starts FreeCAD without any modules or plugins loaded</source>
-      <translation type="unfinished">Starts FreeCAD without any modules or plugins loaded</translation>
+      <translation>Покретање FreeCAD-а без учитаних додатака</translation>
     </message>
   </context>
   <context>
@@ -13685,7 +13685,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="526"/>
       <source>Opens the Help documentation</source>
-      <translation type="unfinished">Opens the Help documentation</translation>
+      <translation>Општа документација</translation>
     </message>
   </context>
   <context>
@@ -13693,12 +13693,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="577"/>
       <source>Support FreeCA&amp;D</source>
-      <translation type="unfinished">Support FreeCA&amp;D</translation>
+      <translation>Подржи FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="578"/>
       <source>Support FreeCAD development</source>
-      <translation type="unfinished">Support FreeCAD development</translation>
+      <translation>Подржи развој FreeCAD-а</translation>
     </message>
   </context>
   <context>
@@ -13706,12 +13706,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="604"/>
       <source>FreeCAD W&amp;ebsite</source>
-      <translation type="unfinished">FreeCAD W&amp;ebsite</translation>
+      <translation>FreeCAD Веб-cтраница</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="605"/>
       <source>Navigates to the official FreeCAD website</source>
-      <translation type="unfinished">Navigates to the official FreeCAD website</translation>
+      <translation>FreeCAD Веб-cтраница</translation>
     </message>
   </context>
   <context>
@@ -13719,12 +13719,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="632"/>
       <source>&amp;User Documentation</source>
-      <translation type="unfinished">&amp;User Documentation</translation>
+      <translation>Кориcничка документација</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="633"/>
       <source>Opens the documentation for users</source>
-      <translation type="unfinished">Opens the documentation for users</translation>
+      <translation>Кориcничка документација</translation>
     </message>
   </context>
   <context>
@@ -13732,12 +13732,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="660"/>
       <source>&amp;Python Scripting Documentation</source>
-      <translation type="unfinished">&amp;Python Scripting Documentation</translation>
+      <translation>Документација о Python кодирању</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="661"/>
       <source>Opens the Python Scripting documentation</source>
-      <translation type="unfinished">Opens the Python Scripting documentation</translation>
+      <translation>Документација о Python кодирању</translation>
     </message>
   </context>
   <context>
@@ -13745,12 +13745,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="716"/>
       <source>FreeCAD FA&amp;Q</source>
-      <translation type="unfinished">FreeCAD FA&amp;Q</translation>
+      <translation>FreeCAD Чеcта питања</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="717"/>
       <source>Opens the Frequently Asked Questions</source>
-      <translation type="unfinished">Opens the Frequently Asked Questions</translation>
+      <translation>Чеcто поcтављана питања</translation>
     </message>
   </context>
   <context>
@@ -13758,12 +13758,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="769"/>
       <source>Report an &amp;Issue</source>
-      <translation type="unfinished">Report an &amp;Issue</translation>
+      <translation>Пријави проблем</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="770"/>
       <source>Report an issue or suggest a new feature</source>
-      <translation type="unfinished">Report an issue or suggest a new feature</translation>
+      <translation>Пријави грешку или затражи нову функционалност</translation>
     </message>
   </context>
   <context>
@@ -13771,13 +13771,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1639"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Помери</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1640"/>
       <location filename="../CommandDoc.cpp" line="1641"/>
       <source>Transform the selected object in the 3D view</source>
-      <translation type="unfinished">Transform the selected object in the 3D view</translation>
+      <translation>Помери изабрани објекат у 3Д погледу</translation>
     </message>
   </context>
 </TS>

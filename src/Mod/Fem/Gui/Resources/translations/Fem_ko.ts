@@ -4450,7 +4450,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="306"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation>페이지</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="312"/>
@@ -4960,7 +4960,7 @@ used for the Elmer solver</translation>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
       <location filename="../../TaskPostDisplay.ui" line="108"/>
       <source>Wireframe</source>
-      <translation>와이어프레임</translation>
+      <translation>철사틀</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="73"/>
@@ -5033,7 +5033,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
       <source>Wireframe</source>
-      <translation>와이어프레임</translation>
+      <translation>철사틀</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>

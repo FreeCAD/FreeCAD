@@ -209,7 +209,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="452"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="462"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Ako je označeno, prikazaće jedinicu mere pored vrednosti kote</translation>
+      <translation>Ako je potvrđeno, prikazaće jedinicu mere pored vrednosti kote</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
@@ -248,7 +248,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="306"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="316"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation>Ako je označeno, prikazaće se kotna linija</translation>
+      <translation>Ako je potvrđeno, prikazaće se kotna linija</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
@@ -427,7 +427,7 @@ Promeni smer ose u uredniku svojstava.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="243"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Ako je označeno, rezultujući objekti posle umnožavanja će biti spojeni ako se dodiruju.
+      <translation>Ako je potvrđeno, rezultujući objekti posle umnožavanja će biti spojeni ako se dodiruju.
 Ovo radi samo ako je "Umnožavanje spona" isključeno.</translation>
     </message>
     <message>
@@ -439,7 +439,7 @@ Ovo radi samo ako je "Umnožavanje spona" isključeno.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Ako je označeno, rezultujući objekat će biti „Umnožavanje spona“ umesto običnog umnožavanja.
+      <translation>Ako je potvrđeno, rezultujući objekat će biti „Umnožavanje spona“ umesto običnog umnožavanja.
 Umnožavanje spona je efikasnije kada se napravi više kopija, ali se ne može spojiti zajedno.</translation>
     </message>
     <message>
@@ -559,7 +559,7 @@ Negativne vrednosti će dovesti do kopija proizvedenih u negativnom pravcu.</tra
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Ako je čekirano, rezultujući objekti posle umnožavanja će biti spojeni ako se dodiruju.
+      <translation>Ako je potvrđeno, rezultujući objekti posle umnožavanja će biti spojeni ako se dodiruju.
 Ovo radi samo ako je "Umnožavanje spona" isključeno.</translation>
     </message>
     <message>
@@ -571,7 +571,7 @@ Ovo radi samo ako je "Umnožavanje spona" isključeno.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="414"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Ako je čekirano, rezultujući objekat će biti „Umnožavanje spona“ umesto običnog umnožavanja.
+      <translation>Ako je potvrđeno, rezultujući objekat će biti „Umnožavanje spona“ umesto običnog umnožavanja.
 Umnožavanje spona je efikasnije kada se napravi više kopija, ali se ne može spojiti zajedno.</translation>
     </message>
     <message>
@@ -656,7 +656,7 @@ Promeni smer ose u uredniku svojstava.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Ako je označeno, rezultujući objekti posle umnožavanja će biti spojeni ako se dodiruju.
+      <translation>Ako je potvrđeno, rezultujući objekti posle umnožavanja će biti spojeni ako se dodiruju.
 Ovo radi samo ako je "Umnožavanje spona" isključeno.</translation>
     </message>
     <message>
@@ -668,7 +668,7 @@ Ovo radi samo ako je "Umnožavanje spona" isključeno.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Ako je označeno, rezultujući objekat će biti „Umnožavanje spona“ umesto običnog umnožavanja.
+      <translation>Ako je potvrđeno, rezultujući objekat će biti „Umnožavanje spona“ umesto običnog umnožavanja.
 Umnožavanje spona je efikasnije kada se napravi više kopija, ali se ne može spojiti zajedno.</translation>
     </message>
     <message>
@@ -709,7 +709,7 @@ Umnožavanje spona je efikasnije kada se napravi više kopija, ali se ne može s
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>Resetuj izbor 3D tačke</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -977,7 +977,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
       <source>Emissive shape color</source>
-      <translation>Emitujuća boja</translation>
+      <translation>Zračeća boja</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="102"/>
@@ -1056,7 +1056,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
       <source>Wireframe</source>
-      <translation>Žičani ram</translation>
+      <translation>Žičani okvir</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
@@ -1168,7 +1168,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="486"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
-      <translation>Ako je označeno, oznaka mernih jedinica se dodaje uz kotni broj</translation>
+      <translation>Ako je potvrđeno, oznaka mernih jedinica se dodaje uz kotni broj</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="503"/>
@@ -1326,7 +1326,7 @@ Pozitivna vrednost definiše produžetak pomoćnih kotnih linija. Koristite samo
     <message>
       <location filename="../ui/preferences-draft.ui" line="66"/>
       <source>Default working plane</source>
-      <translation>Podrazumevana radna ravan</translation>
+      <translation>Unapred zadana radna ravan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="14"/>
@@ -1346,7 +1346,7 @@ Values between 6 and 8 are usually considered the best trade-off.</source>
 will automatically align with the current view whenever a command is started.
 Additionally it will align to preselected planar faces, or when points on planar
 faces are picked during commands.</source>
-      <translation>Podrazumevana radna ravan za nove poglede. Ako je podešeno na "Automatski", radna ravan
+      <translation>Unapred zadana radna ravan za nove poglede. Ako je podešeno na "Automatski", radna ravan
 će se automatski poravnati sa trenutnim pogledom svaki put kada se pokrene komanda.
 Pored toga, poravnaće se sa unapred izabranim ravnim stranicama, ili izabranim tačkama na stranici.</translation>
     </message>
@@ -1369,7 +1369,7 @@ Pored toga, poravnaće se sa unapred izabranim ravnim stranicama, ili izabranim
       <location filename="../ui/preferences-draft.ui" line="112"/>
       <source>If checked, a widget indicating the current working
 plane orientation appears when picking points</source>
-      <translation>Ako je označeno, tokom operacija crtanja se pojavvljuje grafički element koji pokazuje trenutnu orijentaciju radne ravni</translation>
+      <translation>Ako je potvrđeno, tokom operacija crtanja se pojavvljuje grafički element koji pokazuje trenutnu orijentaciju radne ravni</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="116"/>
@@ -1380,7 +1380,7 @@ plane orientation appears when picking points</source>
       <location filename="../ui/preferences-draft.ui" line="129"/>
       <source>If checked, the layers drop-down list also includes groups.
 Objects can then automatically be added to groups as well.</source>
-      <translation>Ako je označeno, u padajućoj listi slojeva će se nalaziti i grupe.
+      <translation>Ako je potvrđeno, u padajućoj listi slojeva će se nalaziti i grupe.
 Objekti se u tom slučaju mogu automatski dodavati i grupama.</translation>
     </message>
     <message>
@@ -1396,7 +1396,7 @@ Objekti se u tom slučaju mogu automatski dodavati i grupama.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
       <source>If checked, instructions are displayed in the Report view when using Draft commands</source>
-      <translation>Ako je označeno, prilikom upotrebe komandi okruženja Crtanje u Pregledaču objava će se prikazivati instrukcije</translation>
+      <translation>Ako je potvrđeno, prilikom upotrebe komandi okruženja Crtanje u Pregledaču objava će se prikazivati instrukcije</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
@@ -1407,12 +1407,12 @@ Objekti se u tom slučaju mogu automatski dodavati i grupama.</translation>
       <location filename="../ui/preferences-draft.ui" line="171"/>
       <source>If checked, Length input, instead of the X coordinate, will have the initial focus.
 This allows to indicate a direction and then type a distance.</source>
-      <translation>Ukoliko je označeno, umesto X koordinate početni fokus će imati upisana Dužina. Ovo omogućava da se prvo prikaže pravac a onda unese rastojanje.</translation>
+      <translation>Ako je potvrđeno, umesto X koordinate početni fokus će imati upisana Dužina. Ovo omogućava da se prvo prikaže pravac a onda unese rastojanje.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="188"/>
       <source>If checked, base objects, instead of created copies, are selected after copying</source>
-      <translation>Ukoliko je označeno, posle kopiranja će ostati izabrani početni obekti umesto kopija</translation>
+      <translation>Ako je potvrđeno, posle kopiranja će ostati izabrani početni objekti umesto kopija</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="204"/>
@@ -1431,7 +1431,7 @@ Imaj na umu da ova opcija nije u potpunosti podržana i da se mnogi objekti neć
       <location filename="../ui/preferences-draft.ui" line="222"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face colors.
 Only for the splitFaces and makeShell options.</source>
-      <translation>Ukoliko je označeno, objekti nastali posle upotrebe alatki Sastavi i Rastavi će zadržati boje stranica. Odnosi se samo na splitFaces i makeShell opcije.</translation>
+      <translation>Ako je potvrđeno, objekti nastali posle upotrebe alatki Sastavi i Rastavi će zadržati boje stranica. Odnosi se samo na splitFaces i makeShell opcije.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="226"/>
@@ -1442,7 +1442,7 @@ Only for the splitFaces and makeShell options.</source>
       <location filename="../ui/preferences-draft.ui" line="239"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face names.
 Only for the splitFaces and makeShell options.</source>
-      <translation>Ukoliko je označeno, objekti nastali posle upotrebe alatki Sastavi i Rastavi će zadržati nazive stranica. Odnosi se samo na splitFaces i makeShell opcije.</translation>
+      <translation>Ako je potvrđeno, objekti nastali posle upotrebe alatki Sastavi i Rastavi će zadržati nazive stranica. Odnosi se samo na splitFaces i makeShell opcije.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="243"/>
@@ -1484,7 +1484,7 @@ miš neće moći uticati na sadržaj polja tokom trajanja jedne sekunde. Ovime s
     <message>
       <location filename="../ui/preferences-draft.ui" line="370"/>
       <source>The default prefix added to the label of new clones</source>
-      <translation>Podrazumevani prefix koji se dodaje oznaci novih klonova</translation>
+      <translation>Unapred zadani prefix koji se dodaje oznaci novih klonova</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="386"/>
@@ -1706,7 +1706,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</so
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="213"/>
       <source>If checked, the dimension line is displayed by default</source>
-      <translation>Ako je označeno, prikazivaće se kotna linija</translation>
+      <translation>Ako je potvrđeno, prikazivaće se kotna linija</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="216"/>
@@ -1792,7 +1792,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</so
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="387"/>
       <source>If checked, a unit symbol is added to dimension texts by default</source>
-      <translation>Ukoliko je označeno, oznaka merne jedinice se dodaje uz kotni broj</translation>
+      <translation>Ako je potvrđeno, oznaka merne jedinice se dodaje uz kotni broj</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="390"/>
@@ -1920,7 +1920,7 @@ Pozitivna vrednost definiše produžetak pomoćnih kotnih linija. Koristite samo
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter.</source>
-      <translation>Ukoliko je označeno, neće doći do konverzije jedinica.
+      <translation>Ako je potvrđeno, neće doći do konverzije jedinica.
 Jedna jedinica u SVG datoteci će se prevesti kao jedan milimetar.</translation>
     </message>
     <message>
@@ -1980,7 +1980,7 @@ Ova vrednost je maksimalna dužina segmenta.</translation>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Čekirajte ako želite da se uvezu i oblasti (3D stranice).</translation>
+      <translation>Potvrdi ako želiš da se uvezu i oblasti (3D stranice).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
@@ -2045,12 +2045,12 @@ iz Menadžera dodataka.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation>Ako nije označeno, tekst i mtekst neće biti uvezeni</translation>
+      <translation>Ako nije potvrđeno, tekst i mtekst neće biti uvezeni</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
-      <translation>Ako nije označeno, tačke se neće uvoziti</translation>
+      <translation>Ako nije potvrđeno, tačke se neće uvoziti</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="174"/>
@@ -2060,7 +2060,7 @@ iz Menadžera dodataka.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation>Ako je označeno, biće uvezeni i prazni listovi crteža</translation>
+      <translation>Ako je potvrđeno, biće uvezeni i prazni listovi crteža</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="203"/>
@@ -2134,7 +2134,7 @@ prikazivaće se brže na ekranu, ali će biti složeniji za uređivanje.</transl
       <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation>FreeCAD će pokušati da spoji u žičani ram objekte čiji se krajevi podudaraju.
+      <translation>FreeCAD će pokušati da spoji u žičani okvir objekte čiji se krajevi podudaraju.
 Imaj na umu da ovo može potrajati!</translation>
     </message>
     <message>
@@ -2204,24 +2204,24 @@ umesto veličine koju imaju u DXF dokumentu</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Ako je ovo označeno, DXF slojevi će biti importovani kao slojevi okruženja Crtanje</translation>
+      <translation>Ako je ovo potvrđeno, DXF slojevi će biti importovani kao slojevi okruženja Crtanje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation>Šrafure će biti konvertovane u žičane ivice</translation>
+      <translation>Šrafure će biti konvertovane u žičane elemente</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
-      <translation>Uvezi granice šrafure kao žičane ivice</translation>
+      <translation>Uvezi granice šrafure kao žičane elemente</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Ako izlomljene linije imaju definisanu debljinu, biće prikazane
-kao zatvorene žičane ivice sa pravilnom širinom</translation>
+kao zatvoreni žičani elementi sa pravilnom širinom</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="492"/>
@@ -2236,7 +2236,7 @@ kao zatvorene žičane ivice sa pravilnom širinom</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation>Izvoz elipse je nekvalitetan. Čekiraj ovu opciju da bi ih izvezao kao izlomljene linije.</translation>
+      <translation>Izvoz elipse je nekvalitetan. Potvrdi ovu opciju da bi ih izvezao kao izlomljene linije.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="533"/>
@@ -2314,8 +2314,7 @@ Ovo možda neće uspeti za novije šablone od DXF R12.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Ako je potvrđeno, obris ljudske figure će se prikazivati u donjem levom uglu koordinatne mreže. Ovo će važiti samo ako je omogućeno "Prikaži okvir koordinatne mreže".</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -2388,7 +2387,7 @@ Glavne linije koordinatne mreže su deblje od sporednih.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
       <source>If checked, the grid will always be visible in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation>Ako je označeno, koordinatna mreža će uvek biti vidljiva u novim pogledima. Koristi alatku Sakrij/Prikaži koordinatnu mrežu da promeniš u aktivnom pogledu.</translation>
+      <translation>Ako je potvrđeno, koordinatna mreža će uvek biti vidljiva u novim pogledima. Koristi alatku Sakrij/Prikaži koordinatnu mrežu da promeniš u aktivnom pogledu.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="185"/>
@@ -2519,7 +2518,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="371"/>
       <source>If checked, snapping is activated without the need to press the Snap modifier key</source>
-      <translation>Ako je ovo označeno, aktivira se hvatanje bez potrebe da se pritisne taster za režim hvatanja</translation>
+      <translation>Ako je ovo potvrđeno, aktivira se hvatanje bez potrebe da se pritisne taster za režim hvatanja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="272"/>
@@ -2810,12 +2809,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>Ako je potvrđeno, grafički element hvatanja će se prikazivati u statusnoj traci okruženja Crtanje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>Ako je potvrđeno, grafički element razmere napomene će se prikazivati u statusnoj traci okruženja Crtanje</translation>
     </message>
   </context>
   <context>
@@ -3083,7 +3082,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="544"/>
       <source>Check this to lock the current angle</source>
-      <translation>Čekiraj da bi zaključao trenutni ugao</translation>
+      <translation>Potvrdi da bi zaključao trenutni ugao</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="545"/>
@@ -3119,7 +3118,7 @@ Ako nije označeno koristi se koordinatni sistem radne ravni</translation>
       <location filename="../../DraftGui.py" line="562"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation>Izbor da li nacrtani objekat treba da bude stranica ili žičani ram.
+      <translation>Izbor da li nacrtani objekat treba da bude stranica ili žičani okvir.
 Ovaj izbor nije moguć ako je u podešavanjima omogućena opcija 'Koristi Part primitive'</translation>
     </message>
     <message>
@@ -3135,12 +3134,12 @@ Ovaj izbor nije moguć ako je u podešavanjima omogućena opcija 'Koristi Part p
     <message>
       <location filename="../../DraftGui.py" line="569"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation>Ako je označeno, komanda se neće završiti dok ponovo ne pritisneš dugme komande</translation>
+      <translation>Ako je potvrđeno, komanda se neće završiti dok ponovo ne pritisneš dugme komande</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="574"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>Ako je označeno, umesto klasičnog odmaka će biti izvedena OCC vrsta odmaka</translation>
+      <translation>Ako je potvrđeno, umesto klasičnog odmaka će biti izvedena OCC vrsta odmaka</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="575"/>
@@ -3155,7 +3154,7 @@ Ovaj izbor nije moguć ako je u podešavanjima omogućena opcija 'Koristi Part p
     <message>
       <location filename="../../DraftGui.py" line="591"/>
       <source>If checked, objects will be copied instead of moved</source>
-      <translation>Ako je označeno, objekti će biti kopirani umesto pomerani</translation>
+      <translation>Ako je potvrđeno, objekti će biti kopirani umesto pomerani</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="578"/>
@@ -3205,7 +3204,7 @@ Ovaj izbor nije moguć ako je u podešavanjima omogućena opcija 'Koristi Part p
     <message>
       <location filename="../../DraftGui.py" line="593"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation>Ako je označeno, umesto celih objekata biće modifikovani podelementi</translation>
+      <translation>Ako je potvrđeno, umesto celih objekata biće modifikovani podelementi</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="594"/>
@@ -3243,7 +3242,7 @@ Ovaj izbor nije moguć ako je u podešavanjima omogućena opcija 'Koristi Part p
     <message>
       <location filename="../../DraftGui.py" line="704"/>
       <source>DWire</source>
-      <translation>D-žičani ram</translation>
+      <translation>D-žičani okvir</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="722"/>
@@ -3454,7 +3453,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Grafički element razmere napomene</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3464,7 +3463,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Grafički element hvatanja</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -3536,7 +3535,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/utils.py" line="665"/>
       <source>Wires:</source>
-      <translation>Žičani ramovi:</translation>
+      <translation>Žičani okviri:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="666"/>
@@ -3556,7 +3555,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/utils.py" line="676"/>
       <source>Wire</source>
-      <translation>Žičani ram</translation>
+      <translation>Žičani okvir</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="708"/>
@@ -3653,7 +3652,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="196"/>
       <source>Create Wire</source>
-      <translation>Napravi Žičani ram</translation>
+      <translation>Napravi Žičani okvir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="367"/>
@@ -3676,12 +3675,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="334"/>
       <source>Unable to create a Wire from selected objects</source>
-      <translation>Nije moguće napraviti žičani ram od izabranih objekata</translation>
+      <translation>Nije moguće napraviti žičani okvir od izabranih objekata</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="359"/>
       <source>Convert to Wire</source>
-      <translation>Pretvori u Žičani ram</translation>
+      <translation>Pretvori u Žičani okvir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="64"/>
@@ -4159,12 +4158,12 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="503"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation>Nije moguće opseći ove objekte, podržane su samo žičane ivice i kružni lukovi.</translation>
+      <translation>Nije moguće opseći ove objekte, podržane su samo žičani elementi i kružni lukovi.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="508"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation>Nije moguće opseći ove objekte, previše žičanih ivica</translation>
+      <translation>Nije moguće opseći ove objekte, previše žičanih elemenata</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="525"/>
@@ -4224,17 +4223,17 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="125"/>
       <source>Open wire</source>
-      <translation>Otvorene žičane ivice</translation>
+      <translation>Otvori žičani okvir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="128"/>
       <source>Close wire</source>
-      <translation>Zatvorene žičane ivice</translation>
+      <translation>Zatvori žičani okvir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="133"/>
       <source>Reverse wire</source>
-      <translation>Okreni žičane ivice</translation>
+      <translation>Okreni žičani okvir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="177"/>
@@ -4505,7 +4504,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="456"/>
       <source>Turning one Rectangle into a Wire</source>
-      <translation>Pretvaranje pravougaonika u žičani ram</translation>
+      <translation>Pretvaranje pravougaonika u žičani okvir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="485"/>
@@ -4833,7 +4832,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="198"/>
       <source>ShapeString: string has no wires</source>
-      <translation>Tekstualni oblik: znakovni niz nema žičane ivice</translation>
+      <translation>Tekstualni oblik: znakovni niz nema žičane elemente</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="231"/>
@@ -4927,7 +4926,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>Potrebne su dve ivice.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
@@ -5319,12 +5318,12 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="295"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation>Pronađena 1 stranica: izdvajaju se njene žičane ivice</translation>
+      <translation>Pronađena 1 stranica: izdvajaju se njeni žičani elementi</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="301"/>
       <source>Found only wires: extracting their edges</source>
-      <translation>Pronađeni samo žičani ramovi: izdvajaju se njihove ivice</translation>
+      <translation>Pronađeni samo žičani okviri: izdvajaju se njihove ivice</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="305"/>
@@ -5399,12 +5398,12 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="505"/>
       <source>Found closed wires: creating faces</source>
-      <translation>Pronađeni zatvoreni žičani ramovi: prave se stranice</translation>
+      <translation>Pronađeni zatvoreni žičani okviri: prave se stranice</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="510"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation>Pronađeno nekoliko žičanih ivica ili ivica: spajaju se</translation>
+      <translation>Pronađeno nekoliko žičanih elemenata ili ivica: spajaju se</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="512"/>
@@ -5420,7 +5419,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="519"/>
       <source>Found 1 open wire: closing it</source>
-      <translation>Pronađen 1 otvoren žičani ram: zatvara se</translation>
+      <translation>Pronađen 1 otvoren žičani okvir: zatvara se</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="530"/>
@@ -5593,22 +5592,22 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>Nije moguće uposliti Povezivač stranica</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>Nema odgovarajućih stranica za Povezivač stranica</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>Nije moguće uposliti Povezivač stranica, nastavi sa onemugoćenim šivenjem</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>Pretvaranje ravnih B-splajn stranica (napravljenih Povezivačem stranica) u ravne stranice nije uspelo</translation>
     </message>
   </context>
   <context>
@@ -5978,7 +5977,7 @@ iz menija Alati/Menadžer dodataka</translation>
     <message>
       <location filename="../../importSVG.py" line="1833"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation>Lista za izvoz ne sadrži objekte sa ispravnim graničnim okvirom</translation>
+      <translation>Lista za izvoz ne sadrži objekte sa ispravnom graničnom kutijom</translation>
     </message>
   </context>
   <context>
@@ -6605,7 +6604,7 @@ Zatim ju možeš koristiti da sačuvaš neku drugu poziciju kamere i stanje obje
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation>Žičani ram u B-Splajn</translation>
+      <translation>Žičani okvir u B-Splajn</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="67"/>
@@ -6638,7 +6637,7 @@ Ako se izaberu drugi objekti, oni se ignorišu.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="71"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation>Pravi zaobljenje između dve izabrane ivice ili dve žičane ivice.</translation>
+      <translation>Pravi zaobljenje između dve izabrane ivice ili dva žičana elementa.</translation>
     </message>
   </context>
   <context>
@@ -7203,7 +7202,7 @@ The result of the operation depends on the types of objects, which may be able t
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
       <translation>Rastavlja izabrane objekte u jednostavnije oblike.
 Rezultat operacije zavisi od vrste objekata, koji se možda mogu rastaviti nekoliko puta zaredom.
-Na primer, izabrana izlomljena linija se rastavi na jednostavnije stranice, žičane ramove, a zatim ivice. Takođe može oduzeti stranice.</translation>
+Na primer, izabrana izlomljena linija se rastavi na jednostavnije stranice, žičane okvire, a zatim ivice. Takođe može oduzeti stranice.</translation>
     </message>
   </context>
   <context>
@@ -8116,32 +8115,32 @@ svojstva 'Početni ugao' i 'Krajnji ugao'.</translation>
     <message>
       <location filename="../../draftobjects/wire.py" line="49"/>
       <source>The vertices of the wire</source>
-      <translation>Temena žičanog rama</translation>
+      <translation>Temena žičanog okvira</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation>Da li je žičani ram zatvorena ili ne</translation>
+      <translation>Da li je žičani okvir zatvoren ili ne</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation>Bazni objekat je žičani ram, formiran je od 2 objekta</translation>
+      <translation>Bazni objekat je žičani okvir, formiran je od 2 objekta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="61"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation>Objekat alat je žičani ram, formiran je od 2 objekta</translation>
+      <translation>Objekat alat je žičani okvir, formiran je od 2 objekta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="65"/>
       <source>The start point of this line</source>
-      <translation>Početna tačka duži</translation>
+      <translation>Početna tačka</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="69"/>
       <source>The end point of this line</source>
-      <translation>Krajnja tačka duži</translation>
+      <translation>Krajnja tačka</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="73"/>

@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>BIM material</source>
-      <translation type="unfinished">BIM material</translation>
+      <translation>BIM snov</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>

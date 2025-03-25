@@ -82,7 +82,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="110"/>
       <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
-      <translation type="unfinished">Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</translation>
+      <translation>შერწყმის სიზუსტე სპირალისთვის. გაზარდეთ, თუ სპირალური მოხაზულობის ნაწილთან შერწყმა, ბოლომდე, არ მოგწონთ.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
@@ -302,7 +302,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="609"/>
       <source>Duplicate selected &amp;object</source>
-      <translation type="unfinished">Duplicate selected &amp;object</translation>
+      <translation>მონიშნული &amp;ობიექტის დუბლირება</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
@@ -2101,22 +2101,22 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
       <source>ANSI pipe profile</source>
-      <translation type="unfinished">ANSI pipe profile</translation>
+      <translation>ANSI მილის პროფილი</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>BSP pipe profile</source>
-      <translation type="unfinished">BSP pipe profile</translation>
+      <translation>BSP მილის პროფილი</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>BSW whitworth profile</source>
-      <translation type="unfinished">BSW whitworth profile</translation>
+      <translation>პროფილი BSW whitworth</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>BSF whitworth fine profile</source>
-      <translation type="unfinished">BSF whitworth fine profile</translation>
+      <translation>პროფილი BSF whitworth fine</translation>
     </message>
   </context>
   <context>
@@ -4772,7 +4772,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="153"/>
       <source>Unsupported boolean operation</source>
-      <translation type="unfinished">Unsupported boolean operation</translation>
+      <translation>მხარდაუჭერელი ბულევური ოპერაცია</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="801"/>
@@ -4912,7 +4912,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
       <source>Unable to reach the selected shape, please select faces</source>
-      <translation type="unfinished">Unable to reach the selected shape, please select faces</translation>
+      <translation>მონიშნულ მოხაზულობამდე მიღწევა შეუძლებელია. აირჩიეთ ზედაპირები</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="740"/>
@@ -5095,12 +5095,12 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <location filename="../../../App/FeatureHole.cpp" line="2196"/>
       <location filename="../../../App/FeatureHole.cpp" line="2201"/>
       <source>Boolean operation failed on profile Edge</source>
-      <translation type="unfinished">Boolean operation failed on profile Edge</translation>
+      <translation>ბულევური ოპერაცია ცავარდა პროფილის წიბოზე</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2207"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
-      <translation type="unfinished">Boolean operation produced non-solid on profile Edge</translation>
+      <translation>ბულევური ოპერაციის შედეგი არამყარია პროფილის წიბოზე</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
@@ -5424,7 +5424,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeatureThickness.cpp" line="107"/>
       <source>Invalid face reference</source>
-      <translation type="unfinished">Invalid face reference</translation>
+      <translation>არასწორი ზედაპირის მიმართვა</translation>
     </message>
   </context>
   <context>
@@ -5474,7 +5474,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="722"/>
       <source>Groove parameters</source>
-      <translation type="unfinished">Groove parameters</translation>
+      <translation>კილოს მორგება</translation>
     </message>
   </context>
 </TS>

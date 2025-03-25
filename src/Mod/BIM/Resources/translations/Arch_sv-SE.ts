@@ -1820,7 +1820,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="262"/>
       <source>Save as...</source>
-      <translation type="unfinished">Save as...</translation>
+      <translation>Spara som...</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="14"/>

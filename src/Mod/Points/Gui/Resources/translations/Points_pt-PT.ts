@@ -310,7 +310,7 @@
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
-      <translation type="unfinished">The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</translation>
+      <translation>A Caixa Delimitadora dos pontos importados não contém a origem. Deseja referenciá-la à origem?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>

@@ -1225,12 +1225,12 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
     <message>
       <location filename="../../Command.cpp" line="2087"/>
       <source>Appearance per &amp;face</source>
-      <translation type="unfinished">Appearance per &amp;face</translation>
+      <translation>Wygląd dla ściany</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2088"/>
       <source>Set the appearance of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the appearance of each individual face of the selected object.</translation>
+      <translation>Ustaw wygląd każdej ściany wybranego obiektu.</translation>
     </message>
   </context>
   <context>
@@ -1951,7 +1951,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="2189"/>
       <source>Persiste&amp;nt section cut</source>
-      <translation type="unfinished">Persiste&amp;nt section cut</translation>
+      <translation>Trwałe przycięcie przekroju</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2190"/>
@@ -2193,22 +2193,22 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="2257"/>
       <source>Add a coordinate system</source>
-      <translation type="unfinished">Add a coordinate system</translation>
+      <translation>Dodaj układ współrzędnych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Add a datum plane</source>
-      <translation type="unfinished">Add a datum plane</translation>
+      <translation>Dodaj płaszczyznę odniesienia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2324"/>
       <source>Add a datum line</source>
-      <translation type="unfinished">Add a datum line</translation>
+      <translation>Dodaj linię odniesienia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
       <source>Add a datum point</source>
-      <translation type="unfinished">Add a datum point</translation>
+      <translation>Dodaj punkt odniesienia</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
@@ -2634,7 +2634,7 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation type="unfinished">STEP Export Settings</translation>
+      <translation>Ustawienia eksportu STEP</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="104"/>
@@ -2723,7 +2723,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Click to start selecting an edge in 3D view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3D view.</translation>
+      <translation>Kliknij, aby rozpocząć wybieranie krawędzi w widoku 3D.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
@@ -3188,7 +3188,7 @@ Zaznacz najpierw jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP Import Settings</source>
-      <translation type="unfinished">STEP Import Settings</translation>
+      <translation>Ustawienia importu STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
@@ -4076,17 +4076,17 @@ Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi a
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="84"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Ustawianie zbyt małego odchylenia powoduje, że teselacja trwa dłużej, a tym samym zamraża lub spowalnia interfejs użytkownika.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="104"/>
       <source>Angle Deflection</source>
-      <translation type="unfinished">Angle Deflection</translation>
+      <translation>Odchylenie kątowe</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="105"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Ustawianie zbyt małego odchylenia powoduje, że teselacja trwa dłużej, a tym samym zamraża lub spowalnia interfejs użytkownika.</translation>
     </message>
   </context>
   <context>
@@ -4833,7 +4833,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
+      <translation>Wybierz jedną lub więcej połączonych krawędzi w widoku 3D i naciśnij przycisk "Gotowe"</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="437"/>
@@ -5268,18 +5268,18 @@ Pojedyncze kontrole operacji logicznych:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="456"/>
       <source>Null shape</source>
-      <translation type="unfinished">Null shape</translation>
+      <translation>Kształt pusty</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="457"/>
       <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Skipped</source>
-      <translation type="unfinished">Skipped</translation>
+      <translation>Pominięte</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="467"/>
       <source>Infinite shape</source>
-      <translation type="unfinished">Infinite shape</translation>
+      <translation>Nieskończony kształt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="494"/>
@@ -5294,7 +5294,7 @@ Pojedyncze kontrole operacji logicznych:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="542"/>
       <source>No errors</source>
-      <translation type="unfinished">No errors</translation>
+      <translation>Brak błędów</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="553"/>
@@ -5314,7 +5314,7 @@ Pojedyncze kontrole operacji logicznych:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>To Report view.</source>
-      <translation type="unfinished">To Report view.</translation>
+      <translation>Do Widoku raportu.</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="654"/>
@@ -6968,12 +6968,12 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../Command.cpp" line="2246"/>
       <source>Create a coordinate system</source>
-      <translation type="unfinished">Create a coordinate system</translation>
+      <translation>Utwórz układ współrzędnych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2247"/>
       <source>A coordinate system object that can be attached to other objects.</source>
-      <translation type="unfinished">A coordinate system object that can be attached to other objects.</translation>
+      <translation>Obiekt układu współrzędnych, który może być dołączony do innych obiektów.</translation>
     </message>
   </context>
   <context>
@@ -6991,7 +6991,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../Command.cpp" line="2281"/>
       <source>A plane object that can be attached to other objects.</source>
-      <translation type="unfinished">A plane object that can be attached to other objects.</translation>
+      <translation>Obiekt płaszczyzny, który może być dołączony do innych obiektów.</translation>
     </message>
   </context>
   <context>
@@ -7009,7 +7009,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../Command.cpp" line="2314"/>
       <source>A line object that can be attached to other objects.</source>
-      <translation type="unfinished">A line object that can be attached to other objects.</translation>
+      <translation>Obiekt linii, który może być dołączony do innych obiektów.</translation>
     </message>
   </context>
   <context>
@@ -7027,7 +7027,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../Command.cpp" line="2347"/>
       <source>A point object that can be attached to other objects.</source>
-      <translation type="unfinished">A point object that can be attached to other objects.</translation>
+      <translation>Obiekt punktu, który może być dołączony do innych obiektów.</translation>
     </message>
   </context>
   <context>
@@ -7045,7 +7045,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../Command.cpp" line="2382"/>
       <source>Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</source>
-      <translation type="unfinished">Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</translation>
+      <translation>Utwórz obiekt odniesienia (układ współrzędnych, płaszczyznę, linię, punkt), który może być dołączony do innych obiektów.</translation>
     </message>
   </context>
 </TS>

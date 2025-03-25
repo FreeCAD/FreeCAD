@@ -2055,7 +2055,7 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>Arrastrar geometrías</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -6348,7 +6348,7 @@ Los puntos deben estar más cerca de una quinta parte del espacio de la cuadríc
     <message>
       <location filename="../../Command.cpp" line="1251"/>
       <source>Toggle grid</source>
-      <translation>Activa/desactiva cuadrícula</translation>
+      <translation>Alternar cuadrícula</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1253"/>
@@ -7381,7 +7381,7 @@ En su lugar, se aplican restricciones de igualdad entre los objetos originales y
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>Crear externa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
@@ -7394,16 +7394,16 @@ En su lugar, se aplican restricciones de igualdad entre los objetos originales y
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>Crear geometría de proyección externa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Crea las aristas de proyección de una geometría externa.
+Las aristas externas pueden ser geometrías de definición o de construcción.
+Puedes utilizar la herramienta de alternar la construcción.</translation>
     </message>
   </context>
   <context>
@@ -7411,16 +7411,16 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>Crear geometría de intersección externa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Crea las aristas de intersección de una geometría externa con el plano de croquis.
+Las aristas externas pueden ser geometrías de definición o de construcción.
+Puedes utilizar la herramienta de alternar la construcción.</translation>
     </message>
   </context>
 </TS>

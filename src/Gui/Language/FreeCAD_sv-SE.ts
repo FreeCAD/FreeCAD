@@ -138,7 +138,7 @@
     <message>
       <location filename="../CommandStructure.cpp" line="151"/>
       <source>Add a variable set</source>
-      <translation type="unfinished">Add a variable set</translation>
+      <translation>Lägg till en variabeluppsättning</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="971"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../ViewProviderLink.cpp" line="2600"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Växla array-element</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3012"/>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../CommandFeat.cpp" line="127"/>
       <source>Set Random Color</source>
-      <translation type="unfinished">Set Random Color</translation>
+      <translation>Sätt en slumpmässig färg</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="178"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>Växla frys</translation>
     </message>
   </context>
   <context>
@@ -671,7 +671,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../AboutApplication.ui" line="177"/>
       <source>Architecture</source>
-      <translation type="unfinished">Architecture</translation>
+      <translation>Arkitektur</translation>
     </message>
     <message>
       <location filename="../AboutApplication.ui" line="225"/>
@@ -743,12 +743,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgAbout.cpp" line="507"/>
       <source>Privacy Policy</source>
-      <translation type="unfinished">Privacy Policy</translation>
+      <translation>Integritetspolicy</translation>
     </message>
     <message>
       <location filename="../DlgAbout.cpp" line="734"/>
       <source>Copied!</source>
-      <translation type="unfinished">Copied!</translation>
+      <translation>Kopierad!</translation>
     </message>
   </context>
   <context>
@@ -1105,7 +1105,7 @@ Om detta inte väljs måste egenskapen vara unikt namngiven och den nås som 'ob
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>Bläddra</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="60"/>
@@ -4301,7 +4301,7 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Console</source>
-      <translation type="unfinished">Console</translation>
+      <translation>Konsol</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -5396,7 +5396,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No 3D view</source>
-      <translation type="unfinished">No 3D view</translation>
+      <translation>Ingen 3D-vy</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
@@ -5960,7 +5960,7 @@ Vill du spara ändringarna?</translation>
       <location filename="../GraphvizView.cpp" line="445"/>
       <location filename="../CommandDoc.cpp" line="667"/>
       <source>Graphviz format</source>
-      <translation type="unfinished">Graphviz format</translation>
+      <translation>Graphviz-format</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="459"/>
@@ -7828,7 +7828,7 @@ Please check report view for more details.</translation>
     <message>
       <location filename="../StartupProcess.cpp" line="340"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>Ogiltig OpenGL-version</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -8723,7 +8723,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderLink.cpp" line="2598"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Växla array-element</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2607"/>
@@ -9014,7 +9014,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <source>&amp;Next</source>
-      <translation type="unfinished">&amp;Next</translation>
+      <translation>Nästa</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>
@@ -9028,7 +9028,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
       <source>&amp;Previous</source>
-      <translation type="unfinished">&amp;Previous</translation>
+      <translation>Föregående</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="202"/>
@@ -9098,7 +9098,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close A&amp;ll</source>
-      <translation type="unfinished">Close A&amp;ll</translation>
+      <translation>Stäng alla</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
@@ -9140,7 +9140,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1143"/>
       <source>Cu&amp;t</source>
-      <translation type="unfinished">Cu&amp;t</translation>
+      <translation>Klipp ut</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1144"/>
@@ -9210,7 +9210,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="94"/>
       <source>Ma&amp;cros...</source>
-      <translation type="unfinished">Ma&amp;cros...</translation>
+      <translation>Makron...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="95"/>
@@ -9276,7 +9276,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="406"/>
       <source>Prefere&amp;nces ...</source>
-      <translation type="unfinished">Prefere&amp;nces ...</translation>
+      <translation>Inställningar ...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
@@ -9290,7 +9290,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
       <source>&amp;Panels</source>
-      <translation type="unfinished">&amp;Panels</translation>
+      <translation>Paneler</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="282"/>
@@ -9402,7 +9402,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="688"/>
       <source>FreeCAD &amp;Forum</source>
-      <translation type="unfinished">FreeCAD &amp;Forum</translation>
+      <translation>FreeCAD forum</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="689"/>
@@ -12404,7 +12404,7 @@ dot/period will always be printed.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Letar du efter fler teman? Du kan få dem med &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
@@ -13295,7 +13295,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="160"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>Växla frys</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="162"/>

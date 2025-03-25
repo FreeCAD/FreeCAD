@@ -305,12 +305,12 @@
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>Points not at Origin</source>
-      <translation type="unfinished">Points not at Origin</translation>
+      <translation>Тачке нису у координатном почетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
-      <translation type="unfinished">The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</translation>
+      <translation>Координатни почетак није унутар граничне кутије око увезених тачака. Да ли желиш да их померим у координатни почетак?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>

@@ -56,7 +56,7 @@
     <message>
       <location filename="../propertyeditor/PropertyModel.cpp" line="276"/>
       <source>Base</source>
-      <translation>베이스</translation>
+      <translation>기본</translation>
     </message>
   </context>
   <context>
@@ -1106,7 +1106,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>탐색</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="60"/>
@@ -4082,7 +4082,7 @@ Free Turntable: the part will be rotated around the z-axis.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="492"/>
       <source>Free Turntable</source>
-      <translation type="unfinished">Free Turntable</translation>
+      <translation>자유 회전반</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
@@ -6549,7 +6549,7 @@ How do you want to proceed?</source>
       <location filename="../PropertyView.cpp" line="96"/>
       <location filename="../PropertyView.cpp" line="551"/>
       <source>Data</source>
-      <translation>데이터</translation>
+      <translation>자료</translation>
     </message>
   </context>
   <context>
@@ -8796,7 +8796,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="443"/>
       <source>Font size</source>
-      <translation>폰트 크기</translation>
+      <translation>글꼴 크기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="447"/>
@@ -9032,7 +9032,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1674"/>
       <source>Ali&amp;gnment...</source>
-      <translation type="unfinished">Ali&amp;gnment...</translation>
+      <translation>정렬…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1675"/>
@@ -10172,7 +10172,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="796"/>
       <source>Add te&amp;xt document</source>
-      <translation type="unfinished">Add te&amp;xt document</translation>
+      <translation>선택항목 보이기</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="797"/>
@@ -11061,7 +11061,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2719"/>
       <source>&amp;Box zoom</source>
-      <translation type="unfinished">&amp;Box zoom</translation>
+      <translation>박스줌</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2720"/>

@@ -922,7 +922,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="304"/>
       <source>Number of threads used for analysis</source>
-      <translation type="unfinished">Number of threads used for analysis</translation>
+      <translation>Колькасць патокаў, якія ўжываюцца для аналізу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
@@ -947,7 +947,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>SPOOLES equation solver</source>
-      <translation type="unfinished">SPOOLES equation solver</translation>
+      <translation>Сродак рашэння ўраўнення SPOOLS</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
@@ -1132,22 +1132,22 @@ will be merged to make the volume boundaries invisible.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
       <source>Save result in binary format</source>
-      <translation type="unfinished">Save result in binary format</translation>
+      <translation>Захавайце вынік у двайковым фармаце</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="300"/>
       <source>Use binary format</source>
-      <translation type="unfinished">Use binary format</translation>
+      <translation>Ужываць двайковы фармат</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
       <source>Save the index of geometric entities</source>
-      <translation type="unfinished">Save the index of geometric entities</translation>
+      <translation>Захаваць індэкс геаметрычных сутнасцяў</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="319"/>
       <source>Save geometry IDs</source>
-      <translation type="unfinished">Save geometry IDs</translation>
+      <translation>Захаваць ідэнтыфікатары геаметрыі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
@@ -1456,22 +1456,22 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="131"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Дэталізаваны часопіс</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Узровень дэталізацыі, які адлюстроўваецца на панэлі задач</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Колькасць патокаў</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="167"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Колькасць патокаў, якія ўжываюцца для паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
@@ -1550,17 +1550,17 @@ exported from FreeCAD.</source>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="89"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Экспартаваць</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
       <source>Mesh elements to export</source>
-      <translation type="unfinished">Mesh elements to export</translation>
+      <translation>Элементы паліганальнай сеткі для экспартавання</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="102"/>
       <source>Mesh element level to export</source>
-      <translation type="unfinished">Mesh element level to export</translation>
+      <translation>Узровень элемента паліганальнай сеткі для экспартавання</translation>
     </message>
   </context>
   <context>
@@ -2679,7 +2679,7 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density:</source>
-      <translation type="unfinished">Density:</translation>
+      <translation>Шчыльнасць:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
@@ -3230,32 +3230,32 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
       <source>Axis1 Length:</source>
-      <translation type="unfinished">Axis1 Length:</translation>
+      <translation>Даўжыня восі 1:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="236"/>
       <source>Axis2 Length:</source>
-      <translation type="unfinished">Axis2 Length:</translation>
+      <translation>Даўжыня восі 2:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="343"/>
       <source>T1 Thickness:</source>
-      <translation type="unfinished">T1 Thickness:</translation>
+      <translation>Таўшчыня T1:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="375"/>
       <source>T2 Thickness:</source>
-      <translation type="unfinished">T2 Thickness:</translation>
+      <translation>Таўшчыня T2:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="407"/>
       <source>T3 Thickness:</source>
-      <translation type="unfinished">T3 Thickness:</translation>
+      <translation>Таўшчыня T3:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="439"/>
       <source>T4 Thickness:</source>
-      <translation type="unfinished">T4 Thickness:</translation>
+      <translation>Таўшчыня T4:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
@@ -3499,28 +3499,28 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element Dimension:</source>
-      <translation type="unfinished">Element Dimension:</translation>
+      <translation>Вымярэнне элементу:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
       <source>Maximum Size:</source>
-      <translation type="unfinished">Maximum Size:</translation>
+      <translation>Найбольшы памер:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="57"/>
       <location filename="../ui/MeshGmsh.ui" line="95"/>
       <source>Use 0.0 to set size automatically</source>
-      <translation type="unfinished">Use 0.0 to set size automatically</translation>
+      <translation>Задайце значэнне 0.0 для аўтаматычнай устаноўкі памеру</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="85"/>
       <source>Minimum Size:</source>
-      <translation type="unfinished">Minimum Size:</translation>
+      <translation>Найменшы памер:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="126"/>
       <source>Element Order:</source>
-      <translation type="unfinished">Element Order:</translation>
+      <translation>Парадак элементу:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="144"/>
@@ -6072,7 +6072,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskPostContours.ui" line="77"/>
       <source>Enable Laplacian smoothing</source>
-      <translation type="unfinished">Enable Laplacian smoothing</translation>
+      <translation>Уключыць згладжванне па метадзе Лапласа</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="80"/>
@@ -6082,7 +6082,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskPostContours.ui" line="97"/>
       <source>Factor to control vertex displacement</source>
-      <translation type="unfinished">Factor to control vertex displacement</translation>
+      <translation>Каэфіцыент для кіравання зрушэннем вяршынь</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="113"/>
@@ -6092,7 +6092,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskPostContours.ui" line="116"/>
       <source>No Color</source>
-      <translation type="unfinished">No Color</translation>
+      <translation>Без колеру</translation>
     </message>
   </context>
   <context>
@@ -6648,7 +6648,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Erase elements</source>
-      <translation type="unfinished">Erase elements</translation>
+      <translation>Выдаліць элементы</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
@@ -6703,12 +6703,12 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximum Size:</source>
-      <translation type="unfinished">Maximum Size:</translation>
+      <translation>Найбольшы памер:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
       <source>Minimum Size:</source>
-      <translation type="unfinished">Minimum Size:</translation>
+      <translation>Найменшы памер:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="117"/>
@@ -6772,22 +6772,22 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="59"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Дэталізаваны часопіс</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Узровень дэталізацыі, які адлюстроўваецца на панэлі задач</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Колькасць патокаў</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="95"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Колькасць патокаў, якія ўжываюцца для паліганальнай сеткі</translation>
     </message>
   </context>
 </TS>

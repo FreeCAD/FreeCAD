@@ -1214,12 +1214,12 @@
     <message>
       <location filename="../../Command.cpp" line="2087"/>
       <source>Appearance per &amp;face</source>
-      <translation type="unfinished">Appearance per &amp;face</translation>
+      <translation>Внешний вид на лицо</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2088"/>
       <source>Set the appearance of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the appearance of each individual face of the selected object.</translation>
+      <translation>Задайте внешний вид каждой отдельной грани выбранного объекта.</translation>
     </message>
   </context>
   <context>
@@ -1360,7 +1360,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Compound tools</source>
-      <translation>Составные инструменты</translation>
+      <translation>Инструменты группировки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
@@ -1432,7 +1432,7 @@
     <message>
       <location filename="../../Command.cpp" line="832"/>
       <source>Make compound</source>
-      <translation>Создать соединение</translation>
+      <translation>Создать группу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="833"/>
@@ -1861,7 +1861,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="354"/>
       <source>Refine the copy of a shape</source>
-      <translation>Создает копию формы отчищенную от ненужных линии, которые появляются в результате построения.</translation>
+      <translation>Создаёт улучшенную копию формы</translation>
     </message>
   </context>
   <context>
@@ -1941,7 +1941,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2189"/>
       <source>Persiste&amp;nt section cut</source>
-      <translation type="unfinished">Persiste&amp;nt section cut</translation>
+      <translation>Постоянное сечение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2190"/>
@@ -2133,8 +2133,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="866"/>
       <source>Compound</source>
-      <translation>Соединить
-Группировка</translation>
+      <translation>Группировать</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="911"/>
@@ -2184,22 +2183,22 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2257"/>
       <source>Add a coordinate system</source>
-      <translation type="unfinished">Add a coordinate system</translation>
+      <translation>Добавить систему координат</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Add a datum plane</source>
-      <translation type="unfinished">Add a datum plane</translation>
+      <translation>Добавить контрольную (datum) плоскость</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2324"/>
       <source>Add a datum line</source>
-      <translation type="unfinished">Add a datum line</translation>
+      <translation>Добавить базовую линию </translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
       <source>Add a datum point</source>
-      <translation type="unfinished">Add a datum point</translation>
+      <translation>Добавить контрольную точку</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
@@ -2625,7 +2624,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation type="unfinished">STEP Export Settings</translation>
+      <translation>Настройки импорта STEP</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="104"/>
@@ -2710,7 +2709,7 @@ the size of the resulting STEP file.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Click to start selecting an edge in 3D view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3D view.</translation>
+      <translation>Нажмите, чтобы начать выбор линии в окне трёхмерного просмотра.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
@@ -3172,7 +3171,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP Import Settings</source>
-      <translation type="unfinished">STEP Import Settings</translation>
+      <translation>Настройки импорта STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
@@ -4058,17 +4057,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="84"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Установка слишком малого отклонения приведет к увеличению времени тесселяции и, как следствие, к зависанию или замедлению работы графического интерфейса.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="104"/>
       <source>Angle Deflection</source>
-      <translation type="unfinished">Angle Deflection</translation>
+      <translation>Угол прогиба</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="105"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Установка слишком малого угла отклонения приведет к увеличению времени тесселяции и, как следствие, к зависанию или замедлению работы графического интерфейса.</translation>
     </message>
   </context>
   <context>
@@ -4091,12 +4090,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="42"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation>Автоматически закрепить модель после булевой операции</translation>
+      <translation>Автоматически улучшает модель после булевой операции</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>Автоматически закрепить модель после операций над эскизом</translation>
+      <translation>Автоматически улучшает модель после операций с базовым эскизом</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
@@ -4815,7 +4814,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
+      <translation>Выберите одно или несколько соединенных ребер в 3D-виде и нажмите «Готово».</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="437"/>
@@ -5250,18 +5249,18 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="456"/>
       <source>Null shape</source>
-      <translation type="unfinished">Null shape</translation>
+      <translation>Пустая фигура</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="457"/>
       <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Skipped</source>
-      <translation type="unfinished">Skipped</translation>
+      <translation>Пропущено</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="467"/>
       <source>Infinite shape</source>
-      <translation type="unfinished">Infinite shape</translation>
+      <translation>Бесконечная форма</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="494"/>
@@ -5276,7 +5275,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="542"/>
       <source>No errors</source>
-      <translation type="unfinished">No errors</translation>
+      <translation>Ошибок нет</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="553"/>
@@ -5296,7 +5295,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>To Report view.</source>
-      <translation type="unfinished">To Report view.</translation>
+      <translation>Смотреть отчет.</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="654"/>
@@ -5697,7 +5696,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Объединение</translation>
+      <translation>Группировать</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -6080,8 +6079,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
-      <translation>Соединить
-Группировка</translation>
+      <translation>Группировать</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -6235,7 +6233,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
       <source>Compound Filter</source>
-      <translation>Фильтр соединений</translation>
+      <translation>Фильтр соединений группы</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
@@ -6949,12 +6947,12 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2246"/>
       <source>Create a coordinate system</source>
-      <translation type="unfinished">Create a coordinate system</translation>
+      <translation>Создать систему координат</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2247"/>
       <source>A coordinate system object that can be attached to other objects.</source>
-      <translation type="unfinished">A coordinate system object that can be attached to other objects.</translation>
+      <translation>Объект системы координат, который можно прикрепить к другим объектам.</translation>
     </message>
   </context>
   <context>
@@ -6972,7 +6970,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2281"/>
       <source>A plane object that can be attached to other objects.</source>
-      <translation type="unfinished">A plane object that can be attached to other objects.</translation>
+      <translation>Плоский объект, который можно прикрепить к другим объектам.</translation>
     </message>
   </context>
   <context>
@@ -6990,7 +6988,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2314"/>
       <source>A line object that can be attached to other objects.</source>
-      <translation type="unfinished">A line object that can be attached to other objects.</translation>
+      <translation>Линейный объект, который можно прикрепить к другим объектам.</translation>
     </message>
   </context>
   <context>
@@ -7008,7 +7006,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2347"/>
       <source>A point object that can be attached to other objects.</source>
-      <translation type="unfinished">A point object that can be attached to other objects.</translation>
+      <translation>Точечный объект, который можно прикрепить к другим объектам.</translation>
     </message>
   </context>
   <context>
@@ -7026,7 +7024,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../Command.cpp" line="2382"/>
       <source>Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</source>
-      <translation type="unfinished">Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</translation>
+      <translation>Создайте базовый объект (LCS, плоскость, линию, точку), который можно прикрепить к другим объектам.</translation>
     </message>
   </context>
 </TS>

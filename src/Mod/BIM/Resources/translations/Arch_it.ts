@@ -2836,7 +2836,7 @@ invece del'ambiente di lavoro web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="74"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Porte e Finestre</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="87"/>
@@ -2914,32 +2914,32 @@ invece del'ambiente di lavoro web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="226"/>
       <source>Default Ceiling Color</source>
-      <translation type="unfinished">Default Ceiling Color</translation>
+      <translation>Colore Predefinito Soffitto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="264"/>
       <source>Create a default Render project with the newly created Site</source>
-      <translation type="unfinished">Create a default Render project with the newly created Site</translation>
+      <translation>Crea un progetto Render predefinito con il Sito appena creato</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="267"/>
       <source>Create Render Project (requires Render)</source>
-      <translation type="unfinished">Create Render Project (requires Render)</translation>
+      <translation>Crea Progetto Render (richiede Render)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="280"/>
       <source>Fit view while importing.</source>
-      <translation type="unfinished">Fit view while importing.</translation>
+      <translation>Adatta la vista durante l'importazione.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="296"/>
       <source>Create a default IFC project with the newly created Site.</source>
-      <translation type="unfinished">Create a default IFC project with the newly created Site.</translation>
+      <translation>Crea un progetto IFC predefinito con il Sito appena creato.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="299"/>
       <source>Create IFC Project</source>
-      <translation type="unfinished">Create IFC Project</translation>
+      <translation>Crea Progetto IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="45"/>
@@ -5763,7 +5763,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="55"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>Crea Vista 2D</translation>
     </message>
   </context>
   <context>
@@ -9926,7 +9926,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation type="unfinished">Add IFC property...</translation>
+      <translation>Aggiungi proprietà IFC...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>

@@ -303,7 +303,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="609"/>
       <source>Duplicate selected &amp;object</source>
-      <translation type="unfinished">Duplicate selected &amp;object</translation>
+      <translation>Dupliraj izabrani objekat</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
@@ -923,7 +923,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="432"/>
       <source>Migrate legacy Part Design features to Bodies</source>
-      <translation>Migriraj nasleđene tipske oblike u Tela</translation>
+      <translation>Migriraj zastarele tipske oblike u Tela</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="577"/>
@@ -981,7 +981,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="44"/>
       <source>No wire in sketch</source>
-      <translation>Nema žičanih ivica u skici</translation>
+      <translation>Nema žičanih elemenata u skici</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="45"/>
@@ -1817,7 +1817,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="67"/>
       <source>No wire in sketch</source>
-      <translation>Nema žičanih ivica u skici</translation>
+      <translation>Nema žičanih elemenata u skici</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
@@ -2102,22 +2102,22 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
       <source>ANSI pipe profile</source>
-      <translation type="unfinished">ANSI pipe profile</translation>
+      <translation>ANSI cevni navoji</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>BSP pipe profile</source>
-      <translation type="unfinished">BSP pipe profile</translation>
+      <translation>BSP cevni navoji</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>BSW whitworth profile</source>
-      <translation type="unfinished">BSW whitworth profile</translation>
+      <translation>BSW vitvortov navoj</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>BSF whitworth fine profile</source>
-      <translation type="unfinished">BSF whitworth fine profile</translation>
+      <translation>BSF vitvortov fini navoj</translation>
     </message>
   </context>
   <context>
@@ -2432,7 +2432,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="314"/>
       <source>x-component of direction vector</source>
-      <translation>x-komponenta vektora pravca</translation>
+      <translation>apscisa X vektora pravca</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="336"/>
@@ -2442,7 +2442,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="343"/>
       <source>y-component of direction vector</source>
-      <translation>y-komponenta vektora pravca</translation>
+      <translation>ordinata Y vektora pravca</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="365"/>
@@ -2452,13 +2452,13 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="372"/>
       <source>z-component of direction vector</source>
-      <translation>z-komponenta vektora pravca</translation>
+      <translation>aplikata Z vektora pravca</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="403"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation>Ako nije označeno, dužina će biti
+      <translation>Ako nije potvrđeno, dužina će biti
 merena duž zadatog pravca</translation>
     </message>
     <message>
@@ -3494,7 +3494,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../Command.cpp" line="919"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation>Razmislite o korišćenju povezivača oblika ili OsnovniOblik kao referencu na spoljašnju geometriju u telu.</translation>
+      <translation>Razmislite o korišćenju povezivača oblika ili početni tipski oblik kao referencu na spoljašnju geometriju u telu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="941"/>
@@ -3564,7 +3564,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../CommandBody.cpp" line="132"/>
       <location filename="../../CommandBody.cpp" line="181"/>
       <source>Bad base feature</source>
-      <translation>Loš osnovni tipski oblik</translation>
+      <translation>Loš početni tipski oblik</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="115"/>
@@ -3574,12 +3574,12 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="120"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 već pripada telu, nije moguće iskoristiti ga kao osnovni tipski oblik za drugo telo.</translation>
+      <translation>%1 već pripada telu, tako da nije moguće iskoristiti ga kao početni tipski oblik za drugo telo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="133"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Osnovni tipski oblik (%1) pripada drugom telu.</translation>
+      <translation>Početni tipski oblik (%1) pripada drugom telu.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="157"/>
@@ -3612,7 +3612,7 @@ Ovo može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="174"/>
       <source>Base feature</source>
-      <translation>Osnovni tipski oblik</translation>
+      <translation>Početni tipski oblik</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="182"/>
@@ -3666,7 +3666,7 @@ Ovo može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="567"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Samo tipski oblik može da bude zadnji u Telu.</translation>
+      <translation>Samo puni tipski oblik može da bude krajnji u kontejneru telo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="689"/>
@@ -3693,7 +3693,7 @@ Ovo može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="864"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Nemoguće je pomeriti osnovni tipski oblik tela.</translation>
+      <translation>Nemoguće je pomeriti početni tipski oblik tela.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="871"/>
@@ -3727,7 +3727,7 @@ Ovo može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="264"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Ne možeš primeniti tipske oblike koji prave udubljenja ako nemaš na raspolaganju osnovni tipski oblik</translation>
+      <translation>Ne možeš primeniti tipske oblike koji prave udubljenja ako nemaš na raspolaganju početni tipski oblik</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="445"/>
@@ -3950,7 +3950,7 @@ Mada, moći ćeš da migriraš u bilo kom trenutku kasnije pomoću 'Konstruisanj
     <message>
       <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
-      <translation>Migrirajte ručno</translation>
+      <translation>Migriraj ručno</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="51"/>
@@ -4726,22 +4726,22 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="64"/>
       <source>BaseFeature link is not set</source>
-      <translation>Veza OsnovniOblik nije podešena</translation>
+      <translation>Veza ka početnom tipskom obliku nije podešena</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="69"/>
       <source>BaseFeature must be a Part::Feature</source>
-      <translation>OsnovniOblik mora biti Part::Feature</translation>
+      <translation>Početni tipski oblik mora biti Part::Feature</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="78"/>
       <source>BaseFeature has an empty shape</source>
-      <translation>OsnovniOblik je prazan</translation>
+      <translation>Početni tipski oblik je prazan</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="81"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation>Ne može se izvršiti Isecanje bulovom operacijom bez OsnovnogOblika</translation>
+      <translation>Ne može se izvršiti Isecanje bulovom operacijom bez početnog tipskog oblika</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="95"/>
@@ -4752,7 +4752,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="102"/>
       <source>Cannot do boolean operation with invalid base shape</source>
-      <translation>Nije moguće izvršiti bulovu operaciju sa neispravnim osnovnim oblikom</translation>
+      <translation>Nije moguće izvršiti bulovu operaciju sa neispravnim početnim tipskim oblikom</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="108"/>
@@ -4762,7 +4762,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="134"/>
       <source>Base shape is null</source>
-      <translation>Osnovni oblik je prazan</translation>
+      <translation>Početni tipski oblik je prazan</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="115"/>
@@ -4869,7 +4869,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>Ne može se napraviti traženi tipski oblik. Razlog može biti:
- - aktivno Telo ne sadrži osnovni tipski oblik, tako da nema 
+ - aktivno Telo ne sadrži početni tipski oblik, tako da nema 
  materijal za uklanjanje;
  - izabrana skica ne pripada aktivnom Telu.</translation>
     </message>
@@ -4891,7 +4891,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="581"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation>Pravljenje nije uspelo jer je pravac ortogonalan vektoru normale skice</translation>
+      <translation>Pravljenje nije uspelo pošto pravac zaklapa ugao od 90° sa vektorom normale skice</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="639"/>
@@ -5200,7 +5200,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="265"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation>Preseci moraju imati isti broj žičanih ivica kao početni presek</translation>
+      <translation>Preseci moraju imati isti broj žičanih elemenata kao početni presek</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="292"/>
@@ -5245,7 +5245,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="574"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation>Izabrani element u putanji vodilji nije ni ivica ni žičana ivica.</translation>
+      <translation>Izabrani element u putanji vodilji nije ni ivica ni žičani element.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="587"/>
@@ -5255,7 +5255,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="591"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation>Putanja vodilja nije ni ivica ni žičana ivica.</translation>
+      <translation>Putanja vodilja nije ni ivica ni žičanih elemenata.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="595"/>
@@ -5265,7 +5265,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="101"/>
       <source>Cannot subtract primitive feature without base feature</source>
-      <translation>Ne mogu da oduzmem primitiv bez osnovnog tipskog oblika</translation>
+      <translation>Ne mogu da oduzmem primitiv ako ne postoji početni tipski oblik</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="253"/>
@@ -5395,7 +5395,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="794"/>
       <source>Fusion with base feature failed</source>
-      <translation>Unija sa osnovnim tipskim oblikom nije uspela</translation>
+      <translation>Unija sa početnim tipskim oblikom nije uspela</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="108"/>

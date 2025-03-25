@@ -7,8 +7,7 @@
       <location filename="../../Link.cpp" line="130"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Ukládá poslední uživatelskou volbu, zda použít nastavení „Kopírovat při změně“ na všechny odkazy
-které odkazují na stejný konfigurovatelný objekt</translation>
+      <translation>Ukládá poslední uživatelskou volbu, zda použít nastavení „Kopírovat při změně“ na všechny odkazy, které odkazují na stejný konfigurovatelný objekt</translation>
     </message>
   </context>
   <context>
@@ -46,32 +45,32 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="209"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>osa X</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="210"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>osa Y</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="211"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>osa Z</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="212"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>rovina XY</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="213"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>rovina XZ</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="214"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>rovina YZ</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="215"/>

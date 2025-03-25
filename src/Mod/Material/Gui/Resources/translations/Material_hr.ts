@@ -1192,7 +1192,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>&amp;Appearance...</source>
-      <translation type="unfinished">&amp;Appearance...</translation>
+      <translation>&amp;Izgled...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1206,7 +1206,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <translation>&amp;Materijal...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

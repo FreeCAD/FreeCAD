@@ -18,7 +18,7 @@
     <name>Assembly_CreateJointFixed</name>
     <message>
         <location filename="../../../CommandCreateJoint.py" line="77"/>
-        <source>Create a Fixed Joint</source>
+        <source>Create Fixed Joint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -98,7 +98,7 @@
     </message>
     <message>
         <location filename="../../../CommandCreateJoint.py" line="231"/>
-        <source>Create one of several different joints based on the selection.For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
+        <source>Create one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -177,7 +177,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="126"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="127"/>
         <source>Active object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -249,7 +249,7 @@
     </message>
     <message>
         <location filename="../../../JointObject.py" line="55"/>
-        <location filename="../../../JointObject.py" line="1476"/>
+        <location filename="../../../JointObject.py" line="1490"/>
         <source>Distance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -265,7 +265,7 @@
     </message>
     <message>
         <location filename="../../../JointObject.py" line="58"/>
-        <location filename="../../../JointObject.py" line="1478"/>
+        <location filename="../../../JointObject.py" line="1492"/>
         <source>Angle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -290,17 +290,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="1320"/>
+        <location filename="../../../JointObject.py" line="599"/>
+        <source>Broken link in: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="1334"/>
         <source>You need to select 2 elements from 2 separate parts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="1480"/>
+        <location filename="../../../JointObject.py" line="1494"/>
         <source>Radius 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="1482"/>
+        <location filename="../../../JointObject.py" line="1496"/>
         <source>Pitch radius</source>
         <translation type="unfinished"></translation>
     </message>
@@ -668,7 +673,12 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="954"/>
+        <location filename="../../../JointObject.py" line="457"/>
+        <source>The {order} reference of the joint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="968"/>
         <source>The object to ground</source>
         <translation type="unfinished"></translation>
     </message>
@@ -883,7 +893,7 @@ Turn rigid/Turn flexible command there, or by editing its Rigid property in the 
     </message>
     <message>
         <location filename="../preferences/Assembly.ui" line="20"/>
-        <source>Allow to leave edit mode when pressing Esc button</source>
+        <source>Allows leaving edit mode when pressing Esc button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -916,17 +926,17 @@ The files are named &quot;runPreDrag.asmt&quot; and &quot;dragging.log&quot; and
 <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="198"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="196"/>
         <source>The object is associated to one or more joints.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="200"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="198"/>
         <source>Do you want to move the object and delete associated joints?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="888"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="891"/>
         <source>Move part</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1202,7 +1212,7 @@ Press ESC to cancel.</source>
     <name>Assembly_InsertNewPart</name>
     <message>
         <location filename="../../../CommandInsertNewPart.py" line="54"/>
-        <source>Insert a new part</source>
+        <source>Insert New Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

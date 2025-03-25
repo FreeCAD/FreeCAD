@@ -4335,7 +4335,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="751"/>
       <source>Selection is not a Knot</source>
-      <translation type="unfinished">Selection is not a Knot</translation>
+      <translation>Pasirinkimas nėra Mazgas</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
@@ -4368,7 +4368,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_beziers.py" line="385"/>
       <location filename="../../draftguitools/gui_beziers.py" line="389"/>
       <source>Click and drag to define next knot</source>
-      <translation type="unfinished">Click and drag to define next knot</translation>
+      <translation>Paspauskite ir vilkite kad apibrėžtumėte kitą mazgą</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="67"/>

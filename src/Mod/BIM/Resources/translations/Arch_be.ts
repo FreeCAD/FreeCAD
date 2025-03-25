@@ -251,13 +251,10 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>Уласцівасць, якую трэба атрымаць з кожнага аб'екта.
+Можа быць 'Колькасць' для падліку аб'ектаў, альбо назвы ўласцівасцяў, такія як 'Даўжыня' ці 'Фігура.Аб'ём' для здабывання пэўнай уласцівасці.
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+Пры ўжыванні з уласнымі аб'ектамі IFC можа быць ўжыта для здабывання любога атрыбуту ці карыстальніцкіх уласцівасцяў вынятых элементаў.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -273,18 +270,14 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>Неабавязковы спіс імёнаў аб'ектаў (унутраных назваў, а не пазнак), які падзелены кропкай з коскай (;), якія павінны ўлічвацца пры выкананні дадзенай аперацыі.
+Калі спіс змяшчае групы, будуць дададзеныя даччыныя элементы.
 
-Leave blank to use all objects from the document.
+Пакіньце поле пустым, каб ужываць усе аб'екты з дакумента.
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+Калі дакумент з'яўляецца праектам IFC, будуць ужытыя ўсе аб'екты IFC незалежна ад пашырэння ў FreeCAD ці не.
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+Ужыць назву праекта IFC, каб атрымаць доступ да ўсіх аб'ектаў IFC дадзенага праекту, незалежна ад таго, пашыраны яны ці не.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="112"/>
@@ -293,11 +286,23 @@ of that project, no matter if they are expanded or not.</translation>
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+      <translation>Неабавязковы спіс фільтраў "Уласцівасць:Значэнне", якія падзелены кропкай з коскай (;).
+Дадаць ! да назвы ўласцівасці, каб інвертаваць эфект фільтра (выключыць аб'екты, якія адпавядаюць фільтру).
+Аб'екты, уласцівасць якіх змяшчае значэнне, будуць супастаўленыя.
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+Прыклады дапушчальных фільтраў (усе без уліку рэгістра):
+Name:Wall - будуць улічвацца толькі аб'екты, у назве якіх ёсць 'сцяна' (унутранае імя);
+!Name: Wall - будуць улічвацца толькі аб'екты, у назве якіх няма 'сцяны' (унутранае імя);
+Description:Win - будуць разглядацца толькі аб'екты з словам 'акно' у іх апісанні;
+!Label:Win - будуць улічвацца толькі аб'екты, у якіх у меткі няма слова 'акно';
+IfcType:Wall - будуць улічвацца толькі аб'екты, тып Ifc якіх роўны 'Сцяна';
+!Tag:Wall - будуць улічвацца толькі аб'екты, у якіх метка не з'яўляецца 'Сцяной'.
 
-When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+Калі вы пакінеце гэта поле пустым, фільтраванне не будзе ўжытае.
+
+Пры працы з уласнымі аб'ектамі IFC вы можаце ўжываць назвы уласцівасцяў FreeCAD, напрыклад:
+'Class: IfcWall' ці любы іншы атрыбут IFC (напрыклад, 'IsTypedBy:#455').
+Калі ў слупку 'Аб'екты' паказана значэнне праекту ці дакументу IFC, будуць разгледжаныя ўсе аб'екты IFC дадзенага праекту.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
@@ -633,10 +638,8 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document,
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>Калі птушка, вас больш не спытаюць пры стварэнні новага дакумента FreeCAD, і гэты дакумент не будзе аўтаматычна ператвораны ў дакумент, які сумяшчальны з IFC.
+Вы ўсё яшчэ можаце пераўтварыць дакумент FreeCAD ў стандарт IFC самастойна, калі выкарыстаеце каманду меню Інструменты -&gt; Зрабіць праект IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
@@ -1050,7 +1053,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>Дадаць стандартны IFC PSet</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
@@ -1413,52 +1416,54 @@ FreeCAD створыць радок у аркушу з гэтымі значэн
     <message>
       <location filename="../ui/dialogConvertType.ui" line="14"/>
       <source>Convert to IFC type</source>
-      <translation type="unfinished">Convert to IFC type</translation>
+      <translation>Пераўтварыць у тып IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
       <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
-      <translation type="unfinished">This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</translation>
+      <translation>Аб'ект будзе ператвораны ў тып %1. 
+ыпы могуць быць ужытыя для прысваення агульных атрыбутаў і ўласцівасцяў некалькіх аб'ектаў адначасова.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="36"/>
       <source>Keep original object. The object will adopt the new type</source>
-      <translation type="unfinished">Keep original object. The object will adopt the new type</translation>
+      <translation>Пакінуць зыходны аб'ект.
+Аб'ект прыме новы тып</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC property</source>
-      <translation type="unfinished">Add IFC property</translation>
+      <translation>Дадаць уласцівасць IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
       <source>IfcLabel</source>
-      <translation type="unfinished">IfcLabel</translation>
+      <translation>IfcLabel</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="49"/>
       <source>IfcBoolean</source>
-      <translation type="unfinished">IfcBoolean</translation>
+      <translation>IfcBoolean</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation type="unfinished">IfcInteger</translation>
+      <translation>IfcInteger</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
       <source>IfcReal</source>
-      <translation type="unfinished">IfcReal</translation>
+      <translation>IfcReal</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="64"/>
       <source>IfcLengthMeasure</source>
-      <translation type="unfinished">IfcLengthMeasure</translation>
+      <translation>IfcLengthMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="69"/>
       <source>IfcAreaMeasure</source>
-      <translation type="unfinished">IfcAreaMeasure</translation>
+      <translation>IfcAreaMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="80"/>
@@ -1468,7 +1473,7 @@ FreeCAD створыць радок у аркушу з гэтымі значэн
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="94"/>
       <source>PSet</source>
-      <translation type="unfinished">PSet</translation>
+      <translation>PSet</translation>
     </message>
   </context>
   <context>
@@ -2893,12 +2898,12 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="525"/>
       <source>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
-      <translation type="unfinished">When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</translation>
+      <translation>Пры націску на выгляд ці ўзровень у кіраўнік прагляду BIM фон пераключаецца на звычайны колер пры актывацыі двухмернага прадстаўлення і на градыентны колер пры актывацыі ўзроўню</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="528"/>
       <source>Switch backgrounds</source>
-      <translation type="unfinished">Switch backgrounds</translation>
+      <translation>Пераключыць фон</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="314"/>
@@ -2933,7 +2938,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="14"/>
       <source>SH3D import</source>
-      <translation type="unfinished">SH3D import</translation>
+      <translation>Імпартаваць SH3D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
@@ -2945,121 +2950,122 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-sh3d-import.ui" line="45"/>
       <source>Shows verbose debug messages during import of SH3D files in the Report
                     view panel. Log level message must be allowed for this setting to have an effect.</source>
-      <translation type="unfinished">Shows verbose debug messages during import of SH3D files in the Report
-                    view panel. Log level message must be allowed for this setting to have an effect.</translation>
+      <translation>Адлюстроўвае падрабязныя адладкавыя паведамленні падчас імпарту файлаў SH3D у справаздачу панэлі прагляду.
+Для таго каб дадзеная налада зарабіла, неабходна дазволіць адлюстраванне паведамленняў на ўзроўні часопіса.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="71"/>
       <source>Whether to import the model's doors and windows</source>
-      <translation type="unfinished">Whether to import the model's doors and windows</translation>
+      <translation>Ці варта імпартаваць дзверы і вокны дадзенай мадэлі</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="74"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Дзверы і вокны</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="87"/>
       <source>Whether to import the model's furnitures</source>
-      <translation type="unfinished">Whether to import the model's furnitures</translation>
+      <translation>Ці варта імпартаваць мэблю мадэлі</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
       <source>Furnitures</source>
-      <translation type="unfinished">Furnitures</translation>
+      <translation>Мэбля</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="103"/>
       <source>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</source>
-      <translation type="unfinished">Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</translation>
+      <translation>Ці варта ствараць Arch::Equipment для кожнай мэблі, якая вызначаная ў мадэлі
+(Заўвага: можа адмоўна адбіцца на хуткасці працэсу імпартавання)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="106"/>
       <source>Create Arch::Equipment</source>
-      <translation type="unfinished">Create Arch::Equipment</translation>
+      <translation>Стварыць Arch::Equipment</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="119"/>
       <source>Whether to join the different Arch::Wall together</source>
-      <translation type="unfinished">Whether to join the different Arch::Wall together</translation>
+      <translation>Ці варта злучаць розныя Arch::Wall разам</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="122"/>
       <source>Join Arch::Wall</source>
-      <translation type="unfinished">Join Arch::Wall</translation>
+      <translation>Аб'яднаць Arch::Wall</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="135"/>
       <source>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</source>
-      <translation type="unfinished">Whether to import the model's lights. Note that you also need to import
-                    the model's furnitures.</translation>
+      <translation>Ці варта імпартаваць асвятленне мадэлі.
+Вам таксама трэба імпартаваць мэблю мадэлі.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="139"/>
       <source>Lights (requires Render)</source>
-      <translation type="unfinished">Lights (requires Render)</translation>
+      <translation>Асвятленне (патрабуецца візуалізацыя)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="152"/>
       <source>Whether to import the model's cameras</source>
-      <translation type="unfinished">Whether to import the model's cameras</translation>
+      <translation>Ці варта імпартаваць камеры мадэлі</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="155"/>
       <source>Cameras (requires Render)</source>
-      <translation type="unfinished">Cameras (requires Render)</translation>
+      <translation>Камеры (патрабуецца візуалізацыя)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="168"/>
       <source>Merge imported element with existing FC object</source>
-      <translation type="unfinished">Merge imported element with existing FC object</translation>
+      <translation>Аб'яднаць імпартаваны элемент з існуючым аб'ектам FC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="171"/>
       <source>Merge into existing document</source>
-      <translation type="unfinished">Merge into existing document</translation>
+      <translation>Аб'яднаць з існуючым дакументам</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="186"/>
       <source>Default Floor Color</source>
-      <translation type="unfinished">Default Floor Color</translation>
+      <translation>Першапачатковы колер паверху</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="202"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="242"/>
       <source>This color might be used when a room does not define its own color.</source>
-      <translation type="unfinished">This color might be used when a room does not define its own color.</translation>
+      <translation>Колер можа ўжывацца, калі пакой не вызначае свой уласны колер.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="226"/>
       <source>Default Ceiling Color</source>
-      <translation type="unfinished">Default Ceiling Color</translation>
+      <translation>Першапачатковы колер столі</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="264"/>
       <source>Create a default Render project with the newly created Site</source>
-      <translation type="unfinished">Create a default Render project with the newly created Site</translation>
+      <translation>Стварыць першапачатковы праект візуалізацыі для зноў створанай мясцовасці</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="267"/>
       <source>Create Render Project (requires Render)</source>
-      <translation type="unfinished">Create Render Project (requires Render)</translation>
+      <translation>Стварыць праект візуалізацыі (патрабуецца візуалізацыя)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="280"/>
       <source>Fit view while importing.</source>
-      <translation type="unfinished">Fit view while importing.</translation>
+      <translation>Запаўненне выгляду пры імпартаванні.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="296"/>
       <source>Create a default IFC project with the newly created Site.</source>
-      <translation type="unfinished">Create a default IFC project with the newly created Site.</translation>
+      <translation>Стварыць першапачатковы праект IFC для зноў створанай мясцовасці.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="299"/>
       <source>Create IFC Project</source>
-      <translation type="unfinished">Create IFC Project</translation>
+      <translation>Стварыць праект IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="45"/>
@@ -5192,7 +5198,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="102"/>
       <source>renamed property 'Description' to 'Operation'</source>
-      <translation type="unfinished">renamed property 'Description' to 'Operation'</translation>
+      <translation>пераназваць уласцівасць 'Апісанне' у 'Аперацыя'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="103"/>
@@ -5377,7 +5383,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="1164"/>
       <source>Wrong base type</source>
-      <translation type="unfinished">Wrong base type</translation>
+      <translation>Няправільны тып асновы</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1653"/>
@@ -5897,7 +5903,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="55"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>Стварыць двухмернае прадстаўленне</translation>
     </message>
   </context>
   <context>
@@ -6042,7 +6048,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="733"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </translation>
+      <translation>Абраць карыстальніцкі набор уласцівасцяў, які будзе ўжывацца пры стварэнні альтэрнатыўнай фігуры з тым жа Эскізам архітэктуры </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1195"/>
@@ -7560,7 +7566,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="110"/>
       <source>The operation column</source>
-      <translation type="unfinished">The operation column</translation>
+      <translation>Слупок аперацыі</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="112"/>
@@ -8042,7 +8048,9 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="160"/>
       <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
-      <translation type="unfinished">The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</translation>
+      <translation>Даўжыня сцяны.
+Даступная толькі для чытання, калі сцяна не заснаваная на неабмежаваным эскізе з адным рабром ці на ломанай лініі чарнавіка з адным рабром.
+Звярніцеся да wiki для атрымання падрабязнай інфармацыі пра тое, як вылічаецца даўжыня.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="166"/>
@@ -8127,12 +8135,17 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="214"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Абраныя рэбры (ці група рэбраў) асноўнага эскізу/эскізу архітэктуры для ўжывання пры стварэнні формы дадзенай архітэктуры сцяны (замест ужывання ўсіх рэбраў першапачатковага асноўнага эскізу/эскізу архітэктуры).
+Уводзяцца парадкавыя нумары рэбраў ці суполак.
+Адключаецца і ігнаруецца, калі асноўны аб'ект (ArchSketch) падае інфармацыю пра абраныя рэбры (у якасці восі сцяны) з дапамогай метаду getWallBaseShapeEdgesInfo().
+ [Удасканаленне ад ArchSketch] у вонкавым дадатку Эскіз архітэктуры прадугледжаны інструмент 'Правіць сегмент сцяны' з графічным інтэрфейсам, які дазваляе карыстальнікам абраць рэбры ў інтэрактыўным рэжыме.
+'Талерантны да тапанімікі', калі ў базе ўжываецца ArchSketch (і ўсталяваны дадатак Эскіз архітэктуры).
+Увага: не 'талерантны да тапанімікі', калі ўжываецца толькі Эскіз.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </translation>
+      <translation>Абраць карыстальніцкі набор уласцівасцяў, які будзе ўжывацца пры стварэнні альтэрнатыўнай фігуры, пластоў сцяны архітэктуры з тым жа Эскізам архітэктуры </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="719"/>
@@ -9332,12 +9345,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="177"/>
       <source>Add quantity set...</source>
-      <translation type="unfinished">Add quantity set...</translation>
+      <translation>Дадаць набор велічыні...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="193"/>
       <source>Adding quantity set</source>
-      <translation type="unfinished">Adding quantity set</translation>
+      <translation>Дадае набор велічыні</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="440"/>
@@ -10046,7 +10059,9 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="66"/>
       <source>The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</source>
-      <translation type="unfinished">The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</translation>
+      <translation>Файл IFC не захаваны.
+Калі ласка, захавайце яго адзін раз, каб мець магчымасць параўнаць з існуючым файлам IFC.
+Потым зноў запусціце дадзеную каманду.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="77"/>
@@ -10118,37 +10133,37 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation type="unfinished">Add IFC property...</translation>
+      <translation>Дадаць уласцівасць IFC...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation type="unfinished">Add standard IFC Property Set...</translation>
+      <translation>Дадаць стандартны набор уласцівасцяў IFC...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="139"/>
       <source>No Property set provided</source>
-      <translation type="unfinished">No Property set provided</translation>
+      <translation>Набор уласцівасцяў не прадугледжаны</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="145"/>
       <source>add property</source>
-      <translation type="unfinished">add property</translation>
+      <translation>дадаць уласцівасць</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="208"/>
       <source>Property set already exists</source>
-      <translation type="unfinished">Property set already exists</translation>
+      <translation>Набор уласцівасцяў ужо існуе</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="212"/>
       <source>add property set</source>
-      <translation type="unfinished">add property set</translation>
+      <translation>дадаць набор уласцівасцяў</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="220"/>
       <source>Property already exists</source>
-      <translation type="unfinished">Property already exists</translation>
+      <translation>Уласцівасць ужо існуе</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="74"/>
@@ -10158,27 +10173,27 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="66"/>
       <source>Viewed lines</source>
-      <translation type="unfinished">Viewed lines</translation>
+      <translation>Лініі прагляду</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="75"/>
       <source>Cut lines</source>
-      <translation type="unfinished">Cut lines</translation>
+      <translation>Лініі разрэзу</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="376"/>
       <source>Removing property</source>
-      <translation type="unfinished">Removing property</translation>
+      <translation>Выдаляе уласцівасць</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="380"/>
       <source>Removing property set</source>
-      <translation type="unfinished">Removing property set</translation>
+      <translation>Выдаленне набору уласцівасцяў</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_types.py" line="109"/>
       <source>Error: Incompatible type</source>
-      <translation type="unfinished">Error: Incompatible type</translation>
+      <translation>Памылка: несумяшчальны тып</translation>
     </message>
   </context>
   <context>
@@ -11627,12 +11642,12 @@ IfcOpenShell неабходны для імпартавання ці экспа�
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="43"/>
       <source>2D Drawing</source>
-      <translation type="unfinished">2D Drawing</translation>
+      <translation>Двухмерны чарцёж</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="47"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
-      <translation type="unfinished">Creates a drawing container to contain elements of a 2D view</translation>
+      <translation>Стварае кантэйнер для чарцяжа, які змяшчае элементы двухмернага прадстаўлення</translation>
     </message>
   </context>
   <context>
@@ -11640,12 +11655,12 @@ IfcOpenShell неабходны для імпартавання ці экспа�
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
       <source>Section view</source>
-      <translation type="unfinished">Section view</translation>
+      <translation>Выгляд перасеку</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="97"/>
       <source>Section cut</source>
-      <translation type="unfinished">Section cut</translation>
+      <translation>Разрэз перасеку</translation>
     </message>
   </context>
   <context>
@@ -11653,12 +11668,12 @@ IfcOpenShell неабходны для імпартавання ці экспа�
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="39"/>
       <source>Insert view</source>
-      <translation type="unfinished">Insert view</translation>
+      <translation>Уставіць выгляд</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="43"/>
       <source>Inserts a drawing view on a page</source>
-      <translation type="unfinished">Inserts a drawing view on a page</translation>
+      <translation>Устаўляе выгляд чарцяжоў на старонку</translation>
     </message>
   </context>
 </TS>

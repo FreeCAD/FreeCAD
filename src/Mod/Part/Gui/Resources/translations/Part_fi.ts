@@ -25,7 +25,7 @@
       <location filename="../../AttacherTexts.cpp" line="323"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="325"/>
@@ -1078,7 +1078,7 @@
       <location filename="../../DlgBlock.ui" line="48"/>
       <location filename="../../DlgBlock.ui" line="209"/>
       <source>Dimension</source>
-      <translation>Mitta</translation>
+      <translation>Dimensio</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="53"/>
@@ -1176,14 +1176,14 @@
     <message>
       <location filename="../../Command.cpp" line="2125"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2126"/>
       <location filename="../../Command.cpp" line="2127"/>
       <location filename="../../Command.cpp" line="2129"/>
       <source>Box selection</source>
-      <translation>Laatikon valinta</translation>
+      <translation>Laatikkovalinta</translation>
     </message>
   </context>
   <context>
@@ -1191,7 +1191,7 @@
     <message>
       <location filename="../../Command.cpp" line="2053"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2054"/>
@@ -1209,7 +1209,7 @@
     <message>
       <location filename="../../Command.cpp" line="2086"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2087"/>
@@ -1227,7 +1227,7 @@
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
@@ -1245,7 +1245,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="106"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="107"/>
@@ -1257,7 +1257,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
       <source>Create a cube solid</source>
-      <translation>Luo kiintomuoto-kuutio</translation>
+      <translation>Luo kuutio</translation>
     </message>
   </context>
   <context>
@@ -1265,7 +1265,7 @@
     <message>
       <location filename="../../Command.cpp" line="132"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="133"/>
@@ -1283,7 +1283,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -1301,7 +1301,7 @@
     <message>
       <location filename="../../Command.cpp" line="1527"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1528"/>
@@ -1311,7 +1311,7 @@
     <message>
       <location filename="../../Command.cpp" line="1529"/>
       <source>Advanced utility to create shapes</source>
-      <translation>Lisäasetukset muotojen luomisen apuohjelmalle</translation>
+      <translation>Muotojen luomisen edistynyt työkalu</translation>
     </message>
   </context>
   <context>
@@ -1319,7 +1319,7 @@
     <message>
       <location filename="../../Command.cpp" line="1432"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1433"/>
@@ -1329,7 +1329,7 @@
     <message>
       <location filename="../../Command.cpp" line="1434"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Viiste valittuihin muotoihin reunoista</translation>
+      <translation>Viistä valitut reunat</translation>
     </message>
   </context>
   <context>
@@ -1337,7 +1337,7 @@
     <message>
       <location filename="../../Command.cpp" line="360"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="361"/>
@@ -1355,7 +1355,7 @@
     <message>
       <location filename="../../Command.cpp" line="724"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="725"/>
@@ -1373,7 +1373,7 @@
     <message>
       <location filename="../../Command.cpp" line="500"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="501"/>
@@ -1391,7 +1391,7 @@
     <message>
       <location filename="../../Command.cpp" line="1726"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1727"/>
@@ -1409,7 +1409,7 @@
     <message>
       <location filename="../../Command.cpp" line="606"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="607"/>
@@ -1427,7 +1427,7 @@
     <message>
       <location filename="../../Command.cpp" line="831"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="832"/>
@@ -1445,7 +1445,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="190"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="191"/>
@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../Command.cpp" line="1488"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1489"/>
@@ -1483,7 +1483,7 @@
     <message>
       <location filename="../../Command.cpp" line="301"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="302"/>
@@ -1501,7 +1501,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="64"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="65"/>
@@ -1521,7 +1521,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="413"/>
@@ -1539,7 +1539,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="325"/>
@@ -1557,7 +1557,7 @@
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
@@ -1575,7 +1575,7 @@
     <message>
       <location filename="../../Command.cpp" line="1267"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1268"/>
@@ -1593,7 +1593,7 @@
     <message>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
@@ -1603,7 +1603,7 @@
     <message>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Fillet the selected edges of a shape</source>
-      <translation>Pyöristä muodon valitut särmät</translation>
+      <translation>Pyöristä valitut reunat</translation>
     </message>
   </context>
   <context>
@@ -1611,7 +1611,7 @@
     <message>
       <location filename="../../Command.cpp" line="420"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="421"/>
@@ -1629,7 +1629,7 @@
     <message>
       <location filename="../../Command.cpp" line="936"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="937"/>
@@ -1647,7 +1647,7 @@
     <message>
       <location filename="../../Command.cpp" line="1047"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1048"/>
@@ -1665,7 +1665,7 @@
     <message>
       <location filename="../../Command.cpp" line="1556"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1557"/>
@@ -1683,7 +1683,7 @@
     <message>
       <location filename="../../Command.cpp" line="1324"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1325"/>
@@ -1701,7 +1701,7 @@
     <message>
       <location filename="../../Command.cpp" line="1095"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1096"/>
@@ -1719,7 +1719,7 @@
     <message>
       <location filename="../../Command.cpp" line="1460"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1461"/>
@@ -1737,7 +1737,7 @@
     <message>
       <location filename="../../Command.cpp" line="1614"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1615"/>
@@ -1755,7 +1755,7 @@
     <message>
       <location filename="../../Command.cpp" line="1671"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1672"/>
@@ -1773,7 +1773,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
@@ -1791,7 +1791,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
@@ -1809,17 +1809,17 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Create primitives...</source>
-      <translation>Luo primitiivit...</translation>
+      <translation>Luo perusmuotoja...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="216"/>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Parametrisoitujen geometristen primitiivien luonti</translation>
+      <translation>Parametrisoitujen perusmuotojen luonti</translation>
     </message>
   </context>
   <context>
@@ -1827,7 +1827,7 @@
     <message>
       <location filename="../../Command.cpp" line="2155"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2156"/>
@@ -1848,7 +1848,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="353"/>
@@ -1866,7 +1866,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1174"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
@@ -1884,7 +1884,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
@@ -1902,7 +1902,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1948"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1949"/>
@@ -1920,7 +1920,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="888"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="889"/>
@@ -1938,12 +1938,12 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2189"/>
       <source>Persiste&amp;nt section cut</source>
-      <translation type="unfinished">Persiste&amp;nt section cut</translation>
+      <translation>Jatk&amp;uva poikkileikkaus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2190"/>
       <source>Creates a persistent section cut of visible part objects</source>
-      <translation>Luo pysyvä halkaisukuvanto objektin näkyvästä osasta</translation>
+      <translation>Luo pysyvän poikkileikkauksen näkyvän osan objekteista</translation>
     </message>
   </context>
   <context>
@@ -1951,7 +1951,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="106"/>
@@ -1969,7 +1969,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="222"/>
@@ -1987,7 +1987,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="56"/>
@@ -2005,7 +2005,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="148"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="149"/>
@@ -2025,7 +2025,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1585"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1586"/>
@@ -2043,7 +2043,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1818"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1819"/>
@@ -2071,7 +2071,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="232"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="233"/>
@@ -2091,7 +2091,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="297"/>
@@ -2251,7 +2251,7 @@ of projection.</source>
       <location filename="../../TaskShapeBuilder.cpp" line="356"/>
       <location filename="../../TaskShapeBuilder.cpp" line="408"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="469"/>
@@ -2756,8 +2756,8 @@ the size of the resulting STEP file.</translation>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative).
 If both lengths are zero, magnitude of direction is used.</source>
-      <translation type="unfinished">Length to extrude along direction (can be negative).
-If both lengths are zero, magnitude of direction is used.</translation>
+      <translation>Pituus jolla pursotetaan suuntaan (voi olla negatiivinen).
+Jos molemmat pituudet ovat nolla, suunnan suuruutta.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
@@ -2767,7 +2767,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="243"/>
       <source>Length to extrude against the direction (can be negative).</source>
-      <translation type="unfinished">Length to extrude against the direction (can be negative).</translation>
+      <translation>Suunnan vastainen pursotus (voi olla negatiivinen).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
@@ -2812,7 +2812,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
       <source>Select shape(s) that should be extruded</source>
-      <translation type="unfinished">Select shape(s) that should be extruded</translation>
+      <translation>Valitse muoto(-dot) jotka pursotetaan</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="373"/>
@@ -2871,7 +2871,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation>Ei voida määrittää pursotettavan muodon normaalia vektoria. Ole hyvä ja käytä muuta tilaa. 
+      <translation>Ei voida määrittää pursotettavan muodon normaalivektoria. Ole hyvä ja käytä muuta tilaa. 
 
 (%1)</translation>
     </message>
@@ -3006,7 +3006,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="277"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>Koko2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="281"/>
@@ -3811,12 +3811,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
       <source>Add wire</source>
-      <translation type="unfinished">Add wire</translation>
+      <translation>Lisää lanka</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
       <source>Add edge</source>
-      <translation type="unfinished">Add edge</translation>
+      <translation>Lisää reuna</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="56"/>
@@ -3836,7 +3836,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
       <source>Extrude height</source>
-      <translation type="unfinished">Extrude height</translation>
+      <translation>Pursotuksen korkeus</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="116"/>
@@ -4348,7 +4348,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="110"/>
       <source>Rotation axis</source>
-      <translation type="unfinished">Rotation axis</translation>
+      <translation>Rotaatioakseli</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="118"/>
@@ -4539,7 +4539,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Pysyvä poikkileikkaus</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -4674,7 +4674,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="222"/>
       <source>Box selection for shells is not supported</source>
-      <translation type="unfinished">Box selection for shells is not supported</translation>
+      <translation>Kuoria ei voi valita laatikkovalintatyökalulla</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="231"/>
@@ -4990,7 +4990,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="799"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="806"/>
@@ -5497,7 +5497,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation type="unfinished">Box selection...</translation>
+      <translation>Laatikkovalinta...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5540,7 +5540,7 @@ reuna tai lanka, jota pitkin reitin pyyhkäisy tehdään.</translation>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
       <source>Tube</source>
-      <translation type="unfinished">Tube</translation>
+      <translation>Putki</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
@@ -5687,7 +5687,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
@@ -6098,12 +6098,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation>Luo putki</translation>
+      <translation>Putki</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation>Luo putken</translation>
+      <translation>Luo putki</translation>
     </message>
   </context>
   <context>
@@ -6211,7 +6211,7 @@ Haluatko jatkaa?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
@@ -6261,7 +6261,7 @@ for collision or distance filtering.</translation>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
@@ -6279,14 +6279,14 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>Pura yhdistelmämuoto osiinsa</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>Jaa yhdistelmämuoto osiinsa erillisiksi objekteiksi.
+Jokaiselle muodolle luodaan myös 'Yhdistelmäobjektin suodatin'.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
@@ -6296,7 +6296,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
   </context>
   <context>
@@ -6409,7 +6409,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Liite...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
@@ -6612,7 +6612,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="14"/>
       <source>Scale</source>
-      <translation>Mittakaava</translation>
+      <translation>Skaalaa</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
@@ -6688,7 +6688,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1295"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1296"/>
@@ -6706,13 +6706,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Valinnan suodatin</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <location filename="../../CommandFilter.cpp" line="48"/>
       <source>Change the selection filter</source>
-      <translation type="unfinished">Change the selection filter</translation>
+      <translation>Muuta valinnan suodatinta</translation>
     </message>
   </context>
   <context>
@@ -6720,13 +6720,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>Kärkipisteitten valinta</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
       <location filename="../../CommandFilter.cpp" line="176"/>
       <source>Only allow the selection of vertices</source>
-      <translation type="unfinished">Only allow the selection of vertices</translation>
+      <translation>Valitse vain kärkipisteitä</translation>
     </message>
   </context>
   <context>
@@ -6734,13 +6734,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge selection</source>
-      <translation type="unfinished">Edge selection</translation>
+      <translation>Valitse reunoja</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="199"/>
       <location filename="../../CommandFilter.cpp" line="201"/>
       <source>Only allow the selection of edges</source>
-      <translation type="unfinished">Only allow the selection of edges</translation>
+      <translation>Valitse vain reunoja</translation>
     </message>
   </context>
   <context>
@@ -6748,13 +6748,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face selection</source>
-      <translation type="unfinished">Face selection</translation>
+      <translation>Valitse sivuja</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <location filename="../../CommandFilter.cpp" line="226"/>
       <source>Only allow the selection of faces</source>
-      <translation type="unfinished">Only allow the selection of faces</translation>
+      <translation>Valitse vain kappaleitten tahkoja</translation>
     </message>
   </context>
   <context>
@@ -6764,7 +6764,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../CommandFilter.cpp" line="249"/>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Poista valintasuodattimet</translation>
     </message>
   </context>
   <context>
@@ -6855,7 +6855,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="66"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
@@ -6882,7 +6882,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
       <source>Box selection</source>
-      <translation>Laatikon valinta</translation>
+      <translation>Laatikkovalinta</translation>
     </message>
   </context>
   <context>
@@ -6936,7 +6936,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
   </context>
   <context>
@@ -6944,7 +6944,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../Command.cpp" line="2245"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2246"/>
@@ -6962,7 +6962,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../Command.cpp" line="2279"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2280"/>
@@ -6980,7 +6980,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../Command.cpp" line="2312"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2313"/>
@@ -6998,7 +6998,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../Command.cpp" line="2345"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2346"/>
@@ -7016,7 +7016,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../Command.cpp" line="2380"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2381"/>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <translation>&amp;Crear el full de càlcul</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="949"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Align &amp;bottom</source>
-      <translation type="unfinished">Align &amp;bottom</translation>
+      <translation>Alinear a l'&amp;inferior</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Align &amp;center</source>
-      <translation type="unfinished">Align &amp;center</translation>
+      <translation>Alinear al &amp;centre</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Align &amp;left</source>
-      <translation type="unfinished">Align &amp;left</translation>
+      <translation>Alinear a l'&amp;esquerra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="284"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="397"/>
       <source>Align &amp;right</source>
-      <translation type="unfinished">Align &amp;right</translation>
+      <translation>Alinear a la &amp;dreta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="398"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Align &amp;top</source>
-      <translation type="unfinished">Align &amp;top</translation>
+      <translation>Alinear al &amp;superior</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="455"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="568"/>
       <source>&amp;Vertically center-align</source>
-      <translation type="unfinished">&amp;Vertically center-align</translation>
+      <translation>Alineació &amp;Vertical al centre</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="569"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>&amp;Export spreadsheet</source>
-      <translation type="unfinished">&amp;Export spreadsheet</translation>
+      <translation>&amp;Exportar full de càlcul</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="238"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>&amp;Import spreadsheet</source>
-      <translation type="unfinished">&amp;Import spreadsheet</translation>
+      <translation>&amp;Importar full de càlcul</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>&amp;Merge cells</source>
-      <translation type="unfinished">&amp;Merge cells</translation>
+      <translation>&amp;Fusiona les cel·les</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>&amp;Divideix la cel·la</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>&amp;Bold text</source>
-      <translation type="unfinished">&amp;Bold text</translation>
+      <translation>&amp;Text en negreta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="626"/>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../Command.cpp" line="709"/>
       <source>&amp;Italic text</source>
-      <translation type="unfinished">&amp;Italic text</translation>
+      <translation>&amp;Text en cursiva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="710"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>&amp;Underline text</source>
-      <translation type="unfinished">&amp;Underline text</translation>
+      <translation>&amp;Text subratllat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
@@ -289,7 +289,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>&amp;Divideix la cel·la</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="305"/>
@@ -378,7 +378,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="142"/>
       <source>Set text color</source>
-      <translation type="unfinished">Set text color</translation>
+      <translation>Definiu el color del text</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="176"/>
@@ -696,12 +696,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Workbench.cpp" line="94"/>
       <location filename="../../Workbench.cpp" line="96"/>
       <source>Set cell(s) text color</source>
-      <translation type="unfinished">Set cell(s) text color</translation>
+      <translation>Definiu el color de les cel·les</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="95"/>
       <source>Sets the Spreadsheet cell(s) text color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) text color</translation>
+      <translation>Estableix el color de text de les cel·les del full de càlcul</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="114"/>
@@ -875,12 +875,12 @@ Spreadsheet.my_alias_name enlloc de Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
@@ -941,7 +941,7 @@ Vols continuar?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Set a zoom level for table view from 60% to 160%.</source>
-      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
+      <translation>Establiu el nivell de zoom per la vista de la taula de 60% a 160%.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="51"/>
@@ -951,7 +951,7 @@ Vols continuar?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level:</source>
-      <translation type="unfinished">Default zoom level:</translation>
+      <translation>Nivell de zoom predeterminat:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="83"/>
@@ -1197,12 +1197,12 @@ Per defecte: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom level</source>
-      <translation type="unfinished">Zoom level</translation>
+      <translation>Nivell de zoom</translation>
     </message>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <translation>Nivell de zoom nou:</translation>
     </message>
   </context>
 </TS>

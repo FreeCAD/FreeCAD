@@ -11,7 +11,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="129"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Показать/скрыть кривизну всех B-сплайнов</translation>
+      <translation>Переключение между показом и скрытием гребней кривизны для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="69"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>Переключение между показом и скрытием степени для всех B-сплайнов</translation>
+      <translation>Переключение между отображением и скрытием степени для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="159"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Переключение между отображением и сокрытием мультипликативных узлов для всех B-сплайнов</translation>
+      <translation>Переключение между отображением и скрытием кратности узлов для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -45,12 +45,12 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="187"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation>Показать/скрыть контрольную точку веса B-сплайна</translation>
+      <translation>Показать/скрыть вес контрольных точек B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="188"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation>Переключает между отображением и скрытием контрольной точки для всех B-сплайнов</translation>
+      <translation>Переключает между отображением и скрытием весов контрольных точек для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="99"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Показать/скрыть управляющие полигоны всех B-сплайнов</translation>
+      <translation>Переключает между отображением и скрытием управляющих полигонов для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1579"/>
       <source>Copy the geometry of another sketch</source>
-      <translation>Копировать геометрию другого эскиза</translation>
+      <translation>Копировать выбранную фигуру с другого эскиза</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1523"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Создает копию геометрии, взяв за основу последнюю выделенную точку</translation>
+      <translation>Создает копию фигуры, взяв за основу последнюю выделенную точку</translation>
     </message>
   </context>
   <context>
@@ -97,7 +97,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="218"/>
       <source>Show/hide B-spline information layer</source>
-      <translation>Показать/скрыть информационный уровень В-сплайн</translation>
+      <translation>Показать/скрыть вспомогательную информацию В-сплайнов</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="300"/>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="337"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation>Показать/скрыть контрольную точку веса B-сплайна</translation>
+      <translation>Показать/скрыть вес контрольных точек B-сплайна</translation>
     </message>
   </context>
   <context>
@@ -130,7 +130,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8502"/>
       <source>Constrain arc or circle</source>
-      <translation>Ограничение дуги или окружности</translation>
+      <translation>Ограничить дугу или окружность</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8503"/>
@@ -140,7 +140,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8613"/>
       <source>Constrain radius</source>
-      <translation>Ограничение радиуса</translation>
+      <translation>Ограничить радиус</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8619"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8625"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Ограничение радиуса/диаметра автоматически</translation>
+      <translation>Ограничить радиус/диаметр автоматически</translation>
     </message>
   </context>
   <context>
@@ -163,7 +163,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1605"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Создает копию геометрии, взяв за основу последнюю выделенную точку</translation>
+      <translation>Создает копию фигуры, взяв за основу последнюю выделенную точку</translation>
     </message>
   </context>
   <context>
@@ -189,7 +189,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="993"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>Создать B-сплайн на эскизе</translation>
+      <translation>Создать базисный сплайн (B-сплайн) на эскизе</translation>
     </message>
   </context>
   <context>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="785"/>
       <source>Create a conic in the sketch</source>
-      <translation>Создать конус на эскизе</translation>
+      <translation>Создать фигуру конического сечения на эскизе</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="636"/>
       <source>Modify knot multiplicity</source>
-      <translation>Изменение кратности узлов</translation>
+      <translation>Изменить кратность узлов</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="702"/>
       <source>Increase knot multiplicity</source>
-      <translation>Увеличение кратности узлов</translation>
+      <translation>Увеличить кратность узла</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="711"/>
       <source>Decrease knot multiplicity</source>
-      <translation>Уменьшение кратности узлов</translation>
+      <translation>Уменьшить кратность узла</translation>
     </message>
   </context>
   <context>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8662"/>
       <source>Constrain angle</source>
-      <translation>Ограничение угла</translation>
+      <translation>Ограничить угол</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8663"/>
@@ -322,12 +322,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3575"/>
       <source>Constrain block</source>
-      <translation>Ограничение перемещения</translation>
+      <translation>Ограничение изменения</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3576"/>
       <source>Block the selected edge from moving</source>
-      <translation>Блокировать выбранный край от перемещения</translation>
+      <translation>Ограничить возможность изменений выбранного ребра</translation>
     </message>
   </context>
   <context>
@@ -335,12 +335,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="4291"/>
       <source>Constrain coincident</source>
-      <translation>Ограничение наложения точек</translation>
+      <translation>Ограничение совпадения точек</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4292"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation>Создать ограничение совпадения между точками или ограничение концентричности между кругами, дугами и эллипсами</translation>
+      <translation>Создать ограничение совпадения между точками или ограничение концентричности между окружностями, дугами и эллипсами</translation>
     </message>
   </context>
   <context>
@@ -366,7 +366,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="4396"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation>Исправить длину линии или расстояние между линией и вершиной или между двумя кругами</translation>
+      <translation>Задать длину линии или расстояние между линией и вершиной или между двумя кругами</translation>
     </message>
   </context>
   <context>
@@ -379,7 +379,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5048"/>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Фиксировать расстояние по горизонтали между двумя точками или концами отрезка</translation>
+      <translation>Задать расстояние по горизонтали между двумя точками или концами отрезка</translation>
     </message>
   </context>
   <context>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5352"/>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Фиксировать расстояние по вертикали между двумя точками или концами отрезка</translation>
+      <translation>Задать расстояние по вертикали между двумя точками или концами отрезка</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="9115"/>
       <source>Constrain equal</source>
-      <translation>Ограничение эквивалентностью</translation>
+      <translation>Ограничение эквивалентности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9117"/>
@@ -413,12 +413,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3197"/>
       <source>Constrain horizontal</source>
-      <translation>Ограничить горизонталь</translation>
+      <translation>Ограничить горизонтально</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3198"/>
       <source>Create a horizontal constraint on the selected item</source>
-      <translation>Создать ограничение горизонтальности для выбранных линий</translation>
+      <translation>Создать ограничение горизонтальности для выбранных элементов</translation>
     </message>
   </context>
   <context>
@@ -432,8 +432,7 @@
       <location filename="../../CommandConstraints.cpp" line="3289"/>
       <source>Create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation>Создать ограничение расстояния горизонтального и вертикального расстояния
-на выбранной вершине</translation>
+      <translation>Создать ограничение положения по горизонтали и вертикали для выбранной вершины</translation>
     </message>
   </context>
   <context>
@@ -480,12 +479,12 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8133"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Ограничение радиуса/диаметра автоматически</translation>
+      <translation>Ограничить радиус/диаметр автоматически</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8134"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation>Назначает диаметр, если выбран круг или радиус, если выбран полюс дуга/сплайн</translation>
+      <translation>Назначает диаметр, если выбран круг или радиус, если выбран дуга/ часть B-сплайна</translation>
     </message>
   </context>
   <context>
@@ -507,7 +506,7 @@ and an edge as an interface.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9357"/>
       <source>Constrain symmetric</source>
-      <translation>Ограничить симметричность</translation>
+      <translation>Ограничение симметричности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9358"/>
@@ -521,12 +520,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3242"/>
       <source>Constrain vertical</source>
-      <translation>Ограничить вертикаль</translation>
+      <translation>Ограничить вертикально</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3243"/>
       <source>Create a vertical constraint on the selected item</source>
-      <translation>Создать ограничение вертикальности для выделенных линий</translation>
+      <translation>Создать ограничение вертикальности для выбранных элементов</translation>
     </message>
   </context>
   <context>
@@ -534,12 +533,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
       <source>Convert geometry to B-spline</source>
-      <translation>Преобразовать геометрию в B-сплайн</translation>
+      <translation>Преобразовать фигуру в B-сплайн</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="116"/>
       <source>Converts the selected geometry to a B-spline</source>
-      <translation>Преобразовать выбранную геометрию в B-сплайн</translation>
+      <translation>Преобразует выбранную геометрическую фигуру в B-сплайн</translation>
     </message>
   </context>
   <context>
@@ -552,7 +551,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1471"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation>Создает простую копию геометрии, взяв за основу последнюю выделенную точку</translation>
+      <translation>Создает простую копию фигуры, взяв за основу последнюю выделенную точку</translation>
     </message>
   </context>
   <context>
@@ -565,7 +564,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="496"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation>Создать дугу, указав её конечные точки и точку вдоль дуги</translation>
+      <translation>Создать дугу, указав её конечные точки и точку на траектории дуги</translation>
     </message>
   </context>
   <context>
@@ -573,7 +572,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1164"/>
       <source>Create circle by 3 points</source>
-      <translation>Создать круг по 3 точкам</translation>
+      <translation>Создать окружность по 3 точкам</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1165"/>
@@ -643,7 +642,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="850"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation>Создать B-сплайн по контрольным точкам на эскизе.</translation>
+      <translation>Создает базисный сплайн (B-сплайн) по контрольным точкам на эскизе.</translation>
     </message>
   </context>
   <context>
@@ -651,12 +650,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="598"/>
       <source>Create circle by center</source>
-      <translation>Создать круг по центру</translation>
+      <translation>Создать окружность от центра</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="599"/>
       <source>Create a circle in the sketch</source>
-      <translation>Создать окружность на эскизе</translation>
+      <translation>Создать окружность начиная от центра на эскизе</translation>
     </message>
   </context>
   <context>
@@ -682,7 +681,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="633"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>Создать эллипс от центра в эскизе</translation>
+      <translation>Создать эллипс начиная от центра на эскизе</translation>
     </message>
   </context>
   <context>
@@ -695,7 +694,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1228"/>
       <source>Create a fillet between two lines or at a coincident point</source>
-      <translation>Скруглить угол между двумя линиями, или соединить две линии дугой окружности</translation>
+      <translation>Скруглить угол между двумя линиями, или в точке пересечения</translation>
     </message>
   </context>
   <context>
@@ -721,7 +720,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1816"/>
       <source>Create a hexagon in the sketch</source>
-      <translation>Создать шестиугольник в эскизе</translation>
+      <translation>Создать шестиугольник на эскизе</translation>
     </message>
   </context>
   <context>
@@ -781,12 +780,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="884"/>
       <source>Create periodic B-spline</source>
-      <translation>Создать периодический B-сплайн</translation>
+      <translation>Создать замкнутый B-сплайн</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="885"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation>Создать периодический B-сплайн по контрольным точкам на эскизе.</translation>
+      <translation>Создает замкнутый базисный сплайн (B-сплайн) по контрольным точкам на эскизе.</translation>
     </message>
   </context>
   <context>
@@ -812,7 +811,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="203"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Создать полилинию на эскизе. 'M' - смена режима</translation>
+      <translation>Создать ломаную линию на эскизе. Клавиша 'M' - смена режима соединения точек</translation>
     </message>
   </context>
   <context>
@@ -838,7 +837,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="266"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation>Создать центрированный прямоугольник на эскизе</translation>
+      <translation>Создать прямоугольник, начиная с указания его центральной точки на эскизе</translation>
     </message>
   </context>
   <context>
@@ -859,12 +858,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1665"/>
       <source>Create slot</source>
-      <translation>Создать паз</translation>
+      <translation>Создать стадион</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1666"/>
       <source>Create a slot in the sketch</source>
-      <translation>Создать паз на эскизе</translation>
+      <translation>Создать фигуру формы стадиона на эскизе</translation>
     </message>
   </context>
   <context>
@@ -911,7 +910,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="498"/>
       <source>Decrease knot multiplicity</source>
-      <translation>Уменьшение кратности узлов</translation>
+      <translation>Уменьшить кратность узла</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="499"/>
@@ -929,7 +928,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2127"/>
       <source>Delete all constraints in the sketch</source>
-      <translation>Удалить все ограничения в эскизе</translation>
+      <translation>Удалить все ограничения с эскиза</translation>
     </message>
   </context>
   <context>
@@ -937,12 +936,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2061"/>
       <source>Delete all geometry</source>
-      <translation>Удалить всю геометрию</translation>
+      <translation>Удалить все фигуры</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2062"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
-      <translation>Удалить всю геометрию и ограничения в текущем эскизе, за исключением внешней геометрии</translation>
+      <translation>Удалить все фигуры и ограничения в текущем эскизе, за исключением внешних фигур</translation>
     </message>
   </context>
   <context>
@@ -963,12 +962,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1353"/>
       <source>Extend edge</source>
-      <translation>Продлить грань</translation>
+      <translation>Продлить отрезок</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1354"/>
       <source>Extend an edge with respect to the picked position</source>
-      <translation>Продлить грань до ближайшего пересечения</translation>
+      <translation>Продлить отрезок до выбранной точки</translation>
     </message>
   </context>
   <context>
@@ -981,7 +980,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="192"/>
       <source>Increases the degree of the B-spline</source>
-      <translation>Увеличить степень B-сплайна</translation>
+      <translation>Увеличивает степень B-сплайна</translation>
     </message>
   </context>
   <context>
@@ -989,7 +988,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="350"/>
       <source>Increase knot multiplicity</source>
-      <translation>Увеличение кратности узлов</translation>
+      <translation>Увеличить кратность узла</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="351"/>
@@ -1028,7 +1027,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>Leave sketch</source>
-      <translation>Покинуть эскиз</translation>
+      <translation>Закрыть эскиз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -1048,14 +1047,14 @@ with respect to a line or a third point</source>
       <source>Set the 'AttachmentSupport' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation>Установите «AttachmentSupport» эскиза.
-Сначала выберите опорную геометрию, например грань или ребро твердого объекта,
+      <translation>Установите свойство «AttachmentSupport» эскиза, то есть проецировать эскиз на фигуру
+Сначала выберите опорную фигуру, например грань или ребро твердого объекта,
 затем вызовите эту команду, затем выберите нужный эскиз.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="647"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation>Некоторые из выбранных объектов зависят от эскиза, который будет отображен. Циклические зависимости не допускаются.</translation>
+      <translation>Некоторые из выбранных объектов зависят от эскиза, который выбран для отображения. Циклические зависимости недопустимы.</translation>
     </message>
   </context>
   <context>
@@ -1068,12 +1067,12 @@ then call this command, then choose the desired sketch.</source>
     <message>
       <location filename="../../Command.cpp" line="984"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
-      <translation>Создать новый эскиз из слияния двух или более выбранных эскизов.</translation>
+      <translation>Создать новый эскиз слиянием двух или более выбранных эскизов.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Некорректный выбор</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
@@ -1094,13 +1093,13 @@ then call this command, then choose the desired sketch.</source>
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
       <translation>Создает новый зеркальный эскиз для каждого выбранного эскиза,
-используя оси X или Y или исходную точку,
+используя оси X или Y или точку начала координат,
 как точку отсчета зеркального отображения.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="874"/>
       <source>Wrong selection</source>
-      <translation>Неправильное выделение</translation>
+      <translation>Некорректное выделение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="875"/>
@@ -1118,7 +1117,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1570"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation>Перемещает геометрии, принимая в качестве ориентира последнюю выбранную точку</translation>
+      <translation>Перемещает фигуры, принимая в качестве ориентира последнюю выбранную точку</translation>
     </message>
   </context>
   <context>
@@ -1144,7 +1143,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1910"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation>Создаёт прямоугольный массив геометрии, в качестве привязки используется последняя выделенная точка</translation>
+      <translation>Создаёт прямоугольный массив фигур, взяв за основу последнюю выделенную точку</translation>
     </message>
   </context>
   <context>
@@ -1152,12 +1151,12 @@ as mirroring reference.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2193"/>
       <source>Remove axes alignment</source>
-      <translation>Удалить выравнивание осей</translation>
+      <translation>Удалить выравнивание по осям</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2194"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation>Изменяет ограничения, чтобы удалить выравнивание осей, пытаясь сохранить взаимосвязь ограничения выделения.</translation>
+      <translation>Изменяет ограничения, чтобы удалить выравнивание по осям, пытаясь сохранить взаимные ограничения выделенного</translation>
     </message>
   </context>
   <context>
@@ -1171,8 +1170,8 @@ as mirroring reference.</source>
       <location filename="../../Command.cpp" line="416"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'AttachmentSupport' property, if any.</source>
-      <translation>Поместите выбранный эскиз на одну из глобальных координатных плоскостей.
-Это очистит свойство AttachmentSupport, если таковое имеется.</translation>
+      <translation>Поместит выбранный эскиз на одну из глобальных координатных плоскостей.
+Это очистит свойство проекции на поверхность детали (AttachmentSupport), если таковое имеется.</translation>
     </message>
   </context>
   <context>
@@ -1185,7 +1184,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="981"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
-      <translation>Показать всю внутреннюю геометрию или скрыть неиспользуемую внутреннюю геометрию</translation>
+      <translation>Показать все внутренние геометрические элементы или скрыть неиспользуемые внутренние геометрические элементы. Поддерживаются: эллипс, дуга, B-сплайн</translation>
     </message>
   </context>
   <context>
@@ -1202,12 +1201,12 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="338"/>
       <source>Select associated constraints</source>
-      <translation>Выделить связанные ограничения</translation>
+      <translation>Выделить наложенные ограничения</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="340"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
-      <translation>Выделить ограничения, связанные с выбранными геометрическими элементами</translation>
+      <translation>Выделить ограничения, примененные к выбранными геометрическими элементами</translation>
     </message>
   </context>
   <context>
@@ -1215,12 +1214,12 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="771"/>
       <source>Select associated geometry</source>
-      <translation>Выделить связанную геометрию</translation>
+      <translation>Выделить ограничиваемую фигуру</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="773"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
-      <translation>Выделить геометрические элементы, связанные с выбранными ограничениями</translation>
+      <translation>Выделить геометрические элементы, ограниченные выбранными ограничениями</translation>
     </message>
   </context>
   <context>
@@ -1233,7 +1232,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="892"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
-      <translation>Выделить геометрические элементы, в которых решатель по-прежнему обнаруживает неограниченные степени свободы.</translation>
+      <translation>Выделить геометрические элементы, в которых программа по-прежнему обнаруживает неограниченные степени свободы.</translation>
     </message>
   </context>
   <context>
@@ -1246,7 +1245,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="505"/>
       <source>Select the local horizontal axis of the sketch</source>
-      <translation>Выберите локальную горизонтальную ось эскиза</translation>
+      <translation>Выбрать локальную горизонтальную ось эскиза</translation>
     </message>
   </context>
   <context>
@@ -1268,7 +1267,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="420"/>
       <source>Select the local origin point of the sketch</source>
-      <translation>Выберите локальное начало координат эскиза</translation>
+      <translation>Выберите локальную точку отсчета координат эскиза</translation>
     </message>
   </context>
   <context>
@@ -1307,7 +1306,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1384"/>
       <source>Split edge</source>
-      <translation>Разделить ребро</translation>
+      <translation>Разделить линию</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1385"/>
@@ -1333,7 +1332,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="97"/>
       <source>Switch virtual space</source>
-      <translation>Переключение виртуального пространства</translation>
+      <translation>Переключить виртуального пространства</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="99"/>
@@ -1351,7 +1350,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1097"/>
       <source>Creates symmetric of selected geometry. After starting the tool select the reference line or point.</source>
-      <translation>Создает симметричность выбранной геометрии. После запуска инструмента выберите опорную линию или точку.</translation>
+      <translation>Создает симметричность выбранных геометрических фигур. После запуска инструмента выберите опорную линию или точку.</translation>
     </message>
   </context>
   <context>
@@ -1359,12 +1358,12 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10124"/>
       <source>Activate/deactivate constraint</source>
-      <translation>Вкл/выкл ограничение</translation>
+      <translation>Включить/отключить ограничение</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10125"/>
       <source>Activates or deactivates the selected constraints</source>
-      <translation>Вкл/выкл выбранные ограничения</translation>
+      <translation>Включает или отключает выбранные ограничения</translation>
     </message>
   </context>
   <context>
@@ -1377,7 +1376,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="74"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-      <translation>Переключить панель инструментов или выделение в/из режим вспомогательной геометрии</translation>
+      <translation>Переключить панель инструментов или выделенное в/из режим(а) вспомогательной геометрии</translation>
     </message>
   </context>
   <context>
@@ -1385,13 +1384,13 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9967"/>
       <source>Toggle driving/reference constraint</source>
-      <translation>Переключить ограничения в  построительные/основные</translation>
+      <translation>Переключить ограничения в задающие/измерительные</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9968"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
-      <translation>Переключает панель инструментов или преобразует выбранные ограничения, в режим построительной/основной геометрии</translation>
+      <translation>Переключает панель инструментов или преобразует выбранные ограничения, в режим задания ограничений/измерения геометрических фигур</translation>
     </message>
   </context>
   <context>
@@ -1418,12 +1417,12 @@ into driving or reference mode</source>
       <location filename="../../Command.cpp" line="817"/>
       <source>Validates a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation>Проверяет эскиз, просматривая отсутствующие совпадения, недействительные ограничения, вырожденную геометрию и т. д.</translation>
+      <translation>Проверяет эскиз, просматривая отсутствующие совпадения, некорректные ограничения, поврежденные геометрические фигуры и т. д.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="833"/>
       <source>Wrong selection</source>
-      <translation>Неправильное выделение</translation>
+      <translation>Некорректное выделение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="834"/>
@@ -1436,12 +1435,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
       <source>View section</source>
-      <translation>Просмотр сечения</translation>
+      <translation>Показать сечение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1076"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation>В режиме редактирования переключайте между видом секции и полным видом.</translation>
+      <translation>В режиме редактирования переключает между видом сечения и полным видом.</translation>
     </message>
   </context>
   <context>
@@ -1449,7 +1448,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="781"/>
       <source>View sketch</source>
-      <translation>Просмотр эскиза</translation>
+      <translation>Просмотреть эскиз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="782"/>
@@ -1462,27 +1461,27 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3376"/>
       <source>Add 'Lock' constraint</source>
-      <translation>Добавить 'Блокирующее' ограничение</translation>
+      <translation>Ограничить положение</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3430"/>
       <source>Add relative 'Lock' constraint</source>
-      <translation>Добавить относительное ограничение 'Блокировка'</translation>
+      <translation>Ограничить положение относительно чего-либо</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3495"/>
       <source>Add fixed constraint</source>
-      <translation>Добавить фиксированное ограничение</translation>
+      <translation>Добавить ограничение передвижения</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3666"/>
       <source>Add 'Block' constraint</source>
-      <translation>Добавить ограничение 'Блок'</translation>
+      <translation>Ограничить изменение</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3715"/>
       <source>Add block constraint</source>
-      <translation>Добавить ограничение блока</translation>
+      <translation>Ограничить изменение</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4057"/>
@@ -1506,25 +1505,25 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="4502"/>
       <location filename="../../CommandConstraints.cpp" line="4829"/>
       <source>Add point to point distance constraint</source>
-      <translation>Добавить точку к ограничению расстояния до точки</translation>
+      <translation>Добавить ограничение расстояния от точки до точки</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1855"/>
       <location filename="../../CommandConstraints.cpp" line="4545"/>
       <location filename="../../CommandConstraints.cpp" line="4917"/>
       <source>Add point to line Distance constraint</source>
-      <translation>Добавить точку к ограничению расстояния до линии</translation>
+      <translation>Добавить ограничение расстояния от точки до линии</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4626"/>
       <location filename="../../CommandConstraints.cpp" line="4972"/>
       <source>Add circle to circle distance constraint</source>
-      <translation>Добавить круг к ограничениям расстояния круга</translation>
+      <translation>Добавить ограничение расстояния от окружности к окружности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4669"/>
       <source>Add circle to line distance constraint</source>
-      <translation>Добавить круг к ограниченияю линейного расстояния</translation>
+      <translation>Добавить ограничение расстояния от окружности к линии</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1953"/>
@@ -1547,33 +1546,33 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1824"/>
       <source>Add lock constraint</source>
-      <translation>Добавить ограничение блокировки</translation>
+      <translation>Ограничить положение</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1820"/>
       <source>Add 'Distance to origin' constraint</source>
-      <translation>Добавить ограничение "Расстояние до базовой точки"</translation>
+      <translation>Добавить ограничение "Расстояние до точки начала координат "</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1836"/>
       <location filename="../../CommandConstraints.cpp" line="2450"/>
       <location filename="../../CommandConstraints.cpp" line="2679"/>
       <source>Add Distance constraint</source>
-      <translation>Добавить ограничение по расстоянию</translation>
+      <translation>Добавить ограничение на расстояние</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1841"/>
       <location filename="../../CommandConstraints.cpp" line="1870"/>
       <location filename="../../CommandConstraints.cpp" line="1904"/>
       <source>Add 'Horizontal' constraints</source>
-      <translation>Добавить ограничение "горизонтальность"</translation>
+      <translation>Добавить ограничения "горизонтально"</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1845"/>
       <location filename="../../CommandConstraints.cpp" line="1877"/>
       <location filename="../../CommandConstraints.cpp" line="1911"/>
       <source>Add 'Vertical' constraints</source>
-      <translation>Добавить ограничение "вертикальность"</translation>
+      <translation>Добавить ограничения "вертикально"</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1860"/>
@@ -1606,7 +1605,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1995"/>
       <source>Add Block constraint</source>
-      <translation>Добавить ограничение "блокировка"</translation>
+      <translation>Ограничить изменение</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2010"/>
@@ -1653,17 +1652,17 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2657"/>
       <source>Add DistanceX constraint</source>
-      <translation>Добавить ограничение расстояния по X</translation>
+      <translation>Добавить ограничение расстояния по оси X</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2668"/>
       <source>Add DistanceY constraint</source>
-      <translation>Добавить ограничение расстояния по Y</translation>
+      <translation>Добавить ограничение расстояния по оси Y</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4575"/>
       <source>Add point to circle Distance constraint</source>
-      <translation>Добавить точку в Ограничение расстояния круга</translation>
+      <translation>Добавить ограничение расстояния от точки до окружности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3975"/>
@@ -1681,7 +1680,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="5160"/>
       <location filename="../../CommandConstraints.cpp" line="5287"/>
       <source>Add point to point horizontal distance constraint</source>
-      <translation>Добавить точку к ограничению расстояния по горизонтали</translation>
+      <translation>Добавить ограничение расстояния от одной точки к другой точке по горизонтали</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5201"/>
@@ -1692,7 +1691,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="5462"/>
       <location filename="../../CommandConstraints.cpp" line="5586"/>
       <source>Add point to point vertical distance constraint</source>
-      <translation>Добавить точку к ограничению расстояния по вертикали</translation>
+      <translation>Добавить ограничение расстояния от одной точки к другой точке по вертикали</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5500"/>
@@ -1912,12 +1911,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
-      <translation>Обрезать линию</translation>
+      <translation>Обрезать ребро</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExtend.h" line="288"/>
       <source>Extend edge</source>
-      <translation>Продлить грань</translation>
+      <translation>Продлить ребро</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSplitting.h" line="147"/>
@@ -1932,7 +1931,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="150"/>
       <source>Add slot</source>
-      <translation>Добавить слот</translation>
+      <translation>Добавить стадион</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="141"/>
@@ -1952,12 +1951,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="388"/>
       <source>Increase knot multiplicity</source>
-      <translation>Увеличение кратности узлов</translation>
+      <translation>Увеличить кратность узла</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="536"/>
       <source>Decrease knot multiplicity</source>
-      <translation>Уменьшение кратности узлов</translation>
+      <translation>Уменьшить кратность узла</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="779"/>
@@ -1997,7 +1996,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2087"/>
       <source>Delete all geometry</source>
-      <translation>Удалить всю геометрию</translation>
+      <translation>Удалить все фигуры</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2151"/>
@@ -2051,7 +2050,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>Перетащить геометрию</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -2081,7 +2080,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="172"/>
       <source>Add sketch arc slot</source>
-      <translation>Добавить паз для дуги эскиза</translation>
+      <translation>Добавить стадион по дуге на эскиз</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="119"/>
@@ -2143,13 +2142,13 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7037"/>
       <source>You are requesting no change in knot multiplicity.</source>
-      <translation>Вы не запрашиваете никаких изменений в множественности узлов.</translation>
+      <translation>Вы не запрашиваете никаких изменений в кратности узла.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7031"/>
       <location filename="../../../App/SketchObject.cpp" line="7217"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
-      <translation>Индекс геометрии B-сплайна (GeoID) выходит за пределы допустимого диапазона.</translation>
+      <translation>Индекс (GeoID) фигуры B-сплайна выходит за пределы допустимого диапазона.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7043"/>
@@ -2160,7 +2159,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7052"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
-      <translation>Индекс узла выходит за границы. Обратите внимание, что в соответствии с нотацией OCC первый узел имеет индекс 1, а не ноль.</translation>
+      <translation>Индекс узла выходит за границы. Обратите внимание, что в соответствии с принятым соглашением FreeCAD, первый узел имеет индекс 1, а не ноль.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7063"/>
@@ -2180,7 +2179,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7221"/>
       <source>Knot cannot have zero multiplicity.</source>
-      <translation>Узел не может иметь нулевой кратности.</translation>
+      <translation>Узел не может иметь нулевую кратность.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7238"/>
@@ -2477,7 +2476,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="181"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
-      <translation>Невозможно добавить ограничение между двумя фиксированными геометриями. Фиксированная геометрия включает в себя внешнюю геометрию, заблокированную геометрию или специальные точки в качестве точек узла B-сплайна.</translation>
+      <translation>Невозможно добавить ограничение между двумя фиксированными фигурами. Фиксированная геометрическая фигура включает в себя внешнюю геометрию, заблокированную от изменений геометрию или специальные точки такие, как узловые точки B-сплайна.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="755"/>
@@ -2544,7 +2543,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="3657"/>
       <location filename="../../CommandConstraints.cpp" line="3710"/>
       <source>The selected edge already has a Block constraint!</source>
-      <translation>Выбранная линия уже имеет Блочное ограничение!</translation>
+      <translation>Изменение выбранной линии уже ограничено!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3017"/>
@@ -2576,7 +2575,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3621"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation>Блокирующее ограничение не может быть добавлено, если эскиз не решаем или имеются избыточные или конфликтующие ограничения.</translation>
+      <translation>Ограничение изменения не может быть добавлено, если эскиз не решаем или имеются избыточные или конфликтующие ограничения.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3640"/>
@@ -2602,7 +2601,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="7571"/>
       <location filename="../../CommandConstraints.cpp" line="8248"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation>Выберите либо только один или несколько полюсов B-сплайна, либо только одну или несколько дуг или окружностей из эскиза, но не смешанные.</translation>
+      <translation>Выберите либо только один или несколько полюсов B-сплайна, либо только одну или несколько дуг или окружностей из эскиза, но не то и другое одновременно.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9735"/>
@@ -2650,7 +2649,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4448"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Выделите либо один отрезок, либо точку и отрезок, либо две точки.</translation>
+      <translation>Выделите либо один отрезок, либо точку и отрезок, либо две точки на эскизе.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4705"/>
@@ -2703,7 +2702,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="8995"/>
       <location filename="../../CommandConstraints.cpp" line="9814"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation>Выберите край, который не является B-сплайном.</translation>
+      <translation>Выберите край, который не является весом B-сплайна.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="229"/>
@@ -2853,12 +2852,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="6841"/>
       <location filename="../../CommandConstraints.cpp" line="6879"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation>Зависимость касательной в узле B-сплайн поддерживается только линиями!</translation>
+      <translation>Ограничение касательной в узле B-сплайна поддерживается только линиями!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3892"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
-      <translation>Вместо этого был применен узел B-сплайна к касанию конечной точки.</translation>
+      <translation>Вместо этого был применен узел B-сплайна к касательной точке.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5879"/>
@@ -2928,7 +2927,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="9209"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation>Равенство для края B-сплайна в настоящее время не поддерживается.</translation>
+      <translation>Равенство для линий B-сплайна в настоящее время не поддерживается.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2430"/>
@@ -3002,7 +3001,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
       <source>CAD Kernel Error</source>
-      <translation>Ошибка ядра CAD</translation>
+      <translation>Ошибка ядра САПР</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="170"/>
@@ -3031,7 +3030,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="920"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="993"/>
       <source>Selection is empty</source>
-      <translation>Пустое выделение</translation>
+      <translation>Ничего не выделено</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="245"/>
@@ -3073,7 +3072,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1049"/>
       <source>Two end points, or coincident point should be selected.</source>
-      <translation>Следует выбрать две конечные точки или совпадающие точки.</translation>
+      <translation>Следует выбрать две конечные точки или совпадающие конечные точки.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="81"/>
@@ -3180,7 +3179,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="269"/>
       <source>Arc Slot parameters</source>
-      <translation>Параметры слота дуги</translation>
+      <translation>Параметры дугового стадиона</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="263"/>
@@ -3321,7 +3320,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="120"/>
       <source>Block</source>
-      <translation>Блок</translation>
+      <translation>Изменение ограничено</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="121"/>
@@ -3660,12 +3659,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Block Constraint</source>
-      <translation>Ограничение Блок</translation>
+      <translation>Ограничение изменения</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="72"/>
       <source>Lock Constraint</source>
-      <translation>Заблокировать</translation>
+      <translation>Ограничение положения</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="73"/>
@@ -4064,12 +4063,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>Если этот флажок установлен, то внешняя геометрия всегда добавляется в качестве справочной, в противном случае она добавляется в соответствии с текущим режимом построения.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>Всегда добавляйте внешнюю геометрию в качестве справочной информации.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4086,7 +4085,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       <translation>Выберите тип размерных ограничений для панели инструментов:
 «Один инструмент»: один инструмент для всех размерных ограничений на панели инструментов: Расстояние, Расстояние X / Y, Угол, Радиус. (Другие в раскрывающемся списке)
 «Отдельные инструменты»: отдельные инструменты для каждого размерного ограничения.
-«Оба»: у вас будет как инструмент «Измерение», так и отдельные инструменты.
+«Оба»: у вас будет как инструмент «Размер», так и отдельные инструменты.
 Этот параметр предназначен только для панели инструментов. Что бы вы ни выбрали, все инструменты всегда доступны в меню и с помощью ярлыков.</translation>
     </message>
     <message>
@@ -4466,20 +4465,20 @@ Then objects are only visible behind the sketch plane.</source>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>Найдено %1 дуг с обратной внешней геометрией. Их конечные точки обведены в 3D-виде.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 ограничений связаны с конечными точками. Ограничения перечислены в представлении отчета (меню Вид -&gt; Панели -&gt; Представление отчета).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Нажмите кнопку "Поменять конечные точки в ограничениях", чтобы переназначить конечные точки. Сделайте это только один раз для эскизов, созданных в FreeCAD старше v0.15.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>Найдено %1 дуг с обратной внешней геометрией. Их конечные точки обведены в 3D-виде.
 
-However, no constraints linking to the endpoints were found.</translation>
+Однако не найдено никаких ограничений, связывающих конечные точки.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -4495,17 +4494,17 @@ However, no constraints linking to the endpoints were found.</translation>
       <location filename="../../TaskSketcherValidation.cpp" line="352"/>
       <location filename="../../TaskSketcherValidation.cpp" line="373"/>
       <source>Constraint orientation locking</source>
-      <translation>Фиксация ориентации ограничения</translation>
+      <translation>Ограничение ориентации</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="353"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation>Блокировка ориентации была включена и пересчитана для %1 ограничений. Эти ограничения были перечислены в окне просмотра отчёта (меню Вид -&gt; Виды -&gt; Просмотр отчёта).</translation>
+      <translation>Ограничение ориентации было включено и пересчитано для %1 ограничений. Эти ограничения были перечислены в окне просмотра отчёта (меню Вид -&gt; Панели -&gt; Просмотр отчёта).</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="374"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation>Блокировка ориентации была отключена для %1 ограничений. Эти ограничения были перечислены в окне просмотра отчёта (меню Вид -&gt; Виды -&gt; Просмотр отчёта). Обратите внимание, что для всех новых ограничений, блокировка будет всё равно по умолчанию включаться.</translation>
+      <translation>Ограничение ориентации было включено и пересчитано для %1 ограничений. Эти ограничения были перечислены в окне просмотра отчёта (меню Вид -&gt; Панели -&gt; Просмотр отчёта). Обратите внимание, что для всех новых ограничений, всё равно по умолчанию ограничение ориентации будет включаться.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="391"/>
@@ -4949,12 +4948,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="206"/>
       <source>Constraint orientation locking</source>
-      <translation>Фиксация ориентации ограничения</translation>
+      <translation>Ограничение ориентации</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="212"/>
       <source>Enables/updates constraint orientation locking</source>
-      <translation>Включить/обновить ограничение блокировки ориентации</translation>
+      <translation>Включить/обновить ограничение ориентации</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="215"/>
@@ -4964,7 +4963,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="222"/>
       <source>Disables constraint orientation locking</source>
-      <translation>Отключить блокировку ограничения ориентации</translation>
+      <translation>Отключить ограничение ориентации</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="225"/>
@@ -5101,7 +5100,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherOverlay.cpp" line="320"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="323"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Показать/скрыть кривизну всех B-сплайнов</translation>
+      <translation>Переключение между показом и скрытием гребней кривизны для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -5119,7 +5118,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherOverlay.cpp" line="302"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="305"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>Переключение между показом и скрытием степени для всех B-сплайнов</translation>
+      <translation>Переключение между отображением и скрытием степени для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -5137,7 +5136,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherOverlay.cpp" line="329"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="332"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Переключение между отображением и сокрытием мультипликативных узлов для всех B-сплайнов</translation>
+      <translation>Переключение между отображением и скрытием кратности узлов для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -5146,7 +5145,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherOverlay.cpp" line="339"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="342"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation>Переключает между отображением и скрытием контрольной точки для всех B-сплайнов</translation>
+      <translation>Переключает между отображением и скрытием весов контрольных точек для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -5155,7 +5154,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherOverlay.cpp" line="311"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="314"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Показать/скрыть управляющие полигоны всех B-сплайнов</translation>
+      <translation>Переключает между отображением и скрытием управляющих полигонов для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -5164,7 +5163,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherTools.cpp" line="1678"/>
       <location filename="../../CommandSketcherTools.cpp" line="1681"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Создает копию геометрии, взяв за основу последнюю выделенную точку</translation>
+      <translation>Создает копию фигуры, взяв за основу последнюю выделенную точку</translation>
     </message>
   </context>
   <context>
@@ -5200,7 +5199,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherTools.cpp" line="1686"/>
       <location filename="../../CommandSketcherTools.cpp" line="1689"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation>Создает простую копию геометрии, взяв за основу последнюю выделенную точку</translation>
+      <translation>Создает простую копию фигуры, взяв за основу последнюю выделенную точку</translation>
     </message>
   </context>
   <context>
@@ -5214,7 +5213,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="1118"/>
       <location filename="../../CommandCreateGeo.cpp" line="1120"/>
       <source>Create a B-spline by control points</source>
-      <translation>Создать B-сплайн по контрольным точкам</translation>
+      <translation>Создает базисный сплайн (B-сплайн) по контрольным точкам</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="849"/>
@@ -5232,7 +5231,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="352"/>
       <source>Center</source>
-      <translation>Центр</translation>
+      <translation>По центру</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="353"/>
@@ -5278,7 +5277,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="2113"/>
       <location filename="../../CommandCreateGeo.cpp" line="2116"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation>Создать правильный многоугольник по центру и одному углу</translation>
+      <translation>Создать правильный многоугольник указав центральную точку и один угол</translation>
     </message>
   </context>
   <context>
@@ -5329,13 +5328,13 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1122"/>
       <source>Periodic B-spline by control points</source>
-      <translation>Периодический B-сплайн по контрольным точкам</translation>
+      <translation>Замкнутый B-сплайн по контрольным точкам</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1125"/>
       <location filename="../../CommandCreateGeo.cpp" line="1128"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation>Создать периодический B-сплайн по контрольным точкам</translation>
+      <translation>Создает замкнутый базисный сплайн (B-сплайн) по контрольным точкам</translation>
     </message>
   </context>
   <context>
@@ -5420,7 +5419,7 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../CommandSketcherTools.cpp" line="1694"/>
       <location filename="../../CommandSketcherTools.cpp" line="1696"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation>Перемещает геометрии, принимая в качестве ориентира последнюю выбранную точку</translation>
+      <translation>Перемещает фигуры, принимая в качестве ориентира последнюю выбранную точку</translation>
     </message>
   </context>
   <context>
@@ -5972,12 +5971,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>Неуправляемое изменение свойства геометрии приводит к недействительным индексам ограничений</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>Неуправляемое изменение свойства ограничения приводит к недействительным индексам ограничения</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -6017,7 +6016,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../DrawSketchHandlerArcSlot.h" line="180"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
       <source>Error</source>
-      <translation>Ошибки</translation>
+      <translation>Ошибка</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2093"/>
@@ -6032,7 +6031,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2378"/>
       <source>Selection has no valid geometries. B-splines and points are not supported yet.</source>
-      <translation>Выборка не имеет допустимых геометрий. B-сплайны и точки пока не поддерживаются.</translation>
+      <translation>Выбор не содержит допустимых геометрических фигур. B-сплайны и точки пока не поддерживаются.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="134"/>
@@ -6098,12 +6097,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
       <source>Error deleting last pole/knot</source>
-      <translation>Ошибка при удалении последнего поля/узла</translation>
+      <translation>Ошибка при удалении последнего полюса/узла</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="680"/>
       <source>Error adding B-spline pole/knot</source>
-      <translation>Ошибка добавления поля/группы B-сплайна</translation>
+      <translation>Ошибка добавления полюса/узла B-сплайна</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
@@ -6150,7 +6149,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../DrawSketchHandlerEllipse.h" line="180"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="185"/>
       <source>Tool execution aborted</source>
-      <translation>Выполнение инструмента прервано</translation>
+      <translation>Применение инструмента прервано</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPoint.h" line="94"/>
@@ -6170,7 +6169,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="161"/>
       <source>Failed to add slot</source>
-      <translation>Не удалось добавить паз</translation>
+      <translation>Не удалось добавить стадион</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSplitting.h" line="159"/>
@@ -6222,7 +6221,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="181"/>
       <source>Failed to add arc slot</source>
-      <translation>Не удалось добавить слот дуги</translation>
+      <translation>Не удалось добавить дуговой стадион</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="176"/>
@@ -6255,7 +6254,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1132"/>
       <source>B-spline by knots</source>
-      <translation>B-сплайн узлами</translation>
+      <translation>B-сплайн по узлам</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1133"/>
@@ -6380,12 +6379,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="952"/>
       <source>Create periodic B-spline by knots</source>
-      <translation>Создать периодический B-сплайн по узлам</translation>
+      <translation>Создать замкнутый B-сплайн по узлам</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="954"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation>Создайте периодический B-сплайн по узлам, т.е. путем интерполяции, в эскизе.</translation>
+      <translation>Создает замкнутый B-сплайн по узлам, т.е. путем интерполяции, в эскизе.</translation>
     </message>
   </context>
   <context>
@@ -6436,7 +6435,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="7452"/>
       <source>Constrain radius</source>
-      <translation>Ограничение радиуса</translation>
+      <translation>Ограничить радиус</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7453"/>
@@ -6691,12 +6690,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1610"/>
       <source>Slots</source>
-      <translation>Слоты</translation>
+      <translation>Стадионы</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1611"/>
       <source>Slot tools.</source>
-      <translation>Инструмент слотов.</translation>
+      <translation>Инструмент стадионов.</translation>
     </message>
   </context>
   <context>
@@ -6704,12 +6703,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1696"/>
       <source>Create arc slot</source>
-      <translation>Создать дуговой слот</translation>
+      <translation>Создать дуговой стадион</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1697"/>
       <source>Create an arc slot in the sketch</source>
-      <translation>Создать арку в эскизе</translation>
+      <translation>Создать дуговой стадион на эскизе</translation>
     </message>
   </context>
   <context>
@@ -6717,7 +6716,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandConstraints.cpp" line="3775"/>
       <source>Constrain coincident</source>
-      <translation>Ограничение наложения точек</translation>
+      <translation>Ограничение совпадения точек</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3776"/>
@@ -7131,7 +7130,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="460"/>
       <source>Center</source>
-      <translation>Центр</translation>
+      <translation>По центру</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="461"/>
@@ -7175,7 +7174,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="547"/>
       <source>Flat ends</source>
-      <translation>Концы плоскости</translation>
+      <translation>Плоские концы</translation>
     </message>
   </context>
   <context>
@@ -7183,7 +7182,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="420"/>
       <source>Center</source>
-      <translation>Центр</translation>
+      <translation>По центру</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="421"/>
@@ -7282,13 +7281,13 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Periodic B-spline by knots</source>
-      <translation>Периодический B-сплайн узлами</translation>
+      <translation>Замкнутый B-сплайн узлами</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1142"/>
       <location filename="../../CommandCreateGeo.cpp" line="1145"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation>Создать периодический B-сплайн узлами</translation>
+      <translation>Создать замкнутый B-сплайн по узлам</translation>
     </message>
   </context>
   <context>
@@ -7301,7 +7300,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="116"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Создать полилинию на эскизе. 'M' - смена режима</translation>
+      <translation>Создать ломаную линию на эскизе. Клавиша 'M' - смена режима соединения точек</translation>
     </message>
   </context>
   <context>
@@ -7327,12 +7326,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="855"/>
       <source>Periodic (R)</source>
-      <translation>Периодичность (R)</translation>
+      <translation>Замкнутый(R)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="858"/>
       <source>Create a periodic B-spline.</source>
-      <translation>Создать периодический B-сплайн.</translation>
+      <translation>Создать замкнутый B-сплайн.</translation>
     </message>
   </context>
   <context>
@@ -7372,12 +7371,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>Создать внешний</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>Создайте внешние ребра, связанные с внешней геометрией.</translation>
     </message>
   </context>
   <context>
@@ -7385,16 +7384,16 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>Создать внешнюю проекционную геометрию</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Создайте проекционные края внешней геометрии.
+Внешние края могут быть либо определяющими, либо конструктивными геометриями.
+Вы можете использовать инструмент переключения построения.</translation>
     </message>
   </context>
   <context>
@@ -7402,16 +7401,16 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>Создать внешнюю геометрию пересечения</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Создайте ребра пересечения внешней геометрии с плоскостью эскиза.
+Внешние ребра могут быть либо определяющими, либо вспомогательными геометриями.
+Вы можете использовать инструмент переключения построения.</translation>
     </message>
   </context>
 </TS>

@@ -8,7 +8,7 @@
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
       <translation>Αποθηκεύει την τελευταία επιλογή χρήστη για το αν θα εφαρμοστεί η ρύθμιση CopyOnChange σε όλους τους συνδέσμους
-που αναφέρονται στο ίδιο διαμορφώσιμο αντικείμενο</translation>
+που αναφέρονται στο ίδιο διαμορφώσιμο αντικείμενο(App11)</translation>
     </message>
   </context>
   <context>
@@ -16,7 +16,7 @@ that reference the same configurable object</source>
     <message>
       <location filename="../../Application.cpp" line="468"/>
       <source>Unnamed</source>
-      <translation>Ανώνυμο</translation>
+      <translation>Ανώνυμο(App19)</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@ that reference the same configurable object</source>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="162"/>
       <source>Origin</source>
-      <translation>Σημείο Τομής Αξόνων</translation>
+      <translation>Σημείο Τομής Αξόνων(App27)</translation>
     </message>
   </context>
   <context>
@@ -35,9 +35,9 @@ that reference the same configurable object</source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
-      <translation type="unfinished">
-It is recommended that the user right-click the root of the document and select Mark to recompute.
-The user should then click the Refresh button in the main toolbar.
+      <translation>
+Συνιστάται ο χρήστης να κάνει δεξί κλικ στη ρίζα του εγγράφου και να επιλέξει Zarak για επανυπολογισμό.
+Ο χρήστης θα πρέπει να κάνει κλικ στο κουμπί Ανανέωση στην κύρια γραμμή εργαλείων.
 </translation>
     </message>
   </context>
@@ -46,32 +46,32 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="209"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>Άξονας X(App49)</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="210"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Άξονας Υ(App54)</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="211"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Άξονας Ζ(App59)</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="212"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY-Κάτοψη(App65)</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="213"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ-Πρόσοψη(App69)</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="214"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ-Πλάγια όψη(App74)</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="215"/>
