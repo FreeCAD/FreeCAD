@@ -89,7 +89,6 @@ protected:
     bool parse();
     App::DocumentObject* container;
 
-
     std::shared_ptr<Node_Block> Ast;
 };
 
