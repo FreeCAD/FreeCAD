@@ -553,7 +553,7 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
 {
     char* view = nullptr;
     double scale = -1.0;
-    if (!PyArg_ParseTuple(args.ptr(), "|sd", &view, &scale))
+    if (!PyArg_ParseTuple(args.ptr(), "|zd", &view, &scale))
         throw Py::Exception();
 
     try {
