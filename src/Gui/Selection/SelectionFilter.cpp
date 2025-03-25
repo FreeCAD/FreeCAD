@@ -202,7 +202,6 @@ bool SelectionFilter::match()
 
         Result.push_back(temp);
     }
-
     return true;
 }
 
