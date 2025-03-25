@@ -71,14 +71,15 @@ using planar_embedding_t =
 class TechDrawExport WalkerEdge
 {
 public:
+    WalkerEdge();
     static bool weCompare(WalkerEdge i, WalkerEdge j);
     bool isEqual(WalkerEdge w);
     std::string dump();
 
-    std::size_t v1;
-    std::size_t v2;
+    std::size_t v1 {0};
+    std::size_t v2 {0};
     edge_t ed;
-    std::size_t idx;
+    std::size_t idx {0};
 };
 
 class TechDrawExport ewWire

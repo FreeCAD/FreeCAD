@@ -129,7 +129,7 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
     TopLoc_Location location;
 
     //  triangulate:
-    const Handle(Poly_Triangulation)& triangulation = BRep_Tool::Triangulation(face, location);
+    const Handle(Poly_Triangulation) & triangulation = BRep_Tool::Triangulation(face, location);
 
     if (triangulation.IsNull()) {
         throw std::runtime_error("null triangulation in face construction");
@@ -189,8 +189,8 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     }
 
     // extract xyz poles, knots, weights, degree
-    const Handle(Geom_Surface)& _surface = BRep_Tool::Surface(face);
-    const Handle(Geom_BSplineSurface)& _bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
+    const Handle(Geom_Surface) & _surface = BRep_Tool::Surface(face);
+    const Handle(Geom_BSplineSurface) & _bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
 
     const TColStd_Array1OfReal& _uknots = _bspline->UKnotSequence();
     const TColStd_Array1OfReal& _vknots = _bspline->VKnotSequence();

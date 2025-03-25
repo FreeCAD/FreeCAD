@@ -285,7 +285,6 @@ void DrawViewPart::onChanged(const App::Property* prop)
 
 void DrawViewPart::partExec(TopoDS_Shape& shape)
 {
-    //    Base::Console().Message("DVP::partExec() - %s\n", getNameInDocument());
     if (waitingForHlr()) {
         //finish what we are already doing before starting a new cycle
         return;
@@ -293,8 +292,9 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 
     //we need to keep using the old geometryObject until the new one is fully populated
     m_tempGeometryObject = makeGeometryForShape(shape);
-    if (CoarseView.getValue()) {
-        onHlrFinished();//poly algo does not run in separate thread, so we need to invoke
+    if (CoarseView.getValue() ||
+        !DU::isGuiUp()) {
+        onHlrFinished();//poly algo and console mode do not run in separate thread, so we need to invoke
                         //the post hlr processing manually
     }
 }
@@ -302,8 +302,6 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 //! prepare the shape for HLR processing by centering, scaling and rotating it
 GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
-//    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
-
     // if we use the passed reference directly, the centering doesn't work.  Maybe the underlying OCC TShape
     // isn't modified?  using a copy works and the referenced shape (from getSourceShape in execute())
     // isn't used for anything anyway.
@@ -323,7 +321,6 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Shape& inOutShape,
                                              Base::Vector3d centroid)
 {
-//    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
     gp_Ax2 viewAxis = dvp->getProjectionCS();
 
     //center shape on origin
@@ -342,9 +339,6 @@ TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Sha
 TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
                                                               const gp_Ax2& viewAxis)
 {
-//    Base::Console().Message("DVP::buildGeometryObject() - %s\n", getNameInDocument());
-    showProgressMessage(getNameInDocument(), "is finding hidden lines");
-
     TechDraw::GeometryObjectPtr go(
         std::make_shared<TechDraw::GeometryObject>(getNameInDocument(), this));
     go->setIsoCount(IsoCount.getValue());
@@ -357,31 +351,37 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
         //the polygon approximation HLR process runs quickly, so doesn't need to be in a
         //separate thread
         go->projectShapeWithPolygonAlgo(shape, viewAxis);
+        return go;
     }
-    else {
-        //projectShape (the HLR process) runs in a separate thread since it can take a long time
-        //note that &m_hlrWatcher in the third parameter is not strictly required, but using the
-        //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
-        //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
-        connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
-                                             &m_hlrWatcher, [this] { this->onHlrFinished(); });
 
-        // We create a lambda closure to hold a copy of go, shape and viewAxis.
-        // This is important because those variables might be local to the calling
-        // function and might get destructed before the parallel processing finishes.
-        auto lambda = [go, shape, viewAxis]{go->projectShape(shape, viewAxis);};
-        m_hlrFuture = QtConcurrent::run(std::move(lambda));
-        m_hlrWatcher.setFuture(m_hlrFuture);
-        waitingForHlr(true);
+    if (!DU::isGuiUp()) {
+        // if the Gui is not running (actual the event loop), we cannot use the separate thread,
+        // since we will never be notified of thread completion.
+        go->projectShape(shape, viewAxis);
+        return go;
     }
+
+    //projectShape (the HLR process) runs in a separate thread since it can take a long time
+    //note that &m_hlrWatcher in the third parameter is not strictly required, but using the
+    //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
+    //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
+    connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
+                                         &m_hlrWatcher, [this] { this->onHlrFinished(); });
+
+    // We create a lambda closure to hold a copy of go, shape and viewAxis.
+    // This is important because those variables might be local to the calling
+    // function and might get destructed before the parallel processing finishes.
+    auto lambda = [go, shape, viewAxis]{go->projectShape(shape, viewAxis);};
+    m_hlrFuture = QtConcurrent::run(std::move(lambda));
+    m_hlrWatcher.setFuture(m_hlrFuture);
+    waitingForHlr(true);
+
     return go;
 }
 
 //! continue processing after hlr thread completes
 void DrawViewPart::onHlrFinished()
 {
-    //    Base::Console().Message("DVP::onHlrFinished() - %s\n", getNameInDocument());
-
     //now that the new GeometryObject is fully populated, we can replace the old one
     if (m_tempGeometryObject) {
         geometryObject = m_tempGeometryObject;//replace with new
@@ -407,6 +407,13 @@ void DrawViewPart::onHlrFinished()
 
     //start face finding in a separate thread.  We don't find faces when using the polygon
     //HLR method.
+
+    if (handleFaces() && !DU::isGuiUp()) {
+        extractFaces();
+        onFacesFinished();
+        return;
+    }
+
     if (handleFaces() && !CoarseView.getValue()) {
         try {
             //note that &m_faceWatcher in the third parameter is not strictly required, but using the
@@ -433,7 +440,6 @@ void DrawViewPart::onHlrFinished()
 //! run any tasks that need to been done after geometry is available
 void DrawViewPart::postHlrTasks()
 {
-    // Base::Console().Message("DVP::postHlrTasks() - %s\n", getNameInDocument());
     //add geometry that doesn't come from HLR
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
@@ -470,7 +476,6 @@ void DrawViewPart::postHlrTasks()
 // Run any tasks that need to be done after faces are available
 void DrawViewPart::postFaceExtractionTasks()
 {
-    // Base::Console().Message("DVP::postFaceExtractionTasks() - %s\n", getNameInDocument());
     // Some centerlines depend on faces so we could not add CL geometry before now
     addCenterLinesToGeom();
 
@@ -488,8 +493,6 @@ void DrawViewPart::postFaceExtractionTasks()
 //! make faces from the edge geometry
 void DrawViewPart::extractFaces()
 {
-    //    Base::Console().Message("DVP::extractFaces() - %s waitingForHlr: %d waitingForFaces: %d\n",
-    //                            getNameInDocument(), waitingForHlr(), waitingForFaces());
     if (!geometryObject) {
         //geometry is in flux, can not make faces right now
         return;

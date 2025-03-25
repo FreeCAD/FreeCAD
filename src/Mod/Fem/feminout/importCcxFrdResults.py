@@ -58,6 +58,43 @@ def insert(filename, docname):
 
 
 # ********* module specific methods *********
+def setupPipeline(doc, analysis, results_name, result_data):
+    import ObjectsFem
+    from . import importToolsFem
+
+    # create a results pipeline if not already existing
+    pipeline_name = "Pipeline_" + results_name
+    pipeline_obj = doc.getObject(pipeline_name)
+    if pipeline_obj is None:
+
+        pipeline_obj = ObjectsFem.makePostVtkResult(doc, result_data, results_name)
+        pipeline_visibility = True
+        if analysis:
+            analysis.addObject(pipeline_obj)
+    else:
+        if FreeCAD.GuiUp:
+            # store pipeline visibility because pipeline_obj.load makes the
+            # pipeline always visible
+            pipeline_visibility = pipeline_obj.ViewObject.Visibility
+
+        pipeline_obj.load(*result_data)
+
+    # update the pipeline
+    pipeline_obj.recomputeChildren()
+    pipeline_obj.recompute()
+    if FreeCAD.GuiUp:
+        pipeline_obj.ViewObject.updateColorBars()
+        # make results mesh invisible, will be made visible
+        # later in task_solver_ccxtools.py
+        if len(result_data) == 1:
+            result_data[0].Mesh.ViewObject.Visibility = False
+        else:
+            for res in result_data[0]:
+                res.Mesh.ViewObject.Visibility = False
+        # restore pipeline visibility
+        pipeline_obj.ViewObject.Visibility = pipeline_visibility
+
+
 def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_type=""):
     import ObjectsFem
     from . import importToolsFem
@@ -87,6 +124,8 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
             res_obj.Mesh = result_mesh_object
             return res_obj
 
+        multistep_result = []
+        multistep_value = []
         if len(m["Results"]) > 0:
             for result_set in m["Results"]:
                 if "number" in result_set:
@@ -176,30 +215,39 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 # fill Stats
                 res_obj = resulttools.fill_femresult_stats(res_obj)
 
-                # create a results pipeline if not already existing
-                pipeline_name = "Pipeline_" + results_name
-                pipeline_obj = doc.getObject(pipeline_name)
-                if pipeline_obj is None:
-                    pipeline_obj = ObjectsFem.makePostVtkResult(doc, res_obj, results_name)
-                    pipeline_visibility = True
-                    if analysis:
-                        analysis.addObject(pipeline_obj)
+                # if we have multiple results we delay the pipeline creation
+                if number_of_increments == 1:
+                    setupPipeline(doc, analysis, results_name, [res_obj])
                 else:
-                    if FreeCAD.GuiUp:
-                        # store pipeline visibility because pipeline_obj.load makes the
-                        # pipeline always visible
-                        pipeline_visibility = pipeline_obj.ViewObject.Visibility
-                    pipeline_obj.load(res_obj)
-                # update the pipeline
-                pipeline_obj.recomputeChildren()
-                pipeline_obj.recompute()
-                if FreeCAD.GuiUp:
-                    pipeline_obj.ViewObject.updateColorBars()
-                    # make results mesh invisible, will be made visible
-                    # later in task_solver_ccxtools.py
-                    res_obj.Mesh.ViewObject.Visibility = False
-                    # restore pipeline visibility
-                    pipeline_obj.ViewObject.Visibility = pipeline_visibility
+                    multistep_value.append(step_time)
+                    multistep_result.append(res_obj)
+
+            # we have collected all result objects, lets create the multistep result pipeline
+            if number_of_increments > 1:
+                # figure out type and unit
+                match result_analysis_type:
+                    case "frequency":
+                        unit = FreeCAD.Units.Frequency
+                        description = "Eigenmode"
+                    case "buckling":
+                        unit = FreeCAD.Units.Unit()
+                        description = "Buckling factor"
+                    case "thermomech":
+                        unit = FreeCAD.Units.TimeSpan
+                        description = "Timesteps"
+                    case "static":
+                        unit = FreeCAD.Units.Unit()
+                        description = "Load factor"
+                    case _:
+                        unit = FreeCAD.Units.Unit()
+                        description = "Unknown"
+
+                setupPipeline(
+                    doc,
+                    analysis,
+                    results_name,
+                    [multistep_result, multistep_value, unit, description],
+                )
 
         elif result_analysis_type == "check":
             results_name = f"{result_name_prefix}Check"

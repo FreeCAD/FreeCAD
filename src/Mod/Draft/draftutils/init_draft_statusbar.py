@@ -287,6 +287,38 @@ def init_draft_statusbar_snap():
             snap_action.addAction(Gui.Command.get(cmd).getAction()[0])
 
 
+def hide_draft_statusbar_scale():
+    """
+    hides draft statusbar scale widget
+    """
+    mw = Gui.getMainWindow()
+    sb = mw.statusBar()
+
+    scale_widget = sb.findChild(QtWidgets.QToolBar, "draft_scale_widget")
+    if scale_widget is None:
+        # when switching workbenches, the toolbar sometimes "jumps"
+        # out of the status bar to any other dock area...
+        scale_widget = mw.findChild(QtWidgets.QToolBar, "draft_scale_widget")
+    if scale_widget:
+        scale_widget.hide()
+
+
+def hide_draft_statusbar_snap():
+    """
+    hides draft statusbar snap widget
+    """
+    mw = Gui.getMainWindow()
+    sb = mw.statusBar()
+
+    snap_widget = sb.findChild(QtWidgets.QToolBar,"draft_snap_widget")
+    if snap_widget is None:
+        # when switching workbenches, the toolbar sometimes "jumps"
+        # out of the status bar to any other dock area...
+        snap_widget = mw.findChild(QtWidgets.QToolBar,"draft_snap_widget")
+    if snap_widget:
+        snap_widget.hide()
+
+
 def show_draft_statusbar():
     """
     shows draft statusbar if present or initializes it
@@ -327,25 +359,10 @@ def hide_draft_statusbar():
     """
     hides draft statusbar if present
     """
-    mw = Gui.getMainWindow()
-    sb = mw.statusBar()
-
-    # hide scale widget
-    scale_widget = sb.findChild(QtWidgets.QToolBar, "draft_scale_widget")
-    if scale_widget is None:
-        # when switching workbenches, the toolbar sometimes "jumps"
-        # out of the status bar to any other dock area...
-        scale_widget = mw.findChild(QtWidgets.QToolBar, "draft_scale_widget")
-    if scale_widget:
-        scale_widget.hide()
-
-    # hide snap widget
-    snap_widget = sb.findChild(QtWidgets.QToolBar,"draft_snap_widget")
-    if snap_widget is None:
-        # when switching workbenches, the toolbar sometimes "jumps"
-        # out of the status bar to any other dock area...
-        snap_widget = mw.findChild(QtWidgets.QToolBar,"draft_snap_widget")
-    if snap_widget:
-        snap_widget.hide()
+    # Delay required in case the Draft WB is autoloaded,
+    # else show_draft_statusbar will not yet be done.
+    t = QtCore.QTimer()
+    t.singleShot(500, hide_draft_statusbar_scale)
+    t.singleShot(500, hide_draft_statusbar_snap)
 
 ## @}

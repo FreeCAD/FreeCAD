@@ -26,7 +26,7 @@
 
 #include <Base/Parameter.h>
 #include <QImage>
-
+#include <QPushButton>
 #include <QStyledItemDelegate>
 
 class FileCardDelegate: public QStyledItemDelegate
@@ -46,9 +46,9 @@ protected:
 
 private:
     Base::Reference<ParameterGrp> _parameterGroup;
-    std::unique_ptr<QWidget> _widget;
     const int margin = 11;
     const int textspacing = 2;
+    QPushButton styleButton;
 };
 
 

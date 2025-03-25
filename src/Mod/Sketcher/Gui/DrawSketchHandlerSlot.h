@@ -410,8 +410,9 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                 double angle =
                     Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-                onSketchPos.x = handler->startPoint.x + cos(angle) * length;
-                onSketchPos.y = handler->startPoint.y + sin(angle) * length;
+                Base::Vector2d ovpDir(cos(angle), sin(angle));
+                onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, ovpDir);
+                onSketchPos += handler->startPoint;
             }
         } break;
         case SelectMode::SeekThird: {
@@ -467,6 +468,16 @@ void DSHSlotController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::Fourth,
                                         Base::toDegrees(range),
                                         Base::Unit::Angle);
+            }
+            else if (vec.Length() > Precision::Confusion()) {
+                double ovpRange =
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+
+                if (fabs(range - ovpRange) > Precision::Confusion()) {
+                    setOnViewParameterValue(OnViewParameter::Fourth,
+                                            Base::toDegrees(range),
+                                            Base::Unit::Angle);
+                }
             }
 
             onViewParameters[OnViewParameter::Third]->setPoints(start, end);

@@ -3,8 +3,8 @@
   <PythonExport
       Father="BaseClassPy"
       Name="Array3DPy"
-      Twin="Material3DArray"
-      TwinPointer="Material3DArray"
+      Twin="Array3D"
+      TwinPointer="Array3D"
       Include="Mod/Material/App/MaterialValue.h"
       Namespace="Materials"
       FatherInclude="Base/BaseClassPy.h"
@@ -21,17 +21,23 @@
       </Documentation>
       <Parameter Name="Array" Type="List"/>
     </Attribute>
-    <Attribute Name="Columns" ReadOnly="true">
+    <Attribute Name="Dimensions" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The number of dimensions in the array, in this case 3.</UserDocu>
+      </Documentation>
+      <Parameter Name="Dimensions" Type="Int"/>
+    </Attribute>
+    <Attribute Name="Columns" ReadOnly="false">
       <Documentation>
         <UserDocu>The number of columns in the array.</UserDocu>
       </Documentation>
-      <Parameter Name="Columns" Type="Long"/>
+      <Parameter Name="Columns" Type="Int"/>
     </Attribute>
-    <Attribute Name="Depth" ReadOnly="true">
+    <Attribute Name="Depth" ReadOnly="false">
       <Documentation>
         <UserDocu>The depth of the array (3rd dimension).</UserDocu>
       </Documentation>
-      <Parameter Name="Columns" Type="Long"/>
+      <Parameter Name="Depth" Type="Int"/>
     </Attribute>
     <Methode Name="getRows" ReadOnly="true">
       <Documentation>
@@ -46,6 +52,21 @@
     <Methode Name="getDepthValue" ReadOnly="true">
       <Documentation>
         <UserDocu>Get the column value at the given depth</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setDepthValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the column value at the given depth</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the value at the given depth, row, and column</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setRows" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the number of rows at the given depth</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

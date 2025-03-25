@@ -45,7 +45,7 @@ using namespace Gui;
  * The internationalization of FreeCAD makes heavy use of the internationalization
  * support of Qt. For more details refer to your Qt documentation.
  *
- * \section stepbystep Step by step
+ * \section stepbystep_language Step by step
  * To integrate a new language into FreeCAD or one of its application modules
  * you have to perform the following steps:
  *

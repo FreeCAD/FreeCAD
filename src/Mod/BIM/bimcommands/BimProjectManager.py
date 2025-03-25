@@ -435,7 +435,7 @@ class BIM_ProjectManager:
             s = "# FreeCAD BIM Project setup preset " + name + "\n"
             s += (
                 "groupNewDocument="
-                + str(int(self.form.groupNewDocument.isChecked()))
+                + str(int(self.form.groupNewProject.isChecked()))
                 + "\n"
             )
             s += "projectName=" + self.form.projectName.text() + "\n"
@@ -506,7 +506,7 @@ class BIM_ProjectManager:
                     if line[0] != "#":
                         s = line.split("=")
                         if s[0] == "groupNewDocument":
-                            self.form.groupNewDocument.setChecked(bool(int(s[1])))
+                            self.form.groupNewProject.setChecked(bool(int(s[1])))
                         elif s[0] == "projectName":
                             self.form.projectName.setText(s[1])
                         elif s[0] == "groupSite":

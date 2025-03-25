@@ -88,7 +88,9 @@ TYPESYSTEM_SOURCE(Fem::FemMesh, Base::Persistence)
 
 FemMesh::FemMesh()
     : myMesh(nullptr)
+#if SMESH_VERSION_MAJOR < 9
     , myStudyId(0)
+#endif
 {
 #if SMESH_VERSION_MAJOR >= 9
     myMesh = getGenerator()->CreateMesh(false);
@@ -99,7 +101,9 @@ FemMesh::FemMesh()
 
 FemMesh::FemMesh(const FemMesh& mesh)
     : myMesh(nullptr)
+#if SMESH_VERSION_MAJOR < 9
     , myStudyId(0)
+#endif
 {
 #if SMESH_VERSION_MAJOR >= 9
     myMesh = getGenerator()->CreateMesh(false);

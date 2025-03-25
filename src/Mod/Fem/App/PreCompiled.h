@@ -153,6 +153,7 @@
 #include <gp_Vec.hxx>
 
 // VTK
+#include <vtkAlgorithmOutput.h>
 #include <vtkAppendFilter.h>
 #include <vtkCellArray.h>
 #include <vtkCompositeDataSet.h>
@@ -160,9 +161,12 @@
 #include <vtkDataSetReader.h>
 #include <vtkDataSetWriter.h>
 #include <vtkDoubleArray.h>
+#include <vtkFloatArray.h>
 #include <vtkHexahedron.h>
 #include <vtkIdList.h>
 #include <vtkImageData.h>
+#include <vtkInformation.h>
+#include <vtkInformationVector.h>
 #include <vtkLine.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiPieceDataSet.h>
@@ -177,18 +181,20 @@
 #include <vtkQuadraticTetra.h>
 #include <vtkQuadraticTriangle.h>
 #include <vtkQuadraticWedge.h>
-#include <vtkStringArray.h>
-#include <vtkFloatArray.h>
-#include <vtkXMLMultiBlockDataWriter.h>
 #include <vtkRectilinearGrid.h>
+#include <vtkStreamingDemandDrivenPipeline.h>
+#include <vtkStringArray.h>
 #include <vtkStructuredGrid.h>
 #include <vtkTetra.h>
+#include <vtkTransform.h>
 #include <vtkTriangle.h>
 #include <vtkUniformGrid.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkWedge.h>
 #include <vtkXMLDataSetWriter.h>
 #include <vtkXMLImageDataReader.h>
+#include <vtkXMLMultiBlockDataReader.h>
+#include <vtkXMLMultiBlockDataWriter.h>
 #include <vtkXMLPUnstructuredGridReader.h>
 #include <vtkXMLPolyDataReader.h>
 #include <vtkXMLRectilinearGridReader.h>

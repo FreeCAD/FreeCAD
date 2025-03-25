@@ -450,6 +450,13 @@ std::vector<edge_t> EdgeWalker::getEmbeddingRow(int v)
 //*******************************************
 // WalkerEdge Methods
 //*******************************************
+WalkerEdge::WalkerEdge()
+{
+    // Ensure the edge is properly initialized (Coverity defect 316559)
+    ed.m_source = 0;
+    ed.m_target = 0;
+}
+
 bool WalkerEdge::isEqual(WalkerEdge w)
 {
     if ((v1 == w.v1 && v2 == w.v2)  ||

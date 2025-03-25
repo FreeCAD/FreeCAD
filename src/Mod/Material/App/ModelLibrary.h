@@ -32,68 +32,28 @@
 
 #include <Mod/Material/MaterialGlobal.h>
 
+#include "Library.h"
 #include "MaterialValue.h"
 #include "Model.h"
 namespace Materials
 {
 
-// class Model;
-
-class MaterialsExport LibraryBase: public Base::BaseClass
-{
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
-public:
-    LibraryBase() = default;
-    LibraryBase(const QString& libraryName, const QString& dir, const QString& icon);
-    ~LibraryBase() override = default;
-
-    const QString getName() const
-    {
-        return _name;
-    }
-    const QString getDirectory() const
-    {
-        return _directory;
-    }
-    const QString getDirectoryPath() const
-    {
-        return QDir(_directory).absolutePath();
-    }
-    const QString getIconPath() const
-    {
-        return _iconPath;
-    }
-    bool operator==(const LibraryBase& library) const;
-    bool operator!=(const LibraryBase& library) const
-    {
-        return !operator==(library);
-    }
-    QString getLocalPath(const QString& path) const;
-    QString getRelativePath(const QString& path) const;
-    bool isRoot(const QString& path) const;
-
-private:
-    LibraryBase(const LibraryBase&);
-
-    QString _name;
-    QString _directory;
-    QString _iconPath;
-};
-
-class MaterialsExport ModelLibrary: public LibraryBase,
+class MaterialsExport ModelLibrary: public Library,
                                     public std::enable_shared_from_this<ModelLibrary>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     ModelLibrary();
-    ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon);
+    ModelLibrary(const QString& libraryName,
+                 const QString& dir,
+                 const QString& icon,
+                 bool readOnly = true);
     ~ModelLibrary() override = default;
 
     bool operator==(const ModelLibrary& library) const
     {
-        return LibraryBase::operator==(library);
+        return Library::operator==(library);
     }
     bool operator!=(const ModelLibrary& library) const
     {
@@ -118,5 +78,7 @@ private:
 };
 
 }  // namespace Materials
+
+Q_DECLARE_METATYPE(std::shared_ptr<Materials::ModelLibrary>)
 
 #endif  // MATERIAL_MODELLIBRARY_H

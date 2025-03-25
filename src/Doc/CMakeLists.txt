@@ -31,22 +31,22 @@ if(DOXYGEN_FOUND)
 
     # directory order seems important for correct macro expansion
     # (files containing macros definitions must be parsed before the files using them)
-    SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIRS}/Inventor/fields/SoSubField.h 
-                           ${CMAKE_SOURCE_DIR}/src/CXX 
-                           ${CMAKE_SOURCE_DIR}/src/3rdParty/zipios++ 
+    SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIRS}/Inventor/fields/SoSubField.h
+                           ${CMAKE_SOURCE_DIR}/src/3rdParty/PyCXX/CXX
+                           ${CMAKE_SOURCE_DIR}/src/3rdParty/zipios++
                            ${CMAKE_SOURCE_DIR}/src/3rdParty
-                           ${CMAKE_SOURCE_DIR}/src/Build 
-                           ${CMAKE_SOURCE_DIR}/src/Base 
-                           ${CMAKE_BINARY_DIR}/src/Base 
-                           ${CMAKE_SOURCE_DIR}/src/App 
-                           ${CMAKE_BINARY_DIR}/src/App 
-                           ${CMAKE_SOURCE_DIR}/src/Gui 
-                           ${CMAKE_BINARY_DIR}/src/Gui 
+                           ${CMAKE_SOURCE_DIR}/src/Build
+                           ${CMAKE_SOURCE_DIR}/src/Base
+                           ${CMAKE_BINARY_DIR}/src/Base
+                           ${CMAKE_SOURCE_DIR}/src/App
+                           ${CMAKE_BINARY_DIR}/src/App
+                           ${CMAKE_SOURCE_DIR}/src/Gui
+                           ${CMAKE_BINARY_DIR}/src/Gui
                            ${CMAKE_SOURCE_DIR}/src/Mod
                            ${CMAKE_BINARY_DIR}/src/Mod
-                           #${CMAKE_SOURCE_DIR}/src/Main #nothing to document there ATM...
+                           ${CMAKE_SOURCE_DIR}/src/Main #nothing to document there ATM...
                            ${CMAKE_SOURCE_DIR}/src/Doc
-                           ${CMAKE_BINARY_DIR}/src/Doc 
+                           ${CMAKE_BINARY_DIR}/src/Doc
     )
     STRING(REGEX REPLACE ";" " " DOXYGEN_INPUT_LIST "${DOXYGEN_SOURCE_DIR}")
 
