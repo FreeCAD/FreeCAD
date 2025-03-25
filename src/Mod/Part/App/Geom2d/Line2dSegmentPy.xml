@@ -15,15 +15,15 @@
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
             <UserDocu>Describes a line segment in 2D space.
 
-                To create a line there are several ways:
-                Part.Geom2d.Line2dSegment()
-                    Creates a default line
+To create a line there are several ways:
+Part.Geom2d.Line2dSegment()
+    Creates a default line
 
-                Part.Geom2d.Line2dSegment(Line)
-                    Creates a copy of the given line
+Part.Geom2d.Line2dSegment(Line)
+    Creates a copy of the given line
 
-                Part.Geom2d.Line2dSegment(Point1,Point2)
-                    Creates a line that goes through two given points.</UserDocu>
+Part.Geom2d.Line2dSegment(Point1,Point2)
+    Creates a line that goes through two given points.</UserDocu>
         </Documentation>
         <Methode Name="setParameterRange">
             <Documentation>

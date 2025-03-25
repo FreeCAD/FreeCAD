@@ -28,12 +28,12 @@
     </Methode>
     <Methode Name="loadInitSurface">
       <Documentation>
-        <UserDocu> Loads the initial surface</UserDocu>
+        <UserDocu>Loads the initial surface</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="surfInit" Const="true">
       <Documentation>
-        <UserDocu> Returns the initial surface</UserDocu>
+        <UserDocu>Returns the initial surface</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="surface" Const="true">
@@ -69,7 +69,7 @@
     <Methode Name="curves2d" Const="true">
       <Documentation>
         <UserDocu>Extracts the array of curves on the plate surface which
-        correspond to the curve constraints set in add()
+correspond to the curve constraints set in add()
         </UserDocu>
       </Documentation>
     </Methode>

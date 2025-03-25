@@ -48,6 +48,6 @@ public:
         setTwinPointer(handle.get());
         hRoot = handle;
     }
-    </ClassDeclarations>
+</ClassDeclarations>
   </PythonExport>
 </GenerateModel>

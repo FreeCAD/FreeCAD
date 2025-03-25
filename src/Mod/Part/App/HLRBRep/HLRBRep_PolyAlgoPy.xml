@@ -178,6 +178,6 @@ public:
     Handle(HLRBRep_PolyAlgo) handle() {
         return hAlgo;
     }
-    </ClassDeclarations>
+</ClassDeclarations>
     </PythonExport>
 </GenerateModel>
