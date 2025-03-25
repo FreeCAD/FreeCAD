@@ -160,7 +160,7 @@ Select only the edges of the shape of index i.
     <Methode Name="selectFace">
         <Documentation>
             <UserDocu>selectFace(i)
-		
+
 Select only the faces of the shape of index i.
             </UserDocu>
         </Documentation>
@@ -177,7 +177,7 @@ shell.
     <Methode Name="update">
         <Documentation>
             <UserDocu>update()
-		
+
 Update the DataStructure.
             </UserDocu>
         </Documentation>
@@ -190,6 +190,6 @@ public:
     Handle(HLRBRep_Algo) handle() {
         return hAlgo;
     }
-    </ClassDeclarations>
+</ClassDeclarations>
     </PythonExport>
 </GenerateModel>

@@ -18,8 +18,7 @@
     </Documentation>
     <Methode Name="setOrder">
       <Documentation>
-        <UserDocu>Allows you to set the order of continuity required for
-the constraints: G0, G1, and G2, controlled
+        <UserDocu>Allows you to set the order of continuity required for the constraints: G0, G1, and G2, controlled
 respectively by G0Criterion G1Criterion and G2Criterion.
         </UserDocu>
       </Documentation>
@@ -31,27 +30,24 @@ respectively by G0Criterion G1Criterion and G2Criterion.
     </Methode>
     <Methode Name="G0Criterion">
       <Documentation>
-        <UserDocu>Returns the G0 criterion at the parametric point U on
-the curve. This is the greatest distance allowed between
-the constraint and the target surface at U.
+        <UserDocu>Returns the G0 criterion at the parametric point U on the curve.
+This is the greatest distance allowed between the constraint and the target surface at U.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="G1Criterion">
       <Documentation>
-        <UserDocu>Returns the G1 criterion at the parametric point U on
-the curve. This is the greatest angle allowed between
-the constraint and the target surface at U.
-Raises an exception if  the  curve  is  not  on  a  surface.
+        <UserDocu>Returns the G1 criterion at the parametric point U on the curve.
+This is the greatest angle allowed between the constraint and the target surface at U.
+Raises an exception if the curve is not on a surface.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="G2Criterion">
       <Documentation>
-        <UserDocu>Returns the G2 criterion at the parametric point U on
-the curve. This is the greatest difference in curvature
-allowed between the constraint and the target surface at U.
-Raises an exception if  the  curve  is  not  on  a  surface.
+        <UserDocu>Returns the G2 criterion at the parametric point U on the curve.
+This is the greatest difference in curvature allowed between the constraint and the target surface at U.
+Raises an exception if the curve is not on a surface.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -71,47 +67,47 @@ distance tolerance from the constructor, is used.
 defining the greatest angle allowed between the
 constraint and the target surface. If this criterion is not
 set, TolAng, the angular tolerance from the constructor, is used.
-Raises an exception if  the  curve  is  not  on  a  surface
+Raises an exception if the curve is not on a surface.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setG2Criterion">
       <Documentation>
         <UserDocu> Allows you to set the G2 criterion. This is the law
- defining the greatest difference in curvature allowed
- between the constraint and the target surface. If this
- criterion is not set, TolCurv, the curvature tolerance from
- the constructor, is used.
- Raises   ConstructionError if  the  point  is  not  on  the  surface
+defining the greatest difference in curvature allowed
+between the constraint and the target surface. If this
+criterion is not set, TolCurv, the curvature tolerance from
+the constructor, is used.
+Raises ConstructionError if the point is not on the surface.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="curve3d">
       <Documentation>
-        <UserDocu> Returns a 3d curve associated the surface resulting of the constraints</UserDocu>
+        <UserDocu>Returns a 3d curve associated the surface resulting of the constraints</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setCurve2dOnSurf">
       <Documentation>
-        <UserDocu> loads a 2d curve associated the surface resulting of the constraints
+        <UserDocu>Loads a 2d curve associated the surface resulting of the constraints
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="curve2dOnSurf">
       <Documentation>
-        <UserDocu> Returns a 2d curve associated the surface resulting of the constraints</UserDocu>
+        <UserDocu>Returns a 2d curve associated the surface resulting of the constraints</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setProjectedCurve">
       <Documentation>
-        <UserDocu> loads a 2d curve  resulting from the normal projection of
- the curve on the initial surface</UserDocu>
+        <UserDocu>Loads a 2d curve  resulting from the normal projection of
+the curve on the initial surface</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="projectedCurve">
       <Documentation>
         <UserDocu> Returns the projected curve resulting from the normal projection of the
- curve on the initial surface</UserDocu>
+curve on the initial surface</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="NbPoints">
@@ -125,21 +121,21 @@ the number of points.</UserDocu>
     </Attribute>
     <Attribute Name="FirstParameter" ReadOnly="true">
         <Documentation>
-            <UserDocu> This function returns the first parameter of the curve.
+            <UserDocu>This function returns the first parameter of the curve.
 The first parameter is the lowest parametric value for the curve, which defines the starting point of the curve.</UserDocu>
         </Documentation>
         <Parameter Name="FirstParameter" Type="Float"/>
     </Attribute>
     <Attribute Name="LastParameter" ReadOnly="true">
         <Documentation>
-            <UserDocu> This function returns the last parameter of the curve.
+            <UserDocu>This function returns the last parameter of the curve.
 The last parameter is the highest parametric value for the curve, which defines the ending point of the curve.</UserDocu>
         </Documentation>
         <Parameter Name="LastParameter" Type="Float"/>
     </Attribute>
     <Attribute Name="Length" ReadOnly="true">
         <Documentation>
-            <UserDocu> This function returns the length of the curve.
+            <UserDocu>This function returns the length of the curve.
 The length of the curve is a geometric property that indicates how long the curve is in the space.</UserDocu>
         </Documentation>
         <Parameter Name="Length" Type="Float"/>
