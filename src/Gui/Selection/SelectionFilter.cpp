@@ -178,13 +178,11 @@ bool SelectionFilter::match()
 
         // test if subnames present
         if (it->SubName.empty()) {
-            //Base::Console().Warning("it->SubName.empty()\n");
             // if no subnames the count of the object get tested
             if (temp.size() < min || temp.size() > max)
                 return false;
         }
         else {
-            //Base::Console().Warning("it->SubName not empty\n");
             // if subnames present count all subs over the selected object of type
             std::size_t subCount = 0;
             for (const auto & it2 : temp) {
@@ -192,7 +190,6 @@ bool SelectionFilter::match()
                 if (subNames.empty())
                     return false;
                 for (const auto & subName : subNames) {
-                    //Base::Console().Warning("subName %s\n", subName.c_str());
                     if (subName.find(it->SubName) != 0)
                         return false;
                 }
