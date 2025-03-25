@@ -131,14 +131,16 @@ bool SelectionFilterGatePython::allow(App::Document*, App::DocumentObject* obj, 
 
 // ----------------------------------------------------------------------------
 
-SelectionFilter::SelectionFilter(const char* filter)
-  : Ast(nullptr)
+SelectionFilter::SelectionFilter(const char* filter, App::DocumentObject* container)
+    : Ast(nullptr)
+    , container(container)
 {
     setFilter(filter);
 }
 
-SelectionFilter::SelectionFilter(const std::string& filter)
-  : Ast(nullptr)
+SelectionFilter::SelectionFilter(const std::string& filter, App::DocumentObject* container)
+    : Ast(nullptr)
+    , container(container)
 {
     setFilter(filter.c_str());
 }
@@ -172,16 +174,17 @@ bool SelectionFilter::match()
             min = it->Slice->Min;
             max = it->Slice->Max;
         }
-
-        std::vector<Gui::SelectionObject> temp = Gui::Selection().getSelectionEx(nullptr, it->ObjectType);
+        std::vector<Gui::SelectionObject> temp = container ? Gui::Selection().getSelectionIn(container, it->ObjectType) : Gui::Selection().getSelectionEx(nullptr, it->ObjectType);
 
         // test if subnames present
         if (it->SubName.empty()) {
+            //Base::Console().Warning("it->SubName.empty()\n");
             // if no subnames the count of the object get tested
             if (temp.size() < min || temp.size() > max)
                 return false;
         }
         else {
+            //Base::Console().Warning("it->SubName not empty\n");
             // if subnames present count all subs over the selected object of type
             std::size_t subCount = 0;
             for (const auto & it2 : temp) {
@@ -189,6 +192,7 @@ bool SelectionFilter::match()
                 if (subNames.empty())
                     return false;
                 for (const auto & subName : subNames) {
+                    //Base::Console().Warning("subName %s\n", subName.c_str());
                     if (subName.find(it->SubName) != 0)
                         return false;
                 }
@@ -201,6 +205,7 @@ bool SelectionFilter::match()
 
         Result.push_back(temp);
     }
+
     return true;
 }
 
