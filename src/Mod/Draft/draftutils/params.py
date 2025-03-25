@@ -388,6 +388,7 @@ def _get_param_dictionary():
         "DefaultDisplayMode":          ("int",       0),
         "DefaultDrawStyle":            ("int",       0),
         "DefaultPrintColor":           ("unsigned",  255),
+        "DimAutoFlipText":             ("bool",      True),
         "Draft_array_fuse":            ("bool",      False),
         "Draft_array_Link":            ("bool",      True),
         "FilletRadius":                ("float",     100.0),

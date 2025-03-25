@@ -92,6 +92,3 @@ class ViewProxy(solverbase.ViewProxy):
 
     def getIcon(self):
         return ":/icons/FEM_SolverMystran.svg"
-
-
-##  @}

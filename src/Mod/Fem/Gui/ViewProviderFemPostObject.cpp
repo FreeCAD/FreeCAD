@@ -261,27 +261,40 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
 
 ViewProviderFemPostObject::~ViewProviderFemPostObject()
 {
-    FemPostObjectSelectionObserver::instance().unregisterFemPostObject(this);
-    m_transpType->unref();
-    m_depthBuffer->unref();
-    m_shapeHints->unref();
-    m_coordinates->unref();
-    m_materialBinding->unref();
-    m_drawStyle->unref();
-    m_normalBinding->unref();
-    m_normals->unref();
-    m_faces->unref();
-    m_triangleStrips->unref();
-    m_markers->unref();
-    m_lines->unref();
-    m_sepMarkerLine->unref();
-    m_separator->unref();
-    m_material->unref();
-    m_matPlainEdges->unref();
-    m_switchMatEdges->unref();
-    deleteColorBar();
-    m_colorStyle->unref();
-    m_colorRoot->unref();
+    try {
+        FemPostObjectSelectionObserver::instance().unregisterFemPostObject(this);
+        m_transpType->unref();
+        m_depthBuffer->unref();
+        m_shapeHints->unref();
+        m_coordinates->unref();
+        m_materialBinding->unref();
+        m_drawStyle->unref();
+        m_normalBinding->unref();
+        m_normals->unref();
+        m_faces->unref();
+        m_triangleStrips->unref();
+        m_markers->unref();
+        m_lines->unref();
+        m_sepMarkerLine->unref();
+        m_separator->unref();
+        m_material->unref();
+        m_matPlainEdges->unref();
+        m_switchMatEdges->unref();
+        m_colorStyle->unref();
+        m_colorRoot->unref();
+        deleteColorBar();
+    }
+    catch (Base::Exception& e) {
+        Base::Console().DestructorError(
+            "ViewProviderFemPostObject",
+            "ViewProviderFemPostObject destructor threw an exception: %s\n",
+            e.what());
+    }
+    catch (...) {
+        Base::Console().DestructorError(
+            "ViewProviderFemPostObject",
+            "ViewProviderFemPostObject destructor threw an unknown exception");
+    }
 }
 
 void ViewProviderFemPostObject::deleteColorBar()
@@ -430,7 +443,7 @@ void ViewProviderFemPostObject::updateProperties()
     m_coloringEnum.setEnums(colorArrays);
     Field.setValue(m_coloringEnum);
 
-    std::vector<std::string>::iterator it = std::find(colorArrays.begin(), colorArrays.end(), val);
+    auto it = std::ranges::find(colorArrays, val);
     if (!val.empty() && it != colorArrays.end()) {
         Field.setValue(val.c_str());
     }
@@ -472,7 +485,7 @@ void ViewProviderFemPostObject::updateProperties()
     m_vectorEnum.setEnums(colorArrays);
     VectorMode.setValue(m_vectorEnum);
 
-    it = std::find(colorArrays.begin(), colorArrays.end(), val);
+    it = std::ranges::find(colorArrays, val);
     if (!val.empty() && it != colorArrays.end()) {
         VectorMode.setValue(val.c_str());
     }
@@ -850,15 +863,9 @@ bool ViewProviderFemPostObject::setupPipeline()
 
     auto postObject = getObject<Fem::FemPostObject>();
 
-    vtkDataObject* data = postObject->Data.getValue();
-    if (!data) {
-        return false;
-    }
-
     // check all fields if there is a real/imaginary one and if so
     // add a field with an absolute value
-    vtkSmartPointer<vtkDataObject> SPdata = data;
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(SPdata);
+    vtkDataSet* dset = postObject->getDataSet();
     if (!dset) {
         return false;
     }
@@ -964,7 +971,7 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
             postDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !postDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -1073,7 +1080,15 @@ bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
 {
     // warn the user if the object has unselected children
     auto objs = claimChildren();
-    return ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline");
+    if (!ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline")) {
+        return false;
+    };
+
+    // delete all subelements
+    for (auto obj : objs) {
+        getObject()->getDocument()->removeObject(obj->getNameInDocument());
+    }
+    return true;
 }
 
 bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const

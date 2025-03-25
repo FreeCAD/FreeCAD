@@ -60,9 +60,10 @@ protected: //! @name Constructors
                                                  const TopoDS_Shape& theS2,
                                                  BOPAlgo_Operation theOperation);
 
-
 private:
-  Standard_EXPORT TopoDS_Shape RecursiveCutCompound(const TopoDS_Shape& theArgument);
-  Standard_EXPORT void RecursiveAddArguments(const TopoDS_Shape& theArgument);
+  Standard_EXPORT void RecursiveAddTools(const TopoDS_Shape& theTool);
+  Standard_EXPORT void RecursiveCutFusedTools(const TopTools_ListOfShape& theOriginalArguments,
+                                              const TopoDS_Shape& theTool);
+  Standard_EXPORT void RecursiveCutCompound(const TopoDS_Shape& theArgument);
 };
 #endif

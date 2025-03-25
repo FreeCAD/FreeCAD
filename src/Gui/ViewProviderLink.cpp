@@ -1534,8 +1534,9 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
             return true;
 
         if(info.isLinked()) {
-            info.linkInfo->getDetail(false,childType,subname,det,path);
-            return true;
+            if (info.linkInfo->getDetail(false,childType,subname,det,path)) {
+                return true;
+            }
         }
     }
     if(isLinked()) {
@@ -2384,8 +2385,19 @@ bool ViewProviderLink::getDetailPath(
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
     auto element = getObject<App::LinkElement>();
-    if (element && !element->canDelete())
+    if (element && !element->canDelete()) {
         return false;
+    }
+
+    auto link = getObject<App::Link>();
+    if (link->ElementCount.getValue() != 0) {
+        auto doc = link->getDocument();
+        auto elements = link->ElementList.getValues();
+        for (auto element : elements) {
+            doc->removeObject(element->getNameInDocument());
+        }
+    }
+    
     auto ext = getLinkExtension();
     if (ext->isLinkMutated()) {
         auto linked = ext->getLinkedObjectValue();

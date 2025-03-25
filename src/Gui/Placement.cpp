@@ -530,13 +530,8 @@ void Placement::setupSignalMapper()
         signalMapper->setMapping(it, id++);
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
-            this, &Placement::onPlacementChanged);
-#else
     connect(signalMapper, &QSignalMapper::mappedInt,
             this, &Placement::onPlacementChanged);
-#endif
 }
 
 void Placement::setupRotationMethod()
@@ -713,7 +708,7 @@ void Placement::onSelectedVertexClicked()
 
     if (!success) {
         Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
-        QMessageBox msgBox;
+        QMessageBox msgBox(this);
         msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
 face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
 face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \

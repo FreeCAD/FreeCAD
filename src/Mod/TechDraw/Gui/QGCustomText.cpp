@@ -43,15 +43,14 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGCustomText::QGCustomText(QGraphicsItem* parent) :
-    QGraphicsTextItem(parent), isHighlighted(false)
+    QGraphicsTextItem(parent)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
-    m_colCurrent = getNormalColor();
-    m_colNormal  = m_colCurrent;
+    m_colNormal  = getNormalColor();
     tightBounding = false;
 }
 
@@ -144,27 +143,23 @@ void QGCustomText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 }
 
 void QGCustomText::setPrettyNormal() {
-    m_colCurrent = m_colNormal;
-    setDefaultTextColor(m_colCurrent);
+    setDefaultTextColor(m_colNormal);
     update();
 }
 
 void QGCustomText::setPrettyPre() {
-    m_colCurrent = getPreColor();
-    setDefaultTextColor(m_colCurrent);
+    setDefaultTextColor(getPreColor());
     update();
 }
 
 void QGCustomText::setPrettySel() {
-    m_colCurrent = getSelectColor();
-    setDefaultTextColor(m_colCurrent);
+    setDefaultTextColor(getSelectColor());
     update();
 }
 
 void QGCustomText::setColor(QColor c)
 {
     m_colNormal = c;
-    m_colCurrent = c;
     QGraphicsTextItem::setDefaultTextColor(c);
 }
 

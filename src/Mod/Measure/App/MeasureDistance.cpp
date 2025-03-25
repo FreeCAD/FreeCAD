@@ -415,12 +415,12 @@ std::vector<App::DocumentObject*> MeasureDistanceDetached::getSubject() const
 
 Base::Type MeasureDistanceType::getClassTypeId()
 {
-    return Base::Type::badType();
+    return Base::Type::BadType;
 }
 
 Base::Type MeasureDistanceType::getTypeId() const
 {
-    return Base::Type::badType();
+    return Base::Type::BadType;
 }
 
 void MeasureDistanceType::init()
@@ -436,7 +436,7 @@ void* MeasureDistanceType::create()
     return new MeasureDistanceDetached();
 }
 
-Base::Type MeasureDistanceType::classTypeId = Base::Type::badType();
+Base::Type MeasureDistanceType::classTypeId = Base::Type::BadType;
 
 
 // Migrate old MeasureDistance Type

@@ -205,25 +205,6 @@ void MenuManager::setup(MenuItem* menuItems) const
 
     QMenuBar* menuBar = getMainWindow()->menuBar();
 
-#if 0
-#if defined(FC_OS_MACOSX) && QT_VERSION >= 0x050900
-    // Unknown Qt macOS bug observed with Qt >= 5.9.4 causes random crashes when viewing reused top level menus.
-    menuBar->clear();
-#endif
-
-    // On Kubuntu 18.10 global menu has issues with FreeCAD 0.18 menu bar.
-    // Optional parameter, clearing the menu bar, can be set as a workaround.
-    // Clearing the menu bar can cause issues, when trying to access menu bar through Python.
-    // https://forum.freecad.org/viewtopic.php?f=10&t=30340&start=440#p289330
-    if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/MainWindow")->GetBool("ClearMenuBar",false)) {
-        menuBar->clear();
-    }
-#else
-    // In addition to the reason described in the above comments, there is
-    // another more subtle one that's making clearing menu bar a necessity for
-    // all platforms.
-    //
     // By right, it should be fine for more than one command action having the
     // same shortcut but in different workbench. It should not require manual
     // conflict resolving in this case, as the action in an inactive workbench
@@ -243,7 +224,6 @@ void MenuManager::setup(MenuItem* menuItems) const
     // Clearing the menu bar, and recreate it every time when switching
     // workbench with only the active actions can solve this problem.
     menuBar->clear();
-#endif
 
     QList<QAction*> actions = menuBar->actions();
     for (auto& item : menuItems->getItems())

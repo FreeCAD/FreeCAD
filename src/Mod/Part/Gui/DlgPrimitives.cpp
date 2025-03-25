@@ -215,11 +215,7 @@ bool AbstractPrimitive::hasValidPrimitive() const
 
 void AbstractPrimitive::connectSignalMapper(QSignalMapper* mapper)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-        connect(mapper, qOverload<QObject*>(&QSignalMapper::mapped), this, &AbstractPrimitive::changeValue);
-#else
         connect(mapper, &QSignalMapper::mappedObject, this, &AbstractPrimitive::changeValue);
-#endif
 }
 
 namespace PartGui {

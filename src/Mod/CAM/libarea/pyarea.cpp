@@ -48,7 +48,7 @@ static void print_curve(const CCurve& c)
 #if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
     printf("number of vertices = %d\n", nvertices);
 #elif defined(_WIN32)
-    printf("number of vertices = %Iu\n", nvertices);
+    printf("number of vertices = %zu\n", nvertices);
 #else
     printf("number of vertices = %lu\n", nvertices);
 #endif

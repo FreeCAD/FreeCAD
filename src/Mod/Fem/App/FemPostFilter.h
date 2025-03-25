@@ -35,6 +35,7 @@
 #include <vtkTableBasedClipDataSet.h>
 #include <vtkVectorNorm.h>
 #include <vtkWarpVector.h>
+#include <vtkImplicitFunction.h>
 
 #include <App/PropertyUnits.h>
 #include <App/DocumentObjectExtension.h>
@@ -45,27 +46,25 @@
 namespace Fem
 {
 
+enum class TransformLocation : size_t
+{
+    input,
+    output
+};
+
 class FemExport FemPostFilter: public Fem::FemPostObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFilter);
 
-public:
-    /// Constructor
-    FemPostFilter();
-    ~FemPostFilter() override;
-
-    App::PropertyLink Input;
-
-    App::DocumentObjectExecReturn* execute() override;
-
 protected:
-    vtkDataObject* getInputData();
+    vtkSmartPointer<vtkDataSet> getInputData();
+    std::vector<std::string> getInputVectorFields();
+    std::vector<std::string> getInputScalarFields();
 
     // pipeline handling for derived filter
     struct FilterPipeline
     {
         vtkSmartPointer<vtkAlgorithm> source, target;
-        vtkSmartPointer<vtkProbeFilter> filterSource, filterTarget;
         std::vector<vtkSmartPointer<vtkAlgorithm>> algorithmStorage;
     };
 
@@ -73,10 +72,29 @@ protected:
     void setActiveFilterPipeline(std::string name);
     FilterPipeline& getFilterPipeline(std::string name);
 
+    void setTransformLocation(TransformLocation loc);
+
+public:
+    /// Constructor
+    FemPostFilter();
+    ~FemPostFilter() override;
+
+    App::PropertyFloat Frame;
+
+    void onChanged(const App::Property* prop) override;
+    App::DocumentObjectExecReturn* execute() override;
+
+    vtkSmartPointer<vtkAlgorithm> getFilterInput();
+    vtkSmartPointer<vtkAlgorithm> getFilterOutput();
+
 private:
     // handling of multiple pipelines which can be the filter
     std::map<std::string, FilterPipeline> m_pipelines;
     std::string m_activePipeline;
+    bool m_use_transform = false;
+    TransformLocation m_transform_location = TransformLocation::output;
+
+    void pipelineChanged();  // inform parents that the pipeline changed
 };
 
 class FemExport FemPostSmoothFilterExtension: public App::DocumentObjectExtension
@@ -215,6 +233,7 @@ protected:
 private:
     vtkSmartPointer<vtkTableBasedClipDataSet> m_clipper;
     vtkSmartPointer<vtkExtractGeometry> m_extractor;
+    vtkSmartPointer<vtkImplicitFunction> m_defaultFunction;
 };
 
 
@@ -287,6 +306,7 @@ protected:
 
 private:
     vtkSmartPointer<vtkCutter> m_cutter;
+    vtkSmartPointer<vtkImplicitFunction> m_defaultFunction;
 };
 
 

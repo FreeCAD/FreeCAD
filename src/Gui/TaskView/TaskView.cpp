@@ -47,7 +47,7 @@
 
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
 #include <Gui/QSint/actionpanel/taskheader_p.h>
-#include <Gui/QSint/actionpanel/freecadscheme.h>
+#include <Gui/QSint/actionpanel/actionpanelscheme.h>
 
 
 using namespace Gui::TaskView;
@@ -270,16 +270,13 @@ QSize TaskPanel::minimumSizeHint() const
 TaskView::TaskView(QWidget *parent)
     : QScrollArea(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
 {
-    //addWidget(new TaskEditControl(this));
-    //addWidget(new TaskAppearance(this));
-    //addStretch();
     taskPanel = new TaskPanel(this);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());
     taskPanel->setSizePolicy(sizePolicy);
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
     this->setWidget(taskPanel);
     setWidgetResizable(true);
@@ -603,7 +600,7 @@ void TaskView::showDialog(TaskDialog *dlg)
         taskPanel->addWidget(ActiveCtrl);
     }
 
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
     if (!dlg->needsFullSpace())
         taskPanel->addStretch();
@@ -751,7 +748,6 @@ void TaskView::addTaskWatcher()
         taskPanel->addStretch();
     updateWatcher();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     // Workaround to avoid a crash in Qt. See also
     // https://forum.freecad.org/viewtopic.php?f=8&t=39187
     //
@@ -762,9 +758,8 @@ void TaskView::addTaskWatcher()
         QEvent event(QEvent::StyleChange);
         QApplication::sendEvent(box, &event);
     }
-#endif
 
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::saveCurrentWidth()
@@ -870,14 +865,14 @@ void TaskView::clicked (QAbstractButton * button)
 
 void TaskView::clearActionStyle()
 {
-    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->clearActionStyle();
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::restoreActionStyle()
 {
-    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->restoreActionStyle();
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->restoreActionStyle();
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 

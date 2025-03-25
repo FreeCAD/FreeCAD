@@ -431,10 +431,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->windowMapper = new QSignalMapper(this);
 
     // connection between workspace, window menu and tab bar
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(d->windowMapper, qOverload<QWidget*>(&QSignalMapper::mapped),
-            this, &MainWindow::onSetActiveSubWindow);
-#elif QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     connect(d->windowMapper, &QSignalMapper::mappedWidget,
             this, &MainWindow::onSetActiveSubWindow);
 #else

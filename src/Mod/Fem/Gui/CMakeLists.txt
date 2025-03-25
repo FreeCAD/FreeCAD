@@ -21,17 +21,10 @@ include_directories(
 
 include_directories(
     SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${OCC_INCLUDE_DIR}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
 )
 
-link_directories(${OCC_LIBRARY_DIR})
 link_directories(${SMESH_LIB_PATH})
 
 set(FemGui_LIBS
@@ -102,6 +95,8 @@ if(BUILD_FEM_VTK)
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui
+        TaskPostFrames.ui
+        TaskPostBranch.ui
     )
 endif(BUILD_FEM_VTK)
 
@@ -340,6 +335,8 @@ if(BUILD_FEM_VTK)
         ViewProviderFemPostObject.cpp
         ViewProviderFemPostPipeline.h
         ViewProviderFemPostPipeline.cpp
+        ViewProviderFemPostBranchFilter.h
+        ViewProviderFemPostBranchFilter.cpp
         ViewProviderFemPostFunction.h
         ViewProviderFemPostFunction.cpp
         ViewProviderFemPostFilter.h

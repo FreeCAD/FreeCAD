@@ -36,9 +36,12 @@ This includes linear dimensions, radial dimensions, and angular dimensions.
 import math
 
 import FreeCAD as App
+import DraftVecUtils
 import WorkingPlane
 
+from draftgeoutils import edges
 from draftutils import gui_utils
+from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn, _err
 from draftutils.translate import translate
@@ -49,6 +52,51 @@ if App.GuiUp:
     from draftviewproviders.view_dimension \
         import (ViewProviderLinearDimension,
                 ViewProviderAngularDimension)
+
+
+def _get_flip_text_lin(p1, p2, wp, normal):
+    # for linear, radial dimensions
+    if not params.get_param("DimAutoFlipText"):
+        return False
+    p1 = wp.project_point(p1)
+    p2 = wp.project_point(p2)
+    ang = DraftVecUtils.angle(wp.u, p2.sub(p1), normal)
+    tol = 1e-4  # high tolerance
+    if math.isclose(ang, 0, abs_tol=tol):
+        return False
+    if math.isclose(ang, math.pi, abs_tol=tol):
+        return True
+    if math.isclose(ang, math.pi/2, abs_tol=tol):
+        return False
+    if math.isclose(ang, -math.pi/2, abs_tol=tol):
+        return True
+    # 90-180 (in that quadrant + 1st point closest to the origin):
+    if math.pi/2 < ang < math.pi:
+        return True
+    # 180-270:
+    if -math.pi < ang < -math.pi/2:
+        return True
+    # 0-90 and 270-360:
+    return False
+
+
+def _get_flip_text_ang(cen, sta, end, normal):
+    # for angular dimensions
+    if not params.get_param("DimAutoFlipText"):
+        return False
+    import Part
+    circle = Part.makeCircle(1, cen, normal, sta, end)
+    mid = edges.findMidpoint(circle)
+    wp = WorkingPlane.get_working_plane(update=False)
+    ang = DraftVecUtils.angle(wp.u, mid.sub(cen), normal)
+    tol = 1e-4  # high tolerance
+    if math.isclose(ang, 0, abs_tol=tol):
+        return True
+    if math.isclose(ang, math.pi, abs_tol=tol):
+        return False
+    if ang > 0:
+        return False
+    return True
 
 
 def make_dimension(p1, p2, p3=None, p4=None):
@@ -77,12 +125,23 @@ def make_dimension(p1, p2, p3=None, p4=None):
         _err("No active document. Aborting")
         return None
 
-    new_obj = App.ActiveDocument.addObject("App::FeaturePython",
-                                           "Dimension")
+    new_obj = App.ActiveDocument.addObject("App::FeaturePython", "Dimension")
     LinearDimension(new_obj)
 
     if App.GuiUp:
         ViewProviderLinearDimension(new_obj.ViewObject)
+
+    wp = WorkingPlane.get_working_plane(update=False)
+    normal = wp.axis
+    flip_text = False
+
+    if App.GuiUp:
+        # invert the normal if we are viewing it from the back
+        vnorm = gui_utils.get3DView().getViewDirection()
+        if vnorm.getAngle(normal) < math.pi/2:
+            normal = normal.negative()
+
+    new_obj.Normal = normal
 
     if isinstance(p1, App.Vector) and isinstance(p2, App.Vector):
         # Measure a straight distance between p1 and p2
@@ -92,6 +151,9 @@ def make_dimension(p1, p2, p3=None, p4=None):
             p3 = p2.sub(p1)
             p3.multiply(0.5)
             p3 = p1.add(p3)
+
+        if App.GuiUp:
+            flip_text = _get_flip_text_lin(p1, p2, wp, normal)
 
     elif isinstance(p2, int) and isinstance(p3, int):
         # p1 is an object, and measure the distance between vertices p2 and p3
@@ -103,20 +165,17 @@ def make_dimension(p1, p2, p3=None, p4=None):
         new_obj.LinkedGeometry = linked
         new_obj.Support = p1
 
-        # p4, and now p3, is the point through which the dimension line
-        # will go through
+        v1 = p1.Shape.Vertexes[idx[0]].Point
+        v2 = p1.Shape.Vertexes[idx[1]].Point
+        # p4, and now p3, is the point through which the dimension line will pass
         p3 = p4
         if not p3:
-            # When used from the GUI command, this will never run
-            # because p4 will always be assigned to a vector,
-            # so p3 will never be `None`.
-            # Moreover, `new_obj.Base` doesn't exist, and certainly `Shape`
-            # doesn't exist, so if this ever runs it will be an error.
-            v1 = new_obj.Base.Shape.Vertexes[idx[0]].Point
-            v2 = new_obj.Base.Shape.Vertexes[idx[1]].Point
             p3 = v2.sub(v1)
             p3.multiply(0.5)
             p3 = v1.add(p3)
+
+        if App.GuiUp:
+            flip_text = _get_flip_text_lin(v1, v2, wp, normal)
 
     elif isinstance(p3, str):
         # If the original p3 is a string, we are measuring a circular arc
@@ -137,29 +196,22 @@ def make_dimension(p1, p2, p3=None, p4=None):
         new_obj.LinkedGeometry = linked
         new_obj.Support = p1
 
-        # p4, and now p3, is the point through which the dimension line
-        # will go through
+        cen = p1.Shape.Edges[p2].Curve.Center
+        # p4, and now p3, is the point through which the dimension line will pass
         p3 = p4
         if not p3:
-            p3 = p1.Shape.Edges[p2].Curve.Center.add(App.Vector(1, 0, 0))
+            p3 = cen.add(App.Vector(1, 0, 0))
+
+        if App.GuiUp:
+            flip_text = _get_flip_text_lin(cen, p3, wp, normal)
 
     # This p3 is the point through which the dimension line will pass,
     # but this may not be the original p3, it could have been p4
     # depending on the first three parameter values
     new_obj.Dimline = p3
 
-    normal = WorkingPlane.get_working_plane(update=False).axis
-
     if App.GuiUp:
-        # invert the normal if we are viewing it from the back
-        vnorm = gui_utils.get3DView().getViewDirection()
-
-        if vnorm.getAngle(normal) < math.pi/2:
-            normal = normal.negative()
-
-    new_obj.Normal = normal
-
-    if App.GuiUp:
+        new_obj.ViewObject.FlipText = flip_text
         gui_utils.format_object(new_obj)
         gui_utils.select(new_obj)
 
@@ -577,14 +629,8 @@ def make_angular_dimension(center=App.Vector(0, 0, 0),
     if not normal:
         normal = WorkingPlane.get_working_plane(update=False).axis
 
-    new_obj = App.ActiveDocument.addObject("App::FeaturePython",
-                                           "Dimension")
+    new_obj = App.ActiveDocument.addObject("App::FeaturePython", "Dimension")
     AngularDimension(new_obj)
-
-    new_obj.Center = center
-    new_obj.FirstAngle = angles[0]
-    new_obj.LastAngle = angles[1]
-    new_obj.Dimline = dim_line
 
     if App.GuiUp:
         ViewProviderAngularDimension(new_obj.ViewObject)
@@ -596,9 +642,14 @@ def make_angular_dimension(center=App.Vector(0, 0, 0),
         if vnorm.getAngle(normal) < math.pi/2:
             normal = normal.negative()
 
+    new_obj.Center = center
+    new_obj.FirstAngle = angles[0]
+    new_obj.LastAngle = angles[1]
+    new_obj.Dimline = dim_line
     new_obj.Normal = normal
 
     if App.GuiUp:
+        new_obj.ViewObject.FlipText = _get_flip_text_ang(center, angles[0], angles[1], normal)
         gui_utils.format_object(new_obj)
         gui_utils.select(new_obj)
 

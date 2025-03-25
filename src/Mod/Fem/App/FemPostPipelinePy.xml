@@ -10,12 +10,21 @@
         FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
         FatherNamespace="Fem">
         <Documentation>
-            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <Author Licence="LGPL" Name="Stefan Tröger" EMail="stefantroeger@gmx.net" />
             <UserDocu>The FemPostPipeline class.</UserDocu>
         </Documentation>
         <Methode Name="read">
             <Documentation>
-                <UserDocu>Read in vtk file</UserDocu>
+                <UserDocu>
+read(filepath)
+read([filepaths], [values], unit, frame_type)
+
+Reads in a single vtk file or creates a multiframe result by reading in multiple result files. If multiframe is wanted, 4 argumenhts are needed:
+1. List of result files each being one frame,
+2. List of values valid for each frame (e.g. [s] if time data),
+3. the unit of the value as FreeCAD.Units.Unit,
+4. the Description of the frame type
+</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="scale">
@@ -25,7 +34,21 @@
         </Methode>
         <Methode Name="load">
             <Documentation>
-                <UserDocu>Load a result object</UserDocu>
+                <UserDocu>
+load(result_object)
+load([result_objects], [values], unit, frame_type)
+
+Load a single result object or create a multiframe result by loading multiple result frames. If multiframe is wanted, 4 argumenhts are needed:
+1. List of result files each being one frame,
+2. List of values valid for each frame (e.g. [s] if time data),
+3. the unit of the value as FreeCAD.Units.Unit,
+4. the Description of the frame type
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getFilter">
+            <Documentation>
+                <UserDocu>Returns all filters, that this pipeline uses (non recursive, result does not contain branch child filters)</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="recomputeChildren">

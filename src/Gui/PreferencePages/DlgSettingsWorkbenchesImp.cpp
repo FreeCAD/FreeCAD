@@ -400,12 +400,12 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 
 void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled)
 {
-    bool isStartupWb = wbName.toStdString() == _startupModule;
-    bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
-        wbName.toStdString()) != _backgroundAutoloadedModules.end();
-    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
+    const bool isStartupWb = wbName.toStdString() == _startupModule;
+    const bool autoLoad = std::ranges::find(_backgroundAutoloadedModules, wbName.toStdString())
+        != _backgroundAutoloadedModules.end();
+    const auto widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
     connect(widget, &wbListItem::wbToggled, this, &DlgSettingsWorkbenchesImp::wbToggled);
-    auto wItem = new QListWidgetItem();
+    const auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
     ui->wbList->addItem(wItem);
     ui->wbList->setItemWidget(wItem, widget);
@@ -421,11 +421,8 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     wbs_ordered = QString::fromStdString(hGrp->GetASCII("Ordered", ""));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+
     wbs_ordered_list = wbs_ordered.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
-    wbs_ordered_list = wbs_ordered.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
 
     QStringList workbenches = Application::Instance->workbenches();
     workbenches.sort();
@@ -458,11 +455,8 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench"));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+
     unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
-    unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
 
     QStringList workbenches = Application::Instance->workbenches();
 

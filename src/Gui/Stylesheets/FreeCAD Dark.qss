@@ -1287,15 +1287,6 @@ QPushButton::menu-indicator {
   bottom: 4px;
 }
 
-QDialogButtonBox QPushButton {
-  /* Issue # 194 # 248 - Special case of QPushButton inside dialogs, for better UI */
-  min-width: 80px;
-}
-
-QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
-QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
-  min-width: 20px;
-}
 /* QToolButton ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
@@ -2877,9 +2868,17 @@ Start page
 /**
  * Special handling for WB Tab Bar
  */
- #WbTabBar #WbTabBarMore {
+#WbTabBar #WbTabBarMore {
   padding-right: 12px;
- }
+}
+
+QPushButton[objectName="buttonIFCPropertiesDelete"] {
+  min-width: 100px;
+}
+
+QGroupBox[objectName="matOpsGrpBox"] QPushButton {
+  min-width: 235px;
+}
 
 /* Below is a fix for indentation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
 /* QTreeView::item:selected:active#groupsTreeView {

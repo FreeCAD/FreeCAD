@@ -61,11 +61,10 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
             &QAction::triggered,
             this,
             &TaskFemConstraintHeatflux::onReferenceDeleted);
-
-    connect(ui->rb_convection, &QRadioButton::clicked, this, &TaskFemConstraintHeatflux::Conv);
-    connect(ui->rb_radiation, &QRadioButton::clicked, this, &TaskFemConstraintHeatflux::Rad);
-    connect(ui->rb_dflux, &QRadioButton::clicked, this, &TaskFemConstraintHeatflux::Flux);
-
+    connect(ui->cb_constr_type,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskFemConstraintHeatflux::onConstrTypeChanged);
     connect(ui->qsb_heat_flux,
             qOverload<double>(&QuantitySpinBox::valueChanged),
             this,
@@ -105,11 +104,20 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->btnRemove->blockSignals(true);
 
     // Get the feature data
-    Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
+    auto pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
+    App::PropertyEnumeration* constrType = &pcConstraint->ConstraintType;
+    QStringList qTypeList;
+    for (auto item : constrType->getEnumVector()) {
+        qTypeList << QString::fromUtf8(item.c_str());
+    }
+    ui->cb_constr_type->addItems(qTypeList);
+    ui->cb_constr_type->setCurrentIndex(constrType->getValue());
+    ui->sw_heatflux->setCurrentIndex(constrType->getValue());
+
     ui->qsb_ambienttemp_conv->setMinimum(0);
     ui->qsb_ambienttemp_conv->setMaximum(FLOAT_MAX);
 
@@ -129,21 +137,6 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->dsb_emissivity->setValue(pcConstraint->Emissivity.getValue());
 
     ui->qsb_heat_flux->setValue(pcConstraint->DFlux.getQuantityValue());
-
-    std::string constraint_type = pcConstraint->ConstraintType.getValueAsString();
-
-    if (constraint_type == "Convection") {
-        ui->rb_convection->setChecked(true);
-        ui->sw_heatflux->setCurrentIndex(0);
-    }
-    else if (constraint_type == "Radiation") {
-        ui->rb_radiation->setChecked(true);
-        ui->sw_heatflux->setCurrentIndex(1);
-    }
-    else if (constraint_type == "DFlux") {
-        ui->rb_dflux->setChecked(true);
-        ui->sw_heatflux->setCurrentIndex(2);
-    }
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -216,12 +209,12 @@ void TaskFemConstraintHeatflux::Conv()
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.ConstraintType = %s",
+                            "App.ActiveDocument.%s.ConstraintType = \"%s\"",
                             name.c_str(),
-                            get_constraint_type().c_str());
+                            getConstraintType().c_str());
     ui->qsb_ambienttemp_conv->setValue(pcConstraint->AmbientTemp.getQuantityValue());
     ui->qsb_film_coef->setValue(pcConstraint->FilmCoef.getQuantityValue());
-    ui->sw_heatflux->setCurrentIndex(0);
+    ui->sw_heatflux->setCurrentIndex(1);
 }
 
 void TaskFemConstraintHeatflux::Rad()
@@ -229,12 +222,12 @@ void TaskFemConstraintHeatflux::Rad()
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.ConstraintType = %s",
+                            "App.ActiveDocument.%s.ConstraintType = \"%s\"",
                             name.c_str(),
-                            get_constraint_type().c_str());
+                            getConstraintType().c_str());
     ui->qsb_ambienttemp_rad->setValue(pcConstraint->AmbientTemp.getQuantityValue());
     ui->dsb_emissivity->setValue(pcConstraint->Emissivity.getValue());
-    ui->sw_heatflux->setCurrentIndex(1);
+    ui->sw_heatflux->setCurrentIndex(2);
 }
 
 void TaskFemConstraintHeatflux::Flux()
@@ -242,11 +235,27 @@ void TaskFemConstraintHeatflux::Flux()
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.ConstraintType = %s",
+                            "App.ActiveDocument.%s.ConstraintType = \"%s\"",
                             name.c_str(),
-                            get_constraint_type().c_str());
+                            getConstraintType().c_str());
     ui->qsb_heat_flux->setValue(pcConstraint->DFlux.getQuantityValue());
-    ui->sw_heatflux->setCurrentIndex(2);
+    ui->sw_heatflux->setCurrentIndex(0);
+}
+
+void TaskFemConstraintHeatflux::onConstrTypeChanged(int item)
+{
+    auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
+    obj->ConstraintType.setValue(item);
+    const char* type = obj->ConstraintType.getValueAsString();
+    if (strcmp(type, "DFlux") == 0) {
+        this->Flux();
+    }
+    else if (strcmp(type, "Convection") == 0) {
+        this->Conv();
+    }
+    else if (strcmp(type, "Radiation") == 0) {
+        this->Rad();
+    }
 }
 
 void TaskFemConstraintHeatflux::addToSelection()
@@ -285,8 +294,7 @@ void TaskFemConstraintHeatflux::addToSelection()
         }
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
+            for (auto itr = std::ranges::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
@@ -349,9 +357,7 @@ void TaskFemConstraintHeatflux::removeFromSelection()
             // SubElements
         }
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -401,14 +407,17 @@ const std::string TaskFemConstraintHeatflux::getReferences() const
 
 std::string TaskFemConstraintHeatflux::getAmbientTemp() const
 {
-    if (ui->rb_convection->isChecked()) {
+    std::string type = this->getConstraintType();
+    if (type == "Convection") {
         return ui->qsb_ambienttemp_conv->value().getSafeUserString();
     }
-    if (ui->rb_radiation->isChecked()) {
+    else if (type == "Convection") {
         return ui->qsb_ambienttemp_rad->value().getSafeUserString();
     }
-    auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
-    return obj->AmbientTemp.getQuantityValue().getSafeUserString();
+    else {
+        auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
+        return obj->AmbientTemp.getQuantityValue().getSafeUserString();
+    }
 }
 
 std::string TaskFemConstraintHeatflux::getFilmCoef() const
@@ -426,19 +435,9 @@ double TaskFemConstraintHeatflux::getEmissivity() const
     return ui->dsb_emissivity->value();
 }
 
-std::string TaskFemConstraintHeatflux::get_constraint_type() const
+std::string TaskFemConstraintHeatflux::getConstraintType() const
 {
-    std::string type;
-    if (ui->rb_convection->isChecked()) {
-        type = "\"Convection\"";
-    }
-    else if (ui->rb_radiation->isChecked()) {
-        type = "\"Radiation\"";
-    }
-    else if (ui->rb_dflux->isChecked()) {
-        type = "\"DFlux\"";
-    }
-    return type;
+    return ui->cb_constr_type->currentText().toStdString();
 }
 
 void TaskFemConstraintHeatflux::changeEvent(QEvent* e)

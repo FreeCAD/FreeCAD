@@ -22,8 +22,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QPushButton>
+#endif
 
 #include <App/DocumentObject.h>
+#include <Gui/ComboView.h>
+#include <Gui/DockWindowManager.h>
+#include <Gui/propertyeditor/PropertyEditor.h>
+#include <Gui/propertyeditor/PropertyModel.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 
@@ -86,4 +93,52 @@ std::vector<App::DocumentObject*> ViewProviderAnnotation::claimChildren() const
 TechDraw::DrawViewAnnotation* ViewProviderAnnotation::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawViewAnnotation*>(pcObject);
+}
+
+bool ViewProviderAnnotation::doubleClicked()
+{
+    setEdit(ViewProvider::Default);
+    return true;
+}
+
+bool ViewProviderAnnotation::setEdit(int ModNum)
+{
+    if (ModNum != ViewProvider::Default) {
+        return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    // retrieves the PropertyEditor of the Data tab in the comboview of the
+    // mainwindow and opens the editor of the "text" property of the selected
+    // item and mimics a click of the button inside that editor, which opens
+    // the plain text edit dialog
+    // I feel quite dirty writing this but that was the cleanest way to prevent
+    // code duplication, because everything just works as long as the structure
+    // does not change. In case this modus operandi gets used more
+    // often, this should be delegated to a utility function that takes a property
+    // path and opens the "deepest" editor of that property
+    auto comboView = qobject_cast<Gui::DockWnd::ComboView*>(
+        Gui::DockWindowManager::instance()->getDockWindow("Model"));
+    if (!comboView) {
+        return false;
+    }
+    auto dataPropView = comboView->findChild<Gui::PropertyEditor::PropertyEditor*>(
+        QStringLiteral("propertyEditorData"));
+    if (!dataPropView) {
+        return false;
+    }
+    auto dataPropModel = qobject_cast<Gui::PropertyEditor::PropertyModel*>(dataPropView->model());
+    if (!dataPropModel) {
+        return false;
+    }
+    // the property data is a tree model, to we need the first item in the first group
+    auto index = dataPropModel->propertyIndexFromPath(
+        {QStringLiteral("Annotation"), QStringLiteral("Text")});
+    // setting the current item also opens the editor
+    dataPropView->setCurrentIndex(index);
+    dataPropView->activated(index);
+    // there is a button in the editor wigdet that opens a plain text dialog
+    auto button = dataPropView->findChild<QPushButton*>();
+    if (button) {
+        button->click();
+    }
+    return true;
 }

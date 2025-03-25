@@ -92,16 +92,6 @@ ViewProviderFemPostFunctionProvider::ViewProviderFemPostFunctionProvider() = def
 
 ViewProviderFemPostFunctionProvider::~ViewProviderFemPostFunctionProvider() = default;
 
-std::vector<App::DocumentObject*> ViewProviderFemPostFunctionProvider::claimChildren() const
-{
-    return getObject<Fem::FemPostFunctionProvider>()->Functions.getValues();
-}
-
-std::vector<App::DocumentObject*> ViewProviderFemPostFunctionProvider::claimChildren3D() const
-{
-    return claimChildren();
-}
-
 void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::onChanged(prop);
@@ -113,7 +103,7 @@ void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
     Fem::FemPostFunctionProvider* obj = getObject<Fem::FemPostFunctionProvider>();
-    if (prop == &obj->Functions) {
+    if (prop == &obj->Group) {
         updateSize();
     }
 }
@@ -333,7 +323,7 @@ bool ViewProviderFemPostFunction::setEdit(int ModNum)
             postDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !postDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

@@ -63,12 +63,7 @@ using namespace TechDraw;
 MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) {
     setupUi(this);
     m_lastBlockList = nullptr;
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
-    f_textedit->setTabStopWidth(40);
-#else
     f_textedit->setTabStopDistance(40);
-#endif
-//    setDefFontSize(getDefFontSizeNum());
     setDefFontSize(TechDrawGui::PreferencesGui::labelFontSizePX());
     m_defFont = getDefFont().family();
     f_textedit->setFont(getDefFont());
@@ -204,15 +199,10 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     for(int size: sizes) {
         f_fontsize->addItem(QString::number(size));
     }
-    //TODO: void QComboBox::setEditText(const QString &text) to " " when multiple select
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(f_fontsize, qOverload<const QString&>(&QComboBox::currentIndexChanged),
-            this, &MRichTextEdit::textSize);
-#else
+
     connect(f_fontsize, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
         textSize(f_fontsize->itemText(index));
     });
-#endif
 
     // text foreground color
 
@@ -282,18 +272,12 @@ void MRichTextEdit::textRemoveFormat() {
     fmt.setFontStrikeOut  (false);
     fmt.setFontItalic     (false);
     fmt.setFontPointSize  (m_defFontSize);
-//  fmt.setFontFamily     ("Helvetica");
-//  fmt.setFontStyleHint  (QFont::SansSerif);
-//  fmt.setFontFixedPitch (true);
 
     f_bold      ->setChecked(false);
     f_underline ->setChecked(false);
     f_italic    ->setChecked(false);
     f_strikeout ->setChecked(false);
     f_fontsize  ->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
-
-//  QTextBlockFormat bfmt = cursor.blockFormat();
-//  bfmt->setIndent(0);
 
     fmt.clearBackground();
 
@@ -428,11 +412,7 @@ void MRichTextEdit::textStyle(int index) {
         }
     if (index == ParagraphMonospace) {
         fmt = cursor.charFormat();
-#if QT_VERSION < QT_VERSION_CHECK(5,13,0)
-        fmt.setFontFamily(QString::fromUtf8("Monospace"));
-#else
         fmt.setFontFamilies(QStringList() << QString::fromUtf8("Monospace"));
-#endif
         fmt.setFontStyleHint(QFont::Monospace);
         fmt.setFontFixedPitch(true);
         }
@@ -530,7 +510,6 @@ void MRichTextEdit::mergeFormatOnWordOrSelection(const QTextCharFormat &format) 
 }
 
 void MRichTextEdit::slotCursorPositionChanged() {
-//    qDebug() << "MRTE::slotCursorPositionChanged()";
     //why do we change text style when selecting text?
     QTextCursor cursor = f_textedit->textCursor();
     if (cursor.hasSelection()) {                       //let selection logic handle this
@@ -569,7 +548,6 @@ void MRichTextEdit::slotCursorPositionChanged() {
 }
 
 void MRichTextEdit::fontChanged(const QFont &font) {
-//    qDebug() << "MRTE::fontChanged()";
     //TODO: change this to real font selector
     f_fontsize->setCurrentIndex(f_fontsize->findText(QString::number(font.pointSize())));
     f_bold->setChecked(font.bold());
@@ -634,14 +612,7 @@ void MRichTextEdit::bgColorChanged(const QColor &color) {
 }
 
 void MRichTextEdit::slotCurrentCharFormatChanged(const QTextCharFormat &format) {
-//    qDebug() << "MRTE::slotCurrentCharFormatChanged()";
     Q_UNUSED(format);
-    //again, why do we do all this just because the cursor moved?
-    //can it be this simple???
-//    fontChanged(format.font());
-//    bgColorChanged((format.background().isOpaque()) ? format.background().color() : QColor());
-//    fgColorChanged((format.foreground().isOpaque()) ? format.foreground().color() : QColor());
-//    f_link->setChecked(format.isAnchor());
 }
 
 void MRichTextEdit::slotClipboardDataChanged() {
@@ -723,7 +694,6 @@ void MRichTextEdit::onExit()
 
 void MRichTextEdit::onSelectionChanged()
 {
-//    qDebug() << "MRTE::onSelectionChanged()";
     if (hasMultipleSizes()) {
         f_fontsize->setEditText(QString());
         f_fontsize->setCurrentIndex(-1);
@@ -739,7 +709,6 @@ void MRichTextEdit::onSelectionChanged()
 //does selection have multiple sizes?
 bool MRichTextEdit::hasMultipleSizes()
 {
-//    qDebug() << "MRTE::hasMultipleSizes()";
     QTextCursor cursor = f_textedit->textCursor();
     if (cursor.hasSelection()) {
         int begin = cursor.selectionStart();
@@ -767,7 +736,6 @@ bool MRichTextEdit::hasMultipleSizes()
 
 void MRichTextEdit::setDefFontSize(int fontSize)
 {
-//    Base::Console().Message("MRTE::setDefFontSize(%d)\n", fs);
     m_defFontSize = fontSize;
     m_fontsize_h1 = fontSize + 8;
     m_fontsize_h2 = fontSize + 6;
@@ -787,7 +755,6 @@ void MRichTextEdit::setDefFontSize(int fontSize)
 
 int MRichTextEdit::getDefFontSizeNum()
 {
-//    Base::Console().Message("MRTE::getDefFontSizeNum()\n");
     double fontSize = TechDraw::Preferences::dimFontSizeMM();
 
     //this conversion is only approximate. the factor changes for different fonts.
@@ -799,7 +766,6 @@ int MRichTextEdit::getDefFontSizeNum()
 
 QString MRichTextEdit::getDefFontSize()
 {
-//    Base::Console().Message("MRTE::getDefFontSize()\n");
     return QString::number(getDefFontSizeNum());
 }
 
@@ -823,7 +789,6 @@ QFont MRichTextEdit::getDefFont()
 // if the conversion factor is float, will generate non-standard sizes
 void MRichTextEdit::addFontSize(QString fontSize)
 {
-//    Base::Console().Message("MRTE::addFontSize(%s)\n", qPrintable(fs));
     QStringList newList;
     int fsVal = fontSize.toInt();
     int size = f_fontsize->count();
