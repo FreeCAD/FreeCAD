@@ -22,13 +22,18 @@
 
 """Unit test for the Native IFC module"""
 
+import difflib
 import os
-import time
 import tempfile
-import FreeCAD
-import Draft
-import Arch
 import unittest
+
+import ifcopenshell
+from ifcopenshell.util import element
+
+import FreeCAD
+import Arch
+import Draft
+
 from . import ifc_import
 from . import ifc_tools
 from . import ifc_geometry
@@ -37,9 +42,7 @@ from . import ifc_layers
 from . import ifc_psets
 from . import ifc_objects
 from . import ifc_generator
-import ifcopenshell
-from ifcopenshell.util import element
-import difflib
+
 
 IFC_FILE_PATH = None  # downloaded IFC file path
 FCSTD_FILE_PATH = None  # saved FreeCAD file

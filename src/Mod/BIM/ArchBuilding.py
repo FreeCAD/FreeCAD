@@ -20,25 +20,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-import ArchCommands
-import ArchFloor
-import Draft
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
 __title__  = "FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
@@ -49,6 +30,27 @@ __url__    = "https://www.freecad.org"
 #
 #  This module provides tools to build building objects.
 #  Buildings are primarily containers for Arch objects
+
+import FreeCAD
+import ArchCommands
+import ArchFloor
+import Draft
+
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+
 
 BuildingTypes = ['Undefined',
 'Agricultural - Barn',

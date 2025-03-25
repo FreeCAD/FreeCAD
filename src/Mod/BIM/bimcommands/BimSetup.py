@@ -24,6 +24,7 @@
 
 import os
 import sys
+
 import FreeCAD
 import FreeCADGui
 
@@ -396,7 +397,7 @@ class BIM_Setup:
         )
 
     def setPreset(self, preset=None):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         unit = None
         decimals = None
@@ -650,11 +651,11 @@ class BIM_Setup:
                         ifcok = True
         if not ifcok:
             # ifcopenshell not installed
-            import re
             import json
-            from PySide import QtGui
-            import zipfile
+            import re
             from urllib import request
+            import zipfile
+            from PySide import QtGui
 
             if not FreeCAD.GuiUp:
                 reply = QtGui.QMessageBox.Yes

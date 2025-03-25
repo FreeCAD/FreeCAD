@@ -24,7 +24,6 @@
 
 """The BIM Fuse command"""
 
-
 import FreeCAD
 import FreeCADGui
 
@@ -44,7 +43,6 @@ class BIM_Fuse:
         return v
 
     def Activated(self):
-        import PartGui
         FreeCADGui.runCommand("Part_Fuse")
 
 

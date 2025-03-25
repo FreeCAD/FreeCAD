@@ -20,6 +20,16 @@
 #*                                                                         *
 #***************************************************************************
 
+__title__  = "FreeCAD Project"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchProject
+#  \ingroup ARCH
+#  \brief The Project object and tools
+#
+#  This module provides tools to build Project objects.
+
 """This module provides tools to build Project objects.  Project objects are
 objects specifically for better IFC compatibility, allowing the user to tweak
 certain IFC relevant values.
@@ -28,25 +38,16 @@ certain IFC relevant values.
 import FreeCAD
 import ArchIFC
 import ArchIFCView
+
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
-
-## @package ArchProject
-#  \ingroup ARCH
-#  \brief The Project object and tools
-#
-#  This module provides tools to build Project objects.
-
-__title__  = "FreeCAD Project"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
 
 
 class _Project(ArchIFC.IfcContext):

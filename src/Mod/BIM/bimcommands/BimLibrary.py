@@ -25,13 +25,15 @@ from __future__ import print_function
 
 """The BIM library tool"""
 
-import sys
 import os
+import sys
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 FILTERS = [
@@ -108,7 +110,7 @@ class BIM_Library_TaskPanel:
 
     def __init__(self, offlinemode=False):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.mainDocName = FreeCAD.Gui.ActiveDocument.Document.Name
         self.previewDocName = "Viewer"
@@ -345,7 +347,9 @@ class BIM_Library_TaskPanel:
     def addtolibrary(self):
         # DISABLED
 
-        import Part, Mesh, os
+        import os
+        import Mesh
+        import Part
 
         self.fileDialog = QtGui.QFileDialog.getSaveFileName(
             None, "Save As", self.librarypath
@@ -380,7 +384,6 @@ class BIM_Library_TaskPanel:
 
     def setSearchModel(self, text):
 
-        import PartGui
         from PySide import QtGui
 
         def add_line(f, dp):
@@ -445,7 +448,6 @@ class BIM_Library_TaskPanel:
     def setOnlineModel(self):
 
         from PySide import QtGui
-        import PartGui
 
         def addItems(root, d, path):
             for k, v in d.items():
@@ -813,8 +815,8 @@ class BIM_Library_TaskPanel:
     def getOnlineContentsAPI(self, url):
         """same as getOnlineContents but uses github API (faster)"""
 
-        import requests
         import json
+        import requests
 
         result = {}
         count = 0

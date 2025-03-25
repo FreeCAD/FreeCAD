@@ -22,11 +22,14 @@
 import json
 import math
 
-import FreeCAD
-# import Draft
 import ifcopenshell
 from ifcopenshell import guid
+
+import FreeCAD
+# import Draft
+
 from draftutils import params
+
 
 def getObjectsOfIfcType(objects, ifcType):
     results = []

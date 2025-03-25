@@ -22,7 +22,6 @@
 
 """This NativeIFC module deals with properties and property sets"""
 
-
 import os
 import re
 

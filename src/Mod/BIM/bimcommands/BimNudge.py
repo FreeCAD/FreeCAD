@@ -22,7 +22,6 @@
 
 """BIM nudge commands"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -36,7 +35,7 @@ class BIM_Nudge:
     def getNudgeValue(self, mode):
         "mode can be dist, up, down, left, right. dist returns a float in mm, other modes return a 3D vector"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         mw = FreeCADGui.getMainWindow()
         if mw:
@@ -136,7 +135,7 @@ class BIM_Nudge_Switch(BIM_Nudge):
         }
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         mw = FreeCADGui.getMainWindow()
         if mw:

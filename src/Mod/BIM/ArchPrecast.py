@@ -23,16 +23,26 @@ __title__  = "FreeCAD Precast concrete module"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
+## @package ArchPrecast
+#  \ingroup ARCH
+#  \brief Precast options for ArchStructure
+#
+#  This module provides additional presets for the Arch Structure
+#  tool, to build a series of precast concrete elements
+
 """This module contains tools to build basic precast concrete elements:
 Beams, pillars, slabs and panels"""
 
-import ArchCommands,ArchComponent,FreeCAD
+import FreeCAD
+import ArchCommands
+import ArchComponent
+
 from FreeCAD import Vector
 from draftutils import params
 
 if FreeCAD.GuiUp:
-    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):
@@ -41,12 +51,6 @@ else:
         return txt
     # \endcond
 
-## @package ArchPrecast
-#  \ingroup ARCH
-#  \brief Precast options for ArchStructure
-#
-#  This module provides additional presets for the Arch Structure
-#  tool, to build a series of precast concrete elements
 
 class _Precast(ArchComponent.Component):
 
@@ -684,7 +688,8 @@ class _PrecastStairs(_Precast):
         if length < tread:
             length = tread # minimum
 
-        import math,Part
+        import math
+        import Part
 
         p = [Vector(0,0,0)] # relative moves
         if downlength:

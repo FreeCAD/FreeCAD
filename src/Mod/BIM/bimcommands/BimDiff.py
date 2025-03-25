@@ -22,7 +22,6 @@
 
 """The BIM Diff command"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -49,7 +48,7 @@ class BIM_Diff:
         # make the main doc the active one before running this script!
 
         # what will be compared: IDs, geometry, materials. Everything else is discarded.
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         import Draft
 
         MOVE_TOLERANCE = 0.2  # the max allowed move in mm

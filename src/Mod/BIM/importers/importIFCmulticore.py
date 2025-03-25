@@ -18,18 +18,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """FreeCAD IFC importer - Multicore version"""
 
+import os
 import sys
 import time
-import os
 
 import FreeCAD
-import Draft
 import Arch
-from importers import importIFCHelper
-from FreeCAD import Base
 import ArchIFC
+import Draft
+
+from FreeCAD import Base
+
+from importers import importIFCHelper
 
 # global dicts to store ifc object/freecad object relationships
 

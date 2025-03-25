@@ -24,10 +24,10 @@
 
 """The BIM TDPage command"""
 
+import os
 
 import FreeCAD
 import FreeCADGui
-import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -49,7 +49,7 @@ class BIM_TDPage:
         return v
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         import TechDraw
 
         templatedir = FreeCAD.ParamGet(
