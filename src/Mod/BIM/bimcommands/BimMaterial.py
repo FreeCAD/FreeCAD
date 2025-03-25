@@ -521,10 +521,8 @@ class BIM_Material:
                     if o.Name == name:
                         self.dlg.matList.setCurrentItem(i)
             if hasattr(self.dlg, "buttonMergeDupes"):
-                if len(self.dlg.materials) > 1:
-                    self.dlg.buttonMergeDupes.setEnabled(True)
-                else:
-                    self.dlg.buttonMergeDupes.setEnabled(False)
+                hasMultipleMaterials = len(self.dlg.materials) > 1
+                self.dlg.buttonMergeDupes.setEnabled(hasMultipleMaterials)
 
     def createIcon(self, obj):
         from PySide import QtCore, QtGui
