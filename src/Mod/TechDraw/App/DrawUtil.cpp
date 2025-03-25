@@ -1897,6 +1897,13 @@ std::string DrawUtil::cleanFilespecBackslash(const std::string& filespec)
     return noBackslash;
 }
 
+//! returns true if the Gui module and its event loop are active.
+bool DrawUtil::isGuiUp()
+{
+    auto* app = QCoreApplication::instance();
+    return (app != nullptr) && app->inherits("QApplication");
+}
+
 
 //============================
 // various debugging routines.

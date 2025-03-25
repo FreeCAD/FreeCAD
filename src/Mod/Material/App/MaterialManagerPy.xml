@@ -10,7 +10,7 @@
       FatherInclude="Base/BaseClassPy.h"
       FatherNamespace="Base"
       Constructor="true"
-      Delete="true">
+      Delete="false">
     <Documentation>
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material descriptions.</UserDocu>

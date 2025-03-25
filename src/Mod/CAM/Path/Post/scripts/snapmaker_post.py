@@ -116,22 +116,24 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.arguments_visible: dict[str, bool] = dict()
         self.parser = argparse.ArgumentParser()
 
-        self.init_values()
-        self.init_argument_defaults()
-        self.init_arguments_visible()
-        self.parser = self.init_parser(self.values, self.argument_defaults, self.arguments_visible)
+        self.snapmaker_init_values()
+        self.snapmaker_init_argument_defaults()
+        self.snapmaker_init_arguments_visible()
+        self.parser = self.snapmaker_init_parser(
+            self.values, self.argument_defaults, self.arguments_visible
+        )
 
         # create another parser with all visible arguments
         all_arguments_visible = dict()
         for key in iter(self.arguments_visible):
             all_arguments_visible[key] = True
-        self.visible_parser = self.init_parser(
+        self.visible_parser = self.snapmaker_init_parser(
             self.values, self.argument_defaults, all_arguments_visible
         )
 
         FreeCAD.Console.PrintLog(f'{self.values["POSTPROCESSOR_FILE_NAME"]}: initialized.\n')
 
-    def init_values(self):
+    def snapmaker_init_values(self):
         """Initialize values that are used throughout the postprocessor."""
         Path.Post.UtilsArguments.init_shared_values(self.values)
 
@@ -197,7 +199,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             "percent"
         ]
 
-    def init_argument_defaults(self) -> None:
+    def snapmaker_init_argument_defaults(self) -> None:
         """Initialize which arguments (in a pair) are shown as the default argument."""
         Path.Post.UtilsArguments.init_argument_defaults(self.argument_defaults)
 
@@ -210,7 +212,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.argument_defaults["boundaries-check"] = True
         self.argument_defaults["spindle-percent"] = True
 
-    def init_arguments_visible(self) -> None:
+    def snapmaker_init_arguments_visible(self) -> None:
         """Initialize which argument pairs are visible in TOOLTIP_ARGS."""
         Path.Post.UtilsArguments.init_arguments_visible(self.arguments_visible)
 
@@ -232,7 +234,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.arguments_visible["line-increment"] = True
         self.arguments_visible["spindle-speeds"] = True
 
-    def init_parser(self, values, argument_defaults, arguments_visible) -> argparse.ArgumentParser:
+    def snapmaker_init_parser(
+        self, values, argument_defaults, arguments_visible
+    ) -> argparse.ArgumentParser:
         """Initialize the postprocessor arguments parser"""
         parser = Path.Post.UtilsArguments.init_shared_arguments(
             values, argument_defaults, arguments_visible
@@ -335,7 +339,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return parser
 
-    def process_arguments(self, filename: str = "-") -> (bool, str | argparse.Namespace):
+    def snapmaker_process_arguments(self, filename: str = "-") -> (bool, str | argparse.Namespace):
         """Process any arguments to the postprocessor."""
         (flag, args) = Path.Post.UtilsArguments.process_shared_arguments(
             self.values, self.parser, self._job.PostProcessorArgs, self.visible_parser, filename
@@ -389,7 +393,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return flag, args
 
-    def process_postables(self, filename: str = "-") -> [(str, str)]:
+    def snapmaker_process_postables(self, filename: str = "-") -> [(str, str)]:
         """process job sections to gcode"""
         sections: [(str, str)] = list()
 
@@ -622,11 +626,12 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
     def export(self, filename: str | pathlib.Path = "-"):
         """process gcode and export"""
-        (flag, args) = self.process_arguments()
+        (flag, args) = self.snapmaker_process_arguments()
         if flag:
-            return self.process_postables(filename)
-        else:
-            return [("allitems", args)]
+            return self.snapmaker_process_postables(filename)
+        if args is None:
+            return None
+        return [("allitems", args)]
 
     @property
     def tooltip(self) -> str:

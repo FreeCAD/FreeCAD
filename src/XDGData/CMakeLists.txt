@@ -30,7 +30,20 @@ install(
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages
 )
 
+configure_file(
+    FreeCAD.thumbnailer.in
+    ${CMAKE_BINARY_DIR}/FreeCAD.thumbnailer
+)
 install(
-    FILES FreeCAD.thumbnailer
+    FILES ${CMAKE_BINARY_DIR}/FreeCAD.thumbnailer
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/thumbnailers
+)
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/src/Tools/freecad-thumbnailer.in
+    ${CMAKE_BINARY_DIR}/freecad-thumbnailer
+)
+install(
+    PROGRAMS ${CMAKE_BINARY_DIR}/freecad-thumbnailer
+    TYPE BIN
 )

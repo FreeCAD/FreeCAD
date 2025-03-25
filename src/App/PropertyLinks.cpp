@@ -3731,7 +3731,11 @@ PropertyXLink::PropertyXLink(bool _allowPartial, PropertyLinkBase* parent)
 
 PropertyXLink::~PropertyXLink()
 {
-    unlink();
+    try {
+        unlink();
+    } catch (std::bad_weak_ptr &) {
+        FC_WARN("Bad pointer exception caught when destroying PropertyXLink\n");
+    }
 }
 
 void PropertyXLink::setSyncSubObject(bool enable)

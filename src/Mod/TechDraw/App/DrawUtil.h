@@ -260,6 +260,7 @@ public:
 
     static std::string cleanFilespecBackslash(const std::string& filespec);
 
+    static bool isGuiUp();
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);

@@ -67,9 +67,12 @@ if(BUILD_FEM_VTK)
         FemPostObjectPyImp.cpp
         FemPostPipelinePy.xml
         FemPostPipelinePyImp.cpp
+        FemPostBranchFilterPy.xml
+        FemPostBranchFilterPyImp.cpp
     )
     generate_from_xml(FemPostObjectPy)
     generate_from_xml(FemPostPipelinePy)
+    generate_from_xml(FemPostBranchFilterPy)
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -80,8 +83,12 @@ if(BUILD_FEM_VTK)
         PropertyPostDataObject.cpp
         FemPostObject.h
         FemPostObject.cpp
+        FemPostGroupExtension.h
+        FemPostGroupExtension.cpp
         FemPostPipeline.h
         FemPostPipeline.cpp
+        FemPostBranchFilter.h
+        FemPostBranchFilter.cpp
         FemPostFilter.h
         FemPostFilter.cpp
         FemPostFunction.h

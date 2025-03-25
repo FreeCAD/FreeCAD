@@ -1022,7 +1022,7 @@ void MaterialConfigLoader::addLegacy(const QMap<QString, QString>& fcmat,
 {
     for (auto const& legacy : fcmat.keys()) {
         auto name = legacy;
-        int last = name.lastIndexOf(QLatin1String("/"));
+        int last = name.lastIndexOf(QStringLiteral("/"));
         if (last > 0) {
             name = name.mid(last + 1);
         }
@@ -1034,7 +1034,7 @@ void MaterialConfigLoader::addLegacy(const QMap<QString, QString>& fcmat,
 }
 
 std::shared_ptr<Material>
-MaterialConfigLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& library,
+MaterialConfigLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>& library,
                                           const QString& path)
 {
     QString author = getAuthorAndLicense(path);  // Place them both in the author field
@@ -1056,7 +1056,10 @@ MaterialConfigLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>
     QString sourceReference = value(fcmat, "ReferenceSource", "");
     QString sourceURL = value(fcmat, "SourceURL", "");
 
-    std::shared_ptr<Material> finalModel = std::make_shared<Material>(library, path, uuid, name);
+    auto baseLibrary =
+        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibrary>&>(library);
+    std::shared_ptr<Material> finalModel =
+        std::make_shared<Material>(baseLibrary, path, uuid, name);
     finalModel->setOldFormat(true);
 
     finalModel->setAuthor(author);
