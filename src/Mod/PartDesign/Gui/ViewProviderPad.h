@@ -56,6 +56,7 @@ public:
     Base::Placement getDraggerPlacement();
     double getPadLengthFromDragger();
     void hideUnWantedAxes();
+    void setDraggerLabel();
 
     void setDraggerPosFromUI(double value);
 

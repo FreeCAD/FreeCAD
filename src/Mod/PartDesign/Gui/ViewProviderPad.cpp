@@ -75,7 +75,6 @@ bool ViewProviderPad::setEdit([[maybe_unused]] int ModNum)
     assert(!dragger);
     dragger = new Gui::SoFCCSysDragger();
     dragger->setAxisColors(0x00000000, 0x00000000, 0xFF0000FF);
-    dragger->zAxisLabel.setValue("Length");
     dragger->draggerSize.setValue(Gui::ViewParams::instance()->getDraggerScale());
 
     dragger->addStartCallback(dragStartCallback, this);
@@ -85,6 +84,7 @@ bool ViewProviderPad::setEdit([[maybe_unused]] int ModNum)
     dialog = new TaskDlgPadParameters(this);
     Gui::Control().showDialog(dialog);
 
+    setDraggerLabel();
     updatePosition(dialog->getPadLength());
     hideUnWantedAxes();
 
@@ -192,6 +192,7 @@ void ViewProviderPad::dragMotionCallback(void *data, SoDragger *d)
     // This is hack used due to pad of 0 length giving arbitrary size in the model
     if (std::abs(padLength - 0.001) <= 0.01) {
         vp->updatePosition(padLength);
+        vp->setDraggerLabel();
     }
 
     Base::Console().Message("Continuing dragging, Pad Length: %lf\n", padLength);
@@ -200,4 +201,10 @@ void ViewProviderPad::dragMotionCallback(void *data, SoDragger *d)
 void PartDesignGui::ViewProviderPad::setDraggerPosFromUI(double value)
 {
     updatePosition(value);
+    setDraggerLabel();
+}
+
+void PartDesignGui::ViewProviderPad::setDraggerLabel()
+{
+    dragger->zAxisLabel.setValue(fmt::format("Length: {}", dialog->getPadLength()).c_str());
 }
