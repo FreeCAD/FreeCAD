@@ -14,15 +14,15 @@
         <Documentation>
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
             <UserDocu>Describes an infinite line in 2D space
-                To create a line there are several ways:
-                Part.Geom2d.Line2d()
-                    Creates a default line.
+To create a line there are several ways:
+Part.Geom2d.Line2d()
+    Creates a default line.
 
-                Part.Geom2d.Line2d(Line)
-                    Creates a copy of the given line.
+Part.Geom2d.Line2d(Line)
+    Creates a copy of the given line.
 
-                Part.Geom2d.Line2d(Point,Dir)
-                    Creates a line that goes through two given points.</UserDocu>
+Part.Geom2d.Line2d(Point,Dir)
+    Creates a line that goes through two given points.</UserDocu>
         </Documentation>
         <Attribute Name="Location" ReadOnly="false">
             <Documentation>
