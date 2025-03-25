@@ -34,20 +34,34 @@
 #include "ModelManager.h"
 
 #include "ModelManagerLocal.h"
+#if defined(BUILD_MATERIAL_EXTERNAL)
+#include "ModelManagerExternal.h"
+#endif
 
 using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
 QMutex ModelManager::_mutex;
+bool ModelManager::_useExternal = false;
 ModelManager* ModelManager::_manager = nullptr;
 std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
+#if defined(BUILD_MATERIAL_EXTERNAL)
+std::unique_ptr<ModelManagerExternal> ModelManager::_externalManager;
+#endif
 
 ModelManager::ModelManager()
-{}
+{
+    _hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    _useExternal = _hGrp->GetBool("UseExternal", false);
+    _hGrp->Attach(this);
+}
 
 ModelManager::~ModelManager()
-{}
+{
+    _hGrp->Detach(this);
+}
 
 ModelManager& ModelManager::getManager()
 {
@@ -68,6 +82,22 @@ void ModelManager::initManagers()
     }
     if (!_localManager) {
         _localManager = std::make_unique<ModelManagerLocal>();
+    }
+
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (!_externalManager) {
+        _externalManager = std::make_unique<ModelManagerExternal>();
+    }
+#endif
+}
+
+void ModelManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
+{
+    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+    if (strcmp(Reason, "UseExternal") == 0) {
+        Base::Console().Log("Use external changed\n");
+        _useExternal = rGrp.GetBool("UseExternal", false);
+        // _dbManager->refresh();
     }
 }
 
@@ -97,7 +127,11 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocal
 }
 
 void ModelManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
-{}
+{
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    _externalManager->createLibrary(libraryName, icon, readOnly);
+#endif
+}
 
 void ModelManager::createLocalLibrary(const QString& libraryName,
                                       const QString& directory,
@@ -145,6 +179,15 @@ std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManager::getLoca
 
 std::shared_ptr<Model> ModelManager::getModel(const QString& uuid) const
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_useExternal) {
+        auto model = _externalManager->getModel(uuid);
+        if (model) {
+            return model;
+        }
+    }
+#endif
+    // We really want to return the local model if not found, such as for User folder models
     return _localManager->getModel(uuid);
 }
 
@@ -178,3 +221,51 @@ bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType)
 
     return false;
 }
+
+#if defined(BUILD_MATERIAL_EXTERNAL)
+void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library)
+{
+    _externalManager->createLibrary(library->getName(),
+                                    library->getIconPath(),
+                                    library->isReadOnly());
+
+    auto models = _localManager->libraryModels(library->getName());
+    for (auto& tuple : *models) {
+        auto uuid = std::get<0>(tuple);
+        auto path = std::get<1>(tuple);
+        auto name = std::get<2>(tuple);
+        Base::Console().Log("\t('%s', '%s', '%s')\n",
+                            uuid.toStdString().c_str(),
+                            path.toStdString().c_str(),
+                            name.toStdString().c_str());
+
+        auto model = _localManager->getModel(uuid);
+        _externalManager->migrateModel(library->getName(), path, model);
+    }
+}
+
+void ModelManager::validateMigration(const std::shared_ptr<Materials::ModelLibrary>& library)
+{
+    auto models = _localManager->libraryModels(library->getName());
+    for (auto& tuple : *models) {
+        auto uuid = std::get<0>(tuple);
+        auto path = std::get<1>(tuple);
+        auto name = std::get<2>(tuple);
+        Base::Console().Log("\t('%s', '%s', '%s')\n",
+                            uuid.toStdString().c_str(),
+                            path.toStdString().c_str(),
+                            name.toStdString().c_str());
+
+        auto model = _localManager->getModel(uuid);
+        auto externalModel = _externalManager->getModel(uuid);
+        model->validate(externalModel);
+    }
+}
+
+// Cache stats
+double ModelManager::modelHitRate()
+{
+    initManagers();
+    return _externalManager->modelHitRate();
+}
+#endif

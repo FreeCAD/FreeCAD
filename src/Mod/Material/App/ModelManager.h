@@ -39,7 +39,7 @@ namespace Materials
 class ModelManagerLocal;
 class ModelManagerExternal;
 
-class MaterialsExport ModelManager: public Base::BaseClass
+class MaterialsExport ModelManager: public Base::BaseClass, ParameterGrp::ObserverType
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -80,13 +80,30 @@ public:
     static bool isModel(const QString& file);
     static bool passFilter(ModelFilter filter, Model::ModelType modelType);
 
+    /// Observer message from the ParameterGrp
+    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
+
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    void migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library);
+    void validateMigration(const std::shared_ptr<Materials::ModelLibrary>& library);
+
+    // Cache functions
+    static double modelHitRate();
+#endif
+
 private:
     ModelManager();
     static void initManagers();
 
     static ModelManager* _manager;
     static std::unique_ptr<ModelManagerLocal> _localManager;
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    static std::unique_ptr<ModelManagerExternal> _externalManager;
+#endif
     static QMutex _mutex;
+    static bool _useExternal;
+
+    ParameterGrp::handle _hGrp;
 };
 
 }  // namespace Materials

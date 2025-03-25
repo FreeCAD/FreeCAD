@@ -207,7 +207,7 @@ MaterialManagerLocal::libraryMaterials(const QString& libraryName)
     for (auto& it : *_materialMap) {
         // This is needed to resolve cyclic dependencies
         auto library = it.second->getLibrary();
-        if (library->sameName(libraryName)) {
+        if (library->getName() == libraryName) {
             materials->push_back(std::tuple<QString, QString, QString>(it.first,
                                                                        it.second->getDirectory(),
                                                                        it.second->getName()));

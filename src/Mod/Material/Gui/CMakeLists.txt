@@ -4,6 +4,10 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+if(BUILD_MATERIAL_EXTERNAL)
+    add_definitions(-DBUILD_MATERIAL_EXTERNAL)
+endif(BUILD_MATERIAL_EXTERNAL)
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -54,6 +58,12 @@ set(MatGui_UIC_SRCS
     ModelSelect.ui
     TextEdit.ui
 )
+if(BUILD_MATERIAL_EXTERNAL)
+    list(APPEND MatGui_UIC_SRCS
+        DlgSettingsExternal.ui
+        TaskMigrateExternal.ui
+    )
+endif(BUILD_MATERIAL_EXTERNAL)
 
 SET(MatGui_SRCS
     ${Python_SRCS}
@@ -126,6 +136,16 @@ SET(MatGui_SRCS
     WorkbenchManipulator.cpp
     WorkbenchManipulator.h
 )
+if(BUILD_MATERIAL_EXTERNAL)
+    list(APPEND MatGui_SRCS
+        DlgSettingsExternal.cpp
+        DlgSettingsExternal.h
+        DlgSettingsExternal.ui
+        TaskMigrateExternal.cpp
+        TaskMigrateExternal.h
+        TaskMigrateExternal.ui
+    )
+endif(BUILD_MATERIAL_EXTERNAL)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
