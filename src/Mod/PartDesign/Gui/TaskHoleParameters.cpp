@@ -73,14 +73,17 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
-    bool isNone = std::string(pcHole->ThreadType.getValueAsString()) == "None";
+    bool isCustom = std::string(pcHole->ThreadType.getValueAsString()) == "Custom";
 
-    ui->Threaded->setHidden(isNone);
-    ui->ThreadSize->setHidden(isNone);
-    ui->labelSize->setHidden(isNone);
+    ui->ThreadSize->setHidden(isCustom);
+    ui->labelSize->setHidden(isCustom);
+    ui->ThreadClass->setHidden(isCustom);
+    ui->labelThreadClass->setHidden(isCustom);
 
     ui->Threaded->setChecked(pcHole->Threaded.getValue());
     ui->ThreadType->setCurrentIndex(pcHole->ThreadType.getValue());
+    ui->ThreadDiameter->setValue(pcHole->ThreadDiameter.getValue());
+    ui->ThreadPitch->setValue(pcHole->ThreadPitch.getValue());
 
     ui->ThreadSize->clear();
     std::vector<std::string> cursor = pcHole->ThreadSize.getEnumVector();
@@ -163,14 +166,15 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     bool isThreaded = ui->Threaded->isChecked();
     bool isModeled = pcHole->ModelThread.getValue();
     ui->ThreadGroupBox->setVisible(isThreaded);
-    ui->ClearanceWidget->setHidden(isNone || isThreaded);
+    ui->ClearanceWidget->setHidden(isCustom || isThreaded);
     ui->ModelThread->setChecked(isModeled);
     ui->UseCustomThreadClearance->setChecked(pcHole->UseCustomThreadClearance.getValue());
     ui->CustomThreadClearance->setValue(pcHole->CustomThreadClearance.getValue());
     ui->ThreadDepthType->setCurrentIndex(pcHole->ThreadDepthType.getValue());
     ui->ThreadDepth->setValue(pcHole->ThreadDepth.getValue());
+    ui->CustomThreadWidget->setEnabled(isCustom);
 
-    ui->ModelThread->setEnabled(ui->Threaded->isChecked() && ui->ThreadType->currentIndex() != 0);
+    ui->ModelThread->setEnabled(ui->Threaded->isChecked());
     ui->CustomClearanceWidget->setVisible(isThreaded && isModeled);
     ui->CustomThreadClearance->setEnabled(ui->UseCustomThreadClearance->isChecked());
     ui->UpdateView->setChecked(false);
@@ -197,7 +201,11 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     connect(ui->ThreadFit, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskHoleParameters::threadFitChanged);
     connect(ui->Diameter, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::DiameterChanged);
+    connect(ui->ThreadDiameter, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskHoleParameters::threadDiameterChanged);
+    connect(ui->ThreadPitch, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::threadPitchChanged);
     connect(ui->directionRightHand, &QRadioButton::clicked,
             this, &TaskHoleParameters::threadDirectionChanged);
     connect(ui->directionLeftHand, &QRadioButton::clicked,
@@ -253,6 +261,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->TaperedAngle->bind(pcHole->TaperedAngle);
     ui->ThreadDepth->bind(pcHole->ThreadDepth);
     ui->CustomThreadClearance->bind(pcHole->CustomThreadClearance);
+    ui->ThreadDiameter->bind(pcHole->ThreadDiameter);
+    ui->ThreadPitch->bind(pcHole->ThreadPitch);
 
     // NOLINTBEGIN
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
@@ -269,11 +279,12 @@ void TaskHoleParameters::threadedChanged()
     auto pcHole = getObject<PartDesign::Hole>();
 
     bool isChecked = ui->Threaded->isChecked();
+    bool isCustom = std::string(pcHole->ThreadType.getValueAsString()) == "Custom";
     pcHole->Threaded.setValue(isChecked);
 
     ui->ThreadGroupBox->setVisible(isChecked);
-    ui->ClearanceWidget->setHidden(isChecked);
-    // run modelThreadChanged 
+    ui->ClearanceWidget->setHidden(isChecked || isCustom);
+    // run modelThreadChanged
     // it will handle the visibility of the model options
     modelThreadChanged();
     recomputeFeature();
@@ -646,14 +657,15 @@ void TaskHoleParameters::threadTypeChanged(int index)
     // now set the new type, this will reset the comboboxes to item 0
     hole->ThreadType.setValue(index);
 
-    // Threaded checkbox is meaningless if no thread profile is selected.
-    bool isNone = std::string(hole->ThreadType.getValueAsString()) == "None";
+    bool isCustom = std::string(hole->ThreadType.getValueAsString()) == "Custom";
     bool isThreaded = hole->Threaded.getValue();
-    ui->Threaded->setHidden(isNone);
-    ui->ThreadGroupBox->setHidden(isNone || !isThreaded);
-    ui->ThreadSize->setHidden(isNone);
-    ui->labelSize->setHidden(isNone);
-    ui->ClearanceWidget->setHidden(isNone || isThreaded);
+    ui->ThreadGroupBox->setHidden(!isThreaded);
+    ui->ThreadSize->setHidden(isCustom);
+    ui->labelSize->setHidden(isCustom);
+    ui->ClearanceWidget->setHidden(isCustom || isThreaded);
+    ui->ThreadClass->setHidden(isCustom);
+    ui->labelThreadClass->setHidden(isCustom);
+    ui->CustomThreadWidget->setEnabled(isCustom);
 
     if (TypeClass == QByteArray("ISO")) {
         // the names of the clearance types are different in ISO and UTS
@@ -726,7 +738,7 @@ void TaskHoleParameters::threadClassChanged(int index)
     }
 }
 
-void TaskHoleParameters::threadDiameterChanged(double value)
+void TaskHoleParameters::DiameterChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->Diameter.setValue(value);
@@ -754,6 +766,14 @@ void TaskHoleParameters::threadDirectionChanged()
         else {
             hole->ThreadDirection.setValue(1L);
         }
+        recomputeFeature();
+    }
+}
+
+void TaskHoleParameters::threadDiameterChanged(double value)
+{
+    if (auto hole = getObject<PartDesign::Hole>()) {
+        hole->ThreadDiameter.setValue(value);
         recomputeFeature();
     }
 }
@@ -838,6 +858,14 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->Diameter->setEnabled(true);
         updateSpinBox(ui->Diameter, hole->Diameter.getValue());
         updateHoleCutLimits(hole);
+    }
+    else if (&Prop == &hole->ThreadDiameter) {
+        ui->ThreadDiameter->setEnabled(true);
+        updateSpinBox(ui->ThreadDiameter, hole->ThreadDiameter.getValue());
+    }
+    else if (&Prop == &hole->ThreadPitch) {
+        ui->ThreadPitch->setEnabled(true);
+        updateSpinBox(ui->ThreadPitch, hole->ThreadPitch.getValue());
     }
     else if (&Prop == &hole->ThreadDirection) {
         ui->directionRightHand->setEnabled(true);
@@ -1073,6 +1101,8 @@ void TaskHoleParameters::apply()
     ui->Depth->apply();
     ui->DrillPointAngle->apply();
     ui->TaperedAngle->apply();
+    ui->ThreadDiameter->apply();
+    ui->ThreadPitch->apply();
 
     if (!hole->Threaded.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "Threaded = " << (getThreaded() ? 1 : 0));
