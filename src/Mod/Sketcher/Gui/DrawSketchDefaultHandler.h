@@ -782,60 +782,70 @@ protected:
                 c->First = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
                 AutoConstraints.push_back(std::move(c));
             } break;
+            case Sketcher::Perpendicular: {
+                auto c = std::make_unique<Sketcher::Constraint>();
+                c->Type = Sketcher::Perpendicular;
+                c->First = geoId1;
+                c->Second = geoId2;
+                AutoConstraints.push_back(std::move(c));
+            } break;
+            case Sketcher::Parallel: {
+                auto c = std::make_unique<Sketcher::Constraint>();
+                c->Type = Sketcher::Parallel;
+                c->First = geoId1;
+                c->Second = geoId2;
+                AutoConstraints.push_back(std::move(c));
+            } break;
             case Sketcher::Tangent: {
                 Sketcher::SketchObject* Obj = sketchgui->getObject<Sketcher::SketchObject>();
 
                 const Part::Geometry* geom1 = Obj->getGeometry(geoId1);
                 const Part::Geometry* geom2 = Obj->getGeometry(geoId2);
-
-                // ellipse tangency support using construction elements (lines)
-                if (geom1 && geom2
-                    && (geom1->is<Part::GeomEllipse>() || geom2->is<Part::GeomEllipse>())) {
-                    if (!geom1->is<Part::GeomEllipse>()) {
-                        std::swap(geoId1, geoId2);
-                    }
-
-                    // geoId1 is the ellipse
-                    geom1 = Obj->getGeometry(geoId1);
-                    geom2 = Obj->getGeometry(geoId2);
-
-                    if (geom2->is<Part::GeomEllipse>() || geom2->is<Part::GeomArcOfEllipse>()
-                        || geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>()) {
-                        // in all these cases an intermediate element is needed
-                        // makeTangentToEllipseviaNewPoint(
-                        //     Obj,
-                        //     static_cast<const Part::GeomEllipse*>(geom1),
-                        //     geom2,
-                        //     geoId1,
-                        //     geoId2);
-                        // NOTE: Temporarily deactivated
-                        return false;
-                    }
+                if (!geom1 || !geom2) {
+                    return false;
                 }
 
-                // arc of ellipse tangency support using external elements
-                if (geom1 && geom2
-                    && (geom1->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomArcOfEllipse>())) {
-                    if (!geom1->is<Part::GeomArcOfEllipse>()) {
-                        std::swap(geoId1, geoId2);
-                    }
-
-                    // geoId1 is the arc of ellipse
-                    geom1 = Obj->getGeometry(geoId1);
-                    geom2 = Obj->getGeometry(geoId2);
-
-                    if (geom2->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomCircle>()
-                        || geom2->is<Part::GeomArcOfCircle>()) {
-                        // in all these cases an intermediate element is needed
-                        // makeTangentToArcOfEllipseviaNewPoint(
-                        //     Obj,
-                        //     static_cast<const Part::GeomArcOfEllipse*>(geom1),
-                        //     geom2,
-                        //     geoId1,
-                        //     geoId2);
-                        // NOTE: Temporarily deactivated
-                        return false;
-                    }
+                // 2026.01.16: Do not use swap as it did before or it breaks resultCoincident.
+                // NOTE: Temporarily deactivated : ellipse tangency support using construction elements
+                if (geom1->is<Part::GeomEllipse>()
+                    && (geom2->is<Part::GeomConic>() || geom2->is<Part::GeomArcOfConic>())) {
+                    // makeTangentToEllipseviaNewPoint(
+                    //     Obj,
+                    //     static_cast<const Part::GeomEllipse*>(geom1),
+                    //     geom2,
+                    //     geoId1,
+                    //     geoId2);
+                    return false;
+                }
+                else if (geom2->is<Part::GeomEllipse>()
+                         && (geom1->is<Part::GeomConic>() || geom1->is<Part::GeomArcOfConic>())) {
+                    // makeTangentToEllipseviaNewPoint(
+                    //     Obj,
+                    //     static_cast<const Part::GeomEllipse*>(geom2),
+                    //     geom1,
+                    //     geoId2,
+                    //     geoId1);
+                    return false;
+                }
+                else if (geom1->is<Part::GeomArcOfEllipse>()
+                         && (geom2->is<Part::GeomConic>() || geom2->is<Part::GeomArcOfConic>())) {
+                    // makeTangentToArcOfEllipseviaNewPoint(
+                    //     Obj,
+                    //     static_cast<const Part::GeomArcOfEllipse*>(geom1),
+                    //     geom2,
+                    //     geoId1,
+                    //     geoId2);
+                    return false;
+                }
+                else if (geom2->is<Part::GeomArcOfEllipse>()
+                         && (geom1->is<Part::GeomConic>() || geom1->is<Part::GeomArcOfConic>())) {
+                    // makeTangentToArcOfEllipseviaNewPoint(
+                    //     Obj,
+                    //     static_cast<const Part::GeomArcOfEllipse*>(geom2),
+                    //     geom1,
+                    //     geoId2,
+                    //     geoId1);
+                    return false;
                 }
 
                 auto resultCoincident = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
@@ -979,7 +989,7 @@ protected:
         sketchobject->diagnoseAdditionalConstraints(autoConstraints);
 
         if (sketchobject->getLastHasRedundancies()) {
-            Base::Console().warning(
+            Base::Console().message(
                 sketchobject->getFullLabel(),
                 QT_TRANSLATE_NOOP("Notifications", "Autoconstraints cause redundancy. Removing them") "\n"
             );

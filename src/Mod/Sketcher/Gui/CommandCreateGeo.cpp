@@ -151,7 +151,7 @@ public:
 
         setCheckable(false);
 
-        addCommand("Sketcher_CreatePolyline");
+        addCommand("Sketcher_CreatePolyline2");
         addCommand("Sketcher_CreateLine");
     }
 
@@ -249,6 +249,36 @@ void CmdSketcherCreatePolyline::activated(int iMsg)
 }
 
 bool CmdSketcherCreatePolyline::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+// Polyline2 ================================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreatePolyline2)
+
+CmdSketcherCreatePolyline2::CmdSketcherCreatePolyline2()
+    : Command("Sketcher_CreatePolyline2")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create polyline");
+    sToolTipText = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
+    sWhatsThis = "Sketcher_CreatePolyline";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePolyline";
+    sAccel = "L";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline2, "Sketcher_CreatePolyline2")
+
+void CmdSketcherCreatePolyline2::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolyLine>());
+}
+
+bool CmdSketcherCreatePolyline2::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
@@ -1962,6 +1992,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSplineByInterpolation());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePolyline2());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
