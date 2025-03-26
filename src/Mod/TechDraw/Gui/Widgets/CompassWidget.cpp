@@ -69,7 +69,7 @@ bool CompassWidget::eventFilter(QObject* target, QEvent* event)
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
             const auto isEnter = keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter;
-            if (dsbAngle->isNormalized() && isEnter) {
+            if (isEnter && dsbAngle->isNormalized()) {
                 return true;
             }
         }
