@@ -28,7 +28,6 @@ import sys
 import math
 import FreeCAD
 import FreeCADGui
-from nativeifc import ifc_tools
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -120,11 +119,13 @@ class BIM_ProjectManager:
                     self.form.siteElevation.setText(str(self.site.Declination))
             buildings = []
             if self.site and self.project:
+                from nativeifc import ifc_tools
                 buildings = ifc_tools.get_children(self.site, ifctype="IfcBuilding")
                 buildings = list(filter(None, [ifc_tools.get_object(b) for b in buildings]))
             if not buildings:
                 buildings = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building"]
             if buildings:
+                from nativeifc import ifc_tools
                 self.building = buildings[0]
                 self.form.buildingName.setText(self.building.Label)
                 levels = ifc_tools.get_children(self.building, ifctype="IfcBuildingStorey")
