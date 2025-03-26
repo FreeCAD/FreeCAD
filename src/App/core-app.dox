@@ -111,5 +111,7 @@
  *   - The DocumentObject classes
  *   - The Expression classes
  *   - The Property classes
+ *
+ * For a more high-level discussion see the topic @ref APP "App".
  */
 
