@@ -136,6 +136,10 @@ if(BUILD_TEST)
   add_subdirectory(Test)
 endif(BUILD_TEST)
 
+if(BUILD_TEXT)
+  add_subdirectory(Text)
+endif(BUILD_TEXT)
+
 if(BUILD_TUX)
     add_subdirectory(Tux)
 endif(BUILD_TUX)
