@@ -65,7 +65,7 @@ if(DOXYGEN_FOUND)
 
     find_package(Coin3DDoc)
     if( COIN3D_DOC_FOUND )
-        SET(DOXYGEN_TAGFILES 
+        SET(DOXYGEN_TAGFILES
             ${COIN3D_DOC_TAGFILE}=${COIN3D_DOC_PATH}
         )
     endif( COIN3D_DOC_FOUND )
@@ -88,14 +88,16 @@ if(DOXYGEN_FOUND)
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mainpage.dox.in
                    ${CMAKE_CURRENT_BINARY_DIR}/mainpage.dox @ONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cfg.in  
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cfg.in
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg @ONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildWebDoc.cfg.in  
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildWebDoc.cfg.in
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildWebDoc.cfg @ONLY)
- 
+
+    file(MAKE_DIRECTORY "${DOXYGEN_OUTPUT_DIR}")
+
     # reconfigure to have all sources files generated from xml, whatever build options were
     # generate source documentation
-    # delete CMakeCache to reset to default build options next time 
+    # delete CMakeCache to reset to default build options next time
     ADD_CUSTOM_TARGET(DevDoc
         ${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
         COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg
