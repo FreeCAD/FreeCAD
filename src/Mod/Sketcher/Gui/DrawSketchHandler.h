@@ -170,7 +170,8 @@ public:
 
     // Helpers for seekAutoConstraint :
     // Helper structure to hold preselection data
-    struct PreselectionData {
+    struct PreselectionData
+    {
         int geoId = Sketcher::GeoEnum::GeoUndef;
         Sketcher::PointPos posId = Sketcher::PointPos::none;
         // direction of hit shape (if it is a line, the direction of the line)
@@ -180,18 +181,18 @@ public:
     PreselectionData getPreselectionData();
 
     void seekPreselectionAutoConstraint(std::vector<AutoConstraint>& constraints,
-        const Base::Vector2d& Pos,
-        const Base::Vector2d& Dir,
-        AutoConstraint::TargetType type);
+                                        const Base::Vector2d& Pos,
+                                        const Base::Vector2d& Dir,
+                                        AutoConstraint::TargetType type);
 
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos);
 
     void seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints,
-        const Base::Vector2d& Dir);
+                                     const Base::Vector2d& Dir);
 
     void seekTangentAutoConstraint(std::vector<AutoConstraint>& constraints,
-        const Base::Vector2d& Pos,
-        const Base::Vector2d& Dir);
+                                   const Base::Vector2d& Pos,
+                                   const Base::Vector2d& Dir);
 
     int seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
                            const Base::Vector2d& Pos,
