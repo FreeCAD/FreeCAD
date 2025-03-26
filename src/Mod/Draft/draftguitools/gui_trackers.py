@@ -43,6 +43,7 @@ import FreeCADGui
 import Draft
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils import grid_observer
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _msg
@@ -1326,6 +1327,16 @@ class gridTracker(Tracker):
         self.displayHumanFigure(wp)
         self.setAxesColor(wp)
         self.on()
+
+    def on(self):
+        """Set the visibility to True and update the checked state grid button."""
+        super().on()
+        grid_observer._update_grid_gui()
+
+    def off(self):
+        """Set the visibility to False and update the checked state grid button."""
+        super().off()
+        grid_observer._update_grid_gui()
 
     def getClosestNode(self, point):
         """Return the closest node from the given point."""
