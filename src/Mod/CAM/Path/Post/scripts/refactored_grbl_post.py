@@ -75,6 +75,7 @@ class Refactored_Grbl(PostProcessor):
         # Set any values here that need to override the default values set
         # in the parent routine.
         #
+        values["ENABLE_COOLANT"] = True
         #
         # If this is set to True, then commands that are placed in
         # comments that look like (MC_RUN_COMMAND: blah) will be output.
