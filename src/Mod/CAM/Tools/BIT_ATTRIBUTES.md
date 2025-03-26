@@ -9,7 +9,6 @@ Diameter - Endmill diameter
 
 Length - Overall length of the endmill
 
-
 ShankDiameter - diameter of the shank
 
 CuttingEdgeHeight
@@ -20,7 +19,9 @@ CuttingEdgeHeight
 Diameter - Endmill diameter
 
 Length - Overall length of the endmill
+
 ShankDiameter - diameter of the shank
+
 CuttingEdgeHeight
 
 ## BullNoseMill
