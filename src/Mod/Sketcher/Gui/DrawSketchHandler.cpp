@@ -420,7 +420,8 @@ DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& sugg
     return pixmaps;
 }
 
-DrawSketchHandler::PreselectionData DrawSketchHandler::getPreselectionData() {
+DrawSketchHandler::PreselectionData DrawSketchHandler::getPreselectionData()
+{
     SketchObject* obj = sketchgui->getSketchObject();
 
     // Extract preselection information (vertex, curve, cross)
@@ -479,7 +480,8 @@ bool DrawSketchHandler::isLineCenterAutoConstraint(int GeoId, const Base::Vector
     return false;
 }
 
-void DrawSketchHandler::seekPreselectionAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
+void DrawSketchHandler::seekPreselectionAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
     const Base::Vector2d& Pos,
     const Base::Vector2d& Dir,
     AutoConstraint::TargetType type)
@@ -511,7 +513,7 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(std::vector<AutoConstrain
 
         if (constr.Type == Sketcher::Tangent && preSel.isLine) {
             if (Dir.Length() < 1e-8 || preSel.hitShapeDir.Length() < 1e-8) {
-                return; // Direction not set so return;
+                return;  // Direction not set so return;
             }
 
             // We are hitting a line and have hitting vector information
@@ -522,7 +524,10 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(std::vector<AutoConstrain
             // substantially parallel) or if it is an sketch axis (that can not move to accommodate
             // to the shape), then only if it is around 6 degrees with the normal (around 84
             // degrees)
-            if (fabs(cosangle) > 0.995f && !((preSel.geoId == Sketcher::GeoEnum::HAxis || preSel.geoId == Sketcher::GeoEnum::VAxis) && fabs(cosangle) < 0.1)) {
+            if (fabs(cosangle) > 0.995f
+                && !((preSel.geoId == Sketcher::GeoEnum::HAxis
+                      || preSel.geoId == Sketcher::GeoEnum::VAxis)
+                     && fabs(cosangle) < 0.1)) {
                 return;
             }
         }
@@ -533,10 +538,12 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(std::vector<AutoConstrain
     }
 }
 
-void DrawSketchHandler::seekAlignmentAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-    const Base::Vector2d& Dir) {
-    
-    const double angleDevRad = 0.035; // 2 degrees in radians
+void DrawSketchHandler::seekAlignmentAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Dir)
+{
+
+    const double angleDevRad = 0.035;  // 2 degrees in radians
 
     AutoConstraint constr;
     constr.Type = Sketcher::None;
@@ -558,8 +565,8 @@ void DrawSketchHandler::seekAlignmentAutoConstraint(std::vector<AutoConstraint>&
 }
 
 void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-    const Base::Vector2d& Pos,
-    const Base::Vector2d& Dir)
+                                                  const Base::Vector2d& Pos,
+                                                  const Base::Vector2d& Dir)
 {
     SketchObject* obj = sketchgui->getSketchObject();
     int tangId = GeoEnum::GeoUndef;
@@ -679,7 +686,7 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
             double distancetoline = norm * (tmpPos - focus1P);  // distance focus1 to line
 
             // mirror of focus1 with respect to the line
-            Base::Vector3d focus1PMirrored = focus1P + 2 * distancetoline * norm;  
+            Base::Vector3d focus1PMirrored = focus1P + 2 * distancetoline * norm;
 
             double error = fabs((focus1PMirrored - focus2P).Length() - 2 * a);
 
@@ -695,10 +702,10 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
                 double angle = Base::fmod(
                     atan2(
                         -aoe->getMajorRadius()
-                        * ((tmpPos.x - center.x) * majdir.y - (tmpPos.y - center.y) * majdir.x),
+                            * ((tmpPos.x - center.x) * majdir.y - (tmpPos.y - center.y) * majdir.x),
                         aoe->getMinorRadius()
-                        * ((tmpPos.x - center.x) * majdir.x + (tmpPos.y - center.y) * majdir.y))
-                    - startAngle,
+                            * ((tmpPos.x - center.x) * majdir.x + (tmpPos.y - center.y) * majdir.y))
+                        - startAngle,
                     2.f * M_PI);
 
                 while (angle < startAngle) {
