@@ -5,20 +5,22 @@ This is independent from tool shapes - but tool shapes must honor those attribut
 
 ## EndMill
 
-Diameter; Endmill diameter
+Diameter - Endmill diameter
 
-Length; Overall length of the endmill
+Length - Overall length of the endmill
 
 
-ShankDiameter; diameter of the shank
+ShankDiameter - diameter of the shank
+
 CuttingEdgeHeight
 
 
 ## BallEndMill
 
-Diameter; Endmill diameter
-Length; Overall length of the endmill
-ShankDiameter; diameter of the shank
+Diameter - Endmill diameter
+
+Length - Overall length of the endmill
+ShankDiameter - diameter of the shank
 CuttingEdgeHeight
 
 ## BullNoseMill
