@@ -1694,10 +1694,15 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
     ui->listWidgetElements->repaint();
 }
 
-void TaskSketcherElements::onListWidgetElementsItemEntered(QListWidgetItem* item)
+bool TaskSketcherElements::hasInputWidgetFocused()
 {
     QWidget* focusedWidget = QApplication::focusWidget();
-    if (qobject_cast<QLineEdit*>(focusedWidget)) {
+    return qobject_cast<QLineEdit*>(focusedWidget);
+}
+
+void TaskSketcherElements::onListWidgetElementsItemEntered(QListWidgetItem* item)
+{
+    if (hasInputWidgetFocused()) {
         return;
     }
     ui->listWidgetElements->setFocus();
@@ -1707,8 +1712,7 @@ void TaskSketcherElements::onListWidgetElementsItemEntered(QListWidgetItem* item
 
 void TaskSketcherElements::onListWidgetElementsMouseMoveOnItem(QListWidgetItem* it)
 {
-    QWidget* focusedWidget = QApplication::focusWidget();
-    if (qobject_cast<QLineEdit*>(focusedWidget)) {
+    if (hasInputWidgetFocused()) {
         return;
     }
 
