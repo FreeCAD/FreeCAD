@@ -1312,12 +1312,14 @@ def makeSpace(objects=None, baseobj=None, name=None):
     1. Single object (e.g. a Part::Feature document object). Will be used as the space's base
        shape.::
             objects = <Part::Feature>
+
     2. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
        requires the GUI to be active. The `SubObjects` property of each selection object in the
        list defines the space's boundaries. If the list contains a single selection object without
        subobjects, or with only one subobject, the object in its ``Object`` property is used as
        the base shape.::
             objects = [<SelectionObject>, ...]
+
     3. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
        tuple contains a document object and a nested tuple of subobjects that define the boundaries.
        If the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
@@ -1395,11 +1397,13 @@ def addSpaceBoundaries(space, subobjects):
        requires the GUI to be active. The `SubObjects` property of each selection object in the
        list defines the boundaries to add to the space.::
             subobjects = [<SelectionObject>, ...]
+
     2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
        tuple contains a document object and a nested tuple of subobjects that define the boundaries
        to add.::
             subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
             subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+
     """
     import Draft
 
@@ -1425,11 +1429,13 @@ def removeSpaceBoundaries(space, subobjects):
        requires the GUI to be active. The `SubObjects` property of each selection object in the
        list defines the boundaries to remove from the space.::
             subobjects = [<SelectionObject>, ...]
+
     2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
        tuple contains a document object and a nested tuple of subobjects that define the boundaries
        to remove.::
             subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
             subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+
     """
     import Draft
 
