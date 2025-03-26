@@ -68,16 +68,10 @@ bool CompassWidget::eventFilter(QObject* target, QEvent* event)
     if (target == dsbAngle) {
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-                dsbAngle->interpretText();
-                slotSpinBoxEnter(dsbAngle->rawValue());
+            const auto isEnter = keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter;
+            if (dsbAngle->isNormalized() && isEnter) {
                 return true;
             }
-        }
-        else if (event->type() == QEvent::FocusOut) {
-            dsbAngle->interpretText();
-            slotSpinBoxEnter(dsbAngle->rawValue());
-            return true;
         }
     }
     return QWidget::eventFilter(target, event);
