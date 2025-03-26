@@ -2390,7 +2390,7 @@ bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
     }
 
     auto link = getObject<App::Link>();
-    if (link->ElementCount.getValue() != 0) {
+    if (link && link->ElementCount.getValue() != 0) {
         auto doc = link->getDocument();
         auto elements = link->ElementList.getValues();
         for (auto element : elements) {
