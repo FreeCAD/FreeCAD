@@ -6,7 +6,10 @@ This is independent from tool shapes - but tool shapes must honor those attribut
 ## EndMill
 
 Diameter; Endmill diameter
+
 Length; Overall length of the endmill
+
+
 ShankDiameter; diameter of the shank
 CuttingEdgeHeight
 
