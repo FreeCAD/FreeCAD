@@ -122,6 +122,7 @@ class TemplateClassPyExport(template.ModelTemplate):
 #ifndef @self.export.Namespace.upper().replace("::", "_")@_@self.export.Name.upper()@_H
 #define @self.export.Namespace.upper().replace("::", "_")@_@self.export.Name.upper()@_H
 
+#include <CXX/Objects.hxx>
 #include <@self.export.FatherInclude@>
 #include <@self.export.Include@>
 #include <string>
