@@ -3,9 +3,9 @@
  * @ingroup CORE
  * @brief The part of FreeCAD that works without GUI (console or server mode)
  * @details It contains the App namespace and defines core concepts such as
- * @ref DocumentGroup "Document", @ref DocObject "Document Object", the @ref
- * Expression "Expression Framework", and the @ref PropFrame
- * "Property Framework".
+ * @ref DocumentGroup "Document", @ref DocumentObjectGroup "Document Object",
+ * the @ref ExpressionFramework "Expression Framework", and the @ref
+ * PropertyFramework "Property Framework".
  */
 
 /**
@@ -38,19 +38,19 @@
  */
 
 /**
- * @defgroup DocObject Document Object
+ * @defgroup DocumentObjectGroup Document Object
  * @ingroup APP
  * @brief %Base class of all objects handled in the Document.
  */
 
 /**
- * @defgroup Expression Expressions framework
+ * @defgroup ExpressionFramework Expressions framework
  * @ingroup APP
  * @brief The expression system allows users to write expressions and formulas that produce values
  */
 
 /**
- * @defgroup PropFrame Property framework
+ * @defgroup PropertyFramework Property framework
  * @ingroup APP
  * @brief System to access object properties.
  *
