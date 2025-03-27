@@ -96,27 +96,27 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
     // Fill data into dialog elements
     ui->spbSlope->setUnit(pcConstraint->Slope.getUnit());
     ui->spbSlope->setMinimum(0);
-    ui->spbSlope->setMaximum(FLOAT_MAX);
+    ui->spbSlope->setMaximum(std::numeric_limits<float>::max());
     ui->spbSlope->setValue(pcConstraint->Slope.getQuantityValue());
     ui->spbSlope->bind(pcConstraint->Slope);
 
     ui->spbAdjust->setUnit(pcConstraint->Adjust.getUnit());
     ui->spbAdjust->setMinimum(0);
-    ui->spbAdjust->setMaximum(FLOAT_MAX);
+    ui->spbAdjust->setMaximum(std::numeric_limits<float>::max());
     ui->spbAdjust->setValue(pcConstraint->Adjust.getQuantityValue());
     ui->spbAdjust->bind(pcConstraint->Adjust);
 
     ui->ckbFriction->setChecked(friction);
 
     ui->spbFrictionCoeff->setMinimum(0);
-    ui->spbFrictionCoeff->setMaximum(FLOAT_MAX);
+    ui->spbFrictionCoeff->setMaximum(std::numeric_limits<float>::max());
     ui->spbFrictionCoeff->setValue(pcConstraint->FrictionCoefficient.getValue());
     ui->spbFrictionCoeff->setEnabled(friction);
     ui->spbFrictionCoeff->bind(pcConstraint->FrictionCoefficient);
 
     ui->spbStickSlope->setUnit(pcConstraint->StickSlope.getUnit());
     ui->spbStickSlope->setMinimum(0);
-    ui->spbStickSlope->setMaximum(FLOAT_MAX);
+    ui->spbStickSlope->setMaximum(std::numeric_limits<float>::max());
     ui->spbStickSlope->setValue(pcConstraint->StickSlope.getQuantityValue());
     ui->spbStickSlope->setEnabled(friction);
     ui->spbStickSlope->bind(pcConstraint->StickSlope);
