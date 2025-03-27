@@ -218,7 +218,7 @@ PyObject* MatrixPy::number_power_handler(PyObject* self, PyObject* other, PyObje
     }
 
     if (b < 0) {
-        if (fabs(a.determinant()) > DBL_EPSILON) {
+        if (fabs(a.determinant()) > std::numeric_limits<double>::epsilon()) {
             a.inverseGauss();
         }
         else {
@@ -667,7 +667,7 @@ PyObject* MatrixPy::invert()
 {
     PY_TRY
     {
-        if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON) {
+        if (fabs(getMatrixPtr()->determinant()) > std::numeric_limits<double>::epsilon()) {
             getMatrixPtr()->inverseGauss();
             Py_Return;
         }
@@ -682,7 +682,7 @@ PyObject* MatrixPy::inverse()
 {
     PY_TRY
     {
-        if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON) {
+        if (fabs(getMatrixPtr()->determinant()) > std::numeric_limits<double>::epsilon()) {
             Base::Matrix4D m = *getMatrixPtr();
             m.inverseGauss();
             return new MatrixPy(m);
