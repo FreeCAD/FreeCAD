@@ -27,7 +27,6 @@
 #ifndef _PreComp_
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/range/adaptor/indexed.hpp>
-#include <climits>
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextra-semi"

@@ -23,7 +23,6 @@
 #ifndef IMPORT_IMPORTOCAF2_H
 #define IMPORT_IMPORTOCAF2_H
 
-#include <climits>
 #include <map>
 #include <set>
 #include <string>
