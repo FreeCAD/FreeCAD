@@ -159,6 +159,10 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintElectrostaticPotential",
             type_of_obj(ObjectsFem.makeConstraintElectrostaticPotential(doc)),
         )
+        self.assertEqual(
+            "Fem::ConstraintElectricChargeDensity",
+            type_of_obj(ObjectsFem.makeConstraintElectricChargeDensity(doc)),
+        )
         self.assertEqual("Fem::ConstraintFixed", type_of_obj(ObjectsFem.makeConstraintFixed(doc)))
         self.assertEqual(
             "Fem::ConstraintRigidBody", type_of_obj(ObjectsFem.makeConstraintRigidBody(doc))
@@ -332,6 +336,12 @@ class TestObjectType(unittest.TestCase):
             is_of_type(
                 ObjectsFem.makeConstraintElectrostaticPotential(doc),
                 "Fem::ConstraintElectrostaticPotential",
+            )
+        )
+        self.assertTrue(
+            is_of_type(
+                ObjectsFem.makeConstraintElectricChargeDensity(doc),
+                "Fem::ConstraintElectricChargeDensity",
             )
         )
         self.assertTrue(is_of_type(ObjectsFem.makeConstraintFixed(doc), "Fem::ConstraintFixed"))
@@ -549,6 +559,18 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(
             is_derived_from(
                 constraint_electorstatic_potential, "Fem::ConstraintElectrostaticPotential"
+            )
+        )
+
+        # ConstraintElectricChargeDensity
+        constraint_electric_charge_density = ObjectsFem.makeConstraintElectricChargeDensity(doc)
+        self.assertTrue(is_derived_from(constraint_electric_charge_density, "App::DocumentObject"))
+        self.assertTrue(
+            is_derived_from(constraint_electric_charge_density, "Fem::ConstraintPython")
+        )
+        self.assertTrue(
+            is_derived_from(
+                constraint_electric_charge_density, "Fem::ConstraintElectricChargeDensity"
             )
         )
 
@@ -913,6 +935,11 @@ class TestObjectType(unittest.TestCase):
                 "Fem::ConstraintPython"
             )
         )
+        self.assertTrue(
+            ObjectsFem.makeConstraintElectricChargeDensity(doc).isDerivedFrom(
+                "Fem::ConstraintPython"
+            )
+        )
         self.assertTrue(ObjectsFem.makeConstraintFixed(doc).isDerivedFrom("Fem::ConstraintFixed"))
         self.assertTrue(
             ObjectsFem.makeConstraintRigidBody(doc).isDerivedFrom("Fem::ConstraintRigidBody")
@@ -1077,6 +1104,7 @@ def create_all_fem_objects_doc(doc):
     analysis.addObject(ObjectsFem.makeConstraintCurrentDensity(doc))
     analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
     analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
+    analysis.addObject(ObjectsFem.makeConstraintElectricChargeDensity(doc))
     analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
     analysis.addObject(ObjectsFem.makeConstraintRigidBody(doc))
     analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))

@@ -40,9 +40,6 @@ if FreeCAD.GuiUp:
 
     Gui = FreeCADGui  # shortcut
 
-## \addtogroup FEM
-#  @{
-
 
 def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     """Export mesh to TetGen *.poly file format"""

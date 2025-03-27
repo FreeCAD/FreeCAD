@@ -26,6 +26,7 @@
 
 // Std. configurations
 #include <array>
+#include <cassert>
 #include <chrono>
 #include <map>
 #include <set>
@@ -759,6 +760,11 @@ public:
     template<typename... Args>
     inline void DeveloperError(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
+    /// A noexcept DeveloperError for use in destructors. When compiled in debug, terminates via an
+    /// assert. In release, the exception is silently caught and dropped.
+    inline void
+    DestructorError(const std::string& notifier, const char* pMsg, Args&&... args) noexcept;
+    template<typename... Args>
     inline void UserError(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
     inline void TranslatedUserError(const std::string& notifier, const char* pMsg, Args&&... args);
@@ -1081,6 +1087,21 @@ inline void Base::ConsoleSingleton::DeveloperError(const std::string& notifier,
     Send<Base::LogStyle::Error,
          Base::IntendedRecipient::Developer,
          Base::ContentType::Untranslatable>(notifier, pMsg, std::forward<Args>(args)...);
+}
+
+template<typename... Args>
+inline void Base::ConsoleSingleton::DestructorError(const std::string& notifier,
+                                                    const char* pMsg,
+                                                    Args&&... args) noexcept
+{
+    try {
+        Send<Base::LogStyle::Error,
+             Base::IntendedRecipient::Developer,
+             Base::ContentType::Untranslatable>(notifier, pMsg, std::forward<Args>(args)...);
+    }
+    catch (...) {
+        assert("An exception was thrown while attempting console output in a destructor" && false);
+    }
 }
 
 template<typename... Args>

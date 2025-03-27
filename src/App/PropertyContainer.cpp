@@ -643,7 +643,7 @@ void PropertyData::visitProperties(OffsetBase offsetBase,
 /** \defgroup PropFrame Property framework
     \ingroup APP
     \brief System to access object properties
-\section Introduction
+\section propframe_intro Introduction
 The property framework introduces the ability to access attributes (member variables) of a class by name without
 knowing the class type. It's like the reflection mechanism of Java or C#.
 This ability is introduced by the App::PropertyContainer class and can be used by all derived classes.

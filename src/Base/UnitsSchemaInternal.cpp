@@ -370,8 +370,12 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, std:
         factor = 1.0;
     }
     else if (unit == Unit::SurfaceChargeDensity) {
-        unitString = "C/m^2";
-        factor = 1e-6;
+        unitString = "C/mm^2";
+        factor = 1.0;
+    }
+    else if (unit == Unit::VolumeChargeDensity) {
+        unitString = "C/mm^3";
+        factor = 1.0;
     }
     else if (unit == Unit::CurrentDensity) {
         if (UnitValue <= 1e3) {

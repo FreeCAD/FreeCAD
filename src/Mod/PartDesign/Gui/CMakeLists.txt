@@ -9,7 +9,6 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
 
-generate_from_xml(ViewProviderPy)
 generate_from_py(ViewProvider)
 
 
@@ -230,7 +229,7 @@ SOURCE_GROUP("Module" FILES ${PartDesignGuiModule_SRCS})
 
 
 SET(Python_SRCS
-    ViewProviderPy.xml
+    ViewProvider.pyi
     ViewProviderPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

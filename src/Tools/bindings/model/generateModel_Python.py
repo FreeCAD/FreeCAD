@@ -492,6 +492,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     # Parse imports to compute module metadata
     module_name = _get_module_from_path(path)
+
     imported_from_module = imports_mapping[base_class_name]
     parent_module_name = _extract_module_name(imported_from_module, module_name)
 
@@ -537,11 +538,8 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     # Attach sequence protocol metadata if provided.
     if sequence_protocol_kwargs is not None:
-        try:
-            seq_protocol = SequenceProtocol(**sequence_protocol_kwargs)
-            py_export.Sequence = seq_protocol
-        except Exception as e:
-            py_export.Sequence = None
+        seq_protocol = SequenceProtocol(**sequence_protocol_kwargs)
+        py_export.Sequence = seq_protocol
 
     py_export.Attribute.extend(class_attributes)
     py_export.Methode.extend(class_methods)
