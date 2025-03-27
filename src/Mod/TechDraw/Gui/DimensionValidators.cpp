@@ -386,10 +386,10 @@ DimensionGeometry TechDraw::isValidSingleEdge(const ReferenceEntry& ref)
             return DimensionGeometry::isInvalid;
         }
         Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
-        if (fabs(line.y) < FLT_EPSILON) {
+        if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isVertical;
         }
-        if (fabs(line.x) < FLT_EPSILON) {
+        if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isHorizontal;
         }
         return DimensionGeometry::isDiagonal;
@@ -430,13 +430,13 @@ DimensionGeometry TechDraw::isValidSingleEdge3d(DrawViewPart* dvp, const Referen
         Base::Vector3d point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(occEdge)));
         point1 = dvp->projectPoint(point1);
         Base::Vector3d line = point1 - point0;
-        if (fabs(line.y) < FLT_EPSILON) {
+        if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isVertical;
         }
-        if (fabs(line.x) < FLT_EPSILON) {
+        if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isHorizontal;
         }
-        //        else if (fabs(line.z) < FLT_EPSILON) {
+        //        else if (fabs(line.z) < std::numeric_limits<float>::epsilon()) {
         //            return TechDraw::isZLimited;
         //        }
         else {
@@ -632,9 +632,9 @@ DimensionGeometry TechDraw::isValidVertexes(const ReferenceVector& refs)
         TechDraw::VertexPtr v0 = dvp->getVertex(refs.at(0).getSubName());
         TechDraw::VertexPtr v1 = dvp->getVertex(refs.at(1).getSubName());
         Base::Vector3d line = v1->point() - v0->point();
-        if (fabs(line.y) < FLT_EPSILON) {
+        if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isHorizontal;
-        } else if (fabs(line.x) < FLT_EPSILON) {
+        } else if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isHorizontal;
         } else {
             return DimensionGeometry::isDiagonal;
@@ -670,12 +670,12 @@ DimensionGeometry TechDraw::isValidVertexes3d(DrawViewPart* dvp, const Reference
         Base::Vector3d point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(geometry1)));
         point1 = dvp->projectPoint(point1);
         Base::Vector3d line = point1 - point0;
-        if (fabs(line.y) < FLT_EPSILON) {
+        if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isVertical;
         }
-        if (fabs(line.x) < FLT_EPSILON) {
+        if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isHorizontal;
-            //        } else if(fabs(line.z) < FLT_EPSILON) {
+            //        } else if(fabs(line.z) < std::numeric_limits<float>::epsilon()) {
             //            return isZLimited;
         } else {
             return DimensionGeometry::isDiagonal;

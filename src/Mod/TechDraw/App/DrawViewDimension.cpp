@@ -105,11 +105,11 @@ const char* DrawViewDimension::TypeEnums[] = {"Distance",
 const char* DrawViewDimension::MeasureTypeEnums[] = {"True", "Projected", nullptr};
 
 // constraint to set the step size to 0.1
-static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = {-DBL_MAX,
-                                                                                 DBL_MAX,
-                                                                                 0.1};
+static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = {
+    -std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), 0.1};
 // constraint to force positive values
-static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = {0.0, DBL_MAX, 0.1};
+static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = {
+    0.0, std::numeric_limits<double>::max(), 0.1};
 
 DrawViewDimension::DrawViewDimension()
 {
