@@ -118,22 +118,14 @@ def _findRelativePath(path, typ):
     return relative
 
 
-# Unused due to bug fix related to relative paths
-"""
-def findRelativePathShape(path):
-    return _findRelativePath(path, 'Shape')
-
-
-def findRelativePathTool(path):
-    return _findRelativePath(path, 'Bit')
-"""
-
-
 def findRelativePathLibrary(path):
     return _findRelativePath(path, "Library")
 
 
 class ToolBit(object):
+
+    TOOL_TYPES = [ "EndMill", "BallEndMill", "BullNoseMill", "Drill", "VBit", "Probe", "Laser", "Other"]
+    
     def __init__(self, obj, shapeFile, path=None):
         Path.Log.track(obj.Label, shapeFile, path)
         self.obj = obj
@@ -155,6 +147,14 @@ class ToolBit(object):
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The file of the tool"),
         )
+
+        obj.addProperty(
+            "App::PropertyStringEnum",
+            "ToolType",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "The type of the tool"),
+        )
+        
         obj.addProperty(
             "App::PropertyString",
             "ShapeName",
@@ -168,10 +168,13 @@ class ToolBit(object):
             QT_TRANSLATE_NOOP("App::Property", "List of all properties inherited from the bit"),
         )
 
+        # set enum types by assigning array
+        obj.ToolType = TOOL_TYPES
         if path:
             obj.File = path
         if shapeFile is None:
             obj.BitShape = "endmill.fcstd"
+            obj.ToolType = "EndMill"
             self._setupBitShape(obj)
             self.unloadBitBody(obj)
         else:
@@ -196,6 +199,16 @@ class ToolBit(object):
         obj.setEditorMode("BitBody", 2)
         obj.setEditorMode("File", 1)
         obj.setEditorMode("Shape", 2)
+
+        if not hasattr(obj, "ToolType"):
+            obj.addProperty(
+                "App::PropertyString",
+                "ToolType",
+                "Base",
+                QT_TRANSLATE_NOOP("App::Property", "The type of the tool"),
+            )
+            obj.ToolType = TOOL_TYPES
+        
         if not hasattr(obj, "BitPropertyNames"):
             obj.addProperty(
                 "App::PropertyStringList",
@@ -438,6 +451,10 @@ class ToolBit(object):
         attrs = {}
         attrs["version"] = 2
         attrs["name"] = obj.Label
+
+        if obj.ToolType:
+            attrs["type"] = obj.ToolType
+        
         if Path.Preferences.toolsStoreAbsolutePaths():
             attrs["shape"] = obj.BitShape
         else:
@@ -451,8 +468,7 @@ class ToolBit(object):
         for name in obj.BitPropertyNames:
             params[name] = PathUtil.getPropertyValueString(obj, name)
         attrs["parameter"] = params
-        params = {}
-        attrs["attribute"] = params
+        attrs["attribute"] = {}
         return attrs
 
 
@@ -467,6 +483,10 @@ class ToolBitFactory(object):
         Path.Log.track(attrs, path)
         obj = Factory.Create(name, attrs["shape"], path)
         obj.Label = attrs["name"]
+
+        if "type" in attrs:
+            obj.ToolType = attrs["type"]
+        
         params = attrs["parameter"]
         for prop in params:
             PathUtil.setProperty(obj, prop, params[prop])
