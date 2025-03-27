@@ -132,6 +132,20 @@ def makeConstraintDisplacement(doc, name="ConstraintDisplacement"):
     return obj
 
 
+def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
+    """makeConstraintElectricChargeDensity(document, [name]):
+    makes a Fem ElectricChargeDensity object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_electricchargedensity
+
+    constraint_electricchargedensity.ConstraintElectricChargeDensity(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_electricchargedensity
+
+        view_constraint_electricchargedensity.VPConstraintElectricChargeDensity(obj.ViewObject)
+    return obj
+
+
 def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
     """makeConstraintElectrostaticPotential(document, [name]):
     makes a Fem ElectrostaticPotential object"""
