@@ -423,14 +423,14 @@ CurvatureInfo FacetCurvature::Compute(FacetIndex index) const
             fMax = (float)dMax;
         }
         else {
-            fMin = FLT_MAX;
-            fMax = FLT_MAX;
+            fMin = std::numeric_limits<float>::max();
+            fMax = std::numeric_limits<float>::max();
         }
     }
     else {
         // too few points => cannot calc any properties
-        fMin = FLT_MAX;
-        fMax = FLT_MAX;
+        fMin = std::numeric_limits<float>::max();
+        fMax = std::numeric_limits<float>::max();
     }
 
     CurvatureInfo info;
