@@ -144,16 +144,16 @@ class SequenceProtocol:
     All attributes are required booleans.
     """
 
-    sq_length: bool
-    sq_concat: bool
-    sq_repeat: bool
-    sq_item: bool
-    mp_subscript: bool
-    sq_ass_item: bool
-    mp_ass_subscript: bool
-    sq_contains: bool
-    sq_inplace_concat: bool
-    sq_inplace_repeat: bool
+    sq_length: bool = False
+    sq_concat: bool = False
+    sq_repeat: bool = False
+    sq_item: bool = False
+    mp_subscript: bool = False
+    sq_ass_item: bool = False
+    mp_ass_subscript: bool = False
+    sq_contains: bool = False
+    sq_inplace_concat: bool = False
+    sq_inplace_repeat: bool = False
 
 
 @dataclass

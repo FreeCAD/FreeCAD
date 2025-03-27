@@ -42,44 +42,44 @@ else()
     )
 endif()
 
-generate_from_xml(Array2DPy)
-generate_from_xml(Array3DPy)
-generate_from_xml(MaterialFilterPy)
-generate_from_xml(MaterialFilterOptionsPy)
-generate_from_xml(MaterialLibraryPy)
-generate_from_xml(MaterialManagerPy)
-generate_from_xml(MaterialPy)
-generate_from_xml(ModelManagerPy)
-generate_from_xml(ModelPropertyPy)
-generate_from_xml(MaterialPropertyPy)
-generate_from_xml(ModelPy)
-generate_from_xml(UUIDsPy)
+generate_from_py(Array2D)
+generate_from_py(Array3D)
+generate_from_py(MaterialFilter)
+generate_from_py(MaterialFilterOptions)
+generate_from_py(MaterialLibrary)
+generate_from_py(MaterialManager)
+generate_from_py(Material)
+generate_from_py(ModelManager)
+generate_from_py(ModelProperty)
+generate_from_py(MaterialProperty)
+generate_from_py(Model)
+generate_from_py(UUIDs)
 
 SET(Python_SRCS
     Exceptions.h
-    Array2DPy.xml
+    Array2D.pyi
     Array2DPyImp.cpp
-    Array3DPy.xml
+    Array3D.pyi
     Array3DPyImp.cpp
-    MaterialFilterOptionsPy.xml
+    MaterialFilterOptions.pyi
     MaterialFilterOptionsPyImp.cpp
-    MaterialFilterPy.xml
+    MaterialFilter.pyi
     MaterialFilterPyImp.cpp
-    MaterialLibraryPy.xml
+    MaterialLibrary.pyi
     MaterialLibraryPyImp.cpp
-    MaterialManagerPy.xml
+    MaterialManager.pyi
     MaterialManagerPyImp.cpp
-    MaterialPropertyPy.xml
+    MaterialProperty.pyi
     MaterialPropertyPyImp.cpp
-    MaterialPy.xml
+    Material.pyi
     MaterialPyImp.cpp
-    ModelManagerPy.xml
+    ModelManager.pyi
     ModelManagerPyImp.cpp
-    ModelPropertyPy.xml
+    ModelProperty.pyi
     ModelPropertyPyImp.cpp
-    ModelPy.xml
+    Model.pyi
     ModelPyImp.cpp
-    UUIDsPy.xml
+    UUIDs.pyi
     UUIDsPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
