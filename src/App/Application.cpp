@@ -3722,7 +3722,7 @@ void Application::getVerboseInfo(QTextStream& str, const std::map<std::string,st
     str << "Coin " << COIN_VERSION << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
     str << "boost " << BOOST_LIB_VERSION << ", ";
-    str << "Eigen3 " << fcEigen3Version << ", ";
+    str << "Eigen3 " << fcEigen3Version << '\n';
     str << "PySide " << fcPysideVersion << ", ";
     str << "shiboken " << fcShibokenVersion << ", ";
 #ifdef SMESH_VERSION_STR
