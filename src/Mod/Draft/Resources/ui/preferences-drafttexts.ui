@@ -90,9 +90,6 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
         <property name="toolTip">
          <string>The default font for texts, dimensions and labels</string>
         </property>
-        <property name="text">
-         <string/>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>textfont</cstring>
         </property>
