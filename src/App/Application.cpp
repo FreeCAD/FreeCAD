@@ -2652,7 +2652,7 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverFile = nullptr;
 
     // Banner ===========================================================
-    if (mConfig["RunMode"] != "Cmd" && !vm.count("verbose")) {
+    if (mConfig["RunMode"] != "Cmd" && !(vm.count("verbose") && vm.count("version"))) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (mConfig["Verbose"] != "Strict")
@@ -2764,7 +2764,7 @@ void Application::initConfig(int argc, char ** argv)
 
     logStatus();
 
-    if (vm.count("verbose")) {
+    if (vm.count("verbose") && vm.count("version")) {
         Application::_pcSingleton = new Application(mConfig);
         QString data;
         QTextStream str(&data);
@@ -3722,8 +3722,8 @@ void Application::getVerboseInfo(QTextStream& str, const std::map<std::string,st
     str << "Coin " << COIN_VERSION << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
     str << "boost " << BOOST_LIB_VERSION << ", ";
-    str << "Eigen3 " << fcEigen3Version << '\n';
-    str << "PySide " << fcPysideVersion << ", ";
+    str << "Eigen3 " << fcEigen3Version << ", ";
+    str << "PySide " << fcPysideVersion << '\n';
     str << "shiboken " << fcShibokenVersion << ", ";
 #ifdef SMESH_VERSION_STR
     str << "SMESH " << SMESH_VERSION_STR << ", ";
