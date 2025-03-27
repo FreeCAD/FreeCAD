@@ -46,7 +46,7 @@ class ObjectIdentifier;
 
 /**
  * @brief %Base class of all properties
- * @ingroup PropFrame
+ * @ingroup PropertyFramework
  *
  * @details This is the father of all properties. Properties are objects which that used
  * in the document tree to parameterize e.g. features and their graphical output.
@@ -56,7 +56,7 @@ class ObjectIdentifier;
  * possible properties.  It is also possible to define user properties
  * and use them in the framework.
  *
- * For a more high-level overview see topic @ref PropFrame "Property Framework".
+ * For a more high-level overview see topic @ref PropertyFramework "Property Framework".
  */
 class AppExport Property: public Base::Persistence
 {
