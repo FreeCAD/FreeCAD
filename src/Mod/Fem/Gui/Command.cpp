@@ -1416,6 +1416,9 @@ void CmdFemCompEmConstraints::activated(int iMsg)
     else if (iMsg == 2) {
         rcCmdMgr.runCommandByName("FEM_ConstraintMagnetization");
     }
+    else if (iMsg == 3) {
+        rcCmdMgr.runCommandByName("FEM_ConstraintElectricChargeDensity");
+    }
     else {
         return;
     }
@@ -1441,6 +1444,8 @@ Gui::Action* CmdFemCompEmConstraints::createAction()
     cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintCurrentDensity"));
     QAction* cmd2 = pcAction->addAction(QString());
     cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintMagnetization"));
+    QAction* cmd3 = pcAction->addAction(QString());
+    cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintElectricChargeDensity"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1501,6 +1506,20 @@ void CmdFemCompEmConstraints::languageChange()
                                                  ConstraintMagnetization->getToolTipText()));
         cmd2->setStatusTip(QApplication::translate("FEM_ConstraintMagnetization",
                                                    ConstraintMagnetization->getStatusTip()));
+    }
+
+    Gui::Command* ConstraintElectricChargeDensity =
+        rcCmdMgr.getCommandByName("FEM_ConstraintElectricChargeDensity");
+    if (ConstraintElectricChargeDensity) {
+        QAction* cmd3 = a[3];
+        cmd3->setText(QApplication::translate("FEM_ConstraintElectricChargeDensity",
+                                              ConstraintElectricChargeDensity->getMenuText()));
+        cmd3->setToolTip(
+            QApplication::translate("FEM_ConstraintElectricChargeDensity",
+                                    ConstraintElectricChargeDensity->getToolTipText()));
+        cmd3->setStatusTip(
+            QApplication::translate("FEM_ConstraintElectricChargeDensity",
+                                    ConstraintElectricChargeDensity->getStatusTip()));
     }
 }
 
