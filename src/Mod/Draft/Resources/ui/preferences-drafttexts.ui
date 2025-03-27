@@ -75,22 +75,20 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
       <item row="0" column="0">
        <widget class="QLabel" name="label_textfont">
         <property name="text">
-         <string>Font name or family</string>
+         <string>Font name</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1" colspan="2">
-       <widget class="Gui::PrefLineEdit" name="lineEdit_textfont">
+       <widget class="Gui::PrefFontBox" name="fontBox_textfont">
+        <property name="minimumSize">
+         <size>
+          <width>280</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="toolTip">
-         <string>The default font for texts, dimensions and labels. It can be a font name such
-as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &quot;mono&quot;, or a family such as
-&quot;Arial,Helvetica,sans&quot;, or a name with a style such as &quot;Arial:Bold&quot;.</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="placeholderText">
-         <string>Internal font</string>
+         <string>The default font for texts, dimensions and labels</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>textfont</cstring>
@@ -99,6 +97,13 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          <cstring>Mod/Draft</cstring>
         </property>
        </widget>
+      </item>
+      <item row="0" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_textheight">
@@ -137,13 +142,6 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          <cstring>Mod/Draft</cstring>
         </property>
        </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </spacer>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_LineSpacing">
@@ -693,6 +691,11 @@ used for linear dimensions.</string>
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFontBox</class>
+   <extends>QFontComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
