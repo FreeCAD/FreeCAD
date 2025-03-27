@@ -404,6 +404,17 @@ PropertySurfaceChargeDensity::PropertySurfaceChargeDensity()
 }
 
 //**************************************************************************
+// PropertyVolumeChargeDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVolumeChargeDensity, App::PropertyQuantity)
+
+PropertyVolumeChargeDensity::PropertyVolumeChargeDensity()
+{
+    setUnit(Base::Unit::VolumeChargeDensity);
+}
+
+//**************************************************************************
 // PropertyElectricCurrent
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
