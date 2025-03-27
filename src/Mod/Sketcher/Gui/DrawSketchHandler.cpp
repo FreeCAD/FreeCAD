@@ -691,11 +691,6 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
             double error = fabs((focus1PMirrored - focus2P).Length() - 2 * a);
 
             if (error < tangDeviation) {
-                tangId = i;
-                tangDeviation = error;
-            }
-
-            if (error < tangDeviation) {
                 double startAngle, endAngle;
                 aoe->getRange(startAngle, endAngle, /*emulateCCW=*/true);
 
