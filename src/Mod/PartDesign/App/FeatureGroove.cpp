@@ -270,7 +270,7 @@ void Groove::generateRevolution(TopoDS_Shape& revol,
             angleOffset = angle2 * -1.0;
         }
         else if (method == RevolMethod::ThroughAll) {
-            angleTotal = 2 * M_PI;
+            angleTotal = 2 * std::numbers::pi;
         }
         else if (midplane) {
             // Rotate the face by half the angle to get Groove symmetric to sketch plane
