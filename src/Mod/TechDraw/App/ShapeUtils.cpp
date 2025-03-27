@@ -273,7 +273,7 @@ TopoDS_Shape ShapeUtils::rotateShape(const TopoDS_Shape& input, const gp_Ax2& vi
     }
 
     gp_Ax1 rotAxis = viewAxis.Axis();
-    double rotation = rotAngle * M_PI / 180.0;
+    double rotation = rotAngle * std::numbers::pi / 180.0;
 
     try {
         gp_Trsf tempTransform;

@@ -28,21 +28,10 @@
 #ifndef ADAPTIVE_HPP
 #define ADAPTIVE_HPP
 
-#ifndef __DBL_MAX__
-#define __DBL_MAX__ 1.7976931348623158e+308
-#endif
-
-#ifndef __LONG_MAX__
-#define __LONG_MAX__ 2147483647
-#endif
-
-#ifndef M_PI
-#define M_PI 3.141592653589793238
-#endif
 
 // #define DEV_MODE
 
-#define NTOL 1.0e-7  // numeric tolerance
+constexpr double NTOL = 1.0e-7;  // numeric tolerance
 
 namespace AdaptivePath
 {
@@ -201,8 +190,9 @@ private:  // constants for fine tuning
     const double CLEAN_PATH_TOLERANCE = 1.41;            // should be >1
     const double FINISHING_CLEAN_PATH_TOLERANCE = 1.41;  // should be >1
 
-    const long PASSES_LIMIT = __LONG_MAX__;              // limit used while debugging
-    const long POINTS_PER_PASS_LIMIT = __LONG_MAX__;     // limit used while debugging
+    const long PASSES_LIMIT = std::numeric_limits<long>::max();  // limit used while debugging
+    const long POINTS_PER_PASS_LIMIT =
+        std::numeric_limits<long>::max();                // limit used while debugging
     const clock_t PROGRESS_TICKS = CLOCKS_PER_SEC / 10;  // progress report interval
 };
 }  // namespace AdaptivePath

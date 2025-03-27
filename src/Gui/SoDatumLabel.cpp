@@ -36,6 +36,7 @@
 # include <algorithm>
 # include <cfloat>
 # include <cmath>
+# include <numbers>
 # include <QFontMetrics>
 # include <QPainter>
 
@@ -62,6 +63,9 @@ using namespace Gui;
 
 namespace {
 
+constexpr float pi = std::numbers::pi_v<float>;
+constexpr float pi_2 = pi/2.0F;
+
 void glVertex(const SbVec3f& pt){
     glVertex3f(pt[0], pt[1], pt[2]);
 }
@@ -78,11 +82,11 @@ void glDrawLine(const SbVec3f& p1, const SbVec3f& p2){
     glEnd();
 }
 
-void glDrawArc(const SbVec3f& center, float radius, float startAngle=0., float endAngle=2.0*M_PI, int countSegments=0){
+void glDrawArc(const SbVec3f& center, float radius, float startAngle=0., float endAngle=2.0*pi, int countSegments=0){
     float range = endAngle - startAngle;
 
     if (countSegments == 0){
-        countSegments = std::max(6, abs(int(25.0 * range / M_PI)));
+        countSegments = std::max(6, abs(int(25.0 * range / pi)));
     }
 
     float segment = range / (countSegments-1);
@@ -546,11 +550,11 @@ private:
         float startangle = atan2f(vc1[1], vc1[0]);
         float endangle = atan2f(vc2[1], vc2[0]);
         if (endangle < startangle) {
-            endangle += 2. * M_PI;
+            endangle += 2. * pi;
         }
 
         SbVec3f textCenter;
-        if (endangle - startangle <= M_PI) {
+        if (endangle - startangle <= pi) {
             textCenter = ctr + vm * (length + imgHeight);
         } else {
             textCenter = ctr - vm * (length + 2. * imgHeight);
@@ -689,7 +693,7 @@ SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVe
     float endangle = atan2f(vc2[1], vc2[0]);
 
     if (endangle < startangle) {
-        endangle += 2. * M_PI;
+        endangle += 2. * pi;
     }
 
     // Text location
@@ -697,7 +701,7 @@ SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVe
     vm.normalize();
 
     SbVec3f textCenter;
-    if (endangle - startangle <= M_PI) {
+    if (endangle - startangle <= pi) {
         textCenter = ctr + vm * (length + this->imgHeight);
     } else {
         textCenter = ctr - vm * (length + 2. * this->imgHeight);
@@ -1192,10 +1196,10 @@ void SoDatumLabel::drawDistance(const SbVec3f* points, float scale, int srch, fl
 
     // Get magnitude of angle between horizontal
     angle = atan2f(dir[1],dir[0]);
-    if (angle > M_PI_2+M_PI/12) {
-        angle -= (float)M_PI;
-    } else if (angle <= -M_PI_2+M_PI/12) {
-        angle += (float)M_PI;
+    if (angle > pi_2+pi/12) {
+        angle -= (float)pi;
+    } else if (angle <= -pi_2+pi/12) {
+        angle += (float)pi;
     }
 
     textOffset = midpos + normal * length + dir * length2;
@@ -1291,7 +1295,7 @@ void SoDatumLabel::drawDistance(const SbVec3f* points)
         float startangle1 = this->param3.getValue();
         float radius1 = this->param5.getValue();
         SbVec3f center = points[2];
-        int countSegments = std::max(6, abs(int(50.0 * range1 / (2 * M_PI))));
+        int countSegments = std::max(6, abs(int(50.0 * range1 / (2 * pi))));
         double segment = range1 / (countSegments - 1);
 
         glBegin(GL_LINE_STRIP);
@@ -1307,7 +1311,7 @@ void SoDatumLabel::drawDistance(const SbVec3f* points)
         float startangle2 = this->param6.getValue();
         float radius2 = this->param8.getValue();
         SbVec3f center = points[3];
-        int countSegments = std::max(6, abs(int(50.0 * range2 / (2 * M_PI))));
+        int countSegments = std::max(6, abs(int(50.0 * range2 / (2 * pi))));
         double segment = range2 / (countSegments - 1);
 
         glBegin(GL_LINE_STRIP);
@@ -1342,10 +1346,10 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
 
     // Get magnitude of angle between horizontal
     angle = atan2f(dir[1],dir[0]);
-    if (angle > M_PI_2+M_PI/12) {
-        angle -= (float)M_PI;
-    } else if (angle <= -M_PI_2+M_PI/12) {
-        angle += (float)M_PI;
+    if (angle > pi_2+pi/12) {
+        angle -= (float)pi;
+    } else if (angle <= -pi_2+pi/12) {
+        angle += (float)pi;
     }
 
     textOffset = pos;
@@ -1401,7 +1405,7 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
     float startangle = this->param3.getValue();
     float range = this->param4.getValue();
     if (range != 0.0) {
-        int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
+        int countSegments = std::max(6, abs(int(50.0 * range / (2 * pi))));
         double segment = range / (countSegments - 1);
 
         glBegin(GL_LINE_STRIP);
@@ -1535,7 +1539,7 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     float startangle = atan2f(vc1[1], vc1[0]);
     float endangle = atan2f(vc2[1], vc2[0]);
     if (endangle < startangle) {
-        endangle += 2.0F * (float)M_PI;
+        endangle += 2.0F * (float)pi;
     }
 
     float range = endangle - startangle;
@@ -1547,10 +1551,10 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     dir.normalize();
     // Get magnitude of angle between horizontal
     angle = atan2f(dir[1],dir[0]);
-    if (angle > M_PI_2+M_PI/12) {
-        angle -= (float)M_PI;
-    } else if (angle <= -M_PI_2+M_PI/12) {
-        angle += (float)M_PI;
+    if (angle > pi_2+pi/12) {
+        angle -= (float)pi;
+    } else if (angle <= -pi_2+pi/12) {
+        angle += (float)pi;
     }
        // Text location
     textOffset = getLabelTextCenterArcLength(ctr, p1, p2);
@@ -1566,7 +1570,7 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     SbVec3f pnt4 = p2 + (length-radius) * vm;
 
         // Draw arc
-    if (range <= M_PI) {
+    if (range <= pi) {
         glDrawArc(ctr + (length-radius)*vm, radius, startangle, endangle);
     }
     else {
@@ -1678,7 +1682,7 @@ void SoDatumLabel::drawText(SoState *state, int srcw, int srch, float angle, con
 
     // Apply a rotation and translation matrix
     glTranslatef(textOffset[0], textOffset[1], textOffset[2]);
-    glRotatef((GLfloat) angle * 180 / M_PI, 0,0,1);
+    glRotatef((GLfloat) angle * 180 / pi, 0,0,1);
     glBegin(GL_QUADS);
 
     glColor3f(1.F, 1.F, 1.F);

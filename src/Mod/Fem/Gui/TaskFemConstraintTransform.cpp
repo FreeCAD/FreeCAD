@@ -130,14 +130,14 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     ui->qsb_rot_angle->bind(
         App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Angle")));
 
-    ui->spb_rot_axis_x->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_x->setMaximum(FLOAT_MAX);
-    ui->spb_rot_axis_y->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_y->setMaximum(FLOAT_MAX);
-    ui->spb_rot_axis_z->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_z->setMaximum(FLOAT_MAX);
-    ui->qsb_rot_angle->setMinimum(-FLOAT_MAX);
-    ui->qsb_rot_angle->setMaximum(FLOAT_MAX);
+    ui->spb_rot_axis_x->setMinimum(-std::numeric_limits<float>::max());
+    ui->spb_rot_axis_x->setMaximum(std::numeric_limits<float>::max());
+    ui->spb_rot_axis_y->setMinimum(-std::numeric_limits<float>::max());
+    ui->spb_rot_axis_y->setMaximum(std::numeric_limits<float>::max());
+    ui->spb_rot_axis_z->setMinimum(-std::numeric_limits<float>::max());
+    ui->spb_rot_axis_z->setMaximum(std::numeric_limits<float>::max());
+    ui->qsb_rot_angle->setMinimum(-std::numeric_limits<float>::max());
+    ui->qsb_rot_angle->setMaximum(std::numeric_limits<float>::max());
 
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {

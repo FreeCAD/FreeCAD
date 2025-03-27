@@ -556,7 +556,7 @@ std::string embedItem::dump()
     std::stringstream builder;
     builder << "embedItem - vertex: " << iVertex  << " incidenceList: ";
     for (auto& ii : incidenceList) {
-        builder << " e:" << ii.iEdge << "/a:" << (ii.angle * (180.0/M_PI)) << "/ed:" << ii.eDesc;
+        builder << " e:" << ii.iEdge << "/a:" << (ii.angle * (180.0/std::numbers::pi)) << "/ed:" << ii.eDesc;
     }
     return builder.str();
 }

@@ -51,7 +51,7 @@
 
 
 #ifndef M_2PI
-#define M_2PI ((M_PI)*2.0)
+#define M_2PI ((std::numbers::pi)*2.0)
 #endif
 
 constexpr double DegreesHalfCircle{180.0};

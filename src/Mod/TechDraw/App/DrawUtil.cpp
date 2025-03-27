@@ -203,7 +203,7 @@ double DrawUtil::angleWithX(Base::Vector3d inVec)
 {
     double result = atan2(inVec.y, inVec.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += 2.0 * std::numbers::pi;
     }
 
     return result;
@@ -225,7 +225,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
     }
     double result = atan2(u.y, u.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += 2.0 * std::numbers::pi;
     }
 
     return result;
@@ -251,7 +251,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
     c->D1(param, paramPoint, derivative);
     double angle = atan2(derivative.Y(), derivative.X());
     if (angle < 0) {//map from [-PI:PI] to [0:2PI]
-        angle += 2.0 * M_PI;
+        angle += 2.0 * std::numbers::pi;
     }
     return angle;
 }
@@ -1059,7 +1059,7 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector
 
     // remove the effect of the Rotation property
     double rotDeg = dvp.Rotation.getValue();
-    double rotRad = rotDeg * M_PI / 180.0;
+    double rotRad = rotDeg * std::numbers::pi / 180.0;
     if (rotDeg != 0.0) {
         // we always rotate around the origin.
         appPoint.RotateZ(-rotRad);
@@ -1396,10 +1396,10 @@ double DrawUtil::sqr(double x)
 
 void DrawUtil::angleNormalize(double& fi)
 {
-    while (fi <= -M_PI) {
+    while (fi <= -std::numbers::pi) {
         fi += M_2PI;
     }
-    while (fi > M_PI) {
+    while (fi > std::numbers::pi) {
         fi -= M_2PI;
     }
 }
@@ -1419,7 +1419,7 @@ double DrawUtil::angleDifference(double fi1, double fi2, bool reflex)
 
     fi1 -= fi2;
 
-    if ((fi1 > +M_PI || fi1 <= -M_PI) != reflex) {
+    if ((fi1 > +std::numbers::pi || fi1 <= -std::numbers::pi) != reflex) {
         fi1 += fi1 > 0.0 ? -M_2PI : +M_2PI;
     }
 
@@ -1573,7 +1573,7 @@ void DrawUtil::intervalMarkCircular(std::vector<std::pair<double, bool>>& markin
     angleNormalize(start);
 
     double end = start + length;
-    if (end > M_PI) {
+    if (end > std::numbers::pi) {
         end -= M_2PI;
     }
 
@@ -1790,7 +1790,7 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
     if (arcRotation < 0.0) {
         arcRotation = -arcRotation;
         arcBaseAngle -= arcRotation;
-        if (arcBaseAngle <= -M_PI) {
+        if (arcBaseAngle <= -std::numbers::pi) {
             arcBaseAngle += M_2PI;
         }
     }

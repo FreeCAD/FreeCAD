@@ -42,6 +42,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <numbers>
 #include <vector>
 
 // Boost

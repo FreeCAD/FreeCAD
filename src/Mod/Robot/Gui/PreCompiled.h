@@ -46,6 +46,7 @@
 #ifdef _PreComp_
 
 // STL
+#include <numbers>
 #include <sstream>
 
 // Qt

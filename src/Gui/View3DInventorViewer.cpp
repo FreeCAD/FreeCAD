@@ -36,6 +36,7 @@
 # endif
 
 # include <fmt/format.h>
+#include <numbers>
 
 # include <Inventor/SbBox.h>
 # include <Inventor/SoEventManager.h>
@@ -3267,7 +3268,7 @@ void View3DInventorViewer::setCameraType(SoType type)
         // heightAngle. Setting it to 45 deg also causes an issue with a too
         // close camera but we don't have this other ugly effect.
 
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);  // NOLINT
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = std::numbers::pi_v<float> / 4.0F;  // NOLINT
     }
 
     lightRotation->rotation.connectFrom(&cam->orientation);
@@ -3426,7 +3427,7 @@ void View3DInventorViewer::viewAll()
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
     if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);  // NOLINT
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = std::numbers::pi_v<float> / 4.0F;  // NOLINT
     }
 
     if (isAnimationEnabled()) {
@@ -3562,6 +3563,10 @@ void View3DInventorViewer::viewSelection()
 
 void View3DInventorViewer::alignToSelection()
 {
+    constexpr float pi = std::numbers::pi_v<float>;
+    constexpr float pi_2 = std::numbers::pi_v<float> / 2.0F;
+    constexpr float pi_4 = std::numbers::pi_v<float> / 4.0F;
+
     if (!getCamera()) {
         return;
     }
@@ -3634,24 +3639,24 @@ void View3DInventorViewer::alignToSelection()
         
         // Make angle positive
         if (angle < 0) {
-            angle += 2 * M_PI;
+            angle += 2 * pi;
         }
         
         // Find the angle to rotate to the nearest horizontal or vertical alignment with directionX.
         // f is a small value used to get more deterministic behavior when the camera is at directionX +- 45 degrees.
         const float f = 0.00001F;
-        
-        if (angle <= M_PI_4 + f) {
+
+        if (angle <= pi_4 + f) {
             angle = 0;
         }
-        else if (angle <= 3 * M_PI_4 + f) {
-            angle = M_PI_2;
+        else if (angle <= 3 * pi_4 + f) {
+            angle = pi_2;
         }
-        else if (angle < M_PI + M_PI_4 - f) {
-            angle = M_PI;
+        else if (angle < pi + pi_4 - f) {
+            angle = pi;
         }
-        else if (angle < M_PI + 3 * M_PI_4 - f) {
-            angle = M_PI + M_PI_2;
+        else if (angle < pi + 3 * pi_4 - f) {
+            angle = pi + pi_2;
         }
         else {
             angle = 0;
@@ -3960,7 +3965,7 @@ void View3DInventorViewer::drawAxisCross()
 
     const float NEARVAL = 0.1F;
     const float FARVAL = 10.0F;
-    const float dim = NEARVAL * float(tan(M_PI / 8.0)); // FOV is 45 deg (45/360 = 1/8)
+    const float dim = NEARVAL * tan(std::numbers::pi_v<float> / 8.0F); // FOV is 45 deg (45/360 = 1/8)
     glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
 
 

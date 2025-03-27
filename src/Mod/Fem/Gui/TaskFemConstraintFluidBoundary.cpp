@@ -145,18 +145,18 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             &TaskFemConstraintFluidBoundary::onReferenceDeleted);
 
     // setup ranges
-    ui->spinBoundaryValue->setMinimum(-FLOAT_MAX);
-    ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
+    ui->spinBoundaryValue->setMinimum(-std::numeric_limits<float>::max());
+    ui->spinBoundaryValue->setMaximum(std::numeric_limits<float>::max());
     ui->spinTurbulentIntensityValue->setMinimum(0.0);
-    ui->spinTurbulentIntensityValue->setMaximum(FLOAT_MAX);
+    ui->spinTurbulentIntensityValue->setMaximum(std::numeric_limits<float>::max());
     ui->spinTurbulentLengthValue->setMinimum(0.0);
-    ui->spinTurbulentLengthValue->setMaximum(FLOAT_MAX);
+    ui->spinTurbulentLengthValue->setMaximum(std::numeric_limits<float>::max());
     ui->spinTemperatureValue->setMinimum(-273.15);
-    ui->spinTemperatureValue->setMaximum(FLOAT_MAX);
+    ui->spinTemperatureValue->setMaximum(std::numeric_limits<float>::max());
     ui->spinHeatFluxValue->setMinimum(0.0);
-    ui->spinHeatFluxValue->setMaximum(FLOAT_MAX);
+    ui->spinHeatFluxValue->setMaximum(std::numeric_limits<float>::max());
     ui->spinHTCoeffValue->setMinimum(0.0);
-    ui->spinHTCoeffValue->setMaximum(FLOAT_MAX);
+    ui->spinHTCoeffValue->setMaximum(std::numeric_limits<float>::max());
 
     connect(ui->comboBoundaryType,
             qOverload<int>(&QComboBox::currentIndexChanged),
@@ -352,8 +352,9 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
 
     // Fill data into dialog elements
     double f = pcConstraint->BoundaryValue.getValue();
-    ui->spinBoundaryValue->setMinimum(FLOAT_MIN);  // previous set the min to ZERO is not flexible
-    ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
+    ui->spinBoundaryValue->setMinimum(
+        -std::numeric_limits<float>::max());  // previous set the min to ZERO is not flexible
+    ui->spinBoundaryValue->setMaximum(std::numeric_limits<float>::max());
     ui->spinBoundaryValue->setValue(f);
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {

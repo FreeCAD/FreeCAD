@@ -38,6 +38,8 @@
 #include <windows.h>
 #endif
 
+#include <numbers>
+
 // Boost
 #include <boost/core/ignore_unused.hpp>
 

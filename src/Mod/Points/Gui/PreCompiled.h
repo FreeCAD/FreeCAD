@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <limits>
 #include <memory>
+#include <numbers>
 
 // boost
 #include <boost/math/special_functions/fpclassify.hpp>

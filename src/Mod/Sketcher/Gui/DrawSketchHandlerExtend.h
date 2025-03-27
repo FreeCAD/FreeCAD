@@ -142,8 +142,8 @@ public:
                  */
                 bool inCurve = (projection.Length() < recenteredLine.Length()
                                 && projection.GetAngle(recenteredLine)
-                                    < 0.1);  // Two possible values here, M_PI and 0, but 0.1 is to
-                                             // avoid floating point problems.
+                                    < 0.1);  // Two possible values here, std::numbers::pi and 0,
+                                             // but 0.1 is to avoid floating point problems.
                 if (inCurve) {
                     Increment = SavedExtendFromStart
                         ? -1 * projection.Length()
@@ -185,8 +185,8 @@ public:
                     bool isCCWFromStart = crossProduct(angle, startAngle) < 0;
                     if (outOfArc) {
                         if (isCCWFromStart) {
-                            modStartAngle -= 2 * M_PI - angleToStartAngle;
-                            modArcAngle += 2 * M_PI - angleToStartAngle;
+                            modStartAngle -= 2 * std::numbers::pi - angleToStartAngle;
+                            modArcAngle += 2 * std::numbers::pi - angleToStartAngle;
                         }
                         else {
                             modStartAngle -= angleToStartAngle;
@@ -199,8 +199,8 @@ public:
                             modArcAngle -= angleToStartAngle;
                         }
                         else {
-                            modStartAngle += 2 * M_PI - angleToStartAngle;
-                            modArcAngle -= 2 * M_PI - angleToStartAngle;
+                            modStartAngle += 2 * std::numbers::pi - angleToStartAngle;
+                            modArcAngle -= 2 * std::numbers::pi - angleToStartAngle;
                         }
                     }
                 }
@@ -208,7 +208,7 @@ public:
                     bool isCWFromEnd = crossProduct(angle, endAngle) >= 0;
                     if (outOfArc) {
                         if (isCWFromEnd) {
-                            modArcAngle += 2 * M_PI - angleToEndAngle;
+                            modArcAngle += 2 * std::numbers::pi - angleToEndAngle;
                         }
                         else {
                             modArcAngle += angleToEndAngle;
@@ -219,7 +219,7 @@ public:
                             modArcAngle -= angleToEndAngle;
                         }
                         else {
-                            modArcAngle -= 2 * M_PI - angleToEndAngle;
+                            modArcAngle -= 2 * std::numbers::pi - angleToEndAngle;
                         }
                     }
                 }

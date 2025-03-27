@@ -54,8 +54,8 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
     arcEnd.y = &arcEndY;
     arcCenter.x = &arcCenterX;
     arcCenter.y = &arcCenterY;
-    double arcRadius = 5.0, arcStartAngle = 0.0, arcEndAngle = M_PI / 2;
-    double desiredAngle = M_PI;
+    double arcRadius = 5.0, arcStartAngle = 0.0, arcEndAngle = std::numbers::pi / 2;
+    double desiredAngle = std::numbers::pi;
     double bSplineStartX = 0.0, bSplineEndX = 16.0;
     double bSplineStartY = 10.0, bSplineEndY = -10.0;
     GCS::Point bSplineStart, bSplineEnd;

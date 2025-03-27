@@ -25,6 +25,7 @@
 #endif
 
 #include <cassert>
+#include <cmath>
 
 #include "Geo.h"
 

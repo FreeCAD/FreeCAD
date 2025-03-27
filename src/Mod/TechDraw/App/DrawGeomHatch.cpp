@@ -399,12 +399,12 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, B
     double interval = hatchLine.getInterval() * scale;
     double offset = hatchLine.getOffset() * scale;
     double angle = hatchLine.getAngle() + rotation;
-    origin.RotateZ(rotation * M_PI / 180.);
+    origin.RotateZ(rotation * std::numbers::pi / 180.);
 
     if (scale == 0. || interval == 0.)
         return {};
 
-    Base::Vector3d hatchDirection(cos(angle * M_PI / 180.), sin(angle * M_PI / 180.), 0.);
+    Base::Vector3d hatchDirection(cos(angle * std::numbers::pi / 180.), sin(angle * std::numbers::pi / 180.), 0.);
     Base::Vector3d hatchPerpendicular(-hatchDirection.y, hatchDirection.x, 0.);
     Base::Vector3d hatchIntervalAndOffset = offset * hatchDirection + interval * hatchPerpendicular;
 

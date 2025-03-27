@@ -40,6 +40,7 @@
 
 // STL
 #include <memory>
+#include <numbers>
 #include <sstream>
 
 // kdl_cp

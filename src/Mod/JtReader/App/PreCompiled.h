@@ -33,6 +33,7 @@
 
 #include <cassert>
 #include <cstdio>
+#include <numbers>
 
 // STL
 #include <algorithm>

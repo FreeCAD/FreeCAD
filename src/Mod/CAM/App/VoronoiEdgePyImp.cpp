@@ -697,11 +697,11 @@ PyObject* VoronoiEdgePy::getSegmentAngle(PyObject* args)
             double a0 = e->dia->angleOfSegment(i0);
             double a1 = e->dia->angleOfSegment(i1);
             double a = a0 - a1;
-            if (a > M_PI_2) {
-                a -= M_PI;
+            if (a > std::numbers::pi / 2.0) {
+                a -= std::numbers::pi;
             }
-            else if (a < -M_PI_2) {
-                a += M_PI;
+            else if (a < -std::numbers::pi / 2.0) {
+                a += std::numbers::pi;
             }
             return Py::new_reference_to(Py::Float(a));
         }

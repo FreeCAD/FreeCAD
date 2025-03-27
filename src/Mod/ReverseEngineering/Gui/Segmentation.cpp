@@ -115,7 +115,7 @@ void Segmentation::accept()
                 std::vector<MeshCore::PointIndex> indexes = kernel.GetFacetPoints(jt);
                 MeshCore::PlaneFit fit;
                 fit.AddPoints(kernel.GetPoints(indexes));
-                if (fit.Fit() < FLOAT_MAX) {
+                if (fit.Fit() < std::numeric_limits<float>::max()) {
                     Base::Vector3f base = fit.GetBase();
                     Base::Vector3f axis = fit.GetNormal();
                     MeshCore::AbstractSurfaceFit* fitter =

@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cassert>
+#include <numbers>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
@@ -773,9 +774,9 @@ bool Part::Tools::isConcave(const TopoDS_Face &face, const gp_Pnt &pointOfVue, c
 
             // check normals orientation
     gp_Dir dirdU(dU);
-    result = (dirdU.Angle(direction) - M_PI_2) <= Precision::Confusion();
+    result = (dirdU.Angle(direction) - std::numbers::pi_v<Standard_Real> / 2.0) <= Precision::Confusion();
     gp_Dir dirdV(dV);
-    result = result || ((dirdV.Angle(direction) - M_PI_2) <= Precision::Confusion());
+    result = result || ((dirdV.Angle(direction) - std::numbers::pi_v<Standard_Real> / 2.0) <= Precision::Confusion());
 
     return result;
 }

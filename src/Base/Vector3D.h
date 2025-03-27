@@ -27,74 +27,28 @@
 
 #include <cmath>
 #include <cfloat>
-
-#ifndef F_PI
-#define F_PI 3.1415926f
-#endif
-
-#ifndef D_PI
-#define D_PI 3.141592653589793
-#endif
-
-#ifndef FLOAT_MAX
-#define FLOAT_MAX 3.402823466E+38F
-#endif
-
-#ifndef FLOAT_MIN
-#define FLOAT_MIN 1.175494351E-38F
-#endif
-
-#ifndef DOUBLE_MAX
-#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
-#endif
-
-#ifndef DOUBLE_MIN
-#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
-#endif
-
+#include <limits>
+#include <numbers>
 
 namespace Base
 {
 template<class numT>
 struct float_traits
 {
-};
-
-template<>
-struct float_traits<float>
-{
-    using float_type = float;
-    [[nodiscard]] static constexpr float_type pi()
+    [[nodiscard]] static constexpr numT pi()
     {
-        return F_PI;
+        return std::numbers::pi_v<numT>;
     }
-    [[nodiscard]] static constexpr float_type epsilon()
+    [[nodiscard]] static constexpr numT epsilon()
     {
-        return FLT_EPSILON;
+        return std::numeric_limits<numT>::epsilon();
     }
-    [[nodiscard]] static constexpr float_type maximum()
+    [[nodiscard]] static constexpr numT maximum()
     {
-        return FLT_MAX;
+        return std::numeric_limits<numT>::max();
     }
 };
 
-template<>
-struct float_traits<double>
-{
-    using float_type = double;
-    [[nodiscard]] static constexpr float_type pi()
-    {
-        return D_PI;
-    }
-    [[nodiscard]] static constexpr float_type epsilon()
-    {
-        return DBL_EPSILON;
-    }
-    [[nodiscard]] static constexpr float_type maximum()
-    {
-        return DBL_MAX;
-    }
-};
 
 /** The Vector Base class. */
 template<class float_type>

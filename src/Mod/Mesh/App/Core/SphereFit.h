@@ -72,17 +72,18 @@ public:
      */
     void ComputeApproximations();
     /**
-     * Fit a sphere onto the given points. If the fit fails FLOAT_MAX is returned.
+     * Fit a sphere onto the given points. If the fit fails std::numeric_limits<float>::max() is
+     * returned.
      */
     float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted sphere. If Fit() has not been
-     * called FLOAT_MAX is returned.
+     * called std::numeric_limits<float>::max() is returned.
      */
     float GetDistanceToSphere(const Base::Vector3f& rcPoint) const;
     /**
      * Returns the standard deviation from the points to the fitted sphere. If Fit() has not been
-     * called FLOAT_MAX is returned.
+     * called std::numeric_limits<float>::max() is returned.
      */
     float GetStdDeviation() const;
     /**

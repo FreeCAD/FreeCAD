@@ -1113,7 +1113,7 @@ Base::Vector3d  DrawBrokenView::makePerpendicular(Base::Vector3d inDir) const
     gp_Pnt origin(0.0, 0.0, 0.0);
     auto dir = getProjectionCS().Direction();
     gp_Ax1 axis(origin, dir);
-    auto gRotated = gDir.Rotated(axis,  M_PI_2);
+    auto gRotated = gDir.Rotated(axis, std::numbers::pi_v<Standard_Real>/2.0F);
     return Base::convertTo<Base::Vector3d>(gRotated);
 }
 

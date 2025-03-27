@@ -22,10 +22,10 @@
 
 #include "Adaptive.hpp"
 #include <iostream>
-#include <cmath>
 #include <cstring>
 #include <ctime>
 #include <algorithm>
+#include <numbers>
 
 namespace ClipperLib
 {
@@ -116,7 +116,7 @@ inline double Angle3Points(const DoublePoint& p1, const DoublePoint& p2, const D
     double t1 = atan2(p2.Y - p1.Y, p2.X - p1.X);
     double t2 = atan2(p3.Y - p2.Y, p3.X - p2.X);
     double a = fabs(t2 - t1);
-    return min(a, 2 * M_PI - a);
+    return min(a, 2 * std::numbers::pi - a);
 }
 
 inline DoublePoint DirectionV(const IntPoint& pt1, const IntPoint& pt2)
@@ -374,7 +374,7 @@ double DistancePointToPathsSqrd(const Paths& paths,
                                 size_t& clpSegmentIndex,
                                 double& clpParameter)
 {
-    double minDistSq = __DBL_MAX__;
+    double minDistSq = std::numeric_limits<double>::max();
     IntPoint clp;
     // iterate though paths
     for (Path::size_type i = 0; i < paths.size(); i++) {
@@ -768,7 +768,7 @@ bool PopPathWithClosestPoint(Paths& paths /*closest path is removed from collect
         return false;
     }
 
-    double minDistSqrd = __DBL_MAX__;
+    double minDistSqrd = std::numeric_limits<double>::max();
     size_t closestPathIndex = 0;
     long closestPointIndex = 0;
     for (size_t pathIndex = 0; pathIndex < paths.size(); pathIndex++) {
@@ -1096,8 +1096,8 @@ private:
 class Interpolation
 {
 public:
-    const double MIN_ANGLE = -M_PI / 4;
-    const double MAX_ANGLE = M_PI / 4;
+    const double MIN_ANGLE = -std::numbers::pi / 4;
+    const double MAX_ANGLE = std::numbers::pi / 4;
 
     void clear()
     {
@@ -1247,7 +1247,7 @@ public:
             }
         }
 
-        double minDistSq = __DBL_MAX__;
+        double minDistSq = std::numeric_limits<double>::max();
         size_t minPathIndex = state.currentPathIndex;
         size_t minSegmentIndex = state.currentSegmentIndex;
         double minSegmentPos = state.segmentPos;
@@ -1542,7 +1542,7 @@ double Adaptive2d::CalcCutArea(Clipper& clip,
         double minFi = fi1;
         double maxFi = fi2;
         if (maxFi < minFi) {
-            maxFi += 2 * M_PI;
+            maxFi += 2 * std::numbers::pi;
         }
 
         if (preventConventional && interPathLen >= RESOLUTION_FACTOR) {
@@ -1550,7 +1550,7 @@ double Adaptive2d::CalcCutArea(Clipper& clip,
             IntPoint midPoint(long(c2.X + toolRadiusScaled * cos(0.5 * (maxFi + minFi))),
                               long(c2.Y + toolRadiusScaled * sin(0.5 * (maxFi + minFi))));
             if (PointSideOfLine(c1, c2, midPoint) < 0) {
-                area = __DBL_MAX__;
+                area = std::numeric_limits<double>::max();
                 Perf_CalcCutAreaCirc.Stop();
                 // #ifdef DEV_MODE
                 // 	cout << "Break: @(" << double(c2.X)/scaleFactor << "," <<
@@ -2359,7 +2359,7 @@ bool Adaptive2d::MakeLeadPath(bool leadIn,
         IntPoint(currentPoint.X + nextDir.X * stepSize, currentPoint.Y + nextDir.Y * stepSize);
     Path checkPath;
     double adaptFactor = 0.4;
-    double alfa = M_PI / 64;
+    double alfa = std::numbers::pi / 64;
     double pathLen = 0;
     checkPath.push_back(nextPoint);
     for (int i = 0; i < 10000; i++) {
@@ -2802,7 +2802,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     IntPoint clp;                 // to store closest point
     vector<DoublePoint> gyro;     // used to average tool direction
     vector<double> angleHistory;  // use to predict deflection angle
-    double angle = M_PI;
+    double angle = std::numbers::pi;
     engagePoint = toolPos;
     Interpolation interp;  // interpolation instance
 
@@ -2846,7 +2846,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             }
         }
 
-        angle = M_PI / 4;  // initial pass angle
+        angle = std::numbers::pi / 4;  // initial pass angle
         bool recalcArea = false;
         double cumulativeCutArea = 0;
         // init gyro
@@ -2919,7 +2919,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             /******************************/
             Perf_PointIterations.Start();
             int iteration;
-            double prev_error = __DBL_MAX__;
+            double prev_error = std::numeric_limits<double>::max();
             for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
                 total_iterations++;
                 if (iteration == 0) {
@@ -2991,7 +2991,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 rotateStep++;
                 // if new tool pos. outside boundary rotate until back in
                 recalcArea = true;
-                newToolDir = rotate(newToolDir, M_PI / 90);
+                newToolDir = rotate(newToolDir, std::numbers::pi / 90);
                 newToolPos = IntPoint(long(toolPos.X + newToolDir.X * stepScaled),
                                       long(toolPos.Y + newToolDir.Y * stepScaled));
             }

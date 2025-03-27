@@ -24,8 +24,8 @@
 #define PLANEGCS_GEO_H
 
 #include "Util.h"
-#include <boost/math/constants/constants.hpp>
 #include "../../SketcherGlobal.h"
+#include <numbers>
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4251)
@@ -53,7 +53,7 @@ public:
 };
 
 using VEC_P = std::vector<Point>;
-static constexpr double pi = boost::math::constants::pi<double>();
+static constexpr double pi = std::numbers::pi;
 static constexpr double pi_2 = pi / 2.0;
 static constexpr double pi_18 = pi / 18.0;
 

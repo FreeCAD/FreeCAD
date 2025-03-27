@@ -348,7 +348,7 @@ std::string edgeSortItem::dump()
     std::string result;
     std::stringstream builder;
     builder << "edgeSortItem - s: " << DrawUtil::formatVector(start)  << " e: " << DrawUtil::formatVector(end) <<
-                              " sa: " << startAngle * 180.0/M_PI << " ea: " << endAngle* 180.0/M_PI << " idx: " << idx;
+                              " sa: " << startAngle * 180.0/std::numbers::pi << " ea: " << endAngle* 180.0/std::numbers::pi << " idx: " << idx;
     return builder.str();
 }
 

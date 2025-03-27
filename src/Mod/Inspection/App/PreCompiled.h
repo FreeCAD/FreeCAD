@@ -36,6 +36,7 @@
 
 // STL
 #include <numeric>
+#include <numbers>
 
 // OCC
 #include <BRepBuilderAPI_MakeVertex.hxx>

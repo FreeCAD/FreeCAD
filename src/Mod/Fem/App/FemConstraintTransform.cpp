@@ -119,9 +119,9 @@ Base::Rotation anglesToRotation(double xAngle, double yAngle, double zAngle)
     static Base::Vector3d a(1, 0, 0);
     static Base::Vector3d b(0, 1, 0);
     static int count = 0;
-    double xRad = xAngle * D_PI / 180.0;
-    double yRad = yAngle * D_PI / 180.0;
-    double zRad = zAngle * D_PI / 180.0;
+    double xRad = xAngle * std::numbers::pi / 180.0;
+    double yRad = yAngle * std::numbers::pi / 180.0;
+    double zRad = zAngle * std::numbers::pi / 180.0;
     if (xAngle != 0) {
         a[1] = 0;
         a[2] = 0;

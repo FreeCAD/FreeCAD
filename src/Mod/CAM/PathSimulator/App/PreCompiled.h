@@ -30,7 +30,7 @@
 // standard
 #include <cstdio>
 #include <cassert>
-#include <iostream>
+#include <numbers>
 
 // STL
 #include <algorithm>

@@ -36,6 +36,7 @@
 
 // STL
 #include <cfloat>
+#include <numbers>
 
 // Inventor
 #include <Inventor/SoPickedPoint.h>

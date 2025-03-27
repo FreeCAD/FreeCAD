@@ -46,6 +46,7 @@
 #include <cinttypes>
 #include <iomanip>
 #include <map>
+#include <numbers>
 #include <sstream>
 #include <string>
 #include <vector>

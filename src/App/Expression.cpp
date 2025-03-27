@@ -62,18 +62,6 @@ using namespace App;
 
 FC_LOG_LEVEL_INIT("Expression", true, true)
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-#ifndef M_E
-#define M_E        2.71828182845904523536
-#endif
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
 
 #if defined(_MSC_VER)
 #define strtoll _strtoi64
@@ -2227,7 +2215,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         Rotation rotation = Base::Rotation(
             Vector3d(static_cast<double>(f == MROTATEX), static_cast<double>(f == MROTATEY), static_cast<double>(f == MROTATEZ)),
-            rotationAngle.getValue() * M_PI / 180.0);
+            rotationAngle.getValue() * std::numbers::pi / 180.0);
         Base::Matrix4D rotationMatrix;
         rotation.getValue(rotationMatrix);
 
@@ -2366,7 +2354,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         switch (f) {
         case VANGLE:
-            return Py::asObject(new QuantityPy(new Quantity(vector1.GetAngle(vector2) * 180 / M_PI, Unit::Angle)));
+            return Py::asObject(new QuantityPy(new Quantity(vector1.GetAngle(vector2) * 180 / std::numbers::pi, Unit::Angle)));
         case VCROSS:
             return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
         case VDOT:
@@ -2425,7 +2413,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             _EXPR_THROW("Unit must be either empty or an angle.", expr);
 
         // Convert value to radians
-        value *= M_PI / 180.0;
+        value *= std::numbers::pi / 180.0;
         unit = Unit();
         break;
     case ACOS:
@@ -2434,7 +2422,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (!v1.isDimensionless())
             _EXPR_THROW("Unit must be empty.", expr);
         unit = Unit::Angle;
-        scaler = 180.0 / M_PI;
+        scaler = 180.0 / std::numbers::pi;
         break;
     case EXP:
     case LOG:
@@ -2466,7 +2454,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (v1.getUnit() != v2.getUnit())
             _EXPR_THROW("Units must be equal.",expr);
         unit = Unit::Angle;
-        scaler = 180.0 / M_PI;
+        scaler = 180.0 / std::numbers::pi;
         break;
     case MOD:
         if (e2.isNone())

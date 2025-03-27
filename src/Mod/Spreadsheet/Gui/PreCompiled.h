@@ -41,6 +41,7 @@
 
 // STL
 #include <sstream>
+#include <numbers>
 
 #ifdef FC_OS_WIN32
 #include <windows.h>

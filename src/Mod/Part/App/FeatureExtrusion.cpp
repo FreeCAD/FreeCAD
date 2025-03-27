@@ -244,11 +244,11 @@ ExtrusionParameters Extrusion::computeFinalParameters()
 
     result.solid = this->Solid.getValue();
 
-    result.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngleFwd) > M_PI * 0.5 - Precision::Angular())
+    result.taperAngleFwd = this->TaperAngle.getValue() * std::numbers::pi / 180.0;
+    if (fabs(result.taperAngleFwd) > std::numbers::pi * 0.5 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
-    result.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngleRev) > M_PI * 0.5 - Precision::Angular())
+    result.taperAngleRev = this->TaperAngleRev.getValue() * std::numbers::pi / 180.0;
+    if (fabs(result.taperAngleRev) > std::numbers::pi * 0.5 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
 
     result.faceMakerClass = this->FaceMakerClass.getValue();

@@ -1143,7 +1143,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
     }
     else {
         double actAngle = constr->getValue();
-        constr->setValue(M_PI - actAngle);
+        constr->setValue(std::numbers::pi - actAngle);
     }
 }
 
@@ -3248,12 +3248,12 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             std::swap(startAngle, endAngle);
         }
 
-        if (endAngle > 2 * M_PI) {
-            endAngle -= 2 * M_PI;
+        if (endAngle > 2 * std::numbers::pi) {
+            endAngle -= 2 * std::numbers::pi;
         }
 
         if (startAngle < 0) {
-            endAngle += 2 * M_PI;
+            endAngle += 2 * std::numbers::pi;
         }
 
         // Create Arc Segment
@@ -4980,8 +4980,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 Base::Vector3d scp =
                     cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
 
-                double theta1 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * M_PI);
-                double theta2 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * M_PI);
+                double theta1 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * std::numbers::pi);
+                double theta2 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * std::numbers::pi);
 
                 geoaoc->setCenter(scp);
                 geoaoc->setRange(theta1, theta2, true);
@@ -5028,12 +5028,12 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 
                 double theta1, theta2;
                 geosymaoe->getRange(theta1, theta2, true);
-                theta1 = 2.0 * M_PI - theta1;
-                theta2 = 2.0 * M_PI - theta2;
+                theta1 = 2.0 * std::numbers::pi - theta1;
+                theta2 = 2.0 * std::numbers::pi - theta2;
                 std::swap(theta1, theta2);
                 if (theta1 < 0) {
-                    theta1 += 2.0 * M_PI;
-                    theta2 += 2.0 * M_PI;
+                    theta1 += 2.0 * std::numbers::pi;
+                    theta2 += 2.0 * std::numbers::pi;
                 }
 
                 geosymaoe->setRange(theta1, theta2, true);
@@ -5178,8 +5178,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 Base::Vector3d sep = ep + 2.0 * (refpoint - ep);
                 Base::Vector3d scp = cp + 2.0 * (refpoint - cp);
 
-                double theta1 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * M_PI);
-                double theta2 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * M_PI);
+                double theta1 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * std::numbers::pi);
+                double theta2 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * std::numbers::pi);
 
                 geoaoc->setCenter(scp);
                 geoaoc->setRange(theta1, theta2, true);
@@ -8641,11 +8641,11 @@ void processEdge(const TopoDS_Edge& edge,
                     int tours = 0;
                     double startAngle = baseAngle + alpha;
                     // bring startAngle back in [-pi/2 , 3pi/2[
-                    while (startAngle < -M_PI / 2.0 && tours < 10) {
-                        startAngle = baseAngle + ++tours * 2.0 * M_PI + alpha;
+                    while (startAngle < -std::numbers::pi / 2.0 && tours < 10) {
+                        startAngle = baseAngle + ++tours * 2.0 * std::numbers::pi + alpha;
                     }
-                    while (startAngle >= 3.0 * M_PI / 2.0 && tours > -10) {
-                        startAngle = baseAngle + --tours * 2.0 * M_PI + alpha;
+                    while (startAngle >= 3.0 * std::numbers::pi / 2.0 && tours > -10) {
+                        startAngle = baseAngle + --tours * 2.0 * std::numbers::pi + alpha;
                     }
 
                     // apply same offset to end angle
@@ -8661,7 +8661,7 @@ void processEdge(const TopoDS_Edge& edge,
                                 // P2 = P2 already defined
                                 P1 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             }
-                            else if (endAngle < M_PI) {
+                            else if (endAngle < std::numbers::pi) {
                                 // P2 = P2, already defined
                                 P1 = ProjPointOnPlane_XYZ(end, sketchPlane);
                             }
@@ -8671,16 +8671,16 @@ void processEdge(const TopoDS_Edge& edge,
                             }
                         }
                     }
-                    else if (startAngle < M_PI) {
-                        if (endAngle < M_PI) {
+                    else if (startAngle < std::numbers::pi) {
+                        if (endAngle < std::numbers::pi) {
                             P1 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
                         }
-                        else if (endAngle < 2.0 * M_PI - startAngle) {
+                        else if (endAngle < 2.0 * std::numbers::pi - startAngle) {
                             P2 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             // P1 = P1, already defined
                         }
-                        else if (endAngle < 2.0 * M_PI) {
+                        else if (endAngle < 2.0 * std::numbers::pi) {
                             P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
                             // P1 = P1, already defined
                         }
@@ -8690,15 +8690,15 @@ void processEdge(const TopoDS_Edge& edge,
                         }
                     }
                     else {
-                        if (endAngle < 2 * M_PI) {
+                        if (endAngle < 2 * std::numbers::pi) {
                             P1 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
                         }
-                        else if (endAngle < 4 * M_PI - startAngle) {
+                        else if (endAngle < 4 * std::numbers::pi - startAngle) {
                             P1 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             // P2 = P2, already defined
                         }
-                        else if (endAngle < 3 * M_PI) {
+                        else if (endAngle < 3 * std::numbers::pi) {
                             // P1 = P1, already defined
                             P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
                         }
@@ -8818,7 +8818,7 @@ void processEdge(const TopoDS_Edge& edge,
         gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
         double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
         t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
-        double t_min = t_max + 0.5 * M_PI;
+        double t_min = t_max + 0.5 * std::numbers::pi;
 
         // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
         //     becomes the apoapse of the projected ellipse.
@@ -9313,7 +9313,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                             processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
                         }
 
-                        if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
+                        if (fabs(dnormal.Angle(snormal) - std::numbers::pi/2.0F) < Precision::Confusion()) {
                             // The face is normal to the sketch plane
                             // We don't want to keep the projection of all the edges of the face.
                             // We need a single line that goes from min to max of all the projections.
@@ -11359,25 +11359,25 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
             // the desired angle value (and we are to decide if 180* should be added to it)
             double angleDesire = 0.0;
             if (cstr->Type == Tangent) {
-                angleOffset = -M_PI / 2;
+                angleOffset = -std::numbers::pi / 2;
                 angleDesire = 0.0;
             }
             if (cstr->Type == Perpendicular) {
                 angleOffset = 0;
-                angleDesire = M_PI / 2;
+                angleDesire = std::numbers::pi / 2;
             }
 
             double angleErr = calculateAngleViaPoint(geoId1, geoId2, p.x, p.y) - angleDesire;
 
             // bring angleErr to -pi..pi
-            if (angleErr > M_PI)
-                angleErr -= M_PI * 2;
-            if (angleErr < -M_PI)
-                angleErr += M_PI * 2;
+            if (angleErr > std::numbers::pi)
+                angleErr -= std::numbers::pi * 2;
+            if (angleErr < -std::numbers::pi)
+                angleErr += std::numbers::pi * 2;
 
             // the autodetector
-            if (fabs(angleErr) > M_PI / 2)
-                angleDesire += M_PI;
+            if (fabs(angleErr) > std::numbers::pi / 2)
+                angleDesire += std::numbers::pi;
 
             // external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is
             // invalid and treated as "undecided".

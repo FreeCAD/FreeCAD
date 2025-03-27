@@ -32,18 +32,15 @@
 #include <Python.h>
 
 // standard
-#include <fcntl.h>
-#include <cstdio>
 #include <cassert>
-#include <ctime>
 #include <cfloat>
 #include <chrono>
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES
-#endif  // FC_OS_WIN32
-#include <cmath>
-#include <climits>
 #include <codecvt>
+#include <cstdio>
+#include <ctime>
+#include <fcntl.h>
+#include <limits>
+#include <numbers>
 
 #ifdef FC_OS_WIN32
 #include <direct.h>

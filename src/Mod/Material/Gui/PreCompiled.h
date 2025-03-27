@@ -45,6 +45,7 @@
 #include <cfloat>
 #include <cmath>
 #include <limits>
+#include <numbers>
 
 // STL
 #include <algorithm>

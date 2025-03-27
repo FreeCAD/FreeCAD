@@ -28,6 +28,7 @@
 #ifdef _PreComp_
 
 // STL
+#include <numbers>
 #include <string>
 
 // opencascade

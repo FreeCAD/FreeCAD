@@ -33,6 +33,7 @@
 #include <cmath>
 #include <limits>
 #include <memory>
+#include <numbers>
 
 #include <vector>
 #include <sstream>

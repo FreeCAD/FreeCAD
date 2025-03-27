@@ -45,13 +45,14 @@
 #include <stdexcept>
 #include <cstring>
 #include <cstdlib>
+#include <numbers>
 #include <ostream>
 #include <functional>
 
 namespace ClipperLib
 {
 
-static double const pi = 3.141592653589793238;
+constexpr double pi = std::numbers::pi;
 static double const two_pi = pi * 2;
 static double const def_arc_tolerance = 0.25;
 

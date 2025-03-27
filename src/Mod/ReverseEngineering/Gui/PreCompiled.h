@@ -37,6 +37,7 @@
 
 // standard
 #include <algorithm>
+#include <numbers>
 #include <sstream>
 
 // OpenCasCade

@@ -295,7 +295,7 @@ float MeshAlgorithm::GetAverageEdgeLength() const
 
 float MeshAlgorithm::GetMinimumEdgeLength() const
 {
-    float fLen = FLOAT_MAX;
+    float fLen = std::numeric_limits<float>::max();
     MeshFacetIterator cF(_rclMesh);
     for (cF.Init(); cF.More(); cF.Next()) {
         for (int i = 0; i < 3; i++) {
@@ -1461,7 +1461,7 @@ bool MeshAlgorithm::NearestPointFromPoint(const Base::Vector3f& rclPt,
     }
 
     // calc each facet
-    float fMinDist = FLOAT_MAX;
+    float fMinDist = std::numeric_limits<float>::max();
     FacetIndex ulInd = FACET_INDEX_MAX;
     MeshFacetIterator pF(_rclMesh);
     for (pF.Init(); pF.More(); pF.Next()) {

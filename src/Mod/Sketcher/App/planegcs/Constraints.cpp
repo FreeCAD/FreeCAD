@@ -24,10 +24,9 @@
 #pragma warning(disable : 4251)
 #endif
 
-#define _USE_MATH_DEFINES
-#include <cmath>
-
 #include <algorithm>
+#include <numbers>
+
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS
 #include <cassert>
@@ -3536,10 +3535,10 @@ void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
     double startA = *arc.startAngle;
     // Assume positive angles and CCW arc
     while (startA < 0.) {
-        startA += 2. * M_PI;
+        startA += 2. * std::numbers::pi;
     }
     while (endA < startA) {
-        endA += 2. * M_PI;
+        endA += 2. * std::numbers::pi;
     }
     if (err) {
         *err = rad * (endA - startA) - *distance();

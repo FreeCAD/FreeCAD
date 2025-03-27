@@ -133,7 +133,7 @@ private:
                 startAngle = startAngleBackup;
 
                 double angle1 = (onSketchPos - centerPoint).Angle() - startAngle;
-                double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+                double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * std::numbers::pi;
                 arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
                 reverseIfNecessary();
@@ -331,14 +331,16 @@ private:
                                       isConstructionMode());
 
                 addArcToShapeGeometry(toVector3d(startPoint),
-                                      angleReversed ? endAngle : startAngle + M_PI,
-                                      angleReversed ? endAngle + M_PI : startAngle + 2 * M_PI,
+                                      angleReversed ? endAngle : startAngle + std::numbers::pi,
+                                      angleReversed ? endAngle + std::numbers::pi
+                                                    : startAngle + 2 * std::numbers::pi,
                                       r,
                                       isConstructionMode());
 
                 addArcToShapeGeometry(toVector3d(endPoint),
-                                      angleReversed ? startAngle + M_PI : endAngle,
-                                      angleReversed ? startAngle + 2 * M_PI : M_PI + endAngle,
+                                      angleReversed ? startAngle + std::numbers::pi : endAngle,
+                                      angleReversed ? startAngle + 2 * std::numbers::pi
+                                                    : std::numbers::pi + endAngle,
                                       r,
                                       isConstructionMode());
 
@@ -635,7 +637,7 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
             if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                 double arcAngle =
                     Base::toRadians(onViewParameters[OnViewParameter::Fifth]->getValue());
-                if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                 }
                 else {

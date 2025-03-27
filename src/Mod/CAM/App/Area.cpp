@@ -452,7 +452,7 @@ void Area::addWire(CArea& area,
                 if (reversed) {
                     type = -type;
                 }
-                if (fabs(first - last) > M_PI) {
+                if (fabs(first - last) > std::numbers::pi) {
                     // Split arc(circle) larger than half circle. Because gcode
                     // can't handle full circle?
                     gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
@@ -2631,7 +2631,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 for (int j = 0; j < steps; ++j, offset += stepover) {
                     Point p1(-r, offset), p2(r, offset);
                     if (a > Precision::Confusion()) {
-                        double r = a * M_PI / 180.0;
+                        double r = a * std::numbers::pi / 180.0;
                         p1.Rotate(r);
                         p2.Rotate(r);
                     }
@@ -4155,7 +4155,7 @@ void Area::toPath(Toolpath& path,
                             }
                         }
 
-                        if (fabs(first - last) > M_PI) {
+                        if (fabs(first - last) > std::numbers::pi) {
                             // Split arc(circle) larger than half circle.
                             gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
                             addGArc(verbose,

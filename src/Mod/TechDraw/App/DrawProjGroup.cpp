@@ -1146,9 +1146,9 @@ void DrawProjGroup::spin(const SpinDirection& spindirection)
 {
     double angle;
     if (spindirection == SpinDirection::CW)
-        angle = M_PI / 2.0;// Top -> Right -> Bottom -> Left -> Top
+        angle = std::numbers::pi / 2.0;// Top -> Right -> Bottom -> Left -> Top
     if (spindirection == SpinDirection::CCW)
-        angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
+        angle = -std::numbers::pi / 2.0;// Top -> Left -> Bottom -> Right -> Top
 
     spin(angle);
 }

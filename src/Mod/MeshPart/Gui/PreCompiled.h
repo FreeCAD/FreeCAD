@@ -35,6 +35,7 @@
 
 // STL
 #include <cfloat>
+#include <numbers>
 #include <sstream>
 
 // Qt Toolkit

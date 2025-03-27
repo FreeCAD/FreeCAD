@@ -42,6 +42,7 @@
 
 // standard
 #include <map>
+#include <numbers>
 
 // boost
 #include <boost/math/special_functions/fpclassify.hpp>

@@ -388,7 +388,7 @@ Base::Placement Transform::getPlacementData() const
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value().getValue()*D_PI/180.0);
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value().getValue()*std::numbers::pi/180.0);
     }
     else if (index == 1) {
         rot.setYawPitchRoll(

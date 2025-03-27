@@ -66,18 +66,18 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint* Co
     this->groupLayout()->addWidget(proxy);
 
     // setup ranges
-    ui->spinDiameter->setMinimum(-FLOAT_MAX);
-    ui->spinDiameter->setMaximum(FLOAT_MAX);
-    ui->spinOtherDiameter->setMinimum(-FLOAT_MAX);
-    ui->spinOtherDiameter->setMaximum(FLOAT_MAX);
-    ui->spinCenterDistance->setMinimum(-FLOAT_MAX);
-    ui->spinCenterDistance->setMaximum(FLOAT_MAX);
-    ui->spinForce->setMinimum(-FLOAT_MAX);
-    ui->spinForce->setMaximum(FLOAT_MAX);
-    ui->spinTensionForce->setMinimum(-FLOAT_MAX);
-    ui->spinTensionForce->setMaximum(FLOAT_MAX);
-    ui->spinDistance->setMinimum(-FLOAT_MAX);
-    ui->spinDistance->setMaximum(FLOAT_MAX);
+    ui->spinDiameter->setMinimum(-std::numeric_limits<float>::max());
+    ui->spinDiameter->setMaximum(std::numeric_limits<float>::max());
+    ui->spinOtherDiameter->setMinimum(-std::numeric_limits<float>::max());
+    ui->spinOtherDiameter->setMaximum(std::numeric_limits<float>::max());
+    ui->spinCenterDistance->setMinimum(-std::numeric_limits<float>::max());
+    ui->spinCenterDistance->setMaximum(std::numeric_limits<float>::max());
+    ui->spinForce->setMinimum(-std::numeric_limits<float>::max());
+    ui->spinForce->setMaximum(std::numeric_limits<float>::max());
+    ui->spinTensionForce->setMinimum(-std::numeric_limits<float>::max());
+    ui->spinTensionForce->setMaximum(std::numeric_limits<float>::max());
+    ui->spinDistance->setMinimum(-std::numeric_limits<float>::max());
+    ui->spinDistance->setMaximum(std::numeric_limits<float>::max());
 
     // Get the feature data
     Fem::ConstraintBearing* pcConstraint = ConstraintView->getObject<Fem::ConstraintBearing>();

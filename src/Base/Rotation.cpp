@@ -249,7 +249,7 @@ void Rotation::setValue(const Vector3d& axis, double fAngle)
     //
     // normalization of the angle to be in [0, 2pi[
     _angle = fAngle;
-    double theAngle = fAngle - floor(fAngle / (2.0 * D_PI)) * (2.0 * D_PI);
+    double theAngle = fAngle - floor(fAngle / (2.0 * std::numbers::pi)) * (2.0 * std::numbers::pi);
     this->quat[3] = cos(theAngle / 2.0);
 
     Vector3d norm = axis;
@@ -691,9 +691,9 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
 {
     // The Euler angles (yaw,pitch,roll) are in XY'Z''-notation
     // convert to radians
-    y = (y / 180.0) * D_PI;
-    p = (p / 180.0) * D_PI;
-    r = (r / 180.0) * D_PI;
+    y = (y / 180.0) * std::numbers::pi;
+    p = (p / 180.0) * std::numbers::pi;
+    r = (r / 180.0) * std::numbers::pi;
 
     double c1 = cos(y / 2.0);
     double s1 = sin(y / 2.0);
@@ -726,26 +726,26 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     if (fabs(qd2 - 1.0) <= 16 * DBL_EPSILON) {  // Tolerance copied from OCC "gp_Quaternion.cxx"
         // north pole
         y = 0.0;
-        p = D_PI / 2.0;
+        p = std::numbers::pi / 2.0;
         r = 2.0 * atan2(quat[0], quat[3]);
     }
     else if (fabs(qd2 + 1.0)
              <= 16 * DBL_EPSILON) {  // Tolerance copied from OCC "gp_Quaternion.cxx"
         // south pole
         y = 0.0;
-        p = -D_PI / 2.0;
+        p = -std::numbers::pi / 2.0;
         r = 2.0 * atan2(quat[0], quat[3]);
     }
     else {
         y = atan2(2.0 * (q01 + q23), (q00 + q33) - (q11 + q22));
-        p = qd2 > 1.0 ? D_PI / 2.0 : (qd2 < -1.0 ? -D_PI / 2.0 : asin(qd2));
+        p = qd2 > 1.0 ? std::numbers::pi / 2.0 : (qd2 < -1.0 ? -std::numbers::pi / 2.0 : asin(qd2));
         r = atan2(2.0 * (q12 + q03), (q22 + q33) - (q00 + q11));
     }
 
     // convert to degree
-    y = (y / D_PI) * 180;
-    p = (p / D_PI) * 180;
-    r = (r / D_PI) * 180;
+    y = (y / std::numbers::pi) * 180;
+    p = (p / std::numbers::pi) * 180;
+    r = (r / std::numbers::pi) * 180;
 }
 
 bool Rotation::isSame(const Rotation& q) const
@@ -984,9 +984,9 @@ void Rotation::setEulerAngles(EulerSequence theOrder,
 
     EulerSequence_Parameters o = translateEulerSequence(theOrder);
 
-    theAlpha *= D_PI / 180.0;
-    theBeta *= D_PI / 180.0;
-    theGamma *= D_PI / 180.0;
+    theAlpha *= std::numbers::pi / 180.0;
+    theBeta *= std::numbers::pi / 180.0;
+    theGamma *= std::numbers::pi / 180.0;
 
     double a = theAlpha;
     double b = theBeta;
@@ -1081,7 +1081,7 @@ void Rotation::getEulerAngles(EulerSequence theOrder,
         theGamma = aFirst;
     }
 
-    theAlpha *= 180.0 / D_PI;
-    theBeta *= 180.0 / D_PI;
-    theGamma *= 180.0 / D_PI;
+    theAlpha *= 180.0 / std::numbers::pi;
+    theBeta *= 180.0 / std::numbers::pi;
+    theGamma *= 180.0 / std::numbers::pi;
 }

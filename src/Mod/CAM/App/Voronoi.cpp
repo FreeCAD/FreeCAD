@@ -21,10 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#define _USE_MATH_DEFINES
-#include <math.h>
-#endif
 
 #include <Base/Vector3D.h>
 
@@ -260,10 +256,10 @@ double Voronoi::diagram_type::angleOfSegment(int i, Voronoi::diagram_type::angle
         double ang = 0;
         if (p0.x() == p1.x()) {
             if (p0.y() < p1.y()) {
-                ang = M_PI_2;
+                ang = std::numbers::pi / 2.0;
             }
             else {
-                ang = -M_PI_2;
+                ang = -std::numbers::pi / 2.0;
             }
         }
         else {
@@ -292,7 +288,7 @@ bool Voronoi::diagram_type::segmentsAreConnected(int i, int j) const
 
 void Voronoi::colorColinear(Voronoi::color_type color, double degree)
 {
-    double rad = degree * M_PI / 180;
+    double rad = degree * std::numbers::pi / 180;
 
     Voronoi::diagram_type::angle_map_t angle;
     int psize = vd->points.size();
@@ -306,11 +302,11 @@ void Voronoi::colorColinear(Voronoi::color_type color, double degree)
             double a0 = vd->angleOfSegment(i0, &angle);
             double a1 = vd->angleOfSegment(i1, &angle);
             double a = a0 - a1;
-            if (a > M_PI_2) {
-                a -= M_PI;
+            if (a > std::numbers::pi / 2.0) {
+                a -= std::numbers::pi;
             }
-            else if (a < -M_PI_2) {
-                a += M_PI;
+            else if (a < -std::numbers::pi / 2.0) {
+                a += std::numbers::pi;
             }
             if (fabs(a) < rad) {
                 it->color(color);
