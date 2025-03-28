@@ -125,6 +125,7 @@ SET(bimcommands_SRCS
     bimcommands/BimIfcProperties.py
     bimcommands/BimIfcQuantities.py
     bimcommands/BimImagePlane.py
+    bimcommands/BimJoin.py
     bimcommands/BimLayers.py
     bimcommands/BimLeader.py
     bimcommands/BimLibrary.py
