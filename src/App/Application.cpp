@@ -64,8 +64,8 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
+#include <QSettings>
 #include <QStandardPaths>
-#include <QtCore/qtextstream.h>
 #include <Inventor/C/basic.h>
 #include <LibraryVersions.h>
 
@@ -3786,10 +3786,6 @@ void Application::getVerboseInfo(QTextStream& str, const std::map<std::string,st
         GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
             ->GetASCII("Theme");
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
-    std::string style = qApp->style()->name().toStdString();
-#else
     std::string style =
         GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
@@ -3797,7 +3793,6 @@ void Application::getVerboseInfo(QTextStream& str, const std::map<std::string,st
     if (style.empty()) {
         style = "Qt default";
     }
-#endif
     if (styleSheet.empty()) {
         styleSheet = "unset";
     }
