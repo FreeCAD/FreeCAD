@@ -4189,13 +4189,20 @@ const std::vector<DocumentObject*>& Document::getObjects() const
     return d->objectArray;
 }
 
-
 std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
+{
+    return getObjectsOfType({typeId});
+}
+
+std::vector<DocumentObject*> Document::getObjectsOfType(const std::vector<const Base::Type>& types) const
 {
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
-        if (it->isDerivedFrom(typeId)) {
-            Objects.push_back(it);
+        for (auto& typeId : types) {
+            if (it->isDerivedFrom(typeId)) {
+                Objects.push_back(it);
+                break; // Prevent adding several times the same object.
+            }
         }
     }
     return Objects;
