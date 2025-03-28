@@ -436,10 +436,12 @@ public:
 
     /** @name Verbose Information */
     //@{
-    static void getVerboseInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
+    static void getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
+    static void getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
     static void addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod);
     static QString prettyProductInfoWrapper();
     static QString getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key);
+    static constexpr char* verboseVersionEmitMessage{"verbose_version"};
     //@}
 
     /** @name Link handling */

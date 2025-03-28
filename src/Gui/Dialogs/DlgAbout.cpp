@@ -47,6 +47,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <CXX/WrapPython.h>
+#include <Gui/Application.h>
 
 #include <filesystem>
 #include <LibraryVersions.h>
@@ -479,7 +480,9 @@ void AboutDialog::copyToClipboard()
     QString data;
     QTextStream str(&data);
     std::map<std::string, std::string>& config = App::Application::Config();
-    App::Application::getVerboseInfo(str, config);
+    App::Application::getVerboseCommonInfo(str, config);
+    Gui::Application::getVerboseDPIStyleInfo(str);
+    App::Application::getVerboseAddOnsInfo(str, config);
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

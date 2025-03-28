@@ -35,6 +35,7 @@
 #include <QMessageLogContext>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QScreen>
 #include <QStatusBar>
 #include <QStyle>
 #include <QTextStream>
@@ -2630,4 +2631,45 @@ App::Document* Application::reopen(App::Document* doc)
         }
     }
     return doc;
+}
+
+void Application::getVerboseDPIStyleInfo(QTextStream& str) {
+    // Add Stylesheet/Theme/Qtstyle information
+    std::string styleSheet =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+            ->GetASCII("StyleSheet");
+    std::string theme =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+            ->GetASCII("Theme");
+#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+    std::string style = qApp->style()->name().toStdString();
+#else
+    std::string style =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+            ->GetASCII("QtStyle");
+    if (style.empty()) {
+        style = "Qt default";
+    }
+#endif
+    if (styleSheet.empty()) {
+        styleSheet = "unset";
+    }
+    if (theme.empty()) {
+        theme = "unset";
+    }
+
+    str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
+        << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
+
+    // Add DPI information
+    str << "Logical DPI/Physical DPI/Pixel Ratio: "
+        << QApplication::primaryScreen()->logicalDotsPerInch()
+        << "/"
+        << QApplication::primaryScreen()->physicalDotsPerInch()
+        << "/"
+        << QApplication::primaryScreen()->devicePixelRatio()
+        << "\n";
 }

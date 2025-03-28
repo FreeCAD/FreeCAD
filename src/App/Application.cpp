@@ -2766,10 +2766,7 @@ void Application::initConfig(int argc, char ** argv)
 
     if (vm.count("verbose") && vm.count("version")) {
         Application::_pcSingleton = new Application(mConfig);
-        QString data;
-        QTextStream str(&data);
-        Application::getVerboseInfo(str, mConfig);
-        throw Base::ProgramInformation(data.toStdString());
+        throw Base::ProgramInformation(Application::verboseVersionEmitMessage);
     }
 }
 
@@ -3632,7 +3629,7 @@ QString Application::getValueOrEmpty(const std::map<std::string, std::string>& m
     return (it != map.end()) ? QString::fromStdString(it->second) : QString();
 }
 
-void Application::getVerboseInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig)
+void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig)
 {
     std::map<std::string, std::string>::iterator it;
     const QString deskEnv =
@@ -3776,33 +3773,9 @@ void Application::getVerboseInfo(QTextStream& str, const std::map<std::string,st
             << " (" << loc.name() << ") ]";
     }
     str << "\n";
+}
 
-    // Add Stylesheet/Theme/Qtstyle information
-    std::string styleSheet =
-        GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet");
-    std::string theme =
-        GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("Theme");
-    std::string style =
-        GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("QtStyle");
-    if (style.empty()) {
-        style = "Qt default";
-    }
-    if (styleSheet.empty()) {
-        styleSheet = "unset";
-    }
-    if (theme.empty()) {
-        theme = "unset";
-    }
-
-    str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
-        << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
-
+void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig) {
     // Add installed module information:
     const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
     bool firstMod = true;
