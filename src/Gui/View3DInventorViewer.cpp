@@ -1707,16 +1707,11 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
     auto root = new SoSeparator;
     root->ref();
 
-#if (COIN_MAJOR_VERSION >= 4)
-    // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
-    // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
-    // The trick is to add a callback node and override the viewport size with what we want.
     if (useCoinOffscreenRenderer) {
         auto cbvp = new SoCallback;
         cbvp->setCallback(setViewportCB);
         root->addChild(cbvp);
     }
-#endif
 
     SoCamera* camera = getSoRenderManager()->getCamera();
 
@@ -3524,7 +3519,6 @@ void View3DInventorViewer::viewSelection()
                     float(bbox.MaxX),
                     float(bbox.MaxY),
                     float(bbox.MaxZ));
-#if (COIN_MAJOR_VERSION >= 4)
         float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         switch (cam->viewportMapping.getValue()) {
             case SoCamera::CROP_VIEWPORT_FILL_FRAME:
@@ -3536,27 +3530,6 @@ void View3DInventorViewer::viewSelection()
                 break;
         }
         cam->viewBoundingBox(box,aspectratio,1.0);
-#else
-        SoTempPath path(2);
-        path.ref();
-        auto pcGroup = new SoGroup;
-        pcGroup->ref();
-        auto pcTransform = new SoTransform;
-        pcGroup->addChild(pcTransform);
-        pcTransform->translation = box.getCenter();
-        auto *pcCube = new SoCube;
-        pcGroup->addChild(pcCube);
-        float sizeX,sizeY,sizeZ;
-        box.getSize(sizeX,sizeY,sizeZ);
-        pcCube->width = sizeX;
-        pcCube->height = sizeY;
-        pcCube->depth = sizeZ;
-        path.append(pcGroup);
-        path.append(pcCube);
-        cam->viewAll(&path,getSoRenderManager()->getViewportRegion());
-        path.unrefNoDelete();
-        pcGroup->unref();
-#endif
     }
 }
 
