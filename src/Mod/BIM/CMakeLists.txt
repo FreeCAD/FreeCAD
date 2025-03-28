@@ -18,6 +18,7 @@ SET(Arch_SRCS
     ArchSectionPlane.py
     ArchWindow.py
     ArchWindowPresets.py
+    ArchWindowTaskPanel.py
     ArchAxis.py
     ArchAxisSystem.py
     ArchGrid.py
