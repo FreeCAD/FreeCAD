@@ -124,8 +124,17 @@ def findRelativePathLibrary(path):
 
 class ToolBit(object):
 
-    TOOL_TYPES = [ "EndMill", "BallEndMill", "BullNoseMill", "Drill", "VBit", "Probe", "Laser", "Other"]
-    
+    TOOL_TYPES = [
+        "EndMill",
+        "BallEndMill",
+        "BullNoseMill",
+        "Drill",
+        "VBit",
+        "Probe",
+        "Laser",
+        "Other",
+    ]
+
     def __init__(self, obj, shapeFile, path=None):
         Path.Log.track(obj.Label, shapeFile, path)
         self.obj = obj
@@ -154,7 +163,7 @@ class ToolBit(object):
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The type of the tool"),
         )
-        
+
         obj.addProperty(
             "App::PropertyString",
             "ShapeName",
@@ -208,7 +217,7 @@ class ToolBit(object):
                 QT_TRANSLATE_NOOP("App::Property", "The type of the tool"),
             )
             obj.ToolType = self.TOOL_TYPES
-        
+
         if not hasattr(obj, "BitPropertyNames"):
             obj.addProperty(
                 "App::PropertyStringList",
@@ -454,7 +463,7 @@ class ToolBit(object):
 
         if obj.ToolType:
             attrs["type"] = obj.ToolType
-        
+
         if Path.Preferences.toolsStoreAbsolutePaths():
             attrs["shape"] = obj.BitShape
         else:
@@ -486,7 +495,7 @@ class ToolBitFactory(object):
 
         if "type" in attrs:
             obj.ToolType = attrs["type"]
-        
+
         params = attrs["parameter"]
         for prop in params:
             PathUtil.setProperty(obj, prop, params[prop])
