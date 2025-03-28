@@ -141,7 +141,11 @@ bool Transaction::isEmpty() const
 
 bool Transaction::hasObject(const TransactionalObject* Obj) const
 {
+#if BOOST_VERSION < 107500
     return !!_Objects.get<1>().count(Obj);
+#else
+    return !!_Objects.get<1>().contains(Obj);
+#endif
 }
 
 void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
