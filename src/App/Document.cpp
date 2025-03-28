@@ -4194,7 +4194,7 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
     return getObjectsOfType({typeId});
 }
 
-std::vector<DocumentObject*> Document::getObjectsOfType(const std::vector<const Base::Type>& types) const
+std::vector<DocumentObject*> Document::getObjectsOfType(const std::vector<Base::Type>& types) const
 {
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
