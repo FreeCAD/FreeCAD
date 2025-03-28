@@ -168,10 +168,10 @@ void DlgBindSheet::accept()
                 if (!doc) {
                     FC_THROWM(Base::RuntimeError, "Cannot find document " << docname);
                 }
-                obj = Base::freecad_dynamic_cast<Sheet>(doc->getObject(sep + 1));
+                obj = freecad_cast<Sheet>(doc->getObject(sep + 1));
             }
             else {
-                obj = Base::freecad_dynamic_cast<Sheet>(sheet->getDocument()->getObject(ref));
+                obj = freecad_cast<Sheet>(sheet->getDocument()->getObject(ref));
             }
             if (!obj) {
                 FC_THROWM(Base::RuntimeError, "Cannot find Spreadsheet '" << ref << "'");

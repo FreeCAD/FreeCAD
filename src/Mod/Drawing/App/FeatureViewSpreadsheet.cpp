@@ -186,13 +186,13 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
             if (prop) {
-                if (auto* p = Base::freecad_dynamic_cast<App::PropertyQuantity>(prop)) {
+                if (auto* p = freecad_cast<App::PropertyQuantity>(prop)) {
                     field << p->getValue();
                 }
-                else if (auto p = Base::freecad_dynamic_cast<App::PropertyFloat>(prop)) {
+                else if (auto p = freecad_cast<App::PropertyFloat>(prop)) {
                     field << p->getValue();
                 }
-                else if (auto p = Base::freecad_dynamic_cast<App::PropertyString>(prop)) {
+                else if (auto p = freecad_cast<App::PropertyString>(prop)) {
                     field << p->getValue();
                 }
                 else {

@@ -374,7 +374,7 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
                 Gui::Application::Instance->getViewProvider(doc->getActiveObject());
             auto vpmesh = dynamic_cast<MeshGui::ViewProviderMesh*>(vpm);
 
-            auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(
+            auto svp = freecad_cast<PartGui::ViewProviderPartExt>(
                 Gui::Application::Instance->getViewProvider(obj));
             if (vpmesh && svp) {
                 std::vector<Base::Color> diff_col = svp->ShapeAppearance.getDiffuseColors();
@@ -463,7 +463,7 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
         param += QStringLiteral(",Segments=True");
     }
 
-    auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(
+    auto svp = freecad_cast<PartGui::ViewProviderPartExt>(
         Gui::Application::Instance->getViewProvider(obj));
     if (ui->groupsFaceColors->isChecked() && svp) {
         // TODO: currently, we can only retrieve part feature
