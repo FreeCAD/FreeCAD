@@ -171,7 +171,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             "P",
             "O",
         ]
-        self.values["PREAMBLE"] = f"""G90\nG17"""
+        self.values["PREAMBLE"] = """G90\nG17"""
         self.values["PRE_OPERATION"] = """"""
         self.values["POST_OPERATION"] = """"""
         self.values["POSTAMBLE"] = """M400\nM5"""
@@ -293,14 +293,14 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             "--machine",
             default=None,
             choices=self.values["MACHINES"].keys(),
-            help=f"Snapmaker machine",
+            help=f"Snapmaker machine. Choose from [{self.values['MACHINES'].keys()}].",
         )
 
         group.add_argument(
             "--toolhead",
             default=None,
             choices=self.values["TOOLHEADS"].keys(),
-            help=f"Snapmaker toolhead",
+            help=f"Snapmaker toolhead. Choose from [{self.values['TOOLHEADS'].keys()}].",
         )
 
         group.add_argument(
@@ -375,7 +375,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                     self.values["SPINDLE_PERCENT"] = True
                     if args.spindle_percent is False:
                         FreeCAD.Console.PrintWarning(
-                            f"Toolhead does not handle RPM spindle speed, using percents instead.\n"
+                            "Toolhead does not handle RPM spindle speed, using percents instead.\n"
                         )
                 else:
                     self.values["SPINDLE_PERCENT"] = args.spindle_percent
