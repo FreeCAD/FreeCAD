@@ -1478,7 +1478,7 @@ Expression *OperatorExpression::simplify() const
     Expression * v2 = right->simplify();
 
     // Both arguments reduced to numerics? Then evaluate and return answer
-    if (freecad_dynamic_cast<NumberExpression>(v1) && freecad_dynamic_cast<NumberExpression>(v2)) {
+    if (freecad_cast<NumberExpression>(v1) && freecad_cast<NumberExpression>(v2)) {
         delete v1;
         delete v2;
         return eval();
@@ -1499,7 +1499,7 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     Operator leftOperator(NONE), rightOperator(NONE);
 
     needsParens = false;
-    if (freecad_dynamic_cast<OperatorExpression>(left))
+    if (freecad_cast<OperatorExpression>(left))
         leftOperator = static_cast<OperatorExpression*>(left)->op;
     if (left->priority() < priority()) // Check on operator priority first
         needsParens = true;
@@ -1571,7 +1571,7 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     }
 
     needsParens = false;
-    if (freecad_dynamic_cast<OperatorExpression>(right))
+    if (freecad_cast<OperatorExpression>(right))
         rightOperator = static_cast<OperatorExpression*>(right)->op;
     if (right->priority() < priority()) // Check on operator priority first
         needsParens = true;
@@ -2012,11 +2012,11 @@ Py::Object FunctionExpression::evalAggregate(
                 if (!p)
                     continue;
 
-                if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)))
+                if ((qp = freecad_cast<PropertyQuantity>(p)))
                     c->collect(qp->getQuantityValue());
-                else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)))
+                else if ((fp = freecad_cast<PropertyFloat>(p)))
                     c->collect(Quantity(fp->getValue()));
-                else if ((ip = freecad_dynamic_cast<PropertyInteger>(p)))
+                else if ((ip = freecad_cast<PropertyInteger>(p)))
                     c->collect(Quantity(ip->getValue()));
                 else
                     _EXPR_THROW("Invalid property type for aggregate.", owner);
@@ -2614,7 +2614,7 @@ Expression *FunctionExpression::simplify() const
     for (auto it : args) {
         Expression * v = it->simplify();
 
-        if (freecad_dynamic_cast<NumberExpression>(v))
+        if (freecad_cast<NumberExpression>(v))
             ++numerics;
         a.push_back(v);
     }
@@ -2869,16 +2869,16 @@ void VariableExpression::addComponent(Component *c) {
         }
         long l1=0,l2=0,l3=1;
         if(c->e3) {
-            auto n3 = freecad_dynamic_cast<NumberExpression>(c->e3);
+            auto n3 = freecad_cast<NumberExpression>(c->e3);
             if(!n3 || !essentiallyEqual(n3->getValue(),(double)l3))
                 break;
         }
         if(c->e1) {
-            auto n1 = freecad_dynamic_cast<NumberExpression>(c->e1);
+            auto n1 = freecad_cast<NumberExpression>(c->e1);
             if(!n1) {
                 if(c->e2 || c->e3)
                     break;
-                auto s = freecad_dynamic_cast<StringExpression>(c->e1);
+                auto s = freecad_cast<StringExpression>(c->e1);
                 if(!s)
                     break;
                 var << ObjectIdentifier::MapComponent(
@@ -2895,7 +2895,7 @@ void VariableExpression::addComponent(Component *c) {
                 return;
             }
         }
-        auto n2 = freecad_dynamic_cast<NumberExpression>(c->e2);
+        auto n2 = freecad_cast<NumberExpression>(c->e2);
         if(n2 && essentiallyInteger(n2->getValue(),l2)) {
             var << ObjectIdentifier::RangeComponent(l1,l2,l3);
             return;
@@ -3195,7 +3195,7 @@ Py::Object ConditionalExpression::_getPyValue() const {
 Expression *ConditionalExpression::simplify() const
 {
     std::unique_ptr<Expression> e(condition->simplify());
-    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
+    NumberExpression * v = freecad_cast<NumberExpression>(e.get());
 
     if (!v)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
@@ -3752,11 +3752,11 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     Expression * simplified = ScanResult->simplify();
 
     if (!unitExpression) {
-        OperatorExpression * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
+        OperatorExpression * fraction = freecad_cast<OperatorExpression>(ScanResult);
 
         if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
-            NumberExpression * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
-            UnitExpression * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+            NumberExpression * nom = freecad_cast<NumberExpression>(fraction->getLeft());
+            UnitExpression * denom = freecad_cast<UnitExpression>(fraction->getRight());
 
             // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
             if (denom && nom && essentiallyEqual(nom->getValue(), 1.0))
@@ -3766,13 +3766,13 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     delete ScanResult;
 
     if (unitExpression) {
-        NumberExpression * num = freecad_dynamic_cast<NumberExpression>(simplified);
+        NumberExpression * num = freecad_cast<NumberExpression>(simplified);
 
         if (num) {
            simplified = new UnitExpression(num->getOwner(), num->getQuantity());
             delete num;
         }
-        return freecad_dynamic_cast<UnitExpression>(simplified);
+        return freecad_cast<UnitExpression>(simplified);
     }
     else {
         delete simplified;

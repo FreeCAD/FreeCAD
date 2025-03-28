@@ -72,7 +72,7 @@ Scaled::getTransformations(const std::vector<App::DocumentObject*> originals)
     if (!originals.empty()) {
         // Find centre of gravity of first original
         // FIXME: This method will NOT give the expected result for more than one original!
-        if (auto feature = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(originals.front())) {
+        if (auto feature = freecad_cast<PartDesign::FeatureAddSub>(originals.front())) {
             TopoDS_Shape original = feature->AddSubShape.getShape().getShape();
 
             GProp_GProps props;

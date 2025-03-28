@@ -272,7 +272,7 @@ void DlgPropertyLink::init(const App::DocumentObjectT& prop, bool tryFilter)
 
     ui->searchBox->setDocumentObject(owner);
 
-    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(objProp.getProperty());
+    auto propLink = freecad_cast<App::PropertyLinkBase>(objProp.getProperty());
     if (!propLink) {
         return;
     }
@@ -580,7 +580,7 @@ void DlgPropertyLink::onItemSelectionChanged()
         focus = ui->treeWidget->hasFocus();
         auto doc = Gui::Application::Instance->getDocument(sobjs.front().getDocumentName().c_str());
         if (doc) {
-            auto vp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
+            auto vp = freecad_cast<Gui::ViewProviderDocumentObject>(
                 doc->getViewProvider(obj));
             if (vp) {
                 // If the view provider uses a special window for rendering, switch to it
@@ -1016,7 +1016,7 @@ QTreeWidgetItem* DlgPropertyLink::createItem(App::DocumentObject* obj, QTreeWidg
         return nullptr;
     }
 
-    auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto vp = freecad_cast<ViewProviderDocumentObject>(
         Application::Instance->getViewProvider(obj));
     if (!vp) {
         return nullptr;
@@ -1047,7 +1047,7 @@ QTreeWidgetItem* DlgPropertyLink::createItem(App::DocumentObject* obj, QTreeWidg
 
     QByteArray proxyType;
     auto prop =
-        Base::freecad_dynamic_cast<App::PropertyPythonObject>(obj->getPropertyByName("Proxy"));
+        freecad_cast<App::PropertyPythonObject>(obj->getPropertyByName("Proxy"));
     if (prop) {
         Base::PyGILStateLocker lock;
         Py::Object proxy = prop->getValue();

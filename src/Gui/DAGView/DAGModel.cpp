@@ -146,7 +146,7 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   //NOLINTEND
 
   for (auto obj : documentIn.getDocument()->getObjects()) {
-    auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(documentIn.getViewProvider(obj));
+    auto vpd = freecad_cast<Gui::ViewProviderDocumentObject>(documentIn.getViewProvider(obj));
     if (vpd)
       slotNewObject(*vpd);
   }

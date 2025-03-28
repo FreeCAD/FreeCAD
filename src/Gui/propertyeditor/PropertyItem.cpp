@@ -158,7 +158,7 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
         try {
             // Check for 'DocumentObject' as parent because otherwise 'ObjectIdentifier' raises an
             // exception
-            auto* docObj = Base::freecad_dynamic_cast<App::DocumentObject>(prop.getContainer());
+            auto* docObj = freecad_cast<App::DocumentObject>(prop.getContainer());
             if (docObj && !docObj->isReadOnly(&prop)) {
                 App::ObjectIdentifier id(prop);
                 std::vector<App::ObjectIdentifier> paths;
@@ -4558,7 +4558,7 @@ void LinkLabel::updatePropertyLink()
 {
     QString text;
     auto owner = objProp.getObject();
-    auto prop = Base::freecad_dynamic_cast<App::PropertyLinkBase>(objProp.getProperty());
+    auto prop = freecad_cast<App::PropertyLinkBase>(objProp.getProperty());
 
     link = QVariant();
 
@@ -4673,7 +4673,7 @@ QVariant PropertyLinkItem::data(int column, int role) const
 
 QVariant PropertyLinkItem::value(const App::Property* prop) const
 {
-    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+    auto propLink = freecad_cast<App::PropertyLinkBase>(prop);
     if (!propLink) {
         return {};
     }

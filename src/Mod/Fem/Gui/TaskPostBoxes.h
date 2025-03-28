@@ -83,7 +83,7 @@ public:
     template<class T>
     T* getObject() const
     {
-        return Base::freecad_dynamic_cast<T>(getObject());
+        return freecad_cast<T>(getObject());
     }
     QMetaObject::Connection connSelectPoint;
 
@@ -159,7 +159,7 @@ protected:
     template<class T>
     T* getObject() const
     {
-        return Base::freecad_dynamic_cast<T>(getObject());
+        return freecad_cast<T>(getObject());
     }
     template<typename T>
     T* getTypedObject() const
