@@ -1562,6 +1562,9 @@ void MainWindow::delayedStartup()
     if (hGrp->GetBool("CreateNewDoc", false)) {
         if (App::GetApplication().getDocuments().empty()){
             Application::Instance->commandManager().runCommandByName("Std_New");
+            // This document is autoCreated
+            App::Document* newDoc = App::GetApplication().getActiveDocument();
+            newDoc->setAutoCreated(true);
         }
     }
 
