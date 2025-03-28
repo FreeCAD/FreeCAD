@@ -9,7 +9,7 @@
 # *  Any redistribution must include the specific provision above.          *
 # *                                                                         *
 # *  You may obtain a copy of the Licence at:                               *
-# *  https://joinup.ec.europa.eu/software/page/eupl5                        *
+# *  https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12 *
 # *                                                                         *
 # *  Unless required by applicable law or agreed to in writing, software    *
 # *  distributed under the Licence is distributed on an "AS IS" basis,      *
