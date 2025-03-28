@@ -25,6 +25,7 @@
 #define GUI_DIALOG_CLIPPING_H
 
 #include <QDialog>
+#include <QMap>
 #include <FCGlobal.h>
 
 namespace Gui {
@@ -39,9 +40,10 @@ class GuiExport Clipping : public QDialog
     Q_OBJECT
 
 public:
-    static Clipping* makeDockWidget(Gui::View3DInventor*);
-    Clipping(Gui::View3DInventor* view, QWidget* parent = nullptr);
+    static Clipping* makeDockWidget(Gui::View3DInventor const*);
+    Clipping(Gui::View3DInventor const* view, QWidget* parent = nullptr);
     ~Clipping() override;
+    void switchView(Gui::View3DInventor const*);
 
 protected:
     void setupConnections();
@@ -62,12 +64,14 @@ protected:
     void onDirYValueChanged(double);
     void onDirZValueChanged(double);
 
-public:
-    void reject() override;
-
 private:
     class Private;
-    Private* d;
+    QMap<Gui::View3DInventor const*, Private*> d;
+
+public:
+    void reject() override;
+    void setupPrivate(Private*);
+    void switchUi(Private*);
 };
 
 } // namespace Dialog
