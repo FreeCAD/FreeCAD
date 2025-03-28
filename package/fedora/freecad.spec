@@ -191,6 +191,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
 %cmake \
        -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
+       -DCMAKE_INSTALL_BINDIR=%{_libdir}/%{name}/bin \
        -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
        -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
        -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
@@ -357,3 +358,4 @@ fi
 %changelog
 * Mon Mar 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.1.0-1
 - Adding support for building with Qt6 and PySide6 for Fedora 40+
+{{{git_dir_changelog}}}
