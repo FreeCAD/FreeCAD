@@ -554,7 +554,6 @@ void DlgSettingsAdvanced::setOffset1(qreal t)
         QPoint pos(width(), 0);
         this->b1 = width() - label->fontMetrics().boundingRect(label->text()).width() - 5;
     }
-    label->move(this->a1 * (1-t) + this->b1 * t, label->y());
 }
 
 void DlgSettingsAdvanced::onCurveChange(int index)
