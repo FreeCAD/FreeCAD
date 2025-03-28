@@ -388,9 +388,8 @@ bool LocalCoordinateSystem::extensionGetSubObject(DocumentObject*& ret,
     }
 }
 
-bool LocalCoordinateSystem::hasObject(const DocumentObject* obj, bool recursive) const
+bool LocalCoordinateSystem::hasObject(const DocumentObject* obj, [[maybe_unused]] bool recursive) const
 {
-    Q_UNUSED(recursive);
     auto* lcs = dynamic_cast<const LocalCoordinateSystem*>(getExtendedObject());
     const auto& features = lcs->OriginFeatures.getValues();
     return std::ranges::find(features, obj) != features.end();
