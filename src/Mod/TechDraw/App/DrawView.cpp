@@ -442,7 +442,7 @@ DrawViewClip* DrawView::getClipGroup()
 {
     for (auto* obj : getInList()) {
         if (obj->isDerivedFrom<DrawViewClip>()) {
-            return dynamic_cast<DrawViewClip*>(obj);
+            return freecad_cast<DrawViewClip>(obj);
         }
     }
     return nullptr;
@@ -452,7 +452,7 @@ DrawViewCollection *DrawView::getCollection() const
 {
     for (auto* obj : getInList()) {
         if (obj->isDerivedFrom<DrawViewCollection>()) {
-            return dynamic_cast<DrawViewCollection*>(obj);
+            return freecad_cast<DrawViewCollection>(obj);
         }
     }
     return nullptr;
@@ -659,7 +659,7 @@ void DrawView::setScaleAttribute()
 //! existence of the parent DrawProjGroup
 bool DrawView::isProjGroupItem(DrawViewPart* item)
 {
-    auto dpgi = dynamic_cast<DrawProjGroupItem*>(item);
+    auto dpgi = freecad_cast<DrawProjGroupItem>(item);
     if (!dpgi) {
         return false;
     }

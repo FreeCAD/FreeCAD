@@ -73,7 +73,7 @@ void DrawViewClip::addView(App::DocumentObject* docObj)
         return;
     }
 
-    auto* view = dynamic_cast<DrawView*>(docObj);
+    auto* view = freecad_cast<DrawView>(docObj);
 
     if (!view) {
         auto* link = dynamic_cast<App::Link*>(docObj);
@@ -82,7 +82,7 @@ void DrawViewClip::addView(App::DocumentObject* docObj)
         }
 
         if (link) {
-            view = dynamic_cast<DrawView*>(link->getLinkedObject());
+            view = freecad_cast<DrawView>(link->getLinkedObject());
             if (!view) {
                 return;
             }

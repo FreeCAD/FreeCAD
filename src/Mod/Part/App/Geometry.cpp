@@ -1284,7 +1284,7 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBezierCurve::getPyObject()
 {
-    return new BezierCurvePy(dynamic_cast<GeomBezierCurve*>(this->clone()));
+    return new BezierCurvePy(freecad_cast<GeomBezierCurve>(this->clone()));
 }
 
 bool GeomBezierCurve::isSame(const Geometry &_other, double tol, double) const
@@ -2058,7 +2058,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBSplineCurve::getPyObject()
 {
-    return new BSplineCurvePy(dynamic_cast<GeomBSplineCurve*>(this->clone()));
+    return new BSplineCurvePy(freecad_cast<GeomBSplineCurve>(this->clone()));
 }
 
 bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -4696,7 +4696,7 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
 
 PyObject *GeomLineSegment::getPyObject()
 {
-    return new LineSegmentPy(dynamic_cast<GeomLineSegment*>(this->clone()));
+    return new LineSegmentPy(freecad_cast<GeomLineSegment>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4767,7 +4767,7 @@ void GeomOffsetCurve::Restore(Base::XMLReader &/*reader*/)
 
 PyObject *GeomOffsetCurve::getPyObject()
 {
-    return new OffsetCurvePy(dynamic_cast<GeomOffsetCurve*>(this->clone()));
+    return new OffsetCurvePy(freecad_cast<GeomOffsetCurve>(this->clone()));
 }
 
 bool GeomOffsetCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -4818,10 +4818,10 @@ GeomPlane* GeomSurface::toPlane(bool clone, double tol) const
 {
     if (isDerivedFrom<GeomPlane>()) {
         if (clone) {
-            return dynamic_cast<GeomPlane*>(this->clone());
+            return freecad_cast<GeomPlane>(this->clone());
         }
         else {
-            return dynamic_cast<GeomPlane*>(this->copy());
+            return freecad_cast<GeomPlane>(this->copy());
         }
     }
 
