@@ -97,7 +97,8 @@ int main(int argc, char** argv)
             const std::map<std::string, std::string> config = App::Application::Config();
 
             App::Application::getVerboseCommonInfo(str, config);
-            App:Application::getVerboseAddOnsInfo(str, config);
+        App:
+            Application::getVerboseAddOnsInfo(str, config);
 
             std::cout << data.toStdString();
             exit(0);
