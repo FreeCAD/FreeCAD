@@ -118,7 +118,7 @@ void positionDimText(DrawViewDimension* dim, int indexOffset = 0);
 
 void activateHandler(TechDrawHandler* newHandler)
 {
-    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
     if (!mdi) {
         return;
     }
@@ -235,7 +235,7 @@ public:
 
     void activated() override
     {
-        auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+        auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
         if (mdi) {
             mdi->setDimensionsSelectability(false);
         }
@@ -246,7 +246,7 @@ public:
 
     void deactivated() override
     {
-        auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+        auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
         if (mdi) {
             mdi->setDimensionsSelectability(true);
         }
