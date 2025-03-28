@@ -48,8 +48,9 @@ class MaterialManagerExternal(ABC):
         """Returns a list of libraries managed by this interface
 
         The list contains a series of tuples describing all libraries managed by
-        this module. Each tuple containes the library name, icon, and a boolean to indicate
-        if it is a read only library."""
+        this module. Each tuple containes the library name, icon, a boolean to indicate
+        if it is a read only library, and a timestamp that indicates when it was last
+        modified."""
         pass
 
     @abstractmethod
@@ -58,7 +59,8 @@ class MaterialManagerExternal(ABC):
 
         The list contains a series of tuples describing all libraries managed by
         this module. Each tuple containes the library name, icon, and a boolean to indicate
-        if it is a read only library.
+        if it is a read only library, and a timestamp that indicates when it was last
+        modified.
 
         This differs from the libraries() function in that it only returns libraries
         containing model objects."""
@@ -70,7 +72,8 @@ class MaterialManagerExternal(ABC):
 
         The list contains a series of tuples describing all libraries managed by
         this module. Each tuple containes the library name, icon, and a boolean to indicate
-        if it is a read only library.
+        if it is a read only library, and a timestamp that indicates when it was last
+        modified.
 
         This differs from the libraries() function in that it only returns libraries
         containing material objects."""
@@ -126,26 +129,36 @@ class MaterialManagerExternal(ABC):
 
     @abstractmethod
     def getModel(self, uuid: str) -> Materials.Model:
+        """Retrieve a model given its UUID"""
         pass
 
     @abstractmethod
     def addModel(self, library: str, path: str, model: Materials.Model) -> None:
+        """Add a model to a library in the given folder.
+
+        This will throw a DatabaseModelExistsError exception if the model already exists."""
         pass
 
     @abstractmethod
     def migrateModel(self, library: str, path: str, model: Materials.Model) -> None:
+        """Add the model to the library.
+
+        If the model already exists, then no action is performed."""
         pass
 
     @abstractmethod
     def updateModel(self, library: str, path: str, model: Materials.Model) -> None:
+        """Update the given model"""
         pass
 
     @abstractmethod
     def setModelPath(self, library: str, path: str, model: Materials.Model) -> None:
+        """Change the model path within the library"""
         pass
 
     @abstractmethod
     def renameModel(self, library: str, name: str, model: Materials.Model) -> None:
+        """Change the model name"""
         pass
 
     @abstractmethod
@@ -159,6 +172,7 @@ class MaterialManagerExternal(ABC):
 
     @abstractmethod
     def removeModel(self, model: Materials.Model) -> None:
+        """Remove the model from the library"""
         pass
 
     #
