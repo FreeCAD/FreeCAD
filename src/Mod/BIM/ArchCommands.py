@@ -21,7 +21,6 @@
 #***************************************************************************
 
 import FreeCAD
-import ArchComponent
 import Draft
 import DraftVecUtils
 from FreeCAD import Vector
@@ -30,12 +29,9 @@ from draftutils import params
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
-    from draftutils.translate import translate
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    # \endcond
+
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 __title__  = "FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
@@ -235,6 +231,7 @@ def makeComponent(baseobj=None,name=None,delete=False):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
+    import ArchComponent
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Component")
     obj.Label = name if name else translate("Arch","Component")
     ArchComponent.Component(obj)

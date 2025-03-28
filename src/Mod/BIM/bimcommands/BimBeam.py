@@ -26,12 +26,12 @@
 
 import FreeCAD
 import FreeCADGui
-import ArchStructure
+from . import BimStructure
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
-class BIM_Beam(ArchStructure._CommandStructure):
+class BIM_Beam(BimStructure.CommandStructure):
 
     def __init__(self):
         super().__init__()

@@ -45,11 +45,7 @@ translate = FreeCAD.Qt.translate
 
 from ArchCommands import *
 from ArchWindowPresets import *
-
-
-# TODO: migrate this one
-
-from ArchStructure import *
+from draftutils import params
 
 # make functions
 
@@ -1291,3 +1287,129 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
         obj.Base.ViewObject.hide()
         todo.ToDo.delay(ArchWindow.recolorize,[obj.Document.Name,obj.Name])
     return obj
+
+
+def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
+
+    '''makeStructure([baseobj],[length],[width],[height],[name]): creates a
+    structure element based on the given profile object and the given
+    extrusion height. If no base object is given, you can also specify
+    length and width for a cubic object.'''
+
+    import ArchStructure
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError(translate("BIM", "No active document. Aborting") + "\n")
+        return
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Structure")
+    ArchStructure.Structure(obj)
+    if FreeCAD.GuiUp:
+        ArchStructure.ViewProviderStructure(obj.ViewObject)
+    if baseobj:
+        obj.Base = baseobj
+        if FreeCAD.GuiUp:
+            obj.Base.ViewObject.hide()
+    if width:
+        obj.Width = width
+    else:
+        obj.Width = params.get_param_arch("StructureWidth")
+    if height:
+        obj.Height = height
+    else:
+        if not length:
+            obj.Height = params.get_param_arch("StructureHeight")
+    if length:
+        obj.Length = length
+    else:
+        if not baseobj:
+            # don't set the length if we have a base object,
+            # otherwise the length X height calc
+            # gets wrong
+            obj.Length = params.get_param_arch("StructureLength")
+    if baseobj:
+        w = 0
+        h = 0
+        if hasattr(baseobj,"Width") and hasattr(baseobj,"Height"):
+            w = baseobj.Width.Value
+            h = baseobj.Height.Value
+        elif hasattr(baseobj,"Length") and hasattr(baseobj,"Width"):
+            w = baseobj.Length.Value
+            h = baseobj.Width.Value
+        elif hasattr(baseobj,"Length") and hasattr(baseobj,"Height"):
+            w = baseobj.Length.Value
+            h = baseobj.Height.Value
+        if w and h:
+            if length and not height:
+                obj.Width = w
+                obj.Height = h
+            elif height and not length:
+                obj.Width = w
+                obj.Length = h
+    if not height and not length:
+        obj.IfcType = "Building Element Proxy"
+        obj.Label = name if name else translate("Arch","Structure")
+    elif obj.Length > obj.Height:
+        obj.IfcType = "Beam"
+        obj.Label = name if name else translate("Arch","Beam")
+    elif obj.Height > obj.Length:
+        obj.IfcType = "Column"
+        obj.Label = name if name else translate("Arch","Column")
+    obj.Proxy.set_nodes(obj)
+    return obj
+
+def makeStructuralSystem(objects=[],axes=[],name=None):
+
+    '''makeStructuralSystem([objects],[axes],[name]): makes a structural system
+    based on the given objects and axes'''
+
+    import ArchStructure
+    import Draft
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError(translate("BIM", "No active document. Aborting") + "\n")
+        return
+    result = []
+    if not axes:
+        FreeCAD.Console.PrintError(translate("BIM", "At least one axis must be given") + "\n")
+        return
+    if objects:
+        if not isinstance(objects,list):
+            objects = [objects]
+    else:
+        objects = [None]
+    for o in objects:
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","StructuralSystem")
+        obj.Label = name if name else translate("Arch","StructuralSystem")
+        ArchStructure.StructuralSystem(obj)
+        if FreeCAD.GuiUp:
+            ArchStructure.ViewProviderStructuralSystem(obj.ViewObject)
+        if o:
+            obj.Base = o
+        obj.Axes = axes
+        result.append(obj)
+        if FreeCAD.GuiUp and o:
+            o.ViewObject.hide()
+            Draft.formatObject(obj,o)
+    FreeCAD.ActiveDocument.recompute()
+    if len(result) == 1:
+        return result[0]
+    else:
+        return result
+
+def placeAlongEdge(p1,p2,horizontal=False):
+
+    """placeAlongEdge(p1,p2,[horizontal]): returns a Placement positioned at p1, with Z axis oriented towards p2.
+    If horizontal is True, then the X axis is oriented towards p2, not the Z axis"""
+
+    import WorkingPlane
+    pl = FreeCAD.Placement()
+    pl.Base = p1
+    up = WorkingPlane.get_working_plane(update=False).axis
+    zaxis = p2.sub(p1)
+    yaxis = up.cross(zaxis)
+    if yaxis.Length > 0:
+        xaxis = zaxis.cross(yaxis)
+        if horizontal:
+            pl.Rotation = FreeCAD.Rotation(zaxis,yaxis,xaxis,"ZXY")
+        else:
+            pl.Rotation = FreeCAD.Rotation(xaxis,yaxis,zaxis,"ZXY")
+            pl.Rotation = FreeCAD.Rotation(pl.Rotation.multVec(FreeCAD.Vector(0,0,1)),90).multiply(pl.Rotation)
+    return pl
