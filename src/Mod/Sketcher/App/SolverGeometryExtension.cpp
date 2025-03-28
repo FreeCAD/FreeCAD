@@ -53,12 +53,7 @@ std::unique_ptr<Part::GeometryExtension> SolverGeometryExtension::copy() const
     auto cpy = std::make_unique<SolverGeometryExtension>();
 
     copyAttributes(cpy.get());
-
-#if defined(__GNUC__) && (__GNUC__ <= 4)
-    return std::move(cpy);
-#else
     return cpy;
-#endif
 }
 
 PyObject* SolverGeometryExtension::getPyObject()
