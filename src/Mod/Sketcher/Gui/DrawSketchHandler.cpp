@@ -466,7 +466,8 @@ bool DrawSketchHandler::isLineCenterAutoConstraint(int GeoId, const Base::Vector
     SketchObject* obj = sketchgui->getSketchObject();
 
     auto* geo = obj->getGeometry(GeoId);
-    if (auto* line = dynamic_cast<const Part::GeomLineSegment*>(geo)) {
+    if (geo->isDerivedFrom<Part::GeomLineSegment>()) {
+        auto* line = static_cast<const Part::GeomLineSegment*>(geo);
 
         Base::Vector2d startPoint = toVector2d(line->getStartPoint());
         Base::Vector2d endPoint = toVector2d(line->getEndPoint());
