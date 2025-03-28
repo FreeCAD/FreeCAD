@@ -1040,7 +1040,7 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
         if (e->type() == QEvent::WindowStateChange) {
             // notify all mdi views when the active view receives a show normal, show minimized
             // or show maximized event
-            auto view = qobject_cast<MDIView*>(o);
+            auto view = dynamic_cast<MDIView*>(o);
             if (view) { // emit this signal
                 Qt::WindowStates oldstate = static_cast<QWindowStateChangeEvent*>(e)->oldState();
                 Qt::WindowStates newstate = view->windowState();
@@ -1689,7 +1689,7 @@ void MainWindow::switchToDockedMode()
     // Search for all top-level MDI views
     QWidgetList toplevel = QApplication::topLevelWidgets();
     for (const auto & it : toplevel) {
-        auto view = qobject_cast<MDIView*>(it);
+        auto view = dynamic_cast<MDIView*>(it);
         if (view)
             view->setCurrentViewMode(MDIView::Child);
     }
@@ -1757,7 +1757,7 @@ void MainWindow::loadWindowSettings()
         }
     #else
         using namespace QNativeInterface::Private;
-        if (auto *windowsWindow = dynamic_cast<QWindowsWindow*>(this->windowHandle())) {
+        if (auto *windowsWindow = qobject_cast<QWindowsWindow*>(this->windowHandle())) {
             windowsWindow->setHasBorderInFullScreen(true);
         }
     #endif

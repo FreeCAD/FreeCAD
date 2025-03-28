@@ -201,7 +201,7 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
             else {
                 // search inside this item
                 if (namedIndex < numNamed) {
-                    child = dynamic_cast<PropertyUnitItem*>(this->child(namedIndex));
+                    child = qobject_cast<PropertyUnitItem*>(this->child(namedIndex));
                 }
 
                 if (!child) {

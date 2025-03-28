@@ -182,7 +182,7 @@ View3DInventorViewer* TaskImage::getViewer() const
     if (!feature.expired()) {
         auto vp = Application::Instance->getViewProvider(feature.get());
         auto doc = static_cast<ViewProviderDocumentObject*>(vp)->getDocument();  // NOLINT
-        auto view = dynamic_cast<View3DInventor*>(doc->getViewOfViewProvider(vp));
+        auto view = qobject_cast<View3DInventor*>(doc->getViewOfViewProvider(vp));
         if (view) {
             return view->getViewer();
         }
@@ -633,7 +633,7 @@ bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
 
         /* If user press enter in the spinbox, then we validate the tool.*/
         if ((keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return)
-            && dynamic_cast<QuantitySpinBox*>(object)) {
+            && qobject_cast<QuantitySpinBox*>(object)) {
             Q_EMIT scaleRequired();
         }
 
