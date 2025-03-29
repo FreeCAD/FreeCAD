@@ -393,7 +393,7 @@ JointGroup* getJointGroup(const App::Part* part)
     }
     for (auto jointGroup : jointGroups) {
         if (part->hasObject(jointGroup)) {
-            return dynamic_cast<JointGroup*>(jointGroup);
+            return freecad_cast<JointGroup>(jointGroup);
         }
     }
     return nullptr;
@@ -765,7 +765,7 @@ Base::Placement* getTargetPlacementRelativeTo(
             }
         }
     }
-    else if (auto assembly = dynamic_cast<AssemblyObject*>(part)) {
+    else if (auto assembly = freecad_cast<AssemblyObject>(part)) {
         Base::Console().Warning("h3\n");
         for (auto& obj : assembly->getOutList()) {
             auto foundPlacement = getTargetPlacementRelativeTo(
@@ -787,7 +787,7 @@ Base::Placement* getTargetPlacementRelativeTo(
         Base::Console().Warning("h4\n");
         auto linked_obj = link->getLinkedObject();
 
-        if (dynamic_cast<App::Part*>(linked_obj) || dynamic_cast<AssemblyObject*>(linked_obj)) {
+        if (dynamic_cast<App::Part*>(linked_obj) || freecad_cast<AssemblyObject>(linked_obj)) {
             for (auto& obj : linked_obj->getOutList()) {
                 auto foundPlacement = getTargetPlacementRelativeTo(
                     targetObj, obj, container, inContainerBranch

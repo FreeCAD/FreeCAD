@@ -310,7 +310,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 // feature (which must be of type FeatureAddSub), and skipping
                 // any consecutive DressUp in-between.
                 for(Feature *current=this; ;current=static_cast<DressUp*>(base)) {
-                    base = Base::freecad_dynamic_cast<FeatureAddSub>(current->getBaseObject(true));
+                    base = freecad_cast<FeatureAddSub>(current->getBaseObject(true));
                     if(!base)
                         FC_THROWM(Base::CADKernelError,
                                 "Cannot find additive or subtractive support for " << getFullName());

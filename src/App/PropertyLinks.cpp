@@ -88,7 +88,7 @@ void PropertyLinkBase::setReturnNewElement(bool enable)
 
 void PropertyLinkBase::hasSetValue()
 {
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject>(getContainer());
     if (owner) {
         owner->clearOutListCache();
     }
@@ -249,7 +249,7 @@ static std::string propertyName(const Property* prop)
         return {};
     }
     if (!prop->getContainer() || !prop->hasName()) {
-        auto xlink = Base::freecad_dynamic_cast<const PropertyXLink>(prop);
+        auto xlink = freecad_cast<const PropertyXLink>(prop);
         if (xlink) {
             return propertyName(xlink->parent());
         }
@@ -976,7 +976,7 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& value)
         return;
     }
 
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto parent = freecad_cast<App::DocumentObject>(getContainer());
     for (auto obj : value) {
         if (!obj || !obj->isAttachedToDocument()) {
             throw Base::ValueError("PropertyLinkList: invalid document object");
@@ -1321,7 +1321,7 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
                                std::vector<std::string>&& subs,
                                std::vector<ShadowSub>&& shadows)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto parent = freecad_cast<App::DocumentObject>(getContainer());
     if (lValue) {
         if (!lValue->isAttachedToDocument()) {
             throw Base::ValueError("PropertyLinkSub: invalid document object");
@@ -1521,7 +1521,7 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
     if (!link || !link->isAttachedToDocument()) {
         return false;
     }
-    auto owner = dynamic_cast<DocumentObject*>(prop->getContainer());
+    auto owner = freecad_cast<DocumentObject>(prop->getContainer());
     if (owner && owner->isRestoring()) {
         return false;
     }
@@ -1846,7 +1846,7 @@ void PropertyLinkSub::Save(Base::Writer& writer) const
                     << _cSubList.size();
     writer.Stream() << "\">" << std::endl;
     writer.incInd();
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject>(getContainer());
     bool exporting = owner && owner->isExporting();
     for (unsigned int i = 0; i < _cSubList.size(); i++) {
         const auto& shadow = _ShadowSubList[i];
@@ -2216,7 +2216,7 @@ int PropertyLinkSubList::getSize() const
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto parent = freecad_cast<App::DocumentObject>(getContainer());
     verifyObject(lValue, parent);
 
     // maintain backlinks
@@ -2255,7 +2255,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
                                     const std::vector<const char*>& lSubNames)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto parent = freecad_cast<App::DocumentObject>(getContainer());
     for (auto obj : lValue) {
         verifyObject(obj, parent);
     }
@@ -2316,7 +2316,7 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
                                     std::vector<std::string>&& lSubNames,
                                     std::vector<ShadowSub>&& ShadowSubList)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto parent = freecad_cast<App::DocumentObject>(getContainer());
     for (auto obj : lValue) {
         verifyObject(obj, parent);
     }
@@ -2411,7 +2411,7 @@ void PropertyLinkSubList::addValue(App::DocumentObject* obj,
                                    const std::vector<std::string>& subs,
                                    bool reset)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto parent = freecad_cast<App::DocumentObject>(getContainer());
     verifyObject(obj, parent);
 
     // maintain backlinks.
@@ -2729,7 +2729,7 @@ void PropertyLinkSubList::updateElementReference(DocumentObject* feature, bool r
         unregisterElementReference();
     }
     _ShadowSubList.resize(_lSubList.size());
-    auto owner = freecad_dynamic_cast<DocumentObject>(getContainer());
+    auto owner = freecad_cast<DocumentObject>(getContainer());
     if (owner && owner->isRestoring()) {
         return;
     }
@@ -2788,7 +2788,7 @@ void PropertyLinkSubList::Save(Base::Writer& writer) const
     }
     writer.Stream() << writer.ind() << "<LinkSubList count=\"" << count << "\">" << endl;
     writer.incInd();
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject>(getContainer());
     bool exporting = owner && owner->isExporting();
     for (int i = 0; i < getSize(); i++) {
         auto obj = _lValueList[i];
@@ -2844,7 +2844,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
     SubNames.reserve(count);
     std::vector<ShadowSub> shadows;
     shadows.reserve(count);
-    DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
+    DocumentObject* father = freecad_cast<DocumentObject>(getContainer());
     App::Document* document = father ? father->getDocument() : nullptr;
     std::vector<int> mapped;
     bool restoreLabel = false;
@@ -3370,7 +3370,7 @@ public:
 
         if (info->pcDoc) {
             // make sure to attach only external object
-            auto owner = Base::freecad_dynamic_cast<DocumentObject>(l->getContainer());
+            auto owner = freecad_cast<DocumentObject>(l->getContainer());
             if (owner && owner->getDocument() == info->pcDoc) {
                 return info;
             }
@@ -3609,7 +3609,7 @@ public:
         for (auto it = links.begin(), itNext = it; it != links.end(); it = itNext) {
             ++itNext;
             auto link = *it;
-            auto obj = dynamic_cast<DocumentObject*>(link->getContainer());
+            auto obj = freecad_cast<DocumentObject>(link->getContainer());
             if (obj && obj->getDocument() == &doc) {
                 links.erase(it);
                 // must call unlink here, so that PropertyLink::resetLink can
@@ -3654,7 +3654,7 @@ public:
     bool hasXLink(const App::Document* doc) const
     {
         for (auto link : links) {
-            auto obj = dynamic_cast<DocumentObject*>(link->getContainer());
+            auto obj = freecad_cast<DocumentObject>(link->getContainer());
             if (obj && obj->getDocument() == doc) {
                 return true;
             }
@@ -3703,7 +3703,7 @@ void PropertyLinkBase::breakLinks(App::DocumentObject* link,
         props.clear();
         obj->getPropertyList(props);
         for (auto prop : props) {
-            auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
+            auto linkProp = freecad_cast<PropertyLinkBase>(prop);
             if (linkProp) {
                 linkProp->breakLink(link, clear);
             }
@@ -3826,7 +3826,7 @@ void PropertyXLink::restoreLink(App::DocumentObject* lValue)
 {
     assert(!_pcLink && lValue && docInfo);
 
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject>(getContainer());
     if (!owner || !owner->isAttachedToDocument()) {
         throw Base::RuntimeError("invalid container");
     }
@@ -3863,7 +3863,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue,
         throw Base::ValueError("Invalid object");
     }
 
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject>(getContainer());
     if (!owner || !owner->isAttachedToDocument()) {
         throw Base::RuntimeError("invalid container");
     }
@@ -3930,7 +3930,7 @@ void PropertyXLink::setValue(std::string&& filename,
         setValue(nullptr, std::move(subs), std::move(shadows));
         return;
     }
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject>(getContainer());
     if (!owner || !owner->isAttachedToDocument()) {
         throw Base::RuntimeError("invalid container");
     }
@@ -4332,7 +4332,7 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
 Property*
 PropertyXLink::CopyOnImportExternal(const std::map<std::string, std::string>& nameMap) const
 {
-    auto owner = Base::freecad_dynamic_cast<const DocumentObject>(getContainer());
+    auto owner = freecad_cast<const DocumentObject>(getContainer());
     if (!owner || !owner->getDocument() || !_pcLink || !_pcLink->isAttachedToDocument()) {
         return nullptr;
     }
@@ -5735,7 +5735,7 @@ void PropertyXLinkContainer::Save(Base::Writer& writer) const
     writer.Stream() << writer.ind() << "<XLinks count=\"" << _XLinks.size();
 
     std::map<App::Document*, int> docSet;
-    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto owner = freecad_cast<App::DocumentObject>(getContainer());
     if (owner && !owner->isExporting()) {
         // Document name and label can change on restore, we shall record the
         // current document name and label and pair it with the associated
@@ -5878,7 +5878,7 @@ bool PropertyXLinkContainer::isLinkedToDocument(const App::Document& doc) const
 
 void PropertyXLinkContainer::updateDeps(std::map<DocumentObject*, bool>&& newDeps)
 {
-    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto owner = freecad_cast<App::DocumentObject>(getContainer());
     if (!owner || !owner->isAttachedToDocument()) {
         return;
     }

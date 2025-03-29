@@ -1582,7 +1582,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject* obj) {
             TREE_ERR("invalid linked object");
             continue;
         }
-        auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+        auto vp = freecad_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(link));
         if (!vp) {
             TREE_ERR("invalid view provider of the linked object");
@@ -1918,14 +1918,14 @@ namespace {
                     if (topObj) {
                         auto sobj = topObj->getSubObject(info.topSubname.c_str(), nullptr, &mat);
                         if (sobj == obj) {
-                            propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                            propPlacement = freecad_cast<App::PropertyPlacement>(
                                 obj->getPropertyByName("Placement"));
                         }
                     }
                 }
             }
             else {
-                propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                propPlacement = freecad_cast<App::PropertyPlacement>(
                     obj->getPropertyByName("Placement"));
                 if (propPlacement)
                     mat = propPlacement->getValue().toMatrix();
@@ -2198,7 +2198,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
             auto doc = App::GetApplication().getDocument(info.doc.c_str());
             if (!doc) continue;
             auto obj = doc->getObject(info.obj.c_str());
-            auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+            auto vpc = freecad_cast<ViewProviderDocumentObject>(Application::Instance->getViewProvider(obj));
             if (!vpc) {
                 FC_WARN("Cannot find dragging object " << info.obj);
                 continue;
@@ -2247,7 +2247,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
                     continue;
                 }
                 auto parent = parentDoc->getObject(info.parent.c_str());
-                auto vpp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
+                auto vpp = freecad_cast<ViewProviderDocumentObject>(Application::Instance->getViewProvider(parent));
                 if (!vpp) {
                     FC_WARN("Cannot find dragging object's parent " << info.parent);
                     continue;
@@ -2484,7 +2484,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         for (auto& info : infos) {
             auto& subname = info.subname;
             targetObj = targetDoc->getObject(target.c_str());
-            vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>( Application::Instance->getViewProvider(targetObj));
+            vp = freecad_cast<ViewProviderDocumentObject>( Application::Instance->getViewProvider(targetObj));
             if (!vp) {
                 FC_ERR("Cannot find drop target object " << target);
                 break;
@@ -2496,7 +2496,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 continue;
             }
             auto obj = doc->getObject(info.obj.c_str());
-            auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+            auto vpc = freecad_cast<ViewProviderDocumentObject>(Application::Instance->getViewProvider(obj));
             if (!vpc) {
                 FC_WARN("Cannot find dragging object " << info.obj);
                 continue;
@@ -2507,7 +2507,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
                 if (parentDoc) {
                     auto parent = parentDoc->getObject(info.parent.c_str());
-                    vpp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
+                    vpp = freecad_cast<ViewProviderDocumentObject>(Application::Instance->getViewProvider(parent));
                 }
                 if (!vpp) {
                     FC_WARN("Cannot find dragging object's parent " << info.parent);
@@ -2652,7 +2652,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                     (!info.dragging && sobj->getLinkedObject(false) == obj))
                 {
                     if (!info.dragging)
-                        propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                        propPlacement = freecad_cast<App::PropertyPlacement>(
                             sobj->getPropertyByName("Placement"));
                     if (propPlacement) {
                         newMat *= propPlacement->getValue().inverse().toMatrix();
@@ -2791,7 +2791,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
         auto targetItemObj = static_cast<DocumentObjectItem*>(targetInfo.targetItem);
         App::DocumentObject* targetObj = targetItemObj->object()->getObject();
 
-        auto propGroup = Base::freecad_dynamic_cast<App::PropertyLinkList>(targetObj->getPropertyByName("Group"));
+        auto propGroup = freecad_cast<App::PropertyLinkList>(targetObj->getPropertyByName("Group"));
         if (!propGroup) {
             return;
         }
@@ -2819,7 +2819,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
 
         // Then we set the tree rank
         for (size_t i = 0; i < sortedObjList.size(); ++i) {
-            auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sortedObjList[i]));
+            auto vp = freecad_cast<ViewProviderDocumentObject>(Application::Instance->getViewProvider(sortedObjList[i]));
             vp->setTreeRank(i);
         }
 
@@ -3061,7 +3061,7 @@ void TreeWidget::onUpdateStatus()
                 errors.push_back(obj);
             if (docItem->ObjectMap.count(obj))
                 continue;
-            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
+            auto vpd = freecad_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
             if (vpd)
                 docItem->createNewItem(*vpd);
         }
@@ -3746,7 +3746,7 @@ void TreeWidget::selectLinkedObject(App::DocumentObject* linked) {
     if (!isSelectionAttached() || isSelectionBlocked())
         return;
 
-    auto linkedVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto linkedVp = freecad_cast<ViewProviderDocumentObject>(
         Application::Instance->getViewProvider(linked));
     if (!linkedVp) {
         TREE_ERR("invalid linked view provider");
@@ -3871,7 +3871,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
         std::string subname;
         auto vp = doc->getInEdit(&parentVp, &subname);
         if (!parentVp)
-            parentVp = dynamic_cast<ViewProviderDocumentObject*>(vp);
+            parentVp = freecad_cast<ViewProviderDocumentObject>(vp);
         if (parentVp)
             getTree()->editingItem = findItemByObject(true, parentVp->getObject(), subname.c_str());
     }
@@ -3962,7 +3962,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
 }
 
 ViewProviderDocumentObject* DocumentItem::getViewProvider(App::DocumentObject* obj) {
-    return Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    return freecad_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(obj));
 }
 
@@ -4260,7 +4260,7 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
         return vp->getTreeRank();
     };
 
-    auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(childObj));
+    auto vpc = freecad_cast<ViewProviderDocumentObject>(Application::Instance->getViewProvider(childObj));
     int childTreeRank = getTreeRank(vpc);
 
     // find the last item

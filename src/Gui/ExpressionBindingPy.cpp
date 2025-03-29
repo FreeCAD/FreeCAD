@@ -43,7 +43,7 @@ ExpressionBindingPy::ExpressionBindingPy(Py::PythonClassInstance* self, Py::Tupl
     PythonWrapper wrap;
     wrap.loadWidgetsModule();
 
-    QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(Py::Object(pyObj)));
+    QWidget* obj = qobject_cast<QWidget*>(wrap.toQObject(Py::Object(pyObj)));
     expr = asBinding(obj);
 
     if (!expr) {
