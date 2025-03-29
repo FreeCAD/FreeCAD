@@ -26,7 +26,7 @@ import os
 import pathlib
 import re
 import tempfile
-from typing import Any
+from typing import Any, List, Tuple
 
 import FreeCAD
 import Path
@@ -339,7 +339,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return parser
 
-    def snapmaker_process_arguments(self, filename: str = "-") -> (bool, str | argparse.Namespace):
+    def snapmaker_process_arguments(self, filename: str = "-") -> Tuple[bool, str | argparse.Namespace]:
         """Process any arguments to the postprocessor."""
         (flag, args) = Path.Post.UtilsArguments.process_shared_arguments(
             self.values, self.parser, self._job.PostProcessorArgs, self.visible_parser, filename
@@ -393,9 +393,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return flag, args
 
-    def snapmaker_process_postables(self, filename: str = "-") -> [(str, str)]:
+    def snapmaker_process_postables(self, filename: str = "-") -> List[Tuple[str, str]]:
         """process job sections to gcode"""
-        sections: [(str, str)] = list()
+        sections: List[Tuple[str, str]] = list()
 
         postables = self._buildPostList()
 
@@ -468,7 +468,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return f"thumbnail: data:image/png;base64,{base64.b64encode(data).decode()}"
 
-    def output_header(self, gcode: [[]]):
+    def output_header(self, gcode: List[str]):
         """custom method derived from Path.Post.UtilsExport.output_header"""
         cam_file: str
         comment: str
@@ -498,7 +498,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         add_comment(f"Output Time: {datetime.datetime.now()}")
         add_comment(self.get_thumbnail())
 
-    def convert_spindle(self, gcode: [str]) -> [str]:
+    def convert_spindle(self, gcode: List[str]) -> List[str]:
         """convert spindle speed values from RPM to percent (%) (M3/M4 commands)"""
         if self.values["SPINDLE_PERCENT"] is False:
             return
@@ -518,7 +518,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                 )
         return gcode
 
-    def check_boundaries(self, gcode: [str]) -> bool:
+    def check_boundaries(self, gcode: List[str]) -> bool:
         """Check boundaries and return whether it succeeded"""
         status = True
         FreeCAD.Console.PrintLog("Boundaries check\n")
@@ -553,10 +553,10 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return status
 
-    def export_common(self, objects: list, filename: str | pathlib.Path) -> str:
+    def export_common(self, objects: List, filename: str | pathlib.Path) -> str:
         """custom method derived from Path.Post.UtilsExport.export_common"""
         final: str
-        gcode: [[]] = []
+        gcode: List = []
         result: bool
 
         for obj in objects:
