@@ -66,5 +66,10 @@ Load a single result object or create a multiframe result by loading multiple re
                 <UserDocu>Check if this pipeline holds a given post-processing object</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="renameArrays">
+            <Documentation>
+                <UserDocu>Change name of data arrays</UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>

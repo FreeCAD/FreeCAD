@@ -27,6 +27,7 @@
 #include <vtkAppendFilter.h>
 #include <vtkDataSetReader.h>
 #include <vtkImageData.h>
+#include <vtkPointData.h>
 #include <vtkRectilinearGrid.h>
 #include <vtkStructuredGrid.h>
 #include <vtkUnstructuredGrid.h>
@@ -46,8 +47,6 @@
 #endif
 
 #include <Base/Console.h>
-#include <cmath>
-#include <QString>
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
@@ -735,6 +734,38 @@ void FemPostPipeline::onDocumentRestored()
         || Mode.getValue() < Fem::PostGroupMode::Serial) {
         Mode.setValue(Fem::PostGroupMode::Serial);
     }
+}
+
+void FemPostPipeline::renameArrays(const std::map<std::string, std::string>& names)
+{
+    std::vector<vtkSmartPointer<vtkDataSet>> fields;
+    auto data = Data.getValue();
+    if (!data) {
+        return;
+    }
+
+    if (auto dataSet = vtkDataSet::SafeDownCast(data)) {
+        fields.emplace_back(dataSet);
+    }
+    else if (auto blocks = vtkMultiBlockDataSet::SafeDownCast(data)) {
+        for (unsigned int i = 0; i < blocks->GetNumberOfBlocks(); ++i) {
+            if (auto dataSet = vtkDataSet::SafeDownCast(blocks->GetBlock(i))) {
+                fields.emplace_back(dataSet);
+            }
+        }
+    }
+
+    for (auto f : fields) {
+        auto pointData = f->GetPointData();
+        for (const auto& name : names) {
+            auto array = pointData->GetAbstractArray(name.first.c_str());
+            if (array) {
+                array->SetName(name.second.c_str());
+            }
+        }
+    }
+
+    Data.touch();
 }
 
 PyObject* FemPostPipeline::getPyObject()
