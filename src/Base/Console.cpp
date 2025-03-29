@@ -55,9 +55,9 @@ public:
     std::string notifier;
     std::string msg;
 
-    ConsoleEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type,
-                 IntendedRecipient recipient,
-                 ContentType content,
+    ConsoleEvent(const ConsoleSingleton::FreeCAD_ConsoleMsgType type,
+                 const IntendedRecipient recipient,
+                 const ContentType content,
                  const std::string& notifier,
                  const std::string& msg)
         : QEvent(QEvent::User)
@@ -88,8 +88,7 @@ public:
     void customEvent(QEvent* ev) override
     {
         if (ev->type() == QEvent::User) {
-            ConsoleEvent* ce = static_cast<ConsoleEvent*>(ev);
-            switch (ce->msgtype) {
+            switch (const auto ce = static_cast<ConsoleEvent*>(ev); ce->msgtype) {
                 case ConsoleSingleton::MsgType_Txt:
                     Console().notifyPrivate(LogStyle::Message,
                                             ce->recipient,
@@ -159,7 +158,7 @@ ConsoleSingleton::ConsoleSingleton()
 ConsoleSingleton::~ConsoleSingleton()
 {
     ConsoleOutput::destruct();
-    for (ILogger* Iter : _aclObservers) {
+    for (ILogger* Iter : _aclObservers) {  // NOLINT
         delete Iter;
     }
 }
@@ -171,7 +170,7 @@ ConsoleSingleton::~ConsoleSingleton()
 /**
  *  sets the console in a special mode
  */
-void ConsoleSingleton::SetConsoleMode(ConsoleMode mode)
+void ConsoleSingleton::SetConsoleMode(const ConsoleMode mode)
 {
     if (mode & Verbose) {
         _bVerbose = true;
@@ -181,7 +180,7 @@ void ConsoleSingleton::SetConsoleMode(ConsoleMode mode)
 /**
  *  unsets the console from a special mode
  */
-void ConsoleSingleton::UnsetConsoleMode(ConsoleMode mode)
+void ConsoleSingleton::UnsetConsoleMode(const ConsoleMode mode)
 {
     if (mode & Verbose) {
         _bVerbose = false;
@@ -206,10 +205,11 @@ void ConsoleSingleton::UnsetConsoleMode(ConsoleMode mode)
  * switches off warnings and error messages and restore the state before the modification.
  * If the observer \a sObs doesn't exist then nothing happens.
  */
-ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on)
+ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs,
+                                                    const ConsoleMsgFlags type,
+                                                    const bool on) const
 {
-    ILogger* pObs = Get(sObs);
-    if (pObs) {
+    if (ILogger* pObs = Get(sObs)) {
         ConsoleMsgFlags flags = 0;
 
         if (type & MsgType_Err) {
@@ -255,9 +255,9 @@ ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsg
     return 0;
 }
 
-bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const
+bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, const FreeCAD_ConsoleMsgType type) const
 {
-    ILogger* pObs = Get(sObs);
+    const ILogger* pObs = Get(sObs);
     if (pObs) {
         switch (type) {
             case MsgType_Txt:
@@ -280,7 +280,7 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
     return false;
 }
 
-void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
+void ConsoleSingleton::SetConnectionMode(const ConnectionMode mode)
 {
     connectionMode = mode;
 
@@ -317,9 +317,9 @@ void ConsoleSingleton::DetachObserver(ILogger* pcObserver)
     _aclObservers.erase(pcObserver);
 }
 
-void ConsoleSingleton::notifyPrivate(LogStyle category,
-                                     IntendedRecipient recipient,
-                                     ContentType content,
+void ConsoleSingleton::notifyPrivate(const LogStyle category,
+                                     const IntendedRecipient recipient,
+                                     const ContentType content,
                                      const std::string& notifiername,
                                      const std::string& msg)
 {
@@ -334,9 +334,9 @@ void ConsoleSingleton::notifyPrivate(LogStyle category,
     }
 }
 
-void ConsoleSingleton::postEvent(FreeCAD_ConsoleMsgType type,
-                                 IntendedRecipient recipient,
-                                 ContentType content,
+void ConsoleSingleton::postEvent(const FreeCAD_ConsoleMsgType type,
+                                 const IntendedRecipient recipient,
+                                 const ContentType content,
                                  const std::string& notifiername,
                                  const std::string& msg)
 {
@@ -356,7 +356,7 @@ ILogger* ConsoleSingleton::Get(const char* Name) const
     return nullptr;
 }
 
-int* ConsoleSingleton::GetLogLevel(const char* tag, bool create)
+int* ConsoleSingleton::GetLogLevel(const char* tag, const bool create)
 {
     if (!tag) {
         tag = "";
@@ -379,7 +379,7 @@ void ConsoleSingleton::Refresh()
     }
 }
 
-void ConsoleSingleton::EnableRefresh(bool enable)
+void ConsoleSingleton::EnableRefresh(const bool enable)
 {
     _bCanRefresh = enable;
 }
@@ -520,7 +520,7 @@ PyObject* FC_PYCONSOLE_MSG(std::function<void(const char*, const char*)> func, P
     PyObject* output {};
     PyObject* notifier {};
 
-    const char* notifierStr = "";
+    auto notifierStr = "";
 
     auto retrieveString = [](PyObject* pystr) {
         PyObject* unicode = nullptr;
@@ -740,7 +740,7 @@ PyObject* ConsoleSingleton::sPyGetStatus(PyObject* /*self*/, PyObject* args)
     PY_TRY
     {
         bool b = false;
-        ILogger* pObs = Instance().Get(pstr1);
+        const ILogger* pObs = Instance().Get(pstr1);
         if (!pObs) {
             Py_Return;
         }
@@ -785,7 +785,7 @@ PyObject* ConsoleSingleton::sPySetStatus(PyObject* /*self*/, PyObject* args)
 
     PY_TRY
     {
-        bool status = asBoolean(pyStatus);
+        const bool status = asBoolean(pyStatus);
         ILogger* pObs = Instance().Get(pstr1);
         if (pObs) {
             if (strcmp(pstr2, "Log") == 0) {
@@ -829,7 +829,7 @@ PyObject* ConsoleSingleton::sPyGetObservers(PyObject* /*self*/, PyObject* args)
     PY_TRY
     {
         Py::List list;
-        for (auto i : Instance()._aclObservers) {
+        for (const auto i : Instance()._aclObservers) {
             list.append(Py::String(i->Name() ? i->Name() : ""));
         }
 

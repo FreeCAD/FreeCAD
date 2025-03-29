@@ -494,8 +494,8 @@ namespace Base
 #ifndef FC_LOG_NO_TIMING
 inline FC_DURATION GetDuration(FC_TIME_POINT& tp)
 {
-    auto tnow = std::chrono::FC_TIME_CLOCK::now();
-    auto dc = std::chrono::duration_cast<FC_DURATION>(tnow - tp);
+    const auto tnow = std::chrono::FC_TIME_CLOCK::now();
+    const auto dc = std::chrono::duration_cast<FC_DURATION>(tnow - tp);
     tp = tnow;
     return dc;
 }
@@ -580,7 +580,7 @@ public:
     /**
      * Returns whether a LogStyle category is active or not
      */
-    bool isActive(LogStyle category) const
+    bool isActive(const LogStyle category) const
     {
         switch (category) {
             case LogStyle::Log:
@@ -816,19 +816,19 @@ public:
     /// Change mode
     void UnsetConsoleMode(ConsoleMode mode);
     /// Enables or disables message types of a certain console observer
-    ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on);
+    ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on) const;
     /// Checks if message types of a certain console observer are enabled
     bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
     void SetConnectionMode(ConnectionMode mode);
 
     int* GetLogLevel(const char* tag, bool create = true);
 
-    void SetDefaultLogLevel(int level)
+    void SetDefaultLogLevel(const int level)
     {
         _defaultLogLevel = level;
     }
 
-    int LogLevel(int level) const
+    int LogLevel(const int level) const
     {
         return level < 0 ? _defaultLogLevel : level;
     }
@@ -960,11 +960,11 @@ public:
     bool refresh;
 
     LogLevel(const char* tag,
-             bool print_tag = true,
-             int print_src = 0,
-             bool print_time = false,
-             bool add_eol = true,
-             bool refresh = false)
+             const bool print_tag = true,
+             const int print_src = 0,
+             const bool print_time = false,
+             const bool add_eol = true,
+             const bool refresh = false)
         : tag(tag)
         , lvl(*Console().GetLogLevel(tag))
         , print_tag(print_tag)
@@ -974,7 +974,7 @@ public:
         , refresh(refresh)
     {}
 
-    bool isEnabled(int lev) const
+    bool isEnabled(const int lev) const
     {
         return lev <= level();
     }
@@ -1204,7 +1204,7 @@ void Base::ConsoleSingleton::Send(const std::string& notifiername, const char* p
     }
     else {
 
-        auto type = getConsoleMsg(category);
+        const auto type = getConsoleMsg(category);
 
         postEvent(type, recipient, contenttype, notifiername, format);
     }
