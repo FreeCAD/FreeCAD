@@ -245,11 +245,12 @@ void Rotation::setValue(const Matrix4D& m)
 
 void Rotation::setValue(const Vector3d& axis, double fAngle)
 {
+    using std::numbers::pi;
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //
     // normalization of the angle to be in [0, 2pi[
     _angle = fAngle;
-    double theAngle = fAngle - floor(fAngle / (2.0 * D_PI)) * (2.0 * D_PI);
+    double theAngle = fAngle - floor(fAngle / (2.0 * pi)) * (2.0 * pi);
     this->quat[3] = cos(theAngle / 2.0);
 
     Vector3d norm = axis;
@@ -691,9 +692,9 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
 {
     // The Euler angles (yaw,pitch,roll) are in XY'Z''-notation
     // convert to radians
-    y = (y / 180.0) * D_PI;
-    p = (p / 180.0) * D_PI;
-    r = (r / 180.0) * D_PI;
+    y = (y / 180.0) * std::numbers::pi;
+    p = (p / 180.0) * std::numbers::pi;
+    r = (r / 180.0) * std::numbers::pi;
 
     double c1 = cos(y / 2.0);
     double s1 = sin(y / 2.0);
@@ -710,6 +711,8 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
 
 void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
 {
+    using std::numbers::pi;
+
     double q00 = quat[0] * quat[0];
     double q11 = quat[1] * quat[1];
     double q22 = quat[2] * quat[2];
@@ -722,30 +725,31 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     double q23 = quat[2] * quat[3];
     double qd2 = 2.0 * (q13 - q02);
 
+    // Tolerance copied from OCC "gp_Quaternion.cxx"
+    constexpr double tolerance = 16 * std::numeric_limits<double>::epsilon();
     // handle gimbal lock
-    if (fabs(qd2 - 1.0) <= 16 * DBL_EPSILON) {  // Tolerance copied from OCC "gp_Quaternion.cxx"
+    if (fabs(qd2 - 1.0) <= tolerance) {
         // north pole
         y = 0.0;
-        p = D_PI / 2.0;
+        p = pi / 2.0;
         r = 2.0 * atan2(quat[0], quat[3]);
     }
-    else if (fabs(qd2 + 1.0)
-             <= 16 * DBL_EPSILON) {  // Tolerance copied from OCC "gp_Quaternion.cxx"
+    else if (fabs(qd2 + 1.0) <= tolerance) {
         // south pole
         y = 0.0;
-        p = -D_PI / 2.0;
+        p = -pi / 2.0;
         r = 2.0 * atan2(quat[0], quat[3]);
     }
     else {
         y = atan2(2.0 * (q01 + q23), (q00 + q33) - (q11 + q22));
-        p = qd2 > 1.0 ? D_PI / 2.0 : (qd2 < -1.0 ? -D_PI / 2.0 : asin(qd2));
+        p = qd2 > 1.0 ? pi / 2.0 : (qd2 < -1.0 ? -pi / 2.0 : asin(qd2));
         r = atan2(2.0 * (q12 + q03), (q22 + q33) - (q00 + q11));
     }
 
     // convert to degree
-    y = (y / D_PI) * 180;
-    p = (p / D_PI) * 180;
-    r = (r / D_PI) * 180;
+    y = (y / pi) * 180;
+    p = (p / pi) * 180;
+    r = (r / pi) * 180;
 }
 
 bool Rotation::isSame(const Rotation& q) const
@@ -978,15 +982,17 @@ void Rotation::setEulerAngles(EulerSequence theOrder,
                               double theBeta,
                               double theGamma)
 {
+    using std::numbers::pi;
+
     if (theOrder == Invalid || theOrder >= EulerSequenceLast) {
         throw Base::ValueError("invalid euler sequence");
     }
 
     EulerSequence_Parameters o = translateEulerSequence(theOrder);
 
-    theAlpha *= D_PI / 180.0;
-    theBeta *= D_PI / 180.0;
-    theGamma *= D_PI / 180.0;
+    theAlpha *= pi / 180.0;
+    theBeta *= pi / 180.0;
+    theGamma *= pi / 180.0;
 
     double a = theAlpha;
     double b = theBeta;
@@ -1048,7 +1054,7 @@ void Rotation::getEulerAngles(EulerSequence theOrder,
     EulerSequence_Parameters o = translateEulerSequence(theOrder);
     if (o.isTwoAxes) {
         double sy = sqrt(M(o.i, o.j) * M(o.i, o.j) + M(o.i, o.k) * M(o.i, o.k));
-        if (sy > 16 * DBL_EPSILON) {
+        if (sy > 16 * std::numeric_limits<double>::epsilon()) {
             theAlpha = atan2(M(o.i, o.j), M(o.i, o.k));
             theGamma = atan2(M(o.j, o.i), -M(o.k, o.i));
         }
@@ -1060,7 +1066,7 @@ void Rotation::getEulerAngles(EulerSequence theOrder,
     }
     else {
         double cy = sqrt(M(o.i, o.i) * M(o.i, o.i) + M(o.j, o.i) * M(o.j, o.i));
-        if (cy > 16 * DBL_EPSILON) {
+        if (cy > 16 * std::numeric_limits<double>::epsilon()) {
             theAlpha = atan2(M(o.k, o.j), M(o.k, o.k));
             theGamma = atan2(M(o.j, o.i), M(o.i, o.i));
         }
@@ -1081,7 +1087,7 @@ void Rotation::getEulerAngles(EulerSequence theOrder,
         theGamma = aFirst;
     }
 
-    theAlpha *= 180.0 / D_PI;
-    theBeta *= 180.0 / D_PI;
-    theGamma *= 180.0 / D_PI;
+    theAlpha *= 180.0 / std::numbers::pi;
+    theBeta *= 180.0 / std::numbers::pi;
+    theGamma *= 180.0 / std::numbers::pi;
 }

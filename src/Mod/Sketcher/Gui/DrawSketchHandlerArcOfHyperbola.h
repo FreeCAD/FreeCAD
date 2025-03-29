@@ -103,7 +103,7 @@ public:
             if (!boost::math::isnan(b)) {
                 for (int i = 15; i >= -15; i--) {
                     // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
-                    // double angle = i*M_PI/16.0;
+                    // double angle = i*std::numbers::pi/16.0;
                     double angle = i * angleatpoint / 15;
                     double rx = a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi);
                     double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
@@ -150,7 +150,7 @@ public:
 
             /*double angle1 = angleatpoint - startAngle;
 
-            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
+            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * std::numbers::pi ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;*/
 
             arcAngle = angleatpoint - startAngle;
@@ -290,8 +290,8 @@ public:
                 perp.Scale(abs(b));
                 majAxisPoint = centerPoint + perp;
                 minAxisPoint = centerPoint + minAxisDir;
-                endAngle += M_PI / 2;
-                startAngle += M_PI / 2;
+                endAngle += std::numbers::pi / 2;
+                startAngle += std::numbers::pi / 2;
             }
 
             int currentgeoid = getHighestCurveIndex();

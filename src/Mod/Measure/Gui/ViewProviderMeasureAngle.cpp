@@ -325,7 +325,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
 {
     auto obj = dynamic_cast<Measure::MeasureAngle*>(getMeasureObject());
     double angleDeg = obj->Angle.getValue();
-    constexpr double radiansPerDegree = M_PI / 180.0;
+    constexpr double radiansPerDegree = std::numbers::pi / 180.0;
     this->fieldAngle = angleDeg * radiansPerDegree;
 
     // Set matrix

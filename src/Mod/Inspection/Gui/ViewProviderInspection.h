@@ -107,7 +107,7 @@ private:
     SoCoordinate3* pcCoords;
 
 private:
-    float search_radius {FLT_MAX};
+    float search_radius {std::numeric_limits<float>::max()};
     static bool addflag;
     static App::PropertyFloatConstraint::Constraints floatRange;
 };

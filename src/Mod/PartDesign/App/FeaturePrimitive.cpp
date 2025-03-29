@@ -56,8 +56,8 @@ const App::PropertyQuantityConstraint::Constraints angleRangeU = { 0.0, 360.0, 1
 const App::PropertyQuantityConstraint::Constraints angleRangeV = { -90.0, 90.0, 1.0 };
 // it turned out that OCC cannot e.g. create a box with a width of Precision::Confusion()
 // with two times Precision::Confusion() all geometric primitives can be created
-const App::PropertyQuantityConstraint::Constraints quantityRange = { 2 * Precision::Confusion(), FLT_MAX, 0.1 };
-const App::PropertyQuantityConstraint::Constraints quantityRangeZero = { 0.0, FLT_MAX, 0.1 };
+const App::PropertyQuantityConstraint::Constraints quantityRange = { 2 * Precision::Confusion(), std::numeric_limits<float>::max(), 0.1 };
+const App::PropertyQuantityConstraint::Constraints quantityRangeZero = { 0.0, std::numeric_limits<float>::max(), 0.1 };
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::FeaturePrimitive, PartDesign::FeatureAddSub)
 

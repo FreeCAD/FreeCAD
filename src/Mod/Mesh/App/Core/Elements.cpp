@@ -1309,9 +1309,9 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
     const Base::Vector3f& rcP2 = _aclPoints[1];
     const Base::Vector3f& rcP3 = _aclPoints[2];
 
-    float fD1 = FLOAT_MAX;
-    float fD2 = FLOAT_MAX;
-    float fD3 = FLOAT_MAX;
+    float fD1 = std::numeric_limits<float>::max();
+    float fD2 = std::numeric_limits<float>::max();
+    float fD3 = std::numeric_limits<float>::max();
 
     // 1st edge
     Base::Vector3f clDir = rcP2 - rcP1;
@@ -1383,9 +1383,9 @@ void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
     const Base::Vector3f& rcP2 = _aclPoints[1];
     const Base::Vector3f& rcP3 = _aclPoints[2];
 
-    float fD1 = FLOAT_MAX;
-    float fD2 = FLOAT_MAX;
-    float fD3 = FLOAT_MAX;
+    float fD1 = std::numeric_limits<float>::max();
+    float fD2 = std::numeric_limits<float>::max();
+    float fD3 = std::numeric_limits<float>::max();
 
     // 1st edge
     Base::Vector3f clDir = rcP2 - rcP1;

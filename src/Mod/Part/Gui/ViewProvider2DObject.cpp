@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
 
 
 # include <Inventor/nodes/SoAnnotation.h>
@@ -57,7 +56,8 @@ using namespace std;
 // Construction/Destruction
 
 const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",nullptr};
-App::PropertyQuantityConstraint::Constraints ViewProvider2DObjectGrid::GridSizeRange = {0.001,DBL_MAX,1.0};
+App::PropertyQuantityConstraint::Constraints ViewProvider2DObjectGrid::GridSizeRange = {
+    0.001, std::numeric_limits<double>::max(), 1.0};
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObjectGrid, PartGui::ViewProvider2DObject)
 
@@ -106,10 +106,11 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid()
     else {
         // make sure that nine of the numbers are exactly zero because log(0)
         // is not defined
-        float xMin = std::abs(MinX) < FLT_EPSILON ? 0.01f : MinX;
-        float xMax = std::abs(MaxX) < FLT_EPSILON ? 0.01f : MaxX;
-        float yMin = std::abs(MinY) < FLT_EPSILON ? 0.01f : MinY;
-        float yMax = std::abs(MaxY) < FLT_EPSILON ? 0.01f : MaxY;
+        constexpr float floatEpsilon = std::numeric_limits<float>::epsilon();
+        float xMin = std::abs(MinX) < floatEpsilon ? 0.01f : MinX;
+        float xMax = std::abs(MaxX) < floatEpsilon ? 0.01f : MaxX;
+        float yMin = std::abs(MinY) < floatEpsilon ? 0.01f : MinY;
+        float yMax = std::abs(MaxY) < floatEpsilon ? 0.01f : MaxY;
         MiX = -exp(ceil(log(std::abs(xMin))));
         MiX = std::min<float>(MiX,(float)-exp(ceil(log(std::abs(0.1f*xMax)))));
         MaX = exp(ceil(log(std::abs(xMax))));

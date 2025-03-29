@@ -861,7 +861,7 @@ void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVe
 
     // line
     Base::Vector3d R1(point[0], point[1], point[2]), RA(normal[0], normal[1], normal[2]);
-    if (fabs(RN * RA) < FLT_EPSILON)
+    if (fabs(RN * RA) < std::numeric_limits<float>::epsilon())
         throw Base::ZeroDivisionError("View direction is parallel to sketch plane");
     // intersection point on plane
     Base::Vector3d S = R1 + ((RN * (R0 - R1)) / (RN * RA)) * RA;
@@ -1930,9 +1930,9 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             || Constr->Type == Weight)
             dir = (p2 - p1).Normalize();
         else if (Constr->Type == DistanceX)
-            dir = Base::Vector3d((p2.x - p1.x >= FLT_EPSILON) ? 1 : -1, 0, 0);
+            dir = Base::Vector3d((p2.x - p1.x >= std::numeric_limits<float>::epsilon()) ? 1 : -1, 0, 0);
         else if (Constr->Type == DistanceY)
-            dir = Base::Vector3d(0, (p2.y - p1.y >= FLT_EPSILON) ? 1 : -1, 0);
+            dir = Base::Vector3d(0, (p2.y - p1.y >= std::numeric_limits<float>::epsilon()) ? 1 : -1, 0);
 
         if (Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
@@ -2029,9 +2029,9 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             Base::Vector3d p = getSolvedSketch().getPoint(constr->Third, constr->ThirdPos);
             p0 = Base::Vector3d(p.x, p.y, 0);
             Base::Vector3d dir1 = getSolvedSketch().calculateNormalAtPoint(constr->First, p.x, p.y);
-            dir1.RotateZ(-M_PI / 2);// convert to vector of tangency by rotating
+            dir1.RotateZ(-std::numbers::pi / 2);// convert to vector of tangency by rotating
             Base::Vector3d dir2 = getSolvedSketch().calculateNormalAtPoint(constr->Second, p.x, p.y);
-            dir2.RotateZ(-M_PI / 2);
+            dir2.RotateZ(-std::numbers::pi / 2);
 
             Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
             factor = factor * Base::sgn<double>((dir1 + dir2) * vec);
@@ -3996,7 +3996,7 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
         getCoordsOnSketchPlane(pos0, vol.getProjectionDirection(), x0, y0);
         getCoordsOnSketchPlane(pos1, vol.getProjectionDirection(), x1, y1);
 
-        return -atan2((y1 - y0), (x1 - x0)) * 180 / M_PI;
+        return -atan2((y1 - y0), (x1 - x0)) * 180 / std::numbers::pi;
     }
     catch (const Base::ZeroDivisionError&) {
         return 0;

@@ -166,7 +166,7 @@ SbVec3f DemoMode::getDirection(Gui::View3DInventor* view) const
     SbRotation inv = rot.inverse();
     SbVec3f vec(this->viewAxis);
     inv.multVec(vec, vec);
-    if (vec.length() < FLT_EPSILON) {
+    if (vec.length() < std::numeric_limits<float>::epsilon()) {
         vec = this->viewAxis;
     }
     vec.normalize();

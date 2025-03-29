@@ -1124,8 +1124,9 @@ ElementFilterList::ElementFilterList(QWidget* parent)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt("ElementFilterState",
-                                   INT_MAX);// INT_MAX = 1111111111111111111111111111111 in binary.
+    int filterState = hGrp->GetInt(
+        "ElementFilterState",
+        std::numeric_limits<int>::max());// INT_MAX = 01111111111111111111111111111111 in binary.
 
     for (auto const& filterItem : filterItems) {
         Q_UNUSED(filterItem);
@@ -1320,7 +1321,7 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
     }
 
     // Save the state of the filter.
-    int filterState = INT_MIN;// INT_MIN = 000000000000000000000000000000 in binary.
+    int filterState = 0; // All bits are cleared.
     for (int i = filterList->count() - 1; i >= 0; i--) {
         bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
         filterState = filterState << 1;// we shift left first, else the list is shifted at the end.

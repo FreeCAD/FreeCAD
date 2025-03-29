@@ -19,9 +19,9 @@
 
 namespace Wm4 {
 
-template<> WM4_FOUNDATION_ITEM const float Math<float>::EPSILON = FLT_EPSILON;
+template<> WM4_FOUNDATION_ITEM const float Math<float>::EPSILON = std::numeric_limits<float>::epsilon();
 template<> WM4_FOUNDATION_ITEM const float Math<float>::ZERO_TOLERANCE = 1e-06f;
-template<> WM4_FOUNDATION_ITEM const float Math<float>::MAX_REAL = FLT_MAX;
+template<> WM4_FOUNDATION_ITEM const float Math<float>::MAX_REAL = std::numeric_limits<float>::max();
 template<> WM4_FOUNDATION_ITEM const float Math<float>::PI = (float)(4.0*atan(1.0));
 template<> WM4_FOUNDATION_ITEM const float Math<float>::TWO_PI = 2.0f*Math<float>::PI;
 template<> WM4_FOUNDATION_ITEM const float Math<float>::HALF_PI = 0.5f*Math<float>::PI;
@@ -34,9 +34,9 @@ template<> WM4_FOUNDATION_ITEM const float Math<float>::LN_10 = Math<float>::Log
 template<> WM4_FOUNDATION_ITEM const float Math<float>::INV_LN_2 = 1.0f/Math<float>::LN_2;
 template<> WM4_FOUNDATION_ITEM const float Math<float>::INV_LN_10 = 1.0f/Math<float>::LN_10;
 
-template<> WM4_FOUNDATION_ITEM const double Math<double>::EPSILON = DBL_EPSILON;
+template<> WM4_FOUNDATION_ITEM const double Math<double>::EPSILON = std::numeric_limits<double>::epsilon();
 template<> WM4_FOUNDATION_ITEM const double Math<double>::ZERO_TOLERANCE = 1e-08;
-template<> WM4_FOUNDATION_ITEM const double Math<double>::MAX_REAL = DBL_MAX;
+template<> WM4_FOUNDATION_ITEM const double Math<double>::MAX_REAL = std::numeric_limits<double>::max();
 template<> WM4_FOUNDATION_ITEM const double Math<double>::PI = 4.0*atan(1.0);
 template<> WM4_FOUNDATION_ITEM const double Math<double>::TWO_PI = 2.0*Math<double>::PI;
 template<> WM4_FOUNDATION_ITEM const double Math<double>::HALF_PI = 0.5*Math<double>::PI;

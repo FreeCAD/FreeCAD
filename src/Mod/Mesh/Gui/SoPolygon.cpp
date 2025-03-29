@@ -31,7 +31,6 @@
 #include <GL/gl.h>
 #endif
 #include <algorithm>
-#include <cfloat>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -145,8 +144,9 @@ void SoPolygon::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
     if (!points) {
         return;
     }
-    float maxX = -FLT_MAX, minX = FLT_MAX, maxY = -FLT_MAX, minY = FLT_MAX, maxZ = -FLT_MAX,
-          minZ = FLT_MAX;
+    constexpr float floatMax = std::numeric_limits<float>::max();
+    float maxX = -floatMax, minX = floatMax, maxY = -floatMax, minY = floatMax, maxZ = -floatMax,
+          minZ = floatMax;
     int32_t len = coords->getNum();
     int32_t beg = startIndex.getValue();
     int32_t cnt = numVertices.getValue();

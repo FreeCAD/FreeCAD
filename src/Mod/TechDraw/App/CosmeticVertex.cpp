@@ -166,7 +166,7 @@ Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double
         // invert the Y coordinate so the rotation math works out
         // the stored point is inverted
         scaledPoint = DU::invertY(scaledPoint);
-        scaledPoint.RotateZ(rotDegrees * M_PI / DegreesHalfCircle);
+        scaledPoint.RotateZ(rotDegrees * std::numbers::pi / DegreesHalfCircle);
         scaledPoint = DU::invertY(scaledPoint);
     }
     return scaledPoint;
@@ -182,7 +182,7 @@ Base::Vector3d CosmeticVertex::makeCanonicalPoint(DrawViewPart* dvp, Base::Vecto
     Base::Vector3d result = point;
     if (rotDeg != 0.0) {
         // unrotate the point
-        double rotRad = rotDeg * M_PI / DegreesHalfCircle;
+        double rotRad = rotDeg * std::numbers::pi / DegreesHalfCircle;
         // we always rotate around the origin.
         result.RotateZ(-rotRad);
     }

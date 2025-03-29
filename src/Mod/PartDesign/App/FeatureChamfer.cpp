@@ -35,6 +35,8 @@
 # include <Standard_Version.hxx>
 #endif
 
+#include <limits>
+
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -49,7 +51,7 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
 const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", nullptr};
-const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize = {0.0, FLT_MAX, 0.1};
+const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize = {0.0, std::numeric_limits<float>::max(), 0.1};
 const App::PropertyAngle::Constraints Chamfer::floatAngle = {0.0, 180.0, 1.0};
 
 static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle);

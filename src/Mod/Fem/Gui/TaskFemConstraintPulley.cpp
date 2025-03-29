@@ -76,15 +76,15 @@ TaskFemConstraintPulley::TaskFemConstraintPulley(ViewProviderFemConstraintPulley
 
     // Fill data into dialog elements
     ui->spinOtherDiameter->setMinimum(0);
-    ui->spinOtherDiameter->setMaximum(FLOAT_MAX);
+    ui->spinOtherDiameter->setMaximum(std::numeric_limits<float>::max());
     ui->spinOtherDiameter->setValue(otherdia);
     ui->spinCenterDistance->setMinimum(0);
-    ui->spinCenterDistance->setMaximum(FLOAT_MAX);
+    ui->spinCenterDistance->setMaximum(std::numeric_limits<float>::max());
     ui->spinCenterDistance->setValue(centerdist);
     ui->checkIsDriven->setChecked(isdriven);
-    ui->spinForce->setMinimum(-FLOAT_MAX);
+    ui->spinForce->setMinimum(-std::numeric_limits<float>::max());
     ui->spinTensionForce->setMinimum(0);
-    ui->spinTensionForce->setMaximum(FLOAT_MAX);
+    ui->spinTensionForce->setMaximum(std::numeric_limits<float>::max());
     ui->spinTensionForce->setValue(tensionforce);
 
     // Adjust ui

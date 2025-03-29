@@ -42,7 +42,9 @@
 
 using namespace Surface;
 
-const App::PropertyIntegerConstraint::Constraints SampleRange = {2, INT_MAX, 1};
+const App::PropertyIntegerConstraint::Constraints SampleRange = {2,
+                                                                 std::numeric_limits<int>::max(),
+                                                                 1};
 const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0, 10.0, 0.01};
 const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5, 10.0, 0.01};
 PROPERTY_SOURCE(Surface::Extend, Part::Spline)

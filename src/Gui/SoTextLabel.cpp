@@ -31,7 +31,6 @@
 # else
 # include <GL/gl.h>
 # endif
-# include <cfloat>
 # include <QFontMetrics>
 # include <QPainter>
 # include <QPen>

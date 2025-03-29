@@ -237,7 +237,7 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfCircle)
 {
     // Arrange
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
-    double radius = 3.0, startParam = M_PI / 3, endParam = M_PI * 1.5;
+    double radius = 3.0, startParam = std::numbers::pi / 3, endParam = std::numbers::pi * 1.5;
     Part::GeomArcOfCircle arcOfCircle;
     arcOfCircle.setCenter(coordsCenter);
     arcOfCircle.setRadius(radius);
@@ -267,7 +267,7 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfEllipse)
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
     double majorRadius = 4.0;
     double minorRadius = 3.0;
-    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    double startParam = std::numbers::pi / 3, endParam = std::numbers::pi * 1.5;
     Part::GeomArcOfEllipse arcOfEllipse;
     arcOfEllipse.setCenter(coordsCenter);
     arcOfEllipse.setMajorRadius(majorRadius);
@@ -298,7 +298,7 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfHyperbola)
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
     double majorRadius = 4.0;
     double minorRadius = 3.0;
-    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    double startParam = std::numbers::pi / 3, endParam = std::numbers::pi * 1.5;
     Part::GeomArcOfHyperbola arcOfHyperbola;
     arcOfHyperbola.setCenter(coordsCenter);
     arcOfHyperbola.setMajorRadius(majorRadius);
@@ -330,7 +330,7 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfParabola)
     // Arrange
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
     double focal = 3.0;
-    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    double startParam = std::numbers::pi / 3, endParam = std::numbers::pi * 1.5;
     Part::GeomArcOfParabola arcOfParabola;
     arcOfParabola.setCenter(coordsCenter);
     arcOfParabola.setFocal(focal);

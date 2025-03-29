@@ -182,7 +182,7 @@ void ApplicationCache::setPeriod(ApplicationCache::Period period)
         numDays = 365;
         break;
     case Period::Never:
-        numDays = INT_MAX;
+        numDays = std::numeric_limits<int>::max();
         break;
     }
 }

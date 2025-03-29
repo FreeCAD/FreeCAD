@@ -96,7 +96,7 @@ gp_Ax2 ShapeUtils::getViewAxis(const Base::Vector3d origin, const Base::Vector3d
         cross = cross.Cross(stdZ);
     }
 
-    if (cross.IsEqual(stdOrg, FLT_EPSILON)) {
+    if (cross.IsEqual(stdOrg, std::numeric_limits<float>::epsilon())) {
         viewAxis = gp_Ax2(inputCenter, gp_Dir(direction.x, direction.y, direction.z));
         return viewAxis;
     }
@@ -142,7 +142,7 @@ gp_Ax2 ShapeUtils::legacyViewAxis1(const Base::Vector3d origin, const Base::Vect
         cross = cross.Cross(stdZ);
     }
 
-    if (cross.IsEqual(stdOrg, FLT_EPSILON)) {
+    if (cross.IsEqual(stdOrg, std::numeric_limits<float>::epsilon())) {
         return gp_Ax2(inputCenter, gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
     }
 
@@ -273,7 +273,7 @@ TopoDS_Shape ShapeUtils::rotateShape(const TopoDS_Shape& input, const gp_Ax2& vi
     }
 
     gp_Ax1 rotAxis = viewAxis.Axis();
-    double rotation = rotAngle * M_PI / 180.0;
+    double rotation = rotAngle * std::numbers::pi / 180.0;
 
     try {
         gp_Trsf tempTransform;

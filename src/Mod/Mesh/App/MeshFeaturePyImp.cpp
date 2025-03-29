@@ -73,7 +73,7 @@ PyObject* MeshFeaturePy::harmonizeNormals(PyObject* args)
 PyObject* MeshFeaturePy::smooth(PyObject* args)
 {
     int iter = 1;
-    float d_max = FLOAT_MAX;
+    float d_max = std::numeric_limits<float>::max();
     if (!PyArg_ParseTuple(args, "|if", &iter, &d_max)) {
         return nullptr;
     }

@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cassert>
+#include <numbers>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -743,7 +744,7 @@ RDragger::RDragger()
     }
 
     SO_KIT_ADD_FIELD(rotation, (SbVec3f(0.0, 0.0, 1.0), 0.0));
-    SO_KIT_ADD_FIELD(rotationIncrement, (M_PI / 8.0));
+    SO_KIT_ADD_FIELD(rotationIncrement, (std::numbers::pi / 8.0));
     SO_KIT_ADD_FIELD(rotationIncrementCount, (0));
 
     SO_KIT_INIT_INSTANCE();
@@ -808,7 +809,7 @@ SoGroup* RDragger::buildGeometry()
 
     unsigned int segments = 15;
 
-    float angleIncrement = static_cast<float>(M_PI / 2.0) / static_cast<float>(segments);
+    float angleIncrement = (std::numbers::pi_v<float> / 2.f) / static_cast<float>(segments);
     SbRotation rotation(SbVec3f(0.0, 0.0, 1.0), angleIncrement);
     SbVec3f point(arcRadius, 0.0, 0.0);
     for (unsigned int index = 0; index <= segments; ++index) {
@@ -965,9 +966,10 @@ void RDragger::drag()
             appendRotation(getStartMotionMatrix(), localRotation, SbVec3f(0.0, 0.0, 0.0)));
     }
 
-    Base::Quantity quantity(static_cast<double>(rotationIncrementCount.getValue()) * (180.0 / M_PI)
-                                * rotationIncrement.getValue(),
-                            Base::Unit::Angle);
+    Base::Quantity quantity(
+        static_cast<double>(rotationIncrementCount.getValue())
+            * (180.0 / std::numbers::pi)* rotationIncrement.getValue(),
+        Base::Unit::Angle);
 
     QString message =
         QStringLiteral("%1 %2").arg(QObject::tr("Rotation:"), QString::fromStdString(quantity.getUserString()));
@@ -1179,7 +1181,7 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_ADD_FIELD(translationIncrementCountZ, (0));
 
     SO_KIT_ADD_FIELD(rotation, (SbVec3f(0.0, 0.0, 1.0), 0.0));
-    SO_KIT_ADD_FIELD(rotationIncrement, (M_PI / 8.0));
+    SO_KIT_ADD_FIELD(rotationIncrement, (std::numbers::pi / 8.0));
     SO_KIT_ADD_FIELD(rotationIncrementCountX, (0));
     SO_KIT_ADD_FIELD(rotationIncrementCountY, (0));
     SO_KIT_ADD_FIELD(rotationIncrementCountZ, (0));
@@ -1272,7 +1274,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     SoRotation* localRotation;
     SbRotation tempRotation;
-    auto angle = static_cast<float>(M_PI / 2.0);
+    auto angle = static_cast<float>(std::numbers::pi / 2.0);
     // Translator
     localRotation = SO_GET_ANY_PART(this, "xTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbVec3f(0.0, 0.0, -1.0), angle);

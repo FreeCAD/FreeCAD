@@ -59,7 +59,7 @@ Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags
     , myMesh(mesh)
 {
     ui->setupUi(this);
-    ui->numPln->setRange(1, INT_MAX);
+    ui->numPln->setRange(1, std::numeric_limits<int>::max());
     ui->numPln->setValue(100);
 
     ui->checkBoxSmooth->setChecked(false);
@@ -115,7 +115,7 @@ void Segmentation::accept()
                 std::vector<MeshCore::PointIndex> indexes = kernel.GetFacetPoints(jt);
                 MeshCore::PlaneFit fit;
                 fit.AddPoints(kernel.GetPoints(indexes));
-                if (fit.Fit() < FLOAT_MAX) {
+                if (fit.Fit() < std::numeric_limits<float>::max()) {
                     Base::Vector3f base = fit.GetBase();
                     Base::Vector3f axis = fit.GetNormal();
                     MeshCore::AbstractSurfaceFit* fitter =

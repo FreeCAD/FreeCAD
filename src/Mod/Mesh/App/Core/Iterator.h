@@ -23,7 +23,6 @@
 #ifndef MESH_ITERATOR_H
 #define MESH_ITERATOR_H
 
-#include <climits>
 
 #include <Base/Matrix.h>
 

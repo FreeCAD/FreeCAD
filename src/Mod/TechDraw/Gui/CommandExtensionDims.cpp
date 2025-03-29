@@ -2050,7 +2050,7 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty() && allVertexes.size() > 1) {
-        const auto Pi180 = 180.0 / M_PI;
+        const auto Pi180 = 180.0 / std::numbers::pi;
         TechDraw::DrawViewDimension* dim;
         dim = _createLinDimension(objFeat, allVertexes[0].name, allVertexes[1].name, "DistanceX");
         float yMax = std::max(abs(allVertexes[0].point.y), abs(allVertexes[1].point.y)) + 7.0;
@@ -2119,7 +2119,7 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty() && allVertexes.size() > 1) {
-        const auto Pi180 = 180.0 / M_PI;
+        const auto Pi180 = 180.0 / std::numbers::pi;
         TechDraw::DrawViewDimension* dim;
         dim = _createLinDimension(objFeat, allVertexes[0].name, allVertexes[1].name, "DistanceY");
         float xMax = std::max(abs(allVertexes[0].point.x), abs(allVertexes[1].point.x)) + 7.0;

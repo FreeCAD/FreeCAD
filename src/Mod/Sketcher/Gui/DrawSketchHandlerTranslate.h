@@ -584,7 +584,8 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
             }
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle = onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                double angle =
+                    onViewParameters[OnViewParameter::Fourth]->getValue() * std::numbers::pi / 180;
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -607,7 +608,8 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
             }
 
             if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                double angle = onViewParameters[OnViewParameter::Sixth]->getValue() * M_PI / 180;
+                double angle =
+                    onViewParameters[OnViewParameter::Sixth]->getValue() * std::numbers::pi / 180;
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -647,7 +649,7 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector2d vec2d = Base::Vector2d(handler->firstTranslationVector.x,
                                                   handler->firstTranslationVector.y);
             double angle = vec2d.Angle();
-            double range = angle * 180 / M_PI;
+            double range = angle * 180 / std::numbers::pi;
 
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
@@ -669,7 +671,7 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector2d vec2d = Base::Vector2d(handler->secondTranslationVector.x,
                                                   handler->secondTranslationVector.y);
             double angle = vec2d.Angle();
-            double range = angle * 180 / M_PI;
+            double range = angle * 180 / std::numbers::pi;
 
             if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Sixth, range, Base::Unit::Angle);

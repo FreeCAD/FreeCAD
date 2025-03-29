@@ -968,7 +968,8 @@ QWidget* PropertyIntegerItem::createEditor(QWidget* parent,
 void PropertyIntegerItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     auto sb = qobject_cast<QSpinBox*>(editor);
-    sb->setRange(INT_MIN, INT_MAX);
+    sb->setRange(std::numeric_limits<int>::min(),
+                 std::numeric_limits<int>::max());
     sb->setValue(data.toInt());
 }
 
@@ -1128,7 +1129,8 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const std::function<vo
 void PropertyFloatItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     auto sb = qobject_cast<QDoubleSpinBox*>(editor);
-    sb->setRange((double)INT_MIN, (double)INT_MAX);
+    sb->setRange(static_cast<double>(std::numeric_limits<int>::min()),
+                static_cast<double>(std::numeric_limits<int>::max()));
     sb->setValue(data.toDouble());
 }
 

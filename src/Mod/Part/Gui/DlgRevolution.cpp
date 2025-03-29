@@ -103,16 +103,17 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     ui->setupUi(this);
     setupConnections();
 
-    ui->xPos->setRange(-DBL_MAX,DBL_MAX);
-    ui->yPos->setRange(-DBL_MAX,DBL_MAX);
-    ui->zPos->setRange(-DBL_MAX,DBL_MAX);
+    constexpr double max = std::numeric_limits<double>::max();
+    ui->xPos->setRange(-max, max);
+    ui->yPos->setRange(-max, max);
+    ui->zPos->setRange(-max, max);
     ui->xPos->setUnit(Base::Unit::Length);
     ui->yPos->setUnit(Base::Unit::Length);
     ui->zPos->setUnit(Base::Unit::Length);
 
-    ui->xDir->setRange(-DBL_MAX,DBL_MAX);
-    ui->yDir->setRange(-DBL_MAX,DBL_MAX);
-    ui->zDir->setRange(-DBL_MAX,DBL_MAX);
+    ui->xDir->setRange(-max, max);
+    ui->yDir->setRange(-max, max);
+    ui->zDir->setRange(-max, max);
     ui->xDir->setUnit(Base::Unit());
     ui->yDir->setUnit(Base::Unit());
     ui->zDir->setUnit(Base::Unit());
@@ -307,7 +308,7 @@ bool DlgRevolution::validate()
 
     //check angle
     if (!axisLinkHasAngle){
-        if (fabs(this->getAngle() / 180.0 * M_PI) < Precision::Angular()) {
+        if (fabs(this->getAngle() / 180.0 * std::numbers::pi) < Precision::Angular()) {
             QMessageBox::critical(this, windowTitle(),
                 tr("Revolution angle span is zero. It must be non-zero."));
             ui->angle->setFocus();

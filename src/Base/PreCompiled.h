@@ -36,13 +36,8 @@
 #include <cstdio>
 #include <cassert>
 #include <ctime>
-#include <cfloat>
 #include <chrono>
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES
-#endif  // FC_OS_WIN32
 #include <cmath>
-#include <climits>
 #include <codecvt>
 
 #ifdef FC_OS_WIN32
@@ -61,7 +56,6 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <limits.h>
 #endif
 
 // STL
@@ -69,6 +63,7 @@
 #include <string_view>
 #include <list>
 #include <map>
+#include <numbers>
 #include <unordered_map>
 #include <vector>
 #include <set>

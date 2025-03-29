@@ -402,9 +402,9 @@ double QGISectionLine::getArrowRotation(Base::Vector3d arrowDir)
     arrowDir.Normalize();
     double angle = atan2f(arrowDir.y, arrowDir.x);
     if (angle < 0.0) {
-        angle = 2 * M_PI + angle;
+        angle = 2 * std::numbers::pi + angle;
     }
-    double arrowRotation = 360.0 - angle * (180.0/M_PI);   //convert to Qt rotation (clockwise degrees)
+    double arrowRotation = 360.0 - angle * (180.0/std::numbers::pi);   //convert to Qt rotation (clockwise degrees)
     return arrowRotation;
 }
 

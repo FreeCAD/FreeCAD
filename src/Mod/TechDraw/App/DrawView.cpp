@@ -130,7 +130,7 @@ void DrawView::checkScale()
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
         if (ScaleType.isValue("Page")) {
-            if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+            if(std::abs(page->Scale.getValue() - Scale.getValue()) > std::numeric_limits<float>::epsilon()) {
                 Scale.setValue(page->Scale.getValue());
                 Scale.purgeTouched();
             }
@@ -190,7 +190,7 @@ void DrawView::onChanged(const App::Property* prop)
         }
         if (ScaleType.isValue("Page")) {
             Scale.setStatus(App::Property::ReadOnly, true);
-            if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+            if(std::abs(page->Scale.getValue() - getScale()) > std::numeric_limits<float>::epsilon()) {
                Scale.setValue(page->Scale.getValue());
             }
         } else if ( ScaleType.isValue("Custom") ) {
@@ -200,7 +200,7 @@ void DrawView::onChanged(const App::Property* prop)
             Scale.setStatus(App::Property::ReadOnly, true);
             if (!checkFit(page)) {
                 double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
-                if(std::abs(newScale - getScale()) > FLT_EPSILON) {
+                if(std::abs(newScale - getScale()) > std::numeric_limits<float>::epsilon()) {
                     Scale.setValue(newScale);
                 }
             }

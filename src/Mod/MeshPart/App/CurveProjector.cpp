@@ -180,7 +180,7 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
                         / ((cP1 - cP0) * (cP1 - cP0));
                     // is the Point on the Edge of the facet?
                     if (l < 0.0 || l > 1.0) {
-                        PointOnEdge[i] = Base::Vector3f(FLOAT_MAX, 0, 0);
+                        PointOnEdge[i] = Base::Vector3f(std::numeric_limits<float>::max(), 0, 0);
                     }
                     else {
                         cSplitPoint = (1 - l) * cP0 + l * cP1;
@@ -191,11 +191,11 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
                     // no intersection
                 }
                 else if (Alg.NbPoints() == 0) {
-                    PointOnEdge[i] = Base::Vector3f(FLOAT_MAX, 0, 0);
+                    PointOnEdge[i] = Base::Vector3f(std::numeric_limits<float>::max(), 0, 0);
                     // more the one intersection (@ToDo)
                 }
                 else if (Alg.NbPoints() > 1) {
-                    PointOnEdge[i] = Base::Vector3f(FLOAT_MAX, 0, 0);
+                    PointOnEdge[i] = Base::Vector3f(std::numeric_limits<float>::max(), 0, 0);
                     Base::Console().Log("MeshAlgos::projectCurve(): More then one intersection in "
                                         "Facet %lu, Edge %d\n",
                                         uCurFacetIdx,
@@ -234,7 +234,7 @@ bool CurveProjectorShape::findStartPoint(const MeshKernel& MeshK,
                                          MeshCore::FacetIndex& FaceIndex)
 {
     Base::Vector3f TempResultPoint;
-    float MinLength = FLOAT_MAX;
+    float MinLength = std::numeric_limits<float>::max();
     bool bHit = false;
 
     // go through the whole Mesh
@@ -363,7 +363,7 @@ bool CurveProjectorSimple::findStartPoint(const MeshKernel& MeshK,
                                           MeshCore::FacetIndex& FaceIndex)
 {
     Base::Vector3f TempResultPoint;
-    float MinLength = FLOAT_MAX;
+    float MinLength = std::numeric_limits<float>::max();
     bool bHit = false;
 
     // go through the whole Mesh
@@ -465,11 +465,11 @@ void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge,
 
 
     // build up the new mesh
-    Base::Vector3f lp(FLOAT_MAX, 0, 0), ln, p1, p2, p3, p4, p5, p6;
+    Base::Vector3f lp(std::numeric_limits<float>::max(), 0, 0), ln, p1, p2, p3, p4, p5, p6;
     float ToolSize = 0.2f;
 
     for (const auto& It2 : LineSegs) {
-        if (lp.x != FLOAT_MAX) {
+        if (lp.x != std::numeric_limits<float>::max()) {
             p1 = lp + (ln * (-ToolSize));
             p2 = lp + (ln * ToolSize);
             p3 = lp;

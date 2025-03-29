@@ -732,7 +732,7 @@ PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 180.0 - Base::toDegrees<double>(Precision::Angular()), 1.0 };
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
-const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), FLT_MAX, 1.0 };
+const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0 };
 
 Hole::Hole()
 {
@@ -2244,7 +2244,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         //      | base-sharpV             Rmaj     H
 
         // the little adjustment of p1 and p4 is here to prevent coincidencies
-        double marginX = std::tan(62.5 * M_PI / 180.0) * marginZ;
+        double marginX = std::tan(62.5 * std::numbers::pi / 180.0) * marginZ;
 
         gp_Pnt p1 = toPnt(
             (RmajC - 5 * H / 6 + marginX) * xDir
@@ -2281,7 +2281,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         //       | base-sharpV    Rmaj
 
         // the little adjustment of p1 and p4 is here to prevent coincidencies
-        double marginX = std::tan(60.0 * M_PI / 180.0) * marginZ;
+        double marginX = std::tan(60.0 * std::numbers::pi / 180.0) * marginZ;
         gp_Pnt p1 = toPnt(
             (RmajC - h + marginX) * xDir
             + marginZ * zDir
@@ -2343,7 +2343,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // Reverse the direction of the helix. So that it goes into the material
     gp_Trsf mov;
-    mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
     TopLoc_Location loc1(mov);
     helix.Move(loc1);
 

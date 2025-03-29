@@ -25,7 +25,6 @@
 #define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-#include <climits>
 #include <iostream>
 
 #include <QString>

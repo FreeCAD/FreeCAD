@@ -89,7 +89,7 @@ QWidget *FilletRadiusDelegate::createEditor(QWidget *parent, const QStyleOptionV
     Gui::QuantitySpinBox *editor = new Gui::QuantitySpinBox(parent);
     editor->setUnit(Base::Unit::Length);
     editor->setMinimum(0.0);
-    editor->setMaximum(INT_MAX);
+    editor->setMaximum(std::numeric_limits<int>::max());
     editor->setSingleStep(0.1);
 
     return editor;
@@ -234,11 +234,11 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     ui->setupUi(this);
     setupConnections();
 
-    ui->filletStartRadius->setMaximum(INT_MAX);
+    ui->filletStartRadius->setMaximum(std::numeric_limits<int>::max());
     ui->filletStartRadius->setMinimum(0);
     ui->filletStartRadius->setUnit(Base::Unit::Length);
 
-    ui->filletEndRadius->setMaximum(INT_MAX);
+    ui->filletEndRadius->setMaximum(std::numeric_limits<int>::max());
     ui->filletEndRadius->setMinimum(0);
     ui->filletEndRadius->setUnit(Base::Unit::Length);
 

@@ -54,7 +54,8 @@ using namespace TechDrawGui;
 QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
     m_sleep(false),
     m_qgParent(nullptr),
-    m_lastClick(QPointF(FLT_MAX, FLT_MAX))
+    m_lastClick(QPointF(std::numeric_limits<float>::max(),
+                        std::numeric_limits<float>::max()))
 {
     setTrackerMode(m);
     if (inScene) {
@@ -183,7 +184,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
         return dumbPt;
 
     QPointF result(dumbPt);
-    double angleIncr = M_PI / 8.0;   //15*
+    double angleIncr = std::numbers::pi / 8.0;   //15*
     //mirror last clicked point and event point to get sensible coords
     QPointF last(m_points.back().x(), -m_points.back().y());
     QPointF pt(dumbPt.x(), -dumbPt.y());
@@ -192,7 +193,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
     QPointF qVec = last - pt;    //vec from end of track to end of tail
     double actual = atan2(-qVec.y(), qVec.x());
     if (actual < 0.0) {
-        actual = (2 * M_PI) + actual;          //map to +ve angle
+        actual = (2 * std::numbers::pi) + actual;          //map to +ve angle
     }
 
     double intPart;

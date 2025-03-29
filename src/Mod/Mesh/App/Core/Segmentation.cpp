@@ -201,7 +201,7 @@ std::vector<float> PlaneSurfaceFit::Parameters() const
 // --------------------------------------------------------
 
 CylinderSurfaceFit::CylinderSurfaceFit()
-    : radius(FLOAT_MAX)
+    : radius(std::numeric_limits<float>::max())
     , fitter(new CylinderFit)
 {
     axis.Set(0, 0, 0);
@@ -266,7 +266,7 @@ float CylinderSurfaceFit::Fit()
     }
 
     float fit = fitter->Fit();
-    if (fit < FLOAT_MAX) {
+    if (fit < std::numeric_limits<float>::max()) {
         basepoint = fitter->GetBase();
         axis = fitter->GetAxis();
         radius = fitter->GetRadius();
@@ -309,7 +309,7 @@ std::vector<float> CylinderSurfaceFit::Parameters() const
 // --------------------------------------------------------
 
 SphereSurfaceFit::SphereSurfaceFit()
-    : radius(FLOAT_MAX)
+    : radius(std::numeric_limits<float>::max())
     , fitter(new SphereFit)
 {
     center.Set(0, 0, 0);
@@ -367,7 +367,7 @@ float SphereSurfaceFit::Fit()
     }
 
     float fit = fitter->Fit();
-    if (fit < FLOAT_MAX) {
+    if (fit < std::numeric_limits<float>::max()) {
         center = fitter->GetCenter();
         radius = fitter->GetRadius();
     }

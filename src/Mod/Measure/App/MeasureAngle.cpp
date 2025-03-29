@@ -108,7 +108,7 @@ bool MeasureAngle::isPrioritizedSelection(const App::MeasureSelection& selection
     getVec(*ob2, sub2, vec2);
 
 
-    double angle = std::fmod(vec1.GetAngle(vec2), D_PI);
+    double angle = std::fmod(vec1.GetAngle(vec2), std::numbers::pi);
     return angle > Base::Precision::Angular();
 }
 
