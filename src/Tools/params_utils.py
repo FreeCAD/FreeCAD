@@ -1197,7 +1197,7 @@ class Property:
             )
         cog.out(
             f"""
-    if (auto prop = Base::freecad_dynamic_cast<{self.type_name}>(
+    if (auto prop = freecad_cast<{self.type_name}>(
             obj->getPropertyByName("{self.name}")))
     {{
         if (prop->getContainer() == obj)

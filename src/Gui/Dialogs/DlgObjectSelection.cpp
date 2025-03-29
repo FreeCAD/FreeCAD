@@ -194,7 +194,7 @@ QTreeWidgetItem *DlgObjectSelection::getItem(App::DocumentObject *obj,
         if (!items.empty())
             return items[0];
         item = new QTreeWidgetItem(ui->treeWidget);
-        auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+        auto vp = freecad_cast<ViewProviderDocumentObject>(
                 Gui::Application::Instance->getViewProvider(obj));
         if (vp) item->setIcon(0, vp->getIcon());
         App::SubObjectT objT(obj, "");

@@ -1918,14 +1918,14 @@ namespace {
                     if (topObj) {
                         auto sobj = topObj->getSubObject(info.topSubname.c_str(), nullptr, &mat);
                         if (sobj == obj) {
-                            propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                            propPlacement = freecad_cast<App::PropertyPlacement>(
                                 obj->getPropertyByName("Placement"));
                         }
                     }
                 }
             }
             else {
-                propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                propPlacement = freecad_cast<App::PropertyPlacement>(
                     obj->getPropertyByName("Placement"));
                 if (propPlacement)
                     mat = propPlacement->getValue().toMatrix();
@@ -2484,7 +2484,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         for (auto& info : infos) {
             auto& subname = info.subname;
             targetObj = targetDoc->getObject(target.c_str());
-            vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>( Application::Instance->getViewProvider(targetObj));
+            vp = freecad_cast<ViewProviderDocumentObject>( Application::Instance->getViewProvider(targetObj));
             if (!vp) {
                 FC_ERR("Cannot find drop target object " << target);
                 break;
@@ -2652,7 +2652,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                     (!info.dragging && sobj->getLinkedObject(false) == obj))
                 {
                     if (!info.dragging)
-                        propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                        propPlacement = freecad_cast<App::PropertyPlacement>(
                             sobj->getPropertyByName("Placement"));
                     if (propPlacement) {
                         newMat *= propPlacement->getValue().inverse().toMatrix();
@@ -2791,7 +2791,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
         auto targetItemObj = static_cast<DocumentObjectItem*>(targetInfo.targetItem);
         App::DocumentObject* targetObj = targetItemObj->object()->getObject();
 
-        auto propGroup = Base::freecad_dynamic_cast<App::PropertyLinkList>(targetObj->getPropertyByName("Group"));
+        auto propGroup = freecad_cast<App::PropertyLinkList>(targetObj->getPropertyByName("Group"));
         if (!propGroup) {
             return;
         }
@@ -3061,7 +3061,7 @@ void TreeWidget::onUpdateStatus()
                 errors.push_back(obj);
             if (docItem->ObjectMap.count(obj))
                 continue;
-            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
+            auto vpd = freecad_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
             if (vpd)
                 docItem->createNewItem(*vpd);
         }
@@ -3746,7 +3746,7 @@ void TreeWidget::selectLinkedObject(App::DocumentObject* linked) {
     if (!isSelectionAttached() || isSelectionBlocked())
         return;
 
-    auto linkedVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto linkedVp = freecad_cast<ViewProviderDocumentObject>(
         Application::Instance->getViewProvider(linked));
     if (!linkedVp) {
         TREE_ERR("invalid linked view provider");
@@ -3962,7 +3962,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
 }
 
 ViewProviderDocumentObject* DocumentItem::getViewProvider(App::DocumentObject* obj) {
-    return Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    return freecad_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(obj));
 }
 

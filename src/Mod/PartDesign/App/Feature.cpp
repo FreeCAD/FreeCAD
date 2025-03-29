@@ -389,7 +389,7 @@ TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
 
 Body* Feature::getFeatureBody() const {
 
-    auto body = Base::freecad_dynamic_cast<Body>(_Body.getValue());
+    auto body = freecad_cast<Body>(_Body.getValue());
     if(body)
         return body;
 

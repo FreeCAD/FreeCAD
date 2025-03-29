@@ -745,7 +745,7 @@ void ViewProviderLinkObserver::extensionBeforeDelete() {
 void ViewProviderLinkObserver::extensionReattach(App::DocumentObject *) {
     if(linkInfo) {
         linkInfo->pcLinked =
-            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+            freecad_cast<ViewProviderDocumentObject>(getExtendedContainer());
         linkInfo->update();
     }
 }
@@ -755,7 +755,7 @@ void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
 }
 
 void ViewProviderLinkObserver::extensionModeSwitchChange() {
-    auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+    auto owner = freecad_cast<ViewProviderDocumentObject>(getExtendedContainer());
     if(owner && linkInfo)
         linkInfo->updateSwitch();
 }
@@ -1026,7 +1026,7 @@ void LinkView::setMaterial(int index, const App::Material *material) {
 }
 
 void LinkView::setLink(App::DocumentObject *obj, const std::vector<std::string> &subs) {
-    setLinkViewObject(Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    setLinkViewObject(freecad_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(obj)),subs);
 
 }
@@ -1743,7 +1743,7 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
 
 void ViewProviderLink::onChanged(const App::Property* prop) {
     if(prop==&ChildViewProvider) {
-        childVp = freecad_dynamic_cast<ViewProviderDocumentObject>(ChildViewProvider.getObject().get());
+        childVp = freecad_cast<ViewProviderDocumentObject>(ChildViewProvider.getObject().get());
         if(childVp && getObject()) {
             if(strcmp(childVp->getTypeId().getName(),getObject()->getViewProviderName())!=0
                     && !childVp->allowOverride(*getObject()))
@@ -1864,7 +1864,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
         }
     }else if(prop == ext->getLinkCopyOnChangeGroupProperty()) {
         if (auto group = ext->getLinkCopyOnChangeGroupValue()) {
-            auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            auto vp = freecad_cast<ViewProviderDocumentObject>(
                     Application::Instance->getViewProvider(group));
             if (vp) {
                 vp->hide();
@@ -1915,7 +1915,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->_getShowElementProperty()) {
         if(!ext->_getShowElementValue()) {
 
-            auto linked = freecad_dynamic_cast<ViewProviderDocumentObject>(getLinkedView(true,ext));
+            auto linked = freecad_cast<ViewProviderDocumentObject>(getLinkedView(true,ext));
             if(linked && linked->getDocument()==getDocument())
                 linked->hide();
 
@@ -1929,9 +1929,9 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 bool hasMaterial = false;
                 materials.reserve(elements.size());
                 for(size_t i=0;i<elements.size();++i) {
-                    auto element = freecad_dynamic_cast<App::LinkElement>(elements[i]);
+                    auto element = freecad_cast<App::LinkElement>(elements[i]);
                     if(!element) continue;
-                    auto vp = freecad_dynamic_cast<ViewProviderLink>(
+                    auto vp = freecad_cast<ViewProviderLink>(
                             Application::Instance->getViewProvider(element));
                     if(!vp) continue;
                     overrideMaterial = overrideMaterial || vp->OverrideMaterial.getValue();
@@ -2016,7 +2016,7 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension *ext) {
         int i=-1;
         for(auto obj : elements) {
             ++i;
-            auto vp = freecad_dynamic_cast<ViewProviderLink>(
+            auto vp = freecad_cast<ViewProviderLink>(
                     Application::Instance->getViewProvider(obj));
             if(!vp) continue;
             if(OverrideMaterialList.getSize()>i)
@@ -2234,7 +2234,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
     if(!hasSubName && linkView->isLinked()) {
         auto linked = getLinkedView(false,ext);
         if(linked) {
-            auto linkedVdp = freecad_dynamic_cast<ViewProviderDocumentObject>(linked);
+            auto linkedVdp = freecad_cast<ViewProviderDocumentObject>(linked);
             if(linkedVdp) {
                 if(linkedVdp->getObject()==obj || linkedVdp->getObject()==owner)
                     return false;
@@ -2243,7 +2243,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
         }
     }
     if(obj->getDocument() != getObject()->getDocument() &&
-       !freecad_dynamic_cast<App::PropertyXLink>(ext->getLinkedObjectProperty()))
+       !freecad_cast<App::PropertyXLink>(ext->getLinkedObjectProperty()))
         return false;
 
     return true;
@@ -2600,7 +2600,7 @@ void ViewProviderLink::_setupContextMenu(
         App::LinkBaseExtension *ext, QMenu* menu, QObject* receiver, const char* member)
 {
     if(linkEdit(ext)) {
-        if (auto linkvp = Base::freecad_dynamic_cast<ViewProviderLink>(linkView->getLinkedView()))
+        if (auto linkvp = freecad_cast<ViewProviderLink>(linkView->getLinkedView()))
             linkvp->_setupContextMenu(ext, menu, receiver, member);
         else
             linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
@@ -2743,7 +2743,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     {
         App::PropertyPlacement *propPla = nullptr;
         if(ext->getLinkTransformValue() && ext->getLinkedObjectValue()) {
-            propPla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+            propPla = freecad_cast<App::PropertyPlacement>(
                     ext->getLinkedObjectValue()->getPropertyByName("Placement"));
         }
         if(propPla) {
@@ -2828,7 +2828,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         FC_ERR("no linked object");
         return nullptr;
     }
-    auto vpd = freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto vpd = freecad_cast<ViewProviderDocumentObject>(
                 Application::Instance->getViewProvider(linked));
     if(!vpd) {
         FC_ERR("no linked viewprovider");
@@ -3018,7 +3018,7 @@ std::map<std::string, Base::Color> ViewProviderLink::getElementColors(const char
             auto link = vp->getObject()->getLinkedObject(false);
             if(!link || link==vp->getObject())
                 break;
-            auto next = freecad_dynamic_cast<ViewProviderLink>(
+            auto next = freecad_cast<ViewProviderLink>(
                     Application::Instance->getViewProvider(link));
             if(!next)
                 break;
@@ -3341,7 +3341,7 @@ ViewProviderDocumentObject *ViewProviderLink::getLinkedViewProvider(
         linked = ext->getTrueLinkedObject(recursive);
     if(!linked)
         return self;
-    auto res = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto res = freecad_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(linked));
     if(res)
         return res;
