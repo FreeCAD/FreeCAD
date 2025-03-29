@@ -104,7 +104,7 @@ QColor QGIFace::getDefaultFillColor()
 /// redraw this face
 void QGIFace::draw()
 {
-//    Base::Console().Message("QGIF::draw - pen style: %d\n", m_pen.style());
+//    Base::Console().message("QGIF::draw - pen style: %d\n", m_pen.style());
 
     m_svgHatchArea->hide();
     m_imageSvgHatchArea->hide();
@@ -148,7 +148,7 @@ void QGIFace::draw()
 
 /// show the face style & colour in normal configuration
 void QGIFace::setPrettyNormal() {
-//    Base::Console().Message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
+//    Base::Console().message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
     if (isHatched()  &&
         (m_mode == FillMode::BitmapFill) ) {                               //hatch with bitmap fill
         m_brush.setStyle(Qt::TexturePattern);
@@ -161,21 +161,21 @@ void QGIFace::setPrettyNormal() {
 
 /// show the face style & colour in preselect configuration
 void QGIFace::setPrettyPre() {
-//    Base::Console().Message("QGIF::setPrettyPre()\n");
+//    Base::Console().message("QGIF::setPrettyPre()\n");
     m_brush.setStyle(Qt::SolidPattern);
     QGIPrimPath::setPrettyPre();
 }
 
 /// show the face style & colour in selected configuration
 void QGIFace::setPrettySel() {
-//    Base::Console().Message("QGIF::setPrettySel()\n");
+//    Base::Console().message("QGIF::setPrettySel()\n");
     m_brush.setStyle(Qt::SolidPattern);
     QGIPrimPath::setPrettySel();
 }
 
 /// show or hide the edges of this face.  Usually just for debugging
 void QGIFace::setDrawEdges(bool state) {
-//    Base::Console().Message("QGIF::setDrawEdges(%d)\n", b);
+//    Base::Console().message("QGIF::setDrawEdges(%d)\n", b);
     if (state) {
         setStyle(Qt::DashLine);
     } else {
@@ -194,7 +194,7 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile file(qfs);
     if (!file.open(QFile::ReadOnly | QFile::Text))  {
-        Base::Console().Error("QGIFace could not read %s\n", fileSpec.c_str());
+        Base::Console().error("QGIFace could not read %s\n", fileSpec.c_str());
         return;
     }
     m_svgXML = file.readAll();
@@ -287,7 +287,7 @@ void QGIFace::makeMark(double x, double y)  // NOLINT readability-identifier-len
 /// make an array of svg tiles to cover this face
 void QGIFace::buildSvgHatch()
 {
-//    Base::Console().Message("QGIF::buildSvgHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
+//    Base::Console().message("QGIF::buildSvgHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
     double wTile = SVGSIZEW * m_fillScale;
     double hTile = SVGSIZEH * m_fillScale;
     double faceWidth = path().boundingRect().width();
@@ -306,7 +306,7 @@ void QGIFace::buildSvgHatch()
     QByteArray after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
     QByteArray colorXML = m_svgXML.replace(before, after);
     if (!m_sharedRender->load(colorXML)) {
-        Base::Console().Message("QGIF::buildSvgHatch - failed to load svg string\n");
+        Base::Console().message("QGIF::buildSvgHatch - failed to load svg string\n");
         return;
     }
     long int tileCount = 0;
@@ -320,7 +320,7 @@ void QGIFace::buildSvgHatch()
                          -overlayWidth + ih*hTile + getHatchOffset().y);
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("SVG tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
+                Base::Console().warning("SVG tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
                 break;
             }
         }
@@ -359,7 +359,7 @@ void QGIFace::buildPixHatch()
     //       don't really understand.
     // render svg tile onto a QImage
     if (!m_sharedRender->load(colorXML)) {
-        Base::Console().Message("QGIF::buildSvgHatch - failed to load svg string\n");
+        Base::Console().message("QGIF::buildSvgHatch - failed to load svg string\n");
         return;
     }
 
@@ -367,7 +367,7 @@ void QGIFace::buildPixHatch()
     svgImage.fill(Qt::transparent);
     QPainter painter(&svgImage);
     if (svgImage.isNull()) {
-        Base::Console().Error("QGIF::buildPixHatch - svgImage is null\n");
+        Base::Console().error("QGIF::buildPixHatch - svgImage is null\n");
         return;
     }
 
@@ -377,7 +377,7 @@ void QGIFace::buildPixHatch()
     QPixmap tilePixmap(round(wTile), round(hTile));
     tilePixmap  = QPixmap::fromImage(svgImage);
     if (tilePixmap.isNull()) {
-        Base::Console().Error("QGIF::buildPixHatch - tilePixmap is null\n");
+        Base::Console().error("QGIF::buildPixHatch - tilePixmap is null\n");
         return;
     }
 
@@ -403,7 +403,7 @@ void QGIFace::buildPixHatch()
                                QRectF(0, 0, wTile, hTile));  //source rect
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("Pixmap tile count exceeded: %ld\n",tileCount);
+                Base::Console().warning("Pixmap tile count exceeded: %ld\n",tileCount);
                 break;
             }
         }
@@ -457,7 +457,7 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec) const
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile file(qfs);
     if (!file.open(QFile::ReadOnly))  {
-        Base::Console().Error("QGIFace could not read %s\n", fileSpec.c_str());
+        Base::Console().error("QGIFace could not read %s\n", fileSpec.c_str());
         return pix;
     }
     QByteArray bytes = file.readAll();

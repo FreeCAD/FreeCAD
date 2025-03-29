@@ -346,7 +346,7 @@ FeatureTestAttribute::~FeatureTestAttribute()
     }
     catch (Py::Exception& e) {
         e.clear();
-        Base::Console().Error("Unexpected exception in ~FeatureTestRemoval()\n");
+        Base::Console().error("Unexpected exception in ~FeatureTestRemoval()\n");
     }
 }
 

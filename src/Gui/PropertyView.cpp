@@ -341,7 +341,7 @@ void PropertyView::onTimer()
 {
     // See https://forum.freecad.org/viewtopic.php?f=8&t=72526
     if (this->updating) {
-        Base::Console().Log("Ignore recursive call of PropertyView::onTimer()\n");
+        Base::Console().log("Ignore recursive call of PropertyView::onTimer()\n");
         return;
     }
     Base::StateLocker guard(this->updating);

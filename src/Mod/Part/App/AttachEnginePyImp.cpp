@@ -301,16 +301,16 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
         } catch (Py::Exception& e) {
             if (PyErr_ExceptionMatches(PyExc_ImportError)) {
                 // the GUI is not up.
-                Base::Console().Warning("AttachEngine: Gui not up, so no gui-related entries in getModeInfo.\n");
+                Base::Console().warning("AttachEngine: Gui not up, so no gui-related entries in getModeInfo.\n");
                 e.clear();
             } else {
-                Base::Console().Warning("AttachEngine.getModeInfo: error obtaining GUI strings\n");
+                Base::Console().warning("AttachEngine.getModeInfo: error obtaining GUI strings\n");
                 e.clear();
             }
         } catch (Base::Exception &e){
-            Base::Console().Warning("AttachEngine.getModeInfo: error obtaining GUI strings:");
-            Base::Console().Warning(e.what());
-            Base::Console().Warning("\n");
+            Base::Console().warning("AttachEngine.getModeInfo: error obtaining GUI strings:");
+            Base::Console().warning(e.what());
+            Base::Console().warning("\n");
         }
 
         return Py::new_reference_to(ret);
@@ -384,16 +384,16 @@ PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
         } catch (Py::Exception& e) {
             if (PyErr_ExceptionMatches(PyExc_ImportError)) {
                 // the GUI is not up.
-                Base::Console().Warning("AttachEngine: Gui not up, so no gui-related entries in getModeInfo.\n");
+                Base::Console().warning("AttachEngine: Gui not up, so no gui-related entries in getModeInfo.\n");
                 e.clear();
             } else {
-                Base::Console().Warning("AttachEngine.getRefTypeInfo: error obtaining GUI strings\n");
+                Base::Console().warning("AttachEngine.getRefTypeInfo: error obtaining GUI strings\n");
                 e.clear();
             }
         } catch (Base::Exception &e){
-            Base::Console().Warning("AttachEngine.getRefTypeInfo: error obtaining GUI strings:");
-            Base::Console().Warning(e.what());
-            Base::Console().Warning("\n");
+            Base::Console().warning("AttachEngine.getRefTypeInfo: error obtaining GUI strings:");
+            Base::Console().warning(e.what());
+            Base::Console().warning("\n");
         }
 
         return Py::new_reference_to(ret);

@@ -45,7 +45,7 @@ public:
 private:
     Py::Object readDXF(const Py::Tuple& /*args*/)
     {
-        Base::Console().Warning("DraftUtils.readDXF is removed. "
+        Base::Console().warning("DraftUtils.readDXF is removed. "
                                 "Use Import.readDxf instead.\n");
         return Py::None();
     }

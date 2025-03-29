@@ -573,7 +573,7 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
             Q_EMIT enableApplyBtn();
         }
         else {
-            Base::Console().Warning(std::string("Image scale"),
+            Base::Console().warning(std::string("Image scale"),
                                     "The second point is too close. Retry!\n");
         }
     }

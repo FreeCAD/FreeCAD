@@ -99,7 +99,7 @@ void DlgRevertToBackupConfigImp::accept()
 {
     auto items = ui->listWidget->selectedItems();
     if (items.count() != 1) {
-        Base::Console().Error(tr("No selection in dialog, cannot load backup file").toStdString().c_str());
+        Base::Console().error(tr("No selection in dialog, cannot load backup file").toStdString().c_str());
         return;
     }
     auto item = items[0];
@@ -111,7 +111,7 @@ void DlgRevertToBackupConfigImp::accept()
         newParameters->GetGroup("BaseApp")->copyTo(baseAppGroup);
     }
     else {
-        Base::Console().Error("Preference Pack Internal Error: Invalid backup file location");
+        Base::Console().error("Preference Pack Internal Error: Invalid backup file location");
     }
 
     QDialog::accept();

@@ -87,6 +87,6 @@ PyMOD_INIT_FUNC(SurfaceGui)
     // clang-format on
 
     PyObject* mod = SurfaceGui::initModule();
-    Base::Console().Log("Loading GUI of Surface module... done\n");
+    Base::Console().log("Loading GUI of Surface module... done\n");
     PyMOD_Return(mod);
 }

@@ -270,8 +270,8 @@ private:
                     reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
-                    Base::Console().Error("%s\n", e.GetMessageString());
-                    Base::Console().Message("Try to load STEP file without colors...\n");
+                    Base::Console().error("%s\n", e.GetMessageString());
+                    Base::Console().message("Try to load STEP file without colors...\n");
 
                     Part::ImportStepParts(pcDoc, Utf8Name.c_str());
                     pcDoc->recompute();
@@ -283,8 +283,8 @@ private:
                     reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
-                    Base::Console().Error("%s\n", e.GetMessageString());
-                    Base::Console().Message("Try to load IGES file without colors...\n");
+                    Base::Console().error("%s\n", e.GetMessageString());
+                    Base::Console().message("Try to load IGES file without colors...\n");
 
                     Part::ImportIgesParts(pcDoc, Utf8Name.c_str());
                     pcDoc->recompute();

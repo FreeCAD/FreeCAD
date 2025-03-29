@@ -85,7 +85,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     }
 
     PyObject* mod = MeasureGui::initModule();
-    Base::Console().Log("Loading GUI of Measure module... done\n");
+    Base::Console().log("Loading GUI of Measure module... done\n");
 
     auto manip = std::make_shared<MeasureGui::WorkbenchManipulator>();
     Gui::WorkbenchManipulator::installManipulator(manip);

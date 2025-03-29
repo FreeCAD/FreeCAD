@@ -99,7 +99,7 @@ void DrawPage::onChanged(const App::Property* prop)
     if (prop == &KeepUpdated && KeepUpdated.getValue()) {
         if (!isRestoring() && !isUnsetting()) {
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
-            Base::Console().Message("Rebuilding Views for: %s/%s\n", getNameInDocument(),
+            Base::Console().message("Rebuilding Views for: %s/%s\n", getNameInDocument(),
                                     Label.getValue());
             updateAllViews();
             purgeTouched();
@@ -270,7 +270,7 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 
     //check if View fits on Page
     if (!view->checkFit(this)) {
-        Base::Console().Warning("%s is larger than page. Will be scaled.\n",
+        Base::Console().warning("%s is larger than page. Will be scaled.\n",
                                 view->getNameInDocument());
         view->ScaleType.setValue("Automatic");
     }
@@ -325,7 +325,7 @@ void DrawPage::onDocumentRestored()
 
 void DrawPage::redrawCommand()
 {
-    //    Base::Console().Message("DP::redrawCommand()\n");
+    //    Base::Console().message("DP::redrawCommand()\n");
     forceRedraw(true);
     updateAllViews();
     forceRedraw(false);
@@ -333,7 +333,7 @@ void DrawPage::redrawCommand()
 
 void DrawPage::updateAllViews()
 {
-    //    Base::Console().Message("DP::updateAllViews()\n");
+    //    Base::Console().message("DP::updateAllViews()\n");
     //unordered list of views within page
     std::vector<App::DocumentObject*> featViews = getAllViews();
 
@@ -374,7 +374,7 @@ std::vector<App::DocumentObject*> DrawPage::getViews() const
             v = static_cast<App::Link*>(v)->getLinkedObject();
             addChildren = true;
         }
-        
+
         if (!v->isDerivedFrom<DrawView>()) {
             continue;
         }
@@ -441,7 +441,7 @@ void DrawPage::unsetupObject()
         Views.setValues(emptyViews);
     }
     catch (...) {
-        Base::Console().Warning("DP::unsetupObject - %s - error while deleting children\n",
+        Base::Console().warning("DP::unsetupObject - %s - error while deleting children\n",
                                 getNameInDocument());
     }
 

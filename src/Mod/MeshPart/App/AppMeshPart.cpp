@@ -44,6 +44,6 @@ PyMOD_INIT_FUNC(MeshPart)
         PyMOD_Return(nullptr);
     }
     PyObject* mod = MeshPart::initModule();
-    Base::Console().Log("Loading MeshPart module... done\n");
+    Base::Console().log("Loading MeshPart module... done\n");
     PyMOD_Return(mod);
 }
