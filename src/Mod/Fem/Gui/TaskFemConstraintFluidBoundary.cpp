@@ -327,7 +327,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
         }
     }
     else {
-        Base::Console().Warning(
+        Base::Console().warning(
             "No solver object inside FemAnalysis object, default to non-thermal, non-turbulence\n");
     }
     ui->tabWidget->setTabText(0, tr("Basic"));
@@ -1080,7 +1080,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
             }
         }
         else {
-            Base::Console().Warning("FemSolverObject is not found in the FemAnalysis object, "
+            Base::Console().warning("FemSolverObject is not found in the FemAnalysis object, "
                                     "thermal and turbulence setting is not accepted\n");
         }
     }

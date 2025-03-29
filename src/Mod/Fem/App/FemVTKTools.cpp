@@ -1543,7 +1543,7 @@ void readResults(std::ifstream& ifstr,
                 }
             }
             catch (const std::out_of_range&) {
-                Base::Console().Warning("Invalid node: %d\n", node);
+                Base::Console().warning("Invalid node: %d\n", node);
             }
             ++countNodes;
         }

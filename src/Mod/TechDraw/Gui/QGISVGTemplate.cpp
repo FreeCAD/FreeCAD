@@ -190,7 +190,7 @@ void QGISVGTemplate::createClickHandles()
         double y = Rez::guiX(
             textElement.attribute(QStringLiteral("y"), QStringLiteral("0.0")).toDouble());
         if (name.isEmpty()) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
             return true;
         }

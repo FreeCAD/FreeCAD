@@ -765,7 +765,7 @@ void Document::onChanged(const Property* prop)
         if (!TransDirNew.exists()) {
             if (TransDirOld.exists()) {
                 if (!TransDirOld.renameFile(new_dir.c_str())) {
-                    Base::Console().Warning("Failed to rename '%s' to '%s'\n",
+                    Base::Console().warning("Failed to rename '%s' to '%s'\n",
                                             old_dir.c_str(),
                                             new_dir.c_str());
                 }
@@ -775,7 +775,7 @@ void Document::onChanged(const Property* prop)
             }
             else {
                 if (!TransDirNew.createDirectories()) {
-                    Base::Console().Warning("Failed to create '%s'\n", new_dir.c_str());
+                    Base::Console().warning("Failed to create '%s'\n", new_dir.c_str());
                 }
                 else {
                     this->TransientDir.setValue(new_dir);
@@ -788,7 +788,7 @@ void Document::onChanged(const Property* prop)
             // make sure that the uuid is unique
             std::string uuid = this->Uid.getValueStr();
             Base::Uuid id;
-            Base::Console().Warning("Document with the UUID '%s' already exists, change to '%s'\n",
+            Base::Console().warning("Document with the UUID '%s' already exists, change to '%s'\n",
                                     uuid.c_str(),
                                     id.getValue().c_str());
             // recursive call of onChanged()
@@ -1865,7 +1865,7 @@ private:
                 }
 
                 if (!fi.renameFile(fn.c_str())) {
-                    Base::Console().Warning("Cannot rename project file to backup file\n");
+                    Base::Console().warning("Cannot rename project file to backup file\n");
                 }
             }
             else {
@@ -1945,13 +1945,13 @@ private:
                                 try {
                                     if (!it.deleteFile()) {
                                         backupManagementError = true;
-                                        Base::Console().Warning("Cannot remove backup file : %s\n",
+                                        Base::Console().warning("Cannot remove backup file : %s\n",
                                                                 it.fileName().c_str());
                                     }
                                 }
                                 catch (...) {
                                     backupManagementError = true;
-                                    Base::Console().Warning("Cannot remove backup file : %s\n",
+                                    Base::Console().warning("Cannot remove backup file : %s\n",
                                                             it.fileName().c_str());
                                 }
                             }
@@ -2025,7 +2025,7 @@ private:
                     fi.deleteFile();
                 }
                 catch (...) {
-                    Base::Console().Warning("Cannot remove backup file: %s\n",
+                    Base::Console().warning("Cannot remove backup file: %s\n",
                                             fi.fileName().c_str());
                     backupManagementError = true;
                 }

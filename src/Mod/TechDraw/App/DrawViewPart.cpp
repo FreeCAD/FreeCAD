@@ -554,7 +554,7 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
     }
 
     if (sortedWires.empty()) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "DVP::findFacesNew - %s - Can't make faces from projected edges\n",
             getNameInDocument());
     }
@@ -677,7 +677,7 @@ void DrawViewPart::findFacesOld(const std::vector<BaseGeomPtr> &goEdges)
     EdgeWalker eWalker;
     sortedWires = eWalker.execute(newEdges);
     if (sortedWires.empty()) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "DVP::findFacesOld - %s -Can't make faces from projected edges\n",
             getNameInDocument());
         return;
@@ -1095,7 +1095,7 @@ gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const
         viewAxis = gp_Ax2(gOrg, gDir, gXDir);
     }
     catch (...) {
-        Base::Console().Warning("DVP - %s - failed to create projection CS\n", getNameInDocument());
+        Base::Console().warning("DVP - %s - failed to create projection CS\n", getNameInDocument());
     }
     return viewAxis;
 }

@@ -119,7 +119,7 @@ std::vector<double> LineGroup::split(std::string line)
             result.push_back(std::stod(cell));
         }
         catch (const std::invalid_argument& ia) {
-            Base::Console().Warning("Invalid number in cell: %s (%s) \n", cell.c_str(), ia.what());
+            Base::Console().warning("Invalid number in cell: %s (%s) \n", cell.c_str(), ia.what());
             result.push_back(0.0);
         }
     }

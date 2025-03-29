@@ -165,7 +165,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     bool isPositionOK = validateProfilePosition(profileWire, sectionCS, gClosestBasis);
     if (!isPositionOK) {
         //profile is not in a good position.  Result might not be right.
-        Base::Console().Warning("DCS::makeCuttingTool - %s - profile is outside shape box\n",
+        Base::Console().warning("DCS::makeCuttingTool - %s - profile is outside shape box\n",
                                 getNameInDocument());
     }
 
@@ -580,7 +580,7 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToInt
     //    Base::Console().message("DCS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
     if (shapeToIntersect.IsNull()) {
         // this shouldn't happen
-        Base::Console().Warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
+        Base::Console().warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
                                 getNameInDocument());
         return TopoDS_Compound();
     }
@@ -965,7 +965,7 @@ bool DrawComplexSection::validateOffsetProfile(TopoDS_Wire profile, Base::Vector
         if (angleRad < angleThresholdRad &&
             angleRad > 0.0) {
             // profile segment is slightly skewed. possible bad SectionNormal?
-            Base::Console().Warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
+            Base::Console().warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
                                     getNameInDocument());
             return false;
         }

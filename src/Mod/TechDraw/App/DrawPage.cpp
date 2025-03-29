@@ -270,7 +270,7 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 
     //check if View fits on Page
     if (!view->checkFit(this)) {
-        Base::Console().Warning("%s is larger than page. Will be scaled.\n",
+        Base::Console().warning("%s is larger than page. Will be scaled.\n",
                                 view->getNameInDocument());
         view->ScaleType.setValue("Automatic");
     }
@@ -441,7 +441,7 @@ void DrawPage::unsetupObject()
         Views.setValues(emptyViews);
     }
     catch (...) {
-        Base::Console().Warning("DP::unsetupObject - %s - error while deleting children\n",
+        Base::Console().warning("DP::unsetupObject - %s - error while deleting children\n",
                                 getNameInDocument());
     }
 

@@ -136,7 +136,7 @@ ILoggerBlocker::~ILoggerBlocker()
 #ifdef FC_DEBUG
         auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
         if (debug != msgTypesBlocked) {
-            Console().Warning(
+            Console().warning(
                 "Enabled message types have been changed while ILoggerBlocker was set\n");
         }
 #else

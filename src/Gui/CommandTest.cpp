@@ -775,7 +775,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Warning("Write a warning to the console output.\n");
+            Base::Console().warning("Write a warning to the console output.\n");
     }
 };
 

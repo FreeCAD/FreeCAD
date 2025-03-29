@@ -2025,7 +2025,7 @@ App::DocumentObject* SectionCut::findOrCreateObject(const char* objName)
 {
     auto object = findObject(objName);
     if (!object) {
-        Base::Console().Warning((std::string("SectionCut warning: there is no ")
+        Base::Console().warning((std::string("SectionCut warning: there is no ")
             + std::string(objName) + std::string(", trying to recreate it\n")).c_str());
         startCutting();
         return nullptr;

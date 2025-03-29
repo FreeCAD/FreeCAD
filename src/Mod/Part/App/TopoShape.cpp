@@ -4088,7 +4088,7 @@ bool TopoShape::_makeTransform(const TopoShape &shape,
             }
         }
         catch (const Standard_Failure& e) {
-            Base::Console().Warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
+            Base::Console().warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
         }
     }
     makeTransform(shape,convert(rclTrf),op,copy);

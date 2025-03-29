@@ -971,7 +971,7 @@ public:
             meshds->AddFaceWithID(n0, n1, n2, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
+            Base::Console().warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
                                     element_id,
                                     elements[0],
                                     elements[1],
@@ -1038,7 +1038,7 @@ public:
             meshds->AddVolumeWithID(n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, "
+            Base::Console().warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, "
                                     "%d, %d, %d, %d, %d, %d)\n",
                                     element_id,
                                     elements[1],

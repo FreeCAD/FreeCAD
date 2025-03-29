@@ -328,7 +328,7 @@ void StartupPostProcess::checkOpenGL()
                     .arg(major)
                     .arg(minor)
                 + QStringLiteral("\n");
-            Base::Console().Warning(message.toStdString().c_str());
+            Base::Console().warning(message.toStdString().c_str());
             Dialog::DlgCheckableMessageBox::showMessage(
                 QCoreApplication::applicationName() + QStringLiteral(" - ")
                     + QObject::tr("Invalid OpenGL Version"),
@@ -528,11 +528,11 @@ void StartupPostProcess::autoloadModules(const QStringList& wb)
 void StartupPostProcess::checkParameters()
 {
     if (App::GetApplication().GetSystemParameter().IgnoreSave()) {
-        Base::Console().Warning("System parameter file couldn't be opened.\n"
+        Base::Console().warning("System parameter file couldn't be opened.\n"
                                 "Continue with an empty configuration that won't be saved.\n");
     }
     if (App::GetApplication().GetUserParameter().IgnoreSave()) {
-        Base::Console().Warning("User parameter file couldn't be opened.\n"
+        Base::Console().warning("User parameter file couldn't be opened.\n"
                                 "Continue with an empty configuration that won't be saved.\n");
     }
 }

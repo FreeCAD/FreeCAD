@@ -496,7 +496,7 @@ bool ShapeExtractor::checkShape(const App::DocumentObject* shapeObj, TopoDS_Shap
         }
         // this is ok for devs, but there must be a better way to inform the user from somewhere deep in the
         // call stack. notification area from App?
-        Base::Console().Warning(
+        Base::Console().warning(
             "ShapeExtractor found a problem shape in %s.  Results may be incorrect.\n",
             shapeObj->getNameInDocument());
         return false;

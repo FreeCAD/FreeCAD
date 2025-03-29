@@ -385,7 +385,7 @@ void TaskRichAnno::removeFeature()
                                         m_annoFeat->getNameInDocument());
         }
         catch (...) {
-            Base::Console().Warning("TRA::removeFeature - failed to delete feature\n");
+            Base::Console().warning("TRA::removeFeature - failed to delete feature\n");
             return;
         }
     } else {

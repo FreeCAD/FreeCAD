@@ -474,7 +474,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(std::vector<TopoDS_Edge>& 
         Standard_SStream warnStream;
         bopBuilder.DumpWarnings(warnStream);
         const std::string &warnStr = warnStream.str();
-        Base::Console().Warning("DrawProjectSplit::scrubEdges - OCC fuse raised warning(s):\n%s\n", warnStr.c_str());
+        Base::Console().warning("DrawProjectSplit::scrubEdges - OCC fuse raised warning(s):\n%s\n", warnStr.c_str());
     }
 
     const TopoDS_Shape &bopResult = bopBuilder.Shape();

@@ -413,7 +413,7 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
     Base::Vector3d orgPnt = SectionOrigin.getValue();
 
     if (!isReallyInBox(gp_Pnt(orgPnt.x, orgPnt.y, orgPnt.z), centerBox)) {
-        Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n",
+        Base::Console().warning("DVS: SectionOrigin doesn't intersect part in %s\n",
                                 getNameInDocument());
     }
 
@@ -517,7 +517,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
         FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
         if (!mkCut.IsDone()) {
-            Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
+            Base::Console().warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
         }
         builder.Add(cutPieces, mkCut.Shape());
@@ -547,7 +547,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {// prism & input don't intersect.  rawShape is
                            // garbage, don't bother.
-        Base::Console().Warning("DVS::makeSectionCut - prism & input don't intersect - %s\n",
+        Base::Console().warning("DVS::makeSectionCut - prism & input don't intersect - %s\n",
                                 Label.getValue());
         return;
     }
@@ -588,7 +588,7 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double 
         }
     }
     catch (Standard_Failure& e1) {
-        Base::Console().Warning("DVS::prepareShape - failed to build shape %s - %s **\n",
+        Base::Console().warning("DVS::prepareShape - failed to build shape %s - %s **\n",
                                 getNameInDocument(),
                                 e1.GetMessageString());
     }
@@ -717,7 +717,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 {
     if (shape.IsNull()) {
         // this shouldn't happen
-        Base::Console().Warning(
+        Base::Console().warning(
             "DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n",
             getNameInDocument());
         return TopoDS_Compound();
@@ -893,7 +893,7 @@ TopoDS_Shape DrawViewSection::makeFaceFromWires(std::vector<TopoDS_Wire>& inWire
         }
 
         if (!mkFace.IsDone()) {
-            Base::Console().Warning("DVS::makeFaceFromWires - %s - failed to make section face.\n",
+            Base::Console().warning("DVS::makeFaceFromWires - %s - failed to make section face.\n",
                                     getNameInDocument());
             return TopoDS_Shape();
         }

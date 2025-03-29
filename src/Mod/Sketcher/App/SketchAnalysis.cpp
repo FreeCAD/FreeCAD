@@ -596,7 +596,7 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
                 }
             }
             catch (Base::Exception&) {
-                Base::Console().Warning("Point-On-Point Coincidence analysis: unable to obtain "
+                Base::Console().warning("Point-On-Point Coincidence analysis: unable to obtain "
                                         "derivative. Detection ignored.\n");
                 continue;
             }

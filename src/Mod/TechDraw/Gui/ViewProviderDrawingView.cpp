@@ -99,7 +99,7 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
         // but parent page might.  we may not be part of the document yet though!
         // :( we're not part of the page yet either!
     } else {
-        Base::Console().Warning("VPDV::attach has no Feature!\n");
+        Base::Console().warning("VPDV::attach has no Feature!\n");
     }
 }
 

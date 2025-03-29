@@ -587,7 +587,7 @@ PyObject* ConsoleSingleton::sPyWarning(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
-            Instance().Warning(notifier, "%s", msg);
+            Instance().warning(notifier, "%s", msg);
         },
         args);
 }

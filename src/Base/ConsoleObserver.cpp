@@ -48,7 +48,7 @@ ConsoleObserverFile::ConsoleObserverFile(const char* sFileName)
     : cFileStream(Base::FileInfo(sFileName))  // can be in UTF8
 {
     if (!cFileStream.is_open()) {
-        Console().Warning("Cannot open log file '%s'.\n", sFileName);
+        Console().warning("Cannot open log file '%s'.\n", sFileName);
     }
     // mark the file as a UTF-8 encoded file
     unsigned char bom[3] = {0xef, 0xbb, 0xbf};

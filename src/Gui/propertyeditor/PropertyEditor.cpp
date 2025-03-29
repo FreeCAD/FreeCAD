@@ -612,7 +612,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
     checkDocument = _checkDocument;
 
     if (committing) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "While committing the data to the property the selection has changed.\n");
         delaybuild = true;
         return;

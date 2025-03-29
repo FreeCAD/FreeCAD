@@ -474,7 +474,7 @@ void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
                 filtEdges = visIso;
                 break;
             default:
-                Base::Console().Warning(
+                Base::Console().warning(
                     "GeometryObject::ExtractGeometry - unsupported hlrVisible EdgeClass: %d\n",
                     static_cast<int>(category));
                 return;
@@ -498,7 +498,7 @@ void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
                 filtEdges = hidIso;
                 break;
             default:
-                Base::Console().Warning(
+                Base::Console().warning(
                     "GeometryObject::ExtractGeometry - unsupported hidden EdgeClass: %d\n",
                     static_cast<int>(category));
                 return;

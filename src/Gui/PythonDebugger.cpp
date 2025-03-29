@@ -414,7 +414,7 @@ void PythonDebugger::runFile(const QString& fn)
         //PySys_WriteStderr("Exception: %s\n", e.what());
     }
     catch (...) {
-        Base::Console().Warning("Unknown exception thrown during macro debugging\n");
+        Base::Console().warning("Unknown exception thrown during macro debugging\n");
     }
 }
 
