@@ -343,7 +343,7 @@ EXPO     [eE][-+]?[0-9]+
                                yylval.ivalue = strtoll( yytext, NULL, 10 );
                                if (yylval.ivalue == std::numeric_limits<long long>::min)
                                   throw Base::UnderflowError("Integer underflow");
-                               else if (yylval.ivalue == std::numeric_limits<long long>::max)
+                               else if (yylval.ivalue == std::numeric_limits<long long>::max())
                                   throw Base::OverflowError("Integer overflow");
                                if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
                              }
