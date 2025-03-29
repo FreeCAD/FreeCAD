@@ -96,7 +96,7 @@ bool PreferencePack::apply() const
             Base::Interpreter().runFile(Base::FileInfo::pathToString(preMacroPath).c_str(), false);
         }
         catch (...) {
-            Base::Console().Message("PreferencePack application aborted by the preferencePack's pre.FCMacro");
+            Base::Console().message("PreferencePack application aborted by the preferencePack's pre.FCMacro");
             return false;
         }
     }
@@ -120,7 +120,7 @@ bool PreferencePack::apply() const
             Base::Interpreter().runFile(Base::FileInfo::pathToString(postMacroPath).c_str(), false);
         }
         catch (...) {
-            Base::Console().Message("PreferencePack application reverted by the preferencePack's post.FCMacro");
+            Base::Console().message("PreferencePack application reverted by the preferencePack's post.FCMacro");
             App::GetApplication().GetUserParameter().LoadDocument(Base::FileInfo::pathToString(backupFile).c_str());
             return false;
         }

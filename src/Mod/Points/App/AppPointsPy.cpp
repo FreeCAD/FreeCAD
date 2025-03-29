@@ -390,7 +390,7 @@ private:
                     break;
                 }
                 else {
-                    Base::Console().Message("'%s' is not a point object, export will be ignored.\n",
+                    Base::Console().message("'%s' is not a point object, export will be ignored.\n",
                                             obj->Label.getValue());
                 }
             }

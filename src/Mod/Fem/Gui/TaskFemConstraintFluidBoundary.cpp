@@ -296,7 +296,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             }
             else {
                 ui->tabThermalBoundary->setEnabled(false);  // could be hidden
-                // Base::Console().Message("retrieve solver property HeatTransferring as false\n");
+                // Base::Console().message("retrieve solver property HeatTransferring as false\n");
             }
         }
         else {

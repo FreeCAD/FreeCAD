@@ -131,8 +131,8 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
             Subtype.setEnums(OutletSubtypes);
         }
         else {
-            Base::Console().Message(boundaryType.c_str());
-            Base::Console().Message(" Error: this boundaryType is not defined\n");
+            Base::Console().message(boundaryType.c_str());
+            Base::Console().message(" Error: this boundaryType is not defined\n");
         }
 
         // must set a default (0 or 1) as freestream has only 2 subtypes

@@ -226,7 +226,7 @@ void TaskCosmeticCircle::enableArcWidgets(bool newState)
 //******************************************************************************
 void TaskCosmeticCircle::createCosmeticCircle(void)
 {
-//    Base::Console().Message("TCL::createCosmeticCircle()\n");
+//    Base::Console().message("TCL::createCosmeticCircle()\n");
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Circle"));
 
@@ -261,7 +261,7 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
 
 void TaskCosmeticCircle::updateCosmeticCircle(void)
 {
-    // Base::Console().Message("TCL::updateCosmeticCircle()\n");
+    // Base::Console().message("TCL::updateCosmeticCircle()\n");
     double x = ui->qsbCenterX->value().getValue();
     double y = ui->qsbCenterY->value().getValue();
     double z = ui->qsbCenterZ->value().getValue();

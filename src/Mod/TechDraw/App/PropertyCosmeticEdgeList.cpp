@@ -67,7 +67,7 @@ int PropertyCosmeticEdgeList::getSize() const
 //_lValueList is not const. so why do we pass a const parameter?
 void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
 {
-//    Base::Console().Message("PCEL::setValue() - current values: %d lValue: %s\n", _lValueList.size(), lValue ? "valid" : "null");
+//    Base::Console().message("PCEL::setValue() - current values: %d lValue: %s\n", _lValueList.size(), lValue ? "valid" : "null");
     if (lValue) {
         aboutToSetValue();
         _lValueList.resize(1);
@@ -78,7 +78,7 @@ void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
 
 void PropertyCosmeticEdgeList::setValues(const std::vector<CosmeticEdge*>& lValue)
 {
-//    Base::Console().Message("PCEL::seValues() - in values: %d current values: %d\n", lValue.size(), _lValueList.size());
+//    Base::Console().message("PCEL::seValues() - in values: %d current values: %d\n", lValue.size(), _lValueList.size());
     aboutToSetValue();
     _lValueList.resize(lValue.size());
     if (!lValue.empty()) {

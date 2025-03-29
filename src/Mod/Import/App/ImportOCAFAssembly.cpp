@@ -176,7 +176,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
                         dep);
 
     label.Dump(str);
-    Base::Console().Message(str.str().c_str());
+    Base::Console().message(str.str().c_str());
 #endif
 
     std::string asm_name = assembly;

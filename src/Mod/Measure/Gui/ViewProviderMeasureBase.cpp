@@ -380,7 +380,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 // TODO: should this be pure virtual?
 void ViewProviderMeasureBase::redrawAnnotation()
 {
-    // Base::Console().Message("VPMB::redrawAnnotation()\n");
+    // Base::Console().message("VPMB::redrawAnnotation()\n");
 }
 
 //! connect to the subject to receive visibility updates

@@ -1064,14 +1064,14 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
     else {
         if (approx.HasResult()) {  // result, but not within tolerance
             spline = approx.Curve();
-            Base::Console().Message("DxfWrite::exportBSpline - result not within tolerance\n");
+            Base::Console().message("DxfWrite::exportBSpline - result not within tolerance\n");
         }
         else {
             f = c.FirstParameter();
             l = c.LastParameter();
             s = c.Value(f);
             ePt = c.Value(l);
-            Base::Console().Message(
+            Base::Console().message(
                 "DxfWrite::exportBSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f)\n",
                 s.X(),
                 s.Y(),
@@ -1132,7 +1132,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
 void ImpExpDxfWrite::exportBCurve(BRepAdaptor_Curve& c)
 {
     (void)c;
-    Base::Console().Message("BCurve dxf export not yet supported\n");
+    Base::Console().message("BCurve dxf export not yet supported\n");
 }
 
 void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve& c)

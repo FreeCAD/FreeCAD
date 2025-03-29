@@ -79,7 +79,7 @@ ViewProviderLeader::ViewProviderLeader()
 
 bool ViewProviderLeader::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPL::setEdit(%d)\n", ModNum);
+//    Base::Console().message("VPL::setEdit(%d)\n", ModNum);
     if (ModNum != ViewProvider::Default) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
@@ -95,7 +95,7 @@ bool ViewProviderLeader::setEdit(int ModNum)
 
 bool ViewProviderLeader::doubleClicked()
 {
-//    Base::Console().Message("VPL::doubleClicked()\n");
+//    Base::Console().message("VPL::doubleClicked()\n");
     setEdit(ViewProvider::Default);
     return true;
 }

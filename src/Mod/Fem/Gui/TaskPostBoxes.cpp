@@ -934,7 +934,7 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
         if (!point) {
-            Base::Console().Message("No point picked.\n");
+            Base::Console().message("No point picked.\n");
             return;
         }
 
@@ -1209,7 +1209,7 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
         if (!point) {
-            Base::Console().Message("No point picked.\n");
+            Base::Console().message("No point picked.\n");
             return;
         }
 
@@ -1355,7 +1355,7 @@ void TaskPostDataAtPoint::showValue(double pointValue, const char* unitStr)
     QString posZ = ui->centerZ->text();
 
     QString result = tr("%1 at (%2; %3; %4) is: %5 %6").arg(field, posX, posY, posZ, value, unit);
-    Base::Console().Message("%s\n", result.toUtf8().data());
+    Base::Console().message("%s\n", result.toUtf8().data());
 }
 
 std::string TaskPostDataAtPoint::toString(double val) const

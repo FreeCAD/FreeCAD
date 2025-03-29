@@ -373,7 +373,7 @@ bool Preferences::monochrome()
 //! set monochrome display on/off
 void Preferences::monochrome(bool state)
 {
-    Base::Console().Message("Pref::useLightText - set to %d\n", state);
+    Base::Console().message("Pref::useLightText - set to %d\n", state);
     getPreferenceGroup("Colors")->SetBool("Monochrome", state);
 }
 

@@ -92,7 +92,7 @@ void QGIViewAnnotation::updateView(bool update)
 
 void QGIViewAnnotation::draw()
 {
-    //    Base::Console().Message("QGIVA::draw()\n");
+    //    Base::Console().message("QGIVA::draw()\n");
     if (!isVisible()) {
         return;
     }
@@ -106,7 +106,7 @@ void QGIViewAnnotation::draw()
 
 void QGIViewAnnotation::drawAnnotation()
 {
-    //    Base::Console().Message("QGIVA::drawAnnotation()\n");
+    //    Base::Console().message("QGIVA::drawAnnotation()\n");
     auto viewAnno(dynamic_cast<TechDraw::DrawViewAnnotation*>(getViewObject()));
     if (!viewAnno) {
         return;

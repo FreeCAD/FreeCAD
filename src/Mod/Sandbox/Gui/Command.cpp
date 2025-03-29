@@ -533,7 +533,7 @@ void CmdSandboxEventLoop::activated(int)
 
     timer.start(5000); // 5s timeout
     loop.exec();
-    Base::Console().Message("CmdSandboxEventLoop: timeout\n");
+    Base::Console().message("CmdSandboxEventLoop: timeout\n");
 }
 
 bool CmdSandboxEventLoop::isActive(void)
@@ -758,7 +758,7 @@ public:
             kernel = myMesh->getKernel();
             for (std::vector<Mesh::MeshObjectConstRef>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
                 if (*it != myMesh) {
-                    Base::Console().Message("MeshTestJob::run() in thread: %p\n", QThread::currentThreadId());
+                    Base::Console().message("MeshTestJob::run() in thread: %p\n", QThread::currentThreadId());
                 }
             }
 
@@ -822,7 +822,7 @@ void CmdSandboxMeshTestJob::activated(int)
         }
 
         // run the actual multi-threaded mesh test
-        Base::Console().Message("Mesh test (step %d)...\n",iteration++);
+        Base::Console().message("Mesh test (step %d)...\n",iteration++);
         MeshTestJob meshJob;
         QFuture<Mesh::MeshObject*> mesh_future = QtConcurrent::mapped
             (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, bp::_1));

@@ -160,7 +160,7 @@ bool QGIViewDimension::getGroupSelection()
 //Set selection state for this and its children
 void QGIViewDimension::setGroupSelection(bool isSelected)
 {
-    //    Base::Console().Message("QGIVD::setGroupSelection(%d)\n", b);
+    //    Base::Console().message("QGIVD::setGroupSelection(%d)\n", b);
     setSelected(isSelected);
     datumLabel->setSelected(isSelected);
     dimLines->setSelected(isSelected);
@@ -183,7 +183,7 @@ void QGIViewDimension::hover(bool state)
 
 void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension* obj)
 {
-    //    Base::Console().Message("QGIVD::setViewPartFeature()\n");
+    //    Base::Console().message("QGIVD::setViewPartFeature()\n");
     if (!obj) {
         return;
     }
@@ -219,7 +219,7 @@ void QGIViewDimension::setNormalColorAll()
 //and so mouse events need to be ignored.  Only the QGIDatumLabel mouse events are relevant.
 void QGIViewDimension::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().Message("QGIVD::mousePressEvent() - %s\n", getViewName());
+    //    Base::Console().message("QGIVD::mousePressEvent() - %s\n", getViewName());
     QGraphicsItem::mousePressEvent(event);
 }
 
@@ -230,7 +230,7 @@ void QGIViewDimension::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
 void QGIViewDimension::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().Message("QGIVDim::mouseReleaseEvent() - %s\n", getViewName());
+    //    Base::Console().message("QGIVDim::mouseReleaseEvent() - %s\n", getViewName());
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -2324,14 +2324,14 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
     }
 
     //tarfu
-    Base::Console().Message("QGIVD::findIsoExt - %s - input is not iso axis\n",
+    Base::Console().message("QGIVD::findIsoExt - %s - input is not iso axis\n",
                             getViewObject()->getNameInDocument());
     return Base::Vector3d(1, 0, 0);
 }
 
 void QGIViewDimension::onPrettyChanged(int state)
 {
-    //    Base::Console().Message("QGIVD::onPrettyChange(%d)\n", state);
+    //    Base::Console().message("QGIVD::onPrettyChange(%d)\n", state);
     if (state == NORMAL) {
         setPrettyNormal();
     }
@@ -2367,7 +2367,7 @@ void QGIViewDimension::setPrettyNormal()
 void QGIViewDimension::drawBorder()
 {
     //Dimensions have no border!
-    //    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
+    //    Base::Console().message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
 }
 
 double QGIViewDimension::getDefaultExtensionLineOverhang() const

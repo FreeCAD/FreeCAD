@@ -1096,7 +1096,7 @@ void Document::Restore(Base::XMLReader& reader)
                 addObject(type.c_str(), name.c_str(), /*isNew=*/false);
             }
             catch (Base::Exception&) {
-                Base::Console().Message("Cannot create object '%s'\n", name.c_str());
+                Base::Console().message("Cannot create object '%s'\n", name.c_str());
             }
         }
         reader.readEndElement("Features");

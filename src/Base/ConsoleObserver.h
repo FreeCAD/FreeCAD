@@ -43,12 +43,12 @@ public:
     explicit ConsoleObserverFile(const char* sFileName);
     ~ConsoleObserverFile() override;
 
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  LogStyle level,
                  IntendedRecipient recipient,
                  ContentType content) override;
-    const char* Name() override
+    const char* name() override
     {
         return "File";
     }
@@ -70,12 +70,12 @@ class BaseExport ConsoleObserverStd: public ILogger
 public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  LogStyle level,
                  IntendedRecipient recipient,
                  ContentType content) override;
-    const char* Name() override
+    const char* name() override
     {
         return "Console";
     }

@@ -60,7 +60,7 @@ ConsoleObserverFile::~ConsoleObserverFile()
     cFileStream.close();
 }
 
-void ConsoleObserverFile::SendLog(const std::string& notifiername,
+void ConsoleObserverFile::sendLog(const std::string& notifiername,
                                   const std::string& msg,
                                   LogStyle level,
                                   IntendedRecipient recipient,
@@ -113,7 +113,7 @@ ConsoleObserverStd::ConsoleObserverStd()
 
 ConsoleObserverStd::~ConsoleObserverStd() = default;
 
-void ConsoleObserverStd::SendLog(const std::string& notifiername,
+void ConsoleObserverStd::sendLog(const std::string& notifiername,
                                  const std::string& msg,
                                  LogStyle level,
                                  IntendedRecipient recipient,

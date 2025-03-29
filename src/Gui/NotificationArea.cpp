@@ -234,11 +234,11 @@ public:
 
     /// Function that is called by the console interface for this observer with the message
     /// information
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+    void sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                  Base::IntendedRecipient recipient, Base::ContentType content) override;
 
     /// Name of the observer
-    const char* Name() override
+    const char* name() override
     {
         return "NotificationAreaObserver";
     }
@@ -261,7 +261,7 @@ NotificationAreaObserver::~NotificationAreaObserver()
     Base::Console().DetachObserver(this);
 }
 
-void NotificationAreaObserver::SendLog(const std::string& notifiername, const std::string& msg,
+void NotificationAreaObserver::sendLog(const std::string& notifiername, const std::string& msg,
                                        Base::LogStyle level, Base::IntendedRecipient recipient,
                                        Base::ContentType content)
 {

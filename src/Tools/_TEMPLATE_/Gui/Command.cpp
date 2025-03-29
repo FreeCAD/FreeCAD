@@ -53,7 +53,7 @@ Cmd_TEMPLATE_Test::Cmd_TEMPLATE_Test()
 
 void Cmd_TEMPLATE_Test::activated(int)
 {
-    Base::Console().Message("Hello, World!\n");
+    Base::Console().message("Hello, World!\n");
 }
 
 void Create_TEMPLATE_Commands(void)

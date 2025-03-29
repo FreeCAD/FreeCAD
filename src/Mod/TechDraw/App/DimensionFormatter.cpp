@@ -57,7 +57,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
                                             const Format partial,
                                             const bool isDim) const
 {
-//    Base::Console().Message("DF::formatValue() - %s isRestoring: %d\n",
+//    Base::Console().message("DF::formatValue() - %s isRestoring: %d\n",
 //                            m_dimension->getNameInDocument(), m_dimension->isRestoring());
     bool angularMeasure = m_dimension->Type.isValue("Angle") || m_dimension->Type.isValue("Angle3Pt");
     bool areaMeasure = m_dimension->Type.isValue("Area");

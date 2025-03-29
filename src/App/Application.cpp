@@ -2671,7 +2671,7 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (mConfig["Verbose"] != "Strict")
-            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
+            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
@@ -2681,7 +2681,7 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n",
+            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
@@ -2691,7 +2691,7 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildRevision"].c_str());
 
         if (SafeMode::SafeModeEnabled()) {
-            Base::Console().Message("FreeCAD is running in _SAFE_MODE_.\n"
+            Base::Console().message("FreeCAD is running in _SAFE_MODE_.\n"
                               "Safe mode temporarily disables your configurations and "
                               "addons. Restart the application to exit safe mode.\n\n");
         }
@@ -3016,7 +3016,7 @@ void Application::LoadParameters()
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
                 Base::Console().Warning("   Parameter does not exist, writing initial one\n");
-                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
                                   "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
                                   "   configuration.\n");
             }
@@ -3050,7 +3050,7 @@ void Application::LoadParameters()
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
                 Base::Console().Warning("   User settings do not exist, writing initial one\n");
-                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
                                   "   or your configuration was deleted or moved. The system defaults\n"
                                   "   will be automatically generated for you.\n");
             }
