@@ -20,7 +20,7 @@
 
 /* Parser for the FreeCAD selection filter language */
 
-/*  bison -o SelectionFilter.tab.c  SelectionFilter.y  */
+/*  bison -o SelectionFilterParser.cpp  SelectionFilter.y  */
 
 
 /* Represents the many different ways we can access our data */

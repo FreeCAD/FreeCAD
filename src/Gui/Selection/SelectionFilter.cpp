@@ -278,7 +278,7 @@ public:
 int SelectionFilterlex();
 
 // Parser, defined in SelectionFilter.y
-#include "SelectionFilter.tab.c"
+#include "SelectionFilterParser.cpp"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in SelectionFilter.l
@@ -290,7 +290,7 @@ int SelectionFilterlex();
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
-#include "lex.SelectionFilter.c"
+#include "SelectionFilterLexer.cpp"
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)

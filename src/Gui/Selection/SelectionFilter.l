@@ -21,7 +21,7 @@
 
 /* Lexer for the FreeCAD selection filter language */
 
-/*  flex -o lex.SelectionFilter.c SelectionFilter.l */
+/*  flex -o SelectionFilterLexer.cpp SelectionFilter.l */
 
 #include <string>
 
