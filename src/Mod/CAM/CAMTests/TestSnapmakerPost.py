@@ -16,6 +16,7 @@
 # *  implied. See the Licence for the specific language governing           *
 # *  permissions and limitations under the Licence.                         *
 # ***************************************************************************
+import argparse
 import re
 from typing import List
 
@@ -316,6 +317,129 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
+
+    def test_mod_kits(self):
+        """Test the various mod kits against various models."""
+
+        command = Path.Command("G0 X10 Y20 Z30")
+        expected = "G0 X10.000 Y20.000 Z30.000"
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=Original --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],[])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=90, Y=90, Z=50))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=Original --quick-swap --no-header",
+        )
+        # I don't understand why export returns the arguments
+        # if snapmaker_process_arguments fails.
+        self.assertTrue(isinstance(gcode,argparse.Namespace))
+        self.assertFalse(isinstance(gcode,str))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=Original --bracing-kit --no-header",
+        )
+        # I don't understand why export returns the arguments
+        # if snapmaker_process_arguments fails.
+        self.assertTrue(isinstance(gcode,argparse.Namespace))
+        self.assertFalse(isinstance(gcode,str))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=Artisan --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],[])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=400, Y=400, Z=400))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=Artisan --quick-swap --no-header",
+        )
+        # I don't understand why export returns the arguments
+        # if snapmaker_process_arguments fails.
+        self.assertTrue(isinstance(gcode,argparse.Namespace))
+        self.assertFalse(isinstance(gcode,str))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=Artisan --bracing-kit --no-header",
+        )
+        # I don't understand why export returns the arguments
+        # if snapmaker_process_arguments fails.
+        self.assertTrue(isinstance(gcode,argparse.Namespace))
+        self.assertFalse(isinstance(gcode,str))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A150 --toolhead=50W_CNC --bracing-kit --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=160, Y=148, Z=84))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A150 --toolhead=50W_CNC --quick-swap --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS"])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=160, Y=145, Z=75))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A250 --toolhead=50W_CNC --bracing-kit --quick-swap --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS","BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=230, Y=223, Z=159))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A250T --toolhead=50W_CNC --quick-swap --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS"])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=230, Y=235, Z=165))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A350 --toolhead=50W_CNC --bracing-kit --quick-swap --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS","BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=320, Y=323, Z=254))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A350T --toolhead=50W_CNC --bracing-kit --quick-swap --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS","BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=320, Y=323, Z=254))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A350T --toolhead=200W_CNC --bracing-kit --quick-swap --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS","BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=320, Y=310, Z=254))
 
     def test_toolhead_selection(self):
         """Test automatic selection of toolhead where appropriate"""
