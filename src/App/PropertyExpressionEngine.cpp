@@ -873,7 +873,7 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
     auto inList = pathDocObj->getInListEx(true);
     for (auto& v : expr->getDepObjects()) {
         auto docObj = v.first;
-        if (!v.second && inList.count(docObj)) {
+        if (!v.second && inList.contains(docObj)) {
             std::stringstream ss;
             ss << "cyclic reference to " << docObj->getFullName();
             return ss.str();
@@ -1008,7 +1008,7 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*>& inLis
     }
     bool found = false;
     for (auto& v : _Deps) {
-        if (inList.count(v.first)) {
+        if (inList.contains(v.first)) {
             found = true;
             break;
         }

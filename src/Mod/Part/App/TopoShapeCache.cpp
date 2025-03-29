@@ -151,6 +151,10 @@ int TopoShapeCache::Ancestry::count() const
     return shapes.Extent();
 }
 
+bool TopoShapeCache::Ancestry::empty() const
+{
+    return shapes.IsEmpty();
+}
 
 TopoShapeCache::TopoShapeCache(const TopoDS_Shape& tds)
     : shape(tds.Located(TopLoc_Location()))

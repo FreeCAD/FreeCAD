@@ -2601,7 +2601,7 @@ App::Document* Application::reopen(App::Document* doc)
         if (name == v.first->FileName.getValue()) {
             doc = const_cast<App::Document*>(v.first);
         }
-        if (untouchedDocs.count(v.second)) {
+        if (untouchedDocs.contains(v.second)) {
             if (!v.second->isModified()) {
                 continue;
             }
