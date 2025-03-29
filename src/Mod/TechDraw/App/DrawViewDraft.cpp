@@ -79,7 +79,7 @@ short DrawViewDraft::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewDraft::execute()
 {
-//    Base::Console().Message("DVDr::execute() \n");
+//    Base::Console().message("DVDr::execute() \n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }

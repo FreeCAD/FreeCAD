@@ -513,7 +513,7 @@ private:
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
     }
 
@@ -1070,11 +1070,11 @@ private:
     /*void printCCeVec()
     {
         for (size_t j = 0; j < vCC.size(); j++) {
-            Base::Console().Warning("curve %d{", j);
+            Base::Console().warning("curve %d{", j);
             for (size_t k = 0; k < vCC[j].size(); k++) {
-                Base::Console().Warning("%d, ", vCC[j][k]);
+                Base::Console().warning("%d, ", vCC[j][k]);
             }
-            Base::Console().Warning("}\n");
+            Base::Console().warning("}\n");
         }
     }*/
 };

@@ -191,7 +191,7 @@ void TaskFilletParameters::apply()
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
         std::string text = tr("Empty fillet created!").toStdString();
-        Base::Console().Warning("%s\n", text.c_str());
+        Base::Console().warning("%s\n", text.c_str());
     }
 }
 

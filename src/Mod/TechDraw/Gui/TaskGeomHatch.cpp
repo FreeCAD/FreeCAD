@@ -70,7 +70,7 @@ void TaskGeomHatch::initUi()
     if (nameIndex > -1) {
         ui->cbName->setCurrentIndex(nameIndex);
     } else {
-        Base::Console().Warning("Warning - Pattern name *%s* not found in current PAT File\n", m_name.c_str());
+        Base::Console().warning("Warning - Pattern name *%s* not found in current PAT File\n", m_name.c_str());
     }
     connect(ui->cbName, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskGeomHatch::onNameChanged);
 
@@ -152,7 +152,7 @@ void TaskGeomHatch::onColorChanged()
 
 bool TaskGeomHatch::accept()
 {
-//    Base::Console().Message("TGH::accept()\n");
+//    Base::Console().message("TGH::accept()\n");
     updateValues();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     m_hatch->recomputeFeature();                     //create the hatch lines
@@ -204,7 +204,7 @@ void TaskGeomHatch::getParameters()
 //move values from screen to DocObjs
 void TaskGeomHatch::updateValues()
 {
-//    Base::Console().Message("TGH::updateValues()\n");
+//    Base::Console().message("TGH::updateValues()\n");
     m_file = (ui->fcFile->fileName()).toUtf8().constData();
     m_hatch->FilePattern.setValue(m_file);
     QString cText = ui->cbName->currentText();

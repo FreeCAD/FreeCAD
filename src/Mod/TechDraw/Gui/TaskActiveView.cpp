@@ -88,7 +88,7 @@ void TaskActiveView::changeEvent(QEvent* e)
 
 void TaskActiveView::setUiPrimary()
 {
-    //    Base::Console().Message("TAV::setUiPrimary()\n");
+    //    Base::Console().message("TAV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("ActiveView to TD View"));
     ui->cbCrop->setChecked(false);
     enableCrop(false);
@@ -101,7 +101,7 @@ void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
 
 TechDraw::DrawViewImage* TaskActiveView::createActiveView()
 {
-    //    Base::Console().Message("TAV::createActiveView()\n");
+    //    Base::Console().message("TAV::createActiveView()\n");
 
     //make sure there is an 3D MDI to grab!!
     if (!Gui::getMainWindow()) {
@@ -205,7 +205,7 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     bool success = image.save(QString::fromStdString(tempName));
 
     if (!success) {
-        Base::Console().Error("ActiveView could not save file: %s\n", fileSpec.c_str());
+        Base::Console().error("ActiveView could not save file: %s\n", fileSpec.c_str());
     }
 
     tempName = DU::cleanFilespecBackslash(tempName);
@@ -263,7 +263,7 @@ void TaskActiveView::enableTaskButtons(bool b)
 
 bool TaskActiveView::accept()
 {
-    //    Base::Console().Message("TAV::accept()\n");
+    //    Base::Console().message("TAV::accept()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
     m_imageFeat = createActiveView();
     //    m_imageFeat->requestPaint();
@@ -280,7 +280,7 @@ bool TaskActiveView::accept()
 
 bool TaskActiveView::reject()
 {
-    //    Base::Console().Message("TAV::reject()\n");
+    //    Base::Console().message("TAV::reject()\n");
     //nothing to remove.
 
     Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");

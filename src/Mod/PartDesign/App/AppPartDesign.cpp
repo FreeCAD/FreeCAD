@@ -78,7 +78,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     }
 
     PyObject* mod = PartDesign::initModule();
-    Base::Console().Log("Loading PartDesign module... done\n");
+    Base::Console().log("Loading PartDesign module... done\n");
 
 
     // NOTE: To finish the initialization of our own type objects we must

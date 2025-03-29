@@ -509,7 +509,7 @@ Property* PropertyFileIncluded::Copy() const
         }
 
         // remember the new name for the Undo
-        Base::Console().Log("Copy '%s' to '%s'\n", _cValue.c_str(), newName.filePath().c_str());
+        Base::Console().log("Copy '%s' to '%s'\n", _cValue.c_str(), newName.filePath().c_str());
         prop->_cValue = newName.filePath().c_str();
 
         // make backup files writable to avoid copying them again on undo/redo

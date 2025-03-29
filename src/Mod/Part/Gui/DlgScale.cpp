@@ -92,7 +92,7 @@ void DlgScale::changeEvent(QEvent *e)
 
 void DlgScale::onUniformScaleToggled(bool state)
 {
-//    Base::Console().Message("DS::onUniformScaleToggled()\n");
+//    Base::Console().message("DS::onUniformScaleToggled()\n");
     if (state) {
         // this is uniform scaling, so hide the non-uniform input fields
         ui->dsbUniformScale->setEnabled(true);
@@ -112,7 +112,7 @@ void DlgScale::onUniformScaleToggled(bool state)
 //! list widget
 void DlgScale::findShapes()
 {
-//    Base::Console().Message("DS::findShapes()\n");
+//    Base::Console().message("DS::findShapes()\n");
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc)
         return;
@@ -179,19 +179,19 @@ bool DlgScale::canScale(const TopoDS_Shape& shape) const
 
 void DlgScale::accept()
 {
-//    Base::Console().Message("DS::accept()\n");
+//    Base::Console().message("DS::accept()\n");
     try{
         apply();
         QDialog::accept();
     } catch (Base::AbortException&){
-        Base::Console().Message("DS::accept - apply failed!\n");
+        Base::Console().message("DS::accept - apply failed!\n");
     };
 }
 
 // create a FeatureScale for each scalable object
 void DlgScale::apply()
 {
-//    Base::Console().Message("DS::apply()\n");
+//    Base::Console().message("DS::apply()\n");
     try{
         if (!validate()) {
             QMessageBox::critical(this, windowTitle(),
@@ -271,7 +271,7 @@ void DlgScale::reject()
 //! widget
 std::vector<App::DocumentObject*> DlgScale::getShapesToScale() const
 {
-//    Base::Console().Message("DS::getShapesToScale()\n");
+//    Base::Console().message("DS::getShapesToScale()\n");
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     App::Document* doc = App::GetApplication().getDocument(m_document.c_str());
     if (!doc)
@@ -309,7 +309,7 @@ bool DlgScale::validate()
 //! update a FeatureScale with the parameters from the UI
 void DlgScale::writeParametersToFeature(App::DocumentObject &feature, App::DocumentObject* base) const
 {
-//    Base::Console().Message("DS::writeParametersToFeature()\n");
+//    Base::Console().message("DS::writeParametersToFeature()\n");
     Gui::Command::doCommand(Gui::Command::Doc,"f = App.getDocument('%s').getObject('%s')", feature.getDocument()->getName(), feature.getNameInDocument());
 
     if (!base) {

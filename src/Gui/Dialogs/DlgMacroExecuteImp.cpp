@@ -648,7 +648,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         auto groupBox7 =
             setupCustomMacrosPage->findChild<QGroupBox*>(QStringLiteral("GroupBox7"));
         if (!groupBox7) {
-            Base::Console().Warning("Toolbar walkthrough: Unable to find groupBox7\n");
+            Base::Console().warning("Toolbar walkthrough: Unable to find groupBox7\n");
             // just warn when not a fatal error
         }
         else {
@@ -661,7 +661,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         auto buttonAddAction =
             setupCustomMacrosPage->findChild<QPushButton*>(QStringLiteral("buttonAddAction"));
         if (!buttonAddAction) {
-            Base::Console().Warning("Toolbar walkthrough: Unable to find buttonAddAction\n");
+            Base::Console().warning("Toolbar walkthrough: Unable to find buttonAddAction\n");
         }
         else {
             buttonAddAction->setStyleSheet(QStringLiteral("color:red"));
@@ -670,7 +670,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         auto macroListBox =
             setupCustomMacrosPage->findChild<QComboBox*>(QStringLiteral("actionMacros"));
         if (!macroListBox) {
-            Base::Console().Warning("Toolbar walkthrough: Unable to find actionMacros combo box\n");
+            Base::Console().warning("Toolbar walkthrough: Unable to find actionMacros combo box\n");
         }
         else {
             int macroIndex = macroListBox->findText(fn);  // fn is the macro filename
@@ -681,7 +681,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         auto menuText =
             setupCustomMacrosPage->findChild<QLineEdit*>(QStringLiteral("actionMenu"));
         if (!menuText) {
-            Base::Console().Warning("Toolbar walkthrough: Unable to find actionMenu menuText\n");
+            Base::Console().warning("Toolbar walkthrough: Unable to find actionMenu menuText\n");
         }
         else {
             menuText->setText(bareFileName);  // user can fill in other fields, e.g. tooltip
@@ -717,7 +717,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
     auto moveActionRightButton =
         setupToolbarPage->findChild<QPushButton*>(QStringLiteral("moveActionRightButton"));
     if (!moveActionRightButton) {
-        Base::Console().Warning("Toolbar walkthrough: Unable to find moveActionRightButton\n");
+        Base::Console().warning("Toolbar walkthrough: Unable to find moveActionRightButton\n");
     }
     else {
         moveActionRightButton->setStyleSheet(QStringLiteral("background-color: red"));
@@ -731,7 +731,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
     auto workbenchBox =
         setupToolbarPage->findChild<QComboBox*>(QStringLiteral("workbenchBox"));
     if (!workbenchBox) {
-        Base::Console().Warning("Toolbar walkthrough: Unable to find workbenchBox\n");
+        Base::Console().warning("Toolbar walkthrough: Unable to find workbenchBox\n");
     }
     else {
         /** find the Global workbench and select it for the user **/
@@ -742,14 +742,14 @@ Note: your changes will be applied when you next switch workbenches\n"));
             setupToolbarPage->activateWorkbenchBox(globalIdx);
         }
         else {
-            Base::Console().Warning("Toolbar walkthrough: Unable to find Global workbench\n");
+            Base::Console().warning("Toolbar walkthrough: Unable to find Global workbench\n");
         }
 
         if (!hasCustomToolbar) {
             auto newButton =
                 setupToolbarPage->findChild<QPushButton*>(QStringLiteral("newButton"));
             if (!newButton) {
-                Base::Console().Warning("Toolbar walkthrough: Unable to find newButton\n");
+                Base::Console().warning("Toolbar walkthrough: Unable to find newButton\n");
             }
             else {
                 newButton->setStyleSheet(QStringLiteral("color:red"));
@@ -763,7 +763,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
 
     auto label = setupToolbarPage->findChild<QLabel*>(QStringLiteral("label"));
     if (!label) {
-        Base::Console().Warning("Toolbar walkthrough: Unable to find label\n");
+        Base::Console().warning("Toolbar walkthrough: Unable to find label\n");
     }
     else {
         label->setText(instructions2);
@@ -773,7 +773,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
     /** find Macros category and select it for the user **/
     auto categoryBox = setupToolbarPage->findChild<QComboBox*>(QStringLiteral("categoryBox"));
     if (!categoryBox) {
-        Base::Console().Warning("Toolbar walkthrough: Unable to find categoryBox\n");
+        Base::Console().warning("Toolbar walkthrough: Unable to find categoryBox\n");
     }
     else {
         int macrosIdx = categoryBox->findText(tr("Macros"));
@@ -781,7 +781,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
             categoryBox->setCurrentIndex(macrosIdx);
         }
         else {
-            Base::Console().Warning("Toolbar walkthrough: Unable to find Macros in categoryBox\n");
+            Base::Console().warning("Toolbar walkthrough: Unable to find Macros in categoryBox\n");
         }
     }
 
@@ -789,7 +789,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
     auto toolbarTreeWidget =
         setupToolbarPage->findChild<QTreeWidget*>(QStringLiteral("toolbarTreeWidget"));
     if (!toolbarTreeWidget) {
-        Base::Console().Warning("Toolbar walkthrough: Unable to find toolbarTreeWidget\n");
+        Base::Console().warning("Toolbar walkthrough: Unable to find toolbarTreeWidget\n");
     }
     else {
         toolbarTreeWidget->expandAll();
@@ -802,7 +802,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         auto commandTreeWidget =
             setupToolbarPage->findChild<QTreeWidget*>(QStringLiteral("commandTreeWidget"));
         if (!commandTreeWidget) {
-            Base::Console().Warning("Toolbar walkthrough: Unable to find commandTreeWidget\n");
+            Base::Console().warning("Toolbar walkthrough: Unable to find commandTreeWidget\n");
         }
         else {
             if (!hasMacroCommand) {  // will be the last in the list, the one just created

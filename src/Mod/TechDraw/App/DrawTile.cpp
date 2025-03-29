@@ -69,7 +69,7 @@ short DrawTile::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawTile::execute()
 {
-//    Base::Console().Message("DT::execute()\n");
+//    Base::Console().message("DT::execute()\n");
     return DocumentObject::execute();
 }
 

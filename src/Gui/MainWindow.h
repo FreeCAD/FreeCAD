@@ -388,11 +388,11 @@ public:
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+    void sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                  Base::IntendedRecipient recipient, Base::ContentType content) override;
 
     /// name of the observer
-    const char *Name() override {return "StatusBar";}
+    const char *name() override {return "StatusBar";}
 
     friend class MainWindow;
 private:

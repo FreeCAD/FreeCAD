@@ -79,7 +79,7 @@ void PrefWidget::setParamGrpPath( const QByteArray& path )
   if (getWindowParameter().isValid())
   {
     if ( paramGrpPath() != path )
-      Base::Console().Warning("Widget already attached\n");
+      Base::Console().warning("Widget already attached\n");
   }
 #endif
 
@@ -153,7 +153,7 @@ void PrefWidget::failedToSave(const QString& name) const
     QByteArray objname = name.toLatin1();
     if (objname.isEmpty())
         objname = "Undefined";
-    Console().Warning("Cannot save %s (%s)\n", typeid(*this).name(), objname.constData());
+    Console().warning("Cannot save %s (%s)\n", typeid(*this).name(), objname.constData());
 }
 
 void PrefWidget::failedToRestore(const QString& name) const
@@ -161,7 +161,7 @@ void PrefWidget::failedToRestore(const QString& name) const
     QByteArray objname = name.toLatin1();
     if (objname.isEmpty())
         objname = "Undefined";
-    Console().Warning("Cannot restore %s (%s)\n", typeid(*this).name(), objname.constData());
+    Console().warning("Cannot restore %s (%s)\n", typeid(*this).name(), objname.constData());
 }
 
 // --------------------------------------------------------------------

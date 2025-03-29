@@ -633,11 +633,11 @@ unsigned int FemPostPipeline::getFrameNumber()
 void FemPostPipeline::load(FemResultObject* res)
 {
     if (!res->Mesh.getValue()) {
-        Base::Console().Log("Result mesh object is empty.\n");
+        Base::Console().log("Result mesh object is empty.\n");
         return;
     }
     if (!res->Mesh.getValue()->isDerivedFrom<Fem::FemMeshObject>()) {
-        Base::Console().Log("Result mesh object is not derived from Fem::FemMeshObject.\n");
+        Base::Console().log("Result mesh object is not derived from Fem::FemMeshObject.\n");
         return;
     }
 

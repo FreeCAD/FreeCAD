@@ -57,7 +57,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView() :
     m_myName(std::string())
 {
-//    Base::Console().Message("VPDV::VPDV\n");
+//    Base::Console().message("VPDV::VPDV\n");
     initExtension(this);
 
     sPixmap = "TechDraw_TreeView";
@@ -78,7 +78,7 @@ ViewProviderDrawingView::~ViewProviderDrawingView()
 
 void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 {
-//    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
+//    Base::Console().message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
     //NOLINTBEGIN
@@ -99,7 +99,7 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
         // but parent page might.  we may not be part of the document yet though!
         // :( we're not part of the page yet either!
     } else {
-        Base::Console().Warning("VPDV::attach has no Feature!\n");
+        Base::Console().warning("VPDV::attach has no Feature!\n");
     }
 }
 
@@ -293,7 +293,7 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
-//    Base::Console().Message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
+//    Base::Console().message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
     if (!guiDoc)
         return;
@@ -366,12 +366,12 @@ void ViewProviderDrawingView::showProgressMessage(const std::string featureName,
             .arg(QString::fromStdString(featureName),
                  QString::fromStdString(text));
     if (Gui::getMainWindow()) {
-        //neither of these work! Base::Console().Message() output preempts these messages??
+        //neither of these work! Base::Console().message() output preempts these messages??
 //        Gui::getMainWindow()->showMessage(msg, 3000);
 //        Gui::getMainWindow()->showStatus(Gui::MainWindow::Msg, msg);
         //Temporary implementation. This works, but the messages are queued up and
         //not displayed in the report window in real time??
-        Base::Console().Message("%s\n", qPrintable(msg));
+        Base::Console().message("%s\n", qPrintable(msg));
     }
 }
 

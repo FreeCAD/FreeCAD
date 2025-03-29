@@ -62,7 +62,7 @@ void QGVNavStyleCAD::handleKeyReleaseEvent(QKeyEvent *event)
 
 void QGVNavStyleCAD::handleMousePressEvent(QMouseEvent *event)
 {
-//    Base::Console().Message("QGVNSCAD::handleMousePressEvent() - button: %d\n", event->button());
+//    Base::Console().message("QGVNSCAD::handleMousePressEvent() - button: %d\n", event->button());
     if (event->button() == Qt::MiddleButton) {
         startClick(Qt::MiddleButton);   //for MMB center view
     }
@@ -131,7 +131,7 @@ void QGVNavStyleCAD::handleMouseMoveEvent(QMouseEvent *event)
 
 void QGVNavStyleCAD::handleMouseReleaseEvent(QMouseEvent *event)
 {
-//    Base::Console().Message("QGVNSCAD::handleMouseReleaseEvent() - button: %d\n", event->button());
+//    Base::Console().message("QGVNSCAD::handleMouseReleaseEvent() - button: %d\n", event->button());
     if (getViewer()->isBalloonPlacing()) {
         placeBalloon(event->pos());
     }
@@ -174,7 +174,7 @@ void QGVNavStyleCAD::handleMouseReleaseEvent(QMouseEvent *event)
 
 bool QGVNavStyleCAD::allowContextMenu(QContextMenuEvent *event)
 {
-//    Base::Console().Message("QGVNSCAD::allowContextMenu()\n");
+//    Base::Console().message("QGVNSCAD::allowContextMenu()\n");
     if (event->reason() == QContextMenuEvent::Mouse) {
         //must check for a button combination involving context menu button
         if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier) ||

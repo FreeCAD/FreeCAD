@@ -502,7 +502,7 @@ protected:
                 // RuntimeError exceptions inside of the block above must provide a translatable
                 // message. It is reported both to developer (report view) and user (notifications
                 // area).
-                Base::Console().Error(e.what());
+                Base::Console().error(e.what());
             }
 
             // Keep the recompute separate so that everything is drawn even if execution fails
@@ -514,7 +514,7 @@ protected:
                 // RuntimeError exceptions inside of the block above must provide a translatable
                 // message. It is reported both to developer (report view) and user (notifications
                 // area).
-                Base::Console().Error(e.what());
+                Base::Console().error(e.what());
             }
             return handleContinuousMode();
         }
@@ -940,7 +940,7 @@ protected:
         sketchobject->diagnoseAdditionalConstraints(autoConstraints);
 
         if (sketchobject->getLastHasRedundancies()) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 QT_TRANSLATE_NOOP("Notifications",
                                   "Autoconstraints cause redundancy. Removing them") "\n");
 

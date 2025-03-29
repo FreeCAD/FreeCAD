@@ -486,7 +486,7 @@ bool TaskComplexSection::apply(bool forceUpdate)
     if (m_baseView) {
         if (!DrawComplexSection::canBuild(m_baseView->localVectorToCS(localUnit),
                                           m_profileObject)) {
-            Base::Console().Error(
+            Base::Console().error(
                 "Can not build Complex Section with this profile and direction (1)\n");
             return false;
         }
@@ -496,7 +496,7 @@ bool TaskComplexSection::apply(bool forceUpdate)
         gp_Ax2 sectionCS(stdOrigin, Base::convertTo<gp_Dir>(m_saveNormal),
                          Base::convertTo<gp_Dir>(m_saveXDir));
         if (!DrawComplexSection::canBuild(sectionCS, m_profileObject)) {
-            Base::Console().Error(
+            Base::Console().error(
                 "Can not build Complex Section with this profile and direction (2)\n");
             return false;
         }

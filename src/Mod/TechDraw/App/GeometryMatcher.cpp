@@ -160,7 +160,7 @@ bool GeometryMatcher::compareLines(const TopoDS_Edge& edge1, const TopoDS_Edge& 
     // how does the edge that was NOT null in compareEdges become null here?
     // should not happen, but does!
     if (edge1.IsNull() || edge2.IsNull()) {
-        //        Base::Console().Message("GM::compareLine - an input edge is null\n");
+        //        Base::Console().message("GM::compareLine - an input edge is null\n");
         return false;
     }
     return compareEndPoints(edge1, edge2);
@@ -232,7 +232,7 @@ bool GeometryMatcher::compareBSplines(const TopoDS_Edge& edge1, const TopoDS_Edg
         circleEdge2 = GeometryUtils::asCircle(edge2, isArc2);
     }
     catch (Base::RuntimeError&) {
-        Base::Console().Error("GeometryMatcher failed to make circles from splines\n");
+        Base::Console().error("GeometryMatcher failed to make circles from splines\n");
         return false;
     }
     if (!isArc1 && !isArc2) {

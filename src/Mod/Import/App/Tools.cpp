@@ -124,7 +124,7 @@ void Tools::printLabel(TDF_Label label,
     }
 
     ss << std::endl;
-    Base::Console().Notify<Base::LogStyle::Log>("ImportOCAF2", ss.str().c_str());
+    Base::Console().notify<Base::LogStyle::Log>("ImportOCAF2", ss.str().c_str());
 }
 
 void Tools::dumpLabels(TDF_Label label,

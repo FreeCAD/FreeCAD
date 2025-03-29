@@ -138,7 +138,7 @@ void ModelLoader::showYaml(const YAML::Node& yaml) const
 
     out << yaml;
     std::string logData = out.str();
-    Base::Console().Log("%s\n", logData.c_str());
+    Base::Console().log("%s\n", logData.c_str());
 }
 
 void ModelLoader::dereference(const QString& uuid,
@@ -198,7 +198,7 @@ void ModelLoader::dereference(std::shared_ptr<ModelEntry> model,
                 dereference(model->getUUID(), model, child, inheritances);
             }
             catch (const std::out_of_range&) {
-                Base::Console().Log("Unable to find '%s' in model map\n",
+                Base::Console().log("Unable to find '%s' in model map\n",
                                     nodeName.toStdString().c_str());
             }
         }
@@ -333,7 +333,7 @@ void ModelLoader::loadLibrary(std::shared_ptr<ModelLibraryLocal> library)
                     // showYaml(model->getModel());
                 }
                 catch (InvalidModel const&) {
-                    Base::Console().Log("Invalid model '%s'\n", pathname.toStdString().c_str());
+                    Base::Console().log("Invalid model '%s'\n", pathname.toStdString().c_str());
                 }
             }
         }

@@ -78,7 +78,7 @@ short DrawRichAnno::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawRichAnno::execute()
 {
-//    Base::Console().Message("DRA::execute() - @ (%.3f, %.3f)\n", X.getValue(), Y.getValue());
+//    Base::Console().message("DRA::execute() - @ (%.3f, %.3f)\n", X.getValue(), Y.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -97,7 +97,7 @@ DrawView* DrawRichAnno::getBaseView() const
 //more than 1 DrawPage claims a DrawRichAnno.
 DrawPage* DrawRichAnno::findParentPage() const
 {
-//    Base::Console().Message("DRA::findParentPage()\n");
+//    Base::Console().message("DRA::findParentPage()\n");
     if (!AnnoParent.getValue()) {
         return DrawView::findParentPage();
     }
