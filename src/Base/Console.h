@@ -917,12 +917,12 @@ inline ConsoleSingleton& Console()
 constexpr ConsoleSingleton::FreeCAD_ConsoleMsgType ConsoleSingleton::getConsoleMsg(LogStyle style)
 {
     constexpr std::array msgTypes {// In order of LogStyle
-                                   FreeCAD_ConsoleMsgType::MsgType_Wrn,
-                                   FreeCAD_ConsoleMsgType::MsgType_Txt,
-                                   FreeCAD_ConsoleMsgType::MsgType_Err,
-                                   FreeCAD_ConsoleMsgType::MsgType_Log,
-                                   FreeCAD_ConsoleMsgType::MsgType_Critical,
-                                   FreeCAD_ConsoleMsgType::MsgType_Notification};
+                                   MsgType_Wrn,
+                                   MsgType_Txt,
+                                   MsgType_Err,
+                                   MsgType_Log,
+                                   MsgType_Critical,
+                                   MsgType_Notification};
 
     return msgTypes.at(static_cast<std::size_t>(style));
 }
