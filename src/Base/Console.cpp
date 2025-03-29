@@ -60,7 +60,7 @@ public:
                  const ContentType content,
                  const std::string& notifier,
                  const std::string& msg)
-        : QEvent(QEvent::User)
+        : QEvent(QEvent::User)  // NOLINT
         , msgtype(type)
         , recipient(recipient)
         , content(content)
