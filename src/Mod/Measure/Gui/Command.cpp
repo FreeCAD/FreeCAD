@@ -70,7 +70,7 @@ bool StdCmdMeasure::isActive()
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
-        Gui::View3DInventorViewer* viewer = dynamic_cast<Gui::View3DInventor*>(view)->getViewer();
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
     return false;
