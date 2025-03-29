@@ -565,8 +565,6 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
     def output_header(self, gcode: List[str]):
         """custom method derived from Path.Post.UtilsExport.output_header"""
         cam_file: str
-        comment: str
-        nl: str = "\n"
 
         if not self.values["OUTPUT_HEADER"]:
             return
@@ -580,15 +578,12 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         add_comment("Header Start")
         add_comment("header_type: cnc")
         add_comment(f'machine: {self.values["MACHINE_NAME"]}')
-        comment = Path.Post.UtilsParse.create_comment(
-            self.values, f'Post Processor: {self.values["POSTPROCESSOR_FILE_NAME"]}'
-        )
-        gcode.append(f"{Path.Post.UtilsParse.linenumber(self.values)}{comment}{nl}")
+        add_comment(f'Post Processor: {self.values["POSTPROCESSOR_FILE_NAME"]}')
         if FreeCAD.ActiveDocument:
             cam_file = os.path.basename(FreeCAD.ActiveDocument.FileName)
         else:
             cam_file = "<None>"
-        add_comment(f"Cam File: {cam_file}")
+        add_comment(f"CAM File: {cam_file}")
         add_comment(f"Output Time: {datetime.datetime.now()}")
         add_comment(self.get_thumbnail())
 
