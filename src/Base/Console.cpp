@@ -302,7 +302,7 @@ void ConsoleSingleton::SetConnectionMode(const ConnectionMode mode)
 void ConsoleSingleton::AttachObserver(ILogger* pcObserver)
 {
     // double insert !!
-    assert(_aclObservers.find(pcObserver) == _aclObservers.end());
+    assert(!_aclObservers.contains(pcObserver));
 
     _aclObservers.insert(pcObserver);
 }
@@ -361,7 +361,7 @@ int* ConsoleSingleton::GetLogLevel(const char* tag, const bool create)
     if (!tag) {
         tag = "";
     }
-    if (_logLevels.find(tag) != _logLevels.end()) {
+    if (_logLevels.contains(tag)) {
         return &_logLevels[tag];
     }
     if (!create) {
