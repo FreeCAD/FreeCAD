@@ -49,25 +49,28 @@ Gui--OverlayTabWidget {
 Gui--OverlayTabWidget::pane {
   background-color: transparent;
 }
-
 QSint--ActionGroup QFrame[class="content"] {
-  border-bottom: 1px solid #ababab;
-  border-left: 1px solid #ababab;
-  border-right: 1px solid #ababab;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  }
-
+background-color:  #f0f0f0; /* Task Panel background color */
+margin: 0px;
+padding: 0px;
+border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+border-left: 1px solid rgba(0, 0, 0, 0.4);
+border-right: 1px solid rgba(0, 0, 0, 0.4);
+border-top-left-radius: 0px;
+border-top-right-radius: 0px;
+border-bottom-left-radius: 3px;
+border-bottom-right-radius: 3px;
+}
 QSint--ActionGroup QFrame[class="header"] {
-  border: 1px solid #ababab;
-  border-right: 1px solid #ababab;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  }
+border: 1px solid rgba(0, 0, 0, 0.4);
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor6,stop:1 #959595);
+border-top-left-radius: 3px;
+border-top-right-radius: 3px;
+border-bottom-left-radius: 0px;
+border-bottom-right-radius: 0px;
+margin: 0px;
+padding: 0px;
+}
 
 Gui--OverlayTabWidget::tab-bar:top,
 Gui--OverlayTabWidget::tab-bar:bottom {

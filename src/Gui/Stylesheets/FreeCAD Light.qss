@@ -1563,7 +1563,7 @@ Gui--PropertyEditor--PropertyEditor {
 
 /* Action group */
 QFrame[class="panel"] {
-/* background-color: rgba(237, 237, 237, 0.5); This was added to fix passtrue on overlay in properties, seems to be fixed in new QT*/
+/* background-color: rgba(60, 60, 60, 0.50); */
 }
 
 QSint--ActionGroup {
@@ -1901,7 +1901,7 @@ QTabWidget::pane {
   margin: 0px;
   /* Fixes double border inside pane with pyqt5 */
   padding: 0px;
-  background-color: rgba(227, 227, 227, 84);
+  background-color: rgba(74, 74, 74, 54);
   border: 1px solid #d8d8d8;
 }
 
@@ -2748,7 +2748,7 @@ QAbstractView:selected {
 PlotWidget {
   /* Fix cut labels in plots #134 */
   padding: 0px;
-  color: rgba(253, 253, 253, 0.614);
+  color: rgba(2, 2, 2, 0.614);
 }
 
 /*==================================================================================================
