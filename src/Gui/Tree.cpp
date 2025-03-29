@@ -3066,7 +3066,8 @@ void TreeWidget::onUpdateStatus()
                 errors.push_back(obj);
             if (docItem->ObjectMap.count(obj))
                 continue;
-            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));            
+            auto vpd =
+                Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj)); 
             if (vpd)
                 docItem->createNewItem(*vpd);
 
