@@ -278,7 +278,7 @@ protected:
         int geoId = Sketcher::GeoEnum::GeoUndef;
         Sketcher::PointPos posId = Sketcher::PointPos::none;
         // direction of hit shape (if it is a line, the direction of the line)
-        Base::Vector3d hitShapeDir = Base::Vector3d(0, 0, 0);
+        Base::Vector3d hitShapeDir(0, 0, 0);
         bool isLine = false;
     };
     PreselectionData getPreselectionData();
