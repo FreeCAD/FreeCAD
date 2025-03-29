@@ -1978,7 +1978,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext& context, const QSt
         case QtInfoMsg:
         case QtDebugMsg:
 #ifdef FC_DEBUG
-            Base::Console().Message("%s\n", output.constData());
+            Base::Console().message("%s\n", output.constData());
 #else
             // do not stress user with Qt internals but write to log file if enabled
             Base::Console().Log("%s\n", output.constData());
@@ -2009,7 +2009,7 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
         const char* msg = error->getDebugString().getString();
         switch (dbg->getSeverity()) {
             case SoDebugError::INFO:
-                Base::Console().Message("%s\n", msg);
+                Base::Console().message("%s\n", msg);
                 break;
             case SoDebugError::WARNING:
                 Base::Console().Warning("%s\n", msg);
@@ -2262,7 +2262,7 @@ void runEventLoop(GUISingleApplication& mainApp)
         tryRunEventLoop(mainApp);
     }
     catch (const Base::SystemExitException&) {
-        Base::Console().Message("System exit\n");
+        Base::Console().message("System exit\n");
         throw;
     }
     catch (const std::exception& e) {

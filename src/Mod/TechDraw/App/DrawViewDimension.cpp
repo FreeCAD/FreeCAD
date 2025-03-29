@@ -549,19 +549,19 @@ bool DrawViewDimension::okToProceed()
         // TODO: translate these messages and figure out how to present them to
         // the user since we can't pop up a message box here.
         // this case is probably temporary during restore
-        // Base::Console().Message("DVD::okToProceed - no view for dimension\n");
+        // Base::Console().message("DVD::okToProceed - no view for dimension\n");
         return false;
     }
 
     if (!(has2DReferences() || has3DReferences())) {
         // no references, can't do anything
-        // Base::Console().Message("DVD::okToProceed - Dimension object has no valid references\n");
+        // Base::Console().message("DVD::okToProceed - Dimension object has no valid references\n");
         return false;
     }
 
     if (!getViewPart()->hasGeometry()) {
         // can't do anything until Source has geometry
-        // Base::Console().Message("DVD::okToProceed - Dimension object has no geometry\n");
+        // Base::Console().message("DVD::okToProceed - Dimension object has no geometry\n");
         return false;
     }
 
@@ -1535,7 +1535,7 @@ RefType DrawViewDimension::getRefType() const
 
     if (subNames.empty()) {
         // something went wrong, there were no subNames.
-        Base::Console().Message("DVD::getRefType - %s - there are no subNames.\n",
+        Base::Console().message("DVD::getRefType - %s - there are no subNames.\n",
                                 getNameInDocument());
         return RefType::invalidRef;
     }
@@ -1927,14 +1927,14 @@ void DrawViewDimension::clear3DMeasurements()
 
 void DrawViewDimension::dumpRefs2D(const char* text) const
 {
-    Base::Console().Message("DUMP - %s\n", text);
+    Base::Console().message("DUMP - %s\n", text);
     const std::vector<App::DocumentObject*>& objects = References2D.getValues();
     const std::vector<std::string>& subElements = References2D.getSubValues();
     auto objIt = objects.begin();
     auto subIt = subElements.begin();
     int i = 0;
     for (; objIt != objects.end(); objIt++, subIt++, i++) {
-        Base::Console().Message("DUMP - ref: %d object: %s subElement: %s\n",
+        Base::Console().message("DUMP - ref: %d object: %s subElement: %s\n",
                                 i,
                                 (*objIt)->getNameInDocument(),
                                 (*subIt).c_str());
@@ -2142,7 +2142,7 @@ Base::BoundBox3d DrawViewDimension::getSavedBox()
     if (bbxCorners.empty()) {
         // need to advise caller if BoxCorners not filled in yet.  zero length
         // diagonal?
-        Base::Console().Message("DVD::getSavedBox - no corners!\n");
+        Base::Console().message("DVD::getSavedBox - no corners!\n");
         return Base::BoundBox3d();
     }
     return Base::BoundBox3d(bbxCorners.front().x,

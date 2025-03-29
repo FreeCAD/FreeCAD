@@ -4206,7 +4206,7 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
         if (profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
-            Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last "
+            Base::Console().message("TopoShape::makeLoft: can't close Loft with Vertex as last "
                                     "profile. 'Closed' ignored.\n");
         }
         else {

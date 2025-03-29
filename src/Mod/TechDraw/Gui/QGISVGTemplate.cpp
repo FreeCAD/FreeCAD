@@ -160,7 +160,7 @@ void QGISVGTemplate::createClickHandles()
 
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&file)) {
-        Base::Console().Message("QGISVGTemplate::createClickHandles - xml loading error\n");
+        Base::Console().message("QGISVGTemplate::createClickHandles - xml loading error\n");
         return;
     }
     file.close();

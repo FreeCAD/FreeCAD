@@ -1183,7 +1183,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
         Standard_Integer lv = col.size();
         TColgp_Array2OfPnt interpolationPoints(1, lu, 1, lv);
         TColStd_Array2OfReal zPoints(1, lu, 1, lv);
-        //Base::Console().Message("lu=%d, lv=%d\n", lu, lv);
+        //Base::Console().message("lu=%d, lv=%d\n", lu, lv);
 
         Standard_Integer index1 = 0;
         Standard_Integer index2 = 0;

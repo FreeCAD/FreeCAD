@@ -109,11 +109,11 @@ public:
     {
         Base::Console().DetachObserver(this);
     }
-    const char* Name() override
+    const char* name() override
     {
         return "SplashObserver";
     }
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  Base::LogStyle level,
                  Base::IntendedRecipient recipient,

@@ -554,7 +554,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
                  && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint* point = n->getPickedPoint();
             if (!point) {
-                Base::Console().Message("No facet picked.\n");
+                Base::Console().message("No facet picked.\n");
                 return;
             }
 

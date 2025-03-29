@@ -93,12 +93,12 @@ void LineGroup::setWeight(std::string s, double weight)
 
 void LineGroup::dump(const char* title)
 {
-    Base::Console().Message( "DUMP: %s\n", title);
-    Base::Console().Message( "Name: %s\n", m_name.c_str());
-    Base::Console().Message( "Thin: %.3f\n", m_thin);
-    Base::Console().Message( "Graphic: %.3f\n", m_graphic);
-    Base::Console().Message( "Thick: %.3f\n", m_thick);
-    Base::Console().Message( "Extra: %.3f\n", m_extra);
+    Base::Console().message( "DUMP: %s\n", title);
+    Base::Console().message( "Name: %s\n", m_name.c_str());
+    Base::Console().message( "Thin: %.3f\n", m_thin);
+    Base::Console().message( "Graphic: %.3f\n", m_graphic);
+    Base::Console().message( "Thick: %.3f\n", m_thick);
+    Base::Console().message( "Extra: %.3f\n", m_extra);
 }
 
 //static support function: split comma separated string of values into vector of numbers
@@ -133,7 +133,7 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
     Base::FileInfo fi(parmFile);
     Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open LineGroup file: %s\n", parmFile.c_str());
+        Base::Console().message( "Cannot open LineGroup file: %s\n", parmFile.c_str());
         return record;
     }
     // parse file to get the groupNumber'th line
@@ -204,7 +204,7 @@ std::string LineGroup::getGroupNamesFromFile(std::string FileName)
     Base::FileInfo fi(FileName);
     Base::ifstream inFile(fi, std::ifstream::in);
     if (!inFile.is_open()) {
-        Base::Console().Message("Cannot open LineGroup file: %s\n", FileName.c_str());
+        Base::Console().message("Cannot open LineGroup file: %s\n", FileName.c_str());
         return record;
     }
     // parse the file
@@ -223,7 +223,7 @@ std::string LineGroup::getGroupNamesFromFile(std::string FileName)
         }
     }  //endwhile
     if (record.empty()) {
-        Base::Console().Message("LineGroup error: no group found in file %s\n", FileName.c_str());
+        Base::Console().message("LineGroup error: no group found in file %s\n", FileName.c_str());
     }
     return record;
 }

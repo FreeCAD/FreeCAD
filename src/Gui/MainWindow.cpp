@@ -2090,7 +2090,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
                 files << info.absoluteFilePath();
             }
             else {
-                Base::Console().Message("No support to load file '%s'\n",
+                Base::Console().message("No support to load file '%s'\n",
                     (const char*)info.absoluteFilePath().toUtf8());
             }
         }
@@ -2363,7 +2363,7 @@ void MainWindow::setWindowTitle(const QString& string)
         }
     }
 
-    void StatusBarObserver::SendLog(const std::string& notifiername,
+    void StatusBarObserver::sendLog(const std::string& notifiername,
                                     const std::string& msg,
                                     Base::LogStyle level,
                                     Base::IntendedRecipient recipient,

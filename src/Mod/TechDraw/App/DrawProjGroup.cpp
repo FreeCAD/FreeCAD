@@ -92,7 +92,7 @@ DrawProjGroup::DrawProjGroup()
 //TODO: this duplicates code in DVP
 std::vector<App::DocumentObject*> DrawProjGroup::getAllSources() const
 {
-    //    Base::Console().Message("DPG::getAllSources()\n");
+    //    Base::Console().message("DPG::getAllSources()\n");
     const std::vector<App::DocumentObject*> links = Source.getValues();
     std::vector<DocumentObject*> xLinks;
     XSource.getLinks(xLinks);
@@ -169,7 +169,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn* DrawProjGroup::execute()
 {
-    //    Base::Console().Message("DPG::execute() - %s - waitingForChildren: %d\n",
+    //    Base::Console().message("DPG::execute() - %s - waitingForChildren: %d\n",
     //                            getNameInDocument(), waitingForChildren());
     if (!keepUpdated())
         return App::DocumentObject::StdReturn;
@@ -227,7 +227,7 @@ short DrawProjGroup::mustExecute() const
 
 void DrawProjGroup::reportReady()
 {
-    //    Base::Console().Message("DPG::reportReady - waitingForChildren: %d\n", waitingForChildren());
+    //    Base::Console().message("DPG::reportReady - waitingForChildren: %d\n", waitingForChildren());
     if (waitingForChildren()) {
         //not ready yet
         return;
@@ -255,7 +255,7 @@ TechDraw::DrawPage* DrawProjGroup::getPage() const { return findParentPage(); }
 //does the unscaled DPG fit on the page?
 bool DrawProjGroup::checkFit() const
 {
-    //    Base::Console().Message("DPG::checkFit() - %s\n", getNameInDocument());
+    //    Base::Console().message("DPG::checkFit() - %s\n", getNameInDocument());
     if (waitingForChildren()) {
         //assume everything fits since we don't know what size the children are
         return true;
@@ -268,7 +268,7 @@ bool DrawProjGroup::checkFit() const
 
 bool DrawProjGroup::checkFit(DrawPage* page) const
 {
-    //    Base::Console().Message("DPG::checkFit(page) - %s\n", getNameInDocument());
+    //    Base::Console().message("DPG::checkFit(page) - %s\n", getNameInDocument());
     if (waitingForChildren()) {
         return true;
     }
@@ -283,7 +283,7 @@ bool DrawProjGroup::checkFit(DrawPage* page) const
 //calculate a scale that fits all views on page
 double DrawProjGroup::autoScale() const
 {
-    //    Base::Console().Message("DPG::autoScale() - %s\n", getNameInDocument());
+    //    Base::Console().message("DPG::autoScale() - %s\n", getNameInDocument());
     auto page = findParentPage();
     if (!page) {
         throw Base::RuntimeError("No page is assigned to this feature");
@@ -293,7 +293,7 @@ double DrawProjGroup::autoScale() const
 
 double DrawProjGroup::autoScale(double w, double h) const
 {
-    //    Base::Console().Message("DPG::autoScale(%.3f, %.3f) - %s\n", w, h, getNameInDocument());
+    //    Base::Console().message("DPG::autoScale(%.3f, %.3f) - %s\n", w, h, getNameInDocument());
     //get the space used by views + white space at 1:1 scale
     QRectF bigBox = getRect(false);//unscaled box
 
@@ -309,7 +309,7 @@ QRectF DrawProjGroup::getRect() const { return getRect(true); }
 
 QRectF DrawProjGroup::getRect(bool scaled) const
 {
-    //    Base::Console().Message("DPG::getRect - views: %d\n", Views.getValues().size());
+    //    Base::Console().message("DPG::getRect - views: %d\n", Views.getValues().size());
     std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT> viewPtrs;
     arrangeViewPointers(viewPtrs);
     double totalWidth, totalHeight;
@@ -423,7 +423,7 @@ bool DrawProjGroup::hasProjection(const char* viewProjType) const
 
 bool DrawProjGroup::canDelete(const char* viewProjType) const
 {
-    //    Base::Console().Message("DPG::canDelete(%s)\n", viewProjType);
+    //    Base::Console().message("DPG::canDelete(%s)\n", viewProjType);
     for (const auto it : Views.getValues()) {
         auto view(dynamic_cast<TechDraw::DrawProjGroupItem*>(it));
         if (!view) {
@@ -453,7 +453,7 @@ bool DrawProjGroup::canDelete(const char* viewProjType) const
 
 App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
 {
-    // Base::Console().Message("DPG::addProjection(%s)\n", viewProjType ? viewProjType : "null");
+    // Base::Console().message("DPG::addProjection(%s)\n", viewProjType ? viewProjType : "null");
     DrawProjGroupItem* view(nullptr);
     std::pair<Base::Vector3d, Base::Vector3d> vecs;
 
@@ -568,7 +568,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(DrawPr
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(ProjDirection viewType)
 {
-    //    Base::Console().Message("DPG::getDirsFromFront(%s)\n", viewType.c_str());
+    //    Base::Console().message("DPG::getDirsFromFront(%s)\n", viewType.c_str());
     std::pair<Base::Vector3d, Base::Vector3d> result;
 
     Base::Vector3d projDir, rotVec;
@@ -594,7 +594,7 @@ gp_Dir DrawProjGroup::vec2dir(Base::Vector3d v)
 //this can be improved.  this implementation positions views too far apart.
 Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
 {
-    //    Base::Console().Message("DPG::getXYPosition(%s)\n", Label.getValue());
+    //    Base::Console().message("DPG::getXYPosition(%s)\n", Label.getValue());
     //   Third Angle:  FTL  T  FTRight          0  1  2
     //                  L   F   Right   Rear    3  4  5  6
     //                 FBL  B  FBRight          7  8  9
@@ -942,7 +942,7 @@ void DrawProjGroup::makeViewBbs(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUN
 
 void DrawProjGroup::recomputeChildren()
 {
-    //    Base::Console().Message("DPG::recomputeChildren() - waiting: %d\n", waitingForChildren());
+    //    Base::Console().message("DPG::recomputeChildren() - waiting: %d\n", waitingForChildren());
     for (const auto it : Views.getValues()) {
         auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
@@ -956,7 +956,7 @@ void DrawProjGroup::recomputeChildren()
 
 void DrawProjGroup::autoPositionChildren()
 {
-    //    Base::Console().Message("DPG::autoPositionChildren() - %s - waiting: %d\n",
+    //    Base::Console().message("DPG::autoPositionChildren() - %s - waiting: %d\n",
     //                            getNameInDocument(), waitingForChildren());
     for (const auto it : Views.getValues()) {
         auto view(dynamic_cast<DrawProjGroupItem*>(it));
@@ -975,7 +975,7 @@ void DrawProjGroup::autoPositionChildren()
  */
 void DrawProjGroup::updateChildrenScale()
 {
-    //    Base::Console().Message("DPG::updateChildrenScale() - waiting: %d\n", waitingForChildren());
+    //    Base::Console().message("DPG::updateChildrenScale() - waiting: %d\n", waitingForChildren());
     for (const auto it : Views.getValues()) {
         auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
@@ -1183,7 +1183,7 @@ int DrawProjGroup::getDefProjConv() const { return Preferences::projectionAngle(
  */
 void DrawProjGroup::dumpISO(const char* title)
 {
-    Base::Console().Message("DPG ISO: %s\n", title);
+    Base::Console().message("DPG ISO: %s\n", title);
     for (auto& docObj : Views.getValues()) {
         Base::Vector3d dir;
         Base::Vector3d axis;
@@ -1192,7 +1192,7 @@ void DrawProjGroup::dumpISO(const char* title)
         dir = v->Direction.getValue();
         axis = v->getXDirection();
 
-        Base::Console().Message("%s:  %s/%s\n", t.c_str(), DrawUtil::formatVector(dir).c_str(),
+        Base::Console().message("%s:  %s/%s\n", t.c_str(), DrawUtil::formatVector(dir).c_str(),
                                 DrawUtil::formatVector(axis).c_str());
     }
 }

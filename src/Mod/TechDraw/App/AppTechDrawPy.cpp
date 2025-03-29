@@ -322,7 +322,7 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Message("ATDP::findOuterWire: input is empty\n");
+            Base::Console().message("ATDP::findOuterWire: input is empty\n");
             return Py::None();
         }
 
@@ -372,7 +372,7 @@ private:
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
         if (!pShape) {
-            Base::Console().Message("TRACE - AATDP::findShapeOutline - input shape is null\n");
+            Base::Console().message("TRACE - AATDP::findShapeOutline - input shape is null\n");
             return Py::None();
         }
 
@@ -435,7 +435,7 @@ private:
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 if (!gObj) {
-                    Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+                    Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
                     return Py::String();
                 }
                 TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
@@ -498,7 +498,7 @@ private:
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 if (!gObj) {
-                    Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+                    Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
                     return Py::String();
                 }
 
@@ -568,7 +568,7 @@ private:
         TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
         if (!gObj) {
             // this test might be redundant here since we already checked hasGeometry.
-            Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+            Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
             return;
         }
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());

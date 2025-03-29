@@ -325,7 +325,7 @@ void ConsoleSingleton::notifyPrivate(const LogStyle category,
 {
     for (ILogger* Iter : _aclObservers) {
         if (Iter->isActive(category)) {
-            Iter->SendLog(notifiername,
+            Iter->sendLog(notifiername,
                           msg,
                           category,
                           recipient,
@@ -348,7 +348,7 @@ ILogger* ConsoleSingleton::Get(const char* Name) const
 {
     const char* OName {};
     for (ILogger* Iter : _aclObservers) {
-        OName = Iter->Name();  // get the name
+        OName = Iter->name();  // get the name
         if (OName && strcmp(OName, Name) == 0) {
             return Iter;
         }
@@ -575,7 +575,7 @@ PyObject* ConsoleSingleton::sPyMessage(PyObject* /*self*/, PyObject* args)
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
             Instance()
-                .Send<LogStyle::Message, IntendedRecipient::Developer, ContentType::Untranslatable>(
+                .send<LogStyle::Message, IntendedRecipient::Developer, ContentType::Untranslatable>(
                     notifier,
                     "%s",
                     msg);
@@ -597,7 +597,7 @@ PyObject* ConsoleSingleton::sPyDeveloperWarning(PyObject* /*self*/, PyObject* ar
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
             Instance()
-                .Send<LogStyle::Warning, IntendedRecipient::Developer, ContentType::Untranslatable>(
+                .send<LogStyle::Warning, IntendedRecipient::Developer, ContentType::Untranslatable>(
                     notifier,
                     "%s",
                     msg);
@@ -609,7 +609,7 @@ PyObject* ConsoleSingleton::sPyUserWarning(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
-            Instance().Send<LogStyle::Warning, IntendedRecipient::User, ContentType::Untranslated>(
+            Instance().send<LogStyle::Warning, IntendedRecipient::User, ContentType::Untranslated>(
                 notifier,
                 "%s",
                 msg);
@@ -621,7 +621,7 @@ PyObject* ConsoleSingleton::sPyTranslatedUserWarning(PyObject* /*self*/, PyObjec
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
-            Instance().Send<LogStyle::Warning, IntendedRecipient::User, ContentType::Translated>(
+            Instance().send<LogStyle::Warning, IntendedRecipient::User, ContentType::Translated>(
                 notifier,
                 "%s",
                 msg);
@@ -633,7 +633,7 @@ PyObject* ConsoleSingleton::sPyError(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
-            Instance().Send<LogStyle::Error, IntendedRecipient::All, ContentType::Untranslated>(
+            Instance().send<LogStyle::Error, IntendedRecipient::All, ContentType::Untranslated>(
                 notifier,
                 "%s",
                 msg);
@@ -646,7 +646,7 @@ PyObject* ConsoleSingleton::sPyDeveloperError(PyObject* /*self*/, PyObject* args
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
             Instance()
-                .Send<LogStyle::Error, IntendedRecipient::Developer, ContentType::Untranslatable>(
+                .send<LogStyle::Error, IntendedRecipient::Developer, ContentType::Untranslatable>(
                     notifier,
                     "%s",
                     msg);
@@ -658,7 +658,7 @@ PyObject* ConsoleSingleton::sPyUserError(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
-            Instance().Send<LogStyle::Error, IntendedRecipient::User, ContentType::Untranslated>(
+            Instance().send<LogStyle::Error, IntendedRecipient::User, ContentType::Untranslated>(
                 notifier,
                 "%s",
                 msg);
@@ -670,7 +670,7 @@ PyObject* ConsoleSingleton::sPyTranslatedUserError(PyObject* /*self*/, PyObject*
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
-            Instance().Send<LogStyle::Error, IntendedRecipient::User, ContentType::Translated>(
+            Instance().send<LogStyle::Error, IntendedRecipient::User, ContentType::Translated>(
                 notifier,
                 "%s",
                 msg);
@@ -683,7 +683,7 @@ PyObject* ConsoleSingleton::sPyLog(PyObject* /*self*/, PyObject* args)
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
             Instance()
-                .Send<LogStyle::Log, IntendedRecipient::Developer, ContentType::Untranslatable>(
+                .send<LogStyle::Log, IntendedRecipient::Developer, ContentType::Untranslatable>(
                     notifier,
                     "%s",
                     msg);
@@ -695,7 +695,7 @@ PyObject* ConsoleSingleton::sPyCritical(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
-            Instance().Send<LogStyle::Critical, IntendedRecipient::All, ContentType::Untranslated>(
+            Instance().send<LogStyle::Critical, IntendedRecipient::All, ContentType::Untranslated>(
                 notifier,
                 "%s",
                 msg);
@@ -708,7 +708,7 @@ PyObject* ConsoleSingleton::sPyNotification(PyObject* /*self*/, PyObject* args)
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
             Instance()
-                .Send<LogStyle::Notification, IntendedRecipient::User, ContentType::Untranslated>(
+                .send<LogStyle::Notification, IntendedRecipient::User, ContentType::Untranslated>(
                     notifier,
                     "%s",
                     msg);
@@ -721,7 +721,7 @@ PyObject* ConsoleSingleton::sPyTranslatedNotification(PyObject* /*self*/, PyObje
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
             Instance()
-                .Send<LogStyle::Notification, IntendedRecipient::User, ContentType::Translated>(
+                .send<LogStyle::Notification, IntendedRecipient::User, ContentType::Translated>(
                     notifier,
                     "%s",
                     msg);
@@ -830,7 +830,7 @@ PyObject* ConsoleSingleton::sPyGetObservers(PyObject* /*self*/, PyObject* args)
     {
         Py::List list;
         for (const auto i : Instance()._aclObservers) {
-            list.append(Py::String(i->Name() ? i->Name() : ""));
+            list.append(Py::String(i->name() ? i->name() : ""));
         }
 
         return new_reference_to(list);

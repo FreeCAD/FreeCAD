@@ -544,7 +544,7 @@ App::DocumentObject* getObjectByType(const Base::Type type)
 {
     App::Document* pcDoc = App::GetApplication().getActiveDocument();
     if (!pcDoc) {
-        Base::Console().Message("No active document is found thus created\n");
+        Base::Console().message("No active document is found thus created\n");
         pcDoc = App::GetApplication().newDocument();
     }
     App::DocumentObject* obj = pcDoc->getActiveObject();
@@ -568,7 +568,7 @@ App::DocumentObject* createObjectByType(const Base::Type type)
 {
     App::Document* pcDoc = App::GetApplication().getActiveDocument();
     if (!pcDoc) {
-        Base::Console().Message("No active document is found thus created\n");
+        Base::Console().message("No active document is found thus created\n");
         pcDoc = App::GetApplication().newDocument();
     }
     App::DocumentObject* obj = pcDoc->getActiveObject();
@@ -604,7 +604,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
 
     App::Document* pcDoc = App::GetApplication().getActiveDocument();
     if (!pcDoc) {
-        Base::Console().Message("No active document is found thus created\n");
+        Base::Console().message("No active document is found thus created\n");
         pcDoc = App::GetApplication().newDocument();
     }
     App::DocumentObject* obj = pcDoc->getActiveObject();
@@ -613,13 +613,13 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     App::DocumentObject* result = nullptr;
 
     if (res) {
-        Base::Console().Message(
+        Base::Console().message(
             "FemResultObject pointer is NULL, trying to get the active object\n");
         if (obj->getTypeId() == Base::Type::fromName("Fem::FemResultObjectPython")) {
             result = obj;
         }
         else {
-            Base::Console().Message("the active object is not the correct type, do nothing\n");
+            Base::Console().message("the active object is not the correct type, do nothing\n");
             return nullptr;
         }
     }
@@ -655,7 +655,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     if (!res) {
         App::Document* pcDoc = App::GetApplication().getActiveDocument();
         if (!pcDoc) {
-            Base::Console().Message("No active document is found thus do nothing and return\n");
+            Base::Console().message("No active document is found thus do nothing and return\n");
             return;
         }
         res = pcDoc->getActiveObject();  // type checking is done by caller
@@ -833,7 +833,7 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
             }
         }
         else {
-            Base::Console().Message("    PropertyVectorList NOT found in vkt file data: %s\n",
+            Base::Console().message("    PropertyVectorList NOT found in vkt file data: %s\n",
                                     it.first.c_str());
         }
     }
@@ -868,7 +868,7 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
                                 scalar.first.c_str());
         }
         else {
-            Base::Console().Message("    PropertyFloatList NOT found in vkt file data %s\n",
+            Base::Console().message("    PropertyFloatList NOT found in vkt file data %s\n",
                                     scalar.first.c_str());
         }
     }

@@ -102,7 +102,7 @@ void DrawSVGTemplate::onSettingDocument()
 //? should this check for creation of a template or a page?
 void DrawSVGTemplate::slotCreatedObject(const App::DocumentObject& obj)
 {
-    // Base::Console().Message("DSVGT::slotCreatedObject()\n");
+    // Base::Console().message("DSVGT::slotCreatedObject()\n");
     if (!obj.isDerivedFrom<TechDraw::DrawPage>()) {
         // we don't care
         return;
@@ -112,7 +112,7 @@ void DrawSVGTemplate::slotCreatedObject(const App::DocumentObject& obj)
 
 void DrawSVGTemplate::slotDeletedObject(const App::DocumentObject& obj)
 {
-    // Base::Console().Message("DSVGT::slotDeletedObject()\n");
+    // Base::Console().message("DSVGT::slotDeletedObject()\n");
     if (!obj.isDerivedFrom<TechDraw::DrawPage>()) {
         // we don't care
         return;

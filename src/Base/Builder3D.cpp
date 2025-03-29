@@ -1012,7 +1012,7 @@ void Builder3D::saveToLog()
 {
     ILogger* obs = Base::Console().Get("StatusBar");
     if (obs) {
-        obs->SendLog("Builder3D",
+        obs->sendLog("Builder3D",
                      result.str(),
                      Base::LogStyle::Log,
                      Base::IntendedRecipient::Developer,

@@ -87,7 +87,7 @@ using DU = DrawUtil;
 //! was created.
 bool DimensionAutoCorrect::referencesHaveValidGeometry(std::vector<bool>& referenceState) const
 {
-    // Base::Console().Message("DAC::referencesHaveValidGeometry()\n");
+    // Base::Console().message("DAC::referencesHaveValidGeometry()\n");
     ReferenceVector refsAll = getDimension()->getEffectiveReferences();
     const std::vector<Part::TopoShape> savedGeometry = getDimension()->SavedGeometry.getValues();
 
@@ -126,7 +126,7 @@ bool DimensionAutoCorrect::referencesHaveValidGeometry(std::vector<bool>& refere
 bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceState,
                                                  ReferenceVector& repairedRefs) const
 {
-    // Base::Console().Message("DAC::autocorrectReferences()\n");
+    // Base::Console().message("DAC::autocorrectReferences()\n");
     if (!Preferences::autoCorrectDimRefs()) {
         return false;
     }
@@ -199,7 +199,7 @@ bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceSta
 //! fix a single reference with an exact match to geomToMatch
 bool DimensionAutoCorrect::fix1GeomExact(ReferenceEntry& refToFix, const TopoDS_Shape &geomToMatch) const
 {
-    // Base::Console().Message("DAC::fix1GeomExact()\n");
+    // Base::Console().message("DAC::fix1GeomExact()\n");
     ReferenceEntry fixedRef = refToFix;
     Part::TopoShape topoShapeToMatch(geomToMatch);
     bool success {false};
@@ -229,7 +229,7 @@ bool DimensionAutoCorrect::fix1GeomExact(ReferenceEntry& refToFix, const TopoDS_
 //! fix a single reference with an Similar match to geomToMatch
 bool DimensionAutoCorrect::fix1GeomSimilar(ReferenceEntry& refToFix, const TopoDS_Shape &geomToMatch) const
 {
-    // Base::Console().Message("DAC::fix1GeomSimilar()\n");
+    // Base::Console().message("DAC::fix1GeomSimilar()\n");
     Part::TopoShape topoShapeToMatch(geomToMatch);
     bool success {false};
     if (refToFix.is3d()) {
@@ -261,7 +261,7 @@ bool DimensionAutoCorrect::fix1GeomSimilar(ReferenceEntry& refToFix, const TopoD
 bool DimensionAutoCorrect::findExactVertex2d(ReferenceEntry& refToFix,
                                              const Part::TopoShape& refGeom) const
 {
-    // Base::Console().Message("DAC::findExactVertex2d()\n");
+    // Base::Console().message("DAC::findExactVertex2d()\n");
     getMatcher()->setPointTolerance(EWTOLERANCE);
     auto refObj = refToFix.getObject();
     auto refDvp = dynamic_cast<TechDraw::DrawViewPart*>(refObj);
@@ -281,7 +281,7 @@ bool DimensionAutoCorrect::findExactVertex2d(ReferenceEntry& refToFix,
 //! and return a reference pointing to the matching edge.
 bool DimensionAutoCorrect::findExactEdge2d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const
 {
-    // Base::Console().Message("DAC::findExactEdge2d()\n");
+    // Base::Console().message("DAC::findExactEdge2d()\n");
     auto refObj = refToFix.getObject();
     auto refDvp = dynamic_cast<TechDraw::DrawViewPart*>(refObj);
     if (refDvp) {
@@ -301,7 +301,7 @@ bool DimensionAutoCorrect::findExactEdge2d(ReferenceEntry& refToFix, const Part:
 bool DimensionAutoCorrect::findExactVertex3d(ReferenceEntry& refToFix,
                                              const Part::TopoShape& refGeom) const
 {
-    // Base::Console().Message("DAC::findExactVertex3d()\n");
+    // Base::Console().message("DAC::findExactVertex3d()\n");
     getMatcher()->setPointTolerance(EWTOLERANCE);
 
     // try the referenced object
@@ -331,7 +331,7 @@ bool DimensionAutoCorrect::findExactVertex3d(ReferenceEntry& refToFix,
 //! and return a reference pointing to the matching edge.
 bool DimensionAutoCorrect::findExactEdge3d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const
 {
-    // Base::Console().Message("DAC::findExactEdge3d() - cache: %d\n", m_3dObjectCache.size());
+    // Base::Console().message("DAC::findExactEdge3d() - cache: %d\n", m_3dObjectCache.size());
     // first, try to find a match in the referenced object
     auto refObj = refToFix.getObject();
     if (refObj) {
@@ -367,10 +367,10 @@ bool DimensionAutoCorrect::findExactEdge3d(ReferenceEntry& refToFix, const Part:
 bool DimensionAutoCorrect::findSimilarVertex2d(ReferenceEntry& refToFix,
                                                const Part::TopoShape& refGeom) const
 {
-    // Base::Console().Message("DAC::findSimilarVertex2d()\n");
+    // Base::Console().message("DAC::findSimilarVertex2d()\n");
     (void)refToFix;
     (void)refGeom;
-    // Base::Console().Message("DAC::findSimilarVertex2d is not implemented yet\n");
+    // Base::Console().message("DAC::findSimilarVertex2d is not implemented yet\n");
     return false;
 }
 
@@ -379,10 +379,10 @@ bool DimensionAutoCorrect::findSimilarVertex2d(ReferenceEntry& refToFix,
 bool DimensionAutoCorrect::findSimilarEdge2d(ReferenceEntry& refToFix,
                                              const Part::TopoShape& refGeom) const
 {
-    // Base::Console().Message("DAC::findSimilarEdge2d()\n");
+    // Base::Console().message("DAC::findSimilarEdge2d()\n");
     (void)refToFix;
     (void)refGeom;
-    // Base::Console().Message("DAC::findSimilarEdge2d is not implemented yet\n");
+    // Base::Console().message("DAC::findSimilarEdge2d is not implemented yet\n");
     return false;
 }
 
@@ -392,10 +392,10 @@ bool DimensionAutoCorrect::findSimilarEdge2d(ReferenceEntry& refToFix,
 bool DimensionAutoCorrect::findSimilarVertex3d(ReferenceEntry& refToFix,
                                                const Part::TopoShape& refGeom) const
 {
-    // Base::Console().Message("DAC::findSimilarVertex3d()\n");
+    // Base::Console().message("DAC::findSimilarVertex3d()\n");
     (void)refToFix;
     (void)refGeom;
-    // Base::Console().Message("DAC::findSimilarVertex3d is not implemented yet\n");
+    // Base::Console().message("DAC::findSimilarVertex3d is not implemented yet\n");
     return false;
 }
 
@@ -405,10 +405,10 @@ bool DimensionAutoCorrect::findSimilarVertex3d(ReferenceEntry& refToFix,
 bool DimensionAutoCorrect::findSimilarEdge3d(ReferenceEntry& refToFix,
                                              const Part::TopoShape& refGeom) const
 {
-    // Base::Console().Message("DAC::findSimilarEdge3d(%s)\n", refToFix.getObjectName().c_str());
+    // Base::Console().message("DAC::findSimilarEdge3d(%s)\n", refToFix.getObjectName().c_str());
     (void)refToFix;
     (void)refGeom;
-    // Base::Console().Message("DAC::findSimilarEdge3d is not implemented yet\n");
+    // Base::Console().message("DAC::findSimilarEdge3d is not implemented yet\n");
     return false;
 }
 
@@ -471,7 +471,7 @@ ReferenceEntry DimensionAutoCorrect::searchViewForVert(DrawViewPart* obj,
                                                        const Part::TopoShape& refVertex,
                                                        bool exact) const
 {
-    // Base::Console().Message("DAC::searchViewForVert()\n");
+    // Base::Console().message("DAC::searchViewForVert()\n");
     (void)exact;
     std::vector<TechDraw::VertexPtr> gVertexAll =
         getDimension()->getViewPart()->getVertexGeometry();
@@ -494,7 +494,7 @@ ReferenceEntry DimensionAutoCorrect::searchViewForVert(DrawViewPart* obj,
 ReferenceEntry DimensionAutoCorrect::searchViewForExactEdge(DrawViewPart* obj,
                                                             const Part::TopoShape& refEdge) const
 {
-    // Base::Console().Message("DAC::searchViewForExactEdge()\n");
+    // Base::Console().message("DAC::searchViewForExactEdge()\n");
     auto gEdgeAll = getDimension()->getViewPart()->getEdgeGeometry();
     int iEdge {0};
     for (auto& edge : gEdgeAll) {
@@ -516,10 +516,10 @@ ReferenceEntry DimensionAutoCorrect::searchViewForExactEdge(DrawViewPart* obj,
 ReferenceEntry DimensionAutoCorrect::searchViewForSimilarEdge(DrawViewPart* obj,
                                                               const Part::TopoShape& refEdge) const
 {
-    // Base::Console().Message("DAC::searchViewForSimilarEdge()\n");
+    // Base::Console().message("DAC::searchViewForSimilarEdge()\n");
     (void)obj;
     (void)refEdge;
-    Base::Console().Message("DAC::searchViewForSimilarEdge is not implemented yet\n");
+    Base::Console().message("DAC::searchViewForSimilarEdge is not implemented yet\n");
     return {};
 }
 
@@ -529,7 +529,7 @@ ReferenceEntry DimensionAutoCorrect::searchObjForEdge(App::DocumentObject* obj,
                                                       const Part::TopoShape& refEdge,
                                                       bool exact) const
 {
-    // Base::Console().Message("DAC::searchObjForEdge(%s)\n", obj->Label.getValue());
+    // Base::Console().message("DAC::searchObjForEdge(%s)\n", obj->Label.getValue());
     (void)exact;
     auto shape3d = Part::Feature::getShape(obj);
     if (shape3d.IsNull()) {
@@ -553,7 +553,7 @@ ReferenceEntry DimensionAutoCorrect::searchObjForEdge(App::DocumentObject* obj,
 //! have been repaired
 bool DimensionAutoCorrect::fixBrokenReferences(ReferenceVector& fixedReferences) const
 {
-    // Base::Console().Message("DAC::fixBrokenReferences()\n");
+    // Base::Console().message("DAC::fixBrokenReferences()\n");
     bool success {true};
     const std::vector<Part::TopoShape> savedGeometry = getDimension()->SavedGeometry.getValues();
     int iGeom {0};

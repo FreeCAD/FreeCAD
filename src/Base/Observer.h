@@ -210,7 +210,7 @@ public:
         for (typename std::set<Observer<MsgType>*>::iterator Iter = _ObserverSet.begin();
              Iter != _ObserverSet.end();
              ++Iter) {
-            OName = (*Iter)->Name();  // get the name
+            OName = (*Iter)->name();  // get the name
             if (OName && strcmp(OName, Name) == 0) {
                 return *Iter;
             }

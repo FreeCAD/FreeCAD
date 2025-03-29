@@ -201,6 +201,6 @@ void QGIProjGroup::rotateView()
 void QGIProjGroup::drawBorder()
 {
 //QGIProjGroup does not have a border!
-//    Base::Console().Message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
+//    Base::Console().message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
 

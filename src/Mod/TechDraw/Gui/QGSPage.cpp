@@ -205,7 +205,7 @@ void QGSPage::addChildrenToPage()
 
 void QGSPage::attachTemplate(TechDraw::DrawTemplate* obj)
 {
-    //    Base::Console().Message("QGSP::attachTemplate()\n");
+    //    Base::Console().message("QGSP::attachTemplate()\n");
     setPageTemplate(obj);
 }
 
@@ -324,7 +324,7 @@ int QGSPage::addQView(QGIView* view)
 
         view->updateView(true);
     } else {
-        Base::Console().Message("QGSP::addQView - qview already exists\n");
+        Base::Console().message("QGSP::addQView - qview already exists\n");
     }
     return 0;
 }
@@ -669,7 +669,7 @@ QGIView* QGSPage::addViewDimension(TechDraw::DrawViewDimension* dimFeat)
 
 void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 {
-    //    Base::Console().Message("QGSP::addDimToParent()\n");
+    //    Base::Console().message("QGSP::addDimToParent()\n");
     assert(dim);
     assert(parent);//blow up if we don't have Dimension or Parent
     QPointF posRef(0., 0.);

@@ -119,7 +119,7 @@ void NetworkRetriever::testFailure()
     {
         d->fail = false;
         QString msg = tr("Download started...");
-        Base::Console().Message("%s\n", msg.toUtf8().constData());
+        Base::Console().message("%s\n", msg.toUtf8().constData());
     }
 }
 

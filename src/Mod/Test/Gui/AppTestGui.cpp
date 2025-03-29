@@ -39,7 +39,7 @@ public:
         Base::Console().DetachObserver(this);
     }
 
-    const char* Name() override
+    const char* name() override
     {
         return "ILoggerBlockerTest";
     }
@@ -50,7 +50,7 @@ public:
         buffer.clear();
     }
 
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  Base::LogStyle level,
                  Base::IntendedRecipient recipient,
@@ -87,7 +87,7 @@ public:
         Base::Console().Log(comment);
         flush();
         Base::Console().Log("LOG");
-        Base::Console().Message("MSG");
+        Base::Console().message("MSG");
         Base::Console().Warning("WRN");
         Base::Console().Error("ERR");
         Base::Console().Critical("CMS");

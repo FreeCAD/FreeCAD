@@ -821,7 +821,7 @@ private:
                         builder.Add(comp, shape);
                 }
                 else {
-                    Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
+                    Base::Console().message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
                 }
             }
         }

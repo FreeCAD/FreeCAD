@@ -161,7 +161,7 @@ void QGIWeldSymbol::draw()
 void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
 {
     if (!tileFeat) {
-        Base::Console().Message("QGIWS::drawTile - tile is null\n");
+        Base::Console().message("QGIWS::drawTile - tile is null\n");
         return;
     }
 

@@ -81,7 +81,7 @@ GUIConsole::~GUIConsole (void)
       FreeConsole();
 }
 
-void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+void GUIConsole::sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                          Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
@@ -121,7 +121,7 @@ void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
 GUIConsole::GUIConsole () = default;
 GUIConsole::~GUIConsole () = default;
-void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+void GUIConsole::sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                          Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;

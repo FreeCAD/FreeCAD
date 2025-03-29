@@ -588,7 +588,7 @@ public:
         }
 
         this->deleteLater();
-        Base::Console().Message("Thread with %d steps finished\n",this->steps);
+        Base::Console().message("Thread with %d steps finished\n",this->steps);
     }
 
 private:
@@ -728,7 +728,7 @@ public:
     int matchLog{0};
     int matchCritical{0};
     TestConsoleObserver() = default;
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+    void sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                  Base::IntendedRecipient recipient, Base::ContentType content) override{
 
         (void) notifiername;
@@ -765,7 +765,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Message("Write a message to the console output.\n");
+            Base::Console().message("Write a message to the console output.\n");
     }
 };
 

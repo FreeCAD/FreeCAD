@@ -248,7 +248,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                 }
                 xSourceShapes.push_back(shape);
             } else {
-                Base::Console().Message("SE::getXShapes - no shape from getXShape\n");
+                Base::Console().message("SE::getXShapes - no shape from getXShape\n");
             }
         }
     } else {

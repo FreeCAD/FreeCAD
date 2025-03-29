@@ -257,7 +257,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
             if(getOverrideMode() == "As Is")
                 setDisplayMaskMode(DisplayMode.getValueAsString());
             else {
-                Base::Console().Message("Set override mode: %s\n", getOverrideMode().c_str());
+                Base::Console().message("Set override mode: %s\n", getOverrideMode().c_str());
                 setDisplayMaskMode(getOverrideMode().c_str());
             }
         }

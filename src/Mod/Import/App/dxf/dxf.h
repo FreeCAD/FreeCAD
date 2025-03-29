@@ -694,7 +694,7 @@ protected:
     template<typename... args>
     static void ImportObservation(const char* format, args&&... argValues)
     {
-        Base::ConsoleSingleton::Instance().Message(format, std::forward<args>(argValues)...);
+        Base::ConsoleSingleton::Instance().message(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
     void UnsupportedFeature(const char* format, args&&... argValues);

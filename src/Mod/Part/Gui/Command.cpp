@@ -1107,7 +1107,7 @@ void CmdPartMakeSolid::activated(int iMsg)
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
             if (type == TopAbs_SOLID) {
-                Base::Console().Message("%s is ignored because it is already a solid.\n",
+                Base::Console().message("%s is ignored because it is already a solid.\n",
                     it->Label.getValue());
             }
             else if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
@@ -1135,7 +1135,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                          QLatin1String(it->Label.getValue()));
             }
             else {
-                Base::Console().Message("%s is ignored because it is neither a shell nor a compound.\n",
+                Base::Console().message("%s is ignored because it is neither a shell nor a compound.\n",
                     it->Label.getValue());
             }
 

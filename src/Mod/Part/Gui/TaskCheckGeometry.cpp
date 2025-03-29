@@ -546,7 +546,7 @@ void TaskCheckGeometryResults::goCheck()
 void TaskCheckGeometryResults::generateReport()
 {
     QString reportString = reportViewStrings.join(QLatin1String("\n"));
-    Base::Console().Message(reportString.toStdString().c_str());
+    Base::Console().message(reportString.toStdString().c_str());
 }
 
 

@@ -128,7 +128,7 @@ void QGVNavStyleOCC::handleMouseReleaseEvent(QMouseEvent *event)
 
 bool QGVNavStyleOCC::allowContextMenu(QContextMenuEvent *event)
 {
-//    Base::Console().Message("QGVNSOCC::allowContextMenu()\n");
+//    Base::Console().message("QGVNSOCC::allowContextMenu()\n");
     if (event->reason() == QContextMenuEvent::Mouse) {
         //must check for a button combination involving context menu button
         if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier) ) {
