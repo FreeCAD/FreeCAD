@@ -257,8 +257,7 @@ ConsoleMsgFlags ConsoleSingleton::setEnabledMsgType(const char* sObs,
 
 bool ConsoleSingleton::isMsgTypeEnabled(const char* sObs, const FreeCAD_ConsoleMsgType type) const
 {
-    const ILogger* pObs = get(sObs);
-    if (pObs) {
+    if (const ILogger* pObs = get(sObs)) {
         switch (type) {
             case MsgType_Txt:
                 return pObs->bMsg;
@@ -321,7 +320,7 @@ void ConsoleSingleton::notifyPrivate(const LogStyle category,
                                      const IntendedRecipient recipient,
                                      const ContentType content,
                                      const std::string& notifiername,
-                                     const std::string& msg)
+                                     const std::string& msg) const
 {
     for (ILogger* Iter : _aclObservers) {
         if (Iter->isActive(category)) {
@@ -372,7 +371,7 @@ int* ConsoleSingleton::getLogLevel(const char* tag, const bool create)
     return &ret;
 }
 
-void ConsoleSingleton::refresh()
+void ConsoleSingleton::refresh() const
 {
     if (_bCanRefresh) {
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
@@ -561,9 +560,8 @@ PyObject* FC_PYCONSOLE_MSG(std::function<void(const char*, const char*)> func, P
 
     PY_TRY
     {
-        const char* string = retrieveString(output);
 
-        if (string) {
+        if (const char* string = retrieveString(output)) {
             func(notifierStr, string); /*process message*/
         }
     }
@@ -788,8 +786,7 @@ PyObject* ConsoleSingleton::sPySetStatus(PyObject* /*self*/, PyObject* args)
     PY_TRY
     {
         const bool status = asBoolean(pyStatus);
-        ILogger* pObs = instance().get(pstr1);
-        if (pObs) {
+        if (ILogger* pObs = instance().get(pstr1)) {
             if (strcmp(pstr2, "Log") == 0) {
                 pObs->bLog = status;
             }

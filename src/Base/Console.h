@@ -840,7 +840,7 @@ public:
 
     static PyMethodDef Methods[];
 
-    void refresh();
+    void refresh() const;
     void enableRefresh(bool enable);
 
     constexpr FreeCAD_ConsoleMsgType getConsoleMsg(LogStyle style);
@@ -889,7 +889,7 @@ private:
                        IntendedRecipient recipient,
                        ContentType content,
                        const std::string& notifiername,
-                       const std::string& msg);
+                       const std::string& msg) const;
 
     // singleton
     // static void Destruct(); // unused?
