@@ -324,11 +324,11 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const std::exception& e) {
-        Base::Console().Error("Application unexpectedly terminated: %s\n", e.what());
+        Base::Console().error("Application unexpectedly terminated: %s\n", e.what());
         exit(1);
     }
     catch (...) {
-        Base::Console().Error("Application unexpectedly terminated\n");
+        Base::Console().error("Application unexpectedly terminated\n");
         exit(1);
     }
 

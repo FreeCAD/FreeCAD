@@ -1165,13 +1165,13 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
         e.ReportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled std::exception caught in Application::onLastWindowClosed.\n"
             "The error message is: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled unknown exception caught in Application::onLastWindowClosed.\n");
     }
 }
@@ -1682,9 +1682,9 @@ bool Application::activateWorkbench(const char* name)
             match = rx.match(msg);
         }
 
-        Base::Console().Error("%s\n", (const char*)msg.toUtf8());
+        Base::Console().error("%s\n", (const char*)msg.toUtf8());
         if (!d->startingUp) {
-            Base::Console().Error("%s\n", e.getStackTrace().c_str());
+            Base::Console().error("%s\n", e.getStackTrace().c_str());
         }
         else {
             Base::Console().Log("%s\n", e.getStackTrace().c_str());
@@ -1988,10 +1988,10 @@ void messageHandler(QtMsgType type, const QMessageLogContext& context, const QSt
             Base::Console().warning("%s\n", output.constData());
             break;
         case QtCriticalMsg:
-            Base::Console().Error("%s\n", output.constData());
+            Base::Console().error("%s\n", output.constData());
             break;
         case QtFatalMsg:
-            Base::Console().Error("%s\n", output.constData());
+            Base::Console().error("%s\n", output.constData());
             abort();  // deliberately core dump
     }
 #ifdef FC_OS_WIN32
@@ -2015,7 +2015,7 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
                 Base::Console().warning("%s\n", msg);
                 break;
             default:  // error
-                Base::Console().Error("%s\n", msg);
+                Base::Console().error("%s\n", msg);
                 break;
         }
 #ifdef FC_OS_WIN32
@@ -2045,7 +2045,7 @@ void Application::initApplication()
 {
     static bool init = false;
     if (init) {
-        Base::Console().Error("Tried to run Gui::Application::initApplication() twice!\n");
+        Base::Console().error("Tried to run Gui::Application::initApplication() twice!\n");
         return;
     }
 
@@ -2267,13 +2267,13 @@ void runEventLoop(GUISingleApplication& mainApp)
     }
     catch (const std::exception& e) {
         // catching nasty stuff coming out of the event loop
-        Base::Console().Error("Event loop left through unhandled exception: %s\n", e.what());
+        Base::Console().error("Event loop left through unhandled exception: %s\n", e.what());
         App::Application::destructObserver();
         throw;
     }
     catch (...) {
         // catching nasty stuff coming out of the event loop
-        Base::Console().Error("Event loop left through unknown unhandled exception\n");
+        Base::Console().error("Event loop left through unknown unhandled exception\n");
         App::Application::destructObserver();
         throw;
     }

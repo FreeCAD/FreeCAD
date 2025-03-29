@@ -151,7 +151,7 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
         }
     }  //endwhile
     // nothing was found
-    Base::Console().Error("LineGroup: the LineGroup file has only %s entries but entry number %s is set\n"
+    Base::Console().error("LineGroup: the LineGroup file has only %s entries but entry number %s is set\n"
         , std::to_string(counter).c_str()
         , std::to_string(groupNumber).c_str());
     return std::string(); // return an empty string
@@ -168,7 +168,7 @@ LineGroup* LineGroup::lineGroupFactory(int groupNumber)
 
     std::vector<double> values = LineGroup::split(lgRecord);
     if (values.size() < 4) {
-        Base::Console().Error( "LineGroup::invalid entry in %s\n", lgFileName.c_str() );
+        Base::Console().error( "LineGroup::invalid entry in %s\n", lgFileName.c_str() );
     } else {
         lg->setWeight("Thin", values[0]);
         lg->setWeight("Graphic", values[1]);

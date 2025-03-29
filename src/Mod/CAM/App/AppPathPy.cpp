@@ -63,7 +63,7 @@
         else {                                                                                     \
             str += "No OCCT Exception Message";                                                    \
         }                                                                                          \
-        Base::Console().Error(str.c_str());                                                        \
+        Base::Console().error(str.c_str());                                                        \
         PyErr_SetString(Part::PartExceptionOCCError, str.c_str());                                 \
     }                                                                                              \
     catch (Base::Exception & e)                                                                    \
@@ -81,7 +81,7 @@
         str += "STL exception thrown (";                                                           \
         str += e.what();                                                                           \
         str += ")";                                                                                \
-        Base::Console().Error(str.c_str());                                                        \
+        Base::Console().error(str.c_str());                                                        \
         PyErr_SetString(Base::PyExc_FC_GeneralError, str.c_str());                                 \
     }                                                                                              \
     catch (const char* e)                                                                          \

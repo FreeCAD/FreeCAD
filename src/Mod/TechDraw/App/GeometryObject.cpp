@@ -162,7 +162,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
         brep_hlr->Hide();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
+        Base::Console().error("GO::projectShape - OCC error - %s - while projecting shape\n",
                               e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShape - OCC error");
     }
@@ -329,7 +329,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
         brep_hlrPoly->Update();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "GO::projectShapeWithPolygonAlgo - OCC error - %s - while projecting shape\n",
             e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - OCC error");
@@ -377,7 +377,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
         hidOutline =ShapeUtils::invertGeometry(hidOutline);
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "GO::projectShapeWithPolygonAlgo - OCC error - %s - while extracting edges\n",
             e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - OCC error occurred "

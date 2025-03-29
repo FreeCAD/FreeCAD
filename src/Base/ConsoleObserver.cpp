@@ -306,7 +306,7 @@ int RedirectStdError::overflow(int ch)
 int RedirectStdError::sync()
 {
     if (!buffer.empty() && buffer.back() == '\n') {
-        Base::Console().Error("%s", buffer.c_str());
+        Base::Console().error("%s", buffer.c_str());
         buffer.clear();
     }
     return 0;

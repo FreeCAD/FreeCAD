@@ -2388,7 +2388,7 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList)
 
         if (rtn == -1) {
             int humanconstraintid = cid + 1;
-            Base::Console().Error("Sketcher constraint number %d is malformed!\n",
+            Base::Console().error("Sketcher constraint number %d is malformed!\n",
                                   humanconstraintid);
             MalformedConstraints.push_back(humanconstraintid);
         }
@@ -2411,7 +2411,7 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList,
 
             if (rtn == -1) {
                 int humanconstraintid = cid + 1;
-                Base::Console().Error("Sketcher constraint number %d is malformed!\n",
+                Base::Console().error("Sketcher constraint number %d is malformed!\n",
                                       humanconstraintid);
                 MalformedConstraints.push_back(humanconstraintid);
             }
@@ -2863,7 +2863,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().Error("Direct tangency constraint between line and B-spline is not "
+            Base::Console().error("Direct tangency constraint between line and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2877,7 +2877,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
-            Base::Console().Error("Direct tangency constraint between circle and ellipse is not "
+            Base::Console().error("Direct tangency constraint between circle and ellipse is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2888,24 +2888,24 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().Error("Direct tangency constraint between circle and B-spline is not "
+            Base::Console().error("Direct tangency constraint between circle and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
     }
     else if (Geoms[geoId1].type == Ellipse) {
         if (Geoms[geoId2].type == Circle) {
-            Base::Console().Error("Direct tangency constraint between circle and ellipse is not "
+            Base::Console().error("Direct tangency constraint between circle and ellipse is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
         else if (Geoms[geoId2].type == Arc) {
-            Base::Console().Error("Direct tangency constraint between arc and ellipse is not "
+            Base::Console().error("Direct tangency constraint between arc and ellipse is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
         else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().Error("Direct tangency constraint between ellipse and B-spline is not "
+            Base::Console().error("Direct tangency constraint between ellipse and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2919,7 +2919,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
-            Base::Console().Error("Direct tangency constraint between arc and ellipse is not "
+            Base::Console().error("Direct tangency constraint between arc and ellipse is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2930,13 +2930,13 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().Error("Direct tangency constraint between arc and B-spline is not "
+            Base::Console().error("Direct tangency constraint between arc and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
     }
     else if (Geoms[geoId1].type == BSpline) {
-        Base::Console().Error("Direct tangency constraint including B-splines is not "
+        Base::Console().error("Direct tangency constraint including B-splines is not "
                               "supported. Use tangent-via-point instead.");
         return -1;
     }
@@ -2958,13 +2958,13 @@ int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
     knotindex = std::distance(b.knotpointGeoids.begin(), knotIt);
 
     if (knotindex >= b.knots.size()) {
-        Base::Console().Error("addConstraint: Knot index out-of-range!\n");
+        Base::Console().error("addConstraint: Knot index out-of-range!\n");
         return -1;
     }
 
     if (b.mult[knotindex] >= b.degree) {
         if (b.periodic || (knotindex > 0 && knotindex < (b.knots.size() - 1))) {
-            Base::Console().Error("addTangentLineAtBSplineKnotConstraint: cannot set constraint "
+            Base::Console().error("addTangentLineAtBSplineKnotConstraint: cannot set constraint "
                                   "when B-spline slope is discontinuous at knot!\n");
             return -1;
         }
@@ -2977,7 +2977,7 @@ int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
             //     nullptr, Tangent, true);
 
             // For now we just throw an error.
-            Base::Console().Error(
+            Base::Console().error(
                 "addTangentLineAtBSplineKnotConstraint: This method cannot set tangent constraint "
                 "at end knots of a B-spline. Please constrain the start/end points instead.\n");
             return -1;
@@ -3011,13 +3011,13 @@ int Sketch::addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
     knotindex = std::distance(b.knotpointGeoids.begin(), knotIt);
 
     if (knotindex >= b.knots.size()) {
-        Base::Console().Error("addConstraint: Knot index out-of-range!\n");
+        Base::Console().error("addConstraint: Knot index out-of-range!\n");
         return -1;
     }
 
     if (b.mult[knotindex] >= b.degree) {
         if (b.periodic || (knotindex > 0 && knotindex < (b.knots.size() - 1))) {
-            Base::Console().Error("addTangentLineEndpointAtBSplineKnotConstraint: cannot set "
+            Base::Console().error("addTangentLineEndpointAtBSplineKnotConstraint: cannot set "
                                   "constraint when B-spline slope is discontinuous at knot!\n");
             return -1;
         }
@@ -3030,7 +3030,7 @@ int Sketch::addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
             //     nullptr, Tangent, true);
 
             // For now we just throw an error.
-            Base::Console().Error("addTangentLineEndpointAtBSplineKnotConstraint: This method "
+            Base::Console().error("addTangentLineEndpointAtBSplineKnotConstraint: This method "
                                   "cannot set tangent constraint at end knots of a B-spline. "
                                   "Please constrain the start/end points instead.\n");
             return -1;
@@ -3082,14 +3082,14 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     }
 
     if (Geoms[geoId1].type == Point || Geoms[geoId2].type == Point) {
-        Base::Console().Error("addAngleAtPointConstraint: one of the curves is a point!\n");
+        Base::Console().error("addAngleAtPointConstraint: one of the curves is a point!\n");
         return -1;
     }
 
     GCS::Curve* crv1 = getGCSCurveByGeoId(geoId1);
     GCS::Curve* crv2 = getGCSCurveByGeoId(geoId2);
     if (!crv1 || !crv2) {
-        Base::Console().Error("addAngleAtPointConstraint: getGCSCurveByGeoId returned NULL!\n");
+        Base::Console().error("addAngleAtPointConstraint: getGCSCurveByGeoId returned NULL!\n");
         return -1;
     }
 
@@ -3102,7 +3102,7 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     }
 
     if (pointId < 0 || pointId >= int(Points.size())) {
-        Base::Console().Error("addAngleAtPointConstraint: point index out of range.\n");
+        Base::Console().error("addAngleAtPointConstraint: point index out of range.\n");
         return -1;
     }
     GCS::Point& p = Points[pointId];
@@ -3110,7 +3110,7 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     if (e2e) {  // we need second point
         int pointId = getPointId(geoId2, pos2);
         if (pointId < 0 || pointId >= int(Points.size())) {
-            Base::Console().Error("addAngleAtPointConstraint: point index out of range.\n");
+            Base::Console().error("addAngleAtPointConstraint: point index out of range.\n");
             return -1;
         }
         p2 = &(Points[pointId]);
@@ -3798,7 +3798,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1,
     geoIdBnd = checkGeoId(geoIdBnd);
 
     if (Geoms[geoIdRay1].type == Point || Geoms[geoIdRay2].type == Point) {
-        Base::Console().Error("addSnellsLawConstraint: point is not a curve. Not applicable!\n");
+        Base::Console().error("addSnellsLawConstraint: point is not a curve. Not applicable!\n");
         return -1;
     }
 
@@ -3806,7 +3806,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1,
     GCS::Curve* ray2 = getGCSCurveByGeoId(geoIdRay2);
     GCS::Curve* boundary = getGCSCurveByGeoId(geoIdBnd);
     if (!ray1 || !ray2 || !boundary) {
-        Base::Console().Error("addSnellsLawConstraint: getGCSCurveByGeoId returned NULL!\n");
+        Base::Console().error("addSnellsLawConstraint: getGCSCurveByGeoId returned NULL!\n");
         return -1;
     }
 
@@ -3814,7 +3814,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1,
     int pointId2 = getPointId(geoIdRay2, posRay2);
     if (pointId1 < 0 || pointId1 >= int(Points.size()) || pointId2 < 0
         || pointId2 >= int(Points.size())) {
-        Base::Console().Error("addSnellsLawConstraint: point index out of range.\n");
+        Base::Console().error("addSnellsLawConstraint: point index out of range.\n");
         return -1;
     }
     GCS::Point& p1 = Points[pointId1];
@@ -4316,7 +4316,7 @@ bool Sketch::updateGeometry()
             ++i;
         }
         catch (Base::Exception& e) {
-            Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n", i, e.what());
+            Base::Console().error("Updating geometry: Error build geometry(%d): %s\n", i, e.what());
             return false;
         }
     }

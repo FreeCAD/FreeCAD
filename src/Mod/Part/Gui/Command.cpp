@@ -1144,7 +1144,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                     runCommand(Doc, str.toLatin1());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Cannot convert %s because %s.\n",
+                Base::Console().error("Cannot convert %s because %s.\n",
                     it->Label.getValue(), e.what());
             }
         }
@@ -1203,7 +1203,7 @@ void CmdPartReverseShape::activated(int iMsg)
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Cannot convert %s because %s.\n",
+                Base::Console().error("Cannot convert %s because %s.\n",
                     it->Label.getValue(), e.what());
             }
         }

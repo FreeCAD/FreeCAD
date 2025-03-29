@@ -246,7 +246,7 @@ PyMOD_INIT_FUNC(Part)
         OCCError = PyErr_NewException("Part.OCCError", Base::PyExc_FC_GeneralError, nullptr);
     }
     else {
-        Base::Console().Error("Can not inherit Part.OCCError form BaseFreeCADError.\n");
+        Base::Console().error("Can not inherit Part.OCCError form BaseFreeCADError.\n");
         OCCError = PyErr_NewException("Part.OCCError", PyExc_RuntimeError, nullptr);
     }
     Py_INCREF(OCCError);
@@ -575,7 +575,7 @@ PyMOD_INIT_FUNC(Part)
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    
+
     Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",10.0));
 
     Base::registerServiceImplementation<App::SubObjectPlacementProvider>(new AttacherSubObjectPlacement);

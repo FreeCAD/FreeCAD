@@ -238,7 +238,7 @@ void AutoSaver::timerEvent(QTimerEvent * event)
                 break;
             }
             catch (...) {
-                Base::Console().Error("Failed to auto-save document '%s'\n", it.first.c_str());
+                Base::Console().error("Failed to auto-save document '%s'\n", it.first.c_str());
             }
         }
     }

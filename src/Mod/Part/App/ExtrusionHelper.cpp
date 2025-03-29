@@ -450,10 +450,10 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
     }
     if (offsetShape.IsNull()) {
         if (isSecond)
-            Base::Console().Error("Extrusion: end face of tapered against extrusion is empty\n" \
+            Base::Console().error("Extrusion: end face of tapered against extrusion is empty\n" \
                 "This means most probably that the against taper angle is too large or small.\n");
         else
-            Base::Console().Error("Extrusion: end face of tapered along extrusion is empty\n" \
+            Base::Console().error("Extrusion: end face of tapered along extrusion is empty\n" \
                 "This means most probably that the along taper angle is too large or small.\n");
         Standard_Failure::Raise("Extrusion: end face of tapered extrusion is empty");
     }
@@ -472,10 +472,10 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
         // FIXME: Standard_Failure::Raise or App::DocumentObjectExecReturn don't output the message to the user
         result = TopoDS_Wire();
         if (isSecond)
-            Base::Console().Error("Extrusion: type of against extrusion end face is not supported.\n" \
+            Base::Console().error("Extrusion: type of against extrusion end face is not supported.\n" \
                 "This means most probably that the against taper angle is too large or small.\n");
         else
-            Base::Console().Error("Extrusion: type of along extrusion is not supported.\n" \
+            Base::Console().error("Extrusion: type of along extrusion is not supported.\n" \
                 "This means most probably that the along taper angle is too large or small.\n");
     }
 

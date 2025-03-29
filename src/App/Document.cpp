@@ -1132,7 +1132,7 @@ void Document::Restore(Base::XMLReader& reader)
 void DocumentP::checkStringHasher(const Base::XMLReader& reader)
 {
     if (reader.hasReadFailed("StringHasher.Table.txt")) {
-        Base::Console().Error(QT_TRANSLATE_NOOP(
+        Base::Console().error(QT_TRANSLATE_NOOP(
             "Notifications",
             "\nIt is recommended that the user right-click the root of "
             "the document and select Mark to recompute.\n"
@@ -1532,7 +1532,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
+            Base::Console().error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
         }
     }
     if (!testStatus(Status::Importing)) {
@@ -1579,7 +1579,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             pObj->setStatus(ObjectStatus::Restore, false);
 
             if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
-                Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result "
+                Base::Console().error("Object \"%s\" was subject to a partial restore. As a result "
                                       "geometry may have changed or be incomplete.\n",
                                       name.c_str());
                 reader.clearPartialRestoreDocumentObject();
@@ -2013,7 +2013,7 @@ private:
                     }
 
                     if (ext >= numberOfFiles + 10) {
-                        Base::Console().Error(
+                        Base::Console().error(
                             "File not saved: Cannot rename project file to backup file\n");
                         // throw Base::FileException("File not saved: Cannot rename project file to
                         // backup file", fi);
@@ -2324,7 +2324,7 @@ void Document::restore(const char* filename,
         Document::Restore(reader);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        Base::Console().error("Invalid Document.xml: %s\n", e.what());
         setStatus(Document::RestoreError, true);
     }
 
@@ -2342,7 +2342,7 @@ void Document::restore(const char* filename,
 
     if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
         setStatus(Document::PartialRestore, true);
-        Base::Console().Error("There were errors while loading the file. Some data might have been "
+        Base::Console().error("There were errors while loading the file. Some data might have been "
                               "modified or not recovered at all. Look above for more specific "
                               "information about the objects involved.\n");
     }
@@ -3096,7 +3096,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                 if (it->isError()) {
                     const char* text = getErrorDescription(it);
                     if (text) {
-                        Base::Console().Error("%s: %s\n", it->Label.getValue(), text);
+                        Base::Console().error("%s: %s\n", it->Label.getValue(), text);
                     }
                 }
             }

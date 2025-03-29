@@ -194,7 +194,7 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile file(qfs);
     if (!file.open(QFile::ReadOnly | QFile::Text))  {
-        Base::Console().Error("QGIFace could not read %s\n", fileSpec.c_str());
+        Base::Console().error("QGIFace could not read %s\n", fileSpec.c_str());
         return;
     }
     m_svgXML = file.readAll();
@@ -367,7 +367,7 @@ void QGIFace::buildPixHatch()
     svgImage.fill(Qt::transparent);
     QPainter painter(&svgImage);
     if (svgImage.isNull()) {
-        Base::Console().Error("QGIF::buildPixHatch - svgImage is null\n");
+        Base::Console().error("QGIF::buildPixHatch - svgImage is null\n");
         return;
     }
 
@@ -377,7 +377,7 @@ void QGIFace::buildPixHatch()
     QPixmap tilePixmap(round(wTile), round(hTile));
     tilePixmap  = QPixmap::fromImage(svgImage);
     if (tilePixmap.isNull()) {
-        Base::Console().Error("QGIF::buildPixHatch - tilePixmap is null\n");
+        Base::Console().error("QGIF::buildPixHatch - tilePixmap is null\n");
         return;
     }
 
@@ -457,7 +457,7 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec) const
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile file(qfs);
     if (!file.open(QFile::ReadOnly))  {
-        Base::Console().Error("QGIFace could not read %s\n", fileSpec.c_str());
+        Base::Console().error("QGIFace could not read %s\n", fileSpec.c_str());
         return pix;
     }
     QByteArray bytes = file.readAll();

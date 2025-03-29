@@ -140,7 +140,7 @@ bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, b
 
     double dist = DrawUtil::simpleMinDist(v, e);
     if (dist < 0.0) {
-        Base::Console().Error("DPS::isOnEdge - simpleMinDist failed: %.3f\n", dist);
+        Base::Console().error("DPS::isOnEdge - simpleMinDist failed: %.3f\n", dist);
         return false;
     } else if (dist < Precision::Confusion()) {
         const gp_Pnt pt = BRep_Tool::Pnt(v);                         //have to duplicate method 3 to get param
@@ -466,7 +466,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(std::vector<TopoDS_Edge>& 
         Standard_SStream errorStream;
         bopBuilder.DumpErrors(errorStream);
         const std::string &errorStr = errorStream.str();
-        Base::Console().Error("DrawProjectSplit::scrubEdges - OCC fuse failed with error(s):\n%s\n", errorStr.c_str());
+        Base::Console().error("DrawProjectSplit::scrubEdges - OCC fuse failed with error(s):\n%s\n", errorStr.c_str());
         return std::vector<TopoDS_Edge>();
     }
 

@@ -297,7 +297,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
             }
         }
         catch (...) {
-            Base::Console().Error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
+            Base::Console().error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
             return TopoDS_Shape();
         }
         if (checkShape(linkedObject, ts.getShape())) {
@@ -361,7 +361,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
             FCBRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone()) {
-                Base::Console().Error("SE - Fusion failed\n");
+                Base::Console().error("SE - Fusion failed\n");
                 return baseShape;
             }
             fusedShape = mkFuse.Shape();

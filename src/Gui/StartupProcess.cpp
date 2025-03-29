@@ -416,7 +416,7 @@ void StartupPostProcess::showMainWindow()
         setImportImageFormats();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Error in FreeCADGuiInit.py: %s\n", e.what());
+        Base::Console().error("Error in FreeCADGuiInit.py: %s\n", e.what());
         mainWindow->stopSplasher();
         throw;
 

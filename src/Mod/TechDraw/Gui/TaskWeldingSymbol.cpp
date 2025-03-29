@@ -96,7 +96,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if (!obj ||
         !obj->isDerivedFrom<TechDraw::DrawLeaderLine>() )  {
-        Base::Console().Error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
+        Base::Console().error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
         return;
     }
 
@@ -572,7 +572,7 @@ bool TaskWeldingSymbol::accept()
             updateTiles();
         }
         catch (...) {
-            Base::Console().Error("TWS::accept - failed to update symbol\n");
+            Base::Console().error("TWS::accept - failed to update symbol\n");
         }
 
         Gui::Command::updateActive();

@@ -1030,7 +1030,7 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
         }
         catch (Py::Exception& e) {
             e.clear();
-            Base::Console().Error("Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n");
+            Base::Console().error("Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n");
         }
     }
 }

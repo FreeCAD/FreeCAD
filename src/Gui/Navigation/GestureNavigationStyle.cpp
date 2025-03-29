@@ -1005,7 +1005,7 @@ void GestureNavigationStyle::onRollGesture(int direction)
     } catch (Base::PyException& exc) {
         exc.ReportException();
     } catch (...) {
-        Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
+        Base::Console().error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
    }
 
 }

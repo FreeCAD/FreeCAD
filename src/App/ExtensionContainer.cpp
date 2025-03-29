@@ -397,17 +397,17 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const
             ext->extensionSave(writer);
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
         catch (const std::exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().Error("%s\n", e);
+            Base::Console().error("%s\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error(
+            Base::Console().error(
                 "ExtensionContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
         }
 #endif
@@ -469,17 +469,17 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
             throw;  // re-throw
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
         catch (const std::exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().Error("%s\n", e);
+            Base::Console().error("%s\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown\n");
+            Base::Console().error("ExtensionContainer::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 

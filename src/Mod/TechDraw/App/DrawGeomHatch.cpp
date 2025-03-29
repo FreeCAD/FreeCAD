@@ -228,7 +228,7 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile(std::string file
 {
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n", fileSpec.c_str());
+        Base::Console().error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n", fileSpec.c_str());
         return std::vector<PATLineSpec>();
     }
     return PATLineSpec::getSpecsForPattern(fileSpec, myPattern);

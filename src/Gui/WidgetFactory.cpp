@@ -92,7 +92,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
     }
     catch (...) {
 #ifdef FC_DEBUG
-        Base::Console().Error("%s does not inherit from \"QWidget\"\n", sName);
+        Base::Console().error("%s does not inherit from \"QWidget\"\n", sName);
 #else
         Base::Console().Log("%s does not inherit from \"QWidget\"\n", sName);
 #endif
@@ -133,7 +133,7 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
     }
     else {
 #ifdef FC_DEBUG
-        Base::Console().Error("%s does not inherit from 'Gui::Dialog::PreferencePage'\n", sName);
+        Base::Console().error("%s does not inherit from 'Gui::Dialog::PreferencePage'\n", sName);
 #endif
         delete w;
         return nullptr;
@@ -172,7 +172,7 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     }
     catch (...) {
 #ifdef FC_DEBUG
-        Base::Console().Error("%s does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
+        Base::Console().error("%s does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
 #endif
         delete w;
         return nullptr;

@@ -840,7 +840,7 @@ void CmdSandboxMeshTestJob::activated(int)
     }
 
     if (meshes.empty()) {
-        Base::Console().Error("The mesh test failed to create a valid mesh.\n");
+        Base::Console().error("The mesh test failed to create a valid mesh.\n");
         return;
     }
 }
@@ -905,9 +905,9 @@ void CmdSandboxMeshTestRef::activated(int)
 
     Mesh::MeshObject* ptr = (Mesh::MeshObject*)mesh;
     if (!ptr)
-        Base::Console().Error("Object deleted\n");
+        Base::Console().error("Object deleted\n");
     if (num != mesh.getRefCount())
-        Base::Console().Error("Reference count is %d\n",mesh.getRefCount());
+        Base::Console().error("Reference count is %d\n",mesh.getRefCount());
 }
 
 bool CmdSandboxMeshTestRef::isActive(void)

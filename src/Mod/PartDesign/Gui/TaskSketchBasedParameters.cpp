@@ -242,7 +242,7 @@ QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* sectio
         return QString::fromUtf8(section->Label.getValue());
     }
     else if (subValues.empty()) {
-        Base::Console().Error("No valid subelement linked in %s\n", section->Label.getValue());
+        Base::Console().error("No valid subelement linked in %s\n", section->Label.getValue());
         return {};
     }
     else {

@@ -856,7 +856,7 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
     if (shapeBox.IsVoid()) {
         //this really shouldn't happen here as null shapes should have been caught
         //long before this
-        Base::Console().Error("DU::getWidthInDirection - shapeBox is void\n");
+        Base::Console().error("DU::getWidthInDirection - shapeBox is void\n");
         return 0.0;
     }
     shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);

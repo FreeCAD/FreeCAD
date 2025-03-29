@@ -201,7 +201,7 @@ int AssemblyObject::generateSimulation(App::DocumentObject* sim)
         mbdAssembly->runKINEMATIC();
     }
     catch (...) {
-        Base::Console().Error("Generation of simulation failed\n");
+        Base::Console().error("Generation of simulation failed\n");
         motions.clear();
         return -1;
     }

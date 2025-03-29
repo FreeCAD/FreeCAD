@@ -725,7 +725,7 @@ public:
     void warning(const char* pMsg, Args&&... args);
     /// Prints a error Message
     template<typename... Args>
-    void Error(const char* pMsg, Args&&... args);
+    void error(const char* pMsg, Args&&... args);
     /// Prints a log Message
     template<typename... Args>
     void Log(const char* pMsg, Args&&... args);
@@ -754,7 +754,7 @@ public:
     void TranslatedUserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a error Message with source indication
     template<typename... Args>
-    void Error(const std::string& notifier, const char* pMsg, Args&&... args);
+    void error(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
     void DeveloperError(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
@@ -1062,13 +1062,13 @@ void Base::ConsoleSingleton::TranslatedUserWarning(const std::string& notifier,
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Error(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::error(const char* pMsg, Args&&... args)
 {
-    Error(std::string(""), pMsg, std::forward<Args>(args)...);
+    error(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Error(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::error(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     send<LogStyle::Error>(notifier, pMsg, std::forward<Args>(args)...);
 }

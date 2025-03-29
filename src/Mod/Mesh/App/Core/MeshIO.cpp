@@ -1158,7 +1158,7 @@ bool MeshInput::LoadNastran(std::istream& input)
     for (const auto& tri : mTria) {
         for (int i : tri.second.iV) {
             if (mNode.find(i) == mNode.end()) {
-                Base::Console().Error(
+                Base::Console().error(
                     "CTRIA3 element refers to a node that does not exist, or could not be read.\n");
                 return false;
             }
@@ -1169,7 +1169,7 @@ bool MeshInput::LoadNastran(std::istream& input)
     for (const auto& quad : mQuad) {
         for (int i : quad.second.iV) {
             if (mNode.find(i) == mNode.end()) {
-                Base::Console().Error(
+                Base::Console().error(
                     "CQUAD4 element refers to a node that does not exist, or could not be read.\n");
                 return false;
             }

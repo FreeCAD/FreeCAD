@@ -793,7 +793,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
             }
             catch (const std::exception &e) {
                 if (!errs && isMainDoc)
@@ -801,7 +801,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
             }
             catch (...) {
                 if (errs) {
@@ -1896,7 +1896,7 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         throw Base::AccessViolation();
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        Base::Console().Error("SEH exception (%u): Division by zero\n", code);
+        Base::Console().error("SEH exception (%u): Division by zero\n", code);
         return;
     }
 
@@ -2359,7 +2359,7 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
         // Load the file and tokenize it
         std::ifstream ifs(vm["response-file"].as<std::string>().c_str());
         if (!ifs) {
-            Base::Console().Error("Could no open the response file\n");
+            Base::Console().error("Could no open the response file\n");
             std::stringstream str;
             str << "Could no open the response file: '"
                 << vm["response-file"].as<std::string>() << "'" << '\n';
@@ -2902,10 +2902,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
         }
         catch (...) {
-            Base::Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
 
@@ -2953,10 +2953,10 @@ void Application::processCmdLineFiles()
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
         }
         catch (...) {
-            Base::Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().error("Unknown exception while saving to file: %s \n", output.c_str());
         }
     }
 }
@@ -3024,7 +3024,7 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().Error("%s in file %s.\n"
+        Base::Console().error("%s in file %s.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["SystemParameter"].c_str());
         _pcSysParamMngr->CreateDocument();
@@ -3058,7 +3058,7 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().Error("%s in file %s.\n"
+        Base::Console().error("%s in file %s.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["UserParameter"].c_str());
         _pcUserParamMngr->CreateDocument();

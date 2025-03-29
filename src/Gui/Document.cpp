@@ -1722,7 +1722,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Base::Console().error("%s\n", e.what());
             }
         }
     }

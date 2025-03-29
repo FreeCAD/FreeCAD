@@ -59,7 +59,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_edgeName);
     if (!m_ce) {
-        Base::Console().Error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
         return;
     }
 
