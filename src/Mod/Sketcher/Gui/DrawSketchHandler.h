@@ -288,7 +288,7 @@ protected:
                                         const Base::Vector2d& Dir,
                                         AutoConstraint::TargetType type);
 
-    bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos);
+    bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
     void seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints,
                                      const Base::Vector2d& Dir);
