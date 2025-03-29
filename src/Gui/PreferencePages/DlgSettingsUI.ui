@@ -81,14 +81,44 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label3">
           <property name="text">
-           <string>Accent color 3</string>
+           <string>General UI Background Color</string>
           </property>
           <property name="buddy">
-           <cstring>ThemeAccentColor3</cstring>
+           <cstring>ThemeBackground</cstring>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
+         <widget class="QLabel" name="label4">
+          <property name="text">
+           <string>Menu color</string>
+          </property>
+          <property name="buddy">
+           <cstring>ThemeMenuColor</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label5">
+          <property name="text">
+           <string>First button color</string>
+          </property>
+          <property name="buddy">
+           <cstring>ThemeGradientColor1</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label6">
+          <property name="text">
+           <string>Second button color</string>
+          </property>
+          <property name="buddy">
+           <cstring>ThemeGradientColor2</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
          <widget class="QLabel" name="styleSheetLabel">
           <property name="text">
            <string>Style sheet (advanced):</string>
@@ -98,7 +128,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Overlay style sheet:</string>
@@ -135,7 +165,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::PrefColorButton" name="ThemeAccentColor3">
+         <widget class="Gui::PrefColorButton" name="ThemeBackground">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -143,7 +173,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>This color might be used by your theme to let you customize it.</string>
+           <string>This color is the background color of the UI, changing this will change the UI look. If using a light stylesheet you should use light colors. If you want to use dark colors switch to a dark stylesheet.</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -153,7 +183,7 @@
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ThemeAccentColor3</cstring>
+           <cstring>ThemeBackground</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Themes</cstring>
@@ -161,6 +191,84 @@
          </widget>
         </item>
         <item row="3" column="1">
+         <widget class="Gui::PrefColorButton" name="ThemeMenuColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>This color sets the menu color on top of the window. (File / Edit / view / etc)</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>85</red>
+            <green>123</green>
+            <blue>182</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThemeMenuColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Themes</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="Gui::PrefColorButton" name="ThemeGradientColor1">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>This color sets the button color, if the buttons use gradients as in the default stylesheets then this will be the top color.</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>85</red>
+            <green>123</green>
+            <blue>182</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThemeGradientColor1</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Themes</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="Gui::PrefColorButton" name="ThemeGradientColor2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>This color sets the button color, if the buttons use gradients as in the default stylesheets then this will be the bottom color.</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>85</red>
+            <green>123</green>
+            <blue>182</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThemeGradientColor2</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Themes</cstring>
+          </property>
+         </widget>
+        </item>
+		 <item row="6" column="1">
          <widget class="Gui::PrefComboBox" name="StyleSheets">
           <property name="toolTip">
            <string>Style sheet how user interface will look like</string>
@@ -176,7 +284,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="7" column="1">
          <widget class="Gui::PrefComboBox" name="OverlayStyleSheets">
           <property name="prefPath" stdset="0">
            <cstring>MainWindow</cstring>
@@ -534,7 +642,10 @@
  <tabstops>
   <tabstop>ThemeAccentColor1</tabstop>
   <tabstop>ThemeAccentColor2</tabstop>
-  <tabstop>ThemeAccentColor3</tabstop>
+  <tabstop>ThemeBackground</tabstop>
+  <tabstop>ThemeMenuColor</tabstop>
+  <tabstop>ThemeGradientColor1</tabstop>
+  <tabstop>ThemeGradientColor2</tabstop>
   <tabstop>StyleSheets</tabstop>
   <tabstop>OverlayStyleSheets</tabstop>
   <tabstop>iconSizeSpinBox</tabstop>

@@ -221,7 +221,10 @@ void ThemeSelectorWidget::themeChanged(Theme newTheme)
     if (longAccentColor1 == nonExistentColor) {
         hGrp->SetUnsigned("ThemeAccentColor1", defaultAccentColor);
         hGrp->SetUnsigned("ThemeAccentColor2", defaultAccentColor);
-        hGrp->SetUnsigned("ThemeAccentColor3", defaultAccentColor);
+        hGrp->SetUnsigned("ThemeBackground", defaultAccentColor);
+        hGrp->SetUnsigned("ThemeMenuColor", defaultAccentColor);
+        hGrp->SetUnsigned("ThemeGradientColor1", defaultAccentColor);
+        hGrp->SetUnsigned("ThemeGradientColor2", defaultAccentColor);
     }
 }
 
