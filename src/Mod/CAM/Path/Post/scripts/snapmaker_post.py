@@ -540,11 +540,11 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                         position[axis] += float(value)
                     else:
                         position[axis] = float(value)
-                    extrema[axis][0] = max(extrema[axis][0], position[axis])
-                    extrema[axis][1] = min(extrema[axis][1], position[axis])
+                    extrema[axis][0] = min(extrema[axis][0], position[axis])
+                    extrema[axis][1] = max(extrema[axis][1], position[axis])
 
         for axis in extrema.keys():
-            if abs(extrema[axis][0] - extrema[axis][1]) > self.values["BOUNDARIES"][axis]:
+            if abs(extrema[axis][1] - extrema[axis][0]) > self.values["BOUNDARIES"][axis]:
                 # gcode.insert(0, f';WARNING: Boundary check: job exceeds machine limit on {axis} axis{self.values["END_OF_LINE_CHARACTERS"]}')
                 FreeCAD.Console.PrintWarning(
                     f"Boundary check: job exceeds machine limit on {axis} axis\n"
