@@ -284,7 +284,7 @@ private:
         }
 
         if (sortedWires.empty()) {
-            Base::Console().Warning("ATDP::edgeWalker: Wire detection failed\n");
+            Base::Console().warning("ATDP::edgeWalker: Wire detection failed\n");
             return Py::None();
         }
         else {
@@ -343,7 +343,7 @@ private:
         }
 
         if(sortedWires.empty()) {
-            Base::Console().Warning("ATDP::findOuterWire: Outline wire detection failed\n");
+            Base::Console().warning("ATDP::findOuterWire: Outline wire detection failed\n");
             return Py::None();
         } else {
             outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
@@ -408,7 +408,7 @@ private:
         }
 
         if(sortedWires.empty()) {
-            Base::Console().Warning("ATDP::findShapeOutline: Outline wire detection failed\n");
+            Base::Console().warning("ATDP::findShapeOutline: Outline wire detection failed\n");
             return Py::None();
         } else {
             outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));

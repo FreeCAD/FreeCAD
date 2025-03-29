@@ -582,7 +582,7 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
 
     if (lastHasPartialRedundancies) {
-        Base::Console().Warning(
+        Base::Console().warning(
             this->getFullLabel(),
             QT_TRANSLATE_NOOP("Notifications",
                               "The Sketch has partially redundant constraints!") "\n");
@@ -4514,7 +4514,7 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
         }
     }
     catch (Base::Exception& e) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "Probably, there is a circular reference in the document. Error: %s\n", e.what());
         return true;// prohibiting this reference won't remove the problem anyway...
     }
@@ -4586,7 +4586,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
         }
     }
     catch (Base::Exception& e) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "Probably, there is a circular reference in the document. Error: %s\n", e.what());
         return true;// prohibiting this reference won't remove the problem anyway...
     }
@@ -8293,12 +8293,12 @@ void SketchObject::validateExternalLinks()
         }
         catch (Base::IndexError& indexError) {
             removeBadLink = true;
-            Base::Console().Warning(
+            Base::Console().warning(
                 this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
         }
         catch (Base::ValueError& valueError) {
             removeBadLink = true;
-            Base::Console().Warning(
+            Base::Console().warning(
                 this->getFullLabel(), (valueError.getMessage() + "\n").c_str());
         }
         catch (Standard_Failure&) {
@@ -11394,7 +11394,7 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
     }
     catch (Base::Exception& e) {
         // failure to determine tangency type is not a big deal, so a warning.
-        Base::Console().Warning("Error in AutoLockTangency. %s \n", e.what());
+        Base::Console().warning("Error in AutoLockTangency. %s \n", e.what());
         return false;
     }
     return true;

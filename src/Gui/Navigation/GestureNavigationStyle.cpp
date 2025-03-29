@@ -702,7 +702,7 @@ public:
             ev.flags->processed = true;
             if (ev.mbstate() == 0){
                 //a fail-safe: if gesture end event doesn't arrive, a mouse click should be able to stop this mode.
-                Base::Console().Warning("leaving gesture state by mouse-click (fail-safe)\n");
+                Base::Console().warning("leaving gesture state by mouse-click (fail-safe)\n");
                 return transit<NS::IdleState>();
             }
         }

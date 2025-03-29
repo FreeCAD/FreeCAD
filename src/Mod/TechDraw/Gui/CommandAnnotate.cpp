@@ -1359,7 +1359,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
 
                 std::string delTag = tdv->getCosmeticTag();
                 if (delTag.empty())
-                    Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
+                    Base::Console().warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
                 cv2Delete.push_back(delTag);
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),

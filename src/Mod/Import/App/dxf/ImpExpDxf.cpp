@@ -241,7 +241,7 @@ void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge(), "Arc");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate arc of circle\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate arc of circle\n");
     }
 }
 
@@ -262,7 +262,7 @@ void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(circle).Edge(), "Circle");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate circle\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate circle\n");
     }
 }
 
@@ -379,7 +379,7 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
         Collector->AddObject(BRepBuilderAPI_MakeEdge(geom).Edge(), "Spline");
     }
     catch (const Standard_Failure&) {
-        Base::Console().Warning("ImpExpDxf - failed to create bspline\n");
+        Base::Console().warning("ImpExpDxf - failed to create bspline\n");
     }
 }
 
@@ -404,7 +404,7 @@ void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(ellipse).Edge(), "Ellipse");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate ellipse\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate ellipse\n");
     }
 }
 
@@ -896,7 +896,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             exportLine(adapt);
         }
         else {
-            Base::Console().Warning("ImpExpDxf - unknown curve type: %d\n",
+            Base::Console().warning("ImpExpDxf - unknown curve type: %d\n",
                                     static_cast<int>(adapt.GetType()));
         }
     }

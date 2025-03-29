@@ -719,10 +719,10 @@ public:
 
     /// Prints a Message
     template<typename... Args>
-    void Message(const char* pMsg, Args&&... args);
+    void message(const char* pMsg, Args&&... args);
     /// Prints a warning Message
     template<typename... Args>
-    void Warning(const char* pMsg, Args&&... args);
+    void warning(const char* pMsg, Args&&... args);
     /// Prints a error Message
     template<typename... Args>
     void Error(const char* pMsg, Args&&... args);
@@ -742,10 +742,10 @@ public:
 
     /// Prints a Message with source indication
     template<typename... Args>
-    void Message(const std::string& notifier, const char* pMsg, Args&&... args);
+    void message(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a warning Message with source indication
     template<typename... Args>
-    void Warning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void warning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
     void DeveloperWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
@@ -1005,25 +1005,25 @@ public:
  *  @see UserTranslatedNotification
  */
 template<typename... Args>
-void Base::ConsoleSingleton::Message(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::message(const char* pMsg, Args&&... args)
 {
     message(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Message(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::message(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     send<LogStyle::Message>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Warning(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::warning(const char* pMsg, Args&&... args)
 {
-    Warning(std::string(""), pMsg, std::forward<Args>(args)...);
+    warning(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Warning(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::warning(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     send<LogStyle::Warning>(notifier, pMsg, std::forward<Args>(args)...);
 }

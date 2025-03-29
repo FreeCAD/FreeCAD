@@ -305,12 +305,12 @@ gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges, TopoDS_
     for (auto& edge : inEdges) {
         BRepExtrema_DistShapeShape extss(edge, boundary);
         if (!extss.IsDone()) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "DDH::findClosestPoint - BRepExtrema_DistShapeShape failed - 1\n");
             continue;
         }
         if (extss.NbSolution() == 0) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "DDH::findClosestPoint - BRepExtrema_DistShapeShape failed - 2\n");
             continue;
         }

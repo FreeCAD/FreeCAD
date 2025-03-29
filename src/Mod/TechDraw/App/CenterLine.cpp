@@ -190,9 +190,9 @@ CenterLine* CenterLine::CenterLineBuilder(const DrawViewPart* partFeat,
         verts = subNames;
     }
     if ((ends.first).IsEqual(ends.second, Precision::Confusion())) {
-        Base::Console().Warning("CenterLineBuilder - endpoints are equal: %s\n",
+        Base::Console().warning("CenterLineBuilder - endpoints are equal: %s\n",
                               DrawUtil::formatVector(ends.first).c_str());
-        Base::Console().Warning("CenterLineBuilder - check V/H/A and/or Flip parameters\n");
+        Base::Console().warning("CenterLineBuilder - check V/H/A and/or Flip parameters\n");
         return nullptr;
     }
 
@@ -251,7 +251,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(const TechDraw::DrawViewPart* p
     Base::Vector3d p1 = ends.first;
     Base::Vector3d p2 = ends.second;
     if (p1.IsEqual(p2, 0.00001)) {
-        Base::Console().Warning("Centerline endpoints are equal. Could not draw.\n");
+        Base::Console().warning("Centerline endpoints are equal. Could not draw.\n");
         //what to do here?  //return current geom?
         return m_geometry;
     }
@@ -314,7 +314,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledAndRotatedGeometry(TechDraw::DrawViewPar
     Base::Vector3d p1 = ends.first;
     Base::Vector3d p2 = ends.second;
     if (p1.IsEqual(p2, 0.00001)) {
-        Base::Console().Warning("Centerline endpoints are equal. Could not draw.\n");
+        Base::Console().warning("Centerline endpoints are equal. Could not draw.\n");
         //what to do here?  //return current geom?
         return m_geometry;
     }
@@ -466,7 +466,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(const DrawVi
 {
 //    Base::Console().message("CL::calcEndPoints()\n");
     if (faceNames.empty()) {
-        Base::Console().Warning("CL::calcEndPoints - no faces!\n");
+        Base::Console().warning("CL::calcEndPoints - no faces!\n");
         return std::pair<Base::Vector3d, Base::Vector3d>();
     }
 
@@ -593,7 +593,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(const 
 //    Base::Console().message("CL::calc2Lines() - mode: %d flip: %d edgeNames: %d\n", mode, flip, edgeNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (edgeNames.empty()) {
-        Base::Console().Warning("CL::calcEndPoints2Lines - no edges!\n");
+        Base::Console().warning("CL::calcEndPoints2Lines - no edges!\n");
         return result;
     }
 
@@ -710,7 +710,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(const
 {
 //    Base::Console().message("CL::calc2Points() - mode: %d\n", mode);
     if (vertNames.empty()) {
-        Base::Console().Warning("CL::calcEndPoints2Points - no points!\n");
+        Base::Console().warning("CL::calcEndPoints2Points - no points!\n");
         return std::pair<Base::Vector3d, Base::Vector3d>();
     }
 
@@ -1011,7 +1011,7 @@ void CenterLine::Restore(Base::XMLReader &reader)
         aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));
         m_geometry = aoc;
     } else {
-        Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+        Base::Console().warning("CL::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
     }
 
     // older documents may not have the LineNumber element, so we need to check the

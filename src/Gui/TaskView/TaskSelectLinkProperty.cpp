@@ -75,7 +75,7 @@ TaskSelectLinkProperty::TaskSelectLinkProperty(const char* sFilter,
         LinkList = dynamic_cast<App::PropertyLinkList*>(prop);
     }
     else {
-        Base::Console().Warning("Unknown Link property type in "
+        Base::Console().warning("Unknown Link property type in "
                                 "Gui::TaskView::TaskSelectLinkProperty::TaskSelectLinkProperty()");
     }
 

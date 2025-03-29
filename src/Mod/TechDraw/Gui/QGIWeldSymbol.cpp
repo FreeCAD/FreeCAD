@@ -123,7 +123,7 @@ void QGIWeldSymbol::updateView(bool update)
 
     TechDraw::DrawWeldSymbol *feature = getFeature();
     if (!feature) {
-        Base::Console().Warning("QGIWS::updateView - no feature!\n");
+        Base::Console().warning("QGIWS::updateView - no feature!\n");
         return;
     }
 

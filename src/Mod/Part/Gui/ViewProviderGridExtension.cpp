@@ -300,7 +300,7 @@ void GridExtensionP::createGridPart(int numberSubdiv, bool subDivLines, bool div
 
     if (nlines > 2000) {
         if(!isTooManySegmentsNotified) {
-            Base::Console().Warning("The grid is too dense, so it is being disabled. Consider zooming in or changing the grid configuration\n");
+            Base::Console().warning("The grid is too dense, so it is being disabled. Consider zooming in or changing the grid configuration\n");
             isTooManySegmentsNotified = true;
         }
 

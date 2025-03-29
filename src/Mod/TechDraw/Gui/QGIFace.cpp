@@ -320,7 +320,7 @@ void QGIFace::buildSvgHatch()
                          -overlayWidth + ih*hTile + getHatchOffset().y);
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("SVG tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
+                Base::Console().warning("SVG tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
                 break;
             }
         }
@@ -403,7 +403,7 @@ void QGIFace::buildPixHatch()
                                QRectF(0, 0, wTile, hTile));  //source rect
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("Pixmap tile count exceeded: %ld\n",tileCount);
+                Base::Console().warning("Pixmap tile count exceeded: %ld\n",tileCount);
                 break;
             }
         }

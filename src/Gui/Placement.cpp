@@ -264,7 +264,7 @@ void PlacementHandler::applyPlacement(const Base::Placement& p, bool incremental
         }
     }
     else {
-        Base::Console().Warning("No object selected.\n");
+        Base::Console().warning("No object selected.\n");
     }
 }
 
@@ -315,7 +315,7 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
             tryRecompute(document);
         }
         else {
-            Base::Console().Warning("No object selected.\n");
+            Base::Console().warning("No object selected.\n");
         }
     }
 }
@@ -707,7 +707,7 @@ void Placement::onSelectedVertexClicked()
     ui->zCnt->setValue(center.z);
 
     if (!success) {
-        Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
+        Base::Console().warning("Placement selection error.  Select either 1 or 2 points.\n");
         QMessageBox msgBox(this);
         msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
 face, or edge.  If on a face or edge the point used will be the point at the mouse position along \

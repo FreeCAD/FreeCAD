@@ -955,7 +955,7 @@ void Command::printConflictingAccelerators() const
 {
     auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
     if (cmd)
-        Base::Console().Warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
+        Base::Console().warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
 }
 
 Action * Command::createAction()
@@ -1880,7 +1880,7 @@ bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
 #ifdef FC_DEBUG
         Base::Console().Error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
 #else
-        Base::Console().Warning("Unknown command '%s'\n",Name);
+        Base::Console().warning("Unknown command '%s'\n",Name);
 #endif
         return false;
     }

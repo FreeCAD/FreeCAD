@@ -2803,7 +2803,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
         }
     }
 
-    Base::Console().Warning("Perpendicular constraints between %s and %s are not supported.\n",
+    Base::Console().warning("Perpendicular constraints between %s and %s are not supported.\n",
                             nameByType(Geoms[geoId1].type),
                             nameByType(Geoms[geoId2].type));
     return -1;
@@ -3638,7 +3638,7 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         }
     }
 
-    Base::Console().Warning("Equality constraints between %s and %s are not supported.\n",
+    Base::Console().warning("Equality constraints between %s and %s are not supported.\n",
                             nameByType(Geoms[geoId1].type),
                             nameByType(Geoms[geoId2].type));
     return -1;
@@ -4646,7 +4646,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
         if (!valid_solution) {
             GCSsys.undoSolution();
             updateGeometry();
-            Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
+            Base::Console().warning("Invalid solution from %s solver.\n", solvername.c_str());
         }
         else {
             updateNonDrivingConstraints();
@@ -4706,7 +4706,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
                 if (!valid_solution) {
                     GCSsys.undoSolution();
                     updateGeometry();
-                    Base::Console().Warning("Invalid solution from %s solver.\n",
+                    Base::Console().warning("Invalid solution from %s solver.\n",
                                             solvername.c_str());
                     ret = GCS::SuccessfulSolutionInvalid;
                 }

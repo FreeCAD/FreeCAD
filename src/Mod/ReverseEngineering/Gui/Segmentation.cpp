@@ -211,7 +211,7 @@ void Segmentation::accept()
                         }
                         else {
                             failures.push_back(feaSegm);
-                            Base::Console().Warning("Failed to create face from %s\n",
+                            Base::Console().warning("Failed to create face from %s\n",
                                                     feaSegm->Label.getValue());
                         }
                     }

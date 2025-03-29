@@ -574,7 +574,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(ProjDi
     Base::Vector3d projDir, rotVec;
     DrawProjGroupItem* anch = getAnchor();
     if (!anch) {
-        Base::Console().Warning("DPG::getDirsFromFront - %s - No Anchor!\n", Label.getValue());
+        Base::Console().warning("DPG::getDirsFromFront - %s - No Anchor!\n", Label.getValue());
         throw Base::RuntimeError("Project Group missing Anchor projection item");
     }
 
@@ -761,7 +761,7 @@ int DrawProjGroup::getViewIndex(const char* viewTypeCStr) const
             projType = dp->ProjectionType.getValueAsString();
         }
         else {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "DPG: %s - can not find parent page. Using default Projection Type. (1)\n",
                 getNameInDocument());
             int projConv = getDefProjConv();
@@ -837,7 +837,7 @@ void DrawProjGroup::arrangeViewPointers(
         else {
             Base::Console().Error("DPG:arrangeViewPointers - %s - DPG is not on a page!\n",
                                   getNameInDocument());
-            Base::Console().Warning(
+            Base::Console().warning(
                 "DPG:arrangeViewPointers - using system default Projection Type\n",
                 getNameInDocument());
             int projConv = getDefProjConv();
@@ -850,7 +850,7 @@ void DrawProjGroup::arrangeViewPointers(
 
     // Iterate through views and populate viewPtrs
     if (strcmp(projType, "Third Angle") != 0 && strcmp(projType, "First Angle") != 0) {
-        Base::Console().Warning("DPG: %s - unknown Projection convention: %s\n",
+        Base::Console().warning("DPG: %s - unknown Projection convention: %s\n",
                                 getNameInDocument(), projType);
         throw Base::ValueError(
             "Unknown Projection convention in DrawProjGroup::arrangeViewPointers");
@@ -908,7 +908,7 @@ void DrawProjGroup::arrangeViewPointers(
                 viewPtrs[thirdAngle ? 9 : 0] = oView;
             }
             else {
-                Base::Console().Warning("DPG: %s - unknown view type: %s. \n",
+                Base::Console().warning("DPG: %s - unknown view type: %s. \n",
                                         getNameInDocument(), viewTypeCStr);
                 throw Base::TypeError(
                     "Unknown view type in DrawProjGroup::arrangeViewPointers.");

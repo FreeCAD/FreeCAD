@@ -450,7 +450,7 @@ void SelectionSingleton::notify(SelectionChanges &&Chng)
             }
             catch (const boost::exception&) {
                 // reported by code analyzers
-                Base::Console().Warning("notify: Unexpected boost exception\n");
+                Base::Console().warning("notify: Unexpected boost exception\n");
             }
         }
         NotificationQueue.pop_front();
@@ -603,7 +603,7 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
         }
         catch (const boost::exception&) {
             // reported by code analyzers
-            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+            Base::Console().warning("slotSelectionChanged: Unexpected boost exception\n");
         }
     }
     else {
@@ -613,7 +613,7 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
         }
         catch (const boost::exception&) {
             // reported by code analyzers
-            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+            Base::Console().warning("slotSelectionChanged: Unexpected boost exception\n");
         }
     }
 }

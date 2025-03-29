@@ -537,7 +537,7 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
                     fi.filePath().c_str(),obj->Label.getValue());
             }
             else {
-                Base::Console().Warning("Loaded BRep file '%s' seems to be empty\n", fi.filePath().c_str());
+                Base::Console().warning("Loaded BRep file '%s' seems to be empty\n", fi.filePath().c_str());
             }
         }
     }
@@ -558,7 +558,7 @@ void PropertyPartShape::loadFromStream(Base::Reader &reader)
     }
     catch (const std::exception&) {
         if (!reader.eof())
-            Base::Console().Warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
+            Base::Console().warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
     }
 }
 

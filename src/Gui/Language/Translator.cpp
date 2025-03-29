@@ -409,7 +409,7 @@ void Translator::enableDecimalPointConversion(bool on)
     }
 #if FC_DEBUG
     if (on && decimalPointConverter) {
-        Base::Console().Instance().Warning("Translator: decimal point converter is already installed\n");
+        Base::Console().Instance().warning("Translator: decimal point converter is already installed\n");
     }
 #endif
     if (on && !decimalPointConverter) {

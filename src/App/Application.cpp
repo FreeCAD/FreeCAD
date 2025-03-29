@@ -658,7 +658,7 @@ public:
             }
             catch (const boost::exception&) {
                 // reported by code analyzers
-                Base::Console().Warning("~DocOpenGuard: Unexpected boost exception\n");
+                Base::Console().warning("~DocOpenGuard: Unexpected boost exception\n");
             }
         }
     }
@@ -1085,7 +1085,7 @@ Application::TransactionSignaller::~TransactionSignaller() {
         }
         catch (const boost::exception&) {
             // reported by code analyzers
-            Base::Console().Warning("~TransactionSignaller: Unexpected boost exception\n");
+            Base::Console().warning("~TransactionSignaller: Unexpected boost exception\n");
         }
     }
 }
@@ -1695,7 +1695,7 @@ void Application::destruct()
 {
     // saving system parameter
     if (_pcSysParamMngr->IgnoreSave()) {
-        Base::Console().Warning("Discard system parameter\n");
+        Base::Console().warning("Discard system parameter\n");
     }
     else {
         Base::Console().Log("Saving system parameter...\n");
@@ -1704,7 +1704,7 @@ void Application::destruct()
     }
     // saving the User parameter
     if (_pcUserParamMngr->IgnoreSave()) {
-        Base::Console().Warning("Discard user parameter\n");
+        Base::Console().warning("Discard user parameter\n");
     }
     else {
         Base::Console().Log("Saving user parameter...\n");
@@ -2640,7 +2640,7 @@ void Application::initConfig(int argc, char ** argv)
     if (!pythonpath.empty())
         mConfig["PythonSearchPath"] = pythonpath;
     else
-        Base::Console().Warning("Encoding of Python paths failed\n");
+        Base::Console().warning("Encoding of Python paths failed\n");
 
     // Handle the options that have impact on the init process
     processProgramOptions(vm, mConfig);
@@ -2894,7 +2894,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
-                    Base::Console().Warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
         }
@@ -2949,7 +2949,7 @@ void Application::processCmdLineFiles()
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Base::Console().Warning("File format not supported: %s \n", output.c_str());
+                Base::Console().warning("File format not supported: %s \n", output.c_str());
             }
         }
         catch (const Base::Exception& e) {
@@ -3015,7 +3015,7 @@ void Application::LoadParameters()
         if (_pcSysParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Base::Console().Warning("   Parameter does not exist, writing initial one\n");
+                Base::Console().warning("   Parameter does not exist, writing initial one\n");
                 Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
                                   "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
                                   "   configuration.\n");
@@ -3049,7 +3049,7 @@ void Application::LoadParameters()
 
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Base::Console().Warning("   User settings do not exist, writing initial one\n");
+                Base::Console().warning("   User settings do not exist, writing initial one\n");
                 Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
                                   "   or your configuration was deleted or moved. The system defaults\n"
                                   "   will be automatically generated for you.\n");

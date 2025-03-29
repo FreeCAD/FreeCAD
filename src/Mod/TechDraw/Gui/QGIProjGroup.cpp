@@ -195,7 +195,7 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 //QGIPG does not rotate. Only individual views rotate
 void QGIProjGroup::rotateView()
 {
-    Base::Console().Warning("QGIPG: Projection Groups do not rotate. Change ignored\n");
+    Base::Console().warning("QGIPG: Projection Groups do not rotate. Change ignored\n");
 }
 
 void QGIProjGroup::drawBorder()

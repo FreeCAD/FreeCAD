@@ -77,7 +77,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
     // this widget class is not registered
     if (!w) {
 #ifdef FC_DEBUG
-        Base::Console().Warning("\"%s\" is not registered\n", sName);
+        Base::Console().warning("\"%s\" is not registered\n", sName);
 #else
         Base::Console().Log("\"%s\" is not registered\n", sName);
 #endif
@@ -119,7 +119,7 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
     // this widget class is not registered
     if (!w) {
 #ifdef FC_DEBUG
-        Base::Console().Warning("Cannot create an instance of \"%s\"\n", sName);
+        Base::Console().warning("Cannot create an instance of \"%s\"\n", sName);
 #else
         Base::Console().Log("Cannot create an instance of \"%s\"\n", sName);
 #endif

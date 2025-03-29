@@ -382,7 +382,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
         isInnerWire[0] = false;
         checklist[0] = false;
         --numCheckWires;
-        Base::Console().Warning("Extrusion: could not determine what structure is the outer one.\n\
+        Base::Console().warning("Extrusion: could not determine what structure is the outer one.\n\
                                  The first input one will now be taken as outer one.\n");
     }
 
@@ -399,7 +399,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
             }
             ++i;
         }
-        Base::Console().Warning("Extrusion: too many self-intersection structures!\n\
+        Base::Console().warning("Extrusion: too many self-intersection structures!\n\
                                  Impossible to determine what structure is an inner one.\n\
                                  All undeterminable structures will therefore be taken as outer ones.\n");
     }

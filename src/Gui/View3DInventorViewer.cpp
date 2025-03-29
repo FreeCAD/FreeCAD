@@ -624,9 +624,9 @@ void View3DInventorViewer::init()
         this->grabGesture(Qt::PanGesture);
         this->grabGesture(Qt::PinchGesture);
     } catch (Base::Exception &e) {
-        Base::Console().Warning("Failed to set up gestures. Error: %s\n", e.what());
+        Base::Console().warning("Failed to set up gestures. Error: %s\n", e.what());
     } catch (...) {
-        Base::Console().Warning("Failed to set up gestures. Unknown error.\n");
+        Base::Console().warning("Failed to set up gestures. Unknown error.\n");
     }
 
     //create the cursors
@@ -1019,11 +1019,11 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
             Py::Object py = Py::type(e);
             if (py.isString()) {
                 Py::String str(py);
-                Base::Console().Warning("%s\n", str.as_std_string("utf-8").c_str());
+                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
             }
             else {
                 Py::String str(py.repr());
-                Base::Console().Warning("%s\n", str.as_std_string("utf-8").c_str());
+                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
             }
             // Prints message to console window if we are in interactive mode
             PyErr_Print();
@@ -2215,7 +2215,7 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
 
     const QOpenGLContext* context = QOpenGLContext::currentContext();
     if (!context) {
-        Base::Console().Warning("imageFromFramebuffer failed because no context is active\n");
+        Base::Console().warning("imageFromFramebuffer failed because no context is active\n");
         return;
     }
 
@@ -3573,7 +3573,7 @@ void View3DInventorViewer::alignToSelection()
         // Convert to global coordinates
         globalRotation.multVec(alignmentZ, alignmentZ);
         globalRotation.multVec(alignmentX, alignmentX);
-        
+
         const auto cameraOrientation = getCameraOrientation();
 
         auto directionZ = Base::convertTo<SbVec3f>(alignmentZ);
@@ -3603,18 +3603,18 @@ void View3DInventorViewer::alignToSelection()
         if (axis.dot(directionZ) < 0 && angle != 0) {
             angle *= -1;
         }
-        
+
         using std::numbers::pi;
 
         // Make angle positive
         if (angle < 0) {
             angle += 2 * pi;
         }
-        
+
         // Find the angle to rotate to the nearest horizontal or vertical alignment with directionX.
         // f is a small value used to get more deterministic behavior when the camera is at directionX +- 45 degrees.
         const float f = 0.00001F;
-        
+
         if (angle <= pi/4 + f) {
             angle = 0;
         }
@@ -3640,7 +3640,7 @@ void View3DInventorViewer::alignToSelection()
             directionY[0],  directionY[1],  directionY[2],  0,
             directionZ[0],  directionZ[1],  directionZ[2],  0,
             0,              0,              0,              1));
-        
+
         setCameraOrientation(orientation);
     }
 }
@@ -4293,7 +4293,7 @@ void View3DInventorViewer::removeEventCallback(SoType eventtype, SoEventCallback
 ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 {
     if (!guiDocument) {
-        Base::Console().Warning("View3DInventorViewer::getViewProviderByPath: No document set\n");
+        Base::Console().warning("View3DInventorViewer::getViewProviderByPath: No document set\n");
         return nullptr;
     }
     return guiDocument->getViewProviderByPathFromHead(path);
@@ -4302,7 +4302,7 @@ ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) const
 {
     if (!guiDocument) {
-        Base::Console().Warning("View3DInventorViewer::getViewProviderByPathFromTail: No document set\n");
+        Base::Console().warning("View3DInventorViewer::getViewProviderByPathFromTail: No document set\n");
         return nullptr;
     }
     return guiDocument->getViewProviderByPathFromTail(path);
@@ -4311,7 +4311,7 @@ ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) 
 std::vector<ViewProvider*> View3DInventorViewer::getViewProvidersOfType(const Base::Type& typeId) const
 {
     if (!guiDocument) {
-        Base::Console().Warning("View3DInventorViewer::getViewProvidersOfType: No document set\n");
+        Base::Console().warning("View3DInventorViewer::getViewProvidersOfType: No document set\n");
         return {};
     }
     return guiDocument->getViewProvidersOfType(typeId);

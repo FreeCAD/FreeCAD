@@ -505,7 +505,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                                       obj->Label.getValue());
             }
             else {
-                Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n",
+                Base::Console().warning("Loaded Dataset file '%s' seems to be empty\n",
                                         fi.filePath().c_str());
             }
         }

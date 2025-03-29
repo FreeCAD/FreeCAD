@@ -328,7 +328,7 @@ void QGILeaderLine::updateView(bool update)
     Q_UNUSED(update);
     auto featLeader(dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()));
     if (!featLeader) {
-        Base::Console().Warning("QGILL::updateView - no feature!\n");
+        Base::Console().warning("QGILL::updateView - no feature!\n");
         return;
     }
 
@@ -505,7 +505,7 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
     }
 
     if (qPoints.empty()) {
-        Base::Console().Warning("QGILeaderLine::getWayPointsFromFeature - no points\n");
+        Base::Console().warning("QGILeaderLine::getWayPointsFromFeature - no points\n");
     }
     return qPoints;
 }

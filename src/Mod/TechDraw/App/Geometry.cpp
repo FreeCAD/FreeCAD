@@ -1760,7 +1760,7 @@ TopoDS_Face GeometryUtils::makePerforatedFace(FacePtr bigCheese,  const std::vec
         faceShape = Part::FaceMakerCheese::makeFace(cheeseIngredients);
     }
     catch (const Standard_Failure&) {
-        Base::Console().Warning("Area - could not make holes in face\n");
+        Base::Console().warning("Area - could not make holes in face\n");
         return flippedFace;
     }
 

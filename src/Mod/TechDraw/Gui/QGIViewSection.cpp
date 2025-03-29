@@ -118,7 +118,7 @@ void QGIViewSection::drawSectionFace()
                 }
             }
         } else {
-            Base::Console().Warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
+            Base::Console().warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
                                     section->CutSurfaceDisplay.getValue());
         }
 

@@ -802,7 +802,7 @@ PyObject* ApplicationPy::sSendActiveView(PyObject * /*self*/, PyObject *args)
     const char* ppReturn = nullptr;
     if (!Application::Instance->sendMsgToActiveView(psCommandStr,&ppReturn)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+            Base::Console().warning("Unknown view command: %s\n",psCommandStr);
         }
     }
 
@@ -826,7 +826,7 @@ PyObject* ApplicationPy::sSendFocusView(PyObject * /*self*/, PyObject *args)
     const char* ppReturn = nullptr;
     if (!Application::Instance->sendMsgToFocusView(psCommandStr,&ppReturn)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+            Base::Console().warning("Unknown view command: %s\n",psCommandStr);
         }
     }
 

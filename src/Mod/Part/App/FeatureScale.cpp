@@ -136,7 +136,7 @@ TopoShape Scale::nonuniformScale(const TopoShape& source, const Scale::ScalePara
         transTopo.setShape(mkTrf.Shape());
     }
     catch (...) {
-        Base::Console().Warning("FeatureScale failed on nonuniform scale\n");
+        Base::Console().warning("FeatureScale failed on nonuniform scale\n");
         return transTopo;
     }
     return transTopo;

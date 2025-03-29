@@ -93,7 +93,7 @@ void loadTechDrawResource()
         QString fontFile = QString::fromStdString(fontDir + font);
         int rc = QFontDatabase::addApplicationFont(fontFile);
         if (rc < 0) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "TechDraw failed to load font file: %d from: %s\n", rc, qPrintable(fontFile));
         }
     }

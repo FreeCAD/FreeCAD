@@ -1338,7 +1338,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         Base::Interpreter().runString(nameGui.c_str());
     }
     catch (const Base::Exception& e) {
-        Base::Console().Warning(e.what());
+        Base::Console().warning(e.what());
         return;
     }
 
@@ -1985,7 +1985,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext& context, const QSt
 #endif
             break;
         case QtWarningMsg:
-            Base::Console().Warning("%s\n", output.constData());
+            Base::Console().warning("%s\n", output.constData());
             break;
         case QtCriticalMsg:
             Base::Console().Error("%s\n", output.constData());
@@ -2012,7 +2012,7 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
                 Base::Console().message("%s\n", msg);
                 break;
             case SoDebugError::WARNING:
-                Base::Console().Warning("%s\n", msg);
+                Base::Console().warning("%s\n", msg);
                 break;
             default:  // error
                 Base::Console().Error("%s\n", msg);
@@ -2245,13 +2245,13 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
             fi.deleteFile();
         }
         else {
-            Base::Console().Warning("Failed to create a file lock for the IPC.\n"
+            Base::Console().warning("Failed to create a file lock for the IPC.\n"
                                     "The application will be terminated\n");
         }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().Warning("Failed to create a file lock for the IPC: %s\n",
+        Base::Console().warning("Failed to create a file lock for the IPC: %s\n",
                                 msg.toUtf8().constData());
     }
 }
@@ -2501,7 +2501,7 @@ QString Application::replaceVariablesInQss(QString qssText)
     qssText = qssText.replace(QStringLiteral("@ThemeAccentColor2"), accentColor2);
     qssText = qssText.replace(QStringLiteral("@ThemeAccentColor3"), accentColor3);
 
-    // Base::Console().Warning("%s\n", qssText.toStdString());
+    // Base::Console().warning("%s\n", qssText.toStdString());
     return qssText;
 }
 
@@ -2518,7 +2518,7 @@ void Application::checkForDeprecatedSettings()
                 ->GetBool("UseFCBakExtension", true);
         if (!useFCBakExtension) {
             // TODO: This should be translated
-            Base::Console().Warning("The `.FCStd#` backup format is deprecated and may "
+            Base::Console().warning("The `.FCStd#` backup format is deprecated and may "
                                     "be removed in future versions.\n"
                                     "To update, check the 'Preferences->General->Document->Use "
                                     "date and FCBak extension' option.\n");
@@ -2543,7 +2543,7 @@ void Application::checkForPreviousCrashes()
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().Warning("Failed check for previous crashes because of IPC error: %s\n",
+        Base::Console().warning("Failed check for previous crashes because of IPC error: %s\n",
                                 msg.toUtf8().constData());
     }
 }

@@ -568,7 +568,7 @@ bool DrawViewDimension::okToProceed()
     // is this check still relevant or is it replaced by the autocorrect and
     // validate methods?
     if (References3D.getValues().empty() && !checkReferences2D()) {
-        // Base::Console().Warning("%s has invalid 2D References\n", getNameInDocument());
+        // Base::Console().warning("%s has invalid 2D References\n", getNameInDocument());
         return false;
     }
     return validateReferenceForm();
@@ -667,7 +667,7 @@ double DrawViewDimension::getDimValue()
     if (MeasureType.isValue("True")) {
         // True Values
         if (!measurement->has3DReferences()) {
-            Base::Console().Warning("%s - True dimension has no 3D References\n",
+            Base::Console().warning("%s - True dimension has no 3D References\n",
                                     getNameInDocument());
             return result;
         }
@@ -676,7 +676,7 @@ double DrawViewDimension::getDimValue()
     else {
         // Projected Values
         if (!checkReferences2D()) {
-            Base::Console().Warning("DVD::getDimValue - %s - 2D references are corrupt (5)\n",
+            Base::Console().warning("DVD::getDimValue - %s - 2D references are corrupt (5)\n",
                                     getNameInDocument());
             return result;
         }

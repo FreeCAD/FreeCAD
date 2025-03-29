@@ -957,7 +957,7 @@ protected:
         sketchobject->diagnoseAdditionalConstraints(autoConstraints);
 
         if (sketchobject->getLastHasRedundancies()) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 QT_TRANSLATE_NOOP("Notifications",
                                   "Autoconstraints cause redundancy. Removing them") "\n");
 
