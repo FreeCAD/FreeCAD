@@ -3069,10 +3069,12 @@ void TreeWidget::onUpdateStatus()
             auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));            
             if (vpd)
                 docItem->createNewItem(*vpd);
-            
-            obj->setShouldOfferRelabel();
+
             if (obj->getParents().empty() && obj->getOutList().empty()) {
                 relabelCandidate = obj;
+            }
+            else {
+                RelabelQueue.push_back(obj);
             }
         }
     }
@@ -3085,7 +3087,7 @@ void TreeWidget::onUpdateStatus()
     for (auto& v : localChangedObjects) {
         auto obj = v.first;
 
-        if (obj->shouldOfferRelabel()) {
+        if (std::find(RelabelQueue.begin(), RelabelQueue.end(), obj) != RelabelQueue.end()) {
             relabelCandidate = obj;
         }
 
@@ -3218,6 +3220,7 @@ void TreeWidget::onUpdateStatus()
 void TreeWidget::tryOfferRelabel(App::DocumentObject*& object)
 {
     if (!isAutoRelabelNewEnabled() || !object) {
+        RelabelQueue.clear();
         return;
     }
 
@@ -3226,7 +3229,7 @@ void TreeWidget::tryOfferRelabel(App::DocumentObject*& object)
         auto& data = *iter->second.begin();
         if (data && data->rootItem) {
             editItem(data->rootItem);
-            object->setOfferedRelabel();
+            RelabelQueue.clear();
         }
     }
 }

@@ -258,6 +258,7 @@ private:
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;
     std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
+    std::vector<App::DocumentObject*> RelabelQueue;
 
     enum ChangedObjectStatus {
         CS_Output,
