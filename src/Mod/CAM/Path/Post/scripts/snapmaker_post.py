@@ -65,7 +65,7 @@ class CoordinatesAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
         match = re.match(
-            "^\s*(?P<X>-?\d+\.?\d*),?\s*(?P<Y>-?\d+\.?\d*),?\s*(?P<Z>-?\d+\.?\d*)\s*$", values
+            r"^\s*(?P<X>-?\d+\.?\d*),?\s*(?P<Y>-?\d+\.?\d*),?\s*(?P<Z>-?\d+\.?\d*)\s*$", values
         )
         if match:
             # setattr(namespace, self.dest, 'G0 X{0} Y{1} Z{2}'.format(*match.groups()))
@@ -79,7 +79,7 @@ class ExtremaAction(argparse.Action):
     """argparse Action to handle integer extrema (min,max)"""
 
     def __call__(self, parser, namespace, values, option_string=None):
-        if match := re.match("^ *(\d+),? *(\d+) *$", values):
+        if match := re.match(r"^ *(\d+),? *(\d+) *$", values):
             # setattr(namespace, self.dest, 'G0 X{0} Y{1} Z{2}'.format(*match.groups()))
             params = {
                 key: int(value)
@@ -507,7 +507,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         for index, commandline in enumerate(
             gcode
         ):  # .split(self.values["END_OF_LINE_CHARACTERS"]):
-            if match := re.match("(?P<command>M0?[34])\D.*(?P<spindle>S\d+.?\d*)", commandline):
+            if match := re.match(r"(?P<command>M0?[34])\D.*(?P<spindle>S\d+.?\d*)", commandline):
                 percent = (
                     float(match.group("spindle")[1:]) * 100 / self.values["SPINDLE_SPEEDS"]["max"]
                 )
@@ -528,13 +528,13 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         relative = False
 
         for index, commandline in enumerate(gcode):
-            if re.match("G90(?:\D|$)", commandline):
+            if re.match(r"G90(?:\D|$)", commandline):
                 relative = False
-            elif re.match("G91(?:\D|$)", commandline):
+            elif re.match(r"G91(?:\D|$)", commandline):
                 relative = True
-            elif re.match("G0?[12](?:\D|$)", commandline):
+            elif re.match(r"G0?[12](?:\D|$)", commandline):
                 for axis, value in re.findall(
-                    "(?P<axis>[XYZ])(?P<value>-?\d+\.?\d*)(?:\D|$)", commandline
+                    r"(?P<axis>[XYZ])(?P<value>-?\d+\.?\d*)(?:\D|$)", commandline
                 ):
                     if relative:
                         position[axis] += float(value)
