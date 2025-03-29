@@ -127,20 +127,20 @@ private:
 ILoggerBlocker::ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes)
     : conObs(co)
 {
-    msgTypesBlocked = Console().SetEnabledMsgType(conObs, msgTypes, false);
+    msgTypesBlocked = Console().setEnabledMsgType(conObs, msgTypes, false);
 }
 
 ILoggerBlocker::~ILoggerBlocker()
 {
     try {
 #ifdef FC_DEBUG
-        auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
+        auto debug = Console().setEnabledMsgType(conObs, msgTypesBlocked, true);
         if (debug != msgTypesBlocked) {
             Console().warning(
                 "Enabled message types have been changed while ILoggerBlocker was set\n");
         }
 #else
-        Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
+        Console().setEnabledMsgType(conObs, msgTypesBlocked, true);
 #endif
     }
     catch (...) {

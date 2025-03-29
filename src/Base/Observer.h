@@ -122,7 +122,7 @@ public:
     virtual ~Subject()
     {
         if (_ObserverSet.size() > 0) {
-            Base::Console().DeveloperWarning(std::string("~Subject()"),
+            Base::Console().developerWarning(std::string("~Subject()"),
                                              "Not detached all observers yet\n");
         }
     }
@@ -139,7 +139,7 @@ public:
         size_t count = _ObserverSet.size();
         _ObserverSet.insert(ToObserv);
         if (_ObserverSet.size() == count) {
-            Base::Console().DeveloperWarning(std::string("Subject::Attach"),
+            Base::Console().developerWarning(std::string("Subject::Attach"),
                                              "Observer %p already attached\n",
                                              static_cast<void*>(ToObserv));
         }
@@ -160,7 +160,7 @@ public:
         size_t count = _ObserverSet.size();
         _ObserverSet.erase(ToObserv);
         if (_ObserverSet.size() == count) {
-            Base::Console().DeveloperWarning(std::string("Subject::Detach"),
+            Base::Console().developerWarning(std::string("Subject::Detach"),
                                              "Observer %p already detached\n",
                                              static_cast<void*>(ToObserv));
         }

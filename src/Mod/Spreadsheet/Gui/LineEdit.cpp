@@ -56,13 +56,13 @@ void LineEdit::setDocumentObject(const App::DocumentObject* currentDocObj, bool 
 
     QPointer<Gui::MDIView> active_view = Gui::MainWindow::getInstance()->activeWindow();
     if (!active_view) {
-        Base::Console().DeveloperWarning("LineEdit::setDocumentObject",
+        Base::Console().developerWarning("LineEdit::setDocumentObject",
                                          "The active view is not Spreadsheet");
         return;
     }
     QPointer<ZoomableView> zv = active_view->findChild<ZoomableView*>();
     if (!zv) {
-        Base::Console().DeveloperWarning("LineEdit::setDocumentObject", "ZoomableView not found");
+        Base::Console().developerWarning("LineEdit::setDocumentObject", "ZoomableView not found");
         return;
     }
 

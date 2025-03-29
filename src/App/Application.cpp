@@ -1754,12 +1754,12 @@ void Application::destruct()
 void Application::destructObserver()
 {
     if ( _pConsoleObserverFile ) {
-        Base::Console().DetachObserver(_pConsoleObserverFile);
+        Base::Console().detachObserver(_pConsoleObserverFile);
         delete _pConsoleObserverFile;
         _pConsoleObserverFile = nullptr;
     }
     if ( _pConsoleObserverStd ) {
-        Base::Console().DetachObserver(_pConsoleObserverStd);
+        Base::Console().detachObserver(_pConsoleObserverStd);
         delete _pConsoleObserverStd;
         _pConsoleObserverStd = nullptr;
     }
@@ -2648,7 +2648,7 @@ void Application::initConfig(int argc, char ** argv)
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
     _pConsoleObserverStd = new Base::ConsoleObserverStd();
-    Base::Console().AttachObserver(_pConsoleObserverStd);
+    Base::Console().attachObserver(_pConsoleObserverStd);
     if (mConfig["LoggingConsole"] != "1") {
         _pConsoleObserverStd->bMsg = false;
         _pConsoleObserverStd->bLog = false;
@@ -2656,12 +2656,12 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverStd->bErr = false;
     }
     if (mConfig["Verbose"] == "Strict")
-        Base::Console().UnsetConsoleMode(Base::ConsoleSingleton::Verbose);
+        Base::Console().unsetConsoleMode(Base::ConsoleSingleton::Verbose);
 
     // file logging Init ===========================================================
     if (mConfig["LoggingFile"] == "1") {
         _pConsoleObserverFile = new Base::ConsoleObserverFile(mConfig["LoggingFileName"].c_str());
-        Base::Console().AttachObserver(_pConsoleObserverFile);
+        Base::Console().attachObserver(_pConsoleObserverFile);
     }
     else
         _pConsoleObserverFile = nullptr;
@@ -2706,7 +2706,7 @@ void Application::initConfig(int argc, char ** argv)
 #ifndef FC_DEBUG
             if (v.second>=0) {
                 hasDefault = true;
-                Base::Console().SetDefaultLogLevel(v.second);
+                Base::Console().setDefaultLogLevel(v.second);
             }
 #endif
         }
@@ -2714,20 +2714,20 @@ void Application::initConfig(int argc, char ** argv)
 #ifdef FC_DEBUG
             if (v.second>=0) {
                 hasDefault = true;
-                Base::Console().SetDefaultLogLevel(static_cast<int>(v.second));
+                Base::Console().setDefaultLogLevel(static_cast<int>(v.second));
             }
 #endif
         }
         else {
-            *Base::Console().GetLogLevel(v.first.c_str()) = static_cast<int>(v.second);
+            *Base::Console().getLogLevel(v.first.c_str()) = static_cast<int>(v.second);
         }
     }
 
     if (!hasDefault) {
 #ifdef FC_DEBUG
-        loglevelParam->SetInt("DebugDefault", Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("DebugDefault", Base::Console().logLevel(-1));
 #else
-        loglevelParam->SetInt("Default", Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("Default", Base::Console().logLevel(-1));
 #endif
     }
 

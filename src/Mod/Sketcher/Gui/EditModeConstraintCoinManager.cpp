@@ -1617,13 +1617,13 @@ Restart:
             }
         }
         catch (Base::Exception& e) {
-            Base::Console().DeveloperError("EditModeConstraintCoinManager",
+            Base::Console().developerError("EditModeConstraintCoinManager",
                                            "Exception during draw: %s\n",
                                            e.what());
             e.ReportException();
         }
         catch (...) {
-            Base::Console().DeveloperError("EditModeConstraintCoinManager",
+            Base::Console().developerError("EditModeConstraintCoinManager",
                                            "Exception during draw: unknown\n");
         }
     }
@@ -2049,7 +2049,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId((*it)->First);
                     const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId((*it)->Second);
                     if (!geo1 || !geo2) {
-                        Base::Console().DeveloperWarning(
+                        Base::Console().developerWarning(
                             "EditModeConstraintCoinManager",
                             "Tangent constraint references non-existing geometry\n");
                     }
@@ -2440,7 +2440,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
 
         // Double-check that we can safely access the Inventor nodes
         if (constrId >= editModeScenegraphNodes.constrGroup->getNumChildren()) {
-            Base::Console().DeveloperWarning(
+            Base::Console().developerWarning(
                 "EditModeConstraintManager",
                 "Can't update constraint icons because view is not in sync with sketch\n");
             break;

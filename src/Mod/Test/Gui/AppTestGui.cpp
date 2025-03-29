@@ -36,7 +36,7 @@ class ILoggerBlockerTest: public Base::ILogger
 public:
     ~ILoggerBlockerTest() override
     {
-        Base::Console().DetachObserver(this);
+        Base::Console().detachObserver(this);
     }
 
     const char* name() override
@@ -135,7 +135,7 @@ public:
         runSingleTest("Print all", "LOGMSGWRNERRCMS");
         {
             Base::ILoggerBlocker blocker("ILoggerBlockerTest");
-            Base::Console().SetEnabledMsgType("ILoggerBlockerTest",
+            Base::Console().setEnabledMsgType("ILoggerBlockerTest",
                                               Base::ConsoleSingleton::MsgType_Log,
                                               true);
             runSingleTest("Log is enabled but a warning is triggered in debug mode", "LOG");
@@ -218,8 +218,8 @@ private:
     {
         (void)args;
         ILoggerBlockerTest iltest;
-        Base::Console().AttachObserver(static_cast<Base::ILogger*>(&iltest));
-        Base::Console().SetConnectionMode(Base::ConsoleSingleton::Direct);
+        Base::Console().attachObserver(static_cast<Base::ILogger*>(&iltest));
+        Base::Console().setConnectionMode(Base::ConsoleSingleton::Direct);
         iltest.runTest();
         return Py::None();
     }

@@ -689,12 +689,12 @@ protected:
     template<typename... args>
     static void ImportError(const char* format, args&&... argValues)
     {
-        Base::ConsoleSingleton::Instance().warning(format, std::forward<args>(argValues)...);
+        Base::ConsoleSingleton::instance().warning(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
     static void ImportObservation(const char* format, args&&... argValues)
     {
-        Base::ConsoleSingleton::Instance().message(format, std::forward<args>(argValues)...);
+        Base::ConsoleSingleton::instance().message(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
     void UnsupportedFeature(const char* format, args&&... argValues);
