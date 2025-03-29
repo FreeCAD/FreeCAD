@@ -82,7 +82,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
     }
 
     if (formatSpecifier.isEmpty()) {
-        Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
+        Base::Console().warning("Warning - no numeric format in Format Spec %s - %s\n",
                                 qPrintable(qFormatSpec),
                                 m_dimension->getNameInDocument());
         return qFormatSpec.toStdString();
@@ -125,7 +125,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
     }
 
     if (isTooSmall(userVal, formatSpecifier)) {
-        Base::Console().Warning("Dimension %s value %.6f is too small for format specifier: %s\n",
+        Base::Console().warning("Dimension %s value %.6f is too small for format specifier: %s\n",
                                 m_dimension->getNameInDocument(),
                                 userVal,
                                 qPrintable(formatSpecifier));
@@ -356,7 +356,7 @@ QStringList DimensionFormatter::getPrefixSuffixSpec(const QString& fSpec) const
         result.append(formatSuffix);
         result.append(match);
     } else {       //printf format not found!
-        Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
+        Base::Console().warning("Warning - no numeric format in formatSpec %s - %s\n",
                                 qPrintable(fSpec), m_dimension->getNameInDocument());
         result.append(QString());
         result.append(QString());
@@ -421,7 +421,7 @@ bool DimensionFormatter::isTooSmall(const double value, const QString& formatSpe
             return true;
         }
     } else {
-        Base::Console().Warning("Failed to parse dimension format spec\n");
+        Base::Console().warning("Failed to parse dimension format spec\n");
     }
     return false;
 }

@@ -380,13 +380,13 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
         e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled std::exception caught in PropertyEditor::recomputeDocument.\n"
             "The error message is: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled unknown exception caught in PropertyEditor::recomputeDocument.\n");
     }
 }
@@ -612,7 +612,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
     checkDocument = _checkDocument;
 
     if (committing) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "While committing the data to the property the selection has changed.\n");
         delaybuild = true;
         return;

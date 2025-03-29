@@ -392,7 +392,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
 
             Py::Object attr = getAttrWorkaround(obj, attrname);
             if (!attr.ptr()) {
-                Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
+                Base::Console().log("Python attribute '%s' returns null!\n", name.c_str());
                 continue;
             }
 

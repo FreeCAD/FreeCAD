@@ -2628,7 +2628,7 @@ int Hole::baseProfileOption_idxToBitmask(int index)
      if (index == 2) {
         return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
     } 
-    Base::Console().Error("Unexpected hole base profile combobox index: %i", index);
+    Base::Console().error("Unexpected hole base profile combobox index: %i", index);
     return 0;
 }
 int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
@@ -2643,7 +2643,7 @@ int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
         return 2;
     }
 
-    Base::Console().Error("Unexpected hole base profile bitmask: %i", bitmask);
+    Base::Console().error("Unexpected hole base profile bitmask: %i", bitmask);
     return -1;
 }
 

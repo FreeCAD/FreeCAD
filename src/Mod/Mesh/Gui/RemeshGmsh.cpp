@@ -174,7 +174,7 @@ double GmshWidget::getMinSize() const
 void GmshWidget::accept()
 {
     if (d->gmsh.state() == QProcess::Running) {
-        Base::Console().Warning("Cannot start gmsh because it's already running\n");
+        Base::Console().warning("Cannot start gmsh because it's already running\n");
         return;
     }
 

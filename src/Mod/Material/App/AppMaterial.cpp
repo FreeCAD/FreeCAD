@@ -85,7 +85,7 @@ PyMOD_INIT_FUNC(Materials)
 #endif
     PyObject* module = Materials::initModule();
 
-    Base::Console().Log("Loading Material module... done\n");
+    Base::Console().log("Loading Material module... done\n");
 
     Base::Interpreter().addType(&Materials::Array2DPy::Type, module, "Array2D");
     Base::Interpreter().addType(&Materials::Array3DPy::Type, module, "Array3D");

@@ -427,7 +427,7 @@ public:
 
     void mouseReleaseEvent(QMouseEvent* event) override
     {
-        // Base::Console().Warning("mouseReleaseEvent TH\n");
+        // Base::Console().warning("mouseReleaseEvent TH\n");
         if (event->button() == Qt::RightButton) {
             if (!dims.empty()) {
                 Gui::Selection().clearSelection();
@@ -446,7 +446,7 @@ public:
 
             if (removedRef.hasGeometry()) {
                 finalize = false;
-                //Base::Console().Warning("RmvSelection \n");
+                //Base::Console().warning("RmvSelection \n");
                 // Remove the reference from the vector
                 ReferenceVector& selVector = getSelectionVector(removedRef);
                 selVector.erase(std::remove(selVector.begin(), selVector.end(), removedRef), selVector.end());
@@ -463,7 +463,7 @@ public:
 
             if (addedRef.hasGeometry()) {
                 finalize = false;
-                //Base::Console().Warning("AddSelection\n");
+                //Base::Console().warning("AddSelection\n");
                 //add the geometry to its type vector. Temporarily if not selAllowed
                 if (addedRef.getSubName() == "") {
                     // Behavior deactivated for now because I found it annoying.
@@ -510,7 +510,7 @@ public:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
-        //Base::Console().Warning("onSelectionChanged %d - --%s--\n", (int)msg.Type, msg.pSubName);
+        //Base::Console().warning("onSelectionChanged %d - --%s--\n", (int)msg.Type, msg.pSubName);
 
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
             //clearAndRestartCommand();
@@ -526,13 +526,13 @@ public:
         }
 
         /*if (msg.Type == Gui::SelectionChanges::SetPreselect) {
-            Base::Console().Warning("SetPreselect\n");
+            Base::Console().warning("SetPreselect\n");
             std::string geomName = DrawUtil::getGeomTypeFromName(msg.pSubName);
             edgeOrPointPreselected = geomName == "Edge" || geomName == "Vertex";
             return;
         }
         else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
-            Base::Console().Warning("RmvPreselect\n");
+            Base::Console().warning("RmvPreselect\n");
             edgeOrPointPreselected = false;
             return;
         }*/
@@ -633,7 +633,7 @@ protected:
 
     void finalizeCommand()
     {
-        //Base::Console().Warning("finalizeCommand \n");
+        //Base::Console().warning("finalizeCommand \n");
 
         finishDimensionMove();
 
@@ -752,7 +752,7 @@ protected:
 
     bool makeAppropriateDimension() {
         bool selAllowed = false;
-        //Base::Console().Warning("makeAppropriateDimension %d %d %d %d %d %d\n", selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
+        //Base::Console().warning("makeAppropriateDimension %d %d %d %d %d %d\n", selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
 
         GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
         if (selection.hasFaces()) {
@@ -1971,7 +1971,7 @@ CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
 
 void CmdTechDrawExtentGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtentGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -1990,7 +1990,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
             execExtent(this, "DistanceY");
             break;
         default:
-            Base::Console().Message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 

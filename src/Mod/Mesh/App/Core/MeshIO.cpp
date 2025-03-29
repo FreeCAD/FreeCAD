@@ -246,7 +246,7 @@ bool MeshInput::LoadAny(const char* FileName)
     else if (fi.hasExtension("iv")) {
         ok = LoadInventor(str);
         if (ok && _rclMesh.CountFacets() == 0) {
-            Base::Console().Warning("No usable mesh found in file '%s'", FileName);
+            Base::Console().warning("No usable mesh found in file '%s'", FileName);
         }
     }
     else if (fi.hasExtension({"nas", "bdf"})) {
@@ -1151,14 +1151,14 @@ bool MeshInput::LoadNastran(std::istream& input)
     }
 
     if (badElementCounter > 0) {
-        Base::Console().Warning("Found bad elements while reading NASTRAN file.\n");
+        Base::Console().warning("Found bad elements while reading NASTRAN file.\n");
     }
 
     // Check the triangles to make sure the vertices they refer to actually exist:
     for (const auto& tri : mTria) {
         for (int i : tri.second.iV) {
             if (mNode.find(i) == mNode.end()) {
-                Base::Console().Error(
+                Base::Console().error(
                     "CTRIA3 element refers to a node that does not exist, or could not be read.\n");
                 return false;
             }
@@ -1169,7 +1169,7 @@ bool MeshInput::LoadNastran(std::istream& input)
     for (const auto& quad : mQuad) {
         for (int i : quad.second.iV) {
             if (mNode.find(i) == mNode.end()) {
-                Base::Console().Error(
+                Base::Console().error(
                     "CQUAD4 element refers to a node that does not exist, or could not be read.\n");
                 return false;
             }
@@ -1869,12 +1869,12 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
     bool exportColor = false;
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "Cannot export color information because it's defined per face");
         }
         else if (_material->binding == MeshIO::PER_VERTEX) {
             if (_material->diffuseColor.size() != rPoints.size()) {
-                Base::Console().Warning("Cannot export color information because there is a "
+                Base::Console().warning("Cannot export color information because there is a "
                                         "different number of points and colors");
             }
             else {
@@ -1883,7 +1883,7 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
         }
         else if (_material->binding == MeshIO::OVERALL) {
             if (_material->diffuseColor.empty()) {
-                Base::Console().Warning(
+                Base::Console().warning(
                     "Cannot export color information because there is no color defined");
             }
             else {

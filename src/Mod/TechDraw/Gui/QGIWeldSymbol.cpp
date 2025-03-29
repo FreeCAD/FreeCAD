@@ -123,7 +123,7 @@ void QGIWeldSymbol::updateView(bool update)
 
     TechDraw::DrawWeldSymbol *feature = getFeature();
     if (!feature) {
-        Base::Console().Warning("QGIWS::updateView - no feature!\n");
+        Base::Console().warning("QGIWS::updateView - no feature!\n");
         return;
     }
 
@@ -161,7 +161,7 @@ void QGIWeldSymbol::draw()
 void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
 {
     if (!tileFeat) {
-        Base::Console().Message("QGIWS::drawTile - tile is null\n");
+        Base::Console().message("QGIWS::drawTile - tile is null\n");
         return;
     }
 

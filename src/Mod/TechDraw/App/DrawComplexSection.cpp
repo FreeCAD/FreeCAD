@@ -174,7 +174,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     bool isPositionOK = validateProfilePosition(profileWire, sectionCS);
     if (!isPositionOK) {
         //profile is not in a good position.  Result might not be right.
-        Base::Console().Warning("DCS::makeCuttingTool - %s - profile is outside shape box\n",
+        Base::Console().warning("DCS::makeCuttingTool - %s - profile is outside shape box\n",
                                 getNameInDocument());
     }
 
@@ -302,7 +302,7 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
         waitingForAlign(true);
     }
     catch (...) {
-        Base::Console().Message("DCS::makeSectionCut - failed to make alignedPieces");
+        Base::Console().message("DCS::makeSectionCut - failed to make alignedPieces");
         return;
     }
 
@@ -326,7 +326,6 @@ void DrawComplexSection::onSectionCutFinished()
 //for Aligned strategy, cut the rawShape by each segment of the tool
 void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 {
-
     if (!canBuild(getSectionCS(), CuttingToolWireObject.getValue())) {
         throw Base::RuntimeError("Profile is parallel to Section Normal");
     }
@@ -469,7 +468,7 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToInt
 {
     if (shapeToIntersect.IsNull()) {
         // this shouldn't happen
-        Base::Console().Warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
+        Base::Console().warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
                                 getNameInDocument());
         return {};
     }
@@ -486,7 +485,7 @@ TopoDS_Compound DrawComplexSection::singleToolIntersections(const TopoDS_Shape& 
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     if (!isLinearProfile(toolObj)) {
         //TODO: special handling here
-        //        Base::Console().Message("DCS::singleToolIntersection - profile has curves\n");
+        //        Base::Console().message("DCS::singleToolIntersection - profile has curves\n");
     }
 
     BRep_Builder builder;
@@ -526,7 +525,7 @@ TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape&
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     if (!isLinearProfile(toolObj)) {
         //TODO: special handling here?
-        //        Base::Console().Message("DCS::alignedToolIntersection - profile has curves\n");
+        //        Base::Console().message("DCS::alignedToolIntersection - profile has curves\n");
     }
 
     gp_Pln effectivePlane = getSectionPlane();
@@ -730,7 +729,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
         }
         else {
             //probably can't happen as cut profile has been checked before this
-            Base::Console().Message("DCS::makeSectionLineGeometry - profile is type: %d\n",
+            Base::Console().message("DCS::makeSectionLineGeometry - profile is type: %d\n",
                                     static_cast<int>(sScaled.ShapeType()));
             return TopoDS_Wire();
         }
@@ -817,7 +816,7 @@ bool DrawComplexSection::validateOffsetProfile(TopoDS_Wire profile, Base::Vector
         if (angleRad < angleThresholdRad &&
             angleRad > 0.0) {
             // profile segment is slightly skewed. possible bad SectionNormal?
-            Base::Console().Warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
+            Base::Console().warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
                                     getNameInDocument());
             return false;
         }
@@ -1419,13 +1418,13 @@ std::vector<std::pair<int, Base::Vector3d>> DrawComplexSection::getSegmentViewDi
     if (!checkSectionCS()) {
         // results will likely be incorrect
         // this message will show for every recompute of the complex section.
-        Base::Console().Warning("Coordinate system for ComplexSection is invalid. Check SectionNormal, Direction or XDirection.\n");
+        Base::Console().warning("Coordinate system for ComplexSection is invalid. Check SectionNormal, Direction or XDirection.\n");
     }
 
     auto profileVector = Base::convertTo<Base::Vector3d>(makeProfileVector(profileWire));
     auto parallelDot = profileVector.Dot(sectionNormal);
     if (DU::fpCompare(std::fabs(parallelDot), 1, EWTOLERANCE)) {
-        Base::Console().Warning("Section normal is parallel to profile vector. Results may be incorrect.\n");
+        Base::Console().warning("Section normal is parallel to profile vector. Results may be incorrect.\n");
     }
     auto profilePlanWire = closeProfile(profileWire, sectionNormal, m_shapeSize);
 

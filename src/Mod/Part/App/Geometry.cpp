@@ -326,7 +326,7 @@ void Geometry::Restore(Base::XMLReader &reader)
                 extensions.push_back(std::shared_ptr<GeometryExtension>(newExtension));
             }
             else {
-                Base::Console().Warning("Cannot restore geometry extension of type: %s\n", TypeName);
+                Base::Console().warning("Cannot restore geometry extension of type: %s\n", TypeName);
             }
         }
 

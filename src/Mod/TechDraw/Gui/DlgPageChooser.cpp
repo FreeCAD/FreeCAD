@@ -103,7 +103,7 @@ std::string DlgPageChooser::getSelection() const
 
 void DlgPageChooser::accept() {
     if (ui->lwPages->selectedItems().empty()) {
-        Base::Console().Message("Page Chooser: no page was selected\n");
+        Base::Console().message("Page Chooser: no page was selected\n");
     }
     QDialog::accept();
 }

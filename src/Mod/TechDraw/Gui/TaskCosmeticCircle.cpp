@@ -62,7 +62,7 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_circleName);
     if (!m_ce) {
-        Base::Console().Error("TaskCosmeticCircle - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskCosmeticCircle - bad parameters.  Can not proceed.\n");
         return;
     }
 
@@ -226,7 +226,7 @@ void TaskCosmeticCircle::enableArcWidgets(bool newState)
 //******************************************************************************
 void TaskCosmeticCircle::createCosmeticCircle(void)
 {
-//    Base::Console().Message("TCL::createCosmeticCircle()\n");
+//    Base::Console().message("TCL::createCosmeticCircle()\n");
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Circle"));
 
@@ -261,7 +261,7 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
 
 void TaskCosmeticCircle::updateCosmeticCircle(void)
 {
-    // Base::Console().Message("TCL::updateCosmeticCircle()\n");
+    // Base::Console().message("TCL::updateCosmeticCircle()\n");
     double x = ui->qsbCenterX->value().getValue();
     double y = ui->qsbCenterY->value().getValue();
     double z = ui->qsbCenterZ->value().getValue();
@@ -289,7 +289,7 @@ bool TaskCosmeticCircle::accept()
 {
     if (ui->qsbRadius->value().getValue() <= 0.0) {
         // this won't work!
-        Base::Console().Error("TaskCosmeticCircle - can not create a circle with radius: %.3f\n",
+        Base::Console().error("TaskCosmeticCircle - can not create a circle with radius: %.3f\n",
                                 ui->qsbRadius->value().getValue());
         return false;
     }

@@ -81,6 +81,6 @@ PyMOD_INIT_FUNC(_TEMPLATE_Gui)
     //
     //
     PyObject* mod = _TEMPLATE_Gui::initModule();
-    Base::Console().Log("Loading GUI of _TEMPLATE_ module... done\n");
+    Base::Console().log("Loading GUI of _TEMPLATE_ module... done\n");
     PyMOD_Return(mod);
 }

@@ -944,13 +944,13 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
       stream << "FaceTypedBSpline::isEqual: OCC Error: " << e.GetMessageString() << std::endl;
     else
       stream << "FaceTypedBSpline::isEqual: Unknown OCC Error" << std::endl;
-    Base::Console().Message(stream.str().c_str());
+    Base::Console().message(stream.str().c_str());
   }
   catch (...)
   {
     std::ostringstream stream;
     stream << "FaceTypedBSpline::isEqual: Unknown Error" << std::endl;
-    Base::Console().Message(stream.str().c_str());
+    Base::Console().message(stream.str().c_str());
   }
 
   return false;

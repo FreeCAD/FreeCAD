@@ -408,12 +408,12 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-            Base::Console().Error("Dataset of '%s' cannot be written to vtk file '%s'\n",
+            Base::Console().error("Dataset of '%s' cannot be written to vtk file '%s'\n",
                                   obj->Label.getValue(),
                                   fi.filePath().c_str());
         }
         else {
-            Base::Console().Error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
+            Base::Console().error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
         }
 
         std::stringstream ss;
@@ -534,12 +534,12 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                 App::PropertyContainer* father = this->getContainer();
                 if (father && father->isDerivedFrom<App::DocumentObject>()) {
                     App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                    Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
+                    Base::Console().error("Dataset file '%s' with data of '%s' seems to be empty\n",
                                           fi.filePath().c_str(),
                                           obj->Label.getValue());
                 }
                 else {
-                    Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n",
+                    Base::Console().warning("Loaded Dataset file '%s' seems to be empty\n",
                                             fi.filePath().c_str());
                 }
             }
@@ -551,7 +551,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
             }
         }
         else {
-            Base::Console().Error(
+            Base::Console().error(
                 "Dataset file '%s' is of unsupported type: %s. Data not loaded.\n",
                 fi.filePath().c_str(),
                 extension);

@@ -286,13 +286,13 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
         deleteColorBar();
     }
     catch (Base::Exception& e) {
-        Base::Console().DestructorError(
+        Base::Console().destructorError(
             "ViewProviderFemPostObject",
             "ViewProviderFemPostObject destructor threw an exception: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().DestructorError(
+        Base::Console().destructorError(
             "ViewProviderFemPostObject",
             "ViewProviderFemPostObject destructor threw an unknown exception");
     }

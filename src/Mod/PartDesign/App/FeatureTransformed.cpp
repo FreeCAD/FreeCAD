@@ -334,7 +334,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape = refineShapeIfActive((supportShape));
     if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
-        Base::Console().Warning("Transformed: Result has multiple solids. Only keeping the first.\n");
+        Base::Console().warning("Transformed: Result has multiple solids. Only keeping the first.\n");
     }
 
     this->Shape.setValue(getSolid(supportShape));  // picking the first solid

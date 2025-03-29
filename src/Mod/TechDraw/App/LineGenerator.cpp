@@ -90,7 +90,7 @@ QPen LineGenerator::getBestPen(size_t isoNumber, Qt::PenStyle qtStyle, double wi
 //! 1-15 and ANSI lines are 1-4(?)  The line width is the nominal width in mm.
 QPen LineGenerator::getLinePen(size_t lineNumber, double nominalLineWidth)
 {
-//    Base::Console().Message("LG::getLinePen(%d, %.3f)\n",
+//    Base::Console().message("LG::getLinePen(%d, %.3f)\n",
 //                             lineNumber, nominalLineWidth);
     QPen linePen;
     linePen.setWidthF(nominalLineWidth);
@@ -219,7 +219,7 @@ std::map<std::string, int> LineGenerator::loadElements()
     Base::FileInfo fi(parmFile);
     Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open line element def file: %s\n", parmFile.c_str());
+        Base::Console().message( "Cannot open line element def file: %s\n", parmFile.c_str());
         return result;
     }
     std::string line;
@@ -245,7 +245,7 @@ std::vector< std::vector<std::string> > LineGenerator::getLineDefinitions()
     Base::FileInfo fi(Preferences::currentLineDefFile());
     Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open line def file: %s\n", fi.filePath().c_str());
+        Base::Console().message( "Cannot open line def file: %s\n", fi.filePath().c_str());
         return lineDefs;
     }
 
@@ -309,7 +309,7 @@ std::vector<std::string> LineGenerator::getLineDescriptions()
     Base::FileInfo fi(Preferences::currentLineDefFile());
     Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open line def file: %s\n", fi.filePath().c_str());
+        Base::Console().message( "Cannot open line def file: %s\n", fi.filePath().c_str());
         return lineDescs;
     }
 

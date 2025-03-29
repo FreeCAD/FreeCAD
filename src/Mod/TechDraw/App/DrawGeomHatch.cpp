@@ -126,7 +126,7 @@ void DrawGeomHatch::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawGeomHatch::execute()
 {
-//    Base::Console().Message("DGH::execute()\n");
+//    Base::Console().message("DGH::execute()\n");
     //does execute even need to exist? Its all about the property value changes
     DrawViewPart* parent = getSourceView();
     if (parent) {
@@ -145,7 +145,7 @@ void DrawGeomHatch::onDocumentRestored()
 
 void DrawGeomHatch::replacePatIncluded(std::string newHatchFileName)
 {
-//    Base::Console().Message("DGH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+//    Base::Console().message("DGH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
     if (newHatchFileName.empty()) {
         return;
     }
@@ -160,13 +160,13 @@ void DrawGeomHatch::replacePatIncluded(std::string newHatchFileName)
 
 void DrawGeomHatch::setupObject()
 {
-//    Base::Console().Message("DGH::setupObject()\n");
+//    Base::Console().message("DGH::setupObject()\n");
     replacePatIncluded(FilePattern.getValue());
 }
 
 void DrawGeomHatch::unsetupObject()
 {
-//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+//    Base::Console().message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
     DrawView* dv = freecad_cast<DrawView*>(source);
     if (dv) {
@@ -179,7 +179,7 @@ void DrawGeomHatch::unsetupObject()
 
 void DrawGeomHatch::makeLineSets()
 {
-//    Base::Console().Message("DGH::makeLineSets()\n");
+//    Base::Console().message("DGH::makeLineSets()\n");
     if (!PatIncluded.isEmpty() &&
         !NamePattern.isEmpty()) {
         m_lineSets.clear();
@@ -229,7 +229,7 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile(std::string file
 {
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n", fileSpec.c_str());
+        Base::Console().error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n", fileSpec.c_str());
         return std::vector<PATLineSpec>();
     }
     return PATLineSpec::getSpecsForPattern(fileSpec, myPattern);
@@ -307,7 +307,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
                                                     double hatchRotation,
                                                     Base::Vector3d hatchOffset)
 {
-//    Base::Console().Message("DGH::getTrimmedLines() - rotation: %.3f hatchOffset: %s\n", hatchRotation, DrawUtil::formatVector(hatchOffset).c_str());
+//    Base::Console().message("DGH::getTrimmedLines() - rotation: %.3f hatchOffset: %s\n", hatchRotation, DrawUtil::formatVector(hatchOffset).c_str());
     (void)source;
     std::vector<LineSet> result;
 
@@ -444,7 +444,7 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, B
     // we handle hatch as a set of parallel lines made of dashes, here we loop on each line
     for (int i = firstRepeatIndex ; i <= lastRepeatIndex ; ++i) {
         Base::Vector3d currentOrigin = origin + static_cast<double>(i) * hatchIntervalAndOffset;
-        
+
         int firstDashIndex, lastDashIndex;
         if (std::abs(hatchDirection.x) > std::abs(hatchDirection.y)) {  // we compute intersections with minX and maxX
             firstDashIndex = (hatchDirection.x > 0.)
@@ -499,7 +499,7 @@ TopoDS_Edge DrawGeomHatch::makeLine(const Base::Vector3d& s, const Base::Vector3
 //! these will be clipped to shape on the gui side
 std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int iFace)
 {
-//    Base::Console().Message("TRACE - DGH::getFaceOverlay(%d)\n", iFace);
+//    Base::Console().message("TRACE - DGH::getFaceOverlay(%d)\n", iFace);
     std::vector<LineSet> result;
     DrawViewPart* source = getSourceView();
     if (!source ||

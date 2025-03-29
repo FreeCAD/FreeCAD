@@ -94,7 +94,7 @@ PyMOD_INIT_FUNC(MatGui)
 
     PyObject* matGuiModule = MatGui::initModule();
 
-    Base::Console().Log("Loading GUI of Material module... done\n");
+    Base::Console().log("Loading GUI of Material module... done\n");
 
     MatGui::Workbench ::init();
     auto manip = std::make_shared<MatGui::WorkbenchManipulator>();

@@ -331,7 +331,7 @@ bool QGIViewBalloon::getGroupSelection()
 //Set selection state for this and its children
 void QGIViewBalloon::setGroupSelection(bool isSelected)
 {
-    //    Base::Console().Message("QGIVB::setGroupSelection(%d)\n", b);
+    //    Base::Console().message("QGIVB::setGroupSelection(%d)\n", b);
     setSelected(isSelected);
     balloonLabel->setSelected(isSelected);
     balloonLines->setSelected(isSelected);
@@ -341,7 +341,7 @@ void QGIViewBalloon::setGroupSelection(bool isSelected)
 
 void QGIViewBalloon::select(bool state)
 {
-    //    Base::Console().Message("QGIVBall::select(%d)\n", state);
+    //    Base::Console().message("QGIVBall::select(%d)\n", state);
     setSelected(state);
     draw();
 }
@@ -354,7 +354,7 @@ void QGIViewBalloon::hover(bool state)
 
 void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon* balloonFeat)
 {
-    //    Base::Console().Message("QGIVB::setViewPartFeature()\n");
+    //    Base::Console().message("QGIVB::setViewPartFeature()\n");
     if (!balloonFeat) {
         return;
     }
@@ -540,7 +540,7 @@ void QGIViewBalloon::balloonLabelDragFinished()
 //from QGVP::mouseReleaseEvent - pos = eventPos in scene coords?
 void QGIViewBalloon::placeBalloon(QPointF pos)
 {
-    //    Base::Console().Message("QGIVB::placeBalloon(%s)\n",
+    //    Base::Console().message("QGIVB::placeBalloon(%s)\n",
     //                            DrawUtil::formatVector(pos).c_str());
     auto balloon(dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()));
     if (!balloon) {
@@ -870,7 +870,7 @@ void QGIViewBalloon::setPrettyPre(void)
 
 void QGIViewBalloon::setPrettySel(void)
 {
-    //    Base::Console().Message("QGIVBal::setPrettySel()\n");
+    //    Base::Console().message("QGIVBal::setPrettySel()\n");
     arrow->setPrettySel();
     //    balloonShape->setFill(Qt::white, Qt::NoBrush);
     balloonShape->setPrettySel();
@@ -889,7 +889,7 @@ void QGIViewBalloon::setPrettyNormal(void)
 void QGIViewBalloon::drawBorder(void)
 {
     //Dimensions have no border!
-    //    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
+    //    Base::Console().message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
 }
 
 void QGIViewBalloon::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,

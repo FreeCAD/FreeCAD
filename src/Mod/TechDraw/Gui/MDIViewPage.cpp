@@ -143,7 +143,7 @@ void MDIViewPage::setDocumentName(const std::string& name) { m_documentName = na
 
 void MDIViewPage::closeEvent(QCloseEvent* event)
 {
-    //    Base::Console().Message("MDIVP::closeEvent()\n");
+    //    Base::Console().message("MDIVP::closeEvent()\n");
     MDIView::closeEvent(event);
     if (!event->isAccepted()) {
         return;
@@ -432,7 +432,7 @@ PyObject* MDIViewPage::getPyObject()
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
-    //    Base::Console().Message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
+    //    Base::Console().message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
     if (isContextualMenuEnabled) {
         QMenu menu;
         menu.addAction(m_toggleFrameAction);

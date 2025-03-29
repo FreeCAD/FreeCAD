@@ -248,7 +248,7 @@ void QGISVGTemplate::createClickHandles()
 
     QFile file(templateFilename);
     if (!file.open(QIODevice::ReadOnly)) {
-        Base::Console().Error(
+        Base::Console().error(
             "QGISVGTemplate::createClickHandles - error opening template file %s\n",
             svgTemplate->PageResult.getValue());
         return;
@@ -256,7 +256,7 @@ void QGISVGTemplate::createClickHandles()
 
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&file)) {
-        Base::Console().Message("QGISVGTemplate::createClickHandles - xml loading error\n");
+        Base::Console().message("QGISVGTemplate::createClickHandles - xml loading error\n");
         return;
     }
     file.close();

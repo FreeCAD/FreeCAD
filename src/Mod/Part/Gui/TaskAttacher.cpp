@@ -72,7 +72,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
         return QString::fromLatin1(obj->getNameInDocument());
     }
 
-    // Hide the TNP string from the user. ie show "Body.Pad.Face6"  and not : 
+    // Hide the TNP string from the user. ie show "Body.Pad.Face6"  and not :
     // "Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
     App::ElementNamePair el;
     App::GeoFeature::resolveElement(obj, sub.c_str(), el, true);
@@ -419,7 +419,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     for (size_t i = 0; i < names.size(); ++i) {
         App::DocumentObject* obj = doc->getObject(names[i].c_str());
         if (!obj) {
-            Base::Console().TranslatedUserError("TaskAttacher",
+            Base::Console().translatedUserError("TaskAttacher",
                 "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group '%s'.\n",
                 attachingObj->getFullLabel(), subObj->getFullLabel(), group->getFullLabel());
             rootObj = nullptr;
@@ -441,7 +441,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
         }
 
         // In case the attaching object is in a link to a part.
-        // For instance : 
+        // For instance :
         // - Part1
         // - - LinkToPart2
         // - - - Cube
@@ -454,7 +454,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     }
 
     // if we reach this point it means that attaching object's group is outside of
-    // the scope of the attached object. For instance: 
+    // the scope of the attached object. For instance:
     // - Part1
     // - - Part2
     // - - - Cube
@@ -1224,7 +1224,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox, 
+TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox,
     std::function<void()> onAccept, std::function<void()> onReject)
     : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr), onAccept(onAccept), onReject(onReject), accepted(false)
 {

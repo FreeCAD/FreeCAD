@@ -87,7 +87,7 @@ QByteArray loadFCStdThumbnail(const QString& pathToFCStdFile)
             }
         }
         catch (...) {
-            Base::Console().Log("Failed to load thumbnail for %s\n", pathToFCStdFile.toStdString());
+            Base::Console().log("Failed to load thumbnail for %s\n", pathToFCStdFile.toStdString());
         }
     }
     return {};
@@ -257,7 +257,7 @@ void DisplayedFilesModel::processNewThumbnail(const QString& file, const QByteAr
             Q_EMIT(dataChanged(qmi, qmi, {static_cast<int>(DisplayedFilesModelRoles::image)}));
         }
         else {
-            Base::Console().Log("Unrecognized path %s\n", file.toStdString());
+            Base::Console().log("Unrecognized path %s\n", file.toStdString());
         }
     }
 }

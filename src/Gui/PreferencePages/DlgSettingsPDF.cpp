@@ -36,7 +36,7 @@ void DlgSettingsPDF::loadSettings()
     int currentIndex = ui->comboBox->currentIndex();
 #if QT_VERSION < QT_VERSION_CHECK(6,8,0)
     if (currentIndex == 3) {
-        Base::Console().Warning("When using another copy of FreeCAD you had set the PDF version to X4, but this build of FreeCAD does not support it. Using 1.4 instead.\n");
+        Base::Console().warning("When using another copy of FreeCAD you had set the PDF version to X4, but this build of FreeCAD does not support it. Using 1.4 instead.\n");
         currentIndex = 0;
         ui->comboBox->setCurrentIndex(0);
     }

@@ -118,7 +118,7 @@ void QGVNavStyleMaya::handleMouseReleaseEvent(QMouseEvent *event)
 
 bool QGVNavStyleMaya::allowContextMenu(QContextMenuEvent *event)
 {
-//    Base::Console().Message("QGVNSM::allowContextMenu()\n");
+//    Base::Console().message("QGVNSM::allowContextMenu()\n");
     if (event->reason() == QContextMenuEvent::Mouse) {
         //must check for a button combination involving context menu button
         if (QApplication::keyboardModifiers() == Qt::AltModifier) {
