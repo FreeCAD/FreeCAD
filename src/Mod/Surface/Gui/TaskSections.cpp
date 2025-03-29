@@ -368,6 +368,11 @@ void SectionsPanel::open()
                                   true);
 
     Gui::Selection().clearSelection();
+
+    // if the surface is not yet created then automatically start "AppendEdge" mode
+    if (editedObject->Shape.getShape().isNull()) {
+        ui->buttonEdgeAdd->setChecked(true);
+    }
 }
 
 void SectionsPanel::clearSelection()
