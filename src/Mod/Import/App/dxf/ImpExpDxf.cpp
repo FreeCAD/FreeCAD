@@ -189,7 +189,7 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
         // and don't want to be complaining about unhandled entity types.
         // Note that if it *is* for a hatch we could actually import it and use it to draw a hatch.
     }
-    else if (Blocks.count(name) > 0) {
+    else if (Blocks.contains(name)) {
         ImportError("Duplicate block name '%s'\n", name);
     }
     else {
@@ -462,7 +462,7 @@ void ImpExpDxfRead::ExpandInsert(const std::string& name,
                                  double rotation,
                                  const Base::Vector3d& scale)
 {
-    if (Blocks.count(name) == 0) {
+    if (!Blocks.contains(name)) {
         ImportError("Reference to undefined or external block '%s'\n", name);
         return;
     }
