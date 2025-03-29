@@ -341,7 +341,7 @@ EXPO     [eE][-+]?[0-9]+
 {DIGIT}+{EXPO}               COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}+                     { COUNTCHARS;
                                yylval.ivalue = strtoll( yytext, NULL, 10 );
-                               if (yylval.ivalue == std::numeric_limits<long long>::min)
+                               if (yylval.ivalue == std::numeric_limits<long long>::min())
                                   throw Base::UnderflowError("Integer underflow");
                                else if (yylval.ivalue == std::numeric_limits<long long>::max())
                                   throw Base::OverflowError("Integer overflow");
