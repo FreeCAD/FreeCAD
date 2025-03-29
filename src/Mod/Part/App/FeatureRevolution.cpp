@@ -40,8 +40,7 @@ App::PropertyFloatConstraint::Constraints Revolution::angleRangeU = {-360.0,360.
 
 PROPERTY_SOURCE(Part::Revolution, Part::Feature)
 
-Revolution::Revolution()
-{
+Revolution::Revolution() {
     ADD_PROPERTY_TYPE(Source,(nullptr), "Revolve", App::Prop_None, "Shape to revolve");
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)), "Revolve", App::Prop_None, "Base point of revolution axis");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,0.0,1.0)), "Revolve", App::Prop_None, "Direction of revolution axis");
@@ -50,7 +49,9 @@ Revolution::Revolution()
     Angle.setConstraints(&angleRangeU);
     ADD_PROPERTY_TYPE(Symmetric,(false),"Revolve",App::Prop_None,"Extend revolution symmetrically from the profile.");
     ADD_PROPERTY_TYPE(Solid,(false),"Revolve",App::Prop_None,"Make revolution a solid if possible");
-    ADD_PROPERTY_TYPE(FaceMakerClass,(""),"Revolve",App::Prop_None,"Facemaker to use if Solid is true."); //default for old documents. For default for new objects, refer to setupObject().
+
+    // Default for old documents. For default for new objects, refer to setupObject():
+    ADD_PROPERTY_TYPE(FaceMakerClass,(""),"Revolve",App::Prop_None,"Facemaker to use if Solid is true.");
 }
 
 short Revolution::mustExecute() const
