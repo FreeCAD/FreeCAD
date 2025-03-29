@@ -692,4 +692,41 @@ bool Preferences::showUnits()
     return Preferences::getPreferenceGroup("Dimensions")->GetBool("ShowUnits", false);
 }
 
+//! true if the pop-up for empty selection should be shown.
+// TODO: wf: the original implementation put the parameter in the TechDraw root.  It should be in a branch.
+//       parameter seems to be a double negative?  default state is DontShowInsertFileMessage = false
+//       or ShowInsertFileMessage = true.  We should deprecate the original in favour of a new pref.
+//       is there a standard way to deal with this?
+bool Preferences::ShowInsertFileMessage()
+{
+    // original logic ex Command.cpp insert view
+    // ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
+    // bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
 
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
+    auto paramsInGroup = hGrp->GetParameterNames("DontShowInsertFileMessage");
+    if (!paramsInGroup.empty()) {
+        return hGrp->GetBool("DontShowInsertFileMessage", false);
+    }
+
+    return getPreferenceGroup("User")->GetBool("ShowInsertFileMessage", true);
+}
+
+
+void Preferences::setShowInsertFileMessage(bool state)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
+    auto paramsInGroup = hGrp->GetParameterNames("DontShowInsertFileMessage");
+    if (!paramsInGroup.empty()) {
+        hGrp->SetBool("DontShowInsertFileMessage", !state);
+        return;
+    }
+
+    getPreferenceGroup("User")->SetBool("ShowInsertFileMessage", state);
+}
+
+
+bool Preferences::useSingleInsertTool()
+{
+    return Preferences::getPreferenceGroup("Views")->GetBool("UseSingleInsertTool", true);
+}

@@ -171,10 +171,9 @@ DrawViewPart::~DrawViewPart()
 //!  XSource property lists
 TopoDS_Shape DrawViewPart::getSourceShape(bool fuse) const
 {
-//    Base::Console().Message("DVP::getSourceShape()\n");
     const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty()) {
-        return TopoDS_Shape();
+        throw Base::RuntimeError("DrawViewPart has no source objects");
     }
     if (fuse) {
         return ShapeExtractor::getShapesFused(links);
