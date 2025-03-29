@@ -78,7 +78,7 @@ class TestSnapmakerPost(PathTestUtils.PathTestBase):
 ;machine: Snapmaker 2 A350(T)
 ;Post Processor: Snapmaker_post
 ;Cam File: boxtest.fcstd
-;Output Time: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{0,6}
+;Output Time: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{0,6}
 ;thumbnail: deactivated."""
 
         expected_body = """\
