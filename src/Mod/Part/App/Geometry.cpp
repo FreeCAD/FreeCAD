@@ -550,6 +550,13 @@ void Geometry::translate(const Base::Vector3d& vec) const
     handle()->Translate(trl);
 }
 
+Base::Vector3d Geometry::getPoint(const PointPos posId) const
+{
+    // Should be implemented in derived class, though needed for dynamic dispatch
+    // In case derive class has no implementation, let's return something.
+    return {}
+}
+
 
 // -------------------------------------------------
 
@@ -1107,6 +1114,15 @@ TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomBoundedCurve, Part::GeomCurve)
 GeomBoundedCurve::GeomBoundedCurve() = default;
 
 GeomBoundedCurve::~GeomBoundedCurve() = default;
+
+Base::Vector3d GeomBoundedCurve::getPoint(const PointPos posId) const
+{
+    switch (posId) {
+        case PointPos::start : return getStartPoint();
+        case PointPos::end   : return getEndPoint();
+        default              : return {};
+    }
+}
 
 Base::Vector3d GeomBoundedCurve::getStartPoint() const
 {
@@ -2398,6 +2414,16 @@ GeomArcOfConic::GeomArcOfConic() = default;
 
 GeomArcOfConic::~GeomArcOfConic() = default;
 
+Base::Vector3d GeomArcOfConic::getPoint(const PointPos PosId)
+{
+    switch (PosId) {
+        case PointPos::start : return getStartPoint(true);
+        case PointPos::end   : return getEndPoint(true);
+        case PointPos::mid   : return getCenter();
+        default              : return {};
+    }
+}
+
 /*!
  * \brief GeomArcOfConic::getStartPoint
  * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
@@ -2627,6 +2653,14 @@ Geometry *GeomCircle::copy() const
     GeomCircle *newCirc = new GeomCircle(myCurve);
     newCirc->copyNonTag(this);
     return newCirc;
+}
+
+Base::Vector3d GeomCircle::getPoint(const PointPos PosId)
+{
+    auto pt = getCenter();
+    if(PosId != PointPos::mid)
+        pt.x += getRadius();
+    return pt;
 }
 
 GeomCurve* GeomCircle::createArc(double first, double last) const
@@ -3073,6 +3107,14 @@ Geometry *GeomEllipse::copy() const
     GeomEllipse *newEllipse = new GeomEllipse(myCurve);
     newEllipse->copyNonTag(this);
     return newEllipse;
+}
+
+Base::Vector3d GeomEllipse::getPoint(const PointPos posId)
+{
+    auto pt = getCenter();
+    if(PosId != PointPos::mid)
+        pt += getMajorAxisDir() * getMajorRadius();
+    return pt;
 }
 
 GeomCurve* GeomEllipse::createArc(double first, double last) const
