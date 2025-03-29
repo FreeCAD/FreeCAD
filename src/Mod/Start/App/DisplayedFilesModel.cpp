@@ -47,30 +47,31 @@ using namespace Start;
 namespace
 {
 
-std::string humanReadableSize(unsigned int bytes)
+std::string humanReadableSize(const size_t size)
 {
-    static const std::vector<std::string> siPrefix {
-        "b",
-        "kb",
-        "Mb",
-        "Gb",
-        "Tb",
-        "Pb",
-        "Eb"  // I think it's safe to stop here (for the time being)...
+    using PrefixSpec = struct
+    {
+        char prefix;
+        unsigned long long factor;
     };
-    size_t base = 0;
-    double inUnits = bytes;
-    constexpr double siFactor {1000.0};
-    while (inUnits > siFactor && base < siPrefix.size() - 1) {
-        ++base;
-        inUnits /= siFactor;
-    }
-    if (base == 0) {
-        // Don't include a decimal point for bytes
-        return fmt::format("{:.0f} {}", inUnits, siPrefix[base]);
-    }
-    // For all others, include one digit after the decimal place
-    return fmt::format("{:.1f} {}", inUnits, siPrefix[base]);
+
+    static constexpr std::array<PrefixSpec, 7> prefixes {
+        {{0, 0},
+         {'k', 1ULL << 10},  // User expects to see kiB (1024 bytes)
+         {'M', 1ULL << 20},  // ...
+         {'G', 1ULL << 30},
+         {'T', 1ULL << 40},
+         {'P', 1ULL << 50},
+         {'E', 1ULL << 60}}};
+
+    const auto res = std::find_if(prefixes.rbegin(), prefixes.rend(), [&](const auto& spec) {
+        return spec.factor <= size;
+    });
+
+    // Add one digit after the decimal place for all prefixed sizes
+    return res->prefix != 0
+        ? fmt::format("{}.{} {}B", size / res->factor, size / (10 * res->factor) % 10, res->prefix)
+        : fmt::format("{} B", size);
 }
 
 FileStats fileInfoFromFreeCADFile(const std::string& path)
