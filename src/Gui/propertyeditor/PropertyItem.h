@@ -535,9 +535,9 @@ class GuiExport PropertyVectorItem: public PropertyItem
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(double x READ x WRITE setX DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double y READ y WRITE setY DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double z READ z WRITE setZ DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double x READ x WRITE setX DESIGNABLE true USER true)
+    Q_PROPERTY(double y READ y WRITE setY DESIGNABLE true USER true)
+    Q_PROPERTY(double z READ z WRITE setZ DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
     // clang-format on
 
@@ -642,9 +642,9 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(Base::Quantity x READ x WRITE setX DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(Base::Quantity y READ y WRITE setY DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(Base::Quantity z READ z WRITE setZ DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(Base::Quantity x READ x WRITE setX DESIGNABLE true USER true)
+    Q_PROPERTY(Base::Quantity y READ y WRITE setY DESIGNABLE true USER true)
+    Q_PROPERTY(Base::Quantity z READ z WRITE setZ DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
     // clang-format on
 
@@ -690,22 +690,22 @@ class GuiExport PropertyMatrixItem: public PropertyItem
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(double A11 READ getA11 WRITE setA11 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A12 READ getA12 WRITE setA12 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A13 READ getA13 WRITE setA13 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A14 READ getA14 WRITE setA14 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A21 READ getA21 WRITE setA21 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A22 READ getA22 WRITE setA22 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A23 READ getA23 WRITE setA23 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A24 READ getA24 WRITE setA24 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A31 READ getA31 WRITE setA31 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A32 READ getA32 WRITE setA32 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A33 READ getA33 WRITE setA33 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A34 READ getA34 WRITE setA34 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A41 READ getA41 WRITE setA41 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A42 READ getA42 WRITE setA42 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A43 READ getA43 WRITE setA43 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double A44 READ getA44 WRITE setA44 DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double A11 READ getA11 WRITE setA11 DESIGNABLE true USER true)
+    Q_PROPERTY(double A12 READ getA12 WRITE setA12 DESIGNABLE true USER true)
+    Q_PROPERTY(double A13 READ getA13 WRITE setA13 DESIGNABLE true USER true)
+    Q_PROPERTY(double A14 READ getA14 WRITE setA14 DESIGNABLE true USER true)
+    Q_PROPERTY(double A21 READ getA21 WRITE setA21 DESIGNABLE true USER true)
+    Q_PROPERTY(double A22 READ getA22 WRITE setA22 DESIGNABLE true USER true)
+    Q_PROPERTY(double A23 READ getA23 WRITE setA23 DESIGNABLE true USER true)
+    Q_PROPERTY(double A24 READ getA24 WRITE setA24 DESIGNABLE true USER true)
+    Q_PROPERTY(double A31 READ getA31 WRITE setA31 DESIGNABLE true USER true)
+    Q_PROPERTY(double A32 READ getA32 WRITE setA32 DESIGNABLE true USER true)
+    Q_PROPERTY(double A33 READ getA33 WRITE setA33 DESIGNABLE true USER true)
+    Q_PROPERTY(double A34 READ getA34 WRITE setA34 DESIGNABLE true USER true)
+    Q_PROPERTY(double A41 READ getA41 WRITE setA41 DESIGNABLE true USER true)
+    Q_PROPERTY(double A42 READ getA42 WRITE setA42 DESIGNABLE true USER true)
+    Q_PROPERTY(double A43 READ getA43 WRITE setA43 DESIGNABLE true USER true)
+    Q_PROPERTY(double A44 READ getA44 WRITE setA44 DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
     // clang-format on
 
@@ -804,8 +804,8 @@ class GuiExport PropertyRotationItem: public PropertyItem
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(Base::Quantity Angle READ getAngle WRITE setAngle DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(Base::Vector3d Axis  READ getAxis  WRITE setAxis  DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(Base::Quantity Angle READ getAngle WRITE setAngle DESIGNABLE true USER true)
+    Q_PROPERTY(Base::Vector3d Axis  READ getAxis  WRITE setAxis  DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
     // clang-format on
 
@@ -863,9 +863,9 @@ class GuiExport PropertyPlacementItem: public PropertyItem
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(Base::Quantity Angle    READ getAngle    WRITE setAngle    DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(Base::Vector3d Axis     READ getAxis     WRITE setAxis     DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(Base::Vector3d Position READ getPosition WRITE setPosition DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(Base::Quantity Angle    READ getAngle    WRITE setAngle    DESIGNABLE true USER true)
+    Q_PROPERTY(Base::Vector3d Axis     READ getAxis     WRITE setAxis     DESIGNABLE true USER true)
+    Q_PROPERTY(Base::Vector3d Position READ getPosition WRITE setPosition DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
     // clang-format on
 
@@ -908,7 +908,7 @@ class GuiExport PropertyEnumItem: public PropertyItem
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(QStringList Enum READ getEnum WRITE setEnum DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QStringList Enum READ getEnum WRITE setEnum DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
     // clang-format on
 
@@ -1043,12 +1043,12 @@ class GuiExport PropertyMaterialItem: public PropertyItem
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(QColor AmbientColor  READ getAmbientColor  WRITE setAmbientColor  DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QColor DiffuseColor  READ getDiffuseColor  WRITE setDiffuseColor  DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QColor SpecularColor READ getSpecularColor WRITE setSpecularColor DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(float Shininess      READ getShininess     WRITE setShininess     DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(float Transparency   READ getTransparency  WRITE setTransparency  DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QColor AmbientColor  READ getAmbientColor  WRITE setAmbientColor  DESIGNABLE true USER true)
+    Q_PROPERTY(QColor DiffuseColor  READ getDiffuseColor  WRITE setDiffuseColor  DESIGNABLE true USER true)
+    Q_PROPERTY(QColor SpecularColor READ getSpecularColor WRITE setSpecularColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)
+    Q_PROPERTY(float Shininess      READ getShininess     WRITE setShininess     DESIGNABLE true USER true)
+    Q_PROPERTY(float Transparency   READ getTransparency  WRITE setTransparency  DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
     // clang-format on
 
@@ -1094,12 +1094,12 @@ class GuiExport PropertyMaterialListItem: public PropertyItem
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(QColor AmbientColor  READ getAmbientColor  WRITE setAmbientColor  DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QColor DiffuseColor  READ getDiffuseColor  WRITE setDiffuseColor  DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QColor SpecularColor READ getSpecularColor WRITE setSpecularColor DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(float Shininess      READ getShininess     WRITE setShininess     DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(float Transparency   READ getTransparency  WRITE setTransparency  DESIGNABLE true USER true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QColor AmbientColor  READ getAmbientColor  WRITE setAmbientColor  DESIGNABLE true USER true)
+    Q_PROPERTY(QColor DiffuseColor  READ getDiffuseColor  WRITE setDiffuseColor  DESIGNABLE true USER true)
+    Q_PROPERTY(QColor SpecularColor READ getSpecularColor WRITE setSpecularColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)
+    Q_PROPERTY(float Shininess      READ getShininess     WRITE setShininess     DESIGNABLE true USER true)
+    Q_PROPERTY(float Transparency   READ getTransparency  WRITE setTransparency  DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
     // clang-format on
 

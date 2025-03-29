@@ -272,7 +272,8 @@ std::string SoFCOffscreenRenderer::createMIBA(const SbMatrix& mat) const
 
     com << setw(7) << setfill(' ') << fixed;
     com << "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" ;
-    com << "<MIBA xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"http://juergen-riegel.net/Miba/Miba2.xsd\" Version=\"2\"> \n" ;
+    com << "<MIBA xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+        << "xsi:noNamespaceSchemaLocation=\"http://juergen-riegel.net/Miba/Miba2.xsd\" Version=\"2\"> \n" ;
     com << " <View>\n";
     com << "  <Matrix \n";
     com << "     a11=\"" << mat[0][0] <<"\" a12=\"" << mat[1][0] <<"\" a13=\"" << mat[2][0] <<"\" a14=\"" << mat[3][0] << "\"\n";

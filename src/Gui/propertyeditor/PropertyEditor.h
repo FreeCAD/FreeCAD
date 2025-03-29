@@ -60,13 +60,16 @@ class PropertyModel;
  See also: https://man42.net/blog/2011/09/qt-4-7-modify-a-custom-q_property-with-a-qt-style-sheet/
 */
 
+// clazy:excludeall=qproperty-without-notify
+
+
 class GuiExport PropertyEditor: public QTreeView
 {
     // clang-format off
     Q_OBJECT
-    Q_PROPERTY(QBrush groupBackground READ groupBackground WRITE setGroupBackground DESIGNABLE true SCRIPTABLE true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QColor groupTextColor  READ groupTextColor  WRITE setGroupTextColor  DESIGNABLE true SCRIPTABLE true)  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QBrush itemBackground  READ itemBackground  WRITE setItemBackground  DESIGNABLE true SCRIPTABLE true)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QBrush groupBackground READ groupBackground WRITE setGroupBackground DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QColor groupTextColor  READ groupTextColor  WRITE setGroupTextColor  DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QBrush itemBackground  READ itemBackground  WRITE setItemBackground  DESIGNABLE true SCRIPTABLE true)
     // clang-format on
 
 public:
