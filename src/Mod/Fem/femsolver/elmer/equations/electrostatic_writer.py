@@ -152,58 +152,38 @@ class ESwriter:
                 self.write.handled(obj)
 
         for obj in self.write.getMember("Fem::ConstraintElectricChargeDensity"):
-            if obj.Mode not in ["Interface", "Total Interface"]:
-                continue
+            match obj.Mode:
+                case "Interface":
+                    density = obj.InterfaceChargeDensity
+                case "Total Interface":
+                    density = obj.Proxy.get_total_interface_density(obj)
+                case _:
+                    continue
 
-            size = 0
-            items = []
             for feat, sub_elem in obj.References:
                 for name in sub_elem:
-                    sub = feat.getSubObject(name)
-                    if sub.ShapeType == "Face":
-                        size += sub.Area
-                        items.append(name)
-                    elif sub.ShapeType == "Edge":
-                        size += sub.Length
-                        items.append(name)
-
-            if items:
-                if obj.Mode == "Interface":
-                    density = obj.InterfaceChargeDensity.getValueAs("C/m^2").Value
-                elif obj.Mode == "Total Interface":
-                    area = Units.Quantity(f"{size} mm^2")
-                    density = (obj.TotalCharge / area).getValueAs("C/m^2").Value
-                for name in items:
                     self.write.boundary(name, "! FreeCAD Name", obj.Label)
-                    self.write.boundary(name, "Surface Charge Density", round(density, 6))
+                    self.write.boundary(
+                        name, "Surface Charge Density", round(density.getValueAs("C/m^2").Value, 6)
+                    )
                     self.write.handled(obj)
 
     def handleElectrostaticBodyForces(self):
         for obj in self.write.getMember("Fem::ConstraintElectricChargeDensity"):
-            if obj.Mode not in ["Source", "Total Source"]:
-                continue
+            match obj.Mode:
+                case "Source":
+                    density = obj.SourceChargeDensity
+                case "Total Source":
+                    density = obj.Proxy.get_total_source_density(obj)
+                case _:
+                    continue
 
-            size = 0
-            items = []
             for feat, sub_elem in obj.References:
                 for name in sub_elem:
-                    sub = feat.getSubObject(name)
-                    if sub.ShapeType == "Solid":
-                        size += sub.Volume
-                        items.append(name)
-                    elif sub.ShapeType == "Face":
-                        size += sub.Area
-                        items.append(name)
-
-            if items:
-                if obj.Mode == "Source":
-                    density = obj.SourceChargeDensity.getValueAs("C/m^3").Value
-                elif obj.Mode == "Total Source":
-                    vol = Units.Quantity(f"{size} mm^3")
-                    density = (obj.TotalCharge / vol).getValueAs("C/m^3").Value
-                for name in items:
                     self.write.bodyForce(name, "! FreeCAD Name", obj.Label)
-                    self.write.bodyForce(name, "Charge Density", round(density, 6))
+                    self.write.bodyForce(
+                        name, "Charge Density", round(density.getValueAs("C/m^3").Value, 6)
+                    )
                     self.write.handled(obj)
 
 
