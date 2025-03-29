@@ -46,6 +46,15 @@ if DEBUG := False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+def convert_option_to_attr(option_name):
+    # transforms argparse options into identifiers
+    if option_name.startswith('--'):
+        option_name = option_name[2:]
+    elif option_name.startswith('-'):
+        option_name = option_name[1:]
+    
+    return option_name.replace('-','_')
+
 SNAPMAKER_MACHINES = dict(
     Original=dict(
         key="Original",
@@ -104,6 +113,27 @@ SNAPMAKER_MACHINES = dict(
         lead=dict(X=40, Y=40, Z=8), # Linear module screw pitch (mm/turn)
     ),
 )
+
+# These modifications were released to upgrade the Snapmaker 2.0 machines
+# which started on Kickstarter.
+SNAPMAKER_MOD_KITS = {
+    "QS": dict(
+        key="QS",
+        name="Quick Swap Kit",
+        option_name="--quick-swap",
+        option_help_text="Indicates that the quick swap kit is installed. Only compatible with Snapmaker 2 machines.",
+        compatible_machines={"A150","A250","A250T","A350","A350T"},
+        boundaries_delta=dict(X=0, Y=-15, Z=-15),
+    ),
+    "BK": dict(
+        key="BK",
+        name="Bracing Kit",
+        option_name="--bracing-kit",
+        option_help_text="Indicates that the bracing kit is installed. Only compatible with Snapmaker 2 machines.",
+        compatible_machines={"A150","A250","A250T","A350","A350T"},
+        boundaries_delta=dict(X=0, Y=-12, Z=-6),
+    ),
+}
 
 # Could support other types of toolheads (laser, drag knife, 3DP, ...) in the future
 # https://wiki.snapmaker.com/en/Snapmaker_Luban/manual/2_supported_gcode_references#m3m4-modified-cnclaser-on
@@ -262,6 +292,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.values["BOUNDARIES"] = None
         self.values["BOUNDARIES_CHECK"] = False
         self.values["MACHINES"] = SNAPMAKER_MACHINES
+        self.values["MOD_KITS_ALL"] = SNAPMAKER_MOD_KITS
         self.values["TOOLHEADS"] = SNAPMAKER_TOOLHEADS
         self.values["TOOLHEAD_NAME"] = None
         self.values["SPINDLE_SPEEDS"] = dict()
@@ -353,7 +384,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             "--boundaries",
             action=CoordinatesAction,
             default=None,
-            help='Custom boundaries (e.g. "100, 200, 300"). Overrides --machine',
+            help='Custom boundaries (e.g. "100, 200, 300"). Overrides boundaries from --machine',
         )
 
         group.add_argument(
@@ -363,6 +394,14 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             choices=self.values["MACHINES"].keys(),
             help=f"Snapmaker machine. Choose from [{self.values['MACHINES'].keys()}].",
         )
+
+        for key, value in SNAPMAKER_MOD_KITS.items():
+            group.add_argument(
+                value["option_name"],
+                default=False,
+                action="store_true",
+                help=value["option_help_text"],
+            )
 
         group.add_argument(
             "--toolhead",
@@ -465,10 +504,25 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                     "Spindle speed will be controlled using using RPM.\n"
                 )
 
+            self.values["MOD_KITS_INSTALLED"] = []
             if args.boundaries:  # may override machine boundaries, which is expected
                 self.values["BOUNDARIES"] = args.boundaries
                 self.values["MACHINE_NAME"] += " Boundaries overide=" + str(args.boundaries)
             else:
+                # Update machine dimensions based on installed kits
+                for mod_kit in self.values["MOD_KITS_ALL"].values():
+                    if getattr(args, convert_option_to_attr(mod_kit["option_name"])):
+                        if self.values["MACHINE_KEY"] not in mod_kit["compatible_machines"]:
+                            FreeCAD.Console.PrintError(
+                                f"Machine {machine['name']} is not compatible with {mod_kit["option_name"]}.\n"
+                            )
+                            flag = False
+                            return (flag, args)
+                        self.values["MACHINE_NAME"] += " " + mod_kit["name"]
+                        self.values["MOD_KITS_INSTALLED"].append(mod_kit["key"])
+                        for axis in mod_kit["boundaries_delta"].keys():
+                            self.values["BOUNDARIES"][axis] += mod_kit["boundaries_delta"][axis]
+
                 # Update machine dimensions based on installed toolhead
                 for axis in toolhead["boundaries_delta"].keys():
                     self.values["BOUNDARIES"][axis] += toolhead["boundaries_delta"][axis]
