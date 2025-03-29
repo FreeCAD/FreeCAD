@@ -75,6 +75,6 @@ PyMOD_INIT_FUNC(CloudGui)
     //
     //
     PyObject* mod = CloudGui::initModule();
-    Base::Console().Log("Loading GUI of Cloud module... done\n");
+    Base::Console().log("Loading GUI of Cloud module... done\n");
     PyMOD_Return(mod);
 }

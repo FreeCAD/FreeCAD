@@ -190,7 +190,7 @@ PyObject* FT2FC(const Py_UCS4 *PyUString,
         }
         catch (Py::Exception& e) {
             e.clear();
-            Base::Console().Log("FT2FC char '0x%04x'/'%d' has no Wires!\n", currchar, currchar);
+            Base::Console().log("FT2FC char '0x%04x'/'%d' has no Wires!\n", currchar, currchar);
         }
 
         PenPos += cadv;

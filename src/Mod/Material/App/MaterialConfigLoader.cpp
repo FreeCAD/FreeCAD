@@ -1041,7 +1041,7 @@ MaterialConfigLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryL
 
     QMap<QString, QString> fcmat;
     if (!readFile(path, fcmat)) {
-        Base::Console().Log("Error reading '%s'\n", path.toStdString().c_str());
+        Base::Console().log("Error reading '%s'\n", path.toStdString().c_str());
         throw MaterialReadError();
     }
 

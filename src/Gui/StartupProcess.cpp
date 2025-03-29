@@ -308,10 +308,10 @@ void StartupPostProcess::checkOpenGL()
     if (context.create()) {
         context.makeCurrent(&window);
         if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::Framebuffers)) {
-            Base::Console().Log("This system does not support framebuffer objects\n");
+            Base::Console().log("This system does not support framebuffer objects\n");
         }
         if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::NPOTTextures)) {
-            Base::Console().Log("This system does not support NPOT textures\n");
+            Base::Console().log("This system does not support NPOT textures\n");
         }
 
         int major = context.format().majorVersion();
@@ -336,7 +336,7 @@ void StartupPostProcess::checkOpenGL()
         }
 #endif
         const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-        Base::Console().Log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
+        Base::Console().log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
     }
 }
 
@@ -411,7 +411,7 @@ void StartupPostProcess::showMainWindow()
 
     // running the GUI init script
     try {
-        Base::Console().Log("Run Gui init script\n");
+        Base::Console().log("Run Gui init script\n");
         Application::runInitGuiScript();
         setImportImageFormats();
     }
@@ -432,7 +432,7 @@ void StartupPostProcess::activateWorkbench()
 {
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
-    Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
+    Base::Console().log("Init: Activating default workbench %s\n", start.c_str());
     std::string autoload =
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
@@ -469,7 +469,7 @@ void StartupPostProcess::activateWorkbench()
 
     // show the main window
     if (!Application::hiddenMainWindow()) {
-        Base::Console().Log("Init: Showing main window\n");
+        Base::Console().log("Init: Showing main window\n");
         mainWindow->loadWindowSettings();
     }
 

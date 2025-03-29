@@ -930,7 +930,7 @@ int SketchAnalysis::autoconstraint(double precision,
     // STAGE 3: Equality constraint detection
     int ne = detectMissingEqualityConstraints(precision);
 
-    Base::Console().Log("Constraints: Vertical/Horizontal: %d found. "
+    Base::Console().log("Constraints: Vertical/Horizontal: %d found. "
                         "Point-on-point: %d. Equality: %d\n",
                         nhv,
                         nc,

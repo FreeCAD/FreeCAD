@@ -75,7 +75,7 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
 bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const
 {
 #ifdef FC_DEBUG
-    Base::Console().Log("Check ViewProviderGroupExtension\n");
+    Base::Console().log("Check ViewProviderGroupExtension\n");
 #endif
 
     auto extobj = getExtendedViewProvider()->getObject();

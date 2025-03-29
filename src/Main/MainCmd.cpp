@@ -141,7 +141,7 @@ int main(int argc, char** argv)
     }
 
     // Destruction phase ===========================================================
-    Console().Log("FreeCAD terminating...\n");
+    Console().log("FreeCAD terminating...\n");
 
     try {
         // close open documents
@@ -153,7 +153,7 @@ int main(int argc, char** argv)
     // cleans up
     Application::destruct();
 
-    Console().Log("FreeCAD completely terminated\n");
+    Console().log("FreeCAD completely terminated\n");
 
     return 0;
 }

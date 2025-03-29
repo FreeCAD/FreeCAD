@@ -251,14 +251,14 @@ void MaterialYamlEntry::addToTree(
                         }
                     }
                     catch (const YAML::BadConversion& e) {
-                        Base::Console().Log("Exception %s <%s:%s> - ignored\n",
+                        Base::Console().log("Exception %s <%s:%s> - ignored\n",
                                             e.what(),
                                             name.toStdString().c_str(),
                                             propertyName.c_str());
                     }
                 }
                 else if (propertyName != "UUID") {
-                    Base::Console().Log("\tProperty '%s' is not described by any model. Ignored\n",
+                    Base::Console().log("\tProperty '%s' is not described by any model. Ignored\n",
                                         propertyName.c_str());
                 }
             }
@@ -318,14 +318,14 @@ void MaterialYamlEntry::addToTree(
                         }
                     }
                     catch (const YAML::BadConversion& e) {
-                        Base::Console().Log("Exception %s <%s:%s> - ignored\n",
+                        Base::Console().log("Exception %s <%s:%s> - ignored\n",
                                             e.what(),
                                             name.toStdString().c_str(),
                                             propertyName.c_str());
                     }
                 }
                 else if (propertyName != "UUID") {
-                    Base::Console().Log("\tProperty '%s' is not described by any model. Ignored\n",
+                    Base::Console().log("\tProperty '%s' is not described by any model. Ignored\n",
                                         propertyName.c_str());
                 }
             }
@@ -437,7 +437,7 @@ void MaterialLoader::showYaml(const YAML::Node& yaml)
 
     out << yaml;
     std::string logData = out.str();
-    Base::Console().Log("%s\n", logData.c_str());
+    Base::Console().log("%s\n", logData.c_str());
 }
 
 
@@ -457,7 +457,7 @@ void MaterialLoader::dereference(
             parent = materialMap->at(parentUUID);
         }
         catch (std::out_of_range&) {
-            Base::Console().Log(
+            Base::Console().log(
                 "Unable to apply inheritance for material '%s', parent '%s' not found.\n",
                 material->getName().toStdString().c_str(),
                 parentUUID.toStdString().c_str());

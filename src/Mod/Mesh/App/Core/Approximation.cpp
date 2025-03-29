@@ -1186,7 +1186,7 @@ float CylinderFit::Fit()
         Base::Vector3d dir = cylFit.GetAxis();
 
 #if defined(FC_DEBUG)
-        Base::Console().Log(
+        Base::Console().log(
             "MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, "
             "%0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
             base.x,
@@ -1238,7 +1238,7 @@ float CylinderFit::Fit()
 
     Eigen::LevenbergMarquardt<LMCylinderFunctor, double> lm(functor);
     int status = lm.minimize(x);
-    Base::Console().Log("Cylinder fit: %d, iterations: %d, gradient norm: %f\n",
+    Base::Console().log("Cylinder fit: %d, iterations: %d, gradient norm: %f\n",
                         status,
                         lm.iter,
                         lm.gnorm);

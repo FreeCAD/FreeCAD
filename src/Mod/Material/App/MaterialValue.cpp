@@ -431,11 +431,11 @@ void Array2D::validateColumn(int column) const
 void Array2D::validate(const Array2D& other) const
 {
     if (rows() != other.rows()) {
-        Base::Console().Log("Local row count %d, remote %d\n", rows(), other.rows());
+        Base::Console().log("Local row count %d, remote %d\n", rows(), other.rows());
         throw InvalidProperty("Material property value row counts don't match");
     }
     if (columns() != other.columns()) {
-        Base::Console().Log("Local column count %d, remote %d\n", columns(), other.columns());
+        Base::Console().log("Local column count %d, remote %d\n", columns(), other.columns());
         throw InvalidProperty("Material property value column counts don't match");
     }
     try {
@@ -534,11 +534,11 @@ QVariant Array2D::getValue(int row, int column) const
 
 void Array2D::dumpRow(const std::shared_ptr<QList<QVariant>>& row)
 {
-    Base::Console().Log("row: ");
+    Base::Console().log("row: ");
     for (auto& column : *row) {
-        Base::Console().Log("'%s' ", column.toString().toStdString().c_str());
+        Base::Console().log("'%s' ", column.toString().toStdString().c_str());
     }
-    Base::Console().Log("\n");
+    Base::Console().log("\n");
 }
 
 void Array2D::dump() const

@@ -845,7 +845,7 @@ Document::Document(const char* documentName)
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().Log("+App::Document: %p\n", this);
+    Console().log("+App::Document: %p\n", this);
 #endif
     std::string CreationDateString = Base::Tools::currentDateTimeString();
     std::string Author = App::GetApplication()
@@ -946,7 +946,7 @@ Document::Document(const char* documentName)
 Document::~Document()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Console().Log("-App::Document: %s %p\n", getName(), this);
+    Console().log("-App::Document: %s %p\n", getName(), this);
 #endif
 
     try {
@@ -956,7 +956,7 @@ Document::~Document()
     }
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().Log("-Delete Features of %s \n", getName());
+    Console().log("-Delete Features of %s \n", getName());
 #endif
 
     d->clearDocument();

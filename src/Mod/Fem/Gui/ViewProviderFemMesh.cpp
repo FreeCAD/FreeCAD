@@ -953,7 +953,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         return;
     }
     Base::TimeElapsed Start;
-    Base::Console().Log(
+    Base::Console().log(
         "Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
 
     const SMDS_MeshInfo& info = data->GetMeshInfo();
@@ -989,7 +989,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     std::vector<FemFace> facesHelper(numTries);
 
-    Base::Console().Log("    %f: Start build up %i face helper\n",
+    Base::Console().log("    %f: Start build up %i face helper\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()),
                         facesHelper.size());
     Base::BoundBox3d BndBox;
@@ -1514,7 +1514,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
 
     if (FaceSize < MaxFacesShowInner) {
-        Base::Console().Log("    %f: Start eliminate internal faces SIMPLE\n",
+        Base::Console().log("    %f: Start eliminate internal faces SIMPLE\n",
                             Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
         // search for double (inside) faces and hide them
@@ -1531,7 +1531,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
     }
     else {
-        Base::Console().Log("    %f: Start eliminate internal faces GRID\n",
+        Base::Console().log("    %f: Start eliminate internal faces GRID\n",
                             Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
         BndBox.Enlarge(BndBox.CalcDiagonalLength() / 10000.0);
         // calculate grid properties
@@ -1543,7 +1543,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         unsigned int NbrX = (unsigned int)(BndBox.LengthX() / size) + 1;
         unsigned int NbrY = (unsigned int)(BndBox.LengthY() / size) + 1;
         unsigned int NbrZ = (unsigned int)(BndBox.LengthZ() / size) + 1;
-        Base::Console().Log("      Size:F:%f,  X:%i  ,Y:%i  ,Z:%i\n", gridFactor, NbrX, NbrY, NbrZ);
+        Base::Console().log("      Size:F:%f,  X:%i  ,Y:%i  ,Z:%i\n", gridFactor, NbrX, NbrY, NbrZ);
 
         double Xmin = BndBox.MinX;
         double Ymin = BndBox.MinY;
@@ -1570,7 +1570,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             iZ = z;
 
             if (iX >= NbrX || iY >= NbrY || iZ >= NbrZ) {
-                Base::Console().Log("      Outof range!\n");
+                Base::Console().log("      Outof range!\n");
             }
 
             Grid[iX + iY * NbrX + iZ * NbrX * NbrY].push_back(&facesHelper[l]);
@@ -1594,12 +1594,12 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
         avg = avg / Grid.size();
 
-        Base::Console().Log("      VoxelSize: Max:%i ,Average:%i\n", max, avg);
+        Base::Console().log("      VoxelSize: Max:%i ,Average:%i\n", max, avg);
 
     }  // if( FaceSize < 1000)
 
 
-    Base::Console().Log("    %f: Start build up node map\n",
+    Base::Console().log("    %f: Start build up node map\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // sort out double nodes and build up index map
@@ -1632,7 +1632,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             }
         }
     }
-    Base::Console().Log("    %f: Start set point vector\n",
+    Base::Console().log("    %f: Start set point vector\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // set the point coordinates
@@ -1650,7 +1650,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
 
     // count triangle size
-    Base::Console().Log("    %f: Start count triangle size\n",
+    Base::Console().log("    %f: Start count triangle size\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     int triangleCount = 0;
     for (int l = 0; l < FaceSize; l++) {
@@ -1675,7 +1675,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             }
         }
     }
-    Base::Console().Log("    NumTriangles:%i\n", triangleCount);
+    Base::Console().log("    NumTriangles:%i\n", triangleCount);
     // edge map collect and sort edges of the faces to be shown.
     std::map<int, std::set<int>> EdgeMap;
 
@@ -1706,7 +1706,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
     }
 
-    Base::Console().Log("    %f: Start build up triangle vector\n",
+    Base::Console().log("    %f: Start build up triangle vector\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     // set the triangle face indices
     faces->coordIndex.setNum(4 * triangleCount);
@@ -3126,7 +3126,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     faces->coordIndex.finishEditing();
 
-    Base::Console().Log("    %f: Start build up edge vector\n",
+    Base::Console().log("    %f: Start build up edge vector\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     // std::map<int,std::set<int> > EdgeMap;
     // count edges
@@ -3152,9 +3152,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     }
 
     lines->coordIndex.finishEditing();
-    Base::Console().Log("    NumEdges:%i\n", EdgeSize);
+    Base::Console().log("    NumEdges:%i\n", EdgeSize);
 
-    Base::Console().Log(
+    Base::Console().log(
         "    %f: Finish =========================================================\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }

@@ -2925,8 +2925,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         }
 
 #ifdef DEBUG
-        Base::Console().Log("\n\nFILLET DEBUG\n\n");
-        Base::Console().Log("Ref param: (%f);(%f)", refparam1, refparam2);
+        Base::Console().log("\n\nFILLET DEBUG\n\n");
+        Base::Console().log("Ref param: (%f);(%f)", refparam1, refparam2);
 #endif
 
         std::pair<Base::Vector3d, Base::Vector3d> interpoints;
@@ -3093,12 +3093,12 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
 
 #ifdef DEBUG
-        Base::Console().Log("Start param: (%f);(%f)\n", spc1, spc2);
+        Base::Console().log("Start param: (%f);(%f)\n", spc1, spc2);
 
         Base::Vector3d c1pf = curve1->pointAtParameter(spc1);
         Base::Vector3d c2pf = curve2->pointAtParameter(spc2);
 
-        Base::Console().Log("start point curves: (%f,%f,%f);(%f,%f,%f)\n",
+        Base::Console().log("start point curves: (%f,%f,%f);(%f,%f,%f)\n",
                             c1pf.x,
                             c1pf.y,
                             c1pf.z,
@@ -3112,14 +3112,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         Base::Vector3d tdir2 = curve2->firstDerivativeAtParameter(refparam2);
 
 #ifdef DEBUG
-        Base::Console().Log("tangent vectors: (%f,%f,%f);(%f,%f,%f)\n",
+        Base::Console().log("tangent vectors: (%f,%f,%f);(%f,%f,%f)\n",
                             tdir1.x,
                             tdir1.y,
                             tdir1.z,
                             tdir2.x,
                             tdir2.y,
                             tdir2.z);
-        Base::Console().Log("inter-ref vector: (%f,%f,%f)\n", ref21.x, ref21.y, ref21.z);
+        Base::Console().log("inter-ref vector: (%f,%f,%f)\n", ref21.x, ref21.y, ref21.z);
 #endif
 
         Base::Vector3d vn(0, 0, 1);
@@ -3128,8 +3128,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         double sdir2 = tdir2.Cross(-ref21).Dot(vn);
 
 #ifdef DEBUG
-        Base::Console().Log("sign of offset: (%f,%f)\n", sdir1, sdir2);
-        Base::Console().Log("radius: %f\n", radius);
+        Base::Console().log("sign of offset: (%f,%f)\n", sdir1, sdir2);
+        Base::Console().log("radius: %f\n", radius);
 #endif
 
         Part::GeomOffsetCurve* ocurve1 = new Part::GeomOffsetCurve(
@@ -3142,7 +3142,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         Base::Vector3d oc1pf = ocurve1->pointAtParameter(ocurve1->getFirstParameter());
         Base::Vector3d oc2pf = ocurve2->pointAtParameter(ocurve2->getFirstParameter());
 
-        Base::Console().Log("start point offset curves: (%f,%f,%f);(%f,%f,%f)\n",
+        Base::Console().log("start point offset curves: (%f,%f,%f);(%f,%f,%f)\n",
                             oc1pf.x,
                             oc1pf.y,
                             oc1pf.z,
@@ -3153,7 +3153,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         /*auto printoffsetcurve = [](Part::GeomOffsetCurve *c) {
 
             for(double param = c->getFirstParameter(); param < c->getLastParameter(); param = param
-        + (c->getLastParameter()-c->getFirstParameter())/10) Base::Console().Log("\n%f:
+        + (c->getLastParameter()-c->getFirstParameter())/10) Base::Console().log("\n%f:
         (%f,%f,0)\n", param, c->pointAtParameter(param).x,c->pointAtParameter(param).y);
 
         };
@@ -3169,7 +3169,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         try {
             if (!ocurve1->intersect(ocurve2, offsetintersectionpoints)) {
 #ifdef DEBUG
-                Base::Console().Log("No intersection between offset curves\n");
+                Base::Console().log("No intersection between offset curves\n");
 #endif
                 return -1;
             }
@@ -3181,7 +3181,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
 #ifdef DEBUG
         for (auto inter : offsetintersectionpoints) {
-            Base::Console().Log("offset int(%f,%f,0)\n", inter.first.x, inter.first.y);
+            Base::Console().log("offset int(%f,%f,0)\n", inter.first.x, inter.first.y);
         }
 #endif
 
@@ -3192,7 +3192,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         }
 
 #ifdef DEBUG
-        Base::Console().Log(
+        Base::Console().log(
             "selected offset int(%f,%f,0)\n", filletcenterpoint.first.x, filletcenterpoint.first.y);
 #endif
 
@@ -3225,7 +3225,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         Base::Vector3d refp2 = curve2->pointAtParameter(refoparam2);
 
 #ifdef DEBUG
-        Base::Console().Log("refpoints: (%f,%f,%f);(%f,%f,%f)",
+        Base::Console().log("refpoints: (%f,%f,%f);(%f,%f,%f)",
                             refp1.x,
                             refp1.y,
                             refp1.z,
@@ -3340,7 +3340,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         delete ocurve2;
 
 #ifdef DEBUG
-        Base::Console().Log("\n\nEND OF FILLET DEBUG\n\n");
+        Base::Console().log("\n\nEND OF FILLET DEBUG\n\n");
 #endif
     }
     else {
@@ -11189,13 +11189,13 @@ int SketchObject::changeConstraintsLocking(bool bLock)
                 cntSuccess++;
 
             newVals[i] = constNew;
-            Base::Console().Log("Constraint%i will be affected\n", i + 1);
+            Base::Console().log("Constraint%i will be affected\n", i + 1);
         }
     }
 
     this->Constraints.setValues(std::move(newVals));
 
-    Base::Console().Log("ChangeConstraintsLocking: affected %i of %i tangent/perp constraints\n",
+    Base::Console().log("ChangeConstraintsLocking: affected %i of %i tangent/perp constraints\n",
                         cntSuccess,
                         cntToBeAffected);
 
@@ -11282,13 +11282,13 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         if (affected) {
             cntToBeAffected++;
             newVals[ic] = constNew;
-            Base::Console().Log("Constraint%i will be affected\n", ic + 1);
+            Base::Console().log("Constraint%i will be affected\n", ic + 1);
         };
     }
 
     if (!justAnalyze) {
         this->Constraints.setValues(std::move(newVals));
-        Base::Console().Log("Swapped start/end of reversed external arcs in %i constraints\n",
+        Base::Console().log("Swapped start/end of reversed external arcs in %i constraints\n",
                             cntToBeAffected);
     }
 

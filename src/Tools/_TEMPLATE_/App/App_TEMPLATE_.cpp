@@ -67,6 +67,6 @@ PyMOD_INIT_FUNC(_TEMPLATE_)
     //
     //
     PyObject* mod = _TEMPLATE_::initModule();
-    Base::Console().Log("Loading _TEMPLATE_ module... done\n");
+    Base::Console().log("Loading _TEMPLATE_ module... done\n");
     PyMOD_Return(mod);
 }

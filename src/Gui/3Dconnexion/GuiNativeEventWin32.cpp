@@ -262,7 +262,7 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
 {
     if (gMouseInput == this) {
         gMouseInput = 0;
-        Base::Console().Log("3Dconnexion device detached.\n");
+        Base::Console().log("3Dconnexion device detached.\n");
     }
 }
 
@@ -277,14 +277,14 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
             gMouseInput = this;
             qApp->installNativeEventFilter(
                 new Gui::RawInputEventFilter(Gui::GuiNativeEvent::RawInputEventFilter));
-            Base::Console().Log("3Dconnexion device initialized.\n");
+            Base::Console().log("3Dconnexion device initialized.\n");
         }
         else {
-            Base::Console().Log("3Dconnexion device is attached, but not initialized.\n");
+            Base::Console().log("3Dconnexion device is attached, but not initialized.\n");
         }
     }
     else {
-        Base::Console().Log("3Dconnexion device not attached.\n");
+        Base::Console().log("3Dconnexion device not attached.\n");
     }
 }
 
