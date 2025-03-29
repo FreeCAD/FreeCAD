@@ -34,8 +34,8 @@ macro(SetupLibFmt)
                      cmake_policy(SET CMP0135 NEW)
               endif()
               FetchContent_Declare(fmt
-                      URL https://github.com/fmtlib/fmt/archive/refs/tags/9.1.0.zip
-                      URL_MD5 e6754011ff56bfc37631fcc90961e377
+                      URL https://github.com/fmtlib/fmt/archive/refs/tags/11.1.4.zip
+                      URL_MD5 90667b07f34d91554cf8285ae234ff66
               )
               FetchContent_MakeAvailable(fmt)
               set_target_properties(fmt PROPERTIES POSITION_INDEPENDENT_CODE ON)
