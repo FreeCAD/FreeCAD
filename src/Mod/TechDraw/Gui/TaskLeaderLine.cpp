@@ -87,7 +87,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 
     m_basePage = m_lineFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().Error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
         return;
     }
     App::DocumentObject* obj = m_lineFeat->LeaderParent.getValue();
@@ -108,7 +108,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 
     //TODO: when/if leaders are allowed to be parented to Page, check for m_baseFeat will be removed
     if (!m_baseFeat || !m_basePage) {
-        Base::Console().Error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
         return;
     }
 
@@ -557,7 +557,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
 
             if (!qgLead) {
                 //tarfu
-                Base::Console().Error("TaskLeaderLine - can't find leader graphic\n");
+                Base::Console().error("TaskLeaderLine - can't find leader graphic\n");
                 //now what? throw will generate "unknown unhandled exception"
             } else {
                 m_qgLeader = qgLead;
@@ -626,7 +626,7 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> trackerScenePoints, 
     (void) qgParent;
     //    Base::Console().message("TTL::onTrackerFinished() - parent: %X\n", qgParent);
     if (trackerScenePoints.empty()) {
-        Base::Console().Error("TaskLeaderLine - no points available\n");
+        Base::Console().error("TaskLeaderLine - no points available\n");
         return;
     }
 

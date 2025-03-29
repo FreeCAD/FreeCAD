@@ -244,7 +244,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(const TechDraw::DrawViewPart* p
     }
 
     catch (...) {
-        Base::Console().Error("CL::scaledGeometry - failed to calculate endpoints!\n");
+        Base::Console().error("CL::scaledGeometry - failed to calculate endpoints!\n");
         return nullptr;
     }
 
@@ -306,7 +306,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledAndRotatedGeometry(TechDraw::DrawViewPar
     }
 
     catch (...) {
-        Base::Console().Error("CL::scaledGeometry - failed to calculate endpoints!\n");
+        Base::Console().error("CL::scaledGeometry - failed to calculate endpoints!\n");
         return nullptr;
     }
 
@@ -509,7 +509,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(const DrawVi
     BRepBndLib::AddOptimal(faceEdgeCompound, faceBox);
 
     if (faceBox.IsVoid()) {
-        Base::Console().Error("CL::calcEndPoints - faceBox is void!\n");
+        Base::Console().error("CL::calcEndPoints - faceBox is void!\n");
         throw Base::IndexError("CenterLine wrong number of faces.");
     }
 
@@ -890,7 +890,7 @@ void CenterLine::Save(Base::Writer &writer) const
 
 //stored geometry
     if (!m_geometry) {
-        return Base::Console().Error("CL::Save - m_geometry is null\n");
+        return Base::Console().error("CL::Save - m_geometry is null\n");
     }
 
     writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << std::endl;

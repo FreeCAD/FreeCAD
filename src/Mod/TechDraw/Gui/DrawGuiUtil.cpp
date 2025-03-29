@@ -813,7 +813,7 @@ void DrawGuiUtil::rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const 
 {
     QGIViewPart* view = static_cast<QGIViewPart*>(p1->parentItem());
     if(view != static_cast<QGIViewPart*>(p2->parentItem())) {
-        Base::Console().Error("Vertexes have to be from the same view!");
+        Base::Console().error("Vertexes have to be from the same view!");
     }
 
     Base::Vector2d oldDirection = p2->vector2dBetweenPoints(p1);

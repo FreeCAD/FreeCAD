@@ -659,7 +659,7 @@ PyObject* ApplicationPy::sOpen(PyObject * /*self*/, PyObject *args)
         FileHandler handler(fileName);
         if (!handler.openFile()) {
             QString ext = handler.extension();
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     }
     PY_CATCH;
@@ -683,7 +683,7 @@ PyObject* ApplicationPy::sInsert(PyObject * /*self*/, PyObject *args)
         FileHandler handler(fileName);
         if (!handler.importFile(std::string(DocName ? DocName : ""))) {
             QString ext = handler.extension();
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
 
@@ -783,7 +783,7 @@ PyObject* ApplicationPy::sExport(PyObject * /*self*/, PyObject *args)
             }
         }
         else {
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
 

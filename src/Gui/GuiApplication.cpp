@@ -98,15 +98,15 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         return true;
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
+        Base::Console().error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
                               "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (const std::exception& e) {
-        Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
+        Base::Console().error("Unhandled std::exception caught in GUIApplication::notify.\n"
                               "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (...) {
-        Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n%s",
+        Base::Console().error("Unhandled unknown exception caught in GUIApplication::notify.\n%s",
                               exceptionWarning);
     }
 

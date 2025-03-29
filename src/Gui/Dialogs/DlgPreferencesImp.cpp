@@ -344,11 +344,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         addSizeHint(page);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Base exception thrown for '%s'\n", pageName.c_str());
+        Base::Console().error("Base exception thrown for '%s'\n", pageName.c_str());
         e.ReportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
+        Base::Console().error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
     }
 }
 

@@ -322,9 +322,9 @@ void PythonEditor::onExecuteInConsole()
                 Gui::Command::doCommand(Gui::Command::Doc, dedentedCode.toStdString().c_str());
             } catch (const Base::Exception& e) {
                 QString errorMessage = QString::fromStdString(e.what());
-                Base::Console().Error("Error executing Python code:\n%s\n", errorMessage.toUtf8().constData());
+                Base::Console().error("Error executing Python code:\n%s\n", errorMessage.toUtf8().constData());
             } catch (...) {
-                Base::Console().Error("An unknown error occurred while executing Python code.\n");
+                Base::Console().error("An unknown error occurred while executing Python code.\n");
             }
         }
     }

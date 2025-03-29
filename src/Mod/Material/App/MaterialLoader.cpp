@@ -377,8 +377,8 @@ MaterialLoader::getMaterialFromYAML(const std::shared_ptr<MaterialLibraryLocal>&
                                                     yamlroot);
     }
     catch (YAML::Exception const& e) {
-        Base::Console().Error("YAML parsing error: '%s'\n", path.toStdString().c_str());
-        Base::Console().Error("\t'%s'\n", e.what());
+        Base::Console().error("YAML parsing error: '%s'\n", path.toStdString().c_str());
+        Base::Console().error("\t'%s'\n", e.what());
         showYaml(yamlroot);
     }
 
@@ -411,7 +411,7 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>&
     Base::FileInfo info(pathName);
     Base::ifstream fin(info);
     if (!fin) {
-        Base::Console().Error("YAML file open error: '%s'\n", pathName.c_str());
+        Base::Console().error("YAML file open error: '%s'\n", pathName.c_str());
         return model;
     }
 
@@ -422,8 +422,8 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>&
         model = getMaterialFromYAML(materialLibrary, yamlroot, path);
     }
     catch (YAML::Exception const& e) {
-        Base::Console().Error("YAML parsing error: '%s'\n", pathName.c_str());
-        Base::Console().Error("\t'%s'\n", e.what());
+        Base::Console().error("YAML parsing error: '%s'\n", pathName.c_str());
+        Base::Console().error("\t'%s'\n", e.what());
         showYaml(yamlroot);
     }
 

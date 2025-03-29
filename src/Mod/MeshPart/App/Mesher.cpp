@@ -112,7 +112,7 @@ int MeshingOutput::sync()
             else {
                 sub = buffer;
             }
-            Base::Console().Error("%s", sub.c_str());
+            Base::Console().error("%s", sub.c_str());
         }
         buffer.clear();
     }

@@ -232,7 +232,7 @@ bool GeometryMatcher::compareBSplines(const TopoDS_Edge& edge1, const TopoDS_Edg
         circleEdge2 = GeometryUtils::asCircle(edge2, isArc2);
     }
     catch (Base::RuntimeError&) {
-        Base::Console().Error("GeometryMatcher failed to make circles from splines\n");
+        Base::Console().error("GeometryMatcher failed to make circles from splines\n");
         return false;
     }
     if (!isArc1 && !isArc2) {

@@ -703,7 +703,7 @@ void Material::addPhysical(const QString& uuid)
                     _physical[propertyName] = std::make_shared<MaterialProperty>(property, uuid);
                 }
                 catch (const UnknownValueType&) {
-                    Base::Console().Error("Property '%s' has unknown type '%s'. Ignoring\n",
+                    Base::Console().error("Property '%s' has unknown type '%s'. Ignoring\n",
                                           property.getName().toStdString().c_str(),
                                           property.getPropertyType().toStdString().c_str());
                 }

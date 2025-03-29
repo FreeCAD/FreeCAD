@@ -483,7 +483,7 @@ void CosmeticExtension::addCenterLinesToGeom()
     for (auto& cl : lines) {
         TechDraw::BaseGeomPtr scaledGeom = cl->scaledAndRotatedGeometry(getOwner());
         if (!scaledGeom) {
-            Base::Console().Error("CE::addCenterLinesToGeom - scaledGeometry is null\n");
+            Base::Console().error("CE::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
         }
         //        int idx =

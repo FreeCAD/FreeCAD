@@ -800,7 +800,7 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
     else if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         if (lnk.getValue()) {
             if (!extrude->getDocument()->isIn(lnk.getValue())) {
-                Base::Console().Error("Object was deleted\n");
+                Base::Console().error("Object was deleted\n");
                 return;
             }
             propReferenceAxis->Paste(lnk);

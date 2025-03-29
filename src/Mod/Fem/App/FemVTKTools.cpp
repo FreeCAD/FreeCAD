@@ -295,7 +295,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
 
             // not handled cases
             default: {
-                Base::Console().Error(
+                Base::Console().error(
                     "Only common 1D, 2D and 3D Cells are supported in VTK mesh import\n");
                 break;
             }
@@ -312,7 +312,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     if (f.hasExtension("vtu")) {
         vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().Error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file %s\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -320,7 +320,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     else if (f.hasExtension("pvtu")) {
         vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkXMLPUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().Error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file %s\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -328,13 +328,13 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     else if (f.hasExtension("vtk")) {
         vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkDataSetReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().Error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file %s\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
     }
     else {
-        Base::Console().Error("file name extension is not supported\n");
+        Base::Console().error("file name extension is not supported\n");
         return nullptr;
     }
     // Mesh should link to the part feature, in order to set up FemConstraint
@@ -532,7 +532,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh, bool h
         writeVTKFile<vtkDataSetWriter>(filename, grid);
     }
     else {
-        Base::Console().Error("file name extension is not supported to write VTK\n");
+        Base::Console().error("file name extension is not supported to write VTK\n");
     }
 
     Base::Console().Log("    %f: Done \n",
@@ -599,7 +599,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         ds = readVTKFile<vtkDataSetReader>(filename);
     }
     else {
-        Base::Console().Error("file name extension is not supported\n");
+        Base::Console().error("file name extension is not supported\n");
     }
 
     App::Document* pcDoc = App::GetApplication().getActiveDocument();
@@ -661,7 +661,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
         res = pcDoc->getActiveObject();  // type checking is done by caller
     }
     if (!res) {
-        Base::Console().Error("Result object pointer is invalid and it is not active object");
+        Base::Console().error("Result object pointer is invalid and it is not active object");
         return;
     }
 
@@ -690,7 +690,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
         writeVTKFile<vtkDataSetWriter>(filename, grid);
     }
     else {
-        Base::Console().Error("file name extension is not supported to write VTK\n");
+        Base::Console().error("file name extension is not supported to write VTK\n");
     }
 
     Base::Console().Log("    %f: writing result object to vtk finished\n",
@@ -789,7 +789,7 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
 
     vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
     if (pd->GetNumberOfArrays() == 0) {
-        Base::Console().Error("No point data array is found in vtk data set, do nothing\n");
+        Base::Console().error("No point data array is found in vtk data set, do nothing\n");
         // if pointData is empty, data may be in cellDate,
         // cellData -> pointData interpolation is possible in VTK
         return;
@@ -826,7 +826,7 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
                                     it.first.c_str());
             }
             else {
-                Base::Console().Error("static_cast<App::PropertyVectorList*>((result->"
+                Base::Console().error("static_cast<App::PropertyVectorList*>((result->"
                                       "getPropertyByName(\"%s\")) failed.\n",
                                       it.first.c_str());
                 continue;
@@ -845,7 +845,7 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
             App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(
                 result->getPropertyByName(scalar.first.c_str()));
             if (!field) {
-                Base::Console().Error("static_cast<App::PropertyFloatList*>((result->"
+                Base::Console().error("static_cast<App::PropertyFloatList*>((result->"
                                       "getPropertyByName(\"%s\")) failed.\n",
                                       scalar.first.c_str());
                 continue;
@@ -897,7 +897,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     // filled with points. Then the mapping must be correct)
     App::DocumentObject* meshObj = res->Mesh.getValue();
     if (!meshObj || !meshObj->isDerivedFrom<FemMeshObject>()) {
-        Base::Console().Error("Result object does not correctly link to mesh");
+        Base::Console().error("Result object does not correctly link to mesh");
         return;
     }
     const SMESH_Mesh* smesh = static_cast<FemMeshObject*>(meshObj)->FemMesh.getValue().getSMesh();
@@ -916,7 +916,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
             field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it.first.c_str()));
         }
         else {
-            Base::Console().Error("    PropertyVectorList not found: %s\n", it.first.c_str());
+            Base::Console().error("    PropertyVectorList not found: %s\n", it.first.c_str());
         }
 
         if (field && field->getSize() > 0) {
@@ -970,7 +970,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
                 static_cast<App::PropertyFloatList*>(res->getPropertyByName(scalar.first.c_str()));
         }
         else {
-            Base::Console().Error("PropertyFloatList %s not found \n", scalar.first.c_str());
+            Base::Console().error("PropertyFloatList %s not found \n", scalar.first.c_str());
         }
 
         if (field && field->getSize() > 0) {

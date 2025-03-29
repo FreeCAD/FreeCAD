@@ -2082,7 +2082,7 @@ void ParameterManager::CheckDocument() const
         XercesDOMParser parser;
         Grammar* grammar = parser.loadGrammar(xsdFile, Grammar::SchemaGrammarType, true);
         if (!grammar) {
-            Base::Console().Error("Grammar file cannot be loaded.\n");
+            Base::Console().error("Grammar file cannot be loaded.\n");
             return;
         }
 
@@ -2099,7 +2099,7 @@ void ParameterManager::CheckDocument() const
         parser.parse(xmlFile);
 
         if (parser.getErrorCount() > 0) {
-            Base::Console().Error("Unexpected XML structure detected: %zu errors\n",
+            Base::Console().error("Unexpected XML structure detected: %zu errors\n",
                                   parser.getErrorCount());
         }
     }

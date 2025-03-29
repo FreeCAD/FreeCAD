@@ -136,7 +136,7 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (...) {
-        Console().Error("Application unexpectedly terminated\n");
+        Console().error("Application unexpectedly terminated\n");
         exit(1);
     }
 

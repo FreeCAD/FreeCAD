@@ -249,7 +249,7 @@ void MacroManager::commit()
         Base::Console().Log("Commit macro: %s\n", (const char*)macroName.toUtf8());
     }
     else {
-        Base::Console().Error("Cannot open file to write macro: %s\n",
+        Base::Console().error("Cannot open file to write macro: %s\n",
             (const char*)macroName.toUtf8());
         cancel();
     }

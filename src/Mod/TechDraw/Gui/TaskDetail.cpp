@@ -79,7 +79,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_basePage = m_baseFeat->findParentPage();
     //it is possible that the basePage could be unparented and have no corresponding Page
     if (!m_basePage) {
-        Base::Console().Error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
         return;
     }
 
@@ -146,7 +146,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 {
     if (!m_detailFeat)  {
         //should be caught in CMD caller
-        Base::Console().Error("TaskDetail - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters.  Can not proceed.\n");
         return;
     }
 
@@ -163,7 +163,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     if (m_baseFeat) {
         m_baseName = m_baseFeat->getNameInDocument();
     } else {
-        Base::Console().Error("TaskDetail - no BaseView.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - no BaseView.  Can not proceed.\n");
         return;
     }
 
@@ -366,7 +366,7 @@ void TaskDetail::editByHighlight()
 {
 //    Base::Console().message("TD::editByHighlight()\n");
     if (!m_ghost) {
-        Base::Console().Error("TaskDetail::editByHighlight - no ghost object\n");
+        Base::Console().error("TaskDetail::editByHighlight - no ghost object\n");
         return;
     }
 
@@ -494,7 +494,7 @@ void TaskDetail::updateDetail()
     }
     catch (...) {
         //this is probably due to appl closing while dialog is still open
-        Base::Console().Error("Task Detail - detail feature update failed.\n");
+        Base::Console().error("Task Detail - detail feature update failed.\n");
     }
 }
 

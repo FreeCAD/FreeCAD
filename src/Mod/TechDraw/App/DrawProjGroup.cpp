@@ -359,7 +359,7 @@ App::DocumentObject* DrawProjGroup::getProjObj(const char* viewProjType) const
         auto projPtr(dynamic_cast<DrawProjGroupItem*>(it));
         if (!projPtr) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Error("PROBLEM - DPG::getProjObj - non DPGI entry in Views! %s / %s\n",
+            Base::Console().error("PROBLEM - DPG::getProjObj - non DPGI entry in Views! %s / %s\n",
                                   getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
@@ -377,7 +377,7 @@ DrawProjGroupItem* DrawProjGroup::getProjItem(const char* viewProjType) const
     auto result(dynamic_cast<TechDraw::DrawProjGroupItem*>(docObj));
     if (!result && docObj) {
         //should never have a item in DPG that is not a DPGI.
-        Base::Console().Error("PROBLEM - DPG::getProjItem finds non-DPGI in Group %s / %s\n",
+        Base::Console().error("PROBLEM - DPG::getProjItem finds non-DPGI in Group %s / %s\n",
                               getNameInDocument(), viewProjType);
         throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
     }
@@ -409,7 +409,7 @@ bool DrawProjGroup::hasProjection(const char* viewProjType) const
         auto view(dynamic_cast<TechDraw::DrawProjGroupItem*>(it));
         if (!view) {
             //should never have a item in DPG that is not a DPGI.
-            Base::Console().Error("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
+            Base::Console().error("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
                                   getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
@@ -428,7 +428,7 @@ bool DrawProjGroup::canDelete(const char* viewProjType) const
         auto view(dynamic_cast<TechDraw::DrawProjGroupItem*>(it));
         if (!view) {
             //should never have a item in DPG that is not a DPGI.
-            Base::Console().Error("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
+            Base::Console().error("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
                                   getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
@@ -459,7 +459,7 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
 
     DrawPage* dp = findParentPage();
     if (!dp)
-        Base::Console().Error("DPG:addProjection - %s - DPG is not on a page!\n",
+        Base::Console().error("DPG:addProjection - %s - DPG is not on a page!\n",
                               getNameInDocument());
 
     if (checkViewProjType(viewProjType) && !hasProjection(viewProjType)) {
@@ -467,7 +467,7 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
         view = getDocument()->addObject<TechDraw::DrawProjGroupItem>(FeatName.c_str());
         if (!view) {
             //should never happen that we create a DPGI that isn't a DPGI!!
-            Base::Console().Error("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
+            Base::Console().error("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
                                   getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
@@ -523,7 +523,7 @@ int DrawProjGroup::removeProjection(const char* viewProjType)
             }
             else {
                 //if an element in Views is not a DPGI, something really bad has happened somewhere
-                Base::Console().Error(
+                Base::Console().error(
                     "PROBLEM - DPG::removeProjection - tries to remove non DPGI! %s / %s\n",
                     getNameInDocument(), viewProjType);
                 throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
@@ -547,7 +547,7 @@ int DrawProjGroup::purgeProjections()
         }
         else {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Error("PROBLEM - DPG::purgeProjection - tries to remove non DPGI! %s\n",
+            Base::Console().error("PROBLEM - DPG::purgeProjection - tries to remove non DPGI! %s\n",
                                   getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
@@ -835,7 +835,7 @@ void DrawProjGroup::arrangeViewPointers(
             projType = dp->ProjectionType.getValueAsString();
         }
         else {
-            Base::Console().Error("DPG:arrangeViewPointers - %s - DPG is not on a page!\n",
+            Base::Console().error("DPG:arrangeViewPointers - %s - DPG is not on a page!\n",
                                   getNameInDocument());
             Base::Console().warning(
                 "DPG:arrangeViewPointers - using system default Projection Type\n",
@@ -869,7 +869,7 @@ void DrawProjGroup::arrangeViewPointers(
         auto oView(dynamic_cast<DrawProjGroupItem*>(it));
         if (!oView) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Error(
+            Base::Console().error(
                 "PROBLEM - DPG::arrangeViewPointers - non DPGI in Views! %s\n",
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
@@ -998,7 +998,7 @@ void DrawProjGroup::updateChildrenSource()
         auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Error(
+            Base::Console().error(
                 "PROBLEM - DPG::updateChildrenSource - non DPGI entry in Views! %s\n",
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
@@ -1022,7 +1022,7 @@ void DrawProjGroup::updateChildrenLock()
         auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Error(
+            Base::Console().error(
                 "PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
@@ -1037,7 +1037,7 @@ void DrawProjGroup::updateChildrenEnforce(void)
         auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Error(
+            Base::Console().error(
                 "PROBLEM - DPG::updateChildrenEnforce - non DPGI entry in Views! %s\n",
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");

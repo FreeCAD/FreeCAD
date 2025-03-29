@@ -488,14 +488,14 @@ void Command::_invoke(int id, bool disablelog)
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
     }
     catch (std::exception &e) {
-        Base::Console().Error("C++ exception thrown (%s)\n", e.what());
+        Base::Console().error("C++ exception thrown (%s)\n", e.what());
     }
     catch (const char* e) {
-        Base::Console().Error("%s\n", e);
+        Base::Console().error("%s\n", e);
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
+        Base::Console().error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
@@ -1322,11 +1322,11 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+            Base::Console().error("Running the Python command '%s' failed:\n%s\n%s",
                                   sName, e.getStackTrace().c_str(), e.what());
         }
         catch (const Base::Exception&) {
-            Base::Console().Error("Running the Python command '%s' failed, try to resume",sName);
+            Base::Console().error("Running the Python command '%s' failed, try to resume",sName);
         }
     }
     else {
@@ -1395,7 +1395,7 @@ Action * PythonCommand::createAction()
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
     }
 
     return pcAction;
@@ -1559,7 +1559,7 @@ void PythonGroupCommand::activated(int iMsg)
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+        Base::Console().error("Running the Python command '%s' failed:\n%s\n%s",
                               sName, e.getStackTrace().c_str(), e.what());
     }
 }
@@ -1645,7 +1645,7 @@ Action * PythonGroupCommand::createAction()
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().Error("createAction() of the Python command '%s' failed:\n%s\n%s",
+        Base::Console().error("createAction() of the Python command '%s' failed:\n%s\n%s",
                               sName, e.getStackTrace().c_str(), e.what());
     }
 
@@ -1878,7 +1878,7 @@ bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
     if (_sCommands.find(Name) == _sCommands.end()) {
         // Print in release mode only a log message instead of an error message to avoid to annoy the user
 #ifdef FC_DEBUG
-        Base::Console().Error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
+        Base::Console().error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
 #else
         Base::Console().warning("Unknown command '%s'\n",Name);
 #endif

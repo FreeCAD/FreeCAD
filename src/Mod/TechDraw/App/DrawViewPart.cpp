@@ -392,7 +392,7 @@ void DrawViewPart::onHlrFinished()
     }
 
     if (!hasGeometry()) {
-        Base::Console().Error("TechDraw did not retrieve any geometry for %s/%s\n",
+        Base::Console().error("TechDraw did not retrieve any geometry for %s/%s\n",
                               getNameInDocument(), Label.getValue());
     }
 
@@ -430,7 +430,7 @@ void DrawViewPart::onHlrFinished()
         }
         catch (Standard_Failure& e) {
             waitingForFaces(false);
-            Base::Console().Error("DVP::partExec - %s - extractFaces failed - %s **\n",
+            Base::Console().error("DVP::partExec - %s - extractFaces failed - %s **\n",
                                   getNameInDocument(), e.GetMessageString());
             throw Base::RuntimeError("DVP::onHlrFinished - error extracting faces");
         }

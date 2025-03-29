@@ -207,7 +207,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 {
     (void)qgParent;
     if (pts.empty()) {
-        Base::Console().Error("TaskCosVertex - no points available\n");
+        Base::Console().error("TaskCosVertex - no points available\n");
         return;
     }
 

@@ -1155,7 +1155,7 @@ gp_Ax2 DrawViewSection::getSectionCS() const
         sectionCS = gp_Ax2(gOrigin, gNormal, gXDir);
     }
     catch (...) {
-        Base::Console().Error("DVS::getSectionCS - %s - failed to create section CS\n",
+        Base::Console().error("DVS::getSectionCS - %s - failed to create section CS\n",
                               getNameInDocument());
     }
     return sectionCS;

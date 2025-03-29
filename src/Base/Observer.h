@@ -184,17 +184,17 @@ public:
                 (*Iter)->OnChange(*this, rcReason);  // send OnChange-signal
             }
             catch (Base::Exception& e) {
-                Base::Console().Error("Unhandled Base::Exception caught when notifying observer.\n"
+                Base::Console().error("Unhandled Base::Exception caught when notifying observer.\n"
                                       "The error message is: %s\n",
                                       e.what());
             }
             catch (std::exception& e) {
-                Base::Console().Error("Unhandled std::exception caught when notifying observer\n"
+                Base::Console().error("Unhandled std::exception caught when notifying observer\n"
                                       "The error message is: %s\n",
                                       e.what());
             }
             catch (...) {
-                Base::Console().Error(
+                Base::Console().error(
                     "Unhandled unknown exception caught in when notifying observer.\n");
             }
         }

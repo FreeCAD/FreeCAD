@@ -118,7 +118,7 @@ private:
             }
             catch (Py::Exception&) {
                 Base::PyException e; // extract the Python error text
-                Base::Console().Error("%s\n", e.what());
+                Base::Console().error("%s\n", e.what());
             }
         }
 #else

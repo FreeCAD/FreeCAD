@@ -133,7 +133,7 @@ void PythonThread::run()
 #endif
     }
     catch (const Base::PyException& e) {
-        Base::Console().Error(e.what());
+        Base::Console().error(e.what());
     }
 }
 

@@ -211,7 +211,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -227,7 +227,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::RuntimeError(str);
         }
     }
@@ -849,7 +849,7 @@ private:
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
         if (!pShape) {
-            Base::Console().Error("ShapeUtils::findCentroid - input shape is null\n");
+            Base::Console().error("ShapeUtils::findCentroid - input shape is null\n");
             return Py::None();
         }
 
@@ -1020,7 +1020,7 @@ private:
         }
         Base::FileInfo fi(patFile);
         if (!fi.isReadable()) {
-            Base::Console().Error(".pat File: %s is not readable\n", patFile.c_str());
+            Base::Console().error(".pat File: %s is not readable\n", patFile.c_str());
             return Py::None();
         }
         std::vector<TechDraw::PATLineSpec> specs = TechDraw::DrawGeomHatch::getDecodedSpecsFromFile(patFile, patName);

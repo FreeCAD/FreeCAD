@@ -112,7 +112,7 @@ void ViewProviderCurveNet::updateData(const App::Property* prop)
             computeVertices(VertexRoot,cShape);
         }
         catch (...){
-            Base::Console().Error("ViewProviderPart::create() Cannot compute Inventor representation for the actual shape");
+            Base::Console().error("ViewProviderPart::create() Cannot compute Inventor representation for the actual shape");
         }
     }
 }

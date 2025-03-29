@@ -114,7 +114,7 @@ void TaskLinearPatternParameters::setupParameterUI(QWidget* widget)
             vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
         catch (const Base::Exception& ex) {
-            Base::Console().Error("%s\n", ex.what());
+            Base::Console().error("%s\n", ex.what());
         }
     }
 
@@ -400,7 +400,7 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
         }
     }
     catch (const Base::Exception& ex) {
-        Base::Console().Error("%s\n", ex.what());
+        Base::Console().error("%s\n", ex.what());
     }
 }
 

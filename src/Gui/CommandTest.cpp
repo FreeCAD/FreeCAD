@@ -785,7 +785,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Error("Write an error to the console output.\n");
+            Base::Console().error("Write an error to the console output.\n");
     }
 };
 
@@ -825,7 +825,7 @@ void CmdTestConsoleOutput::activated(int iMsg)
     Base::Console().DetachObserver(&obs);
 
     if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0 || obs.matchCritical > 0) {
-        Base::Console().Error("Race condition in Console class\n");
+        Base::Console().error("Race condition in Console class\n");
     }
 }
 

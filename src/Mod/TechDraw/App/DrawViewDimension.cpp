@@ -1094,7 +1094,7 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
         else {
             // fubar - can't have non-circular spline as target of Diameter dimension, but this is
             // already checked, so something has gone badly wrong.
-            Base::Console().Error("%s: can not make a Circle from this B-spline edge\n",
+            Base::Console().error("%s: can not make a Circle from this B-spline edge\n",
                                   getNameInDocument());
             throw Base::RuntimeError("Bad B-spline geometry for arc dimension");
         }
