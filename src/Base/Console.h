@@ -108,7 +108,7 @@ using PyMethodDef = struct PyMethodDef;
  *
  * Actually, any negative log level behave the same, which is for tags
  * that are not previously configured by user. The actual log level applied is
- * controlled by \c Base::Console().SetDefaultLogLevel(). Python
+ * controlled by \c Base::Console().setDefaultLogLevel(). Python
  * developers/end-users can configure the default log level by calling
  *
  * \code{.py}
@@ -305,13 +305,13 @@ using PyMethodDef = struct PyMethodDef;
  *
  * Most of the logging facilities are exposed through macros. This section
  * briefs how they are implemented under the hood in case you want
- * customization.  A new function GetLogLevel(tag) is added to Base::Console()
+ * customization.  A new function getLogLevel(tag) is added to Base::Console()
  * to let C++ developer query a log level for an arbitrary string tag. The
  * function returns a pointer to an integer representing the log level. Python
  * developer or end-user can set/get the same tag based log level using
  * FreeCAD.setLogLevel/getLogLevel. Any change to the log level is reflected
- * through the pointer returned by Base::Console().GetLogLevel(). What
- * \c FC_LOG_LEVEL_INIT(tag) does is to define a class Base::LogLevel, and then
+ * through the pointer returned by Base::Console().getLogLevel(). What
+ * \c FC_LOG_LEVEL_INIT(tag) does is to define a class Base::logLevel, and then
  * a file static instance of that class to store the pointer to the desired tag
  * log level. The class and instance name is predefined. Various log macros
  * will check that instance to query log level. If you some how want to have
@@ -376,17 +376,17 @@ using PyMethodDef = struct PyMethodDef;
     __FC_PRINT(_instance, _l, _func, std::string(), _msg, __FILE__, __LINE__)
 
 #define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, _msg)
-#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, DeveloperWarning, _msg)
-#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, DeveloperError, _msg)
+#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, developerWarning, _msg)
+#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, developerError, _msg)
 #define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, log, _msg)
 #define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, log, _msg)
 
 #define _FC_MSG(_file, _line, _msg)                                                                \
     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, std::string(), _msg, _file, _line)
 #define _FC_WARN(_file, _line, _msg)                                                               \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, DeveloperWarning, std::string(), _msg, _file, _line)
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, developerWarning, std::string(), _msg, _file, _line)
 #define _FC_ERR(_file, _line, _msg)                                                                \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, DeveloperError, std::string(), _msg, _file, _line)
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, developerError, std::string(), _msg, _file, _line)
 #define _FC_LOG(_file, _line, _msg)                                                                \
     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, Log, std::string(), _msg, _file, _line)
 #define _FC_TRACE(_file, _line, _msg)                                                              \
@@ -650,16 +650,16 @@ public:
  *
  *  That code is equivalent to:
  *  \code
- *  DeveloperError("OCCT", e.what());
+ *  developerError("OCCT", e.what());
  *  \endcode
  *
  *  These convenience functions cover most common cases:
- *  - Unqualified convenience functions, such as Error() and Warning(), produce messages intended to
+ *  - Unqualified convenience functions, such as error() and warning(), produce messages intended to
  *  both User and Developer with an untranslated message.
- *  - Functions qualified with Developer, such as DeveloperError are intended for a Developer and
- *  are untranslatable. Functions qualified with User, such as UserError are intended only for the
+ *  - Functions qualified with Developer, such as developerError are intended for a Developer and
+ *  are untranslatable. Functions qualified with user, such as userError are intended only for the
  *  User and a untranslated (leaving the responsibility to the observer to find the translation).
- *  - Functions qualified with Translated, such as TranslatedError, are intended for the User and
+ *  - Functions qualified with translated, such as translatedError, are intended for the User and
  *  the message is already translated.
  *
  *  An observer receiving an Untranslatable or Translated message should not attempt to translate
@@ -688,7 +688,7 @@ public:
  *  often the case in legacy UI code, where localized strings are already available. For these
  *  cases the solution is to indicate the translated status. For example:
  *  \code
- *  Base::Console().TranslatedUserError(
+ *  Base::Console().translatedUserError(
  *                              this->getFullName(),
  *                              QObject::tr("The selected edge already has a Block constraint!"));
  *  \endcode
@@ -706,8 +706,8 @@ public:
     // exported functions goes here +++++++++++++++++++++++++++++++++++++++
 
     /** Sends a message of type LogStyle (Message, Warning, Error, Log, Critical or Notification).
-        This function is used by all specific convenience functions (Send(), Message(), Warning(),
-       Error(), Log(), Critical and UserNotification, without or without notifier id).
+        This function is used by all specific convenience functions (send(), message(), warning(),
+       error(), log(), Critical() and userNotification(), without or without notifier id).
 
         Notification can be direct or via queue.
     */
@@ -734,10 +734,10 @@ public:
     void critical(const char* pMsg, Args&&... args);
     /// Sends a User Notification
     template<typename... Args>
-    void UserNotification(const char* pMsg, Args&&... args);
+    void userNotification(const char* pMsg, Args&&... args);
     /// Sends an already translated User Notification
     template<typename... Args>
-    void UserTranslatedNotification(const char* pMsg, Args&&... args);
+    void userTranslatedNotification(const char* pMsg, Args&&... args);
 
 
     /// Prints a Message with source indication
@@ -747,7 +747,7 @@ public:
     template<typename... Args>
     void warning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    void DeveloperWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void developerWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
     void UserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
@@ -756,15 +756,15 @@ public:
     template<typename... Args>
     void error(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    void DeveloperError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void developerError(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    /// A noexcept DeveloperError for use in destructors. When compiled in debug, terminates via an
+    /// A noexcept developerError for use in destructors. When compiled in debug, terminates via an
     /// assert. In release, the exception is silently caught and dropped.
-    void DestructorError(const std::string& notifier, const char* pMsg, Args&&... args) noexcept;
+    void destructorError(const std::string& notifier, const char* pMsg, Args&&... args) noexcept;
     template<typename... Args>
-    void UserError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void userError(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    void TranslatedUserError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void translatedUserError(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a log Message with source indication
     template<typename... Args>
     void log(const std::string& notifier, const char* pMsg, Args&&... args);
@@ -773,10 +773,10 @@ public:
     void critical(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Sends a User Notification with source indication
     template<typename... Args>
-    void UserNotification(const std::string& notifier, const char* pMsg, Args&&... args);
+    void userNotification(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Sends an already translated User Notification with source indication
     template<typename... Args>
-    void UserTranslatedNotification(const std::string& notifier, const char* pMsg, Args&&... args);
+    void userTranslatedNotification(const std::string& notifier, const char* pMsg, Args&&... args);
 
     // Notify a message directly to observers
     template<LogStyle,
@@ -785,9 +785,9 @@ public:
     void Notify(const std::string& notifiername, const std::string& msg);
 
     /// Attaches an Observer to FCConsole
-    void AttachObserver(ILogger* pcObserver);
+    void attachObserver(ILogger* pcObserver);
     /// Detaches an Observer from FCConsole
-    void DetachObserver(ILogger* pcObserver);
+    void detachObserver(ILogger* pcObserver);
 
     /// enumeration for the console modes
     enum ConsoleMode
@@ -811,37 +811,37 @@ public:
     };
 
     /// Change mode
-    void SetConsoleMode(ConsoleMode mode);
+    void setConsoleMode(ConsoleMode mode);
     /// Change mode
-    void UnsetConsoleMode(ConsoleMode mode);
+    void unsetConsoleMode(ConsoleMode mode);
     /// Enables or disables message types of a certain console observer
-    ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on) const;
+    ConsoleMsgFlags setEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on) const;
     /// Checks if message types of a certain console observer are enabled
-    bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
-    void SetConnectionMode(ConnectionMode mode);
+    bool isMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
+    void setConnectionMode(ConnectionMode mode);
 
-    int* GetLogLevel(const char* tag, bool create = true);
+    int* getLogLevel(const char* tag, bool create = true);
 
-    void SetDefaultLogLevel(const int level)
+    void setDefaultLogLevel(const int level)
     {
         _defaultLogLevel = level;
     }
 
-    int LogLevel(const int level) const
+    int logLevel(const int level) const
     {
         return level < 0 ? _defaultLogLevel : level;
     }
 
     /// singleton
-    static ConsoleSingleton& Instance();
+    static ConsoleSingleton& instance();
 
     // retrieval of an observer by name
-    ILogger* Get(const char* Name) const;
+    ILogger* get(const char* Name) const;
 
     static PyMethodDef Methods[];
 
     void Refresh();
-    void EnableRefresh(bool enable);
+    void enableRefresh(bool enable);
 
     constexpr FreeCAD_ConsoleMsgType getConsoleMsg(LogStyle style);
 
@@ -910,7 +910,7 @@ private:
  */
 inline ConsoleSingleton& Console()
 {
-    return ConsoleSingleton::Instance();
+    return ConsoleSingleton::instance();
 }
 
 constexpr ConsoleSingleton::FreeCAD_ConsoleMsgType ConsoleSingleton::getConsoleMsg(LogStyle style)
@@ -931,12 +931,12 @@ class BaseExport ConsoleRefreshDisabler
 public:
     ConsoleRefreshDisabler()
     {
-        Console().EnableRefresh(false);
+        Console().enableRefresh(false);
     }
 
     ~ConsoleRefreshDisabler()
     {
-        Console().EnableRefresh(true);
+        Console().enableRefresh(true);
     }
 
     ConsoleRefreshDisabler(const ConsoleRefreshDisabler&) = delete;
@@ -965,7 +965,7 @@ public:
              const bool add_eol = true,
              const bool refresh = false)
         : tag(tag)
-        , lvl(*Console().GetLogLevel(tag))
+        , lvl(*Console().getLogLevel(tag))
         , print_tag(print_tag)
         , print_src(print_src)
         , print_time(print_time)
@@ -980,7 +980,7 @@ public:
 
     int level() const
     {
-        return Console().LogLevel(lvl);
+        return Console().logLevel(lvl);
     }
 
     std::stringstream& prefix(std::stringstream& str, const char* src, int line);
@@ -997,12 +997,12 @@ public:
  *  \code
  *  Console().message("Doing something important %d times\n",i);
  *  \endcode
- *  @see Warning
- *  @see Error
- *  @see Log
- *  @see Critical
- *  @see UserNotification
- *  @see UserTranslatedNotification
+ *  @see warning
+ *  @see error
+ *  @see log
+ *  @see critical
+ *  @see userNotification
+ *  @see userTranslatedNotification
  */
 template<typename... Args>
 void Base::ConsoleSingleton::message(const char* pMsg, Args&&... args)
@@ -1029,7 +1029,7 @@ void Base::ConsoleSingleton::warning(const std::string& notifier, const char* pM
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::DeveloperWarning(const std::string& notifier,
+void Base::ConsoleSingleton::developerWarning(const std::string& notifier,
                                               const char* pMsg,
                                               Args&&... args)
 {
@@ -1074,7 +1074,7 @@ void Base::ConsoleSingleton::error(const std::string& notifier, const char* pMsg
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::DeveloperError(const std::string& notifier,
+void Base::ConsoleSingleton::developerError(const std::string& notifier,
                                             const char* pMsg,
                                             Args&&... args)
 {
@@ -1085,7 +1085,7 @@ void Base::ConsoleSingleton::DeveloperError(const std::string& notifier,
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::DestructorError(const std::string& notifier,
+void Base::ConsoleSingleton::destructorError(const std::string& notifier,
                                              const char* pMsg,
                                              Args&&... args) noexcept
 {
@@ -1101,7 +1101,7 @@ void Base::ConsoleSingleton::DestructorError(const std::string& notifier,
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::UserError(const std::string& notifier,
+void Base::ConsoleSingleton::userError(const std::string& notifier,
                                        const char* pMsg,
                                        Args&&... args)
 {
@@ -1112,7 +1112,7 @@ void Base::ConsoleSingleton::UserError(const std::string& notifier,
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::TranslatedUserError(const std::string& notifier,
+void Base::ConsoleSingleton::translatedUserError(const std::string& notifier,
                                                  const char* pMsg,
                                                  Args&&... args)
 {
@@ -1135,13 +1135,13 @@ void Base::ConsoleSingleton::critical(const std::string& notifier, const char* p
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::UserNotification(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::userNotification(const char* pMsg, Args&&... args)
 {
-    UserNotification(std::string(""), pMsg, std::forward<Args>(args)...);
+    userNotification(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::UserNotification(const std::string& notifier,
+void Base::ConsoleSingleton::userNotification(const std::string& notifier,
                                               const char* pMsg,
                                               Args&&... args)
 {
@@ -1152,13 +1152,13 @@ void Base::ConsoleSingleton::UserNotification(const std::string& notifier,
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::UserTranslatedNotification(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::userTranslatedNotification(const char* pMsg, Args&&... args)
 {
-    UserTranslatedNotification(std::string(""), pMsg, std::forward<Args>(args)...);
+    userTranslatedNotification(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::UserTranslatedNotification(const std::string& notifier,
+void Base::ConsoleSingleton::userTranslatedNotification(const std::string& notifier,
                                                         const char* pMsg,
                                                         Args&&... args)
 {

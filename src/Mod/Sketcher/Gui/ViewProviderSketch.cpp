@@ -217,7 +217,7 @@ void ViewProviderSketch::ParameterObserver::subscribeToParameters()
     }
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
                                        // exception is not propagated
-        Base::Console().DeveloperError(
+        Base::Console().developerError(
             "ViewProviderSketch", "Malformed parameter string: %s\n", e.what());
     }
 }
@@ -239,7 +239,7 @@ void ViewProviderSketch::ParameterObserver::unsubscribeToParameters()
     }
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
                                        // exception is not propagated
-        Base::Console().DeveloperError(
+        Base::Console().developerError(
             "ViewProviderSketch", "Malformed parameter string: %s\n", e.what());
     }
 }
@@ -1737,7 +1737,7 @@ void ViewProviderSketch::commitDragMove(double x, double y)
     }
     catch (const Base::Exception& e) {
         getDocument()->abortCommand();
-        Base::Console().DeveloperError("ViewProviderSketch", "Drag: %s\n", e.what());
+        Base::Console().developerError("ViewProviderSketch", "Drag: %s\n", e.what());
     }
 
     getDocument()->commitCommand();
@@ -2583,7 +2583,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
             }
         }
         else {
-            Base::Console().DeveloperError("ViewProviderSketch::doBoxSelection",
+            Base::Console().developerError("ViewProviderSketch::doBoxSelection",
                                            "Geometry type is unsupported. Selection may be unsynchronised and fail.");
         }
     }
@@ -3076,13 +3076,13 @@ bool ViewProviderSketch::setEdit(int ModNum)
             Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         }
         catch (Base::PyException& e) {
-            Base::Console().DeveloperError(
+            Base::Console().developerError(
                 "ViewProviderSketch", "setEdit: visibility automation failed with an error: \n");
             e.ReportException();
         }
     }
     catch (Base::PyException&) {
-        Base::Console().DeveloperWarning(
+        Base::Console().developerWarning(
             "ViewProviderSketch",
             "setEdit: could not import Show module. Visibility automation will not work.\n");
     }
@@ -3338,7 +3338,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
     }
     catch (Base::PyException& e) {
-        Base::Console().DeveloperError(
+        Base::Console().developerError(
             "ViewProviderSketch",
             "unsetEdit: visibility automation failed with an error: %s \n",
             e.what());
@@ -3366,7 +3366,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
             Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         }
         catch (Base::PyException& e) {
-            Base::Console().DeveloperError(
+            Base::Console().developerError(
                 "ViewProviderSketch",
                 "setEdit: visibility automation failed with an error: %s \n",
                 e.what());
@@ -3473,7 +3473,7 @@ void ViewProviderSketch::camSensCB(void* data, SoSensor*)
     auto cam = proxyVPrdr->renderMgr->getCamera();
 
     if (cam == nullptr)
-        Base::Console().DeveloperWarning("ViewProviderSketch", "Camera is nullptr!\n");
+        Base::Console().developerWarning("ViewProviderSketch", "Camera is nullptr!\n");
     else
         vp->onCameraChanged(cam);
 }
@@ -3556,7 +3556,7 @@ void ViewProviderSketch::deleteSelected()
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        Base::Console().DeveloperWarning(
+        Base::Console().developerWarning(
             "ViewProviderSketch",
             "Delete: Selection not restricted to one sketch and its subelements\n");
         return;
@@ -3633,7 +3633,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d)", *rit);
             }
             catch (const Base::Exception& e) {
-                Base::Console().DeveloperError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
             }
         }
 
@@ -3661,7 +3661,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                                 getObject(), "delConstraintOnPoint(%d,%d)", GeoId, (int)PosId);
                         }
                         catch (const Base::Exception& e) {
-                            Base::Console().DeveloperError("ViewProviderSketch", "%s\n", e.what());
+                            Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
                         }
                         break;
                     }
@@ -3685,7 +3685,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s])", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
-                Base::Console().DeveloperError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
             }
 
             stream.str(std::string());
@@ -3696,7 +3696,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delExternal(%d)", *rit);
             }
             catch (const Base::Exception& e) {
-                Base::Console().DeveloperError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
             }
         }
 

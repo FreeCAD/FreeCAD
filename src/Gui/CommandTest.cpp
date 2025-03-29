@@ -815,14 +815,14 @@ void CmdTestConsoleOutput::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TestConsoleObserver obs;
-    Base::Console().AttachObserver(&obs);
+    Base::Console().attachObserver(&obs);
     QThreadPool::globalInstance()->start(new ConsoleMessageTask);
     QThreadPool::globalInstance()->start(new ConsoleWarningTask);
     QThreadPool::globalInstance()->start(new ConsoleErrorTask);
     QThreadPool::globalInstance()->start(new ConsoleLogTask);
     QThreadPool::globalInstance()->start(new ConsoleCriticalTask);
     QThreadPool::globalInstance()->waitForDone();
-    Base::Console().DetachObserver(&obs);
+    Base::Console().detachObserver(&obs);
 
     if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0 || obs.matchCritical > 0) {
         Base::Console().error("Race condition in Console class\n");

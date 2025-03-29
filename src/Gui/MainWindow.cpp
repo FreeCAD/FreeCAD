@@ -1786,10 +1786,10 @@ void MainWindowP::restoreWindowState(const QByteArray &windowState)
     Base::StateLocker guard(_restoring);
 
     // tmp. disable the report window to suppress some bothering warnings
-    if (Base::Console().IsMsgTypeEnabled("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn)) {
-        Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
+    if (Base::Console().isMsgTypeEnabled("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn)) {
+        Base::Console().setEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
         getMainWindow()->restoreState(windowState);
-        Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
+        Base::Console().setEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
     } else
         getMainWindow()->restoreState(windowState);
 
@@ -2329,7 +2329,7 @@ void MainWindow::setWindowTitle(const QString& string)
         msg = QStringLiteral("#statusBar{color: #000000}");  // black
         wrn = QStringLiteral("#statusBar{color: #ffaa00}");  // orange
         err = QStringLiteral("#statusBar{color: #ff0000}");  // red
-        Base::Console().AttachObserver(this);
+        Base::Console().attachObserver(this);
         getWindowParameter()->Attach(this);
         getWindowParameter()->NotifyAll();
     }
@@ -2337,7 +2337,7 @@ void MainWindow::setWindowTitle(const QString& string)
     StatusBarObserver::~StatusBarObserver()
     {
         getWindowParameter()->Detach(this);
-        Base::Console().DetachObserver(this);
+        Base::Console().detachObserver(this);
     }
 
     void StatusBarObserver::OnChange(Base::Subject<const char*> & rCaller, const char* sReason)

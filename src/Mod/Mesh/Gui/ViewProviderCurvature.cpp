@@ -133,13 +133,13 @@ ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
         deleteColorBar();
     }
     catch (Base::Exception& e) {
-        Base::Console().DestructorError(
+        Base::Console().destructorError(
             "ViewProviderMeshCurvature",
             "ViewProviderMeshCurvature::deleteColorBar() threw an exception: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().DestructorError(
+        Base::Console().destructorError(
             "ViewProviderInspection",
             "ViewProviderInspection destructor threw an unknown exception");
     }

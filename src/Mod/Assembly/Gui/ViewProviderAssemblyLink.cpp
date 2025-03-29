@@ -76,7 +76,7 @@ bool ViewProviderAssemblyLink::setEdit(int mode)
     auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
 
     if (!assemblyLink->isRigid() && mode == (int)ViewProvider::Transform) {
-        Base::Console().UserTranslatedNotification(
+        Base::Console().userTranslatedNotification(
             "Flexible sub-assemblies cannot be transformed.");
         return true;
     }
