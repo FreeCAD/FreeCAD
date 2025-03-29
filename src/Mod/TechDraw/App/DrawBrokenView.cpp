@@ -86,7 +86,6 @@
 #include "GeometryObject.h"
 #include "ShapeExtractor.h"
 #include "ShapeUtils.h"
-// #include "Preferences.h"
 
 #include "DrawBrokenView.h"
 #include "DrawBrokenViewPy.h"
