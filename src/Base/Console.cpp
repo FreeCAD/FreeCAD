@@ -334,7 +334,7 @@ void ConsoleSingleton::notifyPrivate(LogStyle category,
     }
 }
 
-void ConsoleSingleton::postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type,
+void ConsoleSingleton::postEvent(FreeCAD_ConsoleMsgType type,
                                  IntendedRecipient recipient,
                                  ContentType content,
                                  const std::string& notifiername,
@@ -412,85 +412,85 @@ ConsoleSingleton& ConsoleSingleton::Instance()
 // ConsoleSingleton Methods structure
 PyMethodDef ConsoleSingleton::Methods[] = {
     {"PrintMessage",
-     ConsoleSingleton::sPyMessage,
+     sPyMessage,
      METH_VARARGS,
      "PrintMessage(obj) -> None\n\n"
      "Print a message to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintLog",
-     ConsoleSingleton::sPyLog,
+     sPyLog,
      METH_VARARGS,
      "PrintLog(obj) -> None\n\n"
      "Print a log message to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintError",
-     ConsoleSingleton::sPyError,
+     sPyError,
      METH_VARARGS,
      "PrintError(obj) -> None\n\n"
      "Print an error message to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintDeveloperError",
-     ConsoleSingleton::sPyDeveloperError,
+     sPyDeveloperError,
      METH_VARARGS,
      "PrintDeveloperError(obj) -> None\n\n"
      "Print an error message intended only for Developers to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintUserError",
-     ConsoleSingleton::sPyUserError,
+     sPyUserError,
      METH_VARARGS,
      "PrintUserError(obj) -> None\n\n"
      "Print an error message intended only for the User to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintTranslatedUserError",
-     ConsoleSingleton::sPyTranslatedUserError,
+     sPyTranslatedUserError,
      METH_VARARGS,
      "PrintTranslatedUserError(obj) -> None\n\n"
      "Print an already translated error message intended only for the User to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintWarning",
-     ConsoleSingleton::sPyWarning,
+     sPyWarning,
      METH_VARARGS,
      "PrintWarning(obj) -> None\n\n"
      "Print a warning message to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintDeveloperWarning",
-     ConsoleSingleton::sPyDeveloperWarning,
+     sPyDeveloperWarning,
      METH_VARARGS,
      "PrintDeveloperWarning(obj) -> None\n\n"
      "Print an warning message intended only for Developers to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintUserWarning",
-     ConsoleSingleton::sPyUserWarning,
+     sPyUserWarning,
      METH_VARARGS,
      "PrintUserWarning(obj) -> None\n\n"
      "Print a warning message intended only for the User to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintTranslatedUserWarning",
-     ConsoleSingleton::sPyTranslatedUserWarning,
+     sPyTranslatedUserWarning,
      METH_VARARGS,
      "PrintTranslatedUserWarning(obj) -> None\n\n"
      "Print an already translated warning message intended only for the User to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintCritical",
-     ConsoleSingleton::sPyCritical,
+     sPyCritical,
      METH_VARARGS,
      "PrintCritical(obj) -> None\n\n"
      "Print a critical message to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintNotification",
-     ConsoleSingleton::sPyNotification,
+     sPyNotification,
      METH_VARARGS,
      "PrintNotification(obj) -> None\n\n"
      "Print a user notification to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintTranslatedNotification",
-     ConsoleSingleton::sPyTranslatedNotification,
+     sPyTranslatedNotification,
      METH_VARARGS,
      "PrintTranslatedNotification(obj) -> None\n\n"
      "Print an already translated notification to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"SetStatus",
-     ConsoleSingleton::sPySetStatus,
+     sPySetStatus,
      METH_VARARGS,
      "SetStatus(observer, type, status) -> None\n\n"
      "Set the status for either 'Log', 'Msg', 'Wrn' or 'Error' for an observer.\n\n"
@@ -498,7 +498,7 @@ PyMethodDef ConsoleSingleton::Methods[] = {
      "type : str\n    Message type.\n"
      "status : bool"},
     {"GetStatus",
-     ConsoleSingleton::sPyGetStatus,
+     sPyGetStatus,
      METH_VARARGS,
      "GetStatus(observer, type) -> bool or None\n\n"
      "Get the status for either 'Log', 'Msg', 'Wrn' or 'Error' for an observer.\n"
@@ -506,7 +506,7 @@ PyMethodDef ConsoleSingleton::Methods[] = {
      "observer : str\n    Logging interface name.\n"
      "type : str\n    Message type."},
     {"GetObservers",
-     ConsoleSingleton::sPyGetObservers,
+     sPyGetObservers,
      METH_VARARGS,
      "GetObservers() -> list of str\n\n"
      "Get the names of the current logging interfaces."},
