@@ -485,7 +485,6 @@ using PyMethodDef = struct PyMethodDef;
 // clang-format on
 // NOLINTEND(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage,cppcoreguidelines-avoid-do-while)
 
-// TODO: Get rid of this typedef
 using ConsoleMsgFlags = unsigned int;
 
 namespace Base
