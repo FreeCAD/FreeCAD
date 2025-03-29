@@ -73,20 +73,17 @@ void DrawViewClip::addView(App::DocumentObject* docObj)
         return;
     }
 
-    auto* view = dynamic_cast<DrawView*>(docObj);
+    auto* view = static_cast<DrawView*>(docObj);
 
+    auto* link = dynamic_cast<App::Link*>(docObj);
+    if (!link) {
+        return;
+    }
+
+    
+    view = dynamic_cast<DrawView*>(link->getLinkedObject());
     if (!view) {
-        auto* link = dynamic_cast<App::Link*>(docObj);
-        if (!link) {
-            return;
-        }
-
-        if (link) {
-            view = dynamic_cast<DrawView*>(link->getLinkedObject());
-            if (!view) {
-                return;
-            }
-        }
+        return;
     }
 
     std::vector<App::DocumentObject*> newViews(Views.getValues());

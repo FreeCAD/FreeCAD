@@ -62,7 +62,7 @@ TechDraw::DrawView* CommandHelpers::firstViewInSelection(Gui::Command* cmd)
         for (auto& selobj : selection) {
             if (selobj.getObject()->isDerivedFrom<DrawView>()) {
                 auto docobj = selobj.getObject();
-                baseView =  dynamic_cast<TechDraw::DrawView *>(docobj);
+                baseView =  static_cast<TechDraw::DrawView *>(docobj);
                 break;
             }
         }
@@ -81,7 +81,7 @@ TechDraw::DrawView* CommandHelpers::firstNonSpreadsheetInSelection(Gui::Command*
                 continue;
             } else {
                 auto docobj = selobj.getObject();
-                baseView =  dynamic_cast<TechDraw::DrawView *>(docobj);
+                baseView =  static_cast<TechDraw::DrawView *>(docobj);
                 break;
             }
         }
