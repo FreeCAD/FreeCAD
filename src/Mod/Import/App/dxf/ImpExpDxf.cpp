@@ -462,7 +462,7 @@ void ImpExpDxfRead::ExpandInsert(const std::string& name,
                                  double rotation,
                                  const Base::Vector3d& scale)
 {
-    if (Blocks.count(name) == 0) {
+    if (!Blocks.contains(name)) {
         ImportError("Reference to undefined or external block '%s'\n", name);
         return;
     }
@@ -607,15 +607,14 @@ ImpExpDxfRead::Layer::Layer(const std::string& name,
                             std::string&& lineType,
                             PyObject* drawingLayer)
     : CDxfRead::Layer(name, color, std::move(lineType))
-    , DraftLayerView(drawingLayer == nullptr ? nullptr
+    , DraftLayerView(drawingLayer == nullptr ? Py_None
                                              : PyObject_GetAttrString(drawingLayer, "ViewObject"))
-    , GroupContents(
-          drawingLayer == nullptr
-              ? nullptr
-              : (App::PropertyLinkListHidden*)(((App::FeaturePythonPyT<App::DocumentObjectPy>*)
-                                                    drawingLayer)
-                                                   ->getPropertyContainerPtr())
-                    ->getDynamicPropertyByName("Group"))
+    , GroupContents(drawingLayer == nullptr
+                        ? nullptr
+                        : dynamic_cast<App::PropertyLinkListHidden*>(
+                              (((App::FeaturePythonPyT<App::DocumentObjectPy>*)drawingLayer)
+                                   ->getPropertyContainerPtr())
+                                  ->getDynamicPropertyByName("Group")))
 {}
 ImpExpDxfRead::Layer::~Layer()
 {
@@ -631,7 +630,7 @@ void ImpExpDxfRead::Layer::FinishLayer() const
         // App::FeaturePython, and its Proxy is a draftobjects.layer.Layer
         GroupContents->setValue(Contents);
     }
-    if (DraftLayerView != nullptr && Hidden) {
+    if (DraftLayerView != Py_None && Hidden) {
         // Hide the Hidden layers if possible (if GUI exists)
         // We do this now rather than when the layer is created so all objects
         // within the layers also become hidden.
@@ -672,7 +671,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
                                                          "Solid");
         }
         auto result = new Layer(name, color, std::move(lineType), layer);
-        if (result->DraftLayerView != nullptr) {
+        if (result->DraftLayerView != Py_None) {
             PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", Py_False);
             PyObject_SetAttrString(result->DraftLayerView,
                                    "OverrideShapeAppearanceChildren",
