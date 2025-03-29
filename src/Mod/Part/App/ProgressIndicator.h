@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PROGRESSINDICATOR_H
-#define PART_PROGRESSINDICATOR_H
+#pragma once
 
 #include <memory>
 
@@ -32,23 +33,22 @@
 #include <Mod/Part/PartGlobal.h>
 
 
-namespace Part {
+namespace Part
+{
 
-#if OCC_VERSION_HEX < 0x070500
-class PartExport ProgressIndicator : public Message_ProgressIndicator
+class PartExport ProgressIndicator: public Message_ProgressIndicator
 {
 public:
-    ProgressIndicator (int theMaxVal = 100);
-    virtual ~ProgressIndicator ();
+    ProgressIndicator();
+    ~ProgressIndicator() override;
 
-    virtual Standard_Boolean Show (const Standard_Boolean theForce = Standard_True);
-    virtual Standard_Boolean UserBreak();
+    void Show(const Message_ProgressScope& theScope, const Standard_Boolean isForce) override;
+    Standard_Boolean UserBreak() override;
+    void Reset() override;
 
 private:
-    std::unique_ptr<Base::SequencerLauncher> myProgress;
+    std::size_t currentStep {0};
+    std::unique_ptr<Base::SequencerLauncher> progress;
 };
-#endif
 
-}
-
-#endif // PART_PROGRESSINDICATOR_H
+}  // namespace Part

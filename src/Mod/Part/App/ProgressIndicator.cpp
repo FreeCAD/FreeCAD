@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -32,54 +34,40 @@ using namespace Part;
   #include <Transfer_TransientProcess.hxx>
 
   STEPControl_Reader aReader;
-  Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
+  Handle(Message_ProgressIndicator) pi = new ProgressIndicator();
 
-  pi->NewScope(20, "Loading STEP file...");
-  pi->Show();
   aReader.ReadFile("myfile.stp");
-  pi->EndScope();
+  aReader.TransferRoots(pi->Start());
 
-  Handle(StepData_StepModel) Model = aReader.StepModel();
-  pi->NewScope(80, "Translating...");
-  pi->Show();
-  aReader.WS()->MapReader()->SetProgress(pi);
-  Standard_Integer nbr = aReader.NbRootsForTransfer();
-  for ( Standard_Integer n = 1; n<= nbr; n++) {
-    ...
-  }
-
-  pi->EndScope();
   \endcode
  */
 
-#if OCC_VERSION_HEX < 0x070500
-ProgressIndicator::ProgressIndicator (int theMaxVal)
-  : myProgress(new Base::SequencerLauncher("", theMaxVal))
+ProgressIndicator::ProgressIndicator()
 {
-    SetScale (0, theMaxVal, 1);
+    progress = std::make_unique<Base::SequencerLauncher>("Processing...", 100);
 }
 
-ProgressIndicator::~ProgressIndicator ()
+ProgressIndicator::~ProgressIndicator()
 {
+    progress->stop();
 }
 
-Standard_Boolean ProgressIndicator::Show (const Standard_Boolean theForce)
+void ProgressIndicator::Show(const Message_ProgressScope& theScope, const Standard_Boolean isForce)
 {
-    if (theForce) {
-        Handle(TCollection_HAsciiString) aName = GetScope(1).GetName(); //current step
-        if (!aName.IsNull())
-            myProgress->setText (aName->ToCString());
+    (void)isForce;
+    const char* name = theScope.Name();
+    progress->setText(name ? name : "Processing...");
+    std::size_t current = static_cast<std::size_t>(100. * theScope.Value() / theScope.MaxValue());
+    if (current != currentStep) {
+        currentStep = current;
+        progress->setProgress(currentStep);
     }
-
-    Standard_Real aPc = GetPosition(); //always within [0,1]
-    int aVal = (int)(aPc * myProgress->numberOfSteps());
-    myProgress->setProgress (aVal);
-
-    return Standard_True;
 }
 
 Standard_Boolean ProgressIndicator::UserBreak()
 {
-    return myProgress->wasCanceled();
+    return progress->wasCanceled();
 }
-#endif
+
+void ProgressIndicator::Reset()
+{}
