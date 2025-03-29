@@ -225,6 +225,8 @@ SET(TechDrawGui_SRCS
     Widgets/VectorEditWidget.h
     PATPathMaker.cpp
     PATPathMaker.h
+    SingleInsertTool.cpp
+    SingleInsertTool.h
 )
 
 SET(TechDrawGuiView_SRCS
