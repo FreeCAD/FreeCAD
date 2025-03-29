@@ -60,6 +60,9 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+    if (!pObj) {
+        return false;
+    }
     PartDesign::Body *body = getBody();
     App::OriginGroupExtension* originGroup = getOriginGroupExtension(body);
 
@@ -87,8 +90,12 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     }
 #endif
     // Handle selection of geometry elements
-    if (Base::Tools::isNullOrEmpty(sSubName))
+    if (Base::Tools::isNullOrEmpty(sSubName)){
+        if (pObj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
+            return type.testFlag(AllowSelection::SKETCH);
+        }
         return type.testFlag(AllowSelection::WHOLE);
+    }
 
     // resolve links if needed
     if (!pObj->isDerivedFrom<Part::Feature>()) {
@@ -104,14 +111,8 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 PartDesign::Body* ReferenceSelection::getBody() const
 {
-    PartDesign::Body *body;
-    if (support) {
-        body = PartDesign::Body::findBodyOf (support);
-    }
-    else {
-        body = PartDesignGui::getBody(false);
-    }
-
+    auto* body = support ? PartDesign::Body::findBodyOf(support)
+                         : PartDesignGui::getBody(false);
     return body;
 }
 
@@ -296,6 +297,7 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     if (selObj == thisObj)
         return false;
 
+
     std::string subname = msg.pSubName;
 
     //check if the selection is an external reference and ask the user what to do
@@ -345,12 +347,12 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
         return {};
     }
 
-    if (PartDesign::Feature::isDatum(obj)) {
+    if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
         return QString::fromLatin1(obj->getNameInDocument());
     }
-    else if (!sub.empty()) {
+    else if (!sub.empty() && !sub[0].empty()) {
         return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":") +
-               QString::fromLatin1(sub.front().c_str());
+            QString::fromStdString(sub.front());
     }
 
     return {};
