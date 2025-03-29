@@ -2358,6 +2358,42 @@ bool CmdFemPostContoursFilter::isActive()
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemPostCalculatorFilter)
+
+CmdFemPostCalculatorFilter::CmdFemPostCalculatorFilter()
+    : Command("FEM_PostFilterCalculator")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Calculator filter");
+    sToolTipText = QT_TR_NOOP("Create new fields from current data");
+    sWhatsThis = "FEM_PostFilterCalculator";
+    sStatusTip = sToolTipText;
+    sPixmap = "FEM_PostFilterCalculator";
+}
+
+void CmdFemPostCalculatorFilter::activated(int)
+{
+    setupFilter(this, "Calculator");
+}
+
+bool CmdFemPostCalculatorFilter::isActive()
+{
+    // only allow one object
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
+        return false;
+    }
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+//================================================================================================
 DEF_STD_CMD_ACL(CmdFemPostFunctions)
 
 CmdFemPostFunctions::CmdFemPostFunctions()
@@ -2802,6 +2838,7 @@ void CreateFemCommands()
     // vtk post processing
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
+    rcCmdMgr.addCommand(new CmdFemPostCalculatorFilter);
     rcCmdMgr.addCommand(new CmdFemPostClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostContoursFilter);
     rcCmdMgr.addCommand(new CmdFemPostCutFilter);

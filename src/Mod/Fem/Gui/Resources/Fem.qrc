@@ -73,6 +73,7 @@
         <file>icons/FEM_MaterialSolid.svg</file>
 
         <!-- gui command icons: post processing -->
+        <file>icons/FEM_PostFilterCalculator.svg</file>
         <file>icons/FEM_PostFilterClipRegion.svg</file>
         <file>icons/FEM_PostFilterClipScalar.svg</file>
         <file>icons/FEM_PostFilterContours.svg</file>

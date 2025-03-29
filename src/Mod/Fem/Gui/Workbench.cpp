@@ -209,6 +209,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostFilterLinearizedStresses"
              << "FEM_PostFilterDataAtPoint"
+             << "FEM_PostFilterCalculator"
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif
@@ -357,6 +358,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostFilterLinearizedStresses"
              << "FEM_PostFilterDataAtPoint"
+             << "FEM_PostFilterCalculator"
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif
