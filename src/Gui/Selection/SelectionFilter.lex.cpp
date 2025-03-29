@@ -18,9 +18,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#line 2 "lex.SelectionFilter.c"
+#line 2 "SelectionFilter.lex.cpp"
 
-#line 4 "lex.SelectionFilter.c"
+#line 4 "SelectionFilter.lex.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -528,7 +528,7 @@ char *SelectionFiltertext;
 /* Lexer for the FreeCAD selection filter language */
 /* Copyright (c) 2010 Jürgen Riegel  LGPL          */
 
-/*  flex -o lex.SelectionFilter.c SelectionFilter.l */
+/*  flex -o SelectionFilter.lex.cpp SelectionFilter.l */
 
 #include <string>
 
@@ -543,7 +543,7 @@ char *SelectionFiltertext;
 /* change the name of the scanner class. results in "SelectionFilterFlexLexer" */
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
-#line 527 "lex.SelectionFilter.c"
+#line 527 "SelectionFilter.lex.cpp"
 
 #define INITIAL 0
 
@@ -763,7 +763,7 @@ YY_DECL
 
 
  
-#line 747 "lex.SelectionFilter.c"
+#line 747 "SelectionFilter.lex.cpp"
 
     while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
         {
@@ -874,7 +874,7 @@ YY_RULE_SETUP
 #line 54 "SelectionFilter.l"
 ECHO;
     YY_BREAK
-#line 858 "lex.SelectionFilter.c"
+#line 858 "SelectionFilter.lex.cpp"
 case YY_STATE_EOF(INITIAL):
     yyterminate();
 
