@@ -49,8 +49,8 @@
 
 NavlibInterface::NavlibInterface()
     : CNavigation3D(false, navlib::nlOptions_t::no_ui),
-      patternInitialized(false),
-      activeTab({-1, ""})
+      activeTab({-1, ""}),
+      patternInitialized(false)
 {}
 
 NavlibInterface::~NavlibInterface()
@@ -304,7 +304,7 @@ long NavlibInterface::GetViewFrustum(navlib::frustum_t& frustum) const
     return 0;
 }
 
-long NavlibInterface::SetViewFrustum(const navlib::frustum_t& frustum)
+long NavlibInterface::SetViewFrustum(const navlib::frustum_t&)
 {
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
@@ -334,12 +334,12 @@ long NavlibInterface::GetViewExtents(navlib::box_t& extents) const
     const double halfWidth = static_cast<double>(viewVolume.getWidth() / 2.0f);
     const double halfDepth = 1.0e8;
 
-    extents = {-halfWidth,
-               -halfHeight,
-               -halfDepth,
-               halfWidth,
-               halfHeight,
-               halfDepth};
+    extents = {{-halfWidth,
+                -halfHeight,
+                -halfDepth},
+               {halfWidth,
+                halfHeight,
+                halfDepth}};
 
     return 0;
 }
@@ -385,12 +385,12 @@ long NavlibInterface::SetViewExtents(const navlib::box_t& extents)
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
 
-long NavlibInterface::GetViewFOV(double& fov) const
+long NavlibInterface::GetViewFOV(double&) const
 {
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
 
-long NavlibInterface::SetViewFOV(double fov)
+long NavlibInterface::SetViewFOV(double)
 {
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
@@ -448,7 +448,7 @@ long NavlibInterface::GetModelExtents(navlib::box_t& extents) const
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
 
-long NavlibInterface::SetTransaction(long value)
+long NavlibInterface::SetTransaction(long)
 {
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
