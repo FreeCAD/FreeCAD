@@ -881,7 +881,7 @@ public:
     ConsoleSingleton& operator=(ConsoleSingleton&&) = delete;
 
 private:
-    void postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type,
+    void postEvent(FreeCAD_ConsoleMsgType type,
                    IntendedRecipient recipient,
                    ContentType content,
                    const std::string& notifiername,
