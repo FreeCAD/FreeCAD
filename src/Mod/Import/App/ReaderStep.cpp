@@ -43,7 +43,7 @@ ReaderStep::ReaderStep(const Base::FileInfo& file)  // NOLINT
 #endif
 }
 
-void ReaderStep::read(Handle(TDocStd_Document) hDoc)  // NOLINT
+void ReaderStep::read(Handle(TDocStd_Document) hDoc, const Message_ProgressRange& theProgress)
 {
     std::string utf8Name = file.filePath();
     std::string name8bit = Part::encodeFilename(utf8Name);
@@ -63,5 +63,5 @@ void ReaderStep::read(Handle(TDocStd_Document) hDoc)  // NOLINT
         throw Base::FileException("Cannot read STEP file", file);
     }
 
-    aReader.Transfer(hDoc);
+    aReader.Transfer(hDoc, theProgress);
 }

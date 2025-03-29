@@ -60,6 +60,8 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderLink.h>
 #include <Mod/Import/App/ReaderGltf.h>
 #include <Mod/Import/App/ReaderIges.h>
@@ -75,6 +77,7 @@
 #include <Mod/Part/Gui/DlgExportStep.h>
 #include <Mod/Part/Gui/DlgImportStep.h>
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/App/ProgressIndicator.h>
 
 
 FC_LOG_LEVEL_INIT("Import", true, true)
@@ -307,11 +310,15 @@ private:
                 }
 
                 try {
+                    Handle(Message_ProgressIndicator) pi;
+                    if (ocaf.showProgress()) {
+                        pi = new Part::ProgressIndicator();
+                    }
                     Import::ReaderStep reader(file);
 #if OCC_VERSION_HEX >= 0x070800
                     reader.setCodePage(cp);
 #endif
-                    reader.read(hDoc);
+                    reader.read(hDoc, Message_ProgressIndicator::Start(pi));
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().error("%s\n", e.GetMessageString());
@@ -323,8 +330,12 @@ private:
             }
             else if (file.hasExtension({"igs", "iges"})) {
                 try {
+                    Handle(Message_ProgressIndicator) pi;
+                    if (ocaf.showProgress()) {
+                        pi = new Part::ProgressIndicator();
+                    }
                     Import::ReaderIges reader(file);
-                    reader.read(hDoc);
+                    reader.read(hDoc, Message_ProgressIndicator::Start(pi));
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().error("%s\n", e.GetMessageString());
@@ -335,8 +346,12 @@ private:
                 }
             }
             else if (file.hasExtension({"glb", "gltf"})) {
+                Handle(Message_ProgressIndicator) pi;
+                if (ocaf.showProgress()) {
+                    pi = new Part::ProgressIndicator();
+                }
                 Import::ReaderGltf reader(file);
-                reader.read(hDoc);
+                reader.read(hDoc, Message_ProgressIndicator::Start(pi));
             }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");
@@ -364,10 +379,10 @@ private:
 
             if (ret) {
                 App::GetApplication().setActiveDocument(pcDoc);
-                auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
-                if (gdoc) {
-                    gdoc->setActiveView();
-                    Gui::Application::Instance->commandManager().runCommandByName("Std_ViewFitAll");
+                if (auto gdoc = Gui::Application::Instance->getDocument(pcDoc)) {
+                    if (auto view = freecad_cast<Gui::View3DInventor*>(gdoc->setActiveView())) {
+                        view->getViewer()->viewAll();
+                    }
                 }
                 return Py::asObject(ret->getPyObject());
             }
