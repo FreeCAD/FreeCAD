@@ -119,7 +119,7 @@ void BomObject::saveCustomColumnData()
             std::string columnName = getText(0, i);
             if (columnName != "Index" && columnName != "Name" && columnName != "Quantity"
                 && columnName != "File Name") {
-                // Base::Console().Warning("row col %d %d\n", row, col);
+                // Base::Console().warning("row col %d %d\n", row, col);
                 //  save custom data if any.
                 std::string text = getText(row, col);
                 if (text != "") {

@@ -140,7 +140,7 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
+        Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
                                 "Instead, the linked object(s) reside within '%s'.\n",
                                 getTypeId().getName(),
                                 objnames.c_str(),

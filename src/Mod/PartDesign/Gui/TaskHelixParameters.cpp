@@ -496,7 +496,7 @@ void TaskHelixParameters::onAxisChanged(int num)
     }
     else {
         if (!helix->getDocument()->isIn(lnk.getValue())) {
-            Base::Console().Error("Object was deleted\n");
+            Base::Console().error("Object was deleted\n");
             return;
         }
         propReferenceAxis->Paste(lnk);

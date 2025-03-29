@@ -100,7 +100,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 
     Part::TopoShape shape = Part::Feature::getTopoShape(obj, subject.getElementName(), false, mat, nullptr, true);
     if (shape.isNull()) {
-        Base::Console().Log("Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n", obj->getNameInDocument(), subject.getElementName());
+        Base::Console().log("Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n", obj->getNameInDocument(), subject.getElementName());
         return {};
     }
 
@@ -124,7 +124,7 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
     TopoDS_Shape shape = Part::Feature::getShape(ob, subName, true);
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("Part::PartMeasureTypeCb did not retrieve shape for %s, %s\n", ob->getNameInDocument(), subName);
+        Base::Console().message("Part::PartMeasureTypeCb did not retrieve shape for %s, %s\n", ob->getNameInDocument(), subName);
         return App::MeasureElementType();
     }
     TopAbs_ShapeEnum shapeType = shape.ShapeType();
@@ -188,7 +188,7 @@ Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("Part::buildAdapter did not retrieve shape for %s, %s\n",
+        Base::Console().message("Part::buildAdapter did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return Part::VectorAdapter();
     }
@@ -240,7 +240,7 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureLengthHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasureLengthHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureLengthInfo>(false, 0.0, Base::Matrix4D());
     }
@@ -301,7 +301,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureAreaHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasureAreaHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
@@ -328,7 +328,7 @@ MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
     TopoDS_Shape shape = getLocatedShape(subject);
 
     if (shape.IsNull()) {
-        Base::Console().Message("MeasurePositionHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasurePositionHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasurePositionInfo>(false, Base::Vector3d());
     }
@@ -350,7 +350,7 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureAngleHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasureAngleHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureAngleInfo>();
     }
@@ -389,7 +389,7 @@ MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureDistanceHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasureDistanceHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureDistanceInfo>();
     }

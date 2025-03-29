@@ -75,7 +75,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     m_basePage = m_annoFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().Error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
         return;
     }
 
@@ -160,7 +160,7 @@ void TaskRichAnno::changeEvent(QEvent *event)
 
 void TaskRichAnno::setUiPrimary()
 {
-//    Base::Console().Message("TRA::setUiPrimary()\n");
+//    Base::Console().message("TRA::setUiPrimary()\n");
     enableVPUi(false);
     setWindowTitle(m_title);
 
@@ -198,7 +198,7 @@ void TaskRichAnno::enableVPUi(bool enable)
 
 void TaskRichAnno::setUiEdit()
 {
-//    Base::Console().Message("TRA::setUiEdit());
+//    Base::Console().message("TRA::setUiEdit());
     enableVPUi(true);
     setWindowTitle(m_title);
     enableTextUi(true);
@@ -224,7 +224,7 @@ void TaskRichAnno::setUiEdit()
 
 void TaskRichAnno::onEditorClicked(bool clicked)
 {
-//    Base::Console().Message("TL::onEditorClicked(%d)\n", b);
+//    Base::Console().message("TL::onEditorClicked(%d)\n", b);
     Q_UNUSED(clicked);
     m_textDialog = new QDialog(nullptr);
     QString leadText = ui->teAnnoText->toHtml();
@@ -278,7 +278,7 @@ Base::Color TaskRichAnno::prefLineColor()
 //******************************************************************************
 void TaskRichAnno::createAnnoFeature()
 {
-//    Base::Console().Message("TRA::createAnnoFeature()");
+//    Base::Console().message("TRA::createAnnoFeature()");
     const std::string objectName{QT_TR_NOOP("RichTextAnnotation")};
     std::string annoName = m_basePage->getDocument()->getUniqueObjectName(objectName.c_str());
     std::string generatedSuffix {annoName.substr(objectName.length())};
@@ -347,7 +347,7 @@ void TaskRichAnno::createAnnoFeature()
 
 void TaskRichAnno::updateAnnoFeature()
 {
-//    Base::Console().Message("TRA::updateAnnoFeature()\n");
+//    Base::Console().message("TRA::updateAnnoFeature()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
     commonFeatureUpdate();
     Base::Color ac;
@@ -362,7 +362,7 @@ void TaskRichAnno::updateAnnoFeature()
 
 void TaskRichAnno::commonFeatureUpdate()
 {
-//    Base::Console().Message("TRA::commonFeatureUpdate()\n");
+//    Base::Console().message("TRA::commonFeatureUpdate()\n");
     m_annoFeat->setPosition(Rez::appX(m_attachPoint.x), Rez::appX(- m_attachPoint.y), true);
     m_annoFeat->AnnoText.setValue(ui->teAnnoText->toHtml().toUtf8());
     m_annoFeat->MaxWidth.setValue(ui->dsbMaxWidth->value().getValue());
@@ -371,7 +371,7 @@ void TaskRichAnno::commonFeatureUpdate()
 
 void TaskRichAnno::removeFeature()
 {
-//    Base::Console().Message("TRA::removeFeature()\n");
+//    Base::Console().message("TRA::removeFeature()\n");
     if (!m_annoFeat)
         return;
 
@@ -385,7 +385,7 @@ void TaskRichAnno::removeFeature()
                                         m_annoFeat->getNameInDocument());
         }
         catch (...) {
-            Base::Console().Warning("TRA::removeFeature - failed to delete feature\n");
+            Base::Console().warning("TRA::removeFeature - failed to delete feature\n");
             return;
         }
     } else {
@@ -401,7 +401,7 @@ void TaskRichAnno::removeFeature()
 QPointF TaskRichAnno::calcTextStartPos(double scale)
 {
     Q_UNUSED(scale)
-//    Base::Console().Message("TRA::calcTextStartPos(%.3f)\n", scale);
+//    Base::Console().message("TRA::calcTextStartPos(%.3f)\n", scale);
     double textWidth = 100.0;
     double textHeight = 20.0;
     double horizGap(20.0);
@@ -419,17 +419,17 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
             TechDraw::DrawLeaderLine* dll = static_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
         } else {
-//            Base::Console().Message("TRA::calcTextPos - m_baseFeat is not Leader\n");
+//            Base::Console().message("TRA::calcTextPos - m_baseFeat is not Leader\n");
             return QPointF(0.0, 0.0);
         }
     } else {
-//        Base::Console().Message("TRA::calcStartPos - no m_baseFeat\n");
+//        Base::Console().message("TRA::calcStartPos - no m_baseFeat\n");
         if (m_basePage) {
             double w = Rez::guiX(m_basePage->getPageWidth() / 2.0);
             double h = Rez::guiX(m_basePage->getPageHeight() / 2.0);
             return QPointF(w, h);
         } else {
-            Base::Console().Message("TRA::calcStartPos - no m_basePage\n"); //shouldn't happen. caught elsewhere
+            Base::Console().message("TRA::calcStartPos - no m_basePage\n"); //shouldn't happen. caught elsewhere
         }
     }
 
@@ -466,9 +466,9 @@ void TaskRichAnno::enableTaskButtons(bool enable)
 
 bool TaskRichAnno::accept()
 {
-//    Base::Console().Message("TRA::accept()\n");
+//    Base::Console().message("TRA::accept()\n");
     if (m_inProgressLock) {
-//        Base::Console().Message("TRA::accept - edit in progress!!\n");
+//        Base::Console().message("TRA::accept - edit in progress!!\n");
         //TODO: kill MRTE dialog?
         return true;
     }
@@ -492,9 +492,9 @@ bool TaskRichAnno::accept()
 
 bool TaskRichAnno::reject()
 {
-//    Base::Console().Message("TRA::reject()\n");
+//    Base::Console().message("TRA::reject()\n");
     if (m_inProgressLock) {
-//        Base::Console().Message("TRA::reject - edit in progress!!\n");
+//        Base::Console().message("TRA::reject - edit in progress!!\n");
         return false;
     }
 

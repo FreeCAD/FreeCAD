@@ -59,7 +59,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_edgeName);
     if (!m_ce) {
-        Base::Console().Error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
         return;
     }
 
@@ -173,7 +173,7 @@ void TaskCosmeticLine::setUiEdit()
 //******************************************************************************
 void TaskCosmeticLine::createCosmeticLine()
 {
-//    Base::Console().Message("TCL::createCosmeticLine()\n");
+//    Base::Console().message("TCL::createCosmeticLine()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
 
     // ui 2d points are interpreted as unscaled, unrotated, uninverted
@@ -207,7 +207,7 @@ void TaskCosmeticLine::createCosmeticLine()
 
 void TaskCosmeticLine::updateCosmeticLine()
 {
-//    Base::Console().Message("TCL::updateCosmeticLine()\n");
+//    Base::Console().message("TCL::updateCosmeticLine()\n");
     double x = ui->qsbx1->value().getValue();
     double y = ui->qsby1->value().getValue();
     double z = ui->qsbz1->value().getValue();

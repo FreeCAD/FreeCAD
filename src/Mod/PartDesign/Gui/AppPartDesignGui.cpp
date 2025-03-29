@@ -116,7 +116,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
     }
 
     PyObject* mod = PartDesignGui::initModule();
-    Base::Console().Log("Loading GUI of PartDesign module... done\n");
+    Base::Console().log("Loading GUI of PartDesign module... done\n");
 
     // instantiating the commands
     CreatePartDesignCommands();

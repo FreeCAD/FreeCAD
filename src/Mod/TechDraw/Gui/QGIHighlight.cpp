@@ -65,7 +65,7 @@ QGIHighlight::~QGIHighlight()
 
 void QGIHighlight::onDragFinished()
 {
-//    Base::Console().Message("QGIH::onDragFinished - pos: %s\n",
+//    Base::Console().message("QGIH::onDragFinished - pos: %s\n",
 //                            DrawUtil::formatVector(pos()).c_str());
     QGraphicsItem* parent = parentItem();
     auto qgivp = dynamic_cast<QGIViewPart*>(parent);

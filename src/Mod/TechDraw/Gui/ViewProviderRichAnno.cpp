@@ -73,7 +73,7 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 
 bool ViewProviderRichAnno::doubleClicked()
 {
-//    Base::Console().Message("VPRA::doubleClicked()\n");
+//    Base::Console().message("VPRA::doubleClicked()\n");
     setEdit(ViewProvider::Default);
     return true;
 }

@@ -110,7 +110,7 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
 
 bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 {
-    // Base::Console().Message("QGIVP::sceneEventFilter - event: %d watchedtype: %d\n",
+    // Base::Console().message("QGIVP::sceneEventFilter - event: %d watchedtype: %d\n",
     //                         event->type(), watched->type() - QGraphicsItem::UserType);
     if (event->type() == QEvent::ShortcutOverride) {
         // if we accept this event, we should get a regular keystroke event next
@@ -134,7 +134,7 @@ bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 //! selected, remove it from the view.
 bool QGIViewPart::removeSelectedCosmetic() const
 {
-    // Base::Console().Message("QGIVP::removeSelectedCosmetic()\n");
+    // Base::Console().message("QGIVP::removeSelectedCosmetic()\n");
     auto dvp(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     if (!dvp) {
         throw Base::RuntimeError("Graphic has no feature!");
@@ -185,7 +185,7 @@ QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const
 
 void QGIViewPart::updateView(bool update)
 {
-    // Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
+    // Base::Console().message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     if (!viewPart)
         return;
@@ -209,7 +209,7 @@ void QGIViewPart::draw()
     if (!doc || doc->testStatus(App::Document::Status::Restoring)) {
         // if the document is still restoring, we may not have all the information
         // we need to draw the source objects, so we wait until restore is finished.
-        // Base::Console().Message("QGIVP::draw - document is restoring, do not draw\n");
+        // Base::Console().message("QGIVP::draw - document is restoring, do not draw\n");
         return;
     }
 
@@ -230,7 +230,7 @@ void QGIViewPart::drawViewPart()
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     if (!viewPart)
         return;
-    //    Base::Console().Message("QGIVP::DVP() - %s / %s\n", viewPart->getNameInDocument(), viewPart->Label.getValue());
+    //    Base::Console().message("QGIVP::DVP() - %s / %s\n", viewPart->getNameInDocument(), viewPart->Label.getValue());
     if (!viewPart->hasGeometry()) {
         removePrimitives();//clean the slate
         removeDecorations();
@@ -372,7 +372,7 @@ void QGIViewPart::drawAllEdges()
                 showItem = formatGeomFromCenterLine(cTag, item);
             }
             else {
-                Base::Console().Message("QGIVP::drawVP - cosmetic edge: %d is confused - source: %d\n",
+                Base::Console().message("QGIVP::drawVP - cosmetic edge: %d is confused - source: %d\n",
                                         iEdge, static_cast<int>(source));
             }
         } else {
@@ -536,7 +536,7 @@ bool QGIViewPart::showCenterMarks()
 
 bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 {
-    //    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());
+    //    Base::Console().message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());
     bool result = true;
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::CosmeticEdge* ce = partFeat ? partFeat->getCosmeticEdge(cTag) : nullptr;
@@ -555,7 +555,7 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 
 bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
 {
-//    Base::Console().Message("QGIVP::formatGeomFromCenterLine()\n");
+//    Base::Console().message("QGIVP::formatGeomFromCenterLine()\n");
     bool result = true;
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::CenterLine* cl = partFeat ? partFeat->getCenterLine(cTag) : nullptr;
@@ -573,7 +573,7 @@ bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
 
 QGIFace* QGIViewPart::drawFace(TechDraw::FacePtr f, int idx)
 {
-    //    Base::Console().Message("QGIVP::drawFace - %d\n", idx);
+    //    Base::Console().message("QGIVP::drawFace - %d\n", idx);
     std::vector<TechDraw::Wire*> fWires = f->wires;
     QPainterPath facePath;
     for (std::vector<TechDraw::Wire*>::iterator wire = fWires.begin(); wire != fWires.end();
@@ -692,7 +692,7 @@ void QGIViewPart::drawAllSectionLines()
 
 void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
-//    Base::Console().Message("QGIVP::drawSectionLine()\n");
+//    Base::Console().message("QGIVP::drawSectionLine()\n");
     TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
     if (!viewPart)
         return;
@@ -714,7 +714,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         Base::Vector3d l1 = Rez::guiX(sLineEnds.first) * scale;
         Base::Vector3d l2 = Rez::guiX(sLineEnds.second) * scale;
         if (l1.IsEqual(l2, EWTOLERANCE) ) {
-            Base::Console().Message("QGIVP::drawSectionLine - line endpoints are equal. No section line created.\n");
+            Base::Console().message("QGIVP::drawSectionLine - line endpoints are equal. No section line created.\n");
             return;
         }
 
@@ -793,7 +793,7 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     Base::Vector3d vStart = Rez::guiX(ends.first);//already scaled by dcs
     Base::Vector3d vEnd = Rez::guiX(ends.second);
     if (vStart.IsEqual(vEnd, EWTOLERANCE) ) {
-        Base::Console().Message("QGIVP::drawComplexSectionLine - line endpoints are equal. No section line created.\n");
+        Base::Console().message("QGIVP::drawComplexSectionLine - line endpoints are equal. No section line created.\n");
         return;
     }
 
@@ -1030,7 +1030,7 @@ void QGIViewPart::drawMatting()
 //! if this is a broken view, draw the break lines.
 void QGIViewPart::drawBreakLines()
 {
-    // Base::Console().Message("QGIVP::drawBreakLines()\n");
+    // Base::Console().message("QGIVP::drawBreakLines()\n");
 
     auto dbv = dynamic_cast<TechDraw::DrawBrokenView*>(getViewObject());
     if (!dbv) {
@@ -1142,7 +1142,7 @@ QGIViewPart::faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geom
 void QGIViewPart::dumpPath(const char* text, QPainterPath path)
 {
     QPainterPath::Element elem;
-    Base::Console().Message(">>>%s has %d elements\n", text, path.elementCount());
+    Base::Console().message(">>>%s has %d elements\n", text, path.elementCount());
     const char* typeName;
     for (int iElem = 0; iElem < path.elementCount(); iElem++) {
         elem = path.elementAt(iElem);
@@ -1158,7 +1158,7 @@ void QGIViewPart::dumpPath(const char* text, QPainterPath path)
         else {
             typeName = "CurveData";
         }
-        Base::Console().Message(">>>>> element %d: type:%d/%s pos(%.3f, %.3f) M:%d L:%d C:%d\n",
+        Base::Console().message(">>>>> element %d: type:%d/%s pos(%.3f, %.3f) M:%d L:%d C:%d\n",
                                 iElem, static_cast<int>(elem.type), typeName, elem.x, elem.y, static_cast<int>(elem.isMoveTo()),
                                 static_cast<int>(elem.isLineTo()), static_cast<int>(elem.isCurveTo()));
     }

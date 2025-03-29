@@ -656,7 +656,7 @@ void AboutDialog::copyToClipboard()
         ifcopenshellVer = Base::Interpreter().getValue(cmd, "version");
     }
     catch (const Base::Exception& e) {
-        Base::Console().Log("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
+        Base::Console().log("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
     }
 
     if (ifcopenshellVer) {

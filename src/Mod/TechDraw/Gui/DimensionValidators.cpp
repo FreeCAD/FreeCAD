@@ -491,7 +491,7 @@ DimensionGeometry TechDraw::isValidSingleFace3d(DrawViewPart* dvp, const Referen
 
     TopoDS_Shape refShape = ref.getGeometry();
     if (refShape.IsNull() || refShape.ShapeType() != TopAbs_FACE) {
-        Base::Console().Warning("Geometry for reference is not a face.\n");
+        Base::Console().warning("Geometry for reference is not a face.\n");
         return DimensionGeometry::isInvalid;
     }
 

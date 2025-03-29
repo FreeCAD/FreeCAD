@@ -60,7 +60,7 @@ QGIEdge::QGIEdge(int index) :
 // not FreeCAD cosmetic lines
 void QGIEdge::setCosmetic(bool state)
 {
-//    Base::Console().Message("QGIE::setCosmetic(%d)\n", state);
+//    Base::Console().message("QGIE::setCosmetic(%d)\n", state);
     isCosmetic = state;
     if (state) {
         setWidth(0.0);
@@ -77,7 +77,7 @@ void QGIEdge::setHiddenEdge(bool b) {
 }
 
 void QGIEdge::setPrettyNormal() {
-//    Base::Console().Message("QGIE::setPrettyNormal()\n");
+//    Base::Console().message("QGIE::setPrettyNormal()\n");
     if (isHiddenEdge) {
         m_pen.setColor(getHiddenColor());
     } else {

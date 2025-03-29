@@ -1365,7 +1365,7 @@ void StdCmdDelete::activated(int iMsg)
             for(auto &sel : sels) {
                 auto obj = sel.getObject();
                 if (obj == nullptr){
-                    Base::Console().DeveloperWarning("StdCmdDelete::activated",
+                    Base::Console().developerWarning("StdCmdDelete::activated",
                                                      "App::DocumentObject pointer is nullptr\n");
                     continue;
                 }

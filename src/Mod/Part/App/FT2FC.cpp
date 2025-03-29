@@ -190,7 +190,7 @@ PyObject* FT2FC(const Py_UCS4 *PyUString,
         }
         catch (Py::Exception& e) {
             e.clear();
-            Base::Console().Log("FT2FC char '0x%04x'/'%d' has no Wires!\n", currchar, currchar);
+            Base::Console().log("FT2FC char '0x%04x'/'%d' has no Wires!\n", currchar, currchar);
         }
 
         PenPos += cadv;
@@ -270,7 +270,7 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    ShapeConstruct_Curve scc;
    Handle(Geom2d_BSplineCurve) spline = scc.ConvertToBSpline(bcseg, u, v, Precision::Confusion());
    if (spline.IsNull()) {
-       Base::Console().Message("Conversion to B-spline failed");
+       Base::Console().message("Conversion to B-spline failed");
    }
    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(spline , dc->surf);
    dc->Edges.push_back(edge);
@@ -299,7 +299,7 @@ static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector*
    ShapeConstruct_Curve scc;
    Handle(Geom2d_BSplineCurve) spline = scc.ConvertToBSpline(bcseg, u, v, Precision::Confusion());
    if (spline.IsNull()) {
-       Base::Console().Message("Conversion to B-spline failed");
+       Base::Console().message("Conversion to B-spline failed");
    }
    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(spline , dc->surf);
    dc->Edges.push_back(edge);
@@ -374,7 +374,7 @@ PyObject* getGlyphContours(FT_Face FTFace, FT_ULong currchar, double PenPos, dou
            (*iWire).Orientation(TopAbs_REVERSED);
        } else {
             //this is likely a poorly constructed font (ex a ttf with outer wires ACW )
-            Base::Console().Message("FT2FC::getGlyphContours - indeterminate wire direction\n");
+            Base::Console().message("FT2FC::getGlyphContours - indeterminate wire direction\n");
        }
 
        BRepScale.Perform(*iWire,bCopy);
@@ -416,7 +416,7 @@ TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges) {
     for (iEdge = Edges.begin(); iEdge != Edges.end(); ++iEdge){
         mkWire.Add(*iEdge);
         if (!mkWire.IsDone()) {
-            Base::Console().Message("FT2FC Trace edgesToWire failed to add wire\n");
+            Base::Console().message("FT2FC Trace edgesToWire failed to add wire\n");
         }
     }
     occwire = mkWire.Wire();

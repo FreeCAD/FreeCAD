@@ -38,7 +38,7 @@ PyMOD_INIT_FUNC(JtReader)
     // load dependent module
     Base::Interpreter().loadModule("Mesh");
 
-    Base::Console().Log("Loading JtReader module... done\n");
+    Base::Console().log("Loading JtReader module... done\n");
 
     PyMOD_Return(jtReaderModule);
 }

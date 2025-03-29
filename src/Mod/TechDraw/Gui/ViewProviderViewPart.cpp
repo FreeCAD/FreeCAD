@@ -212,7 +212,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
-//    Base::Console().Message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
+//    Base::Console().message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm) {
@@ -290,7 +290,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
     if (dvd) {
         if (!dvd->BaseView.getValue()) {
-            Base::Console().Error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
+            Base::Console().error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
             return false;
         }
         Gui::Control().showDialog(new TaskDlgDetail(dvd));
@@ -357,7 +357,7 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
 
 bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
-    // Base::Console().Message("VPVP::onDelete(%d subNames)\n", subNames.size());
+    // Base::Console().message("VPVP::onDelete(%d subNames)\n", subNames.size());
     // we cannot delete if the view has a section or detail view
     (void) subNames;
     QString bodyMessage;

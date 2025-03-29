@@ -421,7 +421,7 @@ void DlgDisplayPropertiesImp::onChangeModeActivated(const QString& s)
 
 void DlgDisplayPropertiesImp::onChangePlotActivated(const QString& s)
 {
-    Base::Console().Log("Plot = %s\n", (const char*)s.toLatin1());
+    Base::Console().log("Plot = %s\n", (const char*)s.toLatin1());
 }
 
 /**

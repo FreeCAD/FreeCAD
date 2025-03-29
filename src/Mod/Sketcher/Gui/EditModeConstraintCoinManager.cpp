@@ -1617,13 +1617,13 @@ Restart:
             }
         }
         catch (Base::Exception& e) {
-            Base::Console().DeveloperError("EditModeConstraintCoinManager",
+            Base::Console().developerError("EditModeConstraintCoinManager",
                                            "Exception during draw: %s\n",
                                            e.what());
             e.ReportException();
         }
         catch (...) {
-            Base::Console().DeveloperError("EditModeConstraintCoinManager",
+            Base::Console().developerError("EditModeConstraintCoinManager",
                                            "Exception during draw: unknown\n");
         }
     }
@@ -2049,7 +2049,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId((*it)->First);
                     const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId((*it)->Second);
                     if (!geo1 || !geo2) {
-                        Base::Console().DeveloperWarning(
+                        Base::Console().developerWarning(
                             "EditModeConstraintCoinManager",
                             "Tangent constraint references non-existing geometry\n");
                     }
@@ -2277,7 +2277,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                         if (tail
                             != sep->getChild(
                                 static_cast<int>(ConstraintNodePosition::FirstIconIndex))) {
-                            Base::Console().Log("SecondIcon\n");
+                            Base::Console().log("SecondIcon\n");
 
                             auto translation2 = static_cast<SoZoomTranslation*>(
                                 static_cast<SoSeparator*>(tailFather)
@@ -2318,7 +2318,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                             // Useful code to debug coordinates and bounding boxes that does
                             // not need to be compiled in for any debug operations.
 
-                            /*Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n",
+                            /*Base::Console().log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n",
                              * absPos[0],absPos[1],trans[0], trans[1], cursorPos[0],
                              * cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY,
                              * iconSize[0], iconSize[1],
@@ -2440,7 +2440,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
 
         // Double-check that we can safely access the Inventor nodes
         if (constrId >= editModeScenegraphNodes.constrGroup->getNumChildren()) {
-            Base::Console().DeveloperWarning(
+            Base::Console().developerWarning(
                 "EditModeConstraintManager",
                 "Can't update constraint icons because view is not in sync with sketch\n");
             break;

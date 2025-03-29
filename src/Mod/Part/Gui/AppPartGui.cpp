@@ -133,7 +133,7 @@ PyMOD_INIT_FUNC(PartGui)
 
     PyObject* partGuiModule = PartGui::initModule();
 
-    Base::Console().Log("Loading GUI of Part module... done\n");
+    Base::Console().log("Loading GUI of Part module... done\n");
 
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/booleans"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/create"));

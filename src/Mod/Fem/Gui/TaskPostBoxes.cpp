@@ -934,7 +934,7 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
         if (!point) {
-            Base::Console().Message("No point picked.\n");
+            Base::Console().message("No point picked.\n");
             return;
         }
 
@@ -1209,7 +1209,7 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
         if (!point) {
-            Base::Console().Message("No point picked.\n");
+            Base::Console().message("No point picked.\n");
             return;
         }
 
@@ -1355,7 +1355,7 @@ void TaskPostDataAtPoint::showValue(double pointValue, const char* unitStr)
     QString posZ = ui->centerZ->text();
 
     QString result = tr("%1 at (%2; %3; %4) is: %5 %6").arg(field, posX, posY, posZ, value, unit);
-    Base::Console().Message("%s\n", result.toUtf8().data());
+    Base::Console().message("%s\n", result.toUtf8().data());
 }
 
 std::string TaskPostDataAtPoint::toString(double val) const
@@ -1869,7 +1869,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderFemPostScalarClip* view, QWid
     ui->Slider->blockSignals(true);
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
-    Base::Console().Log("init: scalar_factor, slider_value: %f, %i: \n",
+    Base::Console().log("init: scalar_factor, slider_value: %f, %i: \n",
                         scalar_factor,
                         slider_value);
 }
@@ -2003,7 +2003,7 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWid
         (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
-    Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    Base::Console().log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
 TaskPostWarpVector::~TaskPostWarpVector() = default;
@@ -2057,7 +2057,7 @@ void TaskPostWarpVector::onSliderValueChanged(int slider_value)
     ui->Value->blockSignals(true);
     ui->Value->setValue(warp_factor);
     ui->Value->blockSignals(false);
-    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    Base::Console().log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
 void TaskPostWarpVector::onValueValueChanged(double warp_factor)
@@ -2075,7 +2075,7 @@ void TaskPostWarpVector::onValueValueChanged(double warp_factor)
         (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
-    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    Base::Console().log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
 void TaskPostWarpVector::onMaxValueChanged(double)
@@ -2111,7 +2111,7 @@ void TaskPostWarpVector::onMaxValueChanged(double)
         ui->Value->blockSignals(true);
         ui->Value->setValue(warp_factor);
         ui->Value->blockSignals(false);
-    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    Base::Console().log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
     }
     */
 }

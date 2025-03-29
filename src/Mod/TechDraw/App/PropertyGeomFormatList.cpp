@@ -171,7 +171,7 @@ void PropertyGeomFormatList::Restore(Base::XMLReader &reader)
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().Error("GeomFormat \"%s\" within a PropertyGeomFormatList was subject to a partial restore.\n", reader.localName());
+            Base::Console().error("GeomFormat \"%s\" within a PropertyGeomFormatList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the GeomFormat class
                 values.push_back(newG);

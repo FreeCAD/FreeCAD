@@ -79,7 +79,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_basePage = m_baseFeat->findParentPage();
     //it is possible that the basePage could be unparented and have no corresponding Page
     if (!m_basePage) {
-        Base::Console().Error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
         return;
     }
 
@@ -146,7 +146,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 {
     if (!m_detailFeat)  {
         //should be caught in CMD caller
-        Base::Console().Error("TaskDetail - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters.  Can not proceed.\n");
         return;
     }
 
@@ -163,7 +163,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     if (m_baseFeat) {
         m_baseName = m_baseFeat->getNameInDocument();
     } else {
-        Base::Console().Error("TaskDetail - no BaseView.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - no BaseView.  Can not proceed.\n");
         return;
     }
 
@@ -219,7 +219,7 @@ void TaskDetail::changeEvent(QEvent *e)
 //save the start conditions
 void TaskDetail::saveDetailState()
 {
-//    Base::Console().Message("TD::saveDetailState()\n");
+//    Base::Console().message("TD::saveDetailState()\n");
     TechDraw::DrawViewDetail* dvd = getDetailFeat();
     m_saveAnchor = dvd->AnchorPoint.getValue();
     m_saveRadius  = dvd->Radius.getValue();
@@ -228,7 +228,7 @@ void TaskDetail::saveDetailState()
 
 void TaskDetail::restoreDetailState()
 {
-//    Base::Console().Message("TD::restoreDetailState()\n");
+//    Base::Console().message("TD::restoreDetailState()\n");
     TechDraw::DrawViewDetail* dvd = getDetailFeat();
     dvd->AnchorPoint.setValue(m_saveAnchor);
     dvd->Radius.setValue(m_saveRadius);
@@ -238,7 +238,7 @@ void TaskDetail::restoreDetailState()
 
 void TaskDetail::setUiFromFeat()
 {
-//    Base::Console().Message("TD::setUIFromFeat()\n");
+//    Base::Console().message("TD::setUIFromFeat()\n");
     if (m_baseFeat) {
         std::string baseName = getBaseFeat()->getNameInDocument();
         ui->leBaseView->setText(QString::fromStdString(baseName));
@@ -364,9 +364,9 @@ void TaskDetail::onDraggerClicked(bool clicked)
 
 void TaskDetail::editByHighlight()
 {
-//    Base::Console().Message("TD::editByHighlight()\n");
+//    Base::Console().message("TD::editByHighlight()\n");
     if (!m_ghost) {
-        Base::Console().Error("TaskDetail::editByHighlight - no ghost object\n");
+        Base::Console().error("TaskDetail::editByHighlight - no ghost object\n");
         return;
     }
 
@@ -382,7 +382,7 @@ void TaskDetail::editByHighlight()
 //dragEnd is in scene coords.
 void TaskDetail::onHighlightMoved(QPointF dragEnd)
 {
-//    Base::Console().Message("TD::onHighlightMoved(%s) - highlight: %X\n",
+//    Base::Console().message("TD::onHighlightMoved(%s) - highlight: %X\n",
 //                            DrawUtil::formatVector(dragEnd).c_str(), m_ghost);
     ui->pbDragger->setEnabled(true);
 
@@ -395,7 +395,7 @@ void TaskDetail::onHighlightMoved(QPointF dragEnd)
     if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
         if (!dpg) {
-            Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
+            Base::Console().message("TD::getAnchorScene - projection group is confused\n");
             //TODO::throw something.
             return;
         }
@@ -430,7 +430,7 @@ void TaskDetail::enableTaskButtons(bool button)
 //***** Feature create & edit stuff *******************************************
 void TaskDetail::createDetail()
 {
-//    Base::Console().Message("TD::createDetail()\n");
+//    Base::Console().message("TD::createDetail()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
 
     const std::string objectName{"Detail"};
@@ -471,7 +471,7 @@ void TaskDetail::createDetail()
 
 void TaskDetail::updateDetail()
 {
-//    Base::Console().Message("TD::updateDetail()\n");
+//    Base::Console().message("TD::updateDetail()\n");
     try {
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
         double x = ui->qsbX->rawValue();
@@ -494,7 +494,7 @@ void TaskDetail::updateDetail()
     }
     catch (...) {
         //this is probably due to appl closing while dialog is still open
-        Base::Console().Error("Task Detail - detail feature update failed.\n");
+        Base::Console().error("Task Detail - detail feature update failed.\n");
     }
 }
 
@@ -520,7 +520,7 @@ QPointF TaskDetail::getAnchorScene()
 
         DrawProjGroup* dpg = dpgi->getPGroup();
         if (!dpg) {
-            Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
+            Base::Console().message("TD::getAnchorScene - projection group is confused\n");
             //TODO::throw something.
             return QPointF(0.0, 0.0);
         }
@@ -541,7 +541,7 @@ QPointF TaskDetail::getAnchorScene()
 // protects against stale pointers
 DrawViewPart* TaskDetail::getBaseFeat()
 {
-//    Base::Console().Message("TD::getBaseFeat()\n");
+//    Base::Console().message("TD::getBaseFeat()\n");
 
     if (m_doc) {
         App::DocumentObject* baseObj = m_doc->getObject(m_baseName.c_str());
@@ -560,7 +560,7 @@ DrawViewPart* TaskDetail::getBaseFeat()
 // protects against stale pointers
 DrawViewDetail* TaskDetail::getDetailFeat()
 {
-//    Base::Console().Message("TD::getDetailFeat()\n");
+//    Base::Console().message("TD::getDetailFeat()\n");
 
     if (m_baseFeat) {
         App::DocumentObject* detailObj = m_baseFeat->getDocument()->getObject(m_detailName.c_str());
@@ -581,7 +581,7 @@ DrawViewDetail* TaskDetail::getDetailFeat()
 
 bool TaskDetail::accept()
 {
-//    Base::Console().Message("TD::accept()\n");
+//    Base::Console().message("TD::accept()\n");
 
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc)
@@ -597,7 +597,7 @@ bool TaskDetail::accept()
 
 bool TaskDetail::reject()
 {
-//    Base::Console().Message("TD::reject()\n");
+//    Base::Console().message("TD::reject()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc)
         return false;

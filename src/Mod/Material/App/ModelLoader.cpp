@@ -137,7 +137,7 @@ void ModelLoader::showYaml(const YAML::Node& yaml) const
 
     out << yaml;
     std::string logData = out.str();
-    Base::Console().Log("%s\n", logData.c_str());
+    Base::Console().log("%s\n", logData.c_str());
 }
 
 void ModelLoader::dereference(const QString& uuid,
@@ -197,7 +197,7 @@ void ModelLoader::dereference(std::shared_ptr<ModelEntry> model,
                 dereference(model->getUUID(), model, child, inheritances);
             }
             catch (const std::out_of_range&) {
-                Base::Console().Log("Unable to find '%s' in model map\n",
+                Base::Console().log("Unable to find '%s' in model map\n",
                                     nodeName.toStdString().c_str());
             }
         }
@@ -276,12 +276,12 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
 
             if (propType == QStringLiteral("2DArray")
                 || propType == QStringLiteral("3DArray")) {
-                // Base::Console().Log("Reading columns\n");
+                // Base::Console().log("Reading columns\n");
                 // Read the columns
                 auto cols = yamlProp["Columns"];
                 for (const auto& col : cols) {
                     std::string colName = col.first.as<std::string>();
-                    // Base::Console().Log("\tColumns '%s'\n", colName.c_str());
+                    // Base::Console().log("\tColumns '%s'\n", colName.c_str());
 
                     auto colProp = cols[colName];
                     auto colPropDisplayName = yamlValue(colProp, "DisplayName", "");
@@ -330,7 +330,7 @@ void ModelLoader::loadLibrary(std::shared_ptr<ModelLibrary> library)
                     // showYaml(model->getModel());
                 }
                 catch (InvalidModel const&) {
-                    Base::Console().Log("Invalid model '%s'\n", pathname.toStdString().c_str());
+                    Base::Console().log("Invalid model '%s'\n", pathname.toStdString().c_str());
                 }
             }
         }

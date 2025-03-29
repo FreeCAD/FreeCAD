@@ -131,7 +131,7 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
     // int numPris = info.NbPrisms();
     // int numHedr = info.NbPolyhedrons();
 
-    Base::Console().Log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n", numNode, numVolu, numFaces);
+    Base::Console().log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n", numNode, numVolu, numFaces);
 
     FemMesh.setValue(newMesh);
     return App::DocumentObject::StdReturn;

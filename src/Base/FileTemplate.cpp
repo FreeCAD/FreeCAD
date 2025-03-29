@@ -60,7 +60,7 @@ ClassTemplate& ClassTemplate::operator=(ClassTemplate&&) = default;
  * \par
  * You can use a printf like interface like:
  * \code
- * GetConsole().Warning("Some defects in %s, loading anyway\n",str);
+ * GetConsole().warning("Some defects in %s, loading anyway\n",str);
  * \endcode
  * @param a an integer argument.
  * @param s a constant character pointer.

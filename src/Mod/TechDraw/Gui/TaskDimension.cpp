@@ -268,7 +268,7 @@ void TaskDimension::onArbitraryChanged()
 
 void TaskDimension::onFormatSpecifierOverToleranceChanged()
 {
-//    Base::Console().Message("TD::onFormatSpecifierOverToleranceChanged()\n");
+//    Base::Console().message("TD::onFormatSpecifierOverToleranceChanged()\n");
     // if (m_blockToleranceLoop) { return; }
     m_parent->getDimFeat()->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
     if (ui->cbArbitraryTolerances->isChecked() ) {
@@ -287,7 +287,7 @@ void TaskDimension::onFormatSpecifierOverToleranceChanged()
 
 void TaskDimension::onFormatSpecifierUnderToleranceChanged()
 {
-//    Base::Console().Message("TD::onFormatSpecifierUnderToleranceChanged()\n");
+//    Base::Console().message("TD::onFormatSpecifierUnderToleranceChanged()\n");
     m_parent->getDimFeat()->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
     if (ui->cbArbitraryTolerances->isChecked() ) {
         // Don't do anything else if tolerance is Arbitrary

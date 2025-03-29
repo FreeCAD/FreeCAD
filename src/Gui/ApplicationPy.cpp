@@ -659,7 +659,7 @@ PyObject* ApplicationPy::sOpen(PyObject * /*self*/, PyObject *args)
         FileHandler handler(fileName);
         if (!handler.openFile()) {
             QString ext = handler.extension();
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     }
     PY_CATCH;
@@ -683,7 +683,7 @@ PyObject* ApplicationPy::sInsert(PyObject * /*self*/, PyObject *args)
         FileHandler handler(fileName);
         if (!handler.importFile(std::string(DocName ? DocName : ""))) {
             QString ext = handler.extension();
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
 
@@ -783,7 +783,7 @@ PyObject* ApplicationPy::sExport(PyObject * /*self*/, PyObject *args)
             }
         }
         else {
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
 
@@ -802,7 +802,7 @@ PyObject* ApplicationPy::sSendActiveView(PyObject * /*self*/, PyObject *args)
     const char* ppReturn = nullptr;
     if (!Application::Instance->sendMsgToActiveView(psCommandStr,&ppReturn)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+            Base::Console().warning("Unknown view command: %s\n",psCommandStr);
         }
     }
 
@@ -826,7 +826,7 @@ PyObject* ApplicationPy::sSendFocusView(PyObject * /*self*/, PyObject *args)
     const char* ppReturn = nullptr;
     if (!Application::Instance->sendMsgToFocusView(psCommandStr,&ppReturn)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+            Base::Console().warning("Unknown view command: %s\n",psCommandStr);
         }
     }
 

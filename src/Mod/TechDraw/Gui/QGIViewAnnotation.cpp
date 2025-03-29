@@ -92,7 +92,7 @@ void QGIViewAnnotation::updateView(bool update)
 
 void QGIViewAnnotation::draw()
 {
-    //    Base::Console().Message("QGIVA::draw()\n");
+    //    Base::Console().message("QGIVA::draw()\n");
     if (!isVisible()) {
         return;
     }
@@ -106,7 +106,7 @@ void QGIViewAnnotation::draw()
 
 void QGIViewAnnotation::drawAnnotation()
 {
-    //    Base::Console().Message("QGIVA::drawAnnotation()\n");
+    //    Base::Console().message("QGIVA::drawAnnotation()\n");
     auto viewAnno(dynamic_cast<TechDraw::DrawViewAnnotation*>(getViewObject()));
     if (!viewAnno) {
         return;
@@ -144,7 +144,7 @@ void QGIViewAnnotation::drawAnnotation()
     } else if (viewAnno->TextStyle.isValue("Bold-Italic")) {
         ss << "font-weight:bold; font-style:italic; ";
     } else {
-        Base::Console().Warning("%s has invalid TextStyle\n", viewAnno->getNameInDocument());
+        Base::Console().warning("%s has invalid TextStyle\n", viewAnno->getNameInDocument());
         ss << "font-weight:normal; font-style:normal; ";
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";

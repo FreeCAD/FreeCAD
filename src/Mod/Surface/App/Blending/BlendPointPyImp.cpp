@@ -98,8 +98,8 @@ int BlendPointPy::PyInit(PyObject* args, PyObject*)
             BRepAdaptor_Curve adapt(e);
             if (param < adapt.FirstParameter() || param > adapt.LastParameter()) {
                 PyErr_Warn(PyExc_UserWarning, "BlendPoint: edge is not a closed curve");
-                Base::Console().Message("fp=%f\n", adapt.FirstParameter());
-                Base::Console().Message("lp=%f\n", adapt.LastParameter());
+                Base::Console().message("fp=%f\n", adapt.FirstParameter());
+                Base::Console().message("lp=%f\n", adapt.LastParameter());
             }
 
             adapt.D0(param, Pt);

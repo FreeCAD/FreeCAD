@@ -36,10 +36,10 @@ class ILoggerBlockerTest: public Base::ILogger
 public:
     ~ILoggerBlockerTest() override
     {
-        Base::Console().DetachObserver(this);
+        Base::Console().detachObserver(this);
     }
 
-    const char* Name() override
+    const char* name() override
     {
         return "ILoggerBlockerTest";
     }
@@ -50,7 +50,7 @@ public:
         buffer.clear();
     }
 
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  Base::LogStyle level,
                  Base::IntendedRecipient recipient,
@@ -84,13 +84,13 @@ public:
 
     void runSingleTest(const char* comment, std::string expectedResult)
     {
-        Base::Console().Log(comment);
+        Base::Console().log(comment);
         flush();
-        Base::Console().Log("LOG");
-        Base::Console().Message("MSG");
-        Base::Console().Warning("WRN");
-        Base::Console().Error("ERR");
-        Base::Console().Critical("CMS");
+        Base::Console().log("LOG");
+        Base::Console().message("MSG");
+        Base::Console().warning("WRN");
+        Base::Console().error("ERR");
+        Base::Console().critical("CMS");
         if (buffer.str() != expectedResult) {
             throw Py::RuntimeError("ILoggerTest: " + buffer.str() + " different from "
                                    + expectedResult);
@@ -135,7 +135,7 @@ public:
         runSingleTest("Print all", "LOGMSGWRNERRCMS");
         {
             Base::ILoggerBlocker blocker("ILoggerBlockerTest");
-            Base::Console().SetEnabledMsgType("ILoggerBlockerTest",
+            Base::Console().setEnabledMsgType("ILoggerBlockerTest",
                                               Base::ConsoleSingleton::MsgType_Log,
                                               true);
             runSingleTest("Log is enabled but a warning is triggered in debug mode", "LOG");
@@ -218,8 +218,8 @@ private:
     {
         (void)args;
         ILoggerBlockerTest iltest;
-        Base::Console().AttachObserver(static_cast<Base::ILogger*>(&iltest));
-        Base::Console().SetConnectionMode(Base::ConsoleSingleton::Direct);
+        Base::Console().attachObserver(static_cast<Base::ILogger*>(&iltest));
+        Base::Console().setConnectionMode(Base::ConsoleSingleton::Direct);
         iltest.runTest();
         return Py::None();
     }
@@ -247,7 +247,7 @@ PyMOD_INIT_FUNC(QtUnitGui)
     // with the Python runtime system
     PyObject* mod = TestGui::initModule();
 
-    Base::Console().Log("Loading GUI of Test module... done\n");
+    Base::Console().log("Loading GUI of Test module... done\n");
 
     // add resources and reloads the translators
     loadTestResource();

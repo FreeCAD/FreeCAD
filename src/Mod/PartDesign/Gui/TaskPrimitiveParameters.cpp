@@ -265,7 +265,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             vpOrigin = static_cast<Gui::ViewProviderCoordinateSystem*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
         } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
+            Base::Console().error ("%s\n", ex.what () );
         }
     }
 
@@ -388,7 +388,7 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
         }
     }
     catch (const Base::Exception& ex) {
-        Base::Console().Error("%s\n", ex.what());
+        Base::Console().error("%s\n", ex.what());
     }
 }
 

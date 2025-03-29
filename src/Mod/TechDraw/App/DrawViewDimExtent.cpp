@@ -64,7 +64,7 @@ DrawViewDimExtent::DrawViewDimExtent(void)
 
 App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 {
-//    Base::Console().Message("DVDE::execute() - %s\n", getNameInDocument());
+//    Base::Console().message("DVDE::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -94,7 +94,7 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 //! validate 2D references - only checks if the target exists
 bool DrawViewDimExtent::checkReferences2D() const
 {
-//    Base::Console().Message("DVDE::checkReferences2d() - %s\n", getNameInDocument());
+//    Base::Console().message("DVDE::checkReferences2d() - %s\n", getNameInDocument());
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
     if (objects.empty()) {
         return false;
@@ -111,7 +111,7 @@ bool DrawViewDimExtent::checkReferences2D() const
 }
 pointPair DrawViewDimExtent::getPointsExtent(ReferenceVector references)
 {
-//    Base::Console().Message("DVD::getPointsExtent() - %s\n", getNameInDocument());
+//    Base::Console().message("DVD::getPointsExtent() - %s\n", getNameInDocument());
     App::DocumentObject* refObject = references.front().getObject();
     int direction = DirExtent.getValue();
     if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()) {

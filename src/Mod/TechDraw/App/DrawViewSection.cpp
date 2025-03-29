@@ -260,7 +260,7 @@ DrawViewSection::~DrawViewSection()
 {
     // don't destroy this object while it has dependent threads running
     if (m_cutFuture.isRunning()) {
-        Base::Console().Message("%s is waiting for tasks to complete\n", Label.getValue());
+        Base::Console().message("%s is waiting for tasks to complete\n", Label.getValue());
         m_cutFuture.waitForFinished();
     }
 }
@@ -344,7 +344,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
 TopoDS_Shape DrawViewSection::getShapeToCut()
 {
-    //    Base::Console().Message("DVS::getShapeToCut() - %s\n",
+    //    Base::Console().message("DVS::getShapeToCut() - %s\n",
     //    getNameInDocument());
     App::DocumentObject* base = BaseView.getValue();
     TechDraw::DrawViewPart* dvp = nullptr;
@@ -374,7 +374,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
         }
     }
     else {
-        Base::Console().Message("DVS::getShapeToCut - base is weird\n");
+        Base::Console().message("DVS::getShapeToCut - base is weird\n");
         return TopoDS_Shape();
     }
     return shapeToCut;
@@ -387,7 +387,7 @@ TopoDS_Shape DrawViewSection::getShapeForDetail() const
 
 App::DocumentObjectExecReturn* DrawViewSection::execute()
 {
-    // Base::Console().Message("DVS::execute() - %s\n", Label.getValue());
+    // Base::Console().message("DVS::execute() - %s\n", Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -413,7 +413,7 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
     Base::Vector3d orgPnt = SectionOrigin.getValue();
 
     if (!isReallyInBox(gp_Pnt(orgPnt.x, orgPnt.y, orgPnt.z), centerBox)) {
-        Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n",
+        Base::Console().warning("DVS: SectionOrigin doesn't intersect part in %s\n",
                                 getNameInDocument());
     }
 
@@ -485,7 +485,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
         waitingForCut(true);
     }
     catch (...) {
-        Base::Console().Message("DVS::sectionExec - failed to make section cut");
+        Base::Console().message("DVS::sectionExec - failed to make section cut");
         return;
     }
 }
@@ -517,7 +517,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
         FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
         if (!mkCut.IsDone()) {
-            Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
+            Base::Console().warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
         }
         builder.Add(cutPieces, mkCut.Shape());
@@ -547,7 +547,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {// prism & input don't intersect.  rawShape is
                            // garbage, don't bother.
-        Base::Console().Warning("DVS::makeSectionCut - prism & input don't intersect - %s\n",
+        Base::Console().warning("DVS::makeSectionCut - prism & input don't intersect - %s\n",
                                 Label.getValue());
         return;
     }
@@ -588,7 +588,7 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double 
         }
     }
     catch (Standard_Failure& e1) {
-        Base::Console().Warning("DVS::prepareShape - failed to build shape %s - %s **\n",
+        Base::Console().warning("DVS::prepareShape - failed to build shape %s - %s **\n",
                                 getNameInDocument(),
                                 e1.GetMessageString());
     }
@@ -717,7 +717,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 {
     if (shape.IsNull()) {
         // this shouldn't happen
-        Base::Console().Warning(
+        Base::Console().warning(
             "DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n",
             getNameInDocument());
         return TopoDS_Compound();
@@ -779,7 +779,7 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
     // stdZ);
     // project the faces in the shapeToAlign, build new faces from the resulting
     // wires and combine everything into a compound of faces
-    //    Base::Console().Message("DVS::mapToPage() - shapeToAlign.null: %d\n",
+    //    Base::Console().message("DVS::mapToPage() - shapeToAlign.null: %d\n",
     //    shapeToAlign.IsNull());
     if (debugSection()) {
         BRepTools::Write(shapeToAlign, "DVSShapeToAlign.brep");// debug
@@ -842,7 +842,7 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
             // this may or may not be significant.  In the offset or noparallel
             // strategies, a profile segment that is parallel to the SectionNormal
             // will not generate a face.
-            Base::Console().Log("DVS::mapToPage - %s - section face has no valid wires.\n",
+            Base::Console().log("DVS::mapToPage - %s - section face has no valid wires.\n",
                                 getNameInDocument());
             continue;
         }
@@ -893,7 +893,7 @@ TopoDS_Shape DrawViewSection::makeFaceFromWires(std::vector<TopoDS_Wire>& inWire
         }
 
         if (!mkFace.IsDone()) {
-            Base::Console().Warning("DVS::makeFaceFromWires - %s - failed to make section face.\n",
+            Base::Console().warning("DVS::makeFaceFromWires - %s - failed to make section face.\n",
                                     getNameInDocument());
             return TopoDS_Shape();
         }
@@ -911,7 +911,7 @@ TopoDS_Shape DrawViewSection::makeFaceFromWires(std::vector<TopoDS_Wire>& inWire
 // turn OCC section faces into TD geometry
 std::vector<TechDraw::FacePtr> DrawViewSection::makeTDSectionFaces(TopoDS_Compound topoDSFaces)
 {
-    //    Base::Console().Message("DVS::makeTDSectionFaces()\n");
+    //    Base::Console().message("DVS::makeTDSectionFaces()\n");
     std::vector<TechDraw::FacePtr> tdSectionFaces;
     TopExp_Explorer sectionExpl(topoDSFaces, TopAbs_FACE);
     for (; sectionExpl.More(); sectionExpl.Next()) {
@@ -969,7 +969,7 @@ Base::Vector3d DrawViewSection::getSectionDirectionOnBaseView()
 // find the points and directions to make the change point marks.
 ChangePointVector DrawViewSection::getChangePointsFromSectionLine()
 {
-    //    Base::Console().Message("Dvs::getChangePointsFromSectionLine()\n");
+    //    Base::Console().message("Dvs::getChangePointsFromSectionLine()\n");
     ChangePointVector result;
     std::vector<gp_Pnt> allPoints;
     DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
@@ -1014,7 +1014,7 @@ bool DrawViewSection::isReallyInBox(const gp_Pnt p, const Bnd_Box& bb) const
 
 Base::Vector3d DrawViewSection::getXDirection() const
 {
-    //    Base::Console().Message("DVS::getXDirection() - %s\n",
+    //    Base::Console().message("DVS::getXDirection() - %s\n",
     //    Label.getValue());
     App::Property* prop = getPropertyByName("XDirection");
     if (!prop) {
@@ -1040,7 +1040,7 @@ Base::Vector3d DrawViewSection::getXDirection() const
 
 void DrawViewSection::setCSFromBase(const std::string sectionName)
 {
-    //    Base::Console().Message("DVS::setCSFromBase(%s)\n",
+    //    Base::Console().message("DVS::setCSFromBase(%s)\n",
     //    sectionName.c_str());
     gp_Dir gDir = getCSFromBase(sectionName).Direction();
     Base::Vector3d vDir(gDir.X(), gDir.Y(), gDir.Z());
@@ -1054,7 +1054,7 @@ void DrawViewSection::setCSFromBase(const std::string sectionName)
 // set the section CS based on an XY vector in BaseViews CS
 void DrawViewSection::setCSFromBase(const Base::Vector3d localUnit)
 {
-    //    Base::Console().Message("DVS::setCSFromBase(%s)\n",
+    //    Base::Console().message("DVS::setCSFromBase(%s)\n",
     //    DrawUtil::formatVector(localUnit).c_str());
     gp_Ax2 newSectionCS = getBaseDVP()->localVectorToCS(localUnit);
 
@@ -1072,7 +1072,7 @@ void DrawViewSection::setCSFromBase(const Base::Vector3d localUnit)
 // reset the section CS based on an XY vector in current section CS
 void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d localUnit)
 {
-    //    Base::Console().Message("DVS::setCSFromLocalUnit(%s)\n",
+    //    Base::Console().message("DVS::setCSFromLocalUnit(%s)\n",
     //    DrawUtil::formatVector(localUnit).c_str());
     gp_Dir verticalDir = getSectionCS().YDirection();
     gp_Ax1 verticalAxis(Base::convertTo<gp_Pnt>(SectionOrigin.getValue()), verticalDir);
@@ -1086,7 +1086,7 @@ void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d localUnit)
 
 gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
 {
-    //    Base::Console().Message("DVS::getCSFromBase(%s)\n",
+    //    Base::Console().message("DVS::getCSFromBase(%s)\n",
     //    sectionName.c_str());
     Base::Vector3d origin(0.0, 0.0, 0.0);
     Base::Vector3d sectOrigin = SectionOrigin.getValue();
@@ -1143,7 +1143,7 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
 // returns current section cs
 gp_Ax2 DrawViewSection::getSectionCS() const
 {
-    //    Base::Console().Message("DVS::getSectionCS()\n");
+    //    Base::Console().message("DVS::getSectionCS()\n");
     Base::Vector3d vNormal = SectionNormal.getValue();
     gp_Dir gNormal(vNormal.x, vNormal.y, vNormal.z);
     Base::Vector3d vXDir = getXDirection();
@@ -1155,7 +1155,7 @@ gp_Ax2 DrawViewSection::getSectionCS() const
         sectionCS = gp_Ax2(gOrigin, gNormal, gXDir);
     }
     catch (...) {
-        Base::Console().Error("DVS::getSectionCS - %s - failed to create section CS\n",
+        Base::Console().error("DVS::getSectionCS - %s - failed to create section CS\n",
                               getNameInDocument());
     }
     return sectionCS;
@@ -1172,7 +1172,7 @@ Base::Vector3d DrawViewSection::getCutCentroid() const
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
-    // Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
+    // Base::Console().message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
     if (m_lineSets.empty()) {
         makeLineSets();
     }
@@ -1265,7 +1265,7 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
 // create geometric hatch lines
 void DrawViewSection::makeLineSets(void)
 {
-    // Base::Console().Message("DVS::makeLineSets()\n");
+    // Base::Console().message("DVS::makeLineSets()\n");
     if (PatIncluded.isEmpty()) {
         return;
     }
@@ -1273,7 +1273,7 @@ void DrawViewSection::makeLineSets(void)
     std::string fileSpec = PatIncluded.getValue();
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Message("%s can not read hatch file: %s\n",
+        Base::Console().message("%s can not read hatch file: %s\n",
                                 getNameInDocument(),
                                 fileSpec.c_str());
         return;
@@ -1289,7 +1289,7 @@ void DrawViewSection::makeLineSets(void)
 
 void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 {
-    //    Base::Console().Message("DVS::replaceSvgIncluded(%s)\n",
+    //    Base::Console().message("DVS::replaceSvgIncluded(%s)\n",
     //    newSvgFile.c_str());
     if (newSvgFile.empty()) {
         return;
@@ -1306,7 +1306,7 @@ void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 
 void DrawViewSection::replacePatIncluded(std::string newPatFile)
 {
-    // Base::Console().Message("DVS::replacePatIncluded(%s)\n", newPatFile.c_str());
+    // Base::Console().message("DVS::replacePatIncluded(%s)\n", newPatFile.c_str());
     if (newPatFile.empty()) {
         return;
     }
@@ -1324,7 +1324,7 @@ void DrawViewSection::replacePatIncluded(std::string newPatFile)
 
 void DrawViewSection::getParameters()
 {
-    //    Base::Console().Message("DVS::getParameters()\n");
+    //    Base::Console().message("DVS::getParameters()\n");
     bool fuseFirst = Preferences::getPreferenceGroup("General")->GetBool("SectionFuseFirst", false);
     FuseBeforeCut.setValue(fuseFirst);
 }
@@ -1336,7 +1336,7 @@ bool DrawViewSection::debugSection(void) const
 
 int DrawViewSection::prefCutSurface(void) const
 {
-    //    Base::Console().Message("DVS::prefCutSurface()\n");
+    //    Base::Console().message("DVS::prefCutSurface()\n");
 
     return Preferences::getPreferenceGroup("Decorations")
         ->GetInt("CutSurfaceDisplay", 2);// default to SvgHatch
