@@ -347,7 +347,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             "--boundaries",
             action=CoordinatesAction,
             default=None,
-            help='Custom boundaries (e.g. "100, 200, 300"). Overrides --machine',
+            help='Custom boundaries (e.g. "100, 200, 300"). Overrides boundaries from --machine',
         )
 
         group.add_argument(
@@ -356,6 +356,20 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             required=True,
             choices=self.values["MACHINES"].keys(),
             help=f"Snapmaker machine. Choose from [{self.values['MACHINES'].keys()}].",
+        )
+
+        group.add_argument(
+            "--quick-swap",
+            default=False,
+            action="store_true",
+            help="Indicates that the quick swap kit is installed. Only compatible with Snapmaker 2 machines.",
+        )
+
+        group.add_argument(
+            "--bracing-kit",
+            default=False,
+            action="store_true",
+            help="Indicates that the bracing kit is installed. Only compatible with Snapmaker 2 machines.",
         )
 
         group.add_argument(
@@ -408,9 +422,6 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             self.values["MACHINE_NAME"] = machine["name"]
             self.values["BOUNDARIES"] = machine["boundaries"]
 
-            if args.boundaries:  # may override machine boundaries, which is expected
-                self.values["BOUNDARIES"] = args.boundaries
-
             if args.toolhead:
                 if args.toolhead not in machine["compatible_toolheads"]:
                     FreeCAD.Console.PrintError(
@@ -452,6 +463,32 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                 FreeCAD.Console.PrintWarning(
                     "Spindle speed will be controlled using using RPM.\n"
                 )
+
+            if args.boundaries:  # may override machine boundaries, which is expected
+                self.values["BOUNDARIES"] = args.boundaries
+            else:
+                # Update machine dimensions based on model and installed kits
+                if args.quick_swap:
+                    if not self.values["MACHINE_NAME"].startswith("Snapmaker 2 "):
+                        FreeCAD.Console.PrintError(
+                            f"Machine {machine['name']} is not compatible with --quick-swap kit.\n")
+                    else:
+                        self.values["MACHINE_NAME"] += " QS"
+                        self.values["BOUNDARIES"]['Y'] -= 15
+                        self.values["BOUNDARIES"]['Z'] -= 15
+                if args.bracing_kit:
+                    if not self.values["MACHINE_NAME"].startswith("Snapmaker 2 "):
+                        FreeCAD.Console.PrintError(
+                            f"Machine {machine['name']} is not compatible with --bracing-kit.\n")
+                    else:
+                        self.values["MACHINE_NAME"] += " BK"
+                        self.values["BOUNDARIES"]['Y'] -= 12
+                        self.values["BOUNDARIES"]['Z'] -= 6
+                if ( self.values["MACHINE_NAME"].startswith("Snapmaker 2 ")
+                    and self.values["TOOLHEAD_NAME"] == '200W_CNC'
+                ):
+                    self.values["BOUNDARIES"]['Y'] -= 13
+                self.values["MACHINE_NAME"] += " " + self.values["TOOLHEAD_NAME"]
 
             self.values["THUMBNAIL"] = args.thumbnail
             self.values["ALLOW_GUI"] = args.gui
