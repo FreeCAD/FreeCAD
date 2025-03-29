@@ -48,41 +48,76 @@ else:
 SNAPMAKER_MACHINES = dict(
     original=dict(
         name="Snapmaker Original",
-        boundaries=dict(X=90, Y=90, Z=50)
+        boundaries=dict(X=90, Y=90, Z=50),
+        compatible_toolheads={'Original_CNC'}
     ),
     original_z_extension=dict(
         name="Snapmaker Original with Z extension",
-        boundaries=dict(X=90, Y=90, Z=146)
+        boundaries=dict(X=90, Y=90, Z=146),
+        compatible_toolheads={'Original_CNC'}
     ),
     a150=dict(
         name="A150",
-        boundaries=dict(X=160, Y=160, Z=90)
+        boundaries=dict(X=160, Y=160, Z=90),
+        compatible_toolheads={'50W_CNC'}
     ),
     A250=dict(
         name="Snapmaker 2 A250",
-        boundaries=dict(X=230, Y=250, Z=180)
+        boundaries=dict(X=230, Y=250, Z=180),
+        compatible_toolheads={'50W_CNC'}
     ),
     A250T=dict(
         name="Snapmaker 2 A250T",
-        boundaries=dict(X=230, Y=250, Z=180)
+        boundaries=dict(X=230, Y=250, Z=180),
+        compatible_toolheads={'50W_CNC', '200W_CNC'}
     ),
     A350=dict(
         name="Snapmaker 2 A350",
-        boundaries=dict(X=320, Y=350, Z=275)
+        boundaries=dict(X=320, Y=350, Z=275),
+        compatible_toolheads={'50W_CNC', '200W_CNC'}
     ),
     A350T=dict(
         name="Snapmaker 2 A350T",
-        boundaries=dict(X=320, Y=350, Z=275)
+        boundaries=dict(X=320, Y=350, Z=275),
+        compatible_toolheads={'50W_CNC', '200W_CNC'}
     ),
     artisan=dict(
         name="Snapmaker Artisan",
-        boundaries=dict(X=400, Y=400, Z=400)
+        boundaries=dict(X=400, Y=400, Z=400),
+        compatible_toolheads={'200W_CNC'}
     )
 )
 
+# Could support other types of toolheads (laser, drag knife, 3DP, ...) in the future
+# https://wiki.snapmaker.com/en/Snapmaker_Luban/manual/2_supported_gcode_references#m3m4-modified-cnclaser-on
 SNAPMAKER_TOOLHEADS = {
-    "50W": dict(name="50W CNC module", min=0, max=12000, percent=True),
-    "200W": dict(name="200W CNC module", min=8000, max=18000, percent=False),
+    "Original_CNC": dict(
+        name="Original CNC module",
+        speed_rpm=dict(
+            min=0,
+            max=7000
+        ),
+        has_percent=True,
+        has_speed_s=False
+    ),
+    "50W_CNC": dict(
+        name="50W CNC module",
+        speed_rpm=dict(
+            min=0,
+            max=12000
+        ),
+        has_percent=True,
+        has_speed_s=False
+    ),
+    "200W_CNC": dict(
+        name="200W CNC module",
+        speed_rpm=dict(
+            min=0,
+            max=18000
+        ),
+        has_percent=True,
+        has_speed_s=True
+    )
 }
 
 
@@ -170,7 +205,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.values["END_OF_LINE_CHARACTERS"] = "\n"
         self.values["FINISH_LABEL"] = "End"
         self.values["LINE_INCREMENT"] = 1
-        self.values["MACHINE_NAME"] = "Generic Snapmaker"
+        self.values["MACHINE_NAME"] = None
         self.values["MODAL"] = False
         self.values["OUTPUT_PATH_LABELS"] = True
         self.values["OUTPUT_HEADER"] = (
@@ -214,16 +249,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.values["BOUNDARIES_CHECK"] = False
         self.values["MACHINES"] = SNAPMAKER_MACHINES
         self.values["TOOLHEADS"] = SNAPMAKER_TOOLHEADS
-        # default toolhead is 50W (the weakest one)
-        self.values["DEFAULT_TOOLHEAD"] = "50W"
-        self.values["TOOLHEAD_NAME"] = SNAPMAKER_TOOLHEADS[self.values["DEFAULT_TOOLHEAD"]]["name"]
-        self.values["SPINDLE_SPEEDS"] = dict(
-            min=SNAPMAKER_TOOLHEADS[self.values["DEFAULT_TOOLHEAD"]]["min"],
-            max=SNAPMAKER_TOOLHEADS[self.values["DEFAULT_TOOLHEAD"]]["max"],
-        )
-        self.values["SPINDLE_PERCENT"] = SNAPMAKER_TOOLHEADS[self.values["DEFAULT_TOOLHEAD"]][
-            "percent"
-        ]
+        self.values["TOOLHEAD_NAME"] = None
+        self.values["SPINDLE_SPEEDS"] = dict()
+        self.values["SPINDLE_PERCENT"] = None
 
     def snapmaker_init_argument_defaults(self) -> None:
         """Initialize which arguments (in a pair) are shown as the default argument."""
@@ -236,7 +264,6 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.argument_defaults["thumbnail"] = True
         self.argument_defaults["gui"] = True
         self.argument_defaults["boundaries-check"] = True
-        self.argument_defaults["spindle-percent"] = True
 
     def snapmaker_init_arguments_visible(self) -> None:
         """Initialize which argument pairs are visible in TOOLTIP_ARGS."""
@@ -318,6 +345,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         group.add_argument(
             "--machine",
             default=None,
+            required=True,
             choices=self.values["MACHINES"].keys(),
             help=f"Snapmaker machine. Choose from [{self.values['MACHINES'].keys()}].",
         )
@@ -339,14 +367,8 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         group.add_argument(
             "--spindle-percent",
             action="store_true",
-            default=argument_defaults["spindle-percent"],
-            help="use percent as toolhead spindle speed unit",
-        )
-        group.add_argument(
-            "--spindle-rpm",
-            action="store_false",
-            dest="spindle_percent",
-            help="Use RPM as toolhead spindle speed unit",
+            default=None,
+            help="use percent as toolhead spindle speed unit (default: use RPM if supported by toolhead, otherwise percent)",
         )
 
         group.add_argument(
@@ -373,38 +395,55 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         if flag:  # process extra arguments only if flag is True
             self._units = self.values["UNITS"]
 
-            if args.machine:
-                machine = self.values["MACHINES"][args.machine]
-                self.values["MACHINE_NAME"] = machine["name"]
-                self.values["BOUNDARIES"] = machine["boundaries"]
+            # --machine is a required "option"
+            machine = self.values["MACHINES"][args.machine]
+            self.values["MACHINE_NAME"] = machine["name"]
+            self.values["BOUNDARIES"] = machine["boundaries"]
 
             if args.boundaries:  # may override machine boundaries, which is expected
                 self.values["BOUNDARIES"] = args.boundaries
 
             if args.toolhead:
+                if args.toolhead not in machine["compatible_toolheads"]:
+                    FreeCAD.Console.PrintError(
+                        f"Selected --toolhead={args.toolhead} is not compatible with machine {machine['name']}."
+                        +f" Choose from [{machine['compatible_toolheads']}]\n")
+                    flag = False
+                    return (flag, args)
                 toolhead = self.values["TOOLHEADS"][args.toolhead]
-                self.values["TOOLHEAD_NAME"] = toolhead["name"]
+            elif len(machine["compatible_toolheads"]) == 1:
+                toolhead = self.values["TOOLHEADS"][machine["compatible_toolheads"][0]]
             else:
-                FreeCAD.Console.PrintWarning(
-                    f'No toolhead selected, using default ({self.values["TOOLHEAD_NAME"]}). '
-                    f"Consider adding --toolhead\n"
+                FreeCAD.Console.PrintError(
+                    f"Machine {machine['name']} has multiple compatible toolheads:\n"
+                    f"{machine['compatible_toolheads']}\n"
+                    "Please add --toolhead argument.\n"
                 )
-                toolhead = self.values["TOOLHEADS"][self.values["DEFAULT_TOOLHEAD"]]
+                flag = False
+                return (flag, args)
+            self.values["TOOLHEAD_NAME"] = toolhead["name"]
 
-            self.values["SPINDLE_SPEEDS"] = {key: toolhead[key] for key in ("min", "max")}
+            self.values["SPINDLE_SPEEDS"] = toolhead["speed_rpm"]
 
             if args.spindle_speeds:  # may override toolhead value, which is expected
                 self.values["SPINDLE_SPEEDS"] = args.spindle_speeds
 
             if args.spindle_percent is not None:
-                if toolhead["percent"] is True:
+                if toolhead["has_percent"]:
                     self.values["SPINDLE_PERCENT"] = True
-                    if args.spindle_percent is False:
-                        FreeCAD.Console.PrintWarning(
-                            "Toolhead does not handle RPM spindle speed, using percents instead.\n"
-                        )
                 else:
                     self.values["SPINDLE_PERCENT"] = args.spindle_percent
+            else:
+                # Prefer speed S over percent P
+                self.values["SPINDLE_PERCENT"] = toolhead['has_percent'] and not toolhead['has_speed_s']
+            if self.values["SPINDLE_PERCENT"]:
+                FreeCAD.Console.PrintWarning(
+                    "Spindle speed will be controlled using using percentages.\n"
+                )
+            else:
+                FreeCAD.Console.PrintWarning(
+                    "Spindle speed will be controlled using using RPM.\n"
+                )
 
             self.values["THUMBNAIL"] = args.thumbnail
             self.values["ALLOW_GUI"] = args.gui
@@ -527,9 +566,10 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
     def convert_spindle(self, gcode: List[str]) -> List[str]:
         """convert spindle speed values from RPM to percent (%) (M3/M4 commands)"""
         if self.values["SPINDLE_PERCENT"] is False:
-            return
+            return gcode
 
-        # TODO: check if percentage covers range 0-max (most probable) or min-max (200W has a documented min speed)
+        # https://wiki.snapmaker.com/en/Snapmaker_Luban/manual/2_supported_gcode_references#m3m4-modified-cnclaser-on
+        # Speed as percentage in [0,100]% range
         for index, commandline in enumerate(
             gcode
         ):  # .split(self.values["END_OF_LINE_CHARACTERS"]):
