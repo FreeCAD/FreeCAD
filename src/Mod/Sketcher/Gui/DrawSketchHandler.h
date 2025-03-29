@@ -271,6 +271,31 @@ protected:
 
     void signalToolChanged() const;
 
+    // Helpers for seekAutoConstraint :
+    // Helper structure to hold preselection data
+    struct PreselectionData
+    {
+        int geoId = Sketcher::GeoEnum::GeoUndef;
+        Sketcher::PointPos posId = Sketcher::PointPos::none;
+        // direction of hit shape (if it is a line, the direction of the line)
+        Base::Vector3d hitShapeDir = Base::Vector3d(0, 0, 0);
+        bool isLine = false;
+    };
+    PreselectionData getPreselectionData();
+
+    void seekPreselectionAutoConstraint(std::vector<AutoConstraint>& constraints,
+                                        const Base::Vector2d& Pos,
+                                        const Base::Vector2d& Dir,
+                                        AutoConstraint::TargetType type);
+
+    bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
+
+    void seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints,
+                                     const Base::Vector2d& Dir);
+
+    void seekTangentAutoConstraint(std::vector<AutoConstraint>& constraints,
+                                   const Base::Vector2d& Pos,
+                                   const Base::Vector2d& Dir);
 
 protected:
     /**
