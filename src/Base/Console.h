@@ -368,7 +368,7 @@ using PyMethodDef = struct PyMethodDef;
                 _str << '\n';                                                                      \
             Base::Console()._func(_notifier, _str.str().c_str());                                  \
             if (_instance.refresh)                                                                 \
-                Base::Console().Refresh();                                                         \
+                Base::Console().refresh();                                                         \
         }                                                                                          \
     } while (0)
 
@@ -749,9 +749,9 @@ public:
     template<typename... Args>
     void developerWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    void UserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void userWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     template<typename... Args>
-    void TranslatedUserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void translatedUserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a error Message with source indication
     template<typename... Args>
     void error(const std::string& notifier, const char* pMsg, Args&&... args);
@@ -782,7 +782,7 @@ public:
     template<LogStyle,
              IntendedRecipient = IntendedRecipient::All,
              ContentType = ContentType::Untranslated>
-    void Notify(const std::string& notifiername, const std::string& msg);
+    void notify(const std::string& notifiername, const std::string& msg);
 
     /// Attaches an Observer to FCConsole
     void attachObserver(ILogger* pcObserver);
@@ -840,7 +840,7 @@ public:
 
     static PyMethodDef Methods[];
 
-    void Refresh();
+    void refresh();
     void enableRefresh(bool enable);
 
     constexpr FreeCAD_ConsoleMsgType getConsoleMsg(LogStyle style);
@@ -892,7 +892,7 @@ private:
                        const std::string& msg);
 
     // singleton
-    static void Destruct();
+    // static void Destruct(); // unused?
     static ConsoleSingleton* _pcSingleton;  // NOLINT
 
     // observer list
@@ -1040,7 +1040,7 @@ void Base::ConsoleSingleton::developerWarning(const std::string& notifier,
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::UserWarning(const std::string& notifier,
+void Base::ConsoleSingleton::userWarning(const std::string& notifier,
                                          const char* pMsg,
                                          Args&&... args)
 {
@@ -1051,7 +1051,7 @@ void Base::ConsoleSingleton::UserWarning(const std::string& notifier,
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::TranslatedUserWarning(const std::string& notifier,
+void Base::ConsoleSingleton::translatedUserWarning(const std::string& notifier,
                                                    const char* pMsg,
                                                    Args&&... args)
 {
@@ -1199,7 +1199,7 @@ void Base::ConsoleSingleton::send(const std::string& notifiername, const char* p
     }
 
     if (connectionMode == Direct) {
-        Notify<category, recipient, contenttype>(notifiername, format);
+        notify<category, recipient, contenttype>(notifiername, format);
     }
     else {
 
@@ -1212,7 +1212,7 @@ void Base::ConsoleSingleton::send(const std::string& notifiername, const char* p
 template<Base::LogStyle category,
          Base::IntendedRecipient recipient /*= Base::IntendedRecipient::All*/,
          Base::ContentType contenttype /*= Base::ContentType::Untranslated*/>
-void Base::ConsoleSingleton::Notify(const std::string& notifiername, const std::string& msg)
+void Base::ConsoleSingleton::notify(const std::string& notifiername, const std::string& msg)
 {
     notifyPrivate(category, recipient, contenttype, notifiername, msg);
 }

@@ -372,7 +372,7 @@ int* ConsoleSingleton::getLogLevel(const char* tag, const bool create)
     return &ret;
 }
 
-void ConsoleSingleton::Refresh()
+void ConsoleSingleton::refresh()
 {
     if (_bCanRefresh) {
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
@@ -389,6 +389,7 @@ void ConsoleSingleton::enableRefresh(const bool enable)
 
 ConsoleSingleton* ConsoleSingleton::_pcSingleton = nullptr;
 
+/*
 void ConsoleSingleton::Destruct()
 {
     // not initialized or double destructed!
@@ -396,6 +397,7 @@ void ConsoleSingleton::Destruct()
     delete _pcSingleton;
     _pcSingleton = nullptr;
 }
+*/
 
 ConsoleSingleton& ConsoleSingleton::instance()
 {
