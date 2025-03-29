@@ -805,7 +805,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Critical("Write a critical message to the console output.\n");
+            Base::Console().critical("Write a critical message to the console output.\n");
     }
 };
 

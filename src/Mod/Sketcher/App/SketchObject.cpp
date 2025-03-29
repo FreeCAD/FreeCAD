@@ -11128,7 +11128,7 @@ void SketchObject::migrateSketch()
 
             Constraints.setValues(std::move(newconstraints));
 
-            Base::Console().Critical(
+            Base::Console().critical(
                 this->getFullName(),
                 QT_TRANSLATE_NOOP("Notifications",
                                   "Parabolas were migrated. Migrated files won't open in previous "

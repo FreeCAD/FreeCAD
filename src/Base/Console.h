@@ -731,7 +731,7 @@ public:
     void log(const char* pMsg, Args&&... args);
     /// Prints a Critical Message
     template<typename... Args>
-    void Critical(const char* pMsg, Args&&... args);
+    void critical(const char* pMsg, Args&&... args);
     /// Sends a User Notification
     template<typename... Args>
     void UserNotification(const char* pMsg, Args&&... args);
@@ -770,7 +770,7 @@ public:
     void log(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a Critical Message with source indication
     template<typename... Args>
-    void Critical(const std::string& notifier, const char* pMsg, Args&&... args);
+    void critical(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Sends a User Notification with source indication
     template<typename... Args>
     void UserNotification(const std::string& notifier, const char* pMsg, Args&&... args);
@@ -1123,13 +1123,13 @@ void Base::ConsoleSingleton::TranslatedUserError(const std::string& notifier,
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Critical(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::critical(const char* pMsg, Args&&... args)
 {
-    Critical(std::string(""), pMsg, std::forward<Args>(args)...);
+    critical(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Critical(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::critical(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     send<LogStyle::Critical>(notifier, pMsg, std::forward<Args>(args)...);
 }

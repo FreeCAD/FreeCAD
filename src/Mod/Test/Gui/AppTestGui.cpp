@@ -84,13 +84,13 @@ public:
 
     void runSingleTest(const char* comment, std::string expectedResult)
     {
-        Base::Console().Log(comment);
+        Base::Console().log(comment);
         flush();
-        Base::Console().Log("LOG");
+        Base::Console().log("LOG");
         Base::Console().message("MSG");
-        Base::Console().Warning("WRN");
-        Base::Console().Error("ERR");
-        Base::Console().Critical("CMS");
+        Base::Console().warning("WRN");
+        Base::Console().error("ERR");
+        Base::Console().critical("CMS");
         if (buffer.str() != expectedResult) {
             throw Py::RuntimeError("ILoggerTest: " + buffer.str() + " different from "
                                    + expectedResult);
@@ -247,7 +247,7 @@ PyMOD_INIT_FUNC(QtUnitGui)
     // with the Python runtime system
     PyObject* mod = TestGui::initModule();
 
-    Base::Console().Log("Loading GUI of Test module... done\n");
+    Base::Console().log("Loading GUI of Test module... done\n");
 
     // add resources and reloads the translators
     loadTestResource();
