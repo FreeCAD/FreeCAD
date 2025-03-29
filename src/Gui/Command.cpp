@@ -402,7 +402,7 @@ void Command::invoke(int i, TriggerSource trigger)
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdG: %s\n",sName);
+    Base::Console().log("CmdG: %s\n",sName);
 #endif
 
     _invoke(i, bCanLog && !_busy);
@@ -667,7 +667,7 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdC: %s\n", format.constData());
+    Base::Console().log("CmdC: %s\n", format.constData());
 #endif
 
     _runCommand(file,line,eType,format.constData());

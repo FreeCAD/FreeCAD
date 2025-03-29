@@ -201,7 +201,7 @@ QVariant ButtonModel::data (const QModelIndex &index, int role) const
     GroupVector groupVector = spaceballButtonGroup()->GetGroups();
     if (index.row() >= (int)groupVector.size())
     {
-        Base::Console().Log("index error in ButtonModel::data\n");
+        Base::Console().log("index error in ButtonModel::data\n");
         return {};
     }
     if (role == Qt::DisplayRole)

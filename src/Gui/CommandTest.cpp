@@ -795,7 +795,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Log("Write a log to the console output.\n");
+            Base::Console().log("Write a log to the console output.\n");
     }
 };
 

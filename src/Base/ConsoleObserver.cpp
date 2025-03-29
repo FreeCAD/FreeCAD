@@ -261,7 +261,7 @@ int RedirectStdOutput::sync()
 {
     // Print as log as this might be verbose
     if (!buffer.empty() && buffer.back() == '\n') {
-        Base::Console().Log("%s", buffer.c_str());
+        Base::Console().log("%s", buffer.c_str());
         buffer.clear();
     }
     return 0;
@@ -284,7 +284,7 @@ int RedirectStdLog::sync()
 {
     // Print as log as this might be verbose
     if (!buffer.empty() && buffer.back() == '\n') {
-        Base::Console().Log("%s", buffer.c_str());
+        Base::Console().log("%s", buffer.c_str());
         buffer.clear();
     }
     return 0;

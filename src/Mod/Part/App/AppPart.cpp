@@ -217,7 +217,7 @@ PyMOD_INIT_FUNC(Part)
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
-    Base::Console().Log("Module: Part\n");
+    Base::Console().log("Module: Part\n");
 
     // This is highly experimental and we should keep an eye on it
     // if we have mysterious crashes
@@ -229,7 +229,7 @@ PyMOD_INIT_FUNC(Part)
 #endif
 
     PyObject* partModule = Part::initModule();
-    Base::Console().Log("Loading Part module... done\n");
+    Base::Console().log("Loading Part module... done\n");
 
     Py::Object module(partModule);
     module.setAttr("OCC_VERSION", Py::String(OCC_VERSION_STRING_EXT));

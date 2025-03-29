@@ -68,7 +68,7 @@ PyObjectBase::PyObjectBase(void* voidp, PyTypeObject *T)
 #endif
     _Py_NewReference(this);
 #ifdef FC_LOGPYOBJECTS
-    Base::Console().Log("PyO+: %s (%p)\n",T->tp_name, this);
+    Base::Console().log("PyO+: %s (%p)\n",T->tp_name, this);
 #endif
     StatusBits.set(Valid); // valid, the second bit is NOT set, i.e. it's mutable
     StatusBits.set(Notify);
@@ -79,7 +79,7 @@ PyObjectBase::~PyObjectBase()
 {
     PyGILStateLocker lock;
 #ifdef FC_LOGPYOBJECTS
-    Base::Console().Log("PyO-: %s (%p)\n",Py_TYPE(this)->tp_name, this);
+    Base::Console().log("PyO-: %s (%p)\n",Py_TYPE(this)->tp_name, this);
 #endif
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     if (baseProxy && reinterpret_cast<PyBaseProxy*>(baseProxy)->baseobject == this) {
@@ -462,7 +462,7 @@ PyObject *PyObjectBase::_repr()
     std::stringstream a;
     a << "<base object at " << _pcTwinPointer << ">";
 # ifdef FCDebug
-    Console().Log("PyObjectBase::_repr() not overwritten representation!");
+    Console().log("PyObjectBase::_repr() not overwritten representation!");
 # endif
     return Py_BuildValue("s", a.str().c_str());
 }

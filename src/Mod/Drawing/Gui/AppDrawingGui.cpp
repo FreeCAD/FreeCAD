@@ -58,7 +58,7 @@ PyMOD_INIT_FUNC(DrawingGui)
     }
 
     PyObject* mod = DrawingGui::initModule();
-    Base::Console().Log("Loading GUI of Drawing module... done\n");
+    Base::Console().log("Loading GUI of Drawing module... done\n");
 
     // instantiating the commands
     CreateDrawingCommands();

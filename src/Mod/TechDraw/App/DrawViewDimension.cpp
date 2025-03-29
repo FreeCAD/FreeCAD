@@ -481,7 +481,7 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
     }
     if (!m_referencesCorrect) {
         // this test needs Phase 2 of auto correct to be useful
-        Base::Console().Log("The references for %s have changed and autocorrect could not match the geometry\n", Label.getValue());
+        Base::Console().log("The references for %s have changed and autocorrect could not match the geometry\n", Label.getValue());
     }
 
     resetLinear();

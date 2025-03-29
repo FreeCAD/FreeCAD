@@ -198,7 +198,7 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
         //invalid SVG message
         Base::Console().warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
                                 getNameInDocument());
-        Base::Console().Log("DrawViewSymbol - %s - len: %d rc: %d error: %s line: %d col: %d\n",
+        Base::Console().log("DrawViewSymbol - %s - len: %d rc: %d error: %s line: %d col: %d\n",
                             getNameInDocument(), strlen(symbol), rc, qPrintable(errorMsg),
                             errorLine, errorCol);
     }
@@ -209,7 +209,7 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
         //invalid SVG message
         Base::Console().warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
                                 getNameInDocument());
-        Base::Console().Log("DrawViewSymbol - %s - len: %d error: %s line: %d col: %d\n",
+        Base::Console().log("DrawViewSymbol - %s - len: %d error: %s line: %d col: %d\n",
                             getNameInDocument(), strlen(symbol), qPrintable(rc.errorMessage),
                             rc.errorLine, rc.errorColumn);
     }

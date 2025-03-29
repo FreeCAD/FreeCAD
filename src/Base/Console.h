@@ -164,7 +164,7 @@ using PyMethodDef = struct PyMethodDef;
  * \endcode
  *
  * The logging macros correspond to existing Base::Console() output functions,
- * and \c FC_TRACE uses Base::Console().Log(), same as \c FC_LOG. These macros
+ * and \c FC_TRACE uses Base::Console().log(), same as \c FC_LOG. These macros
  * checks the log level defined in \c FC_LOG_LEVEL_INIT to decide whether to
  * print log or not. \c msg here shall be a C++ streaming expression. End of
  * line will be automatically appended by default.
@@ -378,8 +378,8 @@ using PyMethodDef = struct PyMethodDef;
 #define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, _msg)
 #define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, DeveloperWarning, _msg)
 #define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, DeveloperError, _msg)
-#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, Log, _msg)
-#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, Log, _msg)
+#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, log, _msg)
+#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, log, _msg)
 
 #define _FC_MSG(_file, _line, _msg)                                                                \
     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, std::string(), _msg, _file, _line)
@@ -622,7 +622,7 @@ public:
  *  instance of the class from every where in c++ by simply using:
  *  \code
  *  #include <Base/Console.h>
- *  Base::Console().Log("Stage: %d",i);
+ *  Base::Console().log("Stage: %d",i);
  *  \endcode
  *  \par
  *  ConsoleSingleton is able to switch between several modes to, e.g. switch
@@ -728,7 +728,7 @@ public:
     void error(const char* pMsg, Args&&... args);
     /// Prints a log Message
     template<typename... Args>
-    void Log(const char* pMsg, Args&&... args);
+    void log(const char* pMsg, Args&&... args);
     /// Prints a Critical Message
     template<typename... Args>
     void Critical(const char* pMsg, Args&&... args);
@@ -767,7 +767,7 @@ public:
     void TranslatedUserError(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a log Message with source indication
     template<typename... Args>
-    void Log(const std::string& notifier, const char* pMsg, Args&&... args);
+    void log(const std::string& notifier, const char* pMsg, Args&&... args);
     /// Prints a Critical Message with source indication
     template<typename... Args>
     void Critical(const std::string& notifier, const char* pMsg, Args&&... args);
@@ -1169,13 +1169,13 @@ void Base::ConsoleSingleton::UserTranslatedNotification(const std::string& notif
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Log(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::log(const char* pMsg, Args&&... args)
 {
-    Log(std::string(""), pMsg, std::forward<Args>(args)...);
+    log(std::string(""), pMsg, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::Log(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::log(const std::string& notifier, const char* pMsg, Args&&... args)
 {
     send<LogStyle::Log>(notifier, pMsg, std::forward<Args>(args)...);
 }

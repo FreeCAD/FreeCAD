@@ -216,6 +216,6 @@ PyMOD_INIT_FUNC(SandboxGui)
     // the following constructor call registers our extension module
     // with the Python runtime system
     PyObject* mod = SandboxGui::initModule();
-    Base::Console().Log("Loading GUI of Sandbox module... done\n");
+    Base::Console().log("Loading GUI of Sandbox module... done\n");
     PyMOD_Return(mod);
 }

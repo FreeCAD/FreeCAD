@@ -227,31 +227,31 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
 
 #ifdef DEBUG_BLOCK_CONSTRAINT
     if (doesBlockAffectOtherConstraints) {
-        Base::Console().Log("\n  Block interferes with other constraints: Post-analysis required");
+        Base::Console().log("\n  Block interferes with other constraints: Post-analysis required");
     }
 
-    Base::Console().Log("\nOnlyBlocked GeoIds:");
+    Base::Console().log("\nOnlyBlocked GeoIds:");
     size_t i = 0;
     bool found = false;
     for (; i < onlyBlockedGeometry.size(); i++) {
         if (onlyBlockedGeometry[i]) {
-            Base::Console().Log("\n  GeoId=%d", i);
+            Base::Console().log("\n  GeoId=%d", i);
             found = true;
         }
     }
     if (found) {
-        Base::Console().Log("\n  None");
+        Base::Console().log("\n  None");
     }
 
-    Base::Console().Log("\nNotOnlyBlocked GeoIds:");
+    Base::Console().log("\nNotOnlyBlocked GeoIds:");
     i = 0;
     for (; i < blockedGeoIds.size(); i++) {
-        Base::Console().Log("\n  GeoId=%d", blockedGeoIds[i]);
+        Base::Console().log("\n  GeoId=%d", blockedGeoIds[i]);
     }
     if (i == 0) {
-        Base::Console().Log("\n  None");
+        Base::Console().log("\n  None");
     }
-    Base::Console().Log("\n");
+    Base::Console().log("\n");
 #endif  // DEBUG_BLOCK_CONSTRAINT
 
     buildInternalAlignmentGeometryMap(ConstraintList);
@@ -301,7 +301,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
                 analyseBlockedConstraintDependentParameters(blockedGeoIds, params_to_block);
 
             if (debugMode == GCS::IterationLevel) {
-                Base::Console().Log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n",
+                Base::Console().log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n",
                                     index);
             }
             index++;
@@ -317,9 +317,9 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
 
             // Debug code block
             for (size_t i = 0; i < groups.size(); i++) {
-                Base::Console().Log("\nDepParams: Group %d:", i);
+                Base::Console().log("\nDepParams: Group %d:", i);
                 for (size_t j = 0; j < groups[i].size(); j++) {
-                    Base::Console().Log(
+                    Base::Console().log(
                         "\n  Param=%x ,GeoId=%d, GeoPos=%d",
                         param2geoelement.find(*std::next(groups[i].begin(), j))->first,
                         param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
@@ -341,7 +341,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
         Base::TimeElapsed end_time;
 
-        Base::Console().Log("Sketcher::setUpSketch()-T:%s\n",
+        Base::Console().log("Sketcher::setUpSketch()-T:%s\n",
                             Base::TimeElapsed::diffTime(start_time, end_time).c_str());
     }
 
@@ -401,9 +401,9 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
 
 #ifdef DEBUG_BLOCK_CONSTRAINT
     for (size_t i = 0; i < groups.size(); i++) {
-        Base::Console().Log("\nDepParams: Group %d:", i);
+        Base::Console().log("\nDepParams: Group %d:", i);
         for (size_t j = 0; j < groups[i].size(); j++) {
-            Base::Console().Log(
+            Base::Console().log(
                 "\n  Param=%x ,GeoId=%d, GeoPos=%d",
                 param2geoelement.find(*std::next(groups[i].begin(), j))->first,
                 param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
@@ -442,7 +442,7 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
                 params_to_block.push_back(thisparam);
                 prop_groups[i].blocking_param_in_group = thisparam;
 #ifdef DEBUG_BLOCK_CONSTRAINT
-                Base::Console().Log("\nTentatively blocking group %d, with param=%x", i, thisparam);
+                Base::Console().log("\nTentatively blocking group %d, with param=%x", i, thisparam);
 #endif  // DEBUG_BLOCK_CONSTRAINT
                 break;
             }
@@ -4594,7 +4594,7 @@ int Sketch::solve()
 
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-        Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",
+        Base::Console().log("Sketcher::Solve()-%s-T:%s\n",
                             solvername.c_str(),
                             Base::TimeElapsed::diffTime(start_time, end_time).c_str());
     }
@@ -4656,7 +4656,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
         valid_solution = false;
         if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-            Base::Console().Log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
+            Base::Console().log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
                                 solvername.c_str());
         }
     }
@@ -4718,7 +4718,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
                 valid_solution = false;
                 if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-                    Base::Console().Log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
+                    Base::Console().log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
                                         solvername.c_str());
                 }
             }
@@ -4729,19 +4729,19 @@ int Sketch::internalSolve(std::string& solvername, int level)
 
             if (valid_solution) {
                 if (soltype == 1) {
-                    Base::Console().Log("Important: the LevenbergMarquardt solver succeeded where "
+                    Base::Console().log("Important: the LevenbergMarquardt solver succeeded where "
                                         "the DogLeg solver had failed.\n");
                 }
                 else if (soltype == 2) {
-                    Base::Console().Log("Important: the BFGS solver succeeded where the DogLeg and "
+                    Base::Console().log("Important: the BFGS solver succeeded where the DogLeg and "
                                         "LevenbergMarquardt solvers have failed.\n");
                 }
                 else if (soltype == 3) {
-                    Base::Console().Log("Important: the SQP solver succeeded where all single "
+                    Base::Console().log("Important: the SQP solver succeeded where all single "
                                         "subsystem solvers have failed.\n");
                 }
                 else if (soltype > 0) {
-                    Base::Console().Log("All solvers failed.\n");
+                    Base::Console().log("All solvers failed.\n");
                 }
 
                 break;

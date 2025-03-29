@@ -79,7 +79,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
 #ifdef FC_DEBUG
         Base::Console().warning("\"%s\" is not registered\n", sName);
 #else
-        Base::Console().Log("\"%s\" is not registered\n", sName);
+        Base::Console().log("\"%s\" is not registered\n", sName);
 #endif
         return nullptr;
     }
@@ -87,14 +87,14 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
     try {
 #ifdef FC_DEBUG
         const char* cName = dynamic_cast<QWidget*>(w)->metaObject()->className();
-        Base::Console().Log("Widget of type '%s' created.\n", cName);
+        Base::Console().log("Widget of type '%s' created.\n", cName);
 #endif
     }
     catch (...) {
 #ifdef FC_DEBUG
         Base::Console().error("%s does not inherit from \"QWidget\"\n", sName);
 #else
-        Base::Console().Log("%s does not inherit from \"QWidget\"\n", sName);
+        Base::Console().log("%s does not inherit from \"QWidget\"\n", sName);
 #endif
         delete w;
         return nullptr;
@@ -121,14 +121,14 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
 #ifdef FC_DEBUG
         Base::Console().warning("Cannot create an instance of \"%s\"\n", sName);
 #else
-        Base::Console().Log("Cannot create an instance of \"%s\"\n", sName);
+        Base::Console().log("Cannot create an instance of \"%s\"\n", sName);
 #endif
         return nullptr;
     }
 
     if (qobject_cast<Gui::Dialog::PreferencePage*>(w)) {
 #ifdef FC_DEBUG
-        Base::Console().Log("Preference page of type '%s' created.\n", w->metaObject()->className());
+        Base::Console().log("Preference page of type '%s' created.\n", w->metaObject()->className());
 #endif
     }
     else {

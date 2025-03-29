@@ -222,7 +222,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             }
         }
 
-        Base::Console().Log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
+        Base::Console().log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
         hGrp->SetBool("SaveThumbnail",save);
     }
 }

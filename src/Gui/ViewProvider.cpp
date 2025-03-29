@@ -735,11 +735,11 @@ bool ViewProvider::canDropObject(App::DocumentObject* obj) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 #if FC_DEBUG
-    Base::Console().Log("Check extensions for drop\n");
+    Base::Console().log("Check extensions for drop\n");
 #endif
     for (Gui::ViewProviderExtension* ext : vector){
 #if FC_DEBUG
-        Base::Console().Log("Check extensions %s\n", ext->name().c_str());
+        Base::Console().log("Check extensions %s\n", ext->name().c_str());
 #endif
         if (ext->extensionCanDropObject(obj))
             return true;

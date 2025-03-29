@@ -40,7 +40,7 @@ namespace Base
  *  bla blablablablablablabl:
  *  \code
  *  #include <Base/Console.h>
- *  Base::Console().Log("Stage: %d",i);
+ *  Base::Console().log("Stage: %d",i);
  *  \endcode
  *  \par
  *  another blablablablablablablablablabl:

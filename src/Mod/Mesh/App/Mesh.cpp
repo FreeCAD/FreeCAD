@@ -538,7 +538,7 @@ void MeshObject::load(std::istream& in)
     }
     catch (const Base::MemoryException&) {
         // ignore memory exceptions and continue
-        Base::Console().Log("Check for defects in mesh data structure failed\n");
+        Base::Console().log("Check for defects in mesh data structure failed\n");
     }
 #endif
 }

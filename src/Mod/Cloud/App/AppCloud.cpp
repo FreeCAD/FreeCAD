@@ -62,7 +62,7 @@ XERCES_CPP_NAMESPACE_USE
 PyMOD_INIT_FUNC(Cloud)
 {
     PyObject* mod = Cloud::initModule();
-    Base::Console().Log("Loading Cloud module... done\n");
+    Base::Console().log("Loading Cloud module... done\n");
     PyMOD_Return(mod);
 }
 

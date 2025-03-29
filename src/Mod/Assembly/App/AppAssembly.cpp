@@ -55,7 +55,7 @@ PyMOD_INIT_FUNC(AssemblyApp)
     }
 
     PyObject* mod = Assembly::initModule();
-    Base::Console().Log("Loading Assembly module... done\n");
+    Base::Console().log("Loading Assembly module... done\n");
 
 
     // NOTE: To finish the initialization of our own type objects we must

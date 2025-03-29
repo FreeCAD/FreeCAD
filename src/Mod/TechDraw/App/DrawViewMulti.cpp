@@ -96,7 +96,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute()
 
     const std::vector<App::DocumentObject*>& links = Sources.getValues();
     if (links.empty())  {
-        Base::Console().Log("INFO - DVM::execute - No Sources - creation?\n");
+        Base::Console().log("INFO - DVM::execute - No Sources - creation?\n");
         return DrawView::execute();
     }
 

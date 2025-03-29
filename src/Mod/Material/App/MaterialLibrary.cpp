@@ -252,7 +252,7 @@ void MaterialLibraryLocal::deleteFile(MaterialManager& manager, const QString& p
             manager.remove(material->getUUID());
         }
         catch (const MaterialNotFound&) {
-            Base::Console().Log("Unable to remove file from materials list\n");
+            Base::Console().log("Unable to remove file from materials list\n");
         }
         _materialPathMap->erase(rPath);
     }

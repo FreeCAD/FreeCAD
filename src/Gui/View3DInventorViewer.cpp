@@ -262,14 +262,14 @@ public:
         if (event->type() == Spaceball::ButtonEvent::ButtonEventType) {
             auto buttonEvent = static_cast<Spaceball::ButtonEvent*>(event);  // NOLINT
             if (!buttonEvent) {
-                Base::Console().Log("invalid spaceball button event\n");
+                Base::Console().log("invalid spaceball button event\n");
                 return true;
             }
         }
         else if (event->type() == Spaceball::MotionEvent::MotionEventType) {
             auto motionEvent = static_cast<Spaceball::MotionEvent*>(event);  // NOLINT
             if (!motionEvent) {
-                Base::Console().Log("invalid spaceball motion event\n");
+                Base::Console().log("invalid spaceball motion event\n");
                 return true;
             }
         }
@@ -287,7 +287,7 @@ public:
         if (event->type() == Spaceball::MotionEvent::MotionEventType) {
             auto motionEvent = static_cast<Spaceball::MotionEvent*>(event);  // NOLINT
             if (!motionEvent) {
-                Base::Console().Log("invalid spaceball motion event\n");
+                Base::Console().log("invalid spaceball motion event\n");
                 return nullptr;
             }
 
@@ -2029,7 +2029,7 @@ void View3DInventorViewer::interactionFinishCB(void* ud, SoQTQuarterAdaptor* vie
 void View3DInventorViewer::interactionLoggerCB(void* ud, SoAction* action)
 {
     Q_UNUSED(ud)
-    Base::Console().Log("%s\n", action->getTypeId().getName().getString());
+    Base::Console().log("%s\n", action->getTypeId().getName().getString());
 }
 
 void View3DInventorViewer::addGraphicsItem(GLGraphicsItem* item)

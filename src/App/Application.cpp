@@ -1698,18 +1698,18 @@ void Application::destruct()
         Base::Console().warning("Discard system parameter\n");
     }
     else {
-        Base::Console().Log("Saving system parameter...\n");
+        Base::Console().log("Saving system parameter...\n");
         _pcSysParamMngr->SaveDocument();
-        Base::Console().Log("Saving system parameter...done\n");
+        Base::Console().log("Saving system parameter...done\n");
     }
     // saving the User parameter
     if (_pcUserParamMngr->IgnoreSave()) {
         Base::Console().warning("Discard user parameter\n");
     }
     else {
-        Base::Console().Log("Saving user parameter...\n");
+        Base::Console().log("Saving user parameter...\n");
         _pcUserParamMngr->SaveDocument();
-        Base::Console().Log("Saving user parameter...done\n");
+        Base::Console().log("Saving user parameter...done\n");
     }
 
     // now save all other parameter files
@@ -1717,9 +1717,9 @@ void Application::destruct()
     for (const auto &it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
-                Base::Console().Log("Saving %s...\n", it.first.c_str());
+                Base::Console().log("Saving %s...\n", it.first.c_str());
                 it.second->SaveDocument();
-                Base::Console().Log("Saving %s...done\n", it.first.c_str());
+                Base::Console().log("Saving %s...done\n", it.first.c_str());
             }
         }
     }
@@ -2797,7 +2797,7 @@ void Application::initApplication()
 
     // creating the application
     if (mConfig["Verbose"] != "Strict")
-        Base::Console().Log("Create Application\n");
+        Base::Console().log("Create Application\n");
     Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
@@ -2812,11 +2812,11 @@ void Application::initApplication()
 
 
 #if defined (_DEBUG)
-    Base::Console().Log("Application is built with debug information\n");
+    Base::Console().log("Application is built with debug information\n");
 #endif
 
     // starting the init script
-    Base::Console().Log("Run App init script\n");
+    Base::Console().log("Run App init script\n");
     try {
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
@@ -2851,11 +2851,11 @@ std::list<std::string> Application::getCmdLineFiles()
 std::list<std::string> Application::processFiles(const std::list<std::string>& files)
 {
     std::list<std::string> processed;
-    Base::Console().Log("Init: Processing command line files\n");
+    Base::Console().log("Init: Processing command line files\n");
     for (const auto & it : files) {
         Base::FileInfo file(it);
 
-        Base::Console().Log("Init:     Processing file: %s\n",file.filePath().c_str());
+        Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
 
         try {
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
@@ -2891,7 +2891,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
                     processed.push_back(it);
-                    Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
+                    Base::Console().log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
                     Base::Console().warning("File format not supported: %s \n", file.filePath().c_str());
@@ -2972,15 +2972,15 @@ void Application::runApplication()
     }
     else if (mConfig["RunMode"] == "Internal") {
         // run internal script
-        Base::Console().Log("Running internal script:\n");
+        Base::Console().log("Running internal script:\n");
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
     }
     else if (mConfig["RunMode"] == "Exit") {
         // getting out
-        Base::Console().Log("Exiting on purpose\n");
+        Base::Console().log("Exiting on purpose\n");
     }
     else {
-        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
+        Base::Console().log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
     }
 }
 
@@ -2988,10 +2988,10 @@ void Application::logStatus()
 {
     std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
-    Base::Console().Log("Time = %s\n", time_str.c_str());
+    Base::Console().log("Time = %s\n", time_str.c_str());
 
     for (const auto & It : mConfig) {
-        Base::Console().Log("%s = %s\n", It.first.c_str(), It.second.c_str());
+        Base::Console().log("%s = %s\n", It.first.c_str(), It.second.c_str());
     }
 }
 

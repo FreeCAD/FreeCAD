@@ -2181,7 +2181,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
 void Document::onUpdate()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Base::Console().Log("Acti: Gui::Document::onUpdate()");
+    Base::Console().log("Acti: Gui::Document::onUpdate()");
 #endif
 
     std::list<Gui::BaseView*>::iterator it;
@@ -2198,7 +2198,7 @@ void Document::onUpdate()
 void Document::onRelabel()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Base::Console().Log("Acti: Gui::Document::onRelabel()");
+    Base::Console().log("Acti: Gui::Document::onRelabel()");
 #endif
 
     std::list<Gui::BaseView*>::iterator it;
