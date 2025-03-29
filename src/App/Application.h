@@ -441,7 +441,7 @@ public:
     static void addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod);
     static QString prettyProductInfoWrapper();
     static QString getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key);
-    static constexpr char* verboseVersionEmitMessage{"verbose_version"};
+    static constexpr const char* verboseVersionEmitMessage{"verbose_version"};
     //@}
 
     /** @name Link handling */

@@ -38,6 +38,8 @@
 #include <cstdio>
 #include <sstream>
 
+#include <QString>
+
 // FreeCAD Base header
 #include <Base/Console.h>
 #include <Base/Exception.h>
