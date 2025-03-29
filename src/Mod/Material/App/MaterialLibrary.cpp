@@ -315,7 +315,7 @@ MaterialLibraryLocal::saveMaterial(const std::shared_ptr<Material>& material,
         stream.setGenerateByteOrderMark(true);
 
         // Write the contents
-        material->setName(info.baseName());
+        material->setName(info.fileName().remove(QStringLiteral(".FCMat"), Qt::CaseInsensitive));
         material->setLibrary(getptr());
         material->setDirectory(getRelativePath(path));
         material->save(stream, overwrite, saveAsCopy, saveInherited);
