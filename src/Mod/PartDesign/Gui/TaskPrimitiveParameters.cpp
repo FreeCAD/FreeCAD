@@ -222,26 +222,26 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->wedgeZ2max->bind(getObject<PartDesign::Wedge>()->Z2max);
             ui->wedgeZ2min->setValue(getObject<PartDesign::Wedge>()->Z2min.getValue());
             ui->wedgeZ2min->bind(getObject<PartDesign::Wedge>()->Z2min);
-            ui->wedgeXmin->setMinimum(INT_MIN);
+            ui->wedgeXmin->setMinimum(std::numeric_limits<int>::min());
             ui->wedgeXmin->setMaximum(ui->wedgeXmax->rawValue()); // must be < than wedgeXmax
-            ui->wedgeYmin->setMinimum(INT_MIN);
+            ui->wedgeYmin->setMinimum(std::numeric_limits<int>::min());
             ui->wedgeYmin->setMaximum(ui->wedgeYmax->rawValue()); // must be < than wedgeYmax
-            ui->wedgeZmin->setMinimum(INT_MIN);
+            ui->wedgeZmin->setMinimum(std::numeric_limits<int>::min());
             ui->wedgeZmin->setMaximum(ui->wedgeZmax->rawValue()); // must be < than wedgeZmax
-            ui->wedgeX2min->setMinimum(INT_MIN);
+            ui->wedgeX2min->setMinimum(std::numeric_limits<int>::min());;
             ui->wedgeX2min->setMaximum(ui->wedgeX2max->rawValue()); // must be <= than wedgeXmax
-            ui->wedgeZ2min->setMinimum(INT_MIN);
+            ui->wedgeZ2min->setMinimum(std::numeric_limits<int>::min());;
             ui->wedgeZ2min->setMaximum(ui->wedgeZ2max->rawValue()); // must be <= than wedgeXmax
             ui->wedgeXmax->setMinimum(ui->wedgeXmin->rawValue());
-            ui->wedgeXmax->setMaximum(INT_MAX);
+            ui->wedgeXmax->setMaximum(std::numeric_limits<int>::max());
             ui->wedgeYmax->setMinimum(ui->wedgeYmin->rawValue());
-            ui->wedgeYmax->setMaximum(INT_MAX);
+            ui->wedgeYmax->setMaximum(std::numeric_limits<int>::max());
             ui->wedgeZmax->setMinimum(ui->wedgeZmin->rawValue());
-            ui->wedgeZmax->setMaximum(INT_MAX);
+            ui->wedgeZmax->setMaximum(std::numeric_limits<int>::max());
             ui->wedgeX2max->setMinimum(ui->wedgeX2min->rawValue());
-            ui->wedgeX2max->setMaximum(INT_MAX);
+            ui->wedgeX2max->setMaximum(std::numeric_limits<int>::max());
             ui->wedgeZ2max->setMinimum(ui->wedgeZ2min->rawValue());
-            ui->wedgeZ2max->setMaximum(INT_MAX);
+            ui->wedgeZ2max->setMaximum(std::numeric_limits<int>::max());
             break;
     }
 

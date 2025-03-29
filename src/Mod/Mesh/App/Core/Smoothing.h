@@ -23,7 +23,6 @@
 #ifndef MESH_SMOOTHING_H
 #define MESH_SMOOTHING_H
 
-#include <cfloat>
 #include <vector>
 
 #include "Definitions.h"
@@ -88,7 +87,7 @@ public:
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
 
 private:
-    float maximum {FLT_MAX};
+    float maximum {std::numeric_limits<float>::max()};
 };
 
 class MeshExport LaplaceSmoothing: public AbstractSmoothing

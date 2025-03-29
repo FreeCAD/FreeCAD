@@ -125,7 +125,7 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant& item) cons
     else if (_type == Materials::MaterialValue::Integer) {
         Gui::UIntSpinBox* spinner = new Gui::UIntSpinBox(parent);
         spinner->setMinimum(0);
-        spinner->setMaximum(UINT_MAX);
+        spinner->setMaximum(std::numeric_limits<unsigned>::max());
         spinner->setValue(item.toUInt());
         widget = spinner;
     }

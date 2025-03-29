@@ -155,7 +155,7 @@ void ViewProviderAnnotation::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &Rotation) {
-        pRotationXYZ->angle = (Rotation.getValue()/360)*(2*M_PI);
+        pRotationXYZ->angle = (Rotation.getValue()/360)*(2*std::numbers::pi);
     }
     else {
         ViewProviderDocumentObject::onChanged(prop);

@@ -310,7 +310,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry, bool 
 
             if (ulF0 != FACET_INDEX_MAX) {
                 unsigned short usSide = _aclFacetArray[ulF0].Side(ulP0, ulP1);
-                assert(usSide != USHRT_MAX);
+                assert(usSide != std::numeric_limits<unsigned short>::max());
                 _aclFacetArray[ulF0]._aulNeighbours[usSide] = FACET_INDEX_MAX;
             }
         }
@@ -342,13 +342,13 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry, bool 
 
             if (ulF0 != FACET_INDEX_MAX) {
                 unsigned short usSide = _aclFacetArray[ulF0].Side(ulP0, ulP1);
-                assert(usSide != USHRT_MAX);
+                assert(usSide != std::numeric_limits<unsigned short>::max());
                 _aclFacetArray[ulF0]._aulNeighbours[usSide] = ulF1;
             }
 
             if (ulF1 != FACET_INDEX_MAX) {
                 unsigned short usSide = _aclFacetArray[ulF1].Side(ulP0, ulP1);
-                assert(usSide != USHRT_MAX);
+                assert(usSide != std::numeric_limits<unsigned short>::max());
                 _aclFacetArray[ulF1]._aulNeighbours[usSide] = ulF0;
             }
         }

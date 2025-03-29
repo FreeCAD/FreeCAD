@@ -1798,7 +1798,7 @@ void CmdMeshScale::activated(int)
                                             QObject::tr("Enter scaling factor:"),
                                             1,
                                             0,
-                                            DBL_MAX,
+                                            std::numeric_limits<double>::max(),
                                             5,
                                             &ok,
                                             Qt::MSWindowsFixedSizeDialogHint);

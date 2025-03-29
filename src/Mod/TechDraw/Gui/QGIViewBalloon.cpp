@@ -606,6 +606,8 @@ void QGIViewBalloon::draw()
 
 void QGIViewBalloon::drawBalloon(bool originDrag)
 {
+    using std::numbers::pi;
+
     if ((!originDrag) && m_dragInProgress) {
         // TODO there are 2 drag status variables.  m_draggingInProgress appears to be the one to use?
         // dragged shows false while drag is still in progress.
@@ -696,14 +698,14 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
         radius = radius * scale;
         radius += Rez::guiX(3.0);
-        offsetLR = (tan(30 * M_PI / 180) * radius);
+        offsetLR = (tan(30 * pi / 180) * radius);
         QPolygonF triangle;
-        double startAngle = -M_PI / 2;
+        double startAngle = -pi / 2;
         double angle = startAngle;
         for (int i = 0; i < 4; i++) {
             triangle +=
                 QPointF(lblCenter.x + (radius * cos(angle)), lblCenter.y + (radius * sin(angle)));
-            angle += (2 * M_PI / 3);
+            angle += (2 * pi / 3);
         }
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)),
                            lblCenter.y + (radius * sin(startAngle)));
@@ -737,12 +739,12 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
         radius += Rez::guiX(1.0);
         offsetLR = radius;
         QPolygonF triangle;
-        double startAngle = -2 * M_PI / 3;
+        double startAngle = -2 * pi / 3;
         double angle = startAngle;
         for (int i = 0; i < 7; i++) {
             triangle +=
                 QPointF(lblCenter.x + (radius * cos(angle)), lblCenter.y + (radius * sin(angle)));
-            angle += (2 * M_PI / 6);
+            angle += (2 * pi / 6);
         }
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)),
                            lblCenter.y + (radius * sin(startAngle)));
@@ -805,7 +807,7 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
             dirballoonLinesLine = (arrowTipPosInParent - dLineStart).Normalize();
         }
 
-        float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / M_PI;
+        float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / pi;
 
         if ((endType == ArrowType::FILLED_TRIANGLE) && (prefOrthoPyramid())) {
             if (arAngle < 0.0) {
@@ -824,7 +826,7 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
             else {
                 arAngle = 0;
             }
-            double radAngle = arAngle * M_PI / 180.0;
+            double radAngle = arAngle * pi / 180.0;
             double sinAngle = sin(radAngle);
             double cosAngle = cos(radAngle);
             xAdj = Rez::guiX(arrowAdj * cosAngle);
