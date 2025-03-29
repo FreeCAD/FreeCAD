@@ -461,7 +461,7 @@ DrawSketchHandler::PreselectionData DrawSketchHandler::getPreselectionData()
     return preSelData;
 }
 
-bool DrawSketchHandler::isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos)
+bool DrawSketchHandler::isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const
 {
     SketchObject* obj = sketchgui->getSketchObject();
 
