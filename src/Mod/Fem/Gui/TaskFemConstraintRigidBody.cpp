@@ -48,6 +48,7 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     QWidget* parent)
     : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintRigidBody")
 {  // Note change "RigidBody" in line above to new constraint name
+    constexpr float floatMax = std::numeric_limits<float>::max();
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintRigidBody();
     ui->setupUi(proxy);
@@ -137,12 +138,12 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
         App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.y")));
     ui->qsb_ref_node_z->bind(
         App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.z")));
-    ui->qsb_ref_node_x->setMinimum(-FLOAT_MAX);
-    ui->qsb_ref_node_x->setMaximum(FLOAT_MAX);
-    ui->qsb_ref_node_y->setMinimum(-FLOAT_MAX);
-    ui->qsb_ref_node_y->setMaximum(FLOAT_MAX);
-    ui->qsb_ref_node_z->setMinimum(-FLOAT_MAX);
-    ui->qsb_ref_node_z->setMaximum(FLOAT_MAX);
+    ui->qsb_ref_node_x->setMinimum(-floatMax);
+    ui->qsb_ref_node_x->setMaximum(floatMax);
+    ui->qsb_ref_node_y->setMinimum(-floatMax);
+    ui->qsb_ref_node_y->setMaximum(floatMax);
+    ui->qsb_ref_node_z->setMinimum(-floatMax);
+    ui->qsb_ref_node_z->setMaximum(floatMax);
 
     ui->qsb_disp_x->setValue(disp.x);
     ui->qsb_disp_y->setValue(disp.y);
@@ -150,12 +151,12 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     ui->qsb_disp_x->bind(App::ObjectIdentifier::parse(pcConstraint, std::string("Displacement.x")));
     ui->qsb_disp_y->bind(App::ObjectIdentifier::parse(pcConstraint, std::string("Displacement.y")));
     ui->qsb_disp_z->bind(App::ObjectIdentifier::parse(pcConstraint, std::string("Displacement.z")));
-    ui->qsb_disp_x->setMinimum(-FLOAT_MAX);
-    ui->qsb_disp_x->setMaximum(FLOAT_MAX);
-    ui->qsb_disp_y->setMinimum(-FLOAT_MAX);
-    ui->qsb_disp_y->setMaximum(FLOAT_MAX);
-    ui->qsb_disp_z->setMinimum(-FLOAT_MAX);
-    ui->qsb_disp_z->setMaximum(FLOAT_MAX);
+    ui->qsb_disp_x->setMinimum(-floatMax);
+    ui->qsb_disp_x->setMaximum(floatMax);
+    ui->qsb_disp_y->setMinimum(-floatMax);
+    ui->qsb_disp_y->setMaximum(floatMax);
+    ui->qsb_disp_z->setMinimum(-floatMax);
+    ui->qsb_disp_z->setMaximum(floatMax);
 
     ui->spb_rot_axis_x->setValue(rotDir.x);
     ui->spb_rot_axis_y->setValue(rotDir.y);
@@ -169,14 +170,14 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
         App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.z")));
     ui->qsb_rot_angle->bind(
         App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Angle")));
-    ui->spb_rot_axis_x->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_x->setMaximum(FLOAT_MAX);
-    ui->spb_rot_axis_y->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_y->setMaximum(FLOAT_MAX);
-    ui->spb_rot_axis_z->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_z->setMaximum(FLOAT_MAX);
-    ui->qsb_rot_angle->setMinimum(-FLOAT_MAX);
-    ui->qsb_rot_angle->setMaximum(FLOAT_MAX);
+    ui->spb_rot_axis_x->setMinimum(-floatMax);
+    ui->spb_rot_axis_x->setMaximum(floatMax);
+    ui->spb_rot_axis_y->setMinimum(-floatMax);
+    ui->spb_rot_axis_y->setMaximum(floatMax);
+    ui->spb_rot_axis_z->setMinimum(-floatMax);
+    ui->spb_rot_axis_z->setMaximum(floatMax);
+    ui->qsb_rot_angle->setMinimum(-floatMax);
+    ui->qsb_rot_angle->setMaximum(floatMax);
 
     ui->qsb_force_x->setValue(forceX);
     ui->qsb_force_y->setValue(forceY);
@@ -184,12 +185,12 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     ui->qsb_force_x->bind(pcConstraint->ForceX);
     ui->qsb_force_y->bind(pcConstraint->ForceY);
     ui->qsb_force_z->bind(pcConstraint->ForceZ);
-    ui->qsb_force_x->setMinimum(-FLOAT_MAX);
-    ui->qsb_force_x->setMaximum(FLOAT_MAX);
-    ui->qsb_force_y->setMinimum(-FLOAT_MAX);
-    ui->qsb_force_y->setMaximum(FLOAT_MAX);
-    ui->qsb_force_z->setMinimum(-FLOAT_MAX);
-    ui->qsb_force_z->setMaximum(FLOAT_MAX);
+    ui->qsb_force_x->setMinimum(-floatMax);
+    ui->qsb_force_x->setMaximum(floatMax);
+    ui->qsb_force_y->setMinimum(-floatMax);
+    ui->qsb_force_y->setMaximum(floatMax);
+    ui->qsb_force_z->setMinimum(-floatMax);
+    ui->qsb_force_z->setMaximum(floatMax);
 
     ui->qsb_moment_x->setValue(momentX);
     ui->qsb_moment_y->setValue(momentY);
@@ -197,12 +198,12 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     ui->qsb_moment_x->bind(pcConstraint->MomentX);
     ui->qsb_moment_y->bind(pcConstraint->MomentY);
     ui->qsb_moment_z->bind(pcConstraint->MomentZ);
-    ui->qsb_moment_x->setMinimum(-FLOAT_MAX);
-    ui->qsb_moment_x->setMaximum(FLOAT_MAX);
-    ui->qsb_moment_y->setMinimum(-FLOAT_MAX);
-    ui->qsb_moment_y->setMaximum(FLOAT_MAX);
-    ui->qsb_moment_z->setMinimum(-FLOAT_MAX);
-    ui->qsb_moment_z->setMaximum(FLOAT_MAX);
+    ui->qsb_moment_x->setMinimum(-floatMax);
+    ui->qsb_moment_x->setMaximum(floatMax);
+    ui->qsb_moment_y->setMinimum(-floatMax);
+    ui->qsb_moment_y->setMaximum(floatMax);
+    ui->qsb_moment_z->setMinimum(-floatMax);
+    ui->qsb_moment_z->setMaximum(floatMax);
 
     QStringList modeList;
 

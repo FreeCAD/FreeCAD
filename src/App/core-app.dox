@@ -1,15 +1,117 @@
-/** \defgroup APP App
- * \ingroup CORE
- * \brief The part of FreeCAD that works without GUI (console or server mode)
-*/
+/**
+ * @defgroup APP App
+ * @ingroup CORE
+ * @brief The part of FreeCAD that works without GUI (console or server mode)
+ * @details It contains the App namespace and defines core concepts such as
+ * @ref DocumentGroup "Document", @ref DocumentObjectGroup "Document Object",
+ * the @ref ExpressionFramework "Expression Framework", and the @ref
+ * PropertyFramework "Property Framework".
+ */
 
-/** \namespace App
-    \ingroup APP
-    \brief The FreeCAD Application layer
+/**
+ * @defgroup DocumentGroup Document
+ * @ingroup APP
+ * @brief The class that represents a FreeCAD document
+ *
+ * This (besides the App::Application class) is the most important class in FreeCAD.
+ * It contains all the data of the opened, saved, or newly created FreeCAD Document.
+ * The App::Document manages the Undo and Redo mechanism and the linking of documents.
+ *
+ * Note: the documents are not free objects. They are completely handled by the
+ * App::Application. Only the Application can Open or destroy a document.
+ *
+ * \section Exception Exception handling
+ * As the document is the main data structure of FreeCAD we have to take a close
+ * look at how Exceptions affect the integrity of the App::Document.
+ *
+ * \section UndoRedo Undo Redo an Transactions
+ * Undo Redo handling is one of the major mechanism of a document in terms of
+ * user friendliness and speed (no one will wait for Undo too long).
+ *
+ * \section Dependency Graph and dependency handling
+ * The FreeCAD document handles the dependencies of its DocumentObjects with
+ * an adjacency list. This gives the opportunity to calculate the shortest
+ * recompute path. Also, it enables more complicated dependencies beyond trees.
+ *
+ * @see App::Application
+ * @see App::DocumentObject
+ */
 
-    This namespace includes Application services of FreeCAD like:
-    - The Application class
-    - The Document class
+/**
+ * @defgroup DocumentObjectGroup Document Object
+ * @ingroup APP
+ * @brief %Base class of all objects handled in the Document.
+ */
+
+/**
+ * @defgroup ExpressionFramework Expressions framework
+ * @ingroup APP
+ * @brief The expression system allows users to write expressions and formulas that produce values
+ */
+
+/**
+ * @defgroup PropertyFramework Property framework
+ * @ingroup APP
+ * @brief System to access object properties.
+ *
+ * @section propframe_intro Introduction
+ *
+ * The property framework introduces the ability to access attributes (member
+ * variables) of a class by name without knowing the class type. It's like the
+ * reflection mechanism of Java or C#.  This ability is introduced by the
+ * App::PropertyContainer class and can be used by all derived classes.
+ *
+ * This makes it possible in the first place to make an automatic mapping to python (e.g. in App::FeaturePy) and
+ * abstract editing properties in Gui::PropertyEditor.
+ *
+ * @section Examples
+ *
+ * Here some little examples how to use it:
+ *
+ * @code
+ * // search in PropertyList
+ * Property *prop = _pcFeature->getPropertyByName(attr);
+ * if(prop)
+ * {
+ *   return prop->getPyObject();
+ * }
+ * @endcode
+ *
+ * or:
+ *
+ * @code
+ * void PropertyContainer::Restore(Base::Reader &reader)
+ * {
+ *   reader.readElement("Properties");
+ *   int Cnt = reader.getAttributeAsInteger("Count");
+ *
+ *   for(int i=0 ;i<Cnt ;i++)
+ *   {
+ *     reader.readElement("Property");
+ *     string PropName = reader.getAttribute("name");
+ *     Property* prop = getPropertyByName(PropName.c_str());
+ *     if(prop)
+ *       prop->Restore(reader);
+ *
+ *     reader.readEndElement("Property");
+ *   }
+ *   reader.readEndElement("Properties");
+ * }
+ * @endcode
+ */
 
 
-*/
+/**
+ * @namespace App
+ * @ingroup APP
+ * @brief The namespace for the part of FreeCAD that works without GUI.
+ * @details This namespace includes %Application services of FreeCAD that such as:
+ *   - The Application class
+ *   - The Document class
+ *   - The DocumentObject classes
+ *   - The Expression classes
+ *   - The Property classes
+ *
+ * For a more high-level discussion see the topic @ref APP "App".
+ */
+

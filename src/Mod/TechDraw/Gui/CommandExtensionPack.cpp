@@ -2099,7 +2099,7 @@ double _getAngle(Base::Vector3d center, Base::Vector3d point)
 {
     constexpr double DegreesHalfCircle{180.0};
     Base::Vector3d vecCP = point - center;
-    double angle = DU::angleWithX(vecCP) * DegreesHalfCircle / M_PI;
+    double angle = DU::angleWithX(vecCP) * DegreesHalfCircle / std::numbers::pi;
     return angle;
 }
 

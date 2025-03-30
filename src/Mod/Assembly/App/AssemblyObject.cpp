@@ -158,7 +158,6 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
     }
 
     try {
-        // mbdAssembly->runPreDrag();  // solve() is causing some issues with limits.
         mbdAssembly->runKINEMATIC();
     }
     catch (const std::exception& e) {
@@ -197,7 +196,6 @@ int AssemblyObject::generateSimulation(App::DocumentObject* sim)
     jointParts(joints);
 
     create_mbdSimulationParameters(sim);
-
 
     try {
         mbdAssembly->runKINEMATIC();
@@ -384,7 +382,6 @@ bool AssemblyObject::validateNewPlacements()
 
     // TODO: We could do further tests
     // For example check if the joints connectors are correctly aligned.
-
     return true;
 }
 
@@ -593,7 +590,6 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(App::Docum
             return joint;
         }
     }
-
     return nullptr;
 }
 
@@ -753,7 +749,6 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
             jointsOf.push_back(joint);
         }
     }
-
     return jointsOf;
 }
 
@@ -1125,7 +1120,7 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
     }
     else if (type == JointType::Angle) {
         double angle = fabs(Base::toRadians(getJointDistance(joint)));
-        if (fmod(angle, 2 * M_PI) < Precision::Confusion()) {
+        if (fmod(angle, 2 * std::numbers::pi) < Precision::Confusion()) {
             return CREATE<ASMTParallelAxesJoint>::With();
         }
         else {
@@ -1804,7 +1799,6 @@ AssemblyObject::MbDPartData AssemblyObject::getMbDData(App::DocumentObject* part
 
         addConnectedFixedParts(part, addConnectedFixedParts);
     }
-
     return data;
 }
 
@@ -1813,7 +1807,6 @@ std::shared_ptr<ASMTPart> AssemblyObject::getMbDPart(App::DocumentObject* part)
     if (!part) {
         return nullptr;
     }
-
     return getMbDData(part).part;
 }
 
@@ -1831,7 +1824,6 @@ AssemblyObject::makeMbdPart(std::string& name, Base::Placement plc, double mass)
 
     Base::Vector3d pos = plc.getPosition();
     mbdPart->setPosition3D(pos.x, pos.y, pos.z);
-    // Base::Console().Warning("MbD Part placement : (%f, %f, %f)\n", pos.x, pos.y, pos.z);
 
     // TODO : replace with quaternion to simplify
     Base::Rotation rot = plc.getRotation();

@@ -74,27 +74,27 @@ DimensionGeometry validateDimSelection3d(DrawViewPart* dvp,
                                             const std::vector<int>& minimumCounts, //how many of each geometry are needed for a good dimension
                                             const std::vector<DimensionGeometry>& acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
 
-bool validateSubnameList(StringVector subNames, GeometrySet acceptableGeometrySet);
+bool validateSubnameList(const StringVector& subNames, GeometrySet acceptableGeometrySet);
 
 DimensionGeometry getGeometryConfiguration(ReferenceVector valid2dReferences);
 DimensionGeometry getGeometryConfiguration3d(DrawViewPart* dvp,
-                                                                ReferenceVector valid3dReferences);
+                                             const ReferenceVector& valid3dReferences);
 
 GeomCountMap loadRequiredCounts(const StringVector& acceptableGeometry,
                                 const std::vector<int>& minimumCouts);
-bool checkGeometryOccurrences(StringVector subNames, GeomCountMap keyedMinimumCounts);
+bool checkGeometryOccurrences(const StringVector& subNames, GeomCountMap keyedMinimumCounts);
 
-DimensionGeometry isValidVertexes(ReferenceVector refs);
-DimensionGeometry isValidMultiEdge(ReferenceVector refs);
-DimensionGeometry isValidSingleEdge(ReferenceEntry ref);
-DimensionGeometry isValidSingleFace(ReferenceEntry ref);
-DimensionGeometry isValidHybrid(ReferenceVector refs);
+DimensionGeometry isValidVertexes(const ReferenceVector& refs);
+DimensionGeometry isValidMultiEdge(const ReferenceVector& refs);
+DimensionGeometry isValidSingleEdge(const ReferenceEntry& ref);
+DimensionGeometry isValidSingleFace(const ReferenceEntry& ref);
+DimensionGeometry isValidHybrid(const  ReferenceVector& refs);
 
-DimensionGeometry isValidVertexes3d(DrawViewPart* dvp, ReferenceVector refs);
-DimensionGeometry isValidMultiEdge3d(DrawViewPart* dvp, ReferenceVector refs);
-DimensionGeometry isValidSingleEdge3d(DrawViewPart* dvp, ReferenceEntry ref);
-DimensionGeometry isValidSingleFace3d(DrawViewPart* dvp, ReferenceEntry ref);
-DimensionGeometry isValidHybrid3d(DrawViewPart* dvp, ReferenceVector refs);
+DimensionGeometry isValidVertexes3d(DrawViewPart* dvp, const ReferenceVector& refs);
+DimensionGeometry isValidMultiEdge3d(DrawViewPart* dvp, const ReferenceVector& refs);
+DimensionGeometry isValidSingleEdge3d(DrawViewPart* dvp, const ReferenceEntry& ref);
+DimensionGeometry isValidSingleFace3d(DrawViewPart* dvp, const ReferenceEntry& ref);
+DimensionGeometry isValidHybrid3d(DrawViewPart* dvp, const ReferenceVector& refs);
 
 long int mapGeometryTypeToDimType(long int dimType, DimensionGeometry geometry2d,
                                                  DimensionGeometry geometry3d);

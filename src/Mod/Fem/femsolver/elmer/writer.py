@@ -471,6 +471,7 @@ class Writer:
         if activeIn:
             ESW.handleElectrostaticConstants()
             ESW.handleElectrostaticBndConditions()
+            ESW.handleElectrostaticBodyForces()
             ESW.handleElectrostaticMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------

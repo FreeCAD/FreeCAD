@@ -144,6 +144,7 @@ class BIM_ProjectManager:
         import Draft
         import FreeCADGui
         import Part
+        from draftutils import params
 
         vaxes = []
         haxes = []
@@ -306,8 +307,8 @@ class BIM_ProjectManager:
                 outtext = Draft.make_text(
                     [buildingname],
                     FreeCAD.Vector(
-                        Draft.getParam("textheight", 0.20) * 0.3,
-                        -Draft.getParam("textheight", 0.20) * 1.43,
+                        params.get_param("textheight") * 0.3,
+                        -params.get_param("textheight") * 1.43,
                         0,
                     ),
                 )
@@ -324,8 +325,8 @@ class BIM_ProjectManager:
                 axisV.Label = translate("BIM", "Vertical Axes")
                 axisV.ViewObject.BubblePosition = "Both"
                 axisV.ViewObject.LineWidth = self.form.lineWidth.value()
-                axisV.ViewObject.FontSize = Draft.getParam("textheight", 0.20)
-                axisV.ViewObject.BubbleSize = Draft.getParam("textheight", 0.20) * 1.43
+                axisV.ViewObject.FontSize = params.get_param("textheight")
+                axisV.ViewObject.BubbleSize = params.get_param("textheight") * 1.43
                 axisV.ViewObject.LineColor = color
             axisH = None
             if self.form.countHAxes.value() and distHAxes:
@@ -336,8 +337,8 @@ class BIM_ProjectManager:
                 axisH.ViewObject.BubblePosition = "Both"
                 axisH.ViewObject.NumberingStyle = "A,B,C"
                 axisH.ViewObject.LineWidth = self.form.lineWidth.value()
-                axisH.ViewObject.FontSize = Draft.getParam("textheight", 0.20)
-                axisH.ViewObject.BubbleSize = Draft.getParam("textheight", 0.20) * 1.43
+                axisH.ViewObject.FontSize = params.get_param("textheight")
+                axisH.ViewObject.BubbleSize = params.get_param("textheight") * 1.43
                 axisH.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 90)
                 axisH.ViewObject.LineColor = color
             if axisV and axisH:

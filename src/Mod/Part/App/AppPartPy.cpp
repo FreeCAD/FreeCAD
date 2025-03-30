@@ -1622,7 +1622,8 @@ private:
     }
     Py::Object makeRevolution(const Py::Tuple& args)
     {
-        double vmin = DBL_MAX, vmax=-DBL_MAX;
+        constexpr double doubleMax = std::numeric_limits<double>::max();
+        double vmin = doubleMax, vmax=-doubleMax;
         double angle=360;
         PyObject *pPnt=nullptr, *pDir=nullptr, *pCrv;
         Handle(Geom_Curve) curve;
@@ -1641,10 +1642,10 @@ private:
                 if (curve.IsNull()) {
                     throw Py::Exception(PyExc_TypeError, "geometry is not a curve");
                 }
-                if (vmin == DBL_MAX)
+                if (vmin == doubleMax)
                     vmin = curve->FirstParameter();
 
-                if (vmax == -DBL_MAX)
+                if (vmax == -doubleMax)
                     vmax = curve->LastParameter();
                 break;
             }
@@ -1675,9 +1676,9 @@ private:
                     throw Py::Exception(PartExceptionOCCError, "invalid curve in edge");
                 }
 
-                if (vmin == DBL_MAX)
+                if (vmin == doubleMax)
                     vmin = adapt.FirstParameter();
-                if (vmax == -DBL_MAX)
+                if (vmax == -doubleMax)
                     vmax = adapt.LastParameter();
                 break;
             }
@@ -1981,7 +1982,7 @@ private:
         double height;
         double track = 0;
 
-        Py_UNICODE *unichars = nullptr;
+        Py_UCS4 *unichars = nullptr;
         Py_ssize_t pysize;
 
         PyObject *CharList;
@@ -2014,28 +2015,11 @@ private:
             }
 
             pysize = PyUnicode_GetLength(p);
-
-#ifdef FC_OS_WIN32
-            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknown glyph in even positions, and wrong characters in
-            //odd positions.
-            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(p, &pysize);
-#else
-            unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
-#endif
+            unichars = PyUnicode_AsUCS4Copy(p);
         }
         else if (PyUnicode_Check(intext)) {
             pysize = PyUnicode_GetLength(intext);
-
-
-#ifdef FC_OS_WIN32
-            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknown glyph in even positions, and wrong characters in
-            //odd positions.
-            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(intext, &pysize);
-#else
-            unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
-#endif
+            unichars = PyUnicode_AsUCS4Copy(intext);
         }
         else {
             throw Py::TypeError("** makeWireString bad text parameter");

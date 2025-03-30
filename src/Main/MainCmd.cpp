@@ -100,7 +100,7 @@ int main(int argc, char** argv)
         msg << "While initializing " << appName << " the following exception occurred: '"
             << e.what() << "'\n\n";
         msg << "Python is searching for its runtime files in the following directories:\n"
-            << Py_EncodeLocale(Py_GetPath(), nullptr) << "\n\n";
+            << Base::Interpreter().getPythonPath() << "\n\n";
         msg << "Python version information:\n" << Py_GetVersion() << "\n";
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {

@@ -78,7 +78,7 @@ bool MeshProjection::connectLines(std::list<std::pair<Base::Vector3f, Base::Vect
                                   const Base::Vector3f& endPoint,
                                   std::vector<Base::Vector3f>& polyline) const
 {
-    const float fMaxDist = float(std::sqrt(FLOAT_MAX));  // max. length of a gap
+    const float fMaxDist = std::sqrt(std::numeric_limits<float>::max());  // max. length of a gap
     const float fMinEps = 1.0e-4F;
 
     polyline.clear();

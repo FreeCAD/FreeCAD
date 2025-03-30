@@ -31,7 +31,6 @@
 # else
 # include <GL/gl.h>
 # endif
-# include <cfloat>
 # include <QFontMetrics>
 # include <QPainter>
 # include <QPen>
@@ -51,12 +50,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
-
-#if COIN_MAJOR_VERSION > 3
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#else
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#endif
 
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
@@ -65,31 +59,6 @@
 
 using namespace Gui;
 
-/*!
-\code
-
-s="""
-  #Inventor V2.1 ascii
-
-  Annotation {
-    Translation { translation 4 0 0 }
-    FontStyle {
-        size 20
-        style BOLD
-    }
-    BaseColor {
-        rgb 0.0 0.0 0.0
-    }
-
-
-    SoTextLabel { string ["Text label", "Second line"] backgroundColor 1.0 0.447059 0.337255}
-  }
-"""
-
-App.ActiveDocument.addObject("App::InventorObject","iv").Buffer=s
-
-\endcode
-*/
 
 SO_NODE_SOURCE(SoTextLabel)
 
@@ -215,11 +184,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
 
         // disable textures for all units
         SoGLTextureEnabledElement::set(state, this, false);
-#if COIN_MAJOR_VERSION > 3
         SoMultiTextureEnabledElement::set(state, this, false);
-#else
-        SoGLTexture3EnabledElement::set(state, this, false);
-#endif
 
         glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
         glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);

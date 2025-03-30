@@ -76,16 +76,14 @@
 
 using namespace Part;
 
-using UNICHAR = unsigned long;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
-
 // Private function prototypes
-PyObject* getGlyphContours(FT_Face FTFace, UNICHAR currchar, double PenPos, double Scale,int charNum, double tracking);
-FT_Vector getKerning(FT_Face FTFace, UNICHAR lc, UNICHAR rc);
+PyObject* getGlyphContours(FT_Face FTFace, FT_ULong currchar, double PenPos, double Scale,int charNum, double tracking);
+FT_Vector getKerning(FT_Face FTFace, FT_ULong lc, FT_ULong rc);
 TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
 int calcClockDir(std::vector<Base::Vector3d> points);
 
 // for compatibility with old version - separate path & filename
-PyObject* FT2FC(const Py_UNICODE *PyUString,
+PyObject* FT2FC(const Py_UCS4 *PyUString,
                 const size_t length,
                 const char *FontPath,
                 const char *FontName,
@@ -99,7 +97,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
 }
 
 // get string's wires (contours) in FC/OCC coords
-PyObject* FT2FC(const Py_UNICODE *PyUString,
+PyObject* FT2FC(const Py_UCS4 *PyUString,
                 const size_t length,
                 const char *FontSpec,
                 const double stringheight,                 // fc coords
@@ -114,7 +112,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
 
     std::stringstream ErrorMsg;
     double PenPos = 0, scalefactor;
-    UNICHAR prevchar = 0, currchar = 0;
+    FT_ULong prevchar = 0, currchar = 0;
     int  cadv;
     size_t i;
     Py::List CharList;
@@ -215,7 +213,7 @@ struct FTDC_Ctx {
   std::vector<int> wDir;
   std::vector<TopoDS_Edge> Edges;
   std::vector<Base::Vector3d> polyPoints;
-  UNICHAR currchar;
+  FT_ULong currchar;
   FT_Vector LastVert;
   Handle(Geom_Surface) surf;
 };
@@ -321,7 +319,7 @@ static FT_Outline_Funcs FTcbFuncs = {
 
 //********** FT2FC Helpers
 // get glyph outline in wires
-PyObject* getGlyphContours(FT_Face FTFace, UNICHAR currchar, double PenPos, double Scale, int charNum, double tracking) {
+PyObject* getGlyphContours(FT_Face FTFace, FT_ULong currchar, double PenPos, double Scale, int charNum, double tracking) {
    FT_Error error = 0;
    std::stringstream ErrorMsg;
    gp_Pnt origin = gp_Pnt(0.0,0.0,0.0);
@@ -393,7 +391,7 @@ PyObject* getGlyphContours(FT_Face FTFace, UNICHAR currchar, double PenPos, doub
 
 // get kerning values for this char pair
 //TODO: should check FT_HASKERNING flag? returns (0,0) if no kerning?
-FT_Vector getKerning(FT_Face FTFace, UNICHAR lc, UNICHAR rc) {
+FT_Vector getKerning(FT_Face FTFace, FT_ULong lc, FT_ULong rc) {
    FT_Vector retXY;
    FT_Error error;
    std::stringstream ErrorMsg;

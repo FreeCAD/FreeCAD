@@ -68,6 +68,8 @@ public:
 
     void mouseMove(Base::Vector2d onSketchPos) override
     {
+        using std::numbers::pi;
+
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
             seekAndRenderAutoConstraint(sugConstr1,
@@ -78,7 +80,7 @@ public:
             double rx0 = onSketchPos.x - EditCurve[0].x;
             double ry0 = onSketchPos.y - EditCurve[0].y;
             for (int i = 0; i < 16; i++) {
-                double angle = i * M_PI / 16.0;
+                double angle = i * pi / 16.0;
                 double rx1 = rx0 * cos(angle) + ry0 * sin(angle);
                 double ry1 = -rx0 * sin(angle) + ry0 * cos(angle);
                 EditCurve[1 + i] = Base::Vector2d(EditCurve[0].x + rx1, EditCurve[0].y + ry1);
@@ -115,7 +117,7 @@ public:
                 / (sin(angleatpoint) * cos(phi));
 
             for (int i = 1; i < 16; i++) {
-                double angle = i * M_PI / 16.0;
+                double angle = i * pi / 16.0;
                 double rx1 = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
                 double ry1 = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
                 EditCurve[1 + i] = Base::Vector2d(EditCurve[0].x + rx1, EditCurve[0].y + ry1);
@@ -161,7 +163,7 @@ public:
                                          + (onSketchPos.y - centerPoint.y) * sin(phi)))
                 - startAngle;
 
-            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
             arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
             for (int i = 0; i < 34; i++) {
@@ -178,7 +180,7 @@ public:
                 SbString text;
                 std::string aString = lengthToDisplayFormat(a, 1);
                 std::string bString = lengthToDisplayFormat(b, 1);
-                std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
+                std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / pi, 1);
                 text.sprintf(" (R%s, R%s, %s)",
                              aString.c_str(),
                              bString.c_str(),
@@ -222,6 +224,9 @@ public:
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
+
+        using std::numbers::pi;
+
         if (Mode == STATUS_Close) {
             unsetCursor();
             resetPositionText();
@@ -245,7 +250,7 @@ public:
                                          + (endPoint.y - centerPoint.y) * sin(phi)))
                 - startAngle;
 
-            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
             arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
             bool isOriginalArcCCW = true;
@@ -281,8 +286,8 @@ public:
                 perp.Scale(abs(b));
                 majAxisPoint = centerPoint + perp;
                 minAxisPoint = centerPoint + minAxisDir;
-                endAngle += M_PI / 2;
-                startAngle += M_PI / 2;
+                endAngle += pi / 2;
+                startAngle += pi / 2;
             }
 
             int currentgeoid = getHighestCurveIndex();

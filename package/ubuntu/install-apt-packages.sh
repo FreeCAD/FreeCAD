@@ -33,6 +33,7 @@ packages=(
   libocct-visualization-dev
   libopencv-dev
   libproj-dev
+  libpcl-dev
   libpyside2-dev
   libqt5opengl5-dev
   libqt5svg5-dev

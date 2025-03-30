@@ -784,11 +784,12 @@ public:
                        const bool isLinear)
     {
         std::unique_ptr<Geometry> geo;
-        for (auto vit = vmap.qbegin(bgi::nearest(p1, INT_MAX)); vit != vmap.qend(); ++vit) {
+        constexpr int max = std::numeric_limits<int>::max();
+        for (auto vit = vmap.qbegin(bgi::nearest(p1, max)); vit != vmap.qend(); ++vit) {
             auto& vinfo = *vit;
             if (canShowShape()) {
 #if OCC_VERSION_HEX < 0x070800
-                FC_MSG("addcheck " << vinfo.edge().HashCode(INT_MAX));
+                FC_MSG("addcheck " << vinfo.edge().HashCode(max));
 #else
                 FC_MSG("addcheck " << std::hash<TopoDS_Edge> {}(vinfo.edge()));
 #endif
@@ -1568,7 +1569,8 @@ public:
                 }
                 info.iEnd[ic] = info.iStart[ic] = (int)adjacentList.size();
 
-                for (auto vit = vmap.qbegin(bgi::nearest(pt[ic], INT_MAX)); vit != vmap.qend();
+                constexpr int max = std::numeric_limits<int>::max();
+                for (auto vit = vmap.qbegin(bgi::nearest(pt[ic], max)); vit != vmap.qend();
                      ++vit) {
                     auto& vinfo = *vit;
                     if (vinfo.pt().SquareDistance(pt[ic]) > myTol2) {
@@ -2717,7 +2719,8 @@ public:
         FC_MSG("init:");
         for (const auto& shape : sourceEdges) {
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.getShape().TShape().get() << ", " << shape.getShape().HashCode(INT_MAX));
+            constexpr int max = std::numeric_limits<int>::max();
+            FC_MSG(shape.getShape().TShape().get() << ", " << shape.getShape().HashCode(max));
 #else
             FC_MSG(shape.getShape().TShape().get()
                    << ", " << std::hash<TopoDS_Shape> {}(shape.getShape()));
@@ -2736,7 +2739,8 @@ public:
         for (int i = 1; i <= wireData->NbEdges(); ++i) {
             auto shape = wireData->Edge(i);
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.TShape().get() << ", " << shape.HashCode(INT_MAX));
+            constexpr int max = std::numeric_limits<int>::max();
+            FC_MSG(shape.TShape().get() << ", " << shape.HashCode(max));
 #else
             FC_MSG(shape.TShape().get() << ", " << std::hash<TopoDS_Edge> {}(shape));
 #endif
@@ -2800,9 +2804,10 @@ public:
         for (TopTools_ListIteratorOfListOfShape it(hist->Modified(shape.getShape())); it.More();
              it.Next()) {
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.getShape().TShape().get()
-                   << ", " << shape.getShape().HashCode(INT_MAX) << " -> "
-                   << it.Value().TShape().get() << ", " << it.Value().HashCode(INT_MAX));
+                constexpr int max = std::numeric_limits<int>::max();
+                FC_MSG(shape.getShape().TShape().get()
+                   << ", " << shape.getShape().HashCode(max) << " -> "
+                   << it.Value().TShape().get() << ", " << it.Value().HashCode(max));
 #else
             FC_MSG(shape.getShape().TShape().get()
                    << ", " << std::hash<TopoDS_Shape> {}(shape.getShape()) << " -> "
