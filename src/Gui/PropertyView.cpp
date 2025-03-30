@@ -87,12 +87,14 @@ PropertyView::PropertyView(QWidget *parent)
     propertyEditorView->setObjectName(QStringLiteral("propertyEditorView"));
     propertyEditorView->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionView", false));
     propertyEditorView->setAutomaticExpand(_GetParam()->GetBool("AutoExpandView", false));
+    propertyEditorView->setAutomaticCollapse(_GetParam()->GetBool("AutoCollapseView", false));
     tabs->addTab(propertyEditorView, tr("View"));
 
     propertyEditorData = new Gui::PropertyEditor::PropertyEditor();
     propertyEditorData->setObjectName(QStringLiteral("propertyEditorData"));
     propertyEditorData->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionData", true));
     propertyEditorData->setAutomaticExpand(_GetParam()->GetBool("AutoExpandData", false));
+    propertyEditorView->setAutomaticCollapse(_GetParam()->GetBool("AutoCollapseData", false));
     tabs->addTab(propertyEditorData, tr("Data"));
 
     int preferredTab = _GetParam()->GetInt("LastTabIndex", 1);
