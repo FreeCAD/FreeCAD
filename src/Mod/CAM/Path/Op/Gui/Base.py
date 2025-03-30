@@ -187,8 +187,11 @@ class ViewProvider(object):
         for action in menu.actions():
             menu.removeAction(action)
         action = QtGui.QAction(translate("PathOp", "Edit"), menu)
-        action.triggered.connect(self.setEdit)
+        action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
+
+    def _editInContextMenuTriggered(self, checked):
+        self.setEdit()
 
 
 class TaskPanelPage(object):
