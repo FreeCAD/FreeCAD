@@ -94,8 +94,8 @@ InputField::InputField(QWidget * parent)
     connect(this, &QLineEdit::textChanged, this, &InputField::updateIconLabel);
 
     // Set Margins
-    // vertical to avoid this: https://forum.freecad.org/viewtopic.php?f=8&t=50615
-    // horizontal to avoid going under the icon
+    // vertical margin, such that `,` won't be clipped to a `.` and similar font descents. Relevant on some OSX versions
+    // horizontal margin, such that text will not be behind `fx` icon
     int margin = getMargin();
     setTextMargins(margin, margin, margin + iconSize, margin);
 
