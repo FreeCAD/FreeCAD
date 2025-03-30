@@ -521,14 +521,8 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(
             Base::Vector3d dir3d = Base::Vector3d(Dir.x, Dir.y, 0);
             double cosangle = dir3d.Normalize() * preSel.hitShapeDir.Normalize();
 
-            // the angle between the line and the hitting direction are over around 6 degrees (it is
-            // substantially parallel) or if it is an sketch axis (that can not move to accommodate
-            // to the shape), then only if it is around 6 degrees with the normal (around 84
-            // degrees)
-            if (fabs(cosangle) > 0.995f
-                && !((preSel.geoId == Sketcher::GeoEnum::HAxis
-                      || preSel.geoId == Sketcher::GeoEnum::VAxis)
-                     && fabs(cosangle) < 0.1)) {
+            // the angle between the line and the hitting direction are over around 6 degrees
+            if (fabs(cosangle) > 0.995f) {
                 return;
             }
         }
