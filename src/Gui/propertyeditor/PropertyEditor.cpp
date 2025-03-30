@@ -53,6 +53,7 @@ using namespace Gui::PropertyEditor;
 
 PropertyEditor::PropertyEditor(QWidget* parent)
     : QTreeView(parent)
+    , autocollapse(false)
     , autoexpand(false)
     , autoupdate(false)
     , committing(false)
@@ -115,6 +116,14 @@ PropertyEditor::~PropertyEditor()
     QItemEditorFactory* f = delegate->itemEditorFactory();
     delegate->setItemEditorFactory(nullptr);
     delete f;
+}
+
+void PropertyEditor::setAutomaticCollapse(bool v) {
+    autocollapse = v;
+}
+
+bool PropertyEditor::isAutomaticCollapse(bool) const {
+    return autocollapse;
 }
 
 void PropertyEditor::setAutomaticExpand(bool v)
@@ -653,6 +662,10 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
     if (autoexpand) {
         expandAll();
     }
+
+    if (autocollapse) {
+        collapseAll();
+    }
 }
 
 void PropertyEditor::updateProperty(const App::Property& prop)
@@ -695,7 +708,10 @@ void PropertyEditor::removeProperty(const App::Property& prop)
 
 enum MenuAction
 {
+    MA_AutoCollapse,
     MA_AutoExpand,
+    MA_CollapseAll,
+    MA_ExpandAll,
     MA_ShowHidden,
     MA_Expression,
     MA_RemoveProp,
@@ -714,6 +730,7 @@ enum MenuAction
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 {
     QMenu menu;
+    QAction* autoCollapse = nullptr;
     QAction* autoExpand = nullptr;
 
     auto contextIndex = currentIndex();
@@ -769,11 +786,25 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     showHidden->setChecked(PropertyView::showAll());
     showHidden->setData(QVariant(MA_ShowHidden));
 
+    // auto collapse
+    autoCollapse = menu.addAction(tr("Auto collapse"));
+    autoCollapse->setCheckable(true);
+    autoCollapse->setChecked(autocollapse);
+    autoCollapse->setData(QVariant(MA_AutoCollapse));
+
     // auto expand
     autoExpand = menu.addAction(tr("Auto expand"));
     autoExpand->setCheckable(true);
     autoExpand->setChecked(autoexpand);
     autoExpand->setData(QVariant(MA_AutoExpand));
+
+    QAction* collapseall = menu.addAction(tr("Collapse all"));
+    collapseall->setData(QVariant(MA_CollapseAll));
+
+    QAction* expandall = menu.addAction(tr("Expand all"));
+    expandall->setData(QVariant(MA_ExpandAll));
+
+    menu.addSeparator();
 
     // expression
     if (props.size() == 1) {
@@ -834,16 +865,42 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     }
 
     switch (action->data().toInt()) {
+        case MA_AutoCollapse:
+            if (autoCollapse) {
+                autocollapse = autoCollapse->isChecked();
+
+                // uncheck auto expand
+                if (autoExpand->isChecked()) {
+                    autoexpand = false;
+                }
+                
+                if (autocollapse) {
+                    collapseAll();
+                }
+            }
+            return;
         case MA_AutoExpand:
             if (autoExpand) {
                 // Variable autoExpand should not be null when we arrive here, but
                 // since we explicitly initialize the variable to nullptr, a check
                 // nonetheless.
                 autoexpand = autoExpand->isChecked();
+
+                // uncheck auto collapse
+                if (autoCollapse->isChecked()) {
+                    autocollapse = false;
+                }
+
                 if (autoexpand) {
                     expandAll();
                 }
             }
+            return;
+        case MA_CollapseAll:
+            collapseAll();
+            return;
+        case MA_ExpandAll:
+            expandAll();
             return;
         case MA_ShowHidden:
             PropertyView::setShowAll(action->isChecked());
