@@ -79,6 +79,8 @@ public:
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
     void renameProperty(const App::Property&);
+    void setAutomaticCollapse(bool);
+    bool isAutomaticCollapse(bool) const;
     void setAutomaticExpand(bool);
     bool isAutomaticExpand(bool) const;
     void setAutomaticDocumentUpdate(bool);
@@ -148,6 +150,7 @@ private:
     QStringList selectedProperty;
     PropertyModel::PropertyList propList;
     std::unordered_set<const App::PropertyContainer*> propOwners;
+    bool autocollapse;
     bool autoexpand;
     bool autoupdate;
     bool committing;
