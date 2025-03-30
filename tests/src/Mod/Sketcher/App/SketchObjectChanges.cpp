@@ -30,7 +30,7 @@ TEST_F(SketchObjectTest, testSplitLineSegment)
     EXPECT_EQ(result, 0);
     // One additional curve should be added
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
-    // TODO: Expect the resultant curves are line segments and shape is conserved
+    // Expect the resultant curves are line segments and shape is conserved
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
 }
@@ -65,7 +65,7 @@ TEST_F(SketchObjectTest, testSplitEllipse)
 
     // Assert
     EXPECT_EQ(result, 0);
-    // TODO: The ellipse should be split into an arc of ellipse now
+    // The ellipse should be split into an arc of ellipse now
     // FIXME: Internal geometries may be added or removed which may cause some issues
     // EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
 }
@@ -93,7 +93,7 @@ TEST_F(SketchObjectTest, testSplitArcOfCircle)
 TEST_F(SketchObjectTest, testSplitArcOfConic)
 {
     // Arrange
-    // TODO: Define a parabola/hyperbola as reference
+    // Define a parabola/hyperbola as reference
     Base::Vector3d splitPoint(1.0, -1.1, 0.0);
     Part::GeomArcOfParabola arcOfConic;
     setupArcOfParabola(arcOfConic);
@@ -110,7 +110,7 @@ TEST_F(SketchObjectTest, testSplitArcOfConic)
     EXPECT_EQ(result, 0);
     // The arcOfConic should be split into two arcs of the same conic now
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
-    // TODO: Expect the end points of the resultant curve are coincident.
+    // Expect the end points of the resultant curve are coincident.
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
 }
@@ -183,7 +183,7 @@ TEST_F(SketchObjectTest, testTrimLineSegmentEnd)
     // Arrange
     Part::GeomLineSegment lineSeg;
     setupLineSegment(lineSeg);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(lineSeg, 0.2));
     Base::Vector3d p1(getPointAtNormalizedParameter(lineSeg, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -248,7 +248,7 @@ TEST_F(SketchObjectTest, testTrimCircleEnd)
     // Arrange
     Part::GeomCircle circle;
     setupCircle(circle);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(circle, 0.2));
     Base::Vector3d p1(getPointAtNormalizedParameter(circle, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -313,7 +313,7 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleEnd)
     // Arrange
     Part::GeomArcOfCircle arcOfCircle;
     setupArcOfCircle(arcOfCircle);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(arcOfCircle, 0.2));
     Base::Vector3d p1(getPointAtNormalizedParameter(arcOfCircle, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -338,7 +338,7 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     // Arrange
     Part::GeomArcOfCircle arcOfCircle;
     setupArcOfCircle(arcOfCircle);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(arcOfCircle, 0.5));
     Base::Vector3d p1(getPointAtNormalizedParameter(arcOfCircle, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -378,7 +378,7 @@ TEST_F(SketchObjectTest, testTrimEllipseEnd)
     // Arrange
     Part::GeomEllipse ellipse;
     setupEllipse(ellipse);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(ellipse, 0.2));
     Base::Vector3d p1(getPointAtNormalizedParameter(ellipse, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -406,7 +406,7 @@ TEST_F(SketchObjectTest, testTrimEllipseMid)
     // Arrange
     Part::GeomEllipse ellipse;
     setupEllipse(ellipse);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(ellipse, 0.5));
     Base::Vector3d p1(getPointAtNormalizedParameter(ellipse, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -454,7 +454,7 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineEnd)
     // Arrange
     auto periodicBSpline = createTypicalPeriodicBSpline();
     assert(periodicBSpline);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(*periodicBSpline, 0.2));
     Base::Vector3d p1(getPointAtNormalizedParameter(*periodicBSpline, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -480,7 +480,7 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
     // Arrange
     auto periodicBSpline = createTypicalPeriodicBSpline();
     assert(periodicBSpline);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(*periodicBSpline, 0.5));
     Base::Vector3d p1(getPointAtNormalizedParameter(*periodicBSpline, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -556,7 +556,7 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     // Arrange
     auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
     assert(nonPeriodicBSpline);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(*nonPeriodicBSpline, 0.5));
     Base::Vector3d p1(getPointAtNormalizedParameter(*nonPeriodicBSpline, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
@@ -673,12 +673,12 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnFullLengthConstraints)
 
 TEST_F(SketchObjectTest, testTrimEndEffectOnSymmetricConstraints)
 {
-    // TODO: Ensure symmetric constraints go away
+    // Ensure symmetric constraints go away
 
     // Arrange
     Part::GeomLineSegment lineSeg;
     setupLineSegment(lineSeg);
-    // TODO: create curves intersecting at the right spots
+    // create curves intersecting at the right spots
     Base::Vector3d trimPoint(getPointAtNormalizedParameter(lineSeg, 0.2));
     Base::Vector3d p1(getPointAtNormalizedParameter(lineSeg, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
