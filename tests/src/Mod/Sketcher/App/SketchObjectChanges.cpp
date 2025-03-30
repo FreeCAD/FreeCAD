@@ -596,6 +596,162 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     // TODO: Ensure shape is preserved
 }
 
+TEST_F(SketchObjectTest, testTrimEffectOnConstruction)
+{
+    // Ensure construction geometries remain construction
+    // The issue #12715 was usually happening when the geometry changed type, which
+    // currently only happens for circles and ellipses.
+
+    // Arrange
+    Part::GeomCircle circle;
+    setupCircle(circle);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(circle, 0.5));
+    Base::Vector3d p1(getPointAtNormalizedParameter(circle, 0.3));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    Base::Vector3d p3(getPointAtNormalizedParameter(circle, 0.7));
+    Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    // to ensure that this line clearly intersects the curve, not just have a point on object
+    // without explicit constraint
+    p3.x -= 0.1;
+    p3.y -= 0.1;
+    Part::GeomLineSegment lineSegCut2;
+    lineSegCut2.setPoints(p3, p4);
+    getObject()->addGeometry(&lineSegCut2);
+    int geoId = getObject()->addGeometry(&circle, true);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    for (int i = 0; i < getObject()->getHighestCurveIndex(); ++i) {
+        auto* geom = getObject()->getGeometry(i);
+        if (geom->is<Part::GeomArcOfCircle>()) {
+            EXPECT_TRUE(GeometryFacade::getConstruction(geom));
+        }
+    }
+}
+
+TEST_F(SketchObjectTest, testTrimEndEffectOnFullLengthConstraints)
+{
+    // Ensure constraints directly applying to full length disappear if one of the ends disappears.
+
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(lineSeg, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(lineSeg, 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(&lineSeg);
+    auto constr = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
+    constr->Type = Sketcher::ConstraintType::Distance;
+    constr->First = geoId;
+    constr->FirstPos = Sketcher::PointPos::none;
+    constr->setValue((getObject()->getPoint(geoId, Sketcher::PointPos::end)
+                      - getObject()->getPoint(geoId, Sketcher::PointPos::start))
+                         .Length());
+    getObject()->addConstraint(constr);
+
+    // Assert
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Distance), 1);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Distance), 0);
+}
+
+TEST_F(SketchObjectTest, testTrimEndEffectOnSymmetricConstraints)
+{
+    // TODO: Ensure symmetric constraints go away
+
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(lineSeg, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(lineSeg, 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    int geoIdOfCutting = getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(&lineSeg);
+    auto constr = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
+    constr->Type = Sketcher::ConstraintType::Symmetric;
+    constr->First = geoId;
+    constr->FirstPos = Sketcher::PointPos::start;
+    constr->Second = geoId;
+    constr->SecondPos = Sketcher::PointPos::end;
+    constr->Third = geoIdOfCutting;
+    constr->ThirdPos = Sketcher::PointPos::start;
+    getObject()->addConstraint(constr);
+
+    // Assert
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Symmetric), 1);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Symmetric), 0);
+}
+
+TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
+{
+    // See https://github.com/AstoCAD/FreeCAD/issues/24
+
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    lineSeg.setPoints(Base::Vector3d {1.0, -2.0, 0.0}, Base::Vector3d {1.0, 2.0, 0.0});
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(lineSeg, 0.2));
+    int geoId = getObject()->addGeometry(&lineSeg);
+    Part::GeomCircle innerCircle;
+    innerCircle.setCenter(Base::Vector3d {0.0, 0.0, 0.0});
+    innerCircle.setRadius(1.0);
+    int geoIdInnerCircle = getObject()->addGeometry(&innerCircle);
+    Part::GeomCircle outerCircle;
+    outerCircle.setCenter(Base::Vector3d {0.0, 0.0, 0.0});
+    outerCircle.setRadius(1.5);
+    getObject()->addGeometry(&outerCircle);  // no need to save
+    // TODO: add tangent and confirm
+    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
+    constraint->Type = Sketcher::ConstraintType::Tangent;
+    constraint->First = geoId;
+    constraint->FirstPos = Sketcher::PointPos::none;
+    constraint->Second = geoIdInnerCircle;
+    constraint->SecondPos = Sketcher::PointPos::none;
+    getObject()->addConstraint(constraint);
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Tangent), 1);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // TODO: find tangent and confirm nature
+    const auto& constraints = getObject()->Constraints.getValues();
+    auto tangIt = std::ranges::find(constraints,
+                                    Sketcher::ConstraintType::Tangent,
+                                    &Sketcher::Constraint::Type);
+    EXPECT_NE(tangIt, constraints.end());
+    EXPECT_EQ((*tangIt)->FirstPos, Sketcher::PointPos::none);
+    EXPECT_EQ((*tangIt)->SecondPos, Sketcher::PointPos::none);
+}
+
+// TODO: Ensure endpoint constraints go to the appropriate new geometry
+// This will need a reliable way to get the resultant curves after the trim
+
 TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToZero)
 {
     // Arrange
