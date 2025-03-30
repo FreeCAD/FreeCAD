@@ -39,6 +39,7 @@ class MaterialsExport Library: public Base::BaseClass
 public:
     Library() = default;
     Library(const QString& libraryName, const QString& icon, bool readOnly = true);
+    Library(const QString& libraryName, const QString& icon, bool readOnly, const QString& timestamp);
     Library(const QString& libraryName,
             const QString& dir,
             const QString& icon,
@@ -107,6 +108,7 @@ private:
     QString _directory;
     QString _iconPath;
     bool _readOnly;
+    QString _timestamp;
 };
 
 }  // namespace Materials

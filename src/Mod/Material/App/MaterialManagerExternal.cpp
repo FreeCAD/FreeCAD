@@ -38,7 +38,8 @@ using namespace Materials;
 /* TRANSLATOR Material::Materials */
 
 QMutex MaterialManagerExternal::_mutex;
-LRU::Cache<std::string, std::shared_ptr<Material>> MaterialManagerExternal::_cache(DEFAULT_CACHE_SIZE);
+LRU::Cache<std::string, std::shared_ptr<Material>>
+    MaterialManagerExternal::_cache(DEFAULT_CACHE_SIZE);
 
 TYPESYSTEM_SOURCE(Materials::MaterialManagerExternal, Base::BaseClass)
 
@@ -60,8 +61,7 @@ void MaterialManagerExternal::initCache()
 }
 
 void MaterialManagerExternal::cleanup()
-{
-}
+{}
 
 void MaterialManagerExternal::refresh()
 {
@@ -80,14 +80,7 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerExte
     try {
         auto externalLibraries = ExternalManager::getManager()->libraries();
         for (auto& entry : *externalLibraries) {
-            auto libName = std::get<0>(entry);
-            auto icon = std::get<1>(entry);
-            auto readOnly = std::get<2>(entry);
-            Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
-                                libName.toStdString().c_str(),
-                                icon.toStdString().c_str(),
-                                readOnly ? "true" : "false");
-            auto library = std::make_shared<MaterialLibrary>(libName, icon, readOnly);
+            auto library = std::make_shared<MaterialLibrary>(*entry);
             libraryList->push_back(library);
         }
     }
@@ -106,14 +99,7 @@ MaterialManagerExternal::getMaterialLibraries()
     try {
         auto externalLibraries = ExternalManager::getManager()->materialLibraries();
         for (auto& entry : *externalLibraries) {
-            auto libName = std::get<0>(entry);
-            auto icon = std::get<1>(entry);
-            auto readOnly = std::get<2>(entry);
-            Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
-                                libName.toStdString().c_str(),
-                                icon.toStdString().c_str(),
-                                readOnly ? "true" : "false");
-            auto library = std::make_shared<MaterialLibrary>(libName, icon, readOnly);
+            auto library = std::make_shared<MaterialLibrary>(*entry);
             libraryList->push_back(library);
         }
     }
@@ -203,8 +189,8 @@ void MaterialManagerExternal::addMaterial(const QString& libraryName,
 }
 
 void MaterialManagerExternal::migrateMaterial(const QString& libraryName,
-                                          const QString& path,
-                                          const std::shared_ptr<Material>& material)
+                                              const QString& path,
+                                              const std::shared_ptr<Material>& material)
 {
     _cache.erase(material->getUUID().toStdString());
     ExternalManager::getManager()->migrateMaterial(libraryName, path, material);

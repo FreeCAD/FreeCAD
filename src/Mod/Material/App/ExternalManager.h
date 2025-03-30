@@ -32,6 +32,7 @@ class QMutex;
 namespace Materials
 {
 
+class Library;
 class Material;
 class Model;
 class MaterialFilter;
@@ -47,9 +48,9 @@ public:
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
     // Library management
-    std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> libraries();
-    std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> modelLibraries();
-    std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> materialLibraries();
+    std::shared_ptr<std::vector<std::shared_ptr<Library>>> libraries();
+    std::shared_ptr<std::vector<std::shared_ptr<Library>>> modelLibraries();
+    std::shared_ptr<std::vector<std::shared_ptr<Library>>> materialLibraries();
     std::tuple<QString, QString, bool> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     void renameLibrary(const QString& libraryName, const QString& newName);
@@ -88,6 +89,7 @@ private:
     void getConfiguration();
     void instantiate();
     void connect();
+    std::shared_ptr<Library> libraryFromTuple(const Py::Tuple& entry);
 
     static ExternalManager* _manager;
     static QMutex _mutex;

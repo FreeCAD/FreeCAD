@@ -166,9 +166,39 @@ ExternalManager* ExternalManager::getManager()
 //
 //=====
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager::libraries()
+std::shared_ptr<Library>
+ExternalManager::libraryFromTuple(const Py::Tuple& entry)
 {
-    auto libList = std::make_shared<std::vector<std::tuple<QString, QString, bool>>>();
+    auto pyName = entry.getItem(0);
+    QString libraryName;
+    if (!pyName.isNone()) {
+        libraryName = QString::fromStdString(pyName.as_string());
+    }
+    auto pyIcon = entry.getItem(1);
+    QString icon;
+    if (!pyIcon.isNone()) {
+        icon = QString::fromStdString(pyIcon.as_string());
+    }
+    auto pyReadOnly = entry.getItem(2);
+    bool readOnly = pyReadOnly.as_bool();
+    auto pyTimestamp = entry.getItem(3);
+    QString timestamp;
+    if (!pyTimestamp.isNone()) {
+        timestamp = QString::fromStdString(pyTimestamp.as_string());
+    }
+
+    Base::Console().Log("Library name '%s', Icon '%s', readOnly %s, timestamp '%s'\n",
+                        libraryName.toStdString().c_str(),
+                        icon.toStdString().c_str(),
+                        readOnly ? "true" : "false",
+                        timestamp.toStdString().c_str());
+    auto library = std::make_shared<Library>(libraryName, icon, readOnly, timestamp);
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Library>>>
+ExternalManager::libraries()
+{
+    auto libList = std::make_shared<std::vector<std::shared_ptr<Library>>>();
 
     connect();
 
@@ -177,23 +207,9 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
         if (_managerObject.hasAttr("libraries")) {
             Py::Callable libraries(_managerObject.getAttr("libraries"));
             Py::List list(libraries.apply());
-            for (auto library : list) {
-                auto entry = Py::Tuple(library);
-
-                auto pyName = entry.getItem(0);
-                QString libraryName;
-                if (!pyName.isNone()) {
-                    libraryName = QString::fromStdString(pyName.as_string());
-                }
-                auto pyIcon = entry.getItem(1);
-                QString icon;
-                if (!pyIcon.isNone()) {
-                    icon = QString::fromStdString(pyIcon.as_string());
-                }
-                auto pyReadOnly = entry.getItem(2);
-                bool readOnly = pyReadOnly.as_bool();
-
-                libList->push_back(std::tuple<QString, QString, bool>(libraryName, icon, readOnly));
+            for (auto lib : list) {
+                auto library = libraryFromTuple(Py::Tuple(lib));
+                libList->push_back(library);
             }
         }
         else {
@@ -209,9 +225,9 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
     return libList;
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager::modelLibraries()
+std::shared_ptr<std::vector<std::shared_ptr<Library>>> ExternalManager::modelLibraries()
 {
-    auto libList = std::make_shared<std::vector<std::tuple<QString, QString, bool>>>();
+    auto libList = std::make_shared<std::vector<std::shared_ptr<Library>>>();
 
     connect();
 
@@ -220,23 +236,9 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
         if (_managerObject.hasAttr("modelLibraries")) {
             Py::Callable libraries(_managerObject.getAttr("modelLibraries"));
             Py::List list(libraries.apply());
-            for (auto library : list) {
-                auto entry = Py::Tuple(library);
-
-                auto pyName = entry.getItem(0);
-                QString libraryName;
-                if (!pyName.isNone()) {
-                    libraryName = QString::fromStdString(pyName.as_string());
-                }
-                auto pyIcon = entry.getItem(1);
-                QString icon;
-                if (!pyIcon.isNone()) {
-                    icon = QString::fromStdString(pyIcon.as_string());
-                }
-                auto pyReadOnly = entry.getItem(2);
-                bool readOnly = pyReadOnly.as_bool();
-
-                libList->push_back(std::tuple<QString, QString, bool>(libraryName, icon, readOnly));
+            for (auto lib : list) {
+                auto library = libraryFromTuple(Py::Tuple(lib));
+                libList->push_back(library);
             }
         }
         else {
@@ -252,10 +254,9 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
     return libList;
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>>
-ExternalManager::materialLibraries()
+std::shared_ptr<std::vector<std::shared_ptr<Library>>> ExternalManager::materialLibraries()
 {
-    auto libList = std::make_shared<std::vector<std::tuple<QString, QString, bool>>>();
+    auto libList = std::make_shared<std::vector<std::shared_ptr<Library>>>();
 
     connect();
 
@@ -264,23 +265,9 @@ ExternalManager::materialLibraries()
         if (_managerObject.hasAttr("materialLibraries")) {
             Py::Callable libraries(_managerObject.getAttr("materialLibraries"));
             Py::List list(libraries.apply());
-            for (auto library : list) {
-                auto entry = Py::Tuple(library);
-
-                auto pyName = entry.getItem(0);
-                QString libraryName;
-                if (!pyName.isNone()) {
-                    libraryName = QString::fromStdString(pyName.as_string());
-                }
-                auto pyIcon = entry.getItem(1);
-                QString icon;
-                if (!pyIcon.isNone()) {
-                    icon = QString::fromStdString(pyIcon.as_string());
-                }
-                auto pyReadOnly = entry.getItem(2);
-                bool readOnly = pyReadOnly.as_bool();
-
-                libList->push_back(std::tuple<QString, QString, bool>(libraryName, icon, readOnly));
+            for (auto lib : list) {
+                auto library = libraryFromTuple(Py::Tuple(lib));
+                libList->push_back(library);
             }
         }
         else {
