@@ -86,20 +86,31 @@ InputField::InputField(QWidget * parent)
     }
     iconLabel = new ExpressionLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
+    QFontMetrics fm(font());
+    int iconSize = fm.height();
+    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(iconSize, iconSize));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QStringLiteral("QLabel { border: none; padding: 0px; }"));
     iconLabel->hide();
     connect(this, &QLineEdit::textChanged, this, &InputField::updateIconLabel);
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    setStyleSheet(QStringLiteral("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
-    QSize msz = minimumSizeHint();
-    setMinimumSize(qMax(msz.width(), iconLabel->sizeHint().height() + frameWidth * 2 + 2),
-                   qMax(msz.height(), iconLabel->sizeHint().height() + frameWidth * 2 + 2));
+
+    // Set Margins
+    // vertical margin, such that `,` won't be clipped to a `.` and similar font descents. Relevant on some OSX versions
+    // horizontal margin, such that text will not be behind `fx` icon
+    int margin = getMargin();
+    setTextMargins(margin, margin, margin + iconSize, margin);
 
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
     connect(this, &QLineEdit::textChanged, this, &InputField::newInput);
+}
+
+int InputField::getMargin()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    return style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, this) / 2;
+#else
+    return style()->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr, this);
+#endif
 }
 
 InputField::~InputField() = default;
@@ -175,12 +186,10 @@ void InputField::updateText(const Base::Quantity& quant)
     setText(QString::fromStdString(txt));
 }
 
-void InputField::resizeEvent(QResizeEvent *)
+void InputField::resizeEvent(QResizeEvent * /*event*/)
 {
-    QSize sz = iconLabel->sizeHint();
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    iconLabel->move(rect().right() - frameWidth - sz.width(),
-                    rect().center().y() - sz.height() / 2);
+    QSize iconSize = iconLabel->sizeHint();
+    iconLabel->move(width() - (iconSize.width() + 2 * getMargin()), (height() - iconSize.height()) / 2);
 }
 
 void InputField::updateIconLabel(const QString& text)
@@ -260,7 +269,7 @@ void InputField::newInput(const QString & text)
     }
     catch(Base::Exception &e){
         QString errorText = QString::fromLatin1(e.what());
-        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
+        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", iconLabel->sizeHint());
         iconLabel->setPixmap(pixmap);
         Q_EMIT parseError(errorText);
         validInput = false;
@@ -272,7 +281,7 @@ void InputField::newInput(const QString & text)
 
     // check if unit fits!
     if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
-        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
+        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", iconLabel->sizeHint());
         iconLabel->setPixmap(pixmap);
         Q_EMIT parseError(QStringLiteral("Wrong unit"));
         validInput = false;
@@ -280,7 +289,7 @@ void InputField::newInput(const QString & text)
     }
 
 
-    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
+    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", iconLabel->sizeHint());
     iconLabel->setPixmap(pixmap);
     validInput = true;
 
