@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   fill="currentColor"
+   class="bi bi-graph-up"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="Fem_PostPlotline.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="69.075494"
+     inkscape:cx="11.458478"
+     inkscape:cy="9.6343864"
+     inkscape:window-width="3132"
+     inkscape:window-height="1772"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     fill-rule="evenodd"
+     d="m 14.817,3.113 c 0.21387,0.1750014 0.245222,0.4903105 0.07,0.704 l -4.5,5.5 C 10.199729,9.5455781 9.8561383,9.5627576 9.647,9.354 L 7.06,6.767 3.404,11.794 C 3.006988,12.298831 2.2377371,11.73903 2.596,11.206 l 4,-5.5 C 6.7765369,5.4573046 7.1365852,5.4288047 7.354,5.646 l 2.609,2.61 4.15,-5.073 c 0.175001,-0.2138702 0.49031,-0.245222 0.704,-0.07"
+     id="path1"
+     sodipodi:nodetypes="cccccccccccc" />
+</svg>

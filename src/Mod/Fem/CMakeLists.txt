@@ -36,7 +36,7 @@ SET(FemBaseModules_SRCS
     coding_conventions.md
     Init.py
     InitGui.py
-    ObjectsFem.py
+    # ObjectsFem.py
     TestFemApp.py
     CreateLabels.py
 )
@@ -182,6 +182,8 @@ SET(FemObjects_SRCS
     femobjects/base_femelement.py
     femobjects/base_femmeshelement.py
     femobjects/base_fempythonobject.py
+    femobjects/base_fempostextractors.py
+    femobjects/base_fempostvisualizations.py
     femobjects/constant_vacuumpermittivity.py
     femobjects/constraint_bodyheatsource.py
     femobjects/constraint_centrif.py
@@ -217,6 +219,8 @@ if(BUILD_FEM_VTK_PYTHON)
     SET(FemObjects_SRCS
         ${FemObjects_SRCS}
         femobjects/post_glyphfilter.py
+        femobjects/post_extract1D.py
+        femobjects/post_histogram.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 
@@ -597,6 +601,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
     femtaskpanels/base_femtaskpanel.py
     femtaskpanels/base_femlogtaskpanel.py
+    femtaskpanels/base_fempostpanel.py
     femtaskpanels/task_constraint_bodyheatsource.py
     femtaskpanels/task_constraint_centrif.py
     femtaskpanels/task_constraint_currentdensity.py
@@ -628,6 +633,8 @@ if(BUILD_FEM_VTK_PYTHON)
     SET(FemGuiTaskPanels_SRCS
         ${FemGuiTaskPanels_SRCS}
         femtaskpanels/task_post_glyphfilter.py
+        femtaskpanels/task_post_histogram.py
+        femtaskpanels/task_post_extractor.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 
@@ -642,6 +649,10 @@ SET(FemGuiUtils_SRCS
     femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
     femguiutils/vtk_module_handling.py
+    femguiutils/vtk_table_view.py
+    femguiutils/data_extraction.py
+    femguiutils/extract_link_view.py
+    femguiutils/post_visualization.py
 )
 
 SET(FemGuiViewProvider_SRCS
@@ -651,6 +662,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_base_femmaterial.py
     femviewprovider/view_base_femmeshelement.py
     femviewprovider/view_base_femobject.py
+    femviewprovider/view_base_fempostvisualization.py
     femviewprovider/view_constant_vacuumpermittivity.py
     femviewprovider/view_constraint_bodyheatsource.py
     femviewprovider/view_constraint_centrif.py
@@ -686,6 +698,8 @@ if(BUILD_FEM_VTK_PYTHON)
     SET(FemGuiViewProvider_SRCS
         ${FemGuiViewProvider_SRCS}
         femviewprovider/view_post_glyphfilter.py
+        femviewprovider/view_post_extract.py
+        femviewprovider/view_post_histogram.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 

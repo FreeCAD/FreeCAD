@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,55 +21,71 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM base python object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__title__ = "FreeCAD FEM postprocessing visualization base ViewProvider"
+__author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
-## @package base_fempythonobject
+## @package view_base_fempostvisualizations
 #  \ingroup FEM
-#  \brief base object for FEM Python Features
+#  \brief view provider for post visualization object
 
+from PySide import QtGui, QtCore
 
-class BaseFemPythonObject:
+import Plot
+import FreeCADGui
 
-    BaseType = "Fem::BaseFemPythonObject"
+from . import view_base_femobject
+_GuiPropHelper = view_base_femobject._GuiPropHelper
 
-    def __init__(self, obj):
-        # self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to this object
+class VPPostVisualization:
+    """
+    A View Provider for visualization objects
+    """
 
-    # they are needed, see:
-    # https://forum.freecad.org/viewtopic.php?f=18&t=44021
-    # https://forum.freecad.org/viewtopic.php?f=18&t=44009
+    def __init__(self, vobj):
+        vobj.Proxy = self
+        self._setup_properties(vobj)
+
+    def _setup_properties(self, vobj):
+        pl = vobj.PropertiesList
+        for prop in self._get_properties():
+            if not prop.name in pl:
+                prop.add_to_object(vobj)
+
+    def _get_properties(self):
+        return []
+
+    def attach(self, vobj):
+        self.Object = vobj.Object
+        self.ViewObject = vobj
+
+    def isShow(self):
+        return True
+
+    def doubleClicked(self,vobj):
+
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+
+        # check if another VP is in edit mode and close it then
+        if guidoc.getInEdit():
+            FreeCADGui.Control.closeDialog()
+            guidoc.resetEdit()
+
+        guidoc.setEdit(vobj.Object.Name)
+        return True
+
+    def show_visualization(self):
+        # shows the visualization without going into edit mode
+        # to be implemented by subclasses
+        pass
+
+    def get_kw_args(self, obj):
+        # returns a dictionary with all visualization options needed for plotting
+        # based on the view provider properties
+        return {}
+
     def dumps(self):
         return None
 
     def loads(self, state):
         return None
-
-
-class _PropHelper:
-    """
-    Helper class to manage property data inside proxy objects.
-    Initialization keywords are the same used with PropertyContainer
-    to add dynamics properties plus "value" for the initial value.
-    Note: Is used as base for a GUI version, be aware when refactoring
-    """
-
-    def __init__(self, **kwds):
-        self.value = kwds.pop("value")
-        self.info = kwds
-        self.name = kwds["name"]
-
-    def add_to_object(self, obj):
-        obj.addProperty(**self.info)
-        obj.setPropertyStatus(self.name, "LockDynamic")
-        setattr(obj, self.name, self.value)
-
-    def handle_change_type(self, obj, old_type, convert_old_value=lambda x: x):
-        if obj.getTypeIdOfProperty(self.name) == old_type:
-            new_value = convert_old_value(obj.getPropertyByName(self.name))
-            obj.setPropertyStatus(self.name, "-LockDynamic")
-            obj.removeProperty(self.name)
-            self.add_to_object(obj)
-            setattr(obj, self.name, new_value)

@@ -64,7 +64,6 @@
 #include "ui_TaskPostFrames.h"
 #include "ui_TaskPostBranch.h"
 
-
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostFilter.h"
@@ -72,6 +71,9 @@
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostBranchFilter.h"
 
+#include <vtkQtTableView.h>
+#include <vtkQtTableModelAdapter.h>
+#include <vtkAttributeDataToTableFilter.h>
 
 using namespace FemGui;
 using namespace Gui;
@@ -214,9 +216,14 @@ TaskPostWidget::TaskPostWidget(Gui::ViewProviderDocumentObject* view,
     setWindowTitle(title);
     setWindowIcon(icon);
     m_icon = icon;
+
+    m_connection = m_object->signalChanged.connect(boost::bind(&TaskPostWidget::handlePropertyChange, this, boost::placeholders::_1, boost::placeholders::_2));
 }
 
-TaskPostWidget::~TaskPostWidget() = default;
+TaskPostWidget::~TaskPostWidget()
+{
+    m_connection.disconnect();
+};
 
 bool TaskPostWidget::autoApply()
 {
@@ -256,6 +263,14 @@ void TaskPostWidget::updateEnumerationList(App::PropertyEnumeration& prop, QComb
     box->setCurrentIndex(index);
 }
 
+void TaskPostWidget::handlePropertyChange(const App::DocumentObject& obj, const App::Property& prop)
+{
+    if (auto postobj = m_object.get<Fem::FemPostObject>()) {
+        if (&prop == &postobj->Data) {
+            this->onPostDataChanged(postobj);
+        }
+    }
+}
 
 // ***************************************************************************
 // simulation dialog for the TaskView
@@ -474,7 +489,6 @@ void TaskPostDisplay::onTransparencyValueChanged(int i)
 
 void TaskPostDisplay::applyPythonCode()
 {}
-
 
 // ***************************************************************************
 // functions

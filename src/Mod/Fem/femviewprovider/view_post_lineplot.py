@@ -1,6 +1,6 @@
+
 # ***************************************************************************
-# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,55 +22,50 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM base python object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__title__ = "FreeCAD FEM postprocessing line plot ViewProvider for the document object"
+__author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
-## @package base_fempythonobject
+## @package view_post_lineplot
 #  \ingroup FEM
-#  \brief base object for FEM Python Features
+#  \brief view provider for post line plot object
+
+import FreeCAD
+import FreeCADGui
+
+import FemGui
+from PySide import QtGui
 
 
-class BaseFemPythonObject:
+class VPPostLinePlot:
+    """
+    A View Provider for the Post LinePlot object
+    """
 
-    BaseType = "Fem::BaseFemPythonObject"
+    def __init__(self, vobj):
+        vobj.Proxy = self
 
-    def __init__(self, obj):
-        # self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to this object
+    def getIcon(self):
+        return ":/icons/FEM_PostLineplot.svg"
 
-    # they are needed, see:
-    # https://forum.freecad.org/viewtopic.php?f=18&t=44021
-    # https://forum.freecad.org/viewtopic.php?f=18&t=44009
+     def setEdit(self, vobj, mode):
+        # make sure we see what we edit
+        vobj.show()
+
+        # build up the task panel
+        #taskd = task_post_glyphfilter._TaskPanel(vobj)
+
+        #show it
+        #FreeCADGui.Control.showDialog(taskd)
+
+        return True
+
+    def unsetEdit(self, vobj, mode):
+        FreeCADGui.Control.closeDialog()
+        return True
+
     def dumps(self):
         return None
 
     def loads(self, state):
         return None
-
-
-class _PropHelper:
-    """
-    Helper class to manage property data inside proxy objects.
-    Initialization keywords are the same used with PropertyContainer
-    to add dynamics properties plus "value" for the initial value.
-    Note: Is used as base for a GUI version, be aware when refactoring
-    """
-
-    def __init__(self, **kwds):
-        self.value = kwds.pop("value")
-        self.info = kwds
-        self.name = kwds["name"]
-
-    def add_to_object(self, obj):
-        obj.addProperty(**self.info)
-        obj.setPropertyStatus(self.name, "LockDynamic")
-        setattr(obj, self.name, self.value)
-
-    def handle_change_type(self, obj, old_type, convert_old_value=lambda x: x):
-        if obj.getTypeIdOfProperty(self.name) == old_type:
-            new_value = convert_old_value(obj.getPropertyByName(self.name))
-            obj.setPropertyStatus(self.name, "-LockDynamic")
-            obj.removeProperty(self.name)
-            self.add_to_object(obj)
-            setattr(obj, self.name, new_value)
