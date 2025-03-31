@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <limits>
 
 #include <QApplication>
 #include <QColorDialog>
