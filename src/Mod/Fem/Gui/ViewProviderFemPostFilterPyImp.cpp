@@ -27,6 +27,7 @@
 #include <Gui/PythonWrapper.h>
 #include "ViewProviderFemPostFilter.h"
 #include "TaskPostBoxes.h"
+#include "TaskPostExtraction.h"
 // inclusion of the generated files (generated out of ViewProviderFemPostFilterPy.xml)
 #include "ViewProviderFemPostFilterPy.h"
 #include "ViewProviderFemPostFilterPy.cpp"
@@ -50,6 +51,24 @@ PyObject* ViewProviderFemPostFilterPy::createDisplayTaskWidget(PyObject* args)
     }
 
     auto panel = new TaskPostDisplay(getViewProviderFemPostObjectPtr());
+
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
+        return Py::new_reference_to(wrap.fromQWidget(panel));
+    }
+
+    PyErr_SetString(PyExc_TypeError, "creating the panel failed");
+    return nullptr;
+}
+
+PyObject* ViewProviderFemPostFilterPy::createExtractionTaskWidget(PyObject* args)
+{
+    // we take no arguments
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto panel = new TaskPostExtraction(getViewProviderFemPostObjectPtr());
 
     Gui::PythonWrapper wrap;
     if (wrap.loadCoreModule()) {

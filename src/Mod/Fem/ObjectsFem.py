@@ -686,6 +686,48 @@ def makePostVtkResult(doc, result_data, name="VtkResult"):
     return obj
 
 
+def makePostVtkLinePlot(doc, name="Lineplot"):
+    """makePostVtkLineplot(document, [name]):
+    creates a FEM post processing line plot
+    """
+    obj = doc.addObject("App::FeaturePython", name)
+    from femobjects import post_lineplot
+
+    post_lineplot.PostLinePlot(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_lineplot
+        view_post_lineplot.VPPostLinePlot(obj.ViewObject)
+    return
+
+
+def makePostVtkHistogramFieldData(doc, name="FieldData1D"):
+    """makePostVtkFieldData1D(document, [name]):
+    creates a FEM post processing data extractor for 1D Field data
+    """
+    obj = doc.addObject("App::FeaturePython", name)
+    from femobjects import post_histogram
+
+    post_histogram.PostHistogramFieldData(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_histogram
+        view_post_histogram.VPPostHistogramFieldData(obj.ViewObject)
+    return obj
+
+
+def makePostVtkHistogram(doc, name="Histogram"):
+    """makePostVtkHistogram(document, [name]):
+    creates a FEM post processing histogram plot
+    """
+    obj = doc.addObject("App::FeaturePython", name)
+    from femobjects import post_histogram
+
+    post_histogram.PostHistogram(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_histogram
+        view_post_histogram.VPPostHistogram(obj.ViewObject)
+    return obj
+
+
 # ********* solver objects ***********************************************************************
 def makeEquationDeformation(doc, base_solver=None, name="Deformation"):
     """makeEquationDeformation(document, [base_solver], [name]):
