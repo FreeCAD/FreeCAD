@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <limits>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
@@ -36,12 +37,12 @@
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
-#include <BRepLProp_CurveTool.hxx>
+# include <BRepLProp_CurveTool.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
-#include <GC_MakeCircle.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <Geom_Circle.hxx>
+# include <GC_MakeCircle.hxx>
+# include <Geom_TrimmedCurve.hxx>
+# include <Geom_Circle.hxx>
 
 # include <gce_MakeCirc.hxx>
 # include <GCPnts_AbscissaPoint.hxx>

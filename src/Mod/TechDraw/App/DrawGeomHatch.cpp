@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <iomanip>
+# include <limits>
 # include <sstream>
 
 #include <Bnd_Box.hxx>
