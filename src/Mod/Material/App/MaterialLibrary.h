@@ -57,6 +57,7 @@ public:
                     const QString& dir,
                     const QString& icon,
                     bool readOnly = true);
+    MaterialLibrary(const Library& library);
     MaterialLibrary(const MaterialLibrary&) = delete;
     ~MaterialLibrary() override = default;
 

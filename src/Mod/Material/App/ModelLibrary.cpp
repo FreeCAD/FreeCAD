@@ -47,6 +47,12 @@ ModelLibrary::ModelLibrary(const QString& libraryName,
     _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
 }
 
+ModelLibrary::ModelLibrary(const Library& library)
+    : Library(library)
+{
+    _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
+}
+
 ModelLibrary::ModelLibrary()
 {
     _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();

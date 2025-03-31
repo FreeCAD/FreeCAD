@@ -51,7 +51,7 @@ class MaterialManagerLocal;
 class MaterialFilter;
 class MaterialFilterOptions;
 
-class MaterialsExport MaterialManager: public Base::BaseClass
+class MaterialsExport MaterialManager: public Base::BaseClass, ParameterGrp::ObserverType
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -136,14 +136,31 @@ public:
     void dereference(std::shared_ptr<Material> material) const;
     void dereference() const;
 
+    /// Observer message from the ParameterGrp
+    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
+
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    void migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library);
+    void validateMigration(const std::shared_ptr<Materials::MaterialLibrary>& library);
+
+    // Cache functions
+    static double materialHitRate();
+#endif
+
 private:
     MaterialManager();
     static void initManagers();
 
     static MaterialManager* _manager;
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    static std::unique_ptr<MaterialManagerExternal> _externalManager;
+#endif
     static std::unique_ptr<MaterialManagerLocal> _localManager;
     static QMutex _mutex;
+    static bool _useExternal;
+
+    ParameterGrp::handle _hGrp;
 };
 
 }  // namespace Materials
