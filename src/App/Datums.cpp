@@ -367,8 +367,7 @@ bool LocalCoordinateSystem::extensionGetSubObject(DocumentObject*& ret,
     }
 
     try {
-        auto* lcs = dynamic_cast<const LocalCoordinateSystem*>(getExtendedObject());
-        ret = lcs->getDatumElement(name.c_str());
+        ret = getDatumElement(name.c_str());
         if (!ret) {
             return false;
         }
@@ -390,7 +389,6 @@ bool LocalCoordinateSystem::extensionGetSubObject(DocumentObject*& ret,
 
 bool LocalCoordinateSystem::hasObject(const DocumentObject* obj, [[maybe_unused]] bool recursive) const
 {
-    auto* lcs = dynamic_cast<const LocalCoordinateSystem*>(getExtendedObject());
-    const auto& features = lcs->OriginFeatures.getValues();
+    const auto& features = OriginFeatures.getValues();
     return std::ranges::find(features, obj) != features.end();
 }
