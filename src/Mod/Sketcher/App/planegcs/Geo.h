@@ -53,9 +53,6 @@ public:
 };
 
 using VEC_P = std::vector<Point>;
-static constexpr double pi = boost::math::constants::pi<double>();
-static constexpr double pi_2 = pi / 2.0;
-static constexpr double pi_18 = pi / 18.0;
 
 /// Class DeriVector2 holds a vector value and its derivative on the
 /// parameter that the derivatives are being calculated for now. x,y is the

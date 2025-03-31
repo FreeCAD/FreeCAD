@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -1707,16 +1706,11 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
     auto root = new SoSeparator;
     root->ref();
 
-#if (COIN_MAJOR_VERSION >= 4)
-    // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
-    // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
-    // The trick is to add a callback node and override the viewport size with what we want.
     if (useCoinOffscreenRenderer) {
         auto cbvp = new SoCallback;
         cbvp->setCallback(setViewportCB);
         root->addChild(cbvp);
     }
-#endif
 
     SoCamera* camera = getSoRenderManager()->getCamera();
 
@@ -3267,7 +3261,7 @@ void View3DInventorViewer::setCameraType(SoType type)
         // heightAngle. Setting it to 45 deg also causes an issue with a too
         // close camera but we don't have this other ugly effect.
 
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);  // NOLINT
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(std::numbers::pi / 4.0);  // NOLINT
     }
 
     lightRotation->rotation.connectFrom(&cam->orientation);
@@ -3426,7 +3420,7 @@ void View3DInventorViewer::viewAll()
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
     if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);  // NOLINT
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(std::numbers::pi / 4.0);  // NOLINT
     }
 
     if (isAnimationEnabled()) {
@@ -3524,7 +3518,6 @@ void View3DInventorViewer::viewSelection()
                     float(bbox.MaxX),
                     float(bbox.MaxY),
                     float(bbox.MaxZ));
-#if (COIN_MAJOR_VERSION >= 4)
         float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         switch (cam->viewportMapping.getValue()) {
             case SoCamera::CROP_VIEWPORT_FILL_FRAME:
@@ -3536,27 +3529,6 @@ void View3DInventorViewer::viewSelection()
                 break;
         }
         cam->viewBoundingBox(box,aspectratio,1.0);
-#else
-        SoTempPath path(2);
-        path.ref();
-        auto pcGroup = new SoGroup;
-        pcGroup->ref();
-        auto pcTransform = new SoTransform;
-        pcGroup->addChild(pcTransform);
-        pcTransform->translation = box.getCenter();
-        auto *pcCube = new SoCube;
-        pcGroup->addChild(pcCube);
-        float sizeX,sizeY,sizeZ;
-        box.getSize(sizeX,sizeY,sizeZ);
-        pcCube->width = sizeX;
-        pcCube->height = sizeY;
-        pcCube->depth = sizeZ;
-        path.append(pcGroup);
-        path.append(pcCube);
-        cam->viewAll(&path,getSoRenderManager()->getViewportRegion());
-        path.unrefNoDelete();
-        pcGroup->unref();
-#endif
     }
 }
 
@@ -3632,26 +3604,28 @@ void View3DInventorViewer::alignToSelection()
             angle *= -1;
         }
         
+        using std::numbers::pi;
+
         // Make angle positive
         if (angle < 0) {
-            angle += 2 * M_PI;
+            angle += 2 * pi;
         }
         
         // Find the angle to rotate to the nearest horizontal or vertical alignment with directionX.
         // f is a small value used to get more deterministic behavior when the camera is at directionX +- 45 degrees.
         const float f = 0.00001F;
         
-        if (angle <= M_PI_4 + f) {
+        if (angle <= pi/4 + f) {
             angle = 0;
         }
-        else if (angle <= 3 * M_PI_4 + f) {
-            angle = M_PI_2;
+        else if (angle <= 3 * pi/4 + f) {
+            angle = pi/2;
         }
-        else if (angle < M_PI + M_PI_4 - f) {
-            angle = M_PI;
+        else if (angle < pi + pi/4 - f) {
+            angle = pi;
         }
-        else if (angle < M_PI + 3 * M_PI_4 - f) {
-            angle = M_PI + M_PI_2;
+        else if (angle < pi + 3 * pi/4 - f) {
+            angle = pi + pi/2;
         }
         else {
             angle = 0;
@@ -3960,7 +3934,7 @@ void View3DInventorViewer::drawAxisCross()
 
     const float NEARVAL = 0.1F;
     const float FARVAL = 10.0F;
-    const float dim = NEARVAL * float(tan(M_PI / 8.0)); // FOV is 45 deg (45/360 = 1/8)
+    const float dim = NEARVAL * float(tan(std::numbers::pi / 8.0)); // FOV is 45 deg (45/360 = 1/8)
     glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
 
 

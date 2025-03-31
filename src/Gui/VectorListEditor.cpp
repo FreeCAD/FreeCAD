@@ -255,8 +255,8 @@ QWidget *VectorTableDelegate::createEditor(QWidget *parent, const QStyleOptionVi
 {
     auto editor = new QDoubleSpinBox(parent);
     editor->setDecimals(decimals);
-    editor->setMinimum(INT_MIN);
-    editor->setMaximum(INT_MAX);
+    editor->setMinimum(std::numeric_limits<int>::min());
+    editor->setMaximum(std::numeric_limits<int>::max());
     editor->setSingleStep(0.1);
 
     return editor;
@@ -299,11 +299,14 @@ VectorListEditor::VectorListEditor(int decimals, QWidget* parent)
     ui->tableWidget->setModel(model);
     ui->widget->hide();
 
-    ui->coordX->setRange(INT_MIN, INT_MAX);
+    ui->coordX->setRange(std::numeric_limits<int>::min(),
+                         std::numeric_limits<int>::max());
     ui->coordX->setDecimals(decimals);
-    ui->coordY->setRange(INT_MIN, INT_MAX);
+    ui->coordY->setRange(std::numeric_limits<int>::min(),
+                         std::numeric_limits<int>::max());
     ui->coordY->setDecimals(decimals);
-    ui->coordZ->setRange(INT_MIN, INT_MAX);
+    ui->coordZ->setRange(std::numeric_limits<int>::min(),
+                         std::numeric_limits<int>::max());
     ui->coordZ->setDecimals(decimals);
 
     ui->toolButtonMouse->setDisabled(true);

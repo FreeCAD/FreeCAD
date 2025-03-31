@@ -32,6 +32,7 @@
 
 class QComboBox;
 class Ui_TaskPostDisplay;
+class Ui_TaskPostCalculator;
 class Ui_TaskPostClip;
 class Ui_TaskPostContours;
 class Ui_TaskPostDataAlongLine;
@@ -141,11 +142,14 @@ public:
                 QWidget* parent = nullptr);
     ~TaskPostBox() override;
 
-    virtual void applyPythonCode() = 0;
+    virtual void applyPythonCode() {};
     virtual bool isGuiTaskOnly()
     {
         return false;
     }  // return true if only gui properties are manipulated
+
+    // executed when the apply button is pressed in the task dialog
+    virtual void apply() {};
 
 protected:
     App::DocumentObject* getObject() const
@@ -553,6 +557,35 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostWarpVector> ui;
+};
+
+
+// ***************************************************************************
+// calculator filter
+class ViewProviderFemPostCalculator;
+
+class TaskPostCalculator: public TaskPostBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPostCalculator(ViewProviderFemPostCalculator* view, QWidget* parent = nullptr);
+    ~TaskPostCalculator() override;
+
+protected:
+    void apply() override;
+
+private:
+    void setupConnections();
+    void onReplaceInvalidChanged(bool state);
+    void onReplacementValueChanged(double value);
+    void onScalarsActivated(int index);
+    void onVectorsActivated(int index);
+    void onOperatorsActivated(int index);
+
+private:
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostCalculator> ui;
 };
 
 }  // namespace FemGui

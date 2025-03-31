@@ -23,7 +23,6 @@
 #ifndef MESH_MESHPOINT_H
 #define MESH_MESHPOINT_H
 
-#include <climits>
 
 #include <Base/Vector3D.h>
 #include <Base/Handle.h>
@@ -51,7 +50,7 @@ public:
     /// simple constructor
     explicit MeshPoint(const Vector3d& vec = Vector3d(),
                        const MeshObject* obj = nullptr,
-                       unsigned int index = UINT_MAX)
+                       unsigned int index = std::numeric_limits<unsigned>::max())
         : Vector3d(vec)
         , Index(index)
         , Mesh(obj)
@@ -59,7 +58,7 @@ public:
 
     bool isBound() const
     {
-        return Index != UINT_MAX;
+        return Index != std::numeric_limits<unsigned>::max();
     }
 
     unsigned int Index;

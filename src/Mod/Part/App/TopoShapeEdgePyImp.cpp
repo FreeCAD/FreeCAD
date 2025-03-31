@@ -126,7 +126,8 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     PyObject *pcObj, *pcObj2;
-    double first=DBL_MAX, last=DBL_MAX;
+    double first = std::numeric_limits<double>::max();
+    double last = std::numeric_limits<double>::max();
     if (PyArg_ParseTuple(args, "O!|dd", &(Part::GeometryPy::Type), &pcObj, &first, &last)) {
         Geometry* geom = static_cast<GeometryPy*>(pcObj)->getGeometryPtr();
         Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(geom->handle());
@@ -135,9 +136,9 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return -1;
         }
 
-        if (first==DBL_MAX)
+        if (first == std::numeric_limits<double>::max())
             first = curve->FirstParameter();
-        if (last==DBL_MAX)
+        if (last == std::numeric_limits<double>::max())
             last = curve->LastParameter();
 
         try {

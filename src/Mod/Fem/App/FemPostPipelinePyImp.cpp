@@ -58,26 +58,22 @@ PyObject* FemPostPipelinePy::read(PyObject* args)
                          &unitobj,
                          &value_type)) {
         if (!values) {
-
             // single argument version was called!
-
             if (!PyUnicode_Check(files)) {
                 PyErr_SetString(PyExc_TypeError, "argument must be file path");
                 return nullptr;
             }
             const char* path = PyUnicode_AsUTF8(files);
             getFemPostPipelinePtr()->read(Base::FileInfo(path));
+            Py_Return;
         }
         else if (values && unitobj) {
-
             // multistep version!
-
             if (!(PyTuple_Check(files) || PyList_Check(files))
                 || !(PyTuple_Check(values) || PyList_Check(values))) {
-
-                std::string error = std::string(
-                    "Files and values must be list of strings and number respectively.");
-                throw Base::TypeError(error);
+                PyErr_SetString(PyExc_TypeError,
+                                "Files and values must be list of strings and number respectively");
+                return nullptr;
             }
 
             // extract the result objects
@@ -89,7 +85,8 @@ PyObject* FemPostPipelinePy::read(PyObject* args)
             for (Py::Sequence::size_type i = 0; i < size; i++) {
                 auto path = Py::Object(file_list[i]);
                 if (!path.isString()) {
-                    throw Base::TypeError("File path must be string");
+                    PyErr_SetString(PyExc_TypeError, "File path must be string");
+                    return nullptr;
                 }
                 file_result[i] = Base::FileInfo(path.as_string());
             }
@@ -103,8 +100,8 @@ PyObject* FemPostPipelinePy::read(PyObject* args)
             for (Py::Sequence::size_type i = 0; i < size; i++) {
                 auto value = Py::Object(values_list[i]);
                 if (!value.isNumeric()) {
-                    std::string error = std::string("Values must be numbers");
-                    throw Base::TypeError(error);
+                    PyErr_SetString(PyExc_TypeError, "Values must be numbers");
+                    return nullptr;
                 }
                 value_result[i] = Py::Float(value).as_double();
             }

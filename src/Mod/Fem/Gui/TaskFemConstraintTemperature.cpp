@@ -68,9 +68,9 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
 
     // Fill data into dialog elements
     ui->qsb_temperature->setMinimum(0);
-    ui->qsb_temperature->setMaximum(FLOAT_MAX);
-    ui->qsb_cflux->setMinimum(-FLOAT_MAX);
-    ui->qsb_cflux->setMaximum(FLOAT_MAX);
+    ui->qsb_temperature->setMaximum(std::numeric_limits<float>::max());
+    ui->qsb_cflux->setMinimum(-std::numeric_limits<float>::max());
+    ui->qsb_cflux->setMaximum(std::numeric_limits<float>::max());
 
     App::PropertyEnumeration* constrType = &pcConstraint->ConstraintType;
     QStringList qTypeList;

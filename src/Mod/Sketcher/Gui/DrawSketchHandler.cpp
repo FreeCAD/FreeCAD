@@ -537,7 +537,7 @@ void DrawSketchHandler::seekAlignmentAutoConstraint(
     std::vector<AutoConstraint>& suggestedConstraints,
     const Base::Vector2d& Dir)
 {
-
+    using std::numbers::pi;
     const double angleDevRad = 0.035;  // 2 degrees in radians
 
     AutoConstraint constr;
@@ -545,11 +545,11 @@ void DrawSketchHandler::seekAlignmentAutoConstraint(
     constr.GeoId = GeoEnum::GeoUndef;
     constr.PosId = PointPos::none;
     double angle = std::abs(atan2(Dir.y, Dir.x));
-    if (angle < angleDevRad || (M_PI - angle) < angleDevRad) {
+    if (angle < angleDevRad || (pi - angle) < angleDevRad) {
         // Suggest horizontal constraint
         constr.Type = Sketcher::Horizontal;
     }
-    else if (std::abs(angle - M_PI_2) < angleDevRad) {
+    else if (std::abs(angle - pi / 2) < angleDevRad) {
         // Suggest vertical constraint
         constr.Type = Sketcher::Vertical;
     }
@@ -563,6 +563,7 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
                                                   const Base::Vector2d& Pos,
                                                   const Base::Vector2d& Dir)
 {
+    using std::numbers::pi;
     SketchObject* obj = sketchgui->getSketchObject();
     int tangId = GeoEnum::GeoUndef;
 
@@ -652,7 +653,7 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
 
                 double angle = atan2(projPnt.y, projPnt.x);
                 while (angle < startAngle) {
-                    angle += 2 * D_PI;  // Bring it to range of arc
+                    angle += 2 * pi;  // Bring it to range of arc
                 }
 
                 // if the point is on correct side of arc
@@ -696,10 +697,10 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
                         aoe->getMinorRadius()
                             * ((tmpPos.x - center.x) * majdir.x + (tmpPos.y - center.y) * majdir.y))
                         - startAngle,
-                    2.f * M_PI);
+                    2.f * pi);
 
                 while (angle < startAngle) {
-                    angle += 2 * D_PI;  // Bring it to range of arc
+                    angle += 2 * pi;  // Bring it to range of arc
                 }
 
                 // if the point is on correct side of arc
@@ -982,7 +983,7 @@ void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position,
 
     SbString text;
     std::string lengthString = lengthToDisplayFormat(length, 1);
-    std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+    std::string angleString = angleToDisplayFormat(angle * 180.0 / std::numbers::pi, 1);
     text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
     setPositionText(position, text);
 }
@@ -1013,7 +1014,7 @@ void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position,
     SbString text;
     std::string doubleString = unit == Base::Unit::Length
         ? lengthToDisplayFormat(val, 1)
-        : angleToDisplayFormat(val * 180.0 / M_PI, 1);
+        : angleToDisplayFormat(val * 180.0 / std::numbers::pi, 1);
     text.sprintf(" (%s)", doubleString.c_str());
     setPositionText(position, text);
 }

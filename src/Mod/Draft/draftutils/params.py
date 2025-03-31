@@ -367,6 +367,29 @@ def _param_from_PrefFileChooser(widget):
     return path, entry, ""
 
 
+def _param_from_PrefFontBox(widget):
+    if App.GuiUp:
+        from PySide import QtGui
+        font = QtGui.QFont()
+        font.setStyleHint(QtGui.QFont.StyleHint.SansSerif)
+        value = font.defaultFamily()
+    else:
+        value = ""
+    for elem in list(widget):
+        if "name" in elem.keys():
+            att_name = elem.attrib["name"]
+            if att_name == "prefEntry":
+                entry = elem.find("cstring").text
+            elif att_name == "prefPath":
+                path = elem.find("cstring").text
+    # We must set the parameter if it does not exist, else
+    # the Gui::PrefFontBox will show the wrong value.
+    param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
+    if entry not in param_grp.GetStrings():
+        param_grp.SetString(entry, value)
+    return path, entry, value
+
+
 def _get_param_dictionary():
 
     # print("Creating preferences dictionary...")
@@ -594,6 +617,9 @@ def _get_param_dictionary():
                     typ = "string"
                 elif att_class == "Gui::PrefFileChooser":
                     path, entry, value = _param_from_PrefFileChooser(widget)
+                    typ = "string"
+                elif att_class == "Gui::PrefFontBox":
+                    path, entry, value = _param_from_PrefFontBox(widget)
                     typ = "string"
 
                 if path is not None:

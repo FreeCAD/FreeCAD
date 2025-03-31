@@ -33,10 +33,6 @@
 
 #include "Datums.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 using namespace App;
 
 PROPERTY_SOURCE(App::DatumElement, App::GeoFeature)
@@ -243,14 +239,16 @@ App::DocumentObjectExecReturn* LocalCoordinateSystem::execute()
 
 const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getSetupData()
 {
+    using std::numbers::pi;
+
     static const std::vector<SetupData> setupData = {
         // clang-format off
         {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
-        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
-        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1, 1), M_PI * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1, 1, 1), pi * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1, 1), pi * 2 / 3)},
         {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0)},
-        {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
+        {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1, 1, 1), pi * 2 / 3)},
         {App::Point::getClassTypeId(), PointRoles[0], tr("Origin"),   Base::Rotation()}
         // clang-format on
     };

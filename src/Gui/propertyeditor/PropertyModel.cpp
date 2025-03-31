@@ -96,7 +96,7 @@ bool PropertyModel::setData(const QModelIndex& index, const QVariant& value, int
             // now?
             double d = data.toDouble();
             double v = value.toDouble();
-            if (fabs(d - v) > DBL_EPSILON) {
+            if (fabs(d - v) > std::numeric_limits<double>::epsilon()) {
                 return item->setData(value);
             }
         }

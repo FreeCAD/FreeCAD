@@ -23,7 +23,6 @@
 #ifndef GUI_SOFCSELECTIONCONTEXT_H
 #define GUI_SOFCSELECTIONCONTEXT_H
 
-#include <climits>
 #include <map>
 #include <memory>
 #include <set>
@@ -79,11 +78,11 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     }
 
     bool isHighlightAll() const{
-        return highlightIndex==INT_MAX && (selectionIndex.empty() || isSelectAll());
+        return highlightIndex == std::numeric_limits<int>::max() && (selectionIndex.empty() || isSelectAll());
     }
 
     void highlightAll() {
-        highlightIndex = INT_MAX;
+        highlightIndex = std::numeric_limits<int>::max();
     }
 
     void removeHighlight() {

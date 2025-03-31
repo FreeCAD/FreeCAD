@@ -1297,3 +1297,132 @@ short int FemPostWarpVectorFilter::mustExecute() const
         return App::DocumentObject::mustExecute();
     }
 }
+
+
+// ***************************************************************************
+// calculator filter
+PROPERTY_SOURCE(Fem::FemPostCalculatorFilter, Fem::FemPostFilter)
+
+FemPostCalculatorFilter::FemPostCalculatorFilter()
+    : FemPostFilter()
+{
+    ADD_PROPERTY_TYPE(FieldName,
+                      ("Calculator"),
+                      "Calculator",
+                      App::Prop_None,
+                      "Name of the calculated field");
+    ADD_PROPERTY_TYPE(Function,
+                      (""),
+                      "Calculator",
+                      App::Prop_None,
+                      "Expression of the unction to evaluate");
+    ADD_PROPERTY_TYPE(ReplacementValue,
+                      (0.0f),
+                      "Calculator",
+                      App::Prop_None,
+                      "Value used to replace invalid operations");
+    ADD_PROPERTY_TYPE(ReplaceInvalid,
+                      (false),
+                      "Calculator",
+                      App::Prop_None,
+                      "Replace invalid values");
+
+    FilterPipeline calculator;
+    m_calculator = vtkSmartPointer<vtkArrayCalculator>::New();
+    m_calculator->SetResultArrayName(FieldName.getValue());
+    calculator.source = m_calculator;
+    calculator.target = m_calculator;
+    addFilterPipeline(calculator, "calculator");
+    setActiveFilterPipeline("calculator");
+}
+
+FemPostCalculatorFilter::~FemPostCalculatorFilter() = default;
+
+DocumentObjectExecReturn* FemPostCalculatorFilter::execute()
+{
+    updateAvailableFields();
+
+    return FemPostFilter::execute();
+}
+
+void FemPostCalculatorFilter::onChanged(const Property* prop)
+{
+    if (prop == &Function) {
+        m_calculator->SetFunction(Function.getValue());
+    }
+    else if (prop == &FieldName) {
+        m_calculator->SetResultArrayName(FieldName.getValue());
+    }
+    else if (prop == &ReplaceInvalid) {
+        m_calculator->SetReplaceInvalidValues(ReplaceInvalid.getValue());
+    }
+    else if (prop == &ReplacementValue) {
+        m_calculator->SetReplacementValue(ReplacementValue.getValue());
+    }
+    else if (prop == &Data) {
+        updateAvailableFields();
+    }
+    Fem::FemPostFilter::onChanged(prop);
+}
+
+short int FemPostCalculatorFilter::mustExecute() const
+{
+    if (Function.isTouched() || FieldName.isTouched()) {
+        return 1;
+    }
+    else {
+        return FemPostFilter::mustExecute();
+    }
+}
+
+void FemPostCalculatorFilter::updateAvailableFields()
+{
+    // clear all variables
+    m_calculator->RemoveAllVariables();
+    m_calculator->AddCoordinateScalarVariable("coordsX", 0);
+    m_calculator->AddCoordinateScalarVariable("coordsY", 1);
+    m_calculator->AddCoordinateScalarVariable("coordsZ", 2);
+    m_calculator->AddCoordinateVectorVariable("coords");
+
+    std::vector<std::string> scalars;
+    std::vector<std::string> vectors;
+    //    std::vector<std::string> tensors;
+
+    vtkSmartPointer<vtkDataObject> data = getInputData();
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset) {
+        return;
+    }
+    vtkPointData* pd = dset->GetPointData();
+
+    // get all vector fields
+    for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
+        std::string name1 = pd->GetArrayName(i);
+        std::string name2 = name1;
+        std::replace(name2.begin(), name2.end(), ' ', '_');
+        if (pd->GetArray(i)->GetNumberOfComponents() == 3) {
+            m_calculator->AddVectorVariable(name2.c_str(), name1.c_str());
+            // add components as scalar variable
+            m_calculator->AddScalarVariable((name2 + "_X").c_str(), name1.c_str(), 0);
+            m_calculator->AddScalarVariable((name2 + "_Y").c_str(), name1.c_str(), 1);
+            m_calculator->AddScalarVariable((name2 + "_Z").c_str(), name1.c_str(), 2);
+        }
+        else if (pd->GetArray(i)->GetNumberOfComponents() == 1) {
+            m_calculator->AddScalarVariable(name2.c_str(), name1.c_str());
+        }
+    }
+}
+
+const std::vector<std::string> FemPostCalculatorFilter::getScalarVariables()
+{
+    std::vector<std::string> scalars = m_calculator->GetScalarVariableNames();
+    scalars.insert(scalars.begin(), {"coordsX", "coordsY", "coordsZ"});
+    return scalars;
+}
+
+const std::vector<std::string> FemPostCalculatorFilter::getVectorVariables()
+{
+    std::vector<std::string> vectors = m_calculator->GetVectorVariableNames();
+    vectors.insert(vectors.begin(), "coords");
+    return vectors;
+}

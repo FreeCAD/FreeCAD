@@ -119,7 +119,7 @@ App::DocumentObjectExecReturn* SegmentByMesh::execute()
         // now we have too many facets since we have (invisible) facets near to the back clipping
         // plane, so we need the nearest facet to the front clipping plane
         //
-        float fDist = FLOAT_MAX;
+        float fDist = std::numeric_limits<float>::max();
         MeshCore::FacetIndex uIdx = MeshCore::FACET_INDEX_MAX;
         MeshFacetIterator cFIt(rMeshKernel);
 

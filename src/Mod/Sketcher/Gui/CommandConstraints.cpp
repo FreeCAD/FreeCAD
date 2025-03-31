@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 #include <Precision.hxx>
 #include <QPainter>
-#include <cfloat>
 #endif
 
 #include <boost/range/adaptor/reversed.hpp>
@@ -114,10 +113,10 @@ void finishDatumConstraint(Gui::Command* cmd,
 
     if (lastConstraintType == Radius || lastConstraintType == Diameter) {
         labelPosition = hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0)
-            * (M_PI / 180);// Get radius/diameter constraint display angle
+            * (std::numbers::pi / 180);// Get radius/diameter constraint display angle
         labelPositionRandomness =
             hGrp->GetFloat("RadiusDiameterConstraintDisplayAngleRandomness", 0.0)
-            * (M_PI / 180);// Get randomness
+            * (std::numbers::pi / 180);// Get randomness
 
         // Adds a random value around the base angle, so that possibly overlapping labels get likely
         // a different position.
@@ -320,7 +319,7 @@ bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& 
     }
     else {
         // if all points are collinear
-        double length = DBL_MAX;
+        double length = std::numeric_limits<double>::max();
         for (int i = 0; i <= 1; i++) {
             for (int j = 0; j <= 1; j++) {
                 double tmp = Base::DistanceP2(p2[j], p1[i]);

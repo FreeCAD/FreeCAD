@@ -50,10 +50,6 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
-#ifndef M_2PI
-#define M_2PI ((M_PI)*2.0)
-#endif
-
 constexpr double DegreesHalfCircle{180.0};
 
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
@@ -108,7 +104,8 @@ public:
 
     static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
     static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
-    static bool fpCompare(const double& d1, const double& d2, double tolerance = FLT_EPSILON);
+    static bool fpCompare(const double& d1, const double& d2,
+                          double tolerance = std::numeric_limits<float>::epsilon());
     static std::pair<Base::Vector3d, Base::Vector3d>
     boxIntersect2d(Base::Vector3d point, Base::Vector3d dir, double xRange, double yRange);
     static bool apparentIntersection(const Handle(Geom_Curve) curve1,
@@ -147,7 +144,7 @@ public:
 
     static Base::Vector3d toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint);
     static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2,
-                              double tolerance = FLT_EPSILON);
+                              double tolerance = std::numeric_limits<float>::epsilon());
     //! rotate vector by angle radians around axis through org
     static Base::Vector3d vecRotate(Base::Vector3d vec, double angle, Base::Vector3d axis,
                                     Base::Vector3d org = Base::Vector3d(0.0, 0.0, 0.0));

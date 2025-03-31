@@ -41,7 +41,7 @@ struct ShapeHasher
 #if OCC_VERSION_HEX >= 0x070800
         return std::hash<TopoDS_Shape> {}(shape);
 #else
-        return shape.HashCode(INT_MAX);
+        return shape.HashCode(std::numeric_limits<int>::max());
 #endif
     }
 };
@@ -53,7 +53,7 @@ struct LabelHasher
 #if OCC_VERSION_HEX >= 0x070800
         return std::hash<TDF_Label> {}(label);
 #else
-        return TDF_LabelMapHasher::HashCode(label, INT_MAX);
+        return TDF_LabelMapHasher::HashCode(label, std::numeric_limits<int>::max());
 #endif
     }
 };

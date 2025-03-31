@@ -201,6 +201,7 @@ protected:
     void wheelEvent(QWheelEvent * event) override;
     void contextMenuEvent(QContextMenuEvent * event) override;
     void resizeEvent(QResizeEvent*) override;
+    int getMargin();
 
 private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;

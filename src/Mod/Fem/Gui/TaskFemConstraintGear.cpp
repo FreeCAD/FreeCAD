@@ -87,10 +87,10 @@ TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint* Constrai
 
     // Fill data into dialog elements
     ui->spinDiameter->setMinimum(0);
-    ui->spinDiameter->setMaximum(FLOAT_MAX);
+    ui->spinDiameter->setMaximum(std::numeric_limits<float>::max());
     ui->spinDiameter->setValue(dia);
     ui->spinForce->setMinimum(0);
-    ui->spinForce->setMaximum(FLOAT_MAX);
+    ui->spinForce->setMaximum(std::numeric_limits<float>::max());
     ui->spinForce->setValue(force);
     ui->spinForceAngle->setMinimum(-360);
     ui->spinForceAngle->setMaximum(360);

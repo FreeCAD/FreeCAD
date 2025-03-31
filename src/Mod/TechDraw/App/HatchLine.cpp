@@ -396,7 +396,7 @@ double PATLineSpec::getSlope()
     } else if (angle < -90.0) {
         angle = (180 + angle);
     }
-    return tan(angle * M_PI/180.0);
+    return tan(angle * std::numbers::pi/180.0);
 }
 
 bool PATLineSpec::isDashed()
@@ -413,7 +413,7 @@ double PATLineSpec::getIntervalX()
         return getInterval();
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() / cos(perpAngle * M_PI/180.0));
+        return fabs(getInterval() / cos(perpAngle * std::numbers::pi/180.0));
     }
 }
 
@@ -426,7 +426,7 @@ double PATLineSpec::getIntervalY()
         return 0.0;
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() * tan(perpAngle * M_PI/180.0));
+        return fabs(getInterval() * tan(perpAngle * std::numbers::pi/180.0));
     }
 }
 

@@ -54,10 +54,6 @@ from draftutils.utils import ARROW_TYPES as arrowtypes
 
 from draftutils.utils import (type_check,
                               typecheck,
-                              get_param,
-                              getParam,
-                              set_param,
-                              setParam,
                               precision,
                               tolerance)
 
