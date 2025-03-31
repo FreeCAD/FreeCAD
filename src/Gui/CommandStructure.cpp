@@ -110,7 +110,14 @@ void StdCmdGroup::activated(int iMsg)
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");
     QString label = QApplication::translate("Std_Group", "Group");
-    doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
+    std::vector<SelectionSingleton::SelObj> selection = Gui::Selection().getSelection(nullptr, ResolveMode::NoResolve, true);
+
+    doCommand(Doc,"newGroup = App.activeDocument().addObject('App::DocumentObjectGroup','%s')", GroupName.c_str());
+    if(!selection.empty()) {  // TODO: check if addObject is even possible - some objects do not support that
+        const char* objectName = selection.front().pResolvedObject->getNameInDocument();
+        doCommand(Doc,"App.activeDocument().getObject('%s').addObject(newGroup)", objectName);
+    }
+    doCommand(Doc,"App.activeDocument().Tip = newGroup");
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'", GroupName.c_str(),
               label.toUtf8().data());
     commitCommand();
