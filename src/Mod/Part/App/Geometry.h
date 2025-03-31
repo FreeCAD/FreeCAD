@@ -1279,7 +1279,7 @@ PartExport
 double suggestFilletRadius(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                            const Base::Vector3d &refPnt1, const Base::Vector3d &refPnt2);
 PartExport
-GeomArcOfCircle* createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
+GeomArcOfCircle* create2LinesFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius);
 PartExport
 GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2, const Base::Vector3d& refPnt1,
