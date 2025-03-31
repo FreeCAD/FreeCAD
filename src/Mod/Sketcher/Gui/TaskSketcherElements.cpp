@@ -1697,7 +1697,7 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
 bool TaskSketcherElements::hasInputWidgetFocused()
 {
     QWidget* focusedWidget = QApplication::focusWidget();
-    return qobject_cast<QLineEdit*>(focusedWidget);
+    return qobject_cast<QLineEdit*>(focusedWidget) != nullptr;
 }
 
 void TaskSketcherElements::onListWidgetElementsItemEntered(QListWidgetItem* item)
