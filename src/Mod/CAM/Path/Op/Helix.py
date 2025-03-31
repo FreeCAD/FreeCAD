@@ -30,7 +30,7 @@ import Path
 import Path.Base.FeedRate as PathFeedRate
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-
+from math import sqrt
 
 __title__ = "CAM Helix Operation"
 __author__ = "Lorenz Hüdepohl"
@@ -184,6 +184,15 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Extra value to stay away from final profile- good for roughing toolpath",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FeedRateAdj",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Apply radial feed-rate adjustment to correct tooltip speed",
+            ),
+        )
 
         ENUMS = self.helixOpPropertyEnumerations()
         for n in ENUMS:
@@ -207,6 +216,17 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Extra value to stay away from final profile- good for roughing toolpath",
+                ),
+            )
+
+        if not hasattr(obj, "FeedRateAdj"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FeedRateAdj",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply radial feed-rate adjustment to correct tooltip speed",
                 ),
             )
 
@@ -256,10 +276,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "inner_radius": obj.StartRadius.Value + obj.OffsetExtra.Value,
             "direction": obj.Direction,
             "startAt": obj.StartSide,
+            "feedRateAdj":obj.FeedRateAdj,
         }
 
         for hole in holes:
-            args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetExtra.Value)
+            args["hole_radius"] = (hole["d"] / 2) - (obj.OffsetExtra.Value)
             startPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
@@ -295,6 +316,7 @@ def SetupProperties():
     setup.append("StartSide")
     setup.append("StepOver")
     setup.append("StartRadius")
+    setup.append("FeedRateAdj")
     return setup
 
 
