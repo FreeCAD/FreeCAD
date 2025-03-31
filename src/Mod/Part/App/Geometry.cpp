@@ -765,8 +765,8 @@ GeomLineSegment* GeomCurve::toLineSegment(KeepTag clone) const
 
     Base::Vector3d start, end;
     if (isDerivedFrom<GeomBoundedCurve>()) {
-        start = dynamic_cast<const GeomBoundedCurve*>(this)->getStartPoint();
-        end = dynamic_cast<const GeomBoundedCurve*>(this)->getEndPoint();
+        start = static_cast<const GeomBoundedCurve*>(this)->getStartPoint();
+        end = static_cast<const GeomBoundedCurve*>(this)->getEndPoint();
     } else {
         start = pointAtParameter(getFirstParameter());
         end = pointAtParameter(getLastParameter());
@@ -4527,7 +4527,7 @@ bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
 {
     if(_other.getTypeId() != getTypeId()) {
         if (_other.isDerivedFrom<GeomCurve>()) {
-            std::unique_ptr<Geometry> geo(dynamic_cast<const GeomCurve&>(_other).toLine());
+            std::unique_ptr<Geometry> geo(static_cast<const GeomCurve&>(_other).toLine());
             if (geo)
                 return isSame(*geo, tol, atol);
         }
@@ -4819,10 +4819,10 @@ GeomPlane* GeomSurface::toPlane(bool clone, double tol) const
 {
     if (isDerivedFrom<GeomPlane>()) {
         if (clone) {
-            return dynamic_cast<GeomPlane*>(this->clone());
+            return static_cast<GeomPlane*>(this->clone());
         }
         else {
-            return dynamic_cast<GeomPlane*>(this->copy());
+            return static_cast<GeomPlane*>(this->copy());
         }
     }
 
