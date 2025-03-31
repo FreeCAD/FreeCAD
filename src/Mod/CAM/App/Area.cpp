@@ -26,7 +26,6 @@
 #define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
 
 #ifndef _PreComp_
-#include <cfloat>
 
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
@@ -452,7 +451,7 @@ void Area::addWire(CArea& area,
                 if (reversed) {
                     type = -type;
                 }
-                if (fabs(first - last) > M_PI) {
+                if (fabs(first - last) > std::numbers::pi) {
                     // Split arc(circle) larger than half circle. Because gcode
                     // can't handle full circle?
                     gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
@@ -1221,7 +1220,8 @@ struct WireJoiner
                 info.iEnd[i] = info.iStart[i] = (int)adjacentList.size();
 
                 // populate adjacent list
-                for (auto vit = vmap.qbegin(bgi::nearest(pt[i], INT_MAX)); vit != vmap.qend();
+                constexpr int intMax = std::numeric_limits<int>::max();
+                for (auto vit = vmap.qbegin(bgi::nearest(pt[i], intMax)); vit != vmap.qend();
                      ++vit) {
                     ++rcount;
                     if (vit->pt().SquareDistance(pt[i]) > tol) {
@@ -2631,7 +2631,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 for (int j = 0; j < steps; ++j, offset += stepover) {
                     Point p1(-r, offset), p2(r, offset);
                     if (a > Precision::Confusion()) {
-                        double r = a * M_PI / 180.0;
+                        double r = a * std::numbers::pi / 180.0;
                         p1.Rotate(r);
                         p2.Rotate(r);
                     }
@@ -3703,7 +3703,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape>& shapes,
     double max_dist = sort_mode == SortModeGreedy ? threshold * threshold : 0;
     while (!shape_list.empty()) {
         AREA_TRACE("sorting " << shape_list.size() << ' ' << AREA_XYZ(pstart));
-        double best_d = DBL_MAX;
+        double best_d = std::numeric_limits<double>::max();
         auto best_it = shape_list.begin();
         for (auto it = best_it; it != shape_list.end(); ++it) {
             double d;
@@ -4155,7 +4155,7 @@ void Area::toPath(Toolpath& path,
                             }
                         }
 
-                        if (fabs(first - last) > M_PI) {
+                        if (fabs(first - last) > std::numbers::pi) {
                             // Split arc(circle) larger than half circle.
                             gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
                             addGArc(verbose,

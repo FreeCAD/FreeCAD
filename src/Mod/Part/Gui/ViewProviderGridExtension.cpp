@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
 
 # include <Inventor/nodes/SoDepthBuffer.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -60,7 +59,8 @@ using namespace std;
 
 EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderGridExtension, Gui::ViewProviderExtension)
 
-App::PropertyQuantityConstraint::Constraints ViewProviderGridExtension::GridSizeRange = { 0.001,DBL_MAX,1.0 };
+App::PropertyQuantityConstraint::Constraints ViewProviderGridExtension::GridSizeRange = {
+    0.001, std::numeric_limits<double>::max(), 1.0 };
 
 namespace PartGui {
 

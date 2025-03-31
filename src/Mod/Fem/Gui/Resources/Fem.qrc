@@ -15,6 +15,7 @@
         <file>icons/FEM_ConstraintContact.svg</file>
         <file>icons/FEM_ConstraintCurrentDensity.svg</file>
         <file>icons/FEM_ConstraintDisplacement.svg</file>
+        <file>icons/FEM_ConstraintElectricChargeDensity.svg</file>
         <file>icons/FEM_ConstraintElectrostaticPotential.svg</file>
         <file>icons/FEM_ConstraintFixed.svg</file>
         <file>icons/FEM_ConstraintFlowVelocity.svg</file>
@@ -72,6 +73,7 @@
         <file>icons/FEM_MaterialSolid.svg</file>
 
         <!-- gui command icons: post processing -->
+        <file>icons/FEM_PostFilterCalculator.svg</file>
         <file>icons/FEM_PostFilterClipRegion.svg</file>
         <file>icons/FEM_PostFilterClipScalar.svg</file>
         <file>icons/FEM_PostFilterContours.svg</file>
@@ -80,6 +82,8 @@
         <file>icons/FEM_PostFilterDataAtPoint.svg</file>
         <file>icons/FEM_PostFilterLinearizedStresses.svg</file>
         <file>icons/FEM_PostFilterWarp.svg</file>
+        <file>icons/FEM_PostFrames.svg</file>
+        <file>icons/FEM_PostBranchFilter.svg</file>
         <file>icons/FEM_PostPipelineFromResult.svg</file>
         <file>icons/FEM_ResultShow.svg</file>
         <file>icons/FEM_ResultsPurge.svg</file>
@@ -125,6 +129,7 @@
         <file>ui/ConstraintTie.ui</file>
         <file>ui/CurrentDensity.ui</file>
         <file>ui/DlgSettingsNetgen.ui</file>
+        <file>ui/ElectricChargeDensity.ui</file>
         <file>ui/ElectrostaticPotential.ui</file>
         <file>ui/ElementFluid1D.ui</file>
         <file>ui/ElementGeometry1D.ui</file>

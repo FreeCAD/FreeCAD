@@ -76,11 +76,11 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
 
     // Fill data into dialog elements
     ui->qsb_norm->setUnit(pcConstraint->NormalStiffness.getUnit());
-    ui->qsb_norm->setMaximum(FLOAT_MAX);
+    ui->qsb_norm->setMaximum(std::numeric_limits<float>::max());
     ui->qsb_norm->setValue(pcConstraint->NormalStiffness.getQuantityValue());
 
     ui->qsb_tan->setUnit(pcConstraint->TangentialStiffness.getUnit());
-    ui->qsb_tan->setMaximum(FLOAT_MAX);
+    ui->qsb_tan->setMaximum(std::numeric_limits<float>::max());
     ui->qsb_tan->setValue(pcConstraint->TangentialStiffness.getQuantityValue());
 
     ui->cb_elmer_stiffness->clear();

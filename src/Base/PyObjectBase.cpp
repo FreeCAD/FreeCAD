@@ -169,7 +169,9 @@ static PyTypeObject PyBaseProxyType = {
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                      /*tp_watched */
 #endif
-
+#if PY_VERSION_HEX >= 0x030d0000
+    ,0                                                      /*tp_versions_used*/
+#endif
 };
 
 PyTypeObject PyObjectBase::Type = {
@@ -228,6 +230,9 @@ PyTypeObject PyObjectBase::Type = {
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                      /*tp_watched */
 #endif
+#if PY_VERSION_HEX >= 0x030d0000
+    ,0                                                      /*tp_versions_used*/
+#endif
 };
 
 #if defined(__clang__)
@@ -259,7 +264,16 @@ PyObject* createWeakRef(PyObjectBase* ptr)
 PyObjectBase* getFromWeakRef(PyObject* ref)
 {
     if (ref) {
+#if PY_VERSION_HEX >= 0x030d0000
+        ::PyObject* proxy;
+        int returnCode = PyWeakref_GetRef(ref, &proxy);
+        if (returnCode != 1) {
+            return nullptr;
+        }
+        Py_DECREF(proxy);
+#else
         PyObject* proxy = PyWeakref_GetObject(ref);
+#endif
         if (proxy && PyObject_TypeCheck(proxy, &PyBaseProxyType)) {
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
             return static_cast<PyObjectBase*>(reinterpret_cast<PyBaseProxy*>(proxy)->baseobject);

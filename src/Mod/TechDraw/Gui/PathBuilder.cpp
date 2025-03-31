@@ -327,11 +327,11 @@ void PathBuilder::pathArc(QPainterPath& path, double rx, double ry, double x_axi
 
     th_arc = th1 - th0;
     if (th_arc < 0 && sweep_flag)
-        th_arc += 2 * M_PI;
+        th_arc += 2 * std::numbers::pi;
     else if (th_arc > 0 && !sweep_flag)
-        th_arc -= 2 * M_PI;
+        th_arc -= 2 * std::numbers::pi;
 
-    n_segs = qCeil(qAbs(th_arc / (M_PI * 0.5 + 0.001)));
+    n_segs = qCeil(qAbs(th_arc / (std::numbers::pi * 0.5 + 0.001)));
 
     path.moveTo(curx, cury);
 

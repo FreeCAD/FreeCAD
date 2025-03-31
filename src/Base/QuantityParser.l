@@ -225,8 +225,8 @@ CGRP     '\,'[0-9][0-9][0-9]
 ","?{DIGIT}+{EXPO}?                                 {  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
 
 
-"pi"                   {yylval = Quantity(M_PI)          ; return NUM;} // constant pi
-"e"                    {yylval = Quantity(M_E)           ; return NUM;} // constant e
+"pi"                   {yylval = Quantity(std::numbers::pi)          ; return NUM;} // constant pi
+"e"                    {yylval = Quantity(std::numbers::e)           ; return NUM;} // constant e
 
 "acos"                 return ACOS;
 "asin"                 return ASIN;

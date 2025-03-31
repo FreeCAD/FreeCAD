@@ -45,8 +45,10 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumCoordinateSystem,PartDesignGui::ViewProviderDatum)
 
-const App::PropertyFloatConstraint::Constraints ZoomConstraint = {0.0,DBL_MAX,0.2};
-const App::PropertyIntegerConstraint::Constraints FontConstraint = {1,INT_MAX,1};
+const App::PropertyFloatConstraint::Constraints ZoomConstraint = {
+    0.0, std::numeric_limits<double>::max(), 0.2};
+const App::PropertyIntegerConstraint::Constraints FontConstraint = {
+    1,std::numeric_limits<int>::max(), 1};
 
 ViewProviderDatumCoordinateSystem::ViewProviderDatumCoordinateSystem()
 {

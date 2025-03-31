@@ -71,10 +71,7 @@ def purge_results(analysis):
     # result pipeline and filter
     for m in analysis.Group:
         if is_of_type(m, "Fem::FemPostPipeline"):
-            # delete associated filters
-            for filter_obj in m.Filter:
-                analysis.Document.removeObject(filter_obj.Name)
-            # delete the pipeline itself
+            # delete the pipeline itself (it removes all fiters itself)
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
 

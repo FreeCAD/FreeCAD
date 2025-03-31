@@ -846,7 +846,7 @@ TEST_F(SketchObjectTest, testJoinCurves)
     // Arrange
     // Make two curves
     Base::Vector3d coordsCenter(0.0, 0.0, 0.0);
-    double radius = 3.0, startParam = M_PI / 2, endParam = M_PI;
+    double radius = 3.0, startParam = std::numbers::pi / 2, endParam = std::numbers::pi;
     Part::GeomArcOfCircle arcOfCircle;
     arcOfCircle.setCenter(coordsCenter);
     arcOfCircle.setRadius(radius);
@@ -877,7 +877,7 @@ TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
     // Arrange
     // Make two curves
     Base::Vector3d coordsCenter(0.0, 0.0, 0.0);
-    double radius = 3.0, startParam = M_PI / 2, endParam = M_PI;
+    double radius = 3.0, startParam = std::numbers::pi / 2, endParam = std::numbers::pi;
     Part::GeomArcOfCircle arcOfCircle;
     arcOfCircle.setCenter(coordsCenter);
     arcOfCircle.setRadius(radius);

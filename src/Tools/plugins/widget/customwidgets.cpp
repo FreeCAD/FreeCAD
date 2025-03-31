@@ -33,7 +33,6 @@
 #include <QStylePainter>
 #include <QToolTip>
 #include <QtGui>
-#include <cfloat>
 
 #include "customwidgets.h"
 
@@ -449,8 +448,8 @@ ActionSelector::~ActionSelector()
 InputField::InputField(QWidget* parent)
     : QLineEdit(parent)
     , Value(0)
-    , Maximum(INT_MAX)
-    , Minimum(-INT_MAX)
+    , Maximum(std::numeric_limits<int>::max())
+    , Minimum(-std::numeric_limits<int>::max())
     , StepSize(1.0)
     , HistorySize(5)
 {}
@@ -671,8 +670,8 @@ public:
         : validInput(true)
         , pendingEmit(false)
         , unitValue(0)
-        , maximum(INT_MAX)
-        , minimum(-INT_MAX)
+        , maximum(std::numeric_limits<int>::max())
+        , minimum(-std::numeric_limits<int>::max())
         , singleStep(1.0)
     {}
     ~QuantitySpinBoxPrivate()
@@ -1459,7 +1458,7 @@ UnsignedValidator::UnsignedValidator(QObject* parent)
     : QValidator(parent)
 {
     b = 0;
-    t = UINT_MAX;
+    t = std::numeric_limits<unsigned>::max();
 }
 
 UnsignedValidator::UnsignedValidator(uint minimum, uint maximum, QObject* parent)
@@ -1522,39 +1521,41 @@ public:
     {}
     uint mapToUInt(int v) const
     {
+        using limits = std::numeric_limits;
         uint ui;
-        if (v == INT_MIN) {
+        if (v == limits<int>::min()) {
             ui = 0;
         }
-        else if (v == INT_MAX) {
-            ui = UINT_MAX;
+        else if (v == limits<int>::max()) {
+            ui = limits<uint>::max();
         }
         else if (v < 0) {
-            v -= INT_MIN;
-            ui = (uint)v;
+            v -= limits<int>::min();
+            ui = static_cast<uint>(v);
         }
         else {
-            ui = (uint)v;
-            ui -= INT_MIN;
+            ui = static_cast<uint>(v);
+            ui -= limits<int>::min();
         }
         return ui;
     }
     int mapToInt(uint v) const
     {
+        using limits = std::numeric_limits;
         int in;
-        if (v == UINT_MAX) {
-            in = INT_MAX;
+        if (v == limits<uint>::max()) {
+            in = limits<int>::max();
         }
         else if (v == 0) {
-            in = INT_MIN;
+            in = limits<int>::min();
         }
-        else if (v > INT_MAX) {
-            v += INT_MIN;
-            in = (int)v;
+        else if (v > limits<int>::max()) {
+            v += limits<int>::min();
+            in = static_cast<int>(v);
         }
         else {
             in = v;
-            in += INT_MIN;
+            in += limits<int>::min();
         }
         return in;
     }

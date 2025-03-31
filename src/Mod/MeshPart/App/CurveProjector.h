@@ -66,7 +66,8 @@ public:
             std::hash<T> hasher;
             return hasher(x) < hasher(y);
 #else
-            return x.HashCode(INT_MAX - 1) < y.HashCode(INT_MAX - 1);
+            constexpr int max = std::numeric_limits<int>::max();
+            return x.HashCode(max - 1) < y.HashCode(max - 1);
 #endif
         }
     };

@@ -64,7 +64,7 @@ def _get_flip_text_lin(p1, p2, wp, normal):
     tol = 1e-4  # high tolerance
     if math.isclose(ang, 0, abs_tol=tol):
         return False
-    if math.isclose(ang, math.pi, abs_tol=tol):
+    if math.isclose(abs(ang), math.pi, abs_tol=tol):
         return True
     if math.isclose(ang, math.pi/2, abs_tol=tol):
         return False
@@ -92,7 +92,7 @@ def _get_flip_text_ang(cen, sta, end, normal):
     tol = 1e-4  # high tolerance
     if math.isclose(ang, 0, abs_tol=tol):
         return True
-    if math.isclose(ang, math.pi, abs_tol=tol):
+    if math.isclose(abs(ang), math.pi, abs_tol=tol):
         return False
     if ang > 0:
         return False

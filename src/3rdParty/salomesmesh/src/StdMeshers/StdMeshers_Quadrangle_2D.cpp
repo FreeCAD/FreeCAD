@@ -4218,7 +4218,7 @@ bool StdMeshers_Quadrangle_2D::check()
   return isOK;
 }
 
-/*//================================================================================
+//================================================================================
 /*!
  * \brief Finds vertices at the most sharp face corners
  *  \param [in] theFace - the FACE

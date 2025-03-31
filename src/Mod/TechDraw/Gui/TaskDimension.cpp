@@ -227,7 +227,7 @@ void TaskDimension::onEqualToleranceChanged()
         ui->leFormatSpecifierUnderTolerance->setDisabled(true);
     }
     else {
-        ui->qsbOvertolerance->setMinimum(-DBL_MAX);
+        ui->qsbOvertolerance->setMinimum(-std::numeric_limits<double>::max());
         if (!ui->cbTheoreticallyExact->isChecked()) {
             ui->qsbUndertolerance->setDisabled(false);
             ui->leFormatSpecifierUnderTolerance->setDisabled(false);
@@ -372,14 +372,14 @@ void TaskDimension::onDimUseDefaultClicked()
     Base::Vector2d first2(points.first().x, -points.first().y);
     Base::Vector2d second2(points.second().x, -points.second().y);
     double lineAngle = (second2 - first2).Angle();
-    ui->dsbDimAngle->setValue(lineAngle * 180.0 / M_PI);
+    ui->dsbDimAngle->setValue(lineAngle * 180.0 / std::numbers::pi);
 }
 
 void TaskDimension::onDimUseSelectionClicked()
 {
     std::pair<double, bool> result = getAngleFromSelection();
     if (result.second) {
-        ui->dsbDimAngle->setValue(result.first * 180.0 / M_PI);
+        ui->dsbDimAngle->setValue(result.first * 180.0 / std::numbers::pi);
     }
 }
 
@@ -392,13 +392,13 @@ void TaskDimension::onExtUseDefaultClicked()
     Base::Vector2d lineDirection = second2 - first2;
     Base::Vector2d extensionDirection(-lineDirection.y, lineDirection.x);
     double extensionAngle = extensionDirection.Angle();
-    ui->dsbExtAngle->setValue(extensionAngle * 180.0 / M_PI);
+    ui->dsbExtAngle->setValue(extensionAngle * 180.0 / std::numbers::pi);
 }
 void TaskDimension::onExtUseSelectionClicked()
 {
     std::pair<double, bool> result = getAngleFromSelection();
     if (result.second) {
-        ui->dsbExtAngle->setValue(result.first * 180.0 / M_PI);
+        ui->dsbExtAngle->setValue(result.first * 180.0 / std::numbers::pi);
     }
 }
 

@@ -318,7 +318,7 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
             }
 
             int point_index = -1;
-            float distance = FLT_MAX;
+            float distance = std::numeric_limits<float>::max();
             Base::Vector3f pnt;
             SbVec3f face_pnt;
 
@@ -654,7 +654,7 @@ float MeshFillHole::findClosestPoint(const SbLine& ray,
                                      SbVec3f& closestPoint) const
 {
     // now check which vertex of the polygon is closest to the ray
-    float minDist = FLT_MAX;
+    float minDist = std::numeric_limits<float>::max();
     vertex_index = MeshCore::POINT_INDEX_MAX;
 
     const MeshCore::MeshKernel& rMesh = myMesh->Mesh.getValue().getKernel();

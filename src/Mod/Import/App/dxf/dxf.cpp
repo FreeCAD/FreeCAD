@@ -5,8 +5,6 @@
 
 #include "PreCompiled.h"
 
-// required by windows for M_PI definition
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -1584,10 +1582,10 @@ void CDxfWrite::writeAngularDimBlock(const double* textMidPoint,
     double span = fabs(endAngle - startAngle);
     double offset = span * 0.10;
     if (startAngle < 0) {
-        startAngle += 2 * M_PI;
+        startAngle += 2 * std::numbers::pi;
     }
     if (endAngle < 0) {
-        endAngle += 2 * M_PI;
+        endAngle += 2 * std::numbers::pi;
     }
     Base::Vector3d startOff(cos(startAngle + offset), sin(startAngle + offset), 0.0);
     Base::Vector3d endOff(cos(endAngle - offset), sin(endAngle - offset), 0.0);
@@ -2130,7 +2128,7 @@ bool CDxfRead::ReadEllipse()
     Base::Vector3d majorAxisEnd;  //  relative to centre
     double eccentricity = 0;
     double startAngleRadians = 0;
-    double endAngleRadians = 2 * M_PI;
+    double endAngleRadians = 2 * std::numbers::pi;
 
     Setup3DVectorAttribute(ePrimaryPoint, centre);
     Setup3DVectorAttribute(ePoint2, majorAxisEnd);

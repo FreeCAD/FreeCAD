@@ -50,7 +50,6 @@ from ArchWindowPresets import *
 # TODO: migrate this one
 
 from ArchStructure import *
-from ArchSpace import *
 
 # make functions
 
@@ -768,34 +767,151 @@ def makeSite(objectslist=None,baseobj=None,name=None):
 
 
 def makeSpace(objects=None,baseobj=None,name=None):
+    """Creates a space object from the given objects.
 
-    """makeSpace([objects],[baseobj],[name]): Creates a space object from the given objects.
-    Objects can be one document object, in which case it becomes the base shape of the space
-    object, or a list of selection objects as got from getSelectionEx(), or a list of tuples
-    (object, subobjectname)"""
+    Parameters
+    ----------
+    objects : object or List(<SelectionObject>) or App::PropertyLinkSubList, optional
+        The object or selection set that defines the space. If a single object is given,
+        it becomes the base shape for the object. If the object or selection set contains
+        subelements, these will be used as the boundaries to create the space. By default None.
+    baseobj : object or List(<SelectionObject>) or App::PropertyLinkSubList, optional
+        Currently unimplemented, it replaces and behaves in the same way as the objects parameter
+        if defined. By default None.
+    name : str, optional
+        The user-facing name to assign to the space object's label. By default None, in
+        which case the label is set to "Space".
 
+    Notes
+    -----
+    The objects parameter can be passed using either of these different formats:
+    1. Single object (e.g. a Part::Feature document object). Will be used as the space's base
+       shape.
+       ::
+            objects = <Part::Feature>
+    2. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the space's boundaries. If the list contains a single selection object without
+       subobjects, or with only one subobject, the object in its ``Object`` property is used as
+       the base shape.
+       ::
+            objects = [<SelectionObject>, ...]
+    3. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define boundaries. If
+       the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
+       with only one subobject, the object in the tuple is used as the base shape.
+       ::
+            objects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            objects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
     import ArchSpace
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    obj.Label = name if name else translate("Arch","Space")
-    ArchSpace._Space(obj)
+    space = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
+    space.Label = name if name else translate("Arch","Space")
+    ArchSpace._Space(space)
     if FreeCAD.GuiUp:
-        ArchSpace._ViewProviderSpace(obj.ViewObject)
+        ArchSpace._ViewProviderSpace(space.ViewObject)
     if baseobj:
         objects = baseobj
     if objects:
         if not isinstance(objects,list):
             objects = [objects]
-        if len(objects) == 1:
-            obj.Base = objects[0]
-            if FreeCAD.GuiUp:
-                objects[0].ViewObject.hide()
-        else:
-            obj.Proxy.addSubobjects(obj,objects)
-    return obj
 
+        isSingleObject = lambda objs: len(objs) == 1
+
+        # We assume that the objects list is not a mixed set. The type of the first
+        # object will determine the type of the set.
+        # Input to this function can come into three different formats. First convert it
+        # to a common format: [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+        if (hasattr(objects[0], "isDerivedFrom") and
+                objects[0].isDerivedFrom("Gui::SelectionObject")):
+            # Selection set: convert to common format
+            # [<SelectionObject>, ...]
+            objects = [(obj.Object, obj.SubElementNames) for obj in objects]
+        elif (isinstance(objects[0], tuple) or isinstance(objects[0], list)):
+            # Tuple or list of object with subobjects: pass unmodified
+            # [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+            pass
+        else:
+            # Single object: assume anything else passed is a single object with no
+            # boundaries.
+            # [ <Part::PartFeature> ]
+            objects = [(objects[0], [])]
+
+        if isSingleObject(objects):
+            # For a single object, having boundaries is determined by them being defined
+            # as more than one subelement (e.g. two faces)
+            boundaries = [obj for obj in objects if len(obj[1]) > 1]
+        else:
+            boundaries = [obj for obj in objects if obj[1]]
+
+        if isSingleObject(objects) and not boundaries:
+            space.Base = objects[0][0]
+            if FreeCAD.GuiUp:
+                objects[0][0].ViewObject.hide()
+        else:
+            space.Proxy.addSubobjects(space, boundaries)
+    return space
+
+def addSpaceBoundaries(space,subobjects):
+    """Adds the given subobjects as defining boundaries of the given space.
+
+    Parameters
+    ----------
+    space : ArchSpace._Space
+        Arch space object to add the boundaries to.
+    subobjects : List(<SelectionObject>) or App::PropertyLinkSubList
+        List of boundaries to add to the space.
+
+    Notes
+    -----
+    The subobjects parameter can be passed using either of these different formats:
+    1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the boundaries to add to the space.
+       ::
+            subobjects = [<SelectionObject>, ...]
+    2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries
+       to add.
+       ::
+            subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
+    import Draft
+    if Draft.getType(space) == "Space":
+        space.Proxy.addSubobjects(space,subobjects)
+
+def removeSpaceBoundaries(space,subobjects):
+    """Remove the given subobjects as defining boundaries of the given space.
+
+    Parameters
+    ----------
+    space : ArchSpace._Space
+        Arch space object to remove the boundaries from.
+    subobjects : List(<SelectionObject>) or App::PropertyLinkSubList
+        List of boundaries to remove from the space.
+
+    Notes
+    -----
+    The subobjects parameter can be passed using either of these different formats:
+    1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the boundaries to remove from the space.
+       ::
+            subobjects = [<SelectionObject>, ...]
+    2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries
+       to remove.
+       ::
+            subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
+    import Draft
+    if Draft.getType(space) == "Space":
+        space.Proxy.removeSubobjects(space,subobjects)
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
 

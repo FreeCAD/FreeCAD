@@ -183,11 +183,11 @@ ViewProviderPath::ViewProviderPath()
 
 
     ShowCountConstraints.LowerBound = 0;
-    ShowCountConstraints.UpperBound = INT_MAX;
+    ShowCountConstraints.UpperBound = std::numeric_limits<int>::max();
     ShowCountConstraints.StepSize = 1;
     ShowCount.setConstraints(&ShowCountConstraints);
     StartIndexConstraints.LowerBound = 0;
-    StartIndexConstraints.UpperBound = INT_MAX;
+    StartIndexConstraints.UpperBound = std::numeric_limits<int>::max();
     StartIndexConstraints.StepSize = 1;
     StartIndex.setConstraints(&StartIndexConstraints);
     ADD_PROPERTY_TYPE(StartPosition,

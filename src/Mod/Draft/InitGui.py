@@ -165,12 +165,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-            from PySide import QtCore
             from draftutils import init_draft_statusbar
-            # Delay required in case the Draft WB is preloaded,
-            # else show_draft_statusbar will not yet be done:
-            t = QtCore.QTimer()
-            t.singleShot(700, init_draft_statusbar.hide_draft_statusbar)
+            init_draft_statusbar.hide_draft_statusbar()
         import WorkingPlane
         WorkingPlane._view_observer_stop()
         from draftutils import grid_observer

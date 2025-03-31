@@ -122,7 +122,8 @@ void SnapManager::ParameterObserver::updateSnapAngleParameter(const std::string&
 {
     ParameterGrp::handle hGrp = getParameterGrpHandle();
 
-    client.snapAngle = fmod(hGrp->GetFloat(parametername.c_str(), 5.) * M_PI / 180, 2 * M_PI);
+    client.snapAngle = fmod(hGrp->GetFloat(parametername.c_str(), 5.) * std::numbers::pi / 180,
+                            2 * std::numbers::pi);
 }
 
 void SnapManager::ParameterObserver::subscribeToParameters()
@@ -222,7 +223,7 @@ bool SnapManager::snapAtAngle(double& x, double& y)
     double length = (pointToOverride - referencePoint).Length();
 
     double angle1 = (pointToOverride - referencePoint).Angle();
-    double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+    double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * std::numbers::pi;
     lastMouseAngle = abs(angle1 - lastMouseAngle) < abs(angle2 - lastMouseAngle) ? angle1 : angle2;
 
     double angle = round(lastMouseAngle / snapAngle) * snapAngle;
@@ -368,10 +369,10 @@ bool SnapManager::snapToArcMiddle(Base::Vector3d& pointToOverride, const Part::G
     double u, v;
     arc->getRange(u, v, true);
     if (v < u) {
-        v += 2 * M_PI;
+        v += 2 * std::numbers::pi;
     }
     double angle = v - u;
-    int revert = angle < M_PI ? 1 : -1;
+    int revert = angle < std::numbers::pi ? 1 : -1;
 
     /*To know if we are close to the middle of the arc, we are going to compare the angle of the
      * (mouse cursor - center) to the angle of the middle of the arc. If it's less than 10% of the

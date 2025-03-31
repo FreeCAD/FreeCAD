@@ -378,6 +378,7 @@ Base::Vector3d Transform::getDirection() const
 
 Base::Placement Transform::getPlacementData() const
 {
+    using std::numbers::pi;
     int index = ui->rotationInput->currentIndex();
     Base::Rotation rot;
     Base::Vector3d pos;
@@ -388,7 +389,7 @@ Base::Placement Transform::getPlacementData() const
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value().getValue()*D_PI/180.0);
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value().getValue()*pi/180.0);
     }
     else if (index == 1) {
         rot.setYawPitchRoll(

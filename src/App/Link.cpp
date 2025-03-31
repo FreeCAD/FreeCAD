@@ -2624,7 +2624,8 @@ Link::Link()
 {
     LINK_PROPS_ADD(LINK_PARAMS_LINK);
     LinkExtension::initExtension(this);
-    static const PropertyIntegerConstraint::Constraints s_constraints = {0, INT_MAX, 1};
+    static const PropertyIntegerConstraint::Constraints s_constraints = {
+        0, std::numeric_limits<int>::max(), 1};
     ElementCount.setConstraints(&s_constraints);
 }
 

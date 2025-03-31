@@ -43,6 +43,7 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
+
 #include <Mod/Import/App/dxf/ImpExpDxf.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -71,7 +72,6 @@
 #include "GeometryObject.h"
 #include "ProjectionAlgos.h"
 #include "TechDrawExport.h"
-#include "CosmeticVertexPy.h"
 #include "DrawLeaderLinePy.h"
 
 namespace TechDraw {
@@ -434,6 +434,10 @@ private:
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
+                if (!gObj) {
+                    Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+                    return Py::String();
+                }
                 TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
                 ss << dxfOut.exportEdges(shape);
                 shape = ShapeUtils::mirrorShape(gObj->getVisOutline());
@@ -472,6 +476,7 @@ private:
         return dxfReturn;
     }
 
+
     Py::Object viewPartAsSvg(const Py::Tuple& args)
     {
         PyObject *viewObj(nullptr);
@@ -492,9 +497,13 @@ private:
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
+                if (!gObj) {
+                    Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+                    return Py::String();
+                }
+
                 //visible group begin "<g ... >"
                 ss << grpHead1;
-//                double thick = dvp->LineWidth.getValue();
                 double thick = DrawUtil::getDefaultLineWeight("Thick");
                 ss << thick;
                 ss << grpHead2;
@@ -518,7 +527,6 @@ private:
                      dvp->SeamHidden.getValue() ) {
                     //hidden group begin
                     ss << grpHead1;
-//                    thick = dvp->HiddenWidth.getValue();
                     thick = DrawUtil::getDefaultLineWeight("Thin");
                     ss << thick;
                     ss << grpHead2;
@@ -553,9 +561,16 @@ private:
 
     void write1ViewDxf( ImpExpDxfWrite& writer, TechDraw::DrawViewPart* dvp, bool alignPage)
     {
-        if(!dvp->hasGeometry())
+        if(!dvp->hasGeometry()) {
             return;
+        }
+
         TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
+        if (!gObj) {
+            // this test might be redundent here since we already checked hasGeometry.
+            Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+            return;
+        }
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;

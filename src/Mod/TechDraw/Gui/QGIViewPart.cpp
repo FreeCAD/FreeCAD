@@ -964,7 +964,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         highlight->setPos(0.0, 0.0);//sb setPos(center.x, center.y)?
 
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
-        double rotationRad = viewPart->Rotation.getValue() * M_PI / 180.0;
+        double rotationRad = viewPart->Rotation.getValue() * std::numbers::pi / 180.0;
         center.RotateZ(rotationRad);
 
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();

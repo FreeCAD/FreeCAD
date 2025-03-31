@@ -37,9 +37,8 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
-// #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
-// #include <Base/Console.h>
+
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
@@ -695,7 +694,6 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
 
         return obj;
     }
-
     return nullptr;
 }
 
@@ -715,7 +713,6 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
     if (subs.empty()) {
         return nullptr;
     }
-
     return getMovingPartFromRef(assemblyObject, obj, subs[0]);
 }
 
@@ -730,103 +727,6 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
     auto* prop = joint->getPropertyByName<App::PropertyXLinkSub>(pName);
     return getMovingPartFromRef(assemblyObject, prop);
 }
-
-/*
-Base::Placement getPlacementFromProp(App::DocumentObject* obj, const char* propName)
-{
-    Base::Placement plc = Base::Placement();
-    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName(propName));
-    if (propPlacement) {
-        plc = propPlacement->getValue();
-    }
-    return plc;
-}
-
-// Currently unused
-Base::Placement* getTargetPlacementRelativeTo(
-    App::DocumentObject* targetObj, App::DocumentObject* part, App::DocumentObject* container,
-    bool inContainerBranch, bool ignorePlacement = false)
-{
-    inContainerBranch = inContainerBranch || (!ignorePlacement && part == container);
-
-    Base::Console().Warning("sub --------------\n");
-    if (targetObj == part && inContainerBranch && !ignorePlacement) {
-        Base::Console().Warning("found0\n");
-        return &getPlacementFromProp(targetObj, "Placement");
-    }
-
-    if (auto group = dynamic_cast<App::DocumentObjectGroup*>(part)) {
-        for (auto& obj : group->getOutList()) {
-            auto foundPlacement = getTargetPlacementRelativeTo(
-                targetObj, obj, container, inContainerBranch, ignorePlacement
-            );
-            if (foundPlacement != nullptr) {
-                return foundPlacement;
-            }
-        }
-    }
-    else if (auto assembly = dynamic_cast<AssemblyObject*>(part)) {
-        Base::Console().Warning("h3\n");
-        for (auto& obj : assembly->getOutList()) {
-            auto foundPlacement = getTargetPlacementRelativeTo(
-                targetObj, obj, container, inContainerBranch
-            );
-            if (foundPlacement == nullptr) {
-                continue;
-            }
-
-            if (!ignorePlacement) {
-                *foundPlacement = getPlacementFromProp(part, "Placement") * *foundPlacement;
-            }
-
-            Base::Console().Warning("found\n");
-            return foundPlacement;
-        }
-    }
-    else if (auto link = dynamic_cast<App::Link*>(part)) {
-        Base::Console().Warning("h4\n");
-        auto linked_obj = link->getLinkedObject();
-
-        if (dynamic_cast<App::Part*>(linked_obj) || dynamic_cast<AssemblyObject*>(linked_obj)) {
-            for (auto& obj : linked_obj->getOutList()) {
-                auto foundPlacement = getTargetPlacementRelativeTo(
-                    targetObj, obj, container, inContainerBranch
-                );
-                if (foundPlacement == nullptr) {
-                    continue;
-                }
-
-                *foundPlacement = getPlacementFromProp(link, "Placement") * *foundPlacement;
-                return foundPlacement;
-            }
-        }
-
-        auto foundPlacement = getTargetPlacementRelativeTo(
-            targetObj, linked_obj, container, inContainerBranch, true
-        );
-
-        if (foundPlacement != nullptr && !ignorePlacement) {
-            *foundPlacement = getPlacementFromProp(link, "Placement") * *foundPlacement;
-        }
-
-        Base::Console().Warning("found2\n");
-        return foundPlacement;
-    }
-
-    return nullptr;
-}
-
-Base::Placement getGlobalPlacement(App::DocumentObject* targetObj, App::DocumentObject* container =
-nullptr) { bool inContainerBranch = container == nullptr; auto rootObjects =
-App::GetApplication().getActiveDocument()->getRootObjects(); for (auto& part : rootObjects) { auto
-foundPlacement = getTargetPlacementRelativeTo(targetObj, part, container, inContainerBranch); if
-(foundPlacement != nullptr) { Base::Placement plc(foundPlacement->toMatrix()); return plc;
-        }
-    }
-
-    return Base::Placement();
-}
-*/
 
 
 }  // namespace Assembly

@@ -345,10 +345,12 @@ std::vector<edgeSortItem> DrawProjectSplit::sortEdges(std::vector<edgeSortItem>&
 //*************************
 std::string edgeSortItem::dump()
 {
+    using std::numbers::pi;
+
     std::string result;
     std::stringstream builder;
     builder << "edgeSortItem - s: " << DrawUtil::formatVector(start)  << " e: " << DrawUtil::formatVector(end) <<
-                              " sa: " << startAngle * 180.0/M_PI << " ea: " << endAngle* 180.0/M_PI << " idx: " << idx;
+                              " sa: " << startAngle * 180.0/pi << " ea: " << endAngle* 180.0/pi << " idx: " << idx;
     return builder.str();
 }
 

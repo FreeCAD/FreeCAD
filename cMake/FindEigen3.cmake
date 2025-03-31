@@ -1,8 +1,8 @@
 # - Try to find Eigen3 lib
 #
 # This module supports requiring a minimum version, e.g. you can do
-#   find_package(Eigen3 3.1.2)
-# to require version 3.1.2 or newer of Eigen3.
+#   find_package(Eigen3 3.4.0)
+# to require version 3.4.0 or newer of Eigen3.
 #
 # Once done this will define
 #
@@ -17,7 +17,7 @@
 
 if(NOT Eigen3_FIND_VERSION)
   set(Eigen3_FIND_VERSION_MAJOR 3)
-  set(Eigen3_FIND_VERSION_MINOR 0)
+  set(Eigen3_FIND_VERSION_MINOR 4)
   set(Eigen3_FIND_VERSION_PATCH 0)
   set(Eigen3_FIND_VERSION "${Eigen3_FIND_VERSION_MAJOR}.${Eigen3_FIND_VERSION_MINOR}.${Eigen3_FIND_VERSION_PATCH}")
 endif(NOT Eigen3_FIND_VERSION)

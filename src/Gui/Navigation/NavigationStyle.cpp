@@ -39,6 +39,9 @@
 # include <QMenu>
 #endif
 
+#include <cmath>
+#include <limits>
+
 #include <Base/Interpreter.h>
 #include <App/Application.h>
 
@@ -719,7 +722,8 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
         const float distorigo = newpos.length();
         // sqrt(FLT_MAX) == ~ 1e+19, which should be both safe for further
         // calculations and ok for the end-user and app-programmer.
-        if (distorigo > float(sqrt(FLT_MAX))) {
+        float maxDistance = std::sqrt(std::numeric_limits<float>::max());
+        if (distorigo > maxDistance) {
             // do nothing here
         }
         else {

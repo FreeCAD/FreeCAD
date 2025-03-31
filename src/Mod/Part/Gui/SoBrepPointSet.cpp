@@ -32,7 +32,6 @@
 #  include <GL/gl.h>
 # endif
 # include <algorithm>
-# include <cfloat>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
@@ -82,7 +81,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     if(selContext2->checkGlobal(ctx))
         ctx = selContext2;
 
-    if(ctx && ctx->highlightIndex==INT_MAX) {
+    if(ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
         if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
             if(ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
@@ -192,7 +191,7 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
     int id = ctx->highlightIndex;
     const SbVec3f * coords3d = coords->getArrayPtr3();
     if(coords3d) {
-        if(id == INT_MAX) {
+        if(id == std::numeric_limits<int>::max()) {
             glBegin(GL_POINTS);
             for(int idx=startIndex.getValue();idx<coords->getNum();++idx)
                 glVertex3fv((const GLfloat*) (coords3d + idx));
@@ -269,7 +268,7 @@ void SoBrepPointSet::doAction(SoAction* action)
         SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
         const SoDetail* detail = hlaction->getElement();
         if (!detail) {
-            ctx->highlightIndex = INT_MAX;
+            ctx->highlightIndex = std::numeric_limits<int>::max();
             ctx->highlightColor = hlaction->getColor();
             touch();
             return;

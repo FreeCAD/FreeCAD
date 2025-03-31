@@ -152,8 +152,8 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     spinBox = new QuantitySpinBox(mdi);
     spinBox->setUnit(Base::Unit::Length);
-    spinBox->setMinimum(-INT_MAX);
-    spinBox->setMaximum(INT_MAX);
+    spinBox->setMinimum(-std::numeric_limits<int>::max());
+    spinBox->setMaximum(std::numeric_limits<int>::max());
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
     spinBox->setKeyboardTracking(false);
     spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.

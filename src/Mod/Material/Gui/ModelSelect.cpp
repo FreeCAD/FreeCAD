@@ -239,7 +239,7 @@ void ModelSelect::addModels(
     auto tree = ui->treeModels;
     for (auto& mod : *modelTree) {
         std::shared_ptr<Materials::ModelTreeNode> nodePtr = mod.second;
-        if (nodePtr->getType() == Materials::ModelTreeNode::DataNode) {
+        if (nodePtr->getType() == Materials::ModelTreeNode::NodeType::DataNode) {
             auto model = nodePtr->getData();
             QString uuid = model->getUUID();
 
@@ -265,9 +265,9 @@ void ModelSelect::addRecents(QStandardItem* parent)
     auto tree = ui->treeModels;
     for (auto& uuid : _recents) {
         try {
-            auto model = getModelManager().getModel(uuid);
+            auto model = Materials::ModelManager::getManager().getModel(uuid);
 
-            if (getModelManager().passFilter(_filter, model->getType())) {
+            if (Materials::ModelManager::getManager().passFilter(_filter, model->getType())) {
                 QIcon icon = QIcon(model->getLibrary()->getIconPath());
                 auto card = new QStandardItem(icon, model->getName());
                 card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
@@ -287,9 +287,9 @@ void ModelSelect::addFavorites(QStandardItem* parent)
     auto tree = ui->treeModels;
     for (auto& uuid : _favorites) {
         try {
-            auto model = getModelManager().getModel(uuid);
+            auto model = Materials::ModelManager::getManager().getModel(uuid);
 
-            if (getModelManager().passFilter(_filter, model->getType())) {
+            if (Materials::ModelManager::getManager().passFilter(_filter, model->getType())) {
                 QIcon icon = QIcon(model->getLibrary()->getIconPath());
                 auto card = new QStandardItem(icon, model->getName());
                 card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
@@ -339,13 +339,13 @@ void ModelSelect::fillTree()
     addExpanded(tree, model, lib);
     addRecents(lib);
 
-    auto libraries = getModelManager().getModelLibraries();
+    auto libraries = Materials::ModelManager::getManager().getLibraries();
     for (auto& library : *libraries) {
         lib = new QStandardItem(library->getName());
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        auto modelTree = getModelManager().getModelTree(library, _filter);
+        auto modelTree = Materials::ModelManager::getManager().getModelTree(library, _filter);
         addModels(*lib, modelTree, QIcon(library->getIconPath()));
     }
 }
@@ -426,7 +426,7 @@ void ModelSelect::updateModelProperties(std::shared_ptr<Materials::Model> model)
 
 void ModelSelect::updateMaterialModel(const QString& uuid)
 {
-    auto model = getModelManager().getModel(uuid);
+    auto model = Materials::ModelManager::getManager().getModel(uuid);
 
     // Update the general information
     ui->editName->setText(model->getName());

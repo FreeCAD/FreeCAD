@@ -2045,6 +2045,7 @@ void Application::initTypes()
     App::PropertyElectricalResistance       ::init();
     App::PropertyElectricCharge             ::init();
     App::PropertySurfaceChargeDensity       ::init();
+    App::PropertyVolumeChargeDensity        ::init();
     App::PropertyElectricCurrent            ::init();
     App::PropertyElectricPotential          ::init();
     App::PropertyElectromagneticPotential   ::init();
@@ -2635,8 +2636,8 @@ void Application::initConfig(int argc, char ** argv)
         Py_DECREF(pyModule);
     }
 
-    const char* pythonpath = Base::Interpreter().init(argc,argv);
-    if (pythonpath)
+    std::string pythonpath = Base::Interpreter().init(argc,argv);
+    if (!pythonpath.empty())
         mConfig["PythonSearchPath"] = pythonpath;
     else
         Base::Console().Warning("Encoding of Python paths failed\n");

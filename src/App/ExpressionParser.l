@@ -341,15 +341,15 @@ EXPO     [eE][-+]?[0-9]+
 {DIGIT}+{EXPO}               COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}+                     { COUNTCHARS;
                                yylval.ivalue = strtoll( yytext, NULL, 10 );
-                               if (yylval.ivalue == LLONG_MIN)
+                               if (yylval.ivalue == std::numeric_limits<long long>::min())
                                   throw Base::UnderflowError("Integer underflow");
-                               else if (yylval.ivalue == LLONG_MAX)
+                               else if (yylval.ivalue == std::numeric_limits<long long>::max())
                                   throw Base::OverflowError("Integer overflow");
                                if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
                              }
 
-"pi"                         COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
-"e"                          COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
+"pi"                         COUNTCHARS; yylval.constant.fvalue = std::numbers::pi; yylval.constant.name = "pi"; return CONSTANT; // constant pi
+"e"                          COUNTCHARS; yylval.constant.fvalue = std::numbers::e; yylval.constant.name = "e"; return CONSTANT; // constant e
 
 "None"                       COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "None"; return CONSTANT;
 "True"                       COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return CONSTANT;

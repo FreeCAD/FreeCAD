@@ -553,7 +553,7 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
 {
     char* view = nullptr;
     double scale = -1.0;
-    if (!PyArg_ParseTuple(args.ptr(), "|sd", &view, &scale))
+    if (!PyArg_ParseTuple(args.ptr(), "|zd", &view, &scale))
         throw Py::Exception();
 
     try {
@@ -658,7 +658,7 @@ Py::Object View3DInventorPy::viewRotateLeft()
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, (float)M_PI/2);
+      SbRotation nrot(vdir, (float)std::numbers::pi/2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -681,7 +681,7 @@ Py::Object View3DInventorPy::viewRotateRight()
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, (float)-M_PI/2);
+      SbRotation nrot(vdir, (float)-std::numbers::pi/2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {

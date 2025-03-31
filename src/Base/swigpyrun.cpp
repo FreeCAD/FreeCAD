@@ -31,9 +31,7 @@
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#if __GNUC__ >= 8
 #pragma GCC diagnostic ignored "-Wcast-function-type"
-#endif
 #endif
 #include "PyExport.h"
 #include "Exception.h"

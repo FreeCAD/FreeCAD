@@ -63,6 +63,7 @@ protected:
     virtual void showIcon();
     virtual void validateInput();
     void resizeWidget();
+    int getMargin();
 
     bool handleKeyEvent(const QString&);
     virtual void openFormulaDialog();

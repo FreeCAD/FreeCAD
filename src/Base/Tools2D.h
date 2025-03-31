@@ -32,15 +32,6 @@
 #include <FCGlobal.h>
 #endif
 
-// NOLINTBEGIN
-#ifndef DOUBLE_MAX
-#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
-#endif
-#ifndef DOUBLE_MIN
-#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
-#endif
-// NOLINTEND
-
 
 namespace Base
 {
@@ -462,8 +453,8 @@ inline bool Line2d::Contains(const Vector2d& rclV) const
 
 inline BoundBox2d::BoundBox2d()
 {
-    MinX = MinY = DOUBLE_MAX;
-    MaxX = MaxY = -DOUBLE_MAX;
+    MinX = MinY = std::numeric_limits<double>::max();
+    MaxX = MaxY = -std::numeric_limits<double>::max();
 }
 
 inline BoundBox2d::BoundBox2d(double fX1, double fY1, double fX2, double fY2)
@@ -480,7 +471,8 @@ inline bool BoundBox2d::IsValid() const
 
 inline bool BoundBox2d::IsInfinite() const
 {
-    return MaxX >= DOUBLE_MAX && MaxY >= DOUBLE_MAX && MinX <= -DOUBLE_MAX && MinY <= -DOUBLE_MAX;
+    constexpr double max = std::numeric_limits<double>::max();
+    return MaxX >= max && MaxY >= max && MinX <= -max && MinY <= -max;
 }
 
 inline bool BoundBox2d::IsEqual(const BoundBox2d& bbox, double tolerance) const
@@ -525,8 +517,8 @@ inline Vector2d BoundBox2d::GetCenter() const
 
 inline void BoundBox2d::SetVoid()
 {
-    MinX = MinY = DOUBLE_MAX;
-    MaxX = MaxY = -DOUBLE_MAX;
+    MinX = MinY = std::numeric_limits<double>::max();
+    MaxX = MaxY = -std::numeric_limits<double>::max();
 }
 
 inline void BoundBox2d::Add(const Vector2d& v)

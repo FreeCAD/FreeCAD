@@ -46,7 +46,7 @@ protected:
 TEST_F(FeatureRevolutionTest, testExecute)
 {
     // Arrange
-    double puckVolume = len * len * M_PI * wid;  // Area is PIr2; apply height
+    double puckVolume = len * len * std::numbers::pi * wid;  // Area is PIr2; apply height
     // Act
     _revolution->execute();
     Part::TopoShape ts = _revolution->Shape.getValue();
@@ -62,8 +62,8 @@ TEST_F(FeatureRevolutionTest, testExecuteBase)
     // Arrange
     double rad = len + 1.0;
     double rad2 = 1.0;
-    double outerPuckVolume = rad * rad * M_PI * wid;    // Area is PIr2; apply height
-    double innerPuckVolume = rad2 * rad2 * M_PI * wid;  // Area is PIr2; apply height
+    double outerPuckVolume = rad * rad * std::numbers::pi * wid;    // Area is PIr2; apply height
+    double innerPuckVolume = rad2 * rad2 * std::numbers::pi * wid;  // Area is PIr2; apply height
     _revolution->Base.setValue(Base::Vector3d(len + 1, 0, 0));
     // Act
     _revolution->execute();
@@ -79,7 +79,7 @@ TEST_F(FeatureRevolutionTest, testExecuteBase)
 TEST_F(FeatureRevolutionTest, testAxis)
 {
     // Arrange
-    double puckVolume = wid * wid * M_PI * len;  // Area is PIr2 times height
+    double puckVolume = wid * wid * std::numbers::pi * len;  // Area is PIr2 times height
     _revolution->Axis.setValue(Base::Vector3d(1, 0, 0));
     // Act
     _revolution->execute();
@@ -98,7 +98,7 @@ TEST_F(FeatureRevolutionTest, testAxisLink)
     auto edge = _doc->addObject<Part::Feature>("Edge");
     edge->Shape.setValue(e1);
     _revolution->AxisLink.setValue(edge);
-    // double puckVolume = wid * wid * M_PI * len;  // Area is PIr2; apply height
+    // double puckVolume = wid * wid * std::numbers::pi * len;  // Area is PIr2; apply height
     // Act
     _revolution->execute();
     Part::TopoShape ts = _revolution->Shape.getValue();
@@ -115,7 +115,7 @@ TEST_F(FeatureRevolutionTest, testAxisLink)
 TEST_F(FeatureRevolutionTest, testSymmetric)
 {
     // Arrange
-    double puckVolume = len * len * M_PI * wid;  // Area is PIr2 times height
+    double puckVolume = len * len * std::numbers::pi * wid;  // Area is PIr2 times height
     _revolution->Symmetric.setValue(true);
     // Act
     _revolution->execute();
@@ -130,8 +130,8 @@ TEST_F(FeatureRevolutionTest, testSymmetric)
 TEST_F(FeatureRevolutionTest, testAngle)
 {
     // Arrange
-    double puckVolume = len * len * M_PI * wid;  // Area is PIr2 times height
-    _revolution->Angle.setValue(90);             // NOLINT magic number
+    double puckVolume = len * len * std::numbers::pi * wid;  // Area is PIr2 times height
+    _revolution->Angle.setValue(90);                         // NOLINT magic number
     // Act
     _revolution->execute();
     Part::TopoShape ts = _revolution->Shape.getValue();

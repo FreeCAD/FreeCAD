@@ -8,7 +8,7 @@ for subdir in ["geometry", "icons", "icons/IFC", "translations", "ui"]:
     for f in sorted(os.listdir(subpath)):
         if f not in ["Arch.ts", "BIM.ts", "IFC"]:
             ext = os.path.splitext(f)[1]
-            if ext.lower() in [".qm", ".svg", ".ui", ".png", "brep"]:
+            if ext.lower() in [".qm", ".svg", ".ui", ".png", ".brep"]:
                 txt += "        <file>" + subdir + "/" + f + "</file>\n"
 txt += "    </qresource>\n</RCC>\n"
 with open(os.path.join(cdir, "Arch.qrc"), "w") as resfile:

@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
 #endif
 
 #include <App/Document.h>
@@ -100,9 +99,9 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     ui->textLabel2->hide();
     ui->thickness->hide();
     ui->searchRadius->setUnit(Base::Unit::Length);
-    ui->searchRadius->setRange(0, DBL_MAX);
+    ui->searchRadius->setRange(0, std::numeric_limits<double>::max());
     ui->thickness->setUnit(Base::Unit::Length);
-    ui->thickness->setRange(0, DBL_MAX);
+    ui->thickness->setRange(0, std::numeric_limits<double>::max());
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     // disable Ok button and enable of at least one item in each view is on

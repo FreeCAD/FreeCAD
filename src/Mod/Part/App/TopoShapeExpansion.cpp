@@ -83,9 +83,7 @@
 
 #endif
 
-#if OCC_VERSION_HEX >= 0x070500
 #include <OSD_Parallel.hxx>
-#endif
 
 #include "modelRefine.h"
 #include "CrossSection.h"
@@ -1613,6 +1611,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
     bool delayed = false;
 
     while (true) {
+        constexpr int intMin = std::numeric_limits<int>::min();
 
         // Construct the names for modification/generation info collected in
         // the previous step
@@ -1634,7 +1633,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
             const auto& first_key = names.begin()->first;
             auto& first_info = names.begin()->second;
 
-            if (!delayed && first_key.shapetype >= 3 && first_info.index > INT_MIN + 1) {
+            if (!delayed && first_key.shapetype >= 3 && first_info.index > intMin + 1) {
                 // This name is mapped from high level (shell, solid, etc.)
                 // Delay till next round.
                 //
@@ -1682,10 +1681,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         // 'K' marks the additional source shape of this
                         // generate (or modified) shape.
                         ss2 << elementMapPrefix() << 'K';
-                        if (other_info.index == INT_MIN) {
+                        if (other_info.index == intMin) {
                             ss2 << '0';
                         }
-                        else if (other_info.index == INT_MIN + 1) {
+                        else if (other_info.index == intMin + 1) {
                             ss2 << "00";
                         }
                         else {
@@ -1742,10 +1741,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
             else {
                 ss << modgenPostfix();
             }
-            if (first_info.index == INT_MIN) {
+            if (first_info.index == intMin) {
                 ss << '0';
             }
-            else if (first_info.index == INT_MIN + 1) {
+            else if (first_info.index == intMin + 1) {
                 ss << "00";
             }
             else if (abs(first_info.index) > 1) {
@@ -2661,9 +2660,7 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
     if (shape.isNull()) {
         FC_THROWM(Base::ValueError, "makeOffset2D: input shape is null!");
     }
-    if (allowOpenResult == OpenResult::allowOpenResult && OCC_VERSION_HEX < 0x060900) {
-        FC_THROWM(Base::AttributeError, "openResult argument is not supported on OCC < 6.9.0.");
-    }
+
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
@@ -5742,17 +5739,8 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         }
     }
 
-#if OCC_VERSION_HEX >= 0x070500
-    // -1/22/2024 Removing the parameter.
-    // if (PartParams::getParallelRunThreshold() > 0) {
     mk->SetRunParallel(Standard_True);
     OSD_Parallel::SetUseOcctThreads(Standard_True);
-    // }
-#else
-    // 01/22/2024 This will be an extremely rare case, since we don't
-    // build against OCCT versions this old.  Removing the parameter.
-    mk->SetRunParallel(true);
-#endif
 
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);

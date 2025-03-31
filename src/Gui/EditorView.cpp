@@ -139,14 +139,15 @@ EditorView::EditorView(TextEdit* editor, QWidget* parent)
 
     d->activityTimer = new QTimer(this);
     // clang-format off
+    connectionList <<
     connect(d->activityTimer, &QTimer::timeout,
-            this, &EditorView::checkTimestamp);
+            this, &EditorView::checkTimestamp) <<
     connect(d->textEdit->document(), &QTextDocument::modificationChanged,
-            this, &EditorView::setWindowModified);
+            this, &EditorView::setWindowModified) <<
     connect(d->textEdit->document(), &QTextDocument::undoAvailable,
-            this, &EditorView::undoAvailable);
+            this, &EditorView::undoAvailable) <<
     connect(d->textEdit->document(), &QTextDocument::redoAvailable,
-            this, &EditorView::redoAvailable);
+            this, &EditorView::redoAvailable) <<
     connect(d->textEdit->document(), &QTextDocument::contentsChange,
             this, &EditorView::contentsChange);
     // clang-format on
@@ -156,6 +157,10 @@ EditorView::EditorView(TextEdit* editor, QWidget* parent)
 EditorView::~EditorView()
 {
     d->activityTimer->stop();
+    // to avoid the assert introduced a debug version of Qt >6.3. See QTBUG-105473
+    for (auto conn : connectionList) { // NOLINT(performance-for-range-copy)
+        disconnect(conn);
+    }
     delete d->activityTimer;
     delete d;
     getWindowParameter()->Detach(this);

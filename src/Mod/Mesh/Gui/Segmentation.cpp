@@ -44,18 +44,19 @@ Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags
     , ui(new Ui_Segmentation)
     , myMesh(mesh)
 {
+    constexpr int max = std::numeric_limits<int>::max();
     ui->setupUi(this);
-    ui->numPln->setRange(1, INT_MAX);
+    ui->numPln->setRange(1, max);
     ui->numPln->setValue(100);
-    ui->crvCyl->setRange(0, INT_MAX);
-    ui->numCyl->setRange(1, INT_MAX);
+    ui->crvCyl->setRange(0, max);
+    ui->numCyl->setRange(1, max);
     ui->numCyl->setValue(100);
-    ui->crvSph->setRange(0, INT_MAX);
-    ui->numSph->setRange(1, INT_MAX);
+    ui->crvSph->setRange(0, max);
+    ui->numSph->setRange(1, max);
     ui->numSph->setValue(100);
-    ui->crv1Free->setRange(-INT_MAX, INT_MAX);
-    ui->crv2Free->setRange(-INT_MAX, INT_MAX);
-    ui->numFree->setRange(1, INT_MAX);
+    ui->crv1Free->setRange(-max, max);
+    ui->crv2Free->setRange(-max, max);
+    ui->numFree->setRange(1, max);
     ui->numFree->setValue(100);
 
     ui->checkBoxSmooth->setChecked(false);

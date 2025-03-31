@@ -23,7 +23,6 @@
 #ifndef MESH_ELEMENTS_H
 #define MESH_ELEMENTS_H
 
-#include <climits>
 #include <cstring>
 #include <functional>
 #include <vector>
@@ -1147,7 +1146,7 @@ inline unsigned short MeshFacet::Side(FacetIndex ulNIndex) const
         return 2;
     }
 
-    return USHRT_MAX;
+    return std::numeric_limits<unsigned short>::max();
 }
 
 inline unsigned short MeshFacet::Side(PointIndex ulP0, PointIndex ulP1) const
@@ -1177,7 +1176,7 @@ inline unsigned short MeshFacet::Side(PointIndex ulP0, PointIndex ulP1) const
         }
     }
 
-    return USHRT_MAX;
+    return std::numeric_limits<unsigned short>::max();
 }
 
 inline unsigned short MeshFacet::Side(const MeshFacet& rFace) const
@@ -1185,12 +1184,12 @@ inline unsigned short MeshFacet::Side(const MeshFacet& rFace) const
     unsigned short side {};
     for (int i = 0; i < 3; i++) {
         side = Side(rFace._aulPoints[i], rFace._aulPoints[(i + 1) % 3]);
-        if (side != USHRT_MAX) {
+        if (side != std::numeric_limits<unsigned short>::max()) {
             return side;
         }
     }
 
-    return USHRT_MAX;
+    return std::numeric_limits<unsigned short>::max();
 }
 
 inline bool MeshFacet::IsEqual(const MeshFacet& rcFace) const

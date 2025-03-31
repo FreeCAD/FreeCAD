@@ -215,3 +215,38 @@ void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg)
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
+
+
+// ***************************************************************************
+// calculator filter
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostCalculator, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostCalculator::ViewProviderFemPostCalculator()
+{
+    sPixmap = "FEM_PostFilterCalculator";
+}
+
+ViewProviderFemPostCalculator::~ViewProviderFemPostCalculator() = default;
+
+void ViewProviderFemPostCalculator::updateData(const App::Property* prop)
+{
+    auto obj = getObject<Fem::FemPostCalculatorFilter>();
+    if (prop == &obj->Data) {
+        // update color bar
+        ViewProviderFemPostObject::updateData(prop);
+        updateMaterial();
+    }
+    else {
+        return ViewProviderFemPostObject::updateData(prop);
+    }
+}
+
+void ViewProviderFemPostCalculator::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // add the function box
+    assert(dlg->getView() == this);
+    dlg->appendBox(new TaskPostCalculator(this));
+
+    // add the display options
+    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
+}
