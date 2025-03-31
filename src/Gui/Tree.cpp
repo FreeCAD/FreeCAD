@@ -3075,7 +3075,7 @@ void TreeWidget::onUpdateStatus()
                 relabelCandidate = obj;
             }
             else {
-                RelabelQueue.push_back(obj);
+                RelabelQueue.insert(obj);
             }
         }
     }
@@ -3088,7 +3088,7 @@ void TreeWidget::onUpdateStatus()
     for (auto& v : localChangedObjects) {
         auto obj = v.first;
 
-        if (std::find(RelabelQueue.begin(), RelabelQueue.end(), obj) != RelabelQueue.end()) {
+        if (RelabelQueue.find(obj) != RelabelQueue.end()) {
             relabelCandidate = obj;
         }
 
@@ -3218,7 +3218,7 @@ void TreeWidget::onUpdateStatus()
     FC_LOG("done update status");
 }
 
-void TreeWidget::tryOfferRelabel(App::DocumentObject*& object)
+void TreeWidget::tryOfferRelabel(App::DocumentObject* object)
 {
     if (!isAutoRelabelNewEnabled() || !object) {
         RelabelQueue.clear();
