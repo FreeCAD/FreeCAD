@@ -77,6 +77,7 @@ FemFrameSourceAlgorithm::FemFrameSourceAlgorithm::~FemFrameSourceAlgorithm()
 void FemFrameSourceAlgorithm::setDataObject(vtkSmartPointer<vtkDataObject> data)
 {
     m_data = data;
+    Modified();
     Update();
 }
 
@@ -158,7 +159,6 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
                                          vtkInformationVector**,
                                          vtkInformationVector* outVector)
 {
-
     vtkInformation* outInfo = outVector->GetInformationObject(0);
     vtkUnstructuredGrid* output =
         vtkUnstructuredGrid::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
@@ -221,7 +221,6 @@ FemPostPipeline::FemPostPipeline()
 
 vtkDataSet* FemPostPipeline::getDataSet()
 {
-
     if (!m_source_algorithm->isValid()) {
         return nullptr;
     }
@@ -448,6 +447,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             Frame.setValue(long(0));
         }
 
+        updateData();
         recomputeChildren();
     }
 
