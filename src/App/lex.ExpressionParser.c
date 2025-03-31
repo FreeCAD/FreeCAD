@@ -9583,12 +9583,12 @@ YY_RULE_SETUP
 case 138:
 YY_RULE_SETUP
 #line 351 "ExpressionParser.l"
-COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
+COUNTCHARS; yylval.constant.fvalue = std::numbers::pi; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 	YY_BREAK
 case 139:
 YY_RULE_SETUP
 #line 352 "ExpressionParser.l"
-COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
+COUNTCHARS; yylval.constant.fvalue = std::numbers::e; yylval.constant.name = "e"; return CONSTANT; // constant e
 	YY_BREAK
 case 140:
 YY_RULE_SETUP

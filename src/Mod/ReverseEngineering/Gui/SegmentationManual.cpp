@@ -47,7 +47,7 @@ SegmentationManual::SegmentationManual(QWidget* parent, Qt::WindowFlags fl)
 {
     ui->setupUi(this);
     setupConnections();
-    ui->spSelectComp->setRange(1, INT_MAX);
+    ui->spSelectComp->setRange(1, std::numeric_limits<int>::max());
     ui->spSelectComp->setValue(10);
 
     Gui::Selection().clearSelection();
@@ -215,7 +215,7 @@ void SegmentationManual::onPlaneDetectClicked()
 
         MeshCore::PlaneFit fit;
         fit.AddPoints(points);
-        if (fit.Fit() < FLOAT_MAX) {
+        if (fit.Fit() < std::numeric_limits<float>::max()) {
             Base::Vector3f base = fit.GetBase();
             Base::Vector3f axis = fit.GetNormal();
             return new MeshCore::PlaneSurfaceFit(base, axis);
@@ -239,7 +239,7 @@ void SegmentationManual::onCylinderDetectClicked()
             Base::Vector3f axis = fit.GetInitialAxisFromNormals(normal);
             fit.SetInitialValues(base, axis);
         }
-        if (fit.Fit() < FLOAT_MAX) {
+        if (fit.Fit() < std::numeric_limits<float>::max()) {
             Base::Vector3f base = fit.GetBase();
             Base::Vector3f axis = fit.GetAxis();
             float radius = fit.GetRadius();
@@ -259,7 +259,7 @@ void SegmentationManual::onSphereDetectClicked()
 
         MeshCore::SphereFit fit;
         fit.AddPoints(points);
-        if (fit.Fit() < FLOAT_MAX) {
+        if (fit.Fit() < std::numeric_limits<float>::max()) {
             Base::Vector3f base = fit.GetCenter();
             float radius = fit.GetRadius();
             return new MeshCore::SphereSurfaceFit(base, radius);

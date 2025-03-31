@@ -976,7 +976,7 @@ void ViewProviderPartExt::updateVisual()
         //deflection = std::min(deflection, 20.0);
 
         // create or use the mesh on the data structure
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * std::numbers::pi;
 
         IMeshTools_Parameters meshParams;
         meshParams.Deflection = deflection;

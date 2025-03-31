@@ -57,7 +57,11 @@ class Transaction;
 class StringHasher;
 using StringHasherRef = Base::Reference<StringHasher>;
 
-/// The document class
+/**
+ * @brief The document class
+ * @ingroup DocumentGroup
+ * @details For a more high-level discussion see the topic @ref DocumentGroup "Document".
+ */
 class AppExport Document: public App::PropertyContainer
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::Document);

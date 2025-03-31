@@ -203,7 +203,7 @@ double DrawUtil::angleWithX(Base::Vector3d inVec)
 {
     double result = atan2(inVec.y, inVec.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += 2.0 * std::numbers::pi;
     }
 
     return result;
@@ -225,7 +225,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
     }
     double result = atan2(u.y, u.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += 2.0 * std::numbers::pi;
     }
 
     return result;
@@ -251,7 +251,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
     c->D1(param, paramPoint, derivative);
     double angle = atan2(derivative.Y(), derivative.X());
     if (angle < 0) {//map from [-PI:PI] to [0:2PI]
-        angle += 2.0 * M_PI;
+        angle += 2.0 * std::numbers::pi;
     }
     return angle;
 }
@@ -289,7 +289,7 @@ double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double t
 
     //map to [0:2PI]
     if (incidenceAngle < 0.0) {
-        incidenceAngle = M_2PI + incidenceAngle;
+        incidenceAngle = 2*std::numbers::pi + incidenceAngle;
     }
 
     return incidenceAngle;
@@ -1059,7 +1059,7 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector
 
     // remove the effect of the Rotation property
     double rotDeg = dvp.Rotation.getValue();
-    double rotRad = rotDeg * M_PI / 180.0;
+    double rotRad = rotDeg * std::numbers::pi / 180.0;
     if (rotDeg != 0.0) {
         // we always rotate around the origin.
         appPoint.RotateZ(-rotRad);
@@ -1396,11 +1396,13 @@ double DrawUtil::sqr(double x)
 
 void DrawUtil::angleNormalize(double& fi)
 {
-    while (fi <= -M_PI) {
-        fi += M_2PI;
+    using std::numbers::pi;
+
+    while (fi <= -pi) {
+        fi += 2*pi;
     }
-    while (fi > M_PI) {
-        fi -= M_2PI;
+    while (fi > pi) {
+        fi -= 2*pi;
     }
 }
 
@@ -1414,13 +1416,14 @@ double DrawUtil::angleComposition(double fi, double delta)
 
 double DrawUtil::angleDifference(double fi1, double fi2, bool reflex)
 {
+    using std::numbers::pi;
     angleNormalize(fi1);
     angleNormalize(fi2);
 
     fi1 -= fi2;
 
-    if ((fi1 > +M_PI || fi1 <= -M_PI) != reflex) {
-        fi1 += fi1 > 0.0 ? -M_2PI : +M_2PI;
+    if ((fi1 > +pi || fi1 <= -pi) != reflex) {
+        fi1 += fi1 > 0.0 ? -2*pi : +2*pi;
     }
 
     return fi1;
@@ -1559,6 +1562,7 @@ void DrawUtil::intervalMarkLinear(std::vector<std::pair<double, bool>>& marking,
 void DrawUtil::intervalMarkCircular(std::vector<std::pair<double, bool>>& marking, double start,
                                     double length, bool value)
 {
+    using std::numbers::pi;
     if (length == 0.0) {
         return;
     }
@@ -1566,15 +1570,15 @@ void DrawUtil::intervalMarkCircular(std::vector<std::pair<double, bool>>& markin
         length = -length;
         start -= length;
     }
-    if (length > M_2PI) {
-        length = M_2PI;
+    if (length > 2*pi) {
+        length = 2*pi;
     }
 
     angleNormalize(start);
 
     double end = start + length;
-    if (end > M_PI) {
-        end -= M_2PI;
+    if (end > pi) {
+        end -= 2*pi;
     }
 
     // Just make sure the point is stored, its index is read last
@@ -1785,13 +1789,15 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
                                                      const Base::BoundBox2d& rectangle,
                                                      std::vector<Base::Vector2d>& intersections)
 {
+    using std::numbers::pi;
+
     findCircleRectangleIntersections(circleCenter, circleRadius, rectangle, intersections);
 
     if (arcRotation < 0.0) {
         arcRotation = -arcRotation;
         arcBaseAngle -= arcRotation;
-        if (arcBaseAngle <= -M_PI) {
-            arcBaseAngle += M_2PI;
+        if (arcBaseAngle <= -pi) {
+            arcBaseAngle += 2*pi;
         }
     }
 
@@ -1799,7 +1805,7 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
     for (unsigned int i = 0; i < intersections.size();) {
         double pointAngle = (intersections[i] - circleCenter).Angle();
         if (pointAngle < arcBaseAngle - Precision::Confusion()) {
-            pointAngle += M_2PI;
+            pointAngle += 2*pi;
         }
 
         if (pointAngle > arcBaseAngle + arcRotation + Precision::Confusion()) {

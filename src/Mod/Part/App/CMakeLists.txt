@@ -36,115 +36,60 @@ if(FREETYPE_FOUND)
     )
 endif(FREETYPE_FOUND)
 
-generate_from_xml(ArcPy)
 generate_from_py(Arc)
-generate_from_xml(ArcOfConicPy)
 generate_from_py(ArcOfConic)
-generate_from_xml(ArcOfCirclePy)
 generate_from_py(ArcOfCircle)
-generate_from_xml(ArcOfParabolaPy)
 generate_from_py(ArcOfParabola)
-generate_from_xml(BodyBasePy)
 generate_from_py(BodyBase)
-generate_from_xml(ConicPy)
 generate_from_py(Conic)
-generate_from_xml(CirclePy)
 generate_from_py(Circle)
-generate_from_xml(ArcOfEllipsePy)
 generate_from_py(ArcOfEllipse)
-generate_from_xml(EllipsePy)
 generate_from_py(Ellipse)
-generate_from_xml(HyperbolaPy)
 generate_from_py(Hyperbola)
-generate_from_xml(ArcOfHyperbolaPy)
 generate_from_py(ArcOfHyperbola)
-generate_from_xml(ParabolaPy)
 generate_from_py(Parabola)
-generate_from_xml(OffsetCurvePy)
 generate_from_py(OffsetCurve)
-generate_from_xml(GeometryPy)
 generate_from_py(Geometry)
-generate_from_xml(GeometryExtensionPy)
 generate_from_py(GeometryExtension)
-generate_from_xml(GeometryIntExtensionPy)
 generate_from_py(GeometryIntExtension)
-generate_from_xml(GeometryStringExtensionPy)
 generate_from_py(GeometryStringExtension)
-generate_from_xml(GeometryBoolExtensionPy)
 generate_from_py(GeometryBoolExtension)
-generate_from_xml(GeometryDoubleExtensionPy)
 generate_from_py(GeometryDoubleExtension)
-generate_from_xml(GeometryCurvePy)
 generate_from_py(GeometryCurve)
-generate_from_xml(BoundedCurvePy)
 generate_from_py(BoundedCurve)
-generate_from_xml(TrimmedCurvePy)
 generate_from_py(TrimmedCurve)
-generate_from_xml(GeometrySurfacePy)
 generate_from_py(GeometrySurface)
-generate_from_xml(LinePy)
 generate_from_py(Line)
-generate_from_xml(LineSegmentPy)
 generate_from_py(LineSegment)
-generate_from_xml(PointPy)
 generate_from_py(Point)
-generate_from_xml(BezierCurvePy)
 generate_from_py(BezierCurve)
-generate_from_xml(BSplineCurvePy)
 generate_from_py(BSplineCurve)
-generate_from_xml(PlanePy)
 generate_from_py(Plane)
-generate_from_xml(ConePy)
 generate_from_py(Cone)
-generate_from_xml(CylinderPy)
 generate_from_py(Cylinder)
-generate_from_xml(SpherePy)
 generate_from_py(Sphere)
-generate_from_xml(ToroidPy)
 generate_from_py(Toroid)
-generate_from_xml(BezierSurfacePy)
 generate_from_py(BezierSurface)
-generate_from_xml(BSplineSurfacePy)
 generate_from_py(BSplineSurface)
-generate_from_xml(OffsetSurfacePy)
 generate_from_py(OffsetSurface)
-generate_from_xml(PlateSurfacePy)
 generate_from_py(PlateSurface)
-generate_from_xml(RectangularTrimmedSurfacePy)
 generate_from_py(RectangularTrimmedSurface)
-generate_from_xml(SurfaceOfExtrusionPy)
 generate_from_py(SurfaceOfExtrusion)
-generate_from_xml(SurfaceOfRevolutionPy)
 generate_from_py(SurfaceOfRevolution)
-generate_from_xml(PartFeaturePy)
 generate_from_py(PartFeature)
-generate_from_xml(AttachExtensionPy)
 generate_from_py(AttachExtension)
-generate_from_xml(Part2DObjectPy)
 generate_from_py(Part2DObject)
-generate_from_xml(AttachEnginePy)
 generate_from_py(AttachEngine)
-generate_from_xml(TopoShapePy)
 generate_from_py(TopoShape)
-generate_from_xml(TopoShapeCompoundPy)
 generate_from_py(TopoShapeCompound)
-generate_from_xml(TopoShapeCompSolidPy)
 generate_from_py(TopoShapeCompSolid)
-generate_from_xml(TopoShapeEdgePy)
 generate_from_py(TopoShapeEdge)
-generate_from_xml(TopoShapeFacePy)
 generate_from_py(TopoShapeFace)
-generate_from_xml(TopoShapeShellPy)
 generate_from_py(TopoShapeShell)
-generate_from_xml(TopoShapeSolidPy)
 generate_from_py(TopoShapeSolid)
-generate_from_xml(TopoShapeVertexPy)
 generate_from_py(TopoShapeVertex)
-generate_from_xml(TopoShapeWirePy)
 generate_from_py(TopoShapeWire)
-generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 generate_from_py(BRepOffsetAPI_MakePipeShell)
-generate_from_xml(BRepOffsetAPI_MakeFillingPy)
 generate_from_py(BRepOffsetAPI_MakeFilling)
 
 
@@ -157,59 +102,59 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/HLRBRep)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeFix)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
 
-generate_from_xml(BRepFeat/MakePrismPy)
+generate_from_py(BRepFeat/MakePrism)
 
-generate_from_xml(ChFi2d/ChFi2d_AnaFilletAlgoPy)
-generate_from_xml(ChFi2d/ChFi2d_FilletAlgoPy)
-generate_from_xml(ChFi2d/ChFi2d_ChamferAPIPy)
-generate_from_xml(ChFi2d/ChFi2d_FilletAPIPy)
+generate_from_py(ChFi2d/ChFi2d_AnaFilletAlgo)
+generate_from_py(ChFi2d/ChFi2d_FilletAlgo)
+generate_from_py(ChFi2d/ChFi2d_ChamferAPI)
+generate_from_py(ChFi2d/ChFi2d_FilletAPI)
 
-generate_from_xml(Geom2d/ArcOfCircle2dPy)
-generate_from_xml(Geom2d/ArcOfConic2dPy)
-generate_from_xml(Geom2d/ArcOfEllipse2dPy)
-generate_from_xml(Geom2d/ArcOfHyperbola2dPy)
-generate_from_xml(Geom2d/ArcOfParabola2dPy)
-generate_from_xml(Geom2d/BezierCurve2dPy)
-generate_from_xml(Geom2d/BSplineCurve2dPy)
-generate_from_xml(Geom2d/Circle2dPy)
-generate_from_xml(Geom2d/Conic2dPy)
-generate_from_xml(Geom2d/Ellipse2dPy)
-generate_from_xml(Geom2d/Geometry2dPy)
-generate_from_xml(Geom2d/Hyperbola2dPy)
-generate_from_xml(Geom2d/Curve2dPy)
-generate_from_xml(Geom2d/Line2dSegmentPy)
-generate_from_xml(Geom2d/Line2dPy)
-generate_from_xml(Geom2d/OffsetCurve2dPy)
-generate_from_xml(Geom2d/Parabola2dPy)
+generate_from_py(Geom2d/ArcOfCircle2d)
+generate_from_py(Geom2d/ArcOfConic2d)
+generate_from_py(Geom2d/ArcOfEllipse2d)
+generate_from_py(Geom2d/ArcOfHyperbola2d)
+generate_from_py(Geom2d/ArcOfParabola2d)
+generate_from_py(Geom2d/BezierCurve2d)
+generate_from_py(Geom2d/BSplineCurve2d)
+generate_from_py(Geom2d/Circle2d)
+generate_from_py(Geom2d/Conic2d)
+generate_from_py(Geom2d/Ellipse2d)
+generate_from_py(Geom2d/Geometry2d)
+generate_from_py(Geom2d/Hyperbola2d)
+generate_from_py(Geom2d/Curve2d)
+generate_from_py(Geom2d/Line2dSegment)
+generate_from_py(Geom2d/Line2d)
+generate_from_py(Geom2d/OffsetCurve2d)
+generate_from_py(Geom2d/Parabola2d)
 
-generate_from_xml(GeomPlate/BuildPlateSurfacePy)
-generate_from_xml(GeomPlate/CurveConstraintPy)
-generate_from_xml(GeomPlate/PointConstraintPy)
+generate_from_py(GeomPlate/BuildPlateSurface)
+generate_from_py(GeomPlate/CurveConstraint)
+generate_from_py(GeomPlate/PointConstraint)
 
-generate_from_xml(HLRBRep/HLRBRep_AlgoPy)
-generate_from_xml(HLRBRep/HLRToShapePy)
-generate_from_xml(HLRBRep/HLRBRep_PolyAlgoPy)
-generate_from_xml(HLRBRep/PolyHLRToShapePy)
+generate_from_py(HLRBRep/HLRBRep_Algo)
+generate_from_py(HLRBRep/HLRToShape)
+generate_from_py(HLRBRep/HLRBRep_PolyAlgo)
+generate_from_py(HLRBRep/PolyHLRToShape)
 
-generate_from_xml(ShapeFix/ShapeFix_RootPy)
-generate_from_xml(ShapeFix/ShapeFix_EdgePy)
-generate_from_xml(ShapeFix/ShapeFix_FacePy)
-generate_from_xml(ShapeFix/ShapeFix_ShapePy)
-generate_from_xml(ShapeFix/ShapeFix_ShellPy)
-generate_from_xml(ShapeFix/ShapeFix_SolidPy)
-generate_from_xml(ShapeFix/ShapeFix_WirePy)
-generate_from_xml(ShapeFix/ShapeFix_WireframePy)
-generate_from_xml(ShapeFix/ShapeFix_WireVertexPy)
-generate_from_xml(ShapeFix/ShapeFix_EdgeConnectPy)
-generate_from_xml(ShapeFix/ShapeFix_FaceConnectPy)
-generate_from_xml(ShapeFix/ShapeFix_FixSmallFacePy)
-generate_from_xml(ShapeFix/ShapeFix_FixSmallSolidPy)
-generate_from_xml(ShapeFix/ShapeFix_FreeBoundsPy)
-generate_from_xml(ShapeFix/ShapeFix_ShapeTolerancePy)
-generate_from_xml(ShapeFix/ShapeFix_SplitCommonVertexPy)
-generate_from_xml(ShapeFix/ShapeFix_SplitToolPy)
+generate_from_py(ShapeFix/ShapeFix_Root)
+generate_from_py(ShapeFix/ShapeFix_Edge)
+generate_from_py(ShapeFix/ShapeFix_Face)
+generate_from_py(ShapeFix/ShapeFix_Shape)
+generate_from_py(ShapeFix/ShapeFix_Shell)
+generate_from_py(ShapeFix/ShapeFix_Solid)
+generate_from_py(ShapeFix/ShapeFix_Wire)
+generate_from_py(ShapeFix/ShapeFix_Wireframe)
+generate_from_py(ShapeFix/ShapeFix_WireVertex)
+generate_from_py(ShapeFix/ShapeFix_EdgeConnect)
+generate_from_py(ShapeFix/ShapeFix_FaceConnect)
+generate_from_py(ShapeFix/ShapeFix_FixSmallFace)
+generate_from_py(ShapeFix/ShapeFix_FixSmallSolid)
+generate_from_py(ShapeFix/ShapeFix_FreeBounds)
+generate_from_py(ShapeFix/ShapeFix_ShapeTolerance)
+generate_from_py(ShapeFix/ShapeFix_SplitCommonVertex)
+generate_from_py(ShapeFix/ShapeFix_SplitTool)
 
-generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
+generate_from_py(ShapeUpgrade/UnifySameDomain)
 
 SET(Features_SRCS
     FeaturePartBoolean.cpp
@@ -312,115 +257,115 @@ SET(FCBRepAlgoAPI_SRCS
 SOURCE_GROUP("FCBRepAlgoAPI-wrapper" FILES ${FCBRepAlgoAPI_SRCS})
 
 SET(Python_SRCS
-    ArcPy.xml
+    Arc.pyi
     ArcPyImp.cpp
-    ArcOfConicPy.xml
+    ArcOfConic.pyi
     ArcOfConicPyImp.cpp
-    ArcOfCirclePy.xml
+    ArcOfCircle.pyi
     ArcOfCirclePyImp.cpp
-    ArcOfParabolaPy.xml
+    ArcOfParabola.pyi
     ArcOfParabolaPyImp.cpp
-    BodyBasePy.xml
+    BodyBase.pyi
     BodyBasePyImp.cpp
-    ConicPy.xml
+    Conic.pyi
     ConicPyImp.cpp
-    CirclePy.xml
+    Circle.pyi
     CirclePyImp.cpp
-    ArcOfEllipsePy.xml
+    ArcOfEllipse.pyi
     ArcOfEllipsePyImp.cpp
-    EllipsePy.xml
+    Ellipse.pyi
     EllipsePyImp.cpp
-    HyperbolaPy.xml
+    Hyperbola.pyi
     HyperbolaPyImp.cpp
-    ArcOfHyperbolaPy.xml
+    ArcOfHyperbola.pyi
     ArcOfHyperbolaPyImp.cpp
-    ParabolaPy.xml
+    Parabola.pyi
     ParabolaPyImp.cpp
-    OffsetCurvePy.xml
+    OffsetCurve.pyi
     OffsetCurvePyImp.cpp
-    GeometryPy.xml
+    Geometry.pyi
     GeometryPyImp.cpp
-    GeometryExtensionPy.xml
+    GeometryExtension.pyi
     GeometryExtensionPyImp.cpp
-    GeometryIntExtensionPy.xml
+    GeometryIntExtension.pyi
     GeometryIntExtensionPyImp.cpp
-    GeometryStringExtensionPy.xml
+    GeometryStringExtension.pyi
     GeometryStringExtensionPyImp.cpp
-    GeometryBoolExtensionPy.xml
+    GeometryBoolExtension.pyi
     GeometryBoolExtensionPyImp.cpp
-    GeometryDoubleExtensionPy.xml
+    GeometryDoubleExtension.pyi
     GeometryDoubleExtensionPyImp.cpp
-    GeometryCurvePy.xml
+    GeometryCurve.pyi
     GeometryCurvePyImp.cpp
-    BoundedCurvePy.xml
+    BoundedCurve.pyi
     BoundedCurvePyImp.cpp
-    TrimmedCurvePy.xml
+    TrimmedCurve.pyi
     TrimmedCurvePyImp.cpp
-    GeometrySurfacePy.xml
+    GeometrySurface.pyi
     GeometrySurfacePyImp.cpp
-    LinePy.xml
+    Line.pyi
     LinePyImp.cpp
-    LineSegmentPy.xml
+    LineSegment.pyi
     LineSegmentPyImp.cpp
-    PointPy.xml
+    Point.pyi
     PointPyImp.cpp
-    BezierCurvePy.xml
+    BezierCurve.pyi
     BezierCurvePyImp.cpp
-    BSplineCurvePy.xml
+    BSplineCurve.pyi
     BSplineCurvePyImp.cpp
-    PlanePy.xml
+    Plane.pyi
     PlanePyImp.cpp
-    ConePy.xml
+    Cone.pyi
     ConePyImp.cpp
-    CylinderPy.xml
+    Cylinder.pyi
     CylinderPyImp.cpp
-    SpherePy.xml
+    Sphere.pyi
     SpherePyImp.cpp
-    ToroidPy.xml
+    Toroid.pyi
     ToroidPyImp.cpp
-    BezierSurfacePy.xml
+    BezierSurface.pyi
     BezierSurfacePyImp.cpp
-    BSplineSurfacePy.xml
+    BSplineSurface.pyi
     BSplineSurfacePyImp.cpp
-    OffsetSurfacePy.xml
+    OffsetSurface.pyi
     OffsetSurfacePyImp.cpp
-    PlateSurfacePy.xml
+    PlateSurface.pyi
     PlateSurfacePyImp.cpp
-    RectangularTrimmedSurfacePy.xml
+    RectangularTrimmedSurface.pyi
     RectangularTrimmedSurfacePyImp.cpp
-    SurfaceOfExtrusionPy.xml
+    SurfaceOfExtrusion.pyi
     SurfaceOfExtrusionPyImp.cpp
-    SurfaceOfRevolutionPy.xml
+    SurfaceOfRevolution.pyi
     SurfaceOfRevolutionPyImp.cpp
-    PartFeaturePy.xml
+    PartFeature.pyi
     PartFeaturePyImp.cpp
-    AttachExtensionPy.xml
+    AttachExtension.pyi
     AttachExtensionPyImp.cpp
-    Part2DObjectPy.xml
+    Part2DObject.pyi
     Part2DObjectPyImp.cpp
-    AttachEnginePy.xml
+    AttachEngine.pyi
     AttachEnginePyImp.cpp
-    TopoShapePy.xml
+    TopoShape.pyi
     TopoShapePyImp.cpp
-    TopoShapeCompSolidPy.xml
+    TopoShapeCompSolid.pyi
     TopoShapeCompSolidPyImp.cpp
-    TopoShapeCompoundPy.xml
+    TopoShapeCompound.pyi
     TopoShapeCompoundPyImp.cpp
-    TopoShapeEdgePy.xml
+    TopoShapeEdge.pyi
     TopoShapeEdgePyImp.cpp
-    TopoShapeFacePy.xml
+    TopoShapeFace.pyi
     TopoShapeFacePyImp.cpp
-    TopoShapeShellPy.xml
+    TopoShapeShell.pyi
     TopoShapeShellPyImp.cpp
-    TopoShapeSolidPy.xml
+    TopoShapeSolid.pyi
     TopoShapeSolidPyImp.cpp
-    TopoShapeVertexPy.xml
+    TopoShapeVertex.pyi
     TopoShapeVertexPyImp.cpp
-    TopoShapeWirePy.xml
+    TopoShapeWire.pyi
     TopoShapeWirePyImp.cpp
-    BRepOffsetAPI_MakePipeShellPy.xml
+    BRepOffsetAPI_MakePipeShell.pyi
     BRepOffsetAPI_MakePipeShellPyImp.cpp
-    BRepOffsetAPI_MakeFillingPy.xml
+    BRepOffsetAPI_MakeFilling.pyi
     BRepOffsetAPI_MakeFillingPyImp.cpp
     PartPyCXX.cpp
     PartPyCXX.h
@@ -429,59 +374,59 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 # BRepFeat wrappers
 SET(BRepFeatPy_SRCS
-    BRepFeat/MakePrismPy.xml
+    BRepFeat/MakePrism.pyi
     BRepFeat/MakePrismPyImp.cpp
 )
 SOURCE_GROUP("BRepFeat" FILES ${BRepFeatPy_SRCS})
 
 # ChFi2d wrappers
 SET(ChFi2dPy_SRCS
-    ChFi2d/ChFi2d_AnaFilletAlgoPy.xml
+    ChFi2d/ChFi2d_AnaFilletAlgo.pyi
     ChFi2d/ChFi2d_AnaFilletAlgoPyImp.cpp
-    ChFi2d/ChFi2d_FilletAlgoPy.xml
+    ChFi2d/ChFi2d_FilletAlgo.pyi
     ChFi2d/ChFi2d_FilletAlgoPyImp.cpp
-    ChFi2d/ChFi2d_ChamferAPIPy.xml
+    ChFi2d/ChFi2d_ChamferAPI.pyi
     ChFi2d/ChFi2d_ChamferAPIPyImp.cpp
-    ChFi2d/ChFi2d_FilletAPIPy.xml
+    ChFi2d/ChFi2d_FilletAPI.pyi
     ChFi2d/ChFi2d_FilletAPIPyImp.cpp
 )
 SOURCE_GROUP("ChFi2d" FILES ${ChFi2dPy_SRCS})
 
 # Geom2d wrappers
 SET(Geom2dPy_SRCS
-    Geom2d/ArcOfCircle2dPy.xml
+    Geom2d/ArcOfCircle2d.pyi
     Geom2d/ArcOfCircle2dPyImp.cpp
-    Geom2d/ArcOfConic2dPy.xml
+    Geom2d/ArcOfConic2d.pyi
     Geom2d/ArcOfConic2dPyImp.cpp
-    Geom2d/ArcOfEllipse2dPy.xml
+    Geom2d/ArcOfEllipse2d.pyi
     Geom2d/ArcOfEllipse2dPyImp.cpp
-    Geom2d/ArcOfHyperbola2dPy.xml
+    Geom2d/ArcOfHyperbola2d.pyi
     Geom2d/ArcOfHyperbola2dPyImp.cpp
-    Geom2d/ArcOfParabola2dPy.xml
+    Geom2d/ArcOfParabola2d.pyi
     Geom2d/ArcOfParabola2dPyImp.cpp
-    Geom2d/BezierCurve2dPy.xml
+    Geom2d/BezierCurve2d.pyi
     Geom2d/BezierCurve2dPyImp.cpp
-    Geom2d/BSplineCurve2dPy.xml
+    Geom2d/BSplineCurve2d.pyi
     Geom2d/BSplineCurve2dPyImp.cpp
-    Geom2d/Circle2dPy.xml
+    Geom2d/Circle2d.pyi
     Geom2d/Circle2dPyImp.cpp
-    Geom2d/Conic2dPy.xml
+    Geom2d/Conic2d.pyi
     Geom2d/Conic2dPyImp.cpp
-    Geom2d/Ellipse2dPy.xml
+    Geom2d/Ellipse2d.pyi
     Geom2d/Ellipse2dPyImp.cpp
-    Geom2d/Geometry2dPy.xml
+    Geom2d/Geometry2d.pyi
     Geom2d/Geometry2dPyImp.cpp
-    Geom2d/Curve2dPy.xml
+    Geom2d/Curve2d.pyi
     Geom2d/Curve2dPyImp.cpp
-    Geom2d/Hyperbola2dPy.xml
+    Geom2d/Hyperbola2d.pyi
     Geom2d/Hyperbola2dPyImp.cpp
-    Geom2d/Line2dPy.xml
+    Geom2d/Line2d.pyi
     Geom2d/Line2dPyImp.cpp
-    Geom2d/Line2dSegmentPy.xml
+    Geom2d/Line2dSegment.pyi
     Geom2d/Line2dSegmentPyImp.cpp
-    Geom2d/OffsetCurve2dPy.xml
+    Geom2d/OffsetCurve2d.pyi
     Geom2d/OffsetCurve2dPyImp.cpp
-    Geom2d/Parabola2dPy.xml
+    Geom2d/Parabola2d.pyi
     Geom2d/Parabola2dPyImp.cpp
 )
 
@@ -489,11 +434,11 @@ SOURCE_GROUP("Geom2d" FILES ${Geom2dPy_SRCS})
 
 # GeomPlate wrappers
 SET(GeomPlatePy_SRCS
-    GeomPlate/BuildPlateSurfacePy.xml
+    GeomPlate/BuildPlateSurface.pyi
     GeomPlate/BuildPlateSurfacePyImp.cpp
-    GeomPlate/CurveConstraintPy.xml
+    GeomPlate/CurveConstraint.pyi
     GeomPlate/CurveConstraintPyImp.cpp
-    GeomPlate/PointConstraintPy.xml
+    GeomPlate/PointConstraint.pyi
     GeomPlate/PointConstraintPyImp.cpp
 )
 
@@ -501,53 +446,53 @@ SOURCE_GROUP("GeomPlate" FILES ${GeomPlatePy_SRCS})
 
 # HLRBRep wrappers
 SET(HLRBRepPy_SRCS
-    HLRBRep/HLRBRep_AlgoPy.xml
+    HLRBRep/HLRBRep_Algo.pyi
     HLRBRep/HLRBRep_AlgoPyImp.cpp
-    HLRBRep/HLRToShapePy.xml
+    HLRBRep/HLRToShape.pyi
     HLRBRep/HLRToShapePyImp.cpp
 
-    HLRBRep/HLRBRep_PolyAlgoPy.xml
+    HLRBRep/HLRBRep_PolyAlgo.pyi
     HLRBRep/HLRBRep_PolyAlgoPyImp.cpp
-    HLRBRep/PolyHLRToShapePy.xml
+    HLRBRep/PolyHLRToShape.pyi
     HLRBRep/PolyHLRToShapePyImp.cpp
 )
 SOURCE_GROUP("HLRBRep" FILES ${HLRBRepPy_SRCS})
 
 # ShapeFix wrappers
 SET(ShapeFixPy_SRCS
-    ShapeFix/ShapeFix_RootPy.xml
+    ShapeFix/ShapeFix_Root.pyi
     ShapeFix/ShapeFix_RootPyImp.cpp
-    ShapeFix/ShapeFix_EdgePy.xml
+    ShapeFix/ShapeFix_Edge.pyi
     ShapeFix/ShapeFix_EdgePyImp.cpp
-    ShapeFix/ShapeFix_FacePy.xml
+    ShapeFix/ShapeFix_Face.pyi
     ShapeFix/ShapeFix_FacePyImp.cpp
-    ShapeFix/ShapeFix_ShapePy.xml
+    ShapeFix/ShapeFix_Shape.pyi
     ShapeFix/ShapeFix_ShapePyImp.cpp
-    ShapeFix/ShapeFix_ShellPy.xml
+    ShapeFix/ShapeFix_Shell.pyi
     ShapeFix/ShapeFix_ShellPyImp.cpp
-    ShapeFix/ShapeFix_SolidPy.xml
+    ShapeFix/ShapeFix_Solid.pyi
     ShapeFix/ShapeFix_SolidPyImp.cpp
-    ShapeFix/ShapeFix_WirePy.xml
+    ShapeFix/ShapeFix_Wire.pyi
     ShapeFix/ShapeFix_WirePyImp.cpp
-    ShapeFix/ShapeFix_WireframePy.xml
+    ShapeFix/ShapeFix_Wireframe.pyi
     ShapeFix/ShapeFix_WireframePyImp.cpp
-    ShapeFix/ShapeFix_WireVertexPy.xml
+    ShapeFix/ShapeFix_WireVertex.pyi
     ShapeFix/ShapeFix_WireVertexPyImp.cpp
-    ShapeFix/ShapeFix_EdgeConnectPy.xml
+    ShapeFix/ShapeFix_EdgeConnect.pyi
     ShapeFix/ShapeFix_EdgeConnectPyImp.cpp
-    ShapeFix/ShapeFix_FaceConnectPy.xml
+    ShapeFix/ShapeFix_FaceConnect.pyi
     ShapeFix/ShapeFix_FaceConnectPyImp.cpp
-    ShapeFix/ShapeFix_FixSmallFacePy.xml
+    ShapeFix/ShapeFix_FixSmallFace.pyi
     ShapeFix/ShapeFix_FixSmallFacePyImp.cpp
-    ShapeFix/ShapeFix_FixSmallSolidPy.xml
+    ShapeFix/ShapeFix_FixSmallSolid.pyi
     ShapeFix/ShapeFix_FixSmallSolidPyImp.cpp
-    ShapeFix/ShapeFix_FreeBoundsPy.xml
+    ShapeFix/ShapeFix_FreeBounds.pyi
     ShapeFix/ShapeFix_FreeBoundsPyImp.cpp
-    ShapeFix/ShapeFix_ShapeTolerancePy.xml
+    ShapeFix/ShapeFix_ShapeTolerance.pyi
     ShapeFix/ShapeFix_ShapeTolerancePyImp.cpp
-    ShapeFix/ShapeFix_SplitCommonVertexPy.xml
+    ShapeFix/ShapeFix_SplitCommonVertex.pyi
     ShapeFix/ShapeFix_SplitCommonVertexPyImp.cpp
-    ShapeFix/ShapeFix_SplitToolPy.xml
+    ShapeFix/ShapeFix_SplitTool.pyi
     ShapeFix/ShapeFix_SplitToolPyImp.cpp
 )
 
@@ -555,7 +500,7 @@ SOURCE_GROUP("ShapeFix" FILES ${ShapeFixPy_SRCS})
 
 # ShapeUpgrade wrappers
 SET(ShapeUpgradePy_SRCS
-    ShapeUpgrade/UnifySameDomainPy.xml
+    ShapeUpgrade/UnifySameDomain.pyi
     ShapeUpgrade/UnifySameDomainPyImp.cpp
 )
 

@@ -4,6 +4,7 @@ target_sources(Tests_run PRIVATE
         Bitmask.cpp
         BoundBox.cpp
         Builder3D.cpp
+        Color.cpp
         CoordinateSystem.cpp
         DualNumber.cpp
         DualQuaternion.cpp

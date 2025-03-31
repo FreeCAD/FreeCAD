@@ -718,7 +718,7 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child : children) {
         if (child->isDerivedFrom<DrawHatch>() && !child->isRemoving()) {
-            TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(child);
+            TechDraw::DrawHatch* hatch = static_cast<TechDraw::DrawHatch*>(child);
             result.push_back(hatch);
         }
     }
@@ -733,7 +733,7 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     for (auto& child : children) {
         if (child->isDerivedFrom<DrawGeomHatch>()
             && !child->isRemoving()) {
-            TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(child);
+            TechDraw::DrawGeomHatch* geom = static_cast<TechDraw::DrawGeomHatch*>(child);
             result.push_back(geom);
         }
     }
@@ -752,7 +752,7 @@ std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
         if ((*it)->isDerivedFrom<DrawViewDimension>()) {
-            TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(*it);
+            TechDraw::DrawViewDimension* dim = static_cast<TechDraw::DrawViewDimension*>(*it);
             result.push_back(dim);
         }
     }
@@ -768,7 +768,7 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
         if ((*it)->isDerivedFrom<DrawViewBalloon>()) {
-            TechDraw::DrawViewBalloon* balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(*it);
+            TechDraw::DrawViewBalloon* balloon = static_cast<TechDraw::DrawViewBalloon*>(*it);
             result.push_back(balloon);
         }
     }
@@ -986,7 +986,7 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
     if (getEdgeCompound().IsNull()) {
         return 1.0;
     }
-    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(getEdgeCompound(), OXYZ, alignmentAngle * 180.0 / M_PI);
+    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(getEdgeCompound(), OXYZ, alignmentAngle * 180.0 / std::numbers::pi);
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
     BRepBndLib::AddOptimal(rotatedShape, shapeBox);
@@ -1105,7 +1105,7 @@ gp_Ax2 DrawViewPart::getRotatedCS(const Base::Vector3d basePoint) const
     //    Base::Console().Message("DVP::getRotatedCS() - %s - %s\n", getNameInDocument(), Label.getValue());
     gp_Ax2 unrotated = getProjectionCS(basePoint);
     gp_Ax1 rotationAxis(Base::convertTo<gp_Pnt>(basePoint), unrotated.Direction());
-    double angleRad = Rotation.getValue() * M_PI / 180.0;
+    double angleRad = Rotation.getValue() * std::numbers::pi / 180.0;
     gp_Ax2 rotated = unrotated.Rotated(rotationAxis, -angleRad);
     return rotated;
 }
@@ -1142,7 +1142,7 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
         if (o->isDerivedFrom<DrawViewSection>()) {
             // expressions can add extra links to this DVP so we keep only
             // objects that are BaseViews
-            auto section = dynamic_cast<TechDraw::DrawViewSection*>(o);
+            auto section = static_cast<TechDraw::DrawViewSection*>(o);
             auto base = section->BaseView.getValue();
             if (base == this) {
                 result.push_back(section);
@@ -1161,7 +1161,7 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
             !o->isRemoving() ) {
             // expressions can add extra links to this DVP so we keep only
             // objects that are BaseViews
-            auto detail = dynamic_cast<TechDraw::DrawViewDetail*>(o);
+            auto detail = static_cast<TechDraw::DrawViewDetail*>(o);
             auto base = detail->BaseView.getValue();
             if (base == this) {
                 result.push_back(detail);
@@ -1302,9 +1302,9 @@ void DrawViewPart::spin(const SpinDirection& spindirection)
 {
     double angle;
     if (spindirection == SpinDirection::CW)
-        angle = M_PI / 2.0;// Top -> Right -> Bottom -> Left -> Top
+        angle = std::numbers::pi / 2.0;// Top -> Right -> Bottom -> Left -> Top
     if (spindirection == SpinDirection::CCW)
-        angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
+        angle = -std::numbers::pi / 2.0;// Top -> Left -> Bottom -> Right -> Top
 
     spin(angle);
 }
@@ -1338,7 +1338,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(ProjDir
     gp_Dir gNewDir;
     gp_Dir gNewXDir;
 
-    double angle = M_PI / 2.0;//90*
+    double angle = std::numbers::pi / 2.0;//90*
 
     if (viewType == ProjDirection::Right) {
         newCS = anchorCS.Rotated(gUpAxis, angle);

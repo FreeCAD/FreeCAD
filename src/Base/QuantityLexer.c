@@ -1613,12 +1613,12 @@ YY_RULE_SETUP
 case 135:
 YY_RULE_SETUP
 #line 228 "QuantityParser.l"
-{yylval = Quantity(M_PI)          ; return NUM;} // constant pi
+{yylval = Quantity(std::numbers::pi)          ; return NUM;} // constant pi
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
 #line 229 "QuantityParser.l"
-{yylval = Quantity(M_E)           ; return NUM;} // constant e
+{yylval = Quantity(std::numbers::e)           ; return NUM;} // constant e
 	YY_BREAK
 case 137:
 YY_RULE_SETUP

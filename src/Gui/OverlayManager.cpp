@@ -1819,7 +1819,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
         }
 
         if (hit <= 0) {
-            d->_lastPos.setX(INT_MAX);
+            d->_lastPos.setX(std::numeric_limits<int>::max());
             if (ev->type() == QEvent::Wheel) {
                 d->wheelDelay = QTime::currentTime().addMSecs(OverlayParams::getDockOverlayWheelDelay());
                 d->wheelPos = pos;

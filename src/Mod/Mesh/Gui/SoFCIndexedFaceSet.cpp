@@ -30,7 +30,6 @@
 
 #ifndef _PreComp_
 #include <algorithm>
-#include <climits>
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
 #include <OpenGL/glext.h>
@@ -459,7 +458,7 @@ void SoFCIndexedFaceSet::initClass()
 }
 
 SoFCIndexedFaceSet::SoFCIndexedFaceSet()
-    : renderTriangleLimit(UINT_MAX)
+    : renderTriangleLimit(std::numeric_limits<unsigned>::max())
 {
     SO_NODE_CONSTRUCTOR(SoFCIndexedFaceSet);
     SO_NODE_ADD_FIELD(updateGLArray, (false));

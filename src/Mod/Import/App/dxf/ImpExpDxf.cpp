@@ -977,8 +977,8 @@ void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
     // rotation appears to be the clockwise(?) angle between major & +Y??
     double rotation = xaxis.AngleWithRef(gp_Dir(0, 1, 0), gp_Dir(0, 0, 1));
 
-    // 2*M_PI = 6.28319 is invalid(doesn't display in LibreCAD), but 2PI = 6.28318 is valid!
-    // writeEllipse(center, major, minor, rotation, 0.0, 2 * M_PI, true );
+    // 2*pi = 6.28319 is invalid(doesn't display in LibreCAD), but 2PI = 6.28318 is valid!
+    // writeEllipse(center, major, minor, rotation, 0.0, 2 * std::numbers::pi, true );
     writeEllipse(center, major, minor, rotation, 0.0, 6.28318, true);
 }
 
@@ -1036,8 +1036,8 @@ void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
                                      // a > 0 ==> v2 is CCW from v1 (righthanded)?
                                      // a < 0 ==> v2 is CW from v1 (lefthanded)?
 
-    double startAngle = fmod(f, 2.0 * M_PI);  // revolutions
-    double endAngle = fmod(l, 2.0 * M_PI);
+    double startAngle = fmod(f, 2.0 * std::numbers::pi);  // revolutions
+    double endAngle = fmod(l, 2.0 * std::numbers::pi);
     bool endIsCW = (a < 0) ? true : false;  // if !endIsCW swap(start,end)
     // not sure if this is a hack or not. seems to make valid arcs.
     if (!endIsCW) {

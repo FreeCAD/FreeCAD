@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
+# include <numbers>
 # include <iterator>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
@@ -613,8 +614,8 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
 
     // For an exact calculation, only two results would be possible:
     // totalArc = 0.0: The wire does not encircle the axis
-    // totalArc = 2 * M_PI * radius: The wire encircles the axis
-    return (fabs(totalArc) > M_PI * radius);
+    // totalArc = 2 * std::numbers::pi * radius: The wire encircles the axis
+    return (fabs(totalArc) > std::numbers::pi * radius);
 }
 
 TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
