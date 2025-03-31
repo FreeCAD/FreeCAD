@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <BRepAdaptor_Surface.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
