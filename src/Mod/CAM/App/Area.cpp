@@ -26,6 +26,7 @@
 #define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
 
 #ifndef _PreComp_
+#include <limits>
 
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>

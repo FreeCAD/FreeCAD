@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <Geom_Parabola.hxx>
 #endif
