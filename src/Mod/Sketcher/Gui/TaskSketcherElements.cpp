@@ -33,6 +33,7 @@
 #include <QString>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
+#include <limits>
 #endif
 
 #include <App/Application.h>

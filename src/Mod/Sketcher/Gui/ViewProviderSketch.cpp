@@ -38,6 +38,8 @@
 #include <QMessageBox>
 #include <QScreen>
 #include <QTextStream>
+
+#include <limits>
 #endif
 
 #include <Base/Console.h>
