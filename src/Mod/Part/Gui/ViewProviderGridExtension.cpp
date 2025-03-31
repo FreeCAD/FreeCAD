@@ -24,6 +24,8 @@
 
 #ifndef _PreComp_
 
+# include <limits>
+
 # include <Inventor/nodes/SoDepthBuffer.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoLineSet.h>

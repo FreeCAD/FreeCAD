@@ -21,6 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <limits>
 #include <map>
 #include <unordered_set>
 #include <vector>

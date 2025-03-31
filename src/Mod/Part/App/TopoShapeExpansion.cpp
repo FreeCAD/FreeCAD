@@ -26,6 +26,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <limits>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
