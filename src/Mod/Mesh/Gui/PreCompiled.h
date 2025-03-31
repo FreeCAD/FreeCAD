@@ -45,6 +45,7 @@
 #include <iomanip>
 #include <list>
 #include <map>
+#include <limits>
 #include <random>
 #include <sstream>
 #include <string>
