@@ -35,10 +35,10 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import base_femtaskpanel
+from . import base_fempostpanel
 
 
-class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
+class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
     """
     The TaskPanel for editing properties of glyph filter
     """

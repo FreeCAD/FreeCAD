@@ -34,6 +34,10 @@
 #include "FemPostPipelinePy.cpp"
 // clang-format on
 
+#ifdef BUILD_FEM_VTK_WRAPPER
+    #include <vtkPythonUtil.h>
+#endif //BUILD_FEM_VTK
+
 
 using namespace Fem;
 
@@ -311,6 +315,25 @@ PyObject* FemPostPipelinePy::renameArrays(PyObject* args)
     getFemPostPipelinePtr()->renameArrays(names);
 
     Py_Return;
+}
+
+PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
+{
+#ifdef BUILD_FEM_VTK_WRAPPER
+    // we take no arguments
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    // return python object for the algorithm
+    auto algorithm = getFemPostPipelinePtr()->getOutputAlgorithm();
+    PyObject* py_algorithm = vtkPythonUtil::GetObjectFromPointer(algorithm);
+
+    return  Py::new_reference_to(py_algorithm);
+#else
+    PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
+    Py_Return;
+#endif
 }
 
 PyObject* FemPostPipelinePy::getCustomAttributes(const char* /*attr*/) const

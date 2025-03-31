@@ -42,6 +42,7 @@ class Ui_TaskPostWarpVector;
 class Ui_TaskPostCut;
 class Ui_TaskPostFrames;
 class Ui_TaskPostBranch;
+class Ui_TaskPostExtraction;
 
 class SoFontStyle;
 class SoText2;
@@ -187,10 +188,15 @@ protected:
 
     static void updateEnumerationList(App::PropertyEnumeration&, QComboBox* box);
 
+    // object update handling
+    void handlePropertyChange(const App::DocumentObject&, const App::Property&);
+    virtual void onPostDataChanged(Fem::FemPostObject*) {};
+
 private:
     QPixmap m_icon;
     App::DocumentObjectWeakPtrT m_object;
     Gui::ViewProviderWeakPtrT m_view;
+    boost::signals2::connection m_connection;
 };
 
 
@@ -266,7 +272,6 @@ private:
 private:
     std::unique_ptr<Ui_TaskPostDisplay> ui;
 };
-
 
 // ***************************************************************************
 // functions

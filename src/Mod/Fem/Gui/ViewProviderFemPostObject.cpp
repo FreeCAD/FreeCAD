@@ -67,6 +67,7 @@
 #include <Mod/Fem/App/FemPostFilter.h>
 
 #include "TaskPostBoxes.h"
+#include "TaskPostExtraction.h"
 #include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostObject.h"
 
@@ -1019,8 +1020,11 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
 void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
 {
     assert(dlg->getView() == this);
-    auto panel = new TaskPostDisplay(this);
-    dlg->addTaskBox(panel->windowIcon().pixmap(32), panel);
+    auto disp_panel = new TaskPostDisplay(this);
+    dlg->addTaskBox(disp_panel->windowIcon().pixmap(32), disp_panel);
+
+    auto extr_panel = new TaskPostExtraction(this);
+    dlg->addTaskBox(extr_panel->windowIcon().pixmap(32), extr_panel);
 }
 
 void ViewProviderFemPostObject::unsetEdit(int ModNum)
