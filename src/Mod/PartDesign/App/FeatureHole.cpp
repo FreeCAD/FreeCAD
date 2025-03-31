@@ -71,6 +71,7 @@ const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfi
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
+const char* Hole::BaseProfileTypeEnums[]             = {"ArcsAndCircles", "PointArcsAndCircles", nullptr};
 
 /* "None" profile */
 
@@ -809,6 +810,8 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(CustomThreadClearance, (0.0), "Hole", App::Prop_None, "Custom thread clearance (overrides ThreadClass)");
 
+    ADD_PROPERTY_TYPE(BaseProfileType, (0L), "Hole", App::Prop_None, "Which profile feature to base the holes on");
+    BaseProfileType.setEnums(BaseProfileTypeEnums);
 }
 
 void Hole::updateHoleCutParams()
@@ -1664,6 +1667,14 @@ void Hole::onChanged(const App::Property* prop)
 
     ProfileBased::onChanged(prop);
 }
+void Hole::setupObject()
+{
+    // Set the BaseProfileType to "Points, Circles and Arcs"
+    // here so that new objects use points, but older files
+    // keep the default value of "Circles and Arcs"
+    BaseProfileType.setValue(1L);
+    ProfileBased::setupObject();
+}
 
 /**
   * Computes 2D intersection between the lines (pa1, pa2) and (pb1, pb2).
@@ -1740,7 +1751,8 @@ short Hole::mustExecute() const
         UseCustomThreadClearance.isTouched() ||
         CustomThreadClearance.isTouched() ||
         ThreadDepthType.isTouched() ||
-        ThreadDepth.isTouched()
+        ThreadDepth.isTouched() ||
+        BaseProfileType.isTouched()
         )
         return 1;
     return ProfileBased::mustExecute();
@@ -1776,6 +1788,7 @@ void Hole::updateProps()
     onChanged(&CustomThreadClearance);
     onChanged(&ThreadDepthType);
     onChanged(&ThreadDepth);
+    onChanged(&BaseProfileType);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
@@ -2186,11 +2199,17 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
         add_hole(profileEdge, circle->Axis().Location());
     }
 
-    // Iterate over vertices while avoiding edges so that curve handles are ignored
-    for(const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
-        TopoDS_Vertex vertex = TopoDS::Vertex(TopoDS_Shape(profileVertex.getShape()));
 
-        add_hole(profileVertex, BRep_Tool::Pnt(vertex));
+    // To avoid breaking older files which where not made with
+    // holes on points
+    std::string profileType(BaseProfileType.getValueAsString());
+    if(profileType == "PointArcsAndCircles") {
+        // Iterate over vertices while avoiding edges so that curve handles are ignored
+        for(const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
+            TopoDS_Vertex vertex = TopoDS::Vertex(TopoDS_Shape(profileVertex.getShape()));
+
+            add_hole(profileVertex, BRep_Tool::Pnt(vertex));
+        }
     }
     return TopoShape().makeElementCompound(holes);
 }

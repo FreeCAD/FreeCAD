@@ -74,6 +74,7 @@ public:
     App::PropertyAngle          TaperedAngle;
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
+    App::PropertyEnumeration    BaseProfileType;
 
     /** @name methods override feature */
     //@{
@@ -113,6 +114,8 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
+    void setupObject() override;
+
     static const App::PropertyAngle::Constraints floatAngle;
 
 private:
@@ -123,6 +126,7 @@ private:
     static const char* ClearanceUTSEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
+    static const char* BaseProfileTypeEnums[];
 
     /* "None" thread profile */
     static const char* HoleCutType_None_Enums[];
