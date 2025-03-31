@@ -46,51 +46,51 @@ class Wire(DraftObject):
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The vertices of the wire")
-        obj.addProperty("App::PropertyVectorList","Points", "Draft",_tip)
+        obj.addProperty("App::PropertyVectorList","Points", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "If the wire is closed or not")
-        obj.addProperty("App::PropertyBool","Closed", "Draft",_tip)
+        obj.addProperty("App::PropertyBool","Closed", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The base object is the wire, it's formed from 2 objects")
-        obj.addProperty("App::PropertyLink","Base", "Draft",_tip)
+        obj.addProperty("App::PropertyLink","Base", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The tool object is the wire, it's formed from 2 objects")
-        obj.addProperty("App::PropertyLink","Tool", "Draft",_tip)
+        obj.addProperty("App::PropertyLink","Tool", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The start point of this line")
-        obj.addProperty("App::PropertyVectorDistance","Start", "Draft",_tip)
+        obj.addProperty("App::PropertyVectorDistance","Start", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The end point of this line")
-        obj.addProperty("App::PropertyVectorDistance","End", "Draft",_tip)
+        obj.addProperty("App::PropertyVectorDistance","End", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The length of this line")
-        obj.addProperty("App::PropertyLength","Length", "Draft",_tip)
+        obj.addProperty("App::PropertyLength","Length", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyLength","FilletRadius", "Draft",_tip)
+        obj.addProperty("App::PropertyLength","FilletRadius", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Size of the chamfer to give to the corners")
-        obj.addProperty("App::PropertyLength","ChamferSize", "Draft",_tip)
+        obj.addProperty("App::PropertyLength","ChamferSize", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Create a face if this object is closed")
-        obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip)
+        obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The number of subdivisions of each edge")
-        obj.addProperty("App::PropertyInteger","Subdivisions", "Draft",_tip)
+        obj.addProperty("App::PropertyInteger","Subdivisions", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The area of this object")
-        obj.addProperty("App::PropertyArea","Area", "Draft",_tip)
+        obj.addProperty("App::PropertyArea","Area", "Draft",_tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False

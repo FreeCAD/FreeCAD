@@ -350,7 +350,7 @@ class Writer:
         # updates older simulations
         if not hasattr(self.solver, "CoordinateSystem"):
             solver.addProperty(
-                "App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", ""
+                "App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", "", locked=True
             )
             solver.CoordinateSystem = solverClass.COORDINATE_SYSTEM
             solver.CoordinateSystem = "Cartesian"
@@ -360,6 +360,7 @@ class Writer:
                 "BDFOrder",
                 "Timestepping",
                 "Order of time stepping method 'BDF'",
+                locked=True,
             )
             solver.BDFOrder = (2, 1, 5, 1)
         if not hasattr(self.solver, "OutputIntervals"):
@@ -368,10 +369,13 @@ class Writer:
                 "OutputIntervals",
                 "Timestepping",
                 "After how many time steps a result file is output",
+                locked=True,
             )
             solver.OutputIntervals = [1]
         if not hasattr(self.solver, "SimulationType"):
-            solver.addProperty("App::PropertyEnumeration", "SimulationType", "Type", "")
+            solver.addProperty(
+                "App::PropertyEnumeration", "SimulationType", "Type", "", locked=True
+            )
             solver.SimulationType = solverClass.SIMULATION_TYPE
             solver.SimulationType = "Steady State"
         if not hasattr(self.solver, "TimestepIntervals"):
@@ -383,6 +387,7 @@ class Writer:
                     "List of maximum optimization rounds if 'Simulation Type'\n"
                     "is either 'Scanning' or 'Transient'"
                 ),
+                locked=True,
             )
             solver.TimestepIntervals = [100]
         if not hasattr(self.solver, "TimestepSizes"):
@@ -394,6 +399,7 @@ class Writer:
                     "List of time steps of optimization if 'Simulation Type'\n"
                     "is either 'Scanning' or 'Transient'"
                 ),
+                locked=True,
             )
             solver.TimestepSizes = [0.1]
 
@@ -661,6 +667,7 @@ class Writer:
                     "Only use for special cases\n"
                     "and consult the Elmer docs."
                 ),
+                locked=True,
             )
         if not hasattr(equation, "IdrsParameter"):
             equation.addProperty(
@@ -668,6 +675,7 @@ class Writer:
                 "IdrsParameter",
                 "Linear System",
                 "Parameter for iterative method 'Idrs'",
+                locked=True,
             )
             equation.IdrsParameter = (2, 1, 10, 1)
 

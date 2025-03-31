@@ -60,25 +60,40 @@ std::string ViewProviderPy::representation() const
     return "<View provider object>";
 }
 
-PyObject*  ViewProviderPy::addProperty(PyObject *args)
+PyObject*  ViewProviderPy::addProperty(PyObject *args, PyObject *kwd)
 {
     char *sType,*sName=nullptr,*sGroup=nullptr,*sDoc=nullptr;
     short attr=0;
-    std::string sDocStr;
-    PyObject *ro = Py_False, *hd = Py_False;
-    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
-        &PyBool_Type, &ro, &PyBool_Type, &hd))
+    PyObject *ro = Py_False, *hd = Py_False, *lk = Py_False;
+    const std::array<const char*, 9> kwlist {"type",
+                                              "name",
+                                              "group",
+                                              "doc",
+                                              "attr",
+                                              "read_only",
+                                              "hidden",
+                                              "locked",
+                                              nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwd,
+                                             "s|ssethO!O!O!",
+                                             kwlist,
+                                             &sType,
+                                             &sName,
+                                             &sGroup,
+                                             "utf-8",
+                                             &sDoc,
+                                             &attr,
+                                             &PyBool_Type, &ro,
+                                             &PyBool_Type, &hd,
+                                             &PyBool_Type, &lk))
         return nullptr;
-
-    if (sDoc) {
-        sDocStr = sDoc;
-        PyMem_Free(sDoc);
-    }
 
     App::Property* prop=nullptr;
     try {
-        prop = getViewProviderPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
+        prop = getViewProviderPtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
             Base::asBoolean(ro), Base::asBoolean(hd));
+        prop->setStatus(App::Property::LockDynamic, Base::asBoolean(lk));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());

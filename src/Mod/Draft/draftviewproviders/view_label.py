@@ -58,7 +58,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyEnumeration",
                              "TextAlignment",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.TextAlignment = ["Top", "Middle", "Bottom"]
             vobj.TextAlignment = "Bottom"
 
@@ -69,7 +70,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyInteger",
                              "MaxChars",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
 
         if "Justification" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -77,7 +79,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyEnumeration",
                              "Justification",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Justification = ["Left", "Center", "Right"]
 
         if "LineSpacing" not in properties:
@@ -86,7 +89,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyFloat",
                              "LineSpacing",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LineSpacing = params.get_param("LineSpacing")
 
     def set_graphics_properties(self, vobj, properties):
@@ -99,7 +103,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyLength",
                              "ArrowSize",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ArrowSize = params.get_param("arrowsize")
 
         if "ArrowType" not in properties:
@@ -108,7 +113,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyEnumeration",
                              "ArrowType",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ArrowType = utils.ARROW_TYPES
             vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
 
@@ -119,7 +125,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyEnumeration",
                              "Frame",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Frame = ["None", "Rectangle"]
 
         if "Line" not in properties:
@@ -128,7 +135,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "Line",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Line = True
 
     def getIcon(self):

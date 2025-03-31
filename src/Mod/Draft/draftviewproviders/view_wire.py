@@ -60,27 +60,30 @@ class ViewProviderWire(ViewProviderDraft):
         super(ViewProviderWire, self)._set_properties(vobj)
 
         if not hasattr(vobj, "EndArrow"):
-            _tip = "Displays a Dimension symbol at the end of the wire."
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Displays a Dimension symbol at the end of the wire.")
             vobj.addProperty("App::PropertyBool",
                              "EndArrow",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
+                             _tip,
+                             locked=True)
             vobj.EndArrow = False
 
         if not hasattr(vobj, "ArrowSize"):
-            _tip = "Arrow size"
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
             vobj.addProperty("App::PropertyLength",
                              "ArrowSize",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
+                             _tip,
+                             locked=True)
             vobj.ArrowSize = params.get_param("arrowsize")
 
         if not hasattr(vobj, "ArrowType"):
-            _tip = "Arrow type"
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
             vobj.addProperty("App::PropertyEnumeration",
                              "ArrowType",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
+                             _tip,
+                             locked=True)
             vobj.ArrowType = utils.ARROW_TYPES
             vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
 
