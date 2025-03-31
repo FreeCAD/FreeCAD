@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <limits>
 #include <queue>
 #include <utility>
 #endif

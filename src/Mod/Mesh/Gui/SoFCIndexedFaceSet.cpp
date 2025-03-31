@@ -30,6 +30,7 @@
 
 #ifndef _PreComp_
 #include <algorithm>
+#include <limits>
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
 #include <OpenGL/glext.h>

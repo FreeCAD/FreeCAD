@@ -23,6 +23,7 @@
 #ifndef MESH_MESHPOINT_H
 #define MESH_MESHPOINT_H
 
+#include <limits>
 
 #include <Base/Vector3D.h>
 #include <Base/Handle.h>

@@ -27,6 +27,7 @@
 #include <QTimer>
 #include <algorithm>
 #include <functional>
+#include <limits>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
