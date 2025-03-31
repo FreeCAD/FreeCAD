@@ -24,7 +24,6 @@ def openscadmesh(doc, scadstr, objname):
     import OpenSCADUtils
     tmpfilename = OpenSCADUtils.callopenscadstring(scadstr,'stl')
     if tmpfilename:
-        #mesh1 = doc.getObject(objname) #reuse imported object
         Mesh.insert(tmpfilename)
         os.unlink(tmpfilename)
         mesh1 = doc.getObject(objname) #blog
@@ -38,7 +37,7 @@ def openscadmesh(doc, scadstr, objname):
         solid = solid.removeSplitter()
         if solid.Volume < 0:
             solid.complement()
-        obj.Shape = solid#.removeSplitter()
+        obj.Shape = solid
         return obj
     else:
         print(scadstr)
@@ -148,7 +147,6 @@ class Node:
                     obj.Height = h
                     if self.arguments['center']:
                         center(obj,0,0,h)
-                    #base.ViewObject.hide()
                 elif False: #use Frustum Feature with makeRuledSurface
                     obj = doc.addObject("Part::FeaturePython",'frustum')
                     Frustum(obj,r1,r2,int(self.arguments['$fn']), h)
@@ -361,7 +359,6 @@ class Node:
                     sh.makeShapeFromMesh(mesh1.Mesh.Topology,0.1)
                     solid = Part.Solid(sh)
                     obj = doc.addObject("Part::FeaturePython",'import_%s_%s'%(extension,objname))
-                    #obj=doc.addObject('Part::Feature',)
                     ImportObject(obj,mesh1) #This object is not mutable from the GUI
                     ViewProviderTree(obj.ViewObject)
                     solid = solid.removeSplitter()
@@ -400,7 +397,6 @@ class Node:
                         FreeCAD.Console.PrintError('processing of dxf import failed\nPlease rework \'%s\' manually\n' % layera)
                         f = Part.Shape() #empty Shape
                     obj = doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
-                    #obj=doc.addObject('Part::Feature',)
                     ImportObject(obj,groupobj[0]) #This object is not mutable from the GUI
                     ViewProviderTree(obj.ViewObject)
                     obj.Shape=f
@@ -484,12 +480,6 @@ class Node:
             if self.arguments['center']:
                 center(obj,xoff,yoff,0.0)
             return obj
-            #import os
-            #scadstr = 'surface(file = "%s", center = %s );' % \
-            #    (self.arguments['file'], 'true' if self.arguments['center'] else 'false')
-            #docname=os.path.split(self.arguments['file'])[1]
-            #objname,extension = docname.split('.',1)
-            #obj = openscadmesh(doc,scadstr,objname)
 
         elif namel in ['glide','hull']:
             raise(NotImplementedError)
@@ -566,7 +556,6 @@ class Node:
 
 
 
-
 def parseexpression(e):
     e = e.strip()
     el = e.lower()
@@ -590,8 +579,6 @@ def parseexpression(e):
         else:
             import FreeCAD
             FreeCAD.Console.PrintMessage('%s\n' % (el))
-            #return eval(el)
-            #assert(False) #Malformed
     else:
         return e #Return the string
 
@@ -611,9 +598,6 @@ def parseargs(argstring):
         tok.append(''.join(a).strip())
         #print(tok)
         argdict = dict(zip(tok[0::2],[parseexpression(argstring) for argstring in tok[1::2]]))
-#        argdict = {}
-#        for key, value in re.findall(r"(\$?\w+)\s*=\s*(\[?\w+]?),?\s*",argstring):
-#            argdict[key] = parseexpression(value)
         return argdict
     else:
         return parseexpression(argstring)
@@ -688,8 +672,6 @@ def insert(filename,docname):
     except NameError:
         doc = FreeCAD.newDocument(docname)
     readfile(filename).addtofreecad(doc)
-    #doc.recompute()
-
 
 
 global dxfcache
