@@ -135,7 +135,7 @@ bool ViewProviderAnnotation::setEdit(int ModNum)
     // setting the current item also opens the editor
     dataPropView->setCurrentIndex(index);
     dataPropView->activated(index);
-    // there is a button in the editor wigdet that opens a plain text dialog
+    // there is a button in the editor widget that opens a plain text dialog
     auto button = dataPropView->findChild<QPushButton*>();
     if (button) {
         button->click();

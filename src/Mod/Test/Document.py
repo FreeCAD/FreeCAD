@@ -710,7 +710,7 @@ class DocumentImportCases(unittest.TestCase):
             params.set_param("dxfCreateDraft", wasCreateDraft)
             params.set_param("dxfCreateSketch", wasCreateSketch)
         doc = FreeCAD.getDocument("ImportedDocName")
-        # This doc should ahve 3 objects: The Layers containter, the DXF layer called 0, and one Line
+        # This doc should have 3 objects: The Layers container, the DXF layer called 0, and one Line
         self.assertEqual(len(doc.Objects), 3)
         FreeCAD.closeDocument("ImportedDocName")
 

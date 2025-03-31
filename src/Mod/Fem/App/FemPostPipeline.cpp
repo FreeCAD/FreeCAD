@@ -185,8 +185,8 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
         auto time = outInfo->Get(vtkStreamingDemandDrivenPipeline::UPDATE_TIME_STEP());
         auto frames = getFrameValues();
 
-        // we have float values, so be aware of roundign erros. lets subtract the searched time and
-        // then use the smalles value
+        // we have float values, so be aware of rounding errors. lets subtract the searched time and
+        // then use the smallest value
         for (auto& frame : frames) {
             frame = std::abs(frame - time);
         }
@@ -257,7 +257,7 @@ bool FemPostPipeline::allowObject(App::DocumentObject* obj)
         return true;
     }
 
-    // and all standart Post objects the group can handle
+    // and all standard Post objects the group can handle
     return FemPostGroupExtension::allowObject(obj);
 }
 
@@ -360,7 +360,7 @@ void FemPostPipeline::scale(double s)
 
 App::DocumentObjectExecReturn* FemPostPipeline::execute()
 {
-    // we fake a recalculated data oject, so that the viewprovider updates
+    // we fake a recalculated data object, so that the viewprovider updates
     // the visualization. We do not want to do this in onChange, as it
     // could theoretically be long running
     if (m_data_updated) {
@@ -487,7 +487,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             FemPostFilter* nextFilter = obj;
             nextFilter->getFilterInput()->RemoveAllInputConnections(0);
 
-            // handle input modes (Parallel is seperated, alll other settings are serial, just in
+            // handle input modes (Parallel is separated, all other settings are serial, just in
             // case an old document is loaded with "custom" mode, idx 2)
             if (Mode.getValue() == Fem::PostGroupMode::Parallel) {
                 // parallel: all filters get out input

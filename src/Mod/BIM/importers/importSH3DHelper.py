@@ -1511,9 +1511,9 @@ class WallHandler(BaseHandler):
 
     def _set_baseboard_properties(self, obj, elm):
         # Baseboard are a little bit special:
-        # Since their placement and other characteristics are dependant of
+        # Since their placement and other characteristics are dependent on
         # the wall elements to be created (such as doorOrWndows), their
-        # creation is delayed until the
+        # creation is delayed until then
         for baseboard in elm.findall('baseboard'):
             side = baseboard.get('attribute')
             self.setp(obj, "App::PropertyQuantity", f"{side}Thickness", f"The thickness of the {side} baseboard", dim_sh2fc(float(baseboard.get("thickness"))))
