@@ -29,6 +29,7 @@
 #include <QMessageBox>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
+#include <limits>
 #include <sstream>
 #endif
 

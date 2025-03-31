@@ -29,6 +29,7 @@
 #include <QAction>
 #include <QMessageBox>
 #include <sstream>
+#include <limits>
 #endif
 
 #include "Mod/Fem/App/FemConstraintContact.h"
