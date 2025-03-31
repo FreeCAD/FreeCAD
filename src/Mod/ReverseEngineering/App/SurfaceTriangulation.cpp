@@ -742,11 +742,9 @@ void MeshConversion::convert(const pcl::PolygonMesh& pclMesh, Mesh::MeshObject& 
         for (size_t d = 0; d < pclMesh.cloud.fields.size(); ++d) {
             int c = 0;
             // adding vertex
-            if ((pclMesh.cloud.fields[d].datatype ==
-                 pcl::PCLPointField::FLOAT32)
-                &&
-                (pclMesh.cloud.fields[d].name == "x" || pclMesh.cloud.fields[d].name == "y"
-                 || pclMesh.cloud.fields[d].name == "z")) {
+            if ((pclMesh.cloud.fields[d].datatype == pcl::PCLPointField::FLOAT32)
+                && (pclMesh.cloud.fields[d].name == "x" || pclMesh.cloud.fields[d].name == "y"
+                    || pclMesh.cloud.fields[d].name == "z")) {
                 float value;
                 memcpy(&value,
                        &pclMesh.cloud.data[i * point_size + pclMesh.cloud.fields[d].offset
