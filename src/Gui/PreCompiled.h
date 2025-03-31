@@ -65,6 +65,7 @@
 #include <algorithm>
 #include <atomic>
 #include <bitset>
+#include <limits>
 #include <list>
 #include <map>
 #include <numbers>

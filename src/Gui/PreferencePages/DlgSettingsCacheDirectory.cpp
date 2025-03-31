@@ -23,6 +23,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cmath>
+# include <limits>
+# include <vector>
 # include <QCoreApplication>
 # include <QDate>
 # include <QDesktopServices>
@@ -31,8 +34,6 @@
 # include <QMessageBox>
 # include <QSettings>
 # include <QUrl>
-# include <cmath>
-# include <vector>
 #endif
 
 #include <App/Application.h>

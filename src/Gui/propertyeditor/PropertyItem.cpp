@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <algorithm>
 #include <iomanip>
+#include <limits>
 #include <QApplication>
 #include <QComboBox>
 #include <QFontDatabase>

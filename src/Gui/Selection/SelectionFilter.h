@@ -24,6 +24,7 @@
 #ifndef GUI_SelectionFilter_H
 #define GUI_SelectionFilter_H
 
+#include <limits>
 #include <memory>
 #include <string>
 #include <CXX/Extensions.hxx>

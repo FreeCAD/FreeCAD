@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <climits>
+# include <limits>
 # include <QKeyEvent>
 # include <QLineEdit>
 # include <QStyle>
