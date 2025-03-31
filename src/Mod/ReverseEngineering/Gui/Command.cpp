@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
+#include <limits>
 #include <sstream>
 
 #include <BRepBuilderAPI_MakePolygon.hxx>
