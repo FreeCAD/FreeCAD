@@ -71,7 +71,6 @@ const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfi
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
-const char* Hole::BaseProfileTypeEnums[]             = {"ArcsAndCircles", "PointArcsAndCircles", nullptr};
 
 /* "None" profile */
 
@@ -810,8 +809,9 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(CustomThreadClearance, (0.0), "Hole", App::Prop_None, "Custom thread clearance (overrides ThreadClass)");
 
-    ADD_PROPERTY_TYPE(BaseProfileType, (0L), "Hole", App::Prop_None, "Which profile feature to base the holes on");
-    BaseProfileType.setEnums(BaseProfileTypeEnums);
+    // Defaults to circles & arcs so that older files are kept intact
+    // while new file get points, circles and arcs set in setupObject()
+    ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
 }
 
 void Hole::updateHoleCutParams()
@@ -1672,7 +1672,7 @@ void Hole::setupObject()
     // Set the BaseProfileType to "Points, Circles and Arcs"
     // here so that new objects use points, but older files
     // keep the default value of "Circles and Arcs"
-    BaseProfileType.setValue(1L);
+    BaseProfileType.setValue(BaseProfileTypeOptions::OnPointsCirclesArcs);
     ProfileBased::setupObject();
 }
 
@@ -2184,26 +2184,39 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
         holes.push_back(hole);
     };
 
+    int baseProfileType = BaseProfileType.getValue();
+
     // Iterate over edges and filter out non-circle/non-arc types
-    for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
-        Standard_Real c_start;
-        Standard_Real c_end;
-        TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
-        Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
+    if(baseProfileType & BaseProfileTypeOptions::OnCircles || 
+       baseProfileType & BaseProfileTypeOptions::OnArcs) {
+        for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
+            Standard_Real c_start;
+            Standard_Real c_end;
+            TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
+            Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
+    
+            // Circle base?
+            if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
+                continue;
 
-        // Circle?
-        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
-            continue;
+            bool closed = (c_start == 0.0 && c_end == 2*M_PI);
 
-        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-        add_hole(profileEdge, circle->Axis().Location());
+            // Filter for circles
+            if(!(baseProfileType & BaseProfileTypeOptions::OnCircles) && closed)
+                continue;
+            
+            // Filter for arcs
+            if(!(baseProfileType & BaseProfileTypeOptions::OnCircles) && !closed)
+                continue;
+
+            Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
+            add_hole(profileEdge, circle->Axis().Location());
+        }
     }
-
 
     // To avoid breaking older files which where not made with
     // holes on points
-    std::string profileType(BaseProfileType.getValueAsString());
-    if(profileType == "PointArcsAndCircles") {
+    if(baseProfileType & BaseProfileTypeOptions::OnPoints) {
         // Iterate over vertices while avoiding edges so that curve handles are ignored
         for(const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
             TopoDS_Vertex vertex = TopoDS::Vertex(TopoDS_Shape(profileVertex.getShape()));

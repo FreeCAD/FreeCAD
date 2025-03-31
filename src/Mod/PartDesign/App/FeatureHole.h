@@ -74,7 +74,17 @@ public:
     App::PropertyAngle          TaperedAngle;
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
-    App::PropertyEnumeration    BaseProfileType;
+    App::PropertyInteger        BaseProfileType;
+
+    enum BaseProfileTypeOptions {
+        OnPoints    = 1 << 0,
+        OnCircles   = 1 << 1,
+        OnArcs      = 1 << 2,
+
+        // Common combos
+        OnPointsCirclesArcs = OnPoints | OnCircles | OnArcs,
+        OnCirclesArcs = OnCircles | OnArcs
+    };
 
     /** @name methods override feature */
     //@{
@@ -126,7 +136,6 @@ private:
     static const char* ClearanceUTSEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
-    static const char* BaseProfileTypeEnums[];
 
     /* "None" thread profile */
     static const char* HoleCutType_None_Enums[];
