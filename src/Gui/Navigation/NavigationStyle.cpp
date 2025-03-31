@@ -64,7 +64,8 @@ public:
     enum OrbitStyle {
         Turntable,
         Trackball,
-        FreeTurntable
+        FreeTurntable,
+        TrackballClassic,
     };
 
     static constexpr float defaultSphereRadius = 0.8F;
@@ -98,6 +99,9 @@ public:
         }
         if (orbit == FreeTurntable) {
             return getFreeTurntable(point1, point2);
+        }
+        if (orbit == TrackballClassic) {
+            return getTrackballClassic(point1, point2);
         }
 
         return rot;
@@ -162,6 +166,22 @@ private:
         xrot.setValue(xaxis, -dif[0]);
 
         return zrot * xrot;
+    }
+
+    SbRotation getTrackballClassic(const SbVec3f &point1, const SbVec3f &point2) const
+    {
+        // Classic trackball
+        SbRotation zrot;
+        SbRotation yrot;
+        SbVec3f dif = point1 - point2;
+
+        SbVec3f zaxis(1,0,0);
+        zrot.setValue(zaxis, dif[1]);
+
+        SbVec3f yaxis(0,1,0);
+        yrot.setValue(yaxis, -dif[0]);
+
+        return zrot * yrot;
     }
 
 private:
@@ -888,7 +908,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     float sensitivity = getSensitivity();
 
     // Adjust the spin projector sphere to the screen position of the rotation center when the mouse intersects an object
-    if (getOrbitStyle() == Trackball && rotationCenterMode & RotationCenterMode::ScenePointAtCursor && rotationCenterFound && rotationCenterIsScenePointAtCursor) {
+    if ((getOrbitStyle() == Trackball || getOrbitStyle() == TrackballClassic) && rotationCenterMode & RotationCenterMode::ScenePointAtCursor && rotationCenterFound && rotationCenterIsScenePointAtCursor) {
         const auto pointOnScreen = viewer->getPointOnViewport(rotationCenter);
         const auto sphereCenter = 2 * normalizePixelPos(pointOnScreen) - SbVec2f {1, 1};
 
