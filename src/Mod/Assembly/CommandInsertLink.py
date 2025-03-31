@@ -500,7 +500,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
             item.setText(0, new_text)
 
-
     """def clickMouse(self, info):
         if info["Button"] == "BUTTON1" and info["State"] == "DOWN":
             Gui.Selection.clearSelection()
@@ -527,7 +526,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         elif info["Button"] == "BUTTON2" and info["State"] == "DOWN":
             self.dismissPart()"""
-
 
     # Taskbox keyboard event handler
     def eventFilter(self, watched, event):
