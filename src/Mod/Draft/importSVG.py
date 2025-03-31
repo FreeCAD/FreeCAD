@@ -1437,6 +1437,7 @@ def replace_use_with_reference(file_path):
                         parent.append(new_element)
         #now all use tag processd
         #remove symbol and defs tag from tree.
+        parent_map = {child: parent for parent in tree.iter() for child in parent}
         symbols = element.findall(".//{http://www.w3.org/2000/svg}symbol")
         for symbol in symbols:
             parent = parent_map[symbol]
