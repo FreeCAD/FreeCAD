@@ -259,7 +259,7 @@ class CAMSimulation:
                 setJobIdx = jIdx
             jIdx += 1
 
-        # Pre-select GUI-selected job in the combobox
+        # Preselect GUI-selected job in the combobox
         if jobName or jCnt == 1:
             form.comboJobs.setCurrentIndex(setJobIdx)
         else:

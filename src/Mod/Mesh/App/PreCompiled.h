@@ -39,7 +39,6 @@
 
 // standard
 #include <cassert>
-#include <cfloat>
 #include <cmath>
 #include <cstdio>
 #include <fcntl.h>

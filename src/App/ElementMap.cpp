@@ -258,7 +258,8 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
 
     std::vector<ElementMapPtr> childMaps;
     count = 0;
-    if (!(stream >> tmp >> count) || tmp != "MapCount" || count == 0) {
+    constexpr int practicalMaximum {1 << 30 / sizeof(ElementMapPtr)};  // a 1GB child map vector: almost certainly a bug
+    if (!(stream >> tmp >> count) || tmp != "MapCount" || count == 0 || count > practicalMaximum) {
         FC_THROWM(Base::RuntimeError, msg);  // NOLINT
     }
     childMaps.reserve(count - 1);
@@ -284,6 +285,10 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
     unsigned id = 0;
     if (!(stream >> tmp >> index >> id >> typeCount) || tmp != "ElementMap") {
         FC_THROWM(Base::RuntimeError, msg);  // NOLINT
+    }
+    constexpr int maxTypeCount(1000);
+    if (typeCount < 0 || typeCount > maxTypeCount) {
+        FC_THROWM(Base::RuntimeError, "Bad type count in element map, ignoring map");  // NOLINT
     }
 
     auto& map = _idToElementMap[id];

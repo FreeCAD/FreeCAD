@@ -32,7 +32,6 @@
 #  include <GL/gl.h>
 # endif
 # include <algorithm>
-# include <cfloat>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -85,7 +84,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
             selContext2->sl.push_back(-1);
         }else if(ctx)
             selContext2->sl = ctx->sl;
-        if(selContext2->highlightIndex==INT_MAX) {
+        if(selContext2->highlightIndex == std::numeric_limits<int>::max()) {
             selContext2->hl.clear();
             selContext2->hl.push_back(-1);
         }else if(ctx)
@@ -93,7 +92,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
         ctx = selContext2;
     }
 
-    if(ctx && ctx->highlightIndex==INT_MAX) {
+    if(ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
         if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
             if(ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
@@ -329,7 +328,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
         if (!detail) {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
             ctx->highlightColor = hlaction->getColor();
-            ctx->highlightIndex = INT_MAX;
+            ctx->highlightIndex = std::numeric_limits<int>::max();
             ctx->hl.clear();
             ctx->hl.push_back(-1);
             touch();

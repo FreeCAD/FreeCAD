@@ -209,7 +209,7 @@ public:
 
     // NOLINTBEGIN
     Index nearest_index;
-    float nearest_dist {FLOAT_MAX};
+    float nearest_dist {std::numeric_limits<float>::max()};
     // NOLINTEND
 
 private:

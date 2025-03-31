@@ -7,16 +7,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-include_directories(
-    SYSTEM
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
-    ${ZIPIOS_INCLUDES}
-    ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
-)
-
 set(Spreadsheet_LIBS
     FreeCADApp
 )

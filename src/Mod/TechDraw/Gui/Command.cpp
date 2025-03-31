@@ -424,7 +424,7 @@ void CmdTechDrawView::activated(int iMsg)
             bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
             if (!dontShowAgain) {
                 auto msgText = QObject::tr("If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.");
-                QMessageBox msgBox;
+                QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(msgText);
                 auto dontShowMsg = QObject::tr("Do not show this message again");
                 QCheckBox dontShowCheckBox(dontShowMsg, &msgBox);

@@ -346,7 +346,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
 
     if (action->getTypeId() == SoFCPreselectionAction::getClassTypeId()) {
         auto preselectAction = static_cast<SoFCPreselectionAction*>(action);
-        // Do not clear currently preselected object when setting new pre-selection
+        // Do not clear currently preselected object when setting new preselection
         if (!setPreSelection && preselectAction->SelChange.Type == SelectionChanges::RmvPreselect) {
             if (currentHighlightPath) {
                 SoHighlightElementAction highlightAction;
@@ -1552,7 +1552,7 @@ void SoFCSelectionRoot::doAction(SoAction *action) {
 
 bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     // Selection action short-circuit optimization. In case of whole object
-    // selection/pre-selection, we shall store a SelContext keyed by ourself.
+    // selection/preselection, we shall store a SelContext keyed by ourself.
     // And the action traversal can be short-curcuited once the first targeted
     // SoFCSelectionRoot is found here. New function checkSelection() is exposed
     // to check for whole object selection. This greatly improve performance on

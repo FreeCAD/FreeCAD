@@ -32,7 +32,6 @@
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #include <dirent.h>
 #include <unistd.h>
-#include <limits.h>
 #elif defined(FC_OS_WIN32)
 #include <io.h>
 #include <Windows.h>
@@ -333,7 +332,7 @@ bool FileInfo::hasExtension(const char* Ext) const
 
 bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 {
-    return std::any_of(Exts.begin(), Exts.end(), [this](const char* ext) {
+    return std::ranges::any_of(Exts, [this](const char* ext) {
         return hasExtension(ext);
     });
 }

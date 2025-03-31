@@ -110,6 +110,9 @@ std::ostream& Writer::beginCharStream(CharStreamFormat format)
         filteredStream->push(Stream());
         *filteredStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
     }
+
+    checkErrNo();
+
     return *CharStream;
 }
 
@@ -121,6 +124,9 @@ std::ostream& Writer::endCharStream()
             Stream() << "]]>";
         }
     }
+
+    checkErrNo();
+
     return Stream();
 }
 
@@ -152,6 +158,8 @@ void Writer::insertAsciiFile(const char* FileName)
         Stream().put(ch);
     }
     Stream() << "]]>" << std::endl;
+
+    checkErrNo();
 }
 
 void Writer::insertBinFile(const char* FileName)
@@ -170,6 +178,8 @@ void Writer::insertBinFile(const char* FileName)
     from.read(reinterpret_cast<char*>(bytes.data()), fileSize);
     Stream() << Base::base64_encode(bytes.data(), static_cast<unsigned int>(fileSize));
     Stream() << "]]>" << std::endl;
+
+    checkErrNo();
 }
 
 void Writer::setForceXML(bool on)
@@ -229,6 +239,17 @@ void Writer::clearModes()
 void Writer::addError(const std::string& msg)
 {
     Errors.push_back(msg);
+}
+
+void Writer::checkErrNo()
+{
+    switch (errno) {
+        case ENOSPC:  // No space left
+        case EROFS:   // Read only
+        case ENODEV:  // No such device
+        case EACCES:  // Access denied
+            addError(strerror(errno));
+    }
 }
 
 bool Writer::hasErrors() const
@@ -324,6 +345,8 @@ void ZipWriter::putNextEntry(const char* file, const char* obj)
     Writer::putNextEntry(file, obj);
 
     ZipStream.putNextEntry(file);
+
+    Writer::checkErrNo();
 }
 
 void ZipWriter::writeFiles()
@@ -360,6 +383,8 @@ void FileWriter::putNextEntry(const char* file, const char* obj)
 
     std::string fileName = DirName + "/" + file;
     this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+
+    Writer::checkErrNo();
 }
 
 bool FileWriter::shouldWrite(const std::string& /*name*/, const Base::Persistence* /*obj*/) const
@@ -395,4 +420,6 @@ void FileWriter::writeFiles()
 
         index++;
     }
+
+    Writer::checkErrNo();
 }

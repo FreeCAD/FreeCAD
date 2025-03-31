@@ -41,9 +41,9 @@ RemoveComponents::RemoveComponents(QWidget* parent, Qt::WindowFlags fl)
 {
     ui->setupUi(this);
     setupConnections();
-    ui->spSelectComp->setRange(1, INT_MAX);
+    ui->spSelectComp->setRange(1, std::numeric_limits<int>::max());
     ui->spSelectComp->setValue(10);
-    ui->spDeselectComp->setRange(1, INT_MAX);
+    ui->spDeselectComp->setRange(1, std::numeric_limits<int>::max());
     ui->spDeselectComp->setValue(10);
 
     Gui::Selection().clearSelection();

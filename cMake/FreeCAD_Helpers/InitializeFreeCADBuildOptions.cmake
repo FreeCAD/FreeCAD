@@ -178,7 +178,7 @@ macro(InitializeFreeCADBuildOptions)
     endif(MSVC)
     if(NOT MSVC)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
-        option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
+        option(FREECAD_USE_PCL "Build the features that use PCL libs" ON)
     endif(NOT MSVC)
 
     # if this is set override some options
@@ -201,6 +201,10 @@ macro(InitializeFreeCADBuildOptions)
     else()
         set(FREECAD_USE_SMESH OFF)
         set(BUILD_SMESH OFF)
+    endif()
+
+    if (BUILD_CAM OR BUILD_FLAT_MESH)
+        set(FREECAD_USE_PYBIND11 ON)
     endif()
 
     # force build directory to be different to source directory

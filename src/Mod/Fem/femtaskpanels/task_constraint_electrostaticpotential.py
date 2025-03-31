@@ -171,9 +171,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.electric_infinity_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.qsb_surface_charge_density,
+            self.parameter_widget.qsb_electric_flux_density,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.surface_charge_density_changed,
+            self.electric_flux_density_changed,
         )
 
         self.init_parameter_widget()
@@ -232,7 +232,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.electric_infinity = self.obj.ElectricInfinity
         self.capacitance_body_enabled = self.obj.CapacitanceBodyEnabled
         self.capacitance_body = self.obj.CapacitanceBody
-        self.surface_charge_density = self.obj.SurfaceChargeDensity
+        self.electric_flux_density = self.obj.ElectricFluxDensity
 
     def _set_params(self):
         self.obj.Potential = self.potential
@@ -258,7 +258,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.CapacitanceBodyEnabled = self.capacitance_body_enabled
         self.obj.CapacitanceBody = self.capacitance_body
 
-        self.obj.SurfaceChargeDensity = self.surface_charge_density
+        self.obj.ElectricFluxDensity = self.electric_flux_density
 
     def init_parameter_widget(self):
         self._get_params()
@@ -313,11 +313,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.obj, "CapacitanceBody"
         )
 
-        self.parameter_widget.qsb_surface_charge_density.setProperty(
-            "value", self.surface_charge_density
+        self.parameter_widget.qsb_electric_flux_density.setProperty(
+            "value", self.electric_flux_density
         )
-        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_surface_charge_density).bind(
-            self.obj, "SurfaceChargeDensity"
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_electric_flux_density).bind(
+            self.obj, "ElectricFluxDensity"
         )
 
         self.bc_enum = self.obj.getEnumerationsOfProperty("BoundaryCondition")
@@ -397,8 +397,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.capacitance_body = value
         self.parameter_widget.spb_capacitance_body.setValue(value)
 
-    def surface_charge_density_changed(self, value):
-        self.surface_charge_density = value
+    def electric_flux_density_changed(self, value):
+        self.electric_flux_density = value
 
     def boundary_condition_changed(self, index):
         self.boundary_condition = self.bc_enum[index]
