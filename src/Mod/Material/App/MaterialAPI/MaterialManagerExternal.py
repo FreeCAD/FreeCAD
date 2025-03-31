@@ -91,6 +91,13 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
+    def getLibrary(self, name: str) -> tuple:
+        """Get the library
+
+        Retrieve the library with the given name"""
+        pass
+
+    @abstractmethod
     def createLibrary(self, name: str, icon: str, readOnly: bool) -> None:
         """Create a new library
 

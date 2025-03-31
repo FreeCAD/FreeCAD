@@ -114,15 +114,8 @@ MaterialManagerExternal::getMaterialLibraries()
 std::shared_ptr<MaterialLibrary> MaterialManagerExternal::getLibrary(const QString& name) const
 {
     try {
-        auto libTuple = ExternalManager::getManager()->getLibrary(name);
-        auto libName = std::get<0>(libTuple);
-        auto icon = std::get<1>(libTuple);
-        auto readOnly = std::get<2>(libTuple);
-        Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
-                            libName.toStdString().c_str(),
-                            icon.toStdString().c_str(),
-                            readOnly ? "true" : "false");
-        auto library = std::make_shared<MaterialLibrary>(libName, icon, readOnly);
+        auto lib = ExternalManager::getManager()->getLibrary(name);
+        auto library = std::make_shared<MaterialLibrary>(*lib);
         return library;
     }
     catch (const LibraryNotFound& e) {
