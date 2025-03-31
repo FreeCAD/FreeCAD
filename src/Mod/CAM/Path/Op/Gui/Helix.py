@@ -89,7 +89,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
         )
         self.form.FeedRateCheckBox.setCheckState(
-            QtCore.Qt.Checked if obj.FeedRateAdj  else QtCore.Qt.Unchecked
+            QtCore.Qt.Checked if obj.FeedRateAdj else QtCore.Qt.Unchecked
         )
 
     def getSignalsForUpdate(self, obj):

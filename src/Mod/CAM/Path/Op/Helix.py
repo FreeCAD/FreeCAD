@@ -276,7 +276,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "inner_radius": obj.StartRadius.Value + obj.OffsetExtra.Value,
             "direction": obj.Direction,
             "startAt": obj.StartSide,
-            "feedRateAdj":obj.FeedRateAdj,
+            "feedRateAdj": obj.FeedRateAdj,
         }
 
         for hole in holes:
