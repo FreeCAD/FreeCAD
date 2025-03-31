@@ -72,6 +72,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
+        obj.FeedRateAdj = self.form.FeedRateCheckBox.checkState() == QtCore.Qt.Checked
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
@@ -87,6 +88,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.extraOffset.setText(
             FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
         )
+        self.form.FeedRateCheckBox.setCheckState(
+            QtCore.Qt.Checked if obj.FeedRateAdj  else QtCore.Qt.Unchecked
+        )
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -98,6 +102,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.startSide.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.FeedRateCheckBox.stateChanged)
 
         return signals
 
