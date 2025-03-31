@@ -387,7 +387,8 @@ public:
     void findDatumPlanes()
     {
         App::GeoFeatureGroupExtension *geoGroup = getGroupExtensionOfBody();
-        auto datumPlanes = appdocument->getObjectsOfType({PartDesign::Plane::getClassTypeId(), App::Plane::getClassTypeId()});
+        const std::vector<Base::Type> types = { PartDesign::Plane::getClassTypeId(), App::Plane::getClassTypeId() };
+        auto datumPlanes = appdocument->getObjectsOfType(types);
 
         for (auto plane : datumPlanes) {
             if (std::find(planes.begin(), planes.end(), plane) != planes.end()) {
