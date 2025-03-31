@@ -24,6 +24,7 @@ import FreeCAD
 import Path
 import Path.Base.MachineState as PathMachineState
 import Part
+import math
 
 __title__ = "Feed Rate Helper Utility"
 __author__ = "sliptonic (Brad Collette)"
@@ -57,26 +58,48 @@ def setFeedRate(commandlist, ToolController):
             return True
         return Path.Geom.isVertical(Part.makeLine(currentposition, endpoint))
 
+    def _isHorizontal(currentposition, command):
+        x = command.Parameters["X"] if "X" in command.Parameters else currentposition.x
+        y = command.Parameters["Y"] if "Y" in command.Parameters else currentposition.y
+        z = command.Parameters["Z"] if "Z" in command.Parameters else currentposition.z
+        endpoint = FreeCAD.Vector(x, y, z)
+        if Path.Geom.pointsCoincide(currentposition, endpoint):
+            return True
+        return Path.Geom.isHorizontal(Part.makeLine(currentposition, endpoint))
+
     machine = PathMachineState.MachineState()
+
+
+    hFeed = ToolController.HorizFeed.Value
+    vFeed = ToolController.VertFeed.Value
 
     for command in commandlist:
         if command.Name not in Path.Geom.CmdMoveAll:
             continue
 
-        if _isVertical(machine.getPosition(), command):
-            rate = (
-                ToolController.VertRapid.Value
-                if command.Name in Path.Geom.CmdMoveRapid
-                else ToolController.VertFeed.Value
-            )
-        else:
-            rate = (
-                ToolController.HorizRapid.Value
-                if command.Name in Path.Geom.CmdMoveRapid
-                else ToolController.HorizFeed.Value
-            )
-
         params = command.Parameters
+        if ("F" in params) and (command.Name in ["G2","G3"]): 
+            # adj. spindle feedrate to ensure correct chip load on cutting edge, if "F" defined
+            hFeed_adj = hFeed* params["F"]  
+            rate = math.sqrt(vFeed * vFeed + hFeed_adj * hFeed_adj ) # vector sum
+            # TODO combined V,H feedrates for 3D-ops, ramp, pocket/contour radius ?
+        else:
+            if _isVertical(machine.getPosition(), command):
+                rate = (
+                    ToolController.VertRapid.Value
+                    if command.Name in Path.Geom.CmdMoveRapid
+                    else vFeed
+                )
+            else:
+                if _isHorizontal(machine.getPosition(), command) :
+                    rate = (
+                        ToolController.HorizRapid.Value
+                        if command.Name in Path.Geom.CmdMoveRapid
+                        else hFeed 
+                    )
+                else : 
+                    rate = hFeed  # fallback
+
         params["F"] = rate
         command.Parameters = params
 
