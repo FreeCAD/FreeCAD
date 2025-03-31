@@ -51,7 +51,7 @@ public:
     std::shared_ptr<std::vector<std::shared_ptr<Library>>> libraries();
     std::shared_ptr<std::vector<std::shared_ptr<Library>>> modelLibraries();
     std::shared_ptr<std::vector<std::shared_ptr<Library>>> materialLibraries();
-    std::tuple<QString, QString, bool> getLibrary(const QString& name) const;
+    std::shared_ptr<Library> getLibrary(const QString& name);
     void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     void renameLibrary(const QString& libraryName, const QString& newName);
     void changeIcon(const QString& libraryName, const QString& icon);

@@ -88,6 +88,14 @@ public:
     {
         return QDir(_directory).absolutePath();
     }
+    QString getTimestamp() const
+    {
+        return _timestamp;
+    }
+    void setTimestamp(const QString& timestamp)
+    {
+        _timestamp = timestamp;
+    }
 
     bool operator==(const Library& library) const;
     bool operator!=(const Library& library) const

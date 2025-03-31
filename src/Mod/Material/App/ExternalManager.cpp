@@ -35,6 +35,7 @@
 #include "Exceptions.h"
 #include "ExternalManager.h"
 #include "MaterialLibrary.h"
+#include "MaterialLibraryPy.h"
 #include "MaterialPy.h"
 #include "ModelLibrary.h"
 #include "ModelPy.h"
@@ -67,7 +68,7 @@ ExternalManager::~ExternalManager()
 void ExternalManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    if (strcmp(Reason, "Current") == 0) {
+    if (std::strncmp(Reason, "Current", 7) == 0) {
         if (_instantiated) {
             // The old manager object will be deleted when reconnecting
             _instantiated = false;
@@ -193,6 +194,7 @@ ExternalManager::libraryFromTuple(const Py::Tuple& entry)
                         readOnly ? "true" : "false",
                         timestamp.toStdString().c_str());
     auto library = std::make_shared<Library>(libraryName, icon, readOnly, timestamp);
+    return library;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Library>>>
@@ -283,9 +285,32 @@ std::shared_ptr<std::vector<std::shared_ptr<Library>>> ExternalManager::material
     return libList;
 }
 
-std::tuple<QString, QString, bool> ExternalManager::getLibrary(const QString& name) const
+std::shared_ptr<Library> ExternalManager::getLibrary(const QString& name)
 {
-    throw LibraryNotFound("Not yet implemented");
+    // throw LibraryNotFound("Not yet implemented");
+    connect();
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("getLibrary")) {
+            Py::Callable libraries(_managerObject.getAttr("getLibrary"));
+            Py::Tuple args(1);
+            args.setItem(0, Py::String(name.toStdString()));
+            Py::Tuple result(libraries.apply(args));
+
+            Py::Object libObject = result.getItem(0);
+            auto lib = libraryFromTuple(Py::Tuple(libObject));
+            return std::make_shared<Library>(*lib);
+        }
+        else {
+            Base::Console().Log("\tgetLibrary() not found\n");
+            throw ConnectionError();
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw CreationError(e1.what());
+    }
 }
 
 void ExternalManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
