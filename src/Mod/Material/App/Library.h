@@ -54,7 +54,7 @@ public:
     {
         _name = newName;
     }
-    bool sameName(const QString& name)
+    bool isName(const QString& name)
     {
         return (_name == name);
     }
