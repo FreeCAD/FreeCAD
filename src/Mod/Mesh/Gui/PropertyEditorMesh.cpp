@@ -89,10 +89,12 @@ void PropertyMeshKernelItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyMeshKernelItem::createEditor(QWidget* parent,
-                                              const std::function<void()>& method) const
+                                              const std::function<void()>& method,
+                                              FrameOption frameOption) const
 {
     Q_UNUSED(parent);
     Q_UNUSED(method);
+    Q_UNUSED(frameOption);
     return nullptr;
 }
 
