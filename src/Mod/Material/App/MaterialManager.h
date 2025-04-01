@@ -87,7 +87,6 @@ const;
     libraryMaterials(const QString& libraryName,
                      const std::shared_ptr<MaterialFilter>& filter,
                      const MaterialFilterOptions& options);
-    bool isLocalLibrary();
 
     // Folder management
     std::shared_ptr<std::list<QString>>

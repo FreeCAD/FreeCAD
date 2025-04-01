@@ -126,11 +126,6 @@ ModelManager::libraryModels(const QString& libraryName)
     return _localManager->libraryModels(libraryName);
 }
 
-bool ModelManager::isLocalLibrary()
-{
-    return true;
-}
-
 std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManager::getModels()
 {
     return _localManager->getModels();

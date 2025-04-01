@@ -239,10 +239,6 @@ MaterialManager::libraryMaterials(const QString& libraryName,
     return _localManager->libraryMaterials(libraryName, filter, options);
 }
 
-bool MaterialManager::isLocalLibrary()
-{
-    return true;
-}
 
 //=====
 //

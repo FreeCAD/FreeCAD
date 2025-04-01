@@ -63,7 +63,6 @@ public:
     void removeLibrary(const QString& libraryName);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryModels(const QString& libraryName);
-    bool isLocalLibrary();
 
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels();
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getLocalModels();
