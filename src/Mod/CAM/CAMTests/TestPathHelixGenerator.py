@@ -222,4 +222,5 @@ G0 Z20.000000"
         # test "F" param is added when using feedRateAdj
         args["feedRateAdj"] = True
         result = generator.generate(**args)
-        self.assertTrue("F" in result[-2].Parameters)
+        self.assertTrue("FeedFactor" in result[-2].Parameters)
+       
