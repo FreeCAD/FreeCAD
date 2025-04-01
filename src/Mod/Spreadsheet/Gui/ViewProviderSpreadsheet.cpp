@@ -59,18 +59,6 @@ ViewProviderSheet::~ViewProviderSheet()
     }
 }
 
-void ViewProviderSheet::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderSheet::getDisplayModes() const
-{
-    std::vector<std::string> StrList;
-    StrList.emplace_back("Spreadsheet");
-    return StrList;
-}
-
 QIcon ViewProviderSheet::getIcon() const
 {
     return QIcon(QLatin1String(":icons/Spreadsheet.svg"));
