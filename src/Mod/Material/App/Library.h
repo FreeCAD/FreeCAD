@@ -40,6 +40,10 @@ public:
     Library() = default;
     Library(const QString& libraryName, const QString& icon, bool readOnly = true);
     Library(const QString& libraryName,
+            const QString& icon,
+            bool readOnly,
+            const QString& timestamp);
+    Library(const QString& libraryName,
             const QString& dir,
             const QString& icon,
             bool readOnly = true);
@@ -53,7 +57,7 @@ public:
     {
         _name = newName;
     }
-    bool sameName(const QString& name)
+    bool isName(const QString& name)
     {
         return (_name == name);
     }
@@ -87,6 +91,14 @@ public:
     {
         return QDir(_directory).absolutePath();
     }
+    QString getTimestamp() const
+    {
+        return _timestamp;
+    }
+    void setTimestamp(const QString& timestamp)
+    {
+        _timestamp = timestamp;
+    }
 
     bool operator==(const Library& library) const;
     bool operator!=(const Library& library) const
@@ -107,6 +119,7 @@ private:
     QString _directory;
     QString _iconPath;
     bool _readOnly;
+    QString _timestamp;
 };
 
 }  // namespace Materials
