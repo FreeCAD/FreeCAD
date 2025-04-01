@@ -147,11 +147,6 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren() const
     return Gui::ViewProviderDocumentObjectGroup::claimChildren();
 }
 
-std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes() const
-{
-    return {"Analysis"};
-}
-
 void ViewProviderFemAnalysis::hide()
 {
     Gui::ViewProviderDocumentObjectGroup::hide();
