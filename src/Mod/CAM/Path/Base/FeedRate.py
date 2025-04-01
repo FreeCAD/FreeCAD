@@ -69,6 +69,7 @@ def setFeedRate(commandlist, ToolController):
 
     machine = PathMachineState.MachineState()
 
+
     hFeed = ToolController.HorizFeed.Value
     vFeed = ToolController.VertFeed.Value
 
@@ -77,10 +78,10 @@ def setFeedRate(commandlist, ToolController):
             continue
 
         params = command.Parameters
-        if ("F" in params) and (command.Name in ["G2", "G3"]):
+        if ("FeedFactor" in params) and (command.Name in ["G2","G3"]): 
             # adj. spindle feedrate to ensure correct chip load on cutting edge, if "F" defined
-            hFeed_adj = hFeed * params["F"]
-            rate = math.sqrt(vFeed * vFeed + hFeed_adj * hFeed_adj)  # vector sum
+            hFeed_adj = hFeed* params["FeedFactor"] 
+            rate = math.sqrt(vFeed * vFeed + hFeed_adj * hFeed_adj ) # vector sum
             # TODO combined V,H feedrates for 3D-ops, ramp, pocket/contour radius ?
         else:
             if _isVertical(machine.getPosition(), command):
@@ -90,14 +91,15 @@ def setFeedRate(commandlist, ToolController):
                     else vFeed
                 )
             else:
-                if _isHorizontal(machine.getPosition(), command):
+                if _isHorizontal(machine.getPosition(), command) :
                     rate = (
                         ToolController.HorizRapid.Value
                         if command.Name in Path.Geom.CmdMoveRapid
-                        else hFeed
+                        else hFeed 
                     )
-                else:
+                else : 
                     rate = hFeed  # fallback
+        params.pop("FeedFactor",None) 
 
         params["F"] = rate
         command.Parameters = params
