@@ -223,4 +223,3 @@ G0 Z20.000000"
         args["feedRateAdj"] = True
         result = generator.generate(**args)
         self.assertTrue("FeedFactor" in result[-2].Parameters)
-       
