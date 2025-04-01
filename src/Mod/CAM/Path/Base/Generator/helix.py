@@ -23,7 +23,7 @@
 
 from numpy import ceil, linspace, isclose, delete
 import Path
-import math
+import math 
 
 __title__ = "Helix toolpath Generator"
 __author__ = "sliptonic (Brad Collette)"
@@ -87,7 +87,7 @@ def generate(
         raise TypeError("inner_radius must be a float")
 
     if inner_radius < -tool_diameter / 2:
-        # inner_radius also depends on StartRadius
+		# inner_radius also depends on StartRadius
         raise ValueError(
             "inner_radius {0} with a tool of diameter {1} gives a negative helix radius !".format(
                 inner_radius, tool_diameter
@@ -140,21 +140,21 @@ def generate(
         Path.Log.debug("(annular clearance or entire hole)\n")
         outer_path_radius = hole_radius - tool_radius
         inner_path_radius = inner_radius + tool_radius
-
+        
         if abs((outer_path_radius - inner_path_radius) / step_over_distance) < 1e-5:
-            radii = [outer_path_radius]  # below tolerance cutoff, just use outer radius
+            radii = [outer_path_radius] # below tolerance cutoff, just use outer radius
         else:
-            nr = int(ceil((outer_path_radius - inner_path_radius) / step_over_distance) + 1)
-            radii = linspace(outer_path_radius, inner_path_radius, nr)
-            if (startAt == "Outside") and (inner_radius <= 0):
-                radii = delete(radii, -1)  # cutting air. useful for spacing
+            nr = int( ceil((outer_path_radius - inner_path_radius ) / step_over_distance) +1 )
+            radii = linspace(outer_path_radius, inner_path_radius , nr)
+            if (startAt == "Outside") and (inner_radius <= 0): 
+                radii = delete(radii,-1)  # cutting air. useful for spacing
 
     Path.Log.debug("Radii: {}".format(radii))
     # calculate the number of full and partial turns required
     # Each full turn is two 180 degree arcs. Zsteps is equally spaced step
     # down values
-    turncount = max(int(ceil((startPoint.z - endPoint.z) / step_down)), 2)
-    zsteps = linspace(startPoint.z, endPoint.z, 2 * turncount + 1)
+    turncount = max(int(ceil((startPoint.z - endPoint.z) / step_down)) ,2)
+    zsteps = linspace(startPoint.z, endPoint.z, 2 * turncount+1)
 
     def helix_cut_r(r):
         commandlist = []
@@ -162,26 +162,17 @@ def generate(
         commandlist.append(Path.Command("G0", {"X": startPoint.x + r, "Y": startPoint.y}))
         commandlist.append(Path.Command("G1", {"Z": startPoint.z}))
 
-        # FeedRateCheckbox.checked
-        if not feedRateAdj:
-            feedRateRatio = 0
+        #FeedRateCheckbox.checked
+        if not feedRateAdj : feedRateRatio = 0
         else:
-            if (startAt == "Inside") or (
-                r == radii[0]
-            ):  # first cut, always adj for outer wall chip-load
-                feedRateRatio = r / (
-                    r + tool_radius
-                )  # classic (hole_rad-tool_rad)/hole_rad adjustment
+            if (startAt=="Inside") or (r == radii[0]): # first cut, always adj for outer wall chip-load
+                feedRateRatio = r/(r+tool_radius)  # classic (hole_rad-tool_rad)/hole_rad adjustment
             else:
-                if tool_radius > 200 * r:
-                    feedRateRatio = 200  # prevent div zero
-                else:
-                    feedRateRatio = (
-                        r + tool_radius
-                    ) / r  # startAt outside: increase spindle feed rate to maintain inner-cut chip-load
+                if tool_radius > 200*r : feedRateRatio = 200 # prevent div zero
+                else: feedRateRatio = (r+tool_radius)/r # startAt outside: increase spindle feed rate to maintain inner-cut chip-load
+
 
         # Note: if (r == -tool_radius), helix is plugne, hence VH_gradient==0; feedrate==vFeed , OK
-        print("rad = ", r, ",  feedRateRatio = ", feedRateRatio)
         for i in range(1, turncount + 1):
             commandlist.append(
                 Path.Command(
@@ -195,8 +186,7 @@ def generate(
                     },
                 )
             )
-            if feedRateAdj:
-                commandlist[-1].Parameters["F"] = feedRateRatio
+            if feedRateAdj: commandlist[-1].Parameters["FeedFactor"] = feedRateRatio
             commandlist.append(
                 Path.Command(
                     arc_cmd,
@@ -209,8 +199,7 @@ def generate(
                     },
                 )
             )
-            if feedRateAdj:
-                commandlist[-1].Parameters["F"] = feedRateRatio
+            if feedRateAdj: commandlist[-1].Parameters["FeedFactor"] = feedRateRatio
         commandlist.append(
             Path.Command(
                 arc_cmd,
@@ -220,11 +209,10 @@ def generate(
                     "Z": endPoint.z,
                     "I": -r,
                     "J": 0.0,
-                },
+               },
             )
         )
-        if feedRateAdj:
-            commandlist[-1].Parameters["F"] = feedRateRatio
+        if feedRateAdj: commandlist[-1].Parameters["FeedFactor"] = feedRateRatio
         commandlist.append(
             Path.Command(
                 arc_cmd,
@@ -237,8 +225,7 @@ def generate(
                 },
             )
         )
-        if feedRateAdj:
-            commandlist[-1].Parameters["F"] = feedRateRatio
+        if feedRateAdj: commandlist[-1].Parameters["FeedFactor"] = feedRateRatio
         return commandlist
 
     def retract():
@@ -280,3 +267,5 @@ def generate(
         commands.extend(retract())
         prev_r = r
     return commands
+
+ 
