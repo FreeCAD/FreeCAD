@@ -24,6 +24,8 @@
 #ifndef PART_SHAPEMAPHASHER_H
 #define PART_SHAPEMAPHASHER_H
 
+#include <limits>
+
 #include <Standard_Version.hxx>
 #include <TopoDS_Shape.hxx>
 #if OCC_VERSION_HEX >= 0x070800

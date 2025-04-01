@@ -23,6 +23,8 @@
 #ifndef _CurveProjector_h_
 #define _CurveProjector_h_
 
+#include <limits>
+
 #include <TopoDS_Edge.hxx>
 
 #include <Mod/Mesh/App/Mesh.h>

@@ -25,6 +25,7 @@
 
 #include <cstring>
 #include <functional>
+#include <limits>
 #include <vector>
 
 #include <Base/BoundBox.h>

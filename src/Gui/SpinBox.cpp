@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <climits>
+# include <limits>
 # include <QKeyEvent>
 # include <QLineEdit>
 # include <QStyle>
@@ -292,34 +292,40 @@ public:
     UnsignedValidator * mValidator{nullptr};
 
     UIntSpinBoxPrivate() = default;
-    uint mapToUInt( int v ) const
+    unsigned mapToUInt( int v ) const
     {
-        uint ui;
-        if ( v == std::numeric_limits<int>::min() ) {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
+        unsigned ui;
+        if ( v == int_limits::min() ) {
             ui = 0;
-        } else if ( v == std::numeric_limits<int>::max() ) {
-            ui = std::numeric_limits<unsigned>::max();
+        } else if ( v == int_limits::max() ) {
+            ui = uint_limits::max();
         } else if ( v < 0 ) {
-            v -= std::numeric_limits<int>::min();
-            ui = static_cast<uint>(v);
+            v -= int_limits::min();
+            ui = static_cast<unsigned>(v);
         } else {
-            ui = static_cast<uint>(v);
-            ui -= std::numeric_limits<int>::min();
+            ui = static_cast<unsigned>(v);
+            ui -= int_limits::min();
         } return ui;
     }
-    int mapToInt( uint v ) const
+    int mapToInt( unsigned v ) const
     {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
         int in;
-        if ( v == std::numeric_limits<unsigned>::max() ) {
-            in = std::numeric_limits<int>::max();
+        if ( v == uint_limits::max() ) {
+            in = int_limits::max();
         } else if ( v == 0 ) {
-            in = std::numeric_limits<int>::min();
-        } else if ( v > std::numeric_limits<int>::max() ) {
-            v += std::numeric_limits<int>::min();
+            in = int_limits::min();
+        } else if ( v > int_limits::max() ) {
+            v += int_limits::min();
             in = static_cast<int>(v);
         } else {
             in = v;
-            in += std::numeric_limits<int>::min();
+            in += int_limits::min();
         } return in;
     }
 };

@@ -16,6 +16,7 @@
 
 #include "Wm4FoundationPCH.h"
 #include "Wm4Math.h"
+#include <limits>
 
 namespace Wm4 {
 

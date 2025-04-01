@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <map>
 #endif
 

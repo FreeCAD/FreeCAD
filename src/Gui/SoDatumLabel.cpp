@@ -35,6 +35,7 @@
 
 # include <algorithm>
 # include <cmath>
+# include <limits>
 # include <numbers>
 # include <QFontMetrics>
 # include <QPainter>

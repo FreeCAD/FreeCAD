@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <limits>
+#endif
+
 #include <zlib.h>
 #include <App/License.h>
 #include <Gui/AutoSaver.h>

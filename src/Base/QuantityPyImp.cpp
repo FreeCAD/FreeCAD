@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <limits>
+#endif
+
 // inclusion of the generated files (generated out of QuantityPy.xml)
 #include "QuantityPy.h"
 #include "UnitPy.h"

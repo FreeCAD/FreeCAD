@@ -22,6 +22,10 @@
 
 #include <PreCompiled.h>
 
+#ifndef _PreComp_
+#include <limits>
+#endif
+
 #include <QImage>
 #include <QScreen>
 #include <QString>
@@ -47,8 +51,6 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
-
-constexpr float MAX_FLOAT = std::numeric_limits<float>::max();
 
 long NavlibInterface::GetSelectionTransform(navlib::matrix_t&) const
 {
@@ -128,7 +130,7 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
     SoRayPickAction rayPickAction(inventorViewer->getSoRenderManager()->getViewportRegion());
     SbMatrix cameraMatrix;
     SbVec3f closestHitPoint;
-    float minLength = MAX_FLOAT;
+    float minLength = std::numeric_limits<float>::max();
 
     // Get the camera rotation
     SoCamera* pCamera = getCamera<SoCamera*>();
@@ -196,7 +198,7 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
         }
     }
 
-    if (minLength < MAX_FLOAT) {
+    if (minLength < std::numeric_limits<float>::max()) {
         std::copy(closestHitPoint.getValue(), closestHitPoint.getValue() + 3, &position.x);
         return 0;
     }

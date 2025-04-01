@@ -24,6 +24,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
 #define SKETCHERGUI_DrawSketchHandlerOffset_H
 
+#include <limits>
+
 #include <QApplication>
 
 #include <BRep_Tool.hxx>

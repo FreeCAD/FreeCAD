@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <cmath>
+# include <limits>
 # include <sstream>
 # include <Standard_Failure.hxx>
 # include <Precision.hxx>

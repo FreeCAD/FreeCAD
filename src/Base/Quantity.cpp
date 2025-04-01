@@ -22,8 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
 #include <array>
+#include <cmath>
+#include <limits>
 #include <numbers>
 #endif
 

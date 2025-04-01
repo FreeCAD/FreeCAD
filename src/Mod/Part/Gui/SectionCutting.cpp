@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <cmath>
+# include <limits>
 
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoCamera.h>

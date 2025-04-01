@@ -40,6 +40,7 @@
 // STL
 #include <algorithm>
 #include <bitset>
+#include <limits>
 #include <list>
 #include <map>
 #include <queue>

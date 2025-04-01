@@ -32,6 +32,7 @@
 #  include <GL/gl.h>
 # endif
 # include <algorithm>
+# include <limits>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>

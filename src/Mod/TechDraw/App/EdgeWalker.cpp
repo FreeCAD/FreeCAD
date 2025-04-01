@@ -29,6 +29,7 @@
 
 #ifndef _PreComp_
 # include <cmath>
+# include <limits>
 # include <sstream>
 # include <BRep_Tool.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>

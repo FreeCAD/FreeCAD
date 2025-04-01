@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #ifdef FC_OS_LINUX
 #include <unistd.h>
 #endif

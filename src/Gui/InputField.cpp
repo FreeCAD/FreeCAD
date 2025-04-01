@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QPixmapCache>

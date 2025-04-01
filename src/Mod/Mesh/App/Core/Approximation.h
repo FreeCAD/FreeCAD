@@ -28,6 +28,7 @@
 #include <Mod/Mesh/MeshGlobal.h>
 #endif
 #include <algorithm>
+#include <limits>
 #include <list>
 #include <set>
 #include <vector>

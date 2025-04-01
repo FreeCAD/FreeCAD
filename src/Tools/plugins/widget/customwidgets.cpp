@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <limits>
 
 #include <QApplication>
 #include <QColorDialog>
@@ -1519,43 +1520,47 @@ public:
     UIntSpinBoxPrivate()
         : mValidator(0)
     {}
-    uint mapToUInt(int v) const
+    unsigned mapToUInt(int v) const
     {
-        using limits = std::numeric_limits;
-        uint ui;
-        if (v == limits<int>::min()) {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
+        unsigned ui;
+        if (v == int_limits::min()) {
             ui = 0;
         }
-        else if (v == limits<int>::max()) {
-            ui = limits<uint>::max();
+        else if (v == int_limits::max()) {
+            ui = uint_limits::max();
         }
         else if (v < 0) {
-            v -= limits<int>::min();
-            ui = static_cast<uint>(v);
+            v -= int_limits::min();
+            ui = static_cast<unsigned>(v);
         }
         else {
-            ui = static_cast<uint>(v);
-            ui -= limits<int>::min();
+            ui = static_cast<unsigned>(v);
+            ui -= int_limits::min();
         }
         return ui;
     }
-    int mapToInt(uint v) const
+    int mapToInt(unsigned v) const
     {
-        using limits = std::numeric_limits;
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
         int in;
-        if (v == limits<uint>::max()) {
-            in = limits<int>::max();
+        if (v == uint_limits::max()) {
+            in = int_limits::max();
         }
         else if (v == 0) {
-            in = limits<int>::min();
+            in = int_limits::min();
         }
-        else if (v > limits<int>::max()) {
-            v += limits<int>::min();
+        else if (v > int_limits::max()) {
+            v += int_limits::min();
             in = static_cast<int>(v);
         }
         else {
             in = v;
-            in += limits<int>::min();
+            in += int_limits::min();
         }
         return in;
     }

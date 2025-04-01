@@ -105,6 +105,7 @@
 # include <boost/random.hpp>
 # include <cmath>
 # include <ctime>
+# include <limits>
 #endif //_PreComp_
 
 #include <Base/Console.h>

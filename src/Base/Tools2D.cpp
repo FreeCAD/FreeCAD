@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 #include <array>
+#include <limits>
 #include <set>
 #endif
 

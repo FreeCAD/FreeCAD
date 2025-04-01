@@ -26,6 +26,7 @@
 #include <boost/graph/graph_concepts.hpp>
 
 #ifndef _PreComp_
+# include <limits>
 # include <BRepLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>

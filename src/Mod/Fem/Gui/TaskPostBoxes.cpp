@@ -29,7 +29,7 @@
 #include <Inventor/nodes/SoMarkerSet.h>
 
 #include <sstream>
-
+#include <limits>
 #include <QApplication>
 #include <QMessageBox>
 #include <QMetaMethod>
