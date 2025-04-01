@@ -295,7 +295,7 @@ int PropertyItem::childCount() const
 
 int PropertyItem::columnCount() const
 {
-    return 2;
+    return PropertyItem::ColumnCount;
 }
 
 void PropertyItem::setReadOnly(bool ro)
@@ -649,7 +649,7 @@ void PropertyItem::setPropertyValue(const QString& value)
     setPropertyValue(value.toStdString());
 }
 
-QVariant PropertyItem::dataProperty(int role) const
+QVariant PropertyItem::dataPropertyName(int role) const
 {
     if (role == Qt::ForegroundRole && linked) {
         return QVariant::fromValue(QColor(0x20, 0xaa, 0x20));  // NOLINT
@@ -742,9 +742,8 @@ QVariant PropertyItem::dataValue(int role) const
 
 QVariant PropertyItem::data(int column, int role) const
 {
-    // property name
-    if (column == 0) {
-        return dataProperty(role);
+    if (column == PropertyItem::NameColumn) {
+        return dataPropertyName(role);
     }
 
     return dataValue(role);
