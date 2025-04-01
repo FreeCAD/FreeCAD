@@ -162,7 +162,7 @@
    <item row="2" column="0">
     <widget class="QCheckBox" name="FeedRateCheckBox">
      <property name="toolTip">
-      <string>Calculate spindle feed rate compensation to keep tool cutting edge speed roughly constant as helix radius varies. 
+      <string>Calculate spindle feed rate compensation to keep tool cutting edge speed roughly constant as helix radius varies.
 Reduces spindle feedrate when outer edge is cutting
 Increases spindle rate when cutting outside in to maintain tool speed on inner cuts.</string>
      </property>
