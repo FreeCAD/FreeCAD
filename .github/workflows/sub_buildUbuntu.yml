@@ -110,7 +110,7 @@ jobs:
       - name: Install cmake
         uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: '3.16.x'
+          cmake-version: '3.31.6'
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
