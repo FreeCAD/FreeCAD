@@ -43,7 +43,6 @@
 #include <Base/Exception.h>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <ShapeFix_Wire.hxx>
-// #include <BRepLib_FindSurface.hxx>
 
 #include "ExtrusionHelper.h"
 #include "TopoShape.h"

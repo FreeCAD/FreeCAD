@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cassert>
+#include <limits>
 #endif
 
 #include <App/ExpressionParser.h>

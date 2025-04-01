@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <cmath>
+# include <limits>
 # include <sstream>
 # include <Standard_Failure.hxx>
 # include <Precision.hxx>
@@ -130,7 +131,7 @@ void DrawView::checkScale()
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
         if (ScaleType.isValue("Page")) {
-            if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+            if(std::abs(page->Scale.getValue() - Scale.getValue()) > std::numeric_limits<float>::epsilon()) {
                 Scale.setValue(page->Scale.getValue());
                 Scale.purgeTouched();
             }
@@ -190,7 +191,7 @@ void DrawView::onChanged(const App::Property* prop)
         }
         if (ScaleType.isValue("Page")) {
             Scale.setStatus(App::Property::ReadOnly, true);
-            if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+            if(std::abs(page->Scale.getValue() - getScale()) > std::numeric_limits<float>::epsilon()) {
                Scale.setValue(page->Scale.getValue());
             }
         } else if ( ScaleType.isValue("Custom") ) {
@@ -200,7 +201,7 @@ void DrawView::onChanged(const App::Property* prop)
             Scale.setStatus(App::Property::ReadOnly, true);
             if (!checkFit(page)) {
                 double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
-                if(std::abs(newScale - getScale()) > FLT_EPSILON) {
+                if(std::abs(newScale - getScale()) > std::numeric_limits<float>::epsilon()) {
                     Scale.setValue(newScale);
                 }
             }
@@ -442,7 +443,7 @@ DrawViewClip* DrawView::getClipGroup()
 {
     for (auto* obj : getInList()) {
         if (obj->isDerivedFrom<DrawViewClip>()) {
-            return dynamic_cast<DrawViewClip*>(obj);
+            return static_cast<DrawViewClip*>(obj);
         }
     }
     return nullptr;
@@ -452,7 +453,7 @@ DrawViewCollection *DrawView::getCollection() const
 {
     for (auto* obj : getInList()) {
         if (obj->isDerivedFrom<DrawViewCollection>()) {
-            return dynamic_cast<DrawViewCollection*>(obj);
+            return static_cast<DrawViewCollection*>(obj);
         }
     }
     return nullptr;
@@ -551,7 +552,7 @@ std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ((*it)->isDerivedFrom<DrawLeaderLine>()) {
-            TechDraw::DrawLeaderLine* lead = dynamic_cast<TechDraw::DrawLeaderLine*>(*it);
+            TechDraw::DrawLeaderLine* lead = static_cast<TechDraw::DrawLeaderLine*>(*it);
             result.push_back(lead);
         }
     }

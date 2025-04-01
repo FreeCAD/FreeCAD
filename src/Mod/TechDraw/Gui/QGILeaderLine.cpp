@@ -589,7 +589,7 @@ Base::Vector3d  QGILeaderLine::getAttachPoint()
     double yPos = Rez::guiX(featLeader->Y.getValue());
     Base::Vector3d vAttachPoint{xPos, yPos};
     vAttachPoint = vAttachPoint * baseScale;
-    double rotationRad = parent->Rotation.getValue() * M_PI / DegreesHalfCircle;
+    double rotationRad = parent->Rotation.getValue() * std::numbers::pi / DegreesHalfCircle;
     if (rotationRad != 0.0) {
         vAttachPoint.RotateZ(rotationRad);
     }

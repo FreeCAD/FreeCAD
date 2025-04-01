@@ -25,12 +25,12 @@
         #define YYSTYPE Quantity
         #define yyparse Quantity_yyparse
         #define yyerror Quantity_yyerror
-        #ifndef  DOUBLE_MAX
-        # define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-        #endif
-        #ifndef  DOUBLE_MIN
-        # define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-        #endif
+
+
+
+
+
+
 
 %}
 
@@ -49,7 +49,7 @@
 
 %%
 
-    input:                                  { QuantResult = Quantity(DOUBLE_MIN); /* empty input */ }
+    input:                                  { QuantResult = Quantity(std::numeric_limits<double>::min()); /* empty input */ }
             |  num                          { QuantResult = $1     ;            }
             |  unit                         { QuantResult = $1     ;            }
             |  quantity                     { QuantResult = $1     ;            }

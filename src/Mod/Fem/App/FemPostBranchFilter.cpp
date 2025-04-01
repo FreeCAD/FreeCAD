@@ -44,14 +44,14 @@ FemPostBranchFilter::FemPostBranchFilter()
                       (long(0)),
                       "Pipeline",
                       App::Prop_None,
-                      "Selects what the output of the branch itself is\n"
-                      "In passthrough the branchs output is equal its imput.\n"
-                      "In append, all child filter outputs gets appended as the branches output");
+                      "Selects what the output of the branch itself is.\n"
+                      "In passthrough, the branch's output is equal to its input.\n"
+                      "In append, all child filter outputs get appended as the branch's output");
 
     Output.setEnums(OutputEnums);
 
     /* We always have a passthrough filter. This allows to connect our children
-     * dependend on the Mode setting, without worrying about the connection to our input
+     * dependent on the Mode setting, without worrying about the connection to our input
      * filter. We do not care if the input filter changes, as this is affecting only the passthrough
      * input and does not affect our child connections.
      * Dependent on our output mode, the passthrough is also used as output, but potentially

@@ -40,6 +40,7 @@
 #include <cmath>
 
 // STL
+#include <limits>
 #include <sstream>
 
 #ifdef FC_OS_WIN32

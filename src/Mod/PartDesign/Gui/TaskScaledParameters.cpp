@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <limits>
 #endif
 
 #include <App/DocumentObject.h>
@@ -78,7 +79,7 @@ void TaskScaledParameters::setupParameterUI(QWidget* widget)
     auto pcScaled = getObject<PartDesign::Scaled>();
 
     ui->spinFactor->bind(pcScaled->Factor);
-    ui->spinOccurrences->setMaximum(INT_MAX);
+    ui->spinOccurrences->setMaximum(std::numeric_limits<int>::max());
     ui->spinOccurrences->bind(pcScaled->Occurrences);
     ui->spinFactor->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);

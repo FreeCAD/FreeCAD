@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <climits>
+# include <limits>
 # include <QKeyEvent>
 # include <QLineEdit>
 # include <QStyle>
@@ -238,7 +238,7 @@ UnsignedValidator::UnsignedValidator( QObject * parent )
   : QValidator( parent )
 {
     b =  0;
-    t =  UINT_MAX;
+    t =  std::numeric_limits<unsigned>::max();
 }
 
 UnsignedValidator::UnsignedValidator( uint minimum, uint maximum, QObject * parent )
@@ -292,30 +292,40 @@ public:
     UnsignedValidator * mValidator{nullptr};
 
     UIntSpinBoxPrivate() = default;
-    uint mapToUInt( int v ) const
+    unsigned mapToUInt( int v ) const
     {
-        uint ui;
-        if ( v == INT_MIN ) {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
+        unsigned ui;
+        if ( v == int_limits::min() ) {
             ui = 0;
-        } else if ( v == INT_MAX ) {
-            ui = UINT_MAX;
+        } else if ( v == int_limits::max() ) {
+            ui = uint_limits::max();
         } else if ( v < 0 ) {
-            v -= INT_MIN; ui = (uint)v;
+            v -= int_limits::min();
+            ui = static_cast<unsigned>(v);
         } else {
-            ui = (uint)v; ui -= INT_MIN;
+            ui = static_cast<unsigned>(v);
+            ui -= int_limits::min();
         } return ui;
     }
-    int mapToInt( uint v ) const
+    int mapToInt( unsigned v ) const
     {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
         int in;
-        if ( v == UINT_MAX ) {
-            in = INT_MAX;
+        if ( v == uint_limits::max() ) {
+            in = int_limits::max();
         } else if ( v == 0 ) {
-            in = INT_MIN;
-        } else if ( v > INT_MAX ) {
-            v += INT_MIN; in = (int)v;
+            in = int_limits::min();
+        } else if ( v > int_limits::max() ) {
+            v += int_limits::min();
+            in = static_cast<int>(v);
         } else {
-            in = v; in += INT_MIN;
+            in = v;
+            in += int_limits::min();
         } return in;
     }
 };

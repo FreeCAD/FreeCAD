@@ -31,14 +31,6 @@
 
 #define ARC_MIN_SEGMENTS 20.0  // minimum # segments to interpolate an arc
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846 /* pi */
-#endif
-
-#ifndef M_PI_2
-#define M_PI_2 1.57079632679489661923 /* pi/2 */
-#endif
-
 
 namespace Path
 {
@@ -195,7 +187,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             if (nrot != lrot) {
                 double amax = std::max(fmod(fabs(a - A), 360),
                                        std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
-                double angle = amax / 180 * M_PI;
+                double angle = amax / 180 * std::numbers::pi;
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0 / (deviation / angle));
 
                 double da = (a - A) / segments;
@@ -257,16 +249,16 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             Base::Vector3d anorm = (last0 - center0) % (next0 - center0);
             if (anorm.*pz < 0) {
                 if (name == "G3" || name == "G03") {
-                    angle = M_PI * 2 - angle;
+                    angle = std::numbers::pi * 2 - angle;
                 }
             }
             else if (anorm.*pz > 0) {
                 if (name == "G2" || name == "G02") {
-                    angle = M_PI * 2 - angle;
+                    angle = std::numbers::pi * 2 - angle;
                 }
             }
             else if (angle == 0) {
-                angle = M_PI * 2;
+                angle = std::numbers::pi * 2;
             }
 
             double amax = std::max(fmod(fabs(a - A), 360),
@@ -337,7 +329,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             if (nrot != lrot) {
                 double amax = std::max(fmod(fabs(a - A), 360),
                                        std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
-                double angle = amax / 180 * M_PI;
+                double angle = amax / 180 * std::numbers::pi;
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0 / (deviation / angle));
 
                 double da = (a - A) / segments;

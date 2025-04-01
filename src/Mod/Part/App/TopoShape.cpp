@@ -2004,7 +2004,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 
     //circular profile
     Handle(Geom_Circle) aCirc = new Geom_Circle (gp::XOY(), theRadius);
-    aCirc->Rotate (gp::OZ(), M_PI/2.);
+    aCirc->Rotate (gp::OZ(), std::numbers::pi/2.);
 
     //perpendicular section
     Handle(Law_Function) myEvol = ::CreateBsFunction (myPath->FirstParameter(), myPath->LastParameter(), theRadius);
@@ -2116,6 +2116,8 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
                                   Standard_Boolean leftHanded,
                                   Standard_Boolean newStyle) const
 {
+    using std::numbers::pi;
+
     if (fabs(pitch) < Precision::Confusion())
         Standard_Failure::Raise("Pitch of helix too small");
 
@@ -2140,24 +2142,24 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     }
 
     gp_Pnt2d aPnt(0, 0);
-    gp_Dir2d aDir(2. * M_PI, pitch);
+    gp_Dir2d aDir(2. * pi, pitch);
     Standard_Real coneDir = 1.0;
     if (leftHanded) {
-        aDir.SetCoord(-2. * M_PI, pitch);
+        aDir.SetCoord(-2. * pi, pitch);
         coneDir = -1.0;
     }
     gp_Ax2d aAx2d(aPnt, aDir);
 
     Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
     gp_Pnt2d beg = line->Value(0);
-    gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(height/pitch));
+    gp_Pnt2d end = line->Value(sqrt(4.0*pi*pi+pitch*pitch)*(height/pitch));
 
     if (newStyle) {
         // See discussion at 0001247: Part Conical Helix Height/Pitch Incorrect
         if (angle >= Precision::Confusion()) {
             // calculate end point for conical helix
             Standard_Real v = height / cos(angle);
-            Standard_Real u = coneDir * (height/pitch) * 2.0 * M_PI;
+            Standard_Real u = coneDir * (height/pitch) * 2.0 * pi;
             gp_Pnt2d cend(u, v);
             end = cend;
         }
@@ -2179,6 +2181,8 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
                                       Standard_Real radius, Standard_Real angle,
                                       Standard_Boolean leftHanded) const
 {
+    using std::numbers::pi;
+
     if (pitch < Precision::Confusion())
         Standard_Failure::Raise("Pitch of helix too small");
 
@@ -2206,10 +2210,10 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     Standard_Real partTurn = turns - wholeTurns;
 
     gp_Pnt2d aPnt(0, 0);
-    gp_Dir2d aDir(2. * M_PI, pitch);
+    gp_Dir2d aDir(2. * pi, pitch);
     Standard_Real coneDir = 1.0;
     if (leftHanded) {
-        aDir.SetCoord(-2. * M_PI, pitch);
+        aDir.SetCoord(-2. * pi, pitch);
         coneDir = -1.0;
     }
     gp_Ax2d aAx2d(aPnt, aDir);
@@ -2223,10 +2227,10 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
     for (unsigned long i = 0; i < wholeTurns; i++) {
         if (isCylinder) {
-            end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(i+1));
+            end = line->Value(sqrt(4.0*pi*pi+pitch*pitch)*(i+1));
         }
         else {
-            u = coneDir * (i+1) * 2.0 * M_PI;
+            u = coneDir * (i+1) * 2.0 * pi;
             v = ((i+1) * pitch) / cos(angle);
             end = gp_Pnt2d(u, v);
         }
@@ -2238,10 +2242,10 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
     if (partTurn > Precision::Confusion()) {
         if (isCylinder) {
-            end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*turns);
+            end = line->Value(sqrt(4.0*pi*pi+pitch*pitch)*turns);
         }
         else {
-            u = coneDir * turns * 2.0 * M_PI;
+            u = coneDir * turns * 2.0 * pi;
             v = height / cos(angle);
             end = gp_Pnt2d(u, v);
         }
@@ -2283,9 +2287,9 @@ TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Rea
 
     gp_Pnt2d beg(0, 0);
     gp_Pnt2d end(0, 0);
-    gp_Vec2d dir(breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+    gp_Vec2d dir(breakperiod * 2.0 * std::numbers::pi, 1 / nbPeriods);
     if (leftHanded == Standard_True)
-        dir = gp_Vec2d(-breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+        dir = gp_Vec2d(-breakperiod * 2.0 * std::numbers::pi, 1 / nbPeriods);
     Handle(Geom2d_TrimmedCurve) segm;
     TopoDS_Edge edgeOnSurf;
     BRepBuilderAPI_MakeWire mkWire;
@@ -2314,6 +2318,7 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
                                    Standard_Real height,
                                    Standard_Real radius) const
 {
+    using std::numbers::pi;
     if (pitch < Precision::Confusion())
         Standard_Failure::Raise("Pitch of thread too small");
 
@@ -2332,21 +2337,21 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
     Handle(Geom_CylindricalSurface) aCyl2 = new Geom_CylindricalSurface(cylAx2 , radius+depth);
 
     //Threading : Define 2D Curves
-    gp_Pnt2d aPnt(2. * M_PI , height / 2.);
-    gp_Dir2d aDir(2. * M_PI , height / 4.);
+    gp_Pnt2d aPnt(2. * pi , height / 2.);
+    gp_Dir2d aDir(2. * pi , height / 4.);
     gp_Ax2d aAx2d(aPnt , aDir);
 
-    Standard_Real aMajor = 2. * M_PI;
+    Standard_Real aMajor = 2. * pi;
     Standard_Real aMinor = pitch;
 
     Handle(Geom2d_Ellipse) anEllipse1 = new Geom2d_Ellipse(aAx2d , aMajor , aMinor);
     Handle(Geom2d_Ellipse) anEllipse2 = new Geom2d_Ellipse(aAx2d , aMajor , aMinor / 4);
 
-    Handle(Geom2d_TrimmedCurve) aArc1 = new Geom2d_TrimmedCurve(anEllipse1 , 0 , M_PI);
-    Handle(Geom2d_TrimmedCurve) aArc2 = new Geom2d_TrimmedCurve(anEllipse2 , 0 , M_PI);
+    Handle(Geom2d_TrimmedCurve) aArc1 = new Geom2d_TrimmedCurve(anEllipse1 , 0 , pi);
+    Handle(Geom2d_TrimmedCurve) aArc2 = new Geom2d_TrimmedCurve(anEllipse2 , 0 , pi);
 
     gp_Pnt2d anEllipsePnt1 = anEllipse1->Value(0);
-    gp_Pnt2d anEllipsePnt2 = anEllipse1->Value(M_PI);
+    gp_Pnt2d anEllipsePnt2 = anEllipse1->Value(pi);
 
     Handle(Geom2d_TrimmedCurve) aSegment = GCE2d_MakeSegment(anEllipsePnt1 , anEllipsePnt2);
 

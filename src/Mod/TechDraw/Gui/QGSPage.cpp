@@ -893,7 +893,7 @@ void QGSPage::findMissingViews(const std::vector<App::DocumentObject*>& list,
 
         if (obj->isDerivedFrom<TechDraw::DrawViewCollection>()) {
             std::vector<App::DocumentObject*> missingChildViews;
-            auto* collection = dynamic_cast<TechDraw::DrawViewCollection*>(obj);
+            auto* collection = static_cast<TechDraw::DrawViewCollection*>(obj);
             // Find Child Views recursively
             findMissingViews(collection->getViews(), missingChildViews);
 
@@ -1000,7 +1000,7 @@ bool QGSPage::orphanExists(const char* viewName, const std::vector<App::Document
 
         //Check child objects too recursively
         if (obj->isDerivedFrom<TechDraw::DrawViewCollection>()) {
-            auto* collection = dynamic_cast<TechDraw::DrawViewCollection*>(obj);
+            auto* collection = static_cast<TechDraw::DrawViewCollection*>(obj);
             if (orphanExists(viewName, collection->getViews()))
                 return true;
         }

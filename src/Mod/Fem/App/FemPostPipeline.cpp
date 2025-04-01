@@ -27,6 +27,7 @@
 #include <vtkAppendFilter.h>
 #include <vtkDataSetReader.h>
 #include <vtkImageData.h>
+#include <vtkPointData.h>
 #include <vtkRectilinearGrid.h>
 #include <vtkStructuredGrid.h>
 #include <vtkUnstructuredGrid.h>
@@ -46,8 +47,6 @@
 #endif
 
 #include <Base/Console.h>
-#include <cmath>
-#include <QString>
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
@@ -185,8 +184,8 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
         auto time = outInfo->Get(vtkStreamingDemandDrivenPipeline::UPDATE_TIME_STEP());
         auto frames = getFrameValues();
 
-        // we have float values, so be aware of roundign erros. lets subtract the searched time and
-        // then use the smalles value
+        // we have float values, so be aware of rounding errors. lets subtract the searched time and
+        // then use the smallest value
         for (auto& frame : frames) {
             frame = std::abs(frame - time);
         }
@@ -257,7 +256,7 @@ bool FemPostPipeline::allowObject(App::DocumentObject* obj)
         return true;
     }
 
-    // and all standart Post objects the group can handle
+    // and all standard Post objects the group can handle
     return FemPostGroupExtension::allowObject(obj);
 }
 
@@ -360,7 +359,7 @@ void FemPostPipeline::scale(double s)
 
 App::DocumentObjectExecReturn* FemPostPipeline::execute()
 {
-    // we fake a recalculated data oject, so that the viewprovider updates
+    // we fake a recalculated data object, so that the viewprovider updates
     // the visualization. We do not want to do this in onChange, as it
     // could theoretically be long running
     if (m_data_updated) {
@@ -487,7 +486,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             FemPostFilter* nextFilter = obj;
             nextFilter->getFilterInput()->RemoveAllInputConnections(0);
 
-            // handle input modes (Parallel is seperated, alll other settings are serial, just in
+            // handle input modes (Parallel is separated, all other settings are serial, just in
             // case an old document is loaded with "custom" mode, idx 2)
             if (Mode.getValue() == Fem::PostGroupMode::Parallel) {
                 // parallel: all filters get out input
@@ -735,6 +734,38 @@ void FemPostPipeline::onDocumentRestored()
         || Mode.getValue() < Fem::PostGroupMode::Serial) {
         Mode.setValue(Fem::PostGroupMode::Serial);
     }
+}
+
+void FemPostPipeline::renameArrays(const std::map<std::string, std::string>& names)
+{
+    std::vector<vtkSmartPointer<vtkDataSet>> fields;
+    auto data = Data.getValue();
+    if (!data) {
+        return;
+    }
+
+    if (auto dataSet = vtkDataSet::SafeDownCast(data)) {
+        fields.emplace_back(dataSet);
+    }
+    else if (auto blocks = vtkMultiBlockDataSet::SafeDownCast(data)) {
+        for (unsigned int i = 0; i < blocks->GetNumberOfBlocks(); ++i) {
+            if (auto dataSet = vtkDataSet::SafeDownCast(blocks->GetBlock(i))) {
+                fields.emplace_back(dataSet);
+            }
+        }
+    }
+
+    for (auto f : fields) {
+        auto pointData = f->GetPointData();
+        for (const auto& name : names) {
+            auto array = pointData->GetAbstractArray(name.first.c_str());
+            if (array) {
+                array->SetName(name.second.c_str());
+            }
+        }
+    }
+
+    Data.touch();
 }
 
 PyObject* FemPostPipeline::getPyObject()

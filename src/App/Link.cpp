@@ -21,10 +21,15 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
+#include <limits>
+#endif
+
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/range.hpp>
 #include <boost/property_map/property_map.hpp>
 
-#include <boost/range.hpp>
-#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 
@@ -2624,7 +2629,8 @@ Link::Link()
 {
     LINK_PROPS_ADD(LINK_PARAMS_LINK);
     LinkExtension::initExtension(this);
-    static const PropertyIntegerConstraint::Constraints s_constraints = {0, INT_MAX, 1};
+    static const PropertyIntegerConstraint::Constraints s_constraints = {
+        0, std::numeric_limits<int>::max(), 1};
     ElementCount.setConstraints(&s_constraints);
 }
 

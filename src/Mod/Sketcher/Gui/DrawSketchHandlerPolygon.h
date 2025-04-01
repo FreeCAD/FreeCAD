@@ -242,7 +242,8 @@ private:
             return;
         }
 
-        double angleOfSeparation = 2.0 * M_PI / static_cast<double>(numberOfCorners);  // NOLINT
+        double angleOfSeparation =
+            2.0 * std::numbers::pi / static_cast<double>(numberOfCorners);  // NOLINT
         double cos_v = cos(angleOfSeparation);
         double sin_v = sin(angleOfSeparation);
 

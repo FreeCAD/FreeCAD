@@ -55,6 +55,9 @@
 #include <TopoDS.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 
+// stl
+#include <limits>
+
 // Qt
 # include <Gui/QtAll.h>
 
