@@ -797,7 +797,7 @@ void SketchObject::generateId(const Part::Geometry* geo)
 
     if (it != geoHistory->end()) {
         // `find_if` avoids checking twice
-        auto iterOfId = std::find_if(it->begin(), it->end(), isNotInGeoMap);
+        auto iterOfId = std::ranges::find_if(*it, isNotInGeoMap);
         if (iterOfId != it->end() && it2 == it) {
             preReturn(*iterOfId);
             return;
@@ -810,7 +810,7 @@ void SketchObject::generateId(const Part::Geometry* geo)
             preReturn(++geoLastId);
             return;
         }
-        auto iterOfId = std::find_if(it->begin(), it->end(), isNotInGeoMap);
+        auto iterOfId = std::ranges::find_if(*it, isNotInGeoMap);
         if (iterOfId != it->end()) {
             preReturn(*iterOfId);
             return;
@@ -830,7 +830,7 @@ void SketchObject::generateId(const Part::Geometry* geo)
     // already some candidate exists, search for matching of both
     // points
     if (it2 != it) {
-        auto iterOfId = std::find_if(found.begin(), found.end(), isInIt2);
+        auto iterOfId = std::ranges::find_if(found, isInIt2);
         if (iterOfId != found.end()) {
             preReturn(*iterOfId);
             return;
@@ -1357,9 +1357,8 @@ int SketchObject::diagnoseAdditionalConstraints(
     std::vector<Sketcher::Constraint*> allconstraints;
     allconstraints.reserve(objectconstraints.size() + additionalconstraints.size());
 
-    std::copy(objectconstraints.begin(), objectconstraints.end(), back_inserter(allconstraints));
-    std::copy(
-        additionalconstraints.begin(), additionalconstraints.end(), back_inserter(allconstraints));
+    std::ranges::copy(objectconstraints, back_inserter(allconstraints));
+    std::ranges::copy(additionalconstraints, back_inserter(allconstraints));
 
     lastDoF =
         solvedSketch.setUpSketch(getCompleteGeometry(), allconstraints, getExternalGeometryCount());
@@ -1954,7 +1953,7 @@ void SketchObject::replaceGeometries(std::vector<int> oldGeoIds,
     auto vals = getInternalGeometry();
     auto newVals(vals);
 
-    if (std::any_of(oldGeoIds.begin(), oldGeoIds.end(), [](auto geoId) {
+    if (std::ranges::any_of(oldGeoIds, [](auto geoId) {
             return geoId < 0;
         })) {
         THROWM(ValueError, "Cannot replace external geometries and axes.");
@@ -2378,7 +2377,7 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
     int replaceGeoId = GeoEnum::GeoUndef;
     PointPos replacePosId = Sketcher::PointPos::none;
     auto findReplacement = [geoId, posId, &replaceGeoId, &replacePosId, &vals]() {
-        auto it = std::find_if(vals.begin(), vals.end(), [geoId, posId](auto& constr) {
+        auto it = std::ranges::find_if(vals, [geoId, posId](auto& constr) {
             return constr->Type == Sketcher::Coincident
                 && constr->involvesGeoIdAndPosId(geoId, posId);
         });
@@ -3714,7 +3713,7 @@ std::unique_ptr<Constraint> getNewConstraintAtTrimCut(const SketchObject* obj,
         newConstr->SecondPos = PointPos::none;
     }
     return newConstr;
-};
+}
 
 bool isGeoIdAllowedForTrim(const SketchObject* obj, int GeoId)
 {
@@ -4018,8 +4017,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             // that happens, this causes redundant constraints, and in worse cases (incorrect)
             // complaints of over-constraint and solver failures.
 
-            // if (std::none_of(newConstraints.begin(), newConstraints.end(), [](const auto& constr)
-            // {
+            // if (std::ranges::none_of(newConstraints, [](const auto& constr) {
             //         return constr->Type == ConstraintType::Equal;
             //     })) {
             //     constrainAsEqual(newIds.front(), newIds.back());
@@ -6461,7 +6459,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
 
     if (controlpointgeoids[0] != GeoEnum::GeoUndef) {
         isfirstweightconstrained =
-            std::any_of(vals.begin(), vals.end(), [&controlpointgeoids](const auto& constr) {
+            std::ranges::any_of(vals, [&controlpointgeoids](const auto& constr) {
                 return (constr->Type == Sketcher::Weight && constr->First == controlpointgeoids[0]);
             });
     }
@@ -7074,6 +7072,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
     return true;
 }
 
+// clang-format on
 bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -7164,9 +7163,9 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     std::vector<double> knots = bsp->getKnots();
     std::vector<double> newKnots = bspline->getKnots();
 
-    std::map<Sketcher::InternalAlignmentType, std::vector<int>>
-        indexInNew {{Sketcher::BSplineControlPoint, {}},
-                    {Sketcher::BSplineKnotPoint, {}}};
+    std::map<Sketcher::InternalAlignmentType, std::vector<int>> indexInNew {
+        {Sketcher::BSplineControlPoint, {}},
+        {Sketcher::BSplineKnotPoint, {}}};
     indexInNew[Sketcher::BSplineControlPoint].reserve(poles.size());
     indexInNew[Sketcher::BSplineKnotPoint].reserve(knots.size());
 
@@ -7174,19 +7173,13 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         const auto it = std::ranges::find(newPoles, pole);
         indexInNew[Sketcher::BSplineControlPoint].emplace_back(it - newPoles.begin());
     }
-    std::replace(indexInNew[Sketcher::BSplineControlPoint].begin(),
-                 indexInNew[Sketcher::BSplineControlPoint].end(),
-                 int(newPoles.size()),
-                 -1);
+    std::ranges::replace(indexInNew[Sketcher::BSplineControlPoint], int(newPoles.size()), -1);
 
     for (const auto& knot : knots) {
         const auto it = std::ranges::find(newKnots, knot);
         indexInNew[Sketcher::BSplineKnotPoint].emplace_back(it - newKnots.begin());
     }
-    std::replace(indexInNew[Sketcher::BSplineKnotPoint].begin(),
-                 indexInNew[Sketcher::BSplineKnotPoint].end(),
-                 int(newKnots.size()),
-                 -1);
+    std::ranges::replace(indexInNew[Sketcher::BSplineKnotPoint], int(newKnots.size()), -1);
 
     const std::vector<Sketcher::Constraint*>& cvals = Constraints.getValues();
 
@@ -7309,7 +7302,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
         const auto it = std::ranges::find(newPoles, poles[j]);
         poleIndexInNew[j] = it - newPoles.begin();
     }
-    std::replace(poleIndexInNew.begin(), poleIndexInNew.end(), int(newPoles.size()), -1);
+    std::ranges::replace(poleIndexInNew, int(newPoles.size()), -1);
 
     std::vector<double> knots = bsp->getKnots();
     std::vector<double> newKnots = bspline->getKnots();
@@ -7319,7 +7312,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
         const auto it = std::ranges::find(newKnots, knots[j]);
         knotIndexInNew[j] = it - newKnots.begin();
     }
-    std::replace(knotIndexInNew.begin(), knotIndexInNew.end(), int(newKnots.size()), -1);
+    std::ranges::replace(knotIndexInNew, int(newKnots.size()), -1);
 
     const std::vector<Sketcher::Constraint*>& cvals = Constraints.getValues();
 
@@ -7393,6 +7386,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 
     return true;
 }
+// clang-format off
 
 int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 {
@@ -9750,22 +9744,17 @@ const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenc
 
         int i = 0;
 
-        for (std::vector<std::map<int, Sketcher::PointPos>>::const_iterator iti =
-                 coincidenttree.begin();
-             iti != coincidenttree.end();
-             ++iti, ++i) {
+        for (auto iti = coincidenttree.begin(); iti != coincidenttree.end(); ++iti, ++i) {
             // First
             std::map<int, Sketcher::PointPos>::const_iterator filiterator;
             filiterator = (*iti).find(constr->First);
-            if (filiterator != (*iti).end()) {
-                if (constr->FirstPos == (*filiterator).second)
-                    firstpresentin = i;
+            if (filiterator != (*iti).end() && constr->FirstPos == (*filiterator).second) {
+                firstpresentin = i;
             }
             // Second
             filiterator = (*iti).find(constr->Second);
-            if (filiterator != (*iti).end()) {
-                if (constr->SecondPos == (*filiterator).second)
-                    secondpresentin = i;
+            if (filiterator != (*iti).end() && constr->SecondPos == (*filiterator).second) {
+                secondpresentin = i;
             }
         }
 
@@ -10961,7 +10950,6 @@ void SketchObject::migrateSketch()
 
     if (noextensions) {
         for (auto c : Constraints.getValues()) {
-
             addGeometryState(c);
 
             // Convert B-Spline controlpoints radius/diameter constraints to Weight constraints
@@ -10974,10 +10962,8 @@ void SketchObject::migrateSketch()
                 std::vector<double> weights = bsp->getWeights();
 
                 for (auto ccp : Constraints.getValues()) {
-
                     if ((ccp->Type == Radius || ccp->Type == Diameter)
                         && ccp->First == circlegeoid) {
-
                         if (c->InternalAlignmentIndex < int(weights.size())) {
                             ccp->Type = Weight;
                             ccp->setValue(weights[c->InternalAlignmentIndex]);
@@ -10989,7 +10975,6 @@ void SketchObject::migrateSketch()
 
         // Construction migration to extension
         for (auto g : Geometry.getValues()) {
-
             if (g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())) {
                 auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
                     g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
@@ -11000,8 +10985,7 @@ void SketchObject::migrateSketch()
 
                     bool oldconstr = ext->getConstruction();
 
-                    if (g->is<Part::GeomPoint>()
-                        && !gf->isInternalAligned())
+                    if (g->is<Part::GeomPoint>() && !gf->isInternalAligned())
                         oldconstr = true;
 
                     GeometryFacade::setConstruction(g, oldconstr);
@@ -11016,13 +11000,10 @@ void SketchObject::migrateSketch()
     auto constraints = Constraints.getValues();
     auto geometries = getInternalGeometry();
 
-    bool parabolaFound = std::any_of(geometries.begin(), geometries.end(), [](Part::Geometry* g) {
-        return g->is<Part::GeomArcOfParabola>();
-    });
+    bool parabolaFound = std::ranges::any_of(geometries, &Part::Geometry::is<Part::GeomArcOfParabola>);
 
     if (parabolaFound) {
-
-        bool focalaxisfound = std::any_of(constraints.begin(), constraints.end(), [](auto c) {
+        bool focalaxisfound = std::ranges::any_of(constraints, [](auto& c) {
             return c->Type == InternalAlignment && c->AlignmentType == ParabolaFocalAxis;
         });
 
@@ -11078,9 +11059,7 @@ void SketchObject::migrateSketch()
                     newconstraints.push_back(c);
                 }
                 else {
-                    auto axismajorcoincidentfound =
-                        std::any_of(axisgeoid2parabolageoid.begin(),
-                                    axisgeoid2parabolageoid.end(),
+                    auto axismajorcoincidentfound = std::ranges::any_of(axisgeoid2parabolageoid,
                                     [&](const auto& pair) {
                                         auto parabolageoid = pair.second;
                                         auto axisgeoid = pair.first;
@@ -11097,8 +11076,7 @@ void SketchObject::migrateSketch()
                     }
 
                     auto focuscoincidentfound =
-                        std::find_if(axisgeoid2parabolageoid.begin(),
-                                     axisgeoid2parabolageoid.end(),
+                        std::ranges::find_if(axisgeoid2parabolageoid,
                                      [&](const auto& pair) {
                                          auto parabolageoid = pair.second;
                                          auto axisgeoid = pair.first;
