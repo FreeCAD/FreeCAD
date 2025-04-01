@@ -161,7 +161,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
 
     m_partDocument = App::GetApplication().getActiveDocument();
     if (!m_partDocument) {
-        throw Base::ValueError(QString(tr("Have no active document!!!")).toStdString());
+        throw Base::ValueError(tr("Have no active document!!!").toStdString());
     }
     this->attachDocument(m_partDocument);
     m_partDocument->openTransaction("Project on surface");

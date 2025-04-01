@@ -75,7 +75,7 @@ void Exception::ReportException() const
         return;
     }
 
-    std::string msg = errorMessage.empty() ? typeid(*this).name() : errorMessage.c_str();
+    std::string msg = errorMessage.empty() ? typeid(*this).name() : errorMessage;
 
 #ifdef FC_DEBUG
     if (!functionName.empty()) {
@@ -304,8 +304,7 @@ void FileException::ReportException() const
     if (getReported()) {
         return;
     }
-    std::string msg =
-        _sErrMsgAndFileName.empty() ? typeid(*this).name() : _sErrMsgAndFileName.c_str();
+    std::string msg = _sErrMsgAndFileName.empty() ? typeid(*this).name() : _sErrMsgAndFileName;
 
 #ifdef FC_DEBUG
     if (!getFunction().empty()) {

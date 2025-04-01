@@ -132,6 +132,10 @@ public:
     virtual void setPyException() const;
 
 protected:
+    // Is this better? (I think not!! but ..)
+    // The following comment is deliberate to prompt writer and reviewers to be on the lookout for
+    // unusual circumstances that may be triggered by related changes made during the refactor.
+    // Now I need to explain THIS comment. It was requested upon by reviewer kadet1090
     // explicit Exception(std::string message);
     Exception(const Exception& inst);
     Exception(Exception&& inst) noexcept;
