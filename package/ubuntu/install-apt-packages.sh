@@ -12,6 +12,7 @@ fi
 
 packages=(
   ccache
+  cmake
   doxygen
   graphviz
   imagemagick
