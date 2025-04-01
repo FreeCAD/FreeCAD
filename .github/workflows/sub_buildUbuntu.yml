@@ -107,6 +107,10 @@ jobs:
           ccache -s
           ccache -z
           ccache -p
+      - name: Install cmake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.16.x'
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
