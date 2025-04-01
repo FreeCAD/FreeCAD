@@ -723,11 +723,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         if not hasattr(vobj, "ArrowType"):
             return
 
-        if self.p3.x < self.p2.x:
-            inv = False
-        else:
-            inv = True
-
         # Set scale
         symbol = utils.ARROW_TYPES.index(vobj.ArrowType)
         s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
@@ -745,7 +740,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             else:
                 s1.addChild(self.trans1)
 
-            s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
+            s1.addChild(gui_utils.dim_symbol(symbol, invert=False))
             self.marks.addChild(s1)
 
         s2 = coin.SoSeparator()
@@ -754,7 +749,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             s2.addChild(self.trans2)
 
-        s2.addChild(gui_utils.dim_symbol(symbol, invert=inv))
+        s2.addChild(gui_utils.dim_symbol(symbol, invert=True))
         self.marks.addChild(s2)
 
         self.node_wld.insertChild(self.marks, 2)
