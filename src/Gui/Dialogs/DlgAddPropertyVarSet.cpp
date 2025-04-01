@@ -251,7 +251,9 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
     }));
-    propertyItem->setEditorData(editor.get(), QVariant());
+    propertyItem->setEditorData(
+            editor.get(),
+            propertyItem->data(PropertyEditor::PropertyItem::ValueColumn, Qt::EditRole));
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QStringLiteral("editor"));
     auto formLayout = qobject_cast<QFormLayout*>(layout());
