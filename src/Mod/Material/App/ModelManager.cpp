@@ -96,8 +96,6 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocal
     return _localManager->getLibraries();
 }
 
-void ModelManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
-{}
 
 void ModelManager::createLocalLibrary(const QString& libraryName,
                                       const QString& directory,
@@ -128,7 +126,7 @@ ModelManager::libraryModels(const QString& libraryName)
     return _localManager->libraryModels(libraryName);
 }
 
-bool ModelManager::isLocalLibrary(const QString& libraryName)
+bool ModelManager::isLocalLibrary()
 {
     return true;
 }

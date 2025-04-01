@@ -71,8 +71,9 @@ public:
     // Library management
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLocalLibraries();
-    std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
-    void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
+    std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) 
+    
+const;
     void createLocalLibrary(const QString& libraryName,
                             const QString& directory,
                             const QString& icon,
@@ -86,7 +87,7 @@ public:
     libraryMaterials(const QString& libraryName,
                      const std::shared_ptr<MaterialFilter>& filter,
                      const MaterialFilterOptions& options);
-    bool isLocalLibrary(const QString& libraryName);
+    bool isLocalLibrary();
 
     // Folder management
     std::shared_ptr<std::list<QString>>

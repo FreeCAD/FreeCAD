@@ -202,11 +202,6 @@ std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name
     return _localManager->getLibrary(name);
 }
 
-void MaterialManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
-{
-    throw CreationError("Local library requires a path");
-}
-
 void MaterialManager::createLocalLibrary(const QString& libraryName,
                                          const QString& directory,
                                          const QString& icon,
@@ -244,7 +239,7 @@ MaterialManager::libraryMaterials(const QString& libraryName,
     return _localManager->libraryMaterials(libraryName, filter, options);
 }
 
-bool MaterialManager::isLocalLibrary(const QString& libraryName)
+bool MaterialManager::isLocalLibrary()
 {
     return true;
 }

@@ -53,7 +53,7 @@ public:
 
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLocalLibraries();
-    void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
+
     void createLocalLibrary(const QString& libraryName,
                        const QString& directory,
                        const QString& icon,
@@ -63,7 +63,7 @@ public:
     void removeLibrary(const QString& libraryName);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryModels(const QString& libraryName);
-    bool isLocalLibrary(const QString& libraryName);
+    bool isLocalLibrary();
 
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels();
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getLocalModels();
