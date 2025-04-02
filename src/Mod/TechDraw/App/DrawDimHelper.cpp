@@ -354,7 +354,7 @@ DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direc
     go->isPerspective(false);
     go->usePolygonHLR(false);
     go->projectShape(comp, dvp->getProjectionCS());
-    auto edges = go->getEdgeGeometry();
+    auto edges = go->getAll<BaseGeom>();
 
     if (edges.empty()) {
         return result;

@@ -778,7 +778,7 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
 const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 {
     if (geometryObject) {
-        return geometryObject->getVertexGeometry();
+        return geometryObject->getAll<Vertex>();
     }
     return std::vector<TechDraw::VertexPtr>();
 }
@@ -833,13 +833,13 @@ const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
     if (waitingForFaces() || !geometryObject) {
         return std::vector<TechDraw::FacePtr>();
     }
-    return geometryObject->getFaceGeometry();
+    return geometryObject->getAll<Face>();
 }
 
 const BaseGeomPtrVector DrawViewPart::getEdgeGeometry() const
 {
     if (geometryObject) {
-        return geometryObject->getEdgeGeometry();
+        return geometryObject->getAll<BaseGeom>();
     }
     return BaseGeomPtrVector();
 }
