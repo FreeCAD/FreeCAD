@@ -1057,13 +1057,11 @@ class _SolverCalculiX(CommandManager):
     def __init__(self):
         super().__init__()
         self.pixmap = "FEM_SolverStandard"
-        self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculiX", "Solver CalculiX (new framework)"
-        )
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Solver CalculiX")
         self.accel = "S, C"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_SolverCalculiX",
-            "Creates a FEM solver CalculiX new framework (less result error handling)",
+            "Creates a FEM solver CalculiX",
         )
         self.is_active = "with_analysis"
 
