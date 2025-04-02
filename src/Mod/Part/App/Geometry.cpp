@@ -6601,6 +6601,10 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
         range = atan2(-radDir1.y * radDir2.x + radDir1.x * radDir2.y,
                       radDir1.x * radDir2.x + radDir1.y * radDir2.y);
 
+        if (fmod(fabs(range), 2 * M_PI) < Precision::Approximation()) {
+            return nullptr;
+        }
+
         endAngle = startAngle + range;
 
         if (endAngle < startAngle) {
