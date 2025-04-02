@@ -53,6 +53,7 @@
 #include <ViewProviderLink.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
+#include <Inventor/So3DAnnotation.h>
 
 using namespace Gui;
 
@@ -341,7 +342,11 @@ void ViewProviderDragger::attach(App::DocumentObject* pcObject)
     getAnnotation()->addChild(pcPlacement);
 
     auto* pcAxisCrossKit = new Gui::SoFCPlacementIndicatorKit();
-    pcPlacement->addChild(pcAxisCrossKit);
+
+    auto* pcAnnotation = new So3DAnnotation();
+    pcAnnotation->addChild(pcAxisCrossKit);
+
+    pcPlacement->addChild(pcAnnotation);
 }
 
 void ViewProviderDragger::updateDraggerPosition()
