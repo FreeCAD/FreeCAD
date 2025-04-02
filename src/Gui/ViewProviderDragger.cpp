@@ -108,8 +108,8 @@ void ViewProviderDragger::onChanged(const App::Property* property)
     if (property == &TransformOrigin) {
         updateDraggerPosition();
     }
-    else if (property == &ShowPlacement) {
-        pcPlacement->whichChild = ShowPlacement.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    else if (property == &ShowPlacement || property == &Visibility) {
+        pcPlacement->whichChild = (ShowPlacement.getValue() && Visibility.getValue()) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
     }
 
     ViewProviderDocumentObject::onChanged(property);
