@@ -1364,12 +1364,7 @@ protected:
 
     QPixmap icon(std::string name)
     {
-        qreal pixelRatio = 1;
-        Gui::View3DInventorViewer* viewer = getViewer();
-        if (viewer) {
-            pixelRatio = viewer->devicePixelRatio();
-        }
-        int width = 16 * pixelRatio;
+        constexpr int width = 16;
         return Gui::BitmapFactory().pixmapFromSvg(name.c_str(), QSize(width, width));
     }
 

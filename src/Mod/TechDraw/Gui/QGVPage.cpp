@@ -572,14 +572,10 @@ QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
 {
 
     QPointF floatHotspot(hotspot);
-    double pixelRatio = getDevicePixelRatio();
 
-    // Due to impossibility to query cursor size via Qt API, we stick to (32x32)*device_pixel_ratio
+    // Due to impossibility to query cursor size via Qt API, we stick to (32x32)
     // as FreeCAD Wiki suggests - see https://wiki.freecad.org/HiDPI_support#Custom_cursor_size
-    double cursorSize = 32.0 * pixelRatio;
-
-    QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(cursorSize, cursorSize));
-    pixmap.setDevicePixelRatio(pixelRatio);
+    QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(32, 32));
 
     // The default (and here expected) SVG cursor graphics size is 64x64 pixels, thus we must adjust
     // the 64x64 based hotspot position for our 32x32 based cursor pixmaps accordingly
@@ -590,7 +586,7 @@ QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
     // therefore we must take care of the transformation ourselves...
     // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
-        floatHotspot *= pixelRatio;
+        floatHotspot *= getDevicePixelRatio();
     }
 #endif
 
