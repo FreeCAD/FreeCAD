@@ -72,6 +72,7 @@ void DlgSettingsFemCcxImp::saveSettings()
     ui->dsb_ccx_analysis_time->onSave();      // Analysis time
     ui->dsb_ccx_minimum_time_step->onSave();  // Minimum time step
     ui->dsb_ccx_maximum_time_step->onSave();  // Maximum time step
+    ui->ckb_pipeline_result->onSave();
 
     ui->cb_analysis_type->onSave();
     ui->cb_BeamShellOutput->onSave();  // Beam shell output 3d or 2d
@@ -99,6 +100,7 @@ void DlgSettingsFemCcxImp::loadSettings()
     ui->dsb_ccx_analysis_time->onRestore();      // Analysis time
     ui->dsb_ccx_minimum_time_step->onRestore();  // Minimum time step
     ui->dsb_ccx_maximum_time_step->onRestore();  // Maximum time step
+    ui->ckb_pipeline_result->onRestore();
 
     ui->cb_analysis_type->onRestore();
     ui->cb_BeamShellOutput->onRestore();  // Beam shell output 3d or 2d
