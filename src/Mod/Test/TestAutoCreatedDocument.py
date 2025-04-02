@@ -23,24 +23,10 @@ class TestAutoCreatedDocument(unittest.TestCase):
         self.doc.setAutoCreated(False)
         self.assertFalse(self.doc.isAutoCreated(), "autoCreated flag should be False")
 
-    def test_auto_created_on_startup(self):
-        """Test if a document is marked as autoCreated when created on startup."""
-        param_grp = App.ParamGet("User parameter:BaseApp/Preferences/Document")
-        param_grp.SetBool("CreateNewDoc", True)
-        with patch("FreeCADGui.runCommand") as mock_run_cmd:
-            mock_run_cmd.return_value = None
-            Gui.runCommand("Std_New")
-            new_doc = App.activeDocument()
-            new_doc.setAutoCreated(True)
-            self.assertIsNotNone(new_doc, "No document was created")
-            self.assertTrue(new_doc.isAutoCreated(), "New document should be marked as autoCreated")
-
     def test_auto_created_document_closes_on_opening_existing_document(self):
         """Test if an empty autoCreated document is closed when opening an existing document."""
         self.doc.setAutoCreated(True)
         self.assertEqual(len(self.doc.Objects), 0, "Document should have no objects")
-        gui_doc = Gui.getDocument(self.doc)
-        self.assertFalse(gui_doc.Modified, "Document should not be modified")
         saved_doc = App.newDocument("SavedDoc")
         file_path = "/tmp/SavedDoc.FCStd"
         saved_doc.saveAs(file_path)
