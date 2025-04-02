@@ -795,12 +795,17 @@ def makeSolverCalculiXCcxTools(doc, name="SolverCcxTools"):
     return obj
 
 
-def makeSolverCalculix(doc, name="SolverCalculix"):
-    """makeSolverCalculix(document, [name]):
+def makeSolverCalculiX(doc, name="SolverCalculiX"):
+    """makeSolverCalculiX(document, [name]):
     makes a Calculix solver object"""
-    import femsolver.calculix.solver
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_calculix
 
-    obj = femsolver.calculix.solver.create(doc, name)
+    solver_calculix.SolverCalculiX(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_calculix
+
+        view_solver_calculix.VPSolverCalculiX(obj.ViewObject)
     return obj
 
 
