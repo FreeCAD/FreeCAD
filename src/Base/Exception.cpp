@@ -134,6 +134,14 @@ void Exception::setDebugInformation(const std::source_location& location)
     functionName = location.function_name();
 }
 
+void Exception::setDebugInformation(const char* file, int line, const char* func)
+{
+    fileName = file;
+    lineNum = line;
+    functionName = func;
+}
+
+
 void Exception::setTranslatable(const bool translatable)
 {
     isTranslatable = translatable;

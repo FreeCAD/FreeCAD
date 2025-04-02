@@ -46,6 +46,26 @@ using PyObject = struct _object;  // NOLINT
 /// the exception).
 
 // NOLINTBEGIN(*-macro-usage)
+
+
+#ifdef _MSC_VER
+#define FC_THROW_INFO __FILE__, __LINE__, __FUNCSIG__
+#elif __GNUC__
+#define FC_THROW_INFO __FILE__, __LINE__, __PRETTY_FUNCTION__
+#else
+#define FC_THROW_INFO __FILE__, __LINE__, __func__
+#endif
+
+#define THROWM(exc, msg) Base::goExc<exc>(msg, FC_THROW_INFO);
+#define THROWMT(exc, msg) Base::goExc<exc>(msg, FC_THROW_INFO, true);
+#define FC_THROWM(_exception, _msg)                                                                \
+    do {                                                                                           \
+        std::stringstream ss;                                                                      \
+        ss << _msg;                                                                                \
+        THROWM(_exception, ss.str());                                                              \
+    } while (0)
+
+/*
 #define THROWM(exc, msg) Base::goExc<exc>((msg), std::source_location::current());
 #define THROWMT(exc, msg) Base::goExc<exc>((msg), std::source_location::current(), true);
 #define FC_THROWM(_exception, _msg)                                                                \
@@ -54,8 +74,29 @@ using PyObject = struct _object;  // NOLINT
         ss << _msg;                                                                                \
         THROWM(_exception, ss.str());                                                              \
     } while (0)
+*/
+
 // NOLINTEND(*-macro-usage)
 
+
+namespace Base
+{
+template<typename ExceptionType>
+void goExc(const std::string message,
+           const char* file,
+           const int line,
+           const char* func,
+           const bool translatable = false)
+{
+    ExceptionType exception {message};
+    exception.setTranslatable(translatable);
+    exception.setDebugInformation(file, line, func);
+    throw exception;
+}  // NOLINT // unreachable
+}  // namespace Base
+
+
+/*
 namespace Base
 {
 template<typename ExceptionType>
@@ -70,6 +111,7 @@ void goExc(const std::string message,
 }  // NOLINT // unreachable
 
 }  // namespace Base
+*/
 
 //--------------------------------------------------------------------------------------------------
 
@@ -94,8 +136,10 @@ constexpr void FC_THROWM_(const std::string& raw_msg,
     THROWM_<Exception>(raw_msg, location);
 }
 
+
 namespace Base
 {
+
 
 class BaseExport Exception: public BaseClass
 {
@@ -121,6 +165,7 @@ public:
     void setReported(bool reported) const;
 
     void setDebugInformation(const std::source_location& location);
+    void setDebugInformation(const char* file, int line, const char* func);
 
     void setTranslatable(bool translatable);
 
