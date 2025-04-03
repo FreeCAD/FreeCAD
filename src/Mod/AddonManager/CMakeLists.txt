@@ -92,6 +92,7 @@ SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
     AddonManagerTest/app/mocks.py
     AddonManagerTest/app/test_addon.py
+    AddonManagerTest/app/test_addoncatalog.py
     AddonManagerTest/app/test_cache.py
     AddonManagerTest/app/test_dependency_installer.py
     AddonManagerTest/app/test_freecad_interface.py
@@ -100,8 +101,8 @@ SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/test_macro.py
     AddonManagerTest/app/test_macro_parser.py
     AddonManagerTest/app/test_metadata.py
-    AddonManagerTest/app/test_utilities.py
     AddonManagerTest/app/test_uninstaller.py
+    AddonManagerTest/app/test_utilities.py
 )
 
 SET(AddonManagerTestsGui_SRCS
@@ -109,8 +110,10 @@ SET(AddonManagerTestsGui_SRCS
     AddonManagerTest/gui/gui_mocks.py
     AddonManagerTest/gui/test_gui.py
     AddonManagerTest/gui/test_installer_gui.py
-    AddonManagerTest/gui/test_update_all_gui.py
+    AddonManagerTest/gui/test_python_deps_gui.py
     AddonManagerTest/gui/test_uninstaller_gui.py
+    AddonManagerTest/gui/test_update_all_gui.py
+    AddonManagerTest/gui/test_widget_progress_bar.py
     AddonManagerTest/gui/test_workers_startup.py
     AddonManagerTest/gui/test_workers_utility.py
 )

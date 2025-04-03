@@ -32,10 +32,6 @@
 using namespace Sketcher;
 
 //---------- Geometry Extension
-constexpr std::array<const char*, InternalType::NumInternalGeometryType>
-    SketchGeometryExtension::internaltype2str;
-constexpr std::array<const char*, GeometryMode::NumGeometryMode>
-    SketchGeometryExtension::geometrymode2str;
 
 TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension, Part::GeometryMigrationPersistenceExtension)
 
@@ -107,12 +103,7 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy() const
     auto cpy = std::make_unique<SketchGeometryExtension>();
 
     copyAttributes(cpy.get());
-
-#if defined(__GNUC__) && (__GNUC__ <= 4)
-    return std::move(cpy);
-#else
     return cpy;
-#endif
 }
 
 PyObject* SketchGeometryExtension::getPyObject()

@@ -30,7 +30,7 @@
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include "PrefWidgets.h"
 
@@ -218,7 +218,7 @@ void PrefDoubleSpinBox::wheelEvent(QWheelEvent *event)
     if (hasFocus())
         QDoubleSpinBox::wheelEvent(event);
     else
-        event->ignore();    
+        event->ignore();
 }
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox() = default;
@@ -358,7 +358,7 @@ void PrefComboBox::wheelEvent(QWheelEvent *event)
     if (hasFocus())
         QComboBox::wheelEvent(event);
     else
-        event->ignore();      
+        event->ignore();
 }
 
 PrefComboBox::~PrefComboBox() = default;
@@ -562,12 +562,12 @@ void PrefColorButton::restorePreferences()
   if (!m_Restored)
     m_Default = color();
 
-  unsigned int icol = App::Color::asPackedRGBA<QColor>(m_Default);
+  unsigned int icol = Base::Color::asPackedRGBA<QColor>(m_Default);
 
   unsigned long lcol = static_cast<unsigned long>(icol);
   lcol = getWindowParameter()->GetUnsigned(entryName(), lcol);
   icol = static_cast<unsigned int>(lcol);
-  QColor value = App::Color::fromPackedRGBA<QColor>(icol);
+  QColor value = Base::Color::fromPackedRGBA<QColor>(icol);
   if (!this->allowTransparency())
     value.setAlpha(0xff);
   setColor(value);
@@ -583,7 +583,7 @@ void PrefColorButton::savePreferences()
 
   QColor col = color();
   // (r,g,b,a) with a = 255 (opaque)
-  unsigned int icol = App::Color::asPackedRGBA<QColor>(col);
+  unsigned int icol = Base::Color::asPackedRGBA<QColor>(col);
   unsigned long lcol = static_cast<unsigned long>(icol);
   getWindowParameter()->SetUnsigned( entryName(), lcol );
 }
@@ -601,7 +601,7 @@ void PrefUnitSpinBox::wheelEvent(QWheelEvent *event)
     if (hasFocus())
         QuantitySpinBox::wheelEvent(event);
     else
-        event->ignore();        
+        event->ignore();
 }
 
 PrefUnitSpinBox::~PrefUnitSpinBox() = default;
@@ -650,9 +650,10 @@ public:
         list.clear();
     }
     void append(const QString& value) {
-        if (!list.isEmpty() && list.back() == value)
+        if (!list.isEmpty() && list.back() == value) {
             return;
-        auto it = std::find(list.begin(), list.end(), value);
+        }
+        const auto it = std::ranges::find(list, value);
         if (it != list.end())
             list.erase(it);
         else if (list.size() == max_size)
@@ -750,7 +751,7 @@ void PrefQuantitySpinBox::wheelEvent(QWheelEvent *event)
     if (hasFocus())
         QuantitySpinBox::wheelEvent(event);
     else
-        event->ignore();        
+        event->ignore();
 }
 
 void PrefQuantitySpinBox::restorePreferences()

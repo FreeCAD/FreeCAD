@@ -37,6 +37,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Gui/QuantitySpinBox.h>
+
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
@@ -66,16 +68,10 @@ bool CompassWidget::eventFilter(QObject* target, QEvent* event)
     if (target == dsbAngle) {
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-                dsbAngle->interpretText();
-                slotSpinBoxEnter(dsbAngle->value());
+            const auto isEnter = keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter;
+            if (isEnter && dsbAngle->isNormalized()) {
                 return true;
             }
-        }
-        else if (event->type() == QEvent::FocusOut) {
-            dsbAngle->interpretText();
-            slotSpinBoxEnter(dsbAngle->value());
-            return true;
         }
     }
     return QWidget::eventFilter(target, event);
@@ -128,19 +124,11 @@ void CompassWidget::buildWidget()
     compassControlLabel->setSizePolicy(sizePolicy2);
 
     compassControlLayout->addWidget(compassControlLabel);
-
-    dsbAngle = new QDoubleSpinBox(this);
+    dsbAngle = new Gui::QuantitySpinBox(this);
     dsbAngle->setObjectName(QStringLiteral("dsbAngle"));
-    sizePolicy2.setHeightForWidth(dsbAngle->sizePolicy().hasHeightForWidth());
-    dsbAngle->setSizePolicy(sizePolicy2);
-    dsbAngle->setMinimumSize(QSize(75, 26));
-    dsbAngle->setMouseTracking(true);
-    dsbAngle->setFocusPolicy(Qt::ClickFocus);
-    dsbAngle->setAlignment(Qt::AlignRight | Qt::AlignTrailing | Qt::AlignVCenter);
-    dsbAngle->setKeyboardTracking(false);
-    dsbAngle->setSuffix(QStringLiteral("\302\260"));
-    dsbAngle->setMaximum(360.000000000000000);
-    dsbAngle->setMinimum(-360.000000000000000);
+    dsbAngle->setUnit(Base::Unit::Angle);
+    connect(dsbAngle, QOverload<double>::of(&Gui::QuantitySpinBox::valueChanged),
+        this, &CompassWidget::slotSpinBoxEnter);
 
     compassControlLayout->addWidget(dsbAngle);
 

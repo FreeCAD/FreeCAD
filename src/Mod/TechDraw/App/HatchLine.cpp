@@ -110,21 +110,8 @@ Base::Vector3d LineSet::getUnitDir()
 
 Base::Vector3d LineSet::getUnitOrtho()
 {
-    Base::Vector3d result;
     Base::Vector3d unit = getUnitDir();
-    Base::Vector3d X(1.0, 0.0, 0.0);
-    Base::Vector3d Y(0.0, 1.0, 0.0);
-    if (unit.IsEqual(X, 0.000001)) {
-        result = Y;
-    } else if (unit.IsEqual(Y, 0.000001)) {
-        result = X;
-    } else {
-        double unitX = unit.x;
-        double unitY = unit.y;
-        result = Base::Vector3d(unitY, -unitX, 0.0);  //perpendicular
-    }
-    result.Normalize();   //probably redundant
-    return result;
+    return Base::Vector3d(-unit.y, unit.x, 0.0);
 }
 
 
@@ -409,7 +396,7 @@ double PATLineSpec::getSlope()
     } else if (angle < -90.0) {
         angle = (180 + angle);
     }
-    return tan(angle * M_PI/180.0);
+    return tan(angle * std::numbers::pi/180.0);
 }
 
 bool PATLineSpec::isDashed()
@@ -426,7 +413,7 @@ double PATLineSpec::getIntervalX()
         return getInterval();
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() / cos(perpAngle * M_PI/180.0));
+        return fabs(getInterval() / cos(perpAngle * std::numbers::pi/180.0));
     }
 }
 
@@ -439,7 +426,7 @@ double PATLineSpec::getIntervalY()
         return 0.0;
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() * tan(perpAngle * M_PI/180.0));
+        return fabs(getInterval() * tan(perpAngle * std::numbers::pi/180.0));
     }
 }
 

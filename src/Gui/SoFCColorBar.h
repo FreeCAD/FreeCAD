@@ -76,7 +76,7 @@ public:
    *
    * This method must be implemented in subclasses.
    */
-  App::Color getColor(float fVal) const override = 0;
+  Base::Color getColor(float fVal) const override = 0;
   /**
    * Returns always true if the color bar is in mode to show colors to arbitrary values of \a fVal,
    * otherwise true is returned if \a fVal is within the specified parameter range, if not false is
@@ -191,7 +191,7 @@ public:
   /**
    * Returns the associated color to the value \a fVal of the currently active color bar.
    */
-  App::Color getColor(float fVal) const override;
+  Base::Color getColor(float fVal) const override;
   /**
    * Sets whether values outside the range should be in gray,
    */

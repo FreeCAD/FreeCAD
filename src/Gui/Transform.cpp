@@ -298,13 +298,8 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
         signalMapper->setMapping(it, id++);
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
-            this, &Transform::onTransformChanged);
-#else
     connect(signalMapper, &QSignalMapper::mappedInt,
             this, &Transform::onTransformChanged);
-#endif
 
     setTransformStrategy(new DefaultTransformStrategy(this));
 }
@@ -383,6 +378,7 @@ Base::Vector3d Transform::getDirection() const
 
 Base::Placement Transform::getPlacementData() const
 {
+    using std::numbers::pi;
     int index = ui->rotationInput->currentIndex();
     Base::Rotation rot;
     Base::Vector3d pos;
@@ -393,7 +389,7 @@ Base::Placement Transform::getPlacementData() const
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value().getValue()*D_PI/180.0);
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value().getValue()*pi/180.0);
     }
     else if (index == 1) {
         rot.setYawPitchRoll(

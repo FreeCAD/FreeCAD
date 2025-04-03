@@ -47,7 +47,7 @@ protected:
     void attach(App::DocumentObject *obj) override;
 
 private:
-    std::vector<App::Color> originalLineColors;
+    std::vector<Base::Color> originalLineColors;
     std::vector<App::Material> originalFaceAppearance;
 
 };

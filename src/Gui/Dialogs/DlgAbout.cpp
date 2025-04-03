@@ -508,13 +508,7 @@ void AboutDialog::showPrivacyPolicy()
     auto textField = new QTextBrowser(tabPrivacyPolicy);
     textField->setOpenExternalLinks(true);
     hLayout->addWidget(textField);
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    // We can't actually render the markdown, so just display it as text
-    textField->setText(text);
-#else
     textField->setMarkdown(text);
-#endif
 }
 
 void AboutDialog::linkActivated(const QUrl& link)
@@ -580,6 +574,7 @@ void AboutDialog::copyToClipboard()
     QString point = QString::fromStdString(config["BuildVersionPoint"]);
     QString suffix = QString::fromStdString(config["BuildVersionSuffix"]);
     QString build = QString::fromStdString(config["BuildRevision"]);
+    QString buildDate = QString::fromStdString(config["BuildRevisionDate"]);
 
     QString deskEnv =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),
@@ -628,6 +623,7 @@ void AboutDialog::copyToClipboard()
         str << " Snap " << snap;
     }
     str << '\n';
+    str << "Build date: " << buildDate << "\n";
 
 #if defined(_DEBUG) || defined(DEBUG)
     str << "Build type: Debug\n";
@@ -730,10 +726,12 @@ void AboutDialog::copyToClipboard()
         << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
 
     // Add DPI information
-    str << "Logical/physical DPI: "
+    str << "Logical DPI/Physical DPI/Pixel Ratio: "
         << QApplication::primaryScreen()->logicalDotsPerInch()
         << "/"
         << QApplication::primaryScreen()->physicalDotsPerInch()
+        << "/"
+        << QApplication::primaryScreen()->devicePixelRatio()
         << "\n";
 
     // Add installed module information:

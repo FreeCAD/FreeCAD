@@ -113,7 +113,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAc
 
     std::string prefixText(prefixFormat);
     if (prefixFormat.find("%s") != std::string::npos) {
-        DlgTemplateField ui;
+        DlgTemplateField ui(Gui::getMainWindow());
         const int MAX_PREFIX_LENGTH = 31;
 
         if (action) {
@@ -1468,7 +1468,7 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueChainDimension(std::vect
                 edge->m_format.setStyle(1);
                 edge->m_format.setLineNumber(1);
                 edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
-                edge->m_format.setColor(App::Color(0.0f, 0.0f, 0.0f));
+                edge->m_format.setColor(Base::Color(0.0f, 0.0f, 0.0f));
             }
             else
                 carrierVertexes.push_back(oldVertex);
@@ -1851,7 +1851,7 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueCoordDimension(std::vect
                 edge->m_format.setStyle(1);
                 edge->m_format.setLineNumber(1);
                 edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
-                edge->m_format.setColor(App::Color(0.0, 0.0, 0.0));
+                edge->m_format.setColor(Base::Color(0.0, 0.0, 0.0));
             }
             else {
                 carrierVertexes.push_back(oldVertex);
@@ -2050,7 +2050,7 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty() && allVertexes.size() > 1) {
-        const auto Pi180 = 180.0 / M_PI;
+        const auto Pi180 = 180.0 / std::numbers::pi;
         TechDraw::DrawViewDimension* dim;
         dim = _createLinDimension(objFeat, allVertexes[0].name, allVertexes[1].name, "DistanceX");
         float yMax = std::max(abs(allVertexes[0].point.y), abs(allVertexes[1].point.y)) + 7.0;
@@ -2119,7 +2119,7 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty() && allVertexes.size() > 1) {
-        const auto Pi180 = 180.0 / M_PI;
+        const auto Pi180 = 180.0 / std::numbers::pi;
         TechDraw::DrawViewDimension* dim;
         dim = _createLinDimension(objFeat, allVertexes[0].name, allVertexes[1].name, "DistanceY");
         float xMax = std::max(abs(allVertexes[0].point.x), abs(allVertexes[1].point.x)) + 7.0;

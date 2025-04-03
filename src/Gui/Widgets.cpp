@@ -622,7 +622,6 @@ struct ColorButtonP
     bool drawFrame{true};
     bool allowTransparency{false};
     bool modal{true};
-    bool dirty{true};
 };
 }
 
@@ -654,7 +653,6 @@ ColorButton::~ColorButton()
 void ColorButton::setColor(const QColor& c)
 {
     d->col = c;
-    d->dirty = true;
     update();
 }
 
@@ -671,13 +669,12 @@ QColor ColorButton::color() const
  */
 void ColorButton::setPackedColor(uint32_t c)
 {
-    App::Color color;
+    Base::Color color;
     color.setPackedValue(c);
     d->col.setRedF(color.r);
     d->col.setGreenF(color.g);
     d->col.setBlueF(color.b);
     d->col.setAlphaF(color.a);
-    d->dirty = true;
     update();
 }
 
@@ -686,7 +683,7 @@ void ColorButton::setPackedColor(uint32_t c)
  */
 uint32_t ColorButton::packedColor() const
 {
-    App::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
+    Base::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
     return color.getPackedValue();
 }
 
@@ -750,29 +747,26 @@ bool ColorButton::autoChangeColor() const
  */
 void ColorButton::paintEvent (QPaintEvent * e)
 {
-    if (d->dirty) {
-        QSize isize = iconSize();
-        QPixmap pix(isize);
-        pix.fill(palette().button().color());
-
-        QPainter p(&pix);
-
-        int w = pix.width();
-        int h = pix.height();
-        p.setPen(QPen(Qt::gray));
-        if (d->drawFrame) {
-            p.setBrush(d->col);
-            p.drawRect(2, 2, w - 5, h - 5);
-        }
-        else {
-            p.fillRect(0, 0, w, h, QBrush(d->col));
-        }
-        setIcon(QIcon(pix));
-
-        d->dirty = false;
-    }
-
     QPushButton::paintEvent(e);
+
+    QSize isize = iconSize();
+    QRectF colorRect(0, 0, isize.width(), isize.height());
+    QPointF buttonCenter = rect().center();
+    colorRect.moveCenter(buttonCenter);  // move colorRect to center of button
+
+    QPainter painter(this);
+    if(d->drawFrame) {
+        // frame is drawn on the outside of rectangle
+        // so we need to adjust to get same size as for non-frame button
+        constexpr qreal strokeWidth = 2;
+        colorRect.adjust(strokeWidth, strokeWidth, -strokeWidth, -strokeWidth);
+        painter.setBrush(d->col);
+        painter.setPen(Qt::gray);
+        painter.drawRect(colorRect);
+    }
+    else {
+        painter.fillRect(colorRect, d->col);
+    }
 }
 
 void ColorButton::showModeless()
@@ -1009,7 +1003,7 @@ void StatefulLabel::setState(QString state)
                 if (unsignedEntry.first == entry->second.preferenceString) {
                     // Convert the stored Uint into usable color data:
                     unsigned int col = unsignedEntry.second;
-                    QColor qcolor(App::Color::fromPackedRGB<QColor>(col));
+                    QColor qcolor(Base::Color::fromPackedRGB<QColor>(col));
                     this->setStyleSheet(QStringLiteral("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
                     _styleCache[state] = this->styleSheet();
                     return;

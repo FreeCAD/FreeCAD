@@ -20,41 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-/*!
-\defgroup Document Document
-\ingroup APP
-\brief The Base class of the FreeCAD Document
-
-This (besides the App::Application class) is the most important class in FreeCAD.
-It contains all the data of the opened, saved, or newly created FreeCAD Document.
-The App::Document manages the Undo and Redo mechanism and the linking of documents.
-
-\namespace App \class App::Document
-This is besides the Application class the most important class in FreeCAD
-It contains all the data of the opened, saved or newly created FreeCAD Document.
-The Document manage the Undo and Redo mechanism and the linking of documents.
-
-Note: the documents are not free objects. They are completely handled by the
-App::Application. Only the Application can Open or destroy a document.
-
-\section Exception Exception handling
-As the document is the main data structure of FreeCAD we have to take a close
-look at how Exceptions affect the integrity of the App::Document.
-
-\section UndoRedo Undo Redo an Transactions
-Undo Redo handling is one of the major mechanism of a document in terms of
-user friendliness and speed (no one will wait for Undo too long).
-
-\section Dependency Graph and dependency handling
-The FreeCAD document handles the dependencies of its DocumentObjects with
-an adjacence list. This gives the opportunity to calculate the shortest
-recompute path. Also, it enables more complicated dependencies beyond trees.
-
-@see App::Application
-@see App::DocumentObject
-*/
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -94,6 +59,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/TimeInfo.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Profiler.h>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 #include <Base/Sequencer.h>
@@ -2185,6 +2151,7 @@ bool Document::saveToFile(const char* filename) const
     // open extra scope to close ZipWriter properly
     {
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
+
         Base::ZipWriter writer(file);
         if (!file.is_open()) {
             throw Base::FileException("Failed to open file", tmp);
@@ -2210,9 +2177,12 @@ bool Document::saveToFile(const char* filename) const
 
         // write additional files
         writer.writeFiles();
-
         if (writer.hasErrors()) {
-            throw Base::FileException("Failed to write all data to file", tmp);
+            // retrieve Writer error strings
+            std::stringstream message;
+            message << "Failed to write all data to file ";
+            message << writer.getErrors().front();
+            throw Base::FileException(message.str().c_str(), tmp);
         }
 
         GetApplication().signalSaveDocument(*this);
@@ -2963,6 +2933,8 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                         bool* hasError,
                         int options)
 {
+    ZoneScoped;
+
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Ignore document recompute on undo/redo");
@@ -3367,7 +3339,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         return 1;
     }
     catch (std::exception& e) {
-        FC_ERR("exception in " << Feat->getFullName() << " thrown: " << e.what());
+        FC_ERR("Exception in " << Feat->getFullName() << " thrown: " << e.what());
         d->addRecomputeLog(e.what(), Feat);
         return 1;
     }
@@ -3391,26 +3363,25 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     return 0;
 }
 
-bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
+bool Document::recomputeFeature(DocumentObject* feature, bool recursive)
 {
     // delete recompute log
-    d->clearRecomputeLog(Feat);
+    d->clearRecomputeLog(feature);
 
     // verify that the feature is (active) part of the document
-    if (Feat->isAttachedToDocument()) {
-        if (recursive) {
-            bool hasError = false;
-            recompute({Feat}, true, &hasError);
-            return !hasError;
-        }
-        else {
-            _recomputeFeature(Feat);
-            signalRecomputedObject(*Feat);
-            return Feat->isValid();
-        }
+    if (!feature->isAttachedToDocument()) {
+        return false;
+    }
+
+    if (recursive) {
+        bool hasError = false;
+        recompute({feature}, true, &hasError);
+        return !hasError;
     }
     else {
-        return false;
+        _recomputeFeature(feature);
+        signalRecomputedObject(*feature);
+        return feature->isValid();
     }
 }
 
@@ -3758,6 +3729,7 @@ void Document::removeObject(const char* sName)
     d->objectIdMap.erase(pos->second->_Id);
     // Unset the bit to be on the safe side
     pos->second->setStatus(ObjectStatus::Remove, false);
+    unregisterLabel(pos->second->Label.getStrValue());
 
     // do no transactions if we do a rollback!
     std::unique_ptr<DocumentObject> tobedestroyed;
@@ -3775,7 +3747,6 @@ void Document::removeObject(const char* sName)
         }
     }
 
-    unregisterLabel(pos->second->Label.getStrValue());
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin();
          obj != d->objectArray.end();
          ++obj) {
@@ -3807,6 +3778,9 @@ void Document::_removeObject(DocumentObject* pcObject)
     _checkTransaction(pcObject, nullptr, __LINE__);
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
+    if (pos == d->objectMap.end()) {
+        FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
+    }
 
     if (!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
         // Preserve link group children global visibility. See comments in
@@ -3855,6 +3829,11 @@ void Document::_removeObject(DocumentObject* pcObject)
         signalTransactionRemove(*pcObject, 0);
         breakDependency(pcObject, true);
     }
+    // TODO: Transaction::addObjectName could potentially have freed (deleted) pcObject so some of the following
+    // code may be dereferencing a pointer to a deleted object which is not legal. if (d->rollback) this does not occur
+    // and instead pcObject is deleted at the end of this function.
+    // This either should be fixed, perhaps by moving the following lines up in the code,
+    // or there should be a comment explaining why the object will never be deleted because of the logic that got us here.
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false);  // Unset the bit to be on the safe side
@@ -4272,15 +4251,15 @@ std::vector<App::DocumentObject*> Document::getRootObjectsIgnoreLinks() const
 {
     std::vector<App::DocumentObject*> ret;
 
-    for (auto objectIt : d->objectArray) {
+    for (const auto &objectIt : d->objectArray) {
         auto list = objectIt->getInList();
         bool noParents = list.empty();
 
         if (!noParents) {
             // App::Document getRootObjects returns the root objects of the dependency graph.
-            // So if an object is referenced by a App::Link, it will not be returned by that
+            // So if an object is referenced by an App::Link, it will not be returned by that
             // function. So here, as we want the tree-root level objects, we check if all the
-            // parents are links. In which case its still a root object.
+            // parents are links. In which case it's still a root object.
             noParents = std::all_of(list.cbegin(), list.cend(), [](App::DocumentObject* obj) {
                 return obj->isDerivedFrom<App::Link>();
             });
@@ -4299,22 +4278,20 @@ void DocumentP::findAllPathsAt(const std::vector<Node>& all_nodes,
                                std::vector<Path>& all_paths,
                                Path tmp)
 {
-    if (std::find(tmp.begin(), tmp.end(), id) != tmp.end()) {
-        Path tmp2(tmp);
-        tmp2.push_back(id);
-        all_paths.push_back(tmp2);
+    if (std::ranges::find(tmp, id) != tmp.end()) {
+        tmp.push_back(id);
+        all_paths.push_back(std::move(tmp));
         return;  // a cycle
     }
 
     tmp.push_back(id);
     if (all_nodes[id].empty()) {
-        all_paths.push_back(tmp);
+        all_paths.push_back(std::move(tmp));
         return;
     }
 
     for (size_t i = 0; i < all_nodes[id].size(); i++) {
-        Path tmp2(tmp);
-        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
+        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp);
     }
 }
 
@@ -4342,20 +4319,19 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
 
     size_t index_from = indexMap[from];
     size_t index_to = indexMap[to];
-    Path tmp;
     std::vector<Path> all_paths;
-    DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
+    DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, Path());
 
     for (const Path& it : all_paths) {
-        Path::const_iterator jt = std::find(it.begin(), it.end(), index_to);
+        auto jt = std::ranges::find(it, index_to);
         if (jt != it.end()) {
-            std::list<App::DocumentObject*> path;
-            for (Path::const_iterator kt = it.begin(); kt != jt; ++kt) {
+            array.push_back({});
+            auto& path = array.back();
+            for (auto kt = it.begin(); kt != jt; ++kt) {
                 path.push_back(d->objectArray[*kt]);
             }
 
             path.push_back(d->objectArray[*jt]);
-            array.push_back(path);
         }
     }
 

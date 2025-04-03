@@ -587,7 +587,7 @@ std::string Unit::getString() const
 
 std::string Unit::getTypeString() const
 {
-    static std::array<std::pair<Unit, std::string>, 56> unitSpecs {{
+    static std::array<std::pair<Unit, std::string>, 57> unitSpecs {{
         { Unit::Acceleration, "Acceleration" },
         { Unit::AmountOfSubstance, "AmountOfSubstance" },
         { Unit::Angle, "Angle" },
@@ -604,6 +604,7 @@ std::string Unit::getTypeString() const
         { Unit::ElectricalResistance, "ElectricalResistance" },
         { Unit::ElectricCharge, "ElectricCharge" },
         { Unit::SurfaceChargeDensity, "SurfaceChargeDensity" },
+        { Unit::VolumeChargeDensity, "VolumeChargeDensity" },
         { Unit::ElectricCurrent, "ElectricCurrent" },
         { Unit::ElectricPotential, "ElectricPotential" },
         { Unit::ElectromagneticPotential, "ElectromagneticPotential" },
@@ -683,6 +684,7 @@ const Unit Unit::ElectricalInductance       (2, 1, -2, -2);
 const Unit Unit::ElectricalResistance       (2, 1, -3, -2);
 const Unit Unit::ElectricCharge             (0, 0, 1, 1);
 const Unit Unit::SurfaceChargeDensity       (-2, 0, 1, 1);
+const Unit Unit::VolumeChargeDensity       (-3, 0, 1, 1);
 const Unit Unit::ElectricPotential          (2, 1, -3, -1);
 const Unit Unit::ElectromagneticPotential   (1, 1, -2, -1);
 const Unit Unit::Force                      (1, 1, -2);

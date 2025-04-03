@@ -40,7 +40,7 @@ public:
     explicit PATPathMaker(QGraphicsItem* parent = nullptr, double lineWidth = 0.50, double fillScale = 1.0);
     ~PATPathMaker() = default;
 
-    void setLineWidth(double width) {  m_lineWidth = width; }
+    void setLineWidth(double width);
     void setScale(double scale) { m_fillScale = scale; }
     void setPen(QPen pen) { m_pen = pen; }
     QPen getPen()  { return m_pen; }
@@ -50,6 +50,7 @@ public:
 
 protected:
     QGraphicsPathItem* geomToLine(TechDraw::BaseGeomPtr base, TechDraw::LineSet& ls);
+    QGraphicsPathItem* simpleLine(TechDraw::BaseGeomPtr base);
     QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeomPtr base, double offset, TechDraw::LineSet& ls);
     QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, TechDraw::DashSpec ds);
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
@@ -60,7 +61,6 @@ protected:
 
 private:
     QGraphicsItem* m_parent;
-    QPainterPath m_geomhatch;                  //crosshatch fill lines
     QPen m_pen;
 
     std::vector<TechDraw::LineSet> m_lineSets;

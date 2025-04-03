@@ -412,14 +412,14 @@ class Edit(gui_base_original.Modifier):
         """Execute as callback for keyboard event."""
         # TODO: Get the keys from preferences
         event = event_callback.getEvent()
-        if event.getState() == coin.SoKeyboardEvent.DOWN:
+        if event.getState() in (coin.SoKeyboardEvent.DOWN, coin.SoKeyboardEvent.UP):
             key = event.getKey()
             # App.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307:  # ESC
                 self.finish()
             if key == 101:  # "e"
                 self.display_tracker_menu(event)
-            if key == 65535 and Gui.Selection.GetSelection() is None: # BUG: delete key activate Std::Delete command at the same time!
+            if key == 65535 and Gui.Selection.getSelection() is None: # BUG: delete key activate Std::Delete command at the same time!
                 print("DELETE PRESSED\n")
                 self.delPoint(event)
 
@@ -679,7 +679,7 @@ class Edit(gui_base_original.Modifier):
 
         else:
             # try if user is over an edited object
-            pos = event.getPosition()
+            pos = event.getPosition().getValue()
             obj = self.get_selected_obj_at_position(pos)
 
             obj_gui_tools = self.get_obj_gui_tools(obj)
@@ -825,8 +825,7 @@ class Edit(gui_base_original.Modifier):
         """Restore objects style during editing mode.
         """
         for obj in objs:
-            if not obj.isAttachedToDocument():
-                # Object has been deleted.
+            if utils.is_deleted(obj):
                 continue
             obj_gui_tools = self.get_obj_gui_tools(obj)
             if obj_gui_tools:

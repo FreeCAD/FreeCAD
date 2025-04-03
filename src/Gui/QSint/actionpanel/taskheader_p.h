@@ -22,7 +22,7 @@ class TaskHeader : public QFrame
 {
   Q_OBJECT
 
-  typedef QFrame BaseClass;
+  using BaseClass = QFrame;
 
   friend class ActionGroup;
 

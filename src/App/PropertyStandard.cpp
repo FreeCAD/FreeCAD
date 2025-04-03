@@ -601,7 +601,11 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Objec
     std::string p = path.getSubPathStr();
     if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
-        Py::Tuple res(_enum.maxValue() + 1);
+        auto maxEnumValue = _enum.maxValue();
+        if (maxEnumValue < 0) {
+            return false;  // The enum is invalid
+        }
+        Py::Tuple res(maxEnumValue + 1);
         std::vector<std::string> enums = _enum.getEnumVector();
         PropertyString tmp;
         for (int i = 0; i < int(enums.size()); ++i) {
@@ -1246,7 +1250,7 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
 
         double stepSize = valConstr[3];
         // need a value > 0
-        if (stepSize < DBL_EPSILON) {
+        if (stepSize < std::numeric_limits<double>::epsilon()) {
             throw Base::ValueError("Step size must be greater than zero");
         }
 
@@ -1278,7 +1282,8 @@ TYPESYSTEM_SOURCE(App::PropertyPrecision, App::PropertyFloatConstraint)
 //**************************************************************************
 // Construction/Destruction
 //
-const PropertyFloatConstraint::Constraints PrecisionStandard = {0.0, DBL_MAX, 0.001};
+const PropertyFloatConstraint::Constraints PrecisionStandard = {
+    0.0, std::numeric_limits<double>::max(), 0.001};
 
 PropertyPrecision::PropertyPrecision()
 {
@@ -1425,23 +1430,27 @@ PropertyString::PropertyString() = default;
 
 PropertyString::~PropertyString() = default;
 
-void PropertyString::setValue(const char* newLabel)
+void PropertyString::setValue(const char* newValue)
 {
-    if (!newLabel) {
+    if (!newValue) {
         return;
     }
 
-    if (_cValue == newLabel) {
+    if (_cValue == newValue) {
         return;
     }
 
     std::vector<std::pair<Property*, std::unique_ptr<Property>>> propChanges;
-    std::string label = newLabel;
+    std::string newValueStr = newValue;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     bool commit = false;
 
     if (obj && this == &obj->Label) {
-        propChanges = obj->onProposedLabelChange(label);
+        propChanges = obj->onProposedLabelChange(newValueStr);
+        if (_cValue == newValueStr) {
+            // OnProposedLabelChange has changed the new value to what the current value is
+            return;
+        }
         if (!propChanges.empty() && !GetApplication().getActiveTransaction()) {
             commit = true;
             std::ostringstream str;
@@ -1451,7 +1460,7 @@ void PropertyString::setValue(const char* newLabel)
     }
 
     aboutToSetValue();
-    _cValue = label;
+    _cValue = newValueStr;
     hasSetValue();
 
     for (auto& change : propChanges) {
@@ -2223,7 +2232,7 @@ PropertyColor::~PropertyColor() = default;
 //**************************************************************************
 // Base class implementer
 
-void PropertyColor::setValue(const Color& col)
+void PropertyColor::setValue(const Base::Color& col)
 {
     aboutToSetValue();
     _cCol = col;
@@ -2244,7 +2253,7 @@ void PropertyColor::setValue(float r, float g, float b, float a)
     hasSetValue();
 }
 
-const Color& PropertyColor::getValue() const
+const Base::Color& PropertyColor::getValue() const
 {
     return _cCol;
 }
@@ -2267,7 +2276,7 @@ PyObject* PropertyColor::getPyObject()
 
 void PropertyColor::setPyObject(PyObject* value)
 {
-    App::Color cCol;
+    Base::Color cCol;
     if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
         PyObject* item;
         item = PyTuple_GetItem(value, 0);
@@ -2407,7 +2416,7 @@ PyObject* PropertyColorList::getPyObject()
     return list;
 }
 
-Color PropertyColorList::getPyValue(PyObject* item) const
+Base::Color PropertyColorList::getPyValue(PyObject* item) const
 {
     PropertyColor col;
     col.setPyObject(item);
@@ -2451,7 +2460,7 @@ void PropertyColorList::RestoreDocFile(Base::Reader& reader)
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
-    std::vector<Color> values(uCt);
+    std::vector<Base::Color> values(uCt);
     uint32_t value;  // must be 32 bit long
     for (auto& it : values) {
         str >> value;
@@ -2474,7 +2483,7 @@ void PropertyColorList::Paste(const Property& from)
 
 unsigned int PropertyColorList::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Color));
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Color));
 }
 
 //**************************************************************************
@@ -2495,7 +2504,7 @@ void PropertyMaterial::setValue(const Material& mat)
     hasSetValue();
 }
 
-void PropertyMaterial::setValue(const Color& col)
+void PropertyMaterial::setValue(const Base::Color& col)
 {
     setDiffuseColor(col);
 }
@@ -2515,7 +2524,7 @@ const Material& PropertyMaterial::getValue() const
     return _cMat;
 }
 
-void PropertyMaterial::setAmbientColor(const Color& col)
+void PropertyMaterial::setAmbientColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.ambientColor = col;
@@ -2536,7 +2545,7 @@ void PropertyMaterial::setAmbientColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setDiffuseColor(const Color& col)
+void PropertyMaterial::setDiffuseColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.diffuseColor = col;
@@ -2557,7 +2566,7 @@ void PropertyMaterial::setDiffuseColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setSpecularColor(const Color& col)
+void PropertyMaterial::setSpecularColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.specularColor = col;
@@ -2578,7 +2587,7 @@ void PropertyMaterial::setSpecularColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setEmissiveColor(const Color& col)
+void PropertyMaterial::setEmissiveColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.emissiveColor = col;
@@ -2613,22 +2622,22 @@ void PropertyMaterial::setTransparency(float val)
     hasSetValue();
 }
 
-const Color& PropertyMaterial::getAmbientColor() const
+const Base::Color& PropertyMaterial::getAmbientColor() const
 {
     return _cMat.ambientColor;
 }
 
-const Color& PropertyMaterial::getDiffuseColor() const
+const Base::Color& PropertyMaterial::getDiffuseColor() const
 {
     return _cMat.diffuseColor;
 }
 
-const Color& PropertyMaterial::getSpecularColor() const
+const Base::Color& PropertyMaterial::getSpecularColor() const
 {
     return _cMat.specularColor;
 }
 
-const Color& PropertyMaterial::getEmissiveColor() const
+const Base::Color& PropertyMaterial::getEmissiveColor() const
 {
     return _cMat.emissiveColor;
 }
@@ -2816,7 +2825,7 @@ void PropertyMaterialList::setValue(int index, const Material& mat)
     hasSetValue();
 }
 
-void PropertyMaterialList::setAmbientColor(const Color& col)
+void PropertyMaterialList::setAmbientColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2846,7 +2855,7 @@ void PropertyMaterialList::setAmbientColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setAmbientColor(int index, const Color& col)
+void PropertyMaterialList::setAmbientColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -2876,7 +2885,7 @@ void PropertyMaterialList::setAmbientColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColor(const Color& col)
+void PropertyMaterialList::setDiffuseColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2906,7 +2915,7 @@ void PropertyMaterialList::setDiffuseColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColor(int index, const Color& col)
+void PropertyMaterialList::setDiffuseColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -2936,7 +2945,7 @@ void PropertyMaterialList::setDiffuseColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColors(const std::vector<App::Color>& colors)
+void PropertyMaterialList::setDiffuseColors(const std::vector<Base::Color>& colors)
 {
     aboutToSetValue();
     setSize(colors.size(), _lValueList[0]);
@@ -2947,7 +2956,7 @@ void PropertyMaterialList::setDiffuseColors(const std::vector<App::Color>& color
     hasSetValue();
 }
 
-void PropertyMaterialList::setSpecularColor(const Color& col)
+void PropertyMaterialList::setSpecularColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2977,7 +2986,7 @@ void PropertyMaterialList::setSpecularColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setSpecularColor(int index, const Color& col)
+void PropertyMaterialList::setSpecularColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -3007,7 +3016,7 @@ void PropertyMaterialList::setSpecularColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setEmissiveColor(const Color& col)
+void PropertyMaterialList::setEmissiveColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -3037,7 +3046,7 @@ void PropertyMaterialList::setEmissiveColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setEmissiveColor(int index, const Color& col)
+void PropertyMaterialList::setEmissiveColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -3118,29 +3127,29 @@ void PropertyMaterialList::setTransparencies(const std::vector<float>& transpare
     hasSetValue();
 }
 
-const Color& PropertyMaterialList::getAmbientColor() const
+const Base::Color& PropertyMaterialList::getAmbientColor() const
 {
     return _lValueList[0].ambientColor;
 }
 
-const Color& PropertyMaterialList::getAmbientColor(int index) const
+const Base::Color& PropertyMaterialList::getAmbientColor(int index) const
 {
     return _lValueList[index].ambientColor;
 }
 
-const Color& PropertyMaterialList::getDiffuseColor() const
+const Base::Color& PropertyMaterialList::getDiffuseColor() const
 {
     return _lValueList[0].diffuseColor;
 }
 
-const Color& PropertyMaterialList::getDiffuseColor(int index) const
+const Base::Color& PropertyMaterialList::getDiffuseColor(int index) const
 {
     return _lValueList[index].diffuseColor;
 }
 
-std::vector<App::Color> PropertyMaterialList::getDiffuseColors() const
+std::vector<Base::Color> PropertyMaterialList::getDiffuseColors() const
 {
-    std::vector<App::Color> list;
+    std::vector<Base::Color> list;
     for (auto& material : _lValueList) {
         list.push_back(material.diffuseColor);
     }
@@ -3148,22 +3157,22 @@ std::vector<App::Color> PropertyMaterialList::getDiffuseColors() const
     return list;
 }
 
-const Color& PropertyMaterialList::getSpecularColor() const
+const Base::Color& PropertyMaterialList::getSpecularColor() const
 {
     return _lValueList[0].specularColor;
 }
 
-const Color& PropertyMaterialList::getSpecularColor(int index) const
+const Base::Color& PropertyMaterialList::getSpecularColor(int index) const
 {
     return _lValueList[index].specularColor;
 }
 
-const Color& PropertyMaterialList::getEmissiveColor() const
+const Base::Color& PropertyMaterialList::getEmissiveColor() const
 {
     return _lValueList[0].emissiveColor;
 }
 
-const Color& PropertyMaterialList::getEmissiveColor(int index) const
+const Base::Color& PropertyMaterialList::getEmissiveColor(int index) const
 {
     return _lValueList[index].emissiveColor;
 }
@@ -3449,17 +3458,10 @@ unsigned int PropertyPersistentObject::getMemSize() const
 
 void PropertyPersistentObject::setValue(const char* type)
 {
-    if (!type) {
-        type = "";
-    }
-    if (type[0]) {
-        Base::Type::importModule(type);
-        Base::Type t = Base::Type::fromName(type);
+    if (!Base::Tools::isNullOrEmpty(type)) {
+        Base::Type t = Base::Type::getTypeIfDerivedFrom(type, Persistence::getClassTypeId());
         if (t.isBad()) {
-            throw Base::TypeError("Invalid type");
-        }
-        if (!t.isDerivedFrom(Persistence::getClassTypeId())) {
-            throw Base::TypeError("Type must be derived from Base::Persistence");
+            throw Base::TypeError("Invalid type or type must be derived from Base::Persistence");
         }
         if (_pObject && _pObject->getTypeId() == t) {
             return;

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QApplication>
 # include <QDebug>
 # include <QFocusEvent>
@@ -66,8 +67,8 @@ public:
       pendingEmit(false),
       checkRangeInExpression(false),
       unitValue(0),
-      maximum(DOUBLE_MAX),
-      minimum(-DOUBLE_MAX),
+      maximum(std::numeric_limits<double>::max()),
+      minimum(-std::numeric_limits<double>::max()),
       singleStep(1.0),
       q_ptr(q)
     {
@@ -282,14 +283,6 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
             this, [&]{
         this->handlePendingEmit(true);
     });
-
-    // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
-#ifndef Q_OS_MAC
-    lineEdit()->setTextMargins(0, 2, 0, 2);
-#else
-    // https://forum.freecad.org/viewtopic.php?f=8&t=50615
-    lineEdit()->setTextMargins(0, 2, 0, 0);
-#endif
 }
 
 QuantitySpinBox::~QuantitySpinBox() = default;

@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <limits>
 
 #include <QApplication>
 #include <QColorDialog>
@@ -33,7 +34,6 @@
 #include <QStylePainter>
 #include <QToolTip>
 #include <QtGui>
-#include <cfloat>
 
 #include "customwidgets.h"
 
@@ -146,11 +146,8 @@ FileChooser::FileChooser(QWidget* parent)
     connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
 
     button = new QPushButton("...", this);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
     button->setFixedWidth(2 * button->fontMetrics().horizontalAdvance(" ... "));
-#else
-    button->setFixedWidth(2 * button->fontMetrics().width(" ... "));
-#endif
+
     layout->addWidget(button);
 
     connect(button, &QPushButton::clicked, this, &FileChooser::chooseFile);
@@ -220,13 +217,10 @@ void FileChooser::setFilter(const QString& filter)
 void FileChooser::setButtonText(const QString& txt)
 {
     button->setText(txt);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+
     int w1 = 2 * button->fontMetrics().horizontalAdvance(txt);
     int w2 = 2 * button->fontMetrics().horizontalAdvance(" ... ");
-#else
-    int w1 = 2 * button->fontMetrics().width(txt);
-    int w2 = 2 * button->fontMetrics().width(" ... ");
-#endif
+
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
 
@@ -455,8 +449,8 @@ ActionSelector::~ActionSelector()
 InputField::InputField(QWidget* parent)
     : QLineEdit(parent)
     , Value(0)
-    , Maximum(INT_MAX)
-    , Minimum(-INT_MAX)
+    , Maximum(std::numeric_limits<int>::max())
+    , Minimum(-std::numeric_limits<int>::max())
     , StepSize(1.0)
     , HistorySize(5)
 {}
@@ -677,8 +671,8 @@ public:
         : validInput(true)
         , pendingEmit(false)
         , unitValue(0)
-        , maximum(INT_MAX)
-        , minimum(-INT_MAX)
+        , maximum(std::numeric_limits<int>::max())
+        , minimum(-std::numeric_limits<int>::max())
         , singleStep(1.0)
     {}
     ~QuantitySpinBoxPrivate()
@@ -1175,12 +1169,7 @@ QSize QuantitySpinBox::sizeHint() const
     QString fixedContent = QLatin1String(" ");
     s += fixedContent;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
     w = fm.horizontalAdvance(s);
-#else
-    w = fm.width(s);
-#endif
-
     w += 2;  // cursor blinking space
     w += iconHeight;
 
@@ -1205,12 +1194,7 @@ QSize QuantitySpinBox::minimumSizeHint() const
     QString fixedContent = QLatin1String(" ");
     s += fixedContent;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
     w = fm.horizontalAdvance(s);
-#else
-    w = fm.width(s);
-#endif
-
     w += 2;  // cursor blinking space
     w += iconHeight;
 
@@ -1246,31 +1230,6 @@ void QuantitySpinBox::closeEvent(QCloseEvent* event)
     QAbstractSpinBox::closeEvent(event);
 }
 
-bool QuantitySpinBox::event(QEvent* event)
-{
-    // issue #0004059: Tooltips for Gui::QuantitySpinBox not showing
-    // Here we must not try to show the tooltip of the icon label
-    // because it would override a custom tooltip set to this widget.
-    //
-    // We could also check if the text of this tooltip is empty but
-    // it will fail in cases where the widget is embedded into the
-    // property editor and the corresponding item has set a tooltip.
-    // Instead of showing the item's tooltip it will again show the
-    // tooltip of the icon label.
-#if 0
-    if (event->type() == QEvent::ToolTip) {
-        if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
-            QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
-
-            QToolTip::showText( helpEvent->globalPos(), Base::Tools::fromStdString(getExpression()->toString()), this);
-            event->accept();
-            return true;
-        }
-    }
-#endif
-
-    return QAbstractSpinBox::event(event);
-}
 
 void QuantitySpinBox::focusInEvent(QFocusEvent* event)
 {
@@ -1500,7 +1459,7 @@ UnsignedValidator::UnsignedValidator(QObject* parent)
     : QValidator(parent)
 {
     b = 0;
-    t = UINT_MAX;
+    t = std::numeric_limits<unsigned>::max();
 }
 
 UnsignedValidator::UnsignedValidator(uint minimum, uint maximum, QObject* parent)
@@ -1561,41 +1520,47 @@ public:
     UIntSpinBoxPrivate()
         : mValidator(0)
     {}
-    uint mapToUInt(int v) const
+    unsigned mapToUInt(int v) const
     {
-        uint ui;
-        if (v == INT_MIN) {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
+        unsigned ui;
+        if (v == int_limits::min()) {
             ui = 0;
         }
-        else if (v == INT_MAX) {
-            ui = UINT_MAX;
+        else if (v == int_limits::max()) {
+            ui = uint_limits::max();
         }
         else if (v < 0) {
-            v -= INT_MIN;
-            ui = (uint)v;
+            v -= int_limits::min();
+            ui = static_cast<unsigned>(v);
         }
         else {
-            ui = (uint)v;
-            ui -= INT_MIN;
+            ui = static_cast<unsigned>(v);
+            ui -= int_limits::min();
         }
         return ui;
     }
-    int mapToInt(uint v) const
+    int mapToInt(unsigned v) const
     {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
         int in;
-        if (v == UINT_MAX) {
-            in = INT_MAX;
+        if (v == uint_limits::max()) {
+            in = int_limits::max();
         }
         else if (v == 0) {
-            in = INT_MIN;
+            in = int_limits::min();
         }
-        else if (v > INT_MAX) {
-            v += INT_MIN;
-            in = (int)v;
+        else if (v > int_limits::max()) {
+            v += int_limits::min();
+            in = static_cast<int>(v);
         }
         else {
             in = v;
-            in += INT_MIN;
+            in += int_limits::min();
         }
         return in;
     }

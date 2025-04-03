@@ -60,8 +60,8 @@ bool ViewProviderPart::doubleClicked()
 }
 
 void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
-                                  const std::vector<App::Color>& colBase,
-                                  std::vector<App::Color>& colBool)
+                                  const std::vector<Base::Color>& colBase,
+                                  std::vector<Base::Color>& colBool)
 {
     // apply color from modified faces
     for (const auto& jt : hist.shapeMap) {
@@ -83,7 +83,7 @@ void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
     }
 }
 
-void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Color>& colors)
+void ViewProviderPart::applyTransparency(float transparency, std::vector<Base::Color>& colors)
 {
     if (transparency != 0.0) {
         // transparency has been set object-wide

@@ -33,14 +33,16 @@
 namespace TechDraw
 {
 
-enum BalloonType { Circular = 0,
-                 None,
-                 Triangle,
-                 Inspection,
-                 Hexagon,
-                 Square,
-                 Rectangle,
-                 Line};
+enum class BalloonType {
+    Circular = 0,
+    None,
+    Triangle,
+    Inspection,
+    Hexagon,
+    Square,
+    Rectangle,
+    Line
+};
 
 class TechDrawExport BalloonPropEnum {
     Q_DECLARE_TR_FUNCTIONS(TechDraw::BalloonPropEnum)

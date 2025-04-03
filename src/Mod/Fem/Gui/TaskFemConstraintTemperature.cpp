@@ -28,6 +28,7 @@
 #ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
+#include <limits>
 #include <sstream>
 #endif
 
@@ -68,9 +69,9 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
 
     // Fill data into dialog elements
     ui->qsb_temperature->setMinimum(0);
-    ui->qsb_temperature->setMaximum(FLOAT_MAX);
-    ui->qsb_cflux->setMinimum(-FLOAT_MAX);
-    ui->qsb_cflux->setMaximum(FLOAT_MAX);
+    ui->qsb_temperature->setMaximum(std::numeric_limits<float>::max());
+    ui->qsb_cflux->setMinimum(-std::numeric_limits<float>::max());
+    ui->qsb_cflux->setMaximum(std::numeric_limits<float>::max());
 
     App::PropertyEnumeration* constrType = &pcConstraint->ConstraintType;
     QStringList qTypeList;
@@ -204,9 +205,7 @@ void TaskFemConstraintTemperature::addToSelection()
             ConstraintView->getObject()->getDocument()->getObject(it.getFeatName());
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -254,9 +253,7 @@ void TaskFemConstraintTemperature::removeFromSelection()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -271,7 +268,7 @@ void TaskFemConstraintTemperature::removeFromSelection()
             }
         }
     }
-    std::sort(itemsToDel.begin(), itemsToDel.end());
+    std::ranges::sort(itemsToDel);
     while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());

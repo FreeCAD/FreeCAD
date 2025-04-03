@@ -42,6 +42,7 @@
 #include "FileCardView.h"
 #include "FirstStartWidget.h"
 #include "FlowLayout.h"
+#include "NewFileButton.h"
 #include <App/DocumentObject.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -53,130 +54,11 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <gsl/pointers>
+#include <string>
 
 using namespace StartGui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(StartGui::StartView, Gui::MDIView)  // NOLINT
-
-namespace
-{
-
-struct NewButton
-{
-    QString heading;
-    QString description;
-    QString iconPath;
-};
-
-class NewFileButton: public QPushButton
-{
-
-public:
-    NewFileButton(const NewButton& newButton)
-    {
-        auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Start");
-        const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25));  // NOLINT
-        const auto newFileIconSize =
-            static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));  // NOLINT
-        const auto cardLabelWith =
-            static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
-
-        auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(this));
-        auto iconLabel = gsl::owner<QLabel*>(new QLabel(this));
-        mainLayout->addWidget(iconLabel);
-        QIcon baseIcon(newButton.iconPath);
-        iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
-        iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
-
-        auto textLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout);
-        auto textLabelLine1 = gsl::owner<QLabel*>(new QLabel(this));
-        textLabelLine1->setText(newButton.heading);
-        textLabelLine1->setStyleSheet(QLatin1String("font-weight: bold;"));
-        auto textLabelLine2 = gsl::owner<QLabel*>(new QLabel(this));
-        textLabelLine2->setText(newButton.description);
-        textLabelLine2->setWordWrap(true);
-        textLayout->addWidget(textLabelLine1);
-        textLayout->addWidget(textLabelLine2);
-        textLayout->setSpacing(0);
-        mainLayout->addItem(textLayout);
-
-        mainLayout->addStretch();
-
-        this->setMinimumHeight(newFileIconSize + cardSpacing);
-        this->setMinimumWidth(newFileIconSize + cardLabelWith);
-
-        updateStyle();
-    }
-
-    void updateStyle()
-    {
-        QString style = QStringLiteral("");
-        if (qApp->styleSheet().isEmpty()) {
-            style = fileCardStyle();
-        }
-        setStyleSheet(style);  // This will trigger a changeEvent
-    }
-
-    void changeEvent(QEvent* event) override
-    {
-        if (!changeInProgress && event->type() == QEvent::StyleChange) {
-            changeInProgress = true;  // Block recursive calls.
-            updateStyle();
-            changeInProgress = false;
-        }
-
-        QPushButton::changeEvent(event);
-    }
-
-
-    QString fileCardStyle() const
-    {
-        auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Start");
-
-        auto getUserColor = [&hGrp](QColor color, const char* parameter) {
-            uint32_t packed = App::Color::asPackedRGB<QColor>(color);
-            packed = hGrp->GetUnsigned(parameter, packed);
-            color = App::Color::fromPackedRGB<QColor>(packed);
-            return color;
-        };
-
-        QColor background(221, 221, 221);  // NOLINT
-        background = getUserColor(background, "FileCardBackgroundColor");
-
-        QColor hovered(98, 160, 234);  // NOLINT
-        hovered = getUserColor(hovered, "FileCardBorderColor");
-
-        QColor pressed(38, 162, 105);  // NOLINT
-        pressed = getUserColor(pressed, "FileCardSelectionColor");
-
-        return QStringLiteral("QPushButton {"
-                              " background-color: rgb(%1, %2, %3);"
-                              " border-radius: 8px;"
-                              "}"
-                              "QPushButton:hover {"
-                              " border: 2px solid rgb(%4, %5, %6);"
-                              "}"
-                              "QPushButton:pressed {"
-                              " border: 2px solid rgb(%7, %8, %9);"
-                              "}")
-            .arg(background.red())
-            .arg(background.green())
-            .arg(background.blue())
-            .arg(hovered.red())
-            .arg(hovered.green())
-            .arg(hovered.blue())
-            .arg(pressed.red())
-            .arg(pressed.green())
-            .arg(pressed.blue());
-    }
-
-private:
-    bool changeInProgress = false;
-};
-
-}  // namespace
 
 
 StartView::StartView(QWidget* parent)
@@ -194,28 +76,11 @@ StartView::StartView(QWidget* parent)
     auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);   // NOLINT
     auto showExamples = hGrp->GetBool("ShowExamples", true);  // NOLINT
 
-    // Migrate legacy property, can be removed in later releases
-    std::string legacyCustomFolder(hGrp->GetASCII("ShowCustomFolder", ""));
-    if (!legacyCustomFolder.empty()) {
-        hGrp->SetASCII("CustomFolder", legacyCustomFolder);
-        hGrp->RemoveASCII("ShowCustomFolder");
-        Base::Console().Message("v1.1: renamed ShowCustomFolder parameter to CustomFolder\n");
-    }
-    // End of migration code
-
     // Verify that the folder specified in preferences is available before showing it
     std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
     bool showCustomFolder = false;
     if (!customFolder.empty()) {
-        auto customFolderDirectory = QDir(QString::fromStdString(customFolder));
-        if (customFolderDirectory.exists()) {
-            showCustomFolder = true;
-        }
-        else {
-            Base::Console().Warning(
-                "BaseApp/Preferences/Mod/Start/CustomFolder: '%s' does not exist\n",
-                customFolderDirectory.absolutePath().toStdString().c_str());
-        }
+        showCustomFolder = true;
     }
 
     // First start page
@@ -465,6 +330,11 @@ void StartView::newArchFile() const
     catch (...) {
         Gui::Application::Instance->activateWorkbench("ArchWorkbench");
     }
+
+    // Set the camera zoom level to 10 m, which is more appropriate for architectural projects
+    Gui::Command::doCommand(
+        Gui::Command::Gui,
+        "Gui.activeDocument().activeView().viewDefaultOrientation(None, 10000.0)");
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 

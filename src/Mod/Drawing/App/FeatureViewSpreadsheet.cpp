@@ -153,7 +153,7 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
     // create the containing group
     std::string ViewName = Label.getValue();
     std::stringstream result, hr, hg, hb;
-    const App::Color& c = Color.getValue();
+    const Base::Color& c = Color.getValue();
     hr << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.r);
     hg << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.g);
     hb << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.b);
@@ -207,7 +207,7 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
             std::string textstyle = "";
             Spreadsheet::Cell* cell = sheet->getCell(address);
             if (cell) {
-                App::Color f, b;
+                Base::Color f, b;
                 std::set<std::string> st;
                 int colspan, rowspan;
                 if (cell->getBackground(b)) {
@@ -256,7 +256,7 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
                 cell->getAlignment(alignment);
             }
             // skip cell if found in skiplist
-            if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
+            if (std::ranges::find(skiplist, address.toString()) == skiplist.end()) {
                 result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\""
                        << cellwidth << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor
                        << ";stroke-width:" << LineWidth.getValue() / Scale.getValue() << ";stroke:#"

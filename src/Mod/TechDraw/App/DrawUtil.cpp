@@ -25,6 +25,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <limits>
 #include <sstream>
 
 #include <boost_regex.hpp>
@@ -58,6 +59,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
@@ -202,7 +204,7 @@ double DrawUtil::angleWithX(Base::Vector3d inVec)
 {
     double result = atan2(inVec.y, inVec.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += 2.0 * std::numbers::pi;
     }
 
     return result;
@@ -224,7 +226,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
     }
     double result = atan2(u.y, u.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += 2.0 * std::numbers::pi;
     }
 
     return result;
@@ -250,7 +252,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
     c->D1(param, paramPoint, derivative);
     double angle = atan2(derivative.Y(), derivative.X());
     if (angle < 0) {//map from [-PI:PI] to [0:2PI]
-        angle += 2.0 * M_PI;
+        angle += 2.0 * std::numbers::pi;
     }
     return angle;
 }
@@ -288,7 +290,7 @@ double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double t
 
     //map to [0:2PI]
     if (incidenceAngle < 0.0) {
-        incidenceAngle = M_2PI + incidenceAngle;
+        incidenceAngle = 2*std::numbers::pi + incidenceAngle;
     }
 
     return incidenceAngle;
@@ -414,7 +416,7 @@ bool DrawUtil::apparentIntersection(const Handle(Geom_Curve) curve1,
     //for our purposes, only one intersection point is required.
     gp_Pnt p1, p2;
     intersector.Points(1, p1, p2);
-    result = toVector3d(p1);
+    result = Base::convertTo<Base::Vector3d>(p1);
     return true;
 }
 
@@ -519,6 +521,15 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
     return builder.str();
 }
 //template std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
+
+// template specialization
+std::string DrawUtil::formatVector(const QPointF& v)
+{
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
+    builder << " (" << v.x() << ", " << v.y() << ") ";
+    return builder.str();
+}
 
 //! compare 2 vectors for sorting - true if v1 < v2
 //! precision::Confusion() is too strict for vertex - vertex comparisons
@@ -648,7 +659,7 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec, double angle, Base::Vecto
 
 gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
 {
-    return gp_Vec(to<gp_Dir>(closestBasis(toVector3d(inVec))));
+    return gp_Vec(Base::convertTo<gp_Dir>(closestBasis(Base::convertTo<Base::Vector3d>(inVec))));
 }
 
 //! returns stdX, stdY or stdZ.
@@ -836,7 +847,7 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
     Base::Vector3d stdXr(-1.0, 0.0, 0.0);
     Base::Vector3d stdYr(0.0, -1.0, 0.0);
     Base::Vector3d stdZr(0.0, 0.0, -1.0);
-    Base::Vector3d vClosestBasis = closestBasis(toVector3d(direction));
+    Base::Vector3d vClosestBasis = closestBasis(Base::convertTo<Base::Vector3d>(direction));
 
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
@@ -888,7 +899,7 @@ gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
 
 Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
 {
-    return toVector3d(maskDirection(to<gp_Vec>(inVec), to<gp_Vec>(directionToMask)));
+    return Base::convertTo<Base::Vector3d>(maskDirection(Base::convertTo<gp_Vec>(inVec), Base::convertTo<gp_Vec>(directionToMask)));
 }
 
 //! get the coordinate of inPoint for the cardinal unit direction.
@@ -1049,7 +1060,7 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector
 
     // remove the effect of the Rotation property
     double rotDeg = dvp.Rotation.getValue();
-    double rotRad = rotDeg * M_PI / 180.0;
+    double rotRad = rotDeg * std::numbers::pi / 180.0;
     if (rotDeg != 0.0) {
         // we always rotate around the origin.
         appPoint.RotateZ(-rotRad);
@@ -1097,12 +1108,12 @@ std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string del
     return tokens;
 }
 
-App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
+Base::Color DrawUtil::pyTupleToColor(PyObject* pColor)
 {
     //    Base::Console().Message("DU::pyTupleToColor()\n");
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     if (!PyTuple_Check(pColor)) {
-        return App::Color(red, green, blue, alpha);
+        return Base::Color(red, green, blue, alpha);
     }
 
     int tSize = (int)PyTuple_Size(pColor);
@@ -1118,10 +1129,10 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
         PyObject* pAlpha = PyTuple_GetItem(pColor, 3);
         alpha = PyFloat_AsDouble(pAlpha);
     }
-    return App::Color(red, green, blue, alpha);
+    return Base::Color(red, green, blue, alpha);
 }
 
-PyObject* DrawUtil::colorToPyTuple(App::Color color)
+PyObject* DrawUtil::colorToPyTuple(Base::Color color)
 {
     //    Base::Console().Message("DU::pyTupleToColor()\n");
     PyObject* pTuple = PyTuple_New(4);
@@ -1386,11 +1397,13 @@ double DrawUtil::sqr(double x)
 
 void DrawUtil::angleNormalize(double& fi)
 {
-    while (fi <= -M_PI) {
-        fi += M_2PI;
+    using std::numbers::pi;
+
+    while (fi <= -pi) {
+        fi += 2*pi;
     }
-    while (fi > M_PI) {
-        fi -= M_2PI;
+    while (fi > pi) {
+        fi -= 2*pi;
     }
 }
 
@@ -1404,13 +1417,14 @@ double DrawUtil::angleComposition(double fi, double delta)
 
 double DrawUtil::angleDifference(double fi1, double fi2, bool reflex)
 {
+    using std::numbers::pi;
     angleNormalize(fi1);
     angleNormalize(fi2);
 
     fi1 -= fi2;
 
-    if ((fi1 > +M_PI || fi1 <= -M_PI) != reflex) {
-        fi1 += fi1 > 0.0 ? -M_2PI : +M_2PI;
+    if ((fi1 > +pi || fi1 <= -pi) != reflex) {
+        fi1 += fi1 > 0.0 ? -2*pi : +2*pi;
     }
 
     return fi1;
@@ -1549,6 +1563,7 @@ void DrawUtil::intervalMarkLinear(std::vector<std::pair<double, bool>>& marking,
 void DrawUtil::intervalMarkCircular(std::vector<std::pair<double, bool>>& marking, double start,
                                     double length, bool value)
 {
+    using std::numbers::pi;
     if (length == 0.0) {
         return;
     }
@@ -1556,15 +1571,15 @@ void DrawUtil::intervalMarkCircular(std::vector<std::pair<double, bool>>& markin
         length = -length;
         start -= length;
     }
-    if (length > M_2PI) {
-        length = M_2PI;
+    if (length > 2*pi) {
+        length = 2*pi;
     }
 
     angleNormalize(start);
 
     double end = start + length;
-    if (end > M_PI) {
-        end -= M_2PI;
+    if (end > pi) {
+        end -= 2*pi;
     }
 
     // Just make sure the point is stored, its index is read last
@@ -1775,13 +1790,15 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
                                                      const Base::BoundBox2d& rectangle,
                                                      std::vector<Base::Vector2d>& intersections)
 {
+    using std::numbers::pi;
+
     findCircleRectangleIntersections(circleCenter, circleRadius, rectangle, intersections);
 
     if (arcRotation < 0.0) {
         arcRotation = -arcRotation;
         arcBaseAngle -= arcRotation;
-        if (arcBaseAngle <= -M_PI) {
-            arcBaseAngle += M_2PI;
+        if (arcBaseAngle <= -pi) {
+            arcBaseAngle += 2*pi;
         }
     }
 
@@ -1789,7 +1806,7 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
     for (unsigned int i = 0; i < intersections.size();) {
         double pointAngle = (intersections[i] - circleCenter).Angle();
         if (pointAngle < arcBaseAngle - Precision::Confusion()) {
-            pointAngle += M_2PI;
+            pointAngle += 2*pi;
         }
 
         if (pointAngle > arcBaseAngle + arcRotation + Precision::Confusion()) {
@@ -1885,6 +1902,13 @@ std::string DrawUtil::cleanFilespecBackslash(const std::string& filespec)
     boost::regex rxBackslash("\\\\");    //this rx really means match to a single '\'
     std::string noBackslash = boost::regex_replace(filespec, rxBackslash, forwardSlash);
     return noBackslash;
+}
+
+//! returns true if the Gui module and its event loop are active.
+bool DrawUtil::isGuiUp()
+{
+    auto* app = QCoreApplication::instance();
+    return (app != nullptr) && app->inherits("QApplication");
 }
 
 

@@ -125,7 +125,7 @@ void QGIHighlight::makeReference()
     QRectF r(m_start, m_end);
     double radius = r.width() / 2.0;
     QPointF center = r.center();
-    double angleRad = m_referenceAngle * M_PI / 180.0;
+    double angleRad = m_referenceAngle * std::numbers::pi / 180.0;
     double posX = center.x() + cos(angleRad) * radius + horizOffset;
     double posY = center.y() - sin(angleRad) * radius - vertOffset;
     m_reference->setPos(posX, posY);
@@ -188,16 +188,10 @@ void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 void QGIHighlight::setTools()
 {
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-
-    m_brush.setStyle(m_brushCurrent);
-    m_brush.setColor(m_colCurrent);
-
     m_circle->setPen(m_pen);
     m_rect->setPen(m_pen);
 
-    m_reference->setDefaultTextColor(m_colCurrent);
+    m_reference->setDefaultTextColor(m_pen.color());
 }
 
 void QGIHighlight::setLinePen(QPen isoPen)

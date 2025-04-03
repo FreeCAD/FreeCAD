@@ -317,8 +317,7 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
             list = obj->getInListRecursive();
             chain.insert(chain.end(), list.begin(), list.end());
 
-            auto it = std::find(chain.begin(), chain.end(), &Obj);
-            if (it != chain.end()) {
+            if (const auto it = std::ranges::find(chain, &Obj); it != chain.end()) {
                 if (hasPlacementChanged()) {
                     enforceRecompute();
                 }
@@ -595,11 +594,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 recomputeCopy = true;
                 clearCopiedObjects();
 
-                App::DocumentCreateFlags createFlags;
-                createFlags.createView = false;
-                createFlags.temporary = true;
-
-                auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, createFlags);
+                App::DocumentInitFlags initFlags {
+                    .createView = false,
+                    .temporary = true
+                };
+                auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, initFlags);
                 tmpDoc->setUndoMode(0);
                 auto objs = tmpDoc->copyObject({ obj }, true, true);
                 if (!objs.empty()) {

@@ -257,6 +257,3 @@ class FacetFunctionFromXDMF:
 
     # TODO: write some functions to return integrals for Neumann and Robin
     # boundary conditions for the general case (i.e. vector, tensor)
-
-
-##  @}

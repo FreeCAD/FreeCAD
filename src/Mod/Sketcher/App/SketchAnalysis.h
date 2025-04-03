@@ -94,7 +94,7 @@ public:
     int detectMissingPointOnPointConstraints(double precision = Precision::Confusion() * 1000,
                                              bool includeconstruction = true);
     /// Point on Point constraint simple routine Analyse step (see constructor)
-    void analyseMissingPointOnPointCoincident(double angleprecision = M_PI / 8);
+    void analyseMissingPointOnPointCoincident(double angleprecision = std::numbers::pi / 8);
     /// Point on Point constraint simple routine Get step (see constructor)
     std::vector<ConstraintIds>& getMissingPointOnPointConstraints()
     {
@@ -113,7 +113,7 @@ public:
     void makeMissingPointOnPointCoincidentOneByOne();
 
     /// Vertical/Horizontal constraints simple routine Detect step (see constructor)
-    int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI / 8);
+    int detectMissingVerticalHorizontalConstraints(double angleprecision = std::numbers::pi / 8);
     /// Vertical/Horizontal constraints simple routine Get step (see constructor)
     std::vector<ConstraintIds>& getMissingVerticalHorizontalConstraints()
     {
@@ -168,7 +168,7 @@ public:
     ///
     /// It applies coincidents - vertical/horizontal constraints and equality constraints.
     int autoconstraint(double precision = Precision::Confusion() * 1000,
-                       double angleprecision = M_PI / 8,
+                       double angleprecision = std::numbers::pi / 8,
                        bool includeconstruction = true);
 
     // helper functions, which may be used by more complex methods, and/or called directly by user

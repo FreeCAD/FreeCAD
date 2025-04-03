@@ -111,6 +111,8 @@ public:
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        using std::numbers::pi;
+
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
@@ -144,8 +146,8 @@ private:
                         corner2 = Base::Vector2d(corner1.x, onSketchPos.y);
                         cornersReversed = true;
                     }
-                    angle123 = M_PI / 2;
-                    angle412 = M_PI / 2;
+                    angle123 = pi / 2;
+                    angle412 = pi / 2;
                 }
                 else if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
                     toolWidgetManager.drawDirectionAtCursor(onSketchPos, center);
@@ -162,8 +164,8 @@ private:
                         corner2 = Base::Vector2d(corner1.x, onSketchPos.y);
                         cornersReversed = true;
                     }
-                    angle123 = M_PI / 2;
-                    angle412 = M_PI / 2;
+                    angle123 = pi / 2;
+                    angle412 = pi / 2;
                 }
                 else if (constructionMethod() == ConstructionMethod::ThreePoints) {
                     toolWidgetManager.drawDirectionAtCursor(onSketchPos, corner1);
@@ -174,8 +176,8 @@ private:
                     perpendicular.y = (corner2 - corner1).x;
                     corner3 = corner2 + perpendicular;
                     corner4 = corner1 + perpendicular;
-                    angle123 = M_PI / 2;
-                    angle412 = M_PI / 2;
+                    angle123 = pi / 2;
+                    angle412 = pi / 2;
                     corner2Initial = corner2;
                     side = getPointSideOfVector(corner3, corner2 - corner1, corner1);
                 }
@@ -189,8 +191,8 @@ private:
                     perpendicular.y = (onSketchPos - center).x;
                     corner2 = center + perpendicular;
                     corner4 = center - perpendicular;
-                    angle123 = M_PI / 2;
-                    angle412 = M_PI / 2;
+                    angle123 = pi / 2;
+                    angle412 = pi / 2;
                     side = getPointSideOfVector(corner2, corner3 - corner1, corner1);
                 }
 
@@ -247,7 +249,7 @@ private:
                             acos((a.x * b.x + a.y * b.y)
                                  / (sqrt(a.x * a.x + a.y * a.y) * sqrt(b.x * b.x + b.y * b.y)));
                     }
-                    angle412 = M_PI - angle123;
+                    angle412 = pi - angle123;
                     if (roundCorners) {
                         radius = std::min(length, width) / 6  // NOLINT
                             * std::min(sqrt(1 - cos(angle412) * cos(angle412)),
@@ -276,7 +278,7 @@ private:
                             acos((a.x * b.x + a.y * b.y)
                                  / (sqrt(a.x * a.x + a.y * a.y) * sqrt(b.x * b.x + b.y * b.y)));
                     }
-                    angle123 = M_PI - angle412;
+                    angle123 = pi - angle412;
                     if (roundCorners) {
                         radius = std::min(length, width) / 6  // NOLINT
                             * std::min(sqrt(1 - cos(angle412) * cos(angle412)),
@@ -677,7 +679,7 @@ private:
         width = vecW.Length();
         angle = vecL.Angle();
         if (length < Precision::Confusion() || width < Precision::Confusion()
-            || fmod(fabs(angle123), M_PI) < Precision::Confusion()) {
+            || fmod(fabs(angle123), std::numbers::pi) < Precision::Confusion()) {
             return;
         }
 
@@ -738,9 +740,11 @@ private:
 
     void createFirstRectangleFillets(Base::Vector2d vecL, Base::Vector2d vecW, double L1, double L2)
     {
+        using std::numbers::pi;
+
         // center points required later for special case of round corner frame with
         // radiusFrame = 0.
-        double end = angle - M_PI / 2;
+        double end = angle - pi / 2;
 
         Base::Vector2d b1 = (vecL + vecW) / (vecL + vecW).Length();
         Base::Vector2d b2 = (vecL - vecW) / (vecL - vecW).Length();
@@ -749,16 +753,18 @@ private:
         center3 = toVector3d(corner3 - b1 * L2);
         center4 = toVector3d(corner4 + b2 * L1);
 
-        addArcToShapeGeometry(center1, end - M_PI + angle412, end, radius, isConstructionMode());
-        addArcToShapeGeometry(center2, end, end - M_PI - angle123, radius, isConstructionMode());
-        addArcToShapeGeometry(center3, end + angle412, end - M_PI, radius, isConstructionMode());
-        addArcToShapeGeometry(center4, end - M_PI, end - angle123, radius, isConstructionMode());
+        addArcToShapeGeometry(center1, end - pi + angle412, end, radius, isConstructionMode());
+        addArcToShapeGeometry(center2, end, end - pi - angle123, radius, isConstructionMode());
+        addArcToShapeGeometry(center3, end + angle412, end - pi, radius, isConstructionMode());
+        addArcToShapeGeometry(center4, end - pi, end - angle123, radius, isConstructionMode());
     }
 
     void
     createSecondRectangleGeometries(Base::Vector2d vecL, Base::Vector2d vecW, double L1, double L2)
     {
-        double end = angle - M_PI / 2;
+        using std::numbers::pi;
+
+        double end = angle - pi / 2;
 
         if (radius < Precision::Confusion()) {
             radiusFrame = 0.;
@@ -800,22 +806,22 @@ private:
             Base::Vector2d b2 = (vecL - vecW) / (vecL - vecW).Length();
 
             addArcToShapeGeometry(toVector3d(frameCorner1 + b1 * L2F),
-                                  end - M_PI + angle412,
+                                  end - pi + angle412,
                                   end,
                                   radiusFrame,
                                   isConstructionMode());
             addArcToShapeGeometry(toVector3d(frameCorner2 - b2 * L1F),
                                   end,
-                                  end - M_PI - angle123,
+                                  end - pi - angle123,
                                   radiusFrame,
                                   isConstructionMode());
             addArcToShapeGeometry(toVector3d(frameCorner3 - b1 * L2F),
                                   end + angle412,
-                                  end - M_PI,
+                                  end - pi,
                                   radiusFrame,
                                   isConstructionMode());
             addArcToShapeGeometry(toVector3d(frameCorner4 + b2 * L1F),
-                                  end - M_PI,
+                                  end - pi,
                                   end - angle123,
                                   radiusFrame,
                                   isConstructionMode());
@@ -1313,7 +1319,7 @@ private:
                                   firstCurve + 1,
                                   Sketcher::PointPos::none,
                                   firstCurve + 3);
-            if (fabs(angle123 - M_PI / 2) < Precision::Confusion()) {
+            if (fabs(angle123 - std::numbers::pi / 2) < Precision::Confusion()) {
                 addToShapeConstraints(Sketcher::Perpendicular,
                                       firstCurve,
                                       Sketcher::PointPos::none,
@@ -1932,7 +1938,7 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double angle =
                         Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-                    if (fmod(angle, M_PI) < Precision::Confusion()) {
+                    if (fmod(angle, std::numbers::pi) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                         return;
                     }
@@ -1944,8 +1950,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                     int sign = handler->side != sign1 ? 1 : -1;
 
-                    double angle123 =
-                        (handler->corner2Initial - handler->corner1).Angle() + M_PI + sign * angle;
+                    double angle123 = (handler->corner2Initial - handler->corner1).Angle()
+                        + std::numbers::pi + sign * angle;
 
                     onSketchPos.x = handler->corner2Initial.x + cos(angle123) * width;
                     onSketchPos.y = handler->corner2Initial.y + sin(angle123) * width;
@@ -1969,12 +1975,12 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double c =
                         Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-                    if (fmod(c, M_PI) < Precision::Confusion()) {
+                    if (fmod(c, std::numbers::pi) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                         return;
                     }
 
-                    double a = asin(width * sin(M_PI - c)
+                    double a = asin(width * sin(std::numbers::pi - c)
                                     / (handler->corner3 - handler->corner1).Length());
 
                     int sign1 = handler->getPointSideOfVector(onSketchPos,
@@ -2399,6 +2405,8 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
 template<>
 void DSHRectangleController::addConstraints()
 {
+    using std::numbers::pi;
+
     App::DocumentObject* obj = handler->sketchgui->getObject();
 
     int firstCurve = handler->firstCurve;
@@ -2569,15 +2577,15 @@ void DSHRectangleController::addConstraints()
 
     if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
         if (angleSet) {
-            if (fabs(angle - M_PI) < Precision::Confusion()
-                || fabs(angle + M_PI) < Precision::Confusion()
+            if (fabs(angle - pi) < Precision::Confusion()
+                || fabs(angle + pi) < Precision::Confusion()
                 || fabs(angle) < Precision::Confusion()) {
                 Gui::cmdAppObjectArgs(obj,
                                       "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
                                       firstCurve);
             }
-            else if (fabs(angle - M_PI / 2) < Precision::Confusion()
-                     || fabs(angle + M_PI / 2) < Precision::Confusion()) {
+            else if (fabs(angle - pi / 2) < Precision::Confusion()
+                     || fabs(angle + pi / 2) < Precision::Confusion()) {
                 Gui::cmdAppObjectArgs(obj,
                                       "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
                                       firstCurve);
@@ -2591,7 +2599,7 @@ void DSHRectangleController::addConstraints()
             }
         }
         if (innerAngleSet) {
-            if (fabs(innerAngle - M_PI / 2) > Precision::Confusion()) {
+            if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
                 // if 90? then perpendicular already created.
                 Gui::cmdAppObjectArgs(obj,
                                       "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
@@ -2617,7 +2625,7 @@ void DSHRectangleController::addConstraints()
                                    obj);
         }
         if (innerAngleSet) {
-            if (fabs(innerAngle - M_PI / 2) > Precision::Confusion()) {
+            if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
                 // if 90? then perpendicular already created.
                 Gui::cmdAppObjectArgs(obj,
                                       "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",

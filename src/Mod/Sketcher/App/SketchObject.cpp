@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <limits>
 #include <vector>
 
 #include <BRepAdaptor_Curve.hxx>
@@ -113,6 +114,7 @@
 #include "SolverGeometryExtension.h"
 
 #include "ExternalGeometryFacade.h"
+#include <Mod/Part/App/Datums.h>
 
 
 #undef DEBUG
@@ -323,7 +325,6 @@ static bool inline checkSmallEdge(const Part::TopoShape &s) {
 }
 
 void SketchObject::buildShape() {
-    // Shape.setValue(solvedSketch.toShape());
     // We use the following instead to map element names
 
     std::vector<Part::TopoShape> shapes;
@@ -365,10 +366,23 @@ void SketchObject::buildShape() {
         auto egf = ExternalGeometryFacade::getFacade(geo);
         if(!egf->testFlag(ExternalGeometryExtension::Defining))
             continue;
+
         auto indexedName = Data::IndexedName::fromConst("ExternalEdge", i-1);
-        shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
-        if (checkSmallEdge(shapes.back())) {
-            FC_WARN("Edge too small: " << indexedName);
+
+        if (geo->isDerivedFrom<Part::GeomPoint>()) {
+            Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
+            if (!vertex.hasElementMap()) {
+                vertex.resetElementMap(std::make_shared<Data::ElementMap>());
+            }
+            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                                  Data::MappedName::fromRawData(convertSubName(indexedName, false).c_str()),0L);
+            vertices.push_back(vertex);
+            vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
+        } else {
+            shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
+            if (checkSmallEdge(shapes.back())) {
+                FC_WARN("Edge too small: " << indexedName);
+            }
         }
     }
 
@@ -587,8 +601,9 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             Part::PropertyGeometryList tmp;
             tmp.setValues(std::move(geomlist));
             // Only set values if there is actual changes
-            if (!Geometry.isSame(tmp))
+            if (Constraints.isTouched() || !Geometry.isSame(tmp)) {
                 Geometry.moveValues(std::move(tmp));
+            }
         }
     }
     else if (err < 0) {
@@ -639,7 +654,7 @@ public:
             // very forgiving. We should have used Precision::SquareConfisuion(),
             // which is 1e-14. However, there is a problem with current
             // commandGeoCreate. They create new geometry with initial point of
-            // the exact mouse position, instead of the pre-selected point
+            // the exact mouse position, instead of the preselected point
             // position, and rely on auto constraint to snap in the new
             // geometry. So, we cannot use a very strict threshold here.
             double tol = strict?Precision::SquareConfusion()*10:1e-6;
@@ -1130,7 +1145,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
     }
     else {
         double actAngle = constr->getValue();
-        constr->setValue(M_PI - actAngle);
+        constr->setValue(std::numbers::pi - actAngle);
     }
 }
 
@@ -1832,7 +1847,7 @@ int SketchObject::delGeometries(InputIt first, InputIt last)
     // if a GeoId has internal geometry, it must delete internal geometries too
     for (auto c : Constraints.getValues()) {
         if (c->Type == InternalAlignment) {
-            auto pos = std::find(sGeoIds.begin(), sGeoIds.end(), c->Second);
+            auto pos = std::ranges::find(sGeoIds, c->Second);
 
             if (pos != sGeoIds.end()) {
                 sGeoIds.push_back(c->First);
@@ -1840,7 +1855,7 @@ int SketchObject::delGeometries(InputIt first, InputIt last)
         }
     }
 
-    std::sort(sGeoIds.begin(), sGeoIds.end());
+    std::ranges::sort(sGeoIds);
     // eliminate duplicates
     auto newend = std::unique(sGeoIds.begin(), sGeoIds.end());
     sGeoIds.resize(std::distance(sGeoIds.begin(), newend));
@@ -1852,7 +1867,7 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
 {
     std::vector<int> sGeoIds(GeoIds);
 
-    std::sort(sGeoIds.begin(), sGeoIds.end());
+    std::ranges::sort(sGeoIds);
     if (sGeoIds.empty())
         return 0;
 
@@ -3235,12 +3250,12 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             std::swap(startAngle, endAngle);
         }
 
-        if (endAngle > 2 * M_PI) {
-            endAngle -= 2 * M_PI;
+        if (endAngle > 2 * std::numbers::pi) {
+            endAngle -= 2 * std::numbers::pi;
         }
 
         if (startAngle < 0) {
-            endAngle += 2 * M_PI;
+            endAngle += 2 * std::numbers::pi;
         }
 
         // Create Arc Segment
@@ -4507,7 +4522,6 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
 
     // Note: Checking for the body of the support doesn't work when the support are the three base
     // planes
-    // App::DocumentObject *support = this->AttachmentSupport.getValue();
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this);
@@ -4580,7 +4594,6 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 
     // Note: Checking for the body of the support doesn't work when the support are the three base
     // planes
-    // App::DocumentObject *support = this->AttachmentSupport.getValue();
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this);
@@ -4671,8 +4684,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 }
 
 int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
-                               Sketcher::PointPos refPosId /*=Sketcher::PointPos::none*/,
-                               bool addSymmetryConstraints /*= false*/)
+                               Sketcher::PointPos refPosId , bool addSymmetryConstraints )
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -4714,7 +4726,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                     continue;
                 }
 
-                if (constr->Second == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
+                if (constr->Second == GeoEnum::GeoUndef ){
                     if (refIsAxisAligned) {
                         // in this case we want to keep the Vertical, Horizontal constraints
                         // DistanceX ,and DistanceY constraints should also be possible to keep in
@@ -4895,6 +4907,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
     int refGeoId,
     Sketcher::PointPos refPosId)
 {
+    using std::numbers::pi;
+
     std::vector<Part::Geometry*> symmetricVals;
     bool refIsLine = refPosId == Sketcher::PointPos::none;
     int cgeoid = getHighestCurveIndex() + 1;
@@ -4911,7 +4925,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 }
             }
             // Return true if definedGeo is in geoIdList, false otherwise
-            return std::find(geoIdList.begin(), geoIdList.end(), definedGeo) != geoIdList.end();
+            return std::ranges::find(geoIdList, definedGeo) != geoIdList.end();
         }
         // Return true if not internal aligned, indicating it should always be copied
         return true;
@@ -4970,8 +4984,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 Base::Vector3d scp =
                     cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
 
-                double theta1 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * M_PI);
-                double theta2 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * M_PI);
+                double theta1 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * std::numbers::pi);
+                double theta2 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * std::numbers::pi);
 
                 geoaoc->setCenter(scp);
                 geoaoc->setRange(theta1, theta2, true);
@@ -5018,12 +5032,12 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 
                 double theta1, theta2;
                 geosymaoe->getRange(theta1, theta2, true);
-                theta1 = 2.0 * M_PI - theta1;
-                theta2 = 2.0 * M_PI - theta2;
+                theta1 = 2.0 * pi - theta1;
+                theta2 = 2.0 * pi - theta2;
                 std::swap(theta1, theta2);
                 if (theta1 < 0) {
-                    theta1 += 2.0 * M_PI;
-                    theta2 += 2.0 * M_PI;
+                    theta1 += 2.0 * pi;
+                    theta2 += 2.0 * pi;
                 }
 
                 geosymaoe->setRange(theta1, theta2, true);
@@ -5168,8 +5182,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 Base::Vector3d sep = ep + 2.0 * (refpoint - ep);
                 Base::Vector3d scp = cp + 2.0 * (refpoint - cp);
 
-                double theta1 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * M_PI);
-                double theta2 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * M_PI);
+                double theta1 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * pi);
+                double theta2 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * pi);
 
                 geoaoc->setCenter(scp);
                 geoaoc->setRange(theta1, theta2, true);
@@ -5232,8 +5246,6 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             else if (geosym->is<Part::GeomArcOfParabola>()) {
                 auto* geosymaoe = static_cast<Part::GeomArcOfParabola*>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-
-                /*double df= geosymaoe->getFocal();*/
                 Base::Vector3d f1 = geosymaoe->getFocus();
 
                 Base::Vector3d sf1 = f1 + 2.0 * (refpoint - f1);
@@ -5277,9 +5289,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 }
 
 int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3d& displacement,
-                          bool moveonly /*=false*/, bool clone /*=false*/, int csize /*=2*/,
-                          int rsize /*=1*/, bool constraindisplacement /*= false*/,
-                          double perpscale /*= 1.0*/)
+                          bool moveonly , bool clone , int csize , int rsize , bool constraindisplacement ,
+                          double perpscale )
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -5344,8 +5355,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
                         }
                     }
 
-                    if (std::find(newgeoIdList.begin(), newgeoIdList.end(), definedGeo)
-                        == newgeoIdList.end()) {
+                    if (std::ranges::find(newgeoIdList, definedGeo) == newgeoIdList.end()) {
                         // the first element setting the reference is an internal alignment
                         // geometry, wherein the geometry it defines is not part of the copy
                         // operation.
@@ -5400,7 +5410,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
                         }
                     }
 
-                    if (std::find(newgeoIdList.begin(), newgeoIdList.end(), definedGeo)
+                    if (std::ranges::find(newgeoIdList, definedGeo)
                         == newgeoIdList.end()) {
                         // we should not copy internal alignment geometry, unless the element they
                         // define is also mirrored
@@ -7170,7 +7180,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     indexInNew[Sketcher::BSplineKnotPoint].reserve(knots.size());
 
     for (const auto& pole : poles) {
-        const auto it = std::find(newPoles.begin(), newPoles.end(), pole);
+        const auto it = std::ranges::find(newPoles, pole);
         indexInNew[Sketcher::BSplineControlPoint].emplace_back(it - newPoles.begin());
     }
     std::replace(indexInNew[Sketcher::BSplineControlPoint].begin(),
@@ -7179,7 +7189,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
                  -1);
 
     for (const auto& knot : knots) {
-        const auto it = std::find(newKnots.begin(), newKnots.end(), knot);
+        const auto it = std::ranges::find(newKnots, knot);
         indexInNew[Sketcher::BSplineKnotPoint].emplace_back(it - newKnots.begin());
     }
     std::replace(indexInNew[Sketcher::BSplineKnotPoint].begin(),
@@ -7305,7 +7315,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     std::vector<int> poleIndexInNew(poles.size(), -1);
 
     for (size_t j = 0; j < poles.size(); j++) {
-        const auto it = std::find(newPoles.begin(), newPoles.end(), poles[j]);
+        const auto it = std::ranges::find(newPoles, poles[j]);
         poleIndexInNew[j] = it - newPoles.begin();
     }
     std::replace(poleIndexInNew.begin(), poleIndexInNew.end(), int(newPoles.size()), -1);
@@ -7315,7 +7325,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     std::vector<int> knotIndexInNew(knots.size(), -1);
 
     for (size_t j = 0; j < knots.size(); j++) {
-        const auto it = std::find(newKnots.begin(), newKnots.end(), knots[j]);
+        const auto it = std::ranges::find(newKnots, knots[j]);
         knotIndexInNew[j] = it - newKnots.begin();
     }
     std::replace(knotIndexInNew.begin(), knotIndexInNew.end(), int(newKnots.size()), -1);
@@ -8272,6 +8282,9 @@ void SketchObject::validateExternalLinks()
                 const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
                 refSubShape = datum->getShape();
             }
+            else if (Obj->isDerivedFrom<App::DatumElement>()) {
+                // do nothing - shape will be calculated later during rebuild
+            }
             else {
                 const Part::Feature* refObj = static_cast<const Part::Feature*>(Obj);
                 const Part::TopoShape& refShape = refObj->Shape.getShape();
@@ -8333,7 +8346,7 @@ void adjustParameterRange(const TopoDS_Edge &edge,
     // lower arc. Because projection orientation may swap the first and last
     // parameter of the original curve.
     //
-    // We project the middel point of the original curve to the projected curve
+    // We project the middle point of the original curve to the projected curve
     // to decide whether to flip the parameters.
 
     Handle(Geom_Curve) origCurve = BRepAdaptor_Curve(edge).Curve().Curve();
@@ -8523,7 +8536,6 @@ void processEdge2(TopoDS_Edge& projEdge, std::vector<std::unique_ptr<Part::Geome
         gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
         gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
-        // gp_Dir normal = e.Axis().Direction();
         gp_Dir normal = gp_Dir(0, 0, 1);
         gp_Ax2 xdirref(p, normal);
 
@@ -8560,6 +8572,8 @@ void processEdge(const TopoDS_Edge& edge,
                  gp_Ax3& sketchAx3,
                  TopoDS_Shape& aProjFace)
 {
+    using std::numbers::pi;
+
     BRepAdaptor_Curve curve(edge);
     if (curve.GetType() == GeomAbs_Line) {
         geos.emplace_back(projectLine(curve, gPlane, invPlm));
@@ -8633,11 +8647,11 @@ void processEdge(const TopoDS_Edge& edge,
                     int tours = 0;
                     double startAngle = baseAngle + alpha;
                     // bring startAngle back in [-pi/2 , 3pi/2[
-                    while (startAngle < -M_PI / 2.0 && tours < 10) {
-                        startAngle = baseAngle + ++tours * 2.0 * M_PI + alpha;
+                    while (startAngle < -pi / 2.0 && tours < 10) {
+                        startAngle = baseAngle + ++tours * 2.0 * pi + alpha;
                     }
-                    while (startAngle >= 3.0 * M_PI / 2.0 && tours > -10) {
-                        startAngle = baseAngle + --tours * 2.0 * M_PI + alpha;
+                    while (startAngle >= 3.0 * pi / 2.0 && tours > -10) {
+                        startAngle = baseAngle + --tours * 2.0 * pi + alpha;
                     }
 
                     // apply same offset to end angle
@@ -8653,7 +8667,7 @@ void processEdge(const TopoDS_Edge& edge,
                                 // P2 = P2 already defined
                                 P1 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             }
-                            else if (endAngle < M_PI) {
+                            else if (endAngle < pi) {
                                 // P2 = P2, already defined
                                 P1 = ProjPointOnPlane_XYZ(end, sketchPlane);
                             }
@@ -8663,16 +8677,16 @@ void processEdge(const TopoDS_Edge& edge,
                             }
                         }
                     }
-                    else if (startAngle < M_PI) {
-                        if (endAngle < M_PI) {
+                    else if (startAngle < pi) {
+                        if (endAngle < pi) {
                             P1 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
                         }
-                        else if (endAngle < 2.0 * M_PI - startAngle) {
+                        else if (endAngle < 2.0 * pi - startAngle) {
                             P2 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             // P1 = P1, already defined
                         }
-                        else if (endAngle < 2.0 * M_PI) {
+                        else if (endAngle < 2.0 * pi) {
                             P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
                             // P1 = P1, already defined
                         }
@@ -8682,15 +8696,15 @@ void processEdge(const TopoDS_Edge& edge,
                         }
                     }
                     else {
-                        if (endAngle < 2 * M_PI) {
+                        if (endAngle < 2 * pi) {
                             P1 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
                         }
-                        else if (endAngle < 4 * M_PI - startAngle) {
+                        else if (endAngle < 4 * pi - startAngle) {
                             P1 = ProjPointOnPlane_XYZ(beg, sketchPlane);
                             // P2 = P2, already defined
                         }
-                        else if (endAngle < 3 * M_PI) {
+                        else if (endAngle < 3 * pi) {
                             // P1 = P1, already defined
                             P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
                         }
@@ -8761,7 +8775,7 @@ void processEdge(const TopoDS_Edge& edge,
                     // projection is an arc of ellipse
                     auto* aoe = new Part::GeomArcOfEllipse();
                     double firstParam, lastParam;
-                    // ajust the parameter range to get the correct arc
+                    // adjust the parameter range to get the correct arc
                     adjustParameterRange(edge, gPlane, mov, projCurve, firstParam, lastParam);
 
                     Handle(Geom_TrimmedCurve) trimmedCurve = new Geom_TrimmedCurve(projCurve, firstParam, lastParam);
@@ -8810,7 +8824,7 @@ void processEdge(const TopoDS_Edge& edge,
         gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
         double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
         t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
-        double t_min = t_max + 0.5 * M_PI;
+        double t_min = t_max + 0.5 * pi;
 
         // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
         //     becomes the apoapse of the projected ellipse.
@@ -8960,16 +8974,58 @@ void processEdge(const TopoDS_Edge& edge,
         }
         else {
             try {
-                BRepOffsetAPI_NormalProjection mkProj(aProjFace);
-                mkProj.Add(edge);
-                mkProj.Build();
-                const TopoDS_Shape& projShape = mkProj.Projection();
-                if (!projShape.IsNull()) {
-                    TopExp_Explorer xp;
-                    for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
-                        TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
-                        TopLoc_Location loc(mov);
-                        projEdge.Location(loc);
+                Part::TopoShape projShape;
+                // Projection of the edge on parallel plane to the sketch plane is edge itself
+                // all we need to do is match coordinate systems
+                // for some reason OCC doesn't like to project a planar B-Spline to a plane parallel to it
+                if (planar && plane.Axis().Direction().IsParallel(sketchPlane.Axis().Direction(), Precision::Confusion())) {
+                    TopoDS_Edge projEdge = edge;
+
+                    // We need to trim the curve in case we are projecting a B-Spline segment
+                    if(curve.GetType() == GeomAbs_BSplineCurve){
+                        double Param1 = curve.FirstParameter();
+                        double Param2 = curve.LastParameter();
+
+                        if (Param1 > Param2){
+                            std::swap(Param1, Param2);
+                        }
+
+                        // trim curve in case we are projecting a segment
+                        auto bsplineCurve = curve.BSpline();
+                        if(Param2 - Param1 > Precision::Confusion()){
+                            bsplineCurve->Segment(Param1, Param2);
+                            projEdge = BRepBuilderAPI_MakeEdge(bsplineCurve).Edge();
+                        }
+                    }
+
+                    projShape.setShape(projEdge);
+
+                    // We can't use gp_Pln::Distance() because we need to
+                    // know which side the plane is regarding the sketch
+                    const gp_Pnt& aP = sketchPlane.Location();
+                    const gp_Pnt& aLoc = plane.Location ();
+                    const gp_Dir& aDir = plane.Axis().Direction();
+                    double d = (aDir.X() * (aP.X() - aLoc.X()) +
+                            aDir.Y() * (aP.Y() - aLoc.Y()) +
+                            aDir.Z() * (aP.Z() - aLoc.Z()));
+
+                    gp_Trsf trsf;
+                    trsf.SetTranslation(gp_Vec(aDir) * d);
+                    projShape.transformShape(Part::TopoShape::convert(trsf), /*copy*/false);
+                } else {
+                    // When planes not parallel or perpendicular, or edge is not planar
+                    // normal projection is working just fine
+                    BRepOffsetAPI_NormalProjection mkProj(aProjFace);
+                    mkProj.Add(edge);
+                    mkProj.Build();
+
+                    projShape.setShape(mkProj.Projection());
+                }
+                if (!projShape.isNull() && projShape.hasSubShape(TopAbs_EDGE)) {
+                    for (auto &e : projShape.getSubTopoShapes(TopAbs_EDGE)) {
+                        // Transform copy of the edge to the sketch plane local coordinates
+                        e.transformShape(invPlm.toMatrix(), /*copy*/true, /*checkScale*/true);
+                        TopoDS_Edge projEdge = TopoDS::Edge(e.getShape());
                         processEdge2(projEdge, geos);
                     }
                 }
@@ -9017,10 +9073,6 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
             res.push_back(hlrToShape.Rg1LineVCompound());
         }
 
-        /*if (!hlrToShape.RgNLineVCompound().IsNull()) {
-            res.push_back(hlrToShape.RgNLineVCompound());
-        }*/ // we don't need the seams.
-
         if (!hlrToShape.OutLineVCompound().IsNull()) {
             res.push_back(hlrToShape.OutLineVCompound());
         }
@@ -9036,10 +9088,6 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
         if (!hlrToShape.Rg1LineHCompound().IsNull()) {
             res.push_back(hlrToShape.Rg1LineHCompound());
         }
-
-        /*if (!hlrToShape.RgNLineHCompound().IsNull()) {
-            res.push_back(hlrToShape.RgNLineHCompound());
-        }*/
 
         if (!hlrToShape.OutLineHCompound().IsNull()) {
             res.push_back(hlrToShape.OutLineHCompound());
@@ -9218,6 +9266,35 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
                 refSubShape = f;
             }
+            else if (Obj->isDerivedFrom<Part::DatumLine>()) {
+                auto* line = static_cast<const Part::DatumLine*>(Obj);
+                Base::Placement plm = line->Placement.getValue();
+                Base::Vector3d base = plm.getPosition();
+                Base::Vector3d dir = line->getDirection();
+                gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
+                BRepBuilderAPI_MakeEdge eBuilder(l);
+                if (!eBuilder.IsDone()) {
+                    throw Base::RuntimeError(
+                        "Sketcher: addExternal(): Failed to build edge from Part::DatumLine");
+                }
+
+                TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
+                refSubShape = e;
+            }
+            else if (Obj->isDerivedFrom<Part::DatumPoint>()) {
+                auto* point = static_cast<const Part::DatumPoint*>(Obj);
+                Base::Placement plm = point->Placement.getValue();
+                Base::Vector3d base = plm.getPosition();
+                gp_Pnt p(base.x, base.y, base.z);
+                BRepBuilderAPI_MakeVertex eBuilder(p);
+                if (!eBuilder.IsDone()) {
+                    throw Base::RuntimeError(
+                        "Sketcher: addExternal(): Failed to build vertex from Part::DatumPoint");
+                }
+
+                TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
+                refSubShape = v;
+            }
             else {
                 throw Base::TypeError(
                     "Datum feature type is not yet supported as external geometry for a sketch");
@@ -9242,7 +9319,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                             processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
                         }
 
-                        if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
+                        if (fabs(dnormal.Angle(snormal) - std::numbers::pi/2) < Precision::Confusion()) {
                             // The face is normal to the sketch plane
                             // We don't want to keep the projection of all the edges of the face.
                             // We need a single line that goes from min to max of all the projections.
@@ -11137,7 +11214,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    int cntToBeAffected = 0;//==cntSuccess+cntFail
+    int cntToBeAffected = 0;
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
 
     std::vector<Constraint*> newVals(vals);// modifiable copy of pointers array
@@ -11166,7 +11243,6 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
             if (geoId <= GeoEnum::RefExt
                 && (posId == Sketcher::PointPos::start || posId == Sketcher::PointPos::end)) {
                 // we are dealing with a link to an endpoint of external geom
-//                Part::Geometry* g = this->ExternalGeo[-geoId - 1];
                 Part::Geometry* g = this->ExternalGeo[-geoId - 1];
                 if (g->is<Part::GeomArcOfCircle>()) {
                     const Part::GeomArcOfCircle* segm =
@@ -11240,6 +11316,8 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 ///  false - fail (this indicates an error, or that a constraint locking isn't supported).
 bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool bLock)
 {
+    using std::numbers::pi;
+
     try {
         // assert ( cstr->Type == Tangent  ||  cstr->Type == Perpendicular);
         /*tangency type already set. If not bForce - don't touch.*/
@@ -11289,25 +11367,25 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
             // the desired angle value (and we are to decide if 180* should be added to it)
             double angleDesire = 0.0;
             if (cstr->Type == Tangent) {
-                angleOffset = -M_PI / 2;
+                angleOffset = -pi / 2;
                 angleDesire = 0.0;
             }
             if (cstr->Type == Perpendicular) {
                 angleOffset = 0;
-                angleDesire = M_PI / 2;
+                angleDesire = pi / 2;
             }
 
             double angleErr = calculateAngleViaPoint(geoId1, geoId2, p.x, p.y) - angleDesire;
 
             // bring angleErr to -pi..pi
-            if (angleErr > M_PI)
-                angleErr -= M_PI * 2;
-            if (angleErr < -M_PI)
-                angleErr += M_PI * 2;
+            if (angleErr > pi)
+                angleErr -= pi * 2;
+            if (angleErr < -pi)
+                angleErr += pi * 2;
 
             // the autodetector
-            if (fabs(angleErr) > M_PI / 2)
-                angleDesire += M_PI;
+            if (fabs(angleErr) > pi / 2)
+                angleDesire += pi;
 
             // external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is
             // invalid and treated as "undecided".

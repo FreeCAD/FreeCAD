@@ -119,19 +119,19 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
     // TODO: Must we make a copy here instead of assigning to const char* ?
     const char* fname = base->getNameInDocument();
-    if (strcmp(msg.pObjectName, fname) != 0)
+    if (strcmp(msg.pObjectName, fname) != 0) {
         return;
+    }
 
-    std::string subName(msg.pSubName);
+    const std::string subName(msg.pSubName);
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
-    std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
 
-    if (f != refs.end()) { //If it's found then it's in the list so we remove it.
-        refs.erase(f);
+    if (const auto f = std::ranges::find(refs, subName); f != refs.end()) {
+        refs.erase(f);  // it's in the list. Remove it
         removeItemFromListWidget(widget, msg.pSubName);
     }
-    else { //if it's not found then it's not yet in the list so we add it.
-        refs.push_back(subName);
+    else {
+        refs.push_back(subName);  // not yet in the list so we add it
         widget->addItem(QString::fromStdString(msg.pSubName));
     }
 
@@ -292,10 +292,8 @@ void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
 
     addAllEdgesAction = new QAction(tr("Add all edges"), this);
     addAllEdgesAction->setShortcut(QKeySequence(QStringLiteral("Ctrl+Shift+A")));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     addAllEdgesAction->setShortcutVisibleInContextMenu(true);
-#endif
     parentList->addAction(addAllEdgesAction);
     addAllEdgesAction->setStatusTip(tr("Adds all edges to the list box (active only when in add selection mode)."));
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -311,10 +309,8 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
         auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
         deleteAction->setShortcut(QKeySequence(shortcut));
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);
-#endif
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }

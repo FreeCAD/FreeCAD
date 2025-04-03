@@ -200,11 +200,7 @@ private:
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 
     bool bundleFixed;
-    // void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property
-    // *prop) override;
 };
-
-// using AssemblyObjectPython = App::FeaturePythonT<AssemblyObject>;
 
 }  // namespace Assembly
 

@@ -27,6 +27,7 @@
 #include <QTimer>
 #include <algorithm>
 #include <functional>
+#include <limits>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
@@ -117,7 +118,7 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
 
     SoBaseColor* basecol = new SoBaseColor;
     if (mesh) {
-        App::Color col = mesh->ShapeAppearance.getDiffuseColor();
+        Base::Color col = mesh->ShapeAppearance.getDiffuseColor();
         basecol->rgb.setValue(col.r, col.g, col.b);
     }
     else {
@@ -318,14 +319,13 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
             }
 
             int point_index = -1;
-            float distance = FLT_MAX;
+            float distance = std::numeric_limits<float>::max();
             Base::Vector3f pnt;
             SbVec3f face_pnt;
 
             for (int i = 0; i < 3; i++) {
-                int index = (int)f._aulPoints[i];
-                if (std::find(faceView->index.begin(), faceView->index.end(), index)
-                    != faceView->index.end()) {
+                int index = static_cast<int>(f._aulPoints[i]);
+                if (std::ranges::find(faceView->index, index) != faceView->index.end()) {
                     continue;  // already inside
                 }
                 if (f._aulNeighbours[i] == MeshCore::FACET_INDEX_MAX
@@ -524,9 +524,9 @@ void MeshFillHole::closeBridge()
 {
     // Do the hole-filling
     Gui::WaitCursor wc;
-    auto it = std::find(myPolygon.begin(), myPolygon.end(), myVertex1);
-    auto jt = std::find(myPolygon.begin(), myPolygon.end(), myVertex2);
-    if (it != myPolygon.end() && jt != myPolygon.end()) {
+    auto it = std::ranges::find(myPolygon, myVertex1);
+    if (auto jt = std::ranges::find(myPolygon, myVertex2);
+        it != myPolygon.end() && jt != myPolygon.end()) {
         // which iterator comes first
         if (jt < it) {
             std::swap(it, jt);
@@ -655,7 +655,7 @@ float MeshFillHole::findClosestPoint(const SbLine& ray,
                                      SbVec3f& closestPoint) const
 {
     // now check which vertex of the polygon is closest to the ray
-    float minDist = FLT_MAX;
+    float minDist = std::numeric_limits<float>::max();
     vertex_index = MeshCore::POINT_INDEX_MAX;
 
     const MeshCore::MeshKernel& rMesh = myMesh->Mesh.getValue().getKernel();

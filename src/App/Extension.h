@@ -59,7 +59,7 @@ private: \
 #define EXTENSION_TYPESYSTEM_SOURCE_P(_class_) \
 Base::Type _class_::getExtensionClassTypeId(void) { return _class_::classTypeId; } \
 Base::Type _class_::getExtensionTypeId(void) const { return _class_::classTypeId; } \
-Base::Type _class_::classTypeId = Base::Type::badType();  \
+Base::Type _class_::classTypeId = Base::Type::BadType; \
 void * _class_::create(void){\
    return new _class_ ();\
 }
@@ -68,7 +68,7 @@ void * _class_::create(void){\
 #define EXTENSION_TYPESYSTEM_SOURCE_ABSTRACT_P(_class_) \
 Base::Type _class_::getExtensionClassTypeId(void) { return _class_::classTypeId; } \
 Base::Type _class_::getExtensionTypeId(void) const { return _class_::classTypeId; } \
-Base::Type _class_::classTypeId = Base::Type::badType();  \
+Base::Type _class_::classTypeId = Base::Type::BadType; \
 void * _class_::create(void){return 0;}
 
 /// define to implement a subclass of Base::BaseClass
@@ -79,7 +79,7 @@ void _class_::init(void){\
 }
 
 #define EXTENSION_TYPESYSTEM_SOURCE_TEMPLATE(_class_) \
-template<> Base::Type _class_::classTypeId = Base::Type::badType();  \
+template<> Base::Type _class_::classTypeId = Base::Type::BadType; \
 template<> Base::Type _class_::getExtensionClassTypeId(void) { return _class_::classTypeId; } \
 template<> Base::Type _class_::getExtensionTypeId(void) const { return _class_::classTypeId; } \
 template<> void * _class_::create(void){\

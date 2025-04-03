@@ -116,18 +116,13 @@ PyBaseProxy_dealloc(PyObject* self)
     }
     Py_TYPE(self)->tp_free(self);
 }
-
 static PyTypeObject PyBaseProxyType = {
     PyVarObject_HEAD_INIT(nullptr, 0)
     "PyBaseProxy",                                          /*tp_name*/
     sizeof(PyBaseProxy),                                    /*tp_basicsize*/
     0,                                                      /*tp_itemsize*/
     PyBaseProxy_dealloc,                                    /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
     0,                                                      /*tp_vectorcall_offset*/
-#else
-    nullptr,                                                /*tp_print*/
-#endif
     nullptr,                                                /*tp_getattr*/
     nullptr,                                                /*tp_setattr*/
     nullptr,                                                /*tp_compare*/
@@ -170,15 +165,12 @@ static PyTypeObject PyBaseProxyType = {
     nullptr,                                                /*tp_del */
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03090000
     ,0                                            //NOLINT  /*tp_vectorcall */
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                      /*tp_watched */
 #endif
-#elif PY_VERSION_HEX >= 0x03080000
-    ,0                                                      /*tp_vectorcall */
-    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
-    ,0                                                      /*tp_print */
+#if PY_VERSION_HEX >= 0x030d0000
+    ,0                                                      /*tp_versions_used*/
 #endif
 };
 
@@ -189,11 +181,7 @@ PyTypeObject PyObjectBase::Type = {
     0,                                                      /*tp_itemsize*/
     /* --- methods ---------------------------------------------- */
     PyDestructor,                                           /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
     0,                                                      /*tp_vectorcall_offset*/
-#else
-    nullptr,                                                /*tp_print*/
-#endif
     nullptr,                                                /*tp_getattr*/
     nullptr,                                                /*tp_setattr*/
     nullptr,                                                /*tp_compare*/
@@ -238,15 +226,12 @@ PyTypeObject PyObjectBase::Type = {
     nullptr,                                                /*tp_del */
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03090000
     ,0                                            //NOLINT  /*tp_vectorcall */
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                      /*tp_watched */
 #endif
-#elif PY_VERSION_HEX >= 0x03080000
-    ,0                                                      /*tp_vectorcall */
-    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
-    ,0                                                      /*tp_print */
+#if PY_VERSION_HEX >= 0x030d0000
+    ,0                                                      /*tp_versions_used*/
 #endif
 };
 
@@ -279,7 +264,16 @@ PyObject* createWeakRef(PyObjectBase* ptr)
 PyObjectBase* getFromWeakRef(PyObject* ref)
 {
     if (ref) {
+#if PY_VERSION_HEX >= 0x030d0000
+        ::PyObject* proxy;
+        int returnCode = PyWeakref_GetRef(ref, &proxy);
+        if (returnCode != 1) {
+            return nullptr;
+        }
+        Py_DECREF(proxy);
+#else
         PyObject* proxy = PyWeakref_GetObject(ref);
+#endif
         if (proxy && PyObject_TypeCheck(proxy, &PyBaseProxyType)) {
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
             return static_cast<PyObjectBase*>(reinterpret_cast<PyBaseProxy*>(proxy)->baseobject);

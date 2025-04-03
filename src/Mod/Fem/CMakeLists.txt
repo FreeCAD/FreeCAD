@@ -66,6 +66,7 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
+    femexamples/ccx_rigid_body.py
     femexamples/constraint_centrif.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
@@ -86,6 +87,7 @@ SET(FemExamples_SRCS
     femexamples/equation_magnetodynamics_elmer.py
     femexamples/equation_magnetodynamics_2D_elmer.py
     femexamples/equation_magnetostatics_2D_elmer.py
+    femexamples/equation_staticcurrent_elmer.py
     femexamples/frequency_beamsimple.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py
@@ -178,6 +180,7 @@ SET(FemObjects_SRCS
     femobjects/constraint_bodyheatsource.py
     femobjects/constraint_centrif.py
     femobjects/constraint_currentdensity.py
+    femobjects/constraint_electricchargedensity.py
     femobjects/constraint_electrostaticpotential.py
     femobjects/constraint_flowvelocity.py
     femobjects/constraint_initialflowvelocity.py
@@ -580,6 +583,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_constraint_bodyheatsource.py
     femtaskpanels/task_constraint_centrif.py
     femtaskpanels/task_constraint_currentdensity.py
+    femtaskpanels/task_constraint_electricchargedensity.py
     femtaskpanels/task_constraint_electrostaticpotential.py
     femtaskpanels/task_constraint_flowvelocity.py
     femtaskpanels/task_constraint_initialflowvelocity.py
@@ -625,6 +629,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_constraint_bodyheatsource.py
     femviewprovider/view_constraint_centrif.py
     femviewprovider/view_constraint_currentdensity.py
+    femviewprovider/view_constraint_electricchargedensity.py
     femviewprovider/view_constraint_electrostaticpotential.py
     femviewprovider/view_constraint_flowvelocity.py
     femviewprovider/view_constraint_initialflowvelocity.py

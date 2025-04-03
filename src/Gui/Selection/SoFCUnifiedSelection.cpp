@@ -70,6 +70,8 @@
 # include <GL/gl.h>
 #endif
 
+#include <QOpenGLWidget>
+
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>
@@ -344,7 +346,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
 
     if (action->getTypeId() == SoFCPreselectionAction::getClassTypeId()) {
         auto preselectAction = static_cast<SoFCPreselectionAction*>(action);
-        // Do not clear currently preselected object when setting new pre-selection
+        // Do not clear currently preselected object when setting new preselection
         if (!setPreSelection && preselectAction->SelChange.Type == SelectionChanges::RmvPreselect) {
             if (currentHighlightPath) {
                 SoHighlightElementAction highlightAction;
@@ -788,7 +790,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
         // this is called when a selection gate forbade to select an object
         // and the user moved the mouse to an empty area
         this->preSelection = -1;
-        QtGLWidget* window;
+        QOpenGLWidget* window;
         SoState *state = action->getState();
         SoGLWidgetElement::get(state, window);
         QWidget* parent = window ? window->parentWidget() : nullptr;
@@ -1550,7 +1552,7 @@ void SoFCSelectionRoot::doAction(SoAction *action) {
 
 bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     // Selection action short-circuit optimization. In case of whole object
-    // selection/pre-selection, we shall store a SelContext keyed by ourself.
+    // selection/preselection, we shall store a SelContext keyed by ourself.
     // And the action traversal can be short-curcuited once the first targeted
     // SoFCSelectionRoot is found here. New function checkSelection() is exposed
     // to check for whole object selection. This greatly improve performance on

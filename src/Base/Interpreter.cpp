@@ -485,8 +485,6 @@ void InterpreterSingleton::runFile(const char* pxFileName, bool local)
 
 bool InterpreterSingleton::loadModule(const char* psModName)
 {
-    // buffer acrobatics
-    // PyBuf ModName(psModName);
     PyObject* module {};
 
     PyGILStateLocker locker;
@@ -540,8 +538,36 @@ void InterpreterSingleton::addPythonPath(const char* Path)
     list.append(Py::String(Path));
 }
 
+std::string InterpreterSingleton::getPythonPath()
+{
+    // Construct something that looks like the output of the now-deprecated Py_GetPath
+    PyGILStateLocker lock;
+    PyObject* path = PySys_GetObject("path");
+    std::string result;
+    const char* separator = ":";  // Use ":" on Unix-like systems, ";" on Windows
+#ifdef FC_OS_WIN32
+    separator = ";";
+#endif
+    Py_ssize_t length = PyList_Size(path);
+    for (Py_ssize_t i = 0; i < length; ++i) {
+        PyObject* item = PyList_GetItem(path, i);  // Borrowed reference
+        if (!item) {
+            throw Base::RuntimeError("Failed to retrieve item from path");
+        }
+        const char* item_str = PyUnicode_AsUTF8(item);
+        if (!item_str) {
+            throw Base::RuntimeError("Failed to convert path item to UTF-8 string");
+        }
+        if (!result.empty()) {
+            result += separator;
+        }
+        result += item_str;
+    }
+    return result;
+}
+
 #if PY_VERSION_HEX < 0x030b0000
-const char* InterpreterSingleton::init(int argc, char* argv[])
+std::string InterpreterSingleton::init(int argc, char* argv[])
 {
     if (!Py_IsInitialized()) {
         Py_SetProgramName(Py_DecodeLocale(argv[0], nullptr));
@@ -566,10 +592,6 @@ const char* InterpreterSingleton::init(int argc, char* argv[])
                 "    activate_this = os.path.join(base_path, \"bin\", \"activate_this.py\")\n"
                 "    exec(open(activate_this).read(), {'__file__':activate_this})\n");
         }
-
-#if PY_VERSION_HEX < 0x03090000
-        PyEval_InitThreads();
-#endif
 
         size_t size = argc;
         static std::vector<wchar_t*> _argv(size);
@@ -623,7 +645,7 @@ void initInterpreter(int argc, char* argv[])
     Py_Initialize();
 }
 }  // namespace
-const char* InterpreterSingleton::init(int argc, char* argv[])
+std::string InterpreterSingleton::init(int argc, char* argv[])
 {
     try {
         if (!Py_IsInitialized()) {
@@ -632,9 +654,7 @@ const char* InterpreterSingleton::init(int argc, char* argv[])
             PythonStdOutput::init_type();
             this->_global = PyEval_SaveThread();
         }
-
-        PyGILStateLocker lock;
-        return Py_EncodeLocale(Py_GetPath(), nullptr);
+        return getPythonPath();
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -774,11 +794,7 @@ void InterpreterSingleton::runMethod(PyObject* pobject,
         throw TypeError("InterpreterSingleton::RunMethod() wrong arguments");
     }
 
-#if PY_VERSION_HEX < 0x03090000
-    presult = PyEval_CallObject(pmeth, pargs); /* run interpreter */
-#else
     presult = PyObject_CallObject(pmeth, pargs); /* run interpreter */
-#endif
 
     Py_DECREF(pmeth);
     Py_DECREF(pargs);

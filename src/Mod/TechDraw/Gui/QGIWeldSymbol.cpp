@@ -549,7 +549,7 @@ std::pair<Base::Vector3d, Base::Vector3d> QGIWeldSymbol::getLocalAxes()
 {
     auto localX = getLeader()->lastSegmentDirection();
     auto localY = DU::invertY(localX);
-    localY.RotateZ(M_PI_2);
+    localY.RotateZ(std::numbers::pi/2);
     localY.Normalize();
     localY = DU::invertY(localY);
     return {localX, localY};

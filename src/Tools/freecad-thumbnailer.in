@@ -1,0 +1,68 @@
+#!/usr/bin/python3
+"""Support file to show FreeCAD thumbnails on Free Desktop Environments (like GNOME or KDE)
+
+Installation:
+- This executable file should be on the PATH so it can be found
+    "$ sudo cp freecad-thumbnailer /usr/bin"
+  and must have execution rights
+    "$ sudo chmod +x /usr/bin/freecad-thumbnailer"
+
+- If a FreeCAD project file doesn't include a thumbnail the file org.freecad.FreeCAD.png is used.
+  Thus, the file src/Gui/Icons/freecad-icon-48.png must be installed.
+    "$ sudo cp freecad-icon-48.png /usr/share/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png"
+
+- The application/x-extension-fcstd MIME type should be registered
+    Check that a corresponding /usr/share/mime/packages/freecad.xml file exists
+    Make sure the MIME database is up to date
+    "$ sudo update-mime-database /usr/share/mime"
+
+- Register this thumbnailer
+    Adding a file /usr/share/thumbnailers/FreeCAD.thumbnailer with the following content:
+
+    [Thumbnailer Entry]
+    TryExec=freecad-thumbnailer
+    Exec=freecad-thumbnailer -s %s %i %o
+    MimeType=application/x-extension-fcstd;
+
+HINT: Make sure that the symlink /usr/bin/python exists and points to the Python executable
+
+NOTE: To make sure FreeCAD saves thumbnail information:
+
+    Edit -> Preferences... -> Document -> Save thumbnail into project when saving document
+"""
+import sys
+import zipfile
+import getopt
+
+opt, par = getopt.getopt(sys.argv[1:], "-s:")
+input_file = par[0]
+output_file = par[1]
+default_icon = "@CMAKE_INSTALL_DATAROOTDIR@/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png"
+
+try:
+    # Read compressed file
+    zfile = zipfile.ZipFile(input_file)
+    files = zfile.namelist()
+
+    # Check whether we have a FreeCAD document
+    if "Document.xml" not in files:
+        print(input_file, " doesn't look like a FreeCAD file")
+        sys.exit(1)
+
+    # Read thumbnail from file or use default icon
+    image = "thumbnails/Thumbnail.png"
+    if image in files:
+        image = zfile.read(image)
+    else:
+        # apps should have at least 48x48 icons
+        freecad = open(default_icon, "rb")
+        image = freecad.read()
+
+    # Write icon to output_file
+    thumb = open(output_file, "wb")
+    thumb.write(image)
+    thumb.close()
+
+except Exception:
+    print("Error creating FreeCAD thumbnail for file ", input_file)
+    sys.exit(1)

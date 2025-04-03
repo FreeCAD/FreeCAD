@@ -130,6 +130,7 @@ protected:
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges &msg) override;
+    void updateHoleCutLimits(PartDesign::Hole* hole);
 
 private:
 

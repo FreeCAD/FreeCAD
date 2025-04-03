@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -79,6 +80,7 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace std;
 using DimensionType = TechDraw::DrawViewDimension::DimensionType;
+using DimensionGeometry = TechDraw::DimensionGeometry;
 
 //===========================================================================
 // utility routines
@@ -104,7 +106,7 @@ void execAngle3Pt(Gui::Command* cmd);
 void execRadius(Gui::Command* cmd);
 void execDiameter(Gui::Command* cmd);
 void execArea(Gui::Command* cmd);
-void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometryType> acceptableDimensionGeometrys);
+void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometry> acceptableDimensionGeometrys);
 
 void execExtent(Gui::Command* cmd, const std::string& dimType);
 
@@ -1100,7 +1102,7 @@ protected:
     }
 
     void createAngleDimension(ReferenceEntry ref1, ReferenceEntry ref2) {
-        if (TechDraw::isValidMultiEdge({ ref1, ref2 }) != isAngle) {
+        if (TechDraw::isValidMultiEdge({ ref1, ref2 }) != DimensionGeometry::isAngle) {
             //isValidMultiEdge check if lines are parallel.
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance dimension"));
             createDistanceDimension("Distance", { ref1, ref2 });
@@ -1262,10 +1264,10 @@ protected:
             return;
         }
 
-        double minX = DBL_MAX;
-        double minY = DBL_MAX;
-        double maxX = -DBL_MAX;
-        double maxY = -DBL_MAX;
+        double minX = std::numeric_limits<double>::max();
+        double minY = std::numeric_limits<double>::max();
+        double maxX = -std::numeric_limits<double>::max();
+        double maxY = -std::numeric_limits<double>::max();
         for (auto dim : dims) {
             TechDraw::pointPair pp = dim->getLinearPoints();
             Base::Vector3d pnt1 = Rez::guiX(pp.first());
@@ -1354,10 +1356,10 @@ protected:
 
     bool isVerticalDistance(ReferenceVector refs)
     {
-        DimensionGeometryType geometryRefs2d = validateDimSelection(
-            refs, { "Edge", "Vertex" }, { 1, 2 }, { isDiagonal });
+        DimensionGeometry geometryRefs2d = validateDimSelection(
+            refs, { "Edge", "Vertex" }, { 1, 2 }, { DimensionGeometry::isDiagonal });
 
-        return geometryRefs2d == TechDraw::isDiagonal;
+        return geometryRefs2d == DimensionGeometry::isDiagonal;
     }
 
     QPixmap icon(std::string name)
@@ -1531,8 +1533,8 @@ void execRadius(Gui::Command* cmd)
     //Define the geometric configuration required for a radius dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
-        {isCircle, isEllipse, isBSplineCircle, isBSpline});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys(
+        {DimensionGeometry::isCircle, DimensionGeometry::isEllipse, DimensionGeometry::isBSplineCircle, DimensionGeometry::isBSpline});
 
     execDim(cmd, "Radius", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1579,8 +1581,8 @@ void execDiameter(Gui::Command* cmd)
     //Define the geometric configuration required for a diameter dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
-        {isCircle, isEllipse, isBSplineCircle, isBSpline});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys(
+        {DimensionGeometry::isCircle, DimensionGeometry::isEllipse, DimensionGeometry::isBSplineCircle, DimensionGeometry::isBSpline});
 
     execDim(cmd, "Diameter", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1626,8 +1628,8 @@ void execDistance(Gui::Command* cmd)
 {
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
-        {isVertical, isHorizontal, isDiagonal, isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys(
+        {DimensionGeometry::isVertical, DimensionGeometry::isHorizontal, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
 
     execDim(cmd, "Distance", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1675,7 +1677,7 @@ void execDistanceX(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isHorizontal, isDiagonal, isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
 
     execDim(cmd, "DistanceX", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1723,7 +1725,7 @@ void execDistanceY(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isVertical, isDiagonal, isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
 
     execDim(cmd, "DistanceY", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1770,7 +1772,7 @@ void execAngle(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({2});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isAngle});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isAngle});
 
     execDim(cmd, "Angle", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1817,7 +1819,7 @@ void execAngle3Pt(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Vertex"});
     std::vector<int> minimumCounts({3});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isAngle3Pt});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isAngle3Pt});
 
     execDim(cmd, "Angle3Pt", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1864,7 +1866,7 @@ void execArea(Gui::Command* cmd)
     //Define the geometric configuration required for a area dimension
     StringVector acceptableGeometry({"Face"});
     std::vector<int> minimumCounts({1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isFace});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isFace});
 
     execDim(cmd, "Area", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -2116,20 +2118,20 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     //Define the geometric configuration required for a extent dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isMultiEdge,
-                                                                     isHorizontal,
-                                                                     isVertical,
-                                                                     isDiagonal,
-                                                                     isCircle,
-                                                                     isEllipse,
-                                                                     isBSplineCircle,
-                                                                     isBSpline,
-                                                                     isZLimited});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isMultiEdge,
+                                                                     DimensionGeometry::isHorizontal,
+                                                                     DimensionGeometry::isVertical,
+                                                                     DimensionGeometry::isDiagonal,
+                                                                     DimensionGeometry::isCircle,
+                                                                     DimensionGeometry::isEllipse,
+                                                                     DimensionGeometry::isBSplineCircle,
+                                                                     DimensionGeometry::isBSpline,
+                                                                     DimensionGeometry::isZLimited});
 
     //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
+    DimensionGeometry geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
+    if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
                              QObject::tr("Can not make 2D extent dimension from selection"));
@@ -2137,14 +2139,14 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     }
 
     //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
+    DimensionGeometry geometryRefs3d;
+    if (geometryRefs2d == DimensionGeometry::isViewReference && !references3d.empty()) {
         geometryRefs3d = validateDimSelection3d(partFeat,
                                                 references3d,
                                                 acceptableGeometry,
                                                 minimumCounts,
                                                 acceptableDimensionGeometrys);
-        if (geometryRefs3d == isInvalid) {
+        if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
                                  QObject::tr("Can not make 3D extent dimension from selection"));
@@ -2380,7 +2382,7 @@ void CreateTechDrawCommandsDims()
 
 //Common code to build a dimension feature
 
-void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometryType> acceptableDimensionGeometrys)
+void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometry> acceptableDimensionGeometrys)
 {
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
@@ -2396,9 +2398,9 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         TechDraw::getReferencesFromSelection(references2d, references3d);
 
     //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
+    DimensionGeometry geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
+    if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
             QObject::tr("Incorrect Selection"),
             QObject::tr("Can not make 2D dimension from selection"));
@@ -2406,15 +2408,15 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
     }
 
     //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d{TechDraw::isInvalid};
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
+    DimensionGeometry geometryRefs3d{DimensionGeometry::isInvalid};
+    if (geometryRefs2d == DimensionGeometry::isViewReference && !references3d.empty()) {
         geometryRefs3d = validateDimSelection3d(partFeat,
             references3d,
             acceptableGeometry,
             minimumCounts,
             acceptableDimensionGeometrys);
 
-        if (geometryRefs3d == TechDraw::isInvalid) {
+        if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                 QObject::tr("Incorrect Selection"),
                 QObject::tr("Can not make 3D dimension from selection"));
@@ -2427,7 +2429,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
 
     //errors and warnings
     if (type == "Radius" || type == "Diameter") {
-        if (geometryRefs2d == isEllipse || geometryRefs3d == isEllipse) {
+        if (geometryRefs2d == DimensionGeometry::isEllipse || geometryRefs3d == DimensionGeometry::isEllipse) {
             QMessageBox::StandardButton result = QMessageBox::warning(
                 Gui::getMainWindow(),
                 QObject::tr("Ellipse Curve Warning"),
@@ -2438,7 +2440,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
                 return;
             }
         }
-        if (geometryRefs2d == isBSplineCircle || geometryRefs3d == isBSplineCircle) {
+        if (geometryRefs2d == DimensionGeometry::isBSplineCircle || geometryRefs3d == DimensionGeometry::isBSplineCircle) {
             QMessageBox::StandardButton result = QMessageBox::warning(
                 Gui::getMainWindow(),
                 QObject::tr("B-spline Curve Warning"),
@@ -2449,7 +2451,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
                 return;
             }
         }
-        if (geometryRefs2d == isBSpline || geometryRefs3d == isBSpline) {
+        if (geometryRefs2d == DimensionGeometry::isBSpline || geometryRefs3d == DimensionGeometry::isBSpline) {
             QMessageBox::critical(
                 Gui::getMainWindow(),
                 QObject::tr("B-spline Curve Error"),

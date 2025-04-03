@@ -57,13 +57,9 @@
 
 #include "ImportOCAF2.h"
 
-
-#if OCC_VERSION_HEX >= 0x070500
 // See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
 #define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
+
 
 FC_LOG_LEVEL_INIT("Import", true, true)
 
@@ -204,7 +200,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
     bool ret = false;
     Quantity_ColorRGBA aColor;
     if (aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor)) {
-        App::Color c = Tools::convertColor(aColor);
+        Base::Color c = Tools::convertColor(aColor);
         if (!check || info.faceColor != c) {
             info.faceColor = c;
             info.hasFaceColor = true;
@@ -212,7 +208,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
         }
     }
     if (!noDefault && !info.hasFaceColor && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
-        App::Color c = Tools::convertColor(aColor);
+        Base::Color c = Tools::convertColor(aColor);
         if (!check || info.faceColor != c) {
             info.faceColor = c;
             info.hasFaceColor = true;
@@ -220,7 +216,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
         }
     }
     if (aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor)) {
-        App::Color c = Tools::convertColor(aColor);
+        Base::Color c = Tools::convertColor(aColor);
         // Some STEP include a curve color with the same value of the face
         // color. And this will look weird in FC. So for shape with face
         // we'll ignore the curve color, if it is the same as the face color.
@@ -296,8 +292,8 @@ bool ImportOCAF2::createObject(App::Document* doc,
     bool hasEdgeColors = false;
 
     Part::TopoShape tshape(shape);
-    std::vector<App::Color> faceColors;
-    std::vector<App::Color> edgeColors;
+    std::vector<Base::Color> faceColors;
+    std::vector<Base::Color> edgeColors;
 
     TDF_LabelSequence seq;
     if (!label.IsNull() && aShapeTool->GetSubShapes(label, seq)) {
@@ -328,7 +324,7 @@ bool ImportOCAF2::createObject(App::Document* doc,
                 }
 
                 bool foundFaceColor = false, foundEdgeColor = false;
-                App::Color faceColor, edgeColor;
+                Base::Color faceColor, edgeColor;
                 Quantity_ColorRGBA aColor;
                 if (aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor)
                     || aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor)) {
@@ -409,9 +405,8 @@ App::Document* ImportOCAF2::getDocument(App::Document* doc, TDF_Label label)
         return doc;
     }
 
-    App::DocumentCreateFlags createFlags;
-    createFlags.createView = false;
-    auto newDoc = App::GetApplication().newDocument(name.c_str(), name.c_str(), createFlags);
+    App::DocumentInitFlags initFlags {.createView = false};
+    auto newDoc = App::GetApplication().newDocument(name.c_str(), name.c_str(), initFlags);
 
     std::ostringstream ss;
     Base::FileInfo fi(doc->FileName.getValue());
@@ -585,7 +580,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
 }
 
 void ImportOCAF2::getSHUOColors(TDF_Label label,
-                                std::map<std::string, App::Color>& colors,
+                                std::map<std::string, Base::Color>& colors,
                                 bool appendFirst)
 {
     TDF_AttributeSequence seq;
@@ -638,7 +633,7 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
         }
         if (!aColorTool->IsVisible(slabel)) {
             subname += App::DocumentObject::hiddenMarker();
-            colors.emplace(subname, App::Color());
+            colors.emplace(subname, Base::Color());
         }
         else {
             Quantity_ColorRGBA aColor;
@@ -685,7 +680,7 @@ App::DocumentObject* ImportOCAF2::loadShape(App::Document* doc,
         return it->second.obj;
     }
 
-    std::map<std::string, App::Color> shuoColors;
+    std::map<std::string, Base::Color> shuoColors;
     if (!options.useLinkGroup) {
         getSHUOColors(label, shuoColors, false);
     }
@@ -735,7 +730,7 @@ struct ChildInfo
 {
     std::vector<Base::Placement> plas;
     boost::dynamic_bitset<> vis;
-    std::map<size_t, App::Color> colors;
+    std::map<size_t, Base::Color> colors;
     std::vector<TDF_Label> labels;
     TopoDS_Shape shape;
 };
@@ -751,7 +746,7 @@ bool ImportOCAF2::createAssembly(App::Document* _doc,
     std::vector<App::DocumentObject*> children;
     std::map<App::DocumentObject*, ChildInfo> childrenMap;
     boost::dynamic_bitset<> visibilities;
-    std::map<std::string, App::Color> shuoColors;
+    std::map<std::string, Base::Color> shuoColors;
 
     auto doc = _doc;
     if (newDoc) {
@@ -877,7 +872,7 @@ ImportOCAFExt::ImportOCAFExt(Handle(TDocStd_Document) hStdDoc,
     : ImportOCAF2(hStdDoc, doc, name)
 {}
 
-void ImportOCAFExt::applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors)
+void ImportOCAFExt::applyFaceColors(Part::Feature* part, const std::vector<Base::Color>& colors)
 {
     partColors[part] = colors;
 }

@@ -58,8 +58,6 @@ class QObject;
 
 namespace Base {
   class Matrix4D;
-}
-namespace App {
   class Color;
 }
 
@@ -421,11 +419,11 @@ public:
     /** @name Color management methods
      */
     //@{
-    virtual std::map<std::string, App::Color> getElementColors(const char *element=nullptr) const {
+    virtual std::map<std::string, Base::Color> getElementColors(const char *element=nullptr) const {
         (void)element;
         return {};
     }
-    virtual void setElementColors(const std::map<std::string, App::Color> &colors) {
+    virtual void setElementColors(const std::map<std::string, Base::Color> &colors) {
         (void)colors;
     }
     static const std::string &hiddenMarker();

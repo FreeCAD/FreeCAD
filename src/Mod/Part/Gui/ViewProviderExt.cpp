@@ -292,14 +292,14 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         pcPointStyle->pointSize = PointSize.getValue();
     }
     else if (prop == &LineColor) {
-        const App::Color& c = LineColor.getValue();
+        const Base::Color& c = LineColor.getValue();
         pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != LineMaterial.getValue().diffuseColor)
             LineMaterial.setDiffuseColor(c);
         LineColorArray.setValue(LineColor.getValue());
     }
     else if (prop == &PointColor) {
-        const App::Color& c = PointColor.getValue();
+        const Base::Color& c = PointColor.getValue();
         pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != PointMaterial.getValue().diffuseColor)
             PointMaterial.setDiffuseColor(c);
@@ -335,7 +335,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &_diffuseColor) {
         // Used to load the old DiffuseColor values asynchronously
-        std::vector<App::Color> colors = _diffuseColor.getValues();
+        std::vector<Base::Color> colors = _diffuseColor.getValues();
         std::vector<float> transparencies;
         transparencies.resize(static_cast<int>(colors.size()));
         for (int i = 0; i < static_cast<int>(colors.size()); i++) {
@@ -658,8 +658,8 @@ void ViewProviderPartExt::setHighlightedFaces(const App::PropertyMaterialList& a
     setHighlightedFaces(appearance.getValues());
 }
 
-std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const char *element) const {
-    std::map<std::string,App::Color> ret;
+std::map<std::string,Base::Color> ViewProviderPartExt::getElementColors(const char *element) const {
+    std::map<std::string,Base::Color> ret;
 
     if(!element || !element[0]) {
         auto color = ShapeAppearance.getDiffuseColor();
@@ -753,7 +753,7 @@ void ViewProviderPartExt::unsetHighlightedFaces()
     Transparency.touch();
 }
 
-void ViewProviderPartExt::setHighlightedEdges(const std::vector<App::Color>& colors)
+void ViewProviderPartExt::setHighlightedEdges(const std::vector<Base::Color>& colors)
 {
     if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
         getObject()->touch(true);
@@ -790,7 +790,7 @@ void ViewProviderPartExt::unsetHighlightedEdges()
     LineMaterial.touch();
 }
 
-void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& colors)
+void ViewProviderPartExt::setHighlightedPoints(const std::vector<Base::Color>& colors)
 {
     if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
         getObject()->touch(true);
@@ -976,9 +976,8 @@ void ViewProviderPartExt::updateVisual()
         //deflection = std::min(deflection, 20.0);
 
         // create or use the mesh on the data structure
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * std::numbers::pi;
 
-#if OCC_VERSION_HEX >= 0x070500
         IMeshTools_Parameters meshParams;
         meshParams.Deflection = deflection;
         meshParams.Relative = Standard_False;
@@ -987,9 +986,6 @@ void ViewProviderPartExt::updateVisual()
         meshParams.AllowQualityDecrease = Standard_True;
 
         BRepMesh_IncrementalMesh(cShape, meshParams);
-#else
-        BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
-#endif
 
         // We must reset the location here because the transformation data
         // are set in the placement property

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <Geom_Parabola.hxx>
 #endif
@@ -466,12 +467,12 @@ PyObject* VoronoiEdgePy::isBorderline(PyObject* args)
 PyObject* VoronoiEdgePy::toShape(PyObject* args)
 {
     double z0 = 0.0;
-    double z1 = DBL_MAX;
+    double z1 = std::numeric_limits<double>::max();
     int dbg = 0;
     if (!PyArg_ParseTuple(args, "|ddp", &z0, &z1, &dbg)) {
         throw Py::RuntimeError("no, one or two arguments of type double accepted");
     }
-    if (z1 == DBL_MAX) {
+    if (z1 == std::numeric_limits<double>::max()) {
         z1 = z0;
     }
     VoronoiEdge* e = getVoronoiEdgePtr();
@@ -688,6 +689,8 @@ PyObject* VoronoiEdgePy::getDistances(PyObject* args)
 
 PyObject* VoronoiEdgePy::getSegmentAngle(PyObject* args)
 {
+    using std::numbers::pi;
+
     VoronoiEdge* e = getVoronoiEdgeFromPy(this, args);
 
     if (e->ptr->cell()->contains_segment() && e->ptr->twin()->cell()->contains_segment()) {
@@ -697,11 +700,11 @@ PyObject* VoronoiEdgePy::getSegmentAngle(PyObject* args)
             double a0 = e->dia->angleOfSegment(i0);
             double a1 = e->dia->angleOfSegment(i1);
             double a = a0 - a1;
-            if (a > M_PI_2) {
-                a -= M_PI;
+            if (a > pi / 2) {
+                a -= pi;
             }
-            else if (a < -M_PI_2) {
-                a += M_PI;
+            else if (a < -pi / 2) {
+                a += pi;
             }
             return Py::new_reference_to(Py::Float(a));
         }

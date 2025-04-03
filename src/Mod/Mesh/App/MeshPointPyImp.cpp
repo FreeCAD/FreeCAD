@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <sstream>
 #endif
 
@@ -86,7 +87,7 @@ PyObject* MeshPointPy::unbound(PyObject* args)
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
-    getMeshPointPtr()->Index = UINT_MAX;
+    getMeshPointPtr()->Index = std::numeric_limits<unsigned>::max();
     getMeshPointPtr()->Mesh = nullptr;
     Py_Return;
 }
@@ -98,7 +99,7 @@ Py::Long MeshPointPy::getIndex() const
 
 Py::Boolean MeshPointPy::getBound() const
 {
-    return {getMeshPointPtr()->Index != UINT_MAX};
+    return {getMeshPointPtr()->Index != std::numeric_limits<unsigned>::max()};
 }
 
 Py::Object MeshPointPy::getNormal() const

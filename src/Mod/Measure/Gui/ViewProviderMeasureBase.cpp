@@ -237,16 +237,16 @@ void ViewProviderMeasureBase::finishRestoring()
 void ViewProviderMeasureBase::onChanged(const App::Property* prop)
 {
     if (prop == &TextColor) {
-        const App::Color& color = TextColor.getValue();
+        const Base::Color& color = TextColor.getValue();
         pLabel->textColor.setValue(color.r, color.g, color.b);
         updateIcon();
     }
     else if (prop == &TextBackgroundColor) {
-        const App::Color& color = TextBackgroundColor.getValue();
+        const Base::Color& color = TextBackgroundColor.getValue();
         pLabel->backgroundColor.setValue(color.r, color.g, color.b);
     }
     else if (prop == &LineColor) {
-        const App::Color& color = LineColor.getValue();
+        const Base::Color& color = LineColor.getValue();
         pColor->rgb.setValue(color.r, color.g, color.b);
     }
     else if (prop == &FontSize) {
@@ -351,8 +351,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 
     // Check if one of the input properties has been changed
     auto inputProps = obj->getInputProps();
-    if (std::find(inputProps.begin(), inputProps.end(), std::string(prop->getName()))
-        != inputProps.end()) {
+    if (std::ranges::find(inputProps, std::string(prop->getName())) != inputProps.end()) {
         doUpdate = true;
 
         // Add connections to be notified when the measured objects are changed

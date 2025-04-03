@@ -46,28 +46,30 @@ def _parse_docstring_for_documentation(docstring: str) -> Documentation:
     if not docstring:
         return Documentation()
 
-    lines = docstring.strip().split("\n")
+    import textwrap
+
+    # Remove common indentation
+    dedented_docstring = textwrap.dedent(docstring).strip()
+    lines = dedented_docstring.split("\n")
     user_docu_lines = []
 
     for raw_line in lines:
-        line = raw_line.strip()
-        if line.startswith("DeveloperDocu:"):
-            dev_docu = line.split("DeveloperDocu:", 1)[1].strip()
-        elif line.startswith("UserDocu:"):
-            user_docu = line.split("UserDocu:", 1)[1].strip()
-        elif line.startswith("Author:"):
+        stripped_line = raw_line.strip()
+        if stripped_line.startswith("DeveloperDocu:"):
+            dev_docu = stripped_line.split("DeveloperDocu:", 1)[1].strip()
+        elif stripped_line.startswith("UserDocu:"):
+            user_docu = stripped_line.split("UserDocu:", 1)[1].strip()
+        elif stripped_line.startswith("Author:"):
             # e.g. "Author: John Doe (john@example.com)"
-            # naive approach:
-            author_part = line.split("Author:", 1)[1].strip()
-            # attempt to find email in parentheses
+            author_part = stripped_line.split("Author:", 1)[1].strip()
             match = re.search(r"(.*?)\s*\((.*?)\)", author_part)
             if match:
                 author_name = match.group(1).strip()
                 author_email = match.group(2).strip()
             else:
                 author_name = author_part
-        elif line.startswith("Licence:"):
-            author_licence = line.split("Licence:", 1)[1].strip()
+        elif stripped_line.startswith("Licence:"):
+            author_licence = stripped_line.split("Licence:", 1)[1].strip()
         else:
             user_docu_lines.append(raw_line)
 
@@ -210,10 +212,17 @@ def _parse_methods(class_node: ast.ClassDef) -> List[Methode]:
     """
     methods = []
 
-    for stmt in class_node.body:
-        if not isinstance(stmt, ast.FunctionDef):
-            continue
+    def collect_function_defs(nodes):
+        funcs = []
+        for node in nodes:
+            if isinstance(node, ast.FunctionDef):
+                funcs.append(node)
+            elif isinstance(node, ast.If):
+                funcs.extend(collect_function_defs(node.body))
+                funcs.extend(collect_function_defs(node.orelse))
+        return funcs
 
+    for stmt in collect_function_defs(class_node.body):
         # Skip methods decorated with @overload
         skip_method = False
         for deco in stmt.decorator_list:
@@ -324,7 +333,7 @@ def _get_module_from_path(path: str) -> str:
 
     # 2. Attempt to find "src" in the path components.
     try:
-        idx_src = parts.index("src")
+        idx_src = len(parts) - 1 - list(reversed(parts)).index("src")
     except ValueError:
         # If "src" is not found, we cannot determine the module name.
         return None
@@ -483,6 +492,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     # Parse imports to compute module metadata
     module_name = _get_module_from_path(path)
+
     imported_from_module = imports_mapping[base_class_name]
     parent_module_name = _extract_module_name(imported_from_module, module_name)
 
@@ -502,6 +512,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     py_export = PythonExport(
         Documentation=doc_obj,
+        ModuleName=module_name,
         Name=export_decorator_kwargs.get("Name", "") or native_python_class_name,
         PythonName=export_decorator_kwargs.get("PythonName", "") or None,
         Include=export_decorator_kwargs.get("Include", "") or include,
@@ -527,11 +538,8 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     # Attach sequence protocol metadata if provided.
     if sequence_protocol_kwargs is not None:
-        try:
-            seq_protocol = SequenceProtocol(**sequence_protocol_kwargs)
-            py_export.Sequence = seq_protocol
-        except Exception as e:
-            py_export.Sequence = None
+        seq_protocol = SequenceProtocol(**sequence_protocol_kwargs)
+        py_export.Sequence = seq_protocol
 
     py_export.Attribute.extend(class_attributes)
     py_export.Methode.extend(class_methods)
@@ -542,28 +550,42 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 def parse_python_code(path: str) -> GenerateModel:
     """
     Parse the given Python source code and build a GenerateModel containing
-    PythonExport entries for each class that inherits from a relevant binding class.
+    PythonExport entries. If any class is explicitly exported using @export,
+    only those classes are used. If no classes have the @export decorator,
+    then a single non-exported class is assumed to be the export. If there
+    are multiple non-exported classes, an exception is raised.
     """
-
-    source_code = None
     with open(path, "r") as file:
         source_code = file.read()
 
     tree = ast.parse(source_code)
     imports_mapping = _parse_imports(tree)
-    model = GenerateModel()
+
+    explicit_exports = []
+    non_explicit_exports = []
 
     for node in tree.body:
         if isinstance(node, ast.ClassDef):
             py_export = _parse_class(node, source_code, path, imports_mapping)
-            model.PythonExport.append(py_export)
+            if py_export.IsExplicitlyExported:
+                explicit_exports.append(py_export)
+            else:
+                non_explicit_exports.append(py_export)
 
-    # Check for multiple non explicitly exported classes
-    non_exported_classes = [
-        item for item in model.PythonExport if not getattr(item, "IsExplicitlyExported", False)
-    ]
-    if len(non_exported_classes) > 1:
-        raise Exception("Multiple non explicitly-exported classes were found, please use @export.")
+    model = GenerateModel()
+    if explicit_exports:
+        # Use only explicitly exported classes.
+        model.PythonExport.extend(explicit_exports)
+    else:
+        # No explicit exports; allow only one non-exported class.
+        if len(non_explicit_exports) == 1:
+            model.PythonExport.append(non_explicit_exports[0])
+        elif len(non_explicit_exports) > 1:
+            raise Exception(
+                "Multiple non explicitly-exported classes were found, please use @export."
+            )
+        else:
+            raise Exception("No classes found for export.")
 
     return model
 

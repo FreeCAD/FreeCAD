@@ -40,7 +40,7 @@ class SCwriter:
 
     def getStaticCurrentSolver(self, equation):
         # output the equation parameters
-        s = self.write.createLinearSolver(equation)
+        s = self.write.createNonlinearSolver(equation)
         s["Equation"] = "Stat Current Solver"
         s["Procedure"] = sifio.FileAttr("StatCurrentSolve/StatCurrentSolver")
         s["Variable"] = self.write.getUniqueVarName("Potential")
@@ -96,10 +96,13 @@ class SCwriter:
                     # output the FreeCAD label as comment
                     if obj.Label:
                         self.write.boundary(name, "! FreeCAD Name", obj.Label)
-                    self.write.boundary(name, "Current Density BC", True)
-                    self.write.boundary(
-                        name, "Current Density", obj.NormalCurrentDensity.getValueAs("A/m^2").Value
-                    )
+                    if obj.Mode == "Normal":
+                        self.write.boundary(name, "Current Density BC", True)
+                        self.write.boundary(
+                            name,
+                            "Current Density",
+                            obj.NormalCurrentDensity_re.getValueAs("A/m^2").Value,
+                        )
 
                 self.write.handled(obj)
 

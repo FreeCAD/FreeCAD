@@ -90,9 +90,9 @@ bool GeometryMatcher::comparePoints(const TopoDS_Shape& shape1, const TopoDS_Sha
         return false;
     }
     auto vert1 = TopoDS::Vertex(shape1);
-    Base::Vector3d point1 = DU::toVector3d(BRep_Tool::Pnt(vert1));
+    Base::Vector3d point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(vert1));
     auto vert2 = TopoDS::Vertex(shape2);
-    Base::Vector3d point2 = DU::toVector3d(BRep_Tool::Pnt(vert2));
+    Base::Vector3d point2 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(vert2));
     return point1.IsEqual(point2, EWTOLERANCE);
 }
 
@@ -179,8 +179,8 @@ bool GeometryMatcher::compareCircles(const TopoDS_Edge& edge1, const TopoDS_Edge
     gp_Circ circle2 = adapt2.Circle();
     double radius1 = circle1.Radius();
     double radius2 = circle2.Radius();
-    auto center1 = DU::toVector3d(circle1.Location());
-    auto center2 = DU::toVector3d(circle2.Location());
+    auto center1 = Base::convertTo<Base::Vector3d>(circle1.Location());
+    auto center2 = Base::convertTo<Base::Vector3d>(circle2.Location());
     return DU::fpCompare(radius1, radius2, EWTOLERANCE) && center1.IsEqual(center2, EWTOLERANCE);
 }
 
@@ -199,8 +199,8 @@ bool GeometryMatcher::compareEllipses(const TopoDS_Edge& edge1, const TopoDS_Edg
     double minor1 = ellipse1.MinorRadius();
     double major2 = ellipse2.MajorRadius();
     double minor2 = ellipse2.MinorRadius();
-    auto center1 = DU::toVector3d(ellipse1.Location());
-    auto center2 = DU::toVector3d(ellipse2.Location());
+    auto center1 = Base::convertTo<Base::Vector3d>(ellipse1.Location());
+    auto center2 = Base::convertTo<Base::Vector3d>(ellipse2.Location());
     return  (DU::fpCompare(major1, major2, EWTOLERANCE) &&
              DU::fpCompare(minor1, minor2, EWTOLERANCE) &&
              center1.IsEqual(center2, EWTOLERANCE));

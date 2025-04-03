@@ -1246,18 +1246,19 @@ class DraftToolBar:
                 else:
                     delta = plane.get_local_coords(point)
 
+            length, _, phi = DraftVecUtils.get_spherical_coords(*delta)
+            phi = math.degrees(phi)
+
             self.x = delta.x
             self.y = delta.y
             self.z = delta.z
+            self.lvalue = length
+            self.avalue = phi
+
             self.xValue.setText(display_external(delta.x,None,'Length'))
             self.yValue.setText(display_external(delta.y,None,'Length'))
             self.zValue.setText(display_external(delta.z,None,'Length'))
-
-            length, theta, phi = DraftVecUtils.get_spherical_coords(*delta)
-            theta = math.degrees(theta)
-            phi = math.degrees(phi)
             self.lengthValue.setText(display_external(length,None,'Length'))
-            #if not self.angleLock.isChecked():
             self.angleValue.setText(display_external(phi,None,'Angle'))
 
         # set masks
@@ -1630,7 +1631,7 @@ class DraftToolBar:
     def Activated(self):
         self.setWatchers()
         if hasattr(self,"tray"):
-            self.tray.show()
+            todo.delay(self.tray.show, None)
 
     def Deactivated(self):
         if (FreeCAD.activeDraftCommand is not None):
@@ -1639,7 +1640,7 @@ class DraftToolBar:
         FreeCADGui.Control.clearTaskWatcher()
         #self.tray = None
         if hasattr(self,"tray"):
-            self.tray.hide()
+            todo.delay(self.tray.hide, None)
 
     def reset_ui_values(self):
         """Method to reset task panel values"""

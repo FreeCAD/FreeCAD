@@ -51,7 +51,7 @@ QGIEdge::QGIEdge(int index) :
     setFlag(QGraphicsItem::ItemIsFocusable, true);      // to get key press events
     setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    m_width = 1.0;
+    setWidth(1.0);
     setCosmetic(isCosmetic);
     setFill(Qt::NoBrush);
 }
@@ -70,25 +70,25 @@ void QGIEdge::setCosmetic(bool state)
 void QGIEdge::setHiddenEdge(bool b) {
     isHiddenEdge = b;
     if (b) {
-        m_styleCurrent = getHiddenStyle();
+        m_pen.setStyle(getHiddenStyle());
     } else {
-        m_styleCurrent = Qt::SolidLine;
+        m_pen.setStyle(Qt::SolidLine);
     }
 }
 
 void QGIEdge::setPrettyNormal() {
 //    Base::Console().Message("QGIE::setPrettyNormal()\n");
     if (isHiddenEdge) {
-        m_colCurrent = getHiddenColor();
+        m_pen.setColor(getHiddenColor());
     } else {
-        m_colCurrent = getNormalColor();
+        m_pen.setColor(getNormalColor());
     }
     //should call QGIPP::setPrettyNormal()?
 }
 
 QColor QGIEdge::getHiddenColor()
 {
-    App::Color fcColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("HiddenColor", 0x000000FF));
+    Base::Color fcColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("HiddenColor", 0x000000FF));
     return PreferencesGui::getAccessibleQColor(fcColor.asValue<QColor>());
 }
 
@@ -136,10 +136,4 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void QGIEdge::setLinePen(QPen linePen)
 {
     m_pen = linePen;
-}
-
-void QGIEdge::setCurrentPen()
-{
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
 }

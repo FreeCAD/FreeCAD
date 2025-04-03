@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -656,7 +657,7 @@ void PartGui::DlgProjectionOnSurface::show_projected_shapes(
     if (vp) {
         const unsigned int color = 0x8ae23400;
         vp->LineColor.setValue(color);
-        vp->ShapeAppearance.setDiffuseColor(App::Color(color));
+        vp->ShapeAppearance.setDiffuseColor(Base::Color(color));
         vp->PointColor.setValue(color);
         vp->Transparency.setValue(0);
     }
@@ -721,8 +722,8 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
     auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
         Gui::Application::Instance->getViewProvider(iCurrentObject));
     if (vp) {
-        std::vector<App::Color> colors;
-        App::Color defaultColor;
+        std::vector<Base::Color> colors;
+        Base::Color defaultColor;
         if (currentShapeType == TopAbs_FACE) {
             colors = vp->ShapeAppearance.getDiffuseColors();
             defaultColor = colors.front();
@@ -737,7 +738,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
         }
 
         if (iHighlight) {
-            App::Color aColor;
+            Base::Color aColor;
             aColor.setPackedValue(iColor);
             colors.at(index - 1) = aColor;
         }

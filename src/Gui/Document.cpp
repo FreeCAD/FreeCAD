@@ -36,6 +36,7 @@
 # include <QApplication>
 # include <QFileInfo>
 # include <QMessageBox>
+# include <QOpenGLWidget>
 # include <QTextStream>
 # include <QTimer>
 # include <QStatusBar>
@@ -117,7 +118,7 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
-    
+
     using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
@@ -671,13 +672,14 @@ void Document::setEditingTransform(const Base::Matrix4D &mat) {
 
 void Document::resetEdit() {
     bool vpIsNotNull = d->_editViewProvider != nullptr;
+    bool vpHasChanged = d->_editViewProvider != d->_editViewProviderPrevious;
     int modeToRestore = d->_editModePrevious;
     Gui::ViewProvider* vpToRestore = d->_editViewProviderPrevious;
     bool shouldRestorePrevious = d->_editWantsRestorePrevious;
 
     Application::Instance->setEditDocument(nullptr);
 
-    if (vpIsNotNull && shouldRestorePrevious) {
+    if (vpIsNotNull && vpHasChanged && shouldRestorePrevious) {
         setEdit(vpToRestore, modeToRestore);
     }
 }
@@ -1999,11 +2001,11 @@ MDIView *Document::createView(const Base::Type& typeId)
     std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
     if (typeId == View3DInventor::getClassTypeId()) {
 
-        QtGLWidget* shareWidget = nullptr;
+        QOpenGLWidget* shareWidget = nullptr;
         // VBO rendering doesn't work correctly when we don't share the OpenGL widgets
         if (!theViews.empty()) {
             auto firstView = static_cast<View3DInventor*>(theViews.front());
-            shareWidget = qobject_cast<QtGLWidget*>(firstView->getViewer()->getGLWidget());
+            shareWidget = qobject_cast<QOpenGLWidget*>(firstView->getViewer()->getGLWidget());
 
             const char *ppReturn = nullptr;
             firstView->onMsg("GetCamera",&ppReturn);
@@ -2482,11 +2484,11 @@ void Document::setActiveWindow(Gui::MDIView* view)
     std::list<MDIView*> mdis = getMDIViews();
 
     // this document is not active
-    if (std::find(mdis.begin(), mdis.end(), active) == mdis.end())
+    if (std::ranges::find(mdis, active) == mdis.end())
         return;
 
     // the view is not part of the document
-    if (std::find(mdis.begin(), mdis.end(), view) == mdis.end())
+    if (std::ranges::find(mdis, view) == mdis.end())
         return;
 
     getMainWindow()->setActiveWindow(view);

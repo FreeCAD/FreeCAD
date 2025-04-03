@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
 
 #include <QCursor>
 #include <QLocale>
@@ -432,7 +431,7 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
 {
     double dX = p2.x - p1.x;
     double dY = p2.y - p1.y;
-    return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * M_PI;
+    return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * std::numbers::pi;
 }
 
 // Set the two points on circles at minimal distance

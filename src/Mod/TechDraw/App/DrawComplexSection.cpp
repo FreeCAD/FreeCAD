@@ -100,7 +100,6 @@
 #include <gp_Pnt.hxx>
 #endif
 
-#define _USE_MATH_DEFINES
 #include <cmath>
 
 #include <sstream>
@@ -110,6 +109,7 @@
 #include <App/Material.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
@@ -386,7 +386,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         }
         //we only want to reverse the segment normal if it is not perpendicular to section normal
         if (segmentNormal.Dot(gProjectionUnit) != 0.0
-            && segmentNormal.Angle(gProjectionUnit) <= M_PI_2) {
+            && segmentNormal.Angle(gProjectionUnit) <= std::numbers::pi/2) {
             segmentNormal.Reverse();
         }
 
@@ -550,7 +550,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
     }
 
     //center the compound along SectionCS XDirection
-    Base::Vector3d centerVector = DU::toVector3d(gMovementVector) * distanceToMove / -2.0;
+    Base::Vector3d centerVector = Base::convertTo<Base::Vector3d>(gMovementVector) * distanceToMove / -2.0;
     TopoDS_Shape centeredCompound = ShapeUtils::moveShape(comp, centerVector);
 
     if (debugSection()) {
@@ -796,7 +796,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionArrowDirs()
     }
 
     gp_Vec gProfileVector = makeProfileVector(profileWire);
-    gp_Vec gSectionNormal = gp_Vec(DU::to<gp_Dir>(SectionNormal.getValue()));
+    gp_Vec gSectionNormal = gp_Vec(Base::convertTo<gp_Dir>(SectionNormal.getValue()));
     gp_Vec gExtrudeVector = (gSectionNormal.Crossed(gProfileVector)).Normalized();
     Base::Vector3d vClosestBasis = DrawUtil::closestBasis(gp_Dir(gExtrudeVector), getSectionCS());
     gp_Dir gExtrudeDir = gp_Dir(vClosestBasis.x, vClosestBasis.y, vClosestBasis.z);
@@ -826,8 +826,8 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionArrowDirs()
     }
 
     //TODO: similar code elsewhere. Opportunity for reuse.
-    Base::Vector3d vDir0 = DU::toVector3d(gDir0);
-    Base::Vector3d vDir1 = DU::toVector3d(gDir1);
+    Base::Vector3d vDir0 = Base::convertTo<Base::Vector3d>(gDir0);
+    Base::Vector3d vDir1 = Base::convertTo<Base::Vector3d>(gDir1);
     vDir0.Normalize();
     vDir1.Normalize();
     DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
@@ -956,7 +956,7 @@ gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec) const
 // being slightly wrong.  see https://forum.freecad.org/viewtopic.php?t=79017&sid=612a62a60f5db955ee071a7aaa362dbb
 bool DrawComplexSection::validateOffsetProfile(TopoDS_Wire profile, Base::Vector3d direction, double angleThresholdDeg) const
 {
-    double angleThresholdRad = angleThresholdDeg * M_PI / 180.0;  // 5 degrees
+    double angleThresholdRad = angleThresholdDeg * std::numbers::pi / 180.0;  // 5 degrees
     TopExp_Explorer explEdges(profile, TopAbs_EDGE);
     for (; explEdges.More(); explEdges.Next()) {
         std::pair<Base::Vector3d, Base::Vector3d> segmentEnds = getSegmentEnds(TopoDS::Edge(explEdges.Current()));
@@ -981,8 +981,8 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::getSegmentEnds(Top
     gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
     gp_Pnt gpLast = BRep_Tool::Pnt(tvLast);
     std::pair<Base::Vector3d, Base::Vector3d> result;
-    result.first = DU::toVector3d(gpFirst);
-    result.second = DU::toVector3d(gpLast);
+    result.first = Base::convertTo<Base::Vector3d>(gpFirst);
+    result.second = Base::convertTo<Base::Vector3d>(gpLast);
     return result;
 }
 

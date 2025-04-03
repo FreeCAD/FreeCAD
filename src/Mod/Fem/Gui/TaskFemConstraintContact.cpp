@@ -29,6 +29,7 @@
 #include <QAction>
 #include <QMessageBox>
 #include <sstream>
+#include <limits>
 #endif
 
 #include "Mod/Fem/App/FemConstraintContact.h"
@@ -96,27 +97,27 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
     // Fill data into dialog elements
     ui->spbSlope->setUnit(pcConstraint->Slope.getUnit());
     ui->spbSlope->setMinimum(0);
-    ui->spbSlope->setMaximum(FLOAT_MAX);
+    ui->spbSlope->setMaximum(std::numeric_limits<float>::max());
     ui->spbSlope->setValue(pcConstraint->Slope.getQuantityValue());
     ui->spbSlope->bind(pcConstraint->Slope);
 
     ui->spbAdjust->setUnit(pcConstraint->Adjust.getUnit());
     ui->spbAdjust->setMinimum(0);
-    ui->spbAdjust->setMaximum(FLOAT_MAX);
+    ui->spbAdjust->setMaximum(std::numeric_limits<float>::max());
     ui->spbAdjust->setValue(pcConstraint->Adjust.getQuantityValue());
     ui->spbAdjust->bind(pcConstraint->Adjust);
 
     ui->ckbFriction->setChecked(friction);
 
     ui->spbFrictionCoeff->setMinimum(0);
-    ui->spbFrictionCoeff->setMaximum(FLOAT_MAX);
+    ui->spbFrictionCoeff->setMaximum(std::numeric_limits<float>::max());
     ui->spbFrictionCoeff->setValue(pcConstraint->FrictionCoefficient.getValue());
     ui->spbFrictionCoeff->setEnabled(friction);
     ui->spbFrictionCoeff->bind(pcConstraint->FrictionCoefficient);
 
     ui->spbStickSlope->setUnit(pcConstraint->StickSlope.getUnit());
     ui->spbStickSlope->setMinimum(0);
-    ui->spbStickSlope->setMaximum(FLOAT_MAX);
+    ui->spbStickSlope->setMaximum(std::numeric_limits<float>::max());
     ui->spbStickSlope->setValue(pcConstraint->StickSlope.getQuantityValue());
     ui->spbStickSlope->setEnabled(friction);
     ui->spbStickSlope->bind(pcConstraint->StickSlope);
@@ -230,9 +231,7 @@ void TaskFemConstraintContact::addToSelectionSlave()
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -279,9 +278,7 @@ void TaskFemConstraintContact::removeFromSelectionSlave()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -359,8 +356,7 @@ void TaskFemConstraintContact::addToSelectionMaster()
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
+            for (auto itr = std::ranges::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
@@ -408,9 +404,7 @@ void TaskFemConstraintContact::removeFromSelectionMaster()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
