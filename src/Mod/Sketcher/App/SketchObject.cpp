@@ -324,36 +324,48 @@ static bool inline checkSmallEdge(const Part::TopoShape &s) {
     return GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion()) <= Precision::Confusion();
 }
 
-void SketchObject::buildShape() {
+// clang-format on
+void SketchObject::buildShape()
+{
     // We use the following instead to map element names
 
     std::vector<Part::TopoShape> shapes;
     std::vector<Part::TopoShape> vertices;
-    int geoId =0;
+    int geoId = 0;
+
+    auto addVertex = [this, &vertices](auto vertex, auto name) {
+        if (!vertex.hasElementMap()) {
+            vertex.resetElementMap(std::make_shared<Data::ElementMap>());
+        }
+        vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                              Data::MappedName::fromRawData(name.c_str()),
+                              0L);
+        vertices.push_back(vertex);
+        vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
+    };
+
+    auto addEdge = [this, &shapes](auto geo, auto indexedName) {
+        shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
+        if (checkSmallEdge(shapes.back())) {
+            FC_WARN("Edge too small: " << indexedName);
+        }
+    };
 
     // get the geometry after running the solver
     auto geometries = solvedSketch.extractGeometry();
-    for(auto geo : geometries) {
+    for (auto geo : geometries) {
         ++geoId;
-        if(GeometryFacade::getConstruction(geo)) {
+        if (GeometryFacade::getConstruction(geo)) {
             continue;
         }
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
-            Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
-            int idx = getVertexIndexGeoPos(geoId -1, Sketcher::PointPos::start);
-            std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-            if (!vertex.hasElementMap()) {
-                vertex.resetElementMap(std::make_shared<Data::ElementMap>());
-            }            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
-                                  Data::MappedName::fromRawData(name.c_str()),0L);
-            vertices.push_back(vertex);
-            vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
-        } else {
+            int idx = getVertexIndexGeoPos(geoId - 1, Sketcher::PointPos::start);
+            addVertex(Part::TopoShape {TopoDS::Vertex(geo->toShape())},
+                      convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false));
+        }
+        else {
             auto indexedName = Data::IndexedName::fromConst("Edge", geoId);
-            shapes.push_back(getEdge(geo,convertSubName(indexedName, false).c_str()));
-            if (checkSmallEdge(shapes.back())) {
-                FC_WARN("Edge too small: " << indexedName);
-            }
+            addEdge(geo, indexedName);
         }
     }
 
@@ -361,57 +373,53 @@ void SketchObject::buildShape() {
         delete geo;
     }
 
-    for(int i=2;i<ExternalGeo.getSize();++i) {
+    for (int i = 2; i < ExternalGeo.getSize(); ++i) {
         auto geo = ExternalGeo[i];
         auto egf = ExternalGeometryFacade::getFacade(geo);
-        if(!egf->testFlag(ExternalGeometryExtension::Defining))
+        if (!egf->testFlag(ExternalGeometryExtension::Defining)) {
             continue;
+        }
 
-        auto indexedName = Data::IndexedName::fromConst("ExternalEdge", i-1);
+        auto indexedName = Data::IndexedName::fromConst("ExternalEdge", i - 1);
 
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
-            Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
-            if (!vertex.hasElementMap()) {
-                vertex.resetElementMap(std::make_shared<Data::ElementMap>());
-            }
-            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
-                                  Data::MappedName::fromRawData(convertSubName(indexedName, false).c_str()),0L);
-            vertices.push_back(vertex);
-            vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
-        } else {
+            addVertex(Part::TopoShape {TopoDS::Vertex(geo->toShape())},
+                      convertSubName(indexedName, false));
+        }
+        else {
             shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
-            if (checkSmallEdge(shapes.back())) {
-                FC_WARN("Edge too small: " << indexedName);
-            }
+            addEdge(geo, indexedName);
         }
     }
 
     internalElementMap.clear();
 
-    if(shapes.empty() && vertices.empty()) {
+    if (shapes.empty() && vertices.empty()) {
         InternalShape.setValue(Part::TopoShape());
         Shape.setValue(Part::TopoShape());
         return;
     }
     Part::TopoShape result(0, getDocument()->getStringHasher());
     if (vertices.empty()) {
-         // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
-         result.makeElementWires(shapes,Part::OpCodes::Sketch);
-     } else {
-         std::vector<Part::TopoShape> results;
-         if (!shapes.empty()) {
-             // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
-             // geometry exposed through the Shape property, because
-             // SketchObject::getElementName() relies on this op code to
-             // differentiate geometries that are exposed with those in edit
-             // mode.
-             auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
-             for (const auto &wire : wires.getSubTopoShapes(TopAbs_WIRE))
-                 results.push_back(wire);
-         }
-         results.insert(results.end(), vertices.begin(), vertices.end());
-         result.makeElementCompound(results);
-     }
+        // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
+        result.makeElementWires(shapes, Part::OpCodes::Sketch);
+    }
+    else {
+        std::vector<Part::TopoShape> results;
+        if (!shapes.empty()) {
+            // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
+            // geometry exposed through the Shape property, because
+            // SketchObject::getElementName() relies on this op code to
+            // differentiate geometries that are exposed with those in edit
+            // mode.
+            auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
+            for (const auto& wire : wires.getSubTopoShapes(TopAbs_WIRE)) {
+                results.push_back(wire);
+            }
+        }
+        results.insert(results.end(), vertices.begin(), vertices.end());
+        result.makeElementCompound(results);
+    }
     result.Tag = getID();
     InternalShape.setValue(buildInternals(result.located(TopLoc_Location())));
     // Must set Shape property after InternalShape so that
@@ -419,6 +427,7 @@ void SketchObject::buildShape() {
     // property, because some reference may pointing to the InternalShape
     Shape.setValue(result);
 }
+// clang-format off
 
 const std::map<std::string,std::string> SketchObject::getInternalElementMap() const
 {
