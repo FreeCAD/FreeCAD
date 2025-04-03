@@ -398,22 +398,28 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             CallTip tip;
             QString str = QString::fromLatin1(name.c_str());
             tip.name = str;
+            tip.parameter = QString::fromStdString(attrname.as_std_string());
 
             if (attr.isCallable()) {
+                tip.parameter += extractSignature(attr);
                 PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
                 if (PyObject_IsSubclass(attr.ptr(), basetype) == 1) {
                     tip.type = CallTip::Class;
+                    tip.parameter = QString::fromStdString("(class) ") + tip.parameter;
                 }
                 else {
                     PyErr_Clear(); // PyObject_IsSubclass might set an exception
                     tip.type = CallTip::Method;
+                    tip.parameter = QString::fromStdString("(function) def ") + tip.parameter;
                 }
             }
             else if (PyModule_Check(attr.ptr())) {
                 tip.type = CallTip::Module;
+                tip.parameter = QString::fromStdString("(module) ") + tip.parameter;
             }
             else {
                 tip.type = CallTip::Member;
+                tip.parameter = QString::fromStdString("(member) ") + tip.parameter;
             }
 
             if (str == QLatin1String("__doc__") && attr.isString()) {
@@ -426,7 +432,6 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     if (pos < 0)
                         pos = qMin(longdoc.length(), 70);
                     tip.description = stripWhiteSpace(longdoc);
-                    tip.parameter = longdoc.left(pos);
                 }
             }
             else if (attr.hasAttr("__doc__")) {
@@ -439,7 +444,6 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     if (pos < 0)
                         pos = qMin(longdoc.length(), 70);
                     tip.description = stripWhiteSpace(longdoc);
-                    tip.parameter = longdoc.left(pos);
                 }
             }
 
@@ -722,11 +726,10 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 
       /**
        * Try to find out if call needs arguments.
-       * For this we search the description for appropriate hints ...
+       * For this we search the parameters if there are no arguments
        */
-      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String(R"(\s*\(\s*\w+.*\))") );
-      argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
-      if (argumentMatcher.match( callTip.description ).hasMatch())
+      QRegularExpression argumentMatcher(QLatin1String(R"(\(\s*\))"));
+      if (!argumentMatcher.match( callTip.parameter ).hasMatch())
       {
         // if arguments are needed, we just move the cursor one left, to between the parentheses.
         cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor, 1 );
@@ -741,7 +744,8 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 
     QPoint p(posX, posY);
     p = textEdit->mapToGlobal(p);
-    QToolTip::showText( p, callTip.parameter );
+
+    QToolTip::showText(p, callTip.parameter);
 }
 
 QString CallTipsList::stripWhiteSpace(const QString& str) const
@@ -782,6 +786,18 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
     }
 
     return stripped;
+}
+
+QString CallTipsList::extractSignature(const Py::Object& obj) const {
+    Py::Callable callable(obj);
+    Py::Module pInspect("inspect");
+    Py::Callable signatureFunc(pInspect.getAttr("signature"));
+
+    Py::Tuple args(1);
+    args[0] = callable;
+    Py::Object signature = signatureFunc.apply(args);
+
+    return QString::fromStdString(signature.as_string());
 }
 
 #include "moc_CallTips.cpp"

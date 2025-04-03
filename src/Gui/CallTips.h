@@ -76,6 +76,7 @@ private:
     void extractTipsFromObject(Py::Object&, Py::List&, QMap<QString, CallTip>&) const;
     void extractTipsFromProperties(Py::Object&, QMap<QString, CallTip>&) const;
     QString stripWhiteSpace(const QString&) const;
+    QString extractSignature(const Py::Object&) const;
     Py::Object getAttrWorkaround(Py::Object&, Py::String&) const;
 
 private:
