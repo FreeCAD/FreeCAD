@@ -247,10 +247,6 @@ public:
 
     static std::string translateArbitrary(std::string context, std::string baseName, std::string uniqueName);
 
-    static bool isCosmeticVertex(App::DocumentObject* owner, std::string element);
-    static bool isCosmeticEdge(App::DocumentObject* owner, std::string element);
-    static bool isCenterLine(App::DocumentObject* owner, std::string element);
-
     static Base::Vector3d  toAppSpace(const DrawViewPart& dvp, const Base::Vector3d& inPoint);
     static Base::Vector3d  toAppSpace(const DrawViewPart& dvp, const QPointF& inPoint);
 
