@@ -22,6 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 
+# NOTE: "isNull() note"
+# After performing cut operations, checking the resulting shape.isNull() will
+# sometimes return False even when the resulting shape is infinitesimal and
+# further operations with it will raise exceptions. Instead checking if the
+# shape.Wires list is non-empty bypasses this issue.
+
 import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
@@ -759,7 +765,8 @@ def Execute(op, obj):
                     stockPaths[rdict["startdepth"]], path2d, progressFn
                 )
 
-            # Create list of regions to cut, in an order they can be cut in
+            # Sort regions to cut by either depth or area.
+            # TODO: Bonus points for ordering to minimize rapids
             cutlist = list()
             # Region IDs that have been cut already
             cutids = list()
@@ -924,6 +931,131 @@ def _getSolidProjection(shp, z):
     return projectFacesToXY(faces)
 
 
+def _workingEdgeHelperRoughing(op, obj, depths):
+    # Final calculated regions- list of dicts with entries:
+    # "region" - actual shape
+    # "depths" - list of depths this region applies to
+    insideRegions = list()
+    outsideRegions = list()
+
+    # Multiple input solids can be selected- make a single part out of them,
+    # will process each solid separately as appropriate
+    shps = op.model[0].Shape.fuse([k.Shape for k in op.model[1:]])
+
+    projdir = FreeCAD.Vector(0, 0, 1)
+
+    # Take outline of entire model as our baseline machining region. No need to
+    # do this repeatedly inside the loop.
+    modelOutlineFaces = [
+        Part.makeFace(TechDraw.findShapeOutline(s, 1, projdir)) for s in shps.Solids
+    ]
+
+    lastdepth = obj.StartDepth.Value
+
+    for depth in depths:
+        # If we have no stock to machine, just skip all the rest of the math
+        if depth >= op.stock.Shape.BoundBox.ZMax:
+            lastdepth = depth
+            continue
+
+        # NOTE: To "leave" stock along Z without actually checking any face
+        # depths, we simply slice the model "lower" than our actual cut depth by
+        # the Z stock to leave, which ensures we stay at least that far from the
+        # actual faces
+        stockface = _getSolidProjection(op.stock.Shape, depth - obj.ZStockToLeave.Value)
+        aboveRefined = _getSolidProjection(shps, depth - obj.ZStockToLeave.Value)
+
+        # Outside is based on the outer wire of the above_faces
+        # Insides are based on the remaining "below" regions, masked by the
+        # "above"- if something is above an area, we can't machine it in 2.5D
+
+        # OUTSIDE REGIONS
+        # Outside: Take the outer wire of the above faces
+        # NOTE: Exactly one entry per depth (not necessarily one depth entry per
+        # stepdown, however), which is a LIST of the wires we're staying outside
+        # NOTE: Do this FIRST- if any inside regions share enough of an edge
+        # with an outside region for a tool to get through, we want to skip them
+        # for the current stepdown
+        if aboveModelFaces := [
+            Part.makeFace(TechDraw.findShapeOutline(f, 1, projdir)) for f in aboveRefined.Faces
+        ]:
+            aboveModelFaces = aboveModelFaces[0].fuse(aboveModelFaces[1:])
+        else:
+            aboveModelFaces = Part.Shape()
+        # If this region exists in our list, it has to be the last entry, due to
+        # proceeding in order and having only one per depth. If it's already
+        # there, replace with the new, deeper depth, else add new
+        # NOTE: Check for NULL regions to not barf on regions between the top of
+        # the model and the top of the stock, which are "outside" of nothing
+        # NOTE: See "isNull() note" at top of file
+        if (
+            outsideRegions
+            and outsideRegions[-1]["region"].Wires
+            and aboveModelFaces.Wires
+            and not aboveModelFaces.cut(outsideRegions[-1]["region"]).Wires
+        ):
+            outsideRegions[-1]["depths"].append(depth)
+        else:
+            outsideRegions.append({"region": aboveModelFaces, "depths": [depth]})
+
+        # NOTE: If you don't care about controlling depth vs region ordering,
+        # you can actually just do everything with "outside" processing, if you
+        # don't remove internal holes from the regions above
+
+        # INSIDE REGIONS
+        # NOTE: Nothing inside if there's no model above us
+        # NOTE: See "isNull() note" at top of file
+        if aboveModelFaces.Wires:
+            # Remove any overlapping areas already machined from the outside.
+            outsideface = stockface.cut(outsideRegions[-1]["region"].Faces)
+            # NOTE: See "isNull() note" at top of file
+            if outsideface.Wires:
+                belowFaces = [f.cut(outsideface) for f in modelOutlineFaces]
+            else:
+                # NOTE: Doesn't matter here, but ensure we're making a new list so
+                # we don't clobber modelOutlineFaces
+                belowFaces = [f for f in modelOutlineFaces]
+
+            # This isn't really necessary unless the user inputs bad data- eg, a
+            # min depth above the top of the model. In which case we still want to
+            # clear the stock
+            if belowFaces:
+                # Remove the overhangs from the desired region to cut
+                belowCut = belowFaces[0].fuse(belowFaces[1:]).cut(aboveRefined)
+                # NOTE: See "isNull() note" at top of file
+                if belowCut.Wires:
+                    # removeSplitter fixes occasional concatenate issues for
+                    # some face orders
+                    finalCut = DraftGeomUtils.concatenate(belowCut.removeSplitter())
+                else:
+                    finalCut = Part.Shape()
+            else:
+                # Make a dummy shape if we don't have anything actually below
+                finalCut = Part.Shape()
+
+            # Split up into individual faces if any are disjoint, then update
+            # insideRegions- either by adding a new entry OR by updating the depth
+            # of an existing entry
+            for f in finalCut.Faces:
+                addNew = True
+                # Brute-force search all existing regions to see if any are the same
+                newtop = lastdepth
+                for rdict in insideRegions:
+                    # FIXME: Smarter way to do this than a full cut operation?
+                    if not rdict["region"].cut(f).Wires:
+                        rdict["depths"].append(depth)
+                        addNew = False
+                        break
+                if addNew:
+                    insideRegions.append({"region": f, "depths": [depth]})
+
+        # Update the last depth step
+        lastdepth = depth
+    # end for depth
+
+    return insideRegions, outsideRegions
+
+
 def _workingEdgeHelperManual(op, obj, depths):
     # Final calculated regions- list of dicts with entries:
     # "region" - actual shape
@@ -984,7 +1116,7 @@ def _workingEdgeHelperManual(op, obj, depths):
     selectedRefined = projectFacesToXY(selectedRegions + edgefaces)
 
     # If the user selected only faces that don't have an XY projection AND no
-    # edges, give a useful error
+    # edges, give a useful message
     if not selectedRefined.Wires:
         Path.Log.warning("Selected faces/wires have no projection on the XY plane")
         return insideRegions, outsideRegions
@@ -997,8 +1129,8 @@ def _workingEdgeHelperManual(op, obj, depths):
             lastdepth = depth
             continue
 
-        # NOTE: Slice stock lower than cut depth to effectively leave (at least)
-        # obj.ZStockToLeave
+        # NOTE: See note in _workingEdgeHelperRoughing- tl;dr slice stock
+        # lower than cut depth to effectively leave (at least) obj.ZStockToLeave
         aboveRefined = _getSolidProjection(shps, depth - obj.ZStockToLeave.Value)
 
         # Create appropriate tuples and add to list, processing inside/outside
@@ -1106,8 +1238,8 @@ def _getWorkingEdges(op, obj):
 
     # Get the stock outline at each stepdown. Used to calculate toolpaths and
     # for calcuating cut regions in some instances
-    # NOTE: Slice stock lower than cut depth to effectively leave (at least)
-    # obj.ZStockToLeave
+    # NOTE: See note in _workingEdgeHelperRoughing- tl;dr slice stock lower
+    # than cut depth to effectively leave (at least) obj.ZStockToLeave
     # NOTE: Stock is handled DIFFERENTLY than inside and outside regions!
     # Combining different depths just adds code to look up the correct outline
     # when computing inside/outside regions, for no real benefit.
@@ -1121,7 +1253,10 @@ def _getWorkingEdges(op, obj):
     # a list of Z depths that the region applies to
     # Inside regions are a single face; outside regions consist of ALL geometry
     # to be avoided at those depths.
-    insideRegions, outsideRegions = _workingEdgeHelperManual(op, obj, depths)
+    if obj.Base:
+        insideRegions, outsideRegions = _workingEdgeHelperManual(op, obj, depths)
+    else:
+        insideRegions, outsideRegions = _workingEdgeHelperRoughing(op, obj, depths)
 
     # Find all children of each region. A child of region X is any region Y such
     # that Y is a subset of X AND Y starts within one stepdown of X (ie, direct
@@ -1333,7 +1468,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Influences accuracy and performance",
+                "Influences calculation performance vs stability and accuracy.\n\nLarger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.",
             ),
         )
         obj.addProperty(
@@ -1587,9 +1722,6 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.setEditorMode("removalshape", 2)  # hide
 
         FeatureExtensions.initialize_properties(obj)
-
-
-# Eclass
 
 
 def SetupProperties():

@@ -524,6 +524,163 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(noPathTouchesFace3, "No feed moves within the top face.")
 
+    def test10(self):
+        """test10() Tests full roughing- should machine entire model with no inputs"""
+        # Instantiate a Adaptive operation and set Base Geometry
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [(self.doc.Fusion, [])]  # (base, subs_list)
+        adaptive.Label = "test10+"
+        adaptive.Comment = "test10() Verify path generated with no subs roughs entire model"
+
+        # Set additional operation properties
+        setDepthsAndHeights(adaptive, 15, 0)
+        adaptive.FinishingProfile = False
+        adaptive.HelixAngle = 75.0
+        adaptive.HelixDiameterLimit.Value = 1.0
+        adaptive.LiftDistance.Value = 1.0
+        adaptive.StepOver = 75
+        adaptive.UseOutline = False
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            5.0  # Have to set expression to None before numerical value assignment
+        )
+
+        _addViewProvider(adaptive)
+        self.doc.recompute()
+
+        # Check:
+        # - Bounding box at Z=0 goes outside the model box + tool diameter
+        # (has to profile the model)
+        # - Bounding box at Z=5 should go past the model in -X, but only up to the
+        # stock edges in +X and Y
+        # - Bounding box at Z=10 goes to at least stock bounding box edges,
+        # minus tool diameter (has to machine the entire top of the stock off)
+        # - [Should maybe check] At least one move Z = [10,5] is within the model
+        # - [Should maybe check] No moves at Z = 0 are within the model
+
+        paths = [c for c in adaptive.Path.Commands if c.Name in ["G0", "G00", "G1", "G01"]]
+        toolr = adaptive.OpToolDiameter.Value / 2
+        tol = adaptive.Tolerance
+
+        # Make clean up math below- combine tool radius and tolerance into a
+        # single field that can be added/subtracted to/from bounding boxes
+        moffset = toolr - tol
+
+        zDict = {10: None, 5: None, 0: None}
+
+        getPathBoundaries(paths, zDict)
+        mbb = self.doc.Fusion.Shape.BoundBox
+        sbb = adaptive.Document.Stock.Shape.BoundBox
+
+        okAt10 = (
+            zDict[10] is not None
+            and zDict[10]["min"][0] <= sbb.XMin + moffset
+            and zDict[10]["min"][1] <= sbb.YMin + moffset
+            and zDict[10]["max"][0] >= sbb.XMax - moffset
+            and zDict[10]["max"][1] >= sbb.YMax - moffset
+        )
+
+        okAt5 = (
+            zDict[5] is not None
+            and zDict[5]["min"][0] <= mbb.XMin - moffset
+            and zDict[5]["min"][1] <= sbb.YMin + moffset
+            and zDict[5]["max"][0] >= sbb.XMax - moffset
+            and zDict[5]["max"][1] >= sbb.YMax - moffset
+        )
+
+        okAt0 = (
+            zDict[0] is not None
+            and zDict[0]["min"][0] <= mbb.XMin - moffset
+            and zDict[0]["min"][1] <= mbb.YMin - moffset
+            and zDict[0]["max"][0] >= mbb.XMax + moffset
+            and zDict[0]["max"][1] >= mbb.YMax + moffset
+        )
+
+        self.assertTrue(
+            okAt10 and okAt5 and okAt0, "Path boundaries don't include expected regions"
+        )
+
+    def test11(self):
+        """test11() Tests stock handling- should rough full model, but not cut
+        air excessively where there's not stock"""
+        # Instantiate a Adaptive operation and set Base Geometry
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [(self.doc.Fusion, [])]  # (base, subs_list)
+        adaptive.Label = "test11+"
+        adaptive.Comment = "test11() Verify machining region is limited to the stock"
+
+        # Set additional operation properties
+        setDepthsAndHeights(adaptive, 15, 5)
+        adaptive.FinishingProfile = False
+        adaptive.HelixAngle = 75.0
+        adaptive.HelixDiameterLimit.Value = 1.0
+        adaptive.LiftDistance.Value = 1.0
+        adaptive.StepOver = 75
+        adaptive.UseOutline = False
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            5.0  # Have to set expression to None before numerical value assignment
+        )
+
+        # Create and assign new stock that will create different bounds at
+        # different stepdowns
+        btall = Part.makeBox(17, 27, 11, FreeCAD.Vector(-1, -1, 0))
+        bshort = Part.makeBox(42, 27, 6, FreeCAD.Vector(-1, -1, 0))
+        adaptive.Document.Job.Stock.Shape = btall.fuse(bshort)
+
+        _addViewProvider(adaptive)
+        # NOTE: Do NOT recompute entire doc, which will undo our stock change!
+        adaptive.recompute()
+
+        # Check:
+        # - Bounding box at Z=10 stays basically above "btall"
+        # - Bounding box at Z=5 and Z=0 are outside of stock
+
+        paths = [c for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]
+        toolr = adaptive.OpToolDiameter.Value / 2
+        tol = adaptive.Tolerance
+
+        # Make clean up math below- combine tool radius and tolerance into a
+        # single field that can be added/subtracted to/from bounding boxes
+        # NOTE: ADD tol here, since we're effectively flipping our normal
+        # comparison and want tolerance to make our check looser
+        moffset = toolr + tol
+
+        zDict = {10: None, 5: None}
+
+        getPathBoundaries(paths, zDict)
+        sbb = adaptive.Document.Stock.Shape.BoundBox
+        sbb10 = btall.BoundBox
+
+        # These should be no more than a tool radius outside of the "btall"
+        # XY section of the stock
+        okAt10 = (
+            zDict[10] is not None
+            and zDict[10]["min"][0] >= sbb10.XMin - moffset
+            and zDict[10]["min"][1] >= sbb10.YMin - moffset
+            and zDict[10]["max"][0] <= sbb10.XMax + moffset
+            and zDict[10]["max"][1] <= sbb10.YMax + moffset
+        )
+
+        # These should be no more than a tool radius outside of the overall
+        # stock bounding box
+        okAt5 = (
+            zDict[5] is not None
+            and zDict[5]["min"][0] >= sbb.XMin - moffset
+            and zDict[5]["min"][1] >= sbb.YMin - moffset
+            and zDict[5]["max"][0] <= sbb.XMax + moffset
+            and zDict[5]["max"][1] <= sbb.YMax + moffset
+        )
+
+        self.assertTrue(okAt10 and okAt5, "Path feeds extend excessively in +X")
+
+    # POSSIBLY MISSING TESTS:
+    # - Something for region ordering
+    # - Known-edge cases: cones/spheres/cylinders (especially partials on edges
+    # of model + strange angles- especially for cylinders)
+    # - Multiple models/stock
+    # - XY stock to leave
+
 
 # Eclass
 
