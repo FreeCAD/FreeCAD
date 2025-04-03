@@ -180,6 +180,11 @@ class ToolBitEditor(object):
                 value.setData(tool, _Delegate.ObjectRole)
                 value.setData(prop, _Delegate.PropertyRole)
 
+                # do not allow editing of "Type" group as it's
+                # inherently linked to the tool shape and should not be changed
+                if name == "Type":
+                    value.setEditable(False)
+
                 group.appendRow([label, value])
             self.model.appendRow(group)
 

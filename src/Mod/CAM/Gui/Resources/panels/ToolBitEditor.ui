@@ -70,47 +70,49 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QWidget" name="widget">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="leftMargin">
+             <number>0</number>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLineEdit" name="shapePath">
-               <property name="toolTip">
-                <string>The file which defines the type and shape of the Tool Bit.</string>
-               </property>
-               <property name="placeholderText">
-                <string>path</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="shapeSet">
-               <property name="toolTip">
-                <string>Change file defining type and shape of Tool Bit.</string>
-               </property>
-               <property name="text">
-                <string notr="true">...</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="shapePath">
+              <property name="toolTip">
+               <string>The file which defines the type and shape of the Tool Bit.</string>
+              </property>
+              <property name="placeholderText">
+               <string>path</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="shapeSet">
+              <property name="toolTip">
+               <string>Change file defining type and shape of Tool Bit.</string>
+              </property>
+              <property name="text">
+               <string notr="true">...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="toolType"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Type</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -123,22 +125,12 @@
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
              <string>Point/Tip Angle</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="Gui::InputField" name="toolCuttingEdgeAngle">
-            <property name="text">
-             <string notr="true">0 °</string>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">°</string>
             </property>
            </widget>
           </item>
@@ -159,6 +151,16 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="1">
+           <widget class="Gui::InputField" name="toolCuttingEdgeAngle">
+            <property name="text">
+             <string notr="true">0 °</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">°</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -174,14 +176,14 @@
           <string>Image</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -213,7 +215,7 @@
           </size>
          </property>
          <property name="editTriggers">
-          <set>QAbstractItemView::AllEditTriggers</set>
+          <set>QAbstractItemView::EditTrigger::AllEditTriggers</set>
          </property>
         </widget>
        </item>
