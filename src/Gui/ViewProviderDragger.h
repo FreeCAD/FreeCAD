@@ -56,10 +56,6 @@ public:
     /// destructor.
     ~ViewProviderDragger() override;
 
-    /// Property controlling visibility of the placement indicator, useful for displaying origin
-    /// position of attached Document Object.
-    App::PropertyBool ShowPlacement;
-
     /// Origin used when object is transformed. It temporarily changes the origin of object.
     /// Dragger is normally placed at the transform origin, unless explicitly overridden via
     /// ViewProviderDragger#setDraggerPlacement() method.
