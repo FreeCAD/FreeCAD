@@ -101,18 +101,14 @@ class TestPathAdaptive(PathTestBase):
         pass
 
     # Unit tests
-    def test00(self):
-        """test00() Empty test."""
-        return
-
-    def test01(self):
-        """test01() Verify path generated on Face3."""
+    def testFaceSingleSimple(self):
+        """testFaceSingleSimple() Verify path generated on Face3."""
 
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face3"])]  # (base, subs_list)
-        adaptive.Label = "test01+"
-        adaptive.Comment = "test01() Verify path generated on Face3."
+        adaptive.Label = "testFaceSingleSimple+"
+        adaptive.Comment = "testFaceSingleSimple() Verify path generated on Face3."
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -138,14 +134,15 @@ class TestPathAdaptive(PathTestBase):
         #                "expected_moves_test01: {}\noperationMoves: {}".format(expected_moves_test01, operationMoves))
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
-    def test02(self):
-        """test02() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."""
+    def testFacesMergedDifferentZ(self):
+        """testFacesMergedDifferentZ() Verify path generated on adjacent, combined
+        Face3 and Face10.  The Z heights are different."""
 
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
-        adaptive.Label = "test02+"
-        adaptive.Comment = "test02() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."
+        adaptive.Label = "testFacesMergedDifferentZ+"
+        adaptive.Comment = "testFacesMergedDifferentZ() Verify path generated on adjacent, combined Face3 and Face10. The Z heights are different. UseOutline = False"
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -165,14 +162,15 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
-    def test03(self):
-        """test03() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."""
+    def testFacesMergedDifferentZUseOutline(self):
+        """testFacesMergedDifferentZUseOutline() Verify path generated on adjacent, combined Face3 and Face10.
+        The Z heights are different."""
 
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
-        adaptive.Label = "test03+"
-        adaptive.Comment = "test03() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."
+        adaptive.Label = "testFacesMergedDifferentZUseOutline+"
+        adaptive.Comment = "testFacesMergedDifferentZUseOutline() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different. UseOutline = True."
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -192,8 +190,8 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
-    def test04(self):
-        """test04() Verify path generated non-closed edges with differing Z-heights that are closed with Z=1 projection: "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"."""
+    def testOutlineDifferentZDiscontinuousEdges(self):
+        """testOutlineDifferentZDiscontinuous() Verify path generated non-closed edges with differing Z-heights that are closed with Z=1 projection: "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"."""
 
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
@@ -212,8 +210,8 @@ class TestPathAdaptive(PathTestBase):
                 ],
             )
         ]  # (base, subs_list)
-        adaptive.Label = "test04+"
-        adaptive.Comment = 'test04() Verify path generated non-closed edges with differing Z-heights that are closed with Z=1 projection: "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19".'
+        adaptive.Label = "testOutlineDifferentZDiscontinuous+"
+        adaptive.Comment = 'testOutlineDifferentZDiscontinuous() Verify path generated non-closed edges with differing Z-heights that are closed with Z=1 projection: "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19".'
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -233,7 +231,7 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
-    def test05(self):
+    def testOutlineDifferentZContinuousEdges(self):
         """test05() Verify path generated closed wire with differing Z-heights: "Edge13", "Edge7", "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"."""
 
         # Instantiate a Adaptive operation and set Base Geometry
@@ -255,8 +253,8 @@ class TestPathAdaptive(PathTestBase):
                 ],
             )
         ]  # (base, subs_list)
-        adaptive.Label = "test05+"
-        adaptive.Comment = 'test05() Verify path generated closed wire with differing Z-heights: "Edge13", "Edge7", "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19".'
+        adaptive.Label = "testOutlineDifferentZContinuous+"
+        adaptive.Comment = 'testOutlineDifferentZContinuous() Verify path generated closed wire with differing Z-heights: "Edge13", "Edge7", "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19".'
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -276,8 +274,8 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
-    def test06(self):
-        """test06() Verify path generated with outer and inner edge loops at same Z height: "Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33"."""
+    def testOutlineWithCutout(self):
+        """testOutlineWithCutout() Verify path generated with outer and inner edge loops at same Z height: "Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33"."""
 
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
@@ -298,8 +296,8 @@ class TestPathAdaptive(PathTestBase):
                 ],
             )
         ]  # (base, subs_list)
-        adaptive.Label = "test06+"
-        adaptive.Comment = 'test06() Verify path generated with outer and inner edge loops at same Z height: "Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33".'
+        adaptive.Label = "testOutlineWithCutout+"
+        adaptive.Comment = 'testOutlineWithCutout() Verify path generated with outer and inner edge loops at same Z height: "Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33".'
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -335,14 +333,14 @@ class TestPathAdaptive(PathTestBase):
                 break
         self.assertFalse(isInBox, "Paths originating within the inner hole.")
 
-    def test07(self):
-        """test07() Verify path generated on donut-shaped Face10."""
+    def testFaceWithCutout(self):
+        """testFaceWithCutout() Verify path generated on donut-shaped Face10."""
 
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face10"])]  # (base, subs_list)
-        adaptive.Label = "test07+"
-        adaptive.Comment = "test07() Verify path generated on donut-shaped Face10."
+        adaptive.Label = "testFaceWithCutout+"
+        adaptive.Comment = "testFaceWithCutout() Verify path generated on donut-shaped Face10."
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -396,14 +394,14 @@ class TestPathAdaptive(PathTestBase):
                 break
         self.assertTrue(isInBox, "No paths originating within the inner hole.")
 
-    def test08(self):
-        """test08() Tests stock awareness- avoids cutting into the model regardless
+    def testModelStockAwareness(self):
+        """testModelStockAwareness() Tests stock awareness- avoids cutting into the model regardless
         of bounding box selected."""
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
-        adaptive.Label = "test08+"
-        adaptive.Comment = "test08() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different. Result should be the combination at Z=10 (faces from (0,0) to (40,25), minus tool radius), and only the lower face at Z=5: (15,0) to (40,25)."
+        adaptive.Label = "testModelStockAwareness+"
+        adaptive.Comment = "testModelStockAwareness() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different. Result should be the combination at Z=10 (faces from (0,0) to (40,25), minus tool radius), and only the lower face at Z=5: (15,0) to (40,25)."
 
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 0)
@@ -417,6 +415,10 @@ class TestPathAdaptive(PathTestBase):
         adaptive.StepDown.Value = (
             5.0  # Have to set expression to None before numerical value assignment
         )
+        # Don't use helix entry- ensures helix moves are counted in the path
+        # boundary calculation. This should be unnecessary, as the helices are
+        # grown out of the cut area, and thus must be inside of it.
+        adaptive.UseHelixArcs = False
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -435,9 +437,7 @@ class TestPathAdaptive(PathTestBase):
         # single field that can be added/subtracted to/from bounding boxes
         moffset = toolr - tol
 
-        zDict = {10: None, 5: None, 0: None}
-
-        getPathBoundaries(paths, zDict)
+        zDict = getPathBoundaries(paths, [10, 5, 0])
 
         # NOTE: Face3 is at Z=10, Face10 is at Z=5
         bbf3 = self.doc.Fusion.Shape.getElement("Face3").BoundBox
@@ -463,14 +463,14 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(okAt10 and okAt5 and okAt0, "Path boundaries outside of expected regions")
 
-    def test09(self):
-        """test09() Tests Z stock to leave- with 1mm Z stock to leave, machining
+    def testZStockToLeave(self):
+        """testZStockToLeave() Tests Z stock to leave- with 1mm Z stock to leave, machining
         at the top of the model should not touch the top model face"""
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
-        adaptive.Label = "test09+"
-        adaptive.Comment = "test09() Verify Z stock is left as requested"
+        adaptive.Label = "testZStockToLeave+"
+        adaptive.Comment = "testZStockToLeave() Verify Z stock is left as requested"
 
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 10)
@@ -524,13 +524,15 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(noPathTouchesFace3, "No feed moves within the top face.")
 
-    def test10(self):
-        """test10() Tests full roughing- should machine entire model with no inputs"""
+    def testFullModelAdaptiveRoughing(self):
+        """testFullModelAdaptiveRoughing() Tests full roughing- should machine entire model with no inputs"""
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, [])]  # (base, subs_list)
-        adaptive.Label = "test10+"
-        adaptive.Comment = "test10() Verify path generated with no subs roughs entire model"
+        adaptive.Label = "testFullModelAdaptiveRoughing+"
+        adaptive.Comment = (
+            "testFullModelAdaptiveRoughing() Verify path generated with no subs roughs entire model"
+        )
 
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 0)
@@ -544,6 +546,10 @@ class TestPathAdaptive(PathTestBase):
         adaptive.StepDown.Value = (
             5.0  # Have to set expression to None before numerical value assignment
         )
+        # Don't use helix entry- ensures helix moves are counted in the path
+        # boundary calculation. This should be unnecessary, as the helices are
+        # grown out of the cut area, and thus must be inside of it.
+        adaptive.UseHelixArcs = False
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -566,9 +572,7 @@ class TestPathAdaptive(PathTestBase):
         # single field that can be added/subtracted to/from bounding boxes
         moffset = toolr - tol
 
-        zDict = {10: None, 5: None, 0: None}
-
-        getPathBoundaries(paths, zDict)
+        zDict = getPathBoundaries(paths, [10, 5, 0])
         mbb = self.doc.Fusion.Shape.BoundBox
         sbb = adaptive.Document.Stock.Shape.BoundBox
 
@@ -600,14 +604,16 @@ class TestPathAdaptive(PathTestBase):
             okAt10 and okAt5 and okAt0, "Path boundaries don't include expected regions"
         )
 
-    def test11(self):
-        """test11() Tests stock handling- should rough full model, but not cut
+    def testStockLimitsAwareness(self):
+        """testStockLimitsAwareness() Tests stock handling- should rough full model, but not cut
         air excessively where there's not stock"""
         # Instantiate a Adaptive operation and set Base Geometry
         adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, [])]  # (base, subs_list)
-        adaptive.Label = "test11+"
-        adaptive.Comment = "test11() Verify machining region is limited to the stock"
+        adaptive.Label = "testStockLimitsAwareness+"
+        adaptive.Comment = (
+            "testStockLimitsAwareness() Verify machining region is limited to the stock"
+        )
 
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 5)
@@ -621,6 +627,10 @@ class TestPathAdaptive(PathTestBase):
         adaptive.StepDown.Value = (
             5.0  # Have to set expression to None before numerical value assignment
         )
+        # Don't use helix entry- ensures helix moves are counted in the path
+        # boundary calculation. This should be unnecessary, as the helices are
+        # grown out of the cut area, and thus must be inside of it.
+        adaptive.UseHelixArcs = False
 
         # Create and assign new stock that will create different bounds at
         # different stepdowns
@@ -646,9 +656,7 @@ class TestPathAdaptive(PathTestBase):
         # comparison and want tolerance to make our check looser
         moffset = toolr + tol
 
-        zDict = {10: None, 5: None}
-
-        getPathBoundaries(paths, zDict)
+        zDict = getPathBoundaries(paths, [10, 5])
         sbb = adaptive.Document.Stock.Shape.BoundBox
         sbb10 = btall.BoundBox
 
@@ -685,10 +693,10 @@ class TestPathAdaptive(PathTestBase):
 # Eclass
 
 
-def getPathBoundaries(paths, zDict):
-    """getPathBoundaries(paths, zDict): Takes the list of paths and dictionary
-    of Z depths of interest, and finds the bounding box of the paths at each
-    depth.
+def getPathBoundaries(paths, zLevels):
+    """getPathBoundaries(paths, zLevels): Takes the list of paths and list of Z
+    depths of interest, and finds the bounding box of the paths at each depth.
+    A dictionary of depth: {"min": (x,y), "max": (x,y)} entries is returned.
 
     NOTE: You'd think that using Path.BoundBox would give us what we want,
     but... no, for whatever reason it appears to always extend to (0,0,0)
@@ -705,7 +713,8 @@ def getPathBoundaries(paths, zDict):
         p.Y = last.y
         p.Z = last.z
 
-    for z in zDict:
+    zDict = {}
+    for z in zLevels:
         zpaths = [k for k in paths if k.Z == z]
         if not zpaths:
             zDict[z] = None
@@ -715,6 +724,8 @@ def getPathBoundaries(paths, zDict):
         ymin = min([k.Y for k in zpaths])
         ymax = max([k.Y for k in zpaths])
         zDict[z] = {"min": (xmin, ymin), "max": (xmax, ymax)}
+
+    return zDict
 
 
 def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
