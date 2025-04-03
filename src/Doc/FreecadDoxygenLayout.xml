@@ -2,7 +2,7 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
-    <tab type="modules" visible="yes" title=""/>
+    <tab type="topics" visible="yes" title=""/>
     <tab type="namespaces" visible="yes" title="">
       <tab type="namespaces" visible="yes" title=""/>
       <tab type="namespacemembers" visible="yes" title=""/>

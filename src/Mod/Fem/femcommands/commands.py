@@ -221,6 +221,22 @@ class _ConstraintCurrentDensity(CommandManager):
         self.do_activated = "add_obj_on_gui_set_edit"
 
 
+class _ConstraintElectricChargeDensity(CommandManager):
+    "The FEM_ConstraintElectricChargeDensity command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.pixmap = "FEM_ConstraintElectricChargeDensity"
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ConstraintElectricChargeDensity", "Electric charge density"
+        )
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ConstraintElectricChargeDensity", "Creates a electric charge density"
+        )
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
 class _ConstraintElectrostaticPotential(CommandManager):
     "The FEM_ConstraintElectrostaticPotential command definition"
 
@@ -1171,6 +1187,7 @@ FreeCADGui.addCommand("FEM_ConstantVacuumPermittivity", _ConstantVacuumPermittiv
 FreeCADGui.addCommand("FEM_ConstraintBodyHeatSource", _ConstraintBodyHeatSource())
 FreeCADGui.addCommand("FEM_ConstraintCentrif", _ConstraintCentrif())
 FreeCADGui.addCommand("FEM_ConstraintCurrentDensity", _ConstraintCurrentDensity())
+FreeCADGui.addCommand("FEM_ConstraintElectricChargeDensity", _ConstraintElectricChargeDensity())
 FreeCADGui.addCommand("FEM_ConstraintElectrostaticPotential", _ConstraintElectrostaticPotential())
 FreeCADGui.addCommand("FEM_ConstraintFlowVelocity", _ConstraintFlowVelocity())
 FreeCADGui.addCommand("FEM_ConstraintInitialFlowVelocity", _ConstraintInitialFlowVelocity())

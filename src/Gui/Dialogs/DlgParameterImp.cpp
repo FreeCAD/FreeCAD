@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <sstream>
 #include <QByteArray>
 #include <QContextMenuEvent>
@@ -412,11 +413,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
     hGrp = hGrp->GetGroup("ParameterEditor");
     QString path = QString::fromUtf8(hGrp->GetASCII("LastParameterGroup").c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     QStringList paths = path.split(QLatin1String("."), Qt::SkipEmptyParts);
-#else
-    QStringList paths = path.split(QLatin1String("."), QString::SkipEmptyParts);
-#endif
 
     QTreeWidgetItem* parent = nullptr;
     for (int index = 0; index < paramGroup->topLevelItemCount() && !paths.empty(); index++) {
@@ -909,7 +906,7 @@ void ParameterValue::onCreateUIntItem()
                           DlgInputDialogImp::UIntBox);
     dlg.setWindowTitle(QObject::tr("New unsigned item"));
     UIntSpinBox* edit = dlg.getUIntBox();
-    edit->setRange(0, UINT_MAX);
+    edit->setRange(0, std::numeric_limits<unsigned>::max());
     if (dlg.exec() == QDialog::Accepted) {
         QString value = edit->text();
         unsigned long val = value.toULong(&ok);
@@ -1253,7 +1250,7 @@ void ParameterUInt::changeValue()
                           DlgInputDialogImp::UIntBox);
     dlg.setWindowTitle(QObject::tr("Change value"));
     UIntSpinBox* edit = dlg.getUIntBox();
-    edit->setRange(0, UINT_MAX);
+    edit->setRange(0, std::numeric_limits<unsigned>::max());
     edit->setValue(text(2).toULong());
     if (dlg.exec() == QDialog::Accepted) {
         QString value = edit->text();

@@ -158,12 +158,7 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
-void ViewProviderTransformed::recomputeFeature(bool recompute)
-{
-    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
-    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
-        pcTransformed->recomputeFeature(true);
-
+void ViewProviderTransformed::handleTranformedResult(PartDesign::Transformed* pcTransformed) {
     unsigned rejected = 0;
     TopoDS_Shape cShape = pcTransformed->rejected;
     TopExp_Explorer xp;
@@ -209,6 +204,15 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     }
 }
 
+void ViewProviderTransformed::recomputeFeature(bool recompute)
+{
+    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
+    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
+        pcTransformed->recomputeFeature(true);
+
+    handleTranformedResult(pcTransformed);
+}
+
 void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
 {
     try {
@@ -224,7 +228,7 @@ void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
 
         // create or use the mesh on the data structure
         // Note: This DOES have an effect on shape
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * std::numbers::pi;
         BRepMesh_IncrementalMesh(shape, deflection, Standard_False, AngDeflectionRads, Standard_True);
 
         // We must reset the location here because the transformation data

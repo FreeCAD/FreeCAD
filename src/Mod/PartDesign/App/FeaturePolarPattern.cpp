@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <gp_Lin.hxx>
@@ -48,7 +49,8 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences = {
+    1, std::numeric_limits<int>::max(), 1 };
 const App::PropertyAngle::Constraints PolarPattern::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
 
 const char* PolarPattern::ModeEnums[] = {"angle", "offset", nullptr};

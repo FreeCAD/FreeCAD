@@ -35,12 +35,8 @@
 #include <Base/Console.h>
 #include <Mod/Part/App/TopoShape.h>
 
-#if OCC_VERSION_HEX >= 0x070500
 // See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
 #define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
 
 FC_LOG_LEVEL_INIT("Import", true, true)
 

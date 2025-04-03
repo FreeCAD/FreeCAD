@@ -24,6 +24,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
 #define SKETCHERGUI_DrawSketchHandlerOffset_H
 
+#include <limits>
+
 #include <QApplication>
 
 #include <BRep_Tool.hxx>
@@ -932,7 +934,7 @@ private:
 
     void findOffsetLength()
     {
-        double newOffsetLength = DBL_MAX;
+        double newOffsetLength = std::numeric_limits<double>::max();
 
         BRepBuilderAPI_MakeVertex mkVertex({endpoint.x, endpoint.y, 0.0});
         TopoDS_Vertex vertex = mkVertex.Vertex();
@@ -960,7 +962,7 @@ private:
             }
         }
 
-        if (newOffsetLength != DBL_MAX) {
+        if (newOffsetLength != std::numeric_limits<double>::max()) {
             offsetLength = newOffsetLength;
         }
     }

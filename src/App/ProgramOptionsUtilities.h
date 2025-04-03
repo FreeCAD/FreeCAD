@@ -74,7 +74,7 @@ std::pair<std::string, std::string> customSyntax(std::string_view strIn)
                                  "title",
                                  "visual"};
 
-    if (std::find(knowns.begin(), knowns.end(), rest) != knowns.end()) {
+    if (std::ranges::find(knowns, rest) != knowns.end()) {
         return {rest, "null"};
     }
     return {};

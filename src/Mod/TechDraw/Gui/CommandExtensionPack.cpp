@@ -1811,7 +1811,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
 
         double faceArea = faceProps.Mass();
         totalArea += faceArea;
-        center += faceArea*DrawUtil::toVector3d(faceProps.CentreOfMass());
+        center += faceArea*Base::convertTo<Base::Vector3d>(faceProps.CentreOfMass());
     }
     if (totalArea > 0.0) {
         center /= totalArea;
@@ -1976,7 +1976,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     }
 
     double scale = objFeat->getScale();
-    Base::Vector3d anchor = DrawUtil::invertY(DrawUtil::toVector3d(midPoint)/scale);
+    Base::Vector3d anchor = DrawUtil::invertY(Base::convertTo<Base::Vector3d>(midPoint)/scale);
     totalLength /= scale;
 
     // Use virtual dimension view helper to format resulting value
@@ -2099,7 +2099,7 @@ double _getAngle(Base::Vector3d center, Base::Vector3d point)
 {
     constexpr double DegreesHalfCircle{180.0};
     Base::Vector3d vecCP = point - center;
-    double angle = DU::angleWithX(vecCP) * DegreesHalfCircle / M_PI;
+    double angle = DU::angleWithX(vecCP) * DegreesHalfCircle / std::numbers::pi;
     return angle;
 }
 

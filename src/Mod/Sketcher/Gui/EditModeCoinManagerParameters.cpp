@@ -41,9 +41,7 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId,
     if (isExternal) {
         auto egf = Sketcher::ExternalGeometryFacade::getFacade(geom->clone());
         if (egf->testFlag(Sketcher::ExternalGeometryExtension::Defining)) {
-            // Defining external are added to the Normal sublayers because they
-            // share the same line style.
-            return static_cast<int>(SubLayer::Normal);
+            return static_cast<int>(SubLayer::ExternalDefining);
         }
     }
 
@@ -82,7 +80,9 @@ SbColor DrawingParameters::PreselectColor(0.88f, 0.88f, 0.0f);           // #E1E
 SbColor DrawingParameters::SelectColor(0.11f, 0.68f, 0.11f);             // #1CAD1C -> ( 28,173, 28)
 SbColor DrawingParameters::PreselectSelectedColor(0.36f, 0.48f, 0.11f);  // #5D7B1C -> ( 93,123, 28)
 SbColor DrawingParameters::CurveExternalColor(0.8f, 0.2f, 0.6f);         // #CC3399 -> (204, 51,153)
-SbColor DrawingParameters::CurveDraftColor(0.0f, 0.0f, 0.86f);           // #0000DC -> (  0,  0,220)
+SbColor
+    DrawingParameters::CurveExternalDefiningColor(0.8f, 0.2f, 0.6f);  // #CC3399 -> (204, 51,153)
+SbColor DrawingParameters::CurveDraftColor(0.0f, 0.0f, 0.86f);        // #0000DC -> (  0,  0,220)
 SbColor
     DrawingParameters::FullyConstraintConstructionElementColor(0.56f,
                                                                0.66f,

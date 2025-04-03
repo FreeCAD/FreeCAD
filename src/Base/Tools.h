@@ -28,6 +28,7 @@
 #include <FCGlobal.h>
 #endif
 #include <cmath>
+#include <numbers>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -127,25 +128,21 @@ inline T sgn(T t)
     return (t > 0) ? T(1) : T(-1);
 }
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 template<class T>
 inline T toRadians(T d)
 {
-    return static_cast<T>((d * M_PI) / 180.0);
+    return static_cast<T>((d * std::numbers::pi) / 180.0);
 }
 
 template<class T>
 inline T toDegrees(T r)
 {
-    return static_cast<T>((r / M_PI) * 180.0);
+    return static_cast<T>((r / std::numbers::pi) * 180.0);
 }
 
 inline float fromPercent(const long value)
 {
-    return std::roundf(value) / 100.0F;
+    return std::roundf(static_cast<float>(value)) / 100.0F;
 }
 
 inline long toPercent(float value)

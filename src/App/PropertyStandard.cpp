@@ -601,7 +601,11 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Objec
     std::string p = path.getSubPathStr();
     if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
-        Py::Tuple res(_enum.maxValue() + 1);
+        auto maxEnumValue = _enum.maxValue();
+        if (maxEnumValue < 0) {
+            return false;  // The enum is invalid
+        }
+        Py::Tuple res(maxEnumValue + 1);
         std::vector<std::string> enums = _enum.getEnumVector();
         PropertyString tmp;
         for (int i = 0; i < int(enums.size()); ++i) {
@@ -1246,7 +1250,7 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
 
         double stepSize = valConstr[3];
         // need a value > 0
-        if (stepSize < DBL_EPSILON) {
+        if (stepSize < std::numeric_limits<double>::epsilon()) {
             throw Base::ValueError("Step size must be greater than zero");
         }
 
@@ -1278,7 +1282,8 @@ TYPESYSTEM_SOURCE(App::PropertyPrecision, App::PropertyFloatConstraint)
 //**************************************************************************
 // Construction/Destruction
 //
-const PropertyFloatConstraint::Constraints PrecisionStandard = {0.0, DBL_MAX, 0.001};
+const PropertyFloatConstraint::Constraints PrecisionStandard = {
+    0.0, std::numeric_limits<double>::max(), 0.001};
 
 PropertyPrecision::PropertyPrecision()
 {
@@ -3453,17 +3458,10 @@ unsigned int PropertyPersistentObject::getMemSize() const
 
 void PropertyPersistentObject::setValue(const char* type)
 {
-    if (!type) {
-        type = "";
-    }
-    if (type[0]) {
-        Base::Type::importModule(type);
-        Base::Type t = Base::Type::fromName(type);
+    if (!Base::Tools::isNullOrEmpty(type)) {
+        Base::Type t = Base::Type::getTypeIfDerivedFrom(type, Persistence::getClassTypeId());
         if (t.isBad()) {
-            throw Base::TypeError("Invalid type");
-        }
-        if (!t.isDerivedFrom(Persistence::getClassTypeId())) {
-            throw Base::TypeError("Type must be derived from Base::Persistence");
+            throw Base::TypeError("Invalid type or type must be derived from Base::Persistence");
         }
         if (_pObject && _pObject->getTypeId() == t) {
             return;

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <sstream>
 # include <boost/regex.hpp>
 
@@ -117,7 +118,8 @@ static Py_hash_t _TopoShapeHash(PyObject* self)
 #if OCC_VERSION_HEX >= 0x070800
     return std::hash<TopoDS_Shape> {}(static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape());
 #else
-    return static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape().HashCode(INT_MAX);
+    return static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape().HashCode(
+        std::numeric_limits<int>::max());
 #endif
 }
 

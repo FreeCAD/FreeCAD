@@ -26,6 +26,7 @@
 #include <windows.h>
 #endif
 #include <map>
+#include <limits>
 
 #include <QApplication>
 #include <QPointer>
@@ -35,9 +36,7 @@
 #include <qstringlist.h>
 #endif
 
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -1800,7 +1799,7 @@ void CmdMeshScale::activated(int)
                                             QObject::tr("Enter scaling factor:"),
                                             1,
                                             0,
-                                            DBL_MAX,
+                                            std::numeric_limits<double>::max(),
                                             5,
                                             &ok,
                                             Qt::MSWindowsFixedSizeDialogHint);

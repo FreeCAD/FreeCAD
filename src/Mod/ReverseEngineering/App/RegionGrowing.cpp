@@ -88,7 +88,7 @@ void RegionGrowing::perform(int ksearch)
     reg.setInputCloud(cloud);
     // reg.setIndices (indices);
     reg.setInputNormals(normals);
-    reg.setSmoothnessThreshold(3.0 / 180.0 * M_PI);
+    reg.setSmoothnessThreshold(3.0 / 180.0 * std::numbers::pi);
     reg.setCurvatureThreshold(1.0);
 
     std::vector<pcl::PointIndices> clusters;
@@ -142,7 +142,7 @@ void RegionGrowing::perform(const std::vector<Base::Vector3f>& myNormals)
     reg.setInputCloud(cloud);
     // reg.setIndices (indices);
     reg.setInputNormals(normals);
-    reg.setSmoothnessThreshold(3.0 / 180.0 * M_PI);
+    reg.setSmoothnessThreshold(3.0 / 180.0 * std::numbers::pi);
     reg.setCurvatureThreshold(1.0);
 
     std::vector<pcl::PointIndices> clusters;

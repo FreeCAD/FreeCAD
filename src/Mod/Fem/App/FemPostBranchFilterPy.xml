@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="FemPostObjectPy"
+        Name="FemPostBranchFilterPy"
+        Twin="FemPostBranchFilter"
+        TwinPointer="FemPostBranchFilter"
+        Include="Mod/Fem/App/FemPostBranchFilter.h"
+        Namespace="Fem"
+        FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
+        FatherNamespace="Fem">
+        <Documentation>
+            <Author Licence="LGPL" Name="Stefan Tröger" EMail="stefantroeger@gmx.net" />
+            <UserDocu>The FemPostBranch class.</UserDocu>
+        </Documentation>
+        <Methode Name="getFilter">
+            <Documentation>
+                <UserDocu>Returns all filters, that this pipeline uses (non recursive, result does not contain branch child filters)</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="recomputeChildren">
+            <Documentation>
+                <UserDocu>Recomputes all children of the pipeline</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getLastPostObject">
+            <Documentation>
+                <UserDocu>Get the last post-processing object</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="holdsPostObject">
+            <Documentation>
+                <UserDocu>Check if this pipeline holds a given post-processing object</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
+</GenerateModel>

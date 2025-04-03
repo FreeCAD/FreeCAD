@@ -27,7 +27,6 @@
 #ifndef _PreComp_
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/range/adaptor/indexed.hpp>
-#include <climits>
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextra-semi"
@@ -42,9 +41,8 @@
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XSControl_TransferReader.hxx>
 #include <XSControl_WorkSession.hxx>
-#if OCC_VERSION_HEX >= 0x070500
 #include <Message_ProgressRange.hxx>
-#endif
+
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
@@ -62,7 +60,6 @@
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/PartFeaturePy.h>
-#include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/encodeFilename.h>
 

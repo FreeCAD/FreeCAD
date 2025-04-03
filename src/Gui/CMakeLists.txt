@@ -1,4 +1,5 @@
-#add_subdirectory(Icons)
+add_library(FreeCADGui SHARED)
+
 add_subdirectory(Stylesheets)
 add_subdirectory(PreferencePacks)
 add_subdirectory(PreferencePackTemplates)
@@ -44,6 +45,10 @@ if (BUILD_ADDONMGR)
     add_definitions(-DBUILD_ADDONMGR )
 endif(BUILD_ADDONMGR)
 
+if (BUILD_TRACY_FRAME_PROFILER)
+    add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
+endif()
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -60,15 +65,11 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
 )
 
-include_directories(
+target_include_directories(
+    FreeCADGui
     SYSTEM
-    ${Boost_INCLUDE_DIRS}
+    PRIVATE
     ${EIGEN3_INCLUDE_DIR}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${ZIPIOS_INCLUDES}
     ${3DCONNEXION_INCLUDE_DIR}
 )
 
@@ -99,11 +100,15 @@ else(MSVC)
     )
 endif(MSVC)
 
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND FreeCADGui_LIBS TracyClient)
+endif()
+
 if (TARGET Coin::Coin)
     list(APPEND FreeCADGui_LIBS Coin::Coin)
 else()
-    include_directories(SYSTEM ${COIN3D_INCLUDE_DIRS})
-    link_directories(${COIN3D_LIB_DIRS})
+    target_include_directories(FreeCADGui SYSTEM PUBLIC ${COIN3D_INCLUDE_DIRS})
+    target_link_directories(FreeCADGui PUBLIC ${COIN3D_LIB_DIRS})
     list(APPEND FreeCADGui_LIBS ${COIN3D_LIBRARIES})
 endif()
 
@@ -115,8 +120,10 @@ if (WIN32)
     endif()
 endif()
 
-include_directories(
+target_include_directories(
+    FreeCADGui
     SYSTEM
+    PUBLIC
     ${QtCore_INCLUDE_DIRS}
     ${QtWidgets_INCLUDE_DIRS}
     ${QtOpenGL_INCLUDE_DIRS}
@@ -139,8 +146,10 @@ list(APPEND FreeCADGui_LIBS
 )
 
 if(${Qt5WinExtras_FOUND})
-    include_directories(
+    target_include_directories(
+        FreeCADGui
         SYSTEM
+        PUBLIC
         ${Qt5WinExtras_INCLUDE_DIRS}
     )
     list(APPEND FreeCADGui_LIBS
@@ -240,6 +249,7 @@ if(FREECAD_USE_PYSIDE)
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
+        ${PYSIDE_INCLUDE_DIR}/QtWidgets
     )
     if (PYSIDE_LIBRARY)
         list(APPEND FreeCADGui_LIBS
@@ -256,45 +266,42 @@ if(FREECAD_USE_PYSIDE)
             )
         endif ()
     endif (PYSIDE_LIBRARY)
-    include_directories(
-        SYSTEM
-        ${PYSIDE_INCLUDE_DIR}/QtWidgets
-    )
+
     add_definitions(-DHAVE_PYSIDE${PYSIDE_MAJOR_VERSION})
 endif(FREECAD_USE_PYSIDE)
 
-generate_from_xml(DocumentPy)
-generate_from_xml(PythonWorkbenchPy)
-generate_from_xml(ViewProviderPy)
-generate_from_xml(ViewProviderDocumentObjectPy)
-generate_from_xml(ViewProviderGeometryObjectPy)
-generate_from_xml(ViewProviderExtensionPy)
-generate_from_xml(WorkbenchPy)
-generate_from_xml(Selection/SelectionObjectPy)
-generate_from_xml(LinkViewPy)
-generate_from_xml(ViewProviderLinkPy)
-generate_from_xml(AxisOriginPy)
-generate_from_xml(CommandPy)
-generate_from_xml(Navigation/NavigationStylePy)
+generate_from_py(Document)
+generate_from_py(PythonWorkbench)
+generate_from_py(ViewProvider)
+generate_from_py(ViewProviderDocumentObject)
+generate_from_py(ViewProviderGeometryObject)
+generate_from_py(ViewProviderExtension)
+generate_from_py(Workbench)
+generate_from_py(Selection/SelectionObject)
+generate_from_py(LinkView)
+generate_from_py(ViewProviderLink)
+generate_from_py(AxisOrigin)
+generate_from_py(Command)
+generate_from_py(Navigation/NavigationStyle)
 
 generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
 
-# The XML files
-SET(FreeCADGui_XML_SRCS
-    ViewProviderDocumentObjectPy.xml
-    ViewProviderGeometryObjectPy.xml
-    ViewProviderPy.xml
-    ViewProviderExtensionPy.xml
-    PythonWorkbenchPy.xml
-    WorkbenchPy.xml
-    Selection/SelectionObjectPy.xml
-    DocumentPy.xml
-    LinkViewPy.xml
-    ViewProviderLinkPy.xml
-    AxisOriginPy.xml
-    CommandPy.xml
+# The Pyi files
+SET(FreeCADGui_Pyi_SRCS
+    ViewProviderDocumentObject.pyi
+    ViewProviderGeometryObject.pyi
+    ViewProvider.pyi
+    ViewProviderExtension.pyi
+    PythonWorkbench.pyi
+    Workbench.pyi
+    Selection/SelectionObject.pyi
+    Document.pyi
+    LinkView.pyi
+    ViewProviderLink.pyi
+    AxisOrigin.pyi
+    Command.pyi
 )
-SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
+SOURCE_GROUP("Pyi" FILES ${FreeCADGui_Pyi_SRCS})
 
 # The 3D Connexion SDK files
 if(FREECAD_USE_3DCONNEXION_LEGACY AND MSVC)
@@ -449,7 +456,6 @@ set(Gui_RES_SRCS
     Icons/resource.qrc
     Language/translation.qrc
     ${FreeCAD_TR_QRC}
-    QSint/actionpanel/schemes.qrc
 )
 
 qt_add_resources(Gui_QRC_SRCS ${Gui_RES_SRCS})
@@ -862,20 +868,10 @@ SET(qsintActionPanel_SRCS
     QSint/actionpanel/actionpanel.h
     QSint/actionpanel/actionpanelscheme.cpp
     QSint/actionpanel/actionpanelscheme.h
-    QSint/actionpanel/androidpanelscheme.cpp
-    QSint/actionpanel/androidpanelscheme.h
-    QSint/actionpanel/macpanelscheme.cpp
-    QSint/actionpanel/macpanelscheme.h
     QSint/actionpanel/taskgroup_p.cpp
     QSint/actionpanel/taskgroup_p.h
     QSint/actionpanel/taskheader_p.cpp
     QSint/actionpanel/taskheader_p.h
-    QSint/actionpanel/winvistapanelscheme.cpp
-    QSint/actionpanel/winvistapanelscheme.h
-    QSint/actionpanel/winxppanelscheme.cpp
-    QSint/actionpanel/winxppanelscheme.h
-    QSint/actionpanel/freecadscheme.cpp
-    QSint/actionpanel/freecadscheme.h
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
@@ -888,17 +884,6 @@ set(qsint_MOC_HDRS
 
 qt_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
 SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
-
-#SET(Resource_RCS
-#   Icons/resource.qrc
-#   Language/translation.qrc)
-#qt_add_resources(Resource_SRCS ${Resource_RCS})
-#SET(Resource_SRCS
-#   ${Resource_SRCS}
-#   Icons/resource.qrc
-#   Language/translation.qrc
-#)
-#SOURCE_GROUP("Resource" FILES ${Resource_SRCS})
 
 # The 3d view
 SET(View3D_CPP_SRCS
@@ -962,7 +947,7 @@ SET(Navigation_CPP_SRCS
 SET(Navigation_SRCS
     ${Navigation_CPP_SRCS}
     Navigation/NavigationStyle.h
-    Navigation/NavigationStylePy.xml
+    Navigation/NavigationStyle.pyi
     Navigation/GestureNavigationStyle.h
     Navigation/NavigationAnimator.h
     Navigation/NavigationAnimation.h
@@ -1451,8 +1436,8 @@ if (EIGEN3_NO_DEPRECATED_COPY)
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
 endif ()
 
-add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
-target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
+target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
+target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADGui)
 endif()
@@ -1468,15 +1453,6 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
-    #INSTALL(FILES
-    #    Icons/freecad-icon-16.png
-    #    Icons/freecad-icon-32.png
-    #    Icons/freecad-icon-48.png
-    #    Icons/freecad-icon-64.png
-    #    Icons/freecad.svg
-    #    Icons/freecad-doc.png
-    #    DESTINATION ${CMAKE_INSTALL_DATADIR}
-    #)
     INSTALL(FILES Icons/freecad-icon-16.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps RENAME org.freecad.FreeCAD.png)
     INSTALL(FILES Icons/freecad-icon-32.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps RENAME org.freecad.FreeCAD.png)
     INSTALL(FILES Icons/freecad-icon-48.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps RENAME org.freecad.FreeCAD.png)

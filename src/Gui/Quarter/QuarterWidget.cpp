@@ -76,9 +76,7 @@
 #include <QWindow>
 
 #include <Inventor/C/basic.h>
-#if COIN_MAJOR_VERSION >= 4
 #include <Inventor/SbByteBuffer.h>
-#endif
 
 #include <Inventor/SbColor.h>
 #include <Inventor/SbViewportRegion.h>
@@ -92,6 +90,8 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
+
+#include <Base/Profiler.h>
 
 #include "QuarterWidget.h"
 #include "InteractionMode.h"
@@ -839,6 +839,8 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
 */
 void QuarterWidget::paintEvent(QPaintEvent* event)
 {
+    ZoneScoped;
+
     if (updateDevicePixelRatio()) {
         qreal dev_pix_ratio = devicePixelRatio();
         int width = static_cast<int>(dev_pix_ratio * this->width());
@@ -937,11 +939,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     }
     else if (event->type() == QEvent::Wheel) {
         auto wheel = static_cast<QWheelEvent*>(event);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-        QPoint pos = wheel->pos();
-#else
         QPoint pos = wheel->position().toPoint();
-#endif
         QGraphicsItem* item = itemAt(pos);
         if (!item) {
             QGraphicsView::viewportEvent(event);
@@ -990,6 +988,7 @@ QuarterWidget::redraw()
 void
 QuarterWidget::actualRedraw()
 {
+  ZoneScoped;
   PRIVATE(this)->sorendermanager->render(PRIVATE(this)->clearwindow,
                                          PRIVATE(this)->clearzbuffer);
 }
@@ -1244,11 +1243,7 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     QFile file(filenametmp);
     if (file.open(QIODevice::ReadOnly)){
       QByteArray fileContents = file.readAll();
-#if COIN_MAJOR_VERSION >= 4
       stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
-#else
-      stateMachine = ScXML::readBuffer(fileContents.constData());
-#endif
       file.close();
     }
   }

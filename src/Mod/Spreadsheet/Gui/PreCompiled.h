@@ -40,6 +40,7 @@
 #include <cmath>
 
 // STL
+#include <limits>
 #include <sstream>
 
 #ifdef FC_OS_WIN32
@@ -47,9 +48,7 @@
 #endif
 
 // Qt Toolkit
-#ifndef __QtAll__
 #include <Gui/QtAll.h>
-#endif
 
 #endif  //_PreComp_
 

@@ -565,7 +565,7 @@ void DlgMacroExecuteImp::onToolbarButtonClicked()
                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
                          ->GetBool("ShowWalkthroughMessage", true);
     if (showAgain) {
-        QMessageBox msgBox;
+        QMessageBox msgBox(this);
         QAbstractButton* doNotShowAgainButton =
             msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
         msgBox.setText(tr("Guided Walkthrough"));
@@ -807,7 +807,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
                     commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount() - 1));
                 commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
             }
-            else {  // pre-select it for the user (will be the macro menu text)
+            else {  // preselect it for the user (will be the macro menu text)
                 QList<QTreeWidgetItem*> items =
                     commandTreeWidget->findItems(macroMenuText,
                                                  Qt::MatchFixedString | Qt::MatchWrap,

@@ -24,11 +24,13 @@
 #ifndef _PreComp_
 #include <QMessageBox>
 #include <gp_Pnt.hxx>
+#include <numbers>
 #endif// #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/Link.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -192,7 +194,7 @@ void TaskComplexSection::setUiEdit()
         ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
         Base::Vector3d projectedViewDirection = m_baseView->projectPoint(sectionNormalVec, false);
         double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
-        m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+        m_compass->setDialAngle(viewAngle * 180.0 / std::numbers::pi);
         m_viewDirectionWidget->setValueNoNotify(projectedViewDirection * -1.0);
     }
     else {
@@ -307,7 +309,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
     }
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+    m_compass->setDialAngle(viewAngle * 180.0 / std::numbers::pi);
     checkAll(false);
     applyAligned();
 }
@@ -317,7 +319,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
 void TaskComplexSection::slotChangeAngle(double newAngle)
 {
     //    Base::Console().Message("TCS::slotAngleChanged(%.3f)\n", newAngle);
-    double angleRadians = newAngle * M_PI / 180.0;
+    double angleRadians = newAngle * std::numbers::pi / 180.0;
     double unitX = cos(angleRadians);
     double unitY = sin(angleRadians);
     Base::Vector3d localUnit(unitX, unitY, 0.0);
@@ -501,8 +503,8 @@ bool TaskComplexSection::apply(bool forceUpdate)
     }
     else {
         gp_Pnt stdOrigin(0.0, 0.0, 0.0);
-        gp_Ax2 sectionCS(stdOrigin, DrawUtil::to<gp_Dir>(m_saveNormal),
-                         DrawUtil::to<gp_Dir>(m_saveXDir));
+        gp_Ax2 sectionCS(stdOrigin, Base::convertTo<gp_Dir>(m_saveNormal),
+                         Base::convertTo<gp_Dir>(m_saveXDir));
         if (!DrawComplexSection::canBuild(sectionCS, m_profileObject)) {
             Base::Console().Error(
                 "Can not build Complex Section with this profile and direction (2)\n");

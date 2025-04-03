@@ -46,7 +46,7 @@ public:
     void draw(void);
     float getSize() { return m_size; }
     void setSize(float s);
-    float getThick() { return m_width; }
+    float getThick() { return m_pen.widthF(); }
     void setThick(float t);
     void setPrettyNormal() override;
 

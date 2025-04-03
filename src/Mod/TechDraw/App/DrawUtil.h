@@ -23,6 +23,7 @@
 #ifndef DrawUtil_h_
 #define DrawUtil_h_
 
+#include <limits>
 #include <string>
 
 #include <QByteArray>
@@ -44,13 +45,11 @@
 #include <gp_Vec.hxx>
 
 #include <Base/Vector3D.h>
+#include <Base/Converter.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-
-#ifndef M_2PI
-#define M_2PI ((M_PI)*2.0)
-#endif
 
 constexpr double DegreesHalfCircle{180.0};
 
@@ -106,7 +105,8 @@ public:
 
     static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
     static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
-    static bool fpCompare(const double& d1, const double& d2, double tolerance = FLT_EPSILON);
+    static bool fpCompare(const double& d1, const double& d2,
+                          double tolerance = std::numeric_limits<float>::epsilon());
     static std::pair<Base::Vector3d, Base::Vector3d>
     boxIntersect2d(Base::Vector3d point, Base::Vector3d dir, double xRange, double yRange);
     static bool apparentIntersection(const Handle(Geom_Curve) curve1,
@@ -121,9 +121,10 @@ public:
     template <typename T>
     static std::string formatVector(const T& v)
     {
-        return formatVector(toVector3d(v));
+        return formatVector(Base::convertTo<Base::Vector3d>(v));
     }
     static std::string formatVector(const Base::Vector3d& v);
+    static std::string formatVector(const QPointF& v);
 
     static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
     //!std::map require comparator to be a type not a function
@@ -144,7 +145,7 @@ public:
 
     static Base::Vector3d toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint);
     static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2,
-                              double tolerance = FLT_EPSILON);
+                              double tolerance = std::numeric_limits<float>::epsilon());
     //! rotate vector by angle radians around axis through org
     static Base::Vector3d vecRotate(Base::Vector3d vec, double angle, Base::Vector3d axis,
                                     Base::Vector3d org = Base::Vector3d(0.0, 0.0, 0.0));
@@ -171,23 +172,9 @@ public:
                                       Base::Vector2d d2);
 
 
-    template <typename T>
-    static Base::Vector3d toVector3d(const T& v)
-    {
-        return Base::Vector3d(v.X(), v.Y(), v.Z());
-    }
-
     static Base::Vector3d toVector3d(const QPointF& v)
     {
         return Base::Vector3d(v.x(), v.y(), 0);
-    }
-
-    //! To gp_*
-    // TODO: Would this be relevant to move to Base::Vector3d? Probably
-    template <typename T>
-    static T to(const Base::Vector3d &v)
-    {
-        return T(v.x, v.y, v.z);
     }
 
     static QPointF toQPointF(const Base::Vector3d &v)
@@ -271,6 +258,7 @@ public:
 
     static std::string cleanFilespecBackslash(const std::string& filespec);
 
+    static bool isGuiUp();
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);
@@ -289,9 +277,6 @@ public:
 
 // GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
 //template<> std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
-
-// GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
-//template<> Base::Vector3d DrawUtil::toVector3d<QPointF>(const QPointF& v);
 
 }//end namespace TechDraw
 #endif
