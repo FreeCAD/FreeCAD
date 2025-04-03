@@ -557,17 +557,6 @@ QColor QGVPage::getBackgroundColor()
     return fcColor.asValue<QColor>();
 }
 
-double QGVPage::getDevicePixelRatio() const
-{
-    for (Gui::MDIView* view : m_vpPage->getDocument()->getMDIViews()) {
-        if (view->isDerivedFrom<Gui::View3DInventor>()) {
-            return static_cast<Gui::View3DInventor*>(view)->getViewer()->devicePixelRatio();
-        }
-    }
-
-    return 1.0;
-}
-
 QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
 {
 
@@ -586,7 +575,7 @@ QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
     // therefore we must take care of the transformation ourselves...
     // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
-        floatHotspot *= getDevicePixelRatio();
+        floatHotspot *= Gui::BitmapFactoryInst::getMaximumDPR();
     }
 #endif
 
