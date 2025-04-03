@@ -1131,9 +1131,9 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=Non
         obj.Label = name
     else:
         obj.Label = translate("Arch","Wall")
-    ArchWall._Wall(obj)
+    ArchWall.Wall(obj)
     if FreeCAD.GuiUp:
-        ArchWall._ViewProviderWall(obj.ViewObject)
+        ArchWall.ViewProviderWall(obj.ViewObject)
     if baseobj:
         if hasattr(baseobj,'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
             obj.Base = baseobj
@@ -1190,7 +1190,7 @@ def joinWalls(walls,delete=False):
         return None
     if not isinstance(walls,list):
         walls = [walls]
-    if not ArchWall.areSameWallTypes(walls):
+    if not areSameWallTypes(walls):
         return None
     deleteList = []
     base = walls.pop()
@@ -1229,6 +1229,37 @@ def joinWalls(walls,delete=False):
     FreeCAD.ActiveDocument.recompute()
     base.ViewObject.show()
     return base
+
+
+def areSameWallTypes(walls):
+    """Check if a list of walls have the same height, width and alignment.
+
+    Parameters
+    ----------
+    walls: list of <ArchComponent.Component>
+
+    Returns
+    -------
+    bool
+        True if the walls have the same height, width and alignment, False if
+        otherwise.
+    """
+
+    for att in ["Width","Height","Align"]:
+        value = None
+        for w in walls:
+            if not hasattr(w,att):
+                return False
+            if not value:
+                value = getattr(w,att)
+            else:
+                if type(value) == float:
+                    if round(value,Draft.precision()) != round(getattr(w,att),Draft.precision()):
+                        return False
+                else:
+                    if value != getattr(w,att):
+                        return False
+    return True
 
 
 def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):

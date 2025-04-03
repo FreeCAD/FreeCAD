@@ -35,6 +35,7 @@ import FreeCAD
 import ArchCommands
 import ArchIFC
 import Draft
+import Arch
 from draftutils import params
 
 if FreeCAD.GuiUp:
@@ -734,8 +735,7 @@ class Component(ArchIFC.IfcProduct):
                         base = o.Shape
                 else:
                     # special case, both walls with coinciding endpoints
-                    import ArchWall
-                    js = ArchWall.mergeShapes(o,obj)
+                    js = self.mergeShapes(o,obj)
                     if js:
                         add = js.cut(base)
                         if placement:
@@ -817,6 +817,34 @@ class Component(ArchIFC.IfcProduct):
                                 except Part.OCCError:
                                     print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
         return base
+
+    def mergeShapes(self,w1,w2):
+        """
+        Return a Shape built on two walls that share same properties and have a
+        coincident endpoint.
+        """
+
+        if not Arch.areSameWallTypes([w1,w2]):
+            return None
+        if (not hasattr(w1.Base,"Shape")) or (not hasattr(w2.Base,"Shape")):
+            return None
+        if w1.Base.Shape.Faces or w2.Base.Shape.Faces:
+            return None
+
+        # TODO fix this
+        return None
+
+        eds = w1.Base.Shape.Edges + w2.Base.Shape.Edges
+        import DraftGeomUtils
+        w = DraftGeomUtils.findWires(eds)
+        if len(w) == 1:
+            #print("found common wire")
+            normal,length,width,height = w1.Proxy.getDefaultValues(w1)
+            print(w[0].Edges)
+            sh = w1.Proxy.getBase(w1,w[0],normal,width,height)
+            print(sh)
+            return sh
+        return None
 
     def spread(self,obj,shape,placement=None):
         """Copy the object to its Axis's points.
