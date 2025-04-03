@@ -238,7 +238,7 @@ QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
     return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }
 
-bool ViewProvider::onDelete(const std::vector<std::string> &)
+bool ViewProvider::onDelete(const std::vector<std::string>&)
 {
     PartDesign::Feature* feature = getObject<PartDesign::Feature>();
 
