@@ -59,6 +59,8 @@
 #include "FeatureHole.h"
 #include "json.hpp"
 
+#include <numbers>
+
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 namespace PartDesign {
@@ -2187,27 +2189,31 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
     int baseProfileType = BaseProfileType.getValue();
 
     // Iterate over edges and filter out non-circle/non-arc types
-    if(baseProfileType & BaseProfileTypeOptions::OnCircles || 
+    if (baseProfileType & BaseProfileTypeOptions::OnCircles || 
        baseProfileType & BaseProfileTypeOptions::OnArcs) {
-        for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
+        for (const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
             Standard_Real c_start;
             Standard_Real c_end;
             TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
             Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
-    
-            // Circle base?
-            if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
-                continue;
 
-            bool closed = (c_start == 0.0 && c_end == 2*M_PI);
+            // Circle base?
+            if (c->DynamicType() != STANDARD_TYPE(Geom_Circle)) {
+                continue;
+            }
+
+            bool closed = ( std::fabs(c_start) < Precision::Angular() && 
+                            std::fabs(c_end - 2 * std::numbers::pi) < Precision::Angular());
 
             // Filter for circles
-            if(!(baseProfileType & BaseProfileTypeOptions::OnCircles) && closed)
+            if (!(baseProfileType & BaseProfileTypeOptions::OnCircles) && closed) {
                 continue;
+            }
             
             // Filter for arcs
-            if(!(baseProfileType & BaseProfileTypeOptions::OnCircles) && !closed)
+            if (!(baseProfileType & BaseProfileTypeOptions::OnArcs) && !closed) {
                 continue;
+            }
 
             Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
             add_hole(profileEdge, circle->Axis().Location());
@@ -2216,9 +2222,9 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
 
     // To avoid breaking older files which where not made with
     // holes on points
-    if(baseProfileType & BaseProfileTypeOptions::OnPoints) {
+    if (baseProfileType & BaseProfileTypeOptions::OnPoints) {
         // Iterate over vertices while avoiding edges so that curve handles are ignored
-        for(const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
+        for (const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
             TopoDS_Vertex vertex = TopoDS::Vertex(TopoDS_Shape(profileVertex.getShape()));
 
             add_hole(profileVertex, BRep_Tool::Pnt(vertex));

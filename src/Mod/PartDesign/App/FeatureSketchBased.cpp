@@ -949,7 +949,7 @@ double ProfileBased::getThroughAllLength() const
     Bnd_Box box;
     BRepBndLib::Add(base.getShape(), box);
 
-    if(!profileshape.isNull()) 
+    if (!profileshape.isNull()) 
         BRepBndLib::Add(profileshape.getShape(), box);
     box.SetGap(0.0);
     // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
