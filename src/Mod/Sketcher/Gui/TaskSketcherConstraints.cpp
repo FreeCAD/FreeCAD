@@ -1105,7 +1105,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
             processItem = !item->isHidden();
         }
         else if (target == ActionTarget::Selected) {
-            if (std::ranges::find(selecteditems, item) != selecteditems.end())
+            if (selecteditems.contains(item))
                 processItem = true;
         }
 
