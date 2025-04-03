@@ -728,7 +728,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
        * Try to find out if call needs arguments.
        * For this we search the parameters if there are no arguments
        */
-      QRegularExpression argumentMatcher(QLatin1String(R"(\(\s*\))"));
+      QRegularExpression argumentMatcher(QLatin1String(R"(\(\s*self\s*,\s*/\))"));
       if (!argumentMatcher.match( callTip.parameter ).hasMatch())
       {
         // if arguments are needed, we just move the cursor one left, to between the parentheses.
