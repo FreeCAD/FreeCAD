@@ -81,7 +81,7 @@ public:
     ~ViewProviderFemPostObject() override;
 
     App::PropertyEnumeration Field;
-    App::PropertyEnumeration VectorMode;
+    App::PropertyEnumeration Component;
     App::PropertyPercent Transparency;
     App::PropertyBool PlainColorEdgeOnSurface;
     App::PropertyColor EdgeColor;
@@ -130,6 +130,10 @@ public:
     //     //@}
 
 protected:
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   const char* propName) override;
+
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
     void updateVtk();
