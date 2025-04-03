@@ -128,41 +128,20 @@ class ViewProvider:
         # Setup the axis display at the origin
         self.switch = coin.SoSwitch()
         self.sep = coin.SoSeparator()
-        self.axs = coin.SoType.fromName("SoAxisCrossKit").createInstance()
 
-        # Adjust the axis heads scale if needed
-        # Example to save you looking up Inventor API:
-        # self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
-        # self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
-        # self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
+        self.axs = coin.SoType.fromName("SoFCPlacementIndicatorKit").createInstance()
+        self.axs.axisLength.setValue(1.2)
 
-        self.axs.set("xHead.transform", "translation 50 0 0")
-        self.axs.set("yHead.transform", "translation 0 50 0")
-        self.axs.set("zHead.transform", "translation 0 0 50")
-        self.axs.set("xHead.appearance.material", "transparency 0.5")
-        self.axs.set("yHead.appearance.material", "transparency 0.5")
-        self.axs.set("zHead.appearance.material", "transparency 0.5")
+        # enum values for SoFCPlacementIndicatorKit
+        AXES = 1
+        LABELS = 4
+        ARROWHEADS = 8
 
-        # Adjust the axis line width if needed
-        self.axs.set("xAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("xAxis.appearance.drawStyle", "lineWidth 8")
-        self.axs.set("yAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("yAxis.appearance.drawStyle", "lineWidth 8")
-        self.axs.set("zAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("zAxis.appearance.drawStyle", "lineWidth 8")
+        self.axs.parts.setValue(AXES|LABELS|ARROWHEADS)
 
-        self.axs.set("xAxis.appearance.material", "transparency 0.5")
-        self.axs.set("yAxis.appearance.material", "transparency 0.5")
-        self.axs.set("zAxis.appearance.material", "transparency 0.5")
-
-        self.sca = coin.SoType.fromName("SoShapeScale").createInstance()
-        self.sca.setPart("shape", self.axs)
-        self.sca.scaleFactor.setValue(1)  # Keep or adjust if needed
-
-        self.sep.addChild(self.sca)
         self.switch.addChild(self.axs)
-
         self.switch.addChild(self.sep)
+
         vobj.RootNode.addChild(self.switch)
         self.showOriginAxis(True)
 
