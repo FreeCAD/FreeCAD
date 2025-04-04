@@ -587,7 +587,7 @@ def create_pip_call(args: List[str]) -> List[str]:
         call_args = ["pip", "--disable-pip-version-check"]
         call_args.extend(args)
     elif appimage:
-        python_exe = fci.DataPaths.home_dir + "bin/python"
+        python_exe = fci.DataPaths().home_dir + "bin/python"
         call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
         call_args.extend(args)
     else:
