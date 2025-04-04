@@ -1057,6 +1057,7 @@ PythonBaseWorkbench::~PythonBaseWorkbench()
     delete _toolBar;
     delete _commandBar;
     if (_workbenchPy) {
+        Base::PyGILStateLocker lock;
         _workbenchPy->setInvalid();
         _workbenchPy->DecRef();
     }
