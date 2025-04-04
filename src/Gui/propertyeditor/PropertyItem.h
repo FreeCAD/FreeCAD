@@ -87,15 +87,10 @@ class PropertyItem;
 class PropertyModel;
 class PropertyEditorWidget;
 
-enum class FrameOption {
-    NoFrame,
-    WithFrame
+enum class FrameOption : bool {
+    NoFrame=false,
+    WithFrame=true
 };
-
-inline bool frameOptionToBool(FrameOption option) {
-    return option == FrameOption::WithFrame;
-}
-
 /**
  * The PropertyItemFactory provides methods for the dynamic creation of property items.
  * \author Werner Mayer
