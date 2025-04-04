@@ -7355,16 +7355,18 @@ void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef)
     acceptGeometry(); // This may need to be refactored into OnChanged for ExternalGeometry.
 }
 
+// clang-format on
 int SketchObject::delAllExternal()
 {
-    int count = 0; // the remaining count of the detached external geometry
-    std::map<int,int> indexMap; // the index map of the remain external geometry
-    std::vector<Part::Geometry*> geos; // the remaining external geometry
-    for(int i=0;i<ExternalGeo.getSize();++i) {
+    int count = 0;                      // the remaining count of the detached external geometry
+    std::map<int, int> indexMap;        // the index map of the remain external geometry
+    std::vector<Part::Geometry*> geos;  // the remaining external geometry
+    for (int i = 0; i < ExternalGeo.getSize(); ++i) {
         auto geo = ExternalGeo[i];
         auto egf = ExternalGeometryFacade::getFacade(geo);
-        if(egf->getRef().empty())
+        if (egf->getRef().empty()) {
             indexMap[i] = count++;
+        }
         geos.push_back(geo);
     }
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -7383,12 +7385,11 @@ int SketchObject::delAllExternal()
     const std::vector<Constraint*>& constraints = Constraints.getValues();
     std::vector<Constraint*> newConstraints(0);
 
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->First > GeoEnum::RefExt
-            && ((*it)->Second > GeoEnum::RefExt || (*it)->Second == GeoEnum::GeoUndef)
-            && ((*it)->Third > GeoEnum::RefExt || (*it)->Third == GeoEnum::GeoUndef)) {
-            Constraint* copiedConstr = (*it)->clone();
+    for (const auto& constr : constraints) {
+        if (constr->First > GeoEnum::RefExt
+            && (constr->Second > GeoEnum::RefExt || constr->Second == GeoEnum::GeoUndef)
+            && (constr->Third > GeoEnum::RefExt || constr->Third == GeoEnum::GeoUndef)) {
+            Constraint* copiedConstr = constr->clone();
 
             newConstraints.push_back(copiedConstr);
         }
@@ -7402,8 +7403,9 @@ int SketchObject::delAllExternal()
         Base::Console().error("%s\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects, originalSubElements);
-        for (Constraint* it : newConstraints)
+        for (Constraint* it : newConstraints) {
             delete it;
+        }
         return -1;
     }
 
@@ -7411,9 +7413,10 @@ int SketchObject::delAllExternal()
     ExternalGeo.setValues(std::move(geos));
     solverNeedsUpdate = true;
     Constraints.setValues(std::move(newConstraints));
-    acceptGeometry();// This may need to be refactored into OnChanged for ExternalGeometry
+    acceptGeometry();  // This may need to be refactored into OnChanged for ExternalGeometry
     return 0;
 }
+// clang-format off
 
 int SketchObject::delConstraintsToExternal()
 {
