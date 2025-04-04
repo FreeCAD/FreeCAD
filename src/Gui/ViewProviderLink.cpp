@@ -1730,7 +1730,7 @@ QIcon ViewProviderLink::getIcon() const {
 
 QPixmap ViewProviderLink::getOverlayPixmap() const {
     auto ext = getLinkExtension();
-    int px = 12 * getMainWindow()->devicePixelRatioF();
+    constexpr int px = 12;
     if(ext && ext->getLinkedObjectProperty() && ext->_getElementCountValue())
         return BitmapFactory().pixmapFromSvg("LinkArrayOverlay", QSizeF(px,px));
     else if(hasSubElement)
