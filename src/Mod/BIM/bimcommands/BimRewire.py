@@ -24,7 +24,6 @@
 
 """The BIM Rewire command"""
 
-
 import FreeCAD
 import FreeCADGui
 

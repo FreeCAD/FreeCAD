@@ -24,9 +24,9 @@
 
 """The BIM Leader command"""
 
-
 import FreeCAD
 import FreeCADGui
+
 from draftguitools import gui_lines  # Line tool from Draft
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP

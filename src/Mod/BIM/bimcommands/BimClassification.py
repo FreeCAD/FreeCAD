@@ -22,13 +22,14 @@
 
 """The BIM Classification command"""
 
+import os
 
 import FreeCAD
 import FreeCADGui
-import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -306,7 +307,7 @@ class BIM_Classification:
         # self.spanTopLevels()
 
     def updateByTree(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # order by hierarchy
         def istop(obj):
@@ -368,8 +369,8 @@ class BIM_Classification:
         self.form.treeObjects.expandAll()
 
     def updateDefault(self):
+        from PySide import QtGui
         import Draft
-        from PySide import QtCore, QtGui
 
         d = self.objectslist.copy()
         d.update(self.matlist)
@@ -389,7 +390,7 @@ class BIM_Classification:
                         self.form.treeObjects.setCurrentItem(it)
 
     def updateClasses(self, search=""):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.form.treeClass.clear()
 
@@ -436,7 +437,7 @@ class BIM_Classification:
                 first = False
 
     def addChildren(self, children, parent, search=""):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         if children:
             for c in children:
@@ -526,7 +527,8 @@ class BIM_Classification:
         )
         if not os.path.exists(preset):
             return None
-        import codecs, re
+        import codecs
+        import re
 
         d = Item()
         with codecs.open(preset, "r", "utf-8") as f:
@@ -663,7 +665,7 @@ class BIM_Classification:
     def getIcon(self,obj):
         """returns a QIcon for an object"""
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         import Arch_rc
 
         if hasattr(obj.ViewObject, "Icon"):

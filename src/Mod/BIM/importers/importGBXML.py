@@ -23,6 +23,14 @@ __title__  = "FreeCAD GbXml exporter"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
+## @package importGBXML
+#  \ingroup ARCH
+#  \brief GBXML file format exporter
+#
+#  This module provides tools to export GBXML files.
+
+from builtins import open as pyopen
+
 import FreeCAD
 import Draft
 
@@ -34,11 +42,6 @@ else:
         return txt
     # \endcond
 
-## @package importGBXML
-#  \ingroup ARCH
-#  \brief GBXML file format exporter
-#
-#  This module provides tools to export GBXML files.
 
 def export(objectslist,filename):
 

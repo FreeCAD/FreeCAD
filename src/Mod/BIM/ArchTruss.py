@@ -24,14 +24,21 @@ __title__  = "FreeCAD Arch Truss"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
+## @package ArchTruss
+#  \ingroup ARCH
+#  \brief The Truss object and tools
+#
+#  This module provides tools to build Truss objects.
+
 import math
+
 import FreeCAD
 import ArchComponent
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
     def translate(ctxt,txt):
@@ -39,12 +46,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-
-## @package ArchTruss
-#  \ingroup ARCH
-#  \brief The Truss object and tools
-#
-#  This module provides tools to build Truss objects.
 
 rodmodes = ("/|/|/|",
             "/\\/\\/\\",
@@ -328,4 +329,3 @@ class ViewProviderTruss(ArchComponent.ViewProviderComponent):
 
         import Arch_rc
         return ":/icons/Arch_Truss_Tree.svg"
-

@@ -18,9 +18,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Helper functions that are used by SH3D importer."""
+
 import itertools
-import numpy as np
 import math
 import os
 import re
@@ -29,6 +30,9 @@ import uuid
 import xml.etree.ElementTree as ET
 import zipfile
 
+import numpy as np
+
+import FreeCAD as App
 import Arch
 import BOPTools.SplitFeatures
 import BOPTools.BOPFeatures
@@ -42,8 +46,6 @@ import TechDraw
 
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
-
-import FreeCAD as App
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -1367,8 +1369,8 @@ class RoomHandler(BaseHandler):
 
         Returns:
             bool: True if at least one pair of edge intersect.
-            list(tuple): a list of tuple of v1, e1, v2, e2 where v1 is the 
-                intersection on the first edge e1, and v2 is the intersection 
+            list(tuple): a list of tuple of v1, e1, v2, e2 where v1 is the
+                intersection on the first edge e1, and v2 is the intersection
                 on the second edge e2.
         """
         for i in range(len(edges)):
@@ -1380,7 +1382,7 @@ class RoomHandler(BaseHandler):
                     continue
                 for (v1, v2) in vectors:
                     # Check that the intersections are not extremities
-                    # If both v1 and v2 are extremities then the edges 
+                    # If both v1 and v2 are extremities then the edges
                     # are connected which is not really a self-intersecting
                     # situation.
                     if v1 not in [v.Point for v in e1.Vertexes] or v2 not in [v.Point for v in e2.Vertexes]:
@@ -1949,8 +1951,8 @@ class WallHandler(BaseHandler):
 
         if is_wall_straight:
             # In order to make sure that the edges are not self-intersecting
-            # create a convex hull and use these points instead. Maybe 
-            # overkill for a 4 point wall, however not sure how to invert 
+            # create a convex hull and use these points instead. Maybe
+            # overkill for a 4 point wall, however not sure how to invert
             # edges.
             points = list(map(lambda v: v.Point, face.Vertexes))
             new_points = convex_hull(points)
@@ -2247,7 +2249,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
 
         # Note that we only move on the XY plane since we assume that
         # only the right and left face will be used for supporting the
-        # doorOrWndow. It might not be correct for roof windows and floor 
+        # doorOrWndow. It might not be correct for roof windows and floor
         # windows...
         # The absolute coordinate of the corner of the doorOrWindow
         dow_abs_corner = dow_abs_center.add(App.Vector(-width/2, -depth/2, 0))
@@ -2264,7 +2266,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         is_opened = False
         wall_width = depth
         # Get all the walls hosting that doorOrWndow.
-        # 
+        #
         # The main wall is used to determine the projection of the
         # doorOrWindow bounding_box, and thus the placement of the
         # resulting Arch element. The main wall is the one containing
@@ -2289,7 +2291,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         # Get the left and right face for the main_wall
         (_, wall_lface, _, wall_rface) = self.get_faces(main_wall)
 
-        # The general process is as follow: 
+        # The general process is as follow:
         # 1- Find the bounding box face whose normal is properly oriented
         #    with respect to the doorOrWindow (+90º)
         # 2- Find the wall face with the same orientation.
@@ -2329,7 +2331,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             self._debug_shape(wall_face, f"{label_prefix}-bb-projected-onto#{main_wall.Label}", MAGENTA)
             self._debug_shape(projected_face, f"{label_prefix}-bb-projection#{main_wall.Label}", RED)
 
-        # Determine the base vertex that I later use for the doorOrWindow 
+        # Determine the base vertex that I later use for the doorOrWindow
         # placement
         base_vertex = self._get_base_vertex(main_wall, is_on_right, projected_face)
 
@@ -2378,12 +2380,12 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         """Returns the wall(s) and slab(s) intersecting with the doorOrWindow
         bounding_box.
 
-        The main wall is the one that contains the doorOrWndow bounding_box 
-        CenterOfGravity. Note that this will not work for open doorOrWindow 
-        (i.e.whose bounding_box is a lot greater than the containing wall). 
+        The main wall is the one that contains the doorOrWndow bounding_box
+        CenterOfGravity. Note that this will not work for open doorOrWindow
+        (i.e.whose bounding_box is a lot greater than the containing wall).
         The _create_door, has a mitigation process for that case.
 
-        The main_wall is used to get the face on which to project the 
+        The main_wall is used to get the face on which to project the
         doorOrWindows bounding_box, and from there the placement of the
         element on the wall's face.
 
@@ -2391,7 +2393,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         - find out whether the doorOrWindow span several floors, if so
           add all the walls (and slab) for that floor to the list of elements
           to check.
-        - once the list of elements to check is complete we check if the 
+        - once the list of elements to check is complete we check if the
           doorOrWindow bounding_box has a volume in common with the wall.
 
         Args:
@@ -2401,8 +2403,8 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
 
         Returns:
             tuple(Arch::Wall, list(Arch::Wall)): a tuple of the main wall (if
-              any could be found and a list of any other Arch element that 
-              might be host of that 
+              any could be found and a list of any other Arch element that
+              might be host of that
         """
         relevant_walls = [*self.importer.get_walls(floor)]
         # First find out which floor the window might be have an impact on.
@@ -2453,7 +2455,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         """
         debug_geometry = self.importer.preferences["DEBUG_GEOMETRY"]
         # Note that the 'angle' refers to the angle of the face, not its normal.
-        # we therefore add a '+90º' in SH3D coordinate (i.e. -90º in FC 
+        # we therefore add a '+90º' in SH3D coordinate (i.e. -90º in FC
         # coordinate).
         # XXX: Can it be speed up by assuming that left and right are always
         #   Face2 and Face4???
@@ -2474,7 +2476,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         """Return the base vertex used to place a doorOrWindow.
 
         Returns the vertex of the projected_face that serves as the
-        base for the Placement when creating the doorOrWindow. It is 
+        base for the Placement when creating the doorOrWindow. It is
         the lowest vertex and closest to the wall reference point.
         The wall reference point depends on whether we are on the
         right or left side of the wall.
@@ -2618,7 +2620,7 @@ class FurnitureHandler(BaseFurnitureHandler):
             mesh_transform.scale(-1, 1, 1) # Mirror along X
             if debug_geometry: self._debug_mesh(mesh, f"{name}-mirrored", mesh_transform)
 
-        # We add an initial 90º in order for a yaw-pitch-roll-rotation free 
+        # We add an initial 90º in order for a yaw-pitch-roll-rotation free
         # model to appear properly in FC
         mesh_transform.rotateX(math.pi/2)
         if debug_geometry: self._debug_mesh(mesh, f"{name}-x90", mesh_transform)
@@ -2636,7 +2638,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         z_scale = height / normilized_bb.ZLength
 
         mesh_transform.scale(x_scale, y_scale, z_scale)
-        if debug_geometry: 
+        if debug_geometry:
             model_size = App.Vector(model_bb.XLength, model_bb.YLength, model_bb.ZLength)
             normalized_size = App.Vector(normilized_bb.XLength, normilized_bb.YLength, normilized_bb.ZLength)
             final_size = App.Vector(width, depth, height)
@@ -2645,7 +2647,7 @@ class FurnitureHandler(BaseFurnitureHandler):
             self._debug_mesh(mesh, f"{name}-scaled", mesh_transform, MAGENTA)
 
         # At that point the mesh has the proper scale. We determine the placement.
-        # In order to do that, we need to apply the different rotation (ypr) and 
+        # In order to do that, we need to apply the different rotation (ypr) and
         # also the translation from the origin to the final point.
         if pitch != 0:
             r_pitch = App.Rotation(X_NORM, Radian=-pitch)
@@ -3011,4 +3013,3 @@ def convex_hull(points, tol=1e-6):
 #     point_coords = np.array([[p.x, p.y] for p in points])
 #     new_points = [points[i] for i in scipy.spatial.ConvexHull(point_coords).vertices]
 #     return new_points[0]
-

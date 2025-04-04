@@ -23,19 +23,18 @@ __title__  = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
-import os
-import xml.sax
-import zipfile
-
-import FreeCAD
-from FreeCAD import Base
-
-
 ## @package importSH3D
 #  \ingroup ARCH
 #  \brief SH3D (SweetHome3D) file format importer
 #
 #  This module provides tools to import SH3D files created from Sweet Home 3D.
+
+import os
+import zipfile
+
+import FreeCAD
+from FreeCAD import Base
+
 
 DEBUG = True
 

@@ -21,15 +21,6 @@
 
 "The FreeCAD Arch Vector Rendering Module"
 
-import math
-
-import FreeCAD
-import ArchCommands
-import DraftVecUtils
-import DraftGeomUtils
-import Part
-from draftutils import params
-
 ## @package ArchVRM
 #  \ingroup ARCH
 #  \brief The Arch Vector Rendering Module
@@ -38,6 +29,16 @@ from draftutils import params
 #  produce SVG renderings of projected shapes, with filled faces.
 #  It is used by the "Solid" mode of Arch views in TechDraw and Drawing,
 #  and is called from ArchSectionPlane code.
+
+import math
+
+import FreeCAD
+import ArchCommands
+import DraftVecUtils
+import DraftGeomUtils
+import Part
+
+from draftutils import params
 
 MAXLOOP = 10 # the max number of loop before abort
 

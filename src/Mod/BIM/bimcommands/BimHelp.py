@@ -24,7 +24,6 @@
 
 """The BIM Help command"""
 
-
 import FreeCAD
 import FreeCADGui
 
@@ -44,7 +43,7 @@ class BIM_Help:
         }
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         QtGui.QDesktopServices.openUrl("https://www.freecadweb.org/wiki/BIM_Workbench")
 
 

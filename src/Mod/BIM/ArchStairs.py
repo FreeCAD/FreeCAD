@@ -23,17 +23,29 @@ __title__= "FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
+## @package ArchStairs
+#  \ingroup ARCH
+#  \brief The Stairs object and tools
+#
+#  This module provides tools to build Stairs objects.
 
-import FreeCAD,ArchComponent,Draft,DraftVecUtils,math,ArchPipe
-import Part, DraftGeomUtils
+import math
+
+import FreeCAD
+import ArchComponent
+import ArchPipe
+import Draft
+import DraftVecUtils
+import DraftGeomUtils
+import Part
 
 from FreeCAD import Vector
 from draftutils import params
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
     def translate(ctxt,txt):
@@ -42,14 +54,7 @@ else:
         return txt
     # \endcond
 
-## @package ArchStairs
-#  \ingroup ARCH
-#  \brief The Stairs object and tools
-#
-#  This module provides tools to build Stairs objects.
-
 zeroMM = FreeCAD.Units.Quantity('0mm')
-
 
 
 class _Stairs(ArchComponent.Component):
@@ -373,7 +378,7 @@ class _Stairs(ArchComponent.Component):
         if baseProxy and obj.ArchSketchData and \
                 hasattr(baseProxy, 'getStairsBaseShapeEdgesInfo'):
             propSetUuid = self.ArchSkPropSetPickedUuid
-            info = baseProxy.getStairsBaseShapeEdgesInfo(obj.Base,	
+            info = baseProxy.getStairsBaseShapeEdgesInfo(obj.Base,
                    propSetUuid=propSetUuid)
             if info:
                 flightAxis = info.get('flightAxis')
@@ -443,7 +448,7 @@ class _Stairs(ArchComponent.Component):
                     edgeL = [Part.sortEdges(obj.Base.Shape.Edges)[0]]
                 else:  # Should not happen?
                     edgeL = []
-                #lenAxis = len(flightAxis) + len(landingAxis)  
+                #lenAxis = len(flightAxis) + len(landingAxis)
 
             # Build Stairs if there is no obj.Base or even obj.Base is not valid
             else:
@@ -1570,5 +1575,3 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
                 lst.extend(obj.Subtractions)
             return lst
         return []
-
-

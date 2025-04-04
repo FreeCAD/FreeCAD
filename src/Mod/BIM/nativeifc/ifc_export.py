@@ -22,9 +22,10 @@
 
 import tempfile
 
+import ifcopenshell
+
 import FreeCAD
 import Draft
-import ifcopenshell
 
 from importers import exportIFC
 from importers import exportIFCHelper

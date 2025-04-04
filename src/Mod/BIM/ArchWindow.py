@@ -19,32 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
-
-import FreeCAD
-import ArchCommands
-import ArchComponent
-import Draft
-import DraftVecUtils
-import ArchWindowPresets
-from FreeCAD import Units
-from FreeCAD import Vector
-from draftutils import params
-from draftutils.messages import _wrn
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    import draftguitools.gui_trackers as DraftTrackers
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__  = "FreeCAD Window"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchWindow
 #  \ingroup ARCH
@@ -55,17 +32,39 @@ else:
 #  of wires, and that can be inserted into other Arch objects,
 #  by defining a volume that gets subtracted from them.
 
-__title__  = "FreeCAD Window"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+import os
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import ArchWindowPresets
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Units
+from FreeCAD import Vector
+from draftutils import params
+from draftutils.messages import _wrn
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import draftguitools.gui_trackers as DraftTrackers
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 # presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180",
                       "Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
 WindowPresets = ArchWindowPresets.WindowPresets
-
-
 
 
 def recolorize(attr): # names is [docname,objname]
@@ -1417,6 +1416,3 @@ class _ArchWindowTaskPanel:
 
         if self.obj:
             self.obj.ViewObject.Proxy.invertHinge()
-
-
-

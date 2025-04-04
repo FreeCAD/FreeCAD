@@ -24,7 +24,6 @@
 
 """The BIM Door command"""
 
-
 import FreeCAD
 import FreeCADGui
 from bimcommands import BimWindow

@@ -21,6 +21,7 @@
 # ***************************************************************************
 
 import os
+
 import FreeCAD
 import FreeCADGui
 
@@ -44,7 +45,7 @@ class BIM_IfcExplorer:
 
     def Activated(self):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         try:
             import ifcopenshell
@@ -174,7 +175,7 @@ class BIM_IfcExplorer:
         "opens a file"
 
         import ifcopenshell
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.filename = ""
         lastfolder = FreeCAD.ParamGet(
@@ -253,7 +254,7 @@ class BIM_IfcExplorer:
         "inserts selected objects in the active document"
 
         from importers import importIFC
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         doc = FreeCAD.ActiveDocument
         if doc and self.filename:
@@ -472,7 +473,7 @@ class BIM_IfcExplorer:
         "adds the attributes of the given IFC entity under the given QTreeWidgetITem"
 
         import ifcopenshell
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         entity = self.ifc[eid]
 
@@ -555,7 +556,7 @@ class BIM_IfcExplorer:
     def addProperties(self, eid, parent):
         "adds properties of a given entity to the given QTReeWidgetItem"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         entity = self.ifc[eid]
         if hasattr(entity, "IsDefinedBy"):
@@ -585,7 +586,7 @@ class BIM_IfcExplorer:
     def onSelectTree(self, item, previous):
         "displays attributes and properties of a tree item"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         self.backnav.append(previous)
         eid = item.data(0, QtCore.Qt.UserRole)
@@ -628,7 +629,7 @@ class BIM_IfcExplorer:
     def onDoubleClickTree(self, item, column):
         "when a property or attribute is double-clicked"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         if self.tree:
             txt = item.text(column)

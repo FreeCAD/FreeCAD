@@ -27,17 +27,17 @@ import os
 import unittest
 
 import FreeCAD as App
-from FreeCAD import Units
-
 import Arch
 import Draft
 import Part
 import Sketcher
 import TechDraw
 import WorkingPlane
+
 from bimtests.TestArchRoof import TestArchRoof
 from bimtests.TestArchSpace import TestArchSpace
 from bimtests.TestArchWall import TestArchWall
+
 from draftutils.messages import _msg
 
 

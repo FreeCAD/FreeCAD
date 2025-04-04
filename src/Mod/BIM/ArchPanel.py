@@ -19,29 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import math
-
-import FreeCAD
-import ArchCommands
-import ArchComponent
-import Draft
-import DraftVecUtils
-import Part
-from FreeCAD import Vector
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__  = "FreeCAD Panel"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchPanel
 #  \ingroup ARCH
@@ -51,9 +31,30 @@ else:
 #  Panels consist of a closed shape that gets extruded to
 #  produce a flat object.
 
-__title__  = "FreeCAD Panel"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+import math
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
+import Part
+
+from FreeCAD import Vector
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class _Panel(ArchComponent.Component):
@@ -1075,6 +1076,3 @@ class SheetTaskPanel(ArchComponent.ComponentTaskPanel):
 
         FreeCADGui.Control.closeDialog()
         FreeCADGui.runCommand("Draft_Edit")
-
-
-
