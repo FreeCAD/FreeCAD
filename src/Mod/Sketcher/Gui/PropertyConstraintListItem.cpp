@@ -373,7 +373,7 @@ QWidget* PropertyConstraintListItem::createEditor(QWidget* parent,
 {
     Q_UNUSED(method);
     QLineEdit* le = new QLineEdit(parent);
-    le->setFrame(frameOptionToBool(frameOption));
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(true);
     return le;
 }

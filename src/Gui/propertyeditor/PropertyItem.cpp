@@ -845,7 +845,7 @@ QWidget* PropertyStringItem::createEditor(QWidget* parent,
                                           FrameOption frameOption) const
 {
     auto le = new ExpLineEdit(parent);
-    le->setFrame(frameOptionToBool(frameOption));
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(isReadOnly());
     QObject::connect(le, &ExpLineEdit::textChanged, method);
     if (isBound()) {
@@ -894,7 +894,7 @@ QWidget* PropertyFontItem::createEditor(QWidget* parent,
                                         FrameOption frameOption) const
 {
     auto cb = new QComboBox(parent);
-    cb->setFrame(frameOptionToBool(frameOption));
+    cb->setFrame(static_cast<bool>(frameOption));
     cb->setDisabled(isReadOnly());
     QObject::connect(cb, &QComboBox::textActivated, method);
     return cb;
@@ -961,7 +961,7 @@ QWidget* PropertyIntegerItem::createEditor(QWidget* parent,
                                            FrameOption frameOption) const
 {
     auto sb = new Gui::IntSpinBox(parent);
-    sb->setFrame(frameOptionToBool(frameOption));
+    sb->setFrame(static_cast<bool>(frameOption));
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
@@ -1028,7 +1028,7 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent,
                                                      FrameOption frameOption) const
 {
     auto sb = new Gui::IntSpinBox(parent);
-    sb->setFrame(frameOptionToBool(frameOption));
+    sb->setFrame(static_cast<bool>(frameOption));
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
@@ -1124,7 +1124,7 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent,
                                          FrameOption frameOption) const
 {
     auto sb = new Gui::DoubleSpinBox(parent);
-    sb->setFrame(frameOptionToBool(frameOption));
+    sb->setFrame(static_cast<bool>(frameOption));
     sb->setDecimals(decimals());
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
@@ -1192,7 +1192,7 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent,
                                         FrameOption frameOption) const
 {
     auto infield = new Gui::QuantitySpinBox(parent);
-    infield->setFrame(frameOptionToBool(frameOption));
+    infield->setFrame(static_cast<bool>(frameOption));
     infield->setMinimumHeight(0);
     infield->setReadOnly(isReadOnly());
 
@@ -1292,7 +1292,7 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent,
 {
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setDecimals(decimals());
-    sb->setFrame(frameOptionToBool(frameOption));
+    sb->setFrame(static_cast<bool>(frameOption));
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
@@ -1386,7 +1386,7 @@ QWidget* PropertyBoolItem::createEditor(QWidget* parent,
                                         FrameOption frameOption) const
 {
     auto cb = new QComboBox(parent);
-    cb->setFrame(frameOptionToBool(frameOption));
+    cb->setFrame(static_cast<bool>(frameOption));
     cb->addItem(QLatin1String("false"));
     cb->addItem(QLatin1String("true"));
     cb->setDisabled(isReadOnly());
@@ -1506,7 +1506,7 @@ QWidget* PropertyVectorItem::createEditor(QWidget* parent,
                                           FrameOption frameOption) const
 {
     auto le = new VectorLineEdit(decimals(), parent);
-    le->setFrame(frameOptionToBool(frameOption));
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(true);
 
     if (isBound()) {
@@ -1819,7 +1819,7 @@ QWidget* PropertyVectorDistanceItem::createEditor(QWidget* parent,
                                                   FrameOption frameOption) const
 {
     auto le = new VectorLineEdit(decimals(), parent);
-    le->setFrame(frameOptionToBool(frameOption));
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(true);
 
     if (isBound()) {
@@ -2045,7 +2045,7 @@ QWidget* PropertyMatrixItem::createEditor(QWidget* parent,
                                           FrameOption frameOption) const
 {
     auto le = new QLineEdit(parent);
-    le->setFrame(frameOptionToBool(frameOption));
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(true);
     return le;
 }
@@ -3131,7 +3131,7 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent,
 
     if (!enumItems) {
         auto cb = new QComboBox(parent);
-        cb->setFrame(frameOptionToBool(frameOption));
+        cb->setFrame(static_cast<bool>(frameOption));
         cb->setDisabled(isReadOnly());
         cb->addItems(commonModes);
         QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
