@@ -50,12 +50,12 @@ public:
 
     App::PropertyBool           Threaded;
     App::PropertyBool           ModelThread;
-    App::PropertyLength         ThreadPitch;
     App::PropertyEnumeration    ThreadType;
     App::PropertyEnumeration    ThreadSize;
     App::PropertyEnumeration    ThreadClass;
     App::PropertyEnumeration    ThreadFit;
     App::PropertyLength         Diameter;
+    App::PropertyLength         ThreadPitch;
     App::PropertyLength         ThreadDiameter;
     App::PropertyEnumeration    ThreadDirection;
     App::PropertyEnumeration    HoleCutType;
@@ -110,6 +110,10 @@ public:
     virtual void updateProps();
     bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
     bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
+
+    double getFitDiameter(int fit, double diameter) const;
+    double getFitDiameterISO(int fit, double diameter) const;
+    double getFitDiameterUN(int fit, double diameter, std::string threadSize) const;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -224,6 +228,8 @@ private:
     void updateHoleCutParams();
     std::optional<double> determineDiameter() const;
     void updateDiameterParam();
+    void updateThreadPitchParam();
+    void updateThreadDiameterParam();
     void updateThreadDepthParam();
     void readCutDefinitions();
 
