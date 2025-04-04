@@ -1,23 +1,26 @@
-#***************************************************************************
-#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 __title__= "FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
@@ -373,7 +376,7 @@ class _Stairs(ArchComponent.Component):
         if baseProxy and obj.ArchSketchData and \
                 hasattr(baseProxy, 'getStairsBaseShapeEdgesInfo'):
             propSetUuid = self.ArchSkPropSetPickedUuid
-            info = baseProxy.getStairsBaseShapeEdgesInfo(obj.Base,	
+            info = baseProxy.getStairsBaseShapeEdgesInfo(obj.Base,
                    propSetUuid=propSetUuid)
             if info:
                 flightAxis = info.get('flightAxis')
@@ -443,7 +446,7 @@ class _Stairs(ArchComponent.Component):
                     edgeL = [Part.sortEdges(obj.Base.Shape.Edges)[0]]
                 else:  # Should not happen?
                     edgeL = []
-                #lenAxis = len(flightAxis) + len(landingAxis)  
+                #lenAxis = len(flightAxis) + len(landingAxis)
 
             # Build Stairs if there is no obj.Base or even obj.Base is not valid
             else:
@@ -1570,5 +1573,3 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
                 lst.extend(obj.Subtractions)
             return lst
         return []
-
-

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
@@ -56,7 +58,7 @@ class Arch_Level:
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("WorkingPlane")
-        FreeCADGui.doCommand("obj = Arch.makeFloor(FreeCADGui.Selection.getSelection())") 
+        FreeCADGui.doCommand("obj = Arch.makeFloor(FreeCADGui.Selection.getSelection())")
         FreeCADGui.doCommand("obj.Placement = WorkingPlane.get_working_plane().get_placement()")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()

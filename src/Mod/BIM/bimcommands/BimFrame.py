@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
@@ -62,4 +64,3 @@ class Arch_Frame:
 
 
 FreeCADGui.addCommand('Arch_Frame',Arch_Frame())
-

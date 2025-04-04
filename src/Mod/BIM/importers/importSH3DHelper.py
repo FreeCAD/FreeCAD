@@ -1,4 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2024 Julien Masnada <rostskadat@gmail.com>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
