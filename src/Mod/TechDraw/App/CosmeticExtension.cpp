@@ -36,7 +36,7 @@
 using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
-using DVP = DrawViewPart
+using DVP = DrawViewPart;
 
 EXTENSION_PROPERTY_SOURCE(TechDraw::CosmeticExtension, App::DocumentObjectExtension)
 
