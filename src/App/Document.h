@@ -388,6 +388,10 @@ public:
     void setClosable(bool);
     /// check whether the document can be closed
     bool isClosable() const;
+    /// set the document to autoCreated, this is off by default.
+    void setAutoCreated(bool);
+    /// check whether the document is autoCreated.
+    bool isAutoCreated() const;
     /** Recompute touched features and return the number of recalculated features
      *
      * @param objs: specify a sub set of objects to recompute. If empty, then
@@ -673,6 +677,7 @@ private:
 
     std::string oldLabel;
     std::string myName;
+    bool autoCreated;    // Flag to know if the document was automatically created at startup
 };
 
 template<typename T>
