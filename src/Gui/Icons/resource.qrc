@@ -305,6 +305,13 @@
         <file>overlay_error.svg</file>
         <file>feature_suppressed.svg</file>
         <file>forbidden.svg</file>
+        <file>user-input/mouse-left.svg</file>
+        <file>user-input/mouse-right.svg</file>
+        <file>user-input/mouse-move.svg</file>
+        <file>user-input/mouse-middle.svg</file>
+        <file>user-input/mouse-scroll.svg</file>
+        <file>user-input/mouse-scroll-up.svg</file>
+        <file>user-input/mouse-scroll-down.svg</file>
     </qresource>
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>
