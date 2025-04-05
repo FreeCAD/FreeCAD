@@ -33,7 +33,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Assembly_rc
 
-# translate = App.Qt.translate
 
 __title__ = "Assembly Command to Solve Assembly"
 __author__ = "Ondsel"

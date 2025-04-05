@@ -38,7 +38,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Preferences
 
-# translate = App.Qt.translate
 
 __title__ = "Assembly Command Create Exploded View"
 __author__ = "Ondsel"
