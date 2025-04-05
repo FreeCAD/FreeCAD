@@ -415,139 +415,125 @@ DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& sugg
     return pixmaps;
 }
 
-int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-                                          const Base::Vector2d& Pos,
-                                          const Base::Vector2d& Dir,
-                                          AutoConstraint::TargetType type)
+DrawSketchHandler::PreselectionData DrawSketchHandler::getPreselectionData()
 {
-    using std::numbers::pi;
-
-    suggestedConstraints.clear();
     SketchObject* obj = sketchgui->getSketchObject();
 
-    if (!sketchgui->Autoconstraints.getValue()) {
-        return 0;  // If Autoconstraints property is not set quit
-    }
-    // direction of hit shape (if it is a line, the direction of the line)
-    Base::Vector3d hitShapeDir = Base::Vector3d(0, 0, 0);
-    bool preselectIsLine = false;
-
-    // Get Preselection
+    // Extract preselection information (vertex, curve, cross)
+    PreselectionData preSelData;
     int preSelPnt = getPreselectPoint();
     int preSelCrv = getPreselectCurve();
     int preSelCrs = getPreselectCross();
 
-    int GeoId = GeoEnum::GeoUndef;
-    PointPos PosId = PointPos::none;
-
     if (preSelPnt != -1) {
-        obj->getGeoVertexIndex(preSelPnt, GeoId, PosId);
+        obj->getGeoVertexIndex(preSelPnt, preSelData.geoId, preSelData.posId);
     }
     else if (preSelCrv != -1) {
         const Part::Geometry* geom = obj->getGeometry(preSelCrv);
-
-        // ensure geom exists in case object was called before preselection is updated
         if (geom) {
-            GeoId = preSelCrv;
+            preSelData.geoId = preSelCrv;
             if (geom->is<Part::GeomLineSegment>()) {
                 auto* line = static_cast<const Part::GeomLineSegment*>(geom);
-                hitShapeDir = line->getEndPoint() - line->getStartPoint();
-                preselectIsLine = true;
+                preSelData.hitShapeDir = line->getEndPoint() - line->getStartPoint();
+                preSelData.isLine = true;
             }
         }
     }
     else if (preSelCrs == 0) {
-        // root point
-        GeoId = Sketcher::GeoEnum::RtPnt;
-        PosId = PointPos::start;
+        preSelData.geoId = Sketcher::GeoEnum::RtPnt;
+        preSelData.posId = PointPos::start;
     }
     else if (preSelCrs == 1) {
-        // x axis
-        GeoId = Sketcher::GeoEnum::HAxis;
-        hitShapeDir = Base::Vector3d(1, 0, 0);
-        preselectIsLine = true;
+        preSelData.geoId = Sketcher::GeoEnum::HAxis;
+        preSelData.hitShapeDir = Base::Vector3d(1, 0, 0);
+        preSelData.isLine = true;
     }
     else if (preSelCrs == 2) {
-        // y axis
-        GeoId = Sketcher::GeoEnum::VAxis;
-        hitShapeDir = Base::Vector3d(0, 1, 0);
-        preselectIsLine = true;
+        preSelData.geoId = Sketcher::GeoEnum::VAxis;
+        preSelData.hitShapeDir = Base::Vector3d(0, 1, 0);
+        preSelData.isLine = true;
     }
+    return preSelData;
+}
 
-    if (GeoId != GeoEnum::GeoUndef) {
+bool DrawSketchHandler::isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const
+{
+    SketchObject* obj = sketchgui->getSketchObject();
+
+    auto* geo = obj->getGeometry(GeoId);
+    if (geo->isDerivedFrom<Part::GeomLineSegment>()) {
+        auto* line = static_cast<const Part::GeomLineSegment*>(geo);
+
+        Base::Vector2d startPoint = toVector2d(line->getStartPoint());
+        Base::Vector2d endPoint = toVector2d(line->getEndPoint());
+        Base::Vector2d midPoint = (startPoint + endPoint) / 2;
+
+        // Check if we are at middle of the line
+        if ((Pos - midPoint).Length() < (endPoint - startPoint).Length() * 0.05) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void DrawSketchHandler::seekPreselectionAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Pos,
+    const Base::Vector2d& Dir,
+    AutoConstraint::TargetType type)
+{
+    SketchObject* obj = sketchgui->getSketchObject();
+    PreselectionData preSel = getPreselectionData();
+
+    if (preSel.geoId != GeoEnum::GeoUndef) {
         // Currently only considers objects in current Sketcher
         AutoConstraint constr;
         constr.Type = Sketcher::None;
-        constr.GeoId = GeoId;
-        constr.PosId = PosId;
+        constr.GeoId = preSel.geoId;
+        constr.PosId = preSel.posId;
         if (type == AutoConstraint::VERTEX || type == AutoConstraint::VERTEX_NO_TANGENCY) {
-            if (PosId == PointPos::none) {
-                bool lineCenter = false;
-                auto* geo = obj->getGeometry(GeoId);
-                if (geo->is<Part::GeomLineSegment>()) {
-                    auto* line = static_cast<const Part::GeomLineSegment*>(geo);
-
-                    Base::Vector2d startPoint = toVector2d(line->getStartPoint());
-                    Base::Vector2d endPoint = toVector2d(line->getEndPoint());
-                    Base::Vector2d midPoint = (startPoint + endPoint) / 2;
-
-                    // Check if we are at middle of the line
-                    if ((Pos - midPoint).Length() < (endPoint - startPoint).Length() * 0.05) {
-                        lineCenter = true;
-                    }
-                }
-
+            if (preSel.posId == PointPos::none) {
+                bool lineCenter = isLineCenterAutoConstraint(preSel.geoId, Pos);
                 constr.Type = lineCenter ? Sketcher::Symmetric : Sketcher::PointOnObject;
             }
             else {
                 constr.Type = Sketcher::Coincident;
             }
         }
-        else if (type == AutoConstraint::CURVE && PosId != PointPos::none) {
+        else if (type == AutoConstraint::CURVE && preSel.posId != PointPos::none) {
             constr.Type = Sketcher::PointOnObject;
         }
-        else if (type == AutoConstraint::CURVE && PosId == PointPos::none) {
+        else if (type == AutoConstraint::CURVE && preSel.posId == PointPos::none) {
             constr.Type = Sketcher::Tangent;
         }
 
-        if (constr.Type == Sketcher::Tangent && preselectIsLine) {
-            if (Dir.Length() < 1e-8 || hitShapeDir.Length() < 1e-8) {
-                // Direction not set so return;
-                return suggestedConstraints.size();
+        if (constr.Type == Sketcher::Tangent && preSel.isLine) {
+            if (Dir.Length() < 1e-8 || preSel.hitShapeDir.Length() < 1e-8) {
+                return;  // Direction not set so return;
             }
+
             // We are hitting a line and have hitting vector information
             Base::Vector3d dir3d = Base::Vector3d(Dir.x, Dir.y, 0);
-            double cosangle = dir3d.Normalize() * hitShapeDir.Normalize();
+            double cosangle = dir3d.Normalize() * preSel.hitShapeDir.Normalize();
 
-            // the angle between the line and the hitting direction are over around 6 degrees (it is
-            // substantially parallel) or if it is an sketch axis (that can not move to accommodate
-            // to the shape), then only if it is around 6 degrees with the normal (around 84
-            // degrees)
-            if (fabs(cosangle) < 0.995f
-                || ((GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis)
-                    && fabs(cosangle) < 0.1)) {
-                suggestedConstraints.push_back(constr);
+            // the angle between the line and the hitting direction are over around 6 degrees
+            if (fabs(cosangle) > 0.995f) {
+                return;
             }
-
-
-            return suggestedConstraints.size();
         }
 
         if (constr.Type != Sketcher::None) {
             suggestedConstraints.push_back(constr);
         }
     }
+}
 
-    if (Dir.Length() < 1e-8 || type == AutoConstraint::CURVE) {
-        // Direction not set so return;
-        return suggestedConstraints.size();
-    }
-
-    // Suggest vertical and horizontal constraints
-
-    // Number of Degree of deviation from horizontal or vertical lines
-    const double angleDev = 2;
-    const double angleDevRad = angleDev * pi / 180.;
+void DrawSketchHandler::seekAlignmentAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Dir)
+{
+    using std::numbers::pi;
+    const double angleDevRad = 0.035;  // 2 degrees in radians
 
     AutoConstraint constr;
     constr.Type = Sketcher::None;
@@ -566,14 +552,14 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
     if (constr.Type != Sketcher::None) {
         suggestedConstraints.push_back(constr);
     }
+}
 
-    // Do not seek for tangent if we are actually building a primitive
-    if (type == AutoConstraint::VERTEX_NO_TANGENCY) {
-        return suggestedConstraints.size();
-    }
-
-    // Find if there are tangent constraints (currently arcs and circles)
-
+void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
+                                                  const Base::Vector2d& Pos,
+                                                  const Base::Vector2d& Dir)
+{
+    using std::numbers::pi;
+    SketchObject* obj = sketchgui->getSketchObject();
     int tangId = GeoEnum::GeoUndef;
 
     // Do not consider if distance is more than that.
@@ -690,15 +676,10 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
 
             double distancetoline = norm * (tmpPos - focus1P);  // distance focus1 to line
 
-            Base::Vector3d focus1PMirrored =
-                focus1P + 2 * distancetoline * norm;  // mirror of focus1 with respect to the line
+            // mirror of focus1 with respect to the line
+            Base::Vector3d focus1PMirrored = focus1P + 2 * distancetoline * norm;
 
             double error = fabs((focus1PMirrored - focus2P).Length() - 2 * a);
-
-            if (error < tangDeviation) {
-                tangId = i;
-                tangDeviation = error;
-            }
 
             if (error < tangDeviation) {
                 double startAngle, endAngle;
@@ -730,11 +711,33 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
         if (tangId > getHighestCurveIndex()) {  // external Geometry
             tangId = getHighestCurveIndex() - tangId;
         }
-        // Suggest vertical constraint
+        AutoConstraint constr;
         constr.Type = Tangent;
         constr.GeoId = tangId;
         constr.PosId = PointPos::none;
         suggestedConstraints.push_back(constr);
+    }
+}
+
+int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
+                                          const Base::Vector2d& Pos,
+                                          const Base::Vector2d& Dir,
+                                          AutoConstraint::TargetType type)
+{
+    suggestedConstraints.clear();
+
+    if (!sketchgui->Autoconstraints.getValue()) {
+        return 0;  // If Autoconstraints property is not set quit
+    }
+
+    seekPreselectionAutoConstraint(suggestedConstraints, Pos, Dir, type);
+
+    if (Dir.Length() > 1e-8 && type != AutoConstraint::CURVE) {
+        seekAlignmentAutoConstraint(suggestedConstraints, Dir);
+
+        if (type != AutoConstraint::VERTEX_NO_TANGENCY) {
+            seekTangentAutoConstraint(suggestedConstraints, Pos, Dir);
+        }
     }
 
     return suggestedConstraints.size();
