@@ -1,5 +1,5 @@
 from Base.Metadata import export
-from Part.Part2DObject import Part2DObject
+from Part.App.Part2DObject import Part2DObject
 
 @export(
     Include="Mod/Sketcher/App/SketchObjectSF.h",
