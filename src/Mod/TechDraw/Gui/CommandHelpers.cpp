@@ -70,26 +70,6 @@ TechDraw::DrawView* CommandHelpers::firstViewInSelection(Gui::Command* cmd)
     return baseView;
 }
 
-//! find the first DrawView in the current selection for use as a base view (owner)
-TechDraw::DrawView* CommandHelpers::firstNonSpreadsheetInSelection(Gui::Command* cmd)
-{
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawView* baseView{nullptr};
-    if (!selection.empty()) {
-        for (auto& selobj : selection) {
-            if (selobj.getObject()->isDerivedFrom<DrawViewSpreadsheet>()) {
-                continue;
-            } else {
-                auto docobj = selobj.getObject();
-                baseView =  static_cast<TechDraw::DrawView *>(docobj);
-                break;
-            }
-        }
-    }
-    return baseView;
-}
-
-
 std::vector<std::string> CommandHelpers::getSelectedSubElements(Gui::Command* cmd,
                                                 TechDraw::DrawViewPart* &dvp,
                                                 std::string subType)
@@ -129,83 +109,6 @@ std::vector<std::string> CommandHelpers::getSelectedSubElements(Gui::Command* cm
     return selectedSubs;
 }
 
-//! extract the selected shapes and xShapes and determine if a face has been
-//! selected to define the projection direction
-void CommandHelpers::getSelectedShapes(Gui::Command* cmd,
-                       std::vector<App::DocumentObject*>& shapes,
-                       std::vector<App::DocumentObject*>& xShapes,
-                       App::DocumentObject* faceObj,
-                       std::string& faceName)
-{
-    auto resolve = Gui::ResolveMode::OldStyleElement;
-    bool single = false;
-    auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
-                                                        resolve, single);
-    for (auto& sel : selection) {
-        bool is_linked = false;
-        auto obj = sel.getObject();
-        if (obj->isDerivedFrom<TechDraw::DrawPage>()) {
-            continue;
-        }
-        if (obj->isDerivedFrom<App::LinkElement>()
-            || obj->isDerivedFrom<App::LinkGroup>()
-            || obj->isDerivedFrom<App::Link>()) {
-            is_linked = true;
-        }
-        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
-        // 1st, is obj in another document?
-        if (obj->getDocument() != cmd->getDocument()) {
-            std::set<App::DocumentObject*> parents = obj->getInListEx(true);
-            for (auto& parent : parents) {
-                // Only consider parents in the current document, i.e. possible links in this View's document
-                if (parent->getDocument() != cmd->getDocument()) {
-                    continue;
-                }
-                // 2nd, do we really have a link to obj?
-                if (parent->isDerivedFrom<App::LinkElement>()
-                    || parent->isDerivedFrom<App::LinkGroup>()
-                    || parent->isDerivedFrom<App::Link>()) {
-                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
-                    is_linked = true;
-                }
-            }
-        }
-        if (is_linked) {
-            xShapes.push_back(obj);
-            continue;
-        }
-        //not a Link and not null.  assume to be drawable.  Undrawables will be
-        // skipped later.
-        shapes.push_back(obj);
-        if (faceObj) {
-            continue;
-        }
-        //don't know if this works for an XLink
-        for (auto& sub : sel.getSubNames()) {
-            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
-                faceName = sub;
-                //
-                faceObj = obj;
-                break;
-            }
-        }
-    }
-}
-
-
-std::pair<Base::Vector3d, Base::Vector3d> CommandHelpers::viewDirection()
-{
-    if (!Preferences::useCameraDirection()) {
-        return { Base::Vector3d(0, -1, 0), Base::Vector3d(1, 0, 0) };
-    }
-
-    auto faceInfo = faceFromSelection();
-    if (faceInfo.first) {
-        return DrawGuiUtil::getProjDirFromFace(faceInfo.first, faceInfo.second);
-    }
-
-    return DrawGuiUtil::get3DDirAndRot();
-}
 
 std::pair<App::DocumentObject*, std::string> CommandHelpers::faceFromSelection()
 {
