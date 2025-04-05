@@ -199,7 +199,6 @@ SET(FreeCADBase_CPP_SRCS
     ExceptionFactory.cpp
     Factory.cpp
     FileInfo.cpp
-    FileTemplate.cpp
     FutureWatcherProgress.cpp
     GeometryPyCXX.cpp
     Handle.cpp
@@ -270,7 +269,6 @@ SET(FreeCADBase_HPP_SRCS
     ExceptionFactory.h
     Factory.h
     FileInfo.h
-    FileTemplate.h
     FutureWatcherProgress.h
     GeometryPyCXX.h
     Handle.h
