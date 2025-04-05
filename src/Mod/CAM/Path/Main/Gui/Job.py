@@ -137,7 +137,7 @@ class ViewProvider:
         LABELS = 4
         ARROWHEADS = 8
 
-        self.axs.parts.setValue(AXES|LABELS|ARROWHEADS)
+        self.axs.parts.setValue(AXES | LABELS | ARROWHEADS)
 
         self.sep.addChild(self.axs)
         self.switch.addChild(self.sep)
