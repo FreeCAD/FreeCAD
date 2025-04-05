@@ -127,7 +127,7 @@ class ViewProvider:
 
         # Setup the axis display at the origin
         self.switch = coin.SoSwitch()
-        self.sep = coin.SoSeparator()
+        self.sep = coin.SoType.fromName("So3DAnnotation").createInstance()
 
         self.axs = coin.SoType.fromName("SoFCPlacementIndicatorKit").createInstance()
         self.axs.axisLength.setValue(1.2)
@@ -139,7 +139,7 @@ class ViewProvider:
 
         self.axs.parts.setValue(AXES|LABELS|ARROWHEADS)
 
-        self.switch.addChild(self.axs)
+        self.sep.addChild(self.axs)
         self.switch.addChild(self.sep)
 
         vobj.RootNode.addChild(self.switch)
