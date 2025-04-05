@@ -50,7 +50,10 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(SpreadsheetGui::ViewProviderSheet, Gui::ViewProviderDocumentObject)
 
-ViewProviderSheet::ViewProviderSheet() = default;
+ViewProviderSheet::ViewProviderSheet()
+{
+    setToggleVisibility(ToggleVisibilityMode::NoToggleVisibility);
+}
 
 ViewProviderSheet::~ViewProviderSheet()
 {
