@@ -79,6 +79,9 @@ public:
     bool getModelThread() const;
     long getThreadDepthType() const;
     double getThreadDepth() const;
+    int getBaseProfileType() const;
+    int comboBoxIndexToBaseProfilesOption(int index) const;
+    int baseProfilesOptionToComboboxIndex(int baseprofilesoptions) const;
 
 private Q_SLOTS:
     void threadedChanged();
@@ -108,6 +111,7 @@ private Q_SLOTS:
     void updateViewChanged(bool isChecked);
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
+    void baseProfileTypeChanged(int index);
     void setCutDiagram();
 
 private:
