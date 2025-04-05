@@ -227,7 +227,7 @@ void ButtonModel::insertButtonRows(int number)
     {
         QString groupName;
         groupName.setNum(index);
-        Base::Reference<ParameterGrp> newGroup = spaceballButtonGroup()->GetGroup(groupName.toLatin1());//builds the group.
+        Base::Reference<ParameterGrp> newGroup = spaceballButtonGroup()->GetGroup(groupName.toLatin1());
         newGroup->SetASCII("Command", "");
         newGroup->SetASCII("Description", "");
     }

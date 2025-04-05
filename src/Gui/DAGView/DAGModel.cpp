@@ -692,7 +692,7 @@ void Model::updateSlot()
       Vertex target = boost::target(*it, *theGraph);
       if (!(*theGraph)[target].dagVisible)
         continue; //we don't make it here if source isn't visible. So don't have to worry about that.
-      float dependentX = pointSpacing * static_cast<int>(columnFromMask((*theGraph)[target].column)) + pointSize / 2.0; //on center.
+      float dependentX = pointSpacing * static_cast<int>(columnFromMask((*theGraph)[target].column)) + pointSize / 2.0;
       columnFromMask((*theGraph)[target].column);
       float dependentY = rowHeight * (*theGraph)[target].row + rowHeight / 2.0;
 
@@ -1132,7 +1132,8 @@ void Model::renameAcceptedSlot()
 
   auto lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
   assert(lineEdit);
-  const_cast<App::DocumentObject*>(record.DObject)->Label.setValue(lineEdit->text().toUtf8().constData()); //const hack
+  // record itself is a const, but we are going to modify a subcomponent of it anyway, so need a const cast:
+  const_cast<App::DocumentObject*>(record.DObject)->Label.setValue(lineEdit->text().toUtf8().constData());
 
   finishRename();
 }
