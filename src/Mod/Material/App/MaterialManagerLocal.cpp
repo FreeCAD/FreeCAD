@@ -130,7 +130,7 @@ MaterialManagerLocal::getMaterialLibraries()
 std::shared_ptr<MaterialLibrary> MaterialManagerLocal::getLibrary(const QString& name) const
 {
     for (auto& library : *_libraryList) {
-        if (library->isLocal() && library->sameName(name)) {
+        if (library->isLocal() && library->isName(name)) {
             return library;
         }
     }
@@ -160,7 +160,7 @@ void MaterialManagerLocal::createLibrary(const QString& libraryName,
 void MaterialManagerLocal::renameLibrary(const QString& libraryName, const QString& newName)
 {
     for (auto& library : *_libraryList) {
-        if (library->isLocal() && library->sameName(libraryName)) {
+        if (library->isLocal() && library->isName(libraryName)) {
             auto materialLibrary =
                 reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
             materialLibrary->setName(newName);
@@ -174,7 +174,7 @@ void MaterialManagerLocal::renameLibrary(const QString& libraryName, const QStri
 void MaterialManagerLocal::changeIcon(const QString& libraryName, const QString& icon)
 {
     for (auto& library : *_libraryList) {
-        if (library->isLocal() && library->sameName(libraryName)) {
+        if (library->isLocal() && library->isName(libraryName)) {
             auto materialLibrary =
                 reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
             materialLibrary->setIconPath(icon);
@@ -188,7 +188,7 @@ void MaterialManagerLocal::changeIcon(const QString& libraryName, const QString&
 void MaterialManagerLocal::removeLibrary(const QString& libraryName)
 {
     for (auto& library : *_libraryList) {
-        if (library->isLocal() && library->sameName(libraryName)) {
+        if (library->isLocal() && library->isName(libraryName)) {
             _libraryList->remove(library);
 
             // At this point we should rebuild the material map
@@ -207,7 +207,7 @@ MaterialManagerLocal::libraryMaterials(const QString& libraryName)
     for (auto& it : *_materialMap) {
         // This is needed to resolve cyclic dependencies
         auto library = it.second->getLibrary();
-        if (library->sameName(libraryName)) {
+        if (library->isName(libraryName)) {
             materials->push_back(std::tuple<QString, QString, QString>(it.first,
                                                                        it.second->getDirectory(),
                                                                        it.second->getName()));
@@ -245,7 +245,7 @@ MaterialManagerLocal::libraryMaterials(const QString& libraryName,
     for (auto& it : *_materialMap) {
         // This is needed to resolve cyclic dependencies
         auto library = it.second->getLibrary();
-        if (library->sameName(libraryName)) {
+        if (library->isName(libraryName)) {
             if (passFilter(it.second, filter, options)) {
                 materials->push_back(std::tuple<QString, QString, QString>(it.first,
                                                                         it.second->getDirectory(),
