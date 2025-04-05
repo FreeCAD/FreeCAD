@@ -78,8 +78,8 @@ TEST_F(DISABLED_DocumentObserverTest, hasSubObject)
     // hasNoSubObj should be false
     EXPECT_FALSE(hasNoSubObj);
 
-    // The subname of subObjTWithSubObj doesn't contain the name of a sub object, therefore hasSubObj
-    // should be true
+    // The subname of subObjTWithSubObj doesn't contain the name of a sub object, therefore
+    // hasSubObj should be true
     EXPECT_TRUE(hasSubObj);
 }
 

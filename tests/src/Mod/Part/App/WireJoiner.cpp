@@ -541,17 +541,17 @@ TEST_F(WireJoinerTest, setTolerance)
     wjtol.getOpenWires(wiretol, nullptr, false);
 
     wjNegatol.addShape(edgesNegatol);
-    // Setting atol to a negative value won't have effect and therefore wjNegatol.pimpl->myAngularTol
-    // will keep the default value.
-    // The tol value must be given in any case.
+    // Setting atol to a negative value won't have effect and therefore
+    // wjNegatol.pimpl->myAngularTol will keep the default value. The tol value must be given in any
+    // case.
     wjNegatol.setTolerance(-0.1, -pi);
     wjNegatol.Build();
     wjNegatol.getOpenWires(wireNegatol, nullptr, false);
 
     wjatol.addShape(edgesatol);
-    // Setting atol to a negative value won't have effect and therefore wjNegatol.pimpl->myAngularTol
-    // will keep the default value.
-    // We give also the tol value so that a closed wire can be created.
+    // Setting atol to a negative value won't have effect and therefore
+    // wjNegatol.pimpl->myAngularTol will keep the default value. We give also the tol value so that
+    // a closed wire can be created.
     wjatol.setTolerance(0.2, pi / 9);
     wjatol.Build();
     wjatol.getOpenWires(wireatol, nullptr, false);
