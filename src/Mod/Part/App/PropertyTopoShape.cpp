@@ -603,7 +603,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
     // Now it's not possible anymore because both PropertyPartShape::loadFromFile() and
     // PropertyPartShape::loadFromStream() calls PropertyPartShape::setValue() which clears the
     // value of _Ver.
-    // Therefor we're storing the value of _Ver here so that we don't lose it.
+    // Therefore we're storing the value of _Ver here so that we don't lose it.
 
     std::string ver = _Ver;
 

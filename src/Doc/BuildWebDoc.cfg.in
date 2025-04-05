@@ -2794,7 +2794,7 @@ TEMPLATE_RELATIONS     = NO
 # If the INCLUDE_GRAPH, ENABLE_PREPROCESSING and SEARCH_INCLUDES tags are set to
 # YES then Doxygen will generate a graph for each documented file showing the
 # direct and indirect include dependencies of the file with other documented
-# files. Explicit enabling an include graph, when INCLUDE_GRAPH is is set to NO,
+# files. Explicit enabling an include graph, when INCLUDE_GRAPH is set to NO,
 # can be accomplished by means of the command \includegraph. Disabling an
 # include graph can be accomplished by means of the command \hideincludegraph.
 # The default value is: YES.
