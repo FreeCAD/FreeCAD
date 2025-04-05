@@ -80,10 +80,9 @@ void QGIEdge::setPrettyNormal() {
 //    Base::Console().Message("QGIE::setPrettyNormal()\n");
     if (isHiddenEdge) {
         m_pen.setColor(getHiddenColor());
-    } else {
-        m_pen.setColor(getNormalColor());
+        return;
     }
-    //should call QGIPP::setPrettyNormal()?
+    QGIPrimPath::setPrettyNormal();
 }
 
 QColor QGIEdge::getHiddenColor()
