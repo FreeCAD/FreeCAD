@@ -6601,7 +6601,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
         range = atan2(-radDir1.y * radDir2.x + radDir1.x * radDir2.y,
                       radDir1.x * radDir2.x + radDir1.y * radDir2.y);
 
-        if (fmod(fabs(range), 2 * M_PI) < Precision::Approximation()) {
+        if (fmod(fabs(range), 2 * std::numbers::pi) < Precision::Approximation()) {
             return nullptr;
         }
 
@@ -6611,12 +6611,12 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             std::swap(startAngle, endAngle);
         }
 
-        if (endAngle > 2 * M_PI) {
-            endAngle -= 2 * M_PI;
+        if (endAngle > 2 * std::numbers::pi) {
+            endAngle -= 2 * std::numbers::pi;
         }
 
         if (startAngle < 0) {
-            endAngle += 2 * M_PI;
+            endAngle += 2 * std::numbers::pi;
         }
 
         // Create Arc Segment
