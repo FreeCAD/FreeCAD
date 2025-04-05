@@ -250,7 +250,7 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
 {
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
-    }));
+    }, PropertyEditor::FrameOption::WithFrame));
     propertyItem->setEditorData(editor.get(), QVariant());
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QStringLiteral("editor"));
