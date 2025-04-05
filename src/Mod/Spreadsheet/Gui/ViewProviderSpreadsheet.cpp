@@ -50,25 +50,16 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(SpreadsheetGui::ViewProviderSheet, Gui::ViewProviderDocumentObject)
 
-ViewProviderSheet::ViewProviderSheet() = default;
+ViewProviderSheet::ViewProviderSheet()
+{
+    setToggleVisibility(ToggleVisibilityMode::NoToggleVisibility);
+}
 
 ViewProviderSheet::~ViewProviderSheet()
 {
     if (!view.isNull()) {
         Gui::getMainWindow()->removeWindow(view);
     }
-}
-
-void ViewProviderSheet::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderSheet::getDisplayModes() const
-{
-    std::vector<std::string> StrList;
-    StrList.emplace_back("Spreadsheet");
-    return StrList;
 }
 
 QIcon ViewProviderSheet::getIcon() const
