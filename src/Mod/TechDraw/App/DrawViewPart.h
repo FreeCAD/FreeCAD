@@ -239,6 +239,10 @@ public:
     virtual bool waitingForResult() const;
     void progressValueChanged(int v);
 
+    static bool isCosmeticVertex(App::DocumentObject* owner, std::string element);
+    static bool isCosmeticEdge(App::DocumentObject* owner, std::string element);
+    static bool isCenterLine(App::DocumentObject* owner, std::string element);
+
 public Q_SLOTS:
     void onHlrFinished(void);
     void onFacesFinished(void);
