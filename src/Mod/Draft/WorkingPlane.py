@@ -1269,7 +1269,7 @@ class PlaneGui(PlaneBase):
         place = FreeCAD.Placement(mtx)
 
         typ = utils.get_type(obj)
-        if typ in ["App::Part", "PartDesign::Plane", "Axis", "SectionPlane"]:
+        if typ in ["App::Part", "Part::DatumPlane", "PartDesign::Plane", "Axis", "SectionPlane"]:
             ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
         elif typ == "WorkingPlaneProxy":
             ret = self.align_to_wp_proxy(obj, offset, place, _hist_add)

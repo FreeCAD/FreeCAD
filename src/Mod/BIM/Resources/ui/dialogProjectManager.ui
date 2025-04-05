@@ -127,7 +127,7 @@
                <string>This will create an IFC project. All the BIM objects you will add to that IFC project will immediately become IFC objects. This is less flexible, but allows you to stick more strictly to the IFC standard.</string>
               </property>
               <property name="text">
-               <string>Create a Native IFC project in the current dopcument</string>
+               <string>Create a Native IFC project in the current document</string>
               </property>
               <property name="checked">
                <bool>true</bool>

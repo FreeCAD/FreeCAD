@@ -25,7 +25,6 @@
 #define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-#include <climits>
 #include <iostream>
 
 #include <QString>
@@ -71,7 +70,6 @@
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
-#include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/Gui/DlgExportStep.h>
 #include <Mod/Part/Gui/DlgImportStep.h>

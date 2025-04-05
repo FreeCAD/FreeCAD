@@ -56,7 +56,7 @@ void setupArcOfCircle(Part::GeomArcOfCircle& arcOfCircle)
 {
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
     double radius = 3.0;
-    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    double startParam = std::numbers::pi / 3, endParam = std::numbers::pi * 1.5;
     arcOfCircle.setCenter(coordsCenter);
     arcOfCircle.setRadius(radius);
     arcOfCircle.setRange(startParam, endParam, true);
@@ -77,7 +77,7 @@ void setupArcOfHyperbola(Part::GeomArcOfHyperbola& arcOfHyperbola)
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
     double majorRadius = 4.0;
     double minorRadius = 3.0;
-    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    double startParam = std::numbers::pi / 3, endParam = std::numbers::pi * 1.5;
     arcOfHyperbola.setCenter(coordsCenter);
     arcOfHyperbola.setMajorRadius(majorRadius);
     arcOfHyperbola.setMinorRadius(minorRadius);
@@ -88,7 +88,7 @@ void setupArcOfParabola(Part::GeomArcOfParabola& aop)
 {
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
     double focal = 3.0;
-    double startParam = -M_PI * 1.5, endParam = M_PI * 1.5;
+    double startParam = -std::numbers::pi * 1.5, endParam = std::numbers::pi * 1.5;
     aop.setCenter(coordsCenter);
     aop.setFocal(focal);
     aop.setRange(startParam, endParam, true);

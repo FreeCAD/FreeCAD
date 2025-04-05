@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <limits>
 # include <QMessageBox>
 #endif
 
@@ -63,7 +64,8 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     setupConnections();
 
     d->ui.spinOffset->setUnit(Base::Unit::Length);
-    d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
+    d->ui.spinOffset->setRange(-std::numeric_limits<int>::max(),
+                                std::numeric_limits<int>::max());
     d->ui.spinOffset->setSingleStep(0.1);
     d->ui.facesButton->hide();
 

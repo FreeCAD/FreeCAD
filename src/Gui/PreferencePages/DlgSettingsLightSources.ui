@@ -164,7 +164,7 @@
          <cstring>AmbientLightIntensity</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>View/LightSources</cstring>
         </property>
        </widget>
       </item>
@@ -181,7 +181,7 @@
          <cstring>BacklightColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>View/LightSources</cstring>
         </property>
        </widget>
       </item>
@@ -267,7 +267,7 @@
          <cstring>AmbientLightColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>View/LightSources</cstring>
         </property>
        </widget>
       </item>
@@ -293,7 +293,7 @@
          <cstring>HeadlightIntensity</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>View/LightSources</cstring>
         </property>
        </widget>
       </item>
@@ -332,7 +332,7 @@
          <cstring>BacklightIntensity</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>View/LightSources</cstring>
         </property>
        </widget>
       </item>
@@ -367,7 +367,7 @@
          <cstring>FillLightIntensity</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>View/LightSources</cstring>
         </property>
        </widget>
       </item>
@@ -404,7 +404,7 @@
          <cstring>FillLightColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>View/LightSources</cstring>
         </property>
        </widget>
       </item>
@@ -431,7 +431,7 @@
          <cstring>HeadlightColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>View/LightSources</cstring>
         </property>
        </widget>
       </item>

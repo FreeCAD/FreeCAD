@@ -76,9 +76,7 @@
 #include <QWindow>
 
 #include <Inventor/C/basic.h>
-#if COIN_MAJOR_VERSION >= 4
 #include <Inventor/SbByteBuffer.h>
-#endif
 
 #include <Inventor/SbColor.h>
 #include <Inventor/SbViewportRegion.h>
@@ -1245,11 +1243,7 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     QFile file(filenametmp);
     if (file.open(QIODevice::ReadOnly)){
       QByteArray fileContents = file.readAll();
-#if COIN_MAJOR_VERSION >= 4
       stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
-#else
-      stateMachine = ScXML::readBuffer(fileContents.constData());
-#endif
       file.close();
     }
   }

@@ -424,7 +424,7 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
     if (type == Materials::MaterialValue::Integer) {
         auto spinner = new Gui::IntSpinBox(parent);
         spinner->setMinimum(0);
-        spinner->setMaximum(INT_MAX);
+        spinner->setMaximum(std::numeric_limits<int>::max());
         spinner->setValue(item.toInt());
         widget = spinner;
     }

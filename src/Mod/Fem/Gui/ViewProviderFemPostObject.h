@@ -170,7 +170,6 @@ private:
     void WritePointData(vtkPoints* points, vtkDataArray* normals, vtkDataArray* tcoords);
     void WriteColorData(bool ResetColorBarRange);
     void WriteTransparency();
-    void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
     void deleteColorBar();
 
     App::Enumeration m_coloringEnum, m_vectorEnum;

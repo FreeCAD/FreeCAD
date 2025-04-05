@@ -256,7 +256,7 @@ void orthoview::set_projection(const gp_Ax2& cs)
     // angle between desired projection and actual projection
     float rotation = X_dir.Angle(actual_X);
 
-    if (rotation != 0 && abs(M_PI - rotation) > 0.05) {
+    if (rotation != 0 && abs(std::numbers::pi - rotation) > 0.05) {
         if (!Z_dir.IsEqual(actual_X.Crossed(X_dir), 0.05)) {
             rotation = -rotation;
         }
@@ -266,7 +266,7 @@ void orthoview::set_projection(const gp_Ax2& cs)
 
     // this_view->Direction.setValue(Z_dir.X(), Z_dir.Y(), Z_dir.Z());
     this_view->Direction.setValue(x, y, z);
-    this_view->Rotation.setValue(180 * rotation / M_PI);
+    this_view->Rotation.setValue(180 * rotation / std::numbers::pi);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -613,8 +613,8 @@ void OrthoViews::set_orientation(int index)  // set orientation of single view
             dir = primary.XDirection();
             n = -views[index]->rel_y;
         }
-
-        rotation = n * rotate_coeff * M_PI / 2;  // rotate_coeff is -1 or 1 for 1st or 3rd angle
+        // rotate_coeff is -1 or 1 for 1st or 3rd angle
+        rotation = n * rotate_coeff * std::numbers::pi / 2;
         cs = primary.Rotated(gp_Ax1(gp_Pnt(0, 0, 0), dir), rotation);
         views[index]->set_projection(cs);
     }
@@ -780,7 +780,7 @@ void OrthoViews::set_Axo(int rel_x,
         rotations[1] = -0.6156624905260762;
     }
     else {
-        rotations[0] = 1.3088876392502007 - M_PI / 2;
+        rotations[0] = 1.3088876392502007 - std::numbers::pi / 2;
         rotations[1] = -0.6156624905260762;
     }
 

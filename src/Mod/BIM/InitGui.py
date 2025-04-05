@@ -680,6 +680,6 @@ FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-sh3d-import.ui", t)
 
 # Add unit tests
-FreeCAD.__unit_test__ += ["TestArch"]
+FreeCAD.__unit_test__ += ["TestArchGui"]
 # The NativeIFC tests require internet connection and file download
 # FreeCAD.__unit_test__ += ["nativeifc.ifc_selftest"]

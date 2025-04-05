@@ -832,7 +832,7 @@ void DrawGuiUtil::rotateToAlign(DrawViewPart* view, const Base::Vector2d& oldDir
 
     double toRotate = newDirection.GetAngle(oldDirection);
     // Radians to degrees
-    toRotate = toRotate * 180 / M_PI;
+    toRotate = toRotate * 180 / std::numbers::pi;
 
     // Rotate least amount possible
     if(toRotate > 90) {

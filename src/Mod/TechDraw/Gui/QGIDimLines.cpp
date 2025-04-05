@@ -41,8 +41,6 @@ QGIDimLines::QGIDimLines()
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-
-    setFill(QColor(100, 100, 0));
     setWidth(0.5);
 }
 

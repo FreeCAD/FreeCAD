@@ -4,7 +4,10 @@ if (BUILD_SMESH)
 endif()
 
 add_subdirectory(lazy_loader)
-add_subdirectory(libE57Format)
+
+if(NOT FREECAD_USE_EXTERNAL_E57FORMAT)
+    add_subdirectory(libE57Format)
+endif()
 
 if (BUILD_ASSEMBLY AND NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
     if( NOT EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver/CMakeLists.txt" )

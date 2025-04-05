@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <climits>
+# include <limits>
 # include <QKeyEvent>
 # include <QLineEdit>
 # include <QStyle>
@@ -54,9 +54,26 @@ ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
     QObject::connect(iconLabel, &ExpressionLabel::clicked, [this]() {
         this->openFormulaDialog();
     });
+
+    // Set Margins
+    // vertical to avoid this: https://forum.freecad.org/viewtopic.php?f=8&t=50615
+    // horizontal to avoid going under the icon
+    lineedit->setAlignment(Qt::AlignVCenter);
+    int iconWidth = iconLabel->sizeHint().width();
+    int margin = getMargin();
+    lineedit->setTextMargins(margin, margin, margin + iconWidth, margin);
 }
 
 ExpressionSpinBox::~ExpressionSpinBox() = default;
+
+int ExpressionSpinBox::getMargin()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    return lineedit->style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, lineedit) / 2;
+#else
+    return lineedit->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr, lineedit);
+#endif
+}
 
 void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
 {
@@ -67,9 +84,6 @@ void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
 
 void ExpressionSpinBox::showIcon()
 {
-    int frameWidth = spinbox->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    lineedit->setStyleSheet(QStringLiteral("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
-
     iconLabel->show();
 }
 
@@ -164,10 +178,8 @@ void ExpressionSpinBox::onChange()
 
 void ExpressionSpinBox::resizeWidget()
 {
-    int frameWidth = spinbox->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-
-    QSize sz = iconLabel->sizeHint();
-    iconLabel->move(lineedit->rect().right() - frameWidth - sz.width(), lineedit->rect().center().y() - sz.height() / 2);
+    int iconWidth = iconLabel->width() + getMargin();
+    iconLabel->move(lineedit->width() - iconWidth, (lineedit->height() - iconLabel->height()) / 2);
     updateExpression();
 }
 
@@ -226,7 +238,7 @@ UnsignedValidator::UnsignedValidator( QObject * parent )
   : QValidator( parent )
 {
     b =  0;
-    t =  UINT_MAX;
+    t =  std::numeric_limits<unsigned>::max();
 }
 
 UnsignedValidator::UnsignedValidator( uint minimum, uint maximum, QObject * parent )
@@ -280,30 +292,40 @@ public:
     UnsignedValidator * mValidator{nullptr};
 
     UIntSpinBoxPrivate() = default;
-    uint mapToUInt( int v ) const
+    unsigned mapToUInt( int v ) const
     {
-        uint ui;
-        if ( v == INT_MIN ) {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
+        unsigned ui;
+        if ( v == int_limits::min() ) {
             ui = 0;
-        } else if ( v == INT_MAX ) {
-            ui = UINT_MAX;
+        } else if ( v == int_limits::max() ) {
+            ui = uint_limits::max();
         } else if ( v < 0 ) {
-            v -= INT_MIN; ui = (uint)v;
+            v -= int_limits::min();
+            ui = static_cast<unsigned>(v);
         } else {
-            ui = (uint)v; ui -= INT_MIN;
+            ui = static_cast<unsigned>(v);
+            ui -= int_limits::min();
         } return ui;
     }
-    int mapToInt( uint v ) const
+    int mapToInt( unsigned v ) const
     {
+        using int_limits = std::numeric_limits<int>;
+        using uint_limits = std::numeric_limits<unsigned>;
+
         int in;
-        if ( v == UINT_MAX ) {
-            in = INT_MAX;
+        if ( v == uint_limits::max() ) {
+            in = int_limits::max();
         } else if ( v == 0 ) {
-            in = INT_MIN;
-        } else if ( v > INT_MAX ) {
-            v += INT_MIN; in = (int)v;
+            in = int_limits::min();
+        } else if ( v > int_limits::max() ) {
+            v += int_limits::min();
+            in = static_cast<int>(v);
         } else {
-            in = v; in += INT_MIN;
+            in = v;
+            in += int_limits::min();
         } return in;
     }
 };

@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <limits>
 #include <queue>
 #include <utility>
 #endif
@@ -121,7 +122,7 @@ bool MeshTopoAlgorithm::SnapVertex(FacetIndex ulFacetPos, const Base::Vector3f& 
             float fTV = (rP - rPt1) * (rPt2 - rPt1);
 
             // Point is on the edge
-            if (cNo3.Length() < FLOAT_EPS) {
+            if (cNo3.Length() < std::numeric_limits<float>::epsilon()) {
                 return SplitOpenEdge(ulFacetPos, i, rP);
             }
             if ((rP - rPt1) * cNo2 > 0.0F && fD2 >= fTV && fTV >= 0.0F) {
@@ -290,7 +291,7 @@ float MeshTopoAlgorithm::SwapEdgeBenefit(FacetIndex f, int e) const
     PointIndex v2 = faces[f]._aulPoints[(e + 1) % 3];
     PointIndex v3 = faces[f]._aulPoints[(e + 2) % 3];
     unsigned short s = faces[n].Side(faces[f]);
-    if (s == USHRT_MAX) {
+    if (s == std::numeric_limits<unsigned short>::max()) {
         std::cerr << "MeshTopoAlgorithm::SwapEdgeBenefit: error in neighbourhood "
                   << "of faces " << f << " and " << n << std::endl;
         return 0.0F;  // topological error
@@ -600,7 +601,8 @@ bool MeshTopoAlgorithm::IsSwapEdgeLegal(FacetIndex ulFacetPos, FacetIndex ulNeig
     unsigned short uFSide = rclF.Side(rclN);
     unsigned short uNSide = rclN.Side(rclF);
 
-    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) {
+    constexpr auto max = std::numeric_limits<unsigned short>::max();
+    if (uFSide == max || uNSide == max) {
         return false;  // not neighbours
     }
 
@@ -686,7 +688,8 @@ void MeshTopoAlgorithm::SwapEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour)
     unsigned short uFSide = rclF.Side(rclN);
     unsigned short uNSide = rclN.Side(rclF);
 
-    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) {
+    constexpr auto max = std::numeric_limits<unsigned short>::max();
+    if (uFSide == max || uNSide == max) {
         return;  // not neighbours
     }
 
@@ -720,7 +723,8 @@ bool MeshTopoAlgorithm::SplitEdge(FacetIndex ulFacetPos,
     unsigned short uFSide = rclF.Side(rclN);
     unsigned short uNSide = rclN.Side(rclF);
 
-    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) {
+    constexpr auto max = std::numeric_limits<unsigned short>::max();
+    if (uFSide == max || uNSide == max) {
         return false;  // not neighbours
     }
 
@@ -816,13 +820,13 @@ bool MeshTopoAlgorithm::SplitOpenEdge(FacetIndex ulFacetPos,
 bool MeshTopoAlgorithm::Vertex_Less::operator()(const Base::Vector3f& u,
                                                 const Base::Vector3f& v) const
 {
-    if (std::fabs(u.x - v.x) > FLOAT_EPS) {
+    if (std::fabs(u.x - v.x) > std::numeric_limits<float>::epsilon()) {
         return u.x < v.x;
     }
-    if (std::fabs(u.y - v.y) > FLOAT_EPS) {
+    if (std::fabs(u.y - v.y) > std::numeric_limits<float>::epsilon()) {
         return u.y < v.y;
     }
-    if (std::fabs(u.z - v.z) > FLOAT_EPS) {
+    if (std::fabs(u.z - v.z) > std::numeric_limits<float>::epsilon()) {
         return u.z < v.z;
     }
     return false;
@@ -980,7 +984,8 @@ bool MeshTopoAlgorithm::CollapseEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbo
     unsigned short uFSide = rclF.Side(rclN);
     unsigned short uNSide = rclN.Side(rclF);
 
-    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) {
+    constexpr auto max = std::numeric_limits<unsigned short>::max();
+    if (uFSide == max || uNSide == max) {
         return false;  // not neighbours
     }
 
@@ -1214,7 +1219,7 @@ void MeshTopoAlgorithm::SplitFacet(FacetIndex ulFacetPos,
     MeshPoint& rVertex2 = _rclMesh._aclPointArray[rFace._aulPoints[2]];
 
     auto pointIndex = [=](const Base::Vector3f& rP) {
-        unsigned short equalP = USHRT_MAX;
+        unsigned short equalP = std::numeric_limits<unsigned short>::max();
         if (Base::Distance(rVertex0, rP) < fEps) {
             equalP = 0;
         }
@@ -1230,16 +1235,17 @@ void MeshTopoAlgorithm::SplitFacet(FacetIndex ulFacetPos,
     unsigned short equalP1 = pointIndex(rP1);
     unsigned short equalP2 = pointIndex(rP2);
 
+    constexpr auto max = std::numeric_limits<unsigned short>::max();
     // both points are coincident with the corner points
-    if (equalP1 != USHRT_MAX && equalP2 != USHRT_MAX) {
+    if (equalP1 != max && equalP2 != max) {
         return;  // must not split the facet
     }
 
-    if (equalP1 != USHRT_MAX) {
+    if (equalP1 != max) {
         // get the edge to the second given point and perform a split edge operation
         SplitFacetOnOneEdge(ulFacetPos, rP2);
     }
-    else if (equalP2 != USHRT_MAX) {
+    else if (equalP2 != max) {
         // get the edge to the first given point and perform a split edge operation
         SplitFacetOnOneEdge(ulFacetPos, rP1);
     }
@@ -1250,8 +1256,8 @@ void MeshTopoAlgorithm::SplitFacet(FacetIndex ulFacetPos,
 
 void MeshTopoAlgorithm::SplitFacetOnOneEdge(FacetIndex ulFacetPos, const Base::Vector3f& rP)
 {
-    float fMinDist = FLOAT_MAX;
-    unsigned short iEdgeNo = USHRT_MAX;
+    float fMinDist = std::numeric_limits<float>::max();
+    unsigned short iEdgeNo = std::numeric_limits<unsigned short>::max();
     MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
 
     for (unsigned short i = 0; i < 3; i++) {
@@ -1281,8 +1287,10 @@ void MeshTopoAlgorithm::SplitFacetOnTwoEdges(FacetIndex ulFacetPos,
                                              const Base::Vector3f& rP2)
 {
     // search for the matching edges
-    unsigned short iEdgeNo1 = USHRT_MAX, iEdgeNo2 = USHRT_MAX;
-    float fMinDist1 = FLOAT_MAX, fMinDist2 = FLOAT_MAX;
+    unsigned short iEdgeNo1 = std::numeric_limits<unsigned short>::max();
+    unsigned short iEdgeNo2 = std::numeric_limits<unsigned short>::max();
+    float fMinDist1 = std::numeric_limits<float>::max();
+    float fMinDist2 = std::numeric_limits<float>::max();
     MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
 
     for (unsigned short i = 0; i < 3; i++) {
@@ -1392,7 +1400,7 @@ void MeshTopoAlgorithm::SplitFacet(FacetIndex ulFacetPos,
 {
     MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
     unsigned short side = rFace.Side(P1, P2);
-    if (side != USHRT_MAX) {
+    if (side != std::numeric_limits<unsigned short>::max()) {
         PointIndex V1 = rFace._aulPoints[(side + 1) % 3];
         PointIndex V2 = rFace._aulPoints[(side + 2) % 3];
         FacetIndex size = _rclMesh._aclFacetArray.size();
@@ -1455,12 +1463,12 @@ void MeshTopoAlgorithm::HarmonizeNeighbours(FacetIndex facet1, FacetIndex facet2
     MeshFacet& rFace2 = _rclMesh._aclFacetArray[facet2];
 
     unsigned short side = rFace1.Side(rFace2);
-    if (side != USHRT_MAX) {
+    if (side != std::numeric_limits<unsigned short>::max()) {
         rFace1._aulNeighbours[side] = facet2;
     }
 
     side = rFace2.Side(rFace1);
-    if (side != USHRT_MAX) {
+    if (side != std::numeric_limits<unsigned short>::max()) {
         rFace2._aulNeighbours[side] = facet1;
     }
 }

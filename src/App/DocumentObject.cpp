@@ -55,10 +55,6 @@ FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
-/** \defgroup DocObject Document Object
-    \ingroup APP
-    \brief Base class of all objects handled in the Document
-*/
 
 PROPERTY_SOURCE(App::DocumentObject, App::TransactionalObject)
 

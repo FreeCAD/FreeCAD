@@ -1278,9 +1278,9 @@ readNodes(std::ifstream& ifstr, const std::string& lines, vtkSmartPointer<vtkPoi
 {
     std::string keyCode = "    2C";
     std::string keyCodeCoord = " -1";
-    long numNodes;
-    int indicator;
-    int node;
+    long numNodes {0};
+    int indicator {0};
+    int node {0};
     long nodeID = 0;
 
     // frd file might have nodes that are not numbered starting from zero.
@@ -1479,13 +1479,13 @@ void readResults(std::ifstream& ifstr,
     // enter in node values block
     std::string code1 = " -1";
     std::string code2 = " -2";
-    int node;
-    double value;
+    int node {-1};
+    double value {0.0};
     std::vector<double> vecValues;
     std::vector<double> scaValues;
     std::vector<int> nodes;
     int countNodes = 0;
-    size_t countScaPos;
+    size_t countScaPos {0};
     // result block could have both vector/matrix and scalar components
     // save each scalars entity in his own array
     auto scalarPos = identifyScalarEntities(entityTypes);
@@ -1563,9 +1563,15 @@ void readResults(std::ifstream& ifstr,
         }
         if ((vecValues.size() + scaValues.size()) == numComps) {
             if (!vecValues.empty()) {
+                if (node == -1) {
+                    throw Base::FileException("File to load not readable");
+                }
                 vecArray->SetTuple(mapNodes.at(node), vecValues.data());
             }
             if (!scaValues.empty()) {
+                if (node == -1) {
+                    throw Base::FileException("File to load not readable");
+                }
                 std::vector<vtkSmartPointer<vtkDoubleArray>>::iterator it1;
                 std::vector<double>::iterator it2;
                 for (it1 = scaArrays.begin(), it2 = scaValues.begin();

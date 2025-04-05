@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <limits>
 #include <Adaptor3d_IsoCurve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -75,7 +76,10 @@ using Adaptor3d_HSurface = Adaptor3d_Surface;
 using BRepAdaptor_HSurface = BRepAdaptor_Surface;
 #endif
 
-static const App::PropertyFloatConstraint::Constraints scaleConstraint = {0.0, DBL_MAX, 0.1};
+static const App::PropertyFloatConstraint::Constraints scaleConstraint = {
+    0.0,
+    std::numeric_limits<double>::max(),
+    0.1};
 
 PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 

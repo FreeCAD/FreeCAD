@@ -118,7 +118,7 @@ void DrawPage::onChanged(const App::Property* prop)
             for (auto* obj : getViews()) {
                 auto* view = dynamic_cast<DrawView*>(obj);
                 if (view && view->ScaleType.isValue("Page")) {
-                    if (std::abs(view->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+                    if (std::abs(view->Scale.getValue() - Scale.getValue()) > std::numeric_limits<float>::epsilon()) {
                         view->Scale.setValue(Scale.getValue());
                     }
                 }

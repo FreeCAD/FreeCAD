@@ -98,6 +98,10 @@ jobs:
           . $env:ccachebindir\ccache -s
           . $env:ccachebindir\ccache -z
           . $env:ccachebindir\ccache -p
+      - name: Install cmake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.31.6'
       - name: Configuring CMake
         run: >
           cmake -B"${{ env.builddir }}" .

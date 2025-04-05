@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QShortcutEvent>
 # include <QApplication>
 #endif
@@ -409,7 +410,7 @@ void ShortcutManager::onTimer()
     timer.stop();
 
     QAction *found = nullptr;
-    int priority = -INT_MAX;
+    int priority = -std::numeric_limits<int>::max();
     int seq_length = 0;
     for (const auto &info : pendingActions) {
         if (info.action) {

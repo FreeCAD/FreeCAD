@@ -153,7 +153,9 @@ long NavlibInterface::SetActiveCommand(std::string commandId)
             if (!std::string(command->getName()).compare(parsedData.commandName)) {
                 if (parsedData.actionIndex == -1) {
                     Gui::Action* pAction = command->getAction();
-                    pAction->action()->trigger();
+                    if (pAction != nullptr) {
+                        pAction->action()->trigger();
+                    }
                 }
                 else
                     command->invoke(parsedData.actionIndex);

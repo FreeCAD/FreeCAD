@@ -569,6 +569,9 @@ class Joint:
         if App.isRestoring():
             return
 
+        if prop == "Reference1" or prop == "Reference2":
+            joint.recompute()
+
         if prop == "Offset1" or prop == "Offset2":
             if joint.Reference1 is None or joint.Reference2 is None:
                 return
@@ -591,10 +594,21 @@ class Joint:
                 self.preventParallel(joint)
             solveIfAllowed(self.getAssembly(joint))
 
-    def execute(self, fp):
-        """Do something when doing a recomputation, this method is mandatory"""
-        # App.Console.PrintMessage("Recompute Python Box feature\n")
-        pass
+    def execute(self, joint):
+        errStr = joint.Label + ": " + QT_TRANSLATE_NOOP("Assembly", "Broken link in: ")
+        if (
+            hasattr(joint, "Reference1")
+            and joint.Reference1 is not None
+            and (joint.Reference1[1][0].find("?") != -1)
+        ):
+            raise Exception(errStr + "Reference1")
+
+        if (
+            hasattr(joint, "Reference2")
+            and joint.Reference2 is not None
+            and (joint.Reference2[1][0].find("?") != -1)
+        ):
+            raise Exception(errStr + "Reference2")
 
     def setJointConnectors(self, joint, refs):
         # current selection is a vector of strings like "Assembly.Assembly1.Assembly2.Body.Pad.Edge16" including both what selection return as obj_name and obj_sub

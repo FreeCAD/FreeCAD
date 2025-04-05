@@ -188,6 +188,12 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawView
         return;
     }
 
+    if (!DU::isGuiUp()) {
+        makeDetailShape(shape, dvp, dvs);
+        onMakeDetailFinished();
+        waitingForDetail(false);
+    }
+
     //note that &m_detailWatcher in the third parameter is not strictly required, but using the
     //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
     //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
@@ -403,8 +409,10 @@ void DrawViewDetail::onMakeDetailFinished(void)
     waitingForDetail(false);
     QObject::disconnect(connectDetailWatcher);
 
-    //ancestor's buildGeometryObject will run HLR and face finding in a separate thread
     m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
+    if (!DU::isGuiUp()) {
+        onHlrFinished();
+    }
 }
 
 bool DrawViewDetail::waitingForResult() const

@@ -180,30 +180,6 @@ else:
 #  building, ie. a room.
 
 
-
-def addSpaceBoundaries(space,subobjects):
-
-    """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
-
-    import Draft
-    if Draft.getType(space) == "Space":
-        space.Proxy.addSubobjects(space,subobjects)
-
-def removeSpaceBoundaries(space,objects):
-
-    """removeSpaceBoundaries(space,objects): removes the given objects from the given spaces boundaries"""
-
-    import Draft
-    if Draft.getType(space) == "Space":
-        bounds = space.Boundaries
-        for o in objects:
-            for b in bounds:
-                if o.Name == b[0].Name:
-                    bounds.remove(b)
-                    break
-        space.Boundaries = bounds
-
-
 class _Space(ArchComponent.Component):
 
     "A space object"
@@ -306,6 +282,17 @@ class _Space(ArchComponent.Component):
                         if o.Object.Name != obj.Name:
                             objs.append((o.Object,el))
         obj.Boundaries = objs
+
+    def removeSubobjects(self,obj,subobjects):
+
+        "removes subobjects to this space"
+        bounds = obj.Boundaries
+        for o in subobjects:
+            for b in bounds:
+                if o.Name == b[0].Name:
+                    bounds.remove(b)
+                    break
+        obj.Boundaries = bounds
 
     def addObject(self,obj,child):
 
@@ -455,7 +442,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         pl = vobj.PropertiesList
         if not "Text" in pl:
-            vobj.addProperty("App::PropertyStringList",    "Text",        "Space",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $longname, $description or any other propery name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data"))
+            vobj.addProperty("App::PropertyStringList",    "Text",        "Space",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data"))
             vobj.Text = ["$label","$area"]
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont",          "FontName",    "Space",QT_TRANSLATE_NOOP("App::Property","The name of the font"))

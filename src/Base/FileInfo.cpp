@@ -32,7 +32,6 @@
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #include <dirent.h>
 #include <unistd.h>
-#include <limits.h>
 #elif defined(FC_OS_WIN32)
 #include <io.h>
 #include <Windows.h>

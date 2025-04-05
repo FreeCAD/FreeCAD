@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <gp_Dir.hxx>
@@ -49,7 +50,8 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = {
+    1, std::numeric_limits<int>::max(), 1 };
 
 const char* LinearPattern::ModeEnums[] = { "length", "offset", nullptr };
 

@@ -416,14 +416,14 @@ Note: has no effect if a solid was selected</string>
       <item row="0" column="0">
        <widget class="QLabel" name="surfacechargedensityLbl">
         <property name="text">
-         <string>Surface Charge Density:</string>
+         <string>Electric Flux Density:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="qsb_surface_charge_density">
+       <widget class="Gui::QuantitySpinBox" name="qsb_electric_flux_density">
         <property name="toolTip">
-         <string>Surface charge density</string>
+         <string>Normal component of electric displacement field</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">C/m^2</string>

@@ -63,6 +63,30 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
         QColor(QString::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
     negativeFgColor =
         QColor(QString::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
+
+
+    const QStringList alphabet {
+        QStringLiteral("A"), QStringLiteral("B"), QStringLiteral("C"), QStringLiteral("D"),
+        QStringLiteral("E"), QStringLiteral("F"), QStringLiteral("G"), QStringLiteral("H"),
+        QStringLiteral("I"), QStringLiteral("J"), QStringLiteral("K"), QStringLiteral("L"),
+        QStringLiteral("M"), QStringLiteral("N"), QStringLiteral("O"), QStringLiteral("P"),
+        QStringLiteral("Q"), QStringLiteral("R"), QStringLiteral("S"), QStringLiteral("T"),
+        QStringLiteral("U"), QStringLiteral("V"), QStringLiteral("W"), QStringLiteral("X"),
+        QStringLiteral("Y"), QStringLiteral("Z")};
+
+    for (const QString& letter : alphabet) {
+        columnLabels << letter;
+    }
+
+    for (const QString& left : alphabet) {
+        for (const QString& right : alphabet) {
+            columnLabels << left + right;
+        }
+    }
+
+    for (int i = 1; i <= maxRowCount; i++) {
+        rowLabels << QString::number(i);
+    }
 }
 
 SheetModel::~SheetModel()
@@ -74,13 +98,13 @@ SheetModel::~SheetModel()
 int SheetModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return 16384;
+    return maxRowCount;
 }
 
 int SheetModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return 26 * 26 + 26;
+    return maxColumnCount;
 }
 
 namespace
@@ -512,29 +536,15 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
 QVariant SheetModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::SizeHintRole) {
-        if (orientation == Qt::Horizontal) {
-            return QVariant(
-                QSize(sheet->getColumnWidth(section), PropertyRowHeights::defaultHeight));
-        }
-        else {
-            return QVariant(
-                QSize(PropertyColumnWidths::defaultHeaderWidth, sheet->getRowHeight(section)));
-        }
+        const int width =
+            (orientation == Qt::Horizontal ? sheet->getColumnWidth(section)
+                                           : PropertyColumnWidths::defaultHeaderWidth);
+        const int height = (orientation == Qt::Horizontal ? PropertyRowHeights::defaultHeight
+                                                          : sheet->getRowHeight(section));
+        return QSize {width, height};
     }
     if (role == Qt::DisplayRole) {
-        if (orientation == Qt::Horizontal) {
-            static QString labels = QStringLiteral("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-            if (section < 26) {
-                return QVariant(labels[section]);
-            }
-            else {
-                section -= 26;
-                return QVariant(QString(labels[section / 26]) + QString(labels[section % 26]));
-            }
-        }
-        else {
-            return QString::number(section + 1);
-        }
+        return (orientation == Qt::Horizontal ? columnLabels.at(section) : rowLabels.at(section));
     }
     return {};
 }

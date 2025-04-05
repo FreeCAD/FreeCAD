@@ -20,41 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-/*!
-\defgroup Document Document
-\ingroup APP
-\brief The Base class of the FreeCAD Document
-
-This (besides the App::Application class) is the most important class in FreeCAD.
-It contains all the data of the opened, saved, or newly created FreeCAD Document.
-The App::Document manages the Undo and Redo mechanism and the linking of documents.
-
-\namespace App \class App::Document
-This is besides the Application class the most important class in FreeCAD
-It contains all the data of the opened, saved or newly created FreeCAD Document.
-The Document manage the Undo and Redo mechanism and the linking of documents.
-
-Note: the documents are not free objects. They are completely handled by the
-App::Application. Only the Application can Open or destroy a document.
-
-\section Exception Exception handling
-As the document is the main data structure of FreeCAD we have to take a close
-look at how Exceptions affect the integrity of the App::Document.
-
-\section UndoRedo Undo Redo an Transactions
-Undo Redo handling is one of the major mechanism of a document in terms of
-user friendliness and speed (no one will wait for Undo too long).
-
-\section Dependency Graph and dependency handling
-The FreeCAD document handles the dependencies of its DocumentObjects with
-an adjacence list. This gives the opportunity to calculate the shortest
-recompute path. Also, it enables more complicated dependencies beyond trees.
-
-@see App::Application
-@see App::DocumentObject
-*/
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -2186,6 +2151,7 @@ bool Document::saveToFile(const char* filename) const
     // open extra scope to close ZipWriter properly
     {
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
+
         Base::ZipWriter writer(file);
         if (!file.is_open()) {
             throw Base::FileException("Failed to open file", tmp);
@@ -2211,9 +2177,12 @@ bool Document::saveToFile(const char* filename) const
 
         // write additional files
         writer.writeFiles();
-
         if (writer.hasErrors()) {
-            throw Base::FileException("Failed to write all data to file", tmp);
+            // retrieve Writer error strings
+            std::stringstream message;
+            message << "Failed to write all data to file ";
+            message << writer.getErrors().front();
+            throw Base::FileException(message.str().c_str(), tmp);
         }
 
         GetApplication().signalSaveDocument(*this);

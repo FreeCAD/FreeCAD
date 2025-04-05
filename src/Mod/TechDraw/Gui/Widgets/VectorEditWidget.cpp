@@ -24,6 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <QApplication>
 #include <QLabel>
 #include <QObject>
@@ -39,8 +40,6 @@
 #endif
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <limits>
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>

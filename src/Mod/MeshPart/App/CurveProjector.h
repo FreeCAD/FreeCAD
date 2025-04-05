@@ -23,6 +23,8 @@
 #ifndef _CurveProjector_h_
 #define _CurveProjector_h_
 
+#include <limits>
+
 #include <TopoDS_Edge.hxx>
 
 #include <Mod/Mesh/App/Mesh.h>
@@ -66,7 +68,8 @@ public:
             std::hash<T> hasher;
             return hasher(x) < hasher(y);
 #else
-            return x.HashCode(INT_MAX - 1) < y.HashCode(INT_MAX - 1);
+            constexpr int max = std::numeric_limits<int>::max();
+            return x.HashCode(max - 1) < y.HashCode(max - 1);
 #endif
         }
     };

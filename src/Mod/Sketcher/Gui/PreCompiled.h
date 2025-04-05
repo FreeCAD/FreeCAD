@@ -32,7 +32,6 @@
 #ifdef _PreComp_
 
 // standard
-#include <cfloat>
 #include <cmath>
 #include <cstdlib>
 
@@ -40,6 +39,7 @@
 #include <algorithm>
 #include <bitset>
 #include <functional>
+#include <limits>
 #include <map>
 #include <memory>
 #include <vector>
