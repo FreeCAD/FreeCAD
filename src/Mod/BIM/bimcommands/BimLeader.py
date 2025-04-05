@@ -56,45 +56,26 @@ class BIM_Leader(gui_lines.Line):
 
     def finish(self, closed=False, cont=False):
         import DraftVecUtils
+        from draftutils import params
         self.end_callbacks(self.call)
         self.removeTemporaryObject()
-        if getattr(self,"oldWP",None):
-            FreeCAD.DraftWorkingPlane = self.oldWP
-            if hasattr(Gui, "Snapper"):
-                FreeCADGui.Snapper.setGrid()
-                FreeCADGui.Snapper.restack()
-            self.oldWP = None
-        rot, sup, pts, fil = self.getStrings()
-        if self.node:
+        if len(self.node) > 1:
+            rot, sup, pts, fil = self.getStrings()
             base = DraftVecUtils.toString(self.node[0])
-        else:
-            base = DraftVecUtils.toString(FreeCAD.Vector())
-        color = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Draft"
-        ).GetUnsigned("DefaultTextColor", 255)
-        r = ((color >> 24) & 0xFF) / 255.0
-        g = ((color >> 16) & 0xFF) / 255.0
-        b = ((color >> 8) & 0xFF) / 255.0
-        cmd_list = [
-            "pl = FreeCAD.Placement()",
-            "pl.Rotation.Q = " + rot,
-            "pl.Base = " + base,
-            "points = " + pts,
-            "leader = Draft.makeWire(points,placement=pl)",
-            "leader.ViewObject.LineColor = "
-            + str(
-                (
-                    r,
-                    g,
-                    b,
-                )
-            ),
-            "leader.ViewObject.EndArrow = True",
-            "Draft.autogroup(leader)",
-            "FreeCAD.ActiveDocument.recompute()",
-        ]
-        FreeCADGui.addModule("Draft")
-        self.commit(translate("BIM", "Create Leader"), cmd_list)
+            color = params.get_param("DefaultTextColor") | 0x000000FF
+            cmd_list = [
+                "pl = FreeCAD.Placement()",
+                "pl.Rotation.Q = " + rot,
+                "pl.Base = " + base,
+                "points = " + pts,
+                "leader = Draft.make_wire(points, placement=pl)",
+                "leader.ViewObject.LineColor = " + str(color),
+                "leader.ViewObject.EndArrow = True",
+                "Draft.autogroup(leader)",
+                "FreeCAD.ActiveDocument.recompute()",
+            ]
+            FreeCADGui.addModule("Draft")
+            self.commit(translate("BIM", "Create Leader"), cmd_list)
         super(gui_lines.Line, self).finish()
         if self.ui and self.ui.continueMode:
             self.Activated()
