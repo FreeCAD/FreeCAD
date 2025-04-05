@@ -31,10 +31,12 @@
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
+#include "DrawViewPart.h"
 
 using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
+using DVP = DrawViewPart;
 
 EXTENSION_PROPERTY_SOURCE(TechDraw::CosmeticExtension, App::DocumentObjectExtension)
 
@@ -68,14 +70,14 @@ void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removabl
     // Base::Console().Message("CEx::deleteCosmeticElements(%d removables)\n", removables.size());
     for (auto& name : removables) {
         if (DU::getGeomTypeFromName(name) == "Vertex" &&
-         DU::isCosmeticVertex(getOwner(), name)) {
+        DVP::isCosmeticVertex(getOwner(), name)) {
          CosmeticVertex* vert = getCosmeticVertexBySelection(name);
          removeCosmeticVertex(vert->getTagAsString());
          continue;
         }
         if (DU::getGeomTypeFromName(name) == "Edge" &&
-         ( DU::isCosmeticEdge(getOwner(), name)  ||
-           DU::isCenterLine(getOwner(), name) ) ) {
+         ( DVP::isCosmeticEdge(getOwner(), name)  ||
+         DVP::isCenterLine(getOwner(), name) ) ) {
              CosmeticEdge* edge = getCosmeticEdgeBySelection(name);
              if (edge) {
                  // if not edge, something has gone very wrong!
