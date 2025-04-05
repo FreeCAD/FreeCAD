@@ -18,6 +18,7 @@ qt_create_resource_file(${Sketcher_TR_QRC} ${QM_SRCS})
 qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc ${Sketcher_TR_QRC})
 
 generate_from_xml(ViewProviderSketchGeometryExtensionPy)
+generate_from_py_(ViewProviderSketchGeometryExtension)
 
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui

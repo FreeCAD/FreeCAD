@@ -28,7 +28,7 @@
     <Attribute Name="Ref" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                Returns the reference string of this external geometry.
+Returns the reference string of this external geometry.
             </UserDocu>
         </Documentation>
         <Parameter Name="Ref" Type="String"/>
@@ -36,7 +36,7 @@
    <Attribute Name="Id" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                Sets/returns the Internal Alignment Type of the Geometry.
+Sets/returns the Internal Alignment Type of the Geometry.
             </UserDocu>
         </Documentation>
         <Parameter Name="Id" Type="Long"/>
@@ -50,7 +50,7 @@
     <Attribute Name="GeometryLayerId" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                Returns the Id of the geometry Layer in which the geometry is located.
+Returns the Id of the geometry Layer in which the geometry is located.
             </UserDocu>
         </Documentation>
         <Parameter Name="GeometryLayerId" Type="Long"/>
@@ -66,7 +66,7 @@
     <Attribute Name="Blocked" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                Sets/returns whether the geometry is blocked or not.
+Sets/returns whether the geometry is blocked or not.
             </UserDocu>
         </Documentation>
         <Parameter Name="Blocked" Type="Boolean"/>

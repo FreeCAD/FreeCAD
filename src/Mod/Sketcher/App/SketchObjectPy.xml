@@ -20,14 +20,14 @@ Solve the sketch and update the geometry.
 
 solve()
 
-    Returns:
-        0 in case of success, otherwise the following codes in this order of
-        priority:
-        -4 if over-constrained,
-        -3 if conflicting constraints,
-        -5 if malformed constraints
-        -1 if solver error,
-        -2 if redundant constraints.
+  Returns:
+      0 in case of success, otherwise the following codes in this order of
+      priority:
+      -4 if over-constrained,
+      -3 if conflicting constraints,
+      -5 if malformed constraints
+      -1 if solver error,
+      -2 if redundant constraints.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -366,7 +366,7 @@ Moves all datum constraints to the end of the constraint list.
 
 moveDatumsToEnd()
 
-    Warning: This method reorders the constraint indices. Previously hold
+    Warning: This method reorders the constraint indices. Previously held
         numeric references to constraints may reference different constraints
         after this operation.
         </UserDocu>
@@ -402,7 +402,7 @@ toggleDriving(constraintIndex:int)
     </Methode>
     <Methode Name="setVirtualSpace">
         <Documentation>
-            <UserDocu>set the VirtualSpace status of a constraint</UserDocu>
+            <UserDocu>Set the VirtualSpace status of a constraint</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="getVirtualSpace">
@@ -412,7 +412,7 @@ toggleDriving(constraintIndex:int)
     </Methode>
     <Methode Name="toggleVirtualSpace">
         <Documentation>
-            <UserDocu>toggle the VirtualSpace status of a constraint</UserDocu>
+            <UserDocu>Toggle the VirtualSpace status of a constraint</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="setActive">
@@ -516,103 +516,111 @@ setLabelDistance(constraintIndex:int, value:float)
     <Methode Name="moveGeometry">
       <Documentation>
         <UserDocu>
-          moveGeometry(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
-          to another location.
-          It moves the specified point (or curve) to the given location by adding some
-          temporary weak constraints and solve the sketch.
-          This method is mostly used to allow the user to drag some portions of the sketch
-          in real time by e.g. the mouse and it works only for underconstrained portions of
-          the sketch.
-          The argument 'relative', if present, states if the new location is given
-          relatively to the current one.
+Move a given point (or curve) to another location.
+
+moveGeometry(GeoIndex,PointPos,Vector,[relative])
+
+It moves the specified point (or curve) to the given location by adding some
+temporary weak constraints and solving the sketch.
+This method is mostly used to allow the user to drag some portions of the sketch
+in real time by e.g. the mouse and it works only for underconstrained portions of
+the sketch.
+The argument 'relative', if present, states if the new location is given
+relatively to the current one.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="moveGeometries">
       <Documentation>
         <UserDocu>
-          moveGeometries(Geos,Vector,[relative]) - move given points and curves
-          to another location.
-          It moves the specified points and curves to the given location by adding some
-          temporary weak constraints and solve the sketch.
-          This method is mostly used to allow the user to drag some portions of the sketch
-          in real time by e.g. the mouse and it works only for underconstrained portions of
-          the sketch.
-          The argument 'relative', if present, states if the new location is given
-          relatively to the current one. For group dragging this is enforced.
-          Geos is a vector of pairs of geoId and posId.
+Move given points and curves to another location.
+
+moveGeometries(Geos,Vector,[relative])
+
+It moves the specified points and curves to the given location by adding some
+temporary weak constraints and solving the sketch.
+This method is mostly used to allow the user to drag some portions of the sketch
+in real time by e.g. the mouse and it works only for underconstrained portions of
+the sketch.
+The argument 'relative', if present, states if the new location is given
+relatively to the current one. For group dragging this is enforced.
+Geos is a vector of pairs of geoId and posId.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getPoint" Const="true">
       <Documentation>
         <UserDocu>
-          getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch
+Retrieve the vector of a point in the sketch.
+
+getPoint(GeoIndex,PointPos)
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getGeoVertexIndex" Const="true">
       <Documentation>
         <UserDocu>
-          (geoId, posId) = getGeoVertexIndex(index) - retrieve the GeoId and PosId of a point in the sketch
+Retrieve the GeoId and PosId of a point in the sketch.
+
+(geoId, posId) = getGeoVertexIndex(index)
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getAxis" Const="true">
       <Documentation>
         <UserDocu>
-          return an axis based on the corresponding construction line
+Return an axis based on the corresponding construction line
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fillet">
       <Documentation>
-        <UserDocu>create fillet between two edges or at a point</UserDocu>
+        <UserDocu>Create a fillet between two edges or at a point</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="trim">
       <Documentation>
-        <UserDocu>trim a curve with a given id at a given reference point</UserDocu>
+        <UserDocu>Trim a curve with a given id at a given reference point</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="extend">
       <Documentation>
-        <UserDocu>extend a curve to new start and end positions</UserDocu>
+        <UserDocu>Extend a curve to new start and end positions</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="split">
       <Documentation>
-        <UserDocu>split a curve with a given id at a given reference point</UserDocu>
+        <UserDocu>Split a curve with a given id at a given reference point</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="join">
       <Documentation>
-        <UserDocu>join two curves at the given end points</UserDocu>
+        <UserDocu>Join two curves at the given end points</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addSymmetric">
       <Documentation>
-        <UserDocu>add a symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>
+        <UserDocu>Add symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addCopy">
       <Documentation>
-        <UserDocu>add a copy of geometric objects to the sketch displaced by a vector3d</UserDocu>
+        <UserDocu>Add a copy of geometric objects to the sketch displaced by a vector3d</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addMove">
         <Documentation>
-            <UserDocu>Moves the geometric objects in the sketch displaced by a vector3d</UserDocu>
+            <UserDocu>Move the geometric objects in the sketch displaced by a vector3d</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="addRectangularArray">
       <Documentation>
-        <UserDocu>add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction</UserDocu>
+        <UserDocu>Add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeAxesAlignment">
       <Documentation>
-        <UserDocu>modifies constraints so that the shape is not forced to be aligned with axes.</UserDocu>
+        <UserDocu>Modifies constraints so that the shape is not forced to be aligned with axes.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="ExposeInternalGeometry">
@@ -663,150 +671,150 @@ setLabelDistance(constraintIndex:int, value:float)
     <Methode Name="calculateAngleViaPoint">
       <Documentation>
         <UserDocu>
-          calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
-          curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
-          on intersection of the curves, otherwise the result may be useless (except
-          line-to-line, where (0,0) is OK). Returned value is in radians.
+calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
+curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
+on intersection of the curves, otherwise the result may be useless (except
+line-to-line, where (0,0) is OK). Returned value is in radians.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isPointOnCurve">
       <Documentation>
         <UserDocu>
-          isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
-          geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,
-          arcs as full circles/ellipses/etc. Returns boolean value.
+isPointOnCurve(GeoIdCurve, float x, float y) -> bool - tests if the point (x,y)
+geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,
+arcs as full circles/ellipses/etc.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="calculateConstraintError">
       <Documentation>
         <UserDocu>
-          calculateConstraintError(index) - calculates the error function of the
-          constraint identified by its index and returns the signed error value.
-          The error value roughly corresponds to by how much the constraint is
-          violated. If the constraint internally has more than one error function,
-          the returned value is RMS of all errors (sign is lost in this case).
+calculateConstraintError(index) - calculates the error function of the
+constraint identified by its index and returns the signed error value.
+The error value roughly corresponds to by how much the constraint is
+violated. If the constraint internally has more than one error function,
+the returned value is RMS of all errors (sign is lost in this case).
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="changeConstraintsLocking">
       <Documentation>
         <UserDocu>
-          changeConstraintsLocking(bLock) - locks or unlocks all tangent and
-          perpendicular constraints. (Constraint locking prevents it from
-          flipping to another valid configuration, when e.g. external geometry
-          is updated from outside.) The sketch solve is not triggered by the
-          function, but the SketchObject is touched (a recompute will be
-          necessary). The geometry should not be affected by the function.
+changeConstraintsLocking(bLock) - locks or unlocks all tangent and
+perpendicular constraints. (Constraint locking prevents it from
+flipping to another valid configuration, when e.g. external geometry
+is updated from outside.) The sketch solve is not triggered by the
+function, but the SketchObject is touched (a recompute will be
+necessary). The geometry should not be affected by the function.
 
-          The bLock argument specifies, what to do. If true, all constraints
-          are unlocked and locked again. If false, all tangent and perp.
-          constraints are unlocked.
+The bLock argument specifies, what to do. If true, all constraints
+are unlocked and locked again. If false, all tangent and perp.
+constraints are unlocked.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getGeometryWithDependentParameters">
         <Documentation>
             <UserDocu>
-                getGeometryWithDependentParameters - returns a list of geoid posid pairs
-                with all the geometry element edges and vertices which the solver regards
-                as being dependent on other parameters.
+getGeometryWithDependentParameters - returns a list of geoid posid pairs
+with all the geometry element edges and vertices which the solver regards
+as being dependent on other parameters.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="autoconstraint">
         <Documentation>
             <UserDocu>
-                Automatic sketch constraining algorithm.
+Automatic sketch constraining algorithm.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="detectMissingPointOnPointConstraints">
         <Documentation>
             <UserDocu>
-                Detects Missing Point On Point Constraints. The Detect step just identifies possible missing constraints.
-                The result may be retrieved or applied using the corresponding Get / Make methods.
+Detects missing Point On Point Constraints. The detect step just identifies possible missing constraints.
+The result may be retrieved or applied using the corresponding Get / Make methods.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="analyseMissingPointOnPointCoincident">
         <Documentation>
             <UserDocu>
-                Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular.
-                The result may be retrieved or applied using the corresponding Get / Make methods.
+Analyses the already detected missing Point On Point Constraints to detect endpoint tangency/perpendicular.
+The result may be retrieved or applied using the corresponding Get / Make methods.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="detectMissingVerticalHorizontalConstraints">
         <Documentation>
             <UserDocu>
-                Detects Missing Horizontal/Vertical Constraints. The Detect step just identifies possible missing constraints.
-                The result may be retrieved or applied using the corresponding Get / Make methods.
+Detects missing Horizontal/Vertical Constraints. The detect step just identifies possible missing constraints.
+The result may be retrieved or applied using the corresponding Get / Make methods.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="detectMissingEqualityConstraints">
         <Documentation>
             <UserDocu>
-                Detects Missing Equality Constraints. The Detect step just identifies possible missing constraints.
-                The result may be retrieved or applied using the corresponding Get / Make methods.
+Detects missing Equality Constraints. The detect step just identifies possible missing constraints.
+The result may be retrieved or applied using the corresponding Get / Make methods.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="makeMissingPointOnPointCoincident">
         <Documentation>
             <UserDocu>
-                Applies the detected / set Point On Point coincident constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
+Applies the detected / set Point On Point coincident constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="makeMissingVerticalHorizontal">
         <Documentation>
             <UserDocu>
-                Applies the detected / set Vertical/Horizontal constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
+Applies the detected / set Vertical/Horizontal constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="makeMissingEquality">
         <Documentation>
             <UserDocu>
-                Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
+Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="evaluateConstraints" Const="true" NoArgs="true">
         <Documentation>
             <UserDocu>
-                Check for constraints with invalid indexes. Returns True if invalid constraints are found, False otherwise.
+Check for constraints with invalid indexes. Returns True if invalid constraints are found, False otherwise.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="validateConstraints" NoArgs="true">
         <Documentation>
             <UserDocu>
-                Removes constraints with invalid indexes.
+Removes constraints with invalid indexes.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="autoRemoveRedundants">
         <Documentation>
             <UserDocu>
-                Removes constraints currently detected as redundant by the solver. If the argument is True, then the geometry is updated after solving.
+Removes constraints currently detected as redundant by the solver. If the argument is True, then the geometry is updated after solving.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="toPythonCommands">
         <Documentation>
             <UserDocu>
-                Prints the commands that should be executed to recreate the Geometry and Constraints of the present sketch (excluding any External Geometry).
+Prints the commands that should be executed to recreate the Geometry and Constraints of the present sketch (excluding any External Geometry).
             </UserDocu>
         </Documentation>
     </Methode>
     <Attribute Name="MissingPointOnPointConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected endpoint constraints.
+Returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected endpoint constraints.
             </UserDocu>
         </Documentation>
         <Parameter Name="MissingPointOnPointConstraints" Type="List"/>
@@ -814,7 +822,7 @@ setLabelDistance(constraintIndex:int, value:float)
     <Attribute Name="MissingVerticalHorizontalConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected vertical/horizontal constraints.
+Returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected vertical/horizontal constraints.
             </UserDocu>
         </Documentation>
         <Parameter Name="MissingVerticalHorizontalConstraints" Type="List"/>
@@ -822,7 +830,7 @@ setLabelDistance(constraintIndex:int, value:float)
     <Attribute Name="MissingLineEqualityConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                returns a list of (First FirstPos Second SecondPos) tuples with all the detected line segment equality constraints.
+Returns a list of (First FirstPos Second SecondPos) tuples with all the detected line segment equality constraints.
             </UserDocu>
         </Documentation>
         <Parameter Name="MissingLineEqualityConstraints" Type="List"/>
@@ -830,7 +838,7 @@ setLabelDistance(constraintIndex:int, value:float)
     <Attribute Name="MissingRadiusConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                returns a list of (First FirstPos Second SecondPos) tuples with all the detected radius constraints.
+Returns a list of (First FirstPos Second SecondPos) tuples with all the detected radius constraints.
             </UserDocu>
         </Documentation>
         <Parameter Name="MissingRadiusConstraints" Type="List"/>
@@ -838,7 +846,7 @@ setLabelDistance(constraintIndex:int, value:float)
     <Attribute Name="OpenVertices" ReadOnly="true">
         <Documentation>
             <UserDocu>
-                returns a list of vertices positions.
+Returns a list of vertices positions.
             </UserDocu>
         </Documentation>
         <Parameter Name="OpenVertices" Type="List"/>
@@ -913,12 +921,12 @@ setLabelDistance(constraintIndex:int, value:float)
     </Attribute>
     <Methode Name="setGeometryId">
       <Documentation>
-        <UserDocu>sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
+        <UserDocu>Sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getGeometryId">
       <Documentation>
-        <UserDocu>gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
+        <UserDocu>Gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>
