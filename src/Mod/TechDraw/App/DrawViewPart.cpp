@@ -1501,7 +1501,6 @@ void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char
 // true if owner->element is a cosmetic vertex
 bool DrawViewPart::isCosmeticVertex(App::DocumentObject* owner, std::string element)
 {
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
     auto vertexIndex = DrawUtil::getIndexFromName(element);
     auto vertex = ownerView->getProjVertexByIndex(vertexIndex);
     if (vertex) {
@@ -1513,7 +1512,6 @@ bool DrawViewPart::isCosmeticVertex(App::DocumentObject* owner, std::string elem
 // true if owner->element is a cosmetic edge
 bool DrawViewPart::isCosmeticEdge(App::DocumentObject* owner, std::string element)
 {
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
     auto edge = ownerView->getEdge(element);
     if (edge && edge->source() == SourceType::COSMETICEDGE && edge->getCosmetic()) {
         return true;
@@ -1524,7 +1522,6 @@ bool DrawViewPart::isCosmeticEdge(App::DocumentObject* owner, std::string elemen
 // true if owner->element is a center line
 bool DrawViewPart::isCenterLine(App::DocumentObject* owner, std::string element)
 {
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
     auto edge = ownerView->getEdge(element);
     if (edge && edge->source() == SourceType::CENTERLINE && edge->getCosmetic()) {
         return true;
