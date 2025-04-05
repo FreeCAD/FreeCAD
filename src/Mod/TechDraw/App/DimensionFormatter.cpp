@@ -39,17 +39,11 @@ using namespace TechDraw;
 
 bool DimensionFormatter::isMultiValueSchema() const
 {
-    bool angularMeasure = (m_dimension->Type.isValue("Angle") ||
-                           m_dimension->Type.isValue("Angle3Pt"));
+    const bool angularMeasure =
+        (m_dimension->Type.isValue("Angle") || m_dimension->Type.isValue("Angle3Pt"));
 
-    if (Base::UnitsApi::isMultiUnitAngle() &&
-            angularMeasure) {
-        return true;
-    } else if (Base::UnitsApi::isMultiUnitLength() &&
-               !angularMeasure) {
-        return true;
-    }
-    return false;
+    return (Base::UnitsApi::isMultiUnitAngle() && angularMeasure)
+        || (Base::UnitsApi::isMultiUnitLength() && !angularMeasure);
 }
 
 std::string DimensionFormatter::formatValue(const qreal value,
@@ -57,145 +51,117 @@ std::string DimensionFormatter::formatValue(const qreal value,
                                             const Format partial,
                                             const bool isDim) const
 {
-//    Base::Console().Message("DF::formatValue() - %s isRestoring: %d\n",
-//                            m_dimension->getNameInDocument(), m_dimension->isRestoring());
-    bool angularMeasure = m_dimension->Type.isValue("Angle") || m_dimension->Type.isValue("Angle3Pt");
-    bool areaMeasure = m_dimension->Type.isValue("Area");
-    QLocale loc;
+    const bool angularMeasure =
+        m_dimension->Type.isValue("Angle") || m_dimension->Type.isValue("Angle3Pt");
+    const bool areaMeasure = m_dimension->Type.isValue("Area");
 
-    Base::Quantity asQuantity;
-    asQuantity.setValue(value);
+    Base::Unit unit;
     if (angularMeasure) {
-        asQuantity.setUnit(Base::Unit::Angle);
+        unit = Base::Unit::Angle;
     }
     else if (areaMeasure) {
-        asQuantity.setUnit(Base::Unit::Area);
+        unit = Base::Unit::Area;
     }
     else {
-        asQuantity.setUnit(Base::Unit::Length);
+        unit = Base::Unit::Length;
     }
+
+    Base::Quantity asQuantity {value, unit};
+
+    QStringList qsl = getPrefixSuffixSpec(qFormatSpec);
+    const std::string formatPrefix = qsl[0].toStdString();
+    const std::string formatSuffix = qsl[1].toStdString();
+    QString formatSpecifier = qsl[2];
 
     // this handles mm to inch/km/parsec etc and decimal positions but
     // won't give more than Global_Decimals precision
-    QString qUserString = QString::fromStdString(asQuantity.getUserString());
+    std::string basicString = formatPrefix + asQuantity.getUserString() + formatSuffix;
 
-    //get formatSpec prefix/suffix/specifier
-    QStringList qsl = getPrefixSuffixSpec(qFormatSpec);
-    QString formatPrefix    = qsl[0];   //FormatSpec prefix
-    QString formatSuffix    = qsl[1];   //FormatSpec suffix
-    QString formatSpecifier = qsl[2];   //FormatSpec specifier
-
-    QString qMultiValueStr;
-    QString qBasicUnit = QString::fromStdString(Base::UnitsApi::getBasicLengthUnit());
-
-    QString formattedValue;
     if (isMultiValueSchema() && partial == Format::UNALTERED) {
-        //handle multi value schemes (yd/ft/in, dms, etc). don't even try to use Alt Decimals or hide units
-        qMultiValueStr = formatPrefix + qUserString + formatSuffix;
-        return qMultiValueStr.toStdString();
-    } else {
-        //not multivalue schema
-        if (formatSpecifier.isEmpty()) {
-            Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
-                                    qPrintable(qFormatSpec), m_dimension->getNameInDocument());
-            return qFormatSpec.toStdString();
-        }
+        return basicString;  // Don't even try to use Alt Decimals or hide units
+    }
 
-        // for older TD drawings the formatSpecifier "%g" was used, but the number of decimals was
-        // neverheless limited. To keep old drawings, we limit the number of decimals too
-        // if the TD preferences option to use the global decimal number is set
-        // the formatSpecifier can have a prefix and/or suffix
-        if (m_dimension->useDecimals() && formatSpecifier.contains(QStringLiteral("%g"), Qt::CaseInsensitive)) {
-                int globalPrecision = Base::UnitsApi::getDecimals();
-                // change formatSpecifier to e.g. "%.2f"
-                QString newSpecifier = QString::fromStdString("%." + std::to_string(globalPrecision) + "f");
-                formatSpecifier.replace(QStringLiteral("%g"), newSpecifier, Qt::CaseInsensitive);
-        }
+    if (formatSpecifier.isEmpty()) {
+        Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
+                                qPrintable(qFormatSpec),
+                                m_dimension->getNameInDocument());
+        return qFormatSpec.toStdString();
+    }
 
-        // since we are not using a multiValueSchema, we know that angles are in '°' and for
-        // lengths we can get the unit of measure from UnitsApi::getBasicLengthUnit.
+    // for older TD drawings the formatSpecifier "%g" was used, but the number of decimals was
+    // nevertheless limited. To keep old drawings, we limit the number of decimals too
+    // if the TD preferences option to use the global decimal number is set
+    // the formatSpecifier can have a prefix and/or suffix
+    if (m_dimension->useDecimals()
+        && formatSpecifier.contains(QStringLiteral("%g"), Qt::CaseInsensitive)) {
+        const int globalPrecision = Base::UnitsApi::getDecimals();
+        // change formatSpecifier to e.g. "%.2f"
+        const QString newSpecifier =
+            QString::fromStdString("%." + std::to_string(globalPrecision) + "f");
+        formatSpecifier.replace(QStringLiteral("%g"), newSpecifier, Qt::CaseInsensitive);
+    }
 
-        // TODO: check the weird schemas (MKS, Imperial1)that report different UoM
-        // for different values
+    // since we are not using a multiValueSchema, we know that angles are in '°' and for
+    // lengths we can get the unit of measure from UnitsApi::getBasicLengthUnit.
 
-        // get value in the base unit with default decimals
-        // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
-        // get the conversion factor for the unit
-        // the result is now just val / convertValue because val is always in the base unit
-        // don't do this for angular values since they are not in the BaseLengthUnit
-        double userVal;
-        if (angularMeasure) {
-            userVal = asQuantity.getValue();
-            qBasicUnit = QStringLiteral("°");
-        }
-        else {
-            double convertValue = Base::Quantity::parse("1" + qBasicUnit.toStdString()).getValue();
-            userVal = asQuantity.getValue() / convertValue;
-            if (areaMeasure) {
-                userVal = userVal / convertValue; // divide again as area is length²
-                qBasicUnit = qBasicUnit + QStringLiteral("²");
-            }
-        }
+    // TODO: check the weird schemas (MKS, Imperial1) that report different UoM for different values
 
-        if (isTooSmall(userVal, formatSpecifier)) {
-            Base::Console().Warning("Dimension %s value %.6f is too small for format specifier: %s\n",
-                            m_dimension->getNameInDocument(), userVal, qPrintable(formatSpecifier));
-        }
+    // get value in the base unit with default decimals
+    // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
+    // get the conversion factor for the unit
+    // the result is now just val / convertValue because val is always in the base unit
+    // don't do this for angular values since they are not in the BaseLengthUnit
+    std::string qBasicUnit =
+        angularMeasure ? "°" : Base::UnitsApi::getBasicLengthUnit();
+    double userVal = asQuantity.getValue();
 
-        formattedValue = formatValueToSpec(userVal, formatSpecifier);
-
-        // replace decimal sign if necessary
-        QChar dp = QChar::fromLatin1('.');
-        if (loc.decimalPoint() != dp) {
-            formattedValue.replace(dp, loc.decimalPoint());
+    if (!angularMeasure) {
+        const double convertValue = Base::Quantity::parse("1" + qBasicUnit).getValue();
+        userVal /= convertValue;
+        if (areaMeasure) {
+            userVal /= convertValue;  // divide again as area is length²
+            qBasicUnit += "²";
         }
     }
 
-    //formattedValue is now in formatSpec format with local decimal separator
+    if (isTooSmall(userVal, formatSpecifier)) {
+        Base::Console().Warning("Dimension %s value %.6f is too small for format specifier: %s\n",
+                                m_dimension->getNameInDocument(),
+                                userVal,
+                                qPrintable(formatSpecifier));
+    }
+
+    QString formattedValue = formatValueToSpec(userVal, formatSpecifier);
+
+    // replace decimal sign if necessary
+    constexpr QChar dp = QChar::fromLatin1('.');
+    if (const QLocale loc; loc.decimalPoint() != dp) {
+        formattedValue.replace(dp, loc.decimalPoint());
+    }
+
+    // formattedValue is now in formatSpec format with local decimal separator
     std::string formattedValueString = formattedValue.toStdString();
-    if (partial == Format::UNALTERED) {  // prefix + unit subsystem string + suffix
-        return formatPrefix.toStdString() +
-                 qUserString.toStdString() +
-                 formatSuffix.toStdString();
+
+    if (partial == Format::UNALTERED) {
+        return basicString;
     }
-    else if (partial == Format::FORMATTED)  {
+
+    if (partial == Format::FORMATTED) {
+        std::string unitStr {};
+
         if (angularMeasure) {
-            //always insert unit after value
-            return formatPrefix.toStdString() + formattedValueString + "°" +
-                     formatSuffix.toStdString();
+            unitStr = "°";
         }
-        else if (m_dimension->showUnits() || areaMeasure){
-            if (isDim && m_dimension->haveTolerance()) {
-                //unit will be included in tolerance so don't repeat it here
-                return formatPrefix.toStdString() +
-                         formattedValueString +
-                         formatSuffix.toStdString();
-            }
-            else {
-                //no tolerance, so we need to include unit
-                return formatPrefix.toStdString() +
-                         formattedValueString + " " +
-                         qBasicUnit.toStdString() +
-                         formatSuffix.toStdString();
-            }
+        else if ((m_dimension->showUnits() || areaMeasure)
+                 && !(isDim && m_dimension->haveTolerance())) {
+            unitStr = " " + qBasicUnit;
         }
-        else {
-            //showUnits is false
-            return formatPrefix.toStdString() +
-                     formattedValueString +
-                     formatSuffix.toStdString();
-        }
+
+        return formatPrefix + formattedValueString + unitStr + formatSuffix;
     }
-    else if (partial == Format::UNIT) {
-        if (angularMeasure) {
-            return qBasicUnit.toStdString();
-        }
-        else if (m_dimension->showUnits() || areaMeasure) {
-            return qBasicUnit.toStdString();
-        }
-        else {
-            return "";
-        }
+
+    if (partial == Format::UNIT) {
+        return angularMeasure || m_dimension->showUnits() || areaMeasure ? qBasicUnit : "";
     }
 
     return formattedValueString;
@@ -368,13 +334,10 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
 
 bool DimensionFormatter::isNumericFormat(const QString& formatSpecifier) const
 {
-    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
+    //printf double format spec
+    const QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]"));
     QRegularExpressionMatch rxMatch;
-    int pos = formatSpecifier.indexOf(rxFormat, 0, &rxMatch);
-    if (pos != -1)  {
-        return true;
-    }
-    return false;
+    return formatSpecifier.indexOf(rxFormat, 0, &rxMatch) != -1;
 }
 
 //TODO: similar code here and above
