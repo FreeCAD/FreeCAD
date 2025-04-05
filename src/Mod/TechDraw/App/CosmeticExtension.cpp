@@ -31,10 +31,11 @@
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
+#include "DrawViewPart.h"
 
 using namespace TechDraw;
 using namespace std;
-using DU = DrawUtil;
+using DU = DrawViewPart;
 
 EXTENSION_PROPERTY_SOURCE(TechDraw::CosmeticExtension, App::DocumentObjectExtension)
 
