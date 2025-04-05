@@ -29,10 +29,14 @@
 
 #include <QMessageBox>
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Link.h>
 
 #include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
@@ -41,6 +45,7 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+#include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
@@ -53,35 +58,20 @@
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-//! find the first DrawView in the current selection for use as a base view (owner)
-TechDraw::DrawView* CommandHelpers::firstViewInSelection(Gui::Command* cmd)
+//! find the first DrawView in the current selection for use as a base view (owner).  notThis parameter
+//! is used to prevent selecting oneself.
+TechDraw::DrawView* CommandHelpers::firstViewInSelection(App::DocumentObject* notThis)
 {
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     TechDraw::DrawView* baseView{nullptr};
     if (!selection.empty()) {
         for (auto& selobj : selection) {
             if (selobj.getObject()->isDerivedFrom<DrawView>()) {
                 auto docobj = selobj.getObject();
-                baseView =  static_cast<TechDraw::DrawView *>(docobj);
-                break;
-            }
-        }
-    }
-    return baseView;
-}
-
-//! find the first DrawView in the current selection for use as a base view (owner)
-TechDraw::DrawView* CommandHelpers::firstNonSpreadsheetInSelection(Gui::Command* cmd)
-{
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawView* baseView{nullptr};
-    if (!selection.empty()) {
-        for (auto& selobj : selection) {
-            if (selobj.getObject()->isDerivedFrom<DrawViewSpreadsheet>()) {
-                continue;
-            } else {
-                auto docobj = selobj.getObject();
-                baseView =  static_cast<TechDraw::DrawView *>(docobj);
+                if (docobj == notThis) {
+                    continue;
+                }
+                baseView =  dynamic_cast<TechDraw::DrawView *>(docobj);
                 break;
             }
         }
@@ -90,15 +80,14 @@ TechDraw::DrawView* CommandHelpers::firstNonSpreadsheetInSelection(Gui::Command*
 }
 
 
-std::vector<std::string> CommandHelpers::getSelectedSubElements(Gui::Command* cmd,
-                                                TechDraw::DrawViewPart* &dvp,
-                                                std::string subType)
+std::vector<std::string> CommandHelpers::getSelectedSubElements(TechDraw::DrawViewPart* &dvp,
+                                                 const std::string& subType)
 {
     std::vector<std::string> selectedSubs;
     std::vector<std::string> subNames;
     dvp = nullptr;
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    auto selection = Gui::Selection().getSelectionEx();
+    auto itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             dvp = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
@@ -129,21 +118,27 @@ std::vector<std::string> CommandHelpers::getSelectedSubElements(Gui::Command* cm
     return selectedSubs;
 }
 
-//! extract the selected shapes and xShapes and determine if a face has been
-//! selected to define the projection direction
-void CommandHelpers::getSelectedShapes(Gui::Command* cmd,
-                       std::vector<App::DocumentObject*>& shapes,
-                       std::vector<App::DocumentObject*>& xShapes,
-                       App::DocumentObject* faceObj,
-                       std::string& faceName)
+//! extract the selected shapes and xShapes
+void CommandHelpers::getShapeObjectsFromSelection(std::vector<App::DocumentObject*>& shapes,
+                                                  std::vector<App::DocumentObject*>& xShapes, App::DocumentObject *notThis)
 {
     auto resolve = Gui::ResolveMode::OldStyleElement;
     bool single = false;
-    auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
+    auto selection = Gui::Selection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                         resolve, single);
+    if (selection.empty()) {
+        return;
+    }
+
+    auto* activeDoc{App::GetApplication().getActiveDocument()};
     for (auto& sel : selection) {
         bool is_linked = false;
         auto obj = sel.getObject();
+
+        if (notThis && obj == notThis) {
+            continue;
+        }
+
         if (obj->isDerivedFrom<TechDraw::DrawPage>()) {
             continue;
         }
@@ -154,11 +149,11 @@ void CommandHelpers::getSelectedShapes(Gui::Command* cmd,
         }
         // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
         // 1st, is obj in another document?
-        if (obj->getDocument() != cmd->getDocument()) {
+        if (obj->getDocument() != activeDoc) {
             std::set<App::DocumentObject*> parents = obj->getInListEx(true);
             for (auto& parent : parents) {
                 // Only consider parents in the current document, i.e. possible links in this View's document
-                if (parent->getDocument() != cmd->getDocument()) {
+                if (parent->getDocument() != activeDoc) {
                     continue;
                 }
                 // 2nd, do we really have a link to obj?
@@ -177,18 +172,6 @@ void CommandHelpers::getSelectedShapes(Gui::Command* cmd,
         //not a Link and not null.  assume to be drawable.  Undrawables will be
         // skipped later.
         shapes.push_back(obj);
-        if (faceObj) {
-            continue;
-        }
-        //don't know if this works for an XLink
-        for (auto& sub : sel.getSubNames()) {
-            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
-                faceName = sub;
-                //
-                faceObj = obj;
-                break;
-            }
-        }
     }
 }
 
@@ -225,4 +208,127 @@ std::pair<App::DocumentObject*, std::string> CommandHelpers::faceFromSelection()
     }
 
     return { nullptr, "" };
+}
+
+
+DrawViewPart* CommandHelpers::findBaseViewInSelection(App::DocumentObject *notThis)
+{
+    std::vector<App::DocumentObject*> baseCandidates =
+        Gui::Command::getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    App::DocumentObject* baseView{nullptr};
+    for (auto& candidate : baseCandidates) {
+        if (candidate == notThis) {
+            continue;
+        }
+        baseView = candidate;
+        break;
+    }
+    return static_cast<DrawViewPart*>(baseView);
+}
+
+
+void CommandHelpers::getShapeObjectsFromBase(const DrawViewPart& baseView,
+                                             std::vector<App::DocumentObject*>& shapesFromBase,
+                                             std::vector<App::DocumentObject*>& xShapesFromBase)
+{
+    shapesFromBase = baseView.Source.getValues();
+    xShapesFromBase = baseView.XSource.getValues();
+}
+
+
+void CommandHelpers::findBreakObjectsInSelection(std::vector<App::DocumentObject*>& breakObjects)
+{
+    std::vector<Gui::SelectionObject> selection = Gui::Command::getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+
+    if (selection.empty()) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> candidates;
+    for (auto& selObj : selection) {
+        auto temp = selObj.getObject();
+        // a sketch outside a body is returned as an independent object in the selection
+        if (selObj.getSubNames().empty()) {
+            candidates.push_back(temp);
+            continue;
+        }
+
+        // a sketch inside a body is returned as body + subelement, so we have to search through
+        // subnames to find it.  This may(?) apply to App::Part and Group also?
+        auto subname = selObj.getSubNames().front();
+        if (subname.back() == '.') {
+            subname = subname.substr(0, subname.length() - 1);
+            auto objects = selObj.getObject()->getDocument()->getObjects();
+            for (auto& obj : objects) {
+                std::string objname{obj->getNameInDocument()};
+                if (subname == objname) {
+                    candidates.push_back(obj);
+                }
+            }
+        }
+    }
+
+    DrawBrokenView::findBreakObjectsInShapePile(candidates, breakObjects);
+}
+
+
+void CommandHelpers::findProfileObjectsInSelection(App::DocumentObject* &profileObject,
+                                                   std::vector<std::string>& profileSubs)
+{
+    std::vector<Gui::SelectionObject> selection = Gui::Command::getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+
+    if (selection.empty()) {
+        return;
+    }
+
+    auto* baseView = findBaseViewInSelection();
+    if (baseView) {
+        auto profileSubs = getSelectedSubElements(baseView);
+    }
+
+    std::vector<App::DocumentObject*> candidates;
+    for (auto& selObj : selection) {
+        auto obj = selObj.getObject();
+
+        if (obj->isDerivedFrom<TechDraw::DrawViewPart>()) {
+            //use the dvp's Sources as sources for this ComplexSection &
+            //check the subelement(s) to see if they can be used as a profile
+            baseView = static_cast<TechDraw::DrawViewPart*>(obj);
+            if (!selObj.getSubNames().empty()) {
+                //need to add profile subs as parameter
+                profileObject = baseView;
+                auto temp = selObj.getSubNames();
+                profileSubs = temp;
+                return;
+            }
+        }
+
+        if (TechDraw::DrawComplexSection::isProfileObject(obj)) {
+            profileObject = obj;
+        }
+    }
+}
+
+//! true if common requirements for commands are satisfied.  Many new views (section, detail, etc)
+//! require that there be a page, a base view and that no other task dialog is active.
+bool CommandHelpers::isActiveCommon(Gui::Command* cmd)
+{
+    return DrawGuiUtil::needPage(cmd) &&
+           DrawGuiUtil::needView(cmd) &&
+           (Gui::Control().activeDialog() == nullptr);
+}
+
+
+//! true if the caller is free to start a new task dialog
+bool CommandHelpers::guardActiveDialog()
+{
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+                             QObject::tr("Close active task dialog and try again."));
+        return false;
+    }
+    return true;
 }

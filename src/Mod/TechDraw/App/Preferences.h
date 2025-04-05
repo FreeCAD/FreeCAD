@@ -163,6 +163,10 @@ public:
 
     static bool showUnits();
 
+    static void setShowInsertFileMessage(bool state);
+    static bool ShowInsertFileMessage();
+
+    static bool useSingleInsertTool();
 };
 
 

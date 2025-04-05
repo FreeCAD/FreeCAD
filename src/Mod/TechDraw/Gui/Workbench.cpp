@@ -32,8 +32,10 @@
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 
+#include <Mod/TechDraw/App/Preferences.h>
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 #if 0// needed for Qt's lupdate utility
     qApp->translate("Workbench", "Dimensions");
@@ -67,21 +69,15 @@ using namespace TechDrawGui;
 
 TYPESYSTEM_SOURCE(TechDrawGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{}
-
-Workbench::~Workbench()
-{}
-
 Gui::MenuItem* Workbench::setupMenuBar() const
 {
-    Gui::MenuItem* root = StdWorkbench::setupMenuBar();
-    Gui::MenuItem* item = root->findItem("&Windows");
-    Gui::MenuItem* draw = new Gui::MenuItem;
+    auto* root = StdWorkbench::setupMenuBar();
+    auto* item = root->findItem("&Windows");
+    auto* draw = new Gui::MenuItem;
     root->insertItem(item, draw);
 
     // dimensions
-    Gui::MenuItem* dimensions = new Gui::MenuItem;
+    auto* dimensions = new Gui::MenuItem;
     dimensions->setCommand("Dimensions");
     *dimensions << "TechDraw_Dimension";
     *dimensions << "TechDraw_LengthDimension";
@@ -100,7 +96,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dimensions << "TechDraw_DimensionRepair";
 
     // extension: attributes and modifications
-    Gui::MenuItem* toolattrib = new Gui::MenuItem;
+    auto* toolattrib = new Gui::MenuItem;
     toolattrib->setCommand("Extensions: Attributes/Modifications");
     *toolattrib << "TechDraw_ExtensionSelectLineAttributes";
     *toolattrib << "TechDraw_ExtensionChangeLineAttributes";
@@ -123,7 +119,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolattrib << "TechDraw_ExtensionCustomizeFormat";
 
     // extension: centerlines and threading
-    Gui::MenuItem* toolcenter = new Gui::MenuItem;
+    auto* toolcenter = new Gui::MenuItem;
     toolcenter->setCommand("Extensions: Centerlines/Threading");
     *toolcenter << "TechDraw_ExtensionCircleCenterLines";
     *toolcenter << "TechDraw_ExtensionHoleCircle";
@@ -143,7 +139,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionLinePerpendicular";
 
     // extension: dimensions
-    Gui::MenuItem* tooldimensions = new Gui::MenuItem;
+    auto* tooldimensions = new Gui::MenuItem;
     tooldimensions->setCommand("Extensions: Dimensions");
     *tooldimensions << "TechDraw_ExtensionCreateHorizChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChainDimension";
@@ -164,7 +160,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *tooldimensions << "TechDraw_ExtensionDecreaseDecimal";
 
     // annotations
-    Gui::MenuItem* annotations = new Gui::MenuItem;
+    auto* annotations = new Gui::MenuItem;
     annotations->setCommand("Annotations");
     *annotations << "TechDraw_Annotation";
     *annotations << "TechDraw_RichTextAnnotation";
@@ -172,7 +168,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *annotations << "TechDraw_AxoLengthDimension";
 
     // stacking
-    Gui::MenuItem* stacking = new Gui::MenuItem;
+    auto* stacking = new Gui::MenuItem;
     stacking->setCommand("Stacking");
     *stacking << "TechDraw_StackTop";
     *stacking << "TechDraw_StackBottom";
@@ -180,7 +176,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *stacking << "TechDraw_StackDown";
 
     // lines
-    Gui::MenuItem* lines = new Gui::MenuItem;
+    auto* lines = new Gui::MenuItem;
     lines->setCommand("Add Lines");
     *lines << "TechDraw_LeaderLine";
     *lines << "TechDraw_FaceCenterLine";
@@ -193,14 +189,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *lines << "TechDraw_ShowAll";
 
     // vertices
-    Gui::MenuItem* vertices = new Gui::MenuItem;
+    auto* vertices = new Gui::MenuItem;
     vertices->setCommand("Add Vertices");
     *vertices << "TechDraw_CosmeticVertex";
     *vertices << "TechDraw_Midpoints";
     *vertices << "TechDraw_Quadrants";
 
     // pages
-    Gui::MenuItem* pages = new Gui::MenuItem;
+    auto* pages = new Gui::MenuItem;
     pages->setCommand("Page");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
@@ -212,7 +208,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *pages << "TechDraw_ExportPageDXF";
 
     // views
-    Gui::MenuItem* views = new Gui::MenuItem;
+    auto* views = new Gui::MenuItem;
     views->setCommand("TechDraw Views");
     *views << "TechDraw_View";
     *views << "TechDraw_BrokenView";
@@ -232,7 +228,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *views << "TechDraw_ProjectShape";
 
     // views from other workbenches
-    Gui::MenuItem* other = new Gui::MenuItem;
+    auto* other = new Gui::MenuItem;
     other->setCommand("Views From Other Workbenches");
     *other << "TechDraw_ActiveView";
     *other << "TechDraw_DraftView";
@@ -240,20 +236,20 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *other << "TechDraw_SpreadsheetView";
 
     // hatching
-    Gui::MenuItem* hatch = new Gui::MenuItem;
+    auto* hatch = new Gui::MenuItem;
     hatch->setCommand("Hatching");
     *hatch << "TechDraw_Hatch";
     *hatch << "TechDraw_GeometricHatch";
 
     // symbols
-    Gui::MenuItem* symbols = new Gui::MenuItem;
+    auto* symbols = new Gui::MenuItem;
     symbols->setCommand("Symbols");
     *symbols << "TechDraw_WeldSymbol";
     *symbols << "TechDraw_SurfaceFinishSymbols";
     *symbols << "TechDraw_HoleShaftFit";
 
 
-    Gui::MenuItem* aligning = new Gui::MenuItem;
+    auto* aligning = new Gui::MenuItem;
     aligning->setCommand("Aligning");
     *aligning << "TechDraw_AlignVertexesVertically";
     *aligning << "TechDraw_AlignVertexesHorizontally";
@@ -288,10 +284,18 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     return root;
 }
 
+/// https://answers.microsoft.com/en-us/windows/forum/all/whats-the-difference-between-a-taskbar-and-a/20c7746c-b6d3-40f4-b5f4-b44bfcca6e0c/ Taskbar shows the Windows logo/ Start button and Open programs and the Action center where alters are shown,
+/// A toolbar like the Main browser bar/ Favorites bar/ Bing bar and even other third party toolbars like google toolbar are usually located on the top of the screen,
+/// Where as the Taskbar is usually on the bottom of the screen but can be on either side of the screen.
+
+/// https://learn.microsoft.com/en-us/windows/apps/design/controls/command-bar
+/// the command bar shows a row of icon buttons and an optional "see more" button, which is represented by an ellipsis [...].
+
+/// toolbars are the groups of icons that run horizontally across the top of the screen.  Unless you move them somewhere else. :)
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
-    Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    Gui::ToolBarItem* pages = new Gui::ToolBarItem(root);
+    auto* root = StdWorkbench::setupToolBars();
+    auto* pages = new Gui::ToolBarItem(root);
     pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
@@ -299,9 +303,14 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *pages << "TechDraw_RedrawPage";
     *pages << "TechDraw_PrintAll";
 
-    Gui::ToolBarItem* views = new Gui::ToolBarItem(root);
+    auto* views = new Gui::ToolBarItem(root);
     views->setCommand("TechDraw Views");
-    *views << "TechDraw_View";
+    if (Preferences::useSingleInsertTool()) {
+        *views << "TechDraw_View";
+    } else {
+        *views << "TechDraw_ShapeView";
+    }
+
     *views << "TechDraw_BrokenView";
     *views << "TechDraw_ActiveView";
     *views << "TechDraw_SectionGroup";
@@ -309,11 +318,18 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ClipGroup";
 
-    Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
+    if (!Preferences::useSingleInsertTool()) {
+        *views << "TechDraw_Symbol";
+        *views << "TechDraw_Image";
+        *views << "TechDraw_ArchView";
+        *views << "TechDraw_SpreadsheetView";
+    }
+
+    auto* stacking = new Gui::ToolBarItem(root);
     stacking->setCommand("TechDraw Stacking");
     *stacking << "TechDraw_StackGroup";
 
-    Gui::ToolBarItem* dims = new Gui::ToolBarItem(root);
+    auto* dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -346,7 +362,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *dims << "TechDraw_LandmarkDimension";
     *dims << "TechDraw_DimensionRepair";
 
-    Gui::ToolBarItem* extattribs = new Gui::ToolBarItem(root);
+    auto* extattribs = new Gui::ToolBarItem(root);
     extattribs->setCommand("TechDraw Attributes");
     *extattribs << "TechDraw_ExtensionSelectLineAttributes";
     *extattribs << "TechDraw_ExtensionChangeLineAttributes";
@@ -359,7 +375,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     }
     *extattribs << "TechDraw_ExtensionCustomizeFormat";
 
-    Gui::ToolBarItem* extcenter = new Gui::ToolBarItem(root);
+    auto* extcenter = new Gui::ToolBarItem(root);
     extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
@@ -368,7 +384,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
-    Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
+    auto* extdimensions = new Gui::ToolBarItem(root);
     extdimensions->setCommand("TechDraw Extend Dimensions");
     if (separatedTools) {
         *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
@@ -379,18 +395,18 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
     *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
 
-    Gui::ToolBarItem* file = new Gui::ToolBarItem(root);
+    auto* file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPageSVG";
     *file << "TechDraw_ExportPageDXF";
 
-    Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
+    auto* decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
     *decor << "TechDraw_ToggleFrame";
 
-    Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
+    auto* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
     *anno << "TechDraw_Annotation";
     *anno << "TechDraw_LeaderLine";
@@ -407,103 +423,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     return root;
 }
 
+// wf: AFAICT this method doesn't do anything.
 Gui::ToolBarItem* Workbench::setupCommandBars() const
 {
-    Gui::ToolBarItem* root = new Gui::ToolBarItem;
-    Gui::ToolBarItem* pages = new Gui::ToolBarItem(root);
-    pages->setCommand("TechDraw Pages");
-    *pages << "TechDraw_PageDefault";
-    *pages << "TechDraw_PageTemplate";
-    *pages << "TechDraw_FillTemplateFields";
-    *pages << "TechDraw_RedrawPage";
-    *pages << "TechDraw_PrintAll";
-
-
-    Gui::ToolBarItem* views = new Gui::ToolBarItem(root);
-    views->setCommand("Views");
-    *views << "TechDraw_View";
-    *views << "TechDraw_ActiveView";
-    *views << "TechDraw_SectionGroup";
-    *views << "TechDraw_DetailView";
-    *views << "TechDraw_DraftView";
-    *views << "TechDraw_ClipGroup";
-
-    Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
-    stacking->setCommand("TechDraw Stacking");
-    *stacking << "TechDraw_StackGroup";
-
-    Gui::ToolBarItem* dims = new Gui::ToolBarItem(root);
-    dims->setCommand("TechDraw Dimensions");
-    *dims << "TechDraw_Dimension";
-    *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_HorizontalDimension";
-    *dims << "TechDraw_VerticalDimension";
-    *dims << "TechDraw_RadiusDimension";
-    *dims << "TechDraw_DiameterDimension";
-    *dims << "TechDraw_AngleDimension";
-    *dims << "TechDraw_3PtAngleDimension";
-    *dims << "TechDraw_ExtentGroup";
-    // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
-    *dims << "TechDraw_LinkDimension";
-    *dims << "TechDraw_Balloon";
-    *dims << "TechDraw_AxoLengthDimension";
-    *dims << "TechDraw_LandmarkDimension";
-    *dims << "TechDraw_DimensionRepair";
-
-    Gui::ToolBarItem* extattribs = new Gui::ToolBarItem(root);
-    extattribs->setCommand("TechDraw Attributes");
-    *extattribs << "TechDraw_ExtensionSelectLineAttributes";
-    *extattribs << "TechDraw_ExtensionChangeLineAttributes";
-    *extattribs << "TechDraw_ExtensionExtendShortenLineGroup";
-    *extattribs << "TechDraw_ExtensionLockUnlockView";
-    *extattribs << "TechDraw_ExtensionPositionSectionView";
-    *extattribs << "TechDraw_ExtensionAreaAnnotation";
-    *extattribs << "TechDraw_ExtensionArcLengthAnnotation";
-    *extattribs << "TechDraw_ExtensionCustomizeFormat";
-
-    Gui::ToolBarItem* extcenter = new Gui::ToolBarItem(root);
-    extcenter->setCommand("TechDraw Centerlines");
-    *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
-    *extcenter << "TechDraw_ExtensionThreadsGroup";
-    *extcenter << "TechDraw_CommandVertexCreationGroup";
-    //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
-    *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
-    *extcenter << "TechDraw_ExtensionLinePPGroup";
-
-    Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
-    extdimensions->setCommand("TechDraw Extend Dimensions");
-    *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
-    *extdimensions << "TechDraw_ExtensionCreateCoordDimensionGroup";
-    *extdimensions << "TechDraw_ExtensionChamferDimensionGroup";
-    *extdimensions << "TechDraw_ExtensionCreateLengthArc";
-    *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
-    *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
-
-    Gui::ToolBarItem* file = new Gui::ToolBarItem(root);
-    file->setCommand("TechDraw File Access");
-    *file << "TechDraw_ExportPageSVG";
-    *file << "TechDraw_ExportPageDXF";
-
-    Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
-    decor->setCommand("TechDraw Decoration");
-    *decor << "TechDraw_Hatch";
-    *decor << "TechDraw_GeometricHatch";
-    *decor << "TechDraw_ToggleFrame";
-
-    Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
-    anno->setCommand("TechDraw Annotation");
-    *anno << "TechDraw_Annotation";
-    *anno << "TechDraw_LeaderLine";
-    *anno << "TechDraw_RichTextAnnotation";
-    *anno << "TechDraw_CosmeticVertexGroup";
-    *anno << "TechDraw_CenterLineGroup";
-    *anno << "TechDraw_2PointCosmeticLine";
-    *anno << "TechDraw_CosmeticCircle";
-    *anno << "TechDraw_DecorateLine";
-    *anno << "TechDraw_ShowAll";
-    *anno << "TechDraw_WeldSymbol";
-    *anno << "TechDraw_SurfaceFinishSymbols";
-    *anno << "TechDraw_HoleShaftFit";
-
+    // from Part/Gui/Workbench.cpp
+    Gui::ToolBarItem* root = new Gui::ToolBarItem;      //NOLINT
     return root;
 }

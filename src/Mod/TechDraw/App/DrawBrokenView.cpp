@@ -1174,6 +1174,17 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::scalePair(std::pair<Ba
     return result;
 }
 
+void DrawBrokenView::findBreakObjectsInShapePile(std::vector<App::DocumentObject*>& shapePile,
+                                                 std::vector<App::DocumentObject*>& breakObjects)
+{
+    for (auto& shapeObj : shapePile) {
+        if (isBreakObject(*shapeObj)) {
+            breakObjects.push_back(shapeObj);
+        }
+    }
+
+}
+
 PyObject *DrawBrokenView::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {

@@ -38,8 +38,8 @@ class TechDrawGuiExport Workbench : public Gui::StdWorkbench
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    Workbench();
-    ~Workbench() override;
+    Workbench() = default;
+    ~Workbench() override = default;
 
 protected:
     Gui::MenuItem* setupMenuBar() const override;

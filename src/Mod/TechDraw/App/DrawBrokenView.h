@@ -103,6 +103,8 @@ public:
     Base::Vector3d getCompressedCentroid() const;
     double breaklineLength(const App::DocumentObject& breakObj) const;
 
+    static void findBreakObjectsInShapePile(std::vector<App::DocumentObject*>& shapePile,
+                                            std::vector<App::DocumentObject*>& breakObjects);
 
 
 private:

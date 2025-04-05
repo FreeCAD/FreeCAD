@@ -329,9 +329,9 @@ void execCosmeticVertex(Gui::Command* cmd)
 
 void execMidpoints(Gui::Command* cmd)
 {
-//    Base::Console().Message("execMidpoints()\n");
+    Q_UNUSED(cmd)
     TechDraw::DrawViewPart * dvp = nullptr;
-    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
+    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(dvp, "Edge");
 
     if (!dvp || selectedEdges.empty())
         return;
@@ -356,9 +356,9 @@ void execMidpoints(Gui::Command* cmd)
 
 void execQuadrants(Gui::Command* cmd)
 {
-//    Base::Console().Message("execQuadrants()\n");
+    Q_UNUSED(cmd)
     TechDraw::DrawViewPart* dvp = nullptr;
-    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
+    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(dvp, "Edge");
 
     if (!dvp || selectedEdges.empty())
         return;
@@ -551,7 +551,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewAnnotation', 'Annotation', '%s')",
               FeatName.c_str(), FeatName.c_str());
 
-    auto baseView = CommandHelpers::firstViewInSelection(this);
+    auto baseView = CommandHelpers::firstViewInSelection();
     if (baseView) {
         auto baseName = baseView->getNameInDocument();
         doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
@@ -828,7 +828,7 @@ void exec2LineCenterLine(Gui::Command* cmd)
         return;
     }
     TechDraw::DrawViewPart* dvp = nullptr;
-    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
+    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(dvp, "Edge");
 
     if (!dvp || selectedEdges.empty()) {
         return;

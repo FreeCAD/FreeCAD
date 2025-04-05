@@ -88,6 +88,8 @@ SET(TechDrawGui_SRCS
     ${MRTE_SRCS}
     AppTechDrawGui.cpp
     AppTechDrawGuiPy.cpp
+    BalloonHelpers.cpp
+    BalloonHelpers.h
     Command.cpp
     CommandCreateDims.cpp
     CommandDecorate.cpp
@@ -217,6 +219,8 @@ SET(TechDrawGui_SRCS
     TaskCosmeticCircle.ui
     TechDrawHandler.cpp
     TechDrawHandler.h
+    ViewMakers.cpp
+    ViewMakers.h
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp
@@ -225,6 +229,8 @@ SET(TechDrawGui_SRCS
     Widgets/VectorEditWidget.h
     PATPathMaker.cpp
     PATPathMaker.h
+    SingleInsertTool.cpp
+    SingleInsertTool.h
 )
 
 SET(TechDrawGuiView_SRCS
