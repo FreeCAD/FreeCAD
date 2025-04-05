@@ -344,6 +344,8 @@ class TechDrawExport Wire
         explicit Wire(const TopoDS_Wire &w);
         ~Wire();
 
+        // Is this any different from toOccWire??
+        TopoDS_Wire getCleanWire() const;
         TopoDS_Wire toOccWire() const;
         void dump(std::string s);
         BaseGeomPtrVector geoms;
@@ -359,6 +361,8 @@ class TechDrawExport Face
         TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
 
+        std::vector<TechDraw::BaseGeomPtr> getConnectedGeometry();
+        std::vector<TopoDS_Wire> getCleanWires();
         double getArea() const;
         Base::Vector3d getCenter() const;
 };

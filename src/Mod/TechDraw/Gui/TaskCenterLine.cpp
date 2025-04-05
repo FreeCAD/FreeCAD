@@ -70,7 +70,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     ui->setupUi(this);
 
     m_geomIndex = DrawUtil::getIndexFromName(m_edgeName);
-    const TechDraw::BaseGeomPtrVector &geoms = partFeat->getEdgeGeometry();
+    const TechDraw::BaseGeomPtrVector &geoms = partFeat->getAllGeometry<BaseGeom>();
     BaseGeomPtr bg = geoms.at(m_geomIndex);
     std::string tag = bg->getCosmeticTag();
     m_cl = partFeat->getCenterLine(tag);
@@ -348,12 +348,12 @@ Mode TaskCenterLine::checkPathologicalEdges(Mode inMode)
         return inMode;
     }
 
-    TechDraw::BaseGeomPtr edge1 = m_partFeat->getEdge(m_subNames.front());
+    TechDraw::BaseGeomPtr edge1 = m_partFeat->getGeometry<BaseGeom>(m_subNames.front());
     std::vector<Base::Vector3d> ends1 = edge1->findEndPoints();
     bool edge1Vertical = DU::fpCompare(ends1.front().x, ends1.back().x, EWTOLERANCE);
     bool edge1Horizontal = DU::fpCompare(ends1.front().y, ends1.back().y, EWTOLERANCE);
 
-    TechDraw::BaseGeomPtr edge2 = m_partFeat->getEdge(m_subNames.back());
+    TechDraw::BaseGeomPtr edge2 = m_partFeat->getGeometry<BaseGeom>(m_subNames.back());
     std::vector<Base::Vector3d> ends2 = edge2->findEndPoints();
     bool edge2Vertical = DU::fpCompare(ends2.front().x, ends2.back().x, EWTOLERANCE);
     bool edge2Horizontal = DU::fpCompare(ends2.front().y, ends2.back().y, EWTOLERANCE);
@@ -378,9 +378,9 @@ Mode TaskCenterLine::checkPathologicalVertices(Mode inMode)
         return inMode;
     }
 
-    TechDraw::VertexPtr vert1 = m_partFeat->getVertex(m_subNames.front());
+    TechDraw::VertexPtr vert1 = m_partFeat->getGeometry<Vertex>(m_subNames.front());
     Base::Vector3d point1 = vert1->point();
-    TechDraw::VertexPtr vert2 = m_partFeat->getVertex(m_subNames.back());
+    TechDraw::VertexPtr vert2 = m_partFeat->getGeometry<Vertex>(m_subNames.back());
     Base::Vector3d point2 = vert2->point();
 
     if (DU::fpCompare(point1.x, point2.x, EWTOLERANCE)) {

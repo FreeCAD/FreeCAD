@@ -146,7 +146,7 @@ void CosmeticExtension::refreshCVGeoms()
 {
     //    Base::Console().Message("CE::refreshCVGeoms()\n");
 
-    std::vector<TechDraw::VertexPtr> gVerts = getOwner()->getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = getOwner()->getAllGeometry<Vertex>();
     std::vector<TechDraw::VertexPtr> newGVerts;
     for (auto& gv : gVerts) {
         if (gv->getCosmeticTag().empty()) {//keep only non-cv vertices
@@ -162,7 +162,7 @@ void CosmeticExtension::refreshCVGeoms()
 int CosmeticExtension::getCVIndex(const std::string& tag)
 {
     //    Base::Console().Message("CE::getCVIndex(%s)\n", tag.c_str());
-    std::vector<TechDraw::VertexPtr> gVerts = getOwner()->getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = getOwner()->getAllGeometry<Vertex>();
     std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
 
     int i = 0;
@@ -232,8 +232,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const 
     if (!dvp) {
         return nullptr;
     }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::VertexPtr v = dvp->getProjVertexByIndex(idx);
+    TechDraw::VertexPtr v = dvp->getGeometry<Vertex>(name);
     if (!v || v->getCosmeticTag().empty()) {
         return nullptr;
     }
@@ -325,7 +324,7 @@ int CosmeticExtension::add1CEToGE(const std::string& tag)
 void CosmeticExtension::refreshCEGeoms()
 {
     //    Base::Console().Message("CEx::refreshCEGeoms()\n");
-    std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getAllGeometry<BaseGeom>();
     std::vector<TechDraw::BaseGeomPtr> oldGEdges;
     for (auto& ge : gEdges) {
         if (ge->source() != SourceType::COSMETICEDGE) {
@@ -388,8 +387,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(const std:
     if (!dvp) {
         return nullptr;
     }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
+    TechDraw::BaseGeomPtr base = dvp->getGeometry<BaseGeom>(name);
     if (!base || base->getCosmeticTag().empty()) {
         return nullptr;
     }
@@ -464,7 +462,7 @@ int CosmeticExtension::add1CLToGE(const std::string& tag)
 void CosmeticExtension::refreshCLGeoms()
 {
     // Base::Console().Message("CE::refreshCLGeoms()\n");
-    std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getAllGeometry<BaseGeom>();
     std::vector<TechDraw::BaseGeomPtr> newGEdges;
     for (auto& ge : gEdges) {
         if (ge->source() != SourceType::CENTERLINE) {
@@ -550,8 +548,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(const std::str
     if (!dvp) {
         return nullptr;
     }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
+    TechDraw::BaseGeomPtr base = dvp->getGeometry<BaseGeom>(name);
     if (!base || base->getCosmeticTag().empty()) {
         return nullptr;
     }
