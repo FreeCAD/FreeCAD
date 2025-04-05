@@ -459,7 +459,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             value = frames[Frame.getValue()];
         }
         for (const auto& obj : Group.getValues()) {
-            if (auto* postFilter = Base::freecad_dynamic_cast<FemPostFilter>(obj)) {
+            if (auto* postFilter = freecad_cast<FemPostFilter>(obj)) {
                 postFilter->Frame.setValue(value);
             }
         }

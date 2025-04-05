@@ -139,7 +139,7 @@ public:
             if (expr) {
 
                 std::unique_ptr<Expression> res(expr->eval());
-                NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(res.get());
+                NumberExpression * n = freecad_cast<NumberExpression>(res.get());
                 if (n){
                     result = n->getQuantity();
                     value = result.getValue();

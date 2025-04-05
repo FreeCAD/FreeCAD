@@ -201,9 +201,10 @@ bool BaseClass::isDerivedFrom() const
  *
  */
 template<typename T>
-T* freecad_dynamic_cast(Base::BaseClass* type)
+T* freecad_cast(Base::BaseClass* type)
 {
-    static_assert(std::is_base_of<BaseClass, T>::value, "T must be derived from Base::BaseClass");
+    static_assert(std::is_base_of<Base::BaseClass, T>::value,
+                  "T must be derived from Base::BaseClass");
 
     if (type && type->isDerivedFrom(T::getClassTypeId())) {
         return static_cast<T*>(type);
@@ -218,9 +219,10 @@ T* freecad_dynamic_cast(Base::BaseClass* type)
  *
  */
 template<typename T>
-const T* freecad_dynamic_cast(const Base::BaseClass* type)
+const T* freecad_cast(const Base::BaseClass* type)
 {
-    static_assert(std::is_base_of<BaseClass, T>::value, "T must be derived from Base::BaseClass");
+    static_assert(std::is_base_of<Base::BaseClass, T>::value,
+                  "T must be derived from Base::BaseClass");
 
     if (type && type->isDerivedFrom(T::getClassTypeId())) {
         return static_cast<const T*>(type);
@@ -229,7 +231,12 @@ const T* freecad_dynamic_cast(const Base::BaseClass* type)
     return nullptr;
 }
 
-
 }  // namespace Base
+
+// We define global alias for freecad_cast to be used by all FreeCAD files that include
+// BaseClass.h. While doing using on header level is non-ideal it allows for much easier use
+// of the important freecad_cast. In that case the name is prefixed with freecad so there is no
+// chance of symbols collision.
+using Base::freecad_cast;
 
 #endif  // BASE_BASECLASS_H

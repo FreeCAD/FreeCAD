@@ -119,7 +119,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer* _owner,
     , _hash(0)
 {
     if (_owner) {
-        const DocumentObject* docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
+        const DocumentObject* docObj = freecad_cast<const DocumentObject>(_owner);
         if (!docObj) {
             FC_THROWM(Base::RuntimeError, "Property must be owned by a document object.");
         }
@@ -145,7 +145,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer* _owner, bool lo
     , _hash(0)
 {
     if (_owner) {
-        const DocumentObject* docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
+        const DocumentObject* docObj = freecad_cast<const DocumentObject>(_owner);
         if (!docObj) {
             FC_THROWM(Base::RuntimeError, "Property must be owned by a document object.");
         }
@@ -166,7 +166,7 @@ ObjectIdentifier::ObjectIdentifier(const Property& prop, int index)
     , localProperty(false)
     , _hash(0)
 {
-    DocumentObject* docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
+    DocumentObject* docObj = freecad_cast<DocumentObject>(prop.getContainer());
 
     if (!docObj) {
         FC_THROWM(Base::TypeError, "Property must be owned by a document object.");
@@ -1364,7 +1364,7 @@ ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier& other) con
 ObjectIdentifier ObjectIdentifier::parse(const DocumentObject* docObj, const std::string& str)
 {
     std::unique_ptr<Expression> expr(ExpressionParser::parse(docObj, str.c_str()));
-    VariableExpression* v = freecad_dynamic_cast<VariableExpression>(expr.get());
+    VariableExpression* v = freecad_cast<VariableExpression>(expr.get());
 
     if (v) {
         return v->getPath();
@@ -1853,12 +1853,12 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
         }
         if (prop && prop->getContainer() != obj) {
             auto linkTouched =
-                Base::freecad_dynamic_cast<PropertyBool>(obj->getPropertyByName("_LinkTouched"));
+                freecad_cast<PropertyBool>(obj->getPropertyByName("_LinkTouched"));
             if (linkTouched) {
                 propName = linkTouched->getName();
             }
             else {
-                auto propOwner = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+                auto propOwner = freecad_cast<DocumentObject>(prop->getContainer());
                 if (propOwner) {
                     obj = propOwner;
                 }
