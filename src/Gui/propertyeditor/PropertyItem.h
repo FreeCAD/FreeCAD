@@ -130,6 +130,12 @@ class GuiExport PropertyItem: public QObject, public ExpressionBinding
     PROPERTYITEM_HEADER
 
 public:
+    enum Column {
+        NameColumn = 0,
+        ValueColumn = 1,
+        ColumnCount
+    };
+
     ~PropertyItem() override;
 
     /** Sets the current property objects. */
@@ -216,7 +222,7 @@ protected:
     void onChange() override;
 
 private:
-    QVariant dataProperty(int role) const;
+    QVariant dataPropertyName(int role) const;
     QVariant dataValue(int role) const;
     QString toString(const Py::Object&) const;
     QString asNone(const Py::Object&) const;
