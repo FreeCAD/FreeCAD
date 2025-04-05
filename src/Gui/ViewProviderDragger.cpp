@@ -53,6 +53,7 @@
 #include <ViewProviderLink.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
+#include <Inventor/So3DAnnotation.h>
 
 using namespace Gui;
 
@@ -61,11 +62,6 @@ PROPERTY_SOURCE(Gui::ViewProviderDragger, Gui::ViewProviderDocumentObject)
 ViewProviderDragger::ViewProviderDragger()
 {
     ADD_PROPERTY_TYPE(TransformOrigin, ({}), nullptr, App::Prop_Hidden, nullptr);
-    ADD_PROPERTY_TYPE(ShowPlacement,
-                      (false),
-                      "Display Options",
-                      App::Prop_None,
-                      "If true, placement of object is additionally rendered.");
 
     pcPlacement = new SoSwitch;
     pcPlacement->whichChild = SO_SWITCH_NONE;
@@ -106,9 +102,6 @@ void ViewProviderDragger::onChanged(const App::Property* property)
 {
     if (property == &TransformOrigin) {
         updateDraggerPosition();
-    }
-    else if (property == &ShowPlacement) {
-        pcPlacement->whichChild = ShowPlacement.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
     }
 
     ViewProviderDocumentObject::onChanged(property);
@@ -341,7 +334,11 @@ void ViewProviderDragger::attach(App::DocumentObject* pcObject)
     getAnnotation()->addChild(pcPlacement);
 
     auto* pcAxisCrossKit = new Gui::SoFCPlacementIndicatorKit();
-    pcPlacement->addChild(pcAxisCrossKit);
+
+    auto* pcAnnotation = new So3DAnnotation();
+    pcAnnotation->addChild(pcAxisCrossKit);
+
+    pcPlacement->addChild(pcAnnotation);
 }
 
 void ViewProviderDragger::updateDraggerPosition()
