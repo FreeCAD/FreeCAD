@@ -392,7 +392,7 @@ TaskPostDisplay::TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* paren
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
                           ui->Representation);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 
     // get Transparency from ViewProvider
     int trans = getTypedView<ViewProviderFemPostObject>()->Transparency.getValue();
@@ -432,18 +432,18 @@ void TaskPostDisplay::onRepresentationActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
 
 void TaskPostDisplay::onFieldActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
 
 void TaskPostDisplay::onVectorModeActivated(int i)
 {
-    getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
+    getTypedView<ViewProviderFemPostObject>()->Component.setValue(i);
 }
 
 void TaskPostDisplay::onTransparencyValueChanged(int i)
@@ -660,7 +660,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* v
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
                           ui->Representation);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
 
 TaskPostDataAlongLine::~TaskPostDataAlongLine()
@@ -963,7 +963,7 @@ void TaskPostDataAlongLine::onRepresentationActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
 
 void TaskPostDataAlongLine::onFieldActivated(int i)
@@ -971,15 +971,15 @@ void TaskPostDataAlongLine::onFieldActivated(int i)
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
     getObject<Fem::FemPostDataAlongLineFilter>()->PlotData.setValue(FieldName);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 
-    auto vecMode = static_cast<ViewProviderFemPostObject*>(getView())->VectorMode.getEnum();
+    auto vecMode = static_cast<ViewProviderFemPostObject*>(getView())->Component.getEnum();
     getObject<Fem::FemPostDataAlongLineFilter>()->PlotDataComponent.setValue(vecMode);
 }
 
 void TaskPostDataAlongLine::onVectorModeActivated(int i)
 {
-    getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
+    getTypedView<ViewProviderFemPostObject>()->Component.setValue(i);
     int comp = ui->VectorMode->currentIndex();
     getObject<Fem::FemPostDataAlongLineFilter>()->PlotDataComponent.setValue(comp);
 }
@@ -1628,7 +1628,7 @@ void TaskPostContours::onFieldsChanged(int idx)
     // we must also update the VectorMode
     if (!getObject<Fem::FemPostContoursFilter>()->NoColor.getValue()) {
         auto newMode = getTypedObject<Fem::FemPostContoursFilter>()->VectorMode.getValue();
-        getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(newMode);
+        getTypedView<ViewProviderFemPostObject>()->Component.setValue(newMode);
     }
 }
 
@@ -1644,7 +1644,7 @@ void TaskPostContours::onVectorModeChanged(int idx)
         updateFields();
         // now we can set the VectorMode
         if (!getObject<Fem::FemPostContoursFilter>()->NoColor.getValue()) {
-            getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(idx);
+            getTypedView<ViewProviderFemPostObject>()->Component.setValue(idx);
         }
     }
 }
@@ -1668,9 +1668,9 @@ void TaskPostContours::onNoColorChanged(bool state)
         // the ViewProvider field starts with an additional entry "None",
         // therefore the desired new setting is idx + 1
         getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField + 1);
-        // set the VectorMode too
+        // set the Component too
         auto currentMode = getTypedObject<Fem::FemPostContoursFilter>()->VectorMode.getValue();
-        getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(currentMode);
+        getTypedView<ViewProviderFemPostObject>()->Component.setValue(currentMode);
     }
     recompute();
 }

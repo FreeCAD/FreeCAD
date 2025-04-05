@@ -243,10 +243,6 @@ class TestObjectOpen(unittest.TestCase):
 
         self.assertEqual(VPSolverCcxTools, doc.SolverCcxTools.ViewObject.Proxy.__class__)
 
-        from femsolver.calculix.solver import ViewProxy
-
-        self.assertEqual(ViewProxy, doc.SolverCalculix.ViewObject.Proxy.__class__)
-
         from femsolver.elmer.solver import ViewProxy
 
         self.assertEqual(ViewProxy, doc.SolverElmer.ViewObject.Proxy.__class__)
