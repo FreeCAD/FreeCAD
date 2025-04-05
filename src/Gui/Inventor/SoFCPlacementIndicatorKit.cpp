@@ -36,6 +36,7 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoFontStyle.h>
@@ -68,19 +69,20 @@ SoFCPlacementIndicatorKit::SoFCPlacementIndicatorKit()
     SO_KIT_INIT_INSTANCE();
 
     SO_NODE_ADD_FIELD(coloredAxis, (true));
-    SO_NODE_ADD_FIELD(scaleFactor, (scaleFactorDefault));
+    SO_NODE_ADD_FIELD(scaleFactor, (ViewParams::instance()->getPlacementIndicatorScale()));
     SO_NODE_ADD_FIELD(axisLength, (axisLengthDefault));
-
     SO_NODE_ADD_FIELD(parts, (AxisCross));
+    SO_NODE_ADD_FIELD(axes, (AllAxes));
+
     SO_NODE_DEFINE_ENUM_VALUE(Part, Axes);
-    SO_NODE_DEFINE_ENUM_VALUE(Part, PlaneIndicator);
-    SO_NODE_DEFINE_ENUM_VALUE(Part, Labels);
     SO_NODE_DEFINE_ENUM_VALUE(Part, ArrowHeads);
+    SO_NODE_DEFINE_ENUM_VALUE(Part, Labels);
     SO_NODE_DEFINE_ENUM_VALUE(Part, AxisCross);
+    SO_NODE_DEFINE_ENUM_VALUE(Part, PlaneIndicator);
+    SO_NODE_DEFINE_ENUM_VALUE(Part, OriginIndicator);
     SO_NODE_DEFINE_ENUM_VALUE(Part, AllParts);
     SO_NODE_SET_SF_ENUM_TYPE(parts, Part);
 
-    SO_NODE_ADD_FIELD(axes, (AllAxes));
     SO_NODE_DEFINE_ENUM_VALUE(Axes, X);
     SO_NODE_DEFINE_ENUM_VALUE(Axes, Y);
     SO_NODE_DEFINE_ENUM_VALUE(Axes, Z);
@@ -120,12 +122,34 @@ void SoFCPlacementIndicatorKit::recomputeGeometry()
     root->setPart("shape", createGeometry());
 }
 
-SoSeparator* SoFCPlacementIndicatorKit::createGeometry()
+SoSeparator* SoFCPlacementIndicatorKit::createOriginIndicator()
 {
+    const uint32_t originColor = ViewParams::instance()->getOriginColor();
+
     auto sep = new SoSeparator();
 
     auto pcBaseColor = new SoBaseColor();
-    pcBaseColor->rgb.setValue(0.7f, 0.7f, 0.5f);
+    pcBaseColor->rgb.setValue(Base::Color::fromPackedRGBA<SbColor>(originColor));
+
+    auto pcSphere = new SoSphere();
+    // the factor aligns radius of sphere and arrow head visually, without it, it looks too small
+    constexpr float visualAdjustmentFactor = 1.2F;
+    pcSphere->radius = arrowHeadRadius * visualAdjustmentFactor;
+
+    sep->addChild(pcBaseColor);
+    sep->addChild(pcSphere);
+
+    return sep;
+}
+
+SoSeparator* SoFCPlacementIndicatorKit::createGeometry()
+{
+    const uint32_t neutralColor = ViewParams::instance()->getNeutralColor();
+
+    auto sep = new SoSeparator();
+
+    auto pcBaseColor = new SoBaseColor();
+    pcBaseColor->rgb.setValue(Base::Color::fromPackedRGBA<SbColor>(neutralColor));
 
     auto pcLightModel = new SoLightModel();
     pcLightModel->model = SoLightModel::BASE_COLOR;
@@ -137,6 +161,10 @@ SoSeparator* SoFCPlacementIndicatorKit::createGeometry()
         sep->addChild(createPlaneIndicator());
     }
 
+    if (parts.getValue() & OriginIndicator) {
+        sep->addChild(createOriginIndicator());
+    }
+
     if (parts.getValue() & Axes) {
         sep->addChild(createAxes());
     }
@@ -146,24 +174,24 @@ SoSeparator* SoFCPlacementIndicatorKit::createGeometry()
 
 SoSeparator* SoFCPlacementIndicatorKit::createAxes()
 {
-    const auto cylinderOffset = axisLength.getValue() / 2.f;
+    const auto cylinderOffset = axisLength.getValue() / 2.F;
 
     const auto createAxis = [&](const char* label,
                                 Base::Vector3d axis,
                                 uint32_t packedColor,
                                 const double offset) {
         Base::Color axisColor(packedColor);
+        Base::Rotation rotation(Base::Vector3d::UnitY, axis);
 
         auto sep = new SoSeparator;
 
-        auto rotation = Base::Rotation(Base::Vector3d::UnitY, axis);
         auto pcTranslate = new SoTransform();
         pcTranslate->translation.setValue(
             Base::convertTo<SbVec3f>((cylinderOffset + offset) * axis));
         pcTranslate->rotation.setValue(Base::convertTo<SbRotation>(rotation));
 
         auto pcArrowShaft = new SoCylinder();
-        pcArrowShaft->radius = axisThickness / 2.0f;
+        pcArrowShaft->radius = axisThickness / 2.F;
         pcArrowShaft->height = axisLength;
 
         if (coloredAxis.getValue()) {
@@ -216,11 +244,12 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
         return sep;
     };
 
-    auto sep = new SoSeparator;
-
-    auto xyOffset = (parts.getValue() & PlaneIndicator)
+    double additionalAxisMargin = (parts.getValue() & OriginIndicator) ? axisThickness * 4 : 0;
+    double xyOffset = (parts.getValue() & PlaneIndicator)
         ? planeIndicatorRadius + planeIndicatorMargin
-        : axisMargin;
+        : axisMargin + additionalAxisMargin;
+
+    auto sep = new SoSeparator;
 
     if (axes.getValue() & X) {
         sep->addChild(createAxis("X",
@@ -237,9 +266,10 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
     }
 
     if (axes.getValue() & Z) {
-        auto zOffset = (parts.getValue() & PlaneIndicator)
+        double zOffset = (parts.getValue() & PlaneIndicator)
             ? planeIndicatorMargin
-            : axisMargin;
+            : axisMargin + additionalAxisMargin;
+
         sep->addChild(createAxis("Z",
                                  Base::Vector3d::UnitZ,
                                  ViewParams::instance()->getAxisZColor(),
