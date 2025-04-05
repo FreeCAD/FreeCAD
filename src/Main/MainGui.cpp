@@ -179,9 +179,6 @@ int main(int argc, char** argv)
         }
         argv_.push_back(0);  // 0-terminated string
     }
-
-    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
-    _putenv("QT_QPA_PLATFORM=windows:darkmode=1");
 #endif
 
     // Name and Version of the Application
