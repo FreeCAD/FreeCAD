@@ -39,7 +39,7 @@ PROPERTY_SOURCE(App::DatumElement, App::GeoFeature)
 PROPERTY_SOURCE(App::Plane, App::DatumElement)
 PROPERTY_SOURCE(App::Line, App::DatumElement)
 PROPERTY_SOURCE(App::Point, App::DatumElement)
-PROPERTY_SOURCE(App::LocalCoordinateSystem, App::GeoFeature)
+PROPERTY_SOURCE_WITH_EXTENSIONS(App::LocalCoordinateSystem, App::GeoFeature)
 
 DatumElement::DatumElement(bool hideRole)
     : baseDir{0.0, 0.0, 1.0}
@@ -125,7 +125,6 @@ Point::Point()
 // ----------------------------------------------------------------------------
 
 LocalCoordinateSystem::LocalCoordinateSystem()
-    : extension(this)
 {
     ADD_PROPERTY_TYPE(OriginFeatures,
                       (nullptr),
@@ -133,8 +132,11 @@ LocalCoordinateSystem::LocalCoordinateSystem()
                       App::Prop_Hidden,
                       "Axis and baseplanes controlled by the LCS");
 
+    Group.setStatus(Property::Transient, true);
+
     setStatus(App::NoAutoExpand, true);
-    extension.initExtension(this);
+
+    GroupExtension::initExtension(this);
 }
 
 
@@ -199,12 +201,6 @@ App::Point* LocalCoordinateSystem::getPoint(const char* role) const
     err << "LocalCoordinateSystem \"" << getFullName() << "\" contains bad Point object for role \""
         << role << '"';
     throw Base::RuntimeError(err.str().c_str());
-}
-
-bool LocalCoordinateSystem::hasObject(const DocumentObject* obj) const
-{
-    const auto& features = OriginFeatures.getValues();
-    return std::ranges::find(features, obj) != features.end();
 }
 
 short LocalCoordinateSystem::mustExecute() const
@@ -340,18 +336,7 @@ void LocalCoordinateSystem::migrateOriginPoint()
 
 // ----------------------------------------------------------------------------
 
-LocalCoordinateSystem::LCSExtension::LCSExtension(LocalCoordinateSystem* obj)
-    : obj(obj)
-{
-    Group.setStatus(Property::Transient, true);
-}
-
-void LocalCoordinateSystem::LCSExtension::initExtension(ExtensionContainer* obj)
-{
-    App::GroupExtension::initExtension(obj);
-}
-
-bool LocalCoordinateSystem::LCSExtension::extensionGetSubObject(DocumentObject*& ret,
+bool LocalCoordinateSystem::extensionGetSubObject(DocumentObject*& ret,
                                                                 const char* subname,
                                                                 PyObject** pyobj,
                                                                 Base::Matrix4D* mat,
@@ -380,7 +365,7 @@ bool LocalCoordinateSystem::LCSExtension::extensionGetSubObject(DocumentObject*&
     }
 
     try {
-        ret = obj->getDatumElement(name.c_str());
+        ret = getDatumElement(name.c_str());
         if (!ret) {
             return false;
         }
@@ -398,4 +383,10 @@ bool LocalCoordinateSystem::LCSExtension::extensionGetSubObject(DocumentObject*&
         e.ReportException();
         return false;
     }
+}
+
+bool LocalCoordinateSystem::hasObject(const DocumentObject* obj, [[maybe_unused]] bool recursive) const
+{
+    const auto& features = OriginFeatures.getValues();
+    return std::ranges::find(features, obj) != features.end();
 }

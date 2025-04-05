@@ -181,7 +181,7 @@ public:
 
     std::string getSupport() const
     {
-        return Gui::Command::getObjectCmd(getObject(), "(",",'')");
+        return faceSelection.getAsPropertyLinkSubString();
     }
 
     App::DocumentObject* getObject() const
@@ -387,11 +387,17 @@ public:
     void findDatumPlanes()
     {
         App::GeoFeatureGroupExtension *geoGroup = getGroupExtensionOfBody();
-        auto datumPlanes( appdocument->getObjectsOfType(PartDesign::Plane::getClassTypeId()) );
+        const std::vector<Base::Type> types = { PartDesign::Plane::getClassTypeId(), App::Plane::getClassTypeId() };
+        auto datumPlanes = appdocument->getObjectsOfType(types);
+
         for (auto plane : datumPlanes) {
+            if (std::find(planes.begin(), planes.end(), plane) != planes.end()) {
+                continue; // Skip if already in planes (for base planes)
+            }
+
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
-            if ( activeBody->hasObject(plane) ) {
+            if ( activeBody->hasObject(plane, true) ) {
                 if ( !activeBody->isAfterInsertPoint ( plane ) ) {
                     validPlaneCount++;
                     status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
@@ -675,11 +681,20 @@ private:
     {
         // may happen when the user switched to an empty document while the
         // dialog is open
-        if (features.empty())
+        if (features.empty()) {
             return;
-        App::Plane* plane = static_cast<App::Plane*>(features.front());
+        }
         std::string FeatName = documentOfBody->getUniqueObjectName("Sketch");
-        std::string supportString = Gui::Command::getObjectCmd(plane,"(",",[''])");
+        auto* plane = static_cast<App::Plane*>(features.front());
+        auto* lcs = plane->getLCS();
+
+        std::string supportString;
+        if (lcs) {
+            supportString = Gui::Command::getObjectCmd(lcs, "(") + ",['" + plane->getNameInDocument() + "'])";
+        }
+        else {
+            supportString = Gui::Command::getObjectCmd(plane, "(", ",[''])");
+        }
 
         App::Document* doc = partDesignBody->getDocument();
         if (!doc->hasPendingTransaction()) {
@@ -797,9 +812,9 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     // a new sketch.
     // See https://forum.freecad.org/viewtopic.php?f=3&t=44070
 
-    Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
-    Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
-    Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1");
+    Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1", activeBody);
+    Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1", activeBody);
+    Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1", activeBody);
 
     if (PlaneFilter2.match()) {
         PlaneFilter = PlaneFilter2;
