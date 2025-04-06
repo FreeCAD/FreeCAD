@@ -1187,7 +1187,7 @@ void PropertyUnitItem::setValue(const QVariant& value)
     if (!hasExpression() && value.canConvert<Base::Quantity>()) {
         const Base::Quantity& val = value.value<Base::Quantity>();
         Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-        setPropertyValue(Base::UnitsApi::toString(val, format));
+        setPropertyValue(val.toString(format));
     }
 }
 
