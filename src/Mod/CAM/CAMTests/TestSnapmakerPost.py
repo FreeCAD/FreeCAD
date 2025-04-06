@@ -76,7 +76,7 @@ class TestSnapmakerPost(PathTestUtils.PathTestBase):
 ;Header Start
 ;header_type: cnc
 ;machine: Snapmaker 2 A350(T)
-;Post Processor: Snapmaker_post
+;Post Processor: snapmaker_post
 ;Cam File: boxtest.fcstd
 ;Output Time: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{0,6}
 ;thumbnail: deactivated."""
@@ -117,7 +117,7 @@ M5
             if exp.startswith(";Output Time:"):
                 self.assertTrue(re.match(exp, line) is not None)
             else:
-                self.assertTrue(line, exp)
+                self.assertEqual(exp, line)
 
         # test body without header
         gcode = self.get_gcode([], "--machine=A350 --toolhead=50W --spindle-percent --no-header")
