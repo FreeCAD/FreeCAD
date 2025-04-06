@@ -88,8 +88,9 @@ class Arch_Panel:
             return
 
         # interactive mode
-        WorkingPlane.get_working_plane()
 
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        WorkingPlane.get_working_plane()
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -105,6 +106,9 @@ class Arch_Panel:
         "this function is called by the snapper when it has a 3D point"
 
         import DraftVecUtils
+
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
         self.tracker.finalize()
         if point is None:
             FreeCAD.activeDraftCommand = None

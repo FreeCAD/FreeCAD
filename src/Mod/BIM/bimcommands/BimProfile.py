@@ -52,6 +52,8 @@ class Arch_Profile:
     def Activated(self):
 
         import ArchProfile
+
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.Profile = None
         self.Categories = []
         self.Presets = ArchProfile.readPresets()
@@ -109,6 +111,8 @@ class Arch_Profile:
 
         "this function is called by the snapper when it has a 3D point"
 
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
         if not point:
             return
         if not self.Profile:
