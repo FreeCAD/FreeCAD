@@ -243,7 +243,12 @@ Quantity Quantity::operator-() const
 
 std::string Quantity::toString(const QuantityFormat& format) const
 {
-    return fmt::format("'{} {}'", UnitsApi::toNumber(myValue, format), myUnit.getString());
+    return fmt::format("'{} {}'", toNumber(format), myUnit.getString());
+}
+
+std::string Quantity::toNumber(const QuantityFormat& format) const
+{
+    return UnitsApi::toNumber(myValue, format);
 }
 
 std::string Quantity::getUserString() const

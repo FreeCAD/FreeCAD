@@ -93,11 +93,6 @@ void UnitsApi::setSchema(const size_t num)
     schemas->select(num);
 }
 
-std::string UnitsApi::toNumber(const Quantity& quantity, const QuantityFormat& format)
-{
-    return toNumber(quantity.getValue(), format);
-}
-
 std::string UnitsApi::toNumber(const double value, const QuantityFormat& format)
 {
     std::stringstream ss;
