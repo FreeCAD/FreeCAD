@@ -964,12 +964,7 @@ StdCmdReloadStyleSheet::StdCmdReloadStyleSheet()
 
 void StdCmdReloadStyleSheet::activated(int )
 {
-    auto mw = getMainWindow();
-
-    auto qssFile = mw->property("fc_currentStyleSheet").toString();
-    auto tiledBackground = mw->property("fc_tiledBackground").toBool();
-
-    Gui::Application::Instance->setStyleSheet(qssFile, tiledBackground);
+    Application::Instance->reloadStyleSheet();
 }
 
 namespace Gui {
