@@ -139,6 +139,9 @@
 #include "3Dconnexion/navlib/NavlibInterface.h"
 #include "QtWidgets.h"
 
+#include <OverlayManager.h>
+#include <Base/ServiceProvider.h>
+
 #ifdef BUILD_TRACY_FRAME_PROFILER
 #include <tracy/Tracy.hpp>
 #endif
@@ -370,6 +373,31 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 }  // namespace Gui
 
+void Application::initStyleParameterManager()
+{
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")}));
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::UserParameterSource(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Themes/Tokens"),
+            {.name = QT_TR_NOOP("Theme Parameters"),
+             .options = StyleParameters::ParameterSourceOption::UserEditable}));
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::UserParameterSource(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Themes/UserTokens"),
+            {.name = QT_TR_NOOP("User Parameters"),
+             .options = StyleParameters::ParameterSource::UserEditable}));
+
+    for (auto* source : Base::provideServiceImplementations<StyleParameters::ParameterSource>()) {
+        styleParameterManager.addSource(source);
+    }
+
+    Base::registerServiceImplementation(&styleParameterManager);
+}
 // clang-format off
 Application::Application(bool GUIenabled)
 {
@@ -560,6 +588,8 @@ Application::Application(bool GUIenabled)
     View3DInventorViewerPy      ::init_type();
     AbstractSplitViewPy         ::init_type();
     // clang-format on
+
+    initStyleParameterManager();
 
     d = new ApplicationP(GUIenabled);
 
@@ -2478,36 +2508,22 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     }
 }
 
+void Application::reloadStyleSheet()
+{
+    auto mw = getMainWindow();
+
+    auto qssFile = mw->property("fc_currentStyleSheet").toString();
+    auto tiledBackground = mw->property("fc_tiledBackground").toBool();
+
+    styleParameterManager.reload();
+
+    setStyleSheet(qssFile, tiledBackground);
+    OverlayManager::instance()->refresh(nullptr, true);
+}
+
 QString Application::replaceVariablesInQss(QString qssText)
 {
-    // First we fetch the colors from preferences,
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
-    unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", 0);
-    unsigned long longAccentColor2 = hGrp->GetUnsigned("ThemeAccentColor2", 0);
-    unsigned long longAccentColor3 = hGrp->GetUnsigned("ThemeAccentColor3", 0);
-
-    // convert them to hex.
-    // Note: the ulong contains alpha channels so 8 hex characters when we need 6 here.
-    QString accentColor1 = QStringLiteral("#%1")
-                               .arg(longAccentColor1, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
-    QString accentColor2 = QStringLiteral("#%1")
-                               .arg(longAccentColor2, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
-    QString accentColor3 = QStringLiteral("#%1")
-                               .arg(longAccentColor3, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
-
-    qssText = qssText.replace(QStringLiteral("@ThemeAccentColor1"), accentColor1);
-    qssText = qssText.replace(QStringLiteral("@ThemeAccentColor2"), accentColor2);
-    qssText = qssText.replace(QStringLiteral("@ThemeAccentColor3"), accentColor3);
-
-    // Base::Console().warning("%s\n", qssText.toStdString());
-    return qssText;
+    return QString::fromStdString(styleParameterManager.replacePlaceholders(qssText.toStdString()));
 }
 
 void Application::checkForDeprecatedSettings()
