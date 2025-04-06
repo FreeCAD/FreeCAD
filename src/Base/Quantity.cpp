@@ -241,6 +241,11 @@ Quantity Quantity::operator-() const
     return Quantity(-(this->myValue), this->myUnit);
 }
 
+std::string Quantity::toString(const QuantityFormat& format) const
+{
+    return fmt::format("'{} {}'", UnitsApi::toNumber(myValue, format), myUnit.getString());
+}
+
 std::string Quantity::getUserString() const
 {
     double dummy1 {};  // to satisfy GCC
