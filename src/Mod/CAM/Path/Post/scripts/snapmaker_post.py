@@ -52,48 +52,56 @@ SNAPMAKER_MACHINES = dict(
         name="Snapmaker Original",
         boundaries=dict(X=90, Y=90, Z=50),
         compatible_toolheads={"Original_CNC"},
+        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
     ),
     Original_Z_Extension=dict(
         key="Original_Z_Extension",
         name="Snapmaker Original with Z extension",
         boundaries=dict(X=90, Y=90, Z=146),
         compatible_toolheads={"Original_CNC"},
+        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
     ),
     A150=dict(
         key="A150",
         name="Snapmaker 2 A150",
         boundaries=dict(X=160, Y=160, Z=90),
         compatible_toolheads={"50W_CNC"},
+        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
     ),
     A250=dict(
         key="A250",
         name="Snapmaker 2 A250",
         boundaries=dict(X=230, Y=250, Z=180),
         compatible_toolheads={"50W_CNC", "200W_CNC"},
+        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
     ),
     A250T=dict(
         key="A250T",
         name="Snapmaker 2 A250T",
         boundaries=dict(X=230, Y=250, Z=180),
         compatible_toolheads={"50W_CNC", "200W_CNC"},
+        lead=dict(X=20, Y=20, Z=8), # Linear module screw pitch (mm/turn)
     ),
     A350=dict(
         key="A350",
         name="Snapmaker 2 A350",
         boundaries=dict(X=320, Y=350, Z=275),
         compatible_toolheads={"50W_CNC", "200W_CNC"},
+        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
     ),
     A350T=dict(
         key="A350T",
         name="Snapmaker 2 A350T",
         boundaries=dict(X=320, Y=350, Z=275),
         compatible_toolheads={"50W_CNC", "200W_CNC"},
+        lead=dict(X=20, Y=20, Z=8), # Linear module screw pitch (mm/turn)
     ),
     Artisan=dict(
         key="Artisan",
         name="Snapmaker Artisan",
         boundaries=dict(X=400, Y=413, Z=400),
         compatible_toolheads={"200W_CNC"},
+        lead=dict(X=40, Y=40, Z=8), # Linear module screw pitch (mm/turn)
     ),
 )
 
