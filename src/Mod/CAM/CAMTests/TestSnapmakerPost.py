@@ -76,7 +76,7 @@ class TestSnapmakerPost(PathTestUtils.PathTestBase):
         expected_header = """\
 ;Header Start
 ;header_type: cnc
-;machine: Snapmaker 2 A350
+;machine: Snapmaker 2 A350 50W CNC module
 ;Post Processor: snapmaker_post
 ;Cam File: boxtest.fcstd
 ;Output Time: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{0,6}
@@ -108,7 +108,7 @@ M5
 """
 
         # test header and body with comments
-        gcode = self.get_gcode([], "--machine=A350 --toolhead=50W --spindle-percent")
+        gcode = self.get_gcode([], "--machine=A350 --toolhead=50W_CNC")
 
         g_lines = gcode.splitlines()
         e_lines = expected_header.splitlines() + expected_body.splitlines()
@@ -121,12 +121,12 @@ M5
                 self.assertEqual(exp, line)
 
         # test body without header
-        gcode = self.get_gcode([], "--machine=A350 --toolhead=50W --spindle-percent --no-header")
+        gcode = self.get_gcode([], "--machine=A350 --toolhead=50W_CNC --no-header")
         self.assertEqual(gcode, expected_body)
 
         # test body without comments
         gcode = self.get_gcode(
-            [], "--machine=A350 --toolhead=50W --spindle-percent --no-header --no-comments"
+            [], "--machine=A350 --toolhead=50W_CNC --no-header --no-comments"
         )
         expected = "".join(
             [line for line in expected_body.splitlines(keepends=True) if not line.startswith(";")]
@@ -139,7 +139,7 @@ M5
         expected = "G0 X10.000 Y20.000 Z30.000"
 
         gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=50W --spindle-percent --no-header"
+            [command], "--machine=A350 --toolhead=50W_CNC --no-header"
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
@@ -151,7 +151,7 @@ M5
         expected = "G0 X10.00 Y20.00 Z30.00"
 
         gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=50W --spindle-percent --no-header --precision=2"
+            [command], "--machine=A350 --toolhead=50W_CNC --no-header --precision=2"
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
@@ -163,7 +163,7 @@ M5
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A350 --toolhead=50W --spindle-percent --no-header --line-numbers --line-number=10 --line-increment=2",
+            "--machine=A350 --toolhead=50W_CNC --no-header --line-numbers --line-number=10 --line-increment=2",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
@@ -172,7 +172,7 @@ M5
         """Test Pre-amble"""
         gcode = self.get_gcode(
             [],
-            "--machine=A350 --toolhead=50W --spindle-percent --no-header --preamble='G18 G55' --no-comments",
+            "--machine=A350 --toolhead=50W_CNC --no-header --preamble='G18 G55' --no-comments",
         )
         result = gcode.splitlines()[0]
         self.assertEqual(result, "G18 G55")
@@ -181,7 +181,7 @@ M5
         """Test Post-amble"""
         gcode = self.get_gcode(
             [],
-            "--machine=A350 --toolhead=50W --spindle-percent --no-header --postamble='G0 Z50\nM2' --no-comments",
+            "--machine=A350 --toolhead=50W_CNC --no-header --postamble='G0 Z50\nM2' --no-comments",
         )
         result = gcode.splitlines()[-2]
         self.assertEqual(result, "G0 Z50")
@@ -195,7 +195,7 @@ M5
         # test inches conversion
         expected = "G0 X0.3937 Y0.7874 Z1.1811"
         gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=50W --spindle-percent --no-header --inches"
+            [command], "--machine=A350 --toolhead=50W_CNC --no-header --inches"
         )
         self.assertEqual(gcode.splitlines()[3], "G20")
         result = gcode.splitlines()[18]
@@ -205,7 +205,7 @@ M5
         expected = "G0 X0.39 Y0.79 Z1.18"
         gcode = self.get_gcode(
             [command],
-            "--machine=A350 --toolhead=50W --spindle-percent --no-header --inches --precision=2",
+            "--machine=A350 --toolhead=50W_CNC --no-header --inches --precision=2",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
@@ -218,7 +218,7 @@ M5
         expected = "G0 Y30.000"
 
         gcode = self.get_gcode(
-            [c0, c1], "--machine=A350 --toolhead=50W --spindle-percent --no-header --axis-modal"
+            [c0, c1], "--machine=A350 --toolhead=50W_CNC --no-header --axis-modal"
         )
         result = gcode.splitlines()[19]
         self.assertEqual(result, expected)
@@ -230,7 +230,7 @@ M5
         c1 = Path.Command("M3 S3000")
 
         gcode = self.get_gcode(
-            [c0, c1], "--machine=A350 --toolhead=50W --spindle-percent --no-header"
+            [c0, c1], "--machine=A350 --toolhead=50W_CNC --no-header"
         )
         self.assertEqual(gcode.splitlines()[19:22], ["M5", "M76", "M6 T2"])
         self.assertEqual(
@@ -256,88 +256,155 @@ M5
 
         gcode = self.get_gcode(
             [command],
-            "--machine=Original --toolhead=50W --spindle-percent --no-header",
+            "--machine=Original --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A150 --toolhead=50W --spindle-percent --no-header",
+            "--machine=A150 --toolhead=50W_CNC --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A250 --toolhead=50W --spindle-percent --no-header",
+            "--machine=A250 --toolhead=50W_CNC --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A250T --toolhead=50W --spindle-percent --no-header",
+            "--machine=A250T --toolhead=50W_CNC --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A250T --toolhead=200W --no-header",
+            "--machine=A250T --toolhead=200W_CNC --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A350 --toolhead=50W --spindle-percent --no-header",
+            "--machine=A350 --toolhead=50W_CNC --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A350T --toolhead=50W --spindle-percent --no-header",
+            "--machine=A350T --toolhead=50W_CNC --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A350T --toolhead=200W --no-header",
+            "--machine=A350T --toolhead=200W_CNC --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
         gcode = self.get_gcode(
             [command],
-            "--machine=Artisan --toolhead=200W --no-header",
+            "--machine=Artisan --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
-    def test_spindle(self):
+    def test_toolhead_selection(self):
+        """Test automatic selection of toolhead where appropriate"""
+
+        # check succeeds
+        command = Path.Command("G0 X10 Y20 Z30")
+        expected = "G0 X10.000 Y20.000 Z30.000"
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=Original --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["TOOLHEAD_NAME"],"Original CNC module")
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A350 --no-header",
+        )
+        self.assertFalse(isinstance(gcode,str))
+
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A350T --no-header",
+        )
+        self.assertFalse(isinstance(gcode,str))
+
+        # check succeed with artisan (which base is bigger)
+        gcode = self.get_gcode(
+            [command],
+            "--machine=Artisan --no-header --boundaries-check",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["TOOLHEAD_NAME"],"200W CNC module")
+
+    def test_spindle_percent_rpm_auto_select(self):
+        """Test automatic selection of spindle speed rpm vs percent"""
+
+        command = Path.Command("M3 S2100")
+
+        # test original toolhead
+        gcode = self.get_gcode(
+            [command], "--machine=Original --no-header"
+        )
+        self.assertEqual(gcode.splitlines()[18], "M3 P30")
+
+        command = Path.Command("M3 S3600")
+
+        # test 50W toolhead
+        gcode = self.get_gcode(
+            [command], "--machine=A350 --toolhead=50W_CNC --no-header"
+        )
+        self.assertEqual(gcode.splitlines()[18], "M3 P30")
+
+        # test 200W toolhead
+        gcode = self.get_gcode(
+            [command], "--machine=A350 --toolhead=200W_CNC --no-header"
+        )
+        self.assertEqual(gcode.splitlines()[18], "M3 S3600")
+
+        # test 200W toolhead
+        gcode = self.get_gcode(
+            [command], "--machine=Artisan --no-header"
+        )
+        self.assertEqual(gcode.splitlines()[18], "M3 S3600")
+
+    def test_spindle_percent(self):
         """Test spindle speed conversion from RPM to percents"""
 
         command = Path.Command("M3 S3600")
 
         # test 50W toolhead
         gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=50W --spindle-percent --no-header"
+            [command], "--machine=A350 --toolhead=50W_CNC --spindle-percent --no-header"
         )
         self.assertEqual(gcode.splitlines()[18], "M3 P30")
 
         # test 200W toolhead
         gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=200W --spindle-percent --no-header"
+            [command], "--machine=A350 --toolhead=200W_CNC --spindle-percent --no-header"
         )
         self.assertEqual(gcode.splitlines()[18], "M3 P20")
 
         # test custom spindle speed extrema
         gcode = self.get_gcode(
             [command],
-            "--machine=A350 --toolhead=200W --spindle-percent --no-header --spindle-speeds=3000,4000",
+            "--machine=A350 --toolhead=200W_CNC --spindle-percent --no-header --spindle-speeds=3000,4000",
         )
         self.assertEqual(gcode.splitlines()[18], "M3 P90")
 
@@ -346,7 +413,7 @@ M5
 
         command = Path.Command("(comment)")
         gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=50W --spindle-percent --no-header"
+            [command], "--machine=A350 --toolhead=50W_CNC --spindle-percent --no-header"
         )
         result = gcode.splitlines()[18]
         expected = ";comment"
@@ -360,7 +427,7 @@ M5
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A350 --toolhead=50W --spindle-percent --no-header --boundaries-check",
+            "--machine=A350 --toolhead=50W_CNC --no-header --boundaries-check",
         )
         self.assertTrue(self.post.check_boundaries(gcode.splitlines()))
 
@@ -369,20 +436,20 @@ M5
         c1 = Path.Command("G02 Y260")
         gcode = self.get_gcode(
             [c0, c1],
-            "--machine=A350 --toolhead=50W --spindle-percent --no-header --boundaries-check",
+            "--machine=A350 --toolhead=50W_CNC --no-header --boundaries-check",
         )
         self.assertFalse(self.post.check_boundaries(gcode.splitlines()))
 
         # check succeed with artisan (which base is bigger)
         gcode = self.get_gcode(
             [c0, c1],
-            "--machine=Artisan --toolhead=50W --spindle-percent --no-header --boundaries-check",
+            "--machine=Artisan --no-header --boundaries-check",
         )
         self.assertTrue(self.post.check_boundaries(gcode.splitlines()))
 
         # check fails with custom boundaries
         gcode = self.get_gcode(
             [c0, c1],
-            "--machine=A350 --toolhead=50W --spindle-percent --no-header --boundaries-check --boundaries='50,400,10'",
+            "--machine=A350 --toolhead=50W_CNC --no-header --boundaries-check --boundaries='50,400,10'",
         )
         self.assertFalse(self.post.check_boundaries(gcode.splitlines()))
