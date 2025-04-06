@@ -241,7 +241,7 @@ void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge(), "Arc");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate arc of circle\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate arc of circle\n");
     }
 }
 
@@ -262,7 +262,7 @@ void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(circle).Edge(), "Circle");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate circle\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate circle\n");
     }
 }
 
@@ -379,7 +379,7 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
         Collector->AddObject(BRepBuilderAPI_MakeEdge(geom).Edge(), "Spline");
     }
     catch (const Standard_Failure&) {
-        Base::Console().Warning("ImpExpDxf - failed to create bspline\n");
+        Base::Console().warning("ImpExpDxf - failed to create bspline\n");
     }
 }
 
@@ -404,7 +404,7 @@ void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(ellipse).Edge(), "Ellipse");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate ellipse\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate ellipse\n");
     }
 }
 
@@ -896,7 +896,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             exportLine(adapt);
         }
         else {
-            Base::Console().Warning("ImpExpDxf - unknown curve type: %d\n",
+            Base::Console().warning("ImpExpDxf - unknown curve type: %d\n",
                                     static_cast<int>(adapt.GetType()));
         }
     }
@@ -1064,14 +1064,14 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
     else {
         if (approx.HasResult()) {  // result, but not within tolerance
             spline = approx.Curve();
-            Base::Console().Message("DxfWrite::exportBSpline - result not within tolerance\n");
+            Base::Console().message("DxfWrite::exportBSpline - result not within tolerance\n");
         }
         else {
             f = c.FirstParameter();
             l = c.LastParameter();
             s = c.Value(f);
             ePt = c.Value(l);
-            Base::Console().Message(
+            Base::Console().message(
                 "DxfWrite::exportBSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f)\n",
                 s.X(),
                 s.Y(),
@@ -1132,7 +1132,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
 void ImpExpDxfWrite::exportBCurve(BRepAdaptor_Curve& c)
 {
     (void)c;
-    Base::Console().Message("BCurve dxf export not yet supported\n");
+    Base::Console().message("BCurve dxf export not yet supported\n");
 }
 
 void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve& c)

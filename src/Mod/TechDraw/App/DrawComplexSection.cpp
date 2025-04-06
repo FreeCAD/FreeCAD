@@ -149,7 +149,7 @@ DrawComplexSection::DrawComplexSection()
 
 TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 {
-    //    Base::Console().Message("DCS::makeCuttingTool()\n");
+    //    Base::Console().message("DCS::makeCuttingTool()\n");
     TopoDS_Wire profileWire = makeProfileWire();
     if (profileWire.IsNull()) {
         throw Base::RuntimeError("Can not make wire from cutting tool (1)");
@@ -165,7 +165,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     bool isPositionOK = validateProfilePosition(profileWire, sectionCS, gClosestBasis);
     if (!isPositionOK) {
         //profile is not in a good position.  Result might not be right.
-        Base::Console().Warning("DCS::makeCuttingTool - %s - profile is outside shape box\n",
+        Base::Console().warning("DCS::makeCuttingTool - %s - profile is outside shape box\n",
                                 getNameInDocument());
     }
 
@@ -233,7 +233,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 
 TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 {
-    //    Base::Console().Message("DCS::getShapeToPrepare()\n");
+    //    Base::Console().message("DCS::getShapeToPrepare()\n");
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
         return DrawViewSection::getShapeToPrepare();
@@ -245,7 +245,7 @@ TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 //get the shape ready for projection and cut surface finding
 TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, double shapeSize)
 {
-    // Base::Console().Message("DCS::prepareShape() - strategy: %d\n", ProjectionStrategy.getValue());
+    // Base::Console().message("DCS::prepareShape() - strategy: %d\n", ProjectionStrategy.getValue());
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
         return DrawViewSection::prepareShape(cutShape, shapeSize);
@@ -275,7 +275,7 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, doub
 
 void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
-    //    Base::Console().Message("DCS::makeSectionCut() - %s - baseShape.IsNull: %d\n",
+    //    Base::Console().message("DCS::makeSectionCut() - %s - baseShape.IsNull: %d\n",
     //                            getNameInDocument(), baseShape.IsNull());
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
@@ -296,7 +296,7 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
         waitingForAlign(true);
     }
     catch (...) {
-        Base::Console().Message("DCS::makeSectionCut - failed to make alignedPieces");
+        Base::Console().message("DCS::makeSectionCut - failed to make alignedPieces");
         return;
     }
 
@@ -306,7 +306,7 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 
 void DrawComplexSection::onSectionCutFinished()
 {
-    //    Base::Console().Message("DCS::onSectionCutFinished() - %s - cut: %d align: %d\n",
+    //    Base::Console().message("DCS::onSectionCutFinished() - %s - cut: %d align: %d\n",
     //                            getNameInDocument(), m_cutFuture.isRunning(), m_alignFuture.isRunning());
     if (m_cutFuture.isRunning() ||  //waitingForCut()
         m_alignFuture.isRunning()) {//waitingForAlign()
@@ -323,7 +323,7 @@ void DrawComplexSection::onSectionCutFinished()
 //TODO: this process should replace the "makeSectionCut" from DVS
 void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 {
-    //    Base::Console().Message("DCS::makeAlignedPieces() - rawShape.isNull: %d\n", rawShape.IsNull());
+    //    Base::Console().message("DCS::makeAlignedPieces() - rawShape.isNull: %d\n", rawShape.IsNull());
 
     if (!canBuild(getSectionCS(), CuttingToolWireObject.getValue())) {
         throw Base::RuntimeError("Profile is parallel to Section Normal");
@@ -577,10 +577,10 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 TopoDS_Compound
 DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToIntersect)
 {
-    //    Base::Console().Message("DCS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
+    //    Base::Console().message("DCS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
     if (shapeToIntersect.IsNull()) {
         // this shouldn't happen
-        Base::Console().Warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
+        Base::Console().warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
                                 getNameInDocument());
         return TopoDS_Compound();
     }
@@ -594,11 +594,11 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToInt
 //Intersect cutShape with each segment of the cutting tool
 TopoDS_Compound DrawComplexSection::singleToolIntersections(const TopoDS_Shape& cutShape)
 {
-    //    Base::Console().Message("DCS::singleToolInterSections()\n");
+    //    Base::Console().message("DCS::singleToolInterSections()\n");
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     if (!isLinearProfile(toolObj)) {
         //TODO: special handling here
-        //        Base::Console().Message("DCS::singleToolIntersection - profile has curves\n");
+        //        Base::Console().message("DCS::singleToolIntersection - profile has curves\n");
     }
 
     BRep_Builder builder;
@@ -631,7 +631,7 @@ TopoDS_Compound DrawComplexSection::singleToolIntersections(const TopoDS_Shape& 
 //Intersect cutShape with the effective (flattened) cutting plane to generate cut surface faces
 TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape& cutShape)
 {
-    //    Base::Console().Message("DCS::alignedToolIntersections()\n");
+    //    Base::Console().message("DCS::alignedToolIntersections()\n");
     BRep_Builder builder;
     TopoDS_Compound result;
     builder.MakeCompound(result);
@@ -639,7 +639,7 @@ TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape&
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     if (!isLinearProfile(toolObj)) {
         //TODO: special handling here
-        //        Base::Console().Message("DCS::alignedToolIntersection - profile has curves\n");
+        //        Base::Console().message("DCS::alignedToolIntersection - profile has curves\n");
     }
 
     gp_Pln effectivePlane = getSectionPlane();
@@ -670,7 +670,7 @@ TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape&
 
 TopoDS_Compound DrawComplexSection::alignSectionFaces(TopoDS_Shape faceIntersections)
 {
-    //    Base::Console().Message("DCS::alignSectionFaces() - faceIntersections.null: %d\n", faceIntersections.IsNull());
+    //    Base::Console().message("DCS::alignSectionFaces() - faceIntersections.null: %d\n", faceIntersections.IsNull());
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
         return DrawViewSection::alignSectionFaces(faceIntersections);
@@ -705,7 +705,7 @@ TopoDS_Wire DrawComplexSection::makeProfileWire() const
 
 TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject* toolObj)
 {
-    //    Base::Console().Message("DCS::makeProfileWire()\n");
+    //    Base::Console().message("DCS::makeProfileWire()\n");
     if (!isProfileObject(toolObj)) {
         return TopoDS_Wire();
     }
@@ -728,7 +728,7 @@ TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject* toolObj)
 
 gp_Vec DrawComplexSection::makeProfileVector(TopoDS_Wire profileWire)
 {
-    //    Base::Console().Message("DCS::makeProfileVector()\n");
+    //    Base::Console().message("DCS::makeProfileVector()\n");
     TopoDS_Vertex tvFirst, tvLast;
     TopExp::Vertices(profileWire, tvFirst, tvLast);
     gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
@@ -741,7 +741,7 @@ gp_Vec DrawComplexSection::makeProfileVector(TopoDS_Wire profileWire)
 //make drawable td geometry for section line
 BaseGeomPtrVector DrawComplexSection::makeSectionLineGeometry()
 {
-    //    Base::Console().Message("DCS::makeSectionLineGeometry()\n");
+    //    Base::Console().message("DCS::makeSectionLineGeometry()\n");
     BaseGeomPtrVector result;
     DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
@@ -760,7 +760,7 @@ BaseGeomPtrVector DrawComplexSection::makeSectionLineGeometry()
 //get the end points of the section wire
 std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionLineEnds()
 {
-    //    Base::Console().Message("DCS::sectionLineEnds()\n");
+    //    Base::Console().message("DCS::sectionLineEnds()\n");
     std::pair<Base::Vector3d, Base::Vector3d> result;
     TopoDS_Wire lineWire = makeSectionLineWire();
     if (lineWire.IsNull()) {
@@ -787,7 +787,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionLineEnds()
 //get directions of the section line arrows
 std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionArrowDirs()
 {
-    //    Base::Console().Message("DCS::sectionArrowDirs()\n");
+    //    Base::Console().message("DCS::sectionArrowDirs()\n");
     std::pair<Base::Vector3d, Base::Vector3d> result;
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     TopoDS_Wire profileWire = makeProfileWire(toolObj);
@@ -868,7 +868,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
         }
         else {
             //probably can't happen as cut profile has been checked before this
-            Base::Console().Message("DCS::makeSectionLineGeometry - profile is type: %d\n",
+            Base::Console().message("DCS::makeSectionLineGeometry - profile is type: %d\n",
                                     static_cast<int>(sScaled.ShapeType()));
             return TopoDS_Wire();
         }
@@ -880,7 +880,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
 //of the profile before and after the point
 ChangePointVector DrawComplexSection::getChangePointsFromSectionLine()
 {
-    //    Base::Console().Message("DCS::getChangePointsFromSectionLine()\n");
+    //    Base::Console().message("DCS::getChangePointsFromSectionLine()\n");
     ChangePointVector result;
     std::vector<gp_Pnt> allPoints;
     DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
@@ -932,7 +932,7 @@ ChangePointVector DrawComplexSection::getChangePointsFromSectionLine()
 
 gp_Ax2 DrawComplexSection::getCSFromBase(const std::string sectionName) const
 {
-    //    Base::Console().Message("DCS::getCSFromBase()\n");
+    //    Base::Console().message("DCS::getCSFromBase()\n");
     App::DocumentObject* base = BaseView.getValue();
     if (!base
         || !base->isDerivedFrom<TechDraw::DrawViewPart>()) {//is second clause necessary?
@@ -965,7 +965,7 @@ bool DrawComplexSection::validateOffsetProfile(TopoDS_Wire profile, Base::Vector
         if (angleRad < angleThresholdRad &&
             angleRad > 0.0) {
             // profile segment is slightly skewed. possible bad SectionNormal?
-            Base::Console().Warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
+            Base::Console().warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
                                     getNameInDocument());
             return false;
         }
@@ -975,7 +975,7 @@ bool DrawComplexSection::validateOffsetProfile(TopoDS_Wire profile, Base::Vector
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::getSegmentEnds(TopoDS_Edge segment) const
 {
-    //    Base::Console().Message("DCS::getSegmentEnds()\n");
+    //    Base::Console().message("DCS::getSegmentEnds()\n");
     TopoDS_Vertex tvFirst, tvLast;
     TopExp::Vertices(segment, tvFirst, tvLast);
     gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
@@ -990,7 +990,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::getSegmentEnds(Top
 //TODO: centralize all the projection routines scattered around the module!
 gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec, gp_Ax2 sectionCS)
 {
-    //    Base::Console().Message("DCS::projectVector(%s, CS)\n", DU::formatVector(vec).c_str());
+    //    Base::Console().message("DCS::projectVector(%s, CS)\n", DU::formatVector(vec).c_str());
     HLRAlgo_Projector projector(sectionCS);
     gp_Pnt2d prjPnt;
     projector.Project(gp_Pnt(vec.XYZ()), prjPnt);
@@ -1038,7 +1038,7 @@ bool DrawComplexSection::isBaseValid() const
 bool DrawComplexSection::validateProfilePosition(TopoDS_Wire profileWire, gp_Ax2 sectionCS,
                                                  gp_Dir& gClosestBasis) const
 {
-    //    Base::Console().Message("DCS::validateProfilePosition()\n");
+    //    Base::Console().message("DCS::validateProfilePosition()\n");
     gp_Vec gProfileVector = makeProfileVector(profileWire);
     TopoDS_Vertex tvFirst, tvLast;
     TopExp::Vertices(profileWire, tvFirst, tvLast);
@@ -1098,7 +1098,7 @@ bool DrawComplexSection::showSegment(gp_Dir segmentNormal) const
 //Can we make a ComplexSection using this profile and sectionNormal?
 bool DrawComplexSection::canBuild(gp_Ax2 sectionCS, App::DocumentObject* profileObject)
 {
-    //    Base::Console().Message("DCS::canBuild()\n");
+    //    Base::Console().message("DCS::canBuild()\n");
     if (!isProfileObject(profileObject)) {
         return false;
     }
@@ -1188,7 +1188,7 @@ TopoDS_Shape DrawComplexSection::shapeShapeIntersect(const TopoDS_Shape& shape0,
 std::vector<TopoDS_Face> DrawComplexSection::faceShapeIntersect(const TopoDS_Face& face,
                                                                 const TopoDS_Shape& shape)
 {
-    //    Base::Console().Message("DCS::faceShapeIntersect()\n");
+    //    Base::Console().message("DCS::faceShapeIntersect()\n");
     TopoDS_Shape intersect = shapeShapeIntersect(face, shape);
     if (intersect.IsNull()) {
         return std::vector<TopoDS_Face>();

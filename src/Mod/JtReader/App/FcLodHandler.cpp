@@ -29,5 +29,5 @@
 
 void FcLodHandler::startLod()
 {
-    Base::Console().Log("FcLodHandler::startLod()");
+    Base::Console().log("FcLodHandler::startLod()");
 }

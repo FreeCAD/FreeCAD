@@ -486,7 +486,7 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
     }
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
-        Base::Console().DeveloperError("EditModeCoinManager",
+        Base::Console().developerError("EditModeCoinManager",
                                        "Malformed parameter string: %s\n",
                                        e.what());
     }
@@ -514,7 +514,7 @@ void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
     catch (const Base::ValueError&
                e) {  // ensure that if parameter strings are not well-formed, the program is not
                      // terminated when calling the noexcept destructor.
-        Base::Console().DeveloperError("EditModeCoinManager",
+        Base::Console().developerError("EditModeCoinManager",
                                        "Malformed parameter string: %s\n",
                                        e.what());
     }
@@ -726,7 +726,7 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
         return result;
     }
 
-    // Base::Console().Log("Point pick\n");
+    // Base::Console().log("Point pick\n");
     SoPath* path = Point->getPath();
     SoNode* tail = path->getTail();  // Tail is directly the node containing points and curves
 

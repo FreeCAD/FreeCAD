@@ -59,13 +59,13 @@ void CustomFolderModel::loadCustomFolder()
     for (const auto& path : paths) {
         QDir customFolderDirectory(path);
         if (!customFolderDirectory.exists()) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "BaseApp/Preferences/Mod/Start/CustomFolder: custom folder %s does not exist\n",
                 customFolderDirectory.absolutePath().toStdString().c_str());
             continue;
         }
         if (!customFolderDirectory.isReadable()) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "BaseApp/Preferences/Mod/Start/CustomFolder: cannot read custom folder %s\n",
                 customFolderDirectory.absolutePath().toStdString().c_str());
             continue;

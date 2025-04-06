@@ -119,7 +119,7 @@ void NetworkRetriever::testFailure()
     {
         d->fail = false;
         QString msg = tr("Download started...");
-        Base::Console().Message("%s\n", msg.toUtf8().constData());
+        Base::Console().message("%s\n", msg.toUtf8().constData());
     }
 }
 
@@ -265,7 +265,7 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
         {
             if (!dir.mkdir(d->dir))
             {
-                Base::Console().Error("Directory '%s' could not be created.", (const char*)d->dir.toLatin1());
+                Base::Console().error("Directory '%s' could not be created.", (const char*)d->dir.toLatin1());
                 return true; // please, no error message
             }
         }
@@ -362,7 +362,7 @@ void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
     wget->setReadChannel(QProcess::StandardError);
     if (wget->canReadLine()) {
         QByteArray data = wget->readAll();
-        Base::Console().Warning(data);
+        Base::Console().warning(data);
     }
     Q_EMIT wgetExited();
 }
@@ -535,7 +535,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         if (canStart) {
             bool ok = wget->startDownload(QString::fromLatin1(url.c_str()));
             if (!ok)
-                Base::Console().Error("The tool 'wget' couldn't be found. Please check your installation.");
+                Base::Console().error("The tool 'wget' couldn't be found. Please check your installation.");
             else if ( wget->isDownloading() && _pcAction )
                 _pcAction->setText(tr("Stop downloading"));
         }

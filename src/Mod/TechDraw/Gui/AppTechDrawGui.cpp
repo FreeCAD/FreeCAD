@@ -93,7 +93,7 @@ void loadTechDrawResource()
         QString fontFile = QString::fromStdString(fontDir + font);
         int rc = QFontDatabase::addApplicationFont(fontFile);
         if (rc < 0) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "TechDraw failed to load font file: %d from: %s\n", rc, qPrintable(fontFile));
         }
     }
@@ -121,7 +121,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     }
     PyObject* mod = TechDrawGui::initModule();
 
-    Base::Console().Log("Loading TechDrawGui module... done\n");
+    Base::Console().log("Loading TechDrawGui module... done\n");
 
     // instantiating the commands
     CreateTechDrawCommands();

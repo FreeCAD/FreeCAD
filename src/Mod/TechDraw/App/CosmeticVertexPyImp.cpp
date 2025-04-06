@@ -180,7 +180,7 @@ void CosmeticVertexPy::setColor(Py::Object arg)
         CosmeticVertex* cv = getCosmeticVertexPtr();
         cv->color = c;
     } else {
-        Base::Console().Error("CEPI::setColor - not a tuple!\n");
+        Base::Console().error("CEPI::setColor - not a tuple!\n");
         std::string error = std::string("type must be 'tuple', not ");
         error += pTuple->ob_type->tp_name;
         throw Py::TypeError(error);

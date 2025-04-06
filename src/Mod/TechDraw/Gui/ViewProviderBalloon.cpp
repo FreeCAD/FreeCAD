@@ -172,7 +172,7 @@ bool ViewProviderBalloon::canDelete(App::DocumentObject *obj) const
 bool ViewProviderBalloon::onDelete(const std::vector<std::string> & parms)
 {
     Q_UNUSED(parms)
-//    Base::Console().Message("VPB::onDelete() - parms: %d\n", parms.size());
+//    Base::Console().message("VPB::onDelete() - parms: %d\n", parms.size());
     if (Gui::Control().activeDialog())  {
         // TODO: make this selective so only a dialog involving this vp's
         // feature is blocked.  As is, this will prevent deletion during any

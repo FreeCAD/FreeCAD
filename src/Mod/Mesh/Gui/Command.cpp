@@ -1447,7 +1447,7 @@ void CmdMeshBoundingBox::activated(int)
         const MeshCore::MeshKernel& rMesh = ((Mesh::Feature*)it)->Mesh.getValue().getKernel();
         const Base::BoundBox3f& box = rMesh.GetBoundBox();
 
-        Base::Console().Message("Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
+        Base::Console().message("Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
                                 box.MinX,
                                 box.MinY,
                                 box.MinZ,

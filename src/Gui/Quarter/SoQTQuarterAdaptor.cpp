@@ -241,7 +241,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
     SoCamera* cam = getSoRenderManager()->getCamera();
     if (cam && !cam->isOfType(SoPerspectiveCamera::getClassTypeId()) &&
                !cam->isOfType(SoOrthographicCamera::getClassTypeId())) {
-        Base::Console().Warning("Quarter::setCameraType",
+        Base::Console().warning("Quarter::setCameraType",
                                 "Only SoPerspectiveCamera and SoOrthographicCamera is supported.");
         return;
     }
@@ -293,7 +293,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const So
         SoPerspectiveCamera* out)
 {
     if (!in || !out) {
-        Base::Console().Log("Quarter::convertOrtho2Perspective",
+        Base::Console().log("Quarter::convertOrtho2Perspective",
                             "Cannot convert camera settings due to wrong input.");
         return;
     }

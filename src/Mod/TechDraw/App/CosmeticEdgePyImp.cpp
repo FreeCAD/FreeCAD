@@ -167,13 +167,13 @@ Py::String CosmeticEdgePy::getTag() const
 //Py::Object CosmeticEdgePy::getGeometry(void) const
 //{
 ////    TechDraw::BaseGeomPtr bg = getCosmeticEdgePtr()->m_geometry;
-//    Base::Console().Message("Not implemented yet");
+//    Base::Console().message("Not implemented yet");
 //    return Py::asObject(Py_None);
 //}
 
 //void CosmeticEdgePy::setGeometry(Py::Object arg)
 //{
-//    Base::Console().Message("Not implemented yet");
+//    Base::Console().message("Not implemented yet");
 //    PyObject* p = arg.ptr();
 //    if (PyObject_TypeCheck(p, &(TechDraw::BaseGeomPy::Type))) {
 //        //TODO

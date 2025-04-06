@@ -76,7 +76,7 @@ void CmdPathArea::activated(int iMsg)
         }
         for (const std::string& name : subnames) {
             if (name.compare(0, 4, "Face") && name.compare(0, 4, "Edge")) {
-                Base::Console().Error("Selected shape is not 2D\n");
+                Base::Console().error("Selected shape is not 2D\n");
                 return;
             }
 
@@ -159,14 +159,14 @@ void CmdPathAreaWorkplane::activated(int iMsg)
          getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId())) {
         const std::vector<std::string>& subnames = selObj.getSubNames();
         if (subnames.size() > 1) {
-            Base::Console().Error("Please select one sub shape object for plane only\n");
+            Base::Console().error("Please select one sub shape object for plane only\n");
             return;
         }
         const Part::Feature* pcObj = static_cast<Part::Feature*>(selObj.getObject());
         if (subnames.empty()) {
             if (pcObj->isDerivedFrom<Path::FeatureArea>()) {
                 if (!areaName.empty()) {
-                    Base::Console().Error("Please select one FeatureArea only\n");
+                    Base::Console().error("Please select one FeatureArea only\n");
                     return;
                 }
                 areaName = pcObj->getNameInDocument();
@@ -174,12 +174,12 @@ void CmdPathAreaWorkplane::activated(int iMsg)
             }
             for (TopExp_Explorer it(pcObj->Shape.getShape().getShape(), TopAbs_SHELL); it.More();
                  it.Next()) {
-                Base::Console().Error("Selected shape is not 2D\n");
+                Base::Console().error("Selected shape is not 2D\n");
                 return;
             }
         }
         if (!planeName.empty()) {
-            Base::Console().Error("Please select one shape object for plane only\n");
+            Base::Console().error("Please select one shape object for plane only\n");
             return;
         }
         else {
@@ -189,7 +189,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
 
         for (const std::string& name : subnames) {
             if (name.compare(0, 4, "Face") && name.compare(0, 4, "Edge")) {
-                Base::Console().Error("Selected shape is not 2D\n");
+                Base::Console().error("Selected shape is not 2D\n");
                 return;
             }
             std::ostringstream subname;
@@ -198,11 +198,11 @@ void CmdPathAreaWorkplane::activated(int iMsg)
         }
     }
     if (areaName.empty()) {
-        Base::Console().Error("Please select one FeatureArea\n");
+        Base::Console().error("Please select one FeatureArea\n");
         return;
     }
     if (planeName.empty()) {
-        Base::Console().Error("Please select one shape object\n");
+        Base::Console().error("Please select one shape object\n");
         return;
     }
 
@@ -258,7 +258,7 @@ void CmdPathCompound::activated(int iMsg)
                 cmd << "FreeCAD.activeDocument()." << pcPathObject->getNameInDocument() << ",";
             }
             else {
-                Base::Console().Error(
+                Base::Console().error(
                     "Only Path objects must be selected before running this command\n");
                 return;
             }
@@ -277,7 +277,7 @@ void CmdPathCompound::activated(int iMsg)
         updateActive();
     }
     else {
-        Base::Console().Error("At least one Path object must be selected\n");
+        Base::Console().error("At least one Path object must be selected\n");
         return;
     }
 }
@@ -320,7 +320,7 @@ void CmdPathShape::activated(int iMsg)
         }
         for (const std::string& name : subnames) {
             if (name.compare(0, 4, "Face") && name.compare(0, 4, "Edge")) {
-                Base::Console().Warning("Ignored shape %s %s\n",
+                Base::Console().warning("Ignored shape %s %s\n",
                                         pcObj->getNameInDocument(),
                                         name.c_str());
                 continue;

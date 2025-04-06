@@ -588,7 +588,7 @@ public:
         }
 
         this->deleteLater();
-        Base::Console().Message("Thread with %d steps finished\n",this->steps);
+        Base::Console().message("Thread with %d steps finished\n",this->steps);
     }
 
 private:
@@ -728,7 +728,7 @@ public:
     int matchLog{0};
     int matchCritical{0};
     TestConsoleObserver() = default;
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+    void sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                  Base::IntendedRecipient recipient, Base::ContentType content) override{
 
         (void) notifiername;
@@ -765,7 +765,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Message("Write a message to the console output.\n");
+            Base::Console().message("Write a message to the console output.\n");
     }
 };
 
@@ -775,7 +775,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Warning("Write a warning to the console output.\n");
+            Base::Console().warning("Write a warning to the console output.\n");
     }
 };
 
@@ -785,7 +785,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Error("Write an error to the console output.\n");
+            Base::Console().error("Write an error to the console output.\n");
     }
 };
 
@@ -795,7 +795,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Log("Write a log to the console output.\n");
+            Base::Console().log("Write a log to the console output.\n");
     }
 };
 
@@ -805,7 +805,7 @@ public:
     void run() override
     {
         for (int i=0; i<10; i++)
-            Base::Console().Critical("Write a critical message to the console output.\n");
+            Base::Console().critical("Write a critical message to the console output.\n");
     }
 };
 
@@ -815,17 +815,17 @@ void CmdTestConsoleOutput::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TestConsoleObserver obs;
-    Base::Console().AttachObserver(&obs);
+    Base::Console().attachObserver(&obs);
     QThreadPool::globalInstance()->start(new ConsoleMessageTask);
     QThreadPool::globalInstance()->start(new ConsoleWarningTask);
     QThreadPool::globalInstance()->start(new ConsoleErrorTask);
     QThreadPool::globalInstance()->start(new ConsoleLogTask);
     QThreadPool::globalInstance()->start(new ConsoleCriticalTask);
     QThreadPool::globalInstance()->waitForDone();
-    Base::Console().DetachObserver(&obs);
+    Base::Console().detachObserver(&obs);
 
     if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0 || obs.matchCritical > 0) {
-        Base::Console().Error("Race condition in Console class\n");
+        Base::Console().error("Race condition in Console class\n");
     }
 }
 

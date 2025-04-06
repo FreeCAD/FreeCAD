@@ -234,11 +234,11 @@ public:
 
     /// Function that is called by the console interface for this observer with the message
     /// information
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+    void sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                  Base::IntendedRecipient recipient, Base::ContentType content) override;
 
     /// Name of the observer
-    const char* Name() override
+    const char* name() override
     {
         return "NotificationAreaObserver";
     }
@@ -250,7 +250,7 @@ private:
 NotificationAreaObserver::NotificationAreaObserver(NotificationArea* notificationarea)
     : notificationArea(notificationarea)
 {
-    Base::Console().AttachObserver(this);
+    Base::Console().attachObserver(this);
     bLog = false;        // ignore log messages
     bMsg = false;        // ignore messages
     bNotification = true;// activate user notifications
@@ -258,10 +258,10 @@ NotificationAreaObserver::NotificationAreaObserver(NotificationArea* notificatio
 
 NotificationAreaObserver::~NotificationAreaObserver()
 {
-    Base::Console().DetachObserver(this);
+    Base::Console().detachObserver(this);
 }
 
-void NotificationAreaObserver::SendLog(const std::string& notifiername, const std::string& msg,
+void NotificationAreaObserver::sendLog(const std::string& notifiername, const std::string& msg,
                                        Base::LogStyle level, Base::IntendedRecipient recipient,
                                        Base::ContentType content)
 {
@@ -1063,7 +1063,7 @@ void NotificationArea::pushNotification(const QString& notifiername, const QStri
     //
     // But I want my message from my thread to appear in the notification area. Fine, then configure
     // Console not to use the direct connection mode, but the Queued one:
-    // Base::Console().SetConnectionMode(ConnectionMode::Queued);
+    // Base::Console().setConnectionMode(ConnectionMode::Queued);
 
     auto timer_thread = pImp->inhibitTimer.thread();
     auto current_thread = QThread::currentThread();

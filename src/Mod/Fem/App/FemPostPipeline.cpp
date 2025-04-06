@@ -313,7 +313,7 @@ void FemPostPipeline::read(std::vector<Base::FileInfo>& files,
                            std::string& frame_type)
 {
     if (files.size() != values.size()) {
-        Base::Console().Error("Result files and frame values have different length.\n");
+        Base::Console().error("Result files and frame values have different length.\n");
         return;
     }
 
@@ -619,11 +619,11 @@ unsigned int FemPostPipeline::getFrameNumber()
 void FemPostPipeline::load(FemResultObject* res)
 {
     if (!res->Mesh.getValue()) {
-        Base::Console().Log("Result mesh object is empty.\n");
+        Base::Console().log("Result mesh object is empty.\n");
         return;
     }
     if (!res->Mesh.getValue()->isDerivedFrom<Fem::FemMeshObject>()) {
-        Base::Console().Log("Result mesh object is not derived from Fem::FemMeshObject.\n");
+        Base::Console().log("Result mesh object is not derived from Fem::FemMeshObject.\n");
         return;
     }
 
@@ -650,7 +650,7 @@ void FemPostPipeline::load(std::vector<FemResultObject*>& res,
 {
 
     if (res.size() != values.size()) {
-        Base::Console().Error("Result values and frame values have different length.\n");
+        Base::Console().error("Result values and frame values have different length.\n");
         return;
     }
 
@@ -664,7 +664,7 @@ void FemPostPipeline::load(std::vector<FemResultObject*>& res,
     for (ulong i = 0; i < res.size(); i++) {
 
         if (!res[i]->Mesh.getValue()->isDerivedFrom<FemMeshObject>()) {
-            Base::Console().Error("Result mesh object is not derived from Fem::FemMeshObject.\n");
+            Base::Console().error("Result mesh object is not derived from Fem::FemMeshObject.\n");
             return;
         }
 

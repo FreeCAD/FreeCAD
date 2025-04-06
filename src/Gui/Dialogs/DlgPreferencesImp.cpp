@@ -88,7 +88,7 @@ void PreferencesPageItem::setWidget(QWidget* widget)
     if (_widget) {
         _widget->setProperty(PropertyName, QVariant::fromValue<PreferencesPageItem*>(nullptr));
     }
-    
+
     _widget = widget;
     _widget->setProperty(PropertyName, QVariant::fromValue(this));
 }
@@ -235,8 +235,8 @@ QPixmap DlgPreferencesImp::loadIconForGroup(const std::string &name) const
 }
 
 /**
- * Create the necessary widgets for a new group named \a groupName. Returns a 
- * pointer to the group's SettingsPageItem: that widget's lifetime is managed by the 
+ * Create the necessary widgets for a new group named \a groupName. Returns a
+ * pointer to the group's SettingsPageItem: that widget's lifetime is managed by the
  * QStandardItemModel, do not manually deallocate.
  */
 PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string &groupName)
@@ -244,7 +244,7 @@ PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string &groupName
     QString groupNameQString = QString::fromStdString(groupName);
 
     std::string iconName;
-    
+
     QString tooltip;
     getGroupData(groupName, iconName, tooltip);
 
@@ -317,7 +317,7 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         PreferencePage* page = createPreferencePage(pageName, groupItem->data(GroupNameRole).toString().toStdString());
 
         if (!page) {
-            Base::Console().Warning("%s is not a preference page\n", pageName.c_str());
+            Base::Console().warning("%s is not a preference page\n", pageName.c_str());
 
             return;
         }
@@ -344,11 +344,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         addSizeHint(page);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Base exception thrown for '%s'\n", pageName.c_str());
+        Base::Console().error("Base exception thrown for '%s'\n", pageName.c_str());
         e.ReportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
+        Base::Console().error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
     }
 }
 
@@ -366,7 +366,7 @@ int DlgPreferencesImp::minimumDialogWidth(int pageWidth) const
 {
     // this is additional safety spacing to ensure that everything fits with scrollbar etc.
     const auto additionalMargin = style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 8;
-    
+
     QSize size = ui->groupWidgetStack->sizeHint();
 
     int diff = pageWidth - size.width();
@@ -499,7 +499,7 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
             pageStackWidget->setCurrentIndex(index);
 
             updatePageDependentWidgets();
-            
+
             return;
         }
     }
@@ -555,7 +555,7 @@ void DlgPreferencesImp::accept()
     this->invalidParameter = false;
 
     applyChanges();
-    
+
     if (!this->invalidParameter) {
         QDialog::accept();
         restartIfRequired();
@@ -568,7 +568,7 @@ void DlgPreferencesImp::reject()
     restartIfRequired();
 }
 
-void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn) 
+void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn)
 {
     if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Apply) {
         applyChanges();
@@ -638,7 +638,7 @@ void DlgPreferencesImp::restoreDefaults()
     }
 }
 /**
- * If the dialog is currently showing and the static variable _pages changed, this function 
+ * If the dialog is currently showing and the static variable _pages changed, this function
  * will rescan that list of pages and add any that are new to the current dialog. It will not
  * remove any pages that are no longer in the list, and will not change the user's current
  * active page.
@@ -665,7 +665,7 @@ void DlgPreferencesImp::reloadPages()
             }
         }
 
-        // This is a new group that wasn't there when we started this instance of the dialog: 
+        // This is a new group that wasn't there when we started this instance of the dialog:
         if (!groupItem) {
             groupItem = createGroup(group);
         }
@@ -738,7 +738,7 @@ void DlgPreferencesImp::applyChanges()
 
         for (int j = 0; j < pageStackWidget->count(); j++) {
             auto page = qobject_cast<PreferencePage*>(pageStackWidget->widget(j));
-            
+
             if (page) {
                 page->saveSettings();
                 restartRequired = restartRequired || page->isRestartRequired();
@@ -749,7 +749,7 @@ void DlgPreferencesImp::applyChanges()
     bool saveParameter = App::GetApplication()
                              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
                              ->GetBool("SaveUserParameter", true);
-    
+
     if (saveParameter) {
         ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
         parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
@@ -909,7 +909,7 @@ void DlgPreferencesImp::onStackWidgetChange(int index)
         ui->groupsTreeView->expand(parentItem->index());
         parentItem->setExpanded(wasExpanded);
     }
-    
+
     ui->groupsTreeView->selectionModel()->select(currentIndex, QItemSelectionModel::ClearAndSelect);
 }
 
@@ -977,7 +977,7 @@ void DlgPreferencesImp::restorePageDefaults(PreferencesPageItem* item)
          * the newPage object (which has restartRequired initialized to false)
          */
         restartRequired = restartRequired || page->isRestartRequired();
-        
+
         std::string pageName = page->property(PageNameProperty).toString().toStdString();
         std::string groupName = page->property(GroupNameProperty).toString().toStdString();
 

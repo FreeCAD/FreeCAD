@@ -113,8 +113,8 @@ void ModelProperty::validate(const ModelProperty& other) const
         throw InvalidProperty("Model names don't match");
     }
     if (getDisplayName() != other.getDisplayName()) {
-        Base::Console().Log("Local display name '%s'\n", getDisplayName().toStdString().c_str());
-        Base::Console().Log("Remote display name '%s'\n",
+        Base::Console().log("Local display name '%s'\n", getDisplayName().toStdString().c_str());
+        Base::Console().log("Remote display name '%s'\n",
                             other.getDisplayName().toStdString().c_str());
         throw InvalidProperty("Model display names don't match");
     }
@@ -135,8 +135,8 @@ void ModelProperty::validate(const ModelProperty& other) const
     }
 
     if (_columns.size() != other._columns.size()) {
-        Base::Console().Log("Local property column count %d\n", _columns.size());
-        Base::Console().Log("Remote property column count %d\n", other._columns.size());
+        Base::Console().log("Local property column count %d\n", _columns.size());
+        Base::Console().log("Remote property column count %d\n", other._columns.size());
         throw InvalidProperty("Model property column counts don't match");
     }
     for (size_t i = 0; i < _columns.size(); i++) {
@@ -243,8 +243,8 @@ void Model::validate(const std::shared_ptr<Model>& other) const
 
     // Need to compare properties
     if (_properties.size() != other->_properties.size()) {
-        // Base::Console().Log("Local property count %d\n", _properties.size());
-        // Base::Console().Log("Remote property count %d\n", other->_properties.size());
+        // Base::Console().log("Local property count %d\n", _properties.size());
+        // Base::Console().log("Remote property count %d\n", other->_properties.size());
         throw InvalidModel("Model property counts don't match");
     }
     for (auto& property : _properties) {

@@ -394,7 +394,7 @@ void MaterialsEditor::onPhysicalAdd(bool checked)
         updateMaterial();
     }
     else {
-        Base::Console().Log("No model selected\n");
+        Base::Console().log("No model selected\n");
     }
 }
 
@@ -440,7 +440,7 @@ void MaterialsEditor::onAppearanceAdd(bool checked)
         updateMaterial();
     }
     else {
-        Base::Console().Log("No model selected\n");
+        Base::Console().log("No model selected\n");
     }
 }
 
@@ -590,7 +590,7 @@ void MaterialsEditor::saveMaterial()
 void MaterialsEditor::accept()
 {
     if (_material->isOldFormat()) {
-        Base::Console().Log("*** Old Format File ***\n");
+        Base::Console().log("*** Old Format File ***\n");
         oldFormatError();
 
         return;
@@ -914,7 +914,7 @@ bool MaterialsEditor::updateTexturePreview() const
         try {
             auto property = _material->getAppearanceProperty(QStringLiteral("TextureImage"));
             if (!property->isNull()) {
-                // Base::Console().Log("Has 'TextureImage'\n");
+                // Base::Console().log("Has 'TextureImage'\n");
                 auto propertyValue = property->getString();
                 if (!propertyValue.isEmpty()) {
                     QByteArray by = QByteArray::fromBase64(propertyValue.toUtf8());
@@ -931,10 +931,10 @@ bool MaterialsEditor::updateTexturePreview() const
             try {
                 auto property = _material->getAppearanceProperty(QStringLiteral("TexturePath"));
                 if (!property->isNull()) {
-                    // Base::Console().Log("Has 'TexturePath'\n");
+                    // Base::Console().log("Has 'TexturePath'\n");
                     auto filePath = property->getString();
                     if (!image.load(filePath)) {
-                        Base::Console().Log("Unable to load image '%s'\n",
+                        Base::Console().log("Unable to load image '%s'\n",
                                             filePath.toStdString().c_str());
                         // return;  // ???
                     }
@@ -950,7 +950,7 @@ bool MaterialsEditor::updateTexturePreview() const
             auto property = _material->getAppearanceProperty(QStringLiteral("TextureScaling"));
             if (!property->isNull()) {
                 // scaling = property->getFloat();
-                //  Base::Console().Log("Has 'TextureScaling' = %g\n", scaling);
+                //  Base::Console().log("Has 'TextureScaling' = %g\n", scaling);
             }
         }
         catch (const Materials::PropertyNotFound&) {
@@ -1262,7 +1262,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected,
         _material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid));
     }
     catch (Materials::ModelNotFound const&) {
-        Base::Console().Log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
         _material = std::make_shared<Materials::Material>();
     }
 

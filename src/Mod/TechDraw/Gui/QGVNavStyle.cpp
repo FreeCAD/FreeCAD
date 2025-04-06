@@ -109,7 +109,7 @@ void QGVNavStyle::handleFocusOutEvent(QFocusEvent* event)
 
 void QGVNavStyle::handleKeyPressEvent(QKeyEvent* event)
 {
-    // Base::Console().Message("QGNS::handleKeyPressEvent(%d)\n", event->key());
+    // Base::Console().message("QGNS::handleKeyPressEvent(%d)\n", event->key());
     if (event->modifiers().testFlag(Qt::ControlModifier)) {
         switch (event->key()) {
             case Qt::Key_Plus: {
@@ -214,7 +214,7 @@ void QGVNavStyle::handleLeaveEvent(QEvent* event)
 
 void QGVNavStyle::handleMousePressEvent(QMouseEvent* event)
 {
-    // Base::Console().Message("QGVNS::handleMousePressEvent()\n");
+    // Base::Console().message("QGVNS::handleMousePressEvent()\n");
     if (!panningActive && (event->button() == Qt::MiddleButton)) {
         startPan(event->pos());
         event->accept();
@@ -223,7 +223,7 @@ void QGVNavStyle::handleMousePressEvent(QMouseEvent* event)
 
 void QGVNavStyle::handleMouseMoveEvent(QMouseEvent* event)
 {
-    //    Base::Console().Message("QGVNS::handleMouseMoveEvent()\n");
+    //    Base::Console().message("QGVNS::handleMouseMoveEvent()\n");
     if (getViewer()->isBalloonPlacing()) {
         balloonCursorMovement(event);
         return;
@@ -239,7 +239,7 @@ void QGVNavStyle::handleMouseMoveEvent(QMouseEvent* event)
 //button that caused the event (typically RMB)
 void QGVNavStyle::handleMouseReleaseEvent(QMouseEvent* event)
 {
-    //    Base::Console().Message("QGVNS::handleMouseReleaseEvent()\n");
+    //    Base::Console().message("QGVNS::handleMouseReleaseEvent()\n");
     if (getViewer()->isBalloonPlacing()) {
         placeBalloon(event->pos());
     }
@@ -253,7 +253,7 @@ void QGVNavStyle::handleMouseReleaseEvent(QMouseEvent* event)
 bool QGVNavStyle::allowContextMenu(QContextMenuEvent* event)
 {
     Q_UNUSED(event)
-    //    Base::Console().Message("QGVNS::allowContextMenu()\n");
+    //    Base::Console().message("QGVNS::allowContextMenu()\n");
     //    if (event->reason() == QContextMenuEvent::Mouse) {
     //        //must check for a button combination involving context menu button
     //    }
@@ -305,7 +305,7 @@ void QGVNavStyle::zoom(double factor)
 
 void QGVNavStyle::startZoom(QPoint p)
 {
-    //    Base::Console().Message("QGVNS::startZoom(%s)\n", TechDraw::DrawUtil::formatVector(p).c_str());
+    //    Base::Console().message("QGVNS::startZoom(%s)\n", TechDraw::DrawUtil::formatVector(p).c_str());
     zoomOrigin = p;
     zoomingActive = true;
     m_zoomPending = false;
@@ -314,7 +314,7 @@ void QGVNavStyle::startZoom(QPoint p)
 
 void QGVNavStyle::stopZoom()
 {
-    //    Base::Console().Message("QGVNS::stopZoom()\n");
+    //    Base::Console().message("QGVNS::stopZoom()\n");
     zoomingActive = false;
     m_zoomPending = false;
     getViewer()->resetCursor();
@@ -371,7 +371,7 @@ void QGVNavStyle::pan(QPoint p)
 
 void QGVNavStyle::stopPan()
 {
-    //    Base::Console().Message("QGVNS::stopPan()\n");
+    //    Base::Console().message("QGVNS::stopPan()\n");
     panningActive = false;
     m_panPending = false;
     getViewer()->resetCursor();
@@ -391,7 +391,7 @@ void QGVNavStyle::stopClick()
 
 void QGVNavStyle::placeBalloon(QPoint p)
 {
-    //    Base::Console().Message("QGVNS::placeBalloon()\n");
+    //    Base::Console().message("QGVNS::placeBalloon()\n");
     getViewer()->getBalloonCursor()->hide();
     //balloon was created in Command.cpp.  Why are we doing it again?
     getViewer()->getScene()->createBalloon(getViewer()->mapToScene(p),

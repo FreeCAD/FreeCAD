@@ -289,16 +289,16 @@ TaskView::TaskView(QWidget *parent)
     connectApplicationActiveDocument =
     App::GetApplication().signalActiveDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1));
-    connectApplicationDeleteDocument = 
+    connectApplicationDeleteDocument =
     App::GetApplication().signalDeleteDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this, sp::_1));
     connectApplicationClosedView =
     Gui::Application::Instance->signalCloseView.connect
         (std::bind(&Gui::TaskView::TaskView::slotViewClosed, this, sp::_1));
-    connectApplicationUndoDocument = 
+    connectApplicationUndoDocument =
     App::GetApplication().signalUndoDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, sp::_1));
-    connectApplicationRedoDocument = 
+    connectApplicationRedoDocument =
     App::GetApplication().signalRedoDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, sp::_1));
     //NOLINTEND
@@ -453,7 +453,7 @@ QSize TaskView::minimumSizeHint() const
 
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
-    Q_UNUSED(doc); 
+    Q_UNUSED(doc);
     if (!ActiveDialog)
         updateWatcher();
 }
@@ -464,7 +464,7 @@ void TaskView::slotDeletedDocument(const App::Document& doc)
         if (ActiveDialog->isAutoCloseOnDeletedDocument()) {
             std::string name = ActiveDialog->getDocumentName();
             if (name.empty()) {
-                Base::Console().Warning(std::string("TaskView::slotDeletedDocument"),
+                Base::Console().warning(std::string("TaskView::slotDeletedDocument"),
                                         "No document name set\n");
             }
 
@@ -487,7 +487,7 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
         if (ActiveDialog->isAutoCloseOnClosedView()) {
             const Gui::MDIView* associatedView = ActiveDialog->getAssociatedView();
             if (!associatedView) {
-                Base::Console().Warning(std::string("TaskView::slotViewClosed"),
+                Base::Console().warning(std::string("TaskView::slotViewClosed"),
                     "No view associated\n");
             }
 
@@ -509,7 +509,7 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc)
         if (ActiveDialog->isAutoCloseOnTransactionChange()) {
             std::string name = ActiveDialog->getDocumentName();
             if (name.empty()) {
-                Base::Console().Warning(std::string("TaskView::transactionChangeOnDocument"),
+                Base::Console().warning(std::string("TaskView::transactionChangeOnDocument"),
                                         "No document name set\n");
             }
 
@@ -539,11 +539,11 @@ void TaskView::slotRedoDocument(const App::Document& doc)
 void TaskView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                         Gui::SelectionSingleton::MessageType Reason)
 {
-    Q_UNUSED(rCaller); 
+    Q_UNUSED(rCaller);
     std::string temp;
 
     if (Reason.Type == SelectionChanges::AddSelection ||
-        Reason.Type == SelectionChanges::ClrSelection || 
+        Reason.Type == SelectionChanges::ClrSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
         Reason.Type == SelectionChanges::RmvSelection) {
 
@@ -648,7 +648,7 @@ void TaskView::removeDialog()
 
     // put the watcher back in control
     addTaskWatcher();
-    
+
     if (remove) {
         remove->closed();
         remove->emitDestructionSignal();
@@ -823,7 +823,7 @@ void TaskView::removeTaskWatcher()
 void TaskView::accept()
 {
     if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
-        Base::Console().Warning("ActiveDialog was null in call to TaskView::accept()\n");
+        Base::Console().warning("ActiveDialog was null in call to TaskView::accept()\n");
         return;
     }
 
@@ -839,7 +839,7 @@ void TaskView::accept()
 void TaskView::reject()
 {
     if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
-        Base::Console().Warning("ActiveDialog was null in call to TaskView::reject()\n");
+        Base::Console().warning("ActiveDialog was null in call to TaskView::reject()\n");
         return;
     }
 

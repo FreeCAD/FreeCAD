@@ -302,7 +302,7 @@ SolverReportingManager& SolverReportingManager::Manager()
 
 void SolverReportingManager::LogToConsole(const std::string& str)
 {
-    Base::Console().Log(str.c_str());
+    Base::Console().log(str.c_str());
 }
 
 void SolverReportingManager::LogToFile(const std::string& str)
@@ -2086,7 +2086,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     double divergingLim = 1e6 * err + 1e12;
@@ -2101,7 +2101,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                        << ", err: " << err << ", h_norm: " << h_norm << "\n";
 
                 const std::string tmp = stream.str();
-                Base::Console().Log(tmp.c_str());
+                Base::Console().log(tmp.c_str());
             }
             break;
         }
@@ -2113,7 +2113,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                        << ", err: " << err << ", divergingLim: " << divergingLim << "\n";
 
                 const std::string tmp = stream.str();
-                Base::Console().Log(tmp.c_str());
+                Base::Console().log(tmp.c_str());
             }
             break;
         }
@@ -2150,7 +2150,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                    << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
     }
 
@@ -2213,7 +2213,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                << ", xsize: " << xsize << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     double nu = 2, mu = 0;
@@ -2332,7 +2332,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                    << ", g_inf(eps1): " << g_inf << ", h_norm: " << h_norm << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
     }
 
@@ -2385,7 +2385,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     Eigen::VectorXd x(xsize), x_new(xsize);
@@ -2542,7 +2542,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                    << ", err(divergingLim): " << err << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
 
         // count this iteration and start again
@@ -2556,7 +2556,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         stream << "DL: stopcode: " << stop << ((stop == 1) ? ", Success" : ", Failed") << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     return (stop == 1) ? Success : Failed;
@@ -4975,7 +4975,7 @@ int System::diagnose(Algorithm alg)
 
 #ifndef EIGEN_SPARSEQR_COMPATIBLE
     if (qrAlgorithm == EigenSparseQR) {
-        Base::Console().Warning("SparseQR not supported by you current version of Eigen. It "
+        Base::Console().warning("SparseQR not supported by you current version of Eigen. It "
                                 "requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
         qrAlgorithm = EigenDenseQR;
     }
@@ -5053,7 +5053,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(DenseQR_start_time, DenseQR_end_time);
 
-        Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
 #endif
     }
 
@@ -5128,7 +5128,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(SparseQR_start_time, SparseQR_end_time);
 
-        Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
 #endif
     }
 #endif
@@ -5658,7 +5658,7 @@ void System::identifyConflictingRedundantConstraints(
                 break;
         }
 
-        Base::Console().Log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
+        Base::Console().log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
     }
 
     if (res == Success) {
@@ -5673,7 +5673,7 @@ void System::identifyConflictingRedundantConstraints(
         resetToReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {
-            Base::Console().Log("Sketcher Redundant solving: %d redundants\n", redundant.size());
+            Base::Console().log("Sketcher Redundant solving: %d redundants\n", redundant.size());
         }
 
         // TODO: Figure out why we need to iterate in reverse order and add explanation here.
@@ -5692,7 +5692,7 @@ void System::identifyConflictingRedundantConstraints(
             }
 
             if (debugMode == IterationLevel) {
-                Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
+                Base::Console().log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
                                     i,
                                     iterRedundantEntry - conflictGroupsOrig[i].begin(),
                                     (*iterRedundantEntry)->getTag());

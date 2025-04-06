@@ -255,8 +255,8 @@ PyObject* MaterialManagerPy::save(PyObject* args, PyObject* kwds)
         return nullptr;
     }
 
-    Base::Console().Log("library name %s\n", libraryName);
-    Base::Console().Log("path %s\n", path);
+    Base::Console().log("library name %s\n", libraryName);
+    Base::Console().log("path %s\n", path);
 
     MaterialPy* material;
     if (QLatin1String(obj->ob_type->tp_name) == QLatin1String("Materials.Material")) {

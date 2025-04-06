@@ -208,11 +208,11 @@ void CmdApproxPlane::activated(int)
             double q0, q1, q2, q3;
             pm.getRotation().getValue(q0, q1, q2, q3);
 
-            Base::Console().Log("RMS value for plane fit with %lu points: %.4f\n",
+            Base::Console().log("RMS value for plane fit with %lu points: %.4f\n",
                                 aData.size(),
                                 sigma);
-            Base::Console().Log("  Plane base(%.4f, %.4f, %.4f)\n", base.x, base.y, base.z);
-            Base::Console().Log("  Plane normal(%.4f, %.4f, %.4f)\n", norm.x, norm.y, norm.z);
+            Base::Console().log("  Plane base(%.4f, %.4f, %.4f)\n", base.x, base.y, base.z);
+            Base::Console().log("  Plane normal(%.4f, %.4f, %.4f)\n", norm.x, norm.y, norm.z);
 
             std::stringstream str;
             str << "from FreeCAD import Base" << std::endl;

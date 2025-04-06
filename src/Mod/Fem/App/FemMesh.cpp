@@ -572,7 +572,7 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
     ShapeAnalysis_ShapeTolerance analysis;
     double limit = analysis.Tolerance(solid, 1, shapetype);
-    Base::Console().Log("The limit if a node is in or out: %.12lf in scientific: %.4e \n",
+    Base::Console().log("The limit if a node is in or out: %.12lf in scientific: %.4e \n",
                         limit,
                         limit);
 
@@ -971,7 +971,7 @@ public:
             meshds->AddFaceWithID(n0, n1, n2, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
+            Base::Console().warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
                                     element_id,
                                     elements[0],
                                     elements[1],
@@ -1038,7 +1038,7 @@ public:
             meshds->AddVolumeWithID(n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, "
+            Base::Console().warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, "
                                     "%d, %d, %d, %d, %d, %d)\n",
                                     element_id,
                                     elements[1],
@@ -1299,7 +1299,7 @@ class CHEXA2Element: public NastranElement
 void FemMesh::readNastran(const std::string& Filename)
 {
     Base::TimeElapsed Start;
-    Base::Console().Log("Start: FemMesh::readNastran() =================================\n");
+    Base::Console().log("Start: FemMesh::readNastran() =================================\n");
 
     _Mtrx = Base::Matrix4D();
 
@@ -1375,7 +1375,7 @@ void FemMesh::readNastran(const std::string& Filename)
     } while (inputfile.good());
     inputfile.close();
 
-    Base::Console().Log("    %f: File read, start building mesh\n",
+    Base::Console().log("    %f: File read, start building mesh\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // Now fill the SMESH datastructure
@@ -1386,14 +1386,14 @@ void FemMesh::readNastran(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().log("    %f: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readNastran95(const std::string& Filename)
 {
     Base::TimeElapsed Start;
-    Base::Console().Log("Start: FemMesh::readNastran95() =================================\n");
+    Base::Console().log("Start: FemMesh::readNastran95() =================================\n");
 
     _Mtrx = Base::Matrix4D();
 
@@ -1428,7 +1428,7 @@ void FemMesh::readNastran95(const std::string& Filename)
         }
         else if (line1.find("GRID") != std::string::npos)  // We found a Grid line
         {
-            // Base::Console().Log("Found a GRID\n");
+            // Base::Console().log("Found a GRID\n");
             // D06.inp
             // GRID    109             .9      .7
             // Now lets extract the GRID Points = Nodes
@@ -1502,7 +1502,7 @@ void FemMesh::readNastran95(const std::string& Filename)
     } while (inputfile.good());
     inputfile.close();
 
-    Base::Console().Log("    %f: File read, start building mesh\n",
+    Base::Console().log("    %f: File read, start building mesh\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // Now fill the SMESH datastructure
@@ -1517,14 +1517,14 @@ void FemMesh::readNastran95(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().log("    %f: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readAbaqus(const std::string& FileName)
 {
     Base::TimeElapsed Start;
-    Base::Console().Log("Start: FemMesh::readAbaqus() =================================\n");
+    Base::Console().log("Start: FemMesh::readAbaqus() =================================\n");
 
     /*
     Python command to read Abaqus inp mesh file from test suite:
@@ -1557,14 +1557,14 @@ void FemMesh::readAbaqus(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().log("    %f: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readZ88(const std::string& FileName)
 {
     Base::TimeElapsed Start;
-    Base::Console().Log("Start: FemMesh::readZ88() =================================\n");
+    Base::Console().log("Start: FemMesh::readZ88() =================================\n");
 
     /*
     Python command to read Z88 mesh file from test suite:
@@ -1597,7 +1597,7 @@ void FemMesh::readZ88(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().log("    %f: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
@@ -2226,7 +2226,7 @@ void FemMesh::writeABAQUS(const std::string& Filename,
 void FemMesh::writeZ88(const std::string& FileName) const
 {
     Base::TimeElapsed Start;
-    Base::Console().Log("Start: FemMesh::writeZ88() =================================\n");
+    Base::Console().log("Start: FemMesh::writeZ88() =================================\n");
 
     /*
     Python command to export FemMesh from StartWB FEM 3D example:
@@ -2258,41 +2258,41 @@ void FemMesh::write(const char* FileName) const
     Base::FileInfo File(FileName);
 
     if (File.hasExtension("unv")) {
-        Base::Console().Log("FEM mesh object will be exported to unv format.\n");
+        Base::Console().log("FEM mesh object will be exported to unv format.\n");
         // write UNV file
         myMesh->ExportUNV(File.filePath().c_str());
     }
     else if (File.hasExtension("med")) {
-        Base::Console().Log("FEM mesh object will be exported to med format.\n");
+        Base::Console().log("FEM mesh object will be exported to med format.\n");
         myMesh->ExportMED(File.filePath().c_str(),
                           File.fileNamePure().c_str(),
                           false,
                           2);  // 2 means MED_V2_2 version!
     }
     else if (File.hasExtension("stl")) {
-        Base::Console().Log("FEM mesh object will be exported to stl format.\n");
+        Base::Console().log("FEM mesh object will be exported to stl format.\n");
         // export to stl file
         myMesh->ExportSTL(File.filePath().c_str(), false);
     }
     else if (File.hasExtension("dat")) {
-        Base::Console().Log("FEM mesh object will be exported to dat format.\n");
+        Base::Console().log("FEM mesh object will be exported to dat format.\n");
         // export to dat file
         myMesh->ExportDAT(File.filePath().c_str());
     }
     else if (File.hasExtension("inp")) {
-        Base::Console().Log("FEM mesh object will be exported to inp format.\n");
+        Base::Console().log("FEM mesh object will be exported to inp format.\n");
         // write ABAQUS Output
         writeABAQUS(File.filePath(), 1, false);
     }
 #ifdef FC_USE_VTK
     else if (File.hasExtension({"vtk", "vtu"})) {
-        Base::Console().Log("FEM mesh object will be exported to either vtk or vtu format.\n");
+        Base::Console().log("FEM mesh object will be exported to either vtk or vtu format.\n");
         // write unstructure mesh to VTK format *.vtk and *.vtu
         writeVTK(File.filePath().c_str());
     }
 #endif
     else if (File.hasExtension("z88")) {
-        Base::Console().Log("FEM mesh object will be exported to z88 format.\n");
+        Base::Console().log("FEM mesh object will be exported to z88 format.\n");
         // write z88 file
         writeZ88(File.filePath());
     }

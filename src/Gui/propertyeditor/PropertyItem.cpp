@@ -635,13 +635,13 @@ void PropertyItem::setPropertyValue(const std::string& value)
     }
     catch (Base::PyException& e) {
         e.ReportException();
-        Base::Console().Error("Stack Trace: %s\n", e.getStackTrace().c_str());
+        Base::Console().error("Stack Trace: %s\n", e.getStackTrace().c_str());
     }
     catch (Base::Exception& e) {
         e.ReportException();
     }
     catch (...) {
-        Base::Console().Error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
+        Base::Console().error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
     }
 }
 

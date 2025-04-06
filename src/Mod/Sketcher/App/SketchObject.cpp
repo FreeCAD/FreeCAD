@@ -277,7 +277,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
     catch (const Base::Exception&) {
         // 9/16/24: We used to clear the constraints here, but we no longer want to do that
         // as missing reference geometry is not considered an error while we sort out sketcher UI.
-        // Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
+        // Base::Console().error("%s\nClear constraints to external geometry\n", e.what());
         // we cannot trust the constraints of external geometries, so remove them
         //  delConstraintsToExternal();
     }
@@ -576,13 +576,13 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
 
     if (lastHasMalformedConstraints) {
-        Base::Console().Error(
+        Base::Console().error(
             this->getFullLabel(),
             QT_TRANSLATE_NOOP("Notifications", "The Sketch has malformed constraints!") "\n");
     }
 
     if (lastHasPartialRedundancies) {
-        Base::Console().Warning(
+        Base::Console().warning(
             this->getFullLabel(),
             QT_TRANSLATE_NOOP("Notifications",
                               "The Sketch has partially redundant constraints!") "\n");
@@ -1187,7 +1187,7 @@ void SketchObject::setConstraintExpression(int constNum, const std::string& newE
             setExpression(path, expr);
         }
         catch (const Base::Exception&) {
-            Base::Console().Error("Failed to set constraint expression.");
+            Base::Console().error("Failed to set constraint expression.");
         }
     }
 }
@@ -2925,8 +2925,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         }
 
 #ifdef DEBUG
-        Base::Console().Log("\n\nFILLET DEBUG\n\n");
-        Base::Console().Log("Ref param: (%f);(%f)", refparam1, refparam2);
+        Base::Console().log("\n\nFILLET DEBUG\n\n");
+        Base::Console().log("Ref param: (%f);(%f)", refparam1, refparam2);
 #endif
 
         std::pair<Base::Vector3d, Base::Vector3d> interpoints;
@@ -3093,12 +3093,12 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
 
 #ifdef DEBUG
-        Base::Console().Log("Start param: (%f);(%f)\n", spc1, spc2);
+        Base::Console().log("Start param: (%f);(%f)\n", spc1, spc2);
 
         Base::Vector3d c1pf = curve1->pointAtParameter(spc1);
         Base::Vector3d c2pf = curve2->pointAtParameter(spc2);
 
-        Base::Console().Log("start point curves: (%f,%f,%f);(%f,%f,%f)\n",
+        Base::Console().log("start point curves: (%f,%f,%f);(%f,%f,%f)\n",
                             c1pf.x,
                             c1pf.y,
                             c1pf.z,
@@ -3112,14 +3112,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         Base::Vector3d tdir2 = curve2->firstDerivativeAtParameter(refparam2);
 
 #ifdef DEBUG
-        Base::Console().Log("tangent vectors: (%f,%f,%f);(%f,%f,%f)\n",
+        Base::Console().log("tangent vectors: (%f,%f,%f);(%f,%f,%f)\n",
                             tdir1.x,
                             tdir1.y,
                             tdir1.z,
                             tdir2.x,
                             tdir2.y,
                             tdir2.z);
-        Base::Console().Log("inter-ref vector: (%f,%f,%f)\n", ref21.x, ref21.y, ref21.z);
+        Base::Console().log("inter-ref vector: (%f,%f,%f)\n", ref21.x, ref21.y, ref21.z);
 #endif
 
         Base::Vector3d vn(0, 0, 1);
@@ -3128,8 +3128,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         double sdir2 = tdir2.Cross(-ref21).Dot(vn);
 
 #ifdef DEBUG
-        Base::Console().Log("sign of offset: (%f,%f)\n", sdir1, sdir2);
-        Base::Console().Log("radius: %f\n", radius);
+        Base::Console().log("sign of offset: (%f,%f)\n", sdir1, sdir2);
+        Base::Console().log("radius: %f\n", radius);
 #endif
 
         Part::GeomOffsetCurve* ocurve1 = new Part::GeomOffsetCurve(
@@ -3142,7 +3142,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         Base::Vector3d oc1pf = ocurve1->pointAtParameter(ocurve1->getFirstParameter());
         Base::Vector3d oc2pf = ocurve2->pointAtParameter(ocurve2->getFirstParameter());
 
-        Base::Console().Log("start point offset curves: (%f,%f,%f);(%f,%f,%f)\n",
+        Base::Console().log("start point offset curves: (%f,%f,%f);(%f,%f,%f)\n",
                             oc1pf.x,
                             oc1pf.y,
                             oc1pf.z,
@@ -3153,7 +3153,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         /*auto printoffsetcurve = [](Part::GeomOffsetCurve *c) {
 
             for(double param = c->getFirstParameter(); param < c->getLastParameter(); param = param
-        + (c->getLastParameter()-c->getFirstParameter())/10) Base::Console().Log("\n%f:
+        + (c->getLastParameter()-c->getFirstParameter())/10) Base::Console().log("\n%f:
         (%f,%f,0)\n", param, c->pointAtParameter(param).x,c->pointAtParameter(param).y);
 
         };
@@ -3169,7 +3169,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         try {
             if (!ocurve1->intersect(ocurve2, offsetintersectionpoints)) {
 #ifdef DEBUG
-                Base::Console().Log("No intersection between offset curves\n");
+                Base::Console().log("No intersection between offset curves\n");
 #endif
                 return -1;
             }
@@ -3181,7 +3181,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
 #ifdef DEBUG
         for (auto inter : offsetintersectionpoints) {
-            Base::Console().Log("offset int(%f,%f,0)\n", inter.first.x, inter.first.y);
+            Base::Console().log("offset int(%f,%f,0)\n", inter.first.x, inter.first.y);
         }
 #endif
 
@@ -3192,7 +3192,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         }
 
 #ifdef DEBUG
-        Base::Console().Log(
+        Base::Console().log(
             "selected offset int(%f,%f,0)\n", filletcenterpoint.first.x, filletcenterpoint.first.y);
 #endif
 
@@ -3225,7 +3225,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         Base::Vector3d refp2 = curve2->pointAtParameter(refoparam2);
 
 #ifdef DEBUG
-        Base::Console().Log("refpoints: (%f,%f,%f);(%f,%f,%f)",
+        Base::Console().log("refpoints: (%f,%f,%f);(%f,%f,%f)",
                             refp1.x,
                             refp1.y,
                             refp1.z,
@@ -3340,7 +3340,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         delete ocurve2;
 
 #ifdef DEBUG
-        Base::Console().Log("\n\nEND OF FILLET DEBUG\n\n");
+        Base::Console().log("\n\nEND OF FILLET DEBUG\n\n");
 #endif
     }
     else {
@@ -4514,7 +4514,7 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
         }
     }
     catch (Base::Exception& e) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "Probably, there is a circular reference in the document. Error: %s\n", e.what());
         return true;// prohibiting this reference won't remove the problem anyway...
     }
@@ -4586,7 +4586,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
         }
     }
     catch (Base::Exception& e) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "Probably, there is a circular reference in the document. Error: %s\n", e.what());
         return true;// prohibiting this reference won't remove the problem anyway...
     }
@@ -5117,7 +5117,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else {
-                Base::Console().Error("Unsupported Geometry!! Just copying it.\n");
+                Base::Console().error("Unsupported Geometry!! Just copying it.\n");
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
 
@@ -5138,7 +5138,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
         }
         else {
             if (refPosId == Sketcher::PointPos::none) {
-                Base::Console().Error("Wrong PointPosId.\n");
+                Base::Console().error("Wrong PointPosId.\n");
                 return {};
             }
             refpoint = getPoint(georef, refPosId);
@@ -5276,7 +5276,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else {
-                Base::Console().Error("Unsupported Geometry!! Just copying it.\n");
+                Base::Console().error("Unsupported Geometry!! Just copying it.\n");
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
 
@@ -5537,7 +5537,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
                         iterfirstpoint = scp;
                 }
                 else {
-                    Base::Console().Error("Unsupported Geometry!! Just skipping it.\n");
+                    Base::Console().error("Unsupported Geometry!! Just skipping it.\n");
                     continue;
                 }
 
@@ -6927,7 +6927,7 @@ bool SketchObject::convertToNURBS(int GeoId)
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         // revert to original values
         return false;
     }
@@ -7013,7 +7013,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
         bspline->increaseDegree(cdegree + degreeincrement);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         return false;
     }
 
@@ -7059,7 +7059,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
         bspline->approximate(Precision::Confusion(), 20, maxdegree, GeomAbs_C0);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         return false;
     }
 
@@ -7158,7 +7158,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         return false;
     }
 
@@ -7303,7 +7303,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
         bspline->insertKnot(param, multiplicity);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         return false;
     }
 
@@ -7486,7 +7486,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
         if (Objects.size() != SubElements.size() || sObjects.size() != sSubElements.size()) {
             assert(0 /*counts of objects and subelements in external geometry links do not match*/);
-            Base::Console().Error("Internal error: counts of objects and subelements in external "
+            Base::Console().error("Internal error: counts of objects and subelements in external "
                                   "geometry links do not match\n");
             return -1;
         }
@@ -7496,7 +7496,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             int i = 0;
             for (auto& obj : Objects) {
                 if (obj == sobj && SubElements[i] == sSubElements[si]) {
-                    Base::Console().Error(
+                    Base::Console().error(
                         "Link to %s already exists in this sketch. Delete the link and try again\n",
                         sSubElements[si].c_str());
                     return -1;
@@ -7517,7 +7517,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             rebuildExternalGeometry();
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
             // revert to original values
             ExternalGeometry.setValues(originalObjects, originalSubElements);
             return -1;
@@ -7687,7 +7687,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
 
     if (Objects.size() != SubElements.size()) {
         assert(0 /*counts of objects and subelements in external geometry links do not match*/);
-        Base::Console().Error("Internal error: counts of objects and subelements in external "
+        Base::Console().error("Internal error: counts of objects and subelements in external "
                               "geometry links do not match\n");
         return -1;
     }
@@ -7698,7 +7698,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
             if (Types[i] == (int)ExtType::Both
                 || (Types[i] == (int)ExtType::Projection && !intersection)
                 || (Types[i] == (int)ExtType::Intersection && intersection)) {
-                Base::Console().Error("Link to %s already exists in this sketch.\n", SubName);
+                Base::Console().error("Link to %s already exists in this sketch.\n", SubName);
                 return -1;
             }
             // Case where projections are already there when adding intersections.
@@ -7723,7 +7723,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
         rebuildExternalGeometry(ext);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects, originalSubElements);
         return -1;
@@ -7915,7 +7915,7 @@ int SketchObject::delAllExternal()
         rebuildExternalGeometry();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects, originalSubElements);
         for (Constraint* it : newConstraints)
@@ -8293,12 +8293,12 @@ void SketchObject::validateExternalLinks()
         }
         catch (Base::IndexError& indexError) {
             removeBadLink = true;
-            Base::Console().Warning(
+            Base::Console().warning(
                 this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
         }
         catch (Base::ValueError& valueError) {
             removeBadLink = true;
-            Base::Console().Warning(
+            Base::Console().warning(
                 this->getFullLabel(), (valueError.getMessage() + "\n").c_str());
         }
         catch (Standard_Failure&) {
@@ -9054,7 +9054,7 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
         brep_hlr->Hide();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
+        Base::Console().error("GO::projectShape - OCC error - %s - while projecting shape\n",
             e.GetMessageString());
         throw Base::RuntimeError("SketchObject::projectShape - OCC error");
     }
@@ -10469,7 +10469,7 @@ void SketchObject::onChanged(const App::Property* prop)
                             acceptGeometry();
                         }
                         else {
-                            Base::Console().Error(
+                            Base::Console().error(
                                 this->getFullLabel() + " SketchObject::onChanged ",
                                 QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Geometry Property "
                                 "results in invalid constraint indices") "\n");
@@ -10500,7 +10500,7 @@ void SketchObject::onChanged(const App::Property* prop)
                             }
                         }
                         else {
-                            Base::Console().Error(
+                            Base::Console().error(
                                 this->getFullLabel() + " SketchObject::onChanged ",
                                 QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
                                 "Property results in invalid constraint indices") "\n");
@@ -11128,7 +11128,7 @@ void SketchObject::migrateSketch()
 
             Constraints.setValues(std::move(newconstraints));
 
-            Base::Console().Critical(
+            Base::Console().critical(
                 this->getFullName(),
                 QT_TRANSLATE_NOOP("Notifications",
                                   "Parabolas were migrated. Migrated files won't open in previous "
@@ -11189,13 +11189,13 @@ int SketchObject::changeConstraintsLocking(bool bLock)
                 cntSuccess++;
 
             newVals[i] = constNew;
-            Base::Console().Log("Constraint%i will be affected\n", i + 1);
+            Base::Console().log("Constraint%i will be affected\n", i + 1);
         }
     }
 
     this->Constraints.setValues(std::move(newVals));
 
-    Base::Console().Log("ChangeConstraintsLocking: affected %i of %i tangent/perp constraints\n",
+    Base::Console().log("ChangeConstraintsLocking: affected %i of %i tangent/perp constraints\n",
                         cntSuccess,
                         cntToBeAffected);
 
@@ -11282,13 +11282,13 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         if (affected) {
             cntToBeAffected++;
             newVals[ic] = constNew;
-            Base::Console().Log("Constraint%i will be affected\n", ic + 1);
+            Base::Console().log("Constraint%i will be affected\n", ic + 1);
         };
     }
 
     if (!justAnalyze) {
         this->Constraints.setValues(std::move(newVals));
-        Base::Console().Log("Swapped start/end of reversed external arcs in %i constraints\n",
+        Base::Console().log("Swapped start/end of reversed external arcs in %i constraints\n",
                             cntToBeAffected);
     }
 
@@ -11394,7 +11394,7 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
     }
     catch (Base::Exception& e) {
         // failure to determine tangency type is not a big deal, so a warning.
-        Base::Console().Warning("Error in AutoLockTangency. %s \n", e.what());
+        Base::Console().warning("Error in AutoLockTangency. %s \n", e.what());
         return false;
     }
     return true;

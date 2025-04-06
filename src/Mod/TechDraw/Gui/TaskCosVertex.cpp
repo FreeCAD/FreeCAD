@@ -104,7 +104,7 @@ void TaskCosVertex::changeEvent(QEvent* event)
 
 void TaskCosVertex::setUiPrimary()
 {
-//    Base::Console().Message("TCV::setUiPrimary()\n");
+//    Base::Console().message("TCV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("New Cosmetic Vertex"));
 
     if (m_baseFeat) {
@@ -149,7 +149,7 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 void TaskCosVertex::onTrackerClicked(bool clicked)
 {
     Q_UNUSED(clicked);
-//    Base::Console().Message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
+//    Base::Console().message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
 
     removeTracker();
@@ -181,7 +181,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
 
 void TaskCosVertex::startTracker()
 {
-//    Base::Console().Message("TCV::startTracker()\n");
+//    Base::Console().message("TCV::startTracker()\n");
     if (m_trackerMode == QGTracker::TrackerMode::None) {
         return;
     }
@@ -207,7 +207,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 {
     (void)qgParent;
     if (pts.empty()) {
-        Base::Console().Error("TaskCosVertex - no points available\n");
+        Base::Console().error("TaskCosVertex - no points available\n");
         return;
     }
 
@@ -255,7 +255,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 
 void TaskCosVertex::removeTracker()
 {
-//    Base::Console().Message("TCV::removeTracker()\n");
+//    Base::Console().message("TCV::removeTracker()\n");
     if (m_tracker && m_tracker->scene()) {
         m_vpp->getQGSPage()->removeItem(m_tracker);
         delete m_tracker;
