@@ -52,16 +52,10 @@ public:
     static std::string schemaTranslate(const Quantity& quant);
 
     /**
-     * toString & toNumber:
      * Quantity to string. Optionally apply format
      * The string is a number in C locale (i.e. the decimal separator is always a dot)
      * Scientific notation (if needed).
      */
-
-    /** INCLUDES unit */
-    static std::string
-    toString(const Quantity& quantity,
-             const QuantityFormat& format = QuantityFormat(QuantityFormat::Default));
 
     /** Does NOT include unit */
     static std::string
