@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <iomanip>
-#include <sstream>
 #endif
 
 #include <CXX/WrapPython.h>
@@ -91,30 +90,6 @@ void UnitsApi::setSchema(const std::string& name)
 void UnitsApi::setSchema(const size_t num)
 {
     schemas->select(num);
-}
-
-std::string UnitsApi::toNumber(const Quantity& quantity, const QuantityFormat& format)
-{
-    return toNumber(quantity.getValue(), format);
-}
-
-std::string UnitsApi::toNumber(const double value, const QuantityFormat& format)
-{
-    std::stringstream ss;
-
-    switch (format.format) {
-        case QuantityFormat::Fixed:
-            ss << std::fixed;
-            break;
-        case QuantityFormat::Scientific:
-            ss << std::scientific;
-            break;
-        default:
-            break;
-    }
-    ss << std::setprecision(format.precision) << value;
-
-    return ss.str();
 }
 
 double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)

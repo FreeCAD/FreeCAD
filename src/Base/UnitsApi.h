@@ -51,21 +51,6 @@ public:
 
     static std::string schemaTranslate(const Quantity& quant);
 
-    /**
-     * Quantity to string. Optionally apply format
-     * The string is a number in C locale (i.e. the decimal separator is always a dot)
-     * Scientific notation (if needed).
-     */
-
-    /** Does NOT include unit */
-    static std::string
-    toNumber(const Quantity& quantity,
-             const QuantityFormat& format = QuantityFormat(QuantityFormat::Default));
-
-    /** Does NOT include unit */
-    static std::string
-    toNumber(double value, const QuantityFormat& format = QuantityFormat(QuantityFormat::Default));
-
     static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
 
     static void setDecimals(std::size_t);
