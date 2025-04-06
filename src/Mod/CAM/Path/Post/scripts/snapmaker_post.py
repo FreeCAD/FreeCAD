@@ -46,12 +46,30 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 SNAPMAKER_MACHINES = dict(
-    original=dict(name="Snapmaker Original", X=90, Y=90, Z=50),
-    original_z_extension=dict(name="Snapmaker Original with Z extension", X=90, Y=90, Z=146),
-    a150=dict(name="A150", X=160, Y=160, Z=90),
-    **dict.fromkeys(("A250", "A250T"), dict(name="Snapmaker 2 A250(T)", X=230, Y=250, Z=180)),
-    **dict.fromkeys(("A350", "A350T"), dict(name="Snapmaker 2 A350(T)", X=320, Y=350, Z=275)),
-    artisan=dict(name="Snapmaker Artisan", X=400, Y=400, Z=400),
+    original=dict(
+        name="Snapmaker Original",
+        boundaries=dict(X=90, Y=90, Z=50),
+    ),
+    original_z_extension=dict(
+        name="Snapmaker Original with Z extension",
+        boundaries=dict(X=90, Y=90, Z=146),
+    ),
+    a150=dict(
+        name="A150",
+        boundaries=dict(X=160, Y=160, Z=90),
+    ),
+    **dict.fromkeys(("A250", "A250T"), dict(
+        name="Snapmaker 2 A250(T)",
+        boundaries=dict(X=230, Y=250, Z=180),
+    )),
+    **dict.fromkeys(("A350", "A350T"), dict(
+        name="Snapmaker 2 A350(T)",
+        boundaries=dict(X=320, Y=350, Z=275),
+    )),
+    artisan=dict(
+        name="Snapmaker Artisan",
+        boundaries=dict(X=400, Y=400, Z=400),
+    ),
 )
 
 SNAPMAKER_TOOLHEADS = {
@@ -350,7 +368,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             if args.machine:
                 machine = self.values["MACHINES"][args.machine]
                 self.values["MACHINE_NAME"] = machine["name"]
-                self.values["BOUNDARIES"] = {key: machine[key] for key in ("X", "Y", "Z")}
+                self.values["BOUNDARIES"] = machine["boundaries"]
 
             if args.boundaries:  # may override machine boundaries, which is expected
                 self.values["BOUNDARIES"] = args.boundaries
