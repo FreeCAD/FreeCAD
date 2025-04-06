@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>283</width>
+    <height>48</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Window tools</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QPushButton" name="buttonInvertOpening">
+     <property name="text">
+      <string>Invert opening</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../Arch.qrc">
+       <normaloff>:/icons/Arch_Window_Tree.svg</normaloff>:/icons/Arch_Window_Tree.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonInvertHinge">
+     <property name="text">
+      <string>Invert hinge</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../Arch.qrc">
+       <normaloff>:/icons/Arch_Window_Tree.svg</normaloff>:/icons/Arch_Window_Tree.svg</iconset>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Arch.qrc"/>
+ </resources>
+ <connections/>
+</ui>
