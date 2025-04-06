@@ -47,6 +47,7 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionSpin
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
     Q_PROPERTY(QString binding READ boundToName WRITE setBoundToByName) // clazy:exclude=qproperty-without-notify
     Q_PROPERTY(QString expression READ expressionText) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool autoNormalize READ autoNormalize WRITE setAutoNormalize) // clazy:exclude=qproperty-without-notify
 
 public:
     explicit QuantitySpinBox(QWidget *parent = nullptr);
@@ -96,6 +97,11 @@ public:
     int decimals() const;
     /// Sets the number of decimals
     void setDecimals(int v);
+
+    /// Checks if auto normalization is enabled
+    bool autoNormalize() const;
+    /// Enables or disables automatic normalization on enter
+    void setAutoNormalize(bool normalize);
 
     /// Sets a specific unit schema to handle quantities.
     /// The system-wide schema won't be used any more.
@@ -190,6 +196,11 @@ Q_SIGNALS:
      *  or finished (false).
      */
     void showFormulaDialog(bool);
+    /** Gets emitted if user confirms the value with return. This
+     *  is very similar to editingFinished() but does not fire on
+     *  focus out.
+     */
+    void returnPressed();
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;

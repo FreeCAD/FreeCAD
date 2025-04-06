@@ -156,8 +156,10 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setMinimum(-std::numeric_limits<int>::max());
     spinBox->setMaximum(std::numeric_limits<int>::max());
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    spinBox->setKeyboardTracking(false);
     spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
+    spinBox->setAutoNormalize(false);
+    spinBox->setKeyboardTracking(false);
+
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
     }
@@ -172,12 +174,20 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->adjustSize();
     setFocusToSpinbox();
 
-    connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged),
-        this, [this](double value) {
-        this->isSet = true;
-        this->value = value;
+    const auto validateAndFinish = [this]() {
+        // this event can be fired after spinBox was already disposed
+        // in such case we need to skip processing that event
+        if (!spinBox) {
+            return;
+        }
+
+        isSet = true;
+        value = spinBox->rawValue();
+
         Q_EMIT this->valueChanged(value);
-    });
+    };
+
+    connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
 }
 
 void EditableDatumLabel::stopEdit()

@@ -387,7 +387,6 @@ class AttachmentEditorTaskPanel(FrozenClass):
             pos.z = Q(self.form.attachmentOffsetZ.text()).getValueAs(mm)
         if index >= 0  and  index <= 2:
             plm.Base = pos
-
         if index >= 3  and  index <= 5:
             yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
             pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
