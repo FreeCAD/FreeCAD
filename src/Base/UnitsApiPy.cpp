@@ -217,5 +217,6 @@ PyObject* UnitsApi::sToNumber(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    return Py::new_reference_to(Py::String(toNumber(value, qf)));
+    const Quantity quantity {value};
+    return Py::new_reference_to(Py::String(quantity.toNumber(qf)));
 }
