@@ -401,6 +401,7 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgProjectUtility.ui
     Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
+    Dialogs/DlgThemeEditor.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
     Dialogs/DlgSettingsColorGradient.ui
@@ -516,6 +517,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgPropertyLink.cpp
     Dialogs/DlgRevertToBackupConfigImp.cpp
     Dialogs/DlgExpressionInput.cpp
+    Dialogs/DlgThemeEditor.cpp
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
     TaskTransform.cpp
@@ -558,6 +560,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgRevertToBackupConfigImp.h
     Dialogs/DlgCheckableMessageBox.h
     Dialogs/DlgExpressionInput.h
+    Dialogs/DlgThemeEditor.h
     TaskDlgRelocation.h
     TaskTransform.h
     Dialogs/DlgUndoRedo.h
@@ -1322,6 +1325,7 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    StyleParameters.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1364,6 +1368,7 @@ SET(FreeCADGui_SRCS
     StartupProcess.h
     TransactionObject.h
     ToolHandler.h
+    StyleParameters.h
 )
 
 SET(FreeCADGui_SRCS
