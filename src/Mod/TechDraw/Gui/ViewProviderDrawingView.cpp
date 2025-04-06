@@ -486,7 +486,7 @@ TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 //! handled by the undo mechanism, but the QGraphicsScene parentage is not reset.
 void ViewProviderDrawingView::fixSceneDependencies()
 {
-    Base::Console().Message("VPDV::fixSceneDependencies()\n");
+    Base::Console().message("VPDV::fixSceneDependencies()\n");
     auto page = getViewProviderPage();
     if (!page) {
         return;
