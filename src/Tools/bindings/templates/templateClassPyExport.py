@@ -44,6 +44,7 @@ class TemplateClassPyExport(template.ModelTemplate):
             "Part",
             "PartDesign",
             "Material",
+            "Sketcher",
         ]:
             root, ext = os.path.splitext(path)
             return f"{root}_{ext}"
