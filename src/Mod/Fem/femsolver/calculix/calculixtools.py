@@ -44,22 +44,6 @@ from femtools import membertools
 
 class CalculiXTools:
 
-    frd_var_conversion = {
-        "CONTACT": "Contact Displacement",
-        "PE": "Plastic Strain",
-        "CELS": "Contact Energy",
-        "ECD": "Current Density",
-        "EMFB": "Magnetic Field",
-        "EMFE": "Electric Field",
-        "ENER": "Internal Energy Density",
-        "FLUX": "Heat Flux",
-        "DISP": "Displacement",
-        "T": "Temperature",
-        "TOSTRAIN": "Strain",
-        "STRESS": "Stress",
-        "STR(%)": "Error",
-    }
-
     name = "CalculiX"
 
     def __init__(self, obj):
@@ -150,10 +134,7 @@ class CalculiXTools:
             # default display mode
             pipeline.ViewObject.DisplayMode = "Surface"
             pipeline.ViewObject.SelectionStyle = "BoundBox"
-            if self.obj.AnalysisType in ["static", "frequency", "buckling"]:
-                pipeline.ViewObject.Field = "Displacement"
-            elif self.obj.AnalysisType in ["thermomech"]:
-                pipeline.ViewObject.Field = "Temperature"
+            pipeline.ViewObject.Field = self.get_default_field(self.obj.AnalysisType)
         else:
             self._load_ccxfrd_results()
 
@@ -179,8 +160,42 @@ class CalculiXTools:
             if f.endswith(".vtm"):
                 res = os.path.join(self.obj.WorkingDirectory, f)
                 self.obj.Results[0].read(res)
-                self.obj.Results[0].renameArrays(self.frd_var_conversion)
+                self.obj.Results[0].renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
                 break
+
+    def frd_var_conversion(self, analysis_type):
+        common = {
+            "CONTACT": "Contact Displacement",
+            "PE": "Plastic Strain",
+            "CELS": "Contact Energy",
+            "ECD": "Current Density",
+            "EMFB": "Magnetic Field",
+            "EMFE": "Electric Field",
+            "ENER": "Internal Energy Density",
+            "DISP": "Displacement",
+            "TOSTRAIN": "Strain",
+            "STRESS": "Stress",
+            "STR(%)": "Error",
+        }
+        thermo = {"FLUX": "Heat Flux", "T": "Temperature"}
+        electrostatic = {"T": "Potential", "FLUX": "Electric Flux Density"}
+
+        match analysis_type:
+            case "thermomech":
+                common.update(thermo)
+            case "electromagnetic":
+                common.update(electrostatic)
+
+        return common
+
+    def get_default_field(self, analysis_type):
+        match analysis_type:
+            case "static" | "frequency" | "buckling":
+                return "Displacement"
+            case "thermomech":
+                return "Temperature"
+            case "electromagnetic":
+                return "Potential"
 
     def version(self):
         p = QProcess()
