@@ -2021,6 +2021,7 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds, Del
     return 0;
 }
 
+// clang-format on
 void SketchObject::replaceGeometries(std::vector<int> oldGeoIds,
                                      std::vector<Part::Geometry*>& newGeos)
 {
@@ -2042,18 +2043,17 @@ void SketchObject::replaceGeometries(std::vector<int> oldGeoIds,
         newVals[*oldGeoIdIter] = *newGeoIter;
     }
 
-    if (newGeoIter != newGeos.end()) {
-        for (; newGeoIter != newGeos.end(); ++newGeoIter) {
-            generateId(*newGeoIter);
-            newVals.push_back(*newGeoIter);
-        }
-    }
-    else {
-        delGeometries(oldGeoIdIter, oldGeoIds.end());
+    for (; newGeoIter != newGeos.end(); ++newGeoIter) {
+        generateId(*newGeoIter);
+        newVals.push_back(*newGeoIter);
     }
 
+    // Set geometries first, then delete the old ones. This allows to use `delGeometries`.
     Geometry.setValues(std::move(newVals));
+
+    delGeometries(oldGeoIdIter, oldGeoIds.end());
 }
+// clang-format off
 
 int SketchObject::deleteAllGeometry(DeleteOptions options)
 {
