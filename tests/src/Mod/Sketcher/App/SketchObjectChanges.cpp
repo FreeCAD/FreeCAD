@@ -14,6 +14,73 @@
 
 using namespace SketcherTestHelpers;
 
+TEST_F(SketchObjectTest, testReplaceGeometriesOneToOne)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    int geoId = getObject()->addGeometry(&lineSeg);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId}, newCurves);
+
+    // Assert
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+TEST_F(SketchObjectTest, testReplaceGeometriesTwoToOne)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg1, lineSeg2;
+    setupLineSegment(lineSeg1);
+    int geoId1 = getObject()->addGeometry(&lineSeg1);
+    setupLineSegment(lineSeg2);
+    int geoId2 = getObject()->addGeometry(&lineSeg2);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId1, geoId2}, newCurves);
+
+    // Assert
+    // Ensure only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+TEST_F(SketchObjectTest, testReplaceGeometriesOneToTwo)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg1;
+    setupLineSegment(lineSeg1);
+    int geoId1 = getObject()->addGeometry(&lineSeg1);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release(),
+                                            createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId1}, newCurves);
+
+    // Assert
+    // Ensure only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+    geo = getObject()->getGeometry(geoId1 + 1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+// TODO: formulate and add any constraint related changes when replacing geometries
+// Currently, `replageGeometries` is a very "low level" operation that directly replaces the
+// elements of the vector of geometries. Constraint handling is intended to be done by the
+// operations that call this method. We may want to add tests that ensure constraints aren't
+// touched. Alternatively, we may want to change `replaceGeometries` such that it modifies
+// constraints, though that will limit our control in individual operations.
+
 TEST_F(SketchObjectTest, testSplitLineSegment)
 {
     // Arrange
