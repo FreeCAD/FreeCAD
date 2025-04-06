@@ -1310,6 +1310,7 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    ThemeTokenManager.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1349,6 +1350,7 @@ SET(FreeCADGui_SRCS
     StartupProcess.h
     TransactionObject.h
     ToolHandler.h
+    ThemeTokenManager.h
 )
 
 SET(FreeCADGui_SRCS

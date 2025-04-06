@@ -30,6 +30,8 @@
 
 #include <App/Application.h>
 
+#include "ThemeTokenManager.h"
+
 #if QT_VERSION >= QT_VERSION_CHECK(6,0,0) && QT_VERSION < QT_VERSION_CHECK(6,8,1)
 # define HAS_QTBUG_129596
 #endif
@@ -303,6 +305,8 @@ private:
     /// workbench python dictionary
     PyObject* _pcWorkbenchDictionary;
     NavlibInterface* pNavlibInterface;
+
+    ThemeTokenManager themeTokenManager;
 
     friend class ApplicationPy;
 };
