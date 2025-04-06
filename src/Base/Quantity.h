@@ -160,6 +160,9 @@ public:
     std::string
     toString(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
 
+    std::string
+    toNumber(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
+
     std::string getUserString() const;
     /// transfer to user preferred unit/potence
     std::string getUserString(double& factor, std::string& unitString) const;

@@ -26,6 +26,7 @@
 #include <cmath>
 #include <limits>
 #include <numbers>
+#include <sstream>
 #include <string>
 #endif
 
@@ -243,7 +244,26 @@ Quantity Quantity::operator-() const
 
 std::string Quantity::toString(const QuantityFormat& format) const
 {
-    return fmt::format("'{} {}'", UnitsApi::toNumber(myValue, format), myUnit.getString());
+    return fmt::format("'{} {}'", toNumber(format), myUnit.getString());
+}
+
+std::string Quantity::toNumber(const QuantityFormat& format) const
+{
+    std::stringstream ss;
+
+    switch (format.format) {
+        case QuantityFormat::Fixed:
+            ss << std::fixed;
+            break;
+        case QuantityFormat::Scientific:
+            ss << std::scientific;
+            break;
+        default:
+            break;
+    }
+    ss << std::setprecision(format.precision) << myValue;
+
+    return ss.str();
 }
 
 std::string Quantity::getUserString() const
