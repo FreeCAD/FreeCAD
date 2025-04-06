@@ -14,6 +14,39 @@
 
 using namespace SketcherTestHelpers;
 
+TEST_F(SketchObjectTest, testReplaceGeometriesOneToOne)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    int geoId = getObject()->addGeometry(&lineSeg);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId}, newCurves);
+
+    // Assert
+    // TODO: Ensure geoId1 is now a B-Spline
+}
+
+TEST_F(SketchObjectTest, testReplaceGeometriesTwoToOne)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg1, lineSeg2;
+    setupLineSegment(lineSeg1);
+    int geoId1 = getObject()->addGeometry(&lineSeg1);
+    setupLineSegment(lineSeg2);
+    int geoId2 = getObject()->addGeometry(&lineSeg2);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId1, geoId2}, newCurves);
+
+    // Assert
+    // TODO: Ensure only one curve
+    // TODO: Ensure geoId1 is now a B-Spline
+}
+
 TEST_F(SketchObjectTest, testSplitLineSegment)
 {
     // Arrange
