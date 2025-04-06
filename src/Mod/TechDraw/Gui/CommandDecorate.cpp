@@ -103,7 +103,7 @@ void CmdTechDrawHatch::activated(int iMsg)
     }
 
     bool removeOld = false;
-    std::vector<TechDraw::DrawHatch*> hatchObjs = partFeat->getHatches();
+    std::vector<TechDraw::DrawHatch*> hatchObjs = partFeat->getAll<DrawHatch>();
     for (auto& s: subNames) {                             //all the faces selected in DVP
         int face = TechDraw::DrawUtil::getIndexFromName(s);
         if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {

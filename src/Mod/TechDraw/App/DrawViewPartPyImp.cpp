@@ -68,7 +68,7 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     Py::List pEdgeList;
-    std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getAllGeometry<BaseGeom>();
     for (auto& g: geoms) {
         if (g->getHlrVisible()) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
@@ -87,7 +87,7 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     Py::List pEdgeList;
-    std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getAllGeometry<BaseGeom>();
     for (auto& g: geoms) {
         if (!g->getHlrVisible()) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
@@ -106,7 +106,7 @@ PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     Py::List pVertexList;
-    auto vertsAll = dvp->getVertexGeometry();
+    auto vertsAll = dvp->getAllGeometry<Vertex>();
     for (auto& vert: vertsAll) {
         if (vert->getHlrVisible()) {
             PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
@@ -125,7 +125,7 @@ PyObject* DrawViewPartPy::getHiddenVertexes(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     Py::List pVertexList;
-    auto vertsAll = dvp->getVertexGeometry();
+    auto vertsAll = dvp->getAllGeometry<Vertex>();
     for (auto& vert: vertsAll) {
         if (!vert->getHlrVisible()) {
             PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
@@ -797,7 +797,7 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
+    TechDraw::BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(edgeIndex);
     if (!geom) {
         PyErr_SetString(PyExc_ValueError, "Wrong edge index");
         return nullptr;
@@ -823,7 +823,7 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::VertexPtr vert = dvp->getProjVertexByIndex(vertexIndex);
+    TechDraw::VertexPtr vert = dvp->getGeometry<Vertex>(vertexIndex);
     if (!vert) {
         PyErr_SetString(PyExc_ValueError, "Wrong vertex index");
         return nullptr;
@@ -840,18 +840,16 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
 
 PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 {
-    int edgeIndex = 0;
     char* selName;           //Selection routine name - "Edge0"
     if (!PyArg_ParseTuple(args, "s", &selName)) {
         return nullptr;
     }
 
-    edgeIndex = DrawUtil::getIndexFromName(std::string(selName));
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
+    TechDraw::BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(selName);
     if (!geom) {
         PyErr_SetString(PyExc_ValueError, "Wrong edge index");
         return nullptr;
@@ -868,18 +866,16 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
 {
-    int vertexIndex = 0;
     const char* selName;           //Selection routine name - "Vertex0"
     if (!PyArg_ParseTuple(args, "s", &selName)) {
         return nullptr;
     }
 
-    vertexIndex = DrawUtil::getIndexFromName(std::string(selName));
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::VertexPtr vert = dvp->getProjVertexByIndex(vertexIndex);
+    TechDraw::VertexPtr vert = dvp->getGeometry<Vertex>(selName);
     if (!vert) {
         PyErr_SetString(PyExc_ValueError, "Wrong vertex index");
         return nullptr;
