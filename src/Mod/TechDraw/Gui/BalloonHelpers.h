@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.0-or-later
 
 /***************************************************************************
- *   Copyright (c) 2024 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2025 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,14 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-//! CommandHelpers is a collection of methods for common actions in commands
+//! BalloonHelpers is a collection of support methods for balloon command
 
 
-#ifndef COMMANDHELPERS_H
-#define COMMANDHELPERS_H
+#ifndef BALLOONHELPERS_H
+#define BALLOONHELPERS_H
 
 #include <string>
 #include <vector>
+
+#include <QPointF>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Base/Vector3D.h>
@@ -42,37 +44,23 @@ namespace Gui {
 class Command;
 }
 
+namespace TechDrawGui {
+class QGIView;
+}
+
 namespace TechDraw {
 class DrawView;
 class DrawViewPart;
 
-namespace CommandHelpers {
+namespace BalloonHelpers {
 
-    TechDraw::DrawView* firstViewInSelection(App::DocumentObject* notThis = nullptr);
-    DrawViewPart* findBaseViewInSelection(App::DocumentObject* notThis = nullptr);
+    bool checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs);
+    bool checkDrawViewPartBalloon(Gui::Command* cmd);
+    bool checkDirectPlacement(const TechDrawGui::QGIView* view, const std::vector<std::string>& subNames,
+                           QPointF& placement);
 
-    void findBreakObjectsInSelection(std::vector<App::DocumentObject*>& breakObjects);
-    void findProfileObjectsInSelection(App::DocumentObject* &profileObject,
-                                       std::vector<std::string>& profileSubs);
-
-    void getShapeObjectsFromBase(const DrawViewPart& baseView,
-                                 std::vector<App::DocumentObject*>& shapesFromBase,
-                                 std::vector<App::DocumentObject*>& xShapesFromBase);
-
-    void getShapeObjectsFromSelection(std::vector<App::DocumentObject*>& shapes,
-                           std::vector<App::DocumentObject*>& xShapes,
-                            App::DocumentObject* notThis = nullptr);
-
-    std::vector<std::string> getSelectedSubElements(TechDraw::DrawViewPart* &dvp,
-                                                    const std::string &subType = "Edge");
-
-    std::pair<App::DocumentObject*, std::string> faceFromSelection();
-    std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
-
-    bool isActiveCommon(Gui::Command* cmd);
-    bool guardActiveDialog();
-
-}   // end namespace CommandHelpers
+}   // end namespace BalloonHelpers
 }   // end namespace TechDraw
 
 #endif
+

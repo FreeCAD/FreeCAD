@@ -54,6 +54,7 @@
 #include "ViewProviderPage.h"
 #include "MDIViewPage.h"
 #include "CommandHelpers.h"
+#include "ViewMakers.h"
 
 
 using namespace TechDrawGui;
@@ -257,32 +258,16 @@ void CmdTechDrawImage::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
-    QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
         Preferences::defaultSymbolDir(),
         QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)")));
-    if (fileName.isEmpty()) {
+    if (filename.isEmpty()) {
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("Image");
-    fileName = Base::Tools::escapeEncodeFilename(fileName);
-    auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
-              FeatName.c_str(), FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
-
-    auto baseView = CommandHelpers::firstViewInSelection(this);
-    if (baseView) {
-        auto baseName = baseView->getNameInDocument();
-        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
-                  FeatName.c_str(), baseName);
-    }
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create symbol view"));
+    ViewMakers::makeImageView(page, filename);
     updateActive();
     commitCommand();
 }
