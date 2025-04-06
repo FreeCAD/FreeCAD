@@ -21,6 +21,7 @@
 
 import argparse
 import base64
+import copy
 import datetime
 import os
 import pathlib
@@ -46,27 +47,43 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 SNAPMAKER_MACHINES = dict(
-    original=dict(
+    Original=dict(
+        key="Original",
         name="Snapmaker Original",
         boundaries=dict(X=90, Y=90, Z=50),
     ),
-    original_z_extension=dict(
+    Original_Z_Extension=dict(
+        key="Original_Z_Extension",
         name="Snapmaker Original with Z extension",
         boundaries=dict(X=90, Y=90, Z=146),
     ),
-    a150=dict(
-        name="A150",
+    A150=dict(
+        key="A150",
+        name="Snapmaker 2 A150",
         boundaries=dict(X=160, Y=160, Z=90),
     ),
-    **dict.fromkeys(("A250", "A250T"), dict(
-        name="Snapmaker 2 A250(T)",
+    A250=dict(
+        key="A250",
+        name="Snapmaker 2 A250",
         boundaries=dict(X=230, Y=250, Z=180),
-    )),
-    **dict.fromkeys(("A350", "A350T"), dict(
-        name="Snapmaker 2 A350(T)",
+    ),
+    A250T=dict(
+        key="A250T",
+        name="Snapmaker 2 A250T",
+        boundaries=dict(X=230, Y=250, Z=180),
+    ),
+    A350=dict(
+        key="A350",
+        name="Snapmaker 2 A350",
         boundaries=dict(X=320, Y=350, Z=275),
-    )),
-    artisan=dict(
+    ),
+    A350T=dict(
+        key="A350T",
+        name="Snapmaker 2 A350T",
+        boundaries=dict(X=320, Y=350, Z=275),
+    ),
+    Artisan=dict(
+        key="Artisan",
         name="Snapmaker Artisan",
         boundaries=dict(X=400, Y=400, Z=400),
     ),
@@ -367,8 +384,10 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
             if args.machine:
                 machine = self.values["MACHINES"][args.machine]
+                self.values["MACHINE_KEY"] = machine["key"]
                 self.values["MACHINE_NAME"] = machine["name"]
-                self.values["BOUNDARIES"] = machine["boundaries"]
+                # The deepcopy is necessary to avoid modifying the boundaries in the MACHINES dict.
+                self.values["BOUNDARIES"] = copy.deepcopy(machine["boundaries"])
 
             if args.boundaries:  # may override machine boundaries, which is expected
                 self.values["BOUNDARIES"] = args.boundaries
