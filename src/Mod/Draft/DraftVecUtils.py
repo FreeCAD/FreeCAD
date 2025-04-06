@@ -35,11 +35,13 @@ but which can also be used in other workbenches and in macros.
 # flake8 --ignore=E226,E266,E401,W503
 
 import math
+import warnings
 
 import FreeCAD
 from FreeCAD import Vector
 from draftutils import params
 from draftutils import messages
+from draftutils.utils import precision as draft_precision
 
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
@@ -47,6 +49,29 @@ __url__ = "https://www.freecad.org"
 
 ## \addtogroup DRAFTVECUTILS
 #  @{
+
+# @deprecated("use Draft.precision() instead.")
+def precision():
+    """
+    Get the number of fractional decimal digits as configured
+    in Draft preferences.
+
+    This function is deprecated since it is a doublette of
+    Draft.precision()
+       
+    Returns
+    -------
+    int
+        Return the number of fractional decimal digits as configured
+        in Draft preferences.
+    """
+    warnings.warn("Call to deprecated function 'DraftVecUtils.precision()'."
+                  + " Please consider using Draft.precision().",
+                  DeprecationWarning, stacklevel=2)
+    messages._wrn("DraftVecUtils.precision() called, which is deprecated."
+                  + " Please consider using Draft.precision(). ")
+
+    return draft_precision()
 
 
 def typecheck(args_and_types, name="?"):
