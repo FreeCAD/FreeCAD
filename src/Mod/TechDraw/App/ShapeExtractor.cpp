@@ -445,7 +445,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
 //    if (isDraftPoint(obj) {
-//        //Draft Points are not necc. Part::PartFeature??
+//        //Draft Points are not necc. Part::Feature??
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
 
     const Part::Feature* pf = dynamic_cast<const Part::Feature*>(obj);

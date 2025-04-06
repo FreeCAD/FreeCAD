@@ -207,7 +207,7 @@ class Facebinder(DraftObject):
     def addSubobjects(self, obj, facelinks):
         """adds facelinks to this facebinder"""
         # facelinks is an iterable or a selection set:
-        # [(<Part::PartFeature>, ("3.Face3", "3.Face6"))]
+        # [(<Part::Feature>, ("3.Face3", "3.Face6"))]
         # or:
         # Gui.Selection.getSelectionEx("", 0)
         sels = obj.Faces
