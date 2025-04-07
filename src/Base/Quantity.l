@@ -21,13 +21,6 @@
 
 /* Lexer for the FreeCAD  Units language   */
 
-/* use this file to generate the file 'QuantityLexer.c' using the program flex
- * the command for this operation is:
- * flex --outfile=QuantityLexer.c QuantityParser.l
- * (flex for Windows is available here:
- *  https://sourceforge.net/projects/winflexbison/
- *  (you must then change 'flex' to 'win_flex' in the command)) */
-
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
 #define YY_NO_UNISTD_H
