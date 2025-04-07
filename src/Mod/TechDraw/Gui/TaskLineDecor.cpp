@@ -460,7 +460,7 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
         taskbox->hideGroupBox();
     }
 
-    TaskLineDecor* parent = dynamic_cast<TaskLineDecor*>(widget);
+    TaskLineDecor* parent = qobject_cast<TaskLineDecor*>(widget);
     if (parent) {
         restore = new TaskRestoreLines(partFeat, parent);
         restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_DecorateLine"),
