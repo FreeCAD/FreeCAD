@@ -1130,7 +1130,7 @@ void Model::renameAcceptedSlot()
   assert(selections.size() == 1);
   const GraphLinkRecord &record = findRecord(selections.front(), *graphLink);
 
-  auto lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
+  auto lineEdit = qobject_cast<LineEdit*>(proxy->widget());
   assert(lineEdit);
   const_cast<App::DocumentObject*>(record.DObject)->Label.setValue(lineEdit->text().toUtf8().constData()); //const hack
 
