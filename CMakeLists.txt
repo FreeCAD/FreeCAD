@@ -1,6 +1,10 @@
 # As of February 2025 we require CMake 3.22.0
 cmake_minimum_required(VERSION 3.22.0 FATAL_ERROR)
 
+# Check for maximum version
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "4.0.0")
+    message(FATAL_ERROR "The required CMake version is before 4.0.0.")
+endif()
 
 # As of cMake 3.27, find_package() will look for both case-sensitive and all-uppercase versions
 # of the package. This seems to affect FLANN as included by Pixi
