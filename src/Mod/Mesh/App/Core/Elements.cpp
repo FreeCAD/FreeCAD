@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <limits>
+#endif
 
 #include <Mod/Mesh/App/WildMagic4/Wm4DistSegment3Triangle3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Triangle3.h>

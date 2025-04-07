@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 
+# include <limits>
 
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>

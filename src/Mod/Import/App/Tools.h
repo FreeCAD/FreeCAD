@@ -23,6 +23,8 @@
 #ifndef IMPORT_TOOLS_H
 #define IMPORT_TOOLS_H
 
+#include <limits>
+
 #include <Quantity_ColorRGBA.hxx>
 #include <TopoDS_Shape.hxx>
 #include <XCAFDoc_ColorTool.hxx>

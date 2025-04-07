@@ -2697,10 +2697,7 @@ public:
             hotYF *= pRatio;
         }
 #endif
-        qreal cursorWidth = size.width() * pRatio;
-        qreal cursorHeight = size.height() * pRatio;
-        QPixmap px(Gui::BitmapFactory().pixmapFromSvg(svgFile, QSizeF(cursorWidth, cursorHeight)));
-        px.setDevicePixelRatio(pRatio);
+        QPixmap px(Gui::BitmapFactory().pixmapFromSvg(svgFile, size));
         return QCursor(px, hotXF, hotYF);
     }
 };

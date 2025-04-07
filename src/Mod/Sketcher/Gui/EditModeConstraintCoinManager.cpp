@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QPainter>
 #include <QRegularExpression>
+#include <limits>
 #include <memory>
 
 #include <Inventor/SbImage.h>

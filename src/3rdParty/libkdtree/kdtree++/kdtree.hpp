@@ -53,12 +53,12 @@
 //  KDTREE_VERSION % 100 is the patch level
 //  KDTREE_VERSION / 100 % 1000 is the minor version
 //  KDTREE_VERSION / 100000 is the major version
-#define KDTREE_VERSION 702
+#define KDTREE_VERSION 704
 //
 //  KDTREE_LIB_VERSION must be defined to be the same as KDTREE_VERSION
 //  but as a *string* in the form "x_y[_z]" where x is the major version
 //  number, y is the minor version number, and z is the patch level if not 0.
-#define KDTREE_LIB_VERSION "0_7_2"
+#define KDTREE_LIB_VERSION "0_7_4"
 
 
 #include <vector>
@@ -1214,7 +1214,6 @@ protected:
     o << "dimensions:  " << __K << std::endl;
 
     typedef KDTree<__K, _Val, _Acc, _Dist, _Cmp, _Alloc> _Tree;
-    typedef typename _Tree::_Link_type _Link_type;
 
     std::stack<_Link_const_type> s;
     s.push(tree._M_get_root());

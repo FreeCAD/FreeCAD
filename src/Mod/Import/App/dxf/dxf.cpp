@@ -2950,9 +2950,6 @@ bool CDxfRead::ReadLayer()
         // TODO: Should have an import option to omit frozen layers.
         UnsupportedFeature("Frozen layers");
     }
-    if (layerColor < 0) {
-        UnsupportedFeature("Hidden layers");
-    }
     Layers[layername] = MakeLayer(layername, layerColor, std::move(lineTypeName));
     return true;
 }

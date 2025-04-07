@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <limits>
 #include <vector>
 
 #include <BRepAdaptor_Curve.hxx>
@@ -10707,7 +10708,7 @@ void SketchObject::updateGeometryRefs() {
                     FC_ERR("External geometry reference corrupted in " << getFullName()
                             << " Please check.");
                     // This could happen if someone saved the sketch containing
-                    // external geometries using some rouge releases during the
+                    // external geometries using some rogue releases during the
                     // migration period. As a remedy, We re-initiate the
                     // external geometry here to trigger rebuild later, with
                     // call to rebuildExternalGeometry()

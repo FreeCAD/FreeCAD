@@ -222,7 +222,7 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
         }
         else {
             std::string error = std::string(
-                "Multistep load requries 4 arguments: ResultList, ValueList, unit, type");
+                "Multistep load requires 4 arguments: ResultList, ValueList, unit, type");
             throw Base::TypeError(error);
         }
     }
@@ -283,6 +283,28 @@ PyObject* FemPostPipelinePy::holdsPostObject(PyObject* args)
 
     bool ok = getFemPostPipelinePtr()->holdsPostObject(static_cast<FemPostObject*>(obj));
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject* FemPostPipelinePy::renameArrays(PyObject* args)
+{
+    PyObject* pyObj;
+    if (!PyArg_ParseTuple(args, "O!", &(PyDict_Type), &pyObj)) {
+        return nullptr;
+    }
+
+    Py::Dict pyNames {pyObj};
+    std::map<std::string, std::string> names {};
+    for (auto&& [key, value] : pyNames) {
+        if (!key.isString() || !value.isString()) {
+            PyErr_SetString(PyExc_TypeError, "Names must be string objects");
+            return nullptr;
+        }
+        names.emplace(key.as_string(), static_cast<Py::Object>(value).as_string());
+    }
+
+    getFemPostPipelinePtr()->renameArrays(names);
+
+    Py_Return;
 }
 
 PyObject* FemPostPipelinePy::getCustomAttributes(const char* /*attr*/) const

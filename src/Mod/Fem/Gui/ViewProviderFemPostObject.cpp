@@ -38,6 +38,8 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <functional>
+#include <limits>
+
 
 #include <vtkCellArray.h>
 #include <vtkCellData.h>

@@ -23,6 +23,7 @@
 #ifndef MESH_GRID_H
 #define MESH_GRID_H
 
+#include <limits>
 #include <set>
 
 #include <Base/BoundBox.h>

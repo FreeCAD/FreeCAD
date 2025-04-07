@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <limits>
 # include <QAction>
 # include <QApplication>
 # include <QComboBox>
@@ -615,22 +616,12 @@ public:
         int delta = _bottom.tabWidget->getSizeDelta();
         h -= ofs.height();
 
-        auto getCubeSize = [naviCubeSize](OverlayInfo &info) -> int {
-            float scale = info.tabWidget->_imageScale;
-            if (scale == 0.0) {
-                scale = info.tabWidget->titleBar->grab().devicePixelRatio();
-                if (scale == 0.0)
-                    scale = 1.0;
-            }
-            return naviCubeSize/scale + 10;
-        };
-
-        int cubeSize = getCubeSize(_bottom);
+        const int paddedCubeSize = naviCubeSize + 10;
         if(naviCorner == 2)
-            ofs.setWidth(ofs.width()+cubeSize);
+            ofs.setWidth(ofs.width()+paddedCubeSize);
         int bw = w-10-ofs.width()-delta;
         if(naviCorner == 3)
-            bw -= cubeSize;
+            bw -= paddedCubeSize;
         if(bw < 10)
             bw = 10;
 
@@ -648,12 +639,11 @@ public:
         rect = _left.tabWidget->getRect();
 
         ofs = _left.tabWidget->getOffset();
-        cubeSize = getCubeSize(_left);
         if(naviCorner == 0)
-            ofs.setWidth(ofs.width()+cubeSize);
+            ofs.setWidth(ofs.width()+paddedCubeSize);
         delta = _left.tabWidget->getSizeDelta()+rectBottom.height();
-        if(naviCorner == 2 && cubeSize > rectBottom.height())
-            delta += cubeSize - rectBottom.height();
+        if(naviCorner == 2 && paddedCubeSize > rectBottom.height())
+            delta += paddedCubeSize - rectBottom.height();
         int lh = std::max(h-ofs.width()-delta, 10);
 
         _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
@@ -667,12 +657,11 @@ public:
         rect = _right.tabWidget->getRect();
 
         ofs = _right.tabWidget->getOffset();
-        cubeSize = getCubeSize(_right);
         if(naviCorner == 1)
-            ofs.setWidth(ofs.width()+cubeSize);
+            ofs.setWidth(ofs.width()+paddedCubeSize);
         delta = _right.tabWidget->getSizeDelta()+rectBottom.height();
-        if(naviCorner == 3 && cubeSize > rectBottom.height())
-            delta += cubeSize - rectBottom.height();
+        if(naviCorner == 3 && paddedCubeSize > rectBottom.height())
+            delta += paddedCubeSize - rectBottom.height();
         int rh = std::max(h-ofs.width()-delta, 10);
         w -= ofs.height();
 
@@ -686,12 +675,11 @@ public:
         rect = _top.tabWidget->getRect();
 
         ofs = _top.tabWidget->getOffset();
-        cubeSize = getCubeSize(_top);
         delta = _top.tabWidget->getSizeDelta();
         if(naviCorner == 0)
-            rectLeft.setWidth(std::max(rectLeft.width(), cubeSize));
+            rectLeft.setWidth(std::max(rectLeft.width(), paddedCubeSize));
         else if(naviCorner == 1)
-            rectRight.setWidth(std::max(rectRight.width(), cubeSize));
+            rectRight.setWidth(std::max(rectRight.width(), paddedCubeSize));
         int tw = w-rectLeft.width()-rectRight.width()-ofs.width()-delta;
 
         _top.tabWidget->setRect(QRect(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height()));

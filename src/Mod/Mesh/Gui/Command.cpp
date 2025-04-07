@@ -26,6 +26,7 @@
 #include <windows.h>
 #endif
 #include <map>
+#include <limits>
 
 #include <QApplication>
 #include <QPointer>

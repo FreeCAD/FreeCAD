@@ -469,9 +469,9 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                 const auto& newName =
                     elementName.newName.size() ? elementName.newName : elementName.oldName;
                 if (oldName != newName) {
-                    FC_WARN(propertyName(this)
-                            << " auto change element reference " << ret->getFullName() << " "
-                            << oldName << " -> " << newName);
+                    FC_LOG(propertyName(this)
+                           << " auto change element reference " << ret->getFullName() << " "
+                           << oldName << " -> " << newName);
                 }
             }
         }

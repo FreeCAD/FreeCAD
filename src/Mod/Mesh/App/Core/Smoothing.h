@@ -23,6 +23,7 @@
 #ifndef MESH_SMOOTHING_H
 #define MESH_SMOOTHING_H
 
+#include <limits>
 #include <vector>
 
 #include "Definitions.h"

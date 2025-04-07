@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <algorithm>
+#include <limits>
 #endif
 
 #include <Base/Console.h>

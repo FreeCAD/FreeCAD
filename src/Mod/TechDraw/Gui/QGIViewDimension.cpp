@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <cmath>
+# include <limits>
 
 # include <QApplication>
 # include <QGraphicsRectItem>

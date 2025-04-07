@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 
 # include <cmath>
+# include <limits>
 
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>

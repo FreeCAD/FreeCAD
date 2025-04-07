@@ -23,6 +23,7 @@
 #ifndef DrawUtil_h_
 #define DrawUtil_h_
 
+#include <limits>
 #include <string>
 
 #include <QByteArray>

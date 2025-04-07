@@ -21,10 +21,15 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
+#include <limits>
+#endif
+
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/range.hpp>
 #include <boost/property_map/property_map.hpp>
 
-#include <boost/range.hpp>
-#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 

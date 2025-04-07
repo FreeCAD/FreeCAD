@@ -23,6 +23,7 @@
 #ifndef POINTS_GRID_H
 #define POINTS_GRID_H
 
+#include <limits>
 #include <set>
 
 #include <Base/BoundBox.h>
