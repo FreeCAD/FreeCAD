@@ -124,6 +124,7 @@ class BIM_ProjectManager:
             if not buildings:
                 buildings = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building"]
             if buildings:
+                from nativeifc import ifc_tools
                 self.building = buildings[0]
                 self.form.buildingName.setText(self.building.Label)
                 levels = ifc_tools.get_children(self.building, ifctype="IfcBuildingStorey")
