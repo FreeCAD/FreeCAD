@@ -3544,13 +3544,13 @@ int ExpressionParserlex();
 # pragma GCC diagnostic ignored "-Wfree-nonheap-object"
 #endif
 
-// Parser, defined in ExpressionParser.y
+// Parser, defined in Expression.y
 # define YYTOKENTYPE
-#include "ExpressionParser.tab.c"
+#include "Expression.tab.c"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in ExpressionParser.l
-#include "lex.ExpressionParser.c"
+// Scanner, defined in Expression.l
+#include "Expression.lex.c"
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 class StringBufferCleaner
