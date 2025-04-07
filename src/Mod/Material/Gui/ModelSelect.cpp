@@ -389,7 +389,7 @@ void ModelSelect::createModelProperties()
 void ModelSelect::updateModelProperties(std::shared_ptr<Materials::Model> model)
 {
     QTableView* table = ui->tableProperties;
-    auto tableModel = dynamic_cast<QStandardItemModel*>(table->model());
+    auto tableModel = qobject_cast<QStandardItemModel*>(table->model());
     tableModel->clear();
 
     setHeaders(tableModel);
@@ -454,7 +454,7 @@ void ModelSelect::clearMaterialModel()
     ui->tabWidget->setTabText(1, tr("Properties"));
 
     QTableView* table = ui->tableProperties;
-    auto tableModel = dynamic_cast<QStandardItemModel*>(table->model());
+    auto tableModel = qobject_cast<QStandardItemModel*>(table->model());
     tableModel->clear();
 
     setHeaders(tableModel);
@@ -465,7 +465,7 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
 {
     Q_UNUSED(deselected);
 
-    auto model = dynamic_cast<QStandardItemModel*>(ui->treeModels->model());
+    auto model = qobject_cast<QStandardItemModel*>(ui->treeModels->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++) {
         QStandardItem* item = model->itemFromIndex(*it);
