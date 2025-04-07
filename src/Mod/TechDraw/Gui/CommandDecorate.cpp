@@ -349,7 +349,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 // currently looking at that page
 bool CmdTechDrawToggleFrame::isActive()
 {
-    auto mvp = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    auto mvp = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
     if (!mvp) {
         return false;
     }
