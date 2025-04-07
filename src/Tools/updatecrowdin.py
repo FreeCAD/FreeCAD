@@ -127,11 +127,6 @@ locations = [
     ],
     ["Base", "../Base/Resources/translations", "../Base/Resources/Base.qrc"],
     [
-        "Drawing",
-        "../Mod/Drawing/Gui/Resources/translations",
-        "../Mod/Drawing/Gui/Resources/Drawing.qrc",
-    ],
-    [
         "Fem",
         "../Mod/Fem/Gui/Resources/translations",
         "../Mod/Fem/Gui/Resources/Fem.qrc",
