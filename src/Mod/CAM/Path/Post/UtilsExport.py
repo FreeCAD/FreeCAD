@@ -5,7 +5,7 @@
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *   Copyright (c) 2018, 2019 Gauthier Briere                              *
 # *   Copyright (c) 2019, 2020 Schildkroet                                  *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2022-2025 Larry Woestman <LarryWoestman2@gmail.com>     *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -54,104 +54,96 @@ def check_canned_cycles(values: Values) -> None:
 def output_coolant_off(values: Values, gcode: Gcode, coolant_mode: str) -> None:
     """Output the commands to turn coolant off if necessary."""
     comment: str
-    nl: str = "\n"
 
     if values["ENABLE_COOLANT"] and coolant_mode != "None":
         if values["OUTPUT_COMMENTS"]:
             comment = PostUtilsParse.create_comment(values, f"Coolant Off: {coolant_mode}")
-            gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}M9{nl}")
+            gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}M9")
 
 
 def output_coolant_on(values: Values, gcode: Gcode, coolant_mode: str) -> None:
     """Output the commands to turn coolant on if necessary."""
     comment: str
-    nl: str = "\n"
 
     if values["ENABLE_COOLANT"]:
         if values["OUTPUT_COMMENTS"] and coolant_mode != "None":
             comment = PostUtilsParse.create_comment(values, f"Coolant On: {coolant_mode}")
-            gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+            gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
         if coolant_mode == "Flood":
-            gcode.append(f"{PostUtilsParse.linenumber(values)}M8{nl}")
+            gcode.append(f"{PostUtilsParse.linenumber(values)}M8")
         elif coolant_mode == "Mist":
-            gcode.append(f"{PostUtilsParse.linenumber(values)}M7{nl}")
+            gcode.append(f"{PostUtilsParse.linenumber(values)}M7")
 
 
 def output_end_bcnc(values: Values, gcode: Gcode) -> None:
     """Output the ending BCNC header."""
     comment: str
-    nl: str = "\n"
 
     if values["OUTPUT_BCNC"]:
         comment = PostUtilsParse.create_comment(values, "Block-name: post_amble")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
         comment = PostUtilsParse.create_comment(values, "Block-expand: 0")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
         comment = PostUtilsParse.create_comment(values, "Block-enable: 1")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
 
 
 def output_header(values: Values, gcode: Gcode) -> None:
     """Output the header."""
     cam_file: str
     comment: str
-    nl: str = "\n"
 
     if not values["OUTPUT_HEADER"]:
         return
     comment = PostUtilsParse.create_comment(values, "Exported by FreeCAD")
-    gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+    gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
     comment = PostUtilsParse.create_comment(
         values, f'Post Processor: {values["POSTPROCESSOR_FILE_NAME"]}'
     )
-    gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+    gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
     if FreeCAD.ActiveDocument:
         cam_file = os.path.basename(FreeCAD.ActiveDocument.FileName)
     else:
         cam_file = "<None>"
     comment = PostUtilsParse.create_comment(values, f"Cam File: {cam_file}")
-    gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+    gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
     comment = PostUtilsParse.create_comment(values, f"Output Time: {str(datetime.datetime.now())}")
-    gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+    gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
 
 
 def output_motion_mode(values: Values, gcode: Gcode) -> None:
     """Verify if PREAMBLE or SAFETYBLOCK have changed MOTION_MODE."""
-    nl: str = "\n"
 
     if "G90" in values["PREAMBLE"] or "G90" in values["SAFETYBLOCK"]:
         values["MOTION_MODE"] = "G90"
     elif "G91" in values["PREAMBLE"] or "G91" in values["SAFETYBLOCK"]:
         values["MOTION_MODE"] = "G91"
     else:
-        gcode.append(f'{PostUtilsParse.linenumber(values)}{values["MOTION_MODE"]}{nl}')
+        gcode.append(f'{PostUtilsParse.linenumber(values)}{values["MOTION_MODE"]}')
 
 
 def output_postamble_header(values: Values, gcode: Gcode) -> None:
     """Output the postamble header."""
     comment: str = ""
-    nl: str = "\n"
 
     if values["OUTPUT_COMMENTS"]:
         comment = PostUtilsParse.create_comment(values, "Begin postamble")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
 
 
 def output_postamble(values: Values, gcode: Gcode) -> None:
     """Output the postamble."""
     line: str
-    nl: str = "\n"
 
     for line in values["POSTAMBLE"].splitlines(False):
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}")
 
 
 def output_postop(values: Values, gcode: Gcode, obj) -> None:
     """Output the post-operation information."""
     comment: str
     line: str
-    nl: str = "\n"
 
     if values["OUTPUT_COMMENTS"]:
         if values["SHOW_OPERATION_LABELS"]:
@@ -160,55 +152,52 @@ def output_postop(values: Values, gcode: Gcode, obj) -> None:
             )
         else:
             comment = PostUtilsParse.create_comment(values, f'{values["FINISH_LABEL"]} operation')
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
     for line in values["POST_OPERATION"].splitlines(False):
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}")
 
 
 def output_preamble(values: Values, gcode: Gcode) -> None:
     """Output the preamble."""
     comment: str
     line: str
-    nl: str = "\n"
 
     if values["OUTPUT_COMMENTS"]:
         comment = PostUtilsParse.create_comment(values, "Begin preamble")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
     for line in values["PREAMBLE"].splitlines(False):
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}")
 
 
 def output_preop(values: Values, gcode: Gcode, obj) -> None:
     """Output the pre-operation information."""
     comment: str
     line: str
-    nl: str = "\n"
 
     if values["OUTPUT_COMMENTS"]:
         if values["SHOW_OPERATION_LABELS"]:
             comment = PostUtilsParse.create_comment(values, f"Begin operation: {obj.Label}")
         else:
             comment = PostUtilsParse.create_comment(values, "Begin operation")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
         if values["SHOW_MACHINE_UNITS"]:
             comment = PostUtilsParse.create_comment(
                 values, f'Machine units: {values["UNIT_SPEED_FORMAT"]}'
             )
-            gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+            gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
         if values["OUTPUT_MACHINE_NAME"]:
             comment = PostUtilsParse.create_comment(
                 values,
                 f'Machine: {values["MACHINE_NAME"]}, {values["UNIT_SPEED_FORMAT"]}',
             )
-            gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+            gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
     for line in values["PRE_OPERATION"].splitlines(False):
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}")
 
 
 def output_return_to(values: Values, gcode: Gcode) -> None:
     """Output the RETURN_TO command."""
     cmd: str
-    nl: str = "\n"
     num_x: str
     num_y: str
     num_z: str
@@ -220,56 +209,51 @@ def output_return_to(values: Values, gcode: Gcode) -> None:
         cmd = PostUtilsParse.format_command_line(
             values, ["G0", f"X{num_x}", f"Y{num_y}", f"Z{num_z}"]
         )
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{cmd}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{cmd}")
 
 
 def output_safetyblock(values: Values, gcode: Gcode) -> None:
     """Output the safety block."""
     line: str
-    nl: str = "\n"
 
     for line in values["SAFETYBLOCK"].splitlines(False):
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}")
 
 
 def output_start_bcnc(values: Values, gcode: Gcode, obj) -> None:
     """Output the starting BCNC header."""
     comment: str
-    nl: str = "\n"
 
     if values["OUTPUT_BCNC"]:
         comment = PostUtilsParse.create_comment(values, f"Block-name: {obj.Label}")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
         comment = PostUtilsParse.create_comment(values, "Block-expand: 0")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
         comment = PostUtilsParse.create_comment(values, "Block-enable: 1")
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
 
 
 def output_tool_list(values: Values, gcode: Gcode, objectslist) -> None:
     """Output a list of the tools used in the objects."""
     comment: str
-    nl: str = "\n"
 
     if values["OUTPUT_COMMENTS"] and values["LIST_TOOLS_IN_PREAMBLE"]:
         for item in objectslist:
             if hasattr(item, "Proxy") and isinstance(item.Proxy, PathToolController.ToolController):
                 comment = PostUtilsParse.create_comment(values, f"T{item.ToolNumber}={item.Name}")
-                gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
+                gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}")
 
 
 def output_tool_return(values: Values, gcode: Gcode) -> None:
     """Output the tool return block."""
     line: str
-    nl: str = "\n"
 
     for line in values["TOOLRETURN"].splitlines(False):
-        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}{nl}")
+        gcode.append(f"{PostUtilsParse.linenumber(values)}{line}")
 
 
 def output_units(values: Values, gcode: Gcode) -> None:
     """Verify if PREAMBLE or SAFETYBLOCK have changed UNITS."""
-    nl: str = "\n"
 
     if "G21" in values["PREAMBLE"] or "G21" in values["SAFETYBLOCK"]:
         values["UNITS"] = "G21"
@@ -280,7 +264,7 @@ def output_units(values: Values, gcode: Gcode) -> None:
         values["UNIT_FORMAT"] = "in"
         values["UNIT_SPEED_FORMAT"] = "in/min"
     else:
-        gcode.append(f'{PostUtilsParse.linenumber(values)}{values["UNITS"]}{nl}')
+        gcode.append(f'{PostUtilsParse.linenumber(values)}{values["UNITS"]}')
 
 
 def export_common(values: Values, objectslist, filename: str) -> str:
@@ -288,8 +272,8 @@ def export_common(values: Values, objectslist, filename: str) -> str:
     coolant_mode: str
     dia: PostUtils.GCodeEditorDialog
     final: str
+    final_for_editor: str
     gcode: Gcode = []
-    result: bool
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -333,24 +317,63 @@ def export_common(values: Values, objectslist, filename: str) -> str:
     output_safetyblock(values, gcode)
     output_postamble(values, gcode)
 
-    final = "".join(gcode)
+    # add the appropriate end-of-line characters to the gcode, including after the last line
+    gcode.append("")
+    if values["END_OF_LINE_CHARACTERS"] == "\n\n":
+        # flag that we want to use "\n" as the end-of-line characters
+        # by putting "\n\n" at the front of the gcode (which shouldn't otherwise happen)
+        final = "\n\n" + "\n".join(gcode)
+    else:
+        # the other possibilities are:
+        #    "\n"   means "use the end-of-line characters that match the system"
+        #    "\r"   means "use \r"
+        #    "\r\n" means "use \r\n"
+        final = values["END_OF_LINE_CHARACTERS"].join(gcode)
 
     if FreeCAD.GuiUp and values["SHOW_EDITOR"]:
         if len(final) > 100000:
             print("Skipping editor since output is greater than 100kb")
         else:
             dia = PostUtils.GCodeEditorDialog()
-            dia.editor.setText(final)
-            result = dia.exec_()
-            if result:
-                final = dia.editor.toPlainText()
+            # the editor expects lines to end in "\n", and returns lines ending in "\n"
+            if values["END_OF_LINE_CHARACTERS"] == "\n":
+                dia.editor.setText(final)
+                if dia.exec_():
+                    final = dia.editor.toPlainText()
+            else:
+                final_for_editor = "\n".join(gcode)
+                dia.editor.setText(final_for_editor)
+                if dia.exec_():
+                    final_for_editor = dia.editor.toPlainText()
+                    # convert all "\n" to the appropriate end-of-line characters
+                    if values["END_OF_LINE_CHARACTERS"] == "\n\n":
+                        # flag that we want to use "\n" as the end-of-line characters
+                        # by putting "\n\n" at the front of the gcode
+                        # (which shouldn't otherwise happen)
+                        final = "\n\n" + final_for_editor
+                    else:
+                        # the other possibilities are:
+                        #    "\r"   means "use \r"
+                        #    "\r\n" means "use \r\n"
+                        final = final_for_editor.replace("\n", values["END_OF_LINE_CHARACTERS"])
 
     print("done postprocessing.")
 
     if not filename == "-":
-        with open(
-            filename, "w", encoding="utf-8", newline=values["END_OF_LINE_CHARACTERS"]
-        ) as gfile:
-            gfile.write(final)
+        if final[0:2] == "\n\n":
+            # write out the gcode using "\n" as the end-of-line characters
+            with open(filename, "w", encoding="utf-8", newline="") as gfile:
+                gfile.write(final[2:])
+        elif "\r" in final:
+            with open(filename, "w", encoding="utf-8", newline="") as gfile:
+                # write out the gcode with whatever end-of-line characters it already has,
+                # presumably either "\r" or "\r\n"
+                gfile.write(final)
+        else:
+            with open(filename, "w", encoding="utf-8", newline=None) as gfile:
+                # The gcode has "\n" as the end-of-line characters, which means
+                # "write out the gcode with whatever end-of-line characters the system
+                # that is running the postprocessor uses".
+                gfile.write(final)
 
     return final

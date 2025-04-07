@@ -55,7 +55,6 @@ def check_for_an_adaptive_op(
 ) -> str:
     """Check to see if the current command is an adaptive op."""
     adaptiveOp: bool
-    nl: str = "\n"
     opHorizRapid: float
     opVertRapid: float
 
@@ -63,7 +62,7 @@ def check_for_an_adaptive_op(
     if values["OUTPUT_ADAPTIVE"] and adaptiveOp and command in values["RAPID_MOVES"]:
         if opHorizRapid and opVertRapid:
             return "G1"
-        command_line.append(f"(Tool Controller Rapid Values are unset){nl}")
+        command_line.append(f"(Tool Controller Rapid Values are unset)")
     return ""
 
 
@@ -78,12 +77,11 @@ def check_for_drill_translate(
 ) -> bool:
     """Check for drill commands to translate."""
     comment: str
-    nl: str = "\n"
 
     if values["TRANSLATE_DRILL_CYCLES"] and command in values["DRILL_CYCLES_TO_TRANSLATE"]:
         if values["OUTPUT_COMMENTS"]:  # Comment the original command
             comment = create_comment(values, format_command_line(values, command_line))
-            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            gcode.append(f"{linenumber(values)}{comment}")
         # wrap this block to ensure that the value of values["MOTION_MODE"]
         # is restored in case of error
         try:
@@ -100,7 +98,7 @@ def check_for_drill_translate(
         # drill_translate uses G90 mode internally, so need to
         # switch back to G91 mode if it was that way originally
         if values["MOTION_MODE"] == "G91":
-            gcode.append(f"{linenumber(values)}G91{nl}")
+            gcode.append(f"{linenumber(values)}G91")
         return True
     return False
 
@@ -108,7 +106,6 @@ def check_for_drill_translate(
 def check_for_machine_specific_commands(values: Values, gcode: Gcode, command: str) -> None:
     """Check for comments containing machine-specific commands."""
     m: object
-    nl: str = "\n"
     raw_command: str
 
     if values["ENABLE_MACHINE_SPECIFIC_COMMANDS"]:
@@ -116,7 +113,7 @@ def check_for_machine_specific_commands(values: Values, gcode: Gcode, command: s
         if m:
             raw_command = m.group(1)
             # pass literally to the controller
-            gcode.append(f"{linenumber(values)}{raw_command}{nl}")
+            gcode.append(f"{linenumber(values)}{raw_command}")
 
 
 def check_for_spindle_wait(
@@ -124,12 +121,11 @@ def check_for_spindle_wait(
 ) -> None:
     """Check for commands that might need a wait command after them."""
     cmd: str
-    nl: str = "\n"
 
     if values["SPINDLE_WAIT"] > 0 and command in ("M3", "M03", "M4", "M04"):
-        gcode.append(f"{linenumber(values)}{format_command_line(values, command_line)}{nl}")
+        gcode.append(f"{linenumber(values)}{format_command_line(values, command_line)}")
         cmd = format_command_line(values, ["G4", f'P{values["SPINDLE_WAIT"]}'])
-        gcode.append(f"{linenumber(values)}{cmd}{nl}")
+        gcode.append(f"{linenumber(values)}{cmd}")
 
 
 def check_for_suppressed_commands(
@@ -137,13 +133,12 @@ def check_for_suppressed_commands(
 ) -> bool:
     """Check for commands that will be suppressed."""
     comment: str
-    nl: str = "\n"
 
     if command in values["SUPPRESS_COMMANDS"]:
         if values["OUTPUT_COMMENTS"]:
             # convert the command to a comment
             comment = create_comment(values, format_command_line(values, command_line))
-            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            gcode.append(f"{linenumber(values)}{comment}")
         # remove the command
         return True
     return False
@@ -151,34 +146,32 @@ def check_for_suppressed_commands(
 
 def check_for_tlo(values: Values, gcode: Gcode, command: str, params: PathParameters) -> None:
     """Output a tool length command if USE_TLO is True."""
-    nl: str = "\n"
 
     if command in ("M6", "M06") and values["USE_TLO"]:
         cmd = format_command_line(values, ["G43", f'H{str(int(params["T"]))}'])
-        gcode.append(f"{linenumber(values)}{cmd}{nl}")
+        gcode.append(f"{linenumber(values)}{cmd}")
 
 
 def check_for_tool_change(
     values: Values, gcode: Gcode, command: str, command_line: CommandLine
 ) -> bool:
     """Check for a tool change."""
-    nl: str = "\n"
 
     if command in ("M6", "M06"):
         if values["OUTPUT_COMMENTS"]:
             comment = create_comment(values, "Begin toolchange")
-            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            gcode.append(f"{linenumber(values)}{comment}")
         if values["OUTPUT_TOOL_CHANGE"]:
             if values["STOP_SPINDLE_FOR_TOOL_CHANGE"]:
                 # stop the spindle
-                gcode.append(f"{linenumber(values)}M5{nl}")
+                gcode.append(f"{linenumber(values)}M5")
             for line in values["TOOL_CHANGE"].splitlines(False):
-                gcode.append(f"{linenumber(values)}{line}{nl}")
+                gcode.append(f"{linenumber(values)}{line}")
             return False
         if values["OUTPUT_COMMENTS"]:
             # convert the tool change to a comment
             comment = create_comment(values, format_command_line(values, command_line))
-            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            gcode.append(f"{linenumber(values)}{comment}")
         return True
     return False
 
@@ -425,14 +418,13 @@ def drill_translate(
     drill_y: float
     drill_z: float
     motion_z: float
-    nl: str = "\n"
     retract_z: float
     F_feedrate: str
     G0_retract_z: str
 
     if values["MOTION_MODE"] == "G91":
         # force absolute coordinates during cycles
-        gcode.append(f"{linenumber(values)}G90{nl}")
+        gcode.append(f"{linenumber(values)}G90")
 
     drill_x = Units.Quantity(params["X"], Units.Length)
     drill_y = Units.Quantity(params["Y"], Units.Length)
@@ -440,7 +432,7 @@ def drill_translate(
     retract_z = Units.Quantity(params["R"], Units.Length)
     if retract_z < drill_z:  # R less than Z is error
         comment = create_comment(values, "Drill cycle error: R less than Z")
-        gcode.append(f"{linenumber(values)}{comment}{nl}")
+        gcode.append(f"{linenumber(values)}{comment}")
         return
     motion_z = Units.Quantity(motion_location["Z"], Units.Length)
     if values["MOTION_MODE"] == "G91":  # relative movements
@@ -452,9 +444,9 @@ def drill_translate(
         retract_z = motion_z
 
     cmd = format_command_line(values, ["G0", f"Z{format_for_axis(values, retract_z)}"])
-    G0_retract_z = f"{cmd}{nl}"
+    G0_retract_z = f"{cmd}"
     cmd = format_for_feed(values, Units.Quantity(params["F"], Units.Velocity))
-    F_feedrate = f'{values["COMMAND_SPACE"]}F{cmd}{nl}'
+    F_feedrate = f'{values["COMMAND_SPACE"]}F{cmd}'
 
     # preliminary movement(s)
     if motion_z < retract_z:
@@ -467,7 +459,7 @@ def drill_translate(
             f"Y{format_for_axis(values, drill_y)}",
         ],
     )
-    gcode.append(f"{linenumber(values)}{cmd}{nl}")
+    gcode.append(f"{linenumber(values)}{cmd}")
     if motion_z > retract_z:
         # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to retract_z
         # Here use G1 since retract height may be below surface !
@@ -588,7 +580,6 @@ def output_G73_G83_drill_moves(
     drill_step: float
     last_stop_z: float
     next_stop_z: float
-    nl: str = "\n"
 
     last_stop_z = retract_z
     drill_step = Units.Quantity(params["Q"], Units.Length)
@@ -603,7 +594,7 @@ def output_G73_G83_drill_moves(
                     values,
                     ["G0", f"Z{format_for_axis(values, clearance_depth)}"],
                 )
-                gcode.append(f"{linenumber(values)}{cmd}{nl}")
+                gcode.append(f"{linenumber(values)}{cmd}")
             next_stop_z = last_stop_z - drill_step
             if next_stop_z > drill_z:
                 cmd = format_command_line(
@@ -620,7 +611,7 @@ def output_G73_G83_drill_moves(
                             f"Z{format_for_axis(values, chip_breaker_height)}",
                         ],
                     )
-                    gcode.append(f"{linenumber(values)}{cmd}{nl}")
+                    gcode.append(f"{linenumber(values)}{cmd}")
                 elif command == "G83":
                     # Rapid up to the retract height
                     gcode.append(f"{linenumber(values)}{G0_retract_z}")
@@ -643,26 +634,24 @@ def output_G81_G82_drill_moves(
 ) -> None:
     """Output the movement G code for G81 and G82."""
     cmd: str
-    nl: str = "\n"
 
     cmd = format_command_line(values, ["G1", f"Z{format_for_axis(values, drill_z)}"])
     gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}")
     # pause where applicable
     if command == "G82":
         cmd = format_command_line(values, ["G4", f'P{str(params["P"])}'])
-        gcode.append(f"{linenumber(values)}{cmd}{nl}")
+        gcode.append(f"{linenumber(values)}{cmd}")
     gcode.append(f"{linenumber(values)}{G0_retract_z}")
 
 
 def parse_a_group(values: Values, gcode: Gcode, pathobj) -> None:
     """Parse a Group (compound, project, or simple path)."""
     comment: str
-    nl: str = "\n"
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         if values["OUTPUT_COMMENTS"]:
             comment = create_comment(values, f"Compound: {pathobj.Label}")
-            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            gcode.append(f"{linenumber(values)}{comment}")
         for p in pathobj.Group:
             parse_a_group(values, gcode, p)
     else:  # parsing simple path
@@ -671,7 +660,7 @@ def parse_a_group(values: Values, gcode: Gcode, pathobj) -> None:
             return
         if values["OUTPUT_PATH_LABELS"] and values["OUTPUT_COMMENTS"]:
             comment = create_comment(values, f"Path: {pathobj.Label}")
-            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            gcode.append(f"{linenumber(values)}{comment}")
         parse_a_path(values, gcode, pathobj)
 
 
@@ -685,7 +674,6 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     drill_retract_mode: str = "G98"
     lastcommand: str = ""
     motion_location: PathParameters = {}  # keep track of last motion location
-    nl: str = "\n"
     parameter: str
     parameter_value: str
 
@@ -784,13 +772,13 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
                     command_line[1],
                     command_line[0],
                 ]  # swap the order of the commands
-                # Add a line number to the front and a newline to the end of the command line
+                # Add a line number to the front of the command line
                 gcode.append(
-                    f"{linenumber(values)}{format_command_line(values, swapped_command_line)}{nl}"
+                    f"{linenumber(values)}{format_command_line(values, swapped_command_line)}"
                 )
             else:
-                # Add a line number to the front and a newline to the end of the command line
-                gcode.append(f"{linenumber(values)}{format_command_line(values, command_line)}{nl}")
+                # Add a line number to the front of the command line
+                gcode.append(f"{linenumber(values)}{format_command_line(values, command_line)}")
 
         check_for_tlo(values, gcode, command, c.Parameters)
         check_for_machine_specific_commands(values, gcode, command)
