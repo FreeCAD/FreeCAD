@@ -4746,13 +4746,13 @@ QWidget* PropertyLinkItem::createEditor(QWidget* parent,
 void PropertyLinkItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     (void)data;
-    auto ll = dynamic_cast<LinkLabel*>(editor);
+    auto ll = qobject_cast<LinkLabel*>(editor);
     return ll->updatePropertyLink();
 }
 
 QVariant PropertyLinkItem::editorData(QWidget* editor) const
 {
-    auto ll = dynamic_cast<LinkLabel*>(editor);
+    auto ll = qobject_cast<LinkLabel*>(editor);
     return ll->propertyLink();
 }
 

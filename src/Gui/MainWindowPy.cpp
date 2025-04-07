@@ -127,7 +127,7 @@ Py::Object MainWindowPy::getWindows(const Py::Tuple& args)
     if (_mw) {
         QList<QWidget*> windows = _mw->windows();
         for (auto it : windows) {
-            auto view = qobject_cast<MDIView*>(it);
+            auto view = dynamic_cast<MDIView*>(it);
             if (view) {
                 mdis.append(Py::asObject(view->getPyObject()));
             }
@@ -149,7 +149,7 @@ Py::Object MainWindowPy::getWindowsOfType(const Py::Tuple& args)
     if (_mw) {
         QList<QWidget*> windows = _mw->windows();
         for (auto it : windows) {
-            auto view = qobject_cast<MDIView*>(it);
+            auto view = dynamic_cast<MDIView*>(it);
             if (view && view->isDerivedFrom(typeId)) {
                 mdis.append(Py::asObject(view->getPyObject()));
             }
