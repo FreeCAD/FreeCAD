@@ -3795,9 +3795,11 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     return 0;
 }
 
-// clang-format off
-
-int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketcher::PointPos posId2, int continuity)
+int SketchObject::join(int geoId1,
+                       Sketcher::PointPos posId1,
+                       int geoId2,
+                       Sketcher::PointPos posId2,
+                       int continuity)
 {
     // No need to check input data validity as this is an sketchobject managed operation
 
@@ -3827,6 +3829,7 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
         THROWM(ValueError, "Cannot join construction and non-construction geometries.");
         return -1;
     }
+    bool areOriginalCurvesConstruction = GeometryFacade::getConstruction(geo1);
 
     // TODO: make both curves b-splines here itself
     if (!geo1 || !geo2) {
@@ -3847,16 +3850,20 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
     }
 
     // reverse the splines if needed: join end of 1st to start of 2nd
-    if (Sketcher::PointPos::start == posId1)
+    if (Sketcher::PointPos::start == posId1) {
         bsp1->reverse();
-    if (Sketcher::PointPos::end == posId2)
+    }
+    if (Sketcher::PointPos::end == posId2) {
         bsp2->reverse();
+    }
 
     // ensure the degrees of both curves are the same
-    if (bsp1->getDegree() < bsp2->getDegree())
+    if (bsp1->getDegree() < bsp2->getDegree()) {
         bsp1->increaseDegree(bsp2->getDegree());
-    else if (bsp2->getDegree() < bsp1->getDegree())
+    }
+    else if (bsp2->getDegree() < bsp1->getDegree()) {
         bsp2->increaseDegree(bsp1->getDegree());
+    }
 
     // TODO: Check for tangent constraint here
     bool makeC1Continuous = (continuity >= 1);
@@ -3892,16 +3899,18 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
     std::vector<int> newMults(std::move(mults1));
 
     poles2.erase(poles2.begin());
-    if (makeC1Continuous)
-        newPoles.erase(newPoles.end()-1);
+    if (makeC1Continuous) {
+        newPoles.erase(newPoles.end() - 1);
+    }
     newPoles.insert(newPoles.end(),
                     std::make_move_iterator(poles2.begin()),
                     std::make_move_iterator(poles2.end()));
 
     // TODO: Weights might need to be scaled
     weights2.erase(weights2.begin());
-    if (makeC1Continuous)
-        newWeights.erase(newWeights.end()-1);
+    if (makeC1Continuous) {
+        newWeights.erase(newWeights.end() - 1);
+    }
     newWeights.insert(newWeights.end(),
                       std::make_move_iterator(weights2.begin()),
                       std::make_move_iterator(weights2.end()));
@@ -3909,8 +3918,9 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
     // knots of the second spline come after all of the first
     double offset = newKnots.back() - knots2.front();
     knots2.erase(knots2.begin());
-    for (auto& knot : knots2)
+    for (auto& knot : knots2) {
         knot += offset;
+    }
     newKnots.insert(newKnots.end(),
                     std::make_move_iterator(knots2.begin()),
                     std::make_move_iterator(knots2.end()));
@@ -3928,32 +3938,33 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
                     std::make_move_iterator(mults2.begin()),
                     std::make_move_iterator(mults2.end()));
 
-    auto* newSpline = new Part::GeomBSplineCurve(
-        newPoles, newWeights, newKnots, newMults, bsp1->getDegree(), false, true);
+    auto* newSpline = new Part::GeomBSplineCurve(newPoles,
+                                                 newWeights,
+                                                 newKnots,
+                                                 newMults,
+                                                 bsp1->getDegree(),
+                                                 false,
+                                                 true);
 
-    int newGeoId = addGeometry(newSpline);
+    // int newGeoId = addGeometry(newSpline);
+    std::vector<Part::Geometry*> newGeos {newSpline};
+    replaceGeometries({geoId1, geoId2}, newGeos);
 
-    if (newGeoId < 0) {
-        THROWM(ValueError, "Failed to create joined curve.");
-        return -1;
-    }
-
-    exposeInternalGeometry(newGeoId);
-    setConstruction(newGeoId, GeometryFacade::getConstruction(geo1));
+    exposeInternalGeometry(geoId1);
+    setConstruction(geoId1, areOriginalCurvesConstruction);
 
     // TODO: transfer constraints on the non-connected ends
-    auto otherPosId1 = (Sketcher::PointPos::start == posId1) ? Sketcher::PointPos::end
-        : Sketcher::PointPos::start;
-    auto otherPosId2 = (Sketcher::PointPos::start == posId2) ? Sketcher::PointPos::end
-        : Sketcher::PointPos::start;
+    auto otherPosId1 =
+        (Sketcher::PointPos::start == posId1) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    auto otherPosId2 =
+        (Sketcher::PointPos::start == posId2) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 
-    transferConstraints(geoId1, otherPosId1, newGeoId, PointPos::start, true);
-    transferConstraints(geoId2, otherPosId2, newGeoId, PointPos::end, true);
-
-    delGeometries({geoId1, geoId2});
+    transferConstraints(geoId1, otherPosId1, geoId1, PointPos::start, true);
+    transferConstraints(geoId2, otherPosId2, geoId1, PointPos::end, true);
 
     return 0;
 }
+// clang-format off
 
 bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* pObj,
                                      eReasonList* rsn) const
