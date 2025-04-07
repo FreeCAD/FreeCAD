@@ -767,12 +767,11 @@ class Component(ArchIFC.IfcProduct):
         # treat subtractions
         subs = obj.Subtractions
         for link in obj.InListRecursive:
-            if hasattr(link,"Hosts"):
-                if link.Hosts:
-                    if obj in link.Hosts:
-                        subs.append(link)
-            elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
-                if link.Host == obj:
+            if hasattr(link,"Host"):
+                if Draft.getType(link) != "Rebar" and link.Host == obj and not self._objectInInternalLinkgroup(link):
+                    subs.append(link)
+            elif hasattr(link,"Hosts"):
+                if obj in link.Hosts and not self._objectInInternalLinkgroup(link):
                     subs.append(link)
         for o in subs:
             if base:
@@ -1143,13 +1142,11 @@ class Component(ArchIFC.IfcProduct):
 
         for link in obj.InListRecursive:
             if hasattr(link,"Host"):
-                if link.Host:
-                    if link.Host == obj:
-                        hosts.append(link)
+                if link.Host == obj and not self._objectInInternalLinkgroup(link):
+                    hosts.append(link)
             elif hasattr(link,"Hosts"):
-                if link.Hosts:
-                    if obj in link.Hosts:
-                        hosts.append(link)
+                if obj in link.Hosts and not self._objectInInternalLinkgroup(link):
+                    hosts.append(link)
         return hosts
 
     def ensureBase(self, obj):
@@ -1169,6 +1166,27 @@ class Component(ArchIFC.IfcProduct):
                     t = translate("Arch","Wrong base type")
                     FreeCAD.Console.PrintError(obj.Label+": "+t+"\n")
                     return False
+
+    def _isInternalLinkgroup(self, obj):
+        """Returns True if obj is an internal LinkGroup. Such a group is used to
+        store hidden objects used for variant Links that should not be hosted."""
+
+        # based on code by bdm
+        # https://forum.freecad.org/viewtopic.php?p=820487#p820428
+        if obj.TypeId != "App::LinkGroup":
+            return False
+        for inObj in obj.InList:
+            if getattr(inObj, "LinkCopyOnChangeGroup", None) is obj:
+                return True
+        return False
+
+    def _objectInInternalLinkgroup(self, obj):
+        """Returns True if obj is a hidden object in an internal LinkGroup."""
+
+        for inObj in obj.InList:
+            if self._isInternalLinkgroup(inObj):
+                return True
+        return False
 
 
 class ViewProviderComponent:
