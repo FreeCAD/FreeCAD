@@ -1,6 +1,7 @@
-#line 1 "lex.ExpressionParser.c"
+// clang-format off
+#line 2 "Expression.lex.c"
 
-#line 3 "lex.ExpressionParser.c"
+#line 4 "Expression.lex.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -293,7 +294,7 @@
 #if defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 
 /* C99 says to define __STDC_LIMIT_MACROS before including stdint.h,
- * if you want the limit (max/min) macros for int types. 
+ * if you want the limit (max/min) macros for int types.
  */
 #ifndef __STDC_LIMIT_MACROS
 #define __STDC_LIMIT_MACROS 1
@@ -310,7 +311,7 @@ typedef uint32_t flex_uint32_t;
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
 typedef int flex_int32_t;
-typedef unsigned char flex_uint8_t; 
+typedef unsigned char flex_uint8_t;
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
 
@@ -421,10 +422,10 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_CONTINUE_SCAN 0
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
-    
+
     #define YY_LESS_LINENO(n)
     #define YY_LINENO_REWIND_TO(ptr)
-    
+
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
 	do \
@@ -8560,8 +8561,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "ExpressionParser.l"
-#line 2 "ExpressionParser.l"
+#line 1 "Expression.l"
+#line 2 "Expression.l"
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -8585,14 +8586,7 @@ char *yytext;
  *                                                                         *
  ***************************************************************************/
 
-/* Lexer for the FreeCAD Expression language   */
-
-/* use this file to generate the file 'lex.ExpressionParser.c' using the program flex
- * the command for this operation is:
- * flex --outfile=lex.ExpressionParser.c ExpressionParser.l
- * (flex for Windows is available here:
- *  https://sourceforge.net/projects/winflexbison/
- *  (you must then change 'flex' to 'win_flex' in the command)) */
+/* Lexer for the FreeCAD Expression language */
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
@@ -8608,14 +8602,14 @@ extern int column;
 
 #define COUNTCHARS do { last_column = column; column += yyleng; } while (0)
 
-#line 8611 "lex.ExpressionParser.c"
+#line 8605 "Expression.lex.c"
 /*** Flex Declarations and Options ***/
 /* change the name of the scanner class. */
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 /* UTF-8 unicode regular expressions. */
 /* http://www.unicode.org/reports/tr44/#General_Category_Values */
-#line 8618 "lex.ExpressionParser.c"
+#line 8612 "Expression.lex.c"
 
 #define INITIAL 0
 
@@ -8675,7 +8669,7 @@ extern int yywrap ( void );
 #endif
 
 #ifndef YY_NO_UNPUT
-    
+
 #endif
 
 #ifndef yytext_ptr
@@ -8802,7 +8796,7 @@ YY_DECL
 	yy_state_type yy_current_state;
 	char *yy_cp, *yy_bp;
 	int yy_act;
-    
+
 	if ( !(yy_init) )
 		{
 		(yy_init) = 1;
@@ -8830,10 +8824,10 @@ YY_DECL
 		}
 
 	{
-#line 170 "ExpressionParser.l"
+#line 163 "Expression.l"
 
 
-#line 8836 "lex.ExpressionParser.c"
+#line 8830 "Expression.lex.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -8888,751 +8882,751 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 172 "ExpressionParser.l"
+#line 165 "Expression.l"
 COUNTCHARS;
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 173 "ExpressionParser.l"
+#line 166 "Expression.l"
 column = 0;
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 175 "ExpressionParser.l"
+#line 168 "Expression.l"
 COUNTCHARS; yylval.string = unquote(yytext); return STRING;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 177 "ExpressionParser.l"
+#line 170 "Expression.l"
 COUNTCHARS; return *yytext;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 179 "ExpressionParser.l"
+#line 172 "Expression.l"
 COUNTCHARS; return EQ;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 180 "ExpressionParser.l"
+#line 173 "Expression.l"
 COUNTCHARS; return NEQ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 181 "ExpressionParser.l"
+#line 174 "Expression.l"
 COUNTCHARS; return GT;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 182 "ExpressionParser.l"
+#line 175 "Expression.l"
 COUNTCHARS; return LT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 183 "ExpressionParser.l"
+#line 176 "Expression.l"
 COUNTCHARS; return GTE;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 184 "ExpressionParser.l"
+#line 177 "Expression.l"
 COUNTCHARS; return LTE;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 186 "ExpressionParser.l"
+#line 179 "Expression.l"
 COUNTCHARS; return MINUSSIGN;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 187 "ExpressionParser.l"
+#line 180 "Expression.l"
 COUNTCHARS; return MINUSSIGN;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 189 "ExpressionParser.l"
+#line 182 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoMetre;           yylval.quantity.unitStr = yytext; return UNIT; // nano meter
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 190 "ExpressionParser.l"
+#line 183 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = yytext; return UNIT; // micro meter
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 191 "ExpressionParser.l"
+#line 184 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = yytext; return UNIT; // micro meter    (greek micro in UTF8)
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 192 "ExpressionParser.l"
+#line 185 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMetre;          yylval.quantity.unitStr = yytext; return UNIT; // milli meter    (internal standard length)
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 193 "ExpressionParser.l"
+#line 186 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::CentiMetre;          yylval.quantity.unitStr = yytext; return UNIT; // centi meter
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 194 "ExpressionParser.l"
+#line 187 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::DeciMetre;           yylval.quantity.unitStr = yytext; return UNIT; // deci meter
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 195 "ExpressionParser.l"
+#line 188 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = yytext; return UNIT; // Metre
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 196 "ExpressionParser.l"
+#line 189 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloMetre;           yylval.quantity.unitStr = yytext; return UNIT; // kilo meter
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 198 "ExpressionParser.l"
+#line 191 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Liter;               yylval.quantity.unitStr = yytext; return UNIT; // Liter      dm^3
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 199 "ExpressionParser.l"
+#line 192 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliLiter;          yylval.quantity.unitStr = yytext; return UNIT; // milli Liter
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 201 "ExpressionParser.l"
+#line 194 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Hertz;               yylval.quantity.unitStr = yytext; return UNIT; // Hertz
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 202 "ExpressionParser.l"
+#line 195 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloHertz;           yylval.quantity.unitStr = yytext; return UNIT; // kilo Hertz
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 203 "ExpressionParser.l"
+#line 196 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaHertz;           yylval.quantity.unitStr = yytext; return UNIT; // mega Hertz
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 204 "ExpressionParser.l"
+#line 197 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaHertz;           yylval.quantity.unitStr = yytext; return UNIT; // giga Hertz
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 205 "ExpressionParser.l"
+#line 198 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::TeraHertz;           yylval.quantity.unitStr = yytext; return UNIT; // tera Hertz
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 207 "ExpressionParser.l"
+#line 200 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return UNIT; // micro gram
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 208 "ExpressionParser.l"
+#line 201 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return UNIT; // micro gram
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 209 "ExpressionParser.l"
+#line 202 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliGram;           yylval.quantity.unitStr = yytext; return UNIT; // milli gram
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 210 "ExpressionParser.l"
+#line 203 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Gram;                yylval.quantity.unitStr = yytext; return UNIT; // gram
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 211 "ExpressionParser.l"
+#line 204 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloGram;            yylval.quantity.unitStr = yytext; return UNIT; // kilo gram      (internal standard for mass)
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 212 "ExpressionParser.l"
+#line 205 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Ton;                 yylval.quantity.unitStr = yytext; return UNIT; // Metric Tonne
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 214 "ExpressionParser.l"
+#line 207 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Second;              yylval.quantity.unitStr = yytext; return UNIT; // second         (internal standard time)
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 215 "ExpressionParser.l"
+#line 208 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Minute;              yylval.quantity.unitStr = yytext; return UNIT; // minute
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 216 "ExpressionParser.l"
+#line 209 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Hour;                yylval.quantity.unitStr = yytext; return UNIT; // hour
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 218 "ExpressionParser.l"
+#line 211 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = yytext; return UNIT; // Ampere         (internal standard electric current)
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 219 "ExpressionParser.l"
+#line 212 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = yytext; return UNIT; // milli Ampere
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 220 "ExpressionParser.l"
+#line 213 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Ampere
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 221 "ExpressionParser.l"
+#line 214 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // mega Ampere
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 223 "ExpressionParser.l"
+#line 216 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Kelvin;              yylval.quantity.unitStr = yytext; return UNIT; // Kelvin         (internal standard thermodynamic temperature)
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 224 "ExpressionParser.l"
+#line 217 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // milli Kelvin
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 225 "ExpressionParser.l"
+#line 218 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // micro Kelvin
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 226 "ExpressionParser.l"
+#line 219 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // micro Kelvin
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 228 "ExpressionParser.l"
+#line 221 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = yytext; return UNIT; // Mole           (internal standard amount of substance)
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 229 "ExpressionParser.l"
+#line 222 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMole;           yylval.quantity.unitStr = yytext; return UNIT; // milli Mole
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 231 "ExpressionParser.l"
+#line 224 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = yytext; return UNIT; // Candela        (internal standard luminous intensity)
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 233 "ExpressionParser.l"
+#line 226 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 234 "ExpressionParser.l"
+#line 227 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return USUNIT; // inch
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 235 "ExpressionParser.l"
+#line 228 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 236 "ExpressionParser.l"
+#line 229 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return USUNIT; // foot
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 237 "ExpressionParser.l"
+#line 230 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // thou (in/1000)
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 238 "ExpressionParser.l"
+#line 231 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // mil  (the thou in US)
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 239 "ExpressionParser.l"
+#line 232 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return UNIT; // yard
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 240 "ExpressionParser.l"
+#line 233 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = yytext; return UNIT; // mile
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 242 "ExpressionParser.l"
+#line 235 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilePerHour;         yylval.quantity.unitStr = yytext; return UNIT; // mile per hour
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 243 "ExpressionParser.l"
+#line 236 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::SquareFoot;          yylval.quantity.unitStr = yytext; return UNIT; // square foot
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 244 "ExpressionParser.l"
+#line 237 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::CubicFoot;           yylval.quantity.unitStr = yytext; return UNIT; // cubic foot
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 246 "ExpressionParser.l"
+#line 239 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return UNIT; // pound
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 247 "ExpressionParser.l"
+#line 240 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return UNIT; // pound
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 248 "ExpressionParser.l"
+#line 241 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Ounce;               yylval.quantity.unitStr = yytext; return UNIT; // ounce
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 249 "ExpressionParser.l"
+#line 242 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Stone;               yylval.quantity.unitStr = yytext; return UNIT; // Stone
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 250 "ExpressionParser.l"
+#line 243 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Hundredweights;      yylval.quantity.unitStr = yytext; return UNIT; // hundredweights
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 252 "ExpressionParser.l"
+#line 245 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::PoundForce;          yylval.quantity.unitStr = yytext; return UNIT; // pound
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 254 "ExpressionParser.l"
+#line 247 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Newton;              yylval.quantity.unitStr = yytext; return UNIT; // Newton (kg*m/s^2)a-za-za-z
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 255 "ExpressionParser.l"
+#line 248 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = yytext; return UNIT; // milli Newton
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 256 "ExpressionParser.l"
+#line 249 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Newton
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 257 "ExpressionParser.l"
+#line 250 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = yytext; return UNIT; // mega Newton
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 259 "ExpressionParser.l"
+#line 252 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = yytext; return UNIT; // Pascal (kg/m*s^2 or N/m^2)
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 260 "ExpressionParser.l"
+#line 253 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Pascal
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 261 "ExpressionParser.l"
+#line 254 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // mega Pascal
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 262 "ExpressionParser.l"
+#line 255 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // giga Pascal
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 264 "ExpressionParser.l"
+#line 257 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Bar;                 yylval.quantity.unitStr = yytext; return UNIT; // Bar
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 265 "ExpressionParser.l"
+#line 258 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliBar;            yylval.quantity.unitStr = yytext; return UNIT; // milli Bar
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 267 "ExpressionParser.l"
+#line 260 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Torr;                yylval.quantity.unitStr = yytext; return UNIT; // portion of Pascal ( 101325/760 )
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 268 "ExpressionParser.l"
+#line 261 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::mTorr;               yylval.quantity.unitStr = yytext; return UNIT; //
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 269 "ExpressionParser.l"
+#line 262 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = yytext; return UNIT; //
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 270 "ExpressionParser.l"
+#line 263 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = yytext; return UNIT; //
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 272 "ExpressionParser.l"
+#line 265 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::PSI;                 yylval.quantity.unitStr = yytext; return UNIT; // pounds/in^2
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 273 "ExpressionParser.l"
+#line 266 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KSI;                 yylval.quantity.unitStr = yytext; return UNIT; // 1000 x pounds/in^2
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 274 "ExpressionParser.l"
+#line 267 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MPSI;                yylval.quantity.unitStr = yytext; return UNIT; // 1000 ksi
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 276 "ExpressionParser.l"
+#line 269 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = yytext; return UNIT; // Watt (kg*m^2/s^3)
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 277 "ExpressionParser.l"
+#line 270 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliWatt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Watt
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 278 "ExpressionParser.l"
+#line 271 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloWatt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Watt
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 279 "ExpressionParser.l"
+#line 272 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // VoltAmpere (kg*m^2/s^3)
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 281 "ExpressionParser.l"
+#line 274 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Volt;                yylval.quantity.unitStr = yytext; return UNIT; // Volt (kg*m^2/A/s^3)
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 282 "ExpressionParser.l"
+#line 275 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloVolt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Volt
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 283 "ExpressionParser.l"
+#line 276 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliVolt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Volt
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 285 "ExpressionParser.l"
+#line 278 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaSiemens;         yylval.quantity.unitStr = yytext; return UNIT; // mega Siemens
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 286 "ExpressionParser.l"
+#line 279 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloSiemens;         yylval.quantity.unitStr = yytext; return UNIT; // kilo Siemens
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 287 "ExpressionParser.l"
+#line 280 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Siemens;             yylval.quantity.unitStr = yytext; return UNIT; // Siemens (A^2*s^3/kg/m^2)
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 288 "ExpressionParser.l"
+#line 281 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // milli Siemens
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 289 "ExpressionParser.l"
+#line 282 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // micro Siemens
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 290 "ExpressionParser.l"
+#line 283 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // micro Siemens
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 292 "ExpressionParser.l"
+#line 285 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Ohm;                 yylval.quantity.unitStr = yytext; return UNIT; // Ohm (kg*m^2/A^2/s^3)
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 293 "ExpressionParser.l"
+#line 286 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloOhm;             yylval.quantity.unitStr = yytext; return UNIT; // kilo Ohm
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 294 "ExpressionParser.l"
+#line 287 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaOhm;             yylval.quantity.unitStr = yytext; return UNIT; // mega Ohm
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 296 "ExpressionParser.l"
+#line 289 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Coulomb;             yylval.quantity.unitStr = yytext; return UNIT; // Coulomb (A*s)
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 298 "ExpressionParser.l"
+#line 291 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Tesla;               yylval.quantity.unitStr = yytext; return UNIT; // Tesla (kg/s^2/A)
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 299 "ExpressionParser.l"
+#line 292 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Gauss;               yylval.quantity.unitStr = yytext; return UNIT; // Gauss (1 G = 1e-4 T)
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 301 "ExpressionParser.l"
+#line 294 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Weber;               yylval.quantity.unitStr = yytext; return UNIT; // Weber (kg*m^2/s^2/A)
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 303 "ExpressionParser.l"
+#line 296 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Farad;               yylval.quantity.unitStr = yytext; return UNIT; // Farad (s^4*A^2/m^2/kg)
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 304 "ExpressionParser.l"
+#line 297 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliFarad;          yylval.quantity.unitStr = yytext; return UNIT; // milli Farad
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 305 "ExpressionParser.l"
+#line 298 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroFarad;          yylval.quantity.unitStr = yytext; return UNIT; // micro Farad
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 306 "ExpressionParser.l"
+#line 299 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroFarad;          yylval.quantity.unitStr = yytext; return UNIT; // micro Farad
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 307 "ExpressionParser.l"
+#line 300 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoFarad;           yylval.quantity.unitStr = yytext; return UNIT; // nano Farad
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 308 "ExpressionParser.l"
+#line 301 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::PicoFarad;           yylval.quantity.unitStr = yytext; return UNIT; // pico Farad
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 310 "ExpressionParser.l"
+#line 303 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Henry;               yylval.quantity.unitStr = yytext; return UNIT; // Henry (kg*m^2/s^2/A^2)
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 311 "ExpressionParser.l"
+#line 304 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliHenry;          yylval.quantity.unitStr = yytext; return UNIT; // milli Henry
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 312 "ExpressionParser.l"
+#line 305 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroHenry;          yylval.quantity.unitStr = yytext; return UNIT; // micro Henry
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 313 "ExpressionParser.l"
+#line 306 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroHenry;          yylval.quantity.unitStr = yytext; return UNIT; // micro Henry)
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 314 "ExpressionParser.l"
+#line 307 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoHenry;           yylval.quantity.unitStr = yytext; return UNIT; // nano Henry
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 316 "ExpressionParser.l"
+#line 309 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Joule;               yylval.quantity.unitStr = yytext; return UNIT; // Joule (kg*m^2/s^2)
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 317 "ExpressionParser.l"
+#line 310 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliJoule;          yylval.quantity.unitStr = yytext; return UNIT; // milli Joule
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 318 "ExpressionParser.l"
+#line 311 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloJoule;           yylval.quantity.unitStr = yytext; return UNIT; // kilo Joule
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 319 "ExpressionParser.l"
+#line 312 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = yytext; return UNIT; // N*m = Joule
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 320 "ExpressionParser.l"
+#line 313 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = yytext; return UNIT; // V*A*s = Joule
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 321 "ExpressionParser.l"
+#line 314 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return UNIT; //
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 322 "ExpressionParser.l"
+#line 315 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return UNIT; // W*s = Joule
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 323 "ExpressionParser.l"
+#line 316 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloWattHour;        yylval.quantity.unitStr = yytext; return UNIT; // 1 kWh = 3.6e6 J
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 324 "ExpressionParser.l"
+#line 317 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::ElectronVolt;        yylval.quantity.unitStr = yytext; return UNIT; // 1 eV = 1.602176634e-19 J
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 325 "ExpressionParser.l"
+#line 318 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloElectronVolt;    yylval.quantity.unitStr = yytext; return UNIT;
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 326 "ExpressionParser.l"
+#line 319 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaElectronVolt;    yylval.quantity.unitStr = yytext; return UNIT;
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 327 "ExpressionParser.l"
+#line 320 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Calorie;             yylval.quantity.unitStr = yytext; return UNIT; // 1 cal = 4.1868 J
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 328 "ExpressionParser.l"
+#line 321 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloCalorie;         yylval.quantity.unitStr = yytext; return UNIT;
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 330 "ExpressionParser.l"
+#line 323 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 331 "ExpressionParser.l"
+#line 324 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 332 "ExpressionParser.l"
+#line 325 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = yytext; return UNIT; // radian
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 333 "ExpressionParser.l"
+#line 326 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = yytext; return UNIT; // gon
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 334 "ExpressionParser.l"
+#line 327 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 335 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute U+2032 	&prime; &#8242; ′
+#line 328 "Expression.l"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute U+2032	&prime; &#8242; ′
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 336 "ExpressionParser.l"
+#line 329 "Expression.l"
 COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 337 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond U+2033 	&Prime; &#8243; ″
+#line 330 "Expression.l"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond U+2033	&Prime; &#8243; ″
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 339 "ExpressionParser.l"
+#line 332 "Expression.l"
 COUNTCHARS; yylval.fvalue = num_change(yytext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 340 "ExpressionParser.l"
+#line 333 "Expression.l"
 COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 341 "ExpressionParser.l"
+#line 334 "Expression.l"
 COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 137:
 YY_RULE_SETUP
-#line 342 "ExpressionParser.l"
+#line 335 "Expression.l"
 { COUNTCHARS;
                                yylval.ivalue = strtoll( yytext, NULL, 10 );
-                               if (yylval.ivalue == LLONG_MIN)
+                               if (yylval.ivalue == std::numeric_limits<long long>::min())
                                   throw Base::UnderflowError("Integer underflow");
-                               else if (yylval.ivalue == LLONG_MAX)
+                               else if (yylval.ivalue == std::numeric_limits<long long>::max())
                                   throw Base::OverflowError("Integer overflow");
                                if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
                              }
 	YY_BREAK
 case 138:
 YY_RULE_SETUP
-#line 351 "ExpressionParser.l"
+#line 344 "Expression.l"
 COUNTCHARS; yylval.constant.fvalue = std::numbers::pi; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 	YY_BREAK
 case 139:
 YY_RULE_SETUP
-#line 352 "ExpressionParser.l"
+#line 345 "Expression.l"
 COUNTCHARS; yylval.constant.fvalue = std::numbers::e; yylval.constant.name = "e"; return CONSTANT; // constant e
 	YY_BREAK
 case 140:
 YY_RULE_SETUP
-#line 354 "ExpressionParser.l"
+#line 347 "Expression.l"
 COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "None"; return CONSTANT;
 	YY_BREAK
 case 141:
 YY_RULE_SETUP
-#line 355 "ExpressionParser.l"
+#line 348 "Expression.l"
 COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return CONSTANT;
 	YY_BREAK
 case 142:
 YY_RULE_SETUP
-#line 356 "ExpressionParser.l"
+#line 349 "Expression.l"
 COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return CONSTANT;
 	YY_BREAK
 case 143:
 YY_RULE_SETUP
-#line 357 "ExpressionParser.l"
+#line 350 "Expression.l"
 COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "False"; return CONSTANT;
 	YY_BREAK
 case 144:
 YY_RULE_SETUP
-#line 358 "ExpressionParser.l"
+#line 351 "Expression.l"
 COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "False"; return CONSTANT;
 	YY_BREAK
 case 145:
 YY_RULE_SETUP
-#line 360 "ExpressionParser.l"
+#line 353 "Expression.l"
 COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 	YY_BREAK
 case 146:
 YY_RULE_SETUP
-#line 361 "ExpressionParser.l"
+#line 354 "Expression.l"
 COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 	YY_BREAK
 case 147:
 YY_RULE_SETUP
-#line 362 "ExpressionParser.l"
+#line 355 "Expression.l"
 COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 	YY_BREAK
 case 148:
 YY_RULE_SETUP
-#line 364 "ExpressionParser.l"
+#line 357 "Expression.l"
 {
                             COUNTCHARS;
                             std::string s = yytext;
@@ -9650,15 +9644,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 149:
 YY_RULE_SETUP
-#line 379 "ExpressionParser.l"
+#line 372 "Expression.l"
 COUNTCHARS; yylval.string = yytext; return IDENTIFIER;
 	YY_BREAK
 case 150:
 YY_RULE_SETUP
-#line 380 "ExpressionParser.l"
+#line 373 "Expression.l"
 ECHO;
 	YY_BREAK
-#line 9661 "lex.ExpressionParser.c"
+#line 9655 "Expression.lex.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -9942,7 +9936,7 @@ static int yy_get_next_buffer (void)
 {
 	yy_state_type yy_current_state;
 	char *yy_cp;
-    
+
 	yy_current_state = (yy_start);
 
 	for ( yy_cp = (yytext_ptr) + YY_MORE_ADJ; yy_cp < (yy_c_buf_p); ++yy_cp )
@@ -9973,7 +9967,7 @@ static int yy_get_next_buffer (void)
     static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state )
 {
 	int yy_is_jam;
-    	char *yy_cp = (yy_c_buf_p);
+	char *yy_cp = (yy_c_buf_p);
 
 	YY_CHAR yy_c = 1;
 	if ( yy_accept[yy_current_state] )
@@ -10006,7 +10000,7 @@ static int yy_get_next_buffer (void)
 
 {
 	int c;
-    
+
 	*(yy_c_buf_p) = (yy_hold_char);
 
 	if ( *(yy_c_buf_p) == YY_END_OF_BUFFER_CHAR )
@@ -10073,12 +10067,12 @@ static int yy_get_next_buffer (void)
 
 /** Immediately switch to a different input stream.
  * @param input_file A readable stream.
- * 
+ *
  * @note This function does not reset the start condition to @c INITIAL .
  */
     void yyrestart  (FILE * input_file )
 {
-    
+
 	if ( ! YY_CURRENT_BUFFER ){
         yyensure_buffer_stack ();
 		YY_CURRENT_BUFFER_LVALUE =
@@ -10091,11 +10085,11 @@ static int yy_get_next_buffer (void)
 
 /** Switch to a different input buffer.
  * @param new_buffer The new input buffer.
- * 
+ *
  */
     void yy_switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
 {
-    
+
 	/* TODO. We should be able to replace this entire function body
 	 * with
 	 *		yypop_buffer_state();
@@ -10126,7 +10120,7 @@ static int yy_get_next_buffer (void)
 
 static void yy_load_buffer_state  (void)
 {
-    	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
 	(yytext_ptr) = (yy_c_buf_p) = YY_CURRENT_BUFFER_LVALUE->yy_buf_pos;
 	yyin = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
 	(yy_hold_char) = *(yy_c_buf_p);
@@ -10135,13 +10129,13 @@ static void yy_load_buffer_state  (void)
 /** Allocate and initialize an input buffer state.
  * @param file A readable stream.
  * @param size The character buffer size in bytes. When in doubt, use @c YY_BUF_SIZE.
- * 
+ *
  * @return the allocated buffer state.
  */
     YY_BUFFER_STATE yy_create_buffer  (FILE * file, int  size )
 {
 	YY_BUFFER_STATE b;
-    
+
 	b = (YY_BUFFER_STATE) yyalloc( sizeof( struct yy_buffer_state )  );
 	if ( ! b )
 		YY_FATAL_ERROR( "out of dynamic memory in yy_create_buffer()" );
@@ -10164,11 +10158,11 @@ static void yy_load_buffer_state  (void)
 
 /** Destroy the buffer.
  * @param b a buffer created with yy_create_buffer()
- * 
+ *
  */
     void yy_delete_buffer (YY_BUFFER_STATE  b )
 {
-    
+
 	if ( ! b )
 		return;
 
@@ -10189,7 +10183,7 @@ static void yy_load_buffer_state  (void)
 
 {
 	int oerrno = errno;
-    
+
 	yy_flush_buffer( b );
 
 	b->yy_input_file = file;
@@ -10205,17 +10199,17 @@ static void yy_load_buffer_state  (void)
     }
 
         b->yy_is_interactive = 0;
-    
+
 	errno = oerrno;
 }
 
 /** Discard all buffered characters. On the next scan, YY_INPUT will be called.
  * @param b the buffer state to be flushed, usually @c YY_CURRENT_BUFFER.
- * 
+ *
  */
     void yy_flush_buffer (YY_BUFFER_STATE  b )
 {
-    	if ( ! b )
+	if ( ! b )
 		return;
 
 	b->yy_n_chars = 0;
@@ -10240,11 +10234,11 @@ static void yy_load_buffer_state  (void)
  *  the current state. This function will allocate the stack
  *  if necessary.
  *  @param new_buffer The new state.
- *  
+ *
  */
 void yypush_buffer_state (YY_BUFFER_STATE new_buffer )
 {
-    	if (new_buffer == NULL)
+	if (new_buffer == NULL)
 		return;
 
 	yyensure_buffer_stack();
@@ -10270,11 +10264,11 @@ void yypush_buffer_state (YY_BUFFER_STATE new_buffer )
 
 /** Removes and deletes the top of the stack, if present.
  *  The next element becomes the new top.
- *  
+ *
  */
 void yypop_buffer_state (void)
 {
-    	if (!YY_CURRENT_BUFFER)
+	if (!YY_CURRENT_BUFFER)
 		return;
 
 	yy_delete_buffer(YY_CURRENT_BUFFER );
@@ -10294,7 +10288,7 @@ void yypop_buffer_state (void)
 static void yyensure_buffer_stack (void)
 {
 	yy_size_t num_to_alloc;
-    
+
 	if (!(yy_buffer_stack)) {
 
 		/* First allocation is just for 2 elements, since we don't know if this
@@ -10337,13 +10331,13 @@ static void yyensure_buffer_stack (void)
 /** Setup the input buffer state to scan directly from a user-specified character buffer.
  * @param base the character buffer
  * @param size the size in bytes of the character buffer
- * 
+ *
  * @return the newly allocated buffer state object.
  */
 YY_BUFFER_STATE yy_scan_buffer  (char * base, yy_size_t  size )
 {
 	YY_BUFFER_STATE b;
-    
+
 	if ( size < 2 ||
 	     base[size-2] != YY_END_OF_BUFFER_CHAR ||
 	     base[size-1] != YY_END_OF_BUFFER_CHAR )
@@ -10372,14 +10366,14 @@ YY_BUFFER_STATE yy_scan_buffer  (char * base, yy_size_t  size )
 /** Setup the input buffer state to scan a string. The next call to yylex() will
  * scan from a @e copy of @a str.
  * @param yystr a NUL-terminated string to scan
- * 
+ *
  * @return the newly allocated buffer state object.
  * @note If you want to scan bytes that may contain NUL values, then use
  *       yy_scan_bytes() instead.
  */
 YY_BUFFER_STATE yy_scan_string (const char * yystr )
 {
-    
+
 	return yy_scan_bytes( yystr, (int) strlen(yystr) );
 }
 
@@ -10387,7 +10381,7 @@ YY_BUFFER_STATE yy_scan_string (const char * yystr )
  * scan from a @e copy of @a bytes.
  * @param yybytes the byte buffer to scan
  * @param _yybytes_len the number of bytes in the buffer pointed to by @a bytes.
- * 
+ *
  * @return the newly allocated buffer state object.
  */
 YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, int  _yybytes_len )
@@ -10396,7 +10390,7 @@ YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, int  _yybytes_len )
 	char *buf;
 	yy_size_t n;
 	int i;
-    
+
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = (yy_size_t) (_yybytes_len + 2);
 	buf = (char *) yyalloc( n  );
@@ -10450,16 +10444,16 @@ static void yynoreturn yy_fatal_error (const char* msg )
 /* Accessor  methods (get/set functions) to struct members. */
 
 /** Get the current line number.
- * 
+ *
  */
 int yyget_lineno  (void)
 {
-    
+
     return yylineno;
 }
 
 /** Get the input stream.
- * 
+ *
  */
 FILE *yyget_in  (void)
 {
@@ -10467,7 +10461,7 @@ FILE *yyget_in  (void)
 }
 
 /** Get the output stream.
- * 
+ *
  */
 FILE *yyget_out  (void)
 {
@@ -10475,7 +10469,7 @@ FILE *yyget_out  (void)
 }
 
 /** Get the length of the current token.
- * 
+ *
  */
 int yyget_leng  (void)
 {
@@ -10483,7 +10477,7 @@ int yyget_leng  (void)
 }
 
 /** Get the current token.
- * 
+ *
  */
 
 char *yyget_text  (void)
@@ -10493,18 +10487,18 @@ char *yyget_text  (void)
 
 /** Set the current line number.
  * @param _line_number line number
- * 
+ *
  */
 void yyset_lineno (int  _line_number )
 {
-    
+
     yylineno = _line_number;
 }
 
 /** Set the input stream. This does not discard the current
  * input buffer.
  * @param _in_str A readable stream.
- * 
+ *
  * @see yy_switch_to_buffer
  */
 void yyset_in (FILE *  _in_str )
@@ -10558,7 +10552,7 @@ static int yy_init_globals (void)
 /* yylex_destroy is for both reentrant and non-reentrant scanners. */
 int yylex_destroy  (void)
 {
-    
+
     /* Pop the buffer stack, destroying each element. */
 	while(YY_CURRENT_BUFFER){
 		yy_delete_buffer( YY_CURRENT_BUFFER  );
@@ -10584,7 +10578,7 @@ int yylex_destroy  (void)
 #ifndef yytext_ptr
 static void yy_flex_strncpy (char* s1, const char * s2, int n )
 {
-		
+
 	int i;
 	for ( i = 0; i < n; ++i )
 		s1[i] = s2[i];
@@ -10609,7 +10603,7 @@ void *yyalloc (yy_size_t  size )
 
 void *yyrealloc  (void * ptr, yy_size_t  size )
 {
-		
+
 	/* The cast to (char *) in the following accommodates both
 	 * implementations that use char* generic pointers, and those
 	 * that use void* generic pointers.  It works with the latter
@@ -10627,4 +10621,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 380 "ExpressionParser.l"
+#line 373 "Expression.l"

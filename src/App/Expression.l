@@ -22,14 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-/* Lexer for the FreeCAD Expression language   */
-
-/* use this file to generate the file 'lex.ExpressionParser.c' using the program flex
- * the command for this operation is:
- * flex --outfile=lex.ExpressionParser.c ExpressionParser.l
- * (flex for Windows is available here:
- *  https://sourceforge.net/projects/winflexbison/
- *  (you must then change 'flex' to 'win_flex' in the command)) */
+/* Lexer for the FreeCAD Expression language */
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
@@ -165,7 +158,7 @@ S	({S1}|{S2})
 Z	(\x20|\xc2\xa0|\xe1(\x9a\x80)|\xe2(\x80[\x80-\x8a\xa8-\xa9\xaf]|\x81\x9f)|\xe3(\x80\x80))
 
 DIGIT   [0-9]
-EXPO     [eE][-+]?[0-9]+
+EXPO    [eE][-+]?[0-9]+
 
 %% /*** Filter language Part ***/
 
@@ -174,7 +167,7 @@ EXPO     [eE][-+]?[0-9]+
 
 \<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext); return STRING;
 
-[%+()=/*^,\.\{\}\[\]:;@\?#]   COUNTCHARS; return *yytext;
+[%+()=/*^,\.\{\}\[\]:;@\?#]  COUNTCHARS; return *yytext;
 
 "=="                         COUNTCHARS; return EQ;
 "!="                         COUNTCHARS; return NEQ;
@@ -332,9 +325,9 @@ EXPO     [eE][-+]?[0-9]+
 "rad"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = yytext; return UNIT; // radian
 "gon"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = yytext; return UNIT; // gon
 "M"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute
-"\xE2\x80\xB2"               COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute U+2032 	&prime; &#8242; ′
+"\xE2\x80\xB2"               COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute U+2032	&prime; &#8242; ′
 "AS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond
-"\xE2\x80\xB3"               COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond U+2033 	&Prime; &#8243; ″
+"\xE2\x80\xB3"               COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond U+2033	&Prime; &#8243; ″
 
 {DIGIT}*"."{DIGIT}+{EXPO}?   COUNTCHARS; yylval.fvalue = num_change(yytext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}*","{DIGIT}+{EXPO}?   COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
