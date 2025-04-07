@@ -27,6 +27,7 @@ Test module for FreeCAD material cards and APIs
 import unittest
 import FreeCAD
 import Materials
+import sys
 
 parseQuantity = FreeCAD.Units.parseQuantity
 
@@ -37,6 +38,15 @@ class MaterialTestCases(unittest.TestCase):
 
     def setUp(self):
         """ Setup function to initialize test data """
+        # The test for ThermalExpansionCoefficient causes problems with some localizations
+        # due to the Unicode mu ('\u03bc') character in the units. This will happen with
+        # locales that don't support UTF8 such as zh_CN (It does support UTF-8)
+        try:
+            sys.stdout.reconfigure(errors='replace')
+        except:
+            # reconfigure appeared in 3.7, hope for the best...
+            pass
+
         self.ModelManager = Materials.ModelManager()
         self.MaterialManager = Materials.MaterialManager()
         self.uuids = Materials.UUIDs()
@@ -145,12 +155,6 @@ class MaterialTestCases(unittest.TestCase):
         self.assertIn("SpecularColor", properties)
         self.assertIn("Transparency", properties)
 
-        #
-        # The test for ThermalExpansionCoefficient causes problems with some localizations
-        # due to the Unicode mu character in the units. This will happen with
-        # locales that don't support UTF8 such as zh_CN (It does support UTF-8)
-        #
-        # When this is a problem simply comment the lines printing ThermalExpansionCoefficient
         print("Density " + properties["Density"])
         # print("BulkModulus " + properties["BulkModulus"])
         print("PoissonRatio " + properties["PoissonRatio"])
