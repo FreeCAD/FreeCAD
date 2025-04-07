@@ -24,7 +24,6 @@
 
 """This module contains BIM wrappers for commands from other workbenches"""
 
-
 import FreeCAD
 import FreeCADGui
 
@@ -87,4 +86,3 @@ class BIM_Text:
 
 
 FreeCADGui.addCommand("BIM_Text", BIM_Text())
-

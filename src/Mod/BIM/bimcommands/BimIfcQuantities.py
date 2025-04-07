@@ -24,13 +24,15 @@
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-import os
 import csv
+import os
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 QPROPS = [
@@ -81,7 +83,7 @@ class BIM_IfcQuantities:
         return v
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # build objects list
         self.objectslist = {}
@@ -329,7 +331,7 @@ class BIM_IfcQuantities:
         """Updates a single line of the table, without updating
         the actual object"""
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         i = self.get_row(name)
         if i == -1:

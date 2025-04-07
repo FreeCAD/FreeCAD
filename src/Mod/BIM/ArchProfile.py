@@ -35,14 +35,15 @@ import os
 
 import FreeCAD
 import Draft
+
 from FreeCAD import Vector
 from draftutils import params
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide import QtCore, QtGui
-    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):
@@ -465,5 +466,3 @@ class ProfileTaskPanel:
     def retranslateUi(self, TaskPanel):
 
         self.form.setWindowTitle(self.type+" "+QtGui.QApplication.translate("Arch", "Profile", None))
-
-

@@ -23,26 +23,6 @@ __title__  = "FreeCAD Arch External Reference"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
-
-import FreeCAD
-import os
-import zipfile
-import re
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
 ## @package ArchReference
 #  \ingroup ARCH
 #  \brief The Reference object and tools
@@ -50,6 +30,27 @@ else:
 #  This module provides tools to build Reference objects.
 #  References can take a shape from a Part-based object in
 #  another file.
+
+import os
+import re
+import zipfile
+
+import FreeCAD
+
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class ArchReference:
@@ -973,6 +974,3 @@ class ArchReferenceTaskPanel:
                 FreeCAD.loadFile(self.obj.File)
             FreeCADGui.Control.closeDialog()
             FreeCADGui.ActiveDocument.resetEdit()
-
-
-

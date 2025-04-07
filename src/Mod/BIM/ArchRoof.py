@@ -19,28 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import math
-
-import ArchComponent
-import DraftGeomUtils
-import DraftVecUtils
-import FreeCAD
-import Part
-
-from FreeCAD import Vector
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt, txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
-    # \endcond
+__title__  = "FreeCAD Roof"
+__author__ = "Yorik van Havre", "Jonathan Wiedemann"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchRoof
 #  \ingroup ARCH
@@ -50,9 +31,28 @@ else:
 #  Roofs are built from a closed contour and a series of
 #  slopes.
 
-__title__  = "FreeCAD Roof"
-__author__ = "Yorik van Havre", "Jonathan Wiedemann"
-__url__    = "https://www.freecad.org"
+import math
+
+import FreeCAD
+import ArchComponent
+import DraftGeomUtils
+import DraftVecUtils
+import Part
+
+from FreeCAD import Vector
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt, txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt, txt):
+        return txt
+    # \endcond
 
 
 def adjust_list_len (lst, newLn, val):
@@ -955,4 +955,3 @@ class _RoofTaskPanel:
                                    QtGui.QApplication.translate("Arch", "Thickness (mm)", None),
                                    QtGui.QApplication.translate("Arch", "Overhang (mm)", None),
                                    QtGui.QApplication.translate("Arch", "Height (mm)", None)])
-

@@ -24,7 +24,6 @@
 
 """The BIM SimpleCopy command"""
 
-
 import FreeCAD
 import FreeCADGui
 
@@ -47,7 +46,6 @@ class BIM_SimpleCopy:
         return v
 
     def Activated(self):
-        import PartGui
         FreeCADGui.runCommand("Part_SimpleCopy")
 
 

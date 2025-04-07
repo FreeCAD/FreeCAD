@@ -32,10 +32,11 @@ my ryzen9 machine, for 2700 objects. Larger files like the King Arch file
 (20 Mb / 750 000 objects) would import in 18 minutes...
 """
 
-import FreeCAD
-import ifcopenshell
-from PySide2 import QtCore, QtGui, QtWidgets
 import time
+
+import ifcopenshell
+
+from PySide import QtWidgets
 
 
 class ViewProvider:

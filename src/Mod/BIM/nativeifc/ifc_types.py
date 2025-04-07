@@ -22,8 +22,8 @@
 
 """Diffing tool for NativeIFC project objects"""
 
-
 import FreeCAD
+
 from . import ifc_tools
 
 translate = FreeCAD.Qt.translate
