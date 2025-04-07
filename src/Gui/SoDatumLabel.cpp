@@ -965,7 +965,7 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
 {
     // Initialisation check (needs something more sensible) prevents an infinite loop bug
     constexpr float floatEpsilon = std::numeric_limits<float>::epsilon();
-    if (this->imgHeight <= floatEpsilon | this->imgWidth <= floatEpsilon) {
+    if (this->imgHeight <= floatEpsilon || this->imgWidth <= floatEpsilon) {
         return;
     }
 
