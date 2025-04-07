@@ -88,7 +88,7 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
             this,
             &SheetView::currentChanged);
 
-    connect(dynamic_cast<SheetViewHeader*>(ui->cells->horizontalHeader()),
+    connect(qobject_cast<SheetViewHeader*>(ui->cells->horizontalHeader()),
             &SheetViewHeader::resizeFinished,
             this,
             &SheetView::columnResizeFinished);
@@ -97,7 +97,7 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
             this,
             &SheetView::columnResized);
 
-    connect(dynamic_cast<SheetViewHeader*>(ui->cells->verticalHeader()),
+    connect(qobject_cast<SheetViewHeader*>(ui->cells->verticalHeader()),
             &SheetViewHeader::resizeFinished,
             this,
             &SheetView::rowResizeFinished);
