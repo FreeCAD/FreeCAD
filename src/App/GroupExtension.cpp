@@ -414,7 +414,7 @@ bool GroupExtension::extensionGetSubObject(DocumentObject*& ret,
 {
     const char* dot;
     if (!subname || *subname == 0) {
-        auto obj = freecad_cast<const DocumentObject>(getExtendedContainer());
+        auto obj = freecad_cast<const DocumentObject*>(getExtendedContainer());
         ret = const_cast<DocumentObject*>(obj);
         return true;
     }

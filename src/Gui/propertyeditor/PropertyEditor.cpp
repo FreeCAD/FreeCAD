@@ -319,9 +319,9 @@ void PropertyEditor::openEditor(const QModelIndex& index)
     }
     auto prop = items[0];
     auto parent = prop->getContainer();
-    auto obj = freecad_cast<App::DocumentObject>(parent);
+    auto obj = freecad_cast<App::DocumentObject*>(parent);
     if (!obj) {
-        auto view = freecad_cast<ViewProviderDocumentObject>(parent);
+        auto view = freecad_cast<ViewProviderDocumentObject*>(parent);
         if (view) {
             obj = view->getObject();
         }

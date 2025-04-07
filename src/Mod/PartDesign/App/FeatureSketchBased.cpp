@@ -1449,7 +1449,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 
     // If the shape is a line, then return an arbitrary direction that is perpendicular to the line
     auto geom = Part::Geometry::fromShape(shape.getSubShape(TopAbs_EDGE, 1), true);
-    auto geomLine = freecad_cast<Part::GeomLine>(geom.get());
+    auto geomLine = freecad_cast<Part::GeomLine*>(geom.get());
     if (geomLine) {
         Base::Vector3d dir = geomLine->getDir();
         double x = std::fabs(dir.x);

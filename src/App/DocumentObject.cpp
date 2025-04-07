@@ -949,7 +949,7 @@ DocumentObject* DocumentObject::getSubObject(const char* subname,
     // objects (think of the claimed children of a Fusion). But I do think we
     // should change that.
     if (transform && mat) {
-        auto pla = freecad_cast<PropertyPlacement>(getPropertyByName("Placement"));
+        auto pla = freecad_cast<PropertyPlacement*>(getPropertyByName("Placement"));
         if (pla) {
             *mat *= pla->getValue().toMatrix();
         }
@@ -1476,7 +1476,7 @@ bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& i
     std::vector<Property*> props;
     getPropertyList(props);
     for (auto prop : props) {
-        auto linkProp = freecad_cast<PropertyLinkBase>(prop);
+        auto linkProp = freecad_cast<PropertyLinkBase*>(prop);
         if (linkProp && linkProp->adjustLink(inList)) {
             touched = true;
         }
@@ -1495,7 +1495,7 @@ bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& i
 
 std::string DocumentObject::getElementMapVersion(const App::Property* _prop, bool restored) const
 {
-    auto prop = freecad_cast<const PropertyComplexGeoData>(_prop);
+    auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
     if (!prop) {
         return std::string();
     }
@@ -1504,7 +1504,7 @@ std::string DocumentObject::getElementMapVersion(const App::Property* _prop, boo
 
 bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const char* ver) const
 {
-    auto prop = freecad_cast<const PropertyComplexGeoData>(_prop);
+    auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
     if (!prop) {
         return false;
     }

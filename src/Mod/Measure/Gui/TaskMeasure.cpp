@@ -249,7 +249,7 @@ void TaskMeasure::update()
         App::DocumentObject* sub = ob->getSubObject(sel.SubName);
 
         // Resolve App::Link
-        if (auto link = freecad_cast<App::Link>(sub)) {
+        if (auto link = freecad_cast<App::Link*>(sub)) {
             sub = link->getLinkedObject(true);
         }
 

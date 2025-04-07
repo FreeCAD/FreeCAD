@@ -8234,7 +8234,7 @@ static Part::Geometry *fitArcs(std::vector<std::unique_ptr<Part::Geometry> > &ar
     double m = 0.0;
     Base::Vector3d center;
     for (auto &geo : arcs) {
-        if (auto arc = freecad_cast<Part::GeomArcOfCircle>(geo.get())) {
+        if (auto arc = freecad_cast<Part::GeomArcOfCircle*>(geo.get())) {
             if (radius == 0.0) {
                 radius = arc->getRadius();
                 center = arc->getCenter();

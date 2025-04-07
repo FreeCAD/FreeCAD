@@ -120,7 +120,7 @@ public:
     template<typename T>
     inline T* getObjectAs() const
     {
-        return freecad_cast<T>(getViewProvider());
+        return freecad_cast<T*>(getViewProvider());
     }
 
 private:
@@ -215,7 +215,7 @@ public:
     template<typename T>
     inline T* get() const noexcept
     {
-        return freecad_cast<T>(_get());
+        return freecad_cast<T*>(_get());
     }
 
 private:
