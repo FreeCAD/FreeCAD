@@ -122,6 +122,34 @@ class CommandPathPost:
         return self.candidate is not None
 
     def _write_file(self, filename, gcode, policy):
+        #
+        # Up to this point the postprocessors have been using "\n" as the end-of-line
+        # characters in the gcode and using the process of writing out the file as a way
+        # to convert the "\n" into whatever end-of-line characters match the system
+        # running the postprocessor.  This can be a problem if the controller which will
+        # run the gcode doesn't like the same end-of-line characters as the system that
+        # ran the postprocessor to generate the gcode.
+        # The refactored code base now allows for four possible types of end-of-line
+        # characters in the gcode.
+        #
+        if len(gcode) > 1 and gcode[0:2] == "\n\n":
+            # The gcode shouldn't normally start with "\n\n".
+            # This means that the gcode contains "\n" as the end-of-line characters and
+            # that the gcode should be written out exactly that way.
+            newline_handling = ""
+            gcode = gcode[2:]
+        elif "\r" in gcode:
+            # Write out the gcode with whatever end-of-line characters it already has,
+            # presumably either "\r" or "\r\n".
+            newline_handling = ""
+        else:
+            # The gcode is assumed to contain "\n" as the end-of-line characters (if
+            # there are any end-of-line characters in the gcode).  This case also
+            # handles a zero-length gcode string.
+            # Write out the gcode but convert "\n" to whatever the system uses.
+            # This is also backwards compatible with the "previous" way of doing things.
+            newline_handling = None
+
         if policy == "Open File Dialog":
             dlg = QtGui.QFileDialog()
             dlg.setFileMode(QtGui.QFileDialog.FileMode.AnyFile)
@@ -131,7 +159,7 @@ class CommandPathPost:
             if dlg.exec_():
                 filename = dlg.selectedFiles()[0]
                 Path.Log.debug(filename)
-                with open(filename, "w") as f:
+                with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                     f.write(gcode)
             else:
                 return
@@ -140,7 +168,7 @@ class CommandPathPost:
             while os.path.isfile(filename):
                 base, ext = os.path.splitext(filename)
                 filename = f"{base}-1{ext}"
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                 f.write(gcode)
 
         elif policy == "Open File Dialog on conflict":
@@ -153,16 +181,16 @@ class CommandPathPost:
                 if dlg.exec_():
                     filename = dlg.selectedFiles()[0]
                     Path.Log.debug(filename)
-                    with open(filename, "w") as f:
+                    with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                         f.write(gcode)
                 else:
                     return
             else:
-                with open(filename, "w") as f:
+                with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                     f.write(gcode)
 
         else:  # Overwrite
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                 f.write(gcode)
 
         FreeCAD.Console.PrintMessage(f"File written to {filename}\n")
