@@ -113,9 +113,10 @@ inline manipulator<int> blanks(int n)
 // ----------------------------------------------------------------------------
 
 template<class T>
+    requires std::is_arithmetic_v<T>
 inline T clamp(T num, T lower, T upper)
 {
-    return std::max<T>(std::min<T>(upper, num), lower);
+    return std::clamp<T>(num, lower, upper);
 }
 
 template<class T>
