@@ -46,14 +46,16 @@ if DEBUG := False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+
 def convert_option_to_attr(option_name):
     # transforms argparse options into identifiers
-    if option_name.startswith('--'):
+    if option_name.startswith("--"):
         option_name = option_name[2:]
-    elif option_name.startswith('-'):
+    elif option_name.startswith("-"):
         option_name = option_name[1:]
-    
-    return option_name.replace('-','_')
+
+    return option_name.replace("-", "_")
+
 
 SNAPMAKER_MACHINES = dict(
     Original=dict(
@@ -61,56 +63,56 @@ SNAPMAKER_MACHINES = dict(
         name="Snapmaker Original",
         boundaries=dict(X=90, Y=90, Z=50),
         compatible_toolheads={"Original_CNC"},
-        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
+        lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     Original_Z_Extension=dict(
         key="Original_Z_Extension",
         name="Snapmaker Original with Z extension",
         boundaries=dict(X=90, Y=90, Z=146),
         compatible_toolheads={"Original_CNC"},
-        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
+        lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A150=dict(
         key="A150",
         name="Snapmaker 2 A150",
         boundaries=dict(X=160, Y=160, Z=90),
         compatible_toolheads={"50W_CNC"},
-        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
+        lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A250=dict(
         key="A250",
         name="Snapmaker 2 A250",
         boundaries=dict(X=230, Y=250, Z=180),
         compatible_toolheads={"50W_CNC", "200W_CNC"},
-        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
+        lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A250T=dict(
         key="A250T",
         name="Snapmaker 2 A250T",
         boundaries=dict(X=230, Y=250, Z=180),
         compatible_toolheads={"50W_CNC", "200W_CNC"},
-        lead=dict(X=20, Y=20, Z=8), # Linear module screw pitch (mm/turn)
+        lead=dict(X=20, Y=20, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A350=dict(
         key="A350",
         name="Snapmaker 2 A350",
         boundaries=dict(X=320, Y=350, Z=275),
         compatible_toolheads={"50W_CNC", "200W_CNC"},
-        lead=dict(X=8, Y=8, Z=8), # Linear module screw pitch (mm/turn)
+        lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A350T=dict(
         key="A350T",
         name="Snapmaker 2 A350T",
         boundaries=dict(X=320, Y=350, Z=275),
         compatible_toolheads={"50W_CNC", "200W_CNC"},
-        lead=dict(X=20, Y=20, Z=8), # Linear module screw pitch (mm/turn)
+        lead=dict(X=20, Y=20, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     Artisan=dict(
         key="Artisan",
         name="Snapmaker Artisan",
         boundaries=dict(X=400, Y=413, Z=400),
         compatible_toolheads={"200W_CNC"},
-        lead=dict(X=40, Y=40, Z=8), # Linear module screw pitch (mm/turn)
+        lead=dict(X=40, Y=40, Z=8),  # Linear module screw pitch (mm/turn)
     ),
 )
 
@@ -122,7 +124,7 @@ SNAPMAKER_MOD_KITS = {
         name="Quick Swap Kit",
         option_name="--quick-swap",
         option_help_text="Indicates that the quick swap kit is installed. Only compatible with Snapmaker 2 machines.",
-        compatible_machines={"A150","A250","A250T","A350","A350T"},
+        compatible_machines={"A150", "A250", "A250T", "A350", "A350T"},
         boundaries_delta=dict(X=0, Y=-15, Z=-15),
     ),
     "BK": dict(
@@ -130,7 +132,7 @@ SNAPMAKER_MOD_KITS = {
         name="Bracing Kit",
         option_name="--bracing-kit",
         option_help_text="Indicates that the bracing kit is installed. Only compatible with Snapmaker 2 machines.",
-        compatible_machines={"A150","A250","A250T","A350","A350T"},
+        compatible_machines={"A150", "A250", "A250T", "A350", "A350T"},
         boundaries_delta=dict(X=0, Y=-12, Z=-6),
     ),
 }
@@ -440,7 +442,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return parser
 
-    def snapmaker_process_arguments(self, filename: str = "-") -> Tuple[bool, str | argparse.Namespace]:
+    def snapmaker_process_arguments(
+        self, filename: str = "-"
+    ) -> Tuple[bool, str | argparse.Namespace]:
         """Process any arguments to the postprocessor."""
         (flag, args) = Path.Post.UtilsArguments.process_shared_arguments(
             self.values, self.parser, self._job.PostProcessorArgs, self.visible_parser, filename
@@ -459,7 +463,8 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                 if args.toolhead not in machine["compatible_toolheads"]:
                     FreeCAD.Console.PrintError(
                         f"Selected --toolhead={args.toolhead} is not compatible with machine {machine['name']}."
-                        +f" Choose from [{machine['compatible_toolheads']}]\n")
+                        + f" Choose from [{machine['compatible_toolheads']}]\n"
+                    )
                     flag = False
                     return (flag, args)
                 toolhead = self.values["TOOLHEADS"][args.toolhead]
@@ -488,21 +493,21 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                 else:
                     FreeCAD.Console.PrintError(
                         f"Requested spindle speed in percent, but toolhead {toolhead['name']}"
-                        +" does not support speed as percent.\n"
+                        + " does not support speed as percent.\n"
                     )
                     flag = False
                     return (flag, args)
             else:
                 # Prefer speed S over percent P
-                self.values["SPINDLE_PERCENT"] = toolhead['has_percent'] and not toolhead['has_speed_s']
+                self.values["SPINDLE_PERCENT"] = (
+                    toolhead["has_percent"] and not toolhead["has_speed_s"]
+                )
             if self.values["SPINDLE_PERCENT"]:
                 FreeCAD.Console.PrintWarning(
                     "Spindle speed will be controlled using using percentages.\n"
                 )
             else:
-                FreeCAD.Console.PrintWarning(
-                    "Spindle speed will be controlled using using RPM.\n"
-                )
+                FreeCAD.Console.PrintWarning("Spindle speed will be controlled using using RPM.\n")
 
             self.values["MOD_KITS_INSTALLED"] = []
             if args.boundaries:  # may override machine boundaries, which is expected
