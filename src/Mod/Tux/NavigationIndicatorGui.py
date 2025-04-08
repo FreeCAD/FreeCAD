@@ -619,7 +619,7 @@ indicator = IndicatorButton(statusBar)
 indicator.setFlat(True)
 indicator.adjustSize()
 indicator.setObjectName("NavigationIndicator")
-text = translate(
+text = QtGui.QApplication.translate(
     "NavigationIndicator",
     "Navigation indicator",
     "A context menu action used to show or hide the 'Navigation indicator' toolbar widget",
