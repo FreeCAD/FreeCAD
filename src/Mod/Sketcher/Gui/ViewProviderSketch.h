@@ -810,8 +810,11 @@ private:
     /** @name miscelanea utilities */
     //@{
     /// moves a selected constraint
-    void moveConstraint(int constNum, const Base::Vector2d& toPos);
-    void moveConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+    void moveConstraint(int constNum, const Base::Vector2d& toPos, bool offset = false);
+    void moveConstraint(Sketcher::Constraint*,
+                        int constNum,
+                        const Base::Vector2d& toPos,
+                        bool offset = false);
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
