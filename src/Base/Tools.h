@@ -119,14 +119,15 @@ inline T clamp(T num, T lower, T upper)
     return std::max<T>(std::min<T>(upper, num), lower);
 }
 
-template<class T>
-inline T sgn(T t)
+/// Returns -1, 0 or 1 depending on if the value is negative, zero or positive
+template<typename T>
+constexpr std::enable_if_t<std::is_arithmetic_v<T> && std::is_signed_v<T>, T> sgn(T val)
 {
-    if (t == 0) {
-        return T(0);
-    }
+    int oneIfPositive = int(0 < val);
+    int oneIfNegative = int(val < 0);
+    return T(oneIfPositive - oneIfNegative);
+}
 
-    return (t > 0) ? T(1) : T(-1);
 }
 
 template<class T>
