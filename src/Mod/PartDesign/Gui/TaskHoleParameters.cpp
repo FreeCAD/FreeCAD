@@ -70,6 +70,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadType->addItem(tr("ISO/BSP pipes"), QByteArray("None"));
     ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("None"));
     ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("ISO tyre valves"), QByteArray("None"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
