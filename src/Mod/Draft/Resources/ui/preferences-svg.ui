@@ -44,7 +44,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
           <property name="toolTip">
-           <string>Method chosen for importing SVG object color to FreeCAD</string>
+           <string>Method chosen for importing SVG object colors to FreeCAD</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
@@ -56,18 +56,13 @@
            <cstring>Mod/Draft</cstring>
           </property>
           <item>
-           <property name="text">
-            <string>None (fastest)</string>
-           </property>
+          <property name="text">
+            <string>Use default style from Part/PartDesign</string>
+          </property>
           </item>
           <item>
            <property name="text">
-            <string>Use default color and linewidth</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Original color and linewidth</string>
+            <string>Use original svg style</string>
            </property>
           </item>
          </widget>

@@ -476,11 +476,16 @@ class svgHandler(xml.sax.ContentHandler):
             r = float(draftui.color.red() / 255.0)
             g = float(draftui.color.green() / 255.0)
             b = float(draftui.color.blue() / 255.0)
-            self.lw = float(draftui.linewidth)
+            rf = float(draftui.facecolor.red() / 255.0)
+            gf = float(draftui.facecolor.green() / 255.0)
+            bf = float(draftui.facecolor.blue() / 255.0)
+            self.width_default = float(draftui.linewidth)
         else:
-            self.lw = float(params.get_param_view("DefaultShapeLineWidth"))
+            self.width_default = float(params.get_param_view("DefaultShapeLineWidth"))
             r, g, b, _ = utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))
-        self.col = (r, g, b, 0.0)
+            rf, gf, bf, _ = utils.get_rgba_tuple(params.get_param_view("DefaultShapeColor"))
+        self.fill_default = (rf, gf, bf, 0.0)
+        self.color_default = (r, g, b, 0.0)
 
     def format(self, obj):
         """Apply styles to the object if the graphical interface is up."""
@@ -672,9 +677,6 @@ class svgHandler(xml.sax.ContentHandler):
         if 'fill' in data:
             if data['fill'] != 'none':
                 self.fill = getcolor(data['fill'])
-        else:
-            # svg fill default is Black
-            self.fill = getcolor('Black')
         if 'stroke' in data:
             if data['stroke'] != 'none':
                 self.color = getcolor(data['stroke'])
@@ -692,20 +694,25 @@ class svgHandler(xml.sax.ContentHandler):
             if name == "g":
                 self.grouptransform.append(FreeCAD.Matrix())
 
-        if self.style == 1:
-            self.color = self.col
-            self.width = self.lw
+        if self.style == 0:
+            if self.fill is not None:
+                self.fill  = self.fill_default
+            self.color = self.color_default
+            self.width = self.width_default
 
         # apply group styles
         if name == "g":
             self.groupstyles.append([self.fill, self.color, self.width])
         if self.fill is None:
-            if "fill" not in data or data['fill'] != 'none':
+            if "fill" not in data:
                 # do not override fill if this item has specifically set a none fill
                 for groupstyle in reversed(self.groupstyles):
                     if groupstyle[0] is not None:
                         self.fill = groupstyle[0]
                         break
+                if self.fill is None:
+                    # svg fill default is Black
+                    self.fill = getcolor('Black')
         if self.color is None:
             for groupstyle in reversed(self.groupstyles):
                 if groupstyle[1] is not None:
