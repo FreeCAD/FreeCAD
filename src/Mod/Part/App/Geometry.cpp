@@ -6430,7 +6430,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
                         "curves you are intending to fillet."))
             }
         
-            int res = selectintersection(points, interpoints, refPnt1, refPnt2);
+            int res = selectIntersection(points, interpoints, refPnt1, refPnt2);
         
             if (res != 0) {
                 return nullptr;
