@@ -173,7 +173,7 @@ inline long toPercent(float value)
     return std::lround(100.0 * value);
 }
 
-template<class T>
+template<std::floating_point T>
 inline T fmod(T numerator, T denominator)
 {
     T modulo = std::fmod(numerator, denominator);
