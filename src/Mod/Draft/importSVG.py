@@ -293,7 +293,7 @@ def transformCopyShape(shape, m):
     """Apply transformation matrix m on given shape.
 
     Since OCCT 6.8.0 transformShape can be used to apply certain
-    non-orthogonal transformations on shapes. This way a conversion
+    similarity transformations on shapes. This way a conversion
     to BSplines in transformGeometry can be avoided.
 
     @sa: Part::TopoShape::transformGeometry(), TopoShapePy::transformGeometry()
@@ -311,18 +311,12 @@ def transformCopyShape(shape, m):
     shape : Part::TopoShape
         The shape transformed by the matrix
     """
-    # If there is no shear, these matrix operations will be very small
-    _s1 = abs(m.A11**2 + m.A12**2 - m.A21**2 - m.A22**2)
-    _s2 = abs(m.A11 * m.A21 + m.A12 * m.A22)
-    if _s1 < 1e-8 and _s2 < 1e-8:
-        try:
-            newshape = shape.copy()
-            newshape.transformShape(m)
-            return newshape
+    try:
+        return shape.transformShape(m, True, True)
         # Older versions of OCCT will refuse to work on
         # non-orthogonal matrices
-        except Part.OCCError:
-            pass
+    except Part.OCCError:
+        pass
     return shape.transformGeometry(m)
 
 
@@ -735,7 +729,7 @@ class svgHandler(xml.sax.ContentHandler):
             if not pathname:
                 pathname = "Path"
             _msg('data: {}'.format(data))
-            
+
             if "freecad:basepoint1" in data:
                 p1 = data["freecad:basepoint1"]
                 p1 = Vector(float(p1[0]), -float(p1[1]), 0)
@@ -1064,13 +1058,9 @@ class svgHandler(xml.sax.ContentHandler):
         """
         if isinstance(sh, Part.Shape) or isinstance(sh, Part.Wire):
             if self.transform:
-                # sh = transformCopyShape(sh, self.transform)
-                # see issue #2062
-                sh = sh.transformGeometry(self.transform)
+                sh = transformCopyShape(sh, self.transform)
             for transform in self.grouptransform[::-1]:
-                # sh = transformCopyShape(sh, transform)
-                # see issue #2062
-                sh = sh.transformGeometry(transform)
+                sh = transformCopyShape(sh, transform)
             return sh
         elif Draft.getType(sh) in ["Dimension","LinearDimension"]:
             pts = []
