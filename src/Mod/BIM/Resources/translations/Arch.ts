@@ -1356,7 +1356,7 @@ Utils -&gt; Make IFC project</source>
     </message>
     <message>
         <location filename="../ui/dialogConvertType.ui" line="26"/>
-        <source>This object will be converted to a type. Types can be used to give common attributes and properties to several objects at once.</source>
+        <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

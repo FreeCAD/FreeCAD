@@ -23,7 +23,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>This object will be converted to a type. Types can be used to give common attributes and properties to several objects at once.</string>
+      <string>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
