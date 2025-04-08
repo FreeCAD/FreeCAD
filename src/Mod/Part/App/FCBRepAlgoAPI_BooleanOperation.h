@@ -48,9 +48,16 @@ public:
 
     // set fuzzyness based on size
     void setAutoFuzzy();
-
+    
+    #ifdef __clang__
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Woverloaded-virtual"
+    #endif
     // not an override - real Build() has optionals, sadly type of those optionals that are differs between OCCT versions
     Standard_EXPORT virtual void Build(); // NOLINT(clang-diagnostic-overloaded-virtual, -Woverloaded-virtual)
+    #ifdef __clang__
+    #pragma clang diagnostic pop
+    #endif
 
 protected: //! @name Constructors
 
