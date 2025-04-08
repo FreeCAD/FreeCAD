@@ -18,39 +18,41 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the importer for IFC files used above all in Arch and BIM.
 
-Internally it uses IfcOpenShell, which must be installed before using.
-"""
+__title__  = "FreeCAD IFC importer - Enhanced IfcOpenShell-only version"
+__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
+__url__    = "https://www.freecad.org"
+
 ## @package importIFC
 #  \ingroup ARCH
 #  \brief IFC file format importer
 #
 #  This module provides tools to import IFC files.
 
+"""Provide the importer for IFC files used above all in Arch and BIM.
+
+Internally it uses IfcOpenShell, which must be installed before using.
+"""
 
 import os
 import math
 import time
 
 import FreeCAD
-import Part
-import Draft
 import Arch
-import DraftVecUtils
 import ArchIFCSchema
-from importers import importIFCHelper
-from importers import importIFCmulticore
+import Draft
+import DraftVecUtils
+import Part
 
 from draftutils import params
 from draftutils.messages import _msg, _err
 
+from importers import importIFCHelper
+from importers import importIFCmulticore
+
 if FreeCAD.GuiUp:
     import FreeCADGui as Gui
-
-__title__  = "FreeCAD IFC importer - Enhanced IfcOpenShell-only version"
-__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__    = "https://www.freecad.org"
 
 DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import

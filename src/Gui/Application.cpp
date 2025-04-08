@@ -159,7 +159,7 @@ public:
     void newObject(const ViewProvider& vp)
     {
         auto vpd =
-            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+            freecad_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
         if (vpd && vpd->getObject()) {
             map[vpd->getObject()] = vpd;
         }
@@ -167,7 +167,7 @@ public:
     void deleteObject(const ViewProvider& vp)
     {
         auto vpd =
-            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+            freecad_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
         if (vpd && vpd->getObject()) {
             map.erase(vpd->getObject());
         }

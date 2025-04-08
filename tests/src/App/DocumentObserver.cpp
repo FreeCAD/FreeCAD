@@ -74,12 +74,12 @@ TEST_F(DISABLED_DocumentObserverTest, hasSubObject)
 
     // Assert
 
-    // The subname of subObjTWithoutSubObj doesn't contain the name of a sub object, therefor
+    // The subname of subObjTWithoutSubObj doesn't contain the name of a sub object, therefore
     // hasNoSubObj should be false
     EXPECT_FALSE(hasNoSubObj);
 
-    // The subname of subObjTWithSubObj doesn't contain the name of a sub object, therefor hasSubObj
-    // should be true
+    // The subname of subObjTWithSubObj doesn't contain the name of a sub object, therefore
+    // hasSubObj should be true
     EXPECT_TRUE(hasSubObj);
 }
 
@@ -118,11 +118,11 @@ TEST_F(DISABLED_DocumentObserverTest, hasSubElement)
 
     // Assert
 
-    // The subname of subObjTWithoutSubEl doesn't contain the name of a sub element, therefor
+    // The subname of subObjTWithoutSubEl doesn't contain the name of a sub element, therefore
     // hasNoSubEl should be false
     EXPECT_FALSE(hasNoSubEl);
 
-    // The subname of subObjTWithSubEl doesn't contain the name of a sub element, therefor hasSubEl
+    // The subname of subObjTWithSubEl doesn't contain the name of a sub element, therefore hasSubEl
     // should be true
     EXPECT_TRUE(hasSubEl);
 }

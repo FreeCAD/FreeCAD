@@ -403,6 +403,8 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
         notificationArea->setObjectName(QStringLiteral("notificationArea"));
+        //: A context menu action used to show or hide the 'notificationArea' toolbar widget
+        notificationArea->setWindowTitle(tr("Notification area"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }

@@ -21,20 +21,6 @@
 #*                                                                           *
 #*****************************************************************************
 
-import FreeCAD
-import Part
-import Draft
-import ArchCommands
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-else:
-    # \cond
-    def translate(ctxt, txt):
-        return txt
-    # \endcond
-
 __title__="FreeCAD CutPlane"
 __author__ = "Jonathan Wiedemann"
 __url__ = "https://www.freecad.org"
@@ -44,6 +30,22 @@ __url__ = "https://www.freecad.org"
 #  \brief The Cut plane object and tools
 #
 #  This module handles the Cut Plane object
+
+import FreeCAD
+import ArchCommands
+import Draft
+import Part
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt, txt):
+        return txt
+    # \endcond
+
 
 # _getShapes(FreeCADGui.Selection.getSelectionEx("", 0))
 def _getShapes(sels):

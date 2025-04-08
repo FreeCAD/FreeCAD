@@ -547,7 +547,7 @@ int ViewProviderDocumentObject::replaceObject(
     std::vector<App::Property*> props;
     obj->getPropertyList(props);
     for(auto prop : props) {
-        auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+        auto linkProp = freecad_cast<App::PropertyLinkBase>(prop);
         if(!linkProp)
             continue;
         std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj, oldObj,newObj));
@@ -567,7 +567,7 @@ int ViewProviderDocumentObject::replaceObject(
             std::vector<App::Property*> props;
             o->getPropertyList(props);
             for(auto prop : props) {
-                auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+                auto linkProp = freecad_cast<App::PropertyLinkBase>(prop);
                 if(!linkProp)
                     continue;
                 std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj,oldObj,newObj));
@@ -691,7 +691,7 @@ ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
     auto linked = pcObject->getLinkedObject(recursive);
     if(!linked || linked == pcObject)
         return self;
-    auto res = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto res = freecad_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(linked));
     if(!res)
         res = self;

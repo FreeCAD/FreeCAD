@@ -191,7 +191,7 @@ void PropertyGeometryList::trySaveGeometry(Geometry * geom, Base::Writer &writer
         geom->Save(writer);
         for( auto & ext : geom->getExtensions() ) {
             auto extension = ext.lock();
-            auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(extension.get());
+            auto gpe = freecad_cast<GeometryMigrationPersistenceExtension>(extension.get());
             if (gpe)
                 gpe->postSave(writer);
         }
@@ -232,7 +232,7 @@ void PropertyGeometryList::Save(Writer &writer) const
                                         << _lValueList[i]->getTypeId().getName() << "\"";
         for (auto &e : _lValueList[i]->getExtensions() ) {
             auto ext = e.lock();
-            if (auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(ext.get())) {
+            if (auto gpe = freecad_cast<GeometryMigrationPersistenceExtension>(ext.get())) {
                 gpe->preSave(writer);
             }
         }

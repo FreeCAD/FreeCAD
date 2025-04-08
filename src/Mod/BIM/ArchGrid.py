@@ -19,23 +19,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import math
-
-import FreeCAD
-import Part
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
 __title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
@@ -45,6 +28,24 @@ __url__    = "https://www.freecad.org"
 #  \brief Grid system for the Arch workbench
 #
 #  This module provides tools to build grid systems
+
+import math
+
+import FreeCAD
+import Part
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class ArchGrid:

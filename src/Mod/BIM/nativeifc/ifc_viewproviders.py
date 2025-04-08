@@ -86,7 +86,7 @@ class ifc_vp_object:
         from . import ifc_psets
         from . import ifc_materials
         from . import ifc_types
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
@@ -419,7 +419,7 @@ class ifc_vp_document(ifc_vp_object):
 
     def setupContextMenu(self, vobj, menu):
 
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
@@ -463,7 +463,7 @@ class ifc_vp_document(ifc_vp_object):
     def replace_file(self, obj, newfile):
         """Asks the user if the attached file path needs to be replaced"""
 
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         msg = "Replace the stored IFC file path in object "
         msg += self.Object.Label + " with the new one: "
@@ -484,7 +484,7 @@ class ifc_vp_document(ifc_vp_object):
             return False
 
     def schema_warning(self):
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         msg = "Warning: This operation will change the whole IFC file contents "
         msg += "and will not give versionable results. It is best to not do "
@@ -516,7 +516,7 @@ class ifc_vp_group:
         self.Object = vobj.Object
 
     def getIcon(self):
-        from PySide import QtCore, QtGui  # lazy loading
+        from PySide import QtGui  # lazy loading
         import Draft_rc
         import Arch_rc
 
@@ -602,7 +602,7 @@ class ifc_vp_material:
     def setupContextMenu(self, vobj, menu):
         from . import ifc_tools  # lazy import
         from . import ifc_psets
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
@@ -660,7 +660,7 @@ def get_filepath(project):
     """Saves the associated IFC file to another file"""
 
     from . import ifc_tools  # lazy import
-    from PySide import QtCore, QtGui  # lazy import
+    from PySide import QtGui  # lazy import
 
     sf = QtGui.QFileDialog.getSaveFileName(
         None,

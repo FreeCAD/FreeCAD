@@ -8226,7 +8226,7 @@ static Part::Geometry *fitArcs(std::vector<std::unique_ptr<Part::Geometry> > &ar
     double m = 0.0;
     Base::Vector3d center;
     for (auto &geo : arcs) {
-        if (auto arc = Base::freecad_dynamic_cast<Part::GeomArcOfCircle>(geo.get())) {
+        if (auto arc = freecad_cast<Part::GeomArcOfCircle>(geo.get())) {
             if (radius == 0.0) {
                 radius = arc->getRadius();
                 center = arc->getCenter();
@@ -10708,7 +10708,7 @@ void SketchObject::updateGeometryRefs() {
                     FC_ERR("External geometry reference corrupted in " << getFullName()
                             << " Please check.");
                     // This could happen if someone saved the sketch containing
-                    // external geometries using some rouge releases during the
+                    // external geometries using some rogue releases during the
                     // migration period. As a remedy, We re-initiate the
                     // external geometry here to trigger rebuild later, with
                     // call to rebuildExternalGeometry()

@@ -154,12 +154,12 @@ void CmdPartPointsFromMesh::activated(int iMsg)
 
     double distance{1.0};
     auto found = std::find_if(geoms.begin(), geoms.end(), [](App::DocumentObject* obj) {
-        return Base::freecad_dynamic_cast<Part::Feature>(obj);
+        return freecad_cast<Part::Feature>(obj);
     });
 
     if (found != geoms.end()) {
 
-        double defaultDistance = getDefaultDistance(Base::freecad_dynamic_cast<Part::Feature>(*found));
+        double defaultDistance = getDefaultDistance(freecad_cast<Part::Feature>(*found));
 
         double STD_OCC_TOLERANCE = 1e-6;
 

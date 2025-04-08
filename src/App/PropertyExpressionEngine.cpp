@@ -408,7 +408,7 @@ void PropertyExpressionEngine::buildGraphStructures(
 
 ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier& p) const
 {
-    DocumentObject* docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+    DocumentObject* docObj = freecad_cast<DocumentObject>(getContainer());
 
     // Am I owned by a DocumentObject?
     if (!docObj) {
@@ -448,7 +448,7 @@ size_t PropertyExpressionEngine::numExpressions() const
 
 void PropertyExpressionEngine::afterRestore()
 {
-    DocumentObject* docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+    DocumentObject* docObj = freecad_cast<DocumentObject>(getContainer());
     if (restoredExpressions && docObj) {
         Base::FlagToggler<bool> flag(restoring);
         AtomicPropertyChange signaller(*this);
@@ -669,7 +669,7 @@ PropertyExpressionEngine::computeEvaluationOrder(ExecuteOption option)
 DocumentObjectExecReturn* App::PropertyExpressionEngine::execute(ExecuteOption option,
                                                                  bool* touched)
 {
-    DocumentObject* docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+    DocumentObject* docObj = freecad_cast<DocumentObject>(getContainer());
 
     if (!docObj) {
         throw Base::RuntimeError("PropertyExpressionEngine must be owned by a DocumentObject.");
@@ -739,7 +739,7 @@ DocumentObjectExecReturn* App::PropertyExpressionEngine::execute(ExecuteOption o
             throw Base::RuntimeError("Path does not resolve to a property.");
         }
 
-        DocumentObject* parent = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+        DocumentObject* parent = freecad_cast<DocumentObject>(prop->getContainer());
 
         /* Make sure property belongs to the same container as this PropertyExpressionEngine */
         if (parent != docObj) {
@@ -808,7 +808,7 @@ void PropertyExpressionEngine::getPathsToDocumentObject(
     DocumentObject* obj,
     std::vector<App::ObjectIdentifier>& paths) const
 {
-    DocumentObject* owner = freecad_dynamic_cast<DocumentObject>(getContainer());
+    DocumentObject* owner = freecad_cast<DocumentObject>(getContainer());
 
     if (!owner || owner == obj) {
         return;

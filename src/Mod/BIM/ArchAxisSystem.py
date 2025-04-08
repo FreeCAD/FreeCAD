@@ -19,23 +19,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-import DraftGeomUtils
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import Draft
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from pivy import coin
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
 __title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
@@ -46,6 +29,24 @@ __url__    = "https://www.freecad.org"
 #
 #  This module provides tools to build axis systems
 #  An axis system is a collection of multiple axes
+
+import FreeCAD
+import DraftGeomUtils
+
+if FreeCAD.GuiUp:
+    from pivy import coin
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import Draft
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class _AxisSystem:

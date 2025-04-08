@@ -158,7 +158,7 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
         try {
             // Check for 'DocumentObject' as parent because otherwise 'ObjectIdentifier' raises an
             // exception
-            auto* docObj = Base::freecad_dynamic_cast<App::DocumentObject>(prop.getContainer());
+            auto* docObj = freecad_cast<App::DocumentObject>(prop.getContainer());
             if (docObj && !docObj->isReadOnly(&prop)) {
                 App::ObjectIdentifier id(prop);
                 std::vector<App::ObjectIdentifier> paths;
@@ -296,7 +296,7 @@ int PropertyItem::childCount() const
 
 int PropertyItem::columnCount() const
 {
-    return 2;
+    return PropertyItem::ColumnCount;
 }
 
 void PropertyItem::setReadOnly(bool ro)
@@ -650,7 +650,7 @@ void PropertyItem::setPropertyValue(const QString& value)
     setPropertyValue(value.toStdString());
 }
 
-QVariant PropertyItem::dataProperty(int role) const
+QVariant PropertyItem::dataPropertyName(int role) const
 {
     if (role == Qt::ForegroundRole && linked) {
         return QVariant::fromValue(QColor(0x20, 0xaa, 0x20));  // NOLINT
@@ -743,9 +743,8 @@ QVariant PropertyItem::dataValue(int role) const
 
 QVariant PropertyItem::data(int column, int role) const
 {
-    // property name
-    if (column == 0) {
-        return dataProperty(role);
+    if (column == PropertyItem::NameColumn) {
+        return dataPropertyName(role);
     }
 
     return dataValue(role);
@@ -4559,7 +4558,7 @@ void LinkLabel::updatePropertyLink()
 {
     QString text;
     auto owner = objProp.getObject();
-    auto prop = Base::freecad_dynamic_cast<App::PropertyLinkBase>(objProp.getProperty());
+    auto prop = freecad_cast<App::PropertyLinkBase>(objProp.getProperty());
 
     link = QVariant();
 
@@ -4674,7 +4673,7 @@ QVariant PropertyLinkItem::data(int column, int role) const
 
 QVariant PropertyLinkItem::value(const App::Property* prop) const
 {
-    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+    auto propLink = freecad_cast<App::PropertyLinkBase>(prop);
     if (!propLink) {
         return {};
     }

@@ -443,7 +443,7 @@ def findElementClosestVertex(ref, mousePos):
         return element_name
 
     elif elt_type == "Edge":
-        edge = obj.Shape.Edges[elt_index - 1]
+        edge = obj.Shape.getElement(element_name)
         curve = edge.Curve
         if curve.TypeId == "Part::GeomCircle":
             # For centers, as they are not shape vertexes, we return the element name.
@@ -463,12 +463,14 @@ def findElementClosestVertex(ref, mousePos):
             # If line center is closest then we have no vertex name to set so we put element name
             return element_name
 
-        vertex_name = findVertexNameInObject(edge.Vertexes[closest_vertex_index], obj)
+        vertexes = edge.Vertexes
+
+        vertex_name = findVertexNameInObject(vertexes[closest_vertex_index], obj)
 
         return vertex_name
 
     elif elt_type == "Face":
-        face = obj.Shape.Faces[elt_index - 1]
+        face = obj.Shape.getElement(element_name)
         surface = face.Surface
         _type = surface.TypeId
         if _type == "Part::GeomSphere" or _type == "Part::GeomTorus":
@@ -564,9 +566,13 @@ def findClosestPointToMousePos(candidates_points, mousePos):
 
 
 def findVertexNameInObject(vertex, obj):
-    for i, vtx in enumerate(obj.Shape.Vertexes):
-        if vtx.Point == vertex.Point:
-            return "Vertex" + str(i + 1)
+    for i, _ in enumerate(obj.Shape.Vertexes):
+        vertexName = "Vertex" + str(i + 1)
+
+        if (
+            obj.Shape.getElement(vertexName).Point == vertex.Point
+        ):  # Don't use the vtx param from enumerate's 2nd output to avoid hasher warning
+            return vertexName
     return ""
 
 
@@ -966,17 +972,17 @@ def findPlacement(ref, ignoreVertex=False):
     plc = App.Placement()
 
     elt_type, elt_index = extract_type_and_number(elt)
-    vtx_type, vtx_index = extract_type_and_number(vtx)
+    vtx_type, _ = extract_type_and_number(vtx)
 
     isLine = False
 
     if elt_type == "Vertex":
-        vertex = get_element(obj.Shape.Vertexes, elt_index, elt)
+        vertex = get_element(obj.Shape, elt)
         if vertex is None:
             return App.Placement()
         plc.Base = (vertex.X, vertex.Y, vertex.Z)
     elif elt_type == "Edge":
-        edge = get_element(obj.Shape.Edges, elt_index, elt)
+        edge = get_element(obj.Shape, elt)
         if edge is None:
             return App.Placement()
 
@@ -993,7 +999,7 @@ def findPlacement(ref, ignoreVertex=False):
                 line_middle = (edge_points[0] + edge_points[1]) * 0.5
                 plc.Base = line_middle
         else:
-            vertex = get_element(obj.Shape.Vertexes, vtx_index, vtx)
+            vertex = get_element(obj.Shape, vtx)
             if vertex is None:
                 return App.Placement()
 
@@ -1010,7 +1016,7 @@ def findPlacement(ref, ignoreVertex=False):
             plane = Part.Plane(plane_origin, plane_normal)
             plc.Rotation = App.Rotation(plane.Rotation)
     elif elt_type == "Face":
-        face = get_element(obj.Shape.Faces, elt_index, elt)
+        face = get_element(obj.Shape, elt)
         if face is None:
             return App.Placement()
 
@@ -1031,7 +1037,7 @@ def findPlacement(ref, ignoreVertex=False):
                 plc.Base = face.CenterOfGravity
         elif vtx_type == "Edge":
             # In this case the edge is a circle/arc and the wanted vertex is its center.
-            edge = get_element(face.Edges, vtx_index, vtx)
+            edge = get_element(face, vtx)
             if edge is None:
                 return App.Placement()
 
@@ -1047,7 +1053,7 @@ def findPlacement(ref, ignoreVertex=False):
                 plc.Base = findCylindersIntersection(obj, surface, edge, elt_index)
 
         else:
-            vertex = get_element(obj.Shape.Vertexes, vtx_index, vtx)
+            vertex = get_element(obj.Shape, vtx)
             if vertex is None:
                 return App.Placement()
 
@@ -1083,11 +1089,11 @@ def findPlacement(ref, ignoreVertex=False):
     return plc
 
 
-def get_element(shape_elements, index, sub):
-    if index - 1 < 0 or index - 1 >= len(shape_elements):
-        print(f"Joint Corrupted: Index of {sub} out of bound.")
-        return None
-    return shape_elements[index - 1]
+def get_element(shape, name):
+    element = shape.getElement(name)
+    if element is None:
+        App.Console.PrintWarning(f"Unable to find element {name}.")
+    return element
 
 
 def isRefValid(ref, number_sub):

@@ -24,10 +24,15 @@ if(DOXYGEN_FOUND)
     SET(DOXYGEN_LANGUAGE "English" CACHE STRING "Language used by doxygen")
     MARK_AS_ADVANCED(DOXYGEN_LANGUAGE)
 
-# note: this test is obsolete if DevDoc target is used
+    # note: this test is obsolete if DevDoc target is used
     if (NOT BUILD_GUI)
         message("Note: Gui is not built. Documentation may lack some parts.")
     endif (NOT BUILD_GUI)
+
+    # Check required options
+    if(NOT BUILD_FEM)
+      message(FATAL_ERROR "Web documentation requires BUILD_FEM to be ON.")
+    endif()
 
     # directory order seems important for correct macro expansion
     # (files containing macros definitions must be parsed before the files using them)
@@ -65,7 +70,7 @@ if(DOXYGEN_FOUND)
 
     find_package(Coin3DDoc)
     if( COIN3D_DOC_FOUND )
-        SET(DOXYGEN_TAGFILES 
+        SET(DOXYGEN_TAGFILES
             ${COIN3D_DOC_TAGFILE}=${COIN3D_DOC_PATH}
         )
     endif( COIN3D_DOC_FOUND )
@@ -88,26 +93,25 @@ if(DOXYGEN_FOUND)
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mainpage.dox.in
                    ${CMAKE_CURRENT_BINARY_DIR}/mainpage.dox @ONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cfg.in  
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cfg.in
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg @ONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildWebDoc.cfg.in  
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildWebDoc.cfg.in
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildWebDoc.cfg @ONLY)
- 
-    # reconfigure to have all sources files generated from xml, whatever build options were
-    # generate source documentation
-    # delete CMakeCache to reset to default build options next time 
+
+    file(MAKE_DIRECTORY "${DOXYGEN_OUTPUT_DIR}")
+
+    # Note that these two targets do not pick up changes in *.pyi and *Py.xml
+    # files.  To ensure these changes are propagated, execute a build before
+    # executing these targets.
     ADD_CUSTOM_TARGET(DevDoc
-        ${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/Doc/templates ${CMAKE_CURRENT_BINARY_DIR}/templates
         COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg
-        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
     # lightweight version for the web
     ADD_CUSTOM_TARGET(WebDoc
-        ${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/Doc/templates ${CMAKE_CURRENT_BINARY_DIR}/templates
         COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildWebDoc.cfg
-        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 

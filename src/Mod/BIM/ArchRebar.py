@@ -20,17 +20,30 @@
 #***************************************************************************
 # Modified Amritpal Singh <amrit3701@gmail.com> on 07-07-2017
 
+__title__  = "FreeCAD Rebar"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchRebar
+#  \ingroup ARCH
+#  \brief The Rebar object and tools
+#
+#  This module provides tools to build Rebar objects.
+#  Rebars (or Reinforcing Bars) are metallic bars placed
+#  inside concrete structures to reinforce them.
+
 import FreeCAD
-import Draft
-import ArchComponent
-import DraftVecUtils
 import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
     def translate(ctxt,txt):
@@ -42,18 +55,6 @@ else:
 # for Rebar addon compatibility
 from bimcommands import BimRebar
 _CommandRebar = BimRebar.Arch_Rebar
-
-## @package ArchRebar
-#  \ingroup ARCH
-#  \brief The Rebar object and tools
-#
-#  This module provides tools to build Rebar objects.
-#  Rebars (or Reinforcing Bars) are metallic bars placed
-#  inside concrete structures to reinforce them.
-
-__title__  = "FreeCAD Rebar"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
 
 
 class _Rebar(ArchComponent.Component):
@@ -447,9 +448,9 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
                     self.centerlinegroup.removeChild(self.centerline)
             if hasattr(obj.Proxy,"wires"):
                 if obj.Proxy.wires:
+                    import re
                     from pivy import coin
                     import Part
-                    import re
                     self.centerline = coin.SoSeparator()
                     comp = Part.makeCompound(obj.Proxy.wires)
                     buf = re.findall(r"point \[(.*?)\]",comp.writeInventor().replace("\n",""))
@@ -570,4 +571,3 @@ def getLengthOfRebar(rebar):
     else:
         FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
         return None
-

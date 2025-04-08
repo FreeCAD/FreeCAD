@@ -22,10 +22,9 @@
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-
-import os
-import sys
 import math
+import os
+
 import FreeCAD
 import FreeCADGui
 
@@ -49,7 +48,7 @@ class BIM_ProjectManager:
 
         import FreeCADGui
         import ArchBuildingPart
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogProjectManager.ui")
         self.project = None
@@ -125,6 +124,7 @@ class BIM_ProjectManager:
             if not buildings:
                 buildings = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building"]
             if buildings:
+                from nativeifc import ifc_tools
                 self.building = buildings[0]
                 self.form.buildingName.setText(self.building.Label)
                 levels = ifc_tools.get_children(self.building, ifctype="IfcBuildingStorey")
@@ -414,7 +414,7 @@ class BIM_ProjectManager:
 
     def savePreset(self):
         import Arch
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         res = QtGui.QInputDialog.getText(
             None,
@@ -649,7 +649,7 @@ class BIM_ProjectManager:
         )
 
         d.Meta = values
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
@@ -671,7 +671,7 @@ class BIM_ProjectManager:
         """loads the contents of a template into the current file"""
 
         import FreeCADGui
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
