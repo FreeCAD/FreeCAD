@@ -812,7 +812,7 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     // a new sketch.
     // See https://forum.freecad.org/viewtopic.php?f=3&t=44070
 
-    Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1", activeBody);
+    Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1", activeBody);
     Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1", activeBody);
 
