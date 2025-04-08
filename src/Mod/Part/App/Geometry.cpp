@@ -6276,40 +6276,37 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
     }
     else if (geo1->isDerivedFrom<GeomBoundedCurve>() && geo2->isDerivedFrom<GeomBoundedCurve>()) {
 
-        auto distancetorefpoints =
+        auto distanceToRefPoints =
             [](Base::Vector3d ip1, Base::Vector3d ip2, Base::Vector3d ref1, Base::Vector3d ref2) {
                 return (ip1 - ref1).Length() + (ip2 - ref2).Length();
             };
 
-        auto selectintersection =
-            [&distancetorefpoints](std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
+        auto selectIntersection =
+            [&distanceToRefPoints](std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                                    std::pair<Base::Vector3d, Base::Vector3d>& interpoints,
                                    const Base::Vector3d& refPnt1,
                                    const Base::Vector3d& refPnt2) {
                 if (points.empty()) {
                     return -1;
                 }
-                else {
-                    double dist =
-                        distancetorefpoints(points[0].first, points[0].second, refPnt1, refPnt2);
-                    int i = 0, si = 0;
 
-                    for (auto ipoints : points) {
-                        double d =
-                            distancetorefpoints(ipoints.first, ipoints.second, refPnt1, refPnt2);
+                double dist = distanceToRefPoints(points[0].first, points[0].second, refPnt1, refPnt2);
+                int i = 0, si = 0;
 
-                        if (d < dist) {
-                            si = i;
-                            dist = d;
-                        }
+                for (auto ipoints : points) {
+                    double d =  distanceToRefPoints(ipoints.first, ipoints.second, refPnt1, refPnt2);
 
-                        i++;
+                    if (d < dist) {
+                        si = i;
+                        dist = d;
                     }
 
-                    interpoints = points[si];
-
-                    return 0;
+                    i++;
                 }
+
+                interpoints = points[si];
+
+                return 0;
             };
 
         // NOTE: While it is not a requirement that the endpoints of the corner to trim are
@@ -6368,7 +6365,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
         if ((curve1->getStartPoint() - curve2->getStartPoint()).Length() < Precision::Confusion()) {
             Base::Vector3d tmpp1 = curve1->getStartPoint();
             Base::Vector3d tmpp2 = curve2->getStartPoint();
-            double tmpdist = distancetorefpoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
             if (tmpdist < dist) {
                 dist = tmpdist;
                 interpoints = std::make_pair(tmpp1, tmpp2);
@@ -6379,7 +6376,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
         else if ((curve1->getEndPoint() - curve2->getStartPoint()).Length() < Precision::Confusion()) {
             Base::Vector3d tmpp1 = curve1->getEndPoint();
             Base::Vector3d tmpp2 = curve2->getStartPoint();
-            double tmpdist = distancetorefpoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
             if (tmpdist < dist) {
                 dist = tmpdist;
                 interpoints = std::make_pair(tmpp1, tmpp2);
@@ -6390,7 +6387,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
         else if ((curve1->getStartPoint() - curve2->getEndPoint()).Length() < Precision::Confusion()) {
             Base::Vector3d tmpp1 = curve1->getStartPoint();
             Base::Vector3d tmpp2 = curve2->getEndPoint();
-            double tmpdist = distancetorefpoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
             if (tmpdist < dist) {
                 dist = tmpdist;
                 interpoints = std::make_pair(tmpp1, tmpp2);
@@ -6401,7 +6398,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
         else if ((curve1->getEndPoint() - curve2->getEndPoint()).Length() < Precision::Confusion()) {
             Base::Vector3d tmpp1 = curve1->getEndPoint();
             Base::Vector3d tmpp2 = curve2->getEndPoint();
-            double tmpdist = distancetorefpoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
             if (tmpdist < dist) {
                 dist = tmpdist;
                 interpoints = std::make_pair(tmpp1, tmpp2);
@@ -6412,32 +6409,31 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
 
         if (dist == INFINITY) {
             // no coincident was found, try basis curve intersection if GeomTrimmedCurve
-            if (geo1->isDerivedFrom<GeomTrimmedCurve>() && geo2->isDerivedFrom<GeomTrimmedCurve>()) {
-                auto* tcurve1 =static_cast<const GeomTrimmedCurve*>(geo1);
-                auto* tcurve2 = static_cast<const GeomTrimmedCurve*>(geo2);
-
-                try {
-                    if (!tcurve1->intersectBasisCurves(tcurve2, points)) {
-                        return nullptr;
-                    }
-                }
-                catch (Base::CADKernelError& e) {
-                    e.ReportException();
-                    THROWMT(Base::CADKernelError,
-                            QT_TRANSLATE_NOOP("Exceptions",
-                                              "Unable to guess intersection of curves. Try adding "
-                                              "a coincident constraint between the vertices of the "
-                                              "curves you are intending to fillet."))
-                }
-
-                int res = selectintersection(points, interpoints, refPnt1, refPnt2);
-
-                if (res != 0) {
+            if (!geo1->isDerivedFrom<GeomTrimmedCurve>() || !geo2->isDerivedFrom<GeomTrimmedCurve>()) {
+                return nullptr;// not a GeomTrimmedCurve and no coincident point.
+            }
+        
+            auto* tcurve1 = static_cast<const GeomTrimmedCurve*>(geo1);
+            auto* tcurve2 = static_cast<const GeomTrimmedCurve*>(geo2);
+        
+            try {
+                if (!tcurve1->intersectBasisCurves(tcurve2, points)) {
                     return nullptr;
                 }
             }
-            else {
-                return nullptr;// not a GeomTrimmedCurve and no coincident point.
+            catch (Base::CADKernelError& e) {
+                e.ReportException();
+                THROWMT(Base::CADKernelError,
+                    QT_TRANSLATE_NOOP("Exceptions",
+                        "Unable to guess intersection of curves. Try adding "
+                        "a coincident constraint between the vertices of the "
+                        "curves you are intending to fillet."))
+            }
+        
+            int res = selectintersection(points, interpoints, refPnt1, refPnt2);
+        
+            if (res != 0) {
+                return nullptr;
             }
         }
 
@@ -6556,7 +6552,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             THROWM(Base::CADKernelError, "Unable to find intersection between offset curves.")
         }
 
-        int res = selectintersection(offsetintersectionpoints, filletcenterpoint, refPnt1, refPnt2);
+        int res = selectIntersection(offsetintersectionpoints, filletcenterpoint, refPnt1, refPnt2);
 
         if (res != 0) {
             return nullptr;
