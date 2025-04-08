@@ -126,9 +126,7 @@ M5
         self.assertEqual(gcode, expected_body)
 
         # test body without comments
-        gcode = self.get_gcode(
-            [], "--machine=A350 --toolhead=50W_CNC --no-header --no-comments"
-        )
+        gcode = self.get_gcode([], "--machine=A350 --toolhead=50W_CNC --no-header --no-comments")
         expected = "".join(
             [line for line in expected_body.splitlines(keepends=True) if not line.startswith(";")]
         )
@@ -139,9 +137,7 @@ M5
         command = Path.Command("G0 X10 Y20 Z30")
         expected = "G0 X10.000 Y20.000 Z30.000"
 
-        gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=50W_CNC --no-header"
-        )
+        gcode = self.get_gcode([command], "--machine=A350 --toolhead=50W_CNC --no-header")
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
 
@@ -195,9 +191,7 @@ M5
 
         # test inches conversion
         expected = "G0 X0.3937 Y0.7874 Z1.1811"
-        gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=50W_CNC --no-header --inches"
-        )
+        gcode = self.get_gcode([command], "--machine=A350 --toolhead=50W_CNC --no-header --inches")
         self.assertEqual(gcode.splitlines()[3], "G20")
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
@@ -230,9 +224,7 @@ M5
         c0 = Path.Command("M6 T2")
         c1 = Path.Command("M3 S3000")
 
-        gcode = self.get_gcode(
-            [c0, c1], "--machine=A350 --toolhead=50W_CNC --no-header"
-        )
+        gcode = self.get_gcode([c0, c1], "--machine=A350 --toolhead=50W_CNC --no-header")
         self.assertEqual(gcode.splitlines()[19:22], ["M5", "M76", "M6 T2"])
         self.assertEqual(
             gcode.splitlines()[22], "M3 P25"
@@ -330,8 +322,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],[])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=90, Y=90, Z=50))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], [])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=90, Y=90, Z=50))
 
         gcode = self.get_gcode(
             [command],
@@ -339,8 +331,8 @@ M5
         )
         # I don't understand why export returns the arguments
         # if snapmaker_process_arguments fails.
-        self.assertTrue(isinstance(gcode,argparse.Namespace))
-        self.assertFalse(isinstance(gcode,str))
+        self.assertTrue(isinstance(gcode, argparse.Namespace))
+        self.assertFalse(isinstance(gcode, str))
 
         gcode = self.get_gcode(
             [command],
@@ -348,8 +340,8 @@ M5
         )
         # I don't understand why export returns the arguments
         # if snapmaker_process_arguments fails.
-        self.assertTrue(isinstance(gcode,argparse.Namespace))
-        self.assertFalse(isinstance(gcode,str))
+        self.assertTrue(isinstance(gcode, argparse.Namespace))
+        self.assertFalse(isinstance(gcode, str))
 
         gcode = self.get_gcode(
             [command],
@@ -357,8 +349,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],[])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=400, Y=400, Z=400))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], [])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=400, Y=400, Z=400))
 
         gcode = self.get_gcode(
             [command],
@@ -366,8 +358,8 @@ M5
         )
         # I don't understand why export returns the arguments
         # if snapmaker_process_arguments fails.
-        self.assertTrue(isinstance(gcode,argparse.Namespace))
-        self.assertFalse(isinstance(gcode,str))
+        self.assertTrue(isinstance(gcode, argparse.Namespace))
+        self.assertFalse(isinstance(gcode, str))
 
         gcode = self.get_gcode(
             [command],
@@ -375,8 +367,8 @@ M5
         )
         # I don't understand why export returns the arguments
         # if snapmaker_process_arguments fails.
-        self.assertTrue(isinstance(gcode,argparse.Namespace))
-        self.assertFalse(isinstance(gcode,str))
+        self.assertTrue(isinstance(gcode, argparse.Namespace))
+        self.assertFalse(isinstance(gcode, str))
 
         gcode = self.get_gcode(
             [command],
@@ -384,8 +376,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=160, Y=148, Z=84))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=160, Y=148, Z=84))
 
         gcode = self.get_gcode(
             [command],
@@ -393,8 +385,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS"])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=160, Y=145, Z=75))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=160, Y=145, Z=75))
 
         gcode = self.get_gcode(
             [command],
@@ -402,8 +394,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS","BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=230, Y=223, Z=159))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS", "BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=230, Y=223, Z=159))
 
         gcode = self.get_gcode(
             [command],
@@ -411,8 +403,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS"])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=230, Y=235, Z=165))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=230, Y=235, Z=165))
 
         gcode = self.get_gcode(
             [command],
@@ -420,8 +412,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS","BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=320, Y=323, Z=254))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS", "BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=323, Z=254))
 
         gcode = self.get_gcode(
             [command],
@@ -429,8 +421,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS","BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=320, Y=323, Z=254))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS", "BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=323, Z=254))
 
         gcode = self.get_gcode(
             [command],
@@ -438,8 +430,8 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"],["QS","BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"],dict(X=320, Y=310, Z=254))
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS", "BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=310, Z=254))
 
     def test_toolhead_selection(self):
         """Test automatic selection of toolhead where appropriate"""
@@ -454,19 +446,19 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["TOOLHEAD_NAME"],"Original CNC module")
+        self.assertEqual(self.post.values["TOOLHEAD_NAME"], "Original CNC module")
 
         gcode = self.get_gcode(
             [command],
             "--machine=A350 --no-header",
         )
-        self.assertFalse(isinstance(gcode,str))
+        self.assertFalse(isinstance(gcode, str))
 
         gcode = self.get_gcode(
             [command],
             "--machine=A350T --no-header",
         )
-        self.assertFalse(isinstance(gcode,str))
+        self.assertFalse(isinstance(gcode, str))
 
         # check succeed with artisan (which base is bigger)
         gcode = self.get_gcode(
@@ -475,7 +467,7 @@ M5
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["TOOLHEAD_NAME"],"200W CNC module")
+        self.assertEqual(self.post.values["TOOLHEAD_NAME"], "200W CNC module")
 
     def test_spindle_percent_rpm_auto_select(self):
         """Test automatic selection of spindle speed rpm vs percent"""
@@ -483,29 +475,21 @@ M5
         command = Path.Command("M3 S2100")
 
         # test original toolhead
-        gcode = self.get_gcode(
-            [command], "--machine=Original --no-header"
-        )
+        gcode = self.get_gcode([command], "--machine=Original --no-header")
         self.assertEqual(gcode.splitlines()[18], "M3 P30")
 
         command = Path.Command("M3 S3600")
 
         # test 50W toolhead
-        gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=50W_CNC --no-header"
-        )
+        gcode = self.get_gcode([command], "--machine=A350 --toolhead=50W_CNC --no-header")
         self.assertEqual(gcode.splitlines()[18], "M3 P30")
 
         # test 200W toolhead
-        gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=200W_CNC --no-header"
-        )
+        gcode = self.get_gcode([command], "--machine=A350 --toolhead=200W_CNC --no-header")
         self.assertEqual(gcode.splitlines()[18], "M3 S3600")
 
         # test 200W toolhead
-        gcode = self.get_gcode(
-            [command], "--machine=Artisan --no-header"
-        )
+        gcode = self.get_gcode([command], "--machine=Artisan --no-header")
         self.assertEqual(gcode.splitlines()[18], "M3 S3600")
 
     def test_spindle_percent(self):
