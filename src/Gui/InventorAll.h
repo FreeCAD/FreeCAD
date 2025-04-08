@@ -50,6 +50,7 @@
 #include <Inventor/SbTesselator.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbViewVolume.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoEventManager.h>
