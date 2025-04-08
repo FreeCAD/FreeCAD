@@ -129,18 +129,38 @@ constexpr std::enable_if_t<std::is_arithmetic_v<T> && std::is_signed_v<T>, T> sg
     return T(oneIfPositive - oneIfNegative);  // 0/1 - 0/1 = -1/0/1
 }
 
+/// Convert degrees to radians, allow deduction for floating point types
+template<std::floating_point T>
+constexpr T toRadians(T degrees)
+{
+    constexpr auto degToRad = std::numbers::pi_v<T> / T(180);
+    return degrees * degToRad;
 }
 
-template<class T>
-inline T toRadians(T d)
+/// Convert degrees to radians, allow **explicit-only** for any arithmetic type
+template<typename T>
+    requires(std::is_arithmetic_v<T> && !std::floating_point<T>)
+constexpr T toRadians(std::type_identity_t<T> degrees)
 {
-    return static_cast<T>((d * std::numbers::pi) / 180.0);
+    using ResultT = std::conditional_t<std::is_integral_v<T>, double, T>;
+    return static_cast<T>(toRadians<ResultT>(static_cast<ResultT>(degrees)));
 }
 
-template<class T>
-inline T toDegrees(T r)
+/// Convert radians to degrees, allow deduction for floating point types
+template<std::floating_point T>
+constexpr T toDegrees(T radians)
 {
-    return static_cast<T>((r / std::numbers::pi) * 180.0);
+    constexpr auto radToDeg = T(180) / std::numbers::pi_v<T>;
+    return radians * radToDeg;
+}
+
+/// Convert radians to degrees, allow **explicit-only** for any arithmetic type
+template<typename T>
+    requires(std::is_arithmetic_v<T> && !std::floating_point<T>)
+constexpr T toDegrees(std::type_identity_t<T> radians)
+{
+    using ResultT = std::conditional_t<std::is_integral_v<T>, double, T>;
+    return static_cast<T>(toDegrees<ResultT>(static_cast<ResultT>(radians)));
 }
 
 inline float fromPercent(const long value)
