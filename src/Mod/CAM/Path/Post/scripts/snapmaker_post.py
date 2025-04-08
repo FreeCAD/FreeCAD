@@ -179,7 +179,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.values["END_OF_LINE_CHARACTERS"] = "\n"
         self.values["FINISH_LABEL"] = "End"
         self.values["LINE_INCREMENT"] = 1
-        self.values["MACHINE_NAME"] = "Generic Snapmaker"
+        self.values["MACHINE_NAME"] = None
         self.values["MODAL"] = False
         self.values["OUTPUT_PATH_LABELS"] = True
         self.values["OUTPUT_HEADER"] = (
@@ -327,6 +327,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         group.add_argument(
             "--machine",
             default=None,
+            required=True,
             choices=self.values["MACHINES"].keys(),
             help=f"Snapmaker machine. Choose from [{self.values['MACHINES'].keys()}].",
         )
@@ -382,12 +383,12 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         if flag:  # process extra arguments only if flag is True
             self._units = self.values["UNITS"]
 
-            if args.machine:
-                machine = self.values["MACHINES"][args.machine]
-                self.values["MACHINE_KEY"] = machine["key"]
-                self.values["MACHINE_NAME"] = machine["name"]
-                # The deepcopy is necessary to avoid modifying the boundaries in the MACHINES dict.
-                self.values["BOUNDARIES"] = copy.deepcopy(machine["boundaries"])
+            # --machine is a required "option"
+            machine = self.values["MACHINES"][args.machine]
+            self.values["MACHINE_KEY"] = machine["key"]
+            self.values["MACHINE_NAME"] = machine["name"]
+            # The deepcopy is necessary to avoid modifying the boundaries in the MACHINES dict.
+            self.values["BOUNDARIES"] = copy.deepcopy(machine["boundaries"])
 
             if args.boundaries:  # may override machine boundaries, which is expected
                 self.values["BOUNDARIES"] = args.boundaries

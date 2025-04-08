@@ -238,9 +238,21 @@ M5
         )  # no TLO on Snapmaker (G43 inserted after tool change)
 
     def test_models(self):
-        """Test the various models."""
+        """Test the various models, and also test models that don't exist cause an error."""
         command = Path.Command("G0 X10 Y20 Z30")
         expected = "G0 X10.000 Y20.000 Z30.000"
+
+        with self.assertRaises(SystemExit):
+            self.get_gcode(
+                [command],
+                "--no-header",
+            )
+
+        with self.assertRaises(SystemExit):
+            gcode = self.get_gcode(
+                [command],
+                "--machine=robot --no-header",
+            )
 
         gcode = self.get_gcode(
             [command],
