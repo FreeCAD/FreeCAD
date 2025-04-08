@@ -119,14 +119,16 @@ inline T clamp(T num, T lower, T upper)
     return std::clamp<T>(num, lower, upper);
 }
 
-template<class T>
-inline T sgn(T t)
+/// Returns -1, 0 or 1 depending on if the value is negative, zero or positive
+/// As this function might be used in hot paths, it uses branchless implementation
+template<typename T>
+constexpr std::enable_if_t<std::is_arithmetic_v<T> && std::is_signed_v<T>, T> sgn(T val)
 {
-    if (t == 0) {
-        return T(0);
-    }
+    int oneIfPositive = int(0 < val);
+    int oneIfNegative = int(val < 0);
+    return T(oneIfPositive - oneIfNegative);  // 0/1 - 0/1 = -1/0/1
+}
 
-    return (t > 0) ? T(1) : T(-1);
 }
 
 template<class T>
