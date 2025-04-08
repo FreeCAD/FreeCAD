@@ -13,6 +13,10 @@
           "CMAKE_EXPORT_COMPILE_COMMANDS": {
             "type": "BOOL",
             "value": "ON"
+          },
+          "CMAKE_POLICY_VERSION_MINIMUM": {
+            "type": "STRING",
+            "value": "3.5"
           }
         }
       },
