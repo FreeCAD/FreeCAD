@@ -17,6 +17,7 @@
 # *  permissions and limitations under the Licence.                         *
 # ***************************************************************************
 import re
+from typing import List
 
 import FreeCAD
 
@@ -63,7 +64,7 @@ class TestSnapmakerPost(PathTestUtils.PathTestBase):
         """Unit test tear down"""
         pass
 
-    def get_gcode(self, ops: [str], arguments: str) -> str:
+    def get_gcode(self, ops: List[str], arguments: str) -> str:
         """Get postprocessed gcode from a list of operations and postprocessor arguments"""
         self.profile_op.Path = Path.Path(ops)
         self.job.PostProcessorArgs = "--no-show-editor --no-gui --no-thumbnail " + arguments
