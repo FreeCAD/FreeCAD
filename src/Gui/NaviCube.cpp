@@ -48,6 +48,8 @@
 
 #include <Base/Color.h>
 #include <Base/Tools.h>
+#include <Gui/ViewVolumeUtils.h>
+
 #include <Eigen/Dense>
 
 #include "NaviCube.h"
@@ -817,17 +819,19 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
     const float NEARVAL = 0.1f;
     const float FARVAL = 10.1f;
     if (cam->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-        glOrtho(-2.1, 2.1, -2.1, 2.1, NEARVAL, FARVAL);
+        Gui::GL::loadOrthoMatrix(-2.1F, 2.1F, -2.1F, 2.1F, NEARVAL, FARVAL);
     }
     else {
         const float dim = NEARVAL * float(tan(std::numbers::pi / 8.0)) * 1.1;
-        glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
+        Gui::GL::loadFrustumMatrix(-dim, dim, -dim, dim, NEARVAL, FARVAL);
     }
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     SbMatrix mx;
     mx = cam->orientation.getValue();
     mx = mx.inverse();
+    // Position the camera away from the object along the Z-axis.
     mx[3][2] = -5.1F;
     glLoadMatrixf((float*)mx);
 
@@ -918,7 +922,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
     glDisable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0, 1.0, 1.0, 0.0, 0.0, 1.0);
+    Gui::GL::loadOrthoMatrix(0.0, 1.0, 1.0, 0.0, 0.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 

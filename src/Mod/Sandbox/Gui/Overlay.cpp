@@ -34,7 +34,7 @@
 #include <Gui/GLPainter.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-
+#include <Gui/ViewVolumeUtils.h>
 
 #include "Overlay.h"
 
@@ -73,7 +73,12 @@ public:
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, size[0], 0, size[1], -1, 1);
+    Gui::GL::loadOrthoMatrix(0.0,
+                             static_cast<float>(size[0]),
+                             0.0,
+                             static_cast<float>(size[1]),
+                             -1.0,
+                             1.0);
 
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glEnable(GL_BLEND);
@@ -194,7 +199,12 @@ void paintGL()
 
     if (rubberBandIsShown) {
         glMatrixMode(GL_PROJECTION);
-        glOrtho(0, size[0], size[1], 0, 0, 100);
+        Gui::GL::loadOrthoMatrix(0.0,
+                                 static_cast<float>(size[0]),
+                                 static_cast<float>(size[1]),
+                                 0.0,
+                                 0.0,
+                                 100.0);
         glMatrixMode(GL_MODELVIEW);
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -273,7 +283,12 @@ void paintGL()
     SbVec2s size = vp.getViewportSizePixels();
 
         glMatrixMode(GL_PROJECTION);
-        glOrtho(0, size[0], size[1], 0, 0, 100);
+        Gui::GL::loadOrthoMatrix(0.0,
+                                 static_cast<float>(size[0]),
+                                 static_cast<float>(size[1]),
+                                 0.0,
+                                 0.0,
+                                 100.0);
         glMatrixMode(GL_MODELVIEW);
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -353,7 +368,12 @@ void DrawingPlane::draw ()
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
+    Gui::GL::loadOrthoMatrix(0.0,
+                             static_cast<float>(view[0]),
+                             0.0,
+                             static_cast<float>(view[1]),
+                             -1.0,
+                             1.0);
 
     // Store GL state
     glPushAttrib(GL_ALL_ATTRIB_BITS);

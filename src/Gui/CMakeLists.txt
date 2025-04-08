@@ -1428,6 +1428,7 @@ SET(FreeCADGui_SRCS
     Thumbnail.h
     Tools.h
     Utilities.h
+    ViewVolumeUtils.h
     WaitCursor.h
     ManualAlignment.h
     StartupProcess.h

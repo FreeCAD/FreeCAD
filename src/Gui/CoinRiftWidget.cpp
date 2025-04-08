@@ -36,6 +36,7 @@
 #include "CoinRiftWidget.h"
 
 #include <Base/Console.h>
+#include <Gui/ViewVolumeUtils.h>
 
 #if BUILD_VR
 
@@ -237,7 +238,7 @@ void CoinRiftWidget::resizeGL(int width, int height) {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 1000.0);
+    Gui::GL::loadOrthoMatrix(-1.0, 1.0, -1.0, 1.0, 0.0, 1000.0);
     glMatrixMode(GL_MODELVIEW);
 }
 

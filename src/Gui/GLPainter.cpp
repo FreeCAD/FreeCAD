@@ -22,6 +22,8 @@
 
 #include <QOpenGLWidget>
 
+#include <Gui/ViewVolumeUtils.h>
+
 #include "GLPainter.h"
 #include "View3DInventorViewer.h"
 
@@ -63,7 +65,12 @@ bool GLPainter::begin(QPaintDevice * device)
     glPushMatrix();
 
     glLoadIdentity();
-    glOrtho(0, this->width, 0, this->height, -1, 1);
+    Gui::GL::loadOrthoMatrix(0.0F,
+                             static_cast<float>(this->width),
+                             0.0F,
+                             static_cast<float>(this->height),
+                             -1.0F,
+                             1.0F);
 
     // Store GL state
     glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -269,7 +276,12 @@ void Rubberband::paintGL()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, size[0], size[1], 0, 0, 100);
+    Gui::GL::loadOrthoMatrix(0.0F,
+                             static_cast<float>(size[0]),
+                             static_cast<float>(size[1]),
+                             0.0F,
+                             0.0F,
+                             100.0F);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glDisable(GL_TEXTURE_2D);
@@ -405,7 +417,12 @@ void Polyline::paintGL()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, size[0], size[1], 0, 0, 100);
+    Gui::GL::loadOrthoMatrix(0.0F,
+                             static_cast<float>(size[0]),
+                             static_cast<float>(size[1]),
+                             0.0F,
+                             0.0F,
+                             100.0F);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glDisable(GL_TEXTURE_2D);

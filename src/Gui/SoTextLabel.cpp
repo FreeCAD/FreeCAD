@@ -50,6 +50,8 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
+#include <Gui/ViewVolumeUtils.h>
+
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
 #include "Tools.h"
@@ -175,7 +177,12 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
         glLoadIdentity();
-        glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
+        Gui::GL::loadOrthoMatrix(0.0F,
+                                 static_cast<float>(vpsize[0]),
+                                 0.0F,
+                                 static_cast<float>(vpsize[1]),
+                                 -1.0F,
+                                 1.0F);
         glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
         state->push();
@@ -282,7 +289,7 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(-1,1,-1,1,-1,1);
+    Gui::GL::loadOrthoMatrix(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
