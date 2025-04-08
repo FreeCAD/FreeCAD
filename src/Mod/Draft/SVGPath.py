@@ -233,7 +233,7 @@ def _make_wire(path : list[Edge], precision : int, checkclosed : bool=False, don
         _sh = comp.connectEdgesToWires(False, _precision_step(precision))
         sh = _sh.Wires[0]
         if len(sh.Edges) != len(path):
-            _wrn("Unable to form a wire")
+            _wrn("Unable to form a wire. Resort to a Compound of Edges.")
             sh = comp
     return sh
 
@@ -731,24 +731,40 @@ class SvgPathParser:
             add_wire = True
             wr = _make_wire(sh, precision, checkclosed=True)
             wrcpy = wr.copy();
+            wire_reason = ""
             if cnt > 0:
                 face_name = self.name + "_" + str(cnt)
             else:
                 face_name = self.name 
+
+                
+            if not fill:
+                wire_reason = " no-fill"
+            if not wr.Wires[0].isClosed():
+                wire_reason += " open Wire"
             if fill and wr.Wires[0].isClosed():
                 try:
                     face = Face(wr)
                     if not face.isValid():
                         add_wire = add_wire_for_invalid_face
-                        face.fix(1e-6, 0, 1)
+                        wire_reason = " invalid Face"
+                        if face.fix(1e-6, 0, 1):
+                            res = "succeed"
+                        else:
+                            res = "fail"
+                        _wrn("Invalid Face '{}' created. Attempt to fix - {}ed."
+                              .format(face_name, res))
                     else:
                         add_wire = False
                     if not (face.Area < 10 * (_precision_step(precision) ** 2)):
                         self.faces.insert(face, face_name)
                 except:
-                    _msg("Failed to make a shape from path '{}'. This Path will be discarded.".format(self.name))
+                    _wrn("Failed to make a shape from '{}'. ".format(face_name) 
+                          + "This Path will be discarded.")
             if add_wire:
                 if wrcpy.Length > _precision_step(precision):
+                    _msg("Adding wire for '{}' - reason: {}."
+                          .format(face_name, wire_reason))
                     openShapes.append((face_name + "_w", wrcpy))
 
         self.shapes = openShapes
