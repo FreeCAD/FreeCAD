@@ -29,6 +29,7 @@
 #include <QWidget>
 
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
 #include "SoTouchEvents.h"
 
@@ -88,8 +89,8 @@ SoGesturePinchEvent::SoGesturePinchEvent(QPinchGesture* qpinch, QWidget *widget)
     deltaZoom = qpinch->scaleFactor();
     totalZoom = qpinch->totalScaleFactor();
 
-    deltaAngle = -unbranchAngle((qpinch->rotationAngle()-qpinch->lastRotationAngle()) / 180.0 * std::numbers::pi);
-    totalAngle = -qpinch->totalRotationAngle() / 180 * std::numbers::pi;
+    deltaAngle = -unbranchAngle(Base::toRadians(qpinch->rotationAngle()-qpinch->lastRotationAngle()));
+    totalAngle = Base::toRadians(-qpinch->totalRotationAngle());
 
     state = SbGestureState(qpinch->state());
 

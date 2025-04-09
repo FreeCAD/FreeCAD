@@ -48,6 +48,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Mod/Part/App/Tools.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
@@ -228,7 +229,7 @@ void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
 
         // create or use the mesh on the data structure
         // Note: This DOES have an effect on shape
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * std::numbers::pi;
+        Standard_Real AngDeflectionRads = Base::toRadians(AngularDeflection.getValue());
         BRepMesh_IncrementalMesh(shape, deflection, Standard_False, AngDeflectionRads, Standard_True);
 
         // We must reset the location here because the transformation data

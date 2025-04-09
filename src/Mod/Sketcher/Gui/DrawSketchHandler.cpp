@@ -533,7 +533,7 @@ void DrawSketchHandler::seekAlignmentAutoConstraint(
     const Base::Vector2d& Dir)
 {
     using std::numbers::pi;
-    const double angleDevRad = 0.035;  // 2 degrees in radians
+    constexpr double angleDevRad = Base::toRadians<double>(2);
 
     AutoConstraint constr;
     constr.Type = Sketcher::None;

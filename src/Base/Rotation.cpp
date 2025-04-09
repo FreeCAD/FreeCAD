@@ -29,6 +29,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include "Base/Exception.h"
+#include "Base/Tools.h"
 
 #include "Rotation.h"
 #include "Matrix.h"
@@ -696,9 +697,9 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
 {
     // The Euler angles (yaw,pitch,roll) are in XY'Z''-notation
     // convert to radians
-    y = (y / 180.0) * std::numbers::pi;
-    p = (p / 180.0) * std::numbers::pi;
-    r = (r / 180.0) * std::numbers::pi;
+    y = toRadians(y);
+    p = toRadians(p);
+    r = toRadians(r);
 
     double c1 = cos(y / 2.0);
     double s1 = sin(y / 2.0);
@@ -994,9 +995,9 @@ void Rotation::setEulerAngles(EulerSequence theOrder,
 
     EulerSequence_Parameters o = translateEulerSequence(theOrder);
 
-    theAlpha *= pi / 180.0;
-    theBeta *= pi / 180.0;
-    theGamma *= pi / 180.0;
+    theAlpha = Base::toRadians(theAlpha);
+    theBeta = Base::toRadians(theBeta);
+    theGamma = Base::toRadians(theGamma);
 
     double a = theAlpha;
     double b = theBeta;

@@ -114,6 +114,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
@@ -956,7 +957,7 @@ gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec) const
 // being slightly wrong.  see https://forum.freecad.org/viewtopic.php?t=79017&sid=612a62a60f5db955ee071a7aaa362dbb
 bool DrawComplexSection::validateOffsetProfile(TopoDS_Wire profile, Base::Vector3d direction, double angleThresholdDeg) const
 {
-    double angleThresholdRad = angleThresholdDeg * std::numbers::pi / 180.0;  // 5 degrees
+    double angleThresholdRad = Base::toRadians(angleThresholdDeg);  // 5 degrees
     TopExp_Explorer explEdges(profile, TopAbs_EDGE);
     for (; explEdges.More(); explEdges.Next()) {
         std::pair<Base::Vector3d, Base::Vector3d> segmentEnds = getSegmentEnds(TopoDS::Edge(explEdges.Current()));
