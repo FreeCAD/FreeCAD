@@ -25,6 +25,7 @@
 
 #include <QLabel>
 #include <QMouseEvent>
+#include <QLineEdit>
 
 class ExpressionLabel : public QLabel
 {
@@ -37,6 +38,16 @@ public:
             this->setToolTip(genericExpressionEditorTooltip);
         else
             this->setToolTip(expressionEditorTooltipPrefix + text);
+    }
+
+    void show() {
+        if (auto parentLineEdit = qobject_cast<QLineEdit*>(parent())) {
+            // horizontal margin, so text will not be behind the icon
+            QMargins margins = parentLineEdit->contentsMargins();
+            margins.setRight(2 * margins.right() + sizeHint().width());
+            parentLineEdit->setContentsMargins(margins);
+        }
+        QLabel::show();
     }
 
 protected:
