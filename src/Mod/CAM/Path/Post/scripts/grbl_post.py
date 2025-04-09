@@ -127,7 +127,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M5\nG17 G90\n;M2"',
+    help='set commands to be issued after the last command, default="M5\\nG17 G90\\nM2"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
