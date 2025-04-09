@@ -142,7 +142,6 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
 
     def reject(self):
         """Run when clicking the Cancel button."""
-        Gui.ActiveDocument.resetEdit()
         self.sourceCmd.finish()
         self.platWinDialog("Restore")
         return True
@@ -160,15 +159,14 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
         z = App.Units.Quantity(self.form.sbZ.text()).Value
         ssBase = App.Vector(x, y, z)
         try:
-            qr, sup, points, fil = self.sourceCmd.getStrings()
             Gui.addModule("Draft")
+            Gui.addModule("WorkingPlane")
             self.sourceCmd.commit(translate('draft', 'Create ShapeString'),
                                   ['ss = Draft.make_shapestring(String=' + String + ', FontFile=' + FFile + ', Size=' + Size + ', Tracking=' + Tracking + ')',
-                                   'plm = FreeCAD.Placement()',
-                                   'plm.Base = ' + toString(ssBase),
-                                   'plm.Rotation.Q = ' + qr,
-                                   'ss.Placement = plm',
-                                   'ss.AttachmentSupport = ' + sup,
+                                   'pl = FreeCAD.Placement()',
+                                   'pl.Base = ' + toString(ssBase),
+                                   'pl.Rotation = WorkingPlane.get_working_plane().get_placement().Rotation',
+                                   'ss.Placement = pl',
                                    'Draft.autogroup(ss)',
                                    'FreeCAD.ActiveDocument.recompute()'])
         except Exception:
