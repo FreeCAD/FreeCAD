@@ -644,29 +644,27 @@ class svgHandler(xml.sax.ContentHandler):
                     else:
                         # nested svg element
                         unitmode = 'css' + str(self.svgdpi)
-                    vbw = getsize(data['viewBox'][2], 'discard')
-                    vbh = getsize(data['viewBox'][3], 'discard')
-                    abw = getsize(attrs.getValue('width'), unitmode)
-                    abh = getsize(attrs.getValue('height'), unitmode)
+                    vbw = round(getsize(data['viewBox'][2], 'discard'),precision)
+                    vbh = round(getsize(data['viewBox'][3], 'discard'), precision)
+                    abw = round(getsize(attrs.getValue('width'), unitmode), precision)
+                    abh = round(getsize(attrs.getValue('height'), unitmode), precision)
                     self.viewbox = (vbw, vbh)
                     sx = abw / vbw
                     sy = abh / vbh
-                    _data = data.get('preserveAspectRatio', [])
-                    preservearstr = ' '.join(_data).lower()
-                    uniformscaling = round(sx/sy, 5) == 1
-                    if uniformscaling:
+                    preserve_ar = ' '.join(data.get('preserveAspectRatio', [])).lower()
+                    if preserve_ar.startswith('none'):
                         m.scale(Vector(sx, sy, 1))
+                        if sx != sy:
+                            _wrn('Non-uniform scaling with probably degenerating '
+                                  + 'effects on Edges. ({} vs. {}).'.format(sx, sy))
+    
                     else:
-                        _wrn('Scaling factors do not match!')
-                        if preservearstr.startswith('none'):
-                            m.scale(Vector(sx, sy, 1))
+                        # preserve aspect ratio - svg default is 'x/y-mid meet'
+                        if preserve_ar.endswith('slice'):
+                            sxy = max(sx, sy)
                         else:
-                            # preserve the aspect ratio
-                            if preservearstr.endswith('slice'):
-                                sxy = max(sx, sy)
-                            else:
-                                sxy = min(sx, sy)
-                            m.scale(Vector(sxy, sxy, 1))
+                            sxy = min(sx, sy)
+                        m.scale(Vector(sxy, sxy, 1))
                 elif len(self.grouptransform) == 0:
                     # fallback to current dpi
                     m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
