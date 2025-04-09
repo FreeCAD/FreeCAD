@@ -128,11 +128,12 @@ jobs:
           PP_PATH=$RUNNER_TEMP/FreeCAD_Weekly.provisionprofile
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-          export KEYCHAIN_PASSWORD=$(openssl rand -base64 8)
-
           # import certificate and provisioning profile from secrets
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+
+          # check to make sure the provisioning files were created
+          ls -la $CERTIFICATE_PATH $PP_PATH
 
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
