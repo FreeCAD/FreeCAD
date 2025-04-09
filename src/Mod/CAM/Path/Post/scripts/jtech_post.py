@@ -155,9 +155,9 @@ def processArguments(argstring):
         print("Show editor = %d" % SHOW_EDITOR)
         PRECISION = args.precision
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace('\\n', '\n')
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace('\\n', '\n')
         if args.inches:
             UNITS = "G20"
             UNIT_SPEED_FORMAT = "in/min"
