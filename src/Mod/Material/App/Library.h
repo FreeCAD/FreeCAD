@@ -38,11 +38,11 @@ class MaterialsExport Library: public Base::BaseClass
 
 public:
     Library() = default;
-    Library(const QString& libraryName, const QString& icon, bool readOnly = true);
-    Library(const QString& libraryName, const QString& icon, bool readOnly, const QString& timestamp);
+    Library(const QString& libraryName, const QString& iconPath, bool readOnly = true);
+    Library(const QString& libraryName, const QString& iconPath, bool readOnly, const QString& timestamp);
     Library(const QString& libraryName,
             const QString& dir,
-            const QString& icon,
+            const QString& iconPath,
             bool readOnly = true);
     ~Library() override = default;
 

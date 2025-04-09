@@ -48,7 +48,7 @@ public:
     ModelLibrary(const Library& library);
     ModelLibrary(const QString& libraryName,
                  const QString& dir,
-                 const QString& icon,
+                 const QString& iconPath,
                  bool readOnly = true);
     ~ModelLibrary() override = default;
 

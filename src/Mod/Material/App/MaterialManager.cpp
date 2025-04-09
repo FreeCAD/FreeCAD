@@ -267,17 +267,19 @@ std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name
     return _localManager->getLibrary(name);
 }
 
-void MaterialManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+void MaterialManager::createLibrary(const QString& libraryName,
+                                    const QString& iconPath,
+                                    bool readOnly)
 {
     throw CreationError("Local library requires a path");
 }
 
 void MaterialManager::createLocalLibrary(const QString& libraryName,
                                          const QString& directory,
-                                         const QString& icon,
+                                         const QString& iconPath,
                                          bool readOnly)
 {
-    _localManager->createLibrary(libraryName, directory, icon, readOnly);
+    _localManager->createLibrary(libraryName, directory, iconPath, readOnly);
 }
 
 void MaterialManager::renameLibrary(const QString& libraryName, const QString& newName)
@@ -285,9 +287,9 @@ void MaterialManager::renameLibrary(const QString& libraryName, const QString& n
     _localManager->renameLibrary(libraryName, newName);
 }
 
-void MaterialManager::changeIcon(const QString& libraryName, const QString& icon)
+void MaterialManager::changeIcon(const QString& libraryName, const QString& iconPath)
 {
-    _localManager->changeIcon(libraryName, icon);
+    _localManager->changeIcon(libraryName, iconPath);
 }
 
 void MaterialManager::removeLibrary(const QString& libraryName)

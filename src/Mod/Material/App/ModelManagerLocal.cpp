@@ -103,7 +103,7 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerLocal::get
 
 void ModelManagerLocal::createLibrary(const QString& libraryName,
                                       const QString& directory,
-                                      const QString& icon,
+                                      const QString& iconPath,
                                       bool readOnly)
 {
     QDir dir;
@@ -113,7 +113,7 @@ void ModelManagerLocal::createLibrary(const QString& libraryName,
         }
     }
 
-    auto modelLibrary = std::make_shared<ModelLibrary>(libraryName, directory, icon, readOnly);
+    auto modelLibrary = std::make_shared<ModelLibrary>(libraryName, directory, iconPath, readOnly);
     _libraryList->push_back(modelLibrary);
 
     // This needs to be persisted somehow
@@ -131,11 +131,11 @@ void ModelManagerLocal::renameLibrary(const QString& libraryName, const QString&
     throw LibraryNotFound();
 }
 
-void ModelManagerLocal::changeIcon(const QString& libraryName, const QString& icon)
+void ModelManagerLocal::changeIcon(const QString& libraryName, const QString& iconPath)
 {
     for (auto& library : *_libraryList) {
         if (library->isName(libraryName)) {
-            library->setIconPath(icon);
+            library->setIconPath(iconPath);
             return;
         }
     }

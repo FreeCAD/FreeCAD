@@ -40,9 +40,9 @@ TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::Library)
 
 ModelLibrary::ModelLibrary(const QString& libraryName,
                            const QString& dir,
-                           const QString& icon,
+                           const QString& iconPath,
                            bool readOnly)
-    : Library(libraryName, dir, icon, readOnly)
+    : Library(libraryName, dir, iconPath, readOnly)
 {
     _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
 }

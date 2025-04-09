@@ -52,9 +52,7 @@ public:
 
     // Library management
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
-    void createLibrary(const QString& libraryName,
-                       const QString& icon,
-                       bool readOnly = true);
+    void createLibrary(const QString& libraryName, const QString& iconPath, bool readOnly = true);
 
     // Model management
     std::shared_ptr<Model> getModel(const QString& uuid);

@@ -78,11 +78,11 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerExternal::
         auto externalLibraries = ExternalManager::getManager()->libraries();
         for (auto& entry : *externalLibraries) {
             // auto libName = std::get<0>(entry);
-            // auto icon = std::get<1>(entry);
+            // auto iconPath = std::get<1>(entry);
             // auto readOnly = std::get<2>(entry);
-            // Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
+            // Base::Console().Log("Library name '%s', iconPath '%s', readOnly %s\n",
             //                     libName.toStdString().c_str(),
-            //                     icon.toStdString().c_str(),
+            //                     iconPath.toStdString().c_str(),
             //                     readOnly ? "true" : "false");
             auto library = std::make_shared<ModelLibrary>(*entry);
             libraryList->push_back(library);
@@ -97,10 +97,10 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerExternal::
 }
 
 void ModelManagerExternal::createLibrary(const QString& libraryName,
-                                      const QString& icon,
-                                      bool readOnly)
+                                         const QString& iconPath,
+                                         bool readOnly)
 {
-    ExternalManager::getManager()->createLibrary(libraryName, icon, readOnly);
+    ExternalManager::getManager()->createLibrary(libraryName, iconPath, readOnly);
 }
 
 //=====

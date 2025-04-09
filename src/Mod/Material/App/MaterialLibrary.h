@@ -52,10 +52,10 @@ class MaterialsExport MaterialLibrary
 
 public:
     MaterialLibrary() = default;
-    MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
+    MaterialLibrary(const QString& libraryName, const QString& iconPath, bool readOnly = true);
     MaterialLibrary(const QString& libraryName,
                     const QString& dir,
-                    const QString& icon,
+                    const QString& iconPath,
                     bool readOnly = true);
     MaterialLibrary(const Library& library);
     MaterialLibrary(const MaterialLibrary&) = delete;
@@ -86,7 +86,7 @@ public:
     MaterialLibraryLocal() = default;
     MaterialLibraryLocal(const QString& libraryName,
                          const QString& dir,
-                         const QString& icon,
+                         const QString& iconPath,
                          bool readOnly = true);
     ~MaterialLibraryLocal() override = default;
 

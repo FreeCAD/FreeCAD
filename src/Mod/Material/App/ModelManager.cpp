@@ -126,19 +126,19 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocal
     return _localManager->getLibraries();
 }
 
-void ModelManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+void ModelManager::createLibrary(const QString& libraryName, const QString& iconPath, bool readOnly)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
-    _externalManager->createLibrary(libraryName, icon, readOnly);
+    _externalManager->createLibrary(libraryName, iconPath, readOnly);
 #endif
 }
 
 void ModelManager::createLocalLibrary(const QString& libraryName,
                                       const QString& directory,
-                                      const QString& icon,
+                                      const QString& iconPath,
                                       bool readOnly)
 {
-    _localManager->createLibrary(libraryName, directory, icon, readOnly);
+    _localManager->createLibrary(libraryName, directory, iconPath, readOnly);
 }
 
 void ModelManager::renameLibrary(const QString& libraryName, const QString& newName)
@@ -146,9 +146,9 @@ void ModelManager::renameLibrary(const QString& libraryName, const QString& newN
     _localManager->renameLibrary(libraryName, newName);
 }
 
-void ModelManager::changeIcon(const QString& libraryName, const QString& icon)
+void ModelManager::changeIcon(const QString& libraryName, const QString& iconPath)
 {
-    _localManager->changeIcon(libraryName, icon);
+    _localManager->changeIcon(libraryName, iconPath);
 }
 
 void ModelManager::removeLibrary(const QString& libraryName)

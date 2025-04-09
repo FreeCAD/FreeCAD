@@ -65,10 +65,10 @@ public:
     std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName,
                        const QString& directory,
-                       const QString& icon,
+                       const QString& iconPath,
                        bool readOnly = true);
     void renameLibrary(const QString& libraryName, const QString& newName);
-    void changeIcon(const QString& libraryName, const QString& icon);
+    void changeIcon(const QString& libraryName, const QString& iconPath);
     void removeLibrary(const QString& libraryName);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryMaterials(const QString& libraryName);

@@ -140,7 +140,7 @@ std::shared_ptr<MaterialLibrary> MaterialManagerLocal::getLibrary(const QString&
 
 void MaterialManagerLocal::createLibrary(const QString& libraryName,
                                          const QString& directory,
-                                         const QString& icon,
+                                         const QString& iconPath,
                                          bool readOnly)
 {
     QDir dir;
@@ -151,7 +151,7 @@ void MaterialManagerLocal::createLibrary(const QString& libraryName,
     }
 
     auto materialLibrary =
-        std::make_shared<MaterialLibraryLocal>(libraryName, directory, icon, readOnly);
+        std::make_shared<MaterialLibraryLocal>(libraryName, directory, iconPath, readOnly);
     _libraryList->push_back(materialLibrary);
 
     // This needs to be persisted somehow
@@ -171,13 +171,13 @@ void MaterialManagerLocal::renameLibrary(const QString& libraryName, const QStri
     throw LibraryNotFound();
 }
 
-void MaterialManagerLocal::changeIcon(const QString& libraryName, const QString& icon)
+void MaterialManagerLocal::changeIcon(const QString& libraryName, const QString& iconPath)
 {
     for (auto& library : *_libraryList) {
         if (library->isLocal() && library->isName(libraryName)) {
             auto materialLibrary =
                 reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-            materialLibrary->setIconPath(icon);
+            materialLibrary->setIconPath(iconPath);
             return;
         }
     }

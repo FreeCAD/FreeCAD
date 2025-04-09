@@ -43,16 +43,16 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
 
-MaterialLibrary::MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly)
-    : Library(libraryName, icon, readOnly)
+MaterialLibrary::MaterialLibrary(const QString& libraryName, const QString& iconPath, bool readOnly)
+    : Library(libraryName, iconPath, readOnly)
     , _local(false)
 {}
 
 MaterialLibrary::MaterialLibrary(const QString& libraryName,
                                  const QString& dir,
-                                 const QString& icon,
+                                 const QString& iconPath,
                                  bool readOnly)
-    : Library(libraryName, dir, icon, readOnly)
+    : Library(libraryName, dir, iconPath, readOnly)
     , _local(false)
 {}
 
@@ -152,9 +152,9 @@ TYPESYSTEM_SOURCE(Materials::MaterialLibraryLocal, Materials::MaterialLibrary)
 
 MaterialLibraryLocal::MaterialLibraryLocal(const QString& libraryName,
                                            const QString& dir,
-                                           const QString& icon,
+                                           const QString& iconPath,
                                            bool readOnly)
-    : MaterialLibrary(libraryName, dir, icon, readOnly)
+    : MaterialLibrary(libraryName, dir, iconPath, readOnly)
     , _materialPathMap(std::make_unique<std::map<QString, std::shared_ptr<Material>>>())
 {
     setLocal(true);
