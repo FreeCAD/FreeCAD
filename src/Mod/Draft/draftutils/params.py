@@ -405,7 +405,6 @@ def _get_param_dictionary():
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
         "CenterPlaneOnView":           ("bool",      False),
-        "ContinueMode":                ("bool",      False),
         "CopyMode":                    ("bool",      False),
         "DefaultAnnoDisplayMode":      ("int",       0),
         "DefaultDisplayMode":          ("int",       0),
@@ -441,6 +440,26 @@ def _get_param_dictionary():
         "SubelementMode":              ("bool",      False),
         "SvgLinesBlack":               ("bool",      True),
         "useSupport":                  ("bool",      False),
+    }
+
+    param_dict["Mod/Draft/ContinueMode"] = {
+        "Line": ("bool", False),
+        "Polyline": ("bool", False),
+        "Arc": ("bool", False),
+        "Arc_3Points": ("bool", False),
+        "Circle": ("bool", False),
+        "Ellipse": ("bool", False),
+        "Rectangle": ("bool", False),
+        "Polygon": ("bool", False),
+        "Bspline": ("bool", False),
+        "CubicBezCurve": ("bool", False),
+        "BezCurve": ("bool", False),
+        "Point": ("bool", False),
+        "Text": ("bool", False),
+        "Dimension": ("bool", False),
+
+        "Move": ("bool", False),
+        "Copy": ("bool", False),
     }
 
     # Arch parameters that are not in the preferences:
