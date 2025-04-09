@@ -55,6 +55,7 @@ six = "*"
 smesh = "*"
 swig = "*"
 sympy = "*"
+tbb = "*"
 vtk = "*"
 xerces-c = "*"
 xlutils = "*"
@@ -132,6 +133,8 @@ sed = "*"
 ## macOS Dependencies (Apple Silicon)
 [target.osx-arm64.dependencies]
 sed = "*"
+
+[target.win-64.dependencies]
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
