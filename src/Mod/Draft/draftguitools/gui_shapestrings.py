@@ -39,46 +39,46 @@ They are more complex that simple text annotations.
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
-import DraftVecUtils
-import draftutils.utils as utils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftutils.todo as todo
-
-from drafttaskpanels.task_shapestring import ShapeStringTaskPanelCmd
+from draftguitools import gui_base
+from draftutils import gui_utils
+from draftutils import todo
+from draftutils.messages import _toolmsg
 from draftutils.translate import translate
-from draftutils.messages import _toolmsg, _err
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
+from drafttaskpanels import task_shapestring
 
 
-class ShapeString(gui_base_original.Creator):
+class ShapeString(gui_base.GuiCommandBase):
     """Gui command for the ShapeString tool."""
+
+    def __init__(self):
+        super().__init__(name="ShapeString")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        d = {'Pixmap': 'Draft_ShapeString',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string by choosing a specific font and a placement.\nThe closed shapes can be used for extrusions and boolean operations.")}
-        return d
+        return {"Pixmap": "Draft_ShapeString",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string by choosing a specific font and a placement.\nThe closed shapes can be used for extrusions and boolean operations.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name="ShapeString")
-        if self.ui:
-            self.ui.sourceCmd = self
-            self.task = ShapeStringTaskPanelCmd(self)
-            self.call = self.view.addEventCallback("SoEvent", self.task.action)
-            _toolmsg(translate("draft", "Pick ShapeString location point"))
-            todo.ToDo.delay(Gui.Control.showDialog, self.task)
+        super().Activated()
+        self.ui = task_shapestring.ShapeStringTaskPanelCmd(self)
+        self.call = self.view.addEventCallback("SoEvent", self.ui.action)
+        _toolmsg(translate("draft", "Pick ShapeString location point"))
+        todo.ToDo.delay(Gui.Control.showDialog, self.ui)
 
     def finish(self):
-        self.end_callbacks(self.call)
+        try:
+            self.view.removeEventCallback("SoEvent", self.call)
+            gui_utils.end_all_events()
+        except RuntimeError:
+            # the view has been deleted already
+            pass
+        self.call = None
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
         super().finish()
 
 
