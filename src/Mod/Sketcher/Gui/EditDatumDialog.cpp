@@ -213,15 +213,21 @@ void EditDatumDialog::accepted()
                 }
             }
 
-            QString constraintName = ui_ins_datum->name->text().trimmed();
-            if (constraintName.toStdString() != sketch->Constraints[ConstrNbr]->Name) {
-                std::string escapedstr =
-                    Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                escapedstr = Base::Tools::escapeQuotesFromString(escapedstr);
+            std::string constraintName = ui_ins_datum->name->text().trimmed().toStdString();
+            if (constraintName != sketch->Constraints[ConstrNbr]->Name) {
+                if (constraintName != Base::Tools::getIdentifier(constraintName)) {
+                    Gui::NotifyUserError(
+                        sketch,
+                        QT_TRANSLATE_NOOP("Notifications", "Value Error"),
+                        "Invalid constraint name (must only contain alphanumericals, underscores, "
+                        "and must not start with digit)");
+                    constraintName.clear();
+                }
+
                 Gui::cmdAppObjectArgs(sketch,
                                       "renameConstraint(%d, u'%s')",
                                       ConstrNbr,
-                                      escapedstr.c_str());
+                                      constraintName.c_str());
             }
 
             Gui::Command::commitCommand();
