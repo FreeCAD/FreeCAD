@@ -1,8 +1,5 @@
 name: Build all packages
 
-permissions:
-  contents: write
-
 on:
   push:
   workflow_dispatch:
