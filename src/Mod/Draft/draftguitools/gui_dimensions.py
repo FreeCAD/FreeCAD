@@ -76,6 +76,7 @@ class Dimension(gui_base_original.Creator):
         self.max = 2
         self.cont = None
         self.dir = None
+        self.featureName = "Dimension"
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -90,9 +91,9 @@ class Dimension(gui_base_original.Creator):
         if self.cont:
             self.finish()
         else:
-            super().Activated(name="Dimension")
+            super().Activated(name=self.featureName)
             if self.ui:
-                self.ui.pointUi(title=translate("draft", "Dimension"), icon="Draft_Dimension")
+                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
                 self.ui.continueCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False

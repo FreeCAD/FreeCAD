@@ -390,7 +390,7 @@ class DraftToolBar:
         self.relativeMode = params.get_param("RelativeMode")
         self.globalMode = params.get_param("GlobalMode")
         self.makeFaceMode = params.get_param("MakeFaceMode")
-        self.continueMode = params.get_param("ContinueMode")
+        self.continueMode = params.get_param(self.sourceCmd.featureName, "Mod/Draft/ContinueMode")
 
         # Note: The order of the calls to self._checkbox() below controls
         #       the position of the checkboxes in the task panel.
@@ -399,7 +399,7 @@ class DraftToolBar:
         self.isRelative = self._checkbox("isRelative", self.layout, checked=self.relativeMode)
         self.isGlobal = self._checkbox("isGlobal", self.layout, checked=self.globalMode)
         self.makeFace = self._checkbox("makeFace", self.layout, checked=self.makeFaceMode)
-        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=self.continueMode)
+        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=bool(self.continueMode))
 
         # update checkboxes without parameters and without internal modes:
         self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
@@ -920,7 +920,7 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def setContinue(self, val):
-        params.set_param("ContinueMode", bool(val))
+        params.set_param(self.sourceCmd.featureName, bool(val), "Mod/Draft/ContinueMode")
         self.continueMode = bool(val)
 
     # val=-1 is used to temporarily switch to relativeMode and disable the checkbox.
