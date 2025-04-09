@@ -64,6 +64,8 @@ class QUARTER_DLL_API QuarterWidget : public QGraphicsView {
   typedef QGraphicsView inherited;
   Q_OBJECT
 
+// clazy:exclude=qproperty-without-notify
+
 public:
   enum TransparencyType {
     SCREEN_DOOR = SoGLRenderAction::SCREEN_DOOR,
@@ -96,18 +98,18 @@ public:
     INTERLEAVED_COLUMNS = SoRenderManager::INTERLEAVED_COLUMNS
   };
 
-  Q_PROPERTY(QUrl navigationModeFile READ navigationModeFile WRITE setNavigationModeFile RESET resetNavigationModeFile) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool contextMenuEnabled READ contextMenuEnabled WRITE setContextMenuEnabled) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool headlightEnabled READ headlightEnabled WRITE setHeadlightEnabled) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool clearZBuffer READ clearZBuffer WRITE setClearZBuffer) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool clearWindow READ clearWindow WRITE setClearWindow) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool interactionModeEnabled READ interactionModeEnabled WRITE setInteractionModeEnabled) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool interactionModeOn READ interactionModeOn WRITE setInteractionModeOn) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(QUrl navigationModeFile READ navigationModeFile WRITE setNavigationModeFile RESET resetNavigationModeFile)
+  Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
+  Q_PROPERTY(bool contextMenuEnabled READ contextMenuEnabled WRITE setContextMenuEnabled)
+  Q_PROPERTY(bool headlightEnabled READ headlightEnabled WRITE setHeadlightEnabled)
+  Q_PROPERTY(bool clearZBuffer READ clearZBuffer WRITE setClearZBuffer)
+  Q_PROPERTY(bool clearWindow READ clearWindow WRITE setClearWindow)
+  Q_PROPERTY(bool interactionModeEnabled READ interactionModeEnabled WRITE setInteractionModeEnabled)
+  Q_PROPERTY(bool interactionModeOn READ interactionModeOn WRITE setInteractionModeOn)
 
-  Q_PROPERTY(TransparencyType transparencyType READ transparencyType WRITE setTransparencyType) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(RenderMode renderMode READ renderMode WRITE setRenderMode) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(StereoMode stereoMode READ stereoMode WRITE setStereoMode) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(TransparencyType transparencyType READ transparencyType WRITE setTransparencyType)
+  Q_PROPERTY(RenderMode renderMode READ renderMode WRITE setRenderMode)
+  Q_PROPERTY(StereoMode stereoMode READ stereoMode WRITE setStereoMode)
   Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio NOTIFY devicePixelRatioChanged)
 
   Q_ENUM(TransparencyType)

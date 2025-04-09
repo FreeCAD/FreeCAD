@@ -44,16 +44,18 @@ struct DlgCheckableMessageBoxPrivate;
  * "Do not ask me again" checkbox. Emulates the QMessageBox API with
  * static conveniences. */
 
+// clazy:excludeall=qproperty-without-notify
+
 class GuiExport DlgCheckableMessageBox : public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QPixmap iconPixmap READ iconPixmap WRITE setIconPixmap) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(bool isChecked READ isChecked WRITE setChecked) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString text READ text WRITE setText)
+    Q_PROPERTY(QPixmap iconPixmap READ iconPixmap WRITE setIconPixmap)
+    Q_PROPERTY(bool isChecked READ isChecked WRITE setChecked)
   //Q_PROPERTY(QString prefEntry WRITE setPrefEntry) // Must have a READ accessor!
-    Q_PROPERTY(QString checkBoxText READ checkBoxText WRITE setCheckBoxText) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QDialogButtonBox::StandardButtons buttons READ standardButtons WRITE setStandardButtons) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QDialogButtonBox::StandardButton defaultButton READ defaultButton WRITE setDefaultButton) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString checkBoxText READ checkBoxText WRITE setCheckBoxText)
+    Q_PROPERTY(QDialogButtonBox::StandardButtons buttons READ standardButtons WRITE setStandardButtons)
+    Q_PROPERTY(QDialogButtonBox::StandardButton defaultButton READ defaultButton WRITE setDefaultButton)
 public:
     explicit DlgCheckableMessageBox(QWidget *parent);
     ~DlgCheckableMessageBox() override;
