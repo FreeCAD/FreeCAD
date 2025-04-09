@@ -81,14 +81,15 @@ public:
     double getThreadDepth() const;
 
 private Q_SLOTS:
+    void DiameterChanged(double value);
     void threadedChanged();
     void threadTypeChanged(int index);
     void threadSizeChanged(int index);
     void threadClassChanged(int index);
     void threadFitChanged(int index);
     void threadPitchChanged(double value);
-    void threadDiameterChanged(double value);
     void threadDirectionChanged();
+    void threadDiameterChanged(double value);
     void holeCutTypeChanged(int index);
     void holeCutCustomValuesChanged();
     void holeCutDiameterChanged(double value);
