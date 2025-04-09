@@ -66,7 +66,7 @@ jobs:
       cacheKey: weekly-${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
-    # environment: weekly-build
+    environment: weekly-build
     steps:
       - name: Set Platform Environment Variables
         shell: bash -l {0}
@@ -91,7 +91,7 @@ jobs:
 
       - uses: prefix-dev/setup-pixi@v0.8.3
         with:
-          pixi-version: v0.42.1
+          pixi-version: v0.45.0
           cache: false
 
       - name: Restore Compiler Cache
@@ -128,6 +128,16 @@ jobs:
           # import certificate and provisioning profile from secrets
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+
+          # secret existence check
+          echo $GITHUB_TOKEN | wc
+          echo $APP_SPECIFIC_PASSWORD | wc
+          echo $APPLE_ID | wc
+          echo $BUILD_CERTIFICATE_BASE64 | wc
+          echo $BUILD_PROVISION_PROFILE_BASE64 | wc
+          echo $DEVELOPER_TEAM_ID | wc
+          echo $KEYCHAIN_PASSWORD | wc
+          echo $P12_PASSWORD | wc
 
           # check to make sure the provisioning files were created
           ls -la $CERTIFICATE_PATH $PP_PATH
