@@ -5,13 +5,9 @@ permissions:
 
 on:
   push:
-    branches:
-      - main
   workflow_dispatch:
   workflow_call:
   pull_request:
-    branches:
-      - main
 
 jobs:
   tag_build:
