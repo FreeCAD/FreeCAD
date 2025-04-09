@@ -69,6 +69,8 @@ if(BUILD_FEM_VTK)
         FemPostPipelinePyImp.cpp
         FemPostBranchFilterPy.xml
         FemPostBranchFilterPyImp.cpp
+        PostDataObjectPy.cpp
+        PostDataObjectPy.h
     )
     generate_from_xml(FemPostObjectPy)
     generate_from_xml(FemPostPipelinePy)
