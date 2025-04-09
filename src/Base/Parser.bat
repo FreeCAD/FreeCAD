@@ -1,2 +1,2 @@
-C:\cygwin\bin\flex.exe -oQuantityLexer.c  QuantityParser.l
-C:\cygwin\bin\bison -oQuantityParser.c QuantityParser.y
+C:\cygwin\bin\flex.exe -oQuantity.lex.c  Quantity.l
+C:\cygwin\bin\bison -oQuantity.tab.c Quantity.y

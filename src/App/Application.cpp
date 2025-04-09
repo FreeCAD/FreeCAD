@@ -177,8 +177,8 @@ namespace sp = std::placeholders;
 // Application
 //==========================================================================
 
-Base::Reference<ParameterManager> App::Application::_pcSysParamMngr;
-Base::Reference<ParameterManager> App::Application::_pcUserParamMngr;
+Base::Reference<ParameterManager> Application::_pcSysParamMngr;
+Base::Reference<ParameterManager> Application::_pcUserParamMngr;
 Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
@@ -475,25 +475,25 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     //NOLINTBEGIN
     // clang-format off
     // connect the signals to the application for the new document
-    doc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
-    doc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
-    doc->signalNewObject.connect(std::bind(&App::Application::slotNewObject, this, sp::_1));
-    doc->signalDeletedObject.connect(std::bind(&App::Application::slotDeletedObject, this, sp::_1));
-    doc->signalBeforeChangeObject.connect(std::bind(&App::Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
-    doc->signalChangedObject.connect(std::bind(&App::Application::slotChangedObject, this, sp::_1, sp::_2));
-    doc->signalRelabelObject.connect(std::bind(&App::Application::slotRelabelObject, this, sp::_1));
-    doc->signalActivatedObject.connect(std::bind(&App::Application::slotActivatedObject, this, sp::_1));
-    doc->signalUndo.connect(std::bind(&App::Application::slotUndoDocument, this, sp::_1));
-    doc->signalRedo.connect(std::bind(&App::Application::slotRedoDocument, this, sp::_1));
-    doc->signalRecomputedObject.connect(std::bind(&App::Application::slotRecomputedObject, this, sp::_1));
-    doc->signalRecomputed.connect(std::bind(&App::Application::slotRecomputed, this, sp::_1));
-    doc->signalBeforeRecompute.connect(std::bind(&App::Application::slotBeforeRecompute, this, sp::_1));
-    doc->signalOpenTransaction.connect(std::bind(&App::Application::slotOpenTransaction, this, sp::_1, sp::_2));
-    doc->signalCommitTransaction.connect(std::bind(&App::Application::slotCommitTransaction, this, sp::_1));
-    doc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
-    doc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
-    doc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
-    doc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    doc->signalBeforeChange.connect(std::bind(&Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
+    doc->signalChanged.connect(std::bind(&Application::slotChangedDocument, this, sp::_1, sp::_2));
+    doc->signalNewObject.connect(std::bind(&Application::slotNewObject, this, sp::_1));
+    doc->signalDeletedObject.connect(std::bind(&Application::slotDeletedObject, this, sp::_1));
+    doc->signalBeforeChangeObject.connect(std::bind(&Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
+    doc->signalChangedObject.connect(std::bind(&Application::slotChangedObject, this, sp::_1, sp::_2));
+    doc->signalRelabelObject.connect(std::bind(&Application::slotRelabelObject, this, sp::_1));
+    doc->signalActivatedObject.connect(std::bind(&Application::slotActivatedObject, this, sp::_1));
+    doc->signalUndo.connect(std::bind(&Application::slotUndoDocument, this, sp::_1));
+    doc->signalRedo.connect(std::bind(&Application::slotRedoDocument, this, sp::_1));
+    doc->signalRecomputedObject.connect(std::bind(&Application::slotRecomputedObject, this, sp::_1));
+    doc->signalRecomputed.connect(std::bind(&Application::slotRecomputed, this, sp::_1));
+    doc->signalBeforeRecompute.connect(std::bind(&Application::slotBeforeRecompute, this, sp::_1));
+    doc->signalOpenTransaction.connect(std::bind(&Application::slotOpenTransaction, this, sp::_1, sp::_2));
+    doc->signalCommitTransaction.connect(std::bind(&Application::slotCommitTransaction, this, sp::_1));
+    doc->signalAbortTransaction.connect(std::bind(&Application::slotAbortTransaction, this, sp::_1));
+    doc->signalStartSave.connect(std::bind(&Application::slotStartSaveDocument, this, sp::_1, sp::_2));
+    doc->signalFinishSave.connect(std::bind(&Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
+    doc->signalChangePropertyEditor.connect(std::bind(&Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
     // clang-format on
     //NOLINTEND
 
@@ -514,7 +514,7 @@ Document* Application::newDocument(const char * proposedName, const char * propo
 
 bool Application::closeDocument(const char* name)
 {
-    auto pos = DocMap.find( name );
+    const auto pos = DocMap.find( name );
     if (pos == DocMap.end()) // no such document
         return false;
 
@@ -525,9 +525,10 @@ bool Application::closeDocument(const char* name)
     signalDeleteDocument(*pos->second);
 
     // For exception-safety use a smart pointer
-    if (_pActiveDoc == pos->second)
+    if (_pActiveDoc == pos->second) {
         setActiveDocument(static_cast<Document*>(nullptr));
-    std::unique_ptr<Document> delDoc (pos->second);
+    }
+    const std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
     DocFileMap.erase(Base::FileInfo(delDoc->FileName.getValue()).filePath());
 
@@ -547,7 +548,7 @@ void Application::closeAllDocuments()
         closeDocument(pos->first.c_str());
 }
 
-App::Document* Application::getDocument(const char *Name) const
+Document* Application::getDocument(const char *Name) const
 {
 
     const auto pos = DocMap.find(Name);
@@ -558,7 +559,7 @@ App::Document* Application::getDocument(const char *Name) const
     return pos->second;
 }
 
-const char * Application::getDocumentName(const App::Document* doc) const
+const char * Application::getDocumentName(const Document* doc) const
 {
     for (const auto & it : DocMap) {
         if (it.second == doc) {
@@ -569,9 +570,9 @@ const char * Application::getDocumentName(const App::Document* doc) const
     return nullptr;
 }
 
-std::vector<App::Document*> Application::getDocuments() const
+std::vector<Document*> Application::getDocuments() const
 {
-    std::vector<App::Document*> docs;
+    std::vector<Document*> docs;
     docs.reserve(DocMap.size());
     for (const auto & it : DocMap)
         docs.push_back(it.second);
@@ -615,7 +616,7 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
     assert(!Base::Tools::isNullOrEmpty(objName));
     if(!_docReloadAttempts[FileName].emplace(objName).second)
         return -1;
-    auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
+    const auto ret = _pendingDocMap.emplace(FileName,std::vector<std::string>());
     ret.first->second.emplace_back(objName);
     if(ret.second) {
         _pendingDocs.emplace_back(ret.first->first.c_str());
@@ -675,28 +676,30 @@ Document* Application::openDocument(const char * FileName, DocumentInitFlags ini
 Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCanonical) const {
     if(Base::Tools::isNullOrEmpty(path))
         return nullptr;
-    if(DocFileMap.empty()) {
+    if (DocFileMap.empty()) {
         for(const auto &v : DocMap) {
             const auto &file = v.second->FileName.getStrValue();
             if(!file.empty())
                 DocFileMap[Base::FileInfo(file.c_str()).filePath()] = v.second;
         }
     }
-    auto it = DocFileMap.find(Base::FileInfo(path).filePath());
+    const auto it = DocFileMap.find(Base::FileInfo(path).filePath());
     if(it != DocFileMap.end())
         return it->second;
 
-    if (checkCanonical == PathMatchMode::MatchAbsolute)
+    if (checkCanonical == PathMatchMode::MatchAbsolute) {
         return nullptr;
+    }
 
-    std::string filepath = Base::FileInfo(path).filePath();
-    QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
+    const std::string filepath = Base::FileInfo(path).filePath();
+    const QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
     for (const auto &v : DocMap) {
         QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
         if (canonicalPath == fi.canonicalFilePath()) {
-            if (checkCanonical == PathMatchMode::MatchCanonical)
+            if (checkCanonical == PathMatchMode::MatchCanonical) {
                 return v.second;
-            bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
+            }
+            const bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
             FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
                     << (samePath?"":"  for file '") << (samePath?"":filepath.c_str()) << (samePath?"":"'\n")
                     << "  with existing document '" << v.second->Label.getValue()
@@ -742,7 +745,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     int pass = 0;
     do {
-        std::set<App::DocumentT> newDocs;
+        std::set<DocumentT> newDocs;
         for (std::size_t count=0;; ++count) {
             std::string name = std::move(_pendingDocs.front());
             _pendingDocs.pop_front();
@@ -928,8 +931,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
     // Before creating a new document we check whether the document is already open
     auto doc = getDocumentByPath(File.filePath().c_str(), PathMatchMode::MatchCanonicalWarning);
     if(doc) {
-        if(doc->testStatus(App::Document::PartialDoc)
-                || doc->testStatus(App::Document::PartialRestore)) {
+        if(doc->testStatus(Document::PartialDoc)
+                || doc->testStatus(Document::PartialRestore)) {
             // Here means a document is already partially loaded, but the document
             // is requested again, either partial or not. We must check if the
             // document contains the required object
@@ -942,7 +945,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                 bool reopen = false;
                 for(const auto &name : objNames) {
                     auto obj = doc->getObject(name.c_str());
-                    if(!obj || obj->testStatus(App::PartialObject)) {
+                    if(!obj || obj->testStatus(PartialObject)) {
                         reopen = true;
                         // NOTE: We are about to reload this document with
                         // extra objects. However, it is possible to repeat
@@ -1038,7 +1041,7 @@ void Application::setActiveDocumentNoSignal(Document* pDoc)
     // make sure that the active document is set in case no GUI is up
     if (pDoc) {
         Base::PyGILStateLocker lock;
-        Py::Object active(pDoc->getPyObject(), true);
+        const Py::Object active(pDoc->getPyObject(), true);
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
     }
     else {
@@ -1093,9 +1096,9 @@ Application::TransactionSignaller::~TransactionSignaller() {
 int64_t Application::applicationPid()
 {
     static int64_t randomNumber = []() {
-        auto tp = std::chrono::high_resolution_clock::now();
-        auto dur = tp.time_since_epoch();
-        auto seed = dur.count();
+        const auto tp = std::chrono::high_resolution_clock::now();
+        const auto dur = tp.time_since_epoch();
+        const auto seed = dur.count();
         std::mt19937 generator(static_cast<unsigned>(seed));
         constexpr int64_t minValue {1};
         constexpr int64_t maxValue {1000000};
@@ -1118,7 +1121,7 @@ std::string Application::getExecutableName()
 std::string Application::getNameWithVersion()
 {
     auto appname = QCoreApplication::applicationName().toStdString();
-    auto config = App::Application::Config();
+    auto config = Application::Config();
     auto major = config["BuildVersionMajor"];
     auto minor = config["BuildVersionMinor"];
     auto point = config["BuildVersionPoint"];
@@ -1162,7 +1165,7 @@ std::string Application::getResourceDir()
     // #6892: Conda may inject null characters => remove them using c_str()
     std::string path = std::string(RESOURCEDIR).c_str();
     path += PATHSEP;
-    QDir dir(QString::fromStdString(path));
+    const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
     return mConfig["AppHomePath"] + path;
@@ -1176,7 +1179,7 @@ std::string Application::getLibraryDir()
 #ifdef LIBRARYDIR
     // #6892: Conda may inject null characters => remove them using c_str()
     std::string path = std::string(LIBRARYDIR).c_str();
-    QDir dir(QString::fromStdString(path));
+    const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
     return mConfig["AppHomePath"] + path;
@@ -1191,7 +1194,7 @@ std::string Application::getHelpDir()
     // #6892: Conda may inject null characters => remove them using c_str()
     std::string path = std::string(DOCDIR).c_str();
     path += PATHSEP;
-    QDir dir(QString::fromStdString(path));
+    const QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
     return mConfig["AppHomePath"] + path;
@@ -1204,13 +1207,13 @@ int Application::checkLinkDepth(int depth, MessageOption option)
 {
     if (_objCount < 0) {
         _objCount = 0;
-        for (auto &v : DocMap) {
+        for (const auto &v : DocMap) {
             _objCount += v.second->countObjects();
         }
     }
 
     if (depth > _objCount + 2) {
-        auto msg = "Link recursion limit reached. "
+        const auto msg = "Link recursion limit reached. "
                 "Please check for cyclic reference.";
         switch (option) {
         case MessageOption::Quiet:
@@ -1238,7 +1241,7 @@ std::set<DocumentObject *> Application::getLinksTo(
         }
     } else {
         std::set<Document*> docs;
-        for(auto o : obj->getInList()) {
+        for (const auto o : obj->getInList()) {
             if(o && o->isAttachedToDocument() && docs.insert(o->getDocument()).second) {
                 o->getDocument()->getLinksTo(links,obj,options,maxCount);
                 if(maxCount && static_cast<int>(links.size())>=maxCount)
@@ -1265,7 +1268,7 @@ ParameterManager & Application::GetUserParameter()
 
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
-    auto it = mpcPramManager.find(sName);
+    const auto it = mpcPramManager.find(sName);
 
     return it != mpcPramManager.end() ? it->second : nullptr;
 }
@@ -1278,7 +1281,7 @@ Application::GetParameterSetList() const
 
 void Application::AddParameterSet(const char* sName)
 {
-    auto it = mpcPramManager.find(sName);
+    const auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return;
     mpcPramManager[sName] = ParameterManager::Create();
@@ -1286,7 +1289,7 @@ void Application::AddParameterSet(const char* sName)
 
 void Application::RemoveParameterSet(const char* sName)
 {
-    auto it = mpcPramManager.find(sName);
+    const auto it = mpcPramManager.find(sName);
     // Must not delete user or system parameter
     if ( it == mpcPramManager.end() || it->second == _pcUserParamMngr || it->second == _pcSysParamMngr )
         return;
@@ -1295,9 +1298,9 @@ void Application::RemoveParameterSet(const char* sName)
 
 Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* sName)
 {
-    std::string cName = sName,cTemp;
+    std::string cName = sName, cTemp;
 
-    std::string::size_type pos = cName.find(':');
+    const std::string::size_type pos = cName.find(':');
 
     // is there a path separator ?
     if (pos == std::string::npos) {
@@ -1308,7 +1311,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     cName.erase(0,pos+1);
 
     // test if name is valid
-    auto It = mpcPramManager.find(cTemp);
+    const auto It = mpcPramManager.find(cTemp);
     if (It == mpcPramManager.end())
         throw Base::ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
@@ -1324,8 +1327,8 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     // Extract each filetype from 'Type' literal
     std::string::size_type pos = item.filter.find("*.");
     while ( pos != std::string::npos ) {
-        std::string::size_type next = item.filter.find_first_of(" )", pos+1);
-        std::string::size_type len = next-pos-2;
+        const std::string::size_type next = item.filter.find_first_of(" )", pos + 1);
+        const std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
         item.types.push_back(std::move(type));
         pos = item.filter.find("*.", next);
@@ -1449,8 +1452,8 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     // Extract each filetype from 'Type' literal
     std::string::size_type pos = item.filter.find("*.");
     while ( pos != std::string::npos ) {
-        std::string::size_type next = item.filter.find_first_of(" )", pos+1);
-        std::string::size_type len = next-pos-2;
+        const std::string::size_type next = item.filter.find_first_of(" )", pos + 1);
+        const std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
         item.types.push_back(std::move(type));
         pos = item.filter.find("*.", next);
@@ -1567,54 +1570,54 @@ std::map<std::string, std::string> Application::getExportFilters() const
 
 //**************************************************************************
 // signaling
-void Application::slotBeforeChangeDocument(const App::Document& doc, const Property& prop)
+void Application::slotBeforeChangeDocument(const Document& doc, const Property& prop)
 {
     this->signalBeforeChangeDocument(doc, prop);
 }
 
-void Application::slotChangedDocument(const App::Document& doc, const Property& prop)
+void Application::slotChangedDocument(const Document& doc, const Property& prop)
 {
     this->signalChangedDocument(doc, prop);
 }
 
-void Application::slotNewObject(const App::DocumentObject& obj)
+void Application::slotNewObject(const DocumentObject& obj)
 {
     this->signalNewObject(obj);
     _objCount = -1;
 }
 
-void Application::slotDeletedObject(const App::DocumentObject& obj)
+void Application::slotDeletedObject(const DocumentObject& obj)
 {
     this->signalDeletedObject(obj);
     _objCount = -1;
 }
 
-void Application::slotBeforeChangeObject(const App::DocumentObject& obj, const App::Property& prop)
+void Application::slotBeforeChangeObject(const DocumentObject& obj, const Property& prop)
 {
     this->signalBeforeChangeObject(obj, prop);
 }
 
-void Application::slotChangedObject(const App::DocumentObject& obj, const App::Property& prop)
+void Application::slotChangedObject(const DocumentObject& obj, const Property& prop)
 {
     this->signalChangedObject(obj, prop);
 }
 
-void Application::slotRelabelObject(const App::DocumentObject& obj)
+void Application::slotRelabelObject(const DocumentObject& obj)
 {
     this->signalRelabelObject(obj);
 }
 
-void Application::slotActivatedObject(const App::DocumentObject& obj)
+void Application::slotActivatedObject(const DocumentObject& obj)
 {
     this->signalActivatedObject(obj);
 }
 
-void Application::slotUndoDocument(const App::Document& doc)
+void Application::slotUndoDocument(const Document& doc)
 {
     this->signalUndoDocument(doc);
 }
 
-void Application::slotRedoDocument(const App::Document& doc)
+void Application::slotRedoDocument(const Document& doc)
 {
     this->signalRedoDocument(doc);
 }
@@ -1649,18 +1652,18 @@ void Application::slotAbortTransaction(const Document& doc)
     this->signalAbortTransaction(doc);
 }
 
-void Application::slotStartSaveDocument(const App::Document& doc, const std::string& filename)
+void Application::slotStartSaveDocument(const Document& doc, const std::string& filename)
 {
     this->signalStartSaveDocument(doc, filename);
 }
 
-void Application::slotFinishSaveDocument(const App::Document& doc, const std::string& filename)
+void Application::slotFinishSaveDocument(const Document& doc, const std::string& filename)
 {
     DocFileMap.clear();
     this->signalFinishSaveDocument(doc, filename);
 }
 
-void Application::slotChangePropertyEditor(const App::Document& doc, const App::Property& prop)
+void Application::slotChangePropertyEditor(const Document& doc, const Property& prop)
 {
     this->signalChangePropertyEditor(doc, prop);
 }
@@ -2543,24 +2546,24 @@ void Application::initConfig(int argc, char ** argv)
     // Version of the application extracted from SubWCRef into src/Build/Version.h
     // We only set these keys if not yet defined. Therefore it suffices to search
     // only for 'BuildVersionMajor'.
-    if (App::Application::Config().find("BuildVersionMajor") == App::Application::Config().end()) {
+    if (Application::Config().find("BuildVersionMajor") == Application::Config().end()) {
         std::stringstream str;
         str << FCVersionMajor
             << "." << FCVersionMinor
             << "." << FCVersionPoint;
-        App::Application::Config()["ExeVersion"         ] = str.str();
-        App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
-        App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
-        App::Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
-        App::Application::Config()["BuildVersionSuffix" ] = FCVersionSuffix;
-        App::Application::Config()["BuildRevision"      ] = FCRevision;
-        App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
-        App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
+        Application::Config()["ExeVersion"         ] = str.str();
+        Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
+        Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
+        Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
+        Application::Config()["BuildVersionSuffix" ] = FCVersionSuffix;
+        Application::Config()["BuildRevision"      ] = FCRevision;
+        Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
+        Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
 #if defined(FCRepositoryHash)
-        App::Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
+        Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
 #endif
 #if defined(FCRepositoryBranch)
-        App::Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
+        Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
 #endif
     }
 
@@ -2574,7 +2577,7 @@ void Application::initConfig(int argc, char ** argv)
     if (fi.exists() && brand.readFile(fi.absoluteFilePath())) {
         Branding::XmlConfig cfg = brand.getUserDefines();
         for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
-            App::Application::Config()[it.key()] = it.value();
+            Application::Config()[it.key()] = it.value();
         }
     }
 
@@ -2782,7 +2785,7 @@ void Application::initConfig(int argc, char ** argv)
 
 void Application::SaveEnv(const char* s)
 {
-    char *c = getenv(s);
+    const char *c = getenv(s);
     if (c)
         mConfig[s] = c;
 }
@@ -2801,15 +2804,14 @@ void Application::initApplication()
     Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+    const ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
     Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(hGrp->GetInt("UserSchema", 0)));
     Base::UnitsApi::setDecimals(static_cast<int>(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals())));
 
     // In case we are using fractional inches, get user setting for min unit
-    int denom = static_cast<int>(hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
+    const int denom = static_cast<int>(hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
     Base::QuantityFormat::setDefaultDenominator(denom);
-
 
 #if defined (_DEBUG)
     Base::Console().Log("Application is built with debug information\n");
@@ -2881,7 +2883,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             }
             else {
                 std::string ext = file.extension();
-                std::vector<std::string> mods = App::GetApplication().getImportModules(ext.c_str());
+                std::vector<std::string> mods = GetApplication().getImportModules(ext.c_str());
                 if (!mods.empty()) {
                     std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.filePath().c_str());
                     escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
@@ -2915,8 +2917,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
 void Application::processCmdLineFiles()
 {
     // process files passed to command line
-    std::list<std::string> files = getCmdLineFiles();
-    std::list<std::string> processed = processFiles(files);
+    const std::list<std::string> files = getCmdLineFiles();
+    const std::list<std::string> processed = processFiles(files);
 
     if (files.empty()) {
         if (mConfig["RunMode"] == "Exit")
@@ -2925,7 +2927,7 @@ void Application::processCmdLineFiles()
     else if (processed.empty() && files.size() == 1 && mConfig["RunMode"] == "Cmd") {
         // In case we are in console mode and the argument is not a file but Python code
         // then execute it. This is to behave like the standard Python executable.
-        Base::FileInfo file(files.front());
+        const Base::FileInfo file(files.front());
         if (!file.exists()) {
             Base::Interpreter().runString(files.front().c_str());
             mConfig["RunMode"] = "Exit";
@@ -2933,15 +2935,15 @@ void Application::processCmdLineFiles()
     }
 
     const std::map<std::string, std::string>& cfg = Application::Config();
-    auto it = cfg.find("SaveFile");
+    const auto it = cfg.find("SaveFile");
     if (it != cfg.end()) {
         std::string output = it->second;
         output = Base::Tools::escapeEncodeFilename(output);
 
-        Base::FileInfo fi(output);
-        std::string ext = fi.extension();
+        const Base::FileInfo fi(output);
+        const std::string ext = fi.extension();
         try {
-            std::vector<std::string> mods = App::GetApplication().getExportModules(ext.c_str());
+            const std::vector<std::string> mods = GetApplication().getExportModules(ext.c_str());
             if (!mods.empty()) {
                 Base::Interpreter().loadModule(mods.front().c_str());
                 Base::Interpreter().runStringArg("import %s",mods.front().c_str());
@@ -2986,7 +2988,7 @@ void Application::runApplication()
 
 void Application::logStatus()
 {
-    std::string time_str = boost::posix_time::to_simple_string(
+    const std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
     Base::Console().Log("Time = %s\n", time_str.c_str());
 
@@ -3034,14 +3036,14 @@ void Application::LoadParameters()
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            auto it = mConfig.find("UserParameterTemplate");
+            const auto it = mConfig.find("UserParameterTemplate");
             if (it != mConfig.end()) {
                 QString path = QString::fromUtf8(it->second.c_str());
                 if (QDir(path).isRelative()) {
-                    QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
+                    const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
                     path = QFileInfo(QDir(home), path).absoluteFilePath();
                 }
-                QFileInfo fi(path);
+                const QFileInfo fi(path);
                 if (fi.exists()) {
                     _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
                 }
@@ -3097,7 +3099,7 @@ QString getUserHome()
     struct passwd *result;
     const std::size_t buflen = 16384;
     std::vector<char> buffer(buflen);
-    int error = getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result);
+    const int error = getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result);
     Q_UNUSED(error)
     if (!result)
         throw Base::RuntimeError("Getting HOME path from system failed!");
@@ -3225,14 +3227,14 @@ std::filesystem::path findPath(const QString& stdHome, const QString& customHome
  */
 std::tuple<QString, QString, QString> getCustomPaths()
 {
-    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
+    const QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
     QString userHome = env.value(QStringLiteral("FREECAD_USER_HOME"));
     QString userData = env.value(QStringLiteral("FREECAD_USER_DATA"));
     QString userTemp = env.value(QStringLiteral("FREECAD_USER_TEMP"));
 
     auto toNativePath = [](QString& path) {
         if (!path.isEmpty()) {
-            QDir dir(path);
+            const QDir dir(path);
             if (dir.exists())
                 path = QDir::toNativeSeparators(dir.canonicalPath());
             else
@@ -3252,9 +3254,9 @@ std::tuple<QString, QString, QString> getCustomPaths()
 
     // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
     if (!userHome.isEmpty() && userTemp.isEmpty()) {
-        QDir dir(userHome);
+        const QDir dir(userHome);
         dir.mkdir(QStringLiteral("temp"));
-        QFileInfo fi(dir, QStringLiteral("temp"));
+        const QFileInfo fi(dir, QStringLiteral("temp"));
         userTemp = fi.absoluteFilePath();
     }
 
@@ -3484,11 +3486,12 @@ std::string Application::FindHomePath(const char* sCall)
 
         if (const auto buf = new char[++sz]; _NSGetExecutablePath(buf, &sz) == 0) {
             char resolved[PATH_MAX];
-            char* path = realpath(buf, resolved);
+            const char* path = realpath(buf, resolved);
             delete [] buf;
 
             if (path) {
-                std::string Call(resolved), TempHomePath;
+                const std::string Call(resolved);
+                std::string TempHomePath;
                 std::string::size_type pos = Call.find_last_of(PATHSEP);
                 TempHomePath.assign(Call,0,pos);
                 pos = TempHomePath.find_last_of(PATHSEP);

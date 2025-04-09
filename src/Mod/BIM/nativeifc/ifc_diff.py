@@ -23,11 +23,14 @@
 """Diffing tool for NativeIFC project objects"""
 
 import difflib
+
+import ifcopenshell
+
 import FreeCAD
 import FreeCADGui
-import ifcopenshell
-from . import ifc_tools
 import Arch_rc
+
+from . import ifc_tools
 
 translate = FreeCAD.Qt.translate
 

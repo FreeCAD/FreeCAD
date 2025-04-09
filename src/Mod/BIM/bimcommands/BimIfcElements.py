@@ -24,7 +24,6 @@
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -50,7 +49,7 @@ class BIM_IfcElements:
 
     def Activated(self):
         import Draft
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # build objects list
         self.objectslist = {}
@@ -634,7 +633,7 @@ if FreeCAD.GuiUp:
 def getIcon(obj):
     """returns a QIcon for an object"""
 
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
     import Arch_rc
 
     if hasattr(obj.ViewObject, "Icon"):

@@ -250,14 +250,14 @@ bool Cell::getStringContent(std::string& s, bool persistent) const
         if (expression->hasComponent()) {
             s = "=" + expression->toString(persistent);
         }
-        else if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
+        else if (freecad_cast<App::StringExpression>(expression.get())) {
             s = static_cast<App::StringExpression*>(expression.get())->getText();
             s = "'" + s;
         }
-        else if (freecad_dynamic_cast<App::ConstantExpression>(expression.get())) {
+        else if (freecad_cast<App::ConstantExpression>(expression.get())) {
             s = "=" + expression->toString();
         }
-        else if (freecad_dynamic_cast<App::NumberExpression>(expression.get())) {
+        else if (freecad_cast<App::NumberExpression>(expression.get())) {
             s = expression->toString();
         }
         else {
@@ -274,7 +274,7 @@ bool Cell::getStringContent(std::string& s, bool persistent) const
 
 void Cell::afterRestore()
 {
-    auto expr = freecad_dynamic_cast<StringExpression>(expression.get());
+    auto expr = freecad_cast<StringExpression>(expression.get());
     if (expr) {
         setContent(expr->getText().c_str());
     }
@@ -331,13 +331,10 @@ void Cell::setContent(const char* value)
                 try {
                     ExpressionPtr parsedExpr(App::ExpressionParser::parse(owner->sheet(), value));
 
-                    if (const auto fraction =
-                            freecad_dynamic_cast<OperatorExpression>(parsedExpr.get())) {
+                    if (const auto fraction = freecad_cast<OperatorExpression>(parsedExpr.get())) {
                         if (fraction->getOperator() == OperatorExpression::UNIT) {
-                            const auto left =
-                                freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
-                            const auto right =
-                                freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+                            const auto left = freecad_cast<NumberExpression>(fraction->getLeft());
+                            const auto right = freecad_cast<UnitExpression>(fraction->getRight());
                             if (left && right) {
                                 newExpr = std::move(parsedExpr);
                             }
@@ -348,23 +345,22 @@ void Cell::setContent(const char* value)
 
                             // check for numbers in (de)nominator
                             const bool isNumberNom =
-                                freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+                                freecad_cast<NumberExpression>(fraction->getLeft());
                             const bool isNumberDenom =
-                                freecad_dynamic_cast<NumberExpression>(fraction->getRight());
+                                freecad_cast<NumberExpression>(fraction->getRight());
 
                             // check for numbers with units in (de)nominator
                             const auto opNom =
-                                freecad_dynamic_cast<OperatorExpression>(fraction->getLeft());
+                                freecad_cast<OperatorExpression>(fraction->getLeft());
                             const auto opDenom =
-                                freecad_dynamic_cast<OperatorExpression>(fraction->getRight());
+                                freecad_cast<OperatorExpression>(fraction->getRight());
                             const bool isQuantityNom =
                                 opNom && opNom->getOperator() == OperatorExpression::UNIT;
                             const bool isQuantityDenom =
                                 opDenom && opDenom->getOperator() == OperatorExpression::UNIT;
 
                             // check for units in denomainator
-                            const auto uDenom =
-                                freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+                            const auto uDenom = freecad_cast<UnitExpression>(fraction->getRight());
                             const bool isUnitDenom = uDenom && uDenom->is<UnitExpression>();
 
                             const bool isNomValid = isNumberNom || isQuantityNom;
@@ -375,8 +371,7 @@ void Cell::setContent(const char* value)
                             }
                         }
                     }
-                    else if (const auto number =
-                                 freecad_dynamic_cast<NumberExpression>(parsedExpr.get())) {
+                    else if (const auto number = freecad_cast<NumberExpression>(parsedExpr.get())) {
                         // NumbersExpressions can accept more than can be parsed with strtod.
                         //   Example: 12.34 and 12,34 are both valid NumberExpressions
                         newExpr = std::move(parsedExpr);

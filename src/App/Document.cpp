@@ -1630,9 +1630,9 @@ std::vector<App::DocumentObject*> Document::importObjects(Base::XMLReader& reade
             o->setStatus(App::ObjImporting, true);
             FC_LOG("importing " << o->getFullName());
             if (auto propUUID =
-                    Base::freecad_dynamic_cast<PropertyUUID>(o->getPropertyByName("_ObjectUUID"))) {
+                    freecad_cast<PropertyUUID>(o->getPropertyByName("_ObjectUUID"))) {
                 auto propSource =
-                    Base::freecad_dynamic_cast<PropertyUUID>(o->getPropertyByName("_SourceUUID"));
+                    freecad_cast<PropertyUUID>(o->getPropertyByName("_SourceUUID"));
                 if (!propSource) {
                     propSource = static_cast<PropertyUUID*>(
                         o->addDynamicProperty("App::PropertyUUID",
@@ -2439,7 +2439,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             // refresh properties in case the object changes its property list
             obj->getPropertyList(props);
             for (auto prop : props) {
-                auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+                auto link = freecad_cast<PropertyLinkBase>(prop);
                 int res;
                 std::string errMsg;
                 if (link && (res = link->checkRestore(&errMsg))) {
@@ -3987,7 +3987,7 @@ Document::importLinks(const std::vector<App::DocumentObject*>& objArray)
         propList.clear();
         obj->getPropertyList(propList);
         for (auto prop : propList) {
-            auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+            auto linkProp = freecad_cast<PropertyLinkBase>(prop);
             if (linkProp && !prop->testStatus(Property::Immutable) && !obj->isReadOnly(prop)) {
                 auto copy = linkProp->CopyOnImportExternal(nameMap);
                 if (copy) {
@@ -4154,13 +4154,26 @@ const std::vector<DocumentObject*>& Document::getObjects() const
     return d->objectArray;
 }
 
-
 std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
 {
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
         if (it->isDerivedFrom(typeId)) {
             Objects.push_back(it);
+        }
+    }
+    return Objects;
+}
+
+std::vector<DocumentObject*> Document::getObjectsOfType(const std::vector<Base::Type>& types) const
+{
+    std::vector<DocumentObject*> Objects;
+    for (auto it : d->objectArray) {
+        for (auto& typeId : types) {
+            if (it->isDerivedFrom(typeId)) {
+                Objects.push_back(it);
+                break; // Prevent adding several times the same object.
+            }
         }
     }
     return Objects;

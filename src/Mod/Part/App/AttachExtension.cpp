@@ -168,7 +168,7 @@ static inline bool getProp(bool force,
                            const char* name,
                            const char* doc)
 {
-    prop = Base::freecad_dynamic_cast<T>(owner->getDynamicPropertyByName(name));
+    prop = freecad_cast<T>(owner->getDynamicPropertyByName(name));
     if (prop || !force) {
         return false;
     }
@@ -573,7 +573,7 @@ AttachExtension::Properties AttachExtension::getInitedProperties(bool base)
 
 App::PropertyPlacement& AttachExtension::getPlacement() const
 {
-    auto pla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+    auto pla = freecad_cast<App::PropertyPlacement>(
         getExtendedObject()->getPropertyByName("Placement"));
     if (!pla) {
         throw Base::RuntimeError("AttachExtension cannot find placement property");

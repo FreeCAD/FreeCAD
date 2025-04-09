@@ -20,22 +20,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-import ArchComponent
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import Arch_rc
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__  = "Arch Pipe tools"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchPipe
 #  \ingroup ARCH
@@ -44,10 +31,23 @@ else:
 #  This module provides tools to build Pipe and Pipe connector objects.
 #  Pipes are tubular objects extruded along a base line.
 
-__title__  = "Arch Pipe tools"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+import FreeCAD
+import ArchComponent
 
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import Arch_rc
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class _ArchPipe(ArchComponent.Component):
@@ -451,5 +451,3 @@ class _ArchPipeConnector(ArchComponent.Component):
             if pipe.OffsetEnd != offset:
                 pipe.OffsetEnd = offset
                 pipe.Proxy.execute(pipe)
-
-

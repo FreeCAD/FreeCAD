@@ -378,7 +378,7 @@ void PropertySheet::Paste(const Property& from)
 
     if (!spanChanges.empty()) {
         mergedCells = froms.mergedCells;
-        if (auto sheet = Base::freecad_dynamic_cast<Sheet>(getContainer())) {
+        if (auto sheet = freecad_cast<Sheet>(getContainer())) {
             for (const auto& addr : spanChanges) {
                 sheet->cellSpanChanged(addr);
             }
@@ -1476,7 +1476,7 @@ void PropertySheet::recomputeDependants(const App::DocumentObject* owner, const 
         // Check for hidden reference. Because a hidden reference is not
         // protected by cyclic dependency checking, we need to take special
         // care to prevent it from misbehave.
-        Sheet* sheet = Base::freecad_dynamic_cast<Sheet>(getContainer());
+        Sheet* sheet = freecad_cast<Sheet>(getContainer());
         if (!sheet || sheet->testStatus(App::ObjectStatus::Recompute2) || !owner
             || owner->testStatus(App::ObjectStatus::Recompute2)) {
             return;
@@ -2078,8 +2078,7 @@ PropertySheet::BindingType PropertySheet::getBinding(const Range& range,
 
             if (expr->getFunction() == FunctionExpression::TUPLE && expr->getArgs().size() == 3) {
                 if (pTarget) {
-                    if (auto e =
-                            Base::freecad_dynamic_cast<VariableExpression>(expr->getArgs()[0])) {
+                    if (auto e = freecad_cast<VariableExpression>(expr->getArgs()[0])) {
                         *pTarget = e->getPath();
                     }
                 }
@@ -2118,8 +2117,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier& path, const boost::any&
             && Py::Object(seq[1].ptr()).isString() && Py::Object(seq[2].ptr()).isString()) {
             AtomicPropertyChange signaller(*this, false);
             auto other = static_cast<PropertySheetPy*>(seq[0].ptr())->getPropertySheetPtr();
-            auto otherOwner =
-                Base::freecad_dynamic_cast<App::DocumentObject>(other->getContainer());
+            auto otherOwner = freecad_cast<App::DocumentObject>(other->getContainer());
             if (!otherOwner) {
                 FC_THROWM(Base::RuntimeError,
                           "Invalid binding of '" << other->getFullName() << " in "
@@ -2289,7 +2287,7 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
     auto subObject = objT.getSubObject();
     auto subElement = objT.getOldElementName();
 
-    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto owner = freecad_cast<App::DocumentObject>(getContainer());
     for (const auto& [cellName, cellExpression] : data) {
         if (auto expr = cellExpression->getExpression()) {
             const auto& deps = expr->getDeps(option);

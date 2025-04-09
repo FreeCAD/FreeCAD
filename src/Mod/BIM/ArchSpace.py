@@ -24,6 +24,36 @@ __title__= "FreeCAD Arch Space"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
+## @package ArchSpace
+#  \ingroup ARCH
+#  \brief The Space object and tools
+#
+#  This module provides tools to build Space objects.
+#  Spaces define an open volume inside or outside a
+#  building, ie. a room.
+
+import re
+
+import FreeCAD
+import ArchComponent
+import ArchCommands
+import Draft
+
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+
 SpaceTypes = [
 "Undefined",
 "Exterior",
@@ -149,35 +179,6 @@ AreaCalculationType = [
     "XY-plane projection",
     "At Center of Mass"
 ]
-
-
-import FreeCAD
-import ArchComponent
-import ArchCommands
-import Draft
-from draftutils import params
-import re
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
-## @package ArchSpace
-#  \ingroup ARCH
-#  \brief The Space object and tools
-#
-#  This module provides tools to build Space objects.
-#  Spaces define an open volume inside or outside a
-#  building, ie. a room.
 
 
 class _Space(ArchComponent.Component):

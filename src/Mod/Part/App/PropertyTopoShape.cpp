@@ -67,7 +67,7 @@ void PropertyPartShape::setValue(const TopoShape& sh)
 {
     aboutToSetValue();
     _Shape = sh;
-    auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto obj = freecad_cast<App::DocumentObject>(getContainer());
     if(obj) {
         auto tag = obj->getID();
         if(_Shape.Tag && tag!=_Shape.Tag) {
@@ -109,7 +109,7 @@ const TopoShape& PropertyPartShape::getShape() const
     //        res.Tag = -1;
     //    else if (!res.Tag) {
     if (!_Shape.Tag) {
-        if (auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer())) {
+        if (auto parent = freecad_cast<App::DocumentObject>(getContainer())) {
             _Shape.Tag = parent->getID();
         }
     }
@@ -219,7 +219,7 @@ App::Property *PropertyPartShape::Copy() const
 
 void PropertyPartShape::Paste(const App::Property &from)
 {
-    auto prop = Base::freecad_dynamic_cast<const PropertyPartShape>(&from);
+    auto prop = freecad_cast<const PropertyPartShape>(&from);
     if(prop) {
         setValue(prop->_Shape);
         _Ver = prop->_Ver;
@@ -249,7 +249,7 @@ void PropertyPartShape::beforeSave() const
 {
     _HasherIndex = 0;
     _SaveHasher = false;
-    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto owner = freecad_cast<App::DocumentObject>(getContainer());
     if(owner && !_Shape.isNull() && _Shape.getElementMapSize()>0) {
         auto ret = owner->getDocument()->addStringHasher(_Shape.Hasher);
         _HasherIndex = ret.second;
@@ -323,7 +323,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Part");
 
-    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto owner = freecad_cast<App::DocumentObject>(getContainer());
     _Ver = "?";
     bool has_ver = reader.hasAttribute("ElementMap");
     if (has_ver)
@@ -943,7 +943,7 @@ void PropertyShapeCache::setPyObject(PyObject *value) {
  * @return The shape cache, or null if we aren't creating and it doesn't exist
  */
 PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool create) {
-    auto prop = Base::freecad_dynamic_cast<PropertyShapeCache>(
+    auto prop = freecad_cast<PropertyShapeCache>(
         obj->getDynamicPropertyByName(SHAPE_CACHE_NAME));
     if(prop && prop->getContainer()==obj)
         return prop;

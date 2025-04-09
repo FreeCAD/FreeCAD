@@ -338,6 +338,11 @@ void GeomFillSurface::open()
     checkOpenCommand();
     this->vp->highlightReferences(true);
     Gui::Selection().clearSelection();
+
+    // if the surface is not yet created then automatically start "AppendEdge" mode
+    if (editedObject->Shape.getShape().isNull()) {
+        ui->buttonEdgeAdd->setChecked(true);
+    }
 }
 
 void GeomFillSurface::clearSelection()

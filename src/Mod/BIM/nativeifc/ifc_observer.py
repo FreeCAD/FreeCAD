@@ -22,8 +22,8 @@
 
 """Document observer to act on documents containing NativeIFC objects"""
 
-
 import FreeCAD
+
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 

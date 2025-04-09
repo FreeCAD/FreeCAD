@@ -19,19 +19,23 @@
 #*                                                                         *
 #***************************************************************************
 
-import os,FreeCAD,Mesh
-
 __title__  = "FreeCAD 3DS importer"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
-
-DEBUG = True
 
 ## @package import3DS
 #  \ingroup ARCH
 #  \brief 3DS file format importer
 #
 #  This module provides tools to import 3DS files.
+
+import os
+
+import FreeCAD
+import Mesh
+
+DEBUG = True
+
 
 def check3DS():
     "checks if collada if available"

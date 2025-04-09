@@ -20,6 +20,18 @@
 #*                                                                         *
 #***************************************************************************
 
+__title__= "FreeCAD Site"
+__author__ = "Yorik van Havre"
+__url__ = "https://www.freecad.org"
+
+## @package ArchSite
+#  \ingroup ARCH
+#  \brief The Site object and tools
+#
+#  This module provides tools to build Site objects.
+#  Sites are containers for Arch objects, and also define a
+#  terrain surface
+
 """This module provides tools to build Site objects. Sites are
 containers for Arch objects, and also define a terrain surface.
 """
@@ -33,13 +45,14 @@ import ArchCommands
 import ArchComponent
 import ArchIFC
 import Draft
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide import QtGui,QtCore
-    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):
@@ -47,18 +60,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-
-## @package ArchSite
-#  \ingroup ARCH
-#  \brief The Site object and tools
-#
-#  This module provides tools to build Site objects.
-#  Sites are containers for Arch objects, and also define a
-#  terrain surface
-
-__title__= "FreeCAD Site"
-__author__ = "Yorik van Havre"
-__url__ = "https://www.freecad.org"
 
 
 def toNode(shape):
@@ -1180,4 +1181,3 @@ class _ViewProviderSite:
     def loads(self,state):
 
         return None
-

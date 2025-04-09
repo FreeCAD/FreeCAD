@@ -25,8 +25,8 @@ import FreeCAD
 import ArchIFC
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide import QtCore, QtGui
+    import FreeCADGui
     from draftutils.translate import translate
 else:
     def translate(ctxt,txt):

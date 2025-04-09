@@ -390,51 +390,49 @@ bool QGSPage::attachView(App::DocumentObject* obj)
 
     QGIView* qview(nullptr);
 
-    using Base::freecad_dynamic_cast;
-
-    if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSection>(obj)) {
+    if (auto o = freecad_cast<TechDraw::DrawViewSection>(obj)) {
         qview = addViewSection(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewPart>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewPart>(obj)) {
         qview = addViewPart(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawProjGroup>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawProjGroup>(obj)) {
         qview = addProjectionGroup(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewCollection>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewCollection>(obj)) {
         qview = addDrawView(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewDimension>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewDimension>(obj)) {
         qview = addViewDimension(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewBalloon>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewBalloon>(obj)) {
         qview = addViewBalloon(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewAnnotation>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewAnnotation>(obj)) {
         qview = addAnnotation(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSymbol>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewSymbol>(obj)) {
         qview = addDrawViewSymbol(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewClip>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewClip>(obj)) {
         qview = addDrawViewClip(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSpreadsheet>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewSpreadsheet>(obj)) {
         qview = addDrawViewSpreadsheet(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewImage>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewImage>(obj)) {
         qview = addDrawViewImage(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawLeaderLine>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawLeaderLine>(obj)) {
         qview = addViewLeader(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawRichAnno>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawRichAnno>(obj)) {
         qview = addRichAnno(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawWeldSymbol>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawWeldSymbol>(obj)) {
         qview = addWeldSymbol(o);
     }
-    else if (freecad_dynamic_cast<TechDraw::DrawHatch>(obj)) {
+    else if (freecad_cast<TechDraw::DrawHatch>(obj)) {
         //Hatch is not attached like other Views (since it isn't really a View)
         return true;
     }

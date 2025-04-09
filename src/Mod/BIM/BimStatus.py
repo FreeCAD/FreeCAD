@@ -25,6 +25,7 @@
 """This module contains FreeCAD commands for the BIM workbench"""
 
 import os
+
 import FreeCAD
 import FreeCADGui
 
@@ -121,6 +122,9 @@ def setStatusIcons(show=True):
             else:
                 statuswidget = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
                 statuswidget.setObjectName("BIMStatusWidget")
+                text = translate("BIMStatusWidget", "BIM status widget",
+                "A context menu action used to show or hide this toolbar widget")
+                statuswidget.setWindowTitle(text)
                 s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt("ToolbarIconSize", 24)
                 statuswidget.setIconSize(QtCore.QSize(s,s))
                 st.insertPermanentWidget(2, statuswidget)
