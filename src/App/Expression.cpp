@@ -2353,7 +2353,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         switch (f) {
         case VANGLE:
-            return Py::asObject(new QuantityPy(new Quantity(vector1.GetAngle(vector2) * 180 / pi, Unit::Angle)));
+            return Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(vector1.GetAngle(vector2)), Unit::Angle)));
         case VCROSS:
             return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
         case VDOT:

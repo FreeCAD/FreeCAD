@@ -181,7 +181,7 @@ void TaskSectionView::setUiEdit()
     Base::Vector3d projectedViewDirection = m_base->projectPoint(sectionNormalVec, false);
     projectedViewDirection.Normalize();
     double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / std::numbers::pi);
+    m_compass->setDialAngle(Base::toDegrees(viewAngle));
     m_viewDirectionWidget->setValueNoNotify(sectionNormalVec * -1.0);
 }
 
@@ -273,7 +273,7 @@ void TaskSectionView::slotViewDirectionChanged(Base::Vector3d newDirection)
     Base::Vector3d projectedViewDirection = m_base->projectPoint(newDirection, false);
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / std::numbers::pi);
+    m_compass->setDialAngle(Base::toDegrees(viewAngle));
     checkAll(false);
     directionChanged(true);
     applyAligned();
