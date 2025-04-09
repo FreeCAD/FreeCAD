@@ -2,8 +2,6 @@ name: Build all packages
 
 on:
   push:
-  workflow_dispatch:
-  workflow_call:
   pull_request:
 
 jobs:
@@ -51,11 +49,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - { target: linux-64, os: ubuntu-22.04 }
-          - { target: linux-arm64, os: ubuntu-22.04-arm }
-          - { target: osx-64, os: macos-13 }
+          # - { target: linux-64, os: ubuntu-22.04 }
+          # - { target: linux-arm64, os: ubuntu-22.04-arm }
+          # - { target: osx-64, os: macos-13 }
           - { target: osx-arm64, os: macos-latest }
-          - { target: win-64, os: windows-latest }
+          # - { target: win-64, os: windows-latest }
       fail-fast: false
     env:
       CCACHE_DIR: ${{ github.workspace }}/ccache
@@ -117,6 +115,7 @@ jobs:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
           DEVELOPER_TEAM_ID: ${{ secrets.DEVELOPER_TEAM_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
         run: |
