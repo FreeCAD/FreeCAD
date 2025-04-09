@@ -41,10 +41,10 @@ public:
     }
 
     void show() {
-        if (QLineEdit* parentLineEdit = qobject_cast<QLineEdit*>(parent())) {
+        if (auto parentLineEdit = qobject_cast<QLineEdit*>(parent())) {
             // horizontal margin, so text will not be behind the icon
             QMargins margins = parentLineEdit->contentsMargins();
-            margins.setRight(margins.right() * 2 + this->sizeHint().width());
+            margins.setRight(margins.right() * 2 + sizeHint().width());
             parentLineEdit->setContentsMargins(margins);
         }
         QLabel::show();
