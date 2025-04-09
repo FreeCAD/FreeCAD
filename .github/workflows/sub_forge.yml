@@ -2,7 +2,7 @@ name: Build all packages
 
 on:
   push:
-  pull_request:
+  pull_request_target:
 
 jobs:
   tag_build:
