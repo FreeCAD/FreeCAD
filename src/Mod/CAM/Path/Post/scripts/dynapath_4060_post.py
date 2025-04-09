@@ -173,9 +173,9 @@ def processArguments(argstring):
         if args.precision is not None:
             PRECISION = args.precision
         if args.preamble is not None:
-            PREAMBLE = args.preamble.replace('\\n', '\n')
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble.replace('\\n', '\n')
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.inches:
             UNITS = "G70"
             UNIT_SPEED_FORMAT = "in/min"

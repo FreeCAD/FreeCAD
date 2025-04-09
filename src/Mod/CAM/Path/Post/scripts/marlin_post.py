@@ -262,9 +262,9 @@ def processArguments(argstring):
         if args.show_editor:
             SHOW_EDITOR = True
         if args.preamble is not None:
-            PREAMBLE = args.preamble.replace('\\n', '\n')
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble.replace('\\n', '\n')
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.no_translate_drill:
             TRANSLATE_DRILL_CYCLES = False
         if args.translate_drill:
