@@ -807,7 +807,7 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
             dirballoonLinesLine = (arrowTipPosInParent - dLineStart).Normalize();
         }
 
-        float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / pi;
+        float arAngle = Base::toDegrees(atan2(dirballoonLinesLine.y, dirballoonLinesLine.x));
 
         if ((endType == ArrowType::FILLED_TRIANGLE) && (prefOrthoPyramid())) {
             if (arAngle < 0.0) {

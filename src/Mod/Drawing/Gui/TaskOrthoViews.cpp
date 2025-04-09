@@ -266,7 +266,7 @@ void orthoview::set_projection(const gp_Ax2& cs)
 
     // this_view->Direction.setValue(Z_dir.X(), Z_dir.Y(), Z_dir.Z());
     this_view->Direction.setValue(x, y, z);
-    this_view->Rotation.setValue(180 * rotation / std::numbers::pi);
+    this_view->Rotation.setValue(Base::toDegrees(rotation));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

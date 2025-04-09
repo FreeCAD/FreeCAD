@@ -195,7 +195,7 @@ void TaskComplexSection::setUiEdit()
         ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
         Base::Vector3d projectedViewDirection = m_baseView->projectPoint(sectionNormalVec, false);
         double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
-        m_compass->setDialAngle(viewAngle * 180.0 / std::numbers::pi);
+        m_compass->setDialAngle(Base::toDegrees(viewAngle));
         m_viewDirectionWidget->setValueNoNotify(projectedViewDirection * -1.0);
     }
     else {
@@ -310,7 +310,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
     }
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / std::numbers::pi);
+    m_compass->setDialAngle(Base::toDegrees(viewAngle));
     checkAll(false);
     applyAligned();
 }
