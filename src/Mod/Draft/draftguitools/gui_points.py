@@ -68,7 +68,7 @@ class Point(gui_base_original.Creator):
         if self.ui:
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Point")
             self.ui.isRelative.hide()
-            self.ui.continueCmd.show()
+            self.ui.chainedModeCmd.show()
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)
         self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.move)
@@ -141,7 +141,7 @@ class Point(gui_base_original.Creator):
         ----------
         cont: bool or None, optional
             Restart (continue) the command if `True`, or if `None` and
-            `ui.continueMode` is `True`.
+            `ui.chainedMode` is `True`.
         """
         try:
             if self.callbackClick:
@@ -157,7 +157,7 @@ class Point(gui_base_original.Creator):
         self.callbackClick = None
         self.callbackMove = None
         super().finish()
-        if cont or (cont is None and self.ui and self.ui.continueMode):
+        if cont or (cont is None and self.ui and self.ui.chainedMode):
             self.Activated()
 
 

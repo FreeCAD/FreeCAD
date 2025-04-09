@@ -2538,7 +2538,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
         <location filename="../ui/preferences-draftinterface.ui" line="426"/>
-        <source>Continue</source>
+        <source>Chained Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

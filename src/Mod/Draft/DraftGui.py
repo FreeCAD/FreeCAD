@@ -54,8 +54,8 @@ from draftutils.todo import todo
 from draftutils.translate import translate
 from draftutils.units import display_external
 
-def _get_incmd_shortcut(itm):
-    return params.get_param("inCommandShortcut" + itm).upper()
+def _get_incmd_shortcut(itm, path="Mod/Draft"):
+    return params.get_param("inCommandShortcut" + itm, path).upper()
 
 
 #---------------------------------------------------------------------------
@@ -138,7 +138,7 @@ class DraftToolBar:
     Toolbar become obsolete due to lack of manteinence and was disabled
     by default in February 2020.
     Draft Ui Commands call and get information such as point coordinates,
-    subcommands activation, continue mode, etc. from Task Panel Ui
+    subcommands activation, chained mode, etc. from Task Panel Ui
     """
     def __init__(self):
         self.tray = None
@@ -155,7 +155,7 @@ class DraftToolBar:
 
         self.paramconstr = utils.rgba_to_argb(params.get_param("constructioncolor"))
         self.constrMode = False
-        self.continueMode = False
+        self.chainedMode = False
         self.relativeMode = True
         self.globalMode = False
         self.state = None
@@ -390,7 +390,7 @@ class DraftToolBar:
         self.relativeMode = params.get_param("RelativeMode")
         self.globalMode = params.get_param("GlobalMode")
         self.makeFaceMode = params.get_param("MakeFaceMode")
-        self.continueMode = params.get_param(self.sourceCmd.featureName, "Mod/Draft/ContinueMode")
+        self.chainedMode = params.get_param(self.sourceCmd.featureName, "Mod/Draft/ChainedMode")
 
         # Note: The order of the calls to self._checkbox() below controls
         #       the position of the checkboxes in the task panel.
@@ -399,7 +399,7 @@ class DraftToolBar:
         self.isRelative = self._checkbox("isRelative", self.layout, checked=self.relativeMode)
         self.isGlobal = self._checkbox("isGlobal", self.layout, checked=self.globalMode)
         self.makeFace = self._checkbox("makeFace", self.layout, checked=self.makeFaceMode)
-        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=bool(self.continueMode))
+        self.chainedModeCmd = self._checkbox("chainedModeCmd", self.layout, checked=bool(self.chainedMode))
 
         # update checkboxes without parameters and without internal modes:
         self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
@@ -448,7 +448,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.orientWPButton,QtCore.SIGNAL("pressed()"),self.orientWP)
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
-        QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
 
         QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
         QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
@@ -544,11 +544,11 @@ class DraftToolBar:
             "draft", "Finish") + " (" + _get_incmd_shortcut("Exit") + ")")
         self.finishButton.setToolTip(translate(
             "draft", "Finishes the current drawing or editing operation"))
-        self.continueCmd.setToolTip(translate(
+        self.chainedModeCmd.setToolTip(translate(
             "draft", "If checked, command will not finish until you press "
                      + "the command button again"))
-        self.continueCmd.setText(translate(
-            "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
+        self.chainedModeCmd.setText(translate(
+            "draft", "Chained Mode") + " (" + _get_incmd_shortcut("ChainedMode") + ")")
         self.occOffset.setToolTip(translate(
             "draft", "If checked, an OCC-style offset will be performed"
                      + " instead of the classic offset"))
@@ -679,7 +679,7 @@ class DraftToolBar:
         self.extraLineUi()
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
-        self.continueCmd.show()
+        self.chainedModeCmd.show()
 
     def wireUi(self, title=translate("draft", "DWire"), cancel=None, extra=None,
                getcoords=None, rel=False, icon="Draft_Wire"):
@@ -696,7 +696,7 @@ class DraftToolBar:
         self.wipeButton.show()
         self.orientWPButton.show()
         self.undoButton.show()
-        self.continueCmd.show()
+        self.chainedModeCmd.show()
 
     def circleUi(self):
         self.pointUi(translate("draft", "Circle"),icon="Draft_Circle")
@@ -705,7 +705,7 @@ class DraftToolBar:
 
     def arcUi(self):
         self.pointUi(translate("draft", "Arc"),icon="Draft_Arc")
-        self.continueCmd.show()
+        self.chainedModeCmd.show()
         self.isRelative.hide()
 
     def rotateSetCenterUi(self):
@@ -804,9 +804,9 @@ class DraftToolBar:
         todo.delay(self.textValue.setFocus,None)
         self.textbuffer=[]
         self.textline=0
-        self.continueCmd.show()
+        self.chainedModeCmd.show()
         # Change the checkbox label as the in-command shortcut cannot be used:
-        self.continueCmd.setText(translate("draft", "Continue"))
+        self.chainedModeCmd.setText(translate("draft", "Chained Mode"))
 
     def switchUi(self,store=True):
         if store:
@@ -844,13 +844,13 @@ class DraftToolBar:
         else:
             self.makeFace.setEnabled(True)
         self.makeFace.show()
-        self.continueCmd.show()
+        self.chainedModeCmd.show()
 
     def modUi(self):
         self.isCopy.show()
         self.isSubelementMode.show()
         self.isCopy.setChecked(params.get_param("CopyMode"))
-        self.continueCmd.show()
+        self.chainedModeCmd.show()
 
     def checkLocal(self):
         """checks if x,y,z coords must be displayed as local or global"""
@@ -919,9 +919,9 @@ class DraftToolBar:
 # Processing functions
 #---------------------------------------------------------------------------
 
-    def setContinue(self, val):
-        params.set_param(self.sourceCmd.featureName, bool(val), "Mod/Draft/ContinueMode")
-        self.continueMode = bool(val)
+    def setChainedMode(self, val):
+        params.set_param(self.sourceCmd.featureName, bool(val), "Mod/Draft/ChainedMode")
+        self.chainedMode = bool(val)
 
     # val=-1 is used to temporarily switch to relativeMode and disable the checkbox.
     # val=-2 is used to switch back.
@@ -1034,7 +1034,7 @@ class DraftToolBar:
         """finish button action"""
         if self.sourceCmd:
             if cont is None:
-                cont = self.continueMode
+                cont = self.chainedMode
             self.sourceCmd.finish(cont=cont)
         if self.cancel:
             self.cancel()
@@ -1048,7 +1048,7 @@ class DraftToolBar:
 
     def closeLine(self):
         """close button action"""
-        self.sourceCmd.finish(cont=self.continueMode, closed=True)
+        self.sourceCmd.finish(cont=self.chainedMode, closed=True)
         FreeCADGui.ActiveDocument.resetEdit()
 
     def wipeLine(self):
@@ -1135,9 +1135,9 @@ class DraftToolBar:
             if self.makeFace.isVisible():
                 self.makeFace.setChecked(not self.makeFace.isChecked())
             spec = True
-        elif txt == _get_incmd_shortcut("Continue"):
-            if self.continueCmd.isVisible():
-                self.toggleContinue()
+        elif txt == _get_incmd_shortcut("ChainedMode"):
+            if self.chainedModeCmd.isVisible():
+                self.toggleChainedMode()
             spec = True
         elif txt == _get_incmd_shortcut("SetWP"):
             if self.orientWPButton.isVisible():
@@ -1326,22 +1326,22 @@ class DraftToolBar:
             + self.getDefaultColor("constr",rgb=True)+" }")
         self.constrMode = checked
 
-    def toggleContinue(self):
-        FreeCAD.Console.PrintMessage("toggle continue\n")
-        self.continueMode = not self.continueMode
+    def toggleChainedMode(self):
+        FreeCAD.Console.PrintMessage("toggle chained mode\n")
+        self.chainedMode = not self.chainedMode
         try:
-            if hasattr(self,"continueCmd"):
-                if self.continueCmd.isVisible():
-                    self.continueCmd.toggle()
+            if hasattr(self,"chainedModeCmd"):
+                if self.chainedModeCmd.isVisible():
+                    self.chainedModeCmd.toggle()
             if hasattr(self,"panel"):
                 if hasattr(self.panel,"form"):
                     if isinstance(self.panel.form,list):
                         for w in self.panel.form:
-                            c = w.findChild(QtWidgets.QCheckBox,"ContinueCmd")
+                            c = w.findChild(QtWidgets.QCheckBox,"ChainedModeCmd")
                             if c:
                                 c.toggle()
                     else:
-                        c = self.panel.form.findChild(QtWidgets.QCheckBox,"ContinueCmd")
+                        c = self.panel.form.findChild(QtWidgets.QCheckBox,"ChainedModeCmd")
                         if c:
                             c.toggle()
         except Exception:
@@ -1635,7 +1635,7 @@ class DraftToolBar:
 
     def Deactivated(self):
         if (FreeCAD.activeDraftCommand is not None):
-            self.continueMode = False
+            self.chainedMode = False
             FreeCAD.activeDraftCommand.finish()
         FreeCADGui.Control.clearTaskWatcher()
         #self.tray = None

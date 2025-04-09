@@ -183,7 +183,7 @@ class BezCurve(gui_lines.Line):
         ----------
         cont: bool or None, optional
             Restart (continue) the command if `True`, or if `None` and
-            `ui.continueMode` is `True`.
+            `ui.chainedMode` is `True`.
         closed: bool, optional
             Close the curve if `True`.
         """
@@ -223,7 +223,7 @@ class BezCurve(gui_lines.Line):
         # another method that performs cleanup (superfinish)
         # that is not re-implemented by any of the child classes.
         gui_base_original.Creator.finish(self)
-        if cont or (cont is None and self.ui and self.ui.continueMode):
+        if cont or (cont is None and self.ui and self.ui.chainedMode):
             self.Activated()
 
 
@@ -422,7 +422,7 @@ class CubicBezCurve(gui_lines.Line):
         ----------
         cont: bool or None, optional
             Restart (continue) the command if `True`, or if `None` and
-            `ui.continueMode` is `True`.
+            `ui.chainedMode` is `True`.
         closed: bool, optional
             Close the curve if `True`.
         """
@@ -470,7 +470,7 @@ class CubicBezCurve(gui_lines.Line):
         # another method that performs cleanup (superfinish)
         # that is not re-implemented by any of the child classes.
         gui_base_original.Creator.finish(self)
-        if cont or (cont is None and self.ui and self.ui.continueMode):
+        if cont or (cont is None and self.ui and self.ui.chainedMode):
             self.Activated()
 
 

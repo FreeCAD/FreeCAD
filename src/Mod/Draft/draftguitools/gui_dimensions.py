@@ -94,7 +94,7 @@ class Dimension(gui_base_original.Creator):
             super().Activated(name=self.featureName)
             if self.ui:
                 self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
-                self.ui.continueCmd.show()
+                self.ui.chainedModeCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False
                 self.call = self.view.addEventCallback("SoEvent", self.action)
@@ -284,7 +284,7 @@ class Dimension(gui_base_original.Creator):
             # Linear dimension, not linked to any edge
             self.create_linear_dimension()
 
-        if self.ui.continueMode:
+        if self.ui.chainedMode:
             self.cont = self.node[2]
             if not self.dir:
                 if self.link:

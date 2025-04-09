@@ -442,7 +442,7 @@ def _get_param_dictionary():
         "useSupport":                  ("bool",      False),
     }
 
-    param_dict["Mod/Draft/ContinueMode"] = {
+    param_dict["Mod/Draft/ChainedMode"] = {
         "Line": ("bool", False),
         "Polyline": ("bool", False),
         "Arc": ("bool", False),

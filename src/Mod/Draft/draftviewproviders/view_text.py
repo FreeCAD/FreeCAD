@@ -182,7 +182,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         Gui.draftToolBar.sourceCmd = self
         Gui.draftToolBar.taskUi(title=translate("draft", "Text"), icon="Draft_Text")
         Gui.draftToolBar.textUi()
-        Gui.draftToolBar.continueCmd.hide()
+        Gui.draftToolBar.chainedModeCmd.hide()
         Gui.draftToolBar.textValue.setPlainText("\n".join(self.Object.Text))
         Gui.draftToolBar.textValue.setFocus()
 

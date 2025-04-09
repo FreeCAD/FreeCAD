@@ -142,7 +142,7 @@ class Line(gui_base_original.Creator):
         ----------
         cont: bool or None, optional
             Restart (continue) the command if `True`, or if `None` and
-            `ui.continueMode` is `True`.
+            `ui.chainedMode` is `True`.
         closed: bool, optional
             Close the line if `True`.
         """
@@ -196,7 +196,7 @@ class Line(gui_base_original.Creator):
                 self.commit(translate("draft", "Create Wire"),
                             _cmd_list)
         super().finish()
-        if cont or (cont is None and self.ui and self.ui.continueMode):
+        if cont or (cont is None and self.ui and self.ui.chainedMode):
             self.Activated()
 
     def removeTemporaryObject(self):
