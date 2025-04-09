@@ -31,6 +31,7 @@
 #include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -319,7 +320,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
 void TaskComplexSection::slotChangeAngle(double newAngle)
 {
     //    Base::Console().Message("TCS::slotAngleChanged(%.3f)\n", newAngle);
-    double angleRadians = newAngle * std::numbers::pi / 180.0;
+    double angleRadians = Base::toRadians(newAngle);
     double unitX = cos(angleRadians);
     double unitY = sin(angleRadians);
     Base::Vector3d localUnit(unitX, unitY, 0.0);

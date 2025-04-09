@@ -710,8 +710,6 @@ Circle::Circle()
 
 Circle::Circle(Base::Vector3d c, double r)
 {
-    using std::numbers::pi;
-
     geomType = GeomType::CIRCLE;
     radius = r;
     center = c;
@@ -721,11 +719,9 @@ Circle::Circle(Base::Vector3d c, double r)
     gp_Circ circle;
     circle.SetAxis(axis);
     circle.SetRadius(r);
-    double angle1 = 0.0;
-    double angle2 = 360.0;
 
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(pi/180), angle2*(pi/180));
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, 0.0, 2.0 * std::numbers::pi);
     TopoDS_Edge edge = aMakeEdge.Edge();
     occEdge = edge;
 }
@@ -826,7 +822,7 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     circle.SetRadius(r);
 
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, sAng*(std::numbers::pi/180), eAng*(std::numbers::pi/180));
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, Base::toRadians(sAng), Base::toRadians(eAng));
     TopoDS_Edge edge = aMakeEdge.Edge();
     occEdge = edge;
 

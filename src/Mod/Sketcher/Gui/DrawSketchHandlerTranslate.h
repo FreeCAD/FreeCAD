@@ -26,6 +26,8 @@
 
 #include <QApplication>
 
+#include <Base/Tools.h>
+
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
@@ -585,7 +587,7 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                 double angle =
-                    onViewParameters[OnViewParameter::Fourth]->getValue() * std::numbers::pi / 180;
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -609,7 +611,7 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
             if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                 double angle =
-                    onViewParameters[OnViewParameter::Sixth]->getValue() * std::numbers::pi / 180;
+                    Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
