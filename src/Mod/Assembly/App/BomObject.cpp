@@ -39,6 +39,7 @@
 #include <Base/Rotation.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
+#include <QObject>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -268,7 +269,7 @@ std::string BomObject::getBomPropertyValue(App::DocumentObject* obj, std::string
 
     if (!prop) {
         Base::Console().Warning("Property not found: %s\n", baseName.c_str());
-        return "N/A";
+        return QObject::tr("N/A").toStdString();
     }
 
     // Only support a subset of property types for BOM
@@ -301,7 +302,7 @@ std::string BomObject::getBomPropertyValue(App::DocumentObject* obj, std::string
     }
 
     Base::Console().Warning("Property type not supported for: %s\n", prop->getName());
-    return "Not supported";
+    return QObject::tr("Not supported").toStdString();
 }
 
 AssemblyObject* BomObject::getAssembly()
