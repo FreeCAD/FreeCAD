@@ -61,10 +61,7 @@ public:
     Unit operator*(const Unit&) const;
     Unit operator/(const Unit&) const;
     bool operator==(const Unit&) const;
-    bool operator!=(const Unit& that) const
-    {
-        return !(*this == that);
-    }
+    bool operator!=(const Unit& that) const;
     Unit& operator=(const Unit&) = default;
     Unit& operator=(Unit&&) = default;
     Unit pow(double exp) const;
@@ -79,7 +76,6 @@ public:
     int amountOfSubstance() const;
     int luminousIntensity() const;
     int angle() const;
-    bool isEmpty() const;
 
     std::string getString() const;
     /// get the type as an string such as "Area", "Length" or "Pressure".
@@ -87,6 +83,7 @@ public:
 
     /** Predefined Unit types. */
     //@{
+    static const Unit One;
     /// Length unit
     static const Unit Length;
     /// Mass unit

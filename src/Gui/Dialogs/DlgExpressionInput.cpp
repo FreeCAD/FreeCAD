@@ -294,7 +294,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
                 }
 
                 auto msg = value.getUserString();
-                if (!impliedUnit.isEmpty()) {
+                if (impliedUnit != Base::Unit::One) {
                     if (!value.isDimensionless() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
