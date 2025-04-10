@@ -404,6 +404,7 @@ def _get_param_dictionary():
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
+        "ContinueMode":                ("bool",      False),
         "CenterPlaneOnView":           ("bool",      False),
         "CopyMode":                    ("bool",      False),
         "DefaultAnnoDisplayMode":      ("int",       0),
