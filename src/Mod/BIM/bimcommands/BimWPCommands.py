@@ -109,7 +109,7 @@ class BIM_WPView:
                 # Aligning to current widget item
                 BimViews.show(sel[0])
                 return
-            elif hasattr(vm, "lastSelected"):
+            if hasattr(vm, "lastSelected"):
                 # Aligning to stored widget item
                 BimViews.show(vm.lastSelected)
                 return
