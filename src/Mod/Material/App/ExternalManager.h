@@ -28,6 +28,7 @@
 #include <Mod/Material/MaterialGlobal.h>
 
 class QMutex;
+class QString;
 
 namespace Materials
 {
@@ -83,13 +84,16 @@ public:
 
 private:
     ExternalManager();
-    ~ExternalManager();
+    ~ExternalManager() override;
 
     static void initManager();
     void getConfiguration();
     void instantiate();
     void connect();
-    std::shared_ptr<Library> libraryFromTuple(const Py::Tuple& entry);
+    bool checkMaterialLibraryType(const Py::Object& entry);
+    std::shared_ptr<Library> libraryFromObject(const Py::Object& entry);
+    bool checkMaterialObjectType(const Py::Object& entry);
+    std::tuple<QString, QString, QString> materialObjectTypeFromObject(const Py::Object& entry);
 
     static ExternalManager* _manager;
     static QMutex _mutex;

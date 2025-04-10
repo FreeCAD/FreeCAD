@@ -65,9 +65,8 @@ ExternalManager::~ExternalManager()
     _hGrp->Detach(this);
 }
 
-void ExternalManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
+void ExternalManager::OnChange(ParameterGrp::SubjectType& /*rCaller*/, ParameterGrp::MessageType Reason)
 {
-    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
     if (std::strncmp(Reason, "Current", 7) == 0) {
         if (_instantiated) {
             // The old manager object will be deleted when reconnecting
@@ -167,34 +166,72 @@ ExternalManager* ExternalManager::getManager()
 //
 //=====
 
-std::shared_ptr<Library>
-ExternalManager::libraryFromTuple(const Py::Tuple& entry)
+bool ExternalManager::checkMaterialLibraryType(const Py::Object& entry)
 {
-    auto pyName = entry.getItem(0);
+    return entry.hasAttr("name") && entry.hasAttr("icon") && entry.hasAttr("readOnly")
+        && entry.hasAttr("timestamp");
+}
+
+std::shared_ptr<Library>
+ExternalManager::libraryFromObject(const Py::Object& entry)
+{
+    if (!checkMaterialLibraryType(entry)) {
+        throw InvalidLibrary();
+    }
+
+    Py::String pyName(entry.getAttr("name"));
+    Py::Bytes pyIcon(entry.getAttr("icon"));
+    Py::Boolean pyReadOnly(entry.getAttr("readOnly"));
+    Py::String pyTimestamp(entry.getAttr("timestamp"));
+
     QString libraryName;
     if (!pyName.isNone()) {
         libraryName = QString::fromStdString(pyName.as_string());
     }
-    auto pyIcon = entry.getItem(1);
+
     QString icon;
     if (!pyIcon.isNone()) {
         icon = QString::fromStdString(pyIcon.as_string());
     }
-    auto pyReadOnly = entry.getItem(2);
+
     bool readOnly = pyReadOnly.as_bool();
-    auto pyTimestamp = entry.getItem(3);
+
     QString timestamp;
     if (!pyTimestamp.isNone()) {
         timestamp = QString::fromStdString(pyTimestamp.as_string());
     }
 
-    Base::Console().Log("Library name '%s', Icon '%s', readOnly %s, timestamp '%s'\n",
-                        libraryName.toStdString().c_str(),
-                        icon.toStdString().c_str(),
-                        readOnly ? "true" : "false",
-                        timestamp.toStdString().c_str());
     auto library = std::make_shared<Library>(libraryName, icon, readOnly, timestamp);
     return library;
+}
+
+bool ExternalManager::checkMaterialObjectType(const Py::Object& entry)
+{
+    return entry.hasAttr("UUID") && entry.hasAttr("path") && entry.hasAttr("name");
+}
+
+std::tuple<QString, QString, QString>
+ExternalManager::materialObjectTypeFromObject(const Py::Object& entry)
+{
+    QString uuid;
+    auto pyUUID = entry.getAttr("UUID");
+    if (!pyUUID.isNone()) {
+        uuid = QString::fromStdString(pyUUID.as_string());
+    }
+
+    QString path;
+    auto pyPath = entry.getAttr("path");
+    if (!pyPath.isNone()) {
+        path = QString::fromStdString(pyPath.as_string());
+    }
+
+    QString name;
+    auto pyName = entry.getAttr("name");
+    if (!pyName.isNone()) {
+        name = QString::fromStdString(pyName.as_string());
+    }
+
+    return std::tuple<QString, QString, QString>(uuid, path, name);
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Library>>>
@@ -210,7 +247,7 @@ ExternalManager::libraries()
             Py::Callable libraries(_managerObject.getAttr("libraries"));
             Py::List list(libraries.apply());
             for (auto lib : list) {
-                auto library = libraryFromTuple(Py::Tuple(lib));
+                auto library = libraryFromObject(Py::Object(lib));
                 libList->push_back(library);
             }
         }
@@ -239,7 +276,7 @@ std::shared_ptr<std::vector<std::shared_ptr<Library>>> ExternalManager::modelLib
             Py::Callable libraries(_managerObject.getAttr("modelLibraries"));
             Py::List list(libraries.apply());
             for (auto lib : list) {
-                auto library = libraryFromTuple(Py::Tuple(lib));
+                auto library = libraryFromObject(Py::Tuple(lib));
                 libList->push_back(library);
             }
         }
@@ -268,7 +305,7 @@ std::shared_ptr<std::vector<std::shared_ptr<Library>>> ExternalManager::material
             Py::Callable libraries(_managerObject.getAttr("materialLibraries"));
             Py::List list(libraries.apply());
             for (auto lib : list) {
-                auto library = libraryFromTuple(Py::Tuple(lib));
+                auto library = libraryFromObject(Py::Tuple(lib));
                 libList->push_back(library);
             }
         }
@@ -299,7 +336,7 @@ std::shared_ptr<Library> ExternalManager::getLibrary(const QString& name)
             Py::Tuple result(libraries.apply(args));
 
             Py::Object libObject = result.getItem(0);
-            auto lib = libraryFromTuple(Py::Tuple(libObject));
+            auto lib = libraryFromObject(Py::Tuple(libObject));
             return std::make_shared<Library>(*lib);
         }
         else {
@@ -424,25 +461,12 @@ ExternalManager::libraryModels(const QString& libraryName)
             args.setItem(0, Py::String(libraryName.toStdString()));
             Py::List list(libraries.apply(args));
             for (auto library : list) {
-                auto entry = Py::Tuple(library);
-
-                auto pyUUID = entry.getItem(0);
-                QString uuid;
-                if (!pyUUID.isNone()) {
-                    uuid = QString::fromStdString(pyUUID.as_string());
-                }
-                auto pyPath = entry.getItem(1);
-                QString path;
-                if (!pyPath.isNone()) {
-                    path = QString::fromStdString(pyPath.as_string());
-                }
-                auto pyName = entry.getItem(2);
-                QString name;
-                if (!pyName.isNone()) {
-                    name = QString::fromStdString(pyName.as_string());
+                auto entry = Py::Object(library);
+                if (!checkMaterialObjectType(entry)) {
+                    throw InvalidModel();
                 }
 
-                modelList->push_back(std::tuple<QString, QString, QString>(uuid, path, name));
+                modelList->push_back(materialObjectTypeFromObject(entry));
             }
         }
         else {
@@ -473,25 +497,12 @@ ExternalManager::libraryMaterials(const QString& libraryName)
             args.setItem(0, Py::String(libraryName.toStdString()));
             Py::List list(libraries.apply(args));
             for (auto library : list) {
-                auto entry = Py::Tuple(library);
-
-                auto pyUUID = entry.getItem(0);
-                QString uuid;
-                if (!pyUUID.isNone()) {
-                    uuid = QString::fromStdString(pyUUID.as_string());
-                }
-                auto pyPath = entry.getItem(1);
-                QString path;
-                if (!pyPath.isNone()) {
-                    path = QString::fromStdString(pyPath.as_string());
-                }
-                auto pyName = entry.getItem(2);
-                QString name;
-                if (!pyName.isNone()) {
-                    name = QString::fromStdString(pyName.as_string());
+                auto entry = Py::Object(library);
+                if (!checkMaterialObjectType(entry)) {
+                    throw InvalidMaterial();
                 }
 
-                materialList->push_back(std::tuple<QString, QString, QString>(uuid, path, name));
+                materialList->push_back(materialObjectTypeFromObject(entry));
             }
         }
         else {
@@ -534,25 +545,12 @@ ExternalManager::libraryMaterials(const QString& libraryName,
                 Py::Object(new MaterialFilterOptionsPy(new MaterialFilterOptions(options)), true));
             Py::List list(libraries.apply(args));
             for (auto library : list) {
-                auto entry = Py::Tuple(library);
-
-                auto pyUUID = entry.getItem(0);
-                QString uuid;
-                if (!pyUUID.isNone()) {
-                    uuid = QString::fromStdString(pyUUID.as_string());
-                }
-                auto pyPath = entry.getItem(1);
-                QString path;
-                if (!pyPath.isNone()) {
-                    path = QString::fromStdString(pyPath.as_string());
-                }
-                auto pyName = entry.getItem(2);
-                QString name;
-                if (!pyName.isNone()) {
-                    name = QString::fromStdString(pyName.as_string());
+                auto entry = Py::Object(library);
+                if (!checkMaterialObjectType(entry)) {
+                    throw InvalidMaterial();
                 }
 
-                materialList->push_back(std::tuple<QString, QString, QString>(uuid, path, name));
+                materialList->push_back(materialObjectTypeFromObject(entry));
             }
         }
         else {

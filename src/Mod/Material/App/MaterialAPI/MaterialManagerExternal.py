@@ -23,19 +23,22 @@ __author__ = "David Carter"
 __url__ = "https://www.davesrocketshop.com"
 
 from abc import ABC, abstractmethod
-# from typing import Tuple
+from dataclasses import dataclass
 
 import Materials
 
-# This requires Python 3.12 or later. This isn't available on all platforms yet
-# type MaterialName = str
-# type MaterialIcon = str
-# type MaterialReadOnly = bool
-# type MaterialTimestamp = str
-# type MaterialUUID = str
-# type MaterialPath = str
-# type MaterialLibraryType = Tuple[MaterialName, MaterialIcon, MaterialReadOnly, MaterialTimestamp]
-# type MaterialLibraryObjectType = Tuple[MaterialUUID, MaterialPath, MaterialName]
+@dataclass
+class MaterialLibraryType:
+    name: str
+    icon: bytes
+    readOnly: bool
+    timestamp: str
+
+@dataclass
+class MaterialLibraryObjectType:
+    UUID: str
+    path: str
+    name: str
 
 class MaterialManagerExternal(ABC):
     """Abstract base class for all external material managers
@@ -55,7 +58,7 @@ class MaterialManagerExternal(ABC):
     #
 
     @abstractmethod
-    def libraries(self) -> list: #[MaterialLibraryType]:
+    def libraries(self) -> list[MaterialLibraryType]:
         """Returns a list of libraries managed by this interface
 
         The list contains a series of tuples describing all libraries managed by
@@ -65,7 +68,7 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def modelLibraries(self) -> list: #[MaterialLibraryType]:
+    def modelLibraries(self) -> list[MaterialLibraryType]:
         """Returns a list of libraries managed by this interface
 
         The list contains a series of tuples describing all libraries managed by
@@ -78,7 +81,7 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def materialLibraries(self) -> list: #[MaterialLibraryType]:
+    def materialLibraries(self) -> list[MaterialLibraryType]:
         """Returns a list of libraries managed by this interface
 
         The list contains a series of tuples describing all libraries managed by
@@ -98,7 +101,7 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def createLibrary(self, name: str, icon: str, readOnly: bool) -> None:
+    def createLibrary(self, name: str, icon: bytes, readOnly: bool) -> None:
         """Create a new library
 
         Create a new library with the given name"""
@@ -112,7 +115,7 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def changeIcon(self, name: str, icon: str) -> None:
+    def changeIcon(self, name: str, icon: bytes) -> None:
         """Change the library icon
 
         Change the library icon"""
@@ -126,7 +129,7 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def libraryModels(self, library: str) -> list: #[MaterialLibraryObjectType]:
+    def libraryModels(self, library: str) -> list[MaterialLibraryObjectType]:
         """Returns a list of models managed by this library
 
         Each list entry is a tuple containing the UUID, path, and name of the model"""
@@ -135,7 +138,7 @@ class MaterialManagerExternal(ABC):
     @abstractmethod
     def libraryMaterials(self, library: str,
                          filter: Materials.MaterialFilter = None,
-                         options: Materials.MaterialFilterOptions = None) -> list: #[MaterialLibraryObjectType]:
+                         options: Materials.MaterialFilterOptions = None) -> list[MaterialLibraryObjectType]:
         """Returns a list of materials managed by this library
 
         Each list entry is a tuple containing the UUID, path, and name of the material"""
