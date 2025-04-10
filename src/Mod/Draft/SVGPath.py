@@ -1,8 +1,8 @@
 import re
 import math
-from Draft import precisionSVG
 from FreeCAD import Vector, Matrix
 from DraftVecUtils import equals, isNull, angle
+from draftutils.utils import svg_precision
 from draftutils.messages import _err, _msg, _wrn
 
 from Part import (
@@ -678,7 +678,7 @@ class SvgPathParser:
         data. It's supposed to be called direct after SvgPath Object
         creation.
         '''
-        path = SvgPathElement(precisionSVG(), 10)
+        path = SvgPathElement(svg_precision(), 10)
         self.paths = []
         for d, argsstr in self.commands:
             relative = d.islower()
@@ -711,7 +711,7 @@ class SvgPathParser:
         self.shapes = path.create_edges()
         
         
-    def create_faces(self, fill=True, cut=True):
+    def create_faces(self, fill=True, add_wire_for_invalid_face=False):
         ''' 
         Generate Faces from lists of Shapes.
         If shapes form a closed wire and the fill Attribute is set, we 
@@ -722,31 +722,34 @@ class SvgPathParser:
         fill : Object/bool
                if True or not None Faces are generated from closed shapes.
         '''
-        precision = precisionSVG()
-        cnt = 0;
+        precision = svg_precision()
+        cnt = -1;
         openShapes = []
         self.faces = FaceTreeNode()
-        for sh in self.shapes:                               
-            # The path should be closed by now
-            # sh = make_wire(path, self.precision, True)
+        for sh in self.shapes:
+            cnt += 1
             add_wire = True
-            wr = make_wire(sh, precision, checkclosed=True)
+            wr = _make_wire(sh, precision, checkclosed=True)
             wrcpy = wr.copy();
-            if fill and len(wr.Wires) == 1 and wr.Wires[0].isClosed():
+            if cnt > 0:
+                face_name = self.name + "_" + str(cnt)
+            else:
+                face_name = self.name 
+            if fill and wr.Wires[0].isClosed():
                 try:
                     face = Face(wr)
                     if not face.isValid():
+                        add_wire = add_wire_for_invalid_face
                         face.fix(1e-6, 0, 1)
                     else:
                         add_wire = False
-                    if not (face.Area < 10 * (precision_step(precision) ** 2)):
-                        self.faces.insert(face, self.name + "_f" + str(cnt))
-                        cnt += 1
+                    if not (face.Area < 10 * (_precision_step(precision) ** 2)):
+                        self.faces.insert(face, face_name)
                 except:
                     _msg("Failed to make a shape from path '{}'. This Path will be discarded.".format(self.name))
             if add_wire:
-                if wrcpy.Length > precision_step(precision):
-                    openShapes.append((self.name + "_w" + str(cnt-1), wrcpy))
+                if wrcpy.Length > _precision_step(precision):
+                    openShapes.append((face_name + "_w", wrcpy))
 
         self.shapes = openShapes
 

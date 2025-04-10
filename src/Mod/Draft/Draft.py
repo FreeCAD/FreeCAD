@@ -55,7 +55,6 @@ from draftutils.utils import ARROW_TYPES as arrowtypes
 from draftutils.utils import (type_check,
                               typecheck,
                               precision,
-                              precisionSVG,
                               tolerance)
 
 from draftutils.utils import (get_real_name,

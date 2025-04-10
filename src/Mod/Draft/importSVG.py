@@ -60,6 +60,7 @@ from DraftVecUtils import equals
 from FreeCAD import Vector
 from draftutils import params
 from draftutils import utils
+from draftutils.utils import svg_precision
 from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
 from draftutils.utils import pyopen
@@ -463,6 +464,8 @@ class svgHandler(xml.sax.ContentHandler):
         """Retrieve Draft parameters and initialize."""
         self.style = params.get_param("svgstyle")
         self.disableUnitScaling = params.get_param("svgDisableUnitScaling")
+        self.make_cuts = params.get_param("svgMakeCuts")
+        self.add_wire_for_invalid_face = params.get_param("svgAddWireForInvalidFace")
         self.count = 0
         self.transform = None
         self.grouptransform = []
@@ -529,6 +532,7 @@ class svgHandler(xml.sax.ContentHandler):
             Dictionary of content of the elements
         """
         self.count += 1
+        precision = svg_precision()
 
         _msg('processing element {0}: {1}'.format(self.count, name))
         _msg('existing group transform: {}'.format(self.grouptransform))
@@ -748,8 +752,9 @@ class svgHandler(xml.sax.ContentHandler):
             if "d" in data:
                 svgPath = SvgPathParser(data, pathname)
                 svgPath.parse()
-                svgPath.create_faces(self.fill)
-                svgPath.doCuts()
+                svgPath.create_faces(self.fill, self.add_wire_for_invalid_face)
+                if self.make_cuts:
+                    svgPath.doCuts()
                 shapes = svgPath.getShapeList()
                 for named_shape in shapes:
                     self.__addFaceToDoc(named_shape)
@@ -764,7 +769,7 @@ class svgHandler(xml.sax.ContentHandler):
             if "y" not in data:
                 data["y"] = 0
             # Negative values are invalid
-            _precision = 10**(-Draft.precisionSVG())
+            _precision = 10**(-precision)
             if ('rx' not in data or data['rx'] < _precision) \
                     and ('ry' not in data or data['ry'] < _precision):
                 # if True:
@@ -836,7 +841,7 @@ class svgHandler(xml.sax.ContentHandler):
                 for esh1, esh2 in zip(esh[-1:] + esh[:-1], esh):
                     p1 = esh1.Vertexes[-1].Point
                     p2 = esh2.Vertexes[0].Point
-                    if not equals(p1, p2, Draft.precisionSVG()):
+                    if not equals(p1, p2, precision):
                         # straight segments
                         _sh = Part.LineSegment(p1, p2).toShape()
                         edges.append(_sh)
@@ -887,7 +892,7 @@ class svgHandler(xml.sax.ContentHandler):
                     points = points + points[:2]  # emulate closepath
                 for svgx, svgy in zip(points[2::2], points[3::2]):
                     currentvec = Vector(svgx, -svgy, 0)
-                    if not equals(lastvec, currentvec, Draft.precisionSVG()):
+                    if not equals(lastvec, currentvec, precision):
                         seg = Part.LineSegment(lastvec, currentvec).toShape()
                         # print("polyline seg ", lastvec, currentvec)
                         lastvec = currentvec

@@ -206,7 +206,7 @@ def precision():
     return params.get_param("precision")
 
 
-def precisionSVG():
+def svg_precision():
     """Return the precision value for SVG import from the parameter database.
 
     It is the number of decimal places that a float will have.
@@ -226,7 +226,7 @@ def precisionSVG():
     int
         params.get_param("svgPrecision")
     """
-    return params.get_param("precisionSVG")
+    return params.get_param("svgPrecision")
 
 
 def tolerance():
