@@ -25,8 +25,8 @@ graphviz = "*"
 hdf5 = "*"
 ifcopenshell = "*"
 lark = "*"
-lxml = "*"
 libboost-devel = "*"
+lxml = "*"
 matplotlib = "*"
 nine = "*"
 ninja = "*"
@@ -135,6 +135,7 @@ sed = "*"
 sed = "*"
 
 [target.win-64.dependencies]
+pthreads-win32 = "*"
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
