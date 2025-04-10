@@ -1,6 +1,6 @@
 # Bit types and attributes
 
-Below is the list of bit types and their attributes recognized by CAM operations. 
+Below is the list of bit types and their attributes recognized by CAM operations.
 This is independent from tool shapes - but tool shapes must honor those attributes in order to work properly.
 Some of those tools or shapes may not yet be available - but this information is for future reference.
 
@@ -68,4 +68,3 @@ To be Done
 ## Tap
 
 To be Done
-
