@@ -183,7 +183,7 @@ Quantity Quantity::operator/(double factor) const
 
 Quantity Quantity::pow(const Quantity& other) const
 {
-    if (!other.myUnit.isEmpty()) {
+    if (!other.isDimensionless()) {
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     }
 
@@ -273,19 +273,13 @@ std::string Quantity::getSafeUserString() const
 /// true if it has a number without a unit
 bool Quantity::isDimensionless() const
 {
-    return isValid() && myUnit.isEmpty();
+    return myUnit.isEmpty();
 }
 
 /// true if it has a specific unit or no dimension.
 bool Quantity::isDimensionlessOrUnit(const Unit& unit) const
 {
     return isDimensionless() || myUnit == unit;
-}
-
-// true if it has a number and a valid unit
-bool Quantity::isQuantity() const
-{
-    return isValid() && !myUnit.isEmpty();
 }
 
 // true if it has a number with or without a unit

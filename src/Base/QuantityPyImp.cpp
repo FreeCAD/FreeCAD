@@ -43,19 +43,15 @@ using Base::Quantity;
 // returns a string which represents the object e.g. when printed in python
 std::string QuantityPy::representation() const
 {
-    std::stringstream ret;
-
-    double val = getQuantityPtr()->getValue();
-    Unit unit = getQuantityPtr()->getUnit();
-
+    std::stringstream ss;
     // Use Python's implementation to repr() a float
-    Py::Float flt(val);
-    ret << static_cast<std::string>(flt.repr());
-    if (!unit.isEmpty()) {
-        ret << " " << unit.getString();
+    Py::Float flt(getQuantityPtr()->getValue());
+    ss << static_cast<std::string>(flt.repr());
+    if (!getQuantityPtr()->isDimensionless()) {
+        ss << " " << getQuantityPtr()->getUnit().getString();
     }
 
-    return ret.str();
+    return ss.str();
 }
 
 PyObject* QuantityPy::toStr(PyObject* args) const
@@ -66,17 +62,16 @@ PyObject* QuantityPy::toStr(PyObject* args) const
     }
 
     double val = getQuantityPtr()->getValue();
-    Unit unit = getQuantityPtr()->getUnit();
 
-    std::stringstream ret;
-    ret.precision(prec);
-    ret.setf(std::ios::fixed, std::ios::floatfield);
-    ret << val;
-    if (!unit.isEmpty()) {
-        ret << " " << unit.getString();
+    std::stringstream ss;
+    ss.precision(prec);
+    ss.setf(std::ios::fixed, std::ios::floatfield);
+    ss << val;
+    if (!getQuantityPtr()->isDimensionless()) {
+        ss << " " << getQuantityPtr()->getUnit().getString();
     }
 
-    return Py_BuildValue("s", ret.str().c_str());
+    return Py_BuildValue("s", ss.str().c_str());
 }
 
 PyObject* QuantityPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
@@ -279,11 +274,6 @@ PyObject* QuantityPy::getValueAs(PyObject* args) const
         }
 
         const auto qpUnit = qPtr->getUnit();
-        if (qpUnit.isEmpty()) {
-            err("QuantityPtr returned empty unit");
-            return false;
-        }
-
         if (const auto qUnit = quant.getUnit(); qUnit != qpUnit) {
             err("Unit mismatch (`" + qUnit.getString() + "` != `" + qpUnit.getString() + "`)");
             return false;
@@ -301,7 +291,7 @@ PyObject* QuantityPy::getValueAs(PyObject* args) const
     }
 
     const auto quant = optQuant.value();
-    if (quant.isQuantity()) {
+    if (!quant.isDimensionless()) {
         if (!checkQuant(quant)) {
             return nullptr;
         }
