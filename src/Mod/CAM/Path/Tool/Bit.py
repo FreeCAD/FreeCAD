@@ -124,20 +124,30 @@ def findRelativePathLibrary(path):
 
 class ToolBit(object):
 
-    TOOL_TYPES = [ "EndMill", "BallEndMill", "BullNoseMill", "Drill", "VBit", "Probe", 
-                  "Chamfer", "DoveTail", "SlittingSaw", "ThreadMill",
-                  "Laser", "Other"]
-    
+    TOOL_TYPES = [
+        "EndMill",
+        "BallEndMill",
+        "BullNoseMill",
+        "Drill",
+        "VBit",
+        "Probe",
+        "Chamfer",
+        "DoveTail",
+        "SlittingSaw",
+        "ThreadMill",
+        "Laser",
+        "Other",
+    ]
+
     # various spellings map to TOOL_TYPES
     TOOL_TYPE_NAME_MAP = {
-            "end-mill": "EndMill",
-            "bull-nose": "BullNoseMill",
-            "ballend": "BallEndMill",
-            "ball-end": "BallEndMill",
-            "v-bit": "VBit",
-        }
+        "end-mill": "EndMill",
+        "bull-nose": "BullNoseMill",
+        "ballend": "BallEndMill",
+        "ball-end": "BallEndMill",
+        "v-bit": "VBit",
+    }
 
-    
     def __init__(self, obj, shapeFile, path=None):
         Path.Log.track(obj.Label, shapeFile, path)
         self.obj = obj
@@ -166,7 +176,7 @@ class ToolBit(object):
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The type of the tool"),
         )
-        
+
         obj.addProperty(
             "App::PropertyString",
             "ShapeName",
@@ -220,7 +230,7 @@ class ToolBit(object):
                 QT_TRANSLATE_NOOP("App::Property", "The type of the tool"),
             )
             obj.ToolType = self.TOOL_TYPES
-        
+
         if not hasattr(obj, "BitPropertyNames"):
             obj.addProperty(
                 "App::PropertyStringList",
@@ -396,7 +406,6 @@ class ToolBit(object):
                 "Did not find a PropertyBag in {} - not a ToolBit shape?".format(docName)
             )
 
-
         # has to happen last because it could trigger op.execute evaluations
         obj.BitPropertyNames = propNames
         obj.BitBody = bitBody
@@ -488,7 +497,7 @@ class ToolBit(object):
         attrs = {}
         attrs["version"] = 2
         attrs["name"] = obj.Label
-        
+
         if Path.Preferences.toolsStoreAbsolutePaths():
             attrs["shape"] = obj.BitShape
         else:
