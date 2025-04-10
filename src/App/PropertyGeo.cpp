@@ -194,7 +194,7 @@ void PropertyVector::getPaths(std::vector<ObjectIdentifier>& paths) const
 const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) const
 {
     Base::Unit unit = getUnit();
-    if (!unit.isEmpty()) {
+    if (unit != Unit::One) {
         std::string p = path.getSubPathStr();
         if (p == ".x" || p == ".y" || p == ".z") {
             // Convert double to quantity
@@ -207,7 +207,7 @@ const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) cons
 bool PropertyVector::getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const
 {
     Base::Unit unit = getUnit();
-    if (unit.isEmpty()) {
+    if (unit == Unit::One) {
         return false;
     }
 

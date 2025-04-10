@@ -270,10 +270,10 @@ std::string Quantity::getSafeUserString() const
     return Tools::escapeQuotesFromString(userStr);
 }
 
-/// true if it has a number without a unit
+/// true if unit equals to 1, therefore quantity has no dimension
 bool Quantity::isDimensionless() const
 {
-    return myUnit.isEmpty();
+    return myUnit == Unit::One;
 }
 
 /// true if it has a specific unit or no dimension.

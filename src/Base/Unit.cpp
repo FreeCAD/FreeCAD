@@ -281,11 +281,6 @@ int Unit::angle() const
     return sig.Angle;
 }
 
-bool Unit::isEmpty() const
-{
-    return Val == 0;
-}
-
 int Unit::operator [](int index) const
 {
     UnitSignature sig;
@@ -316,6 +311,11 @@ int Unit::operator [](int index) const
 bool Unit::operator ==(const Unit& that) const
 {
     return Val == that.Val;
+}
+
+bool Unit::operator !=(const Unit& that) const
+{
+    return Val != that.Val;
 }
 
 Unit Unit::operator *(const Unit &right) const
@@ -360,7 +360,7 @@ Unit Unit::operator /(const Unit &right) const
 
 std::string Unit::getString() const
 {
-    if (isEmpty()) {
+    if (Val == 0) {
         return {};
     }
 
@@ -657,6 +657,8 @@ std::string Unit::getTypeString() const
 
     return spec->second;
 }
+
+const Unit Unit::One                        (0, 0, 0, 0, 0, 0, 0, 0);
 
 // SI base units
 const Unit Unit::AmountOfSubstance          (0, 0, 0, 0, 0, 1);
