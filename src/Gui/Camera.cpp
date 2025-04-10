@@ -29,70 +29,6 @@
 using namespace Gui;
 
 
-/**
- Formulas to get quaternion for axonometric views:
-
- \code
-from math import sqrt, degrees, asin, atan
-p1=App.Rotation(App.Vector(1,0,0),90)
-p2=App.Rotation(App.Vector(0,0,1),alpha)
-p3=App.Rotation(p2.multVec(App.Vector(1,0,0)),beta)
-p4=p3.multiply(p2).multiply(p1)
-
-from pivy import coin
-c=Gui.ActiveDocument.ActiveView.getCameraNode()
-c.orientation.setValue(*p4.Q)
- \endcode
-
- The angles alpha and beta depend on the type of axonometry
- Isometric:
- \code
-alpha=45
-beta=degrees(asin(-sqrt(1.0/3.0)))
- \endcode
-
- Dimetric:
- \code
-alpha=degrees(asin(sqrt(1.0/8.0)))
-beta=degrees(-asin(1.0/3.0))
- \endcode
-
- Trimetric:
- \code
-alpha=30.0
-beta=-35.0
- \endcode
-
- Verification code that the axonomtries are correct:
-
- \code
-from pivy import coin
-c=Gui.ActiveDocument.ActiveView.getCameraNode()
-vo=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,0)).getValue())
-vx=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(10,0,0)).getValue())
-vy=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,10,0)).getValue())
-vz=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,10)).getValue())
-(vx-vo).Length
-(vy-vo).Length
-(vz-vo).Length
-
-# Projection
-vo.z=0
-vx.z=0
-vy.z=0
-vz.z=0
-
-(vx-vo).Length
-(vy-vo).Length
-(vz-vo).Length
- \endcode
-
- See also:
- http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_6_2_ger_web.html#1
- http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/code_v2/Axonometric/qt/Axonometric.cpp
- https://de.wikipedia.org/wiki/Arkussinus_und_Arkuskosinus
-*/
-
 SbRotation Camera::top()
 {
     return {0, 0, 0, 1};
@@ -127,35 +63,31 @@ SbRotation Camera::left()
 
 SbRotation Camera::isometric()
 {
-    //from math import sqrt, degrees, asin
-    //p1=App.Rotation(App.Vector(1,0,0),45)
-    //p2=App.Rotation(App.Vector(0,0,1),-45)
-    //p3=p2.multiply(p1)
-    //return SbRotation(0.353553f, -0.146447f, -0.353553f, 0.853553f);
-
-    //from math import sqrt, degrees, asin
-    //p1=App.Rotation(App.Vector(1,0,0),90)
-    //p2=App.Rotation(App.Vector(0,0,1),135)
-    //p3=App.Rotation(App.Vector(-1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-    //p4=p3.multiply(p2).multiply(p1)
-    //return SbRotation(0.17592, 0.424708, 0.820473, 0.339851);
-
-    //from math import sqrt, degrees, asin
-    //p1=App.Rotation(App.Vector(1,0,0),90)
-    //p2=App.Rotation(App.Vector(0,0,1),45)
-    //#p3=App.Rotation(App.Vector(1,1,0),45)
-    //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-    //p4=p3.multiply(p2).multiply(p1)
+    // The values here are precalculated as our quaternion implementation
+    // does not support calculating the values in compile time.
+    // The values are verified with unit tests.
     return {0.424708F, 0.17592F, 0.339851F, 0.820473F};
 }
 
 SbRotation Camera::dimetric()
 {
+    // The values here are precalculated as our quaternion implementation
+    // does not support calculating the values in compile time.
+    // The values are verified with unit tests.
+
+    // While there are multiple ways to calculate the dimetric rotation,
+    // we use one which is similar to other CAD applications.
     return {0.567952F, 0.103751F, 0.146726F, 0.803205F};
 }
 
 SbRotation Camera::trimetric()
 {
+    // The values here are precalculated as our quaternion implementation
+    // does not support calculating the values in compile time.
+    // The values are verified with unit tests.
+
+    // While there are multiple ways to calculate the trimetric rotation,
+    // we use one which is similar to other CAD applications.
     return {0.446015F, 0.119509F, 0.229575F, 0.856787F};
 }
 
