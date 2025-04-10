@@ -176,7 +176,6 @@ class ToolBit(object):
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The type of the tool"),
         )
-
         obj.addProperty(
             "App::PropertyString",
             "ShapeName",
