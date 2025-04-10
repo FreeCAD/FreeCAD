@@ -134,6 +134,7 @@ target_link_libraries(Tests_run
     gmock_main
     ${Google_Tests_LIBS}
     FreeCADApp
+    FreeCADGui
 )
 
 include(GoogleTest)
