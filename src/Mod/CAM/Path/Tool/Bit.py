@@ -223,7 +223,7 @@ class ToolBit(object):
 
         if not hasattr(obj, "ToolType"):
             obj.addProperty(
-                "App::PropertyString",
+                "App::PropertyEnumeration",
                 "ToolType",
                 "Base",
                 QT_TRANSLATE_NOOP("App::Property", "The type of the tool"),
