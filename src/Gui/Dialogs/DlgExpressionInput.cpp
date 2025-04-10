@@ -295,13 +295,13 @@ void DlgExpressionInput::checkExpression(const QString& text)
 
                 auto msg = value.getUserString();
                 if (!impliedUnit.isEmpty()) {
-                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
+                    if (!value.isDimensionless() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                     value.setUnit(impliedUnit);
 
                 }
-                else if (!value.getUnit().isEmpty()) {
+                else if (!value.isDimensionless()) {
                     msg += " (Warning: unit discarded)";
 
                     QPalette p(ui->msg->palette());
