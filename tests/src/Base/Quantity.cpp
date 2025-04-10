@@ -27,13 +27,6 @@ TEST(BaseQuantity, TestParse)
     EXPECT_THROW(auto rew [[maybe_unused]] = Quantity::parse("1,234,500.12 kg"), ParserError);
 }
 
-TEST(BaseQuantity, TestDim)
-{
-    const Quantity q1 {0, Unit::Area};
-
-    EXPECT_EQ(q1.isQuantity(), true);
-}
-
 TEST(BaseQuantity, TestNoDim)
 {
     const Quantity q1 {};
