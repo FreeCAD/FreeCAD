@@ -402,7 +402,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             " - "
             + translate(
                 "Assembly",
-                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).",
+                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).",
             )
             + "\n"
             "\n"
