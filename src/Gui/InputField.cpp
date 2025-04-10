@@ -282,7 +282,7 @@ void InputField::newInput(const QString & text)
         res.setUnit(this->actUnit);
 
     // check if unit fits!
-    if (!actUnit.isEmpty() && !res.isDimensionless() && actUnit != res.getUnit()){
+    if (actUnit != Unit::One && !res.isDimensionless() && actUnit != res.getUnit()){
         if (iconLabel->isHidden()) {
             iconLabel->setVisible(true);
         }
