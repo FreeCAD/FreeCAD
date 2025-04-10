@@ -57,7 +57,7 @@ class Ellipse(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Ellipse',
                 'Accel': "E, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Ellipse", "Ellipse"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse. CTRL to snap.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse.")}
 
     def Activated(self):
         """Execute when the command is called."""

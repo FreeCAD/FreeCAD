@@ -76,7 +76,7 @@ class Trimex(gui_base_original.Modifier):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex",
                     "Trims or extends the selected object, or extrudes single"
-                    + " faces.\nCTRL snaps, SHIFT constrains to current segment"
+                    + " faces.\nSHIFT constrains to current segment"
                     + " or to normal, ALT inverts.")}
 
     def Activated(self):
