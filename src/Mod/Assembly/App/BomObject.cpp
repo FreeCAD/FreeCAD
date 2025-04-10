@@ -239,6 +239,16 @@ void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string
         else if (columnName == "Quantity") {
             setCell(App::CellAddress(row, col), std::to_string(1).c_str());
         }
+        else if (columnName.starts_with(".")) {
+            // Column names that start with a dot are considered property names
+            // Extract the property name
+            std::string baseName = columnName.substr(1);
+
+            auto propertyValue = getBomPropertyValue(obj, baseName);
+            if (!propertyValue.empty()) {
+                setCell(App::CellAddress(row, col), propertyValue.c_str());
+            }
+        }
         else {
             // load custom data if any.
             for (auto& el : dataElements) {
@@ -250,6 +260,48 @@ void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string
         }
         ++col;
     }
+}
+
+std::string BomObject::getBomPropertyValue(App::DocumentObject* obj, std::string baseName)
+{
+    App::Property* prop = obj->getPropertyByName(baseName.c_str());
+
+    if (!prop) {
+        Base::Console().Warning("Property not found: %s\n", baseName.c_str());
+        return "N/A";
+    }
+
+    // Only support a subset of property types for BOM
+    if (auto propStr = dynamic_cast<App::PropertyString*>(prop)) {
+        return propStr->getValue();
+    }
+    else if (auto propLength = dynamic_cast<App::PropertyLength*>(prop)) {
+        auto unit = propLength->getUnit().getString();
+        auto value = std::to_string(propLength->getValue());
+        return value + " " + unit;
+    }
+    else if (auto propVolume = dynamic_cast<App::PropertyVolume*>(prop)) {
+        auto unit = propVolume->getUnit().getString();
+        auto value = std::to_string(propVolume->getValue());
+        return value + " " + unit;
+    }
+    else if (auto propQuantity = dynamic_cast<App::PropertyQuantity*>(prop)) {
+        auto unit = propQuantity->getUnit().getString();
+        auto value = std::to_string(propQuantity->getValue());
+        return value + " " + unit;
+    }
+    else if (auto propFloat = dynamic_cast<App::PropertyFloat*>(prop)) {
+        return std::to_string(propFloat->getValue());
+    }
+    else if (auto propInt = dynamic_cast<App::PropertyInteger*>(prop)) {
+        return std::to_string(propInt->getValue());
+    }
+    else if (auto propBool = dynamic_cast<App::PropertyBool*>(prop)) {
+        return propBool->getValue() ? "True" : "False";
+    }
+
+    Base::Console().Warning("Property type not supported for: %s\n", prop->getName());
+    return "Not supported";
 }
 
 AssemblyObject* BomObject::getAssembly()
