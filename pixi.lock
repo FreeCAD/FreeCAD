@@ -374,6 +374,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/sympy-1.13.3-pyh2585a3b_105.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sysroot_linux-64-2.17-h0157908_18.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/tbb-2022.1.0-h4ce085d_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/tbb-devel-2022.1.0-h1f99690_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/tk-8.6.13-noxft_h4845f30_101.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/tornado-6.4.2-py312h66e93f0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tqdm-4.67.1-pyhd8ed1ab_1.conda
@@ -795,6 +796,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/sympy-1.13.3-pyh2585a3b_105.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sysroot_linux-aarch64-2.17-h68829e0_18.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/tbb-2022.1.0-hf6e3e71_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/tbb-devel-2022.1.0-h9a8439e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/tk-8.6.13-h194ca79_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/tornado-6.4.2-py312h52516f5_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tqdm-4.67.1-pyhd8ed1ab_1.conda
@@ -1160,6 +1162,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/sympy-1.13.3-pyh2585a3b_105.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/tapi-1300.6.5-h390ca13_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/tbb-2022.1.0-h479f576_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/tbb-devel-2022.1.0-h22ec409_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/tk-8.6.13-h1abcd95_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/tornado-6.4.2-py312h01d7ebd_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tqdm-4.67.1-pyhd8ed1ab_1.conda
@@ -1499,6 +1502,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/sympy-1.13.3-pyh2585a3b_105.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/tapi-1300.6.5-h03f4b80_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/tbb-2022.1.0-h9541205_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/tbb-devel-2022.1.0-hf29b1df_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/tk-8.6.13-h5083fa2_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/tornado-6.4.2-py312hea69d52_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tqdm-4.67.1-pyhd8ed1ab_1.conda
@@ -1801,6 +1805,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/swig-4.3.0-h51fbe9b_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sympy-1.13.3-pyh04b8f61_5.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/tbb-2022.1.0-ha82c486_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/tbb-devel-2022.1.0-h47441b3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/tk-8.6.13-h5226925_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/tornado-6.4.2-py312h4389bb4_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tqdm-4.67.1-pyhd8ed1ab_1.conda
@@ -19264,6 +19269,53 @@ packages:
   license_family: APACHE
   size: 154810
   timestamp: 1743579326182
+- conda: https://conda.anaconda.org/conda-forge/linux-64/tbb-devel-2022.1.0-h1f99690_0.conda
+  sha256: 9ca1bfe192f6597089e7159cc6d5e3ab69708a29c96727058f0facd8ed04542e
+  md5: c74ce0b7a1d2e7a38409b0b0a6cd2df8
+  depends:
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - libstdcxx >=13
+  - tbb 2022.1.0 h4ce085d_0
+  size: 1084864
+  timestamp: 1743578705472
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/tbb-devel-2022.1.0-h9a8439e_0.conda
+  sha256: 0d92bc5502e96c4f7385e387ee232a02f901cd21133fc53657d7a45b80e15db8
+  md5: 1ab50ee714d2b45349b42ce4d8641b42
+  depends:
+  - libgcc >=13
+  - libstdcxx >=13
+  - tbb 2022.1.0 hf6e3e71_0
+  size: 1084898
+  timestamp: 1743581823507
+- conda: https://conda.anaconda.org/conda-forge/osx-64/tbb-devel-2022.1.0-h22ec409_0.conda
+  sha256: ae77d34395f7366fc27361acf4c3daece66fe171e97ccecafdd35779d0bfda4a
+  md5: 93888681da0d507b7252d1eeb9c99fc3
+  depends:
+  - __osx >=10.13
+  - libcxx >=18
+  - tbb 2022.1.0 h479f576_0
+  size: 1085501
+  timestamp: 1743578857788
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/tbb-devel-2022.1.0-hf29b1df_0.conda
+  sha256: 58456c59d10defc60409f541e46f86e911f9df5eaf6a92bc492227b44576ea5f
+  md5: 003a94b8134e23e8c39b54bc7982239e
+  depends:
+  - __osx >=11.0
+  - libcxx >=18
+  - tbb 2022.1.0 h9541205_0
+  size: 1085639
+  timestamp: 1743578953834
+- conda: https://conda.anaconda.org/conda-forge/win-64/tbb-devel-2022.1.0-h47441b3_0.conda
+  sha256: 485e0b0f36f2d5244486feca682e8ea6be7f1b94c89e3aa3875ea807ce398420
+  md5: b451e898ceb95cad79d84961ee096215
+  depends:
+  - tbb 2022.1.0 ha82c486_0
+  - ucrt >=10.0.20348.0
+  - vc >=14.2,<15
+  - vc14_runtime >=14.29.30139
+  size: 1092828
+  timestamp: 1743579362516
 - conda: https://conda.anaconda.org/conda-forge/linux-64/tk-8.6.13-noxft_h4845f30_101.conda
   sha256: e0569c9caa68bf476bead1bed3d79650bb080b532c64a4af7d8ca286c08dea4e
   md5: d453b98d9c83e71da0741bb0ff4d76bc
