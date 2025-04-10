@@ -404,7 +404,7 @@ void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSele
     _filename = QString(ui->editFilename->text());  // No filename by default
     auto model = static_cast<QStandardItemModel*>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
-    if (indexes.count() == 0) {
+    if (indexes.isEmpty()) {
         _selectedPath = QStringLiteral("/") + _libraryName;
         _selectedFull = _selectedPath;
         _selectedUUID = QString();

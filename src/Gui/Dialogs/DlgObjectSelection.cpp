@@ -280,7 +280,7 @@ void DlgObjectSelection::setItemState(App::DocumentObject *obj,
     if (ui->checkBoxAutoDeps->isChecked() && state == Qt::Checked) {
         // If an object is newly checked, check all its dependencies
         for (auto o : obj->getOutListRecursive()) {
-            if (!depSet.count(o) || itemChanged.count(o))
+            if (!depSet.contains(o) || itemChanged.contains(o))
                 continue;
             auto itItem = itemMap.find(o);
             if (itItem == itemMap.end() || itItem->second[0]->checkState(0) == state)
@@ -304,7 +304,7 @@ void DlgObjectSelection::setItemState(App::DocumentObject *obj,
         // If an object toggles state, we need to revisit all its in-list
         // object to update the partial/full checked state.
         for (auto o : obj->getInList()) {
-            if (!depSet.count(o) ||itemChanged.count(o))
+            if (!depSet.contains(o) || itemChanged.contains(o))
                 continue;
             auto it = itemMap.find(o);
             if (it == itemMap.end() || it->second[0]->checkState(0) == state)
@@ -312,7 +312,7 @@ void DlgObjectSelection::setItemState(App::DocumentObject *obj,
             int count = 0;
             int selcount = 0;
             for (auto sibling : o->getOutList()) {
-                if (!depSet.count(sibling))
+                if (!depSet.contains(sibling))
                     continue;
                 ++count;
                 auto it = itemMap.find(sibling);
@@ -511,7 +511,7 @@ void DlgObjectSelection::checkItemChanged() {
         std::sort(outlist.begin(), outlist.end());
 
         for (const auto &v : itemMap) {
-            if (itemChanged.count(v.first) == 0 && v.second[0]->checkState(0) == Qt::Unchecked)
+            if (!itemChanged.contains(v.first) && v.second[0]->checkState(0) == Qt::Unchecked)
                 continue;
             if (auto obj = v.first.getObject()) {
                 if (!std::binary_search(outlist.begin(), outlist.end(), obj))
@@ -598,7 +598,7 @@ void DlgObjectSelection::onItemSelectionChanged() {
     for (auto obj : sels)
         obj->getInListEx(inlist, true);
     for (auto it = inlist.begin(); it != inlist.end();) {
-        if (!depSet.count(*it) || std::binary_search(sels.begin(), sels.end(), *it))
+        if (!depSet.contains(*it) || std::binary_search(sels.begin(), sels.end(), *it))
             it = inlist.erase(it);
         else
             ++it;
