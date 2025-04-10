@@ -674,10 +674,11 @@ protected:
                 // find if there is already a matching tangency
                 auto itOfTangentConstraint = AutoConstraints.end();
                 if (isStartOrEnd(posId1) && isStartOrEnd(posId2)) {
-                    itOfTangentConstraint =
-                        std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
-                            return ace->Type == Sketcher::Tangent && ace->First == geoId1
-                                && ace->Second == geoId2;
+                    itOfTangentConstraint = std::ranges::find(
+                        AutoConstraints,
+                        std::tuple {Sketcher::Tangent, geoId1, geoId2},
+                        [](const auto& ace) {
+                            return std::tuple {ace->Type, ace->First, ace->Second};
                         });
                 }
 
