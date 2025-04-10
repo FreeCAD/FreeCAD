@@ -607,7 +607,7 @@ void Cell::setComputedUnit(const Base::Unit& unit)
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
     computedUnit = unit;
-    setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
+    setUsed(COMPUTED_UNIT_SET, computedUnit != Unit::One);
     setDirty();
 
     signaller.tryInvoke();
@@ -1110,7 +1110,7 @@ std::string Cell::getFormattedQuantity()
         const Base::Unit& computedUnit = floatProp->getUnit();
         qFormatted = QLocale().toString(rawVal, 'f', Base::UnitsApi::getDecimals());
         if (hasDisplayUnit) {
-            if (computedUnit.isEmpty() || computedUnit == du.unit) {
+            if (computedUnit == Unit::One || computedUnit == du.unit) {
                 QString number =
                     QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
                 qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);

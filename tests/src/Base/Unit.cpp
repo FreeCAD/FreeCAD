@@ -121,7 +121,7 @@ TEST(Unit, TestPowNoDim)
 {
     Base::Unit unit {};
     EXPECT_EQ(unit.pow(2), Base::Unit {0});
-    EXPECT_EQ(unit.isEmpty(), true);
+    EXPECT_EQ(unit == Base::Unit::One, true);
 }
 
 TEST(Unit, TestPowEQ1)
