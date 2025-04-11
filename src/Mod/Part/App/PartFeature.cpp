@@ -166,7 +166,7 @@ App::ElementNamePair Feature::getElementName(const char* name,
     // This function is overridden to provide higher level shape topo names that
     // are generated on demand, e.g. Wire, Shell, Solid, etc.
 
-    auto prop = freecad_cast<PropertyPartShape>(getPropertyOfGeometry());
+    auto prop = freecad_cast<PropertyPartShape*>(getPropertyOfGeometry());
     if (!prop) {
         return App::GeoFeature::getElementName(name, type);
     }
@@ -1686,7 +1686,7 @@ bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 //    if (prop && prop->getValue()) {
 //        return true;
 //    }
-//    if (auto obj = freecad_cast<App::DocumentObject>(container)) {
+//    if (auto obj = freecad_cast<App::DocumentObject*>(container)) {
 //        if (auto doc = obj->getDocument()) {
 //            if (auto prop = propDisableMapping(doc, /*forced*/ false)) {
 //                return prop->getValue();

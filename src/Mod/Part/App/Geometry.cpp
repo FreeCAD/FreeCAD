@@ -215,9 +215,9 @@ bool Geometry::hasSameExtensions(const Geometry& other) const
     size_t index = 0;
     for (const auto& ext : extensions) {
         if (auto persistExt =
-                freecad_cast<const GeometryPersistenceExtension>(ext.get())) {
+                freecad_cast<const GeometryPersistenceExtension*>(ext.get())) {
             for (; index < other.extensions.size(); ++index) {
-                if (auto extOther = freecad_cast<const GeometryPersistenceExtension>(
+                if (auto extOther = freecad_cast<const GeometryPersistenceExtension*>(
                         other.extensions[index].get())) {
                     if (!persistExt->isSame(*extOther)) {
                         return false;
@@ -232,7 +232,7 @@ bool Geometry::hasSameExtensions(const Geometry& other) const
         }
     }
     for (; index < other.extensions.size(); ++index) {
-        if (freecad_cast<const GeometryPersistenceExtension>(
+        if (freecad_cast<const GeometryPersistenceExtension*>(
                 other.extensions[index].get())) {
             return false;
         }

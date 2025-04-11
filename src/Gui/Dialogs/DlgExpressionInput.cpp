@@ -286,7 +286,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
             //set default palette as we may have read text right now
             ui->msg->setPalette(ui->okBtn->palette());
 
-            auto * n = freecad_cast<NumberExpression>(result.get());
+            auto * n = freecad_cast<NumberExpression*>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
                 if (!value.isValid()) {
@@ -554,7 +554,7 @@ static void addGroupsVarSetComboBox(App::VarSet* varSet, QTreeWidgetItem* varSet
 static void addVarSetsVarSetComboBox(std::vector<App::VarSet*>& varSets, QTreeWidgetItem* docItem)
 {
     for (auto varSet : varSets) {
-        auto vp = freecad_cast<Gui::ViewProviderDocumentObject>(
+        auto vp = freecad_cast<Gui::ViewProviderDocumentObject*>(
                 Gui::Application::Instance->getViewProvider(varSet));
         // the item will be automatically destroyed when the docItem will be destroyed
         auto item = new QTreeWidgetItem(docItem);

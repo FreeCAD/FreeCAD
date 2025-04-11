@@ -52,7 +52,7 @@ void MultiTransform::positionBySupport()
     PartDesign::Transformed::positionBySupport();
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
     for (auto f : transFeatures) {
-        auto transFeature = freecad_cast<PartDesign::Transformed>(f);
+        auto transFeature = freecad_cast<PartDesign::Transformed*>(f);
         if (!transFeature) {
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }
@@ -85,7 +85,7 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
         // Find centre of gravity of first original
         // FIXME: This method will NOT give the expected result for more than one original!
         if (auto addFeature =
-                freecad_cast<PartDesign::FeatureAddSub>(originals.front())) {
+                freecad_cast<PartDesign::FeatureAddSub*>(originals.front())) {
             TopoDS_Shape original = addFeature->AddSubShape.getShape().getShape();
 
             GProp_GProps props;
@@ -98,7 +98,7 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
     std::list<gp_Pnt> cogs;
 
     for (auto const& f : transFeatures) {
-        auto transFeature = freecad_cast<PartDesign::Transformed>(f);
+        auto transFeature = freecad_cast<PartDesign::Transformed*>(f);
         if (!transFeature) {
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }

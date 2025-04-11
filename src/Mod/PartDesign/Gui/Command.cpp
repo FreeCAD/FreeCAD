@@ -677,7 +677,7 @@ bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObje
     if (!prop.getName() || !prop.getName()[0]) {
         FC_THROWM(Base::RuntimeError, "Invalid property");
     }
-    auto editObj = freecad_cast<App::DocumentObject>(prop.getContainer());
+    auto editObj = freecad_cast<App::DocumentObject*>(prop.getContainer());
     if (!editObj) {
         FC_THROWM(Base::RuntimeError, "Editing object not found");
     }
@@ -784,7 +784,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         // Populate the subs parameter by checking for external elements before
         // we construct our command.
-        auto ProfileFeature = freecad_cast<PartDesign::ProfileBased>(Feat);
+        auto ProfileFeature = freecad_cast<PartDesign::ProfileBased*>(Feat);
 
         std::vector<std::string>& cmdSubs = const_cast<vector<std::string>&>(subs);
         if (subs.size() == 0) {

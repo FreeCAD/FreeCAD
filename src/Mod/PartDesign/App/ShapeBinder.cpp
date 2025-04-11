@@ -718,7 +718,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         if (!forced) {
             bool hit = true;
             for (auto& v : mats) {
-                auto prop = freecad_cast<App::PropertyMatrix>(
+                auto prop = freecad_cast<App::PropertyMatrix*>(
                     getDynamicPropertyByName(cacheName(v.first)));
                 if (!prop || prop->getValue() != v.second) {
                     hit = false;
