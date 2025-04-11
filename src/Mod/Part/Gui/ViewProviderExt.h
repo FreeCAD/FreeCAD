@@ -76,6 +76,8 @@ public:
     App::PropertyAngle AngularDeflection;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
+    /// Property controlling visibility of the placement indicator, useful for displaying origin
+    /// position of attached Document Object.
     App::PropertyBool ShowPlacement;
     // Points
     App::PropertyFloatConstraint PointSize;
