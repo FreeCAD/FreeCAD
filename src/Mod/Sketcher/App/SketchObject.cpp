@@ -1935,7 +1935,7 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
 void SketchObject::replaceGeometries(std::vector<int> oldGeoIds,
                                      std::vector<Part::Geometry*>& newGeos)
 {
-    auto vals = getInternalGeometry();
+    auto& vals = getInternalGeometry();
     auto newVals(vals);
 
     if (std::any_of(oldGeoIds.begin(), oldGeoIds.end(), [](auto geoId) {
