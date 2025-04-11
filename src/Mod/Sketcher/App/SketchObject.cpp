@@ -11072,7 +11072,7 @@ std::vector<const char *> SketchObject::getElementTypes(bool all) const
 void SketchObject::setExpression(const App::ObjectIdentifier& path,
                                  std::shared_ptr<App::Expression> expr)
 {
-    DocumentObject::setExpression(path, expr);
+    DocumentObject::setExpression(path, std::move(expr));
 
     if (noRecomputes) {
         // if we do not have a recompute, the sketch must be solved to update the DoF of the solver,
