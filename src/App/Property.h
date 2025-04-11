@@ -63,49 +63,83 @@ class AppExport Property: public Base::Persistence
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
+
+    /**
+     * @brief Defines the position in the status bitmask.
+     */
     enum Status
     {
-        Touched = 0,             // touched property
-        Immutable = 1,           // can't modify property
-        ReadOnly = 2,            // for property editor
-        Hidden = 3,              // for property editor
-        Transient = 4,           // for property container save
-        MaterialEdit = 5,        // to turn ON PropertyMaterial edit
-        NoMaterialListEdit = 6,  // to turn OFF PropertyMaterialList edit
-        Output = 7,              // same effect as Prop_Output
-        LockDynamic = 8,         // prevent being removed from dynamic property
-        NoModify = 9,            // prevent causing Gui::Document::setModified()
-        PartialTrigger = 10,     // allow change in partial doc
-        NoRecompute = 11,        // don't touch owner for recompute on property change
-        Single = 12,             // for save/load of floating point numbers
-        Ordered = 13,            // for PropertyLists whether the order of the elements is
-                                 // relevant for the container using it
-        EvalOnRestore = 14,      // In case of expression binding, evaluate the
-                                 // expression on restore and touch the object on value change.
-        Busy = 15,               // internal use to avoid recursive signaling
-        CopyOnChange =
-            16,  // for Link to copy the linked object on change of the property with this flag
-        UserEdit = 17,  // cause property editor to create button for user defined editing
+        /// @brief Whether a property is touched.
+        Touched = 0,
+        /// @brief Whether a property can be modified.
+        Immutable = 1,
+        /// @brief Whether a property is read-only for the property editor.
+        ReadOnly = 2,
+        /// @brief Whether the property is hidden in the property editor.
+        Hidden = 3,
+        /// @brief Whether a property is saved in the document.
+        Transient = 4,
+        /// @brief To turn ON PropertyMaterial edit.
+        MaterialEdit = 5,
+        /// @brief To turn OFF PropertyMaterialList edit.
+        NoMaterialListEdit = 6,
+        /// @brief Whether a property is an output property.
+        Output = 7,
+        /// @brief Whether a dynamic property can be removed.
+        LockDynamic = 8,
+        /// @brief Prevents causing `Gui::Document::setModified()`
+        NoModify = 9,
+        /// @brief Whether to allow change in a partial document.
+        PartialTrigger = 10,
+        /// @brief Whether to prevent to touch the owner for a recompute on property change.
+        NoRecompute = 11,
+        /// @brief Whether a floating point number should be saved as single precision.
+        Single = 12,
+        /// @brief For PropertyLists, whether the order of the elements is
+        /// relevant for the container using it.
+        Ordered = 13,
+        /// @brief In case of expression binding, whether the expression on
+        /// restore and touch the object on value change.
+        EvalOnRestore = 14,
+        /// @brief For internal use to avoid recursive signaling.
+        Busy = 15,
+        /// @brief Whether the linked object should be copied on change of the property.
+        CopyOnChange = 16,
+        /// @brief Whether the property editor should create a button for user defined editing.
+        UserEdit = 17,
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
         // changed in runtime. It is mirrored here to save the linear search
         // required in PropertyContainer::getPropertyType()
-        //
+
+        /// @brief Mark the beginning of enum PropertyType bits.
         PropStaticBegin = 21,
-        PropDynamic = 21,      // indicating the property is dynamically added
-        PropNoPersist = 22,    // corresponding to Prop_NoPersist
-        PropNoRecompute = 23,  // corresponding to Prop_NoRecompute
-        PropReadOnly = 24,     // corresponding to Prop_ReadOnly
-        PropTransient = 25,    // corresponding to Prop_Transient
-        PropHidden = 26,       // corresponding to Prop_Hidden
-        PropOutput = 27,       // corresponding to Prop_Output
+        /// @brief Whether the property is dynamically added.
+        PropDynamic = 21,
+        /// @brief Corresponds to Prop_NoPersist
+        PropNoPersist = 22,
+        /// @brief Corresponds to Prop_NoRecompute
+        PropNoRecompute = 23,
+        /// @brief Corresponds to Prop_ReadOnly
+        PropReadOnly = 24,
+        /// @brief Corresponds to Prop_Transient
+        PropTransient = 25,
+        /// @brief Corresponds to Prop_Hidden
+        PropHidden = 26,
+        /// @brief Corresponds to Prop_Output
+        PropOutput = 27,
+        /// @brief Mark the end of enum PropertyType bits.
         PropStaticEnd = 28,
 
-        User1 = 28,  // user-defined status
-        User2 = 29,  // user-defined status
-        User3 = 30,  // user-defined status
-        User4 = 31   // user-defined status
+        /// @brief User defined status bit.
+        User1 = 28,
+        /// @brief User defined status bit.
+        User2 = 29,
+        /// @brief User defined status bit.
+        User3 = 30,
+        /// @brief User defined status bit.
+        User4 = 31
     };
 
     Property();
