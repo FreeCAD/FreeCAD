@@ -40,6 +40,16 @@ Library::Library(const QString& libraryName, const QString& icon, bool readOnly)
     , _readOnly(readOnly)
 {}
 
+Library::Library(const QString& libraryName,
+                 const QString& icon,
+                 bool readOnly,
+                 const QString& timestamp)
+    : _name(libraryName)
+    , _iconPath(icon)
+    , _readOnly(readOnly)
+    , _timestamp(timestamp)
+{}
+
 Library::Library(const QString& libraryName, const QString& dir, const QString& icon, bool readOnly)
     : _name(libraryName)
     , _directory(QDir::cleanPath(dir))
