@@ -1142,7 +1142,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
         std::string expression = getConstraintExpression(constNum);
-        setConstraintExpression(constNum, reverseAngleConstraintExpression(expression));
+        setConstraintExpression(constNum, std::move(reverseAngleConstraintExpression(expression)));
     }
     else {
         double actAngle = constr->getValue();
