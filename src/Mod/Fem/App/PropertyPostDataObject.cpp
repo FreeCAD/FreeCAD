@@ -59,6 +59,7 @@
 #include <zipios++/zipinputstream.h>
 
 #include "PropertyPostDataObject.h"
+#include "PostDataObjectPy.h"
 
 
 using namespace Fem;
@@ -162,8 +163,7 @@ int PropertyPostDataObject::getDataType()
 
 PyObject* PropertyPostDataObject::getPyObject()
 {
-    // TODO: fetch the vtk python object from the data set and return it
-    return Py::new_reference_to(Py::None());
+    return Py::new_reference_to(PostDataObjectPy::create(m_dataObject));
 }
 
 void PropertyPostDataObject::setPyObject(PyObject* /*value*/)
