@@ -71,9 +71,9 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
 #include "LinkViewPy.h"
 #include "Selection.h"
-#include "SoFCCSysDragger.h"
 #include "SoFCUnifiedSelection.h"
 #include "TaskCSysDragger.h"
 #include "TaskElementColors.h"
@@ -2793,9 +2793,9 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         }
 
         if (auto result = inherited::startEditing(mode)) {
-            csysDragger->addStartCallback(dragStartCallback, this);
-            csysDragger->addFinishCallback(dragFinishCallback, this);
-            csysDragger->addMotionCallback(dragMotionCallback, this);
+            transformDragger->addStartCallback(dragStartCallback, this);
+            transformDragger->addFinishCallback(dragFinishCallback, this);
+            transformDragger->addMotionCallback(dragMotionCallback, this);
 
             setDraggerPlacement(dragCtx->initialPlacement);
 
@@ -2879,7 +2879,7 @@ void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 }
 
 bool ViewProviderLink::callDraggerProxy(const char* fname) {
-    if (!csysDragger) {
+    if (!transformDragger) {
         return false;
     }
 
