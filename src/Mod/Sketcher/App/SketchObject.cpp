@@ -426,7 +426,7 @@ const std::map<std::string,std::string> SketchObject::getInternalElementMap() co
     if (!internalElementMap.empty() || !MakeInternals.getValue())
         return internalElementMap;
 
-    auto internalShape = InternalShape.getShape();
+    auto& internalShape = InternalShape.getShape();
     auto shape = Shape.getShape().located(TopLoc_Location());
     if (!internalShape.isNull() && !shape.isNull()) {
         std::vector<std::string> names;
@@ -1142,7 +1142,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
         std::string expression = getConstraintExpression(constNum);
-        setConstraintExpression(constNum, reverseAngleConstraintExpression(expression));
+        setConstraintExpression(constNum, std::move(reverseAngleConstraintExpression(expression)));
     }
     else {
         double actAngle = constr->getValue();
@@ -1185,7 +1185,7 @@ void SketchObject::setConstraintExpression(int constNum, const std::string& newE
     if (info.expression) {
         try {
             std::shared_ptr<App::Expression> expr(App::Expression::parse(this, newExpression));
-            setExpression(path, expr);
+            setExpression(path, std::move(expr));
         }
         catch (const Base::Exception&) {
             Base::Console().Error("Failed to set constraint expression.");
@@ -1353,7 +1353,7 @@ int SketchObject::diagnoseAdditionalConstraints(
     return lastDoF;
 }
 
-int SketchObject::moveGeometries(std::vector<GeoElementId> geoEltIds, const Base::Vector3d& toPoint, bool relative,
+int SketchObject::moveGeometries(std::vector<GeoElementId>& geoEltIds, const Base::Vector3d& toPoint, bool relative,
                             bool updateGeoBeforeMoving)
 {
 
@@ -1935,7 +1935,7 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
 void SketchObject::replaceGeometries(std::vector<int> oldGeoIds,
                                      std::vector<Part::Geometry*>& newGeos)
 {
-    auto vals = getInternalGeometry();
+    auto& vals = getInternalGeometry();
     auto newVals(vals);
 
     if (std::any_of(oldGeoIds.begin(), oldGeoIds.end(), [](auto geoId) {
@@ -2298,7 +2298,7 @@ int SketchObject::delConstraint(int ConstrId)
     return 0;
 }
 
-int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry)
+int SketchObject::delConstraints(std::vector<int>& ConstrIds, bool updategeometry)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -7605,7 +7605,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                  *
                  *           if (expr_info.expression)*/
                 // App::Expression * expr = parse(this, const std::string& buffer);
-                setExpression(Constraints.createPath(nextcid), expr);
+                setExpression(Constraints.createPath(nextcid), std::move(expr));
             }
         }
     }
@@ -9784,7 +9784,7 @@ const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenc
             std::map<int, Sketcher::PointPos> tmp;
             tmp.insert(std::pair<int, Sketcher::PointPos>(constr->First, constr->FirstPos));
             tmp.insert(std::pair<int, Sketcher::PointPos>(constr->Second, constr->SecondPos));
-            coincidenttree.push_back(tmp);
+            coincidenttree.push_back(std::move(tmp));
         }
         else if (firstpresentin != -1) {
             // add to existing group
@@ -11594,7 +11594,7 @@ std::vector<const char *> SketchObject::getElementTypes(bool all) const
 void SketchObject::setExpression(const App::ObjectIdentifier& path,
                                  std::shared_ptr<App::Expression> expr)
 {
-    DocumentObject::setExpression(path, expr);
+    DocumentObject::setExpression(path, std::move(expr));
 
     if (noRecomputes) {
         // if we do not have a recompute, the sketch must be solved to update the DoF of the solver,
@@ -12111,7 +12111,7 @@ int SketchObject::renameConstraint(int GeoId, std::string name)
         Base::StateLocker lock(managedoperation, true);
 
         Constraint* copy = item->clone();
-        copy->Name = name;
+        copy->Name = std::move(name);
 
         Constraints.set1Value(GeoId, copy);
         delete copy;

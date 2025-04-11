@@ -180,7 +180,7 @@ public:
      * updategeometry=false, prevents the update. This allows one to update the solve status (e.g.
      * dof), without updating the geometry (i.e. make it move to fulfil the constraints).
      */
-    int delConstraints(std::vector<int> ConstrIds, bool updategeometry = true);
+    int delConstraints(std::vector<int>& ConstrIds, bool updategeometry = true);
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident = true);
     int delConstraintOnPoint(int VertexId, bool onlyCoincident = true);
     /// Deletes all constraints referencing an external geometry
@@ -354,7 +354,7 @@ public:
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
-    int moveGeometries(std::vector<GeoElementId> geoEltIds,
+    int moveGeometries(std::vector<GeoElementId>& geoEltIds,
                        const Base::Vector3d& toPoint,
                        bool relative = false,
                        bool updateGeoBeforeMoving = false);
