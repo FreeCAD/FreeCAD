@@ -686,6 +686,33 @@ By uncheck this option, CalculiX command behave like SolverCalculiXCcxTools</str
           </property>
          </widget>
         </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="l_result_format">
+          <property name="text">
+           <string>Result format</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="2">
+         <widget class="Gui::PrefCheckBox" name="ckb_result_format">
+          <property name="toolTip">
+           <string>Save result in binary format.
+Only ta  kes effect if 'Pipeline only' is enabled</string>
+          </property>
+          <property name="text">
+           <string>Use binary format</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BinaryOutput</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
