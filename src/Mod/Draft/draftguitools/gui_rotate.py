@@ -247,7 +247,7 @@ class Rotate(gui_base_original.Modifier):
         ----------
         cont: bool or None, optional
             Restart (continue) the command if `True`, or if `None` and
-            `ui.continueMode` is `True`.
+            `ui.chainedMode` is `True`.
         """
         self.end_callbacks(self.call)
         if self.arctrack:
@@ -255,7 +255,7 @@ class Rotate(gui_base_original.Modifier):
         for ghost in self.ghosts:
             ghost.finalize()
         super().finish()
-        if cont or (cont is None and self.ui and self.ui.continueMode):
+        if cont or (cont is None and self.ui and self.ui.chainedMode):
             todo.ToDo.delayAfter(self.Activated, [])
 
     def rotate(self, copy):

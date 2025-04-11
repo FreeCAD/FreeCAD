@@ -68,7 +68,7 @@ class Text(gui_base_original.Creator):
             self.ui.sourceCmd = self
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Text")
             self.ui.isRelative.hide()
-            self.ui.continueCmd.show()
+            self.ui.chainedModeCmd.show()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.active = True
             self.ui.xValue.setFocus()
@@ -82,11 +82,11 @@ class Text(gui_base_original.Creator):
         ----------
         cont: bool or None, optional
             Restart (continue) the command if `True`, or if `None` and
-            `ui.continueMode` is `True`.
+            `ui.chainedMode` is `True`.
         """
         self.end_callbacks(self.call)
         super().finish(self)
-        if cont or (cont is None and self.ui and self.ui.continueMode):
+        if cont or (cont is None and self.ui and self.ui.chainedMode):
             self.Activated()
 
     def createObject(self):

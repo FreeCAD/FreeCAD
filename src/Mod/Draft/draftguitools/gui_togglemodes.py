@@ -76,8 +76,8 @@ class BaseMode(gui_base.GuiCommandSimplest):
         if _ui is not None:
             if mode == "construction" and hasattr(_ui, "constrButton"):
                 _ui.constrButton.toggle()
-            elif mode == "continue":
-                _ui.toggleContinue()
+            elif mode == "chainedMode":
+                _ui.toggleChainedMode()
 
 
 class ToggleConstructionMode(BaseMode):

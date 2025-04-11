@@ -84,13 +84,13 @@ class Polygon(gui_base_original.Creator):
         ----------
         cont: bool or None, optional
             Restart (continue) the command if `True`, or if `None` and
-            `ui.continueMode` is `True`.
+            `ui.chainedMode` is `True`.
         """
         self.end_callbacks(self.call)
         if self.ui:
             self.arctrack.finalize()
         super().finish()
-        if cont or (cont is None and self.ui and self.ui.continueMode):
+        if cont or (cont is None and self.ui and self.ui.chainedMode):
             self.Activated()
 
     def action(self, arg):

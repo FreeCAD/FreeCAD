@@ -75,7 +75,9 @@ class Dimension(gui_base_original.Creator):
         super().__init__()
         self.max = 2
         self.cont = None
+        self.contMode = None
         self.dir = None
+        self.featureName = "Dimension"
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -87,12 +89,13 @@ class Dimension(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        if self.cont:
+        if self.cont and not self.contMode:
             self.finish()
         else:
-            super().Activated(name="Dimension")
+            super().Activated(name=self.featureName)
             if self.ui:
-                self.ui.pointUi(title=translate("draft", "Dimension"), icon="Draft_Dimension")
+                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
+                self.ui.chainedModeCmd.show()
                 self.ui.continueCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False
@@ -160,6 +163,7 @@ class Dimension(gui_base_original.Creator):
         """Terminate the operation."""
         self.end_callbacks(self.call)
         self.cont = None
+        self.contMode = None
         self.dir = None
         if self.ui:
             self.dimtrack.finalize()
@@ -283,8 +287,9 @@ class Dimension(gui_base_original.Creator):
             # Linear dimension, not linked to any edge
             self.create_linear_dimension()
 
-        if self.ui.continueMode:
-            self.cont = self.node[2]
+        if self.ui.chainedMode or self.ui.continueMode:
+            if self.ui.chainedMode:
+                self.cont = self.node[2]
             if not self.dir:
                 if self.link:
                     v1 = self.link[0].Shape.Vertexes[self.link[1]].Point
@@ -506,7 +511,10 @@ class Dimension(gui_base_original.Creator):
                         #     cen = self.node[0].add(v)
                         #     self.node = [self.node[0], self.node[1], cen]
                         self.createObject()
-                        if not self.cont:
+                        if self.ui.continueMode:
+                           self.contMode = True
+                           self.Activated()
+                        elif not self.cont:
                             self.finish()
                     elif self.angledata:
                         self.node.append(self.point)
