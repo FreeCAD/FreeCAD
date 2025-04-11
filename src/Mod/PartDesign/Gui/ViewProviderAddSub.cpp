@@ -40,6 +40,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Mod/Part/App/Tools.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
@@ -121,7 +122,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
         Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
 
         // create or use the mesh on the data structure
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * std::numbers::pi;
+        Standard_Real AngDeflectionRads = Base::toRadians(AngularDeflection.getValue());
         BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
 
         // We must reset the location here because the transformation data

@@ -71,6 +71,7 @@
 #include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "Cosmetic.h"
 #include "CenterLine.h"
@@ -986,7 +987,7 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
     if (getEdgeCompound().IsNull()) {
         return 1.0;
     }
-    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(getEdgeCompound(), OXYZ, alignmentAngle * 180.0 / std::numbers::pi);
+    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(getEdgeCompound(), OXYZ, Base::toDegrees(alignmentAngle));
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
     BRepBndLib::AddOptimal(rotatedShape, shapeBox);
@@ -1105,7 +1106,7 @@ gp_Ax2 DrawViewPart::getRotatedCS(const Base::Vector3d basePoint) const
     //    Base::Console().Message("DVP::getRotatedCS() - %s - %s\n", getNameInDocument(), Label.getValue());
     gp_Ax2 unrotated = getProjectionCS(basePoint);
     gp_Ax1 rotationAxis(Base::convertTo<gp_Pnt>(basePoint), unrotated.Direction());
-    double angleRad = Rotation.getValue() * std::numbers::pi / 180.0;
+    double angleRad = Base::toRadians(Rotation.getValue());
     gp_Ax2 rotated = unrotated.Rotated(rotationAxis, -angleRad);
     return rotated;
 }

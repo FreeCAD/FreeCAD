@@ -113,11 +113,11 @@ void finishDatumConstraint(Gui::Command* cmd,
     float labelPositionRandomness = 0.0;
 
     if (lastConstraintType == Radius || lastConstraintType == Diameter) {
-        labelPosition = hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0)
-            * (std::numbers::pi / 180);// Get radius/diameter constraint display angle
+        // Get radius/diameter constraint display angle
+        labelPosition = Base::toRadians(hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0));
+        // Get randomness
         labelPositionRandomness =
-            hGrp->GetFloat("RadiusDiameterConstraintDisplayAngleRandomness", 0.0)
-            * (std::numbers::pi / 180);// Get randomness
+            Base::toRadians(hGrp->GetFloat("RadiusDiameterConstraintDisplayAngleRandomness", 0.0));
 
         // Adds a random value around the base angle, so that possibly overlapping labels get likely
         // a different position.

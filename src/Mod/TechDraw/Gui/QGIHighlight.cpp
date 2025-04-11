@@ -26,6 +26,7 @@
 # include <QStyleOptionGraphicsItem>
 #endif
 
+#include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIHighlight.h"
@@ -125,7 +126,7 @@ void QGIHighlight::makeReference()
     QRectF r(m_start, m_end);
     double radius = r.width() / 2.0;
     QPointF center = r.center();
-    double angleRad = m_referenceAngle * std::numbers::pi / 180.0;
+    double angleRad = Base::toRadians(m_referenceAngle);
     double posX = center.x() + cos(angleRad) * radius + horizOffset;
     double posY = center.y() - sin(angleRad) * radius - vertOffset;
     m_reference->setPos(posX, posY);

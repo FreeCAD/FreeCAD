@@ -25,6 +25,7 @@
 #include <QApplication>
 #endif  // #ifndef _PreComp_
 
+#include <Base/Tools.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "SnapManager.h"
@@ -122,8 +123,8 @@ void SnapManager::ParameterObserver::updateSnapAngleParameter(const std::string&
 {
     ParameterGrp::handle hGrp = getParameterGrpHandle();
 
-    client.snapAngle = fmod(hGrp->GetFloat(parametername.c_str(), 5.) * std::numbers::pi / 180,
-                            2 * std::numbers::pi);
+    client.snapAngle =
+        fmod(Base::toRadians(hGrp->GetFloat(parametername.c_str(), 5.)), 2 * std::numbers::pi);
 }
 
 void SnapManager::ParameterObserver::subscribeToParameters()

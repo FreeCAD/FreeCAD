@@ -63,6 +63,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
@@ -1060,8 +1061,8 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector
 
     // remove the effect of the Rotation property
     double rotDeg = dvp.Rotation.getValue();
-    double rotRad = rotDeg * std::numbers::pi / 180.0;
     if (rotDeg != 0.0) {
+        double rotRad = Base::toRadians(rotDeg);
         // we always rotate around the origin.
         appPoint.RotateZ(-rotRad);
     }

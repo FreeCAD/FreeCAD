@@ -496,7 +496,7 @@ double Helix::safePitch()
         }
     }
 
-    double angle = Angle.getValue() / 180.0 * std::numbers::pi;
+    double angle = Base::toRadians(Angle.getValue());
     gp_Dir direction(axisVec.x, axisVec.y, axisVec.z);
     gp_Dir directionStart(startVec.x, startVec.y, startVec.z);
     TopoDS_Shape sketchshape = getVerifiedFace();

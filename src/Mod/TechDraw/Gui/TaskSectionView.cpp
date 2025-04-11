@@ -31,6 +31,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -180,7 +181,7 @@ void TaskSectionView::setUiEdit()
     Base::Vector3d projectedViewDirection = m_base->projectPoint(sectionNormalVec, false);
     projectedViewDirection.Normalize();
     double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / std::numbers::pi);
+    m_compass->setDialAngle(Base::toDegrees(viewAngle));
     m_viewDirectionWidget->setValueNoNotify(sectionNormalVec * -1.0);
 }
 
@@ -272,7 +273,7 @@ void TaskSectionView::slotViewDirectionChanged(Base::Vector3d newDirection)
     Base::Vector3d projectedViewDirection = m_base->projectPoint(newDirection, false);
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / std::numbers::pi);
+    m_compass->setDialAngle(Base::toDegrees(viewAngle));
     checkAll(false);
     directionChanged(true);
     applyAligned();
@@ -281,7 +282,7 @@ void TaskSectionView::slotViewDirectionChanged(Base::Vector3d newDirection)
 //the CompassWidget reports that the view direction angle has changed
 void TaskSectionView::slotChangeAngle(double newAngle)
 {
-    double angleRadians = newAngle * std::numbers::pi / 180.0;
+    double angleRadians = Base::toRadians(newAngle);
     double unitX = cos(angleRadians);
     double unitY = sin(angleRadians);
     Base::Vector3d localUnit(unitX, unitY, 0.0);

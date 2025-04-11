@@ -547,7 +547,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
 
     // Number of Degree of deviation from horizontal or vertical lines
     const double angleDev = 2;
-    const double angleDevRad = angleDev * pi / 180.;
+    const double angleDevRad = Base::toRadians(angleDev);
 
     AutoConstraint constr;
     constr.Type = Sketcher::None;
@@ -1006,7 +1006,7 @@ void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position,
     SbString text;
     std::string doubleString = unit == Base::Unit::Length
         ? lengthToDisplayFormat(val, 1)
-        : angleToDisplayFormat(val * 180.0 / std::numbers::pi, 1);
+        : angleToDisplayFormat(Base::toDegrees(val), 1);
     text.sprintf(" (%s)", doubleString.c_str());
     setPositionText(position, text);
 }
