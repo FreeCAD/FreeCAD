@@ -37,6 +37,7 @@
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+#include <BRepAdaptor_Curve.hxx>
 # include <Geom_Circle.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <Geom_TrimmedCurve.hxx>
@@ -59,6 +60,8 @@
 
 #include "FeatureHole.h"
 #include "json.hpp"
+
+#include <numbers>
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
@@ -810,6 +813,9 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(CustomThreadClearance, (0.0), "Hole", App::Prop_None, "Custom thread clearance (overrides ThreadClass)");
 
+    // Defaults to circles & arcs so that older files are kept intact
+    // while new file get points, circles and arcs set in setupObject()
+    ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
 }
 
 void Hole::updateHoleCutParams()
@@ -1668,6 +1674,14 @@ void Hole::onChanged(const App::Property* prop)
 
     ProfileBased::onChanged(prop);
 }
+void Hole::setupObject()
+{
+    // Set the BaseProfileType to "Points, Circles and Arcs"
+    // here so that new objects use points, but older files
+    // keep the default value of "Circles and Arcs"
+    BaseProfileType.setValue(BaseProfileTypeOptions::OnPointsCirclesArcs);
+    ProfileBased::setupObject();
+}
 
 /**
   * Computes 2D intersection between the lines (pa1, pa2) and (pb1, pb2).
@@ -1744,7 +1758,8 @@ short Hole::mustExecute() const
         UseCustomThreadClearance.isTouched() ||
         CustomThreadClearance.isTouched() ||
         ThreadDepthType.isTouched() ||
-        ThreadDepth.isTouched()
+        ThreadDepth.isTouched() ||
+        BaseProfileType.isTouched()
         )
         return 1;
     return ProfileBased::mustExecute();
@@ -1780,6 +1795,7 @@ void Hole::updateProps()
     onChanged(&CustomThreadClearance);
     onChanged(&ThreadDepthType);
     onChanged(&ThreadDepth);
+    onChanged(&BaseProfileType);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
@@ -1788,14 +1804,8 @@ static gp_Pnt toPnt(gp_Vec dir)
 }
 
 App::DocumentObjectExecReturn* Hole::execute()
-{
-     TopoShape profileshape;
-    try {
-        profileshape = getTopoShapeVerifiedFace();
-    }
-    catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+{ 
+    TopoShape profileshape = getProfileShape(/*needSubElement*/ false);
 
     // Find the base shape
     TopoShape base;
@@ -1818,10 +1828,6 @@ App::DocumentObjectExecReturn* Hole::execute()
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
         base.move(invObjLoc);
-
-        if (profileshape.isNull())
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Hole error: Creating a face from sketch failed"));
         profileshape.move(invObjLoc);
 
         /* Build the prototype hole */
@@ -2169,33 +2175,59 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
 {
     TopoShape result(0);
 
-    for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
-        Standard_Real c_start;
-        Standard_Real c_end;
-        TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
-        Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
-
-        // Circle?
-        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
-            continue;
-
-        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-        gp_Pnt loc = circle->Axis().Location();
-
-
+    auto addHole = [&](Part::TopoShape const& baseshape, gp_Pnt loc) {
         gp_Trsf localSketchTransformation;
         localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
                                                   gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
 
         Part::ShapeMapper mapper;
-        mapper.populate(Part::MappingStatus::Modified, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+        mapper.populate(Part::MappingStatus::Modified, baseshape, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
 
         TopoShape hole(-getID());
-        hole.makeShapeWithElementMap(protoHole, mapper, {profileEdge});
+        hole.makeShapeWithElementMap(protoHole, mapper, {baseshape});
 
         // transform and generate element map.
         hole = hole.makeElementTransform(localSketchTransformation);
         holes.push_back(hole);
+    };
+
+    int baseProfileType = BaseProfileType.getValue();
+
+    // Iterate over edges and filter out non-circle/non-arc types
+    if (baseProfileType & BaseProfileTypeOptions::OnCircles || 
+       baseProfileType & BaseProfileTypeOptions::OnArcs) {
+        for (const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
+            TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
+            BRepAdaptor_Curve adaptor(edge);
+
+            // Circle base?
+            if (adaptor.GetType() != GeomAbs_Circle) {
+                continue;
+            }
+            // Filter for circles
+            if (!(baseProfileType & BaseProfileTypeOptions::OnCircles) && adaptor.IsClosed()) {
+                continue;
+            }
+            
+            // Filter for arcs
+            if (!(baseProfileType & BaseProfileTypeOptions::OnArcs) && !adaptor.IsClosed()) {
+                continue;
+            }
+
+            gp_Circ circle = adaptor.Circle();
+            addHole(profileEdge, circle.Axis().Location());
+        }
+    }
+
+    // To avoid breaking older files which where not made with
+    // holes on points
+    if (baseProfileType & BaseProfileTypeOptions::OnPoints) {
+        // Iterate over vertices while avoiding edges so that curve handles are ignored
+        for (const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
+            TopoDS_Vertex vertex = TopoDS::Vertex(profileVertex.getShape());
+
+            addHole(profileVertex, BRep_Tool::Pnt(vertex));
+        }
     }
     return TopoShape().makeElementCompound(holes);
 }
