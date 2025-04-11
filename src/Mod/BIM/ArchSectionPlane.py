@@ -22,34 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import math
-import Draft
-import ArchCommands
-import DraftVecUtils
-import ArchComponent
-import re
-import tempfile
-import uuid
-import time
-
-from FreeCAD import Vector
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from pivy import coin
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
 ## @package ArchSectionPlane
 #  \ingroup ARCH
 #  \brief The Section plane object and tools
@@ -57,6 +29,35 @@ else:
 #  This module provides tools to build Section plane objects.
 #  It also contains functionality to produce SVG rendering of
 #  section planes, to be used in the TechDraw module
+
+import math
+import re
+import tempfile
+import time
+import uuid
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Vector
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from pivy import coin
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 ISRENDERING = False # flag to prevent concurrent runs of the coin renderer
 
@@ -97,7 +98,8 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
     obtained from performing a series of booleans against the given cut plane
     """
 
-    import Part,DraftGeomUtils
+    import Part
+    import DraftGeomUtils
     shapes = []
     hshapes = []
     sshapes = []
@@ -367,7 +369,8 @@ def getSVG(source,
         if should_update_svg_cache:
             svgcache = ''
             # render using the Arch Vector Renderer
-            import ArchVRM, WorkingPlane
+            import ArchVRM
+            import WorkingPlane
             wp = WorkingPlane.PlaneBase()
             pl = FreeCAD.Placement(source.Placement)
             if source.ViewObject and hasattr(source.ViewObject,"CutMargin"):
@@ -419,7 +422,8 @@ def getSVG(source,
         if should_update_svg_cache:
             svgcache = ""
             # render using the TechDraw module
-            import TechDraw, Part
+            import TechDraw
+            import Part
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
                 style = {'stroke':       "SVGLINECOLOR",
@@ -563,7 +567,8 @@ def getDXF(obj):
     allOn = getattr(obj, "AllOn", True)
     showHidden = getattr(obj, "ShowHidden", False)
     result = []
-    import TechDraw, Part
+    import TechDraw
+    import Part
     if not obj.Source:
         return result
     source = obj.Source

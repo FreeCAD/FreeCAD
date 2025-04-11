@@ -26,17 +26,29 @@ __title__= "FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
+## @package ArchStairs
+#  \ingroup ARCH
+#  \brief The Stairs object and tools
+#
+#  This module provides tools to build Stairs objects.
 
-import FreeCAD,ArchComponent,Draft,DraftVecUtils,math,ArchPipe
-import Part, DraftGeomUtils
+import math
+
+import FreeCAD
+import ArchComponent
+import ArchPipe
+import Draft
+import DraftVecUtils
+import DraftGeomUtils
+import Part
 
 from FreeCAD import Vector
 from draftutils import params
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
     def translate(ctxt,txt):
@@ -45,14 +57,7 @@ else:
         return txt
     # \endcond
 
-## @package ArchStairs
-#  \ingroup ARCH
-#  \brief The Stairs object and tools
-#
-#  This module provides tools to build Stairs objects.
-
 zeroMM = FreeCAD.Units.Quantity('0mm')
-
 
 
 class _Stairs(ArchComponent.Component):

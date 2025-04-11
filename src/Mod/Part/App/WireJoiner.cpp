@@ -1722,7 +1722,7 @@ public:
     }
 
     // Originally here there was the definition of the method checkStack(), which does nothing and
-    // therefor has been removed. See
+    // therefore has been removed. See
     // https://github.com/realthunder/FreeCAD/blob/6f15849be2505f98927e75d0e8352185e14e7b72/src/Mod/Part/App/WireJoiner.cpp#L1366
     // for reference
 
@@ -1768,7 +1768,7 @@ public:
                 ++stack.back().iEnd;
 
                 // Originally here there was a call to the method checkStack(),
-                // which does nothing and therefor has been removed.
+                // which does nothing and therefore has been removed.
             }
         }
     }
@@ -1985,7 +1985,7 @@ public:
         auto stackEnd = stack.size();
 
         // Originally here there was a call to the method checkStack(), which does nothing and
-        // therefor has been removed.
+        // therefore has been removed.
 
         // pstart and pend is the start and end vertex of the current wire
         while (true) {
@@ -2004,7 +2004,7 @@ public:
                                         beginInfo);
 
             // Originally here there was a call to the method checkStack(), which does nothing and
-            // therefor has been removed.
+            // therefore has been removed.
 
             if (proceed) {
                 if (_findClosedWiresUpdateEdges(currentVertex,
@@ -2182,7 +2182,7 @@ public:
             vertexStack.push_back(currentVertex);
 
             // Originally here there was a call to the method checkStack(), which does
-            // nothing and therefor has been removed.
+            // nothing and therefore has been removed.
 
             int idxEnd = (int)wireVertices.size();
             int stackStart = (int)stack.size() - 1;
@@ -2381,7 +2381,7 @@ public:
                     edgeSet.insert(wireVertices[idxV].edgeInfo());
 
                     // Originally here there was a call to the method checkStack(), which does
-                    // nothing and therefor has been removed.
+                    // nothing and therefore has been removed.
                 }
 
                 if (!newWire) {
@@ -2425,7 +2425,7 @@ public:
             vertexStack.push_back(currentVertex);
 
             // Originally here there a call to the method checkStack(), which
-            // does nothing and therefor has been removed.
+            // does nothing and therefore has been removed.
 
             TopoDS_Wire wire;
             if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
@@ -2511,7 +2511,7 @@ public:
             edgeSet.insert(wireVertices[idxV].edgeInfo());
 
             // Originally here there a call to the method checkStack(), which does
-            // nothing and therefor has been removed.
+            // nothing and therefore has been removed.
         }
     }
 

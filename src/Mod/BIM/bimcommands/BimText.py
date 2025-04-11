@@ -26,7 +26,6 @@
 
 """This module contains BIM wrappers for commands from other workbenches"""
 
-
 import FreeCAD
 import FreeCADGui
 

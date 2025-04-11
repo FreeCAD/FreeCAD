@@ -26,9 +26,10 @@
 
 """Utilities to help people verify and update their version of ifcopenshell"""
 
+from packaging.version import Version
+
 import FreeCAD
 import FreeCADGui
-from packaging.version import Version
 from addonmanager_utilities import create_pip_call
 
 translate = FreeCAD.Qt.translate

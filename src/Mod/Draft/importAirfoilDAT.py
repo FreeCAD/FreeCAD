@@ -132,7 +132,7 @@ def process(filename):
 
     regex = re.compile(_regex)
     afile = pyopen(filename, 'r')
-    # read the airfoil name which is always at the first line
+    # read the airfoil name which is always in the first line
     airfoilname = afile.readline().strip()
 
     coords = []

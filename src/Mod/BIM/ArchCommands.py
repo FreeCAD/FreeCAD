@@ -24,23 +24,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import ArchComponent
-import Draft
-import DraftVecUtils
-from FreeCAD import Vector
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui,QtCore
-    from draftutils.translate import translate
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    # \endcond
-
 __title__  = "FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
@@ -51,6 +34,25 @@ __url__    = "https://www.freecad.org"
 #
 #  This module provides general functions used by Arch tools
 #  and utility commands
+
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Vector
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide import QtGui,QtCore
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    # \endcond
+
 
 # module functions ###############################################
 

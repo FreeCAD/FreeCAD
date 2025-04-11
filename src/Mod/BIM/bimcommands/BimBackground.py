@@ -26,7 +26,6 @@
 
 """The BIM Background command"""
 
-
 import FreeCAD
 import FreeCADGui
 

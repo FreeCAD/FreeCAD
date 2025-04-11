@@ -31,9 +31,9 @@ import ArchComponent
 import draftobjects.patharray as patharray
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import PySide.QtGui as QtGui
+    import FreeCADGui
 else:
     # \cond
     def translate(ctxt, txt):

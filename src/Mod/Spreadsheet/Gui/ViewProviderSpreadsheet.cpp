@@ -146,7 +146,7 @@ void ViewProviderSheet::setupContextMenu(QMenu* menu, QObject* receiver, const c
 
 Sheet* ViewProviderSheet::getSpreadsheetObject() const
 {
-    return freecad_dynamic_cast<Sheet>(pcObject);
+    return freecad_cast<Sheet>(pcObject);
 }
 
 void ViewProviderSheet::beforeDelete()

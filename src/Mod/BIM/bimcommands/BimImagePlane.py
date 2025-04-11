@@ -26,7 +26,6 @@
 
 """The BIM ImagePlane command"""
 
-
 import FreeCAD
 import FreeCADGui
 

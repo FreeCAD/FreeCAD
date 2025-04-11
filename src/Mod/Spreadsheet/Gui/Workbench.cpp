@@ -129,7 +129,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
     if (doc) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -163,7 +163,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
     if (doc) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();

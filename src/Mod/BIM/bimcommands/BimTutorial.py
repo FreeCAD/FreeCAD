@@ -24,13 +24,14 @@
 
 """This is the tutorial of the BIM workbench"""
 
-
 import os
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -93,7 +94,9 @@ class BIM_Tutorial:
             QtCore.QTimer.singleShot(1000, self.load)
 
     def load(self, arg=None):
-        import re, sys, codecs
+        import codecs
+        import re
+        import sys
 
         if sys.version_info.major < 3:
             import urllib2
@@ -214,7 +217,7 @@ class BIM_Tutorial:
         self.update()
 
     def update(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         if not hasattr(self, "form") or not self.form or not hasattr(self, "dock"):
             return
@@ -273,7 +276,7 @@ class BIM_Tutorial:
             QtCore.QTimer.singleShot(TESTINTERVAL, self.checkGoals)
 
     def checkGoals(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         if not hasattr(self, "form"):
             return

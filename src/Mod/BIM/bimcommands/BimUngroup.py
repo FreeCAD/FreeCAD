@@ -26,7 +26,6 @@
 
 """The BIM Ungroup command"""
 
-
 import FreeCAD
 import FreeCADGui
 

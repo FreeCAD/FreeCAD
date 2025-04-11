@@ -28,22 +28,6 @@ __title__  = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
-import FreeCAD
-import ArchComponent
-import DraftVecUtils
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
 ## @package ArchEquipment
 #  \ingroup ARCH
 #  \brief The Equipment object and tools
@@ -52,7 +36,22 @@ else:
 #  Equipment is used to represent furniture and all kinds of electrical
 #  or hydraulic appliances in a building
 
+import FreeCAD
+import ArchComponent
+import DraftVecUtils
 
+if FreeCAD.GuiUp:
+    from PySide import QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largestonly=False):

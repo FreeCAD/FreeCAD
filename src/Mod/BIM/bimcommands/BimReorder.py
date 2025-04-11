@@ -25,7 +25,6 @@
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -59,7 +58,7 @@ class BIM_Reorder:
 class BIM_Reorder_TaskPanel:
 
     def __init__(self, obj):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogReorder.ui")

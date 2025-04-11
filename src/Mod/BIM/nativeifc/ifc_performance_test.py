@@ -24,8 +24,10 @@
 
 import os
 import time
-import FreeCAD
 import unittest
+
+import FreeCAD
+
 from . import ifc_import
 
 

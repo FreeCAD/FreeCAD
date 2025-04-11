@@ -1129,8 +1129,8 @@ private:
         auto colorMapping = std::map<unsigned long, unsigned long>();
         colorMapping[defaultCrosshairColor] = color;
 
-        qreal fullIconWidth = 32 * pixelRatio;
-        qreal iconWidth = 16 * pixelRatio;
+        constexpr qreal fullIconWidth = 32;
+        constexpr qreal iconWidth = 16;
         QPixmap cursorPixmap =
                     Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair",
                                                        QSizeF(fullIconWidth, fullIconWidth),
@@ -1143,7 +1143,6 @@ private:
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
-        cursorPixmap.setDevicePixelRatio(pixelRatio);
         // only X11 needs hot point coordinates to be scaled
         if (qGuiApp->platformName() == QLatin1String("xcb")) {
             hotX *= pixelRatio;
@@ -1422,17 +1421,16 @@ public:
         auto colorMapping = std::map<unsigned long, unsigned long>();
         colorMapping[defaultCrosshairColor] = color;
 
-        qreal fullIconWidth = 32 * pixelRatio;
-        qreal iconWidth = 16 * pixelRatio;
-        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
-            icon = Gui::BitmapFactory().pixmapFromSvg("Constraint_Dimension", QSizeF(iconWidth, iconWidth));
+        constexpr qreal fullIconWidth = 32;
+        constexpr qreal iconWidth = 16;
+        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping);
+        QPixmap icon = Gui::BitmapFactory().pixmapFromSvg("Constraint_Dimension", QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
         cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
-        cursorPixmap.setDevicePixelRatio(pixelRatio);
         // only X11 needs hot point coordinates to be scaled
         if (qGuiApp->platformName() == QLatin1String("xcb")) {
             hotX *= pixelRatio;

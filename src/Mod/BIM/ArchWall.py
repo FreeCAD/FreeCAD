@@ -22,6 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__  = "FreeCAD Wall"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchWall
+#  \ingroup ARCH
+#  \brief The Wall object and tools
+#
+#  This module provides tools to build Wall objects.  Walls are simple objects,
+#  usually vertical, typically obtained by giving a thickness to a base line,
+#  then extruding it vertically.
+
 """This module provides tools to build Wall objects.  Walls are simple
 objects, usually vertical, typically obtained by giving a thickness to a base
 line, then extruding it vertically.
@@ -32,17 +44,24 @@ TODO put examples here.
 
 """
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
+import math
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import ArchSketchObject
+import Draft
+import DraftVecUtils
+
 from FreeCAD import Vector
 from draftutils import params
-import ArchSketchObject
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide import QtCore, QtGui
-    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
     import draftguitools.gui_trackers as DraftTrackers
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):
@@ -50,19 +69,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-
-## @package ArchWall
-#  \ingroup ARCH
-#  \brief The Wall object and tools
-#
-#  This module provides tools to build Wall objects.  Walls are simple objects,
-#  usually vertical, typically obtained by giving a thickness to a base line,
-#  then extruding it vertically.
-
-__title__  = "FreeCAD Wall"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
-
 
 
 def mergeShapes(w1,w2):

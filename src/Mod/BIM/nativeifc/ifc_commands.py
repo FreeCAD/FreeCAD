@@ -24,9 +24,9 @@
 
 """This module contains IFC-related FreeCAD commands"""
 
-
 import FreeCAD
 import FreeCADGui
+
 from . import ifc_openshell
 
 translate = FreeCAD.Qt.translate
@@ -157,7 +157,7 @@ class IFC_MakeProject:
     def Activated(self):
         from importers import exportIFC  # lazy loading
         from . import ifc_tools
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         doc = FreeCAD.ActiveDocument
         objs = FreeCADGui.Selection.getSelection()

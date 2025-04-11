@@ -26,7 +26,6 @@
 
 """The BIM Extrude command"""
 
-
 import FreeCAD
 import FreeCADGui
 
@@ -47,7 +46,6 @@ class BIM_Extrude:
         return v
 
     def Activated(self):
-        import PartGui
         FreeCADGui.runCommand("Part_Extrude")
 
 

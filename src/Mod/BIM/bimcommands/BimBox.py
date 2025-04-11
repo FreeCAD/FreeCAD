@@ -25,7 +25,6 @@
 
 """The BIM Box command"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -143,7 +142,7 @@ class BIM_Box:
     def taskbox(self):
         "sets up a taskbox widget"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         wid = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()

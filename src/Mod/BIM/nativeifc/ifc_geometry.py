@@ -24,10 +24,10 @@
 
 """This module contains geometry editing and geometry properties-related tools"""
 
-import FreeCAD
-
 import ifcopenshell
 import ifcopenshell.util.unit
+
+import FreeCAD
 
 from . import ifc_tools
 

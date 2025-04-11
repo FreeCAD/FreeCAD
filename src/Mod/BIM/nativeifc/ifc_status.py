@@ -26,12 +26,11 @@
 
 """This contains nativeifc status widgets and functionality"""
 
-
-import os
 import csv
+import os
+
 import FreeCAD
 import FreeCADGui
-
 
 translate = FreeCAD.Qt.translate
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -103,7 +102,7 @@ def on_add_property():
     sel = FreeCADGui.Selection.getSelection()
     if not sel:
         return
-    from PySide import QtCore, QtGui  # lazy loading
+    from PySide import QtGui  # lazy loading
     from . import ifc_psets
     obj = sel[0]
     psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
@@ -182,7 +181,6 @@ def on_add_pset():
     sel = FreeCADGui.Selection.getSelection()
     if not sel:
         return
-    from PySide import QtCore, QtGui  # lazy loading
     from . import ifc_psets
     obj = sel[0]
     mw = FreeCADGui.getMainWindow()
@@ -276,7 +274,7 @@ def on_new():
 def set_menu(locked=False):
     """Sets the File menu items"""
 
-    from PySide import QtCore, QtGui  # lazy loading
+    from PySide import QtGui  # lazy loading
 
     # switch Std_Save and IFC_Save
     mw = FreeCADGui.getMainWindow()
@@ -455,7 +453,6 @@ def lock_document():
 def find_toplevel(objs):
     """Finds the top-level objects from the list"""
 
-    import Draft
     # filter out any object that depend on another from the list
     nobjs = []
     for obj in objs:
@@ -476,6 +473,8 @@ def find_toplevel(objs):
 
 def filter_out(objs):
     """Filter out objects that should not be converted to IFC"""
+
+    import Draft
 
     nobjs = []
     for obj in objs:

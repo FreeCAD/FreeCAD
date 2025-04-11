@@ -71,9 +71,9 @@
      <widget class="QWidget" name="auxiliary">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QCheckBox" name="curvelinear">
+        <widget class="QCheckBox" name="curvilinear">
          <property name="text">
-          <string>Curvelinear equivalence</string>
+          <string>Curvilinear equivalence</string>
          </property>
         </widget>
        </item>

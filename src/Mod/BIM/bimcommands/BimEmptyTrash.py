@@ -26,7 +26,6 @@
 
 """The BIM EmptyTrash command"""
 
-
 import FreeCAD
 import FreeCADGui
 

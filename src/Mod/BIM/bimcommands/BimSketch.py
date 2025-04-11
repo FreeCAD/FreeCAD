@@ -26,7 +26,6 @@
 
 """The Bim Sketch command"""
 
-
 import FreeCAD
 import FreeCADGui
 

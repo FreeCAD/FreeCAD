@@ -127,7 +127,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M5\nG17 G90\n;M2"',
+    help='set commands to be issued after the last command, default="M5\\nG17 G90\\nM2"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -215,9 +215,9 @@ def processArguments(argstring):
             SHOW_EDITOR = True
         PRECISION = args.precision
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.no_translate_drill:
             TRANSLATE_DRILL_CYCLES = False
         if args.translate_drill:

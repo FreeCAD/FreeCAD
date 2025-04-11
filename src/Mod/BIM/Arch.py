@@ -37,9 +37,11 @@ __url__    = "https://www.freecad.org"
 '''The Arch module provides tools specialized in BIM modeling.'''
 
 import FreeCAD
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     FreeCADGui.updateLocale()
+
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -53,6 +55,7 @@ from ArchWindowPresets import *
 # TODO: migrate this one
 
 from ArchStructure import *
+
 
 # make functions
 

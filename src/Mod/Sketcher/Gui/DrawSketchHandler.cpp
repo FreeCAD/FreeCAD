@@ -406,12 +406,7 @@ DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& sugg
                 break;
         }
         if (!iconType.isEmpty()) {
-            qreal pixelRatio = 1;
-            Gui::View3DInventorViewer* viewer = getViewer();
-            if (viewer) {
-                pixelRatio = viewer->devicePixelRatio();
-            }
-            int iconWidth = 16 * pixelRatio;
+            constexpr int iconWidth = 16;
             QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(iconType.toStdString().c_str(),
                                                               QSize(iconWidth, iconWidth));
             pixmaps.push_back(icon);

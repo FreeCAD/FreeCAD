@@ -22,9 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-import os
+## @package importOBJ
+#  \ingroup ARCH
+#  \brief OBJ file format exporter
+#
+#  This module provides tools to import & export OBJ files.
+#  It is an alternative to the standard Mesh OBJ exporter
+#  and supports exporting faces with more than 3 vertices
+#  and supports object colors / materials
+
 import codecs
 import ntpath
+import os
 from builtins import open as pyopen
 
 import FreeCAD
@@ -34,6 +43,7 @@ import DraftGeomUtils
 import Mesh
 import MeshPart
 import Part
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
@@ -44,14 +54,6 @@ else:
         return text
     # \endcond
 
-## @package importOBJ
-#  \ingroup ARCH
-#  \brief OBJ file format exporter
-#
-#  This module provides tools to import & export OBJ files.
-#  It is an alternative to the standard Mesh OBJ exporter
-#  and supports exporting faces with more than 3 vertices
-#  and supports object colors / materials
 
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"

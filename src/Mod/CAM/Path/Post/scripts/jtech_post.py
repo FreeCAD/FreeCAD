@@ -56,11 +56,11 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="M05 S0\nG90"',
+    help='set commands to be issued before the first command, default="M05 S0\\nG90"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05 S0\nM2"',
+    help='set commands to be issued after the last command, default="M05 S0\\nM2"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -155,9 +155,9 @@ def processArguments(argstring):
         print("Show editor = %d" % SHOW_EDITOR)
         PRECISION = args.precision
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.inches:
             UNITS = "G20"
             UNIT_SPEED_FORMAT = "in/min"

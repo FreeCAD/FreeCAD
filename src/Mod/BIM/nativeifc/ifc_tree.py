@@ -24,7 +24,6 @@
 
 """This NativeIFC module handles the retrieval and display of geometry compositions of objects"""
 
-
 import FreeCAD
 
 TAB = 2
@@ -82,7 +81,7 @@ def show_geometry_tree(element):
     import Arch_rc
     import FreeCADGui  # lazy import
     from . import ifc_tools
-    from PySide import QtGui, QtWidgets
+    from PySide import QtWidgets
 
     if isinstance(element, FreeCAD.DocumentObject):
         element = ifc_tools.get_ifc_element(element)
@@ -149,7 +148,7 @@ def show_properties(current, previous):
 
     import FreeCADGui
     from . import ifc_tools  # lazy loading
-    from PySide import QtCore, QtGui, QtWidgets
+    from PySide import QtCore, QtWidgets
 
     ifcid = int(current.text(0).split("=", 1)[0].strip(" ").strip("#"))
     sel = FreeCADGui.Selection.getSelection()
