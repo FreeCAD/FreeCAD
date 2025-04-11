@@ -2689,7 +2689,7 @@ bool CDxfRead::ReadSection()
 }
 void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
 {
-    if (object->Layers.count(object->m_record_data) == 0) {
+    if (!object->Layers.contains(object->m_record_data)) {
         object->ImportError("First reference to missing Layer '%s'", object->m_record_data);
         // Synthesize the Layer so we don't get the same error again.
         // We need to take copies of the string arguments because MakeLayer uses them as move

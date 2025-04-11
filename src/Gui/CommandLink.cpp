@@ -403,7 +403,7 @@ static void linkConvert(bool unlink) {
             auto obj = info.obj.getObject();
             if(!parent || !obj || !parentVp)
                 continue;
-            if(!recomputeSet.count(parent))
+            if(!recomputeSet.contains(parent))
                 recomputeSet.emplace(parent,parent);
             auto doc = parent->getDocument();
             App::DocumentObject *replaceObj;

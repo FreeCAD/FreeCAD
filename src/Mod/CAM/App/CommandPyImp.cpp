@@ -281,7 +281,7 @@ PyObject* CommandPy::getCustomAttributes(const char* attr) const
     if (satt.length() == 1) {
         if (isalpha(satt[0])) {
             boost::to_upper(satt);
-            if (getCommandPtr()->Parameters.count(satt)) {
+            if (getCommandPtr()->Parameters.contains(satt)) {
                 return PyFloat_FromDouble(getCommandPtr()->Parameters[satt]);
             }
             Py_INCREF(Py_None);

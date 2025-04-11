@@ -62,7 +62,7 @@ std::string MenuItem::command() const
 
 bool MenuItem::hasItems() const
 {
-    return _items.count() > 0;
+    return !_items.isEmpty();
 }
 
 MenuItem* MenuItem::findItem(const std::string& name)
