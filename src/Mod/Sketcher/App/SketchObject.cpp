@@ -2298,7 +2298,7 @@ int SketchObject::delConstraint(int ConstrId)
     return 0;
 }
 
-int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry)
+int SketchObject::delConstraints(std::vector<int>& ConstrIds, bool updategeometry)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
