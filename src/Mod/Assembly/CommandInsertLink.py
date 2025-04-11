@@ -36,7 +36,6 @@ import UtilsAssembly
 import Preferences
 import CommandCreateJoint
 
-# translate = App.Qt.translate
 
 __title__ = "Assembly Command Insert Component"
 __author__ = "Ondsel"
@@ -145,8 +144,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
     def accept(self):
         self.deactivated()
 
-        # if self.partMoving:
-        #    self.endMove()
         Gui.addModule("UtilsAssembly")
         commands = "assembly = UtilsAssembly.activeAssembly()\n"
         for insertionItem in self.insertionStack:
@@ -178,9 +175,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
     def reject(self):
         self.deactivated()
-
-        # if self.partMoving:
-        #    self.dismissPart()
 
         App.closeActiveTransaction(True)
         return True
@@ -335,9 +329,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             item.setExpanded(not item.isExpanded())
             return
 
-        # if self.partMoving:
-        #    self.endMove()
-
         # check that the current document had been saved or that it's the same document as that of the selected part
         if not self.doc == selectedPart.Document:
             if self.doc.FileName == "":
@@ -434,11 +425,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         Gui.Selection.clearSelection()
         Gui.Selection.addSelection(self.doc.Name, addedObject.Name, "")
 
-        # Start moving the part if user brings mouse on view
-        # self.initMove()
-
         item.setSelected(False)
-        # self.form.partList.setItemSelected(item, False)
 
         if len(self.insertionStack) == 1 and not UtilsAssembly.isAssemblyGrounded():
             self.handleFirstInsertion()
@@ -481,7 +468,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
             self.groundedObj = self.insertionStack[0]["addedObject"]
             self.groundedJoint = CommandCreateJoint.createGroundedJoint(self.groundedObj)
-            # self.endMove()
 
     def increment_counter(self, item):
         text = item.text(0)
@@ -514,24 +500,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
             item.setText(0, new_text)
 
-    # def initMove(self):
-    #    self.callbackMove = self.view.addEventCallback("SoLocation2Event", self.moveMouse)
-    #    self.callbackClick = self.view.addEventCallback("SoMouseButtonEvent", self.clickMouse)
-    #    self.callbackKey = self.view.addEventCallback("SoKeyboardEvent", self.KeyboardEvent)
-    #    self.partMoving = True
-
-    # def endMove(self):
-    #    self.view.removeEventCallback("SoLocation2Event", self.callbackMove)
-    #    self.view.removeEventCallback("SoMouseButtonEvent", self.callbackClick)
-    #    self.view.removeEventCallback("SoKeyboardEvent", self.callbackKey)
-    #    self.partMoving = False
-    #    self.doc.recompute()
-    #    # Gui.Selection.removeSelectionGate()
-
-    # def moveMouse(self, info):
-    #    newPos = self.view.getPoint(*info["Position"])
-    #    self.insertionStack[-1]["addedObject"].Placement.Base = newPos
-
     """def clickMouse(self, info):
         if info["Button"] == "BUTTON1" and info["State"] == "DOWN":
             Gui.Selection.clearSelection()
@@ -559,24 +527,8 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         elif info["Button"] == "BUTTON2" and info["State"] == "DOWN":
             self.dismissPart()"""
 
-    # 3D view keyboard handler
-    # def KeyboardEvent(self, info):
-    #    if info["State"] == "UP" and info["Key"] == "ESCAPE":
-    #        self.dismissPart()
-
-    # def dismissPart(self):
-    #    self.endMove()
-    #    stack_item = self.insertionStack.pop()
-    #    self.totalTranslation -= stack_item["translation"]
-    #    UtilsAssembly.removeObjAndChilds(stack_item["addedObject"])
-    #    self.decrement_counter(stack_item["item"])
-
     # Taskbox keyboard event handler
     def eventFilter(self, watched, event):
-        # if watched == self.form and event.type() == QtCore.QEvent.KeyPress:
-        #    if event.key() == QtCore.Qt.Key_Escape and self.partMoving:
-        #        self.dismissPart()
-        #        return True  # Consume the event
 
         if event.type() == QtCore.QEvent.ContextMenu and watched is self.form.partList:
             item = watched.itemAt(event.pos())
@@ -587,8 +539,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     stack_item = self.insertionStack[i]
 
                     if stack_item["item"] == item:
-                        # if self.partMoving:
-                        #    self.endMove()
 
                         self.totalTranslation -= stack_item["translation"]
                         obj = stack_item["addedObject"]
