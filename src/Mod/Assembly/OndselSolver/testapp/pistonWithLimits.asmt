@@ -1,0 +1,415 @@
+freeCAD: 3D CAD with Motion Simulation  by  askoh.com
+Assembly
+	Notes
+		(Text string: 'CAD: Copyright (C) 2000-2004, Aik-Siong Koh, All Rights Reserved.<n><n>The piston crank is the most common mechanism to convert rotary motion to reciprocating motion or vice versa. A crank connects to the ground with a revolute joint. Its other end is connected to the connecting rod. And the connecting rod is connected to the piston which slides along an axis on the ground. The crank is given rotary motion causing the piston to slides back and forth is a straight line. Units are SI units. Angles are in radians.<n><n>If the instructions below are too brief, refer to the Notes in projectile.asm and circular.asm.<n><n>To load the example for a quick look:<n>Click File/Open/Assembly/ to get a dialog. Enter *.asm for a list of assemblies. Select piston.asm. <n><n>To create the assembly from scratch:<n>To create crank, connection rod and piston:<n>Create an empty assembly and populate it with two rods (Assembly1Part1, Assembly1Part2) and one cylinder (Assembly1Part3). The rods have  dimensions (1.0d, 0.2d, 0.1d) and (1.5d, 0.2d, 0.1d). The cylinder has radius (0.5d) and height (1.0d). Arrange them from bottom up away from the origin. <n><n>To mark joint attachment points:<n>On the ground, create a marker (Assembly1Marker1) at (0.0d, 0.0d, 0.0d) and another (Assembly1Marker2) at (3.0d, 0.0d, 0.0d). <n>On the first rod, create a marker (Assembly1Part1Marker1) at (0.1d, 0.1d, 0.0d) and another (Assembly1Part1Marker2) at (0.9d, 0.1d, 0.0d) relative to the z-face. <n>On the second rod, create a marker (Assembly1Part2Marker1) at (0.1d, 0.1d, -0.1d) and another (Assembly1Part2Marker2) at (1.4d, 0.1d, -0.1d) relative to the z-face. <n>On the cylinder, create a marker (Assembly1Part3Marker1) at (0.0d, 0.0d, 0.0d) and another (Assembly1Part3Marker2) at (0.0d, 0.0d, -1.0d) relative to the z-face. Tilt the cylinder a little to get a good view of (Assembly1Part3Marker2). RightClick/Rotate/ over it to rotate the marker (90.0d) degrees about the x-axis.<n>Tilt the cylinder upright to help the solver assemble the system later.<n><n>To create the joints:<n>Connect (Assembly1Marker1) to (Assembly1Part1Marker1) with revolute joint (Assembly1Joint1).<n>Connect (Assembly1Part1Marker2) to (Assembly1Part2Marker1) with revolute joint (Assembly1Joint2).<n>Connect (Assembly1Part2Marker2) to (Assembly1Part3Marker2) with revolute joint (Assembly1Joint3).<n>Connect (Assembly1Marker2) to (Assembly1Part3Marker1) with translational joint (Assembly1Joint3).<n>The translational joint keeps the marker z-axes parallel and colinear. Only relative translation along the z-axis is permitted.<n><n>To apply motion to the crank:<n>Apply rotation motion (Assembly1Motion1) to (Assembly1Joint1). Enter 2.0d*pi*time.<n><n>The assembly is now ready for simulation, animation and plotting.<n>' runs: (Core.RunArray runs: #(514 63 14 5 12 1 2 37 89 10 4 36 1 43 295 32 848 21 517 29 151) values: #(nil #underline #(#underline #bold) #underline #(#underline #bold) #underline nil #(#bold #large) nil #bold nil #(#bold #large) nil #bold nil #bold nil #bold nil #bold nil)))
+	Name
+		Assembly1
+	Position3D
+		0.0 	0.0 	0.0 
+	RotationMatrix
+		1.0 	0.0 	0.0 
+		0.0 	1.0 	0.0 
+		0.0 	0.0 	1.0 
+	Velocity3D
+		0.0 	0.0 	0.0 
+	Omega3D
+		0.0 	0.0 	0.0 
+	RefPoints
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Marker1
+					Position3D
+						0.0 	3.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	0.0 	1.0 
+						0.0 	-1.0 	0.0 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Marker2
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				Part1
+			Position3D
+				-0.1 	-0.1 	-0.1 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+				Extrusion
+					zStart
+						0.0 
+					zEnd
+						0.1 
+					Sketch
+						Name
+							Sketch1
+						Position3D
+							0.0 	0.0 	0.0 
+						RotationMatrix
+							1.0 	0.0 	0.0 
+							0.0 	1.0 	0.0 
+							0.0 	0.0 	1.0 
+						Graphics
+							Rectangle
+								Position2D
+									0.0 	0.0 
+								Angle
+									0.0 
+								xLength
+									1.0 
+								yLength
+									0.2 
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0.5 	0.1 	0.05 
+				RotationMatrix
+					1.0 	0.0 	0.0 
+					0.0 	1.0 	0.0 
+					0.0 	0.0 	1.0 
+				Mass
+					0.2 
+				MomentOfInertias
+					8.3333333333333e-4	0.016833333333333 	0.017333333333333 
+				Density
+					10.0 
+			RefPoints
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.1 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Marker1
+							Position3D
+								0.1 	0.1 	0.0 
+							RotationMatrix
+								1.0 	0.0 	0.0 
+								0.0 	1.0 	0.0 
+								0.0 	0.0 	1.0 
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.1 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Marker2
+							Position3D
+								0.9 	0.1 	0.0 
+							RotationMatrix
+								1.0 	0.0 	0.0 
+								0.0 	1.0 	0.0 
+								0.0 	0.0 	1.0 
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Part2
+			Position3D
+				0.94036115973815 	-0.017284236661228 	6.9388939039072e-18
+			RotationMatrix
+				-0.61538461538462 	-0.78822698199689 	-2.4430659816416e-17
+				0.78822698199689 	-0.61538461538462 	3.1292471039841e-17
+				-3.9699822201676e-17	-4.8559383484174e-33	1.0 
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+				Extrusion
+					zStart
+						0.0 
+					zEnd
+						0.1 
+					Sketch
+						Name
+							Sketch1
+						Position3D
+							0.0 	0.0 	0.0 
+						RotationMatrix
+							1.0 	0.0 	0.0 
+							0.0 	1.0 	0.0 
+							0.0 	0.0 	1.0 
+						Graphics
+							Rectangle
+								Position2D
+									0.0 	0.0 
+								Angle
+									0.0 
+								xLength
+									1.5 
+								yLength
+									0.2 
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0.75 	0.1 	0.05 
+				RotationMatrix
+					1.0 	-2.7755575615629e-16	0.0 
+					2.7755575615629e-16	1.0 	0.0 
+					0.0 	0.0 	1.0 
+				Mass
+					0.3 
+				MomentOfInertias
+					0.00125 	0.0565 	0.05725 
+				Density
+					10.0 
+			RefPoints
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.1 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Marker1
+							Position3D
+								0.1 	0.1 	-0.1 
+							RotationMatrix
+								1.0 	1.6433823482157e-50	6.1629758220392e-33
+								1.9277988905447e-49	1.0 	1.055150120668e-32
+								6.1629758220392e-33	8.8305116654985e-33	1.0 
+				RefPoint
+					Position3D
+						-7.0256300777061e-17	-1.0408340855861e-17	0.1 
+					RotationMatrix
+						1.0 	1.7347234759768e-18	-6.9388939039072e-18
+						1.7347234759768e-18	1.0 	0.0 
+						-6.9388939039072e-18	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Marker2
+							Position3D
+								1.4 	0.1 	-0.1 
+							RotationMatrix
+								1.0 	1.9417266172265e-33	1.873501354055e-16
+								1.4257315131995e-48	1.0 	4.1633363423443e-17
+								-2.5673907444456e-16	-4.1633363423443e-17	1.0 
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Part3
+			Position3D
+				1.8563657024101e-16	1.024695076596 	-6.9385028492422e-17
+			RotationMatrix
+				1.0 	1.7680967979307e-16	-2.2204460492503e-16
+				2.2204460492503e-16	6.3228810015037e-17	1.0 
+				1.7680967979307e-16	-1.0 	6.3228810015037e-17
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+				Extrusion
+					zStart
+						0.0 
+					zEnd
+						1.0 
+					Sketch
+						Name
+							Sketch1
+						Position3D
+							0.0 	0.0 	0.0 
+						RotationMatrix
+							1.0 	0.0 	0.0 
+							0.0 	1.0 	0.0 
+							0.0 	0.0 	1.0 
+						Graphics
+							Circle
+								Position2D
+									0.0 	0.0 
+								Angle
+									0.0 
+								Radius
+									0.5 
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					-7.9328390680452e-18	2.9323172983667e-17	0.5 
+				RotationMatrix
+					9.2444637330587e-33	1.0 	-1.0785207688569e-32
+					9.9703461330478e-65	1.0785207688569e-32	1.0 
+					1.0 	-9.2444637330587e-33	0.0 
+				Mass
+					7.6536686473018 
+				MomentOfInertias
+					0.93243354610288 	1.1040224936599 	1.1040224936599 
+				Density
+					10.0 
+			RefPoints
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	-1.0 	0.0 
+						0.0 	0.0 	-1.0 
+					Markers
+						Marker
+							Name
+								Marker1
+							Position3D
+								0.0 	0.0 	0.0 
+							RotationMatrix
+								1.0 	2.1223636732195e-32	-2.4651903288157e-32
+								-2.4651903288157e-32	-2.2204460492503e-16	1.0 
+								-1.1179465652456e-32	-1.0 	-2.2204460492503e-16
+				RefPoint
+					Position3D
+						1.0408340855861e-17	5.5511151231258e-17	1.0 
+					RotationMatrix
+						1.0 	-6.9388939039072e-18	6.9388939039072e-18
+						-6.9388939039072e-18	1.0 	0.0 
+						6.9388939039072e-18	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Marker2
+							Position3D
+								0.0 	0.0 	0.0 
+							RotationMatrix
+								1.0 	-4.1633363423442e-17	4.1633363423442e-17
+								-4.1633363423442e-17	1.0 	-4.9303806576313e-32
+								4.1633363423442e-17	-3.6977854932235e-32	1.0 
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			RevoluteJoint
+				Name
+					Joint1
+				MarkerI
+					/Assembly1/Marker2
+				MarkerJ
+					/Assembly1/Part1/Marker1
+			RevoluteJoint
+				Name
+					Joint2
+				MarkerI
+					/Assembly1/Part1/Marker2
+				MarkerJ
+					/Assembly1/Part2/Marker1
+			RevoluteJoint
+				Name
+					Joint3
+				MarkerI
+					/Assembly1/Part2/Marker2
+				MarkerJ
+					/Assembly1/Part3/Marker1
+			CylindricalJoint
+				Name
+					Joint4
+				MarkerI
+					/Assembly1/Part3/Marker2
+				MarkerJ
+					/Assembly1/Marker1
+		Motions
+		Limits
+			RotationLimit
+				Name
+					Limit1
+				MarkerI
+					/Assembly1/Marker2
+				MarkerJ
+					/Assembly1/Part1/Marker1
+				MotionJoint
+					/Assembly1/Joint1
+				Limit
+					0.0
+				Type
+					=>
+				Tol
+					1.0e-9
+			TranslationLimit
+				Name
+					Limit2
+				MarkerI
+					/Assembly1/Part3/Marker2
+				MarkerJ
+					/Assembly1/Marker1
+				MotionJoint
+					/Assembly1/Joint4
+				Limit
+					1.2
+				Type
+					=<
+				Tol
+					1.0e-9
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0.0 	-9.81 	0.0 
+	SimulationParameters
+		tstart
+			0.0 
+		tend
+			0.0 
+		hmin
+			1.0e-9
+		hmax
+			1.0 
+		hout
+			0.04 
+		errorTol
+			1.0e-6
+	AnimationParameters
+		nframe
+			26
+		icurrent
+			1
+		istart
+			1
+		iend
+			26
+		isForward
+			true
+		framesPerSecond
+			30

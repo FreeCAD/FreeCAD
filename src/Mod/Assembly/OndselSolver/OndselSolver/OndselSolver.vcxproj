@@ -1,0 +1,851 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{80f56cbc-b685-4c36-b834-a2dcdf0a98b7}</ProjectGuid>
+    <RootNamespace>OndselSolver</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>OndselSolver</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\testapp\OndselSolver.cpp" />
+    <ClCompile Include="Abs.cpp" />
+    <ClCompile Include="AbsConstraint.cpp" />
+    <ClCompile Include="AccICKineNewtonRaphson.cpp" />
+    <ClCompile Include="AccICNewtonRaphson.cpp" />
+    <ClCompile Include="AccKineNewtonRaphson.cpp" />
+    <ClCompile Include="AccNewtonRaphson.cpp" />
+    <ClCompile Include="AllowZRotation.cpp" />
+    <ClCompile Include="AllowZRotationConstraintIqctJqc.cpp" />
+    <ClCompile Include="AngleJoint.cpp" />
+    <ClCompile Include="AngleZConstraintIJ.cpp" />
+    <ClCompile Include="AngleZConstraintIqcJc.cpp" />
+    <ClCompile Include="AngleZConstraintIqcJqc.cpp" />
+    <ClCompile Include="AngleZIecJec.cpp" />
+    <ClCompile Include="AngleZIeqcJec.cpp" />
+    <ClCompile Include="AngleZIeqcJeqc.cpp" />
+    <ClCompile Include="AnyGeneralSpline.cpp" />
+    <ClCompile Include="AnyPosICNewtonRaphson.cpp" />
+    <ClCompile Include="ArcSine.cpp" />
+    <ClCompile Include="ArcTan.cpp" />
+    <ClCompile Include="ArcTan2.cpp" />
+    <ClCompile Include="Arguments.cpp" />
+    <ClCompile Include="Array.cpp" />
+    <ClCompile Include="ASMTAllowRotation.cpp" />
+    <ClCompile Include="ASMTAngleJoint.cpp" />
+    <ClCompile Include="ASMTAnimationParameters.cpp" />
+    <ClCompile Include="ASMTAssembly.cpp" />
+    <ClCompile Include="ASMTAtPointJoint.cpp" />
+    <ClCompile Include="ASMTCompoundJoint.cpp" />
+    <ClCompile Include="ASMTConeConeContact.cpp" />
+    <ClCompile Include="ASMTConstantGravity.cpp" />
+    <ClCompile Include="ASMTConstantVelocityJoint.cpp" />
+    <ClCompile Include="ASMTConstraintSet.cpp" />
+    <ClCompile Include="ASMTContact.cpp" />
+    <ClCompile Include="ASMTCylConeContact.cpp" />
+    <ClCompile Include="ASMTCylCylContact.cpp" />
+    <ClCompile Include="ASMTCylindricalJoint.cpp" />
+    <ClCompile Include="ASMTCylSphJoint.cpp" />
+    <ClCompile Include="ASMTExtrusion.cpp" />
+    <ClCompile Include="ASMTFixedJoint.cpp" />
+    <ClCompile Include="ASMTForceTorque.cpp" />
+    <ClCompile Include="ASMTGearJoint.cpp" />
+    <ClCompile Include="ASMTGeneralMotion.cpp" />
+    <ClCompile Include="ASMTInLineJoint.cpp" />
+    <ClCompile Include="ASMTInPlaneJoint.cpp" />
+    <ClCompile Include="ASMTLimit.cpp" />
+    <ClCompile Include="ASMTLineInPlaneJoint.cpp" />
+    <ClCompile Include="ASMTParallelAxesJoint.cpp" />
+    <ClCompile Include="ASMTPerpendicularJoint.cpp" />
+    <ClCompile Include="ASMTPlanarJoint.cpp" />
+    <ClCompile Include="ASMTPointInLineJoint.cpp" />
+    <ClCompile Include="ASMTItem.cpp" />
+    <ClCompile Include="ASMTItemIJ.cpp" />
+    <ClCompile Include="ASMTJoint.cpp" />
+    <ClCompile Include="ASMTKinematicIJ.cpp" />
+    <ClCompile Include="ASMTMarker.cpp" />
+    <ClCompile Include="ASMTMotion.cpp" />
+    <ClCompile Include="ASMTNoRotationJoint.cpp" />
+    <ClCompile Include="ASMTPart.cpp" />
+    <ClCompile Include="ASMTPointInPlaneJoint.cpp" />
+    <ClCompile Include="ASMTPrincipalMassMarker.cpp" />
+    <ClCompile Include="ASMTRackPinionJoint.cpp" />
+    <ClCompile Include="ASMTRefCurve.cpp" />
+    <ClCompile Include="ASMTRefItem.cpp" />
+    <ClCompile Include="ASMTRefPoint.cpp" />
+    <ClCompile Include="ASMTRefSurface.cpp" />
+    <ClCompile Include="ASMTRevCylJoint.cpp" />
+    <ClCompile Include="ASMTRevoluteJoint.cpp" />
+    <ClCompile Include="ASMTRevRevJoint.cpp" />
+    <ClCompile Include="ASMTRotationalMotion.cpp" />
+    <ClCompile Include="ASMTRotationLimit.cpp" />
+    <ClCompile Include="ASMTScrewJoint.cpp" />
+    <ClCompile Include="ASMTSimulationParameters.cpp" />
+    <ClCompile Include="ASMTSpatialContainer.cpp" />
+    <ClCompile Include="ASMTSpatialItem.cpp" />
+    <ClCompile Include="ASMTSphericalJoint.cpp" />
+    <ClCompile Include="ASMTSphSphJoint.cpp" />
+    <ClCompile Include="ASMTTime.cpp" />
+    <ClCompile Include="ASMTTranslationalMotion.cpp" />
+    <ClCompile Include="ASMTTranslationalJoint.cpp" />
+    <ClCompile Include="ASMTTranslationLimit.cpp" />
+    <ClCompile Include="ASMTUniversalJoint.cpp" />
+    <ClCompile Include="AtPointConstraintIJ.cpp" />
+    <ClCompile Include="AtPointConstraintIqcJc.cpp" />
+    <ClCompile Include="AtPointConstraintIqcJqc.cpp" />
+    <ClCompile Include="AtPointConstraintIqctJqc.cpp" />
+    <ClCompile Include="AtPointJoint.cpp" />
+    <ClCompile Include="BasicIntegrator.cpp" />
+    <ClCompile Include="BasicQuasiIntegrator.cpp" />
+    <ClCompile Include="BasicUserFunction.cpp" />
+    <ClCompile Include="CADSystem.cpp" />
+    <ClCompile Include="CartesianFrame.cpp" />
+    <ClCompile Include="CompoundJoint.cpp" />
+    <ClCompile Include="Constant.cpp" />
+    <ClCompile Include="ConstantGravity.cpp" />
+    <ClCompile Include="ConstantVelocityJoint.cpp" />
+    <ClCompile Include="Constraint.cpp" />
+    <ClCompile Include="ConstraintIJ.cpp" />
+    <ClCompile Include="ConstraintSet.cpp" />
+    <ClCompile Include="ConstVelConstraintIJ.cpp" />
+    <ClCompile Include="ConstVelConstraintIqcJc.cpp" />
+    <ClCompile Include="ConstVelConstraintIqcJqc.cpp" />
+    <ClCompile Include="Cosine.cpp" />
+    <ClCompile Include="CREATE.cpp" />
+    <ClCompile Include="CylindricalJoint.cpp" />
+    <ClCompile Include="CylSphJoint.cpp" />
+    <ClCompile Include="DifferentiatedGeneralSpline.cpp" />
+    <ClCompile Include="EigenDecomposition.cpp" />
+    <ClCompile Include="EndFrameqct2.cpp" />
+    <ClCompile Include="EulerAngles.cpp" />
+    <ClCompile Include="EulerAnglesDDot.cpp" />
+    <ClCompile Include="EulerAnglesDot.cpp" />
+    <ClCompile Include="Exponential.cpp" />
+    <ClCompile Include="ExternalSystem.cpp" />
+    <ClCompile Include="FunctionFromData.cpp" />
+    <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="FunctionXcParameter.cpp" />
+    <ClCompile Include="FunctionXY.cpp" />
+    <ClCompile Include="GeneralSpline.cpp" />
+    <ClCompile Include="Integral.cpp" />
+    <ClCompile Include="ItemIJ.cpp" />
+    <ClCompile Include="LimitIJ.cpp" />
+    <ClCompile Include="Ln.cpp" />
+    <ClCompile Include="Log10.cpp" />
+    <ClCompile Include="LogN.cpp" />
+    <ClCompile Include="MomentOfInertiaSolver.cpp" />
+    <ClCompile Include="Negative.cpp" />
+    <ClCompile Include="PiecewiseFunction.cpp" />
+    <ClCompile Include="Polynomial.cpp" />
+    <ClCompile Include="PosICDragLimitNewtonRaphson.cpp" />
+    <ClCompile Include="PosICDragNewtonRaphson.cpp" />
+    <ClCompile Include="PosVelAccData.cpp" />
+    <ClCompile Include="DiagonalMatrix.cpp" />
+    <ClCompile Include="DifferenceOperator.cpp" />
+    <ClCompile Include="DirectionCosineConstraintIJ.cpp" />
+    <ClCompile Include="DirectionCosineConstraintIqcJc.cpp" />
+    <ClCompile Include="DirectionCosineConstraintIqcJqc.cpp" />
+    <ClCompile Include="DirectionCosineConstraintIqctJqc.cpp" />
+    <ClCompile Include="DirectionCosineIecJec.cpp" />
+    <ClCompile Include="DirectionCosineIeqcJec.cpp" />
+    <ClCompile Include="DirectionCosineIeqcJeqc.cpp" />
+    <ClCompile Include="DirectionCosineIeqctJeqc.cpp" />
+    <ClCompile Include="DiscontinuityError.cpp" />
+    <ClCompile Include="DispCompIecJecIe.cpp" />
+    <ClCompile Include="DispCompIecJecKec.cpp" />
+    <ClCompile Include="DispCompIecJecKeqc.cpp" />
+    <ClCompile Include="DispCompIecJecO.cpp" />
+    <ClCompile Include="DispCompIeqcJecIe.cpp" />
+    <ClCompile Include="DispCompIeqcJecKeqc.cpp" />
+    <ClCompile Include="DispCompIeqcJecO.cpp" />
+    <ClCompile Include="DispCompIeqcJeqcIe.cpp" />
+    <ClCompile Include="DispCompIeqcJeqcKeqc.cpp" />
+    <ClCompile Include="DispCompIeqcJeqcKeqct.cpp" />
+    <ClCompile Include="DispCompIeqcJeqcO.cpp" />
+    <ClCompile Include="DispCompIeqctJeqcIe.cpp" />
+    <ClCompile Include="DispCompIeqctJeqcKeqct.cpp" />
+    <ClCompile Include="DispCompIeqctJeqcO.cpp" />
+    <ClCompile Include="DistanceConstraintIJ.cpp" />
+    <ClCompile Include="DistanceConstraintIqcJc.cpp" />
+    <ClCompile Include="DistanceConstraintIqcJqc.cpp" />
+    <ClCompile Include="DistanceConstraintIqctJqc.cpp" />
+    <ClCompile Include="DistancexyConstraintIJ.cpp" />
+    <ClCompile Include="DistancexyConstraintIqcJc.cpp" />
+    <ClCompile Include="DistancexyConstraintIqcJqc.cpp" />
+    <ClCompile Include="DistIecJec.cpp" />
+    <ClCompile Include="DistIeqcJec.cpp" />
+    <ClCompile Include="DistIeqcJeqc.cpp" />
+    <ClCompile Include="DistIeqctJeqc.cpp" />
+    <ClCompile Include="DistxyIecJec.cpp" />
+    <ClCompile Include="DistxyIeqcJec.cpp" />
+    <ClCompile Include="DistxyIeqcJeqc.cpp" />
+    <ClCompile Include="DistxyIeqctJeqc.cpp" />
+    <ClCompile Include="EndFramec.cpp" />
+    <ClCompile Include="EndFrameqc.cpp" />
+    <ClCompile Include="EndFrameqct.cpp" />
+    <ClCompile Include="EulerAngleszxz.cpp" />
+    <ClCompile Include="EulerAngleszxzDDot.cpp" />
+    <ClCompile Include="EulerAngleszxzDot.cpp" />
+    <ClCompile Include="EulerArray.cpp" />
+    <ClCompile Include="EulerConstraint.cpp" />
+    <ClCompile Include="EulerParameters.cpp" />
+    <ClCompile Include="EulerParametersDDot.cpp" />
+    <ClCompile Include="EulerParametersDot.cpp" />
+    <ClCompile Include="ExpressionX.cpp" />
+    <ClCompile Include="FixedJoint.cpp" />
+    <ClCompile Include="ForceTorqueData.cpp" />
+    <ClCompile Include="ForceTorqueItem.cpp" />
+    <ClCompile Include="FullColumn.cpp" />
+    <ClCompile Include="FullMatrix.cpp" />
+    <ClCompile Include="FullMotion.cpp" />
+    <ClCompile Include="FullRow.cpp" />
+    <ClCompile Include="Function.cpp" />
+    <ClCompile Include="FunctionWithManyArgs.cpp" />
+    <ClCompile Include="FunctionX.cpp" />
+    <ClCompile Include="GearConstraintIJ.cpp" />
+    <ClCompile Include="GearConstraintIqcJc.cpp" />
+    <ClCompile Include="GearConstraintIqcJqc.cpp" />
+    <ClCompile Include="GearJoint.cpp" />
+    <ClCompile Include="GEFullMat.cpp" />
+    <ClCompile Include="GEFullMatFullPv.cpp" />
+    <ClCompile Include="GEFullMatParPv.cpp" />
+    <ClCompile Include="GESpMat.cpp" />
+    <ClCompile Include="GESpMatFullPv.cpp" />
+    <ClCompile Include="GESpMatFullPvPosIC.cpp" />
+    <ClCompile Include="GESpMatParPv.cpp" />
+    <ClCompile Include="GESpMatParPvMarko.cpp" />
+    <ClCompile Include="GESpMatParPvMarkoFast.cpp" />
+    <ClCompile Include="GESpMatParPvPrecise.cpp" />
+    <ClCompile Include="ICKineIntegrator.cpp" />
+    <ClCompile Include="IndependentVariable.cpp" />
+    <ClCompile Include="InLineJoint.cpp" />
+    <ClCompile Include="InPlaneJoint.cpp" />
+    <ClCompile Include="Integrator.cpp" />
+    <ClCompile Include="IntegratorInterface.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Joint.cpp" />
+    <ClCompile Include="KineIntegrator.cpp" />
+    <ClCompile Include="KinematicIeJe.cpp" />
+    <ClCompile Include="LDUFullMatParPv.cpp" />
+    <ClCompile Include="LDUSpMat.cpp" />
+    <ClCompile Include="LDUSpMatParPv.cpp" />
+    <ClCompile Include="LDUSpMatParPvMarko.cpp" />
+    <ClCompile Include="LDUSpMatParPvPrecise.cpp" />
+    <ClCompile Include="LinearMultiStepMethod.cpp" />
+    <ClCompile Include="LineInPlaneJoint.cpp" />
+    <ClCompile Include="MarkerFrame.cpp" />
+    <ClCompile Include="MatrixDecomposition.cpp" />
+    <ClCompile Include="MatrixGaussElimination.cpp" />
+    <ClCompile Include="MatrixLDU.cpp" />
+    <ClCompile Include="MatrixSolver.cpp" />
+    <ClCompile Include="MaximumIterationError.cpp" />
+    <ClCompile Include="MbDMath.cpp" />
+    <ClCompile Include="NewtonRaphson.cpp" />
+    <ClCompile Include="NewtonRaphsonError.cpp" />
+    <ClCompile Include="NoRotationJoint.cpp" />
+    <ClCompile Include="NotKinematicError.cpp" />
+    <ClCompile Include="Numeric.cpp" />
+    <ClCompile Include="OrbitAngleZIecJec.cpp" />
+    <ClCompile Include="OrbitAngleZIeqcJec.cpp" />
+    <ClCompile Include="OrbitAngleZIeqcJeqc.cpp" />
+    <ClCompile Include="Orientation.cpp" />
+    <ClCompile Include="ParallelAxesJoint.cpp" />
+    <ClCompile Include="Part.cpp" />
+    <ClCompile Include="PartFrame.cpp" />
+    <ClCompile Include="PerpendicularJoint.cpp" />
+    <ClCompile Include="PlanarJoint.cpp" />
+    <ClCompile Include="PointInLineJoint.cpp" />
+    <ClCompile Include="PointInPlaneJoint.cpp" />
+    <ClCompile Include="PosICKineNewtonRaphson.cpp" />
+    <ClCompile Include="PosICNewtonRaphson.cpp" />
+    <ClCompile Include="PosKineNewtonRaphson.cpp" />
+    <ClCompile Include="PosNewtonRaphson.cpp" />
+    <ClCompile Include="Power.cpp" />
+    <ClCompile Include="PrescribedMotion.cpp" />
+    <ClCompile Include="Product.cpp" />
+    <ClCompile Include="QuasiIntegrator.cpp" />
+    <ClCompile Include="RackPinConstraintIJ.cpp" />
+    <ClCompile Include="RackPinConstraintIqcJc.cpp" />
+    <ClCompile Include="RackPinConstraintIqcJqc.cpp" />
+    <ClCompile Include="RackPinJoint.cpp" />
+    <ClCompile Include="RampStepFunction.cpp" />
+    <ClCompile Include="Reciprocal.cpp" />
+    <ClCompile Include="RedundantConstraint.cpp" />
+    <ClCompile Include="RevCylJoint.cpp" />
+    <ClCompile Include="RevoluteJoint.cpp" />
+    <ClCompile Include="RevRevJoint.cpp" />
+    <ClCompile Include="RotationLimitIJ.cpp" />
+    <ClCompile Include="RowTypeMatrix.cpp" />
+    <ClCompile Include="ScalarNewtonRaphson.cpp" />
+    <ClCompile Include="ScrewConstraintIJ.cpp" />
+    <ClCompile Include="ScrewConstraintIqcJc.cpp" />
+    <ClCompile Include="ScrewConstraintIqcJqc.cpp" />
+    <ClCompile Include="ScrewJoint.cpp" />
+    <ClCompile Include="SimulationStoppingError.cpp" />
+    <ClCompile Include="Sine.cpp" />
+    <ClCompile Include="SingularMatrixError.cpp" />
+    <ClCompile Include="Solver.cpp" />
+    <ClCompile Include="SparseColumn.cpp" />
+    <ClCompile Include="SparseMatrix.cpp" />
+    <ClCompile Include="SparseRow.cpp" />
+    <ClCompile Include="SparseVector.cpp" />
+    <ClCompile Include="SphericalJoint.cpp" />
+    <ClCompile Include="SphSphJoint.cpp" />
+    <ClCompile Include="StableBackwardDifference.cpp" />
+    <ClCompile Include="LDUFullMat.cpp" />
+    <ClCompile Include="StateData.cpp" />
+    <ClCompile Include="StepFunction.cpp" />
+    <ClCompile Include="Sum.cpp" />
+    <ClCompile Include="Symbolic.cpp" />
+    <ClCompile Include="SymbolicParser.cpp" />
+    <ClCompile Include="SyntaxError.cpp" />
+    <ClCompile Include="System.cpp" />
+    <ClCompile Include="SystemNewtonRaphson.cpp" />
+    <ClCompile Include="SystemSolver.cpp" />
+    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="TooManyTriesError.cpp" />
+    <ClCompile Include="TooSmallStepSizeError.cpp" />
+    <ClCompile Include="Transitions.cpp" />
+    <ClCompile Include="Translation.cpp" />
+    <ClCompile Include="TranslationalJoint.cpp" />
+    <ClCompile Include="TranslationConstraintIJ.cpp" />
+    <ClCompile Include="TranslationConstraintIqcJc.cpp" />
+    <ClCompile Include="TranslationConstraintIqcJqc.cpp" />
+    <ClCompile Include="TranslationConstraintIqctJqc.cpp" />
+    <ClCompile Include="TranslationLimitIJ.cpp" />
+    <ClCompile Include="Units.cpp" />
+    <ClCompile Include="UniversalJoint.cpp" />
+    <ClCompile Include="UserFunction.cpp" />
+    <ClCompile Include="Variable.cpp" />
+    <ClCompile Include="FullVector.cpp" />
+    <ClCompile Include="VectorNewtonRaphson.cpp" />
+    <ClCompile Include="VelICKineSolver.cpp" />
+    <ClCompile Include="VelICSolver.cpp" />
+    <ClCompile Include="VelKineSolver.cpp" />
+    <ClCompile Include="VelSolver.cpp" />
+    <ClCompile Include="ZRotation.cpp" />
+    <ClCompile Include="ZTranslation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\testapp\OndselSolver.h" />
+    <ClInclude Include="Abs.h" />
+    <ClInclude Include="AbsConstraint.h" />
+    <ClInclude Include="AccICKineNewtonRaphson.h" />
+    <ClInclude Include="AccICNewtonRaphson.h" />
+    <ClInclude Include="AccKineNewtonRaphson.h" />
+    <ClInclude Include="AccNewtonRaphson.h" />
+    <ClInclude Include="AllowZRotation.h" />
+    <ClInclude Include="AllowZRotationConstraintIqctJqc.h" />
+    <ClInclude Include="AngleJoint.h" />
+    <ClInclude Include="AngleZConstraintIJ.h" />
+    <ClInclude Include="AngleZConstraintIqcJc.h" />
+    <ClInclude Include="AngleZConstraintIqcJqc.h" />
+    <ClInclude Include="AngleZIecJec.h" />
+    <ClInclude Include="AngleZIeqcJec.h" />
+    <ClInclude Include="AngleZIeqcJeqc.h" />
+    <ClInclude Include="AnyGeneralSpline.h" />
+    <ClInclude Include="AnyPosICNewtonRaphson.h" />
+    <ClInclude Include="ArcSine.h" />
+    <ClInclude Include="ArcTan.h" />
+    <ClInclude Include="ArcTan2.h" />
+    <ClInclude Include="Arguments.h" />
+    <ClInclude Include="Array.h" />
+    <ClInclude Include="ASMTAllowRotation.h" />
+    <ClInclude Include="ASMTAngleJoint.h" />
+    <ClInclude Include="ASMTAnimationParameters.h" />
+    <ClInclude Include="ASMTAssembly.h" />
+    <ClInclude Include="ASMTAtPointJoint.h" />
+    <ClInclude Include="ASMTCompoundJoint.h" />
+    <ClInclude Include="ASMTConeConeContact.h" />
+    <ClInclude Include="ASMTConstantGravity.h" />
+    <ClInclude Include="ASMTConstantVelocityJoint.h" />
+    <ClInclude Include="ASMTConstraintSet.h" />
+    <ClInclude Include="ASMTContact.h" />
+    <ClInclude Include="ASMTCylConeContact.h" />
+    <ClInclude Include="ASMTCylCylContact.h" />
+    <ClInclude Include="ASMTCylindricalJoint.h" />
+    <ClInclude Include="ASMTCylSphJoint.h" />
+    <ClInclude Include="ASMTExtrusion.h" />
+    <ClInclude Include="ASMTFixedJoint.h" />
+    <ClInclude Include="ASMTForceTorque.h" />
+    <ClInclude Include="ASMTGearJoint.h" />
+    <ClInclude Include="ASMTGeneralMotion.h" />
+    <ClInclude Include="ASMTInLineJoint.h" />
+    <ClInclude Include="ASMTInPlaneJoint.h" />
+    <ClInclude Include="ASMTLimit.h" />
+    <ClInclude Include="ASMTLineInPlaneJoint.h" />
+    <ClInclude Include="ASMTParallelAxesJoint.h" />
+    <ClInclude Include="ASMTPerpendicularJoint.h" />
+    <ClInclude Include="ASMTPlanarJoint.h" />
+    <ClInclude Include="ASMTPointInLineJoint.h" />
+    <ClInclude Include="ASMTItem.h" />
+    <ClInclude Include="ASMTItemIJ.h" />
+    <ClInclude Include="ASMTJoint.h" />
+    <ClInclude Include="ASMTKinematicIJ.h" />
+    <ClInclude Include="ASMTMarker.h" />
+    <ClInclude Include="ASMTMotion.h" />
+    <ClInclude Include="ASMTNoRotationJoint.h" />
+    <ClInclude Include="ASMTPart.h" />
+    <ClInclude Include="ASMTPointInPlaneJoint.h" />
+    <ClInclude Include="ASMTPrincipalMassMarker.h" />
+    <ClInclude Include="ASMTRackPinionJoint.h" />
+    <ClInclude Include="ASMTRefCurve.h" />
+    <ClInclude Include="ASMTRefItem.h" />
+    <ClInclude Include="ASMTRefPoint.h" />
+    <ClInclude Include="ASMTRefSurface.h" />
+    <ClInclude Include="ASMTRevCylJoint.h" />
+    <ClInclude Include="ASMTRevoluteJoint.h" />
+    <ClInclude Include="ASMTRevRevJoint.h" />
+    <ClInclude Include="ASMTRotationalMotion.h" />
+    <ClInclude Include="ASMTRotationLimit.h" />
+    <ClInclude Include="ASMTScrewJoint.h" />
+    <ClInclude Include="ASMTSimulationParameters.h" />
+    <ClInclude Include="ASMTSpatialContainer.h" />
+    <ClInclude Include="ASMTSpatialItem.h" />
+    <ClInclude Include="ASMTSphericalJoint.h" />
+    <ClInclude Include="ASMTSphSphJoint.h" />
+    <ClInclude Include="ASMTTime.h" />
+    <ClInclude Include="ASMTTranslationalMotion.h" />
+    <ClInclude Include="ASMTTranslationalJoint.h" />
+    <ClInclude Include="ASMTTranslationLimit.h" />
+    <ClInclude Include="ASMTUniversalJoint.h" />
+    <ClInclude Include="AtPointConstraintIJ.h" />
+    <ClInclude Include="AtPointConstraintIqcJc.h" />
+    <ClInclude Include="AtPointConstraintIqcJqc.h" />
+    <ClInclude Include="AtPointConstraintIqctJqc.h" />
+    <ClInclude Include="AtPointJoint.h" />
+    <ClInclude Include="BasicIntegrator.h" />
+    <ClInclude Include="BasicQuasiIntegrator.h" />
+    <ClInclude Include="BasicUserFunction.h" />
+    <ClInclude Include="CADSystem.h" />
+    <ClInclude Include="CartesianFrame.h" />
+    <ClInclude Include="CompoundJoint.h" />
+    <ClInclude Include="Constant.h" />
+    <ClInclude Include="ConstantGravity.h" />
+    <ClInclude Include="ConstantVelocityJoint.h" />
+    <ClInclude Include="Constraint.h" />
+    <ClInclude Include="ConstraintIJ.h" />
+    <ClInclude Include="ConstraintSet.h" />
+    <ClInclude Include="ConstVelConstraintIJ.h" />
+    <ClInclude Include="ConstVelConstraintIqcJc.h" />
+    <ClInclude Include="ConstVelConstraintIqcJqc.h" />
+    <ClInclude Include="Cosine.h" />
+    <ClInclude Include="CREATE.h" />
+    <ClInclude Include="CylindricalJoint.h" />
+    <ClInclude Include="CylSphJoint.h" />
+    <ClInclude Include="DifferentiatedGeneralSpline.h" />
+    <ClInclude Include="EigenDecomposition.h" />
+    <ClInclude Include="EndFrameqct2.h" />
+    <ClInclude Include="EulerAngles.h" />
+    <ClInclude Include="EulerAnglesDDot.h" />
+    <ClInclude Include="EulerAnglesDot.h" />
+    <ClInclude Include="Exponential.h" />
+    <ClInclude Include="ExternalSystem.h" />
+    <ClInclude Include="FunctionFromData.h" />
+    <ClInclude Include="Functions.h" />
+    <ClInclude Include="FunctionXcParameter.h" />
+    <ClInclude Include="FunctionXY.h" />
+    <ClInclude Include="GeneralSpline.h" />
+    <ClInclude Include="Integral.h" />
+    <ClInclude Include="ItemIJ.h" />
+    <ClInclude Include="LimitIJ.h" />
+    <ClInclude Include="Ln.h" />
+    <ClInclude Include="Log10.h" />
+    <ClInclude Include="LogN.h" />
+    <ClInclude Include="MomentOfInertiaSolver.h" />
+    <ClInclude Include="Negative.h" />
+    <ClInclude Include="PiecewiseFunction.h" />
+    <ClInclude Include="Polynomial.h" />
+    <ClInclude Include="PosICDragLimitNewtonRaphson.h" />
+    <ClInclude Include="PosICDragNewtonRaphson.h" />
+    <ClInclude Include="PosVelAccData.h" />
+    <ClInclude Include="DiagonalMatrix.h" />
+    <ClInclude Include="DifferenceOperator.h" />
+    <ClInclude Include="DirectionCosineConstraintIJ.h" />
+    <ClInclude Include="DirectionCosineConstraintIqcJc.h" />
+    <ClInclude Include="DirectionCosineConstraintIqcJqc.h" />
+    <ClInclude Include="DirectionCosineConstraintIqctJqc.h" />
+    <ClInclude Include="DirectionCosineIecJec.h" />
+    <ClInclude Include="DirectionCosineIeqcJec.h" />
+    <ClInclude Include="DirectionCosineIeqcJeqc.h" />
+    <ClInclude Include="DirectionCosineIeqctJeqc.h" />
+    <ClInclude Include="DiscontinuityError.h" />
+    <ClInclude Include="DispCompIecJecIe.h" />
+    <ClInclude Include="DispCompIecJecKec.h" />
+    <ClInclude Include="DispCompIecJecKeqc.h" />
+    <ClInclude Include="DispCompIecJecO.h" />
+    <ClInclude Include="DispCompIeqcJecIe.h" />
+    <ClInclude Include="DispCompIeqcJecKeqc.h" />
+    <ClInclude Include="DispCompIeqcJecO.h" />
+    <ClInclude Include="DispCompIeqcJeqcIe.h" />
+    <ClInclude Include="DispCompIeqcJeqcKeqc.h" />
+    <ClInclude Include="DispCompIeqcJeqcKeqct.h" />
+    <ClInclude Include="DispCompIeqcJeqcO.h" />
+    <ClInclude Include="DispCompIeqctJeqcIe.h" />
+    <ClInclude Include="DispCompIeqctJeqcKeqct.h" />
+    <ClInclude Include="DispCompIeqctJeqcO.h" />
+    <ClInclude Include="DistanceConstraintIJ.h" />
+    <ClInclude Include="DistanceConstraintIqcJc.h" />
+    <ClInclude Include="DistanceConstraintIqcJqc.h" />
+    <ClInclude Include="DistanceConstraintIqctJqc.h" />
+    <ClInclude Include="DistancexyConstraintIJ.h" />
+    <ClInclude Include="DistancexyConstraintIqcJc.h" />
+    <ClInclude Include="DistancexyConstraintIqcJqc.h" />
+    <ClInclude Include="DistIecJec.h" />
+    <ClInclude Include="DistIeqcJec.h" />
+    <ClInclude Include="DistIeqcJeqc.h" />
+    <ClInclude Include="DistIeqctJeqc.h" />
+    <ClInclude Include="DistxyIecJec.h" />
+    <ClInclude Include="DistxyIeqcJec.h" />
+    <ClInclude Include="DistxyIeqcJeqc.h" />
+    <ClInclude Include="DistxyIeqctJeqc.h" />
+    <ClInclude Include="EndFramec.h" />
+    <ClInclude Include="EndFrameqc.h" />
+    <ClInclude Include="EndFrameqct.h" />
+    <ClInclude Include="enum.h" />
+    <ClInclude Include="EulerAngleszxz.h" />
+    <ClInclude Include="EulerAngleszxzDDot.h" />
+    <ClInclude Include="EulerAngleszxzDot.h" />
+    <ClInclude Include="EulerArray.h" />
+    <ClInclude Include="EulerConstraint.h" />
+    <ClInclude Include="EulerParameters.h" />
+    <ClInclude Include="EulerParametersDDot.h" />
+    <ClInclude Include="EulerParametersDot.h" />
+    <ClInclude Include="ExpressionX.h" />
+    <ClInclude Include="FixedJoint.h" />
+    <ClInclude Include="ForceTorqueData.h" />
+    <ClInclude Include="ForceTorqueItem.h" />
+    <ClInclude Include="FullColumn.h" />
+    <ClInclude Include="FullMatrix.h" />
+    <ClInclude Include="FullMotion.h" />
+    <ClInclude Include="FullRow.h" />
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="FunctionWithManyArgs.h" />
+    <ClInclude Include="FunctionX.h" />
+    <ClInclude Include="GearConstraintIJ.h" />
+    <ClInclude Include="GearConstraintIqcJc.h" />
+    <ClInclude Include="GearConstraintIqcJqc.h" />
+    <ClInclude Include="GearJoint.h" />
+    <ClInclude Include="GEFullMat.h" />
+    <ClInclude Include="GEFullMatFullPv.h" />
+    <ClInclude Include="GEFullMatParPv.h" />
+    <ClInclude Include="GESpMat.h" />
+    <ClInclude Include="GESpMatFullPv.h" />
+    <ClInclude Include="GESpMatFullPvPosIC.h" />
+    <ClInclude Include="GESpMatParPv.h" />
+    <ClInclude Include="GESpMatParPvMarko.h" />
+    <ClInclude Include="GESpMatParPvMarkoFast.h" />
+    <ClInclude Include="GESpMatParPvPrecise.h" />
+    <ClInclude Include="ICKineIntegrator.h" />
+    <ClInclude Include="IndependentVariable.h" />
+    <ClInclude Include="InLineJoint.h" />
+    <ClInclude Include="InPlaneJoint.h" />
+    <ClInclude Include="Integrator.h" />
+    <ClInclude Include="IntegratorInterface.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Joint.h" />
+    <ClInclude Include="KineIntegrator.h" />
+    <ClInclude Include="KinematicIeJe.h" />
+    <ClInclude Include="LDUFullMatParPv.h" />
+    <ClInclude Include="LDUSpMat.h" />
+    <ClInclude Include="LDUSpMatParPv.h" />
+    <ClInclude Include="LDUSpMatParPvMarko.h" />
+    <ClInclude Include="LDUSpMatParPvPrecise.h" />
+    <ClInclude Include="LinearMultiStepMethod.h" />
+    <ClInclude Include="LineInPlaneJoint.h" />
+    <ClInclude Include="MarkerFrame.h" />
+    <ClInclude Include="MatrixDecomposition.h" />
+    <ClInclude Include="MatrixGaussElimination.h" />
+    <ClInclude Include="MatrixLDU.h" />
+    <ClInclude Include="MatrixSolver.h" />
+    <ClInclude Include="MaximumIterationError.h" />
+    <ClInclude Include="MbDMath.h" />
+    <ClInclude Include="NewtonRaphson.h" />
+    <ClInclude Include="NewtonRaphsonError.h" />
+    <ClInclude Include="NoRotationJoint.h" />
+    <ClInclude Include="NotKinematicError.h" />
+    <ClInclude Include="Numeric.h" />
+    <ClInclude Include="OrbitAngleZIecJec.h" />
+    <ClInclude Include="OrbitAngleZIeqcJec.h" />
+    <ClInclude Include="OrbitAngleZIeqcJeqc.h" />
+    <ClInclude Include="Orientation.h" />
+    <ClInclude Include="ParallelAxesJoint.h" />
+    <ClInclude Include="Part.h" />
+    <ClInclude Include="PartFrame.h" />
+    <ClInclude Include="PerpendicularJoint.h" />
+    <ClInclude Include="PlanarJoint.h" />
+    <ClInclude Include="PointInLineJoint.h" />
+    <ClInclude Include="PointInPlaneJoint.h" />
+    <ClInclude Include="PosICKineNewtonRaphson.h" />
+    <ClInclude Include="PosICNewtonRaphson.h" />
+    <ClInclude Include="PosKineNewtonRaphson.h" />
+    <ClInclude Include="PosNewtonRaphson.h" />
+    <ClInclude Include="Power.h" />
+    <ClInclude Include="PrescribedMotion.h" />
+    <ClInclude Include="Product.h" />
+    <ClInclude Include="QuasiIntegrator.h" />
+    <ClInclude Include="RackPinConstraintIJ.h" />
+    <ClInclude Include="RackPinConstraintIqcJc.h" />
+    <ClInclude Include="RackPinConstraintIqcJqc.h" />
+    <ClInclude Include="RackPinJoint.h" />
+    <ClInclude Include="RampStepFunction.h" />
+    <ClInclude Include="Reciprocal.h" />
+    <ClInclude Include="RedundantConstraint.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RevCylJoint.h" />
+    <ClInclude Include="RevoluteJoint.h" />
+    <ClInclude Include="RevRevJoint.h" />
+    <ClInclude Include="RotationLimitIJ.h" />
+    <ClInclude Include="RowTypeMatrix.h" />
+    <ClInclude Include="ScalarNewtonRaphson.h" />
+    <ClInclude Include="ScrewConstraintIJ.h" />
+    <ClInclude Include="ScrewConstraintIqcJc.h" />
+    <ClInclude Include="ScrewConstraintIqcJqc.h" />
+    <ClInclude Include="ScrewJoint.h" />
+    <ClInclude Include="SimulationStoppingError.h" />
+    <ClInclude Include="Sine.h" />
+    <ClInclude Include="SingularMatrixError.h" />
+    <ClInclude Include="Solver.h" />
+    <ClInclude Include="SparseColumn.h" />
+    <ClInclude Include="SparseMatrix.h" />
+    <ClInclude Include="SparseRow.h" />
+    <ClInclude Include="SparseVector.h" />
+    <ClInclude Include="SphericalJoint.h" />
+    <ClInclude Include="SphSphJoint.h" />
+    <ClInclude Include="StableBackwardDifference.h" />
+    <ClInclude Include="LDUFullMat.h" />
+    <ClInclude Include="StateData.h" />
+    <ClInclude Include="StepFunction.h" />
+    <ClInclude Include="Sum.h" />
+    <ClInclude Include="Symbolic.h" />
+    <ClInclude Include="SymbolicParser.h" />
+    <ClInclude Include="SyntaxError.h" />
+    <ClInclude Include="System.h" />
+    <ClInclude Include="SystemNewtonRaphson.h" />
+    <ClInclude Include="SystemSolver.h" />
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="TooManyTriesError.h" />
+    <ClInclude Include="TooSmallStepSizeError.h" />
+    <ClInclude Include="Transitions.h" />
+    <ClInclude Include="Translation.h" />
+    <ClInclude Include="TranslationalJoint.h" />
+    <ClInclude Include="TranslationConstraintIJ.h" />
+    <ClInclude Include="TranslationConstraintIqcJc.h" />
+    <ClInclude Include="TranslationConstraintIqcJqc.h" />
+    <ClInclude Include="TranslationConstraintIqctJqc.h" />
+    <ClInclude Include="TranslationLimitIJ.h" />
+    <ClInclude Include="Units.h" />
+    <ClInclude Include="UniversalJoint.h" />
+    <ClInclude Include="UserFunction.h" />
+    <ClInclude Include="Variable.h" />
+    <ClInclude Include="FullVector.h" />
+    <ClInclude Include="VectorNewtonRaphson.h" />
+    <ClInclude Include="VelICKineSolver.h" />
+    <ClInclude Include="VelICSolver.h" />
+    <ClInclude Include="VelKineSolver.h" />
+    <ClInclude Include="VelSolver.h" />
+    <ClInclude Include="ZRotation.h" />
+    <ClInclude Include="ZTranslation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OndselSolver.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\testapp\00backhoe.asmt" />
+    <None Include="..\testapp\00camrocker.asmt" />
+    <None Include="..\testapp\anglejoint.asmt" />
+    <None Include="..\testapp\camfollower.asmt" />
+    <None Include="..\testapp\circular.asmt" />
+    <None Include="..\testapp\circularPendulum.asmt" />
+    <None Include="..\testapp\cirpendu.asmt" />
+    <None Include="..\testapp\cirpendu2.asmt" />
+    <None Include="..\testapp\coastharbor2.asmt" />
+    <None Include="..\testapp\constvel.asmt" />
+    <None Include="..\testapp\CrankSlider2.mbd" />
+    <None Include="..\testapp\crank_slider.asmt" />
+    <None Include="..\testapp\crank_slider.mbd" />
+    <None Include="..\testapp\crank_sliderX.mbd" />
+    <None Include="..\testapp\CylSphJt.asmt" />
+    <None Include="..\testapp\dragCrankSlider.asmt" />
+    <None Include="..\testapp\dragCrankSlider.asmt.bak" />
+    <None Include="..\testapp\dxfmotion.asmt" />
+    <None Include="..\testapp\dxftree.asmt" />
+    <None Include="..\testapp\engine1.asmt" />
+    <None Include="..\testapp\fixplnplnpln.asmt" />
+    <None Include="..\testapp\fixplnplnplnNoOffset.asmt" />
+    <None Include="..\testapp\fourbar.asmt" />
+    <None Include="..\testapp\fourbot.asmt" />
+    <None Include="..\testapp\Gears.asmt" />
+    <None Include="..\testapp\gyro.asmt" />
+    <None Include="..\testapp\InitialConditions.mbd" />
+    <None Include="..\testapp\JB_2bars.asmt" />
+    <None Include="..\testapp\limits.asmt" />
+    <None Include="..\testapp\mateproblembobcat.asmt" />
+    <None Include="..\testapp\parm.asmt" />
+    <None Include="..\testapp\part32.asmt" />
+    <None Include="..\testapp\piston.asmt" />
+    <None Include="..\testapp\pistonAllowZRotation.asmt" />
+    <None Include="..\testapp\pistonWithLimits.asmt" />
+    <None Include="..\testapp\planarbug.asmt" />
+    <None Include="..\testapp\quasikine.asmt" />
+    <None Include="..\testapp\rackPinion.asmt" />
+    <None Include="..\testapp\rackPinion3.asmt" />
+    <None Include="..\testapp\rackscrew.asmt" />
+    <None Include="..\testapp\RevCylJt.asmt" />
+    <None Include="..\testapp\RevRevJt.asmt" />
+    <None Include="..\testapp\robot.asmt" />
+    <None Include="..\testapp\runPreDrag.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe2.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe3.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1-1.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1-2.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1a.asmt" />
+    <None Include="..\testapp\SphericalHinge.mbd" />
+    <None Include="..\testapp\SphSphJt.asmt" />
+    <None Include="..\testapp\wobpump.asmt" />
+    <None Include="..\testapp\__cubes.asmt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\testapp\CrankSlider2.mov" />
+    <Media Include="..\testapp\InitialConditionsMBDyn.mov" />
+    <Media Include="..\testapp\InitialConditionsOndselSolver.mov" />
+    <Media Include="..\testapp\SphericalHinge.mov" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\CMakeLists.txt" />
+    <Text Include="..\testapp\dragging.log" />
+    <Text Include="..\testapp\draggingBackhoe.log" />
+    <Text Include="..\testapp\draggingBackhoe2.log" />
+    <Text Include="..\testapp\draggingBackhoe3.log" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

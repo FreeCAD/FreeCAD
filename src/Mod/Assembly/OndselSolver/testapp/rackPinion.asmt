@@ -1,0 +1,462 @@
+OndselSolver
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
+	Name
+		OndselAssembly
+	Position3D
+		0	0	0	
+	RotationMatrix
+		1	0	0	
+		0	1	0	
+		0	0	1	
+	Velocity3D
+		0	0	0	
+	Omega3D
+		0	0	0	
+	RefPoints
+		RefPoint
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Markers
+				Marker
+					Name
+						marker-rackPinion#Box001
+					Position3D
+						-1.09127140045166	0.6816802024841309	1.622356414794922	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				rackPinion#Box001
+			Position3D
+				-1.09127140045166	0.6816802024841309	1.622356414794922	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								FixingMarker
+							Position3D
+								0	0	0	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute
+							Position3D
+								0	12	2	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Slider
+							Position3D
+								0	0	2	
+							RotationMatrix
+								-2.220446049250313e-16	0	1	
+								0	-1	0	
+								1	0	-2.220446049250313e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute001
+							Position3D
+								37	12	2	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute002
+							Position3D
+								37	0	2	
+							RotationMatrix
+								-2.220446049250313e-16	0	1	
+								0	-1	0	
+								1	0	-2.220446049250313e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				rackPinion#Cylinder
+			Position3D
+				-1.09127140045166	12.68168020248413	3.622356414794922	
+			RotationMatrix
+				0.9989860693358433	0.04502036509094207	0	
+				-0.04502036509094207	0.9989860693358433	-0	
+				-0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute
+							Position3D
+								0	0	0	
+							RotationMatrix
+								1	6.938893903907228e-18	0	
+								-6.938893903907228e-18	1	-0	
+								-0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#RackPinion
+							Position3D
+								0	0	2	
+							RotationMatrix
+								1	6.938893903907228e-18	0	
+								-6.938893903907228e-18	1	-0	
+								-0	0	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				rackPinion#Box
+			Position3D
+				4.299936895813785	0.6816802024841309	3.622356414794925	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Slider
+							Position3D
+								0	0	0	
+							RotationMatrix
+								-2.220446049250313e-16	0	1	
+								0	-1	0	
+								1	0	-2.220446049250313e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#RackPinion
+							Position3D
+								0	0	3	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				rackPinion#Cylinder001
+			Position3D
+				35.90872859954834	12.68168020248413	3.622356414794922	
+			RotationMatrix
+				-0.208877917092376	-0.9779417241079095	0	
+				0.9779417241079095	-0.208877917092376	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute001
+							Position3D
+								0	0	0	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				rackPinion#Cylinder002
+			Position3D
+				37.90872859954834	0.6816802024841294	3.622356414794922	
+			RotationMatrix
+				-2.220446049250313e-16	5.551115123125783e-17	-1	
+				0.9455343955120326	-0.3255222064678469	-5.551115123125783e-17	
+				-0.3255222064678468	-0.9455343955120326	-2.220446049250313e-16	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute002
+							Position3D
+								-3.33066907387547e-16	0	2	
+							RotationMatrix
+								1	-2.77333911991762e-32	-3.33066907387547e-16	
+								-2.77333911991762e-32	1	-1.665334536937735e-16	
+								3.33066907387547e-16	1.665334536937735e-16	1	
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			FixedJoint
+				Name
+					rackPinion#GroundedJoint
+				MarkerI
+					/OndselAssembly/marker-rackPinion#Box001
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/FixingMarker
+			RevoluteJoint
+				Name
+					rackPinion#Revolute
+				MarkerI
+					/OndselAssembly/rackPinion#Cylinder/rackPinion#Revolute
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/rackPinion#Revolute
+			TranslationalJoint
+				Name
+					rackPinion#Slider
+				MarkerI
+					/OndselAssembly/rackPinion#Box/rackPinion#Slider
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/rackPinion#Slider
+			RevoluteJoint
+				Name
+					rackPinion#Revolute001
+				MarkerI
+					/OndselAssembly/rackPinion#Cylinder001/rackPinion#Revolute001
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/rackPinion#Revolute001
+			RevoluteJoint
+				Name
+					rackPinion#Revolute002
+				MarkerI
+					/OndselAssembly/rackPinion#Cylinder002/rackPinion#Revolute002
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/rackPinion#Revolute002
+			RackPinionJoint
+				Name
+					rackPinion#RackPinion
+				MarkerI
+					/OndselAssembly/rackPinion#Cylinder/rackPinion#RackPinion
+				MarkerJ
+					/OndselAssembly/rackPinion#Box/rackPinion#RackPinion
+				pitchRadius
+					1
+		Motions
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0	0	0	
+	SimulationParameters
+		tstart
+			0
+		tend
+			1
+		hmin
+			1e-09
+		hmax
+			1000000000
+		hout
+			0.1
+		errorTol
+			1e-06
+	AnimationParameters
+		nframe
+			1000000
+		icurrent
+			1
+		istart
+			1
+		iend
+			1000000
+		isForward
+			true
+		framesPerSecond
+			30

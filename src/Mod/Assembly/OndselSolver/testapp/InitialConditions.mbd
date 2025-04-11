@@ -1,0 +1,111 @@
+#-----------------------------------------------------------------------------
+ # [Data Block]
+
+ begin: data;
+     problem: initial value;
+ end: data;
+
+ #-----------------------------------------------------------------------------
+ # [Problem Block]
+
+ begin: initial value;
+     initial time: 0.0;
+     final time: 3.0;
+     time step: 0.01;
+     max iterations: 100;
+     tolerance: 1e-06;
+     derivatives tolerance: 0.0001;
+     derivatives max iterations: 100;
+     derivatives coefficient: auto;
+ end: initial value;
+
+ #-----------------------------------------------------------------------------
+ # [Control Data Block]
+
+ begin: control data;
+     max iterations: 1000;
+     default orientation: orientation matrix;
+     omega rotates: no;
+     print: none;
+     initial stiffness: 1.0, 1.0;
+     structural nodes: 1;
+     rigid bodies: 1;
+ end: control data;
+
+ #-----------------------------------------------------------------------------
+ # [Design Variables]
+
+     #Generic bodies
+
+         #body: 1
+             set: integer body_1 = 1; #body label
+             set: real mass_1 = 0.0086809632949352; #mass [kg]
+             set: real volume_1 = 1.0988561132829396e-06; #volume [m^3]
+
+     #Nodes
+
+         #node: 1
+             set: integer structural_node_1 = 1; #node label
+
+     #Joints
+
+     #Nodes: initial conditions
+
+         #node: 1
+             set: real Px_1 = -5.115001861686883e-08; #X component of the absolute position [m]
+             set: real Py_1 = -0.011073908864273972; #Y component of the absolute position [m]
+             set: real Pz_1 = 6.608063559905836e-07; #Z component of the absolute position [m]
+
+             set: real Vx_1 = 0.0; #X component of the absolute velocity [m/s]
+             set: real Vy_1 = 0.0; #Y component of the absolute velocity [m/s]
+             set: real Vz_1 = 0.0; #Z component of the absolute velocity [m/s]
+
+             set: real Wx_1 = 0.0; #X component of the absolute angular velocity [rad/s]
+             set: real Wy_1 = 8.726646259971648; #Y component of the absolute angular velocity [rad/s]
+             set: real Wz_1 = 1.7453292519943296e-05; #Z component of the absolute angular velocity [rad/s]
+
+ #-----------------------------------------------------------------------------
+ # [Intermediate Variables]
+
+     #Moments of inertia and relative center of mass
+
+         #body 1: 
+             set: real Ixx_1 = 7.67643316e-07; #moment of inertia [kg*m^2]
+             set: real Iyy_1 = 6.162010270000002e-07; #moment of inertia [kg*m^2]
+             set: real Izz_1 = 2.41970364e-07; #moment of inertia [kg*m^2]
+
+             set: real Rx_1 = -3.117081245895825e-20; #X component of the relative center of mass [m]
+             set: real Ry_1 = 0.0; #Y component of the relative center of mass [m]
+             set: real Rz_1 = 1.6371452804531116e-20; #Z component of the relative center of mass [m]
+
+ #-----------------------------------------------------------------------------
+ # [Nodes Block]
+
+ begin: nodes;
+
+     structural: structural_node_1,
+                 dynamic,
+                 Px_1, Py_1, Pz_1, #<absolute_position> [m]
+                 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<absolute_orientation_matrix>
+                 Vx_1, Vy_1, Vz_1, #<absolute_velocity> [m/s]
+                 Wx_1, Wy_1, Wz_1; #<absolute_angular_velocity> [rad/s]
+
+ end: nodes;
+
+ #-----------------------------------------------------------------------------
+ # [Elements Block]
+
+ begin: elements;
+
+     #-----------------------------------------------------------------------------
+     # [Bodies]
+
+         body: body_1,
+               structural_node_1, #<node_label> 
+               mass_1, #<mass> [kg]
+               Rx_1, Ry_1, Rz_1, #<relative_center_of_mass> [m]
+               diag, Ixx_1, Iyy_1, Izz_1, #<inertia matrix> [kg*m^2]
+               orientation, 3, 1.0, 0.0, 0.0, 2, 0.0, 1.0, 0.0; 
+
+ end: elements;
+

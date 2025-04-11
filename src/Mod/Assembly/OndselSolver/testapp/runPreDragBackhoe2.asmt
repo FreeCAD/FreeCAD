@@ -1,0 +1,1556 @@
+OndselSolver
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
+	Name
+		OndselAssembly
+	Position3D
+		0	0	0	
+	RotationMatrix
+		1	0	0	
+		0	1	0	
+		0	0	1	
+	Velocity3D
+		0	0	0	
+	Omega3D
+		0	0	0	
+	RefPoints
+		RefPoint
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Markers
+				Marker
+					Name
+						marker-AssemblyExample#BasePin
+					Position3D
+						-206.51702880859375	40.255699157714844	364.26800537109375	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				AssemblyExample#Base
+			Position3D
+				-206.51702880859375	99.415699157714869	364.26800537109375	
+			RotationMatrix
+				1	-4.4408920985006252e-16	2.1999999999999993e-16	
+				4.4408920985006252e-16	1	9.7699626167013721e-32	
+				-2.1999999999999993e-16	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Fixed
+							Position3D
+								0	0	0	
+							RotationMatrix
+								-2.2204460492503131e-16	1.0000000000000002	2.2000000000000002e-16	
+								1.0000000000000002	-2.2204460492503131e-16	0	
+								0	2.2000000000000002e-16	-1.0000000000000004	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute
+							Position3D
+								30	-80.000000000000014	15	
+							RotationMatrix
+								-2.2204460492503131e-16	6.6613381477509392e-16	-1.0000000000000002	
+								1.0000000000000002	-2.2204460492503131e-16	0	
+								0	-1.0000000000000002	-8.8817841970012523e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute005
+							Position3D
+								14.999999999999915	-38.044442067237526	94.459258343213548	
+							RotationMatrix
+								-2.2204460492503131e-16	1.1102230246251565e-15	1.0000000000000002	
+								-1.0000000000000002	-2.2204460492503131e-16	0	
+								0	-1.0000000000000002	8.8817841970012523e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#BasePin
+			Position3D
+				-206.51702880859375	40.255699157714844	364.26800537109375	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								FixingMarker
+							Position3D
+								0	0	0	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Fixed
+							Position3D
+								0	59.160000000000025	0	
+							RotationMatrix
+								-2.2204460492503131e-16	-1.0000000000000002	0	
+								1.0000000000000002	-2.2204460492503131e-16	0	
+								0	0	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#Boom
+			Position3D
+				-203.54120849609384	257.67123765126127	276.78806593095044	
+			RotationMatrix
+				1	-3.8194916670331742e-16	-1.5475747299408277e-15	
+				7.4186772719254253e-16	0.97083003854566585	0.23976871409218709	
+				1.4108525741717153e-15	-0.23976871409218709	0.97083003854566585	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute
+							Position3D
+								27.024179687500094	-255.87711691921643	42.364379466892615	
+							RotationMatrix
+								1.1102230246251565e-16	-5.5511151231257827e-17	1	
+								1	0	-5.5511151231257827e-17	
+								5.5511151231257827e-17	1	1.1102230246251565e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute001
+							Position3D
+								12.024179687499952	-590.87711691921652	332.36437946689261	
+							RotationMatrix
+								-2.2204460492503131e-16	0	-1.0000000000000002	
+								1.0000000000000002	0	0	
+								2.2204460492503131e-16	-1.0000000000000002	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Cylindrical001
+							Position3D
+								12.024179687499952	-407.37711691921646	273.86437946689273	
+							RotationMatrix
+								-2.2204460492503131e-16	0	-1.0000000000000002	
+								1.0000000000000002	0	0	
+								2.2204460492503131e-16	-1.0000000000000002	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute006
+							Position3D
+								12.024179687500009	-385.87711691921646	162.36437946689256	
+							RotationMatrix
+								-2.2204460492503131e-16	0	-1.0000000000000002	
+								1.0000000000000002	0	0	
+								2.2204460492503131e-16	-1.0000000000000002	-2.2204460492503131e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#BoomCylinderInner
+			Position3D
+				-208.76902880859299	153.80040503460461	270.8790760945692	
+			RotationMatrix
+				1	6.7738576651150357e-16	-1.6206363746010108e-15	
+				-4.2519598212143573e-16	0.9885597407959501	0.15082983417561616	
+				1.7042658572359161e-15	-0.15082983417561616	0.9885597407959501	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Slider
+							Position3D
+								2.2519999999995548	-213.15894861583564	265.21218569827465	
+							RotationMatrix
+								-1.0000000000000004	2.0134856836246187e-31	-7.4377255530521943e-31	
+								3.8355167944546663e-31	-0.70710678118654835	-0.70710678118654713	
+								-6.6830155558806732e-31	-0.70710678118654713	0.70710678118654802	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Cylindrical001
+							Position3D
+								9.7519999999999243	-279.09971778962625	331.15295487206538	
+							RotationMatrix
+								-4.4408920985006262e-16	5.5511151231257827e-17	1.0000000000000002	
+								-0.70710678118654724	-0.70710678118654835	-5.5511151231257827e-17	
+								0.70710678118654824	-0.70710678118654724	0	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#BoomCylinderOuter
+			Position3D
+				-209.27702880859366	182.21361463637555	294.37056435967401	
+			RotationMatrix
+				1	-2.9721014675041915e-17	-9.1352959341446408e-16	
+				1.6716851565257462e-16	0.98855974079594999	0.15082983417561716	
+				8.9859576236026455e-16	-0.15082983417561716	0.98855974079594999	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute005
+							Position3D
+								17.759999999999991	-144.24978336205575	144.24978336205567	
+							RotationMatrix
+								-4.4408920985006262e-16	-5.5511151231257827e-17	1.0000000000000002	
+								0.70710678118654724	-0.70710678118654835	5.5511151231257827e-17	
+								0.70710678118654824	0.70710678118654724	0	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Slider
+							Position3D
+								2.7599999999998204	-265.16504294495542	265.16504294495519	
+							RotationMatrix
+								-1.0000000000000004	-1.4791141972893971e-31	-1.0000000000000001e-15	
+								7.0710678118654812e-16	-0.70710678118654746	-0.70710678118654802	
+								-7.0710678118654714e-16	-0.70710678118654802	0.70710678118654702	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#Bucket
+			Position3D
+				-211.61702880859957	-23.837239233725604	1866.8236062252824	
+			RotationMatrix
+				1	-3.3317240548162432e-15	6.4373806329392598e-15	
+				7.0977420958312618e-15	0.26992023645612079	-0.96288268545626665	
+				1.4704801024996886e-15	0.96288268545626665	0.26992023645612079	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute002
+							Position3D
+								20.100000000000165	-1088.3400000000004	200.93999999999994	
+							RotationMatrix
+								0	0	1.0000000000000002	
+								1.0000000000000002	-2.2204460492503131e-16	-2.2204460492503131e-16	
+								0	1.0000000000000002	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute003
+							Position3D
+								20.100000000000165	-1099.4400000000003	240.38999999999999	
+							RotationMatrix
+								0	0	1.0000000000000002	
+								1.0000000000000002	-2.2204460492503131e-16	-2.2204460492503131e-16	
+								0	1.0000000000000002	-2.2204460492503131e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#BucketCylinderInner
+			Position3D
+				-206.72902880859769	213.02800226613508	60.602446883034965	
+			RotationMatrix
+				1	-5.2583980436131683e-15	-5.1473143890873128e-15	
+				7.2430477046183464e-15	0.82677381962192409	0.56253448888736957	
+				1.2976345224303307e-15	-0.56253448888736957	0.82677381962192409	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Slider002
+							Position3D
+								0.21199999999990382	-918.42475696842757	316.72477280592807	
+							RotationMatrix
+								-1.0000000000000004	1.9372881611913949e-31	-6.8417040065417506e-31	
+								7.0605299141890759e-31	0.15643446504023084	-0.98768834059513788	
+								-8.4315862295477053e-32	-0.98768834059513788	-0.15643446504023117	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Cylindrical003
+							Position3D
+								7.712000000000188	-1091.5665230747552	289.30181108437563	
+							RotationMatrix
+								-2.2204460492503131e-16	0	1.0000000000000002	
+								-0.98768834059513788	0.15643446504023084	0	
+								-0.15643446504023112	-0.98768834059513788	-2.2204460492503131e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#BucketCylinderOuter
+			Position3D
+				-206.87702880859064	293.35107186801753	-34.237529680289349	
+			RotationMatrix
+				1	1.370645773763434e-15	-2.6407141386776817e-15	
+				4.0378488134315435e-16	0.81683031742957557	0.57687800489176111	
+				2.9477107675188331e-15	-0.57687800489176111	0.81683031742957557	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute007
+							Position3D
+								7.8599999999985357	-885.25287385194406	359.79437974384064	
+							RotationMatrix
+								1.1102230246251565e-16	-5.5511151231257827e-17	1.0000000000000002	
+								-0.1736481776669285	-0.98480775301220858	0	
+								0.98480775301220858	-0.1736481776669285	-4.4408920985006262e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Slider002
+							Position3D
+								0.35999999999833676	-1053.6549996170318	330.10054136279587	
+							RotationMatrix
+								-1.0000000000000004	1.9721522630525295e-31	-1.0000000000000001e-15	
+								9.848077530122085e-16	0.17364817766692853	-0.98480775301220858	
+								1.7364817766692849e-16	-0.98480775301220858	-0.17364817766692897	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#BucketLink1
+			Position3D
+				-211.61702880860076	414.24790513731358	530.8104473060755	
+			RotationMatrix
+				1	-6.7857244220684629e-15	-2.7124498237542811e-15	
+				7.2262198168936174e-15	0.97349684000169701	0.22870046459662119	
+				1.0886630041362564e-15	-0.22870046459662119	0.97349684000169701	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute003
+							Position3D
+								20.099999999999966	-1018.9800000000002	112.20000000000005	
+							RotationMatrix
+								0	-1.1102230246251565e-16	1	
+								1	0	-1.1102230246251565e-16	
+								-1.1102230246251565e-16	1	0	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Cylindrical
+							Position3D
+								-2.9000000000000625	-1003.6154985201184	157.67452137488306	
+							RotationMatrix
+								0	-1.1102230246251565e-16	1	
+								1	0	-1.1102230246251565e-16	
+								-1.1102230246251565e-16	1	0	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#BucketLink2
+			Position3D
+				-209.29811232674371	-308.96497899167957	-129.41735800475513	
+			RotationMatrix
+				1	-1.6261795468181185e-15	-7.0188725956073021e-15	
+				7.1181399562766469e-15	0.37363007518375385	0.92757779561510767	
+				1.1140538562900208e-15	-0.92757779561510767	0.37363007518375385	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute004
+							Position3D
+								17.781083518149046	-987.05172659556752	204.81592034301104	
+							RotationMatrix
+								5.6621374255882984e-15	4.17477992951531e-15	-1.0000000000000002	
+								1.9007228936798928e-07	0.9999999999999819	4.1747810412460533e-15	
+								0.99999999999998224	-1.9007228936798928e-07	5.6621374255882984e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Cylindrical
+							Position3D
+								-12.218916481847685	-1049.0517442776707	187.81592977546751	
+							RotationMatrix
+								0	0	1.0000000000000002	
+								1.0000000000000002	-2.2204460492503131e-16	-2.2204460492503131e-16	
+								0	1.0000000000000002	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Cylindrical003
+							Position3D
+								2.781083518150524	-1049.0517442776707	187.81592977546751	
+							RotationMatrix
+								0	0	1.0000000000000002	
+								1.0000000000000002	-2.2204460492503131e-16	-2.2204460492503131e-16	
+								0	1.0000000000000002	-2.2204460492503131e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#Stick
+			Position3D
+				-206.81702880859217	193.34985682310804	72.437803587608556	
+			RotationMatrix
+				1	1.5131589597732428e-15	-2.7760026346272668e-15	
+				2.9181540947503764e-16	0.83010899913055614	0.55760115634964957	
+				3.1481239543246203e-15	-0.55760115634964957	0.83010899913055614	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute001
+							Position3D
+								15.299999999999983	-729.50337384580132	315.52664486176411	
+							RotationMatrix
+								-4.4408920985006262e-16	5.5511151231257827e-17	1	
+								0.71933980033865064	0.6946583704589977	1.6653345369377348e-16	
+								-0.6946583704589977	0.71933980033865064	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute002
+							Position3D
+								15.299999999999983	-1031.2167818496459	271.85847074484406	
+							RotationMatrix
+								-4.4408920985006262e-16	5.5511151231257827e-17	1	
+								0.71933980033865064	0.6946583704589977	1.6653345369377348e-16	
+								-0.6946583704589977	0.71933980033865064	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute004
+							Position3D
+								15.299999999999983	-1006.044788433077	276.18752923788946	
+							RotationMatrix
+								-4.4408920985006262e-16	5.5511151231257827e-17	1	
+								0.71933980033865064	0.6946583704589977	1.6653345369377348e-16	
+								-0.6946583704589977	0.71933980033865064	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Cylindrical002
+							Position3D
+								7.7999999999999545	-669.12	324.36000000000024	
+							RotationMatrix
+								-4.4408920985006262e-16	5.5511151231257827e-17	1	
+								0.71933980033865064	0.6946583704589977	1.6653345369377348e-16	
+								-0.6946583704589977	0.71933980033865064	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute007
+							Position3D
+								7.7999999999999829	-734.09477116233666	347.62476117225344	
+							RotationMatrix
+								-4.4408920985006262e-16	5.5511151231257827e-17	1	
+								0.71933980033865064	0.6946583704589977	1.6653345369377348e-16	
+								-0.6946583704589977	0.71933980033865064	-2.2204460492503131e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#StickCylinderInner
+			Position3D
+				-204.68902880859275	357.94674370443431	314.52008933020807	
+			RotationMatrix
+				1	5.7709328334516967e-16	-2.660563865362079e-15	
+				3.307042005150863e-16	0.94428789275598746	0.3291206094951466	
+				2.7022715391155999e-15	-0.3291206094951466	0.94428789275598746	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Slider001
+							Position3D
+								-1.8280000000007135	-510.60240333601774	83.221350256195251	
+							RotationMatrix
+								-1.0000000000000004	-4.1985532501086275e-31	-9.9647766457753676e-31	
+								1.0214652683421088e-30	-0.6691306063588589	-0.74314482547739424	
+								-3.5476039169087418e-31	-0.74314482547739424	0.66913060635885824	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Cylindrical002
+							Position3D
+								5.671999999999656	-640.87569124220477	200.51994555090306	
+							RotationMatrix
+								0	0	1	
+								-0.74314482547739413	-0.66913060635885846	0	
+								0.66913060635885846	-0.74314482547739413	0	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				AssemblyExample#StickCylinderOuter
+			Position3D
+				-204.17702880859395	388.5582084592491	326.36555279442138	
+			RotationMatrix
+				1	-1.6605154213222291e-16	-1.9914332590032205e-15	
+				8.1222218878096616e-16	0.94428789275598723	0.32912060949514726	
+				1.8258353309541728e-15	-0.32912060949514726	0.94428789275598723	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Revolute006
+							Position3D
+								12.659999999999997	-506.59649126114704	35.837210581402076	
+							RotationMatrix
+								1.1102230246251565e-16	1.6653345369377348e-16	1	
+								0.66913060635885779	-0.74314482547739447	5.5511151231257827e-17	
+								0.74314482547739469	0.66913060635885779	-2.2204460492503131e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								AssemblyExample#Slider001
+							Position3D
+								-2.3400000000001171	-633.67425641778152	150.25854426876663	
+							RotationMatrix
+								-1	-2.9582283945787943e-31	-1.0000000000000003e-15	
+								7.4314482547739525e-16	-0.66913060635885779	-0.7431448254773948	
+								-6.6913060635885756e-16	-0.7431448254773948	0.66913060635885757	
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			FixedJoint
+				Name
+					AssemblyExample#GroundedJoint
+				MarkerI
+					/OndselAssembly/marker-AssemblyExample#BasePin
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BasePin/FixingMarker
+			FixedJoint
+				Name
+					AssemblyExample#Fixed
+				MarkerI
+					/OndselAssembly/AssemblyExample#Base/AssemblyExample#Fixed
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BasePin/AssemblyExample#Fixed
+			RevoluteJoint
+				Name
+					AssemblyExample#Revolute
+				MarkerI
+					/OndselAssembly/AssemblyExample#Base/AssemblyExample#Revolute
+				MarkerJ
+					/OndselAssembly/AssemblyExample#Boom/AssemblyExample#Revolute
+			RevoluteJoint
+				Name
+					AssemblyExample#Revolute001
+				MarkerI
+					/OndselAssembly/AssemblyExample#Stick/AssemblyExample#Revolute001
+				MarkerJ
+					/OndselAssembly/AssemblyExample#Boom/AssemblyExample#Revolute001
+			RevoluteJoint
+				Name
+					AssemblyExample#Revolute002
+				MarkerI
+					/OndselAssembly/AssemblyExample#Bucket/AssemblyExample#Revolute002
+				MarkerJ
+					/OndselAssembly/AssemblyExample#Stick/AssemblyExample#Revolute002
+			RevoluteJoint
+				Name
+					AssemblyExample#Revolute003
+				MarkerI
+					/OndselAssembly/AssemblyExample#Bucket/AssemblyExample#Revolute003
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BucketLink1/AssemblyExample#Revolute003
+			RevoluteJoint
+				Name
+					AssemblyExample#Revolute004
+				MarkerI
+					/OndselAssembly/AssemblyExample#Stick/AssemblyExample#Revolute004
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BucketLink2/AssemblyExample#Revolute004
+			CylindricalJoint
+				Name
+					AssemblyExample#Cylindrical
+				MarkerI
+					/OndselAssembly/AssemblyExample#BucketLink1/AssemblyExample#Cylindrical
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BucketLink2/AssemblyExample#Cylindrical
+			RevoluteJoint
+				Name
+					AssemblyExample#Revolute005
+				MarkerI
+					/OndselAssembly/AssemblyExample#BoomCylinderOuter/AssemblyExample#Revolute005
+				MarkerJ
+					/OndselAssembly/AssemblyExample#Base/AssemblyExample#Revolute005
+			TranslationalJoint
+				Name
+					AssemblyExample#Slider
+				MarkerI
+					/OndselAssembly/AssemblyExample#BoomCylinderInner/AssemblyExample#Slider
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BoomCylinderOuter/AssemblyExample#Slider
+			CylindricalJoint
+				Name
+					AssemblyExample#Cylindrical001
+				MarkerI
+					/OndselAssembly/AssemblyExample#BoomCylinderInner/AssemblyExample#Cylindrical001
+				MarkerJ
+					/OndselAssembly/AssemblyExample#Boom/AssemblyExample#Cylindrical001
+			RevoluteJoint
+				Name
+					AssemblyExample#Revolute006
+				MarkerI
+					/OndselAssembly/AssemblyExample#Boom/AssemblyExample#Revolute006
+				MarkerJ
+					/OndselAssembly/AssemblyExample#StickCylinderOuter/AssemblyExample#Revolute006
+			TranslationalJoint
+				Name
+					AssemblyExample#Slider001
+				MarkerI
+					/OndselAssembly/AssemblyExample#StickCylinderInner/AssemblyExample#Slider001
+				MarkerJ
+					/OndselAssembly/AssemblyExample#StickCylinderOuter/AssemblyExample#Slider001
+			CylindricalJoint
+				Name
+					AssemblyExample#Cylindrical002
+				MarkerI
+					/OndselAssembly/AssemblyExample#StickCylinderInner/AssemblyExample#Cylindrical002
+				MarkerJ
+					/OndselAssembly/AssemblyExample#Stick/AssemblyExample#Cylindrical002
+			RevoluteJoint
+				Name
+					AssemblyExample#Revolute007
+				MarkerI
+					/OndselAssembly/AssemblyExample#Stick/AssemblyExample#Revolute007
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BucketCylinderOuter/AssemblyExample#Revolute007
+			TranslationalJoint
+				Name
+					AssemblyExample#Slider002
+				MarkerI
+					/OndselAssembly/AssemblyExample#BucketCylinderOuter/AssemblyExample#Slider002
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BucketCylinderInner/AssemblyExample#Slider002
+			CylindricalJoint
+				Name
+					AssemblyExample#Cylindrical003
+				MarkerI
+					/OndselAssembly/AssemblyExample#BucketCylinderInner/AssemblyExample#Cylindrical003
+				MarkerJ
+					/OndselAssembly/AssemblyExample#BucketLink2/AssemblyExample#Cylindrical003
+		Motions
+		Limits
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0	0	0	
+	SimulationParameters
+		tstart
+			0
+		tend
+			1
+		hmin
+			1.0000000000000001e-09
+		hmax
+			1000000000
+		hout
+			0.10000000000000001
+		errorTol
+			9.9999999999999995e-07
+	AnimationParameters
+		nframe
+			1000000
+		icurrent
+			1
+		istart
+			1
+		iend
+			1000000
+		isForward
+			true
+		framesPerSecond
+			30
+TimeSeries
+Number	Input	
+Time	Input	
+AssemblySeries	/OndselAssembly
+X	0	
+Y	0	
+Z	0	
+Bryantx	-0	
+Bryanty	0	
+Bryantz	-0	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#Base
+X	-206.51702880859375	
+Y	99.415699157714869	
+Z	364.26800537109375	
+Bryantx	-9.7699626167013721e-32	
+Bryanty	2.1999999999999993e-16	
+Bryantz	4.4408920985006252e-16	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#BasePin
+X	-206.51702880859375	
+Y	40.255699157714844	
+Z	364.26800537109375	
+Bryantx	-0	
+Bryanty	0	
+Bryantz	-0	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#Boom
+X	-203.54120849609384	
+Y	257.67123765126127	
+Z	276.78806593095044	
+Bryantx	-0.24212760880770012	
+Bryanty	-1.5475747299408277e-15	
+Bryantz	3.8194916670331742e-16	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#BoomCylinderInner
+X	-208.76902880859299	
+Y	153.80040503460461	
+Z	270.8790760945692	
+Bryantx	-0.15140765668448433	
+Bryanty	-1.6206363746010108e-15	
+Bryantz	-6.7738576651150357e-16	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#BoomCylinderOuter
+X	-209.27702880859366	
+Y	182.21361463637555	
+Z	294.37056435967401	
+Bryantx	-0.15140765668448536	
+Bryanty	-9.1352959341446408e-16	
+Bryantz	2.9721014675041915e-17	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#Bucket
+X	-211.61702880859957	
+Y	-23.837239233725604	
+Z	1866.8236062252824	
+Bryantx	1.2974861345676729	
+Bryanty	6.4373806329392598e-15	
+Bryantz	3.3317240548162432e-15	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#BucketCylinderInner
+X	-206.72902880859769	
+Y	213.02800226613508	
+Z	60.602446883034965	
+Bryantx	-0.59744813107453232	
+Bryanty	-5.1473143890873128e-15	
+Bryantz	5.2583980436131683e-15	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#BucketCylinderOuter
+X	-206.87702880859064	
+Y	293.35107186801753	
+Z	-34.237529680289349	
+Bryantx	-0.61490142359447431	
+Bryanty	-2.6407141386776817e-15	
+Bryantz	-1.370645773763434e-15	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#BucketLink1
+X	-211.61702880860076	
+Y	414.24790513731358	
+Z	530.8104473060755	
+Bryantx	-0.23074255821516829	
+Bryanty	-2.7124498237542811e-15	
+Bryantz	6.7857244220684629e-15	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#BucketLink2
+X	-209.29811232674371	
+Y	-308.96497899167957	
+Z	-129.41735800475513	
+Bryantx	-1.1878768764033969	
+Bryanty	-7.0188725956073021e-15	
+Bryantz	1.6261795468181185e-15	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#Stick
+X	-206.81702880859217	
+Y	193.34985682310804	
+Z	72.437803587608556	
+Bryantx	-0.59149319219370677	
+Bryanty	-2.7760026346272668e-15	
+Bryantz	-1.5131589597732428e-15	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#StickCylinderInner
+X	-204.68902880859275	
+Y	357.94674370443431	
+Z	314.52008933020807	
+Bryantx	-0.33537215010502258	
+Bryanty	-2.660563865362079e-15	
+Bryantz	-5.7709328334516967e-16	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+PartSeries	/OndselAssembly/AssemblyExample#StickCylinderOuter
+X	-204.17702880859395	
+Y	388.5582084592491	
+Z	326.36555279442138	
+Bryantx	-0.33537215010502325	
+Bryanty	-1.9914332590032205e-15	
+Bryantz	1.6605154213222291e-16	
+VX	0	
+VY	0	
+VZ	0	
+OmegaX	0	
+OmegaY	0	
+OmegaZ	0	
+AX	0	
+AY	0	
+AZ	0	
+AlphaX	0	
+AlphaY	0	
+AlphaZ	0	
+FixedJointSeries	/OndselAssembly/AssemblyExample#GroundedJoint
+FXonI	2.0541849144154434e-05	
+FYonI	-3.8302098922932708e-06	
+FZonI	3.480551938445509e-06	
+TXonI	2.6860211875514526e-05	
+TYonI	0.0018631652114428595	
+TZonI	-0.0035923365816066381	
+FixedJointSeries	/OndselAssembly/AssemblyExample#Fixed
+FXonI	-2.054184914415434e-05	
+FYonI	3.8302098922932717e-06	
+FZonI	-3.4805519384455094e-06	
+TXonI	0.00017904924080292187	
+TYonI	-0.0018631652114428595	
+TZonI	0.0023770807862384673	
+RevoluteJointSeries	/OndselAssembly/AssemblyExample#Revolute
+FXonI	2.063396927176788e-05	
+FYonI	-2.8809175001468067e-06	
+FZonI	4.2787370941801498e-06	
+TXonI	2.5872755500021893e-18	
+TYonI	-0.00082147159654947881	
+TZonI	-0.0033261608161091081	
+RevoluteJointSeries	/OndselAssembly/AssemblyExample#Revolute001
+FXonI	-1.93863934306992e-05	
+FYonI	3.4362107211803969e-06	
+FZonI	-3.9665037836276683e-06	
+TXonI	0	
+TYonI	0	
+TZonI	0	
+RevoluteJointSeries	/OndselAssembly/AssemblyExample#Revolute002
+FXonI	-1.052654852174095e-05	
+FYonI	2.5941966467094838e-05	
+FZonI	-5.0609916774940017e-05	
+TXonI	0	
+TYonI	0	
+TZonI	0	
+RevoluteJointSeries	/OndselAssembly/AssemblyExample#Revolute003
+FXonI	8.0513871125730775e-06	
+FYonI	-2.4950725963392807e-05	
+FZonI	4.8546274142405465e-05	
+TXonI	1.710984403280448e-17	
+TYonI	-0.0025007426035252522	
+TZonI	0.00085613020276652295	
+RevoluteJointSeries	/OndselAssembly/AssemblyExample#Revolute004
+FXonI	2.2475603600466741e-06	
+FYonI	2.0123459864302024e-05	
+FZonI	-5.439795669583307e-05	
+TXonI	3.8681684970441221e-17	
+TYonI	-0.0075484683409082114	
+TZonI	-0.012668313412528767	
+CylindricalJointSeries	/OndselAssembly/AssemblyExample#Cylindrical
+FXonI	1.1498485126377879e-19	
+FYonI	-2.4212788626219529e-05	
+FZonI	5.0634824614558328e-05	
+TXonI	1.8899152230317963e-18	
+TYonI	-0.00086763509883679146	
+TZonI	0.008064569262659407	
+RevoluteJointSeries	/OndselAssembly/AssemblyExample#Revolute005
+FXonI	9.2120127613638039e-08	
+FYonI	9.4929239214646448e-07	
+FZonI	7.9818515573464086e-07	
+TXonI	2.3282062203414104e-20	
+TYonI	-0.0025002182217264053	
+TZonI	0.00059746590500750864	
+TranslationalJointSeries	/OndselAssembly/AssemblyExample#Slider
+FXonI	6.3669996473891229e-08	
+FYonI	6.8729016928534834e-07	
+FZonI	5.0532630979255347e-07	
+TXonI	3.4293013396757423e-05	
+TYonI	-0.0025151029599419115	
+TZonI	0.00061088171182137536	
+CylindricalJointSeries	/OndselAssembly/AssemblyExample#Cylindrical001
+FXonI	4.624857273067223e-22	
+FYonI	-4.6569677305839783e-07	
+FZonI	-3.638188161655306e-07	
+TXonI	2.3649553625053813e-18	
+TYonI	0.002493953096512271	
+TZonI	-0.00061875766452904382	
+RevoluteJointSeries	/OndselAssembly/AssemblyExample#Revolute006
+FXonI	9.6307452967044158e-07	
+FYonI	2.1791951679858279e-07	
+FZonI	4.9761334693863197e-08	
+TXonI	1.897793566845315e-17	
+TYonI	-0.0055214936701219915	
+TZonI	-0.0089692426702505258	
+TranslationalJointSeries	/OndselAssembly/AssemblyExample#Slider001
+FXonI	-3.9266495898111732e-07	
+FYonI	-3.0116483004976099e-07	
+FZonI	-1.6546130996368814e-07	
+TXonI	-8.409538323940229e-05	
+TYonI	0.0054215386058012677	
+TZonI	0.008707020043021426	
+CylindricalJointSeries	/OndselAssembly/AssemblyExample#Cylindrical002
+FXonI	4.5180624567299578e-22	
+FYonI	4.6539252190205578e-07	
+FZonI	-2.2414975652393281e-07	
+TXonI	2.4776147648820908e-17	
+TYonI	-0.0053256627720271194	
+TZonI	-0.0085316395459291983	
+RevoluteJointSeries	/OndselAssembly/AssemblyExample#Revolute007
+FXonI	6.6407346800493162e-06	
+FYonI	3.8509881632093946e-06	
+FZonI	7.7081813579140055e-06	
+TXonI	-2.29972818347917e-18	
+TYonI	0.00029052654126048916	
+TZonI	0.00077004517379884935	
+TranslationalJointSeries	/OndselAssembly/AssemblyExample#Slider002
+FXonI	6.3838099918554102e-06	
+FYonI	3.1007577640770619e-06	
+FZonI	6.5801257558909205e-06	
+TXonI	5.8695727944248154e-05	
+TYonI	-2.6308932334963525e-05	
+TZonI	-5.5830250680290713e-05	
+CylindricalJointSeries	/OndselAssembly/AssemblyExample#Cylindrical003
+FXonI	-2.6570228955972581e-20	
+FYonI	2.7238126699125029e-06	
+FZonI	5.3068329941212788e-06	
+TXonI	-4.0457400956938151e-17	
+TYonI	0.0050093616789166802	
+TZonI	0.0036896730913819698	
