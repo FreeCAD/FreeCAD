@@ -7083,7 +7083,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                  *
                  *           if (expr_info.expression)*/
                 // App::Expression * expr = parse(this, const std::string& buffer);
-                setExpression(Constraints.createPath(nextcid), expr);
+                setExpression(Constraints.createPath(nextcid), std::move(expr));
             }
         }
     }
