@@ -25,7 +25,7 @@
 #define GUI_VIEWPROVIDER_DRAGGER_H
 
 #include "ViewProviderDocumentObject.h"
-#include "SoFCCSysDragger.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
 #include <Base/Placement.h>
 #include <App/PropertyGeo.h>
 
@@ -117,7 +117,7 @@ protected:
      */
     virtual TaskView::TaskDialog* getTransformDialog();
 
-    CoinPtr<SoFCCSysDragger> csysDragger = nullptr;
+    CoinPtr<SoTransformDragger> transformDragger = nullptr;
     ViewProvider *forwardedViewProvider = nullptr;
 
     CoinPtr<SoSwitch> pcPlacement;

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CSYSDRAGGER_H
-#define CSYSDRAGGER_H
+#ifndef GUI_TRANSFORM_DRAGGER_H
+#define GUI_TRANSFORM_DRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -30,9 +30,6 @@
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFString.h>
-#include <Inventor/projectors/SbLineProjector.h>
-#include <Inventor/projectors/SbPlaneProjector.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoIdleSensor.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <FCGlobal.h>
@@ -41,165 +38,6 @@ class SoCamera;
 
 namespace Gui
 {
-/*! @brief Translation Dragger.
- *
- * used for translating along axis. Set the
- * translationIncrement to desired step. Use
- * 'translationIncrementCount' multiplied with
- * 'translationIncrement' for a full double
- * precision vector scalar.
- */
-class TDragger : public SoDragger
-{
-    SO_KIT_HEADER(TDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(activeColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(translator);
-    SO_KIT_CATALOG_ENTRY_HEADER(cylinderSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(coneSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(labelSeparator);
-
-    static constexpr float coneBottomRadius { 0.8f };
-    static constexpr float coneHeight { 2.5f };
-
-    static constexpr float cylinderHeight { 10.0f };
-    static constexpr float cylinderRadius { 0.1f };
-public:
-    static void initClass();
-    TDragger();
-
-    SoSFString label; //!< set from outside and used to label
-    SoSFVec3f translation; //!< set from outside and used from outside for single precision.
-    SoSFDouble translationIncrement; //!< set from outside and used for rounding.
-    SoSFInt32 translationIncrementCount; //!< number of steps. used from outside.
-    SoSFFloat autoScaleResult; //!< set from parent dragger.
-
-protected:
-    ~TDragger() override;
-    SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
-
-    static void startCB(void *, SoDragger * d);
-    static void motionCB(void *, SoDragger * d);
-    static void finishCB(void *, SoDragger * d);
-    static void fieldSensorCB(void *f, SoSensor *);
-    static void valueChangedCB(void *, SoDragger *d);
-
-    void dragStart();
-    void drag();
-    void dragFinish();
-
-    SoFieldSensor fieldSensor;
-    SbLineProjector projector;
-
-private:
-    void buildFirstInstance();
-    SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
-    SoGroup* buildGeometry();
-
-    SoSeparator* buildCylinderGeometry() const;
-    SoSeparator* buildConeGeometry() const;
-    SoSeparator* buildLabelGeometry();
-    SoBaseColor* buildActiveColor();
-
-    using inherited = SoDragger;
-};
-
-/*! @brief Planar Translation Dragger.
- *
- * used for translating on a plane. Set the
- * translationIncrement to desired step. Use
- * 'translationIncrementXCount' or
- * 'translationIncrementYCount' multiplied with
- * 'translationIncrement' for a full double
- * precision vector scalar.
- *
- * @author qewer33
- */
-class TPlanarDragger : public SoDragger
-{
-    SO_KIT_HEADER(TDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(planarTranslatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(planarTranslator);
-    SO_KIT_CATALOG_ENTRY_HEADER(planarTranslatorActive);
-public:
-    static void initClass();
-    TPlanarDragger();
-    SoSFVec3f translation; //!< set from outside and used from outside for single precision.
-    SoSFDouble translationIncrement; //!< set from outside and used for rounding.
-    SoSFInt32 translationIncrementXCount; //!< number of steps. used from outside.
-    SoSFInt32 translationIncrementYCount; //!< number of steps. used from outside.
-    SoSFFloat autoScaleResult; //!< set from parent dragger.
-
-protected:
-    ~TPlanarDragger() override;
-    SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
-
-    static void startCB(void *, SoDragger * d);
-    static void motionCB(void *, SoDragger * d);
-    static void finishCB(void *, SoDragger * d);
-    static void fieldSensorCB(void *f, SoSensor *);
-    static void valueChangedCB(void *, SoDragger *d);
-
-    void dragStart();
-    void drag();
-    void dragFinish();
-
-    SoFieldSensor fieldSensor;
-    SbPlaneProjector projector;
-
-private:
-    void buildFirstInstance();
-    SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
-    SoGroup* buildGeometry();
-    using inherited = SoDragger;
-};
-
-/*! @brief Rotation Dragger.
- *
- * used for rotating around an axis. Set the rotation
- * increment to desired step. Use rotationIncrementCount
- * multiplied with rotationIncrement for full double
- * precision vector scalar.
- */
-class RDragger : public SoDragger
-{
-    SO_KIT_HEADER(RDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotator);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotatorActive);
-public:
-    static void initClass();
-    RDragger();
-    SoSFRotation rotation; //!< set from outside and used from outside for single precision.
-    SoSFDouble rotationIncrement; //!< set from outside and used for rounding.
-    SoSFInt32 rotationIncrementCount; //!< number of steps. used from outside.
-    SoSFColor color; //!< set from outside. non-active color.
-
-protected:
-    ~RDragger() override;
-    SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
-
-    static void startCB(void *, SoDragger * d);
-    static void motionCB(void *, SoDragger * d);
-    static void finishCB(void *, SoDragger * d);
-    static void fieldSensorCB(void *f, SoSensor *);
-    static void valueChangedCB(void *, SoDragger *d);
-
-    void dragStart();
-    void drag();
-    void dragFinish();
-
-    SoFieldSensor fieldSensor;
-    SbPlaneProjector projector;
-    float arcRadius;
-
-private:
-    void buildFirstInstance();
-    int roundIncrement(const float &radiansIn);
-    SoGroup* buildGeometry();
-    using inherited = SoDragger;
-};
-
 /*! @brief Coordinate System Dragger
  *
  * used to transform objects in 3d space. Set initial:
@@ -212,9 +50,9 @@ private:
  * For autoscale you set the field scale & call setupAutoScale with
  * the viewer camera. @see setUpAutoScale @see scale.
  */
-class GuiExport SoFCCSysDragger : public SoDragger
+class GuiExport SoTransformDragger : public SoDragger
 {
-    SO_KIT_HEADER(SoFCCSysDragger);
+    SO_KIT_HEADER(SoTransformDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(annotation);
     SO_KIT_CATALOG_ENTRY_HEADER(scaleNode);
     SO_KIT_CATALOG_ENTRY_HEADER(pickStyle);
@@ -268,8 +106,8 @@ class GuiExport SoFCCSysDragger : public SoDragger
     SO_KIT_CATALOG_ENTRY_HEADER(zRotatorDragger);
 public:
     static void initClass();
-    SoFCCSysDragger();
-    ~SoFCCSysDragger() override;
+    SoTransformDragger();
+    ~SoTransformDragger() override;
 
     SoSFVec3f translation; //!< initial translation and reflects single precision movement.
     SoSFDouble translationIncrement; //!< set from outside used for rounding.
@@ -377,4 +215,4 @@ private:
 
 }
 
-#endif // CSYSDRAGGER_H
+#endif /* GUI_TRANSFORM_DRAGGER_H */
