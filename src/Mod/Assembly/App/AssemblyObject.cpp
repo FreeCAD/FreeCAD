@@ -604,7 +604,7 @@ T* AssemblyObject::getGroup()
     }
     for (auto group : groups) {
         if (hasObject(group)) {
-            return dynamic_cast<T*>(group);
+            return freecad_cast<T>(group);
         }
     }
     return nullptr;
@@ -625,7 +625,7 @@ ViewGroup* AssemblyObject::getExplodedViewGroup() const
     }
     for (auto viewGroup : viewGroups) {
         if (hasObject(viewGroup)) {
-            return dynamic_cast<ViewGroup*>(viewGroup);
+            return freecad_cast<ViewGroup>(viewGroup);
         }
     }
     return nullptr;
@@ -1966,7 +1966,7 @@ std::vector<AssemblyLink*> AssemblyObject::getSubAssemblies()
         doc->getObjectsOfType(Assembly::AssemblyLink::getClassTypeId());
     for (auto assembly : assemblies) {
         if (hasObject(assembly)) {
-            subAssemblies.push_back(dynamic_cast<AssemblyLink*>(assembly));
+            subAssemblies.push_back(freecad_cast<AssemblyLink>(assembly));
         }
     }
 

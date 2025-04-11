@@ -136,7 +136,7 @@ void Flag::mouseMoveEvent(QMouseEvent *e)
         move(e->globalPosition().toPoint() - dragPosition);
 #endif
         e->accept();
-        auto viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
+        auto viewer = qobject_cast<View3DInventorViewer*>(parentWidget());
         if (viewer)
             viewer->getSoRenderManager()->scheduleRedraw();
     }

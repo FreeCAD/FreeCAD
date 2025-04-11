@@ -208,7 +208,7 @@ void DlgInspectMaterial::updateMaterialTree(const Materials::Material& material)
     Base::Console().Log("Material '%s'\n", material.getName().toStdString().c_str());
 
     auto tree = ui->treeMaterials;
-    auto model = dynamic_cast<QStandardItemModel*>(tree->model());
+    auto model = qobject_cast<QStandardItemModel*>(tree->model());
     model->clear();
 
     addMaterial(tree, model, material);
