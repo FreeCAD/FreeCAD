@@ -146,6 +146,8 @@ class ObjectArray:
         self.setEditorModes(obj)
         obj.Proxy = self
 
+        self.FirstRun = True
+
     def dumps(self):
         return None
 
@@ -205,8 +207,8 @@ class ObjectArray:
         self.setEditorModes(obj)
 
     def execute(self, obj):
-        if FreeCAD.GuiUp:
-
+        if FreeCAD.GuiUp and self.FirstRun:
+            self.FirstRun = False
             QtGui.QMessageBox.warning(
                 None,
                 QT_TRANSLATE_NOOP("CAM_ArrayOp", "Operation is depreciated"),
