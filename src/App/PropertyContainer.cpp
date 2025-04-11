@@ -46,10 +46,6 @@ using namespace std;
 TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence)
 
 
-//**************************************************************************
-// Construction/Destruction
-
-// Here's the implementation! Description should take place in the header file!
 PropertyContainer::PropertyContainer()
 {
     propertyData.parentPropertyData = nullptr;
@@ -67,7 +63,6 @@ unsigned int PropertyContainer::getMemSize () const
         size += It->second->getMemSize();
     return size;
 }
-
 
 App::Property* PropertyContainer::addDynamicProperty(
     const char* type, const char* name, const char* group, const char* doc,
@@ -191,36 +186,12 @@ const PropertyData * PropertyContainer::getPropertyDataPtr(){return &propertyDat
 const PropertyData & PropertyContainer::getPropertyData() const{return propertyData;}
 
 
-/**
- * @brief PropertyContainer::handleChangedPropertyName is called during restore to possibly
- * fix reading of older versions of this property container. This method is typically called
- * if the property on file has changed its name in more recent versions.
- *
- * The default implementation does nothing.
- *
- * @param reader The XML stream to read from.
- * @param TypeName Name of property type on file.
- * @param PropName Name of property on file that does not exist in the container anymore.
- */
-
 void PropertyContainer::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
 {
     (void)reader;
     (void)TypeName;
     (void)PropName;
 }
-
-/**
- * @brief PropertyContainer::handleChangedPropertyType is called during restore to possibly
- * fix reading of older versions of the property container. This method is typically called
- * if the property on file has changed its type in more recent versions.
- *
- * The default implementation does nothing.
- *
- * @param reader The XML stream to read from.
- * @param TypeName Name of property type on file.
- * @param prop Pointer to property to restore. Its type differs from TypeName.
- */
 
 void PropertyContainer::handleChangedPropertyType(XMLReader &reader, const char *TypeName, Property *prop)
 {
