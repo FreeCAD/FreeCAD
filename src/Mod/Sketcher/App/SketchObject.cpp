@@ -9262,7 +9262,7 @@ const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenc
             std::map<int, Sketcher::PointPos> tmp;
             tmp.insert(std::pair<int, Sketcher::PointPos>(constr->First, constr->FirstPos));
             tmp.insert(std::pair<int, Sketcher::PointPos>(constr->Second, constr->SecondPos));
-            coincidenttree.push_back(tmp);
+            coincidenttree.push_back(std::move(tmp));
         }
         else if (firstpresentin != -1) {
             // add to existing group
