@@ -30,6 +30,7 @@ import shlex
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
+import re
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
@@ -118,6 +119,52 @@ POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = """"""
+
+# Get X,Y,Z coordinates from G movements
+def getPosition(line):
+    coordinates = {'x':None, 'y':None, 'z':None}
+    for axis in ('x', 'y', 'z'):
+        pattern = f'{axis.upper()}-?\\d+.\\d+'
+        result = re.search(pattern, line)
+        value = float(result.group()[1:]) if result else positionPrev[axis]
+        coordinates[axis] = value
+    return coordinates
+
+# Find and comment G0 movements without changing position between mill operations (G1,G2,G3)
+def cleanerG0(lines):
+    global positionPrev
+    positionPrev = {'x':None, 'y':None, 'z':None}
+    positionNext = {'x':None, 'y':None, 'z':None}
+    deltaXYZ = 0.01 # Max difference between positions of mill operations (G1, G2, G3)
+    g0Lines = []
+    commentLines = []
+    lineNum = 0
+    gcode = list(lines.splitlines())
+
+    for line in gcode:
+        lineNum += 1
+        if line.startswith('G0 '):
+            g0Lines.append(lineNum)
+
+        if re.search(r'^G[123]\s', line):
+            positionNext = getPosition(line)
+
+            if  positionPrev['x'] is not None \
+            and positionPrev['y'] is not None \
+            and positionPrev['z'] is not None \
+            and g0Lines \
+            and abs(positionNext['x']-positionPrev['x']) <=  deltaXYZ \
+            and abs(positionNext['y']-positionPrev['y']) <=  deltaXYZ \
+            and    (positionNext['z']-positionPrev['z']) >= -deltaXYZ:
+                commentLines.extend(g0Lines)
+
+            g0Lines.clear()
+            positionPrev = positionNext
+
+    for i in commentLines:
+        gcode[i-1] = f';{gcode[i-1]} ; Useless movement'
+
+    return '\n'.join(gcode)
 
 
 def processArguments(argstring):
@@ -257,6 +304,9 @@ def export(objectslist, filename, argstring):
         gcode += "(begin postamble)\n"
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
+
+    # comment useless G0 movements
+    gcode = cleanerG0(gcode)
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
