@@ -1509,7 +1509,7 @@ def get_contact_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj)
 
     contact_obj = femobj["Object"]
     if len(contact_obj.References) == 1 and len(contact_obj.References[0][1]) == 2:
-        # [(<Part::PartFeature>, ('Face7', 'Face3'))]
+        # [(<Part::Feature>, ('Face7', 'Face3'))]
         # refs are merged because they are on the same doc obj
         # but only one element face for each contact face (Gui, TaskPael contact)
         ref_obj = contact_obj.References[0][0]
@@ -1521,7 +1521,7 @@ def get_contact_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj)
         and len(contact_obj.References[0][1]) == 1
         and len(contact_obj.References[1][1]) == 1
     ):
-        # [(<Part::PartFeature>, ('Face3',)), (<Part::PartFeature>, ('Face7',))]
+        # [(<Part::Feature>, ('Face3',)), (<Part::Feature>, ('Face7',))]
         # refs are on different objects
         # but only one element face for each contact face (Gui, TaskPael contact)
         slave_ref = contact_obj.References[0]
@@ -1591,7 +1591,7 @@ def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
 
     tie_obj = femobj["Object"]
     if len(tie_obj.References) == 1 and len(tie_obj.References[0][1]) == 2:
-        # [(<Part::PartFeature>, ('Face7', 'Face3'))]
+        # [(<Part::Feature>, ('Face7', 'Face3'))]
         # refs are merged because they are on the same doc obj
         # but only one element face for each contact face (Gui, TaskPael tie)
         ref_obj = tie_obj.References[0][0]
@@ -1603,7 +1603,7 @@ def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
         and len(tie_obj.References[0][1]) == 1
         and len(tie_obj.References[1][1]) == 1
     ):
-        # [(<Part::PartFeature>, ('Face3',)), (<Part::PartFeature>, ('Face7',))]
+        # [(<Part::Feature>, ('Face3',)), (<Part::Feature>, ('Face7',))]
         # refs are on different objects
         # but only one element face for each contact face (Gui, TaskPael tie)
         slave_ref = tie_obj.References[0]
