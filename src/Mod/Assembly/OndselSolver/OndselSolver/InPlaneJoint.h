@@ -5,23 +5,23 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Joint.h"
 
-namespace MbD {
-	class InPlaneJoint : public Joint
-	{
-		//offset
-	public:
-		InPlaneJoint();
-		InPlaneJoint(const std::string& str);
-		virtual void initializeGlobally() = 0;	//To prevent instantiation of this class
+namespace MbD
+{
+class InPlaneJoint: public Joint
+{
+    // offset
+public:
+    InPlaneJoint();
+    InPlaneJoint(const std::string& str);
+    virtual void initializeGlobally() = 0;  // To prevent instantiation of this class
 
-		void createInPlaneConstraint();
+    void createInPlaneConstraint();
 
-		double offset = 0.0;
-	};
-}
-
+    double offset = 0.0;
+};
+}  // namespace MbD

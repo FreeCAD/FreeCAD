@@ -5,15 +5,15 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "AbsConstraint.h"
 #include "PartFrame.h"
 
 using namespace MbD;
 //
-//AbsConstraint::AbsConstraint() {}
+// AbsConstraint::AbsConstraint() {}
 //
-//AbsConstraint::AbsConstraint(const std::string& str) : Constraint(str) {}
+// AbsConstraint::AbsConstraint(const std::string& str) : Constraint(str) {}
 
 AbsConstraint::AbsConstraint(size_t i)
 {
@@ -61,12 +61,12 @@ void AbsConstraint::fillAccICIterError(FColDsptr col)
 {
     col->atiplusNumber(iqXminusOnePlusAxis, lam);
     auto partFrame = static_cast<PartFrame*>(owner);
-        double sum;
-        if (axis < 3) {
-            sum = partFrame->qXddot->at(axis);
-        }
-        else {
-            sum = partFrame->qEddot->at(axis - 3);
-        }
-        col->atiplusNumber(iG, sum);
+    double sum;
+    if (axis < 3) {
+        sum = partFrame->qXddot->at(axis);
+    }
+    else {
+        sum = partFrame->qEddot->at(axis - 3);
+    }
+    col->atiplusNumber(iG, sum);
 }

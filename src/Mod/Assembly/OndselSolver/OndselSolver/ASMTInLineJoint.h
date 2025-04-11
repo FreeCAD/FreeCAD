@@ -10,11 +10,11 @@
 
 #include "ASMTJoint.h"
 
-namespace MbD {
-    class ASMTInLineJoint : public ASMTJoint
-    {
-        //
-    public:
-
-    };
-}
+namespace MbD
+{
+class ASMTInLineJoint: public ASMTJoint
+{
+    //
+public:
+};
+}  // namespace MbD

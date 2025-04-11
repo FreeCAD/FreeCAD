@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include <memory>
@@ -13,30 +13,30 @@
 #include "ExternalSystem.h"
 #include "System.h"
 
-namespace MbD {
+namespace MbD
+{
 
-	class CADSystem
-	{
-		//
-	public:
-		CADSystem() {
-			mbdSystem->initialize();
-			mbdSystem->externalSystem->cadSystem = this;
-		}
+class CADSystem
+{
+    //
+public:
+    CADSystem()
+    {
+        mbdSystem->initialize();
+        mbdSystem->externalSystem->cadSystem = this;
+    }
 
-		void outputFor(AnalysisType type);
-		void logString(const std::string& str);
-		void logString(double value);
-		void runOndselSinglePendulum();
-		void runOndselDoublePendulum();
-		void runOndselPiston();
-		void runPiston();
-		void preMbDrun(std::shared_ptr<System> mbdSys);
-		void postMbDrun();
-		void updateFromMbD();
+    void outputFor(AnalysisType type);
+    void logString(const std::string& str);
+    void logString(double value);
+    void runOndselSinglePendulum();
+    void runOndselDoublePendulum();
+    void runOndselPiston();
+    void runPiston();
+    void preMbDrun(std::shared_ptr<System> mbdSys);
+    void postMbDrun();
+    void updateFromMbD();
 
-		std::shared_ptr<System> mbdSystem = std::make_shared<System>();
-
-	};
-}
-
+    std::shared_ptr<System> mbdSystem = std::make_shared<System>();
+};
+}  // namespace MbD

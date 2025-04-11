@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "AtPointJoint.h"
 
-namespace MbD {
-	class SphericalJoint : public AtPointJoint
-	{
-		//
-	public:
-		SphericalJoint();
-		SphericalJoint(const std::string& str);
-		void initializeGlobally() override;
-
-	};
-}
-
+namespace MbD
+{
+class SphericalJoint: public AtPointJoint
+{
+    //
+public:
+    SphericalJoint();
+    SphericalJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

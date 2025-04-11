@@ -5,10 +5,28 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
-namespace MbD {
-	enum ConstraintType { essential, displacement, perpendicular, redundant };
-	enum DiscontinuityType { TOUCHDOWN, REBOUND, LIFTOFF };
-	enum AnalysisType { INPUT, INITIALCONDITION, DYNAMIC, STATIC };
-}
+namespace MbD
+{
+enum ConstraintType
+{
+    essential,
+    displacement,
+    perpendicular,
+    redundant
+};
+enum DiscontinuityType
+{
+    TOUCHDOWN,
+    REBOUND,
+    LIFTOFF
+};
+enum AnalysisType
+{
+    INPUT,
+    INITIALCONDITION,
+    DYNAMIC,
+    STATIC
+};
+}  // namespace MbD

@@ -5,11 +5,10 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "Integrator.h"
 
 using namespace MbD;
 
 void Integrator::setSystem(Solver*)
-{
-}
+{}

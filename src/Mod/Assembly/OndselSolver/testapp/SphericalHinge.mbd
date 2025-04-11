@@ -93,7 +93,7 @@
 
      #Moments of inertia and relative center of mass
 
-         #body 2: 
+         #body 2:
              set: real Ixx_2 = 4.27187049e-07; #moment of inertia [kg*m^2]
              set: real Iyy_2 = 4.10064115e-07; #moment of inertia [kg*m^2]
              set: real Izz_2 = 6.3235945e-08; #moment of inertia [kg*m^2]
@@ -132,11 +132,11 @@
      # [Bodies]
 
          body: body_2,
-               structural_node_2, #<node_label> 
+               structural_node_2, #<node_label>
                mass_2, #<mass> [kg]
                Rx_2, Ry_2, Rz_2, #<relative_center_of_mass> [m]
                diag, Ixx_2, Iyy_2, Izz_2, #<inertia matrix> [kg*m^2]
-               orientation, 3, -0.0006449901910526301, -0.9879789679799248, 0.1835678153080647, 2, -0.0024511632742001133, 0.17949120074807742, 0.9905437398987571; 
+               orientation, 3, -0.0006449901910526301, -0.9879789679799248, 0.1835678153080647, 2, -0.0024511632742001133, 0.17949120074807742, 0.9905437398987571;
 
      #-----------------------------------------------------------------------------
      # [Joints]
@@ -145,7 +145,7 @@
          clamp,
          structural_node_1, #<node_label>
              1.7274205242444082e-18, 0.0030550458715596384, 0.025, #<absolute_pin_position> [m]
-             3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0; #<absolute_orientation_matrix> 
+             3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0; #<absolute_orientation_matrix>
 
      joint: joint_2,
          spherical hinge,
@@ -157,4 +157,3 @@
          gravity: uniform, 0.0, -1.0, 0.0, string, "9.807"; #<gravity_acceleration> [m/s^2]
 
  end: elements;
-

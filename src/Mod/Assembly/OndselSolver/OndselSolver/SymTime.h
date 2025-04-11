@@ -5,17 +5,17 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "IndependentVariable.h"
 
-namespace MbD {
-    class Time : public IndependentVariable
-    {
-    public:
-        Time();
-        void initialize() override;
-    };
-}
-
+namespace MbD
+{
+class Time: public IndependentVariable
+{
+public:
+    Time();
+    void initialize() override;
+};
+}  // namespace MbD

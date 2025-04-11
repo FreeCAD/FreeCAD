@@ -10,14 +10,13 @@
 
 #include "ASMTJoint.h"
 
-namespace MbD {
-    class ASMTParallelAxesJoint : public ASMTJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTParallelAxesJoint> With();
-        std::shared_ptr<ItemIJ> mbdClassNew() override;
-
-    };
-}
-
+namespace MbD
+{
+class ASMTParallelAxesJoint: public ASMTJoint
+{
+    //
+public:
+    static std::shared_ptr<ASMTParallelAxesJoint> With();
+    std::shared_ptr<ItemIJ> mbdClassNew() override;
+};
+}  // namespace MbD

@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "NoRotationJoint.h"
 #include "System.h"
 #include "DirectionCosineConstraintIJ.h"
@@ -14,23 +14,20 @@
 using namespace MbD;
 
 MbD::NoRotationJoint::NoRotationJoint()
-{
-}
+{}
 
 MbD::NoRotationJoint::NoRotationJoint(const std::string&)
-{
-}
+{}
 
 void MbD::NoRotationJoint::initializeGlobally()
 {
-	if (constraints->empty())
-	{
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
-	}
-	else {
-		Joint::initializeGlobally();
-	}
+    if (constraints->empty()) {
+        addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0));
+        addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
+        addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
+        this->root()->hasChanged = true;
+    }
+    else {
+        Joint::initializeGlobally();
+    }
 }

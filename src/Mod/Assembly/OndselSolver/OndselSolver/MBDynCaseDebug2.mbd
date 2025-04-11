@@ -162,7 +162,7 @@
 
      #Moments of inertia and relative center of mass
 
-         #body 2: 
+         #body 2:
              set: real Ixx_2 = 6.927961737800001e-05; #moment of inertia [kg*m^2]
              set: real Iyy_2 = 5.6689424982e-05; #moment of inertia [kg*m^2]
              set: real Izz_2 = 2.9053392577e-05; #moment of inertia [kg*m^2]
@@ -171,7 +171,7 @@
              set: real Ry_2 = 0.0; #Y component of the relative center of mass [m]
              set: real Rz_2 = 0.0; #Z component of the relative center of mass [m]
 
-         #body 4: 
+         #body 4:
              set: real Ixx_4 = 7.9157004521e-05; #moment of inertia [kg*m^2]
              set: real Iyy_4 = 7.769349168e-05; #moment of inertia [kg*m^2]
              set: real Izz_4 = 3.339121993e-06; #moment of inertia [kg*m^2]
@@ -180,7 +180,7 @@
              set: real Ry_4 = 0.0; #Y component of the relative center of mass [m]
              set: real Rz_4 = 0.0; #Z component of the relative center of mass [m]
 
-         #body 5: 
+         #body 5:
              set: real Ixx_5 = 7.9157004521e-05; #moment of inertia [kg*m^2]
              set: real Iyy_5 = 7.769349168e-05; #moment of inertia [kg*m^2]
              set: real Izz_5 = 3.339121993e-06; #moment of inertia [kg*m^2]
@@ -240,25 +240,25 @@
      # [Bodies]
 
          body: body_2,
-               structural_node_2, #<node_label> 
+               structural_node_2, #<node_label>
                mass_2, #<mass> [kg]
                Rx_2, Ry_2, Rz_2, #<relative_center_of_mass> [m]
                diag, Ixx_2, Iyy_2, Izz_2, #<inertia matrix> [kg*m^2]
-               orientation, 3, -0.35, 0.91, 0.21, 2, 0.78, 0.4, -0.47; 
+               orientation, 3, -0.35, 0.91, 0.21, 2, 0.78, 0.4, -0.47;
 
          body: body_4,
-               structural_node_4, #<node_label> 
+               structural_node_4, #<node_label>
                mass_4, #<mass> [kg]
                Rx_4, Ry_4, Rz_4, #<relative_center_of_mass> [m]
                diag, Ixx_4, Iyy_4, Izz_4, #<inertia matrix> [kg*m^2]
-               orientation, 3, 0.78, 0.4, -0.47, 2, -0.36, 0.91, 0.19; 
+               orientation, 3, 0.78, 0.4, -0.47, 2, -0.36, 0.91, 0.19;
 
          body: body_5,
-               structural_node_5, #<node_label> 
+               structural_node_5, #<node_label>
                mass_5, #<mass> [kg]
                Rx_5, Ry_5, Rz_5, #<relative_center_of_mass> [m]
                diag, Ixx_5, Iyy_5, Izz_5, #<inertia matrix> [kg*m^2]
-               orientation, 3, -0.36, 0.91, 0.19, 2, 0.78, 0.4, -0.47; 
+               orientation, 3, -0.36, 0.91, 0.19, 2, 0.78, 0.4, -0.47;
 
      #-----------------------------------------------------------------------------
      # [Joints]
@@ -267,7 +267,7 @@
          clamp,
          structural_node_1, #<node_label>
              0.16912189837562464, -0.10055206743263254, 0.07867737409397452, #<absolute_pin_position> [m]
-             3, -0.3539135011019427, 0.9158836712023025, 0.18947911379030236, 2, -0.5084786583487672, -0.018385530501657588, -0.8608782877224926; #<absolute_orientation_matrix> 
+             3, -0.3539135011019427, 0.9158836712023025, 0.18947911379030236, 2, -0.5084786583487672, -0.018385530501657588, -0.8608782877224926; #<absolute_orientation_matrix>
 
      joint: joint_2,
          axial rotation,
@@ -283,7 +283,7 @@
          clamp,
          structural_node_3, #<node_label>
              0.2890983348369078, -0.06156645049450425, 0.09724597715885096, #<absolute_pin_position> [m]
-             3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0; #<absolute_orientation_matrix> 
+             3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0; #<absolute_orientation_matrix>
 
      joint: joint_4,
          revolute hinge,
@@ -317,4 +317,3 @@
      drive caller: 1, name,"drive:1", ramp, 5.0, 0.25, 4.0, 0.0;
 
  end: elements;
-

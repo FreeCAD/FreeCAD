@@ -10,10 +10,10 @@
 
 #include "Arguments.h"
 
-namespace MbD {
-	class Functions : public Arguments
-	{
-	public:
-
-	};
-}
+namespace MbD
+{
+class Functions: public Arguments
+{
+public:
+};
+}  // namespace MbD

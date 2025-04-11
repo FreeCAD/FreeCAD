@@ -5,14 +5,15 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "Abs.h"
 
 using namespace MbD;
 
-MbD::Abs::Abs(Symsptr arg) : FunctionX(arg)
+MbD::Abs::Abs(Symsptr arg)
+    : FunctionX(arg)
 {
-	//Do nothing.
+    // Do nothing.
 }
 
 double MbD::Abs::getValue()
@@ -22,11 +23,11 @@ double MbD::Abs::getValue()
 
 Symsptr MbD::Abs::copyWith(Symsptr arg)
 {
-	return std::make_shared<Abs>(arg);
+    return std::make_shared<Abs>(arg);
 }
 
 std::ostream& MbD::Abs::printOn(std::ostream& s) const
 {
-	s << "abs(" << *xx << ")";
-	return s;
+    s << "abs(" << *xx << ")";
+    return s;
 }

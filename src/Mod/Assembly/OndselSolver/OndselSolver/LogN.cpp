@@ -5,14 +5,14 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "LogN.h"
 
 using namespace MbD;
 
-MbD::LogN::LogN(Symsptr arg) : FunctionX(arg)
-{
-}
+MbD::LogN::LogN(Symsptr arg)
+    : FunctionX(arg)
+{}
 
 double MbD::LogN::getValue()
 {
@@ -21,11 +21,11 @@ double MbD::LogN::getValue()
 
 Symsptr MbD::LogN::copyWith(Symsptr arg)
 {
-	return std::make_shared<LogN>(arg);
+    return std::make_shared<LogN>(arg);
 }
 
 std::ostream& MbD::LogN::printOn(std::ostream& s) const
 {
-	s << "ln(" << *xx << ")";
-	return s;
+    s << "ln(" << *xx << ")";
+    return s;
 }

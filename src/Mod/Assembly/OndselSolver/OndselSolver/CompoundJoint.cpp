@@ -5,15 +5,14 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "CompoundJoint.h"
 
 using namespace MbD;
 
 MbD::CompoundJoint::CompoundJoint()
-{
-}
+{}
 
-MbD::CompoundJoint::CompoundJoint(const std::string& str) : Joint(str)
-{
-}
+MbD::CompoundJoint::CompoundJoint(const std::string& str)
+    : Joint(str)
+{}

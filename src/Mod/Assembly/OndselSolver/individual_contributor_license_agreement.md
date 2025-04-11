@@ -29,4 +29,3 @@ You accept and agree to the following terms and conditions for Your present and 
 You agree to notify Ondsel Inc of any facts or circumstances of which you become aware that would make these representations inaccurate in any respect.
 
 This text is licensed under the [Creative Commons Attribution 3.0 License](https://creativecommons.org/licenses/by/3.0/) and the original source is the Google Open Source Programs Office.
-

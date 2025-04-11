@@ -5,20 +5,18 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "ASMTRefItem.h"
 
-namespace MbD {
-    class ASMTRefCurve : public ASMTRefItem
-    {
-        //
-    public:
-        void parseASMT(std::vector<std::string>& lines) override;
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-
-
-    };
-}
-
+namespace MbD
+{
+class ASMTRefCurve: public ASMTRefItem
+{
+    //
+public:
+    void parseASMT(std::vector<std::string>& lines) override;
+    void storeOnLevel(std::ofstream& os, size_t level) override;
+};
+}  // namespace MbD

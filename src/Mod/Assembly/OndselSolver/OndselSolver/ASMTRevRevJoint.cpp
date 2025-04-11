@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
-#include <fstream>	
+#include <fstream>
 
 #include "ASMTRevRevJoint.h"
 #include "RevRevJoint.h"
@@ -14,9 +14,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTRevRevJoint> MbD::ASMTRevRevJoint::With()
 {
-	auto asmt = std::make_shared<ASMTRevRevJoint>();
-	asmt->initialize();
-	return asmt;
+    auto asmt = std::make_shared<ASMTRevRevJoint>();
+    asmt->initialize();
+    return asmt;
 }
 
 std::shared_ptr<ItemIJ> MbD::ASMTRevRevJoint::mbdClassNew()

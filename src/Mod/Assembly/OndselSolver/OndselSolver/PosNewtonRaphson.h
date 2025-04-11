@@ -5,20 +5,20 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "SystemNewtonRaphson.h"
 
-namespace MbD {
-    class PosNewtonRaphson : public SystemNewtonRaphson
-    {
-        //
-    public:
-        void preRun() override;
-        void incrementIterNo() override;
-        void askSystemToUpdate() override;
-        void postRun() override;
-    };
-}
-
+namespace MbD
+{
+class PosNewtonRaphson: public SystemNewtonRaphson
+{
+    //
+public:
+    void preRun() override;
+    void incrementIterNo() override;
+    void askSystemToUpdate() override;
+    void postRun() override;
+};
+}  // namespace MbD

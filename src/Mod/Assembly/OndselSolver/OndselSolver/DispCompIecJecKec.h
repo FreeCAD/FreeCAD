@@ -5,26 +5,26 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "KinematicIeJe.h"
 
-namespace MbD {
-    class DispCompIecJecKec : public KinematicIeJe
-    {
-        //efrmK axisK riIeJeKe aAjOKe rIeJeO 
-    public:
-        DispCompIecJecKec();
-        DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+namespace MbD
+{
+class DispCompIecJecKec: public KinematicIeJe
+{
+    // efrmK axisK riIeJeKe aAjOKe rIeJeO
+public:
+    DispCompIecJecKec();
+    DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
 
-        double value() override;
+    double value() override;
 
-        EndFrmsptr efrmK;
-        size_t axisK;
-        double riIeJeKe;
-        FColDsptr aAjOKe;
-        FColDsptr rIeJeO;
-    };
-}
-
+    EndFrmsptr efrmK;
+    size_t axisK;
+    double riIeJeKe;
+    FColDsptr aAjOKe;
+    FColDsptr rIeJeO;
+};
+}  // namespace MbD

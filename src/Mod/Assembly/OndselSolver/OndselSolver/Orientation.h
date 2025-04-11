@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "PrescribedMotion.h"
 
-namespace MbD {
-	class Orientation : public PrescribedMotion
-	{
-		//
-	public:
-		Orientation();
-		Orientation(const std::string& str);
-		void initializeGlobally() override;
-
-	};
-}
-
+namespace MbD
+{
+class Orientation: public PrescribedMotion
+{
+    //
+public:
+    Orientation();
+    Orientation(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

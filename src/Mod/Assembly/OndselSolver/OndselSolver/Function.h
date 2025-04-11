@@ -5,18 +5,17 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Symbolic.h"
 
-namespace MbD {
-    class Function : public Symbolic
-    {
-        //
-    public:
-        virtual void arguments(Symsptr args) = 0;
-
-    };
-}
-
+namespace MbD
+{
+class Function: public Symbolic
+{
+    //
+public:
+    virtual void arguments(Symsptr args) = 0;
+};
+}  // namespace MbD

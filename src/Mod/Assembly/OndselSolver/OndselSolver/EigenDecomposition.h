@@ -10,13 +10,12 @@
 
 #include "MatrixSolver.h"
 
-namespace MbD {
-	class EigenDecomposition : public MatrixSolver
-	{
+namespace MbD
+{
+class EigenDecomposition: public MatrixSolver
+{
 
-		//
-	public:
-
-	};
-}
-
+    //
+public:
+};
+}  // namespace MbD

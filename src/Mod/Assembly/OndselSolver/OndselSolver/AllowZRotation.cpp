@@ -19,41 +19,41 @@ using namespace MbD;
 
 MbD::AllowZRotation::AllowZRotation()
 {
-	//Do nothing.
+    // Do nothing.
 }
 
-MbD::AllowZRotation::AllowZRotation(const std::string& str) : PrescribedMotion(str) 
+MbD::AllowZRotation::AllowZRotation(const std::string& str)
+    : PrescribedMotion(str)
 {
-	//Do nothing.
+    // Do nothing.
 }
 
 std::shared_ptr<AllowZRotation> MbD::AllowZRotation::With()
 {
-	auto allowZRotation = std::make_shared<AllowZRotation>();
-	allowZRotation->initialize();
-	return allowZRotation;
+    auto allowZRotation = std::make_shared<AllowZRotation>();
+    allowZRotation->initialize();
+    return allowZRotation;
 }
 
 void MbD::AllowZRotation::initializeGlobally()
 {
-	if (constraints->empty()) {
-		initMotions();
-		auto dirCosCon = AllowZRotationConstraintIqctJqc::With(frmI, frmJ, 1, 0);
-		addConstraint(dirCosCon);
-		this->root()->hasChanged = true;
-	}
-	else {
-		PrescribedMotion::initializeGlobally();
-	}
+    if (constraints->empty()) {
+        initMotions();
+        auto dirCosCon = AllowZRotationConstraintIqctJqc::With(frmI, frmJ, 1, 0);
+        addConstraint(dirCosCon);
+        this->root()->hasChanged = true;
+    }
+    else {
+        PrescribedMotion::initializeGlobally();
+    }
 }
 
 void MbD::AllowZRotation::postPosIC()
 {
-	for (size_t i = 0; i < constraints->size(); i++)
-	{
-		auto& constraint = constraints->at(i);
-		auto redunCon = CREATE<RedundantConstraint>::With();
-		redunCon->constraint = constraint;
-		constraints->at(i) = redunCon;
-	}
+    for (size_t i = 0; i < constraints->size(); i++) {
+        auto& constraint = constraints->at(i);
+        auto redunCon = CREATE<RedundantConstraint>::With();
+        redunCon->constraint = constraint;
+        constraints->at(i) = redunCon;
+    }
 }

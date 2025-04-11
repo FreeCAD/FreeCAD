@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "PosICKineNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "Part.h"
@@ -15,13 +15,13 @@ using namespace MbD;
 
 void PosICKineNewtonRaphson::initializeGlobally()
 {
-	AnyPosICNewtonRaphson::initializeGlobally();
-	iterMax = system->iterMaxPosKine;
-	dxTol = system->errorTolPosKine;
+    AnyPosICNewtonRaphson::initializeGlobally();
+    iterMax = system->iterMaxPosKine;
+    dxTol = system->errorTolPosKine;
 }
 
 void MbD::PosICKineNewtonRaphson::preRun()
 {
-	system->logString("MbD: Solving for quasi kinematic position.");
-	PosNewtonRaphson::preRun();
+    system->logString("MbD: Solving for quasi kinematic position.");
+    PosNewtonRaphson::preRun();
 }

@@ -5,20 +5,18 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "AccNewtonRaphson.h"
 
-namespace MbD {
-    class AccKineNewtonRaphson : public AccNewtonRaphson
-    {
-        //Kinematics with fully constrained system
-    public:
-        void initializeGlobally() override;
-        void preRun() override;
-
-
-    };
-}
-
+namespace MbD
+{
+class AccKineNewtonRaphson: public AccNewtonRaphson
+{
+    // Kinematics with fully constrained system
+public:
+    void initializeGlobally() override;
+    void preRun() override;
+};
+}  // namespace MbD

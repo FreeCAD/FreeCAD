@@ -90,19 +90,19 @@ begin: nodes;
       eye,                     # absolute orientation
       null,                    # absolute velocity
       null;                    # absolute angular velocity
-      
+
    structural: Node_Conrod, dynamic,
       reference, Ref_Conrod, Length_Conrod/2., 0., 0., # absolute position
       reference, Ref_Conrod, eye,                      # absolute orientation
       null,                                            # absolute velocity
       null;                                            # absolute angular velocity
-      
+
    structural: Node_Slider, dynamic,
       reference, Ref_Conrod, Length_Conrod, 0., 0., # absolute position
       eye,                                          # absolute orientation
       null,                                         # absolute velocity
       null;                                         # absolute angular velocity
-      
+
 end: nodes;
 
 #-----------------------------------------------------------------------------
@@ -116,17 +116,17 @@ begin: elements;
       Mass_Crank,              # mass
       null,                    # relative center of mass
       diag, 1., 1., Izz_Crank; # inertia matrix
-      
+
    body: Body_Conrod, Node_Conrod,
       Mass_Conrod,              # mass
       null,                     # relative center of mass
       diag, 1., 1., Izz_Conrod; # inertia matrix
-      
+
    body: Body_Slider, Node_Slider,
       Mass_Slider, # mass
       null,        # relative center of mass
       eye;         # inertia matrix
-   
+
    #-----------------------------------------------------------------------------
    # Joints
    joint: JoClamp_Ground,
@@ -134,43 +134,43 @@ begin: elements;
          Node_Ground,
             null, # absolute position
             eye;  # absolute orientation
-   
-   joint: JoAxrot_Ground_Crank, 
-      axial rotation, 
+
+   joint: JoAxrot_Ground_Crank,
+      axial rotation,
          Node_Ground,
             null,                     # relative offset
             hinge, eye,               # relative orientation
          Node_Crank,
             -Length_Crank/2., 0., 0., # relative offset
             hinge, eye,               # relative orientation
-         ramp, 2.*pi, 0., 1., 0.;     # angular velocity   
-            
-   joint: JoRevh_Crank_Conrod, 
-      revolute hinge, 
+         ramp, 2.*pi, 0., 1., 0.;     # angular velocity
+
+   joint: JoRevh_Crank_Conrod,
+      revolute hinge,
          Node_Crank,
             reference, Ref_Conrod, null,       # relative offset
             hinge, reference, Ref_Conrod, eye, # relative axis orientation
          Node_Conrod,
             reference, Ref_Conrod, null,       # relative offset
             hinge, reference, Ref_Conrod, eye; # relative axis orientation
-            
-   joint: JoInlin_Conrod_Slider, 
-      in line, 
+
+   joint: JoInlin_Conrod_Slider,
+      in line,
          Node_Conrod,
             Length_Conrod/2., 0., 0., # relative line position
             eye,                      # relative orientation
          Node_Slider;
-      
-   joint: JoInlin_Ground_Slider, 
+
+   joint: JoInlin_Ground_Slider,
       in line,
          Node_Ground,
             0., Offset_Slider, 0.,         # relative line position
             1, 0., 0., -1., 3, 1., 0., 0., # relative orientation
          Node_Slider;
-      
+
    joint: JoPrism_Ground_Slider,
       prismatic,
          Node_Ground,
          Node_Slider;
-                  
+
 end: elements;

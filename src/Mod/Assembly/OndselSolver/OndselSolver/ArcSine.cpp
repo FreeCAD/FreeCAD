@@ -10,22 +10,22 @@
 
 using namespace MbD;
 
-MbD::ArcSine::ArcSine(Symsptr arg) : FunctionX(arg)
-{
-}
+MbD::ArcSine::ArcSine(Symsptr arg)
+    : FunctionX(arg)
+{}
 
 double MbD::ArcSine::getValue()
 {
-	return std::asin(xx->getValue());
+    return std::asin(xx->getValue());
 }
 
 Symsptr MbD::ArcSine::copyWith(Symsptr arg)
 {
-	return std::make_shared<ArcSine>(arg);
+    return std::make_shared<ArcSine>(arg);
 }
 
 std::ostream& MbD::ArcSine::printOn(std::ostream& s) const
 {
-	s << "arcsin(" << *xx << ")";
-	return s;
+    s << "arcsin(" << *xx << ")";
+    return s;
 }

@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "PrescribedMotion.h"
 
-namespace MbD {
-	class ZTranslation : public PrescribedMotion
-	{
-		//
-	public:
-		ZTranslation();
-		ZTranslation(const std::string& str);
-		void initializeGlobally() override;
-
-	};
-}
-
+namespace MbD
+{
+class ZTranslation: public PrescribedMotion
+{
+    //
+public:
+    ZTranslation();
+    ZTranslation(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

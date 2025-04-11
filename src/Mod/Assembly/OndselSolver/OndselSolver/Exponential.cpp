@@ -5,14 +5,14 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "Exponential.h"
 
 using namespace MbD;
 
-MbD::Exponential::Exponential(Symsptr arg) : FunctionX(arg)
-{
-}
+MbD::Exponential::Exponential(Symsptr arg)
+    : FunctionX(arg)
+{}
 
 double MbD::Exponential::getValue()
 {
@@ -21,11 +21,11 @@ double MbD::Exponential::getValue()
 
 Symsptr MbD::Exponential::copyWith(Symsptr arg)
 {
-	return std::make_shared<Exponential>(arg);
+    return std::make_shared<Exponential>(arg);
 }
 
 std::ostream& MbD::Exponential::printOn(std::ostream& s) const
 {
-	s << "exp(" << *xx << ")";
-	return s;
+    s << "exp(" << *xx << ")";
+    return s;
 }

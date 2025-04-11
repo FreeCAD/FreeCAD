@@ -5,18 +5,16 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "ASMTItemIJ.h"
 
-namespace MbD {
-    class ASMTKinematicIJ : public ASMTItemIJ
-    {
-        //
-    public:
-
-
-    };
-}
-
+namespace MbD
+{
+class ASMTKinematicIJ: public ASMTItemIJ
+{
+    //
+public:
+};
+}  // namespace MbD

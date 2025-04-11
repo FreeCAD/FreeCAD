@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Joint.h"
 
-namespace MbD {
-	class PerpendicularJoint : public Joint
-	{
-		//
-	public:
-		PerpendicularJoint();
-		PerpendicularJoint(const std::string& str);
-		void initializeGlobally() override;
-
-	};
-}
-
+namespace MbD
+{
+class PerpendicularJoint: public Joint
+{
+    //
+public:
+    PerpendicularJoint();
+    PerpendicularJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

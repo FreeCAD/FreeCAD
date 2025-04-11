@@ -10,14 +10,13 @@
 
 #include "ASMTInPlaneJoint.h"
 
-namespace MbD {
-    class ASMTPlanarJoint : public ASMTInPlaneJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTPlanarJoint> With();
-        std::shared_ptr<ItemIJ> mbdClassNew() override;
-
-    };
-}
-
+namespace MbD
+{
+class ASMTPlanarJoint: public ASMTInPlaneJoint
+{
+    //
+public:
+    static std::shared_ptr<ASMTPlanarJoint> With();
+    std::shared_ptr<ItemIJ> mbdClassNew() override;
+};
+}  // namespace MbD

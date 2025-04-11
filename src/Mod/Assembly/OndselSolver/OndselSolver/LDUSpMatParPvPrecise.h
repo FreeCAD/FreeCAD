@@ -5,18 +5,17 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "LDUSpMatParPv.h"
 
-namespace MbD {
-    class LDUSpMatParPvPrecise : public LDUSpMatParPv
-    {
-        //
-    public:
-        void doPivoting(size_t p) override;
-
-    };
-}
-
+namespace MbD
+{
+class LDUSpMatParPvPrecise: public LDUSpMatParPv
+{
+    //
+public:
+    void doPivoting(size_t p) override;
+};
+}  // namespace MbD

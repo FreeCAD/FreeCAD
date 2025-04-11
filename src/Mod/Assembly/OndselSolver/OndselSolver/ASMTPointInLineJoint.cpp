@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
-#include <fstream>	
+#include <fstream>
 
 #include "ASMTPointInLineJoint.h"
 #include "PointInLineJoint.h"
@@ -14,9 +14,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTPointInLineJoint> MbD::ASMTPointInLineJoint::With()
 {
-	auto asmt = std::make_shared<ASMTPointInLineJoint>();
-	asmt->initialize();
-	return asmt;
+    auto asmt = std::make_shared<ASMTPointInLineJoint>();
+    asmt->initialize();
+    return asmt;
 }
 
 std::shared_ptr<ItemIJ> MbD::ASMTPointInLineJoint::mbdClassNew()
@@ -26,6 +26,6 @@ std::shared_ptr<ItemIJ> MbD::ASMTPointInLineJoint::mbdClassNew()
 
 void MbD::ASMTPointInLineJoint::storeOnTimeSeries(std::ofstream& os)
 {
-	os << "PointInLineJointSeries\t" << fullName("") << std::endl;
-	ASMTItemIJ::storeOnTimeSeries(os);
+    os << "PointInLineJointSeries\t" << fullName("") << std::endl;
+    ASMTItemIJ::storeOnTimeSeries(os);
 }

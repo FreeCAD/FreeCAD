@@ -5,11 +5,11 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "TooManyTriesError.h"
 
 using namespace MbD;
 
-TooManyTriesError::TooManyTriesError(const std::string& msg) : std::runtime_error(msg)
-{
-}
+TooManyTriesError::TooManyTriesError(const std::string& msg)
+    : std::runtime_error(msg)
+{}

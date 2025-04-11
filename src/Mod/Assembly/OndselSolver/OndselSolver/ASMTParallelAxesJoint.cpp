@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
-#include <fstream>	
+#include <fstream>
 
 #include "ASMTParallelAxesJoint.h"
 #include "ParallelAxesJoint.h"
@@ -14,9 +14,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTParallelAxesJoint> MbD::ASMTParallelAxesJoint::With()
 {
-	auto asmt = std::make_shared<ASMTParallelAxesJoint>();
-	asmt->initialize();
-	return asmt;
+    auto asmt = std::make_shared<ASMTParallelAxesJoint>();
+    asmt->initialize();
+    return asmt;
 }
 
 std::shared_ptr<ItemIJ> MbD::ASMTParallelAxesJoint::mbdClassNew()

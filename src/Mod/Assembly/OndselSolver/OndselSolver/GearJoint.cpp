@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "GearJoint.h"
 #include "CREATE.h"
 #include "GearConstraintIJ.h"
@@ -14,14 +14,12 @@
 using namespace MbD;
 
 MbD::GearJoint::GearJoint()
-{
-}
+{}
 
 MbD::GearJoint::GearJoint(const std::string&)
-{
-}
+{}
 //
-//void MbD::GearJoint::initializeLocally()
+// void MbD::GearJoint::initializeLocally()
 //{
 //	if (!constraints->empty())
 //	{
@@ -33,16 +31,15 @@ MbD::GearJoint::GearJoint(const std::string&)
 
 void MbD::GearJoint::initializeGlobally()
 {
-	if (constraints->empty())
-	{
-		auto gearIJ = GearConstraintIJ::With(frmI, frmJ);
-		gearIJ->radiusI = radiusI;
-		gearIJ->radiusJ = radiusJ;
-		gearIJ->setConstant(std::numeric_limits<double>::min());
-		addConstraint(gearIJ);
-		this->root()->hasChanged = true;
-	}
-	else {
-		Joint::initializeGlobally();
-	}
+    if (constraints->empty()) {
+        auto gearIJ = GearConstraintIJ::With(frmI, frmJ);
+        gearIJ->radiusI = radiusI;
+        gearIJ->radiusJ = radiusJ;
+        gearIJ->setConstant(std::numeric_limits<double>::min());
+        addConstraint(gearIJ);
+        this->root()->hasChanged = true;
+    }
+    else {
+        Joint::initializeGlobally();
+    }
 }

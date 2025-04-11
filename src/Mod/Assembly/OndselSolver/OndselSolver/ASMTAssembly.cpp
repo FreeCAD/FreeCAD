@@ -361,11 +361,11 @@ void MbD::ASMTAssembly::runSinglePendulum()
 
 std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::assemblyFromFile(const std::string& fileName)
 {
-    // https://stackoverflow.com/a/45867491
-    #if __GNUC__ >= 8
+// https://stackoverflow.com/a/45867491
+#if __GNUC__ >= 8
     std::filesystem::path currentPath = std::filesystem::current_path();
     std::cout << "Current directory: " << currentPath << std::endl;
-    #endif
+#endif
 
     std::ifstream stream(fileName);
     if (stream.fail()) {
@@ -1103,7 +1103,9 @@ void MbD::ASMTAssembly::preMbDrun(std::shared_ptr<System> mbdSys)
     std::static_pointer_cast<Part>(mbdObject)->asFixed();
 }
 
-void MbD::ASMTAssembly::preMbDrunDragStep(std::shared_ptr<System> mbdSys, std::shared_ptr<std::vector<std::shared_ptr<Part>>> /*dragParts*/)
+void MbD::ASMTAssembly::preMbDrunDragStep(
+    std::shared_ptr<System> mbdSys,
+    std::shared_ptr<std::vector<std::shared_ptr<Part>>> /*dragParts*/)
 {
     for (auto& part : *parts) {
         part->preMbDrunDragStep(mbdSys, mbdUnits);
@@ -1416,7 +1418,9 @@ void MbD::ASMTAssembly::runDragStep(
             noop();
         }
     }
-    if (!success) restorePosRot();
+    if (!success) {
+        restorePosRot();
+    }
 }
 
 void MbD::ASMTAssembly::runPostDrag()
@@ -1590,12 +1594,12 @@ void MbD::ASMTAssembly::compareResults(AnalysisType type)
 
 void MbD::ASMTAssembly::outputResults(AnalysisType type)
 {
-    (void) type;
-	//ASMTSpatialContainer::outputResults(type);
-	//for (auto& part : *parts) part->outputResults(type);
-	//for (auto& joint : *joints) joint->outputResults(type);
-	//for (auto& motion : *motions) motion->outputResults(type);
-	//for (auto& forceTorque : *forcesTorques) forceTorque->outputResults(type);
+    (void)type;
+    // ASMTSpatialContainer::outputResults(type);
+    // for (auto& part : *parts) part->outputResults(type);
+    // for (auto& joint : *joints) joint->outputResults(type);
+    // for (auto& motion : *motions) motion->outputResults(type);
+    // for (auto& forceTorque : *forcesTorques) forceTorque->outputResults(type);
 }
 
 void MbD::ASMTAssembly::addPart(std::shared_ptr<ASMTPart> part)
@@ -1776,13 +1780,13 @@ void MbD::ASMTAssembly::updateForFrame(size_t index)
     for (auto& part : *parts) {
         part->updateForFrame(index);
     }
-    //for (auto& joint : *joints) {
-    //    joint->updateForFrame(index);
-    //}
-    //for (auto& motion : *motions) {
-    //    motion->updateForFrame(index);
-    //}
-    //for (auto& forceTorque : *forcesTorques) {
-    //    forceTorque->updateForFrame(index);
-    //}
+    // for (auto& joint : *joints) {
+    //     joint->updateForFrame(index);
+    // }
+    // for (auto& motion : *motions) {
+    //     motion->updateForFrame(index);
+    // }
+    // for (auto& forceTorque : *forcesTorques) {
+    //     forceTorque->updateForFrame(index);
+    // }
 }

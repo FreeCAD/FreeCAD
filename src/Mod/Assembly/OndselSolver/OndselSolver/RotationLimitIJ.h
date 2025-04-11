@@ -10,13 +10,13 @@
 
 #include "LimitIJ.h"
 
-namespace MbD {
-	class RotationLimitIJ : public LimitIJ
-	{
-		//
-	public:
-		static std::shared_ptr<RotationLimitIJ> With();
-		void initializeGlobally() override;
-
-	};
-}
+namespace MbD
+{
+class RotationLimitIJ: public LimitIJ
+{
+    //
+public:
+    static std::shared_ptr<RotationLimitIJ> With();
+    void initializeGlobally() override;
+};
+}  // namespace MbD

@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <assert.h>
 
 #include "Solver.h"
@@ -15,56 +15,52 @@ using namespace MbD;
 
 void MbD::Solver::noop()
 {
-	//No Operations
+    // No Operations
 }
 
 void Solver::initialize()
-{
-}
+{}
 
 void Solver::initializeLocally()
-{
-}
+{}
 
 void Solver::initializeGlobally()
 {
-	assert(false);
+    assert(false);
 }
 
 void Solver::assignEquationNumbers()
 {
-	assert(false);
+    assert(false);
 }
 
 void Solver::run()
 {
-	assert(false);
+    assert(false);
 }
 
 void Solver::preRun()
 {
-	assert(false);
+    assert(false);
 }
 
 void Solver::finalize()
-{
-}
+{}
 
 void Solver::reportStats()
-{
-}
+{}
 
 void Solver::postRun()
 {
-	assert(false);
+    assert(false);
 }
 
 void Solver::logString(const std::string&)
 {
-	assert(false);
+    assert(false);
 }
 
 void MbD::Solver::handleSingularMatrix()
 {
-	assert(false);
+    assert(false);
 }

@@ -5,15 +5,13 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "StateData.h"
 
 using namespace MbD;
 
 StateData::StateData()
-{
-}
+{}
 
 void StateData::initialize()
-{
-}
+{}

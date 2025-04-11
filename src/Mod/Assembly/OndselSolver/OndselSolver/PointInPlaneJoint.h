@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "InPlaneJoint.h"
 
-namespace MbD {
-	class PointInPlaneJoint : public InPlaneJoint
-	{
-		//
-	public:
-		PointInPlaneJoint();
-		PointInPlaneJoint(const std::string& str);
-		void initializeGlobally() override;
-
-	};
-}
-
+namespace MbD
+{
+class PointInPlaneJoint: public InPlaneJoint
+{
+    //
+public:
+    PointInPlaneJoint();
+    PointInPlaneJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

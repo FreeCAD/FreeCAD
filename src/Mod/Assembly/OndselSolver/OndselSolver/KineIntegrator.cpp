@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <string>
 
 #include "KineIntegrator.h"
@@ -16,38 +16,38 @@ using namespace MbD;
 
 void KineIntegrator::preRun()
 {
-	system->logString("MbD: Starting kinematic analysis.");
-	QuasiIntegrator::preRun();
+    system->logString("MbD: Starting kinematic analysis.");
+    QuasiIntegrator::preRun();
 }
 
 void KineIntegrator::firstStep()
 {
-	assert(false);
+    assert(false);
 }
 
 void KineIntegrator::subsequentSteps()
 {
-	assert(false);
+    assert(false);
 }
 
 void KineIntegrator::nextStep()
 {
-	assert(false);
+    assert(false);
 }
 
 void KineIntegrator::runInitialConditionTypeSolution()
 {
-	system->runPosKine();
-	system->runVelKine();
-	system->runAccKine();
+    system->runPosKine();
+    system->runVelKine();
+    system->runAccKine();
 }
 
 void KineIntegrator::iStep(size_t)
 {
-	assert(false);
+    assert(false);
 }
 
 void KineIntegrator::selectOrder()
 {
-	assert(false);
+    assert(false);
 }

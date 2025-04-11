@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "RevCylJoint.h"
 #include "CREATE.h"
 #include "DistancexyConstraintIJ.h"
@@ -14,25 +14,23 @@
 using namespace MbD;
 
 MbD::RevCylJoint::RevCylJoint()
-{
-}
+{}
 
-MbD::RevCylJoint::RevCylJoint(const std::string& str) : CompoundJoint(str)
-{
-}
+MbD::RevCylJoint::RevCylJoint(const std::string& str)
+    : CompoundJoint(str)
+{}
 
 void MbD::RevCylJoint::initializeGlobally()
 {
-	if (constraints->empty())
-	{
-		auto distxyIJ = DistancexyConstraintIJ::With(frmI, frmJ);
-		distxyIJ->setConstant(distanceIJ);
-		addConstraint(distxyIJ);
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
-	}
-	else {
-		CompoundJoint::initializeGlobally();
-	}
+    if (constraints->empty()) {
+        auto distxyIJ = DistancexyConstraintIJ::With(frmI, frmJ);
+        distxyIJ->setConstant(distanceIJ);
+        addConstraint(distxyIJ);
+        addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
+        addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
+        this->root()->hasChanged = true;
+    }
+    else {
+        CompoundJoint::initializeGlobally();
+    }
 }

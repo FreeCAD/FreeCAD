@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Joint.h"
 
-namespace MbD {
-	class ParallelAxesJoint : public Joint
-	{
-		//
-	public:
-		ParallelAxesJoint();
-		ParallelAxesJoint(const std::string& str);
-		void initializeGlobally() override;
-
-	};
-}
-
+namespace MbD
+{
+class ParallelAxesJoint: public Joint
+{
+    //
+public:
+    ParallelAxesJoint();
+    ParallelAxesJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

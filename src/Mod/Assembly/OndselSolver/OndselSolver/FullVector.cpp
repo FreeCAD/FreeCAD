@@ -5,9 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "FullVector.h"
 
 using namespace MbD;
-
-

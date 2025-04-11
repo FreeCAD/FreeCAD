@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "AtPointJoint.h"
 
-namespace MbD {
-	class UniversalJoint : public AtPointJoint
-	{
-		//
-	public:
-		UniversalJoint();
-		UniversalJoint(const std::string& str);
-		void initializeGlobally() override;
-
-	};
-}
-
+namespace MbD
+{
+class UniversalJoint: public AtPointJoint
+{
+    //
+public:
+    UniversalJoint();
+    UniversalJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

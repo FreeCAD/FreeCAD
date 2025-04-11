@@ -10,16 +10,16 @@
 
 #include "PrescribedMotion.h"
 
-namespace MbD {
-	class AllowZRotation : public PrescribedMotion
-	{
-		//
-	public:
-		AllowZRotation();
-		AllowZRotation(const std::string& str);
-		static std::shared_ptr<AllowZRotation> With();
-		void initializeGlobally() override;
-		void postPosIC() override;
-	};
-}
-
+namespace MbD
+{
+class AllowZRotation: public PrescribedMotion
+{
+    //
+public:
+    AllowZRotation();
+    AllowZRotation(const std::string& str);
+    static std::shared_ptr<AllowZRotation> With();
+    void initializeGlobally() override;
+    void postPosIC() override;
+};
+}  // namespace MbD

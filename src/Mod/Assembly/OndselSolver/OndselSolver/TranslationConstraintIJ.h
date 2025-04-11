@@ -11,31 +11,32 @@
 #include "ConstraintIJ.h"
 #include "DispCompIecJecKec.h"
 
-namespace MbD {
-	class TranslationConstraintIJ : public ConstraintIJ
-	{
-		//riIeJeIe
-	public:
-		TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
+namespace MbD
+{
+class TranslationConstraintIJ: public ConstraintIJ
+{
+    // riIeJeIe
+public:
+    TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
 
-		static std::shared_ptr<TranslationConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
+    static std::shared_ptr<TranslationConstraintIJ>
+    With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
 
-		void calcPostDynCorrectorIteration() override;
-		virtual void initriIeJeIe();
-		void initialize() override;
-		void initializeGlobally() override;
-		void initializeLocally() override;
-		void postInput() override;
-		void postPosICIteration() override;
-		void preAccIC() override;
-		void prePosIC() override;
-		void preVelIC() override;
-		void simUpdateAll() override;
-		ConstraintType type() override;
+    void calcPostDynCorrectorIteration() override;
+    virtual void initriIeJeIe();
+    void initialize() override;
+    void initializeGlobally() override;
+    void initializeLocally() override;
+    void postInput() override;
+    void postPosICIteration() override;
+    void preAccIC() override;
+    void prePosIC() override;
+    void preVelIC() override;
+    void simUpdateAll() override;
+    ConstraintType type() override;
 
-		size_t axisI;
-		std::shared_ptr<DispCompIecJecKec> riIeJeIe;
-		//ToDo: Use DispCompIecJecIe instead of DispCompIecJecKec
-	};
-}
-
+    size_t axisI;
+    std::shared_ptr<DispCompIecJecKec> riIeJeIe;
+    // ToDo: Use DispCompIecJecIe instead of DispCompIecJecKec
+};
+}  // namespace MbD

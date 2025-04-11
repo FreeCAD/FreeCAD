@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "System.h"
 #include "ZRotation.h"
 #include "FullColumn.h"
@@ -16,23 +16,26 @@
 
 using namespace MbD;
 
-ZRotation::ZRotation() {
+ZRotation::ZRotation()
+{}
 
-}
-
-ZRotation::ZRotation(const std::string& str) : PrescribedMotion(str) {
-
-}
+ZRotation::ZRotation(const std::string& str)
+    : PrescribedMotion(str)
+{}
 
 void ZRotation::initializeGlobally()
 {
-	if (constraints->empty()) {
-		initMotions();
-		auto dirCosCon = CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0);	//Use Iy and Jx to make sin(theta).
-		addConstraint(dirCosCon);
-		this->root()->hasChanged = true;
-	}
-	else {
-		PrescribedMotion::initializeGlobally();
-	}
+    if (constraints->empty()) {
+        initMotions();
+        auto dirCosCon = CREATE<DirectionCosineConstraintIJ>::ConstraintWith(
+            frmI,
+            frmJ,
+            1,
+            0);  // Use Iy and Jx to make sin(theta).
+        addConstraint(dirCosCon);
+        this->root()->hasChanged = true;
+    }
+    else {
+        PrescribedMotion::initializeGlobally();
+    }
 }

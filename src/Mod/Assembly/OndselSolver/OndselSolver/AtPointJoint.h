@@ -5,22 +5,20 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Joint.h"
 
-namespace MbD {
-    class AtPointJoint : public Joint
-    {
-        //
-    public:
-        AtPointJoint();
-        AtPointJoint(const std::string& str);
+namespace MbD
+{
+class AtPointJoint: public Joint
+{
+    //
+public:
+    AtPointJoint();
+    AtPointJoint(const std::string& str);
 
-        void createAtPointConstraints();
-
-
-    };
-}
-
+    void createAtPointConstraints();
+};
+}  // namespace MbD

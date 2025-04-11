@@ -10,10 +10,11 @@
 
 #include "FunctionWithManyArgs.h"
 
-namespace MbD {
-	class Arguments : public FunctionWithManyArgs
-	{
-	public:
-		void arguments(Symsptr args) override;
-	};
-}
+namespace MbD
+{
+class Arguments: public FunctionWithManyArgs
+{
+public:
+    void arguments(Symsptr args) override;
+};
+}  // namespace MbD

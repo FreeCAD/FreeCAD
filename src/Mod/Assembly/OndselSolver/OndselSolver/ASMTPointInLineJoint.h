@@ -10,14 +10,14 @@
 
 #include "ASMTInLineJoint.h"
 
-namespace MbD {
-    class ASMTPointInLineJoint : public ASMTInLineJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTPointInLineJoint> With();
-        std::shared_ptr<ItemIJ> mbdClassNew() override;
-        void storeOnTimeSeries(std::ofstream& os) override;
-
-    };
-}
+namespace MbD
+{
+class ASMTPointInLineJoint: public ASMTInLineJoint
+{
+    //
+public:
+    static std::shared_ptr<ASMTPointInLineJoint> With();
+    std::shared_ptr<ItemIJ> mbdClassNew() override;
+    void storeOnTimeSeries(std::ofstream& os) override;
+};
+}  // namespace MbD

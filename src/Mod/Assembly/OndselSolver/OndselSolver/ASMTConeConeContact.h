@@ -10,12 +10,11 @@
 
 #include "ASMTContact.h"
 
-namespace MbD {
-	class ASMTConeConeContact : public ASMTContact
-	{
-		//
-	public:
-
-	};
-}
-
+namespace MbD
+{
+class ASMTConeConeContact: public ASMTContact
+{
+    //
+public:
+};
+}  // namespace MbD

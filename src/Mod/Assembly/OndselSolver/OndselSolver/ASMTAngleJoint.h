@@ -10,19 +10,19 @@
 
 #include "ASMTJoint.h"
 
-namespace MbD {
-    class ASMTAngleJoint : public ASMTJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTAngleJoint> With();
-        std::shared_ptr<ItemIJ> mbdClassNew() override;
-        void parseASMT(std::vector<std::string>& lines) override;
-        void readTheIzJz(std::vector<std::string>& lines);
-        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        void storeOnLevel(std::ofstream& os, size_t level) override;
+namespace MbD
+{
+class ASMTAngleJoint: public ASMTJoint
+{
+    //
+public:
+    static std::shared_ptr<ASMTAngleJoint> With();
+    std::shared_ptr<ItemIJ> mbdClassNew() override;
+    void parseASMT(std::vector<std::string>& lines) override;
+    void readTheIzJz(std::vector<std::string>& lines);
+    void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+    void storeOnLevel(std::ofstream& os, size_t level) override;
 
-        double theIzJz = 0.0;
-    };
-}
-
+    double theIzJz = 0.0;
+};
+}  // namespace MbD

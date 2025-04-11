@@ -5,18 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "TranslationConstraintIJ.h"
 #include "CREATE.h"
 
 using namespace MbD;
 
-TranslationConstraintIJ::TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) :
-    ConstraintIJ(frmi, frmj), axisI(axisi)
-{
-}
+TranslationConstraintIJ::TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi)
+    : ConstraintIJ(frmi, frmj)
+    , axisI(axisi)
+{}
 
-std::shared_ptr<TranslationConstraintIJ> MbD::TranslationConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi)
+std::shared_ptr<TranslationConstraintIJ>
+MbD::TranslationConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi)
 {
     assert(frmi->isEndFrameqc());
     assert(frmj->isEndFrameqc());

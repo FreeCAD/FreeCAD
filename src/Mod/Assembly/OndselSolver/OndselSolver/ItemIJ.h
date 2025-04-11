@@ -10,20 +10,20 @@
 
 #include "Item.h"
 
-namespace MbD {
-	class EndFramec;
-	using EndFrmsptr = std::shared_ptr<EndFramec>;
+namespace MbD
+{
+class EndFramec;
+using EndFrmsptr = std::shared_ptr<EndFramec>;
 
-	class ItemIJ : public Item
-	{
-		//
-	public:
-		ItemIJ();
-		ItemIJ(const std::string& str);
-		ItemIJ(EndFrmsptr frmi, EndFrmsptr frmj);
-		virtual void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ);
+class ItemIJ: public Item
+{
+    //
+public:
+    ItemIJ();
+    ItemIJ(const std::string& str);
+    ItemIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+    virtual void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ);
 
-		EndFrmsptr frmI, frmJ;
-
-	};
-}
+    EndFrmsptr frmI, frmJ;
+};
+}  // namespace MbD

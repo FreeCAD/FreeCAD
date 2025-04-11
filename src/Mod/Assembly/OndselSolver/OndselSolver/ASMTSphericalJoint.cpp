@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
-#include <fstream>	
+#include <fstream>
 
 #include "ASMTSphericalJoint.h"
 #include "SphericalJoint.h"
@@ -14,9 +14,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTSphericalJoint> MbD::ASMTSphericalJoint::With()
 {
-	auto asmt = std::make_shared<ASMTSphericalJoint>();
-	asmt->initialize();
-	return asmt;
+    auto asmt = std::make_shared<ASMTSphericalJoint>();
+    asmt->initialize();
+    return asmt;
 }
 
 std::shared_ptr<ItemIJ> MbD::ASMTSphericalJoint::mbdClassNew()
@@ -26,6 +26,6 @@ std::shared_ptr<ItemIJ> MbD::ASMTSphericalJoint::mbdClassNew()
 
 void MbD::ASMTSphericalJoint::storeOnTimeSeries(std::ofstream& os)
 {
-	os << "SphericalJointSeries\t" << fullName("") << std::endl;
-	ASMTItemIJ::storeOnTimeSeries(os);
+    os << "SphericalJointSeries\t" << fullName("") << std::endl;
+    ASMTItemIJ::storeOnTimeSeries(os);
 }

@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
-#include <fstream>	
+#include <fstream>
 
 #include "ASMTRevCylJoint.h"
 #include "RevCylJoint.h"
@@ -14,9 +14,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTRevCylJoint> MbD::ASMTRevCylJoint::With()
 {
-	auto asmt = std::make_shared<ASMTRevCylJoint>();
-	asmt->initialize();
-	return asmt;
+    auto asmt = std::make_shared<ASMTRevCylJoint>();
+    asmt->initialize();
+    return asmt;
 }
 
 std::shared_ptr<ItemIJ> MbD::ASMTRevCylJoint::mbdClassNew()

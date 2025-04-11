@@ -5,28 +5,27 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Function.h"
 
-namespace MbD {
-    class Symbolic;
-    //using Symsptr = Symsptr;
+namespace MbD
+{
+class Symbolic;
+// using Symsptr = Symsptr;
 
-    class FunctionXY : public Function
-    {
-        //x y 
-    public:
-        FunctionXY();
-        FunctionXY(Symsptr base, Symsptr exp);
-        void arguments(Symsptr args) override;
-        virtual Symsptr differentiateWRTx() = 0;
-        virtual Symsptr differentiateWRTy() = 0;
-        bool isConstant() override;
+class FunctionXY: public Function
+{
+    // x y
+public:
+    FunctionXY();
+    FunctionXY(Symsptr base, Symsptr exp);
+    void arguments(Symsptr args) override;
+    virtual Symsptr differentiateWRTx() = 0;
+    virtual Symsptr differentiateWRTy() = 0;
+    bool isConstant() override;
 
-        Symsptr x, y;
-
-    };
-}
-
+    Symsptr x, y;
+};
+}  // namespace MbD

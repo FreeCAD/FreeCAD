@@ -10,13 +10,13 @@
 
 #include "ASMTCompoundJoint.h"
 
-namespace MbD {
-    class ASMTRevCylJoint : public ASMTCompoundJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTRevCylJoint> With();
-        std::shared_ptr<ItemIJ> mbdClassNew() override;
-
-    };
-}
+namespace MbD
+{
+class ASMTRevCylJoint: public ASMTCompoundJoint
+{
+    //
+public:
+    static std::shared_ptr<ASMTRevCylJoint> With();
+    std::shared_ptr<ItemIJ> mbdClassNew() override;
+};
+}  // namespace MbD

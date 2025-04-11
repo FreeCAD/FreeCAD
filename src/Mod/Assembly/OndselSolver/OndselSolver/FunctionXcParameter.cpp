@@ -5,11 +5,11 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "FunctionXcParameter.h"
 
 using namespace MbD;
 
-MbD::FunctionXcParameter::FunctionXcParameter(Symsptr arg) : FunctionX(arg)
-{
-}
+MbD::FunctionXcParameter::FunctionXcParameter(Symsptr arg)
+    : FunctionX(arg)
+{}

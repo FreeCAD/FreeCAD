@@ -5,14 +5,14 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Symbolic.h"
 
-namespace MbD {
-    class UserFunction : public Symbolic
-    {
-    };
-}
-
+namespace MbD
+{
+class UserFunction: public Symbolic
+{
+};
+}  // namespace MbD

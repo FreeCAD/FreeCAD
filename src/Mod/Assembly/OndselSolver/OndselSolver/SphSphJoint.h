@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "CompoundJoint.h"
 
-namespace MbD {
-	class SphSphJoint : public CompoundJoint
-	{
-		//
-	public:
-		SphSphJoint();
-		SphSphJoint(const std::string& str);
-		void initializeGlobally() override;
-
-	};
-}
-
+namespace MbD
+{
+class SphSphJoint: public CompoundJoint
+{
+    //
+public:
+    SphSphJoint();
+    SphSphJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "SphSphJoint.h"
 #include "CREATE.h"
 #include "DistanceConstraintIJ.h"
@@ -14,23 +14,21 @@
 using namespace MbD;
 
 MbD::SphSphJoint::SphSphJoint()
-{
-}
+{}
 
-MbD::SphSphJoint::SphSphJoint(const std::string& str) : CompoundJoint(str)
-{
-}
+MbD::SphSphJoint::SphSphJoint(const std::string& str)
+    : CompoundJoint(str)
+{}
 
 void MbD::SphSphJoint::initializeGlobally()
 {
-	if (constraints->empty())
-	{
-		auto distxyIJ = DistanceConstraintIJ::With(frmI, frmJ);
-		distxyIJ->setConstant(distanceIJ);
-		addConstraint(distxyIJ);
-		this->root()->hasChanged = true;
-	}
-	else {
-		CompoundJoint::initializeGlobally();
-	}
+    if (constraints->empty()) {
+        auto distxyIJ = DistanceConstraintIJ::With(frmI, frmJ);
+        distxyIJ->setConstant(distanceIJ);
+        addConstraint(distxyIJ);
+        this->root()->hasChanged = true;
+    }
+    else {
+        CompoundJoint::initializeGlobally();
+    }
 }

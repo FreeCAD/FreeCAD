@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTRefCurve.h"
 #include "CREATE.h"
 
@@ -13,10 +13,10 @@ using namespace MbD;
 
 void MbD::ASMTRefCurve::parseASMT(std::vector<std::string>&)
 {
-	assert(false);
+    assert(false);
 }
 
 void MbD::ASMTRefCurve::storeOnLevel(std::ofstream&, size_t)
 {
-	assert(false);
+    assert(false);
 }

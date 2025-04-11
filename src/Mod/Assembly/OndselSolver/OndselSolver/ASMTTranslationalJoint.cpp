@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
-#include <fstream>	
+#include <fstream>
 
 #include "ASMTTranslationalJoint.h"
 #include "TranslationalJoint.h"
@@ -14,9 +14,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTTranslationalJoint> MbD::ASMTTranslationalJoint::With()
 {
-	auto asmt = std::make_shared<ASMTTranslationalJoint>();
-	asmt->initialize();
-	return asmt;
+    auto asmt = std::make_shared<ASMTTranslationalJoint>();
+    asmt->initialize();
+    return asmt;
 }
 
 std::shared_ptr<ItemIJ> MbD::ASMTTranslationalJoint::mbdClassNew()
@@ -26,6 +26,6 @@ std::shared_ptr<ItemIJ> MbD::ASMTTranslationalJoint::mbdClassNew()
 
 void MbD::ASMTTranslationalJoint::storeOnTimeSeries(std::ofstream& os)
 {
-	os << "TranslationalJointSeries\t" << fullName("") << std::endl;
-	ASMTItemIJ::storeOnTimeSeries(os);
+    os << "TranslationalJointSeries\t" << fullName("") << std::endl;
+    ASMTItemIJ::storeOnTimeSeries(os);
 }

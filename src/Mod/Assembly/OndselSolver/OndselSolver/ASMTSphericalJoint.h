@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "ASMTAtPointJoint.h"
 
-namespace MbD {
-    class ASMTSphericalJoint : public ASMTAtPointJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTSphericalJoint> With();
-        std::shared_ptr<ItemIJ> mbdClassNew() override;
-        void storeOnTimeSeries(std::ofstream& os) override;
-
-    };
-}
-
+namespace MbD
+{
+class ASMTSphericalJoint: public ASMTAtPointJoint
+{
+    //
+public:
+    static std::shared_ptr<ASMTSphericalJoint> With();
+    std::shared_ptr<ItemIJ> mbdClassNew() override;
+    void storeOnTimeSeries(std::ofstream& os) override;
+};
+}  // namespace MbD

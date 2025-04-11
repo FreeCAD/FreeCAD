@@ -5,19 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "ForceTorqueItem.h"
 
-namespace MbD {
-    class ConstantGravity : public ForceTorqueItem
-    {
-        //
-    public:
-        void fillAccICIterError(FColDsptr col) override;
+namespace MbD
+{
+class ConstantGravity: public ForceTorqueItem
+{
+    //
+public:
+    void fillAccICIterError(FColDsptr col) override;
 
-        FColDsptr gXYZ;
-    };
-}
-
+    FColDsptr gXYZ;
+};
+}  // namespace MbD

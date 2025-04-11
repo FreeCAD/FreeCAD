@@ -5,14 +5,14 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "Ln.h"
 
 using namespace MbD;
 
-MbD::Ln::Ln(Symsptr arg) : FunctionX(arg)
-{
-}
+MbD::Ln::Ln(Symsptr arg)
+    : FunctionX(arg)
+{}
 
 double MbD::Ln::getValue()
 {
@@ -21,5 +21,5 @@ double MbD::Ln::getValue()
 
 Symsptr MbD::Ln::copyWith(Symsptr arg)
 {
-	return std::make_shared<Ln>(arg);
+    return std::make_shared<Ln>(arg);
 }

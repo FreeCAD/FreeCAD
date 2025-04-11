@@ -5,17 +5,18 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "DistanceConstraintIqctJqc.h"
 
 using namespace MbD;
 
-MbD::DistanceConstraintIqctJqc::DistanceConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistanceConstraintIqcJqc(frmi, frmj)
+MbD::DistanceConstraintIqctJqc::DistanceConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj)
+    : DistanceConstraintIqcJqc(frmi, frmj)
 {
-	assert(false);
+    assert(false);
 }
 
 ConstraintType MbD::DistanceConstraintIqctJqc::type()
 {
-	return essential;
+    return essential;
 }

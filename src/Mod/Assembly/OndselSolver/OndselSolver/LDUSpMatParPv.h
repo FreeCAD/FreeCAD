@@ -5,17 +5,16 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "LDUSpMat.h"
 
-namespace MbD {
-    class LDUSpMatParPv : public LDUSpMat
-    {
-        //
-    public:
-
-    };
-}
-
+namespace MbD
+{
+class LDUSpMatParPv: public LDUSpMat
+{
+    //
+public:
+};
+}  // namespace MbD

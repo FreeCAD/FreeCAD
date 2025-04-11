@@ -5,14 +5,14 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ArcTan.h"
 
 using namespace MbD;
 
-MbD::ArcTan::ArcTan(Symsptr arg) : FunctionX(arg)
-{
-}
+MbD::ArcTan::ArcTan(Symsptr arg)
+    : FunctionX(arg)
+{}
 
 double MbD::ArcTan::getValue()
 {
@@ -21,11 +21,11 @@ double MbD::ArcTan::getValue()
 
 Symsptr MbD::ArcTan::copyWith(Symsptr arg)
 {
-	return std::make_shared<ArcTan>(arg);
+    return std::make_shared<ArcTan>(arg);
 }
 
 std::ostream& MbD::ArcTan::printOn(std::ostream& s) const
 {
-	s << "arctan(" << *xx << ")";
-	return s;
+    s << "arctan(" << *xx << ")";
+    return s;
 }

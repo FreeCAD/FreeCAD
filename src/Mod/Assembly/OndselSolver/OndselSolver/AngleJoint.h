@@ -5,21 +5,21 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Joint.h"
 
-namespace MbD {
-    class AngleJoint : public Joint
-    {
-        //theIzJz
-    public:
-        AngleJoint();
-        AngleJoint(const std::string& str);
-        void initializeGlobally() override;
+namespace MbD
+{
+class AngleJoint: public Joint
+{
+    // theIzJz
+public:
+    AngleJoint();
+    AngleJoint(const std::string& str);
+    void initializeGlobally() override;
 
-        double theIzJz = 0.0;
-    };
-}
-
+    double theIzJz = 0.0;
+};
+}  // namespace MbD

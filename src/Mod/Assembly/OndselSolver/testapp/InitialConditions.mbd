@@ -69,7 +69,7 @@
 
      #Moments of inertia and relative center of mass
 
-         #body 1: 
+         #body 1:
              set: real Ixx_1 = 7.67643316e-07; #moment of inertia [kg*m^2]
              set: real Iyy_1 = 6.162010270000002e-07; #moment of inertia [kg*m^2]
              set: real Izz_1 = 2.41970364e-07; #moment of inertia [kg*m^2]
@@ -101,11 +101,10 @@
      # [Bodies]
 
          body: body_1,
-               structural_node_1, #<node_label> 
+               structural_node_1, #<node_label>
                mass_1, #<mass> [kg]
                Rx_1, Ry_1, Rz_1, #<relative_center_of_mass> [m]
                diag, Ixx_1, Iyy_1, Izz_1, #<inertia matrix> [kg*m^2]
-               orientation, 3, 1.0, 0.0, 0.0, 2, 0.0, 1.0, 0.0; 
+               orientation, 3, 1.0, 0.0, 0.0, 2, 0.0, 1.0, 0.0;
 
  end: elements;
-

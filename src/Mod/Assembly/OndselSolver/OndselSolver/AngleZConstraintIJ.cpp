@@ -12,83 +12,83 @@
 
 using namespace MbD;
 
-MbD::AngleZConstraintIJ::AngleZConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
-{
-}
+MbD::AngleZConstraintIJ::AngleZConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj)
+    : ConstraintIJ(frmi, frmj)
+{}
 
 std::shared_ptr<AngleZConstraintIJ> MbD::AngleZConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
-	assert(frmi->isEndFrameqc());
-	assert(frmj->isEndFrameqc());
-	auto angleZConIJ = std::make_shared<AngleZConstraintIqcJqc>(frmi, frmj);
-	angleZConIJ->initialize();
-	return angleZConIJ;
+    assert(frmi->isEndFrameqc());
+    assert(frmj->isEndFrameqc());
+    auto angleZConIJ = std::make_shared<AngleZConstraintIqcJqc>(frmi, frmj);
+    angleZConIJ->initialize();
+    return angleZConIJ;
 }
 
 void MbD::AngleZConstraintIJ::calcPostDynCorrectorIteration()
 {
-	auto thez = thezIeJe->value();
-	aG = thez - aConstant;
+    auto thez = thezIeJe->value();
+    aG = thez - aConstant;
 }
 
 void MbD::AngleZConstraintIJ::initthezIeJe()
 {
-	assert(false);
+    assert(false);
 }
 
 void MbD::AngleZConstraintIJ::initialize()
 {
-	ConstraintIJ::initialize();
-	this->initthezIeJe();
+    ConstraintIJ::initialize();
+    this->initthezIeJe();
 }
 
 void MbD::AngleZConstraintIJ::initializeGlobally()
 {
-	thezIeJe->initializeGlobally();
+    thezIeJe->initializeGlobally();
 }
 
 void MbD::AngleZConstraintIJ::initializeLocally()
 {
-	thezIeJe->initializeLocally();
+    thezIeJe->initializeLocally();
 }
 
 void MbD::AngleZConstraintIJ::postInput()
 {
-	assert(aConstant != std::numeric_limits<double>::min());
-	ConstraintIJ::postInput();
+    assert(aConstant != std::numeric_limits<double>::min());
+    ConstraintIJ::postInput();
 }
 
 void MbD::AngleZConstraintIJ::postPosICIteration()
 {
-	thezIeJe->postPosICIteration();
-	ConstraintIJ::postPosICIteration();
+    thezIeJe->postPosICIteration();
+    ConstraintIJ::postPosICIteration();
 }
 
 void MbD::AngleZConstraintIJ::preAccIC()
 {
-	thezIeJe->preAccIC();
-	ConstraintIJ::preAccIC();
+    thezIeJe->preAccIC();
+    ConstraintIJ::preAccIC();
 }
 
 void MbD::AngleZConstraintIJ::prePosIC()
 {
-	thezIeJe->prePosIC();
-	ConstraintIJ::prePosIC();
+    thezIeJe->prePosIC();
+    ConstraintIJ::prePosIC();
 }
 
 void MbD::AngleZConstraintIJ::preVelIC()
 {
-	thezIeJe->preVelIC();
-	ConstraintIJ::preVelIC();
+    thezIeJe->preVelIC();
+    ConstraintIJ::preVelIC();
 }
 
 void MbD::AngleZConstraintIJ::simUpdateAll()
 {
-	thezIeJe->simUpdateAll();
-	ConstraintIJ::simUpdateAll();
+    thezIeJe->simUpdateAll();
+    ConstraintIJ::simUpdateAll();
 }
 
 ConstraintType MbD::AngleZConstraintIJ::type()
 {
-	return essential;
+    return essential;
 }

@@ -10,12 +10,10 @@
 
 #include "Arguments.h"
 
-namespace MbD {
-	class Transitions : public Arguments
-	{
-	public:
-
-	};
-}
-
-
+namespace MbD
+{
+class Transitions: public Arguments
+{
+public:
+};
+}  // namespace MbD

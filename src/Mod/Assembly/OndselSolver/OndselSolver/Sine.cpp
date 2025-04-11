@@ -5,15 +5,15 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "Sine.h"
 #include "Cosine.h"
 
 using namespace MbD;
 
-MbD::Sine::Sine(Symsptr arg) : FunctionX(arg)
-{
-}
+MbD::Sine::Sine(Symsptr arg)
+    : FunctionX(arg)
+{}
 
 double MbD::Sine::getValue()
 {
@@ -27,11 +27,11 @@ Symsptr MbD::Sine::differentiateWRTx()
 
 Symsptr MbD::Sine::copyWith(Symsptr arg)
 {
-	return std::make_shared<Sine>(arg);
+    return std::make_shared<Sine>(arg);
 }
 
 std::ostream& MbD::Sine::printOn(std::ostream& s) const
 {
-	s << "sin(" << *xx << ")";
-	return s;
+    s << "sin(" << *xx << ")";
+    return s;
 }

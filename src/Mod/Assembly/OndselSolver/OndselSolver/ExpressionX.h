@@ -5,23 +5,22 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "FunctionX.h"
 
-namespace MbD {
-    class ExpressionX : public FunctionX
-    {
-        //
-    public:
+namespace MbD
+{
+class ExpressionX: public FunctionX
+{
+    //
+public:
+    void xexpression(Symsptr arg, Symsptr func);
+    Symsptr differentiateWRTx() override;
+    Symsptr differentiateWRT(Symsptr var) override;
+    double getValue() override;
 
-        void xexpression(Symsptr arg, Symsptr func);
-        Symsptr differentiateWRTx() override;
-        Symsptr differentiateWRT(Symsptr var) override;
-        double getValue() override;
-
-        Symsptr expression = std::make_shared<Symbolic>();
-    };
-}
-
+    Symsptr expression = std::make_shared<Symbolic>();
+};
+}  // namespace MbD

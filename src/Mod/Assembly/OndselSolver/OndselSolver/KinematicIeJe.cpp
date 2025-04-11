@@ -5,19 +5,18 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "KinematicIeJe.h"
 #include "EndFramec.h"
 
 using namespace MbD;
 
 KinematicIeJe::KinematicIeJe()
-{
-}
+{}
 
-KinematicIeJe::KinematicIeJe(EndFrmsptr frmi, EndFrmsptr frmj) : ItemIJ(frmi, frmj)
-{
-}
+KinematicIeJe::KinematicIeJe(EndFrmsptr frmi, EndFrmsptr frmj)
+    : ItemIJ(frmi, frmj)
+{}
 
 bool MbD::KinematicIeJe::isKineIJ()
 {

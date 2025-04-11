@@ -5,11 +5,11 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "TooSmallStepSizeError.h"
 
 using namespace MbD;
 
-TooSmallStepSizeError::TooSmallStepSizeError(const std::string& msg) : std::runtime_error(msg)
-{
-}
+TooSmallStepSizeError::TooSmallStepSizeError(const std::string& msg)
+    : std::runtime_error(msg)
+{}

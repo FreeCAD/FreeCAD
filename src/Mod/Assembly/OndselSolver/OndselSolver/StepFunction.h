@@ -10,12 +10,13 @@
 
 #include "PiecewiseFunction.h"
 
-namespace MbD {
-    class StepFunction : public PiecewiseFunction
-    {
-    public:
-        StepFunction(Symsptr var, std::shared_ptr<std::vector<double>> consts, std::shared_ptr<std::vector<double>> trans);
-
-    };
-}
-
+namespace MbD
+{
+class StepFunction: public PiecewiseFunction
+{
+public:
+    StepFunction(Symsptr var,
+                 std::shared_ptr<std::vector<double>> consts,
+                 std::shared_ptr<std::vector<double>> trans);
+};
+}  // namespace MbD

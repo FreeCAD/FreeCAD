@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
-#include <fstream>	
+#include <fstream>
 
 #include "ASMTNoRotationJoint.h"
 #include "NoRotationJoint.h"
@@ -14,9 +14,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTNoRotationJoint> MbD::ASMTNoRotationJoint::With()
 {
-	auto asmt = std::make_shared<ASMTNoRotationJoint>();
-	asmt->initialize();
-	return asmt;
+    auto asmt = std::make_shared<ASMTNoRotationJoint>();
+    asmt->initialize();
+    return asmt;
 }
 
 std::shared_ptr<ItemIJ> MbD::ASMTNoRotationJoint::mbdClassNew()
@@ -26,6 +26,6 @@ std::shared_ptr<ItemIJ> MbD::ASMTNoRotationJoint::mbdClassNew()
 
 void MbD::ASMTNoRotationJoint::storeOnTimeSeries(std::ofstream& os)
 {
-	os << "NoRotationJointSeries\t" << fullName("") << std::endl;
-	ASMTItemIJ::storeOnTimeSeries(os);
+    os << "NoRotationJointSeries\t" << fullName("") << std::endl;
+    ASMTItemIJ::storeOnTimeSeries(os);
 }

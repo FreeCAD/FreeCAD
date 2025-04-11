@@ -5,19 +5,18 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "FunctionX.h"
 
-namespace MbD {
-    class FunctionXcParameter : public FunctionX
-    {
-        //
-    public:
-        FunctionXcParameter() = default;
-        FunctionXcParameter(Symsptr arg);
-
-    };
-}
-
+namespace MbD
+{
+class FunctionXcParameter: public FunctionX
+{
+    //
+public:
+    FunctionXcParameter() = default;
+    FunctionXcParameter(Symsptr arg);
+};
+}  // namespace MbD

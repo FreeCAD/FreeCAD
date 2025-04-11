@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "GESpMat.h"
 
-namespace MbD {
-    class GESpMatParPv : public GESpMat
-    {
-        //
-    public:
-        void forwardEliminateWithPivot(size_t p) override;
-        void backSubstituteIntoDU() override;
-        void postSolve() override;
-
-    };
-}
-
+namespace MbD
+{
+class GESpMatParPv: public GESpMat
+{
+    //
+public:
+    void forwardEliminateWithPivot(size_t p) override;
+    void backSubstituteIntoDU() override;
+    void postSolve() override;
+};
+}  // namespace MbD

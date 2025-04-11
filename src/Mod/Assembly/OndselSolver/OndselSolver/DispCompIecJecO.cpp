@@ -5,26 +5,26 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "DispCompIecJecO.h"
 #include "EndFramec.h"
 
 using namespace MbD;
 
 DispCompIecJecO::DispCompIecJecO()
-{
-}
+{}
 
-DispCompIecJecO::DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : KinematicIeJe(frmi, frmj), axis(axis)
-{
-}
+DispCompIecJecO::DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
+    : KinematicIeJe(frmi, frmj)
+    , axis(axis)
+{}
 
 void DispCompIecJecO::calcPostDynCorrectorIteration()
 {
-	riIeJeO = frmJ->riOeO(axis) - frmI->riOeO(axis);
+    riIeJeO = frmJ->riOeO(axis) - frmI->riOeO(axis);
 }
 
 double MbD::DispCompIecJecO::value()
 {
-	return riIeJeO;
+    return riIeJeO;
 }

@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ICKineIntegrator.h"
 #include "SystemSolver.h"
 
@@ -13,38 +13,38 @@ using namespace MbD;
 
 void ICKineIntegrator::runInitialConditionTypeSolution()
 {
-	system->runPosICKine();
-	system->runVelICKine();
-	system->runAccICKine();
+    system->runPosICKine();
+    system->runVelICKine();
+    system->runAccICKine();
 }
 
 void ICKineIntegrator::iStep(size_t)
 {
-	assert(false);
+    assert(false);
 }
 
 void ICKineIntegrator::selectOrder()
 {
-	assert(false);
+    assert(false);
 }
 
 void ICKineIntegrator::preRun()
 {
-	system->logString("MbD: Starting quasi kinematic analysis.");
-	QuasiIntegrator::preRun();
+    system->logString("MbD: Starting quasi kinematic analysis.");
+    QuasiIntegrator::preRun();
 }
 
 void ICKineIntegrator::firstStep()
 {
-	assert(false);
+    assert(false);
 }
 
 void ICKineIntegrator::subsequentSteps()
 {
-	assert(false);
+    assert(false);
 }
 
 void MbD::ICKineIntegrator::nextStep()
 {
-	assert(false);
+    assert(false);
 }

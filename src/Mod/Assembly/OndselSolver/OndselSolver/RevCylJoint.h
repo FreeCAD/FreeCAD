@@ -5,21 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "CompoundJoint.h"
 
-namespace MbD {
-	class RevCylJoint : public CompoundJoint
-	{
-		//
-	public:
-		RevCylJoint();
-		RevCylJoint(const std::string& str);
-		void initializeGlobally() override;
-	
-
-	};
-}
-
+namespace MbD
+{
+class RevCylJoint: public CompoundJoint
+{
+    //
+public:
+    RevCylJoint();
+    RevCylJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

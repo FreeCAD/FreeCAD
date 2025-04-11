@@ -5,19 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "InLineJoint.h"
 
-namespace MbD {
-    class CylindricalJoint : public InLineJoint
-    {
-        //frmI frmJ constraints friction 
-    public:
-        CylindricalJoint();
-        CylindricalJoint(const std::string& str);
-        void initializeGlobally() override;
-    };
-}
-
+namespace MbD
+{
+class CylindricalJoint: public InLineJoint
+{
+    // frmI frmJ constraints friction
+public:
+    CylindricalJoint();
+    CylindricalJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

@@ -10,11 +10,11 @@
 
 #include "ASMTJoint.h"
 
-namespace MbD {
-    class ASMTAtPointJoint : public ASMTJoint
-    {
-        //
-    public:
-
-    };
-}
+namespace MbD
+{
+class ASMTAtPointJoint: public ASMTJoint
+{
+    //
+public:
+};
+}  // namespace MbD

@@ -10,16 +10,14 @@
 
 #include "CompoundJoint.h"
 
-namespace MbD {
-	class RevRevJoint : public CompoundJoint
-	{
-		//
-	public:
-		RevRevJoint();
-		RevRevJoint(const std::string& str);
-		void initializeGlobally() override;
-
-
-	};
-}
-
+namespace MbD
+{
+class RevRevJoint: public CompoundJoint
+{
+    //
+public:
+    RevRevJoint();
+    RevRevJoint(const std::string& str);
+    void initializeGlobally() override;
+};
+}  // namespace MbD

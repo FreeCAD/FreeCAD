@@ -5,20 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "ASMTInLineJoint.h"
 
-namespace MbD {
-    class ASMTCylindricalJoint : public ASMTInLineJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTCylindricalJoint> With();
-        std::shared_ptr<ItemIJ> mbdClassNew() override;
-        void storeOnTimeSeries(std::ofstream& os) override;
-
-    };
-}
-
+namespace MbD
+{
+class ASMTCylindricalJoint: public ASMTInLineJoint
+{
+    //
+public:
+    static std::shared_ptr<ASMTCylindricalJoint> With();
+    std::shared_ptr<ItemIJ> mbdClassNew() override;
+    void storeOnTimeSeries(std::ofstream& os) override;
+};
+}  // namespace MbD

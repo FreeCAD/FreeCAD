@@ -5,20 +5,18 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "AccNewtonRaphson.h"
 
-namespace MbD {
-    class AccICNewtonRaphson : public AccNewtonRaphson
-    {
-        //IC acceleration with fully or under constrained system
-    public:
-        bool isConverged() override;
-        void preRun() override;
-
-
-    };
-}
-
+namespace MbD
+{
+class AccICNewtonRaphson: public AccNewtonRaphson
+{
+    // IC acceleration with fully or under constrained system
+public:
+    bool isConverged() override;
+    void preRun() override;
+};
+}  // namespace MbD

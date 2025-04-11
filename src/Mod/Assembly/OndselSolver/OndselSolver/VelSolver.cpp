@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "VelSolver.h"
 #include "MatrixSolver.h"
 #include "SystemSolver.h"
@@ -19,51 +19,51 @@ using namespace MbD;
 
 void VelSolver::basicSolveEquations()
 {
-	x = matrixSolver->solvewithsaveOriginal(jacobian, errorVector, true);
+    x = matrixSolver->solvewithsaveOriginal(jacobian, errorVector, true);
 }
 
 void VelSolver::handleSingularMatrix()
 {
     auto& r = *matrixSolver;
-	std::string str = typeid(r).name();
-	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
-		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
-		this->solveEquations();
-	}
-	else {
-		str = typeid(r).name();
-		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
-			this->logSingularMatrixMessage();
+    std::string str = typeid(r).name();
+    if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
+        matrixSolver = CREATE<GESpMatParPvPrecise>::With();
+        this->solveEquations();
+    }
+    else {
+        str = typeid(r).name();
+        if (str.find("GESpMatParPvPrecise") != std::string::npos) {
+            this->logSingularMatrixMessage();
             matrixSolver->throwSingularMatrixError("VelSolver");
         }
-		else {
-			assert(false);
-		}
-	}
+        else {
+            assert(false);
+        }
+    }
 }
 
 void VelSolver::logSingularMatrixMessage()
 {
-	std::string str = "MbD: Velocity solver has encountered a singular matrix.";
-	system->logString(str);
+    std::string str = "MbD: Velocity solver has encountered a singular matrix.";
+    system->logString(str);
 }
 
 std::shared_ptr<MatrixSolver> VelSolver::matrixSolverClassNew()
 {
-	return CREATE<GESpMatParPvPrecise>::With();
+    return CREATE<GESpMatParPvPrecise>::With();
 }
 
 void VelSolver::solveEquations()
 {
-	try {
-		this->basicSolveEquations();
-	}
-	catch (const SingularMatrixError& ex) {
-		this->handleSingularMatrix();
-	}
+    try {
+        this->basicSolveEquations();
+    }
+    catch (const SingularMatrixError& ex) {
+        this->handleSingularMatrix();
+    }
 }
 
 void VelSolver::setSystem(Solver* sys)
 {
-	system = static_cast<SystemSolver*>(sys);
+    system = static_cast<SystemSolver*>(sys);
 }

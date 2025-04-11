@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "RevoluteJoint.h"
 #include "System.h"
 #include "AtPointConstraintIJ.h"
@@ -14,24 +14,22 @@
 
 using namespace MbD;
 
-RevoluteJoint::RevoluteJoint() 
-{
-}
+RevoluteJoint::RevoluteJoint()
+{}
 
-RevoluteJoint::RevoluteJoint(const std::string& str) : AtPointJoint(str)
-{
-}
+RevoluteJoint::RevoluteJoint(const std::string& str)
+    : AtPointJoint(str)
+{}
 
 void RevoluteJoint::initializeGlobally()
 {
-	if (constraints->empty())
-	{
-		createAtPointConstraints();
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
-	}
-	else {
-		Joint::initializeGlobally();
-	}
+    if (constraints->empty()) {
+        createAtPointConstraints();
+        addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
+        addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
+        this->root()->hasChanged = true;
+    }
+    else {
+        Joint::initializeGlobally();
+    }
 }

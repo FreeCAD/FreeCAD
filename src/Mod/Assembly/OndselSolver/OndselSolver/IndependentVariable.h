@@ -5,17 +5,17 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Variable.h"
 
-namespace MbD {
-    class IndependentVariable : public Variable
-    {
-    public:
-        IndependentVariable();
-        Symsptr differentiateWRT(Symsptr var) override;
-    };
-}
-
+namespace MbD
+{
+class IndependentVariable: public Variable
+{
+public:
+    IndependentVariable();
+    Symsptr differentiateWRT(Symsptr var) override;
+};
+}  // namespace MbD

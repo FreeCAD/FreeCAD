@@ -5,11 +5,11 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "NotKinematicError.h"
 
 using namespace MbD;
 
-NotKinematicError::NotKinematicError(const std::string& msg) : std::runtime_error(msg)
-{
-}
+NotKinematicError::NotKinematicError(const std::string& msg)
+    : std::runtime_error(msg)
+{}

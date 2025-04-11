@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include <stdexcept>
@@ -13,23 +13,25 @@
 #include <vector>
 #include "enum.h"
 
-namespace MbD {
-	class DiscontinuityError : virtual public std::runtime_error
-	{
-	protected:
-		std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes;
+namespace MbD
+{
+class DiscontinuityError: virtual public std::runtime_error
+{
+protected:
+    std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes;
 
-	public:
-		//DiscontinuityError();
-		explicit
-			DiscontinuityError(const std::string& msg, std::shared_ptr<std::vector<DiscontinuityType>> disconTypes) :
-			std::runtime_error(msg), discontinuityTypes(disconTypes)
-		{
-		}
-		explicit DiscontinuityError(const std::string& msg) : std::runtime_error(msg)
-		{
-		}
+public:
+    // DiscontinuityError();
+    explicit DiscontinuityError(const std::string& msg,
+                                std::shared_ptr<std::vector<DiscontinuityType>> disconTypes)
+        : std::runtime_error(msg)
+        , discontinuityTypes(disconTypes)
+    {}
+    explicit DiscontinuityError(const std::string& msg)
+        : std::runtime_error(msg)
+    {}
 
-		virtual ~DiscontinuityError() noexcept {}
-	};
-}
+    virtual ~DiscontinuityError() noexcept
+    {}
+};
+}  // namespace MbD

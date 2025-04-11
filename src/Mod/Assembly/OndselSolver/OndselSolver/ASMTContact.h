@@ -10,20 +10,20 @@
 
 #include "ASMTConstraintSet.h"
 
-namespace MbD {
-	class ForceTorqueData;
+namespace MbD
+{
+class ForceTorqueData;
 
-	class ASMTContact : public ASMTConstraintSet
-	{
-		//
-	public:
-		static std::shared_ptr<ASMTContact> With();
-		void readJointSeries(std::vector<std::string>& lines);
-		void storeOnLevel(std::ofstream& os, size_t level) override;
-		void storeOnTimeSeries(std::ofstream& os) override;
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+class ASMTContact: public ASMTConstraintSet
+{
+    //
+public:
+    static std::shared_ptr<ASMTContact> With();
+    void readJointSeries(std::vector<std::string>& lines);
+    void storeOnLevel(std::ofstream& os, size_t level) override;
+    void storeOnTimeSeries(std::ofstream& os) override;
+    void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 
-		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> jointSeries;
-
-	};
-}
+    std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> jointSeries;
+};
+}  // namespace MbD

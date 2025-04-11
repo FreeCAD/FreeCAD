@@ -13,12 +13,13 @@
 
 using namespace MbD;
 
-ConstraintIJ::ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : frmI(std::move(frmi)), frmJ(std::move(frmj))
-{
-}
+ConstraintIJ::ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj)
+    : frmI(std::move(frmi))
+    , frmJ(std::move(frmj))
+{}
 
 void ConstraintIJ::initialize()
 {
-	Constraint::initialize();
-	aConstant = 0.0;
+    Constraint::initialize();
+    aConstant = 0.0;
 }

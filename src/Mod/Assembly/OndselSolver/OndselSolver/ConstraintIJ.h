@@ -5,25 +5,25 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Constraint.h"
-//#include "EndFramec.h"  //EndFrmsptr is defined
+// #include "EndFramec.h"  //EndFrmsptr is defined
 
-namespace MbD {
-    class EndFramec;
-    using EndFrmsptr = std::shared_ptr<EndFramec>;
+namespace MbD
+{
+class EndFramec;
+using EndFrmsptr = std::shared_ptr<EndFramec>;
 
-    class ConstraintIJ : public Constraint
-    {
-        //frmI frmJ aConstant
-    public:
-        ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+class ConstraintIJ: public Constraint
+{
+    // frmI frmJ aConstant
+public:
+    ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
-        void initialize() override;
+    void initialize() override;
 
-        EndFrmsptr frmI, frmJ;
-    };
-}
-
+    EndFrmsptr frmI, frmJ;
+};
+}  // namespace MbD

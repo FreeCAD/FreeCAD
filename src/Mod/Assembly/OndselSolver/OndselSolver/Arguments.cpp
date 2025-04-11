@@ -16,6 +16,6 @@ using namespace MbD;
 
 void MbD::Arguments::arguments(Symsptr args)
 {
-	auto arguments = std::static_pointer_cast<Arguments>(args);
-	terms = arguments->terms;
+    auto arguments = std::static_pointer_cast<Arguments>(args);
+    terms = arguments->terms;
 }
