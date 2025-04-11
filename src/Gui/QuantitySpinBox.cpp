@@ -410,6 +410,10 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
     if (!handleKeyEvent(event->text())) {
         QAbstractSpinBox::keyPressEvent(event);
     }
+
+    if (isEnter) {
+        returnPressed();
+    }
 }
 
 void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
@@ -493,7 +497,13 @@ bool QuantitySpinBox::isNormalized()
                                               QRegularExpression::CaseInsensitiveOption);
 
     Q_D(const QuantitySpinBox);
-    return !d->validStr.contains(operators);
+
+    // this check is two level
+    // 1. We consider every string that does not contain operators as normalized
+    // 2. If it does contain operators we check if it differs from normalized input - as some
+    //    operators like - can be allowed even in normalized case.
+    return !d->validStr.contains(operators)
+        || d->validStr.toStdString() == d->quantity.getUserString();
 }
 
 void QuantitySpinBox::setValue(const Base::Quantity& value)

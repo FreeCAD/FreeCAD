@@ -190,6 +190,11 @@ Q_SIGNALS:
      *  or finished (false).
      */
     void showFormulaDialog(bool);
+    /** Gets emitted if user confirms the value with return. This
+     *  is very similar to editingFinished() but does not fire on
+     *  focus out.
+     */
+    void returnPressed();
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;
