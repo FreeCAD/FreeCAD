@@ -2480,8 +2480,10 @@ QString Application::replaceVariablesInQss(QString qssText)
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
     unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", 0);
     unsigned long longAccentColor2 = hGrp->GetUnsigned("ThemeAccentColor2", 0);
-    unsigned long longAccentColor3 = hGrp->GetUnsigned("ThemeAccentColor3", 0);
-
+    unsigned long longBackgroundColor = hGrp->GetUnsigned("ThemeBackground", 0);
+    unsigned long longMenuColor = hGrp->GetUnsigned("ThemeMenuColor", 0);
+    unsigned long longGradientColor1 = hGrp->GetUnsigned("ThemeGradientColor1", 0);
+    unsigned long longGradientColor2 = hGrp->GetUnsigned("ThemeGradientColor2", 0);
     // convert them to hex.
     // Note: the ulong contains alpha channels so 8 hex characters when we need 6 here.
     QString accentColor1 = QStringLiteral("#%1")
@@ -2492,15 +2494,29 @@ QString Application::replaceVariablesInQss(QString qssText)
                                .arg(longAccentColor2, 8, 16, QLatin1Char('0'))
                                .toUpper()
                                .mid(0, 7);
-    QString accentColor3 = QStringLiteral("#%1")
-                               .arg(longAccentColor3, 8, 16, QLatin1Char('0'))
+    QString backgroundColor = QStringLiteral("#%1")
+                               .arg(longBackgroundColor, 8, 16, QLatin1Char('0'))
+                               .toUpper()
+                               .mid(0, 7);
+    QString menuColor = QStringLiteral("#%1")
+                               .arg(longMenuColor, 8, 16, QLatin1Char('0'))
+                               .toUpper()
+                               .mid(0, 7);
+    QString gradientColor1 = QStringLiteral("#%1")
+                               .arg(longGradientColor1, 8, 16, QLatin1Char('0'))
+                               .toUpper()
+                               .mid(0, 7);
+    QString gradientColor2 = QStringLiteral("#%1")
+                               .arg(longGradientColor2, 8, 16, QLatin1Char('0'))
                                .toUpper()
                                .mid(0, 7);
 
     qssText = qssText.replace(QStringLiteral("@ThemeAccentColor1"), accentColor1);
     qssText = qssText.replace(QStringLiteral("@ThemeAccentColor2"), accentColor2);
-    qssText = qssText.replace(QStringLiteral("@ThemeAccentColor3"), accentColor3);
-
+    qssText = qssText.replace(QStringLiteral("@ThemeBackground"), backgroundColor);
+    qssText = qssText.replace(QStringLiteral("@ThemeMenuColor"), menuColor);
+    qssText = qssText.replace(QStringLiteral("@ThemeGradientColor1"), gradientColor1);
+    qssText = qssText.replace(QStringLiteral("@ThemeGradientColor2"), gradientColor2);
     // Base::Console().Warning("%s\n", qssText.toStdString());
     return qssText;
 }
