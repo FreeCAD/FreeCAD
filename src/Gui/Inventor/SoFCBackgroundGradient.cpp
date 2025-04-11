@@ -25,6 +25,8 @@
 #ifndef _PreComp_
 #include <array>
 #include <boost/math/constants/constants.hpp>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbViewVolume.h>
 #include <cmath>
 #include <numbers>
 #ifdef FC_OS_MACOSX
@@ -94,7 +96,11 @@ void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(-1,1,-1,1,-1,1);
+    SbViewVolume vv;
+    vv.ortho(-1,1,-1,1,-1,1);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
