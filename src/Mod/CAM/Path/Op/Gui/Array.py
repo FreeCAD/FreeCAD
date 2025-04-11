@@ -40,6 +40,7 @@ translate = FreeCAD.Qt.translate
 
 class ObjectArray:
     def __init__(self, obj):
+        obj.firstRun = True
         obj.addProperty(
             "App::PropertyLinkList",
             "Base",
@@ -205,8 +206,8 @@ class ObjectArray:
         self.setEditorModes(obj)
 
     def execute(self, obj):
-        if FreeCAD.GuiUp:
-
+        if FreeCAD.GuiUp and self.firstRun:
+            obj.firstRun = False
             QtGui.QMessageBox.warning(
                 None,
                 QT_TRANSLATE_NOOP("CAM_ArrayOp", "Operation is depreciated"),
