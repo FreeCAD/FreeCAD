@@ -1185,7 +1185,7 @@ void SketchObject::setConstraintExpression(int constNum, const std::string& newE
     if (info.expression) {
         try {
             std::shared_ptr<App::Expression> expr(App::Expression::parse(this, newExpression));
-            setExpression(path, expr);
+            setExpression(path, std::move(expr));
         }
         catch (const Base::Exception&) {
             Base::Console().Error("Failed to set constraint expression.");
