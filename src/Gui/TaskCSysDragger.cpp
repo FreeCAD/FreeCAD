@@ -41,8 +41,8 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
 #include "QuantitySpinBox.h"
-#include "SoFCCSysDragger.h"
 #include "ViewProviderDragger.h"
 #include "TaskView/TaskView.h"
 
@@ -81,7 +81,7 @@ void alignGridLayoutColumns(const std::list<QGridLayout*>& layouts, unsigned col
 }  // namespace
 
 TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
-                             Gui::SoFCCSysDragger* dragger,
+                             Gui::SoTransformDragger* dragger,
                              QWidget* parent,
                              App::SubObjectPlacementProvider* subObjectPlacemenProvider,
                              App::CenterOfMassProvider* centerOfMassProvider)
@@ -708,7 +708,7 @@ void TaskTransform::onRotationChange(QuantitySpinBox* changed)
     resetReferencePlacement();
 }
 
-TaskCSysDragger::TaskCSysDragger(ViewProviderDragger* vp, SoFCCSysDragger* dragger)
+TaskCSysDragger::TaskCSysDragger(ViewProviderDragger* vp, SoTransformDragger* dragger)
     : vp(vp)
 {
     transform = new TaskTransform(vp, dragger);

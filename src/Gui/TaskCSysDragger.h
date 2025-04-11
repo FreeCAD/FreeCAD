@@ -41,7 +41,7 @@ namespace Attacher
 namespace Gui
 {
 class QuantitySpinBox;
-class SoFCCSysDragger;
+class SoTransformDragger;
 class ViewProviderDragger;
 class Ui_TaskCSysDragger;
 
@@ -67,7 +67,7 @@ public:
     Q_ENUM(PositionMode)
 
     TaskTransform(Gui::ViewProviderDragger* vp,
-                  Gui::SoFCCSysDragger* dragger,
+                  Gui::SoTransformDragger* dragger,
                   QWidget* parent = nullptr,
                   App::SubObjectPlacementProvider* subObjectPlacementProvider =
                       Base::provideService<App::SubObjectPlacementProvider>(),
@@ -134,7 +134,7 @@ private:
     const App::SubObjectPlacementProvider* subObjectPlacementProvider;
     const App::CenterOfMassProvider *centerOfMassProvider;
 
-    CoinPtr<SoFCCSysDragger> dragger;
+    CoinPtr<SoTransformDragger> dragger;
 
     Ui_TaskCSysDragger *ui;
 
@@ -155,7 +155,7 @@ class TaskCSysDragger: public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskCSysDragger(ViewProviderDragger* vp, SoFCCSysDragger* dragger);
+    TaskCSysDragger(ViewProviderDragger* vp, SoTransformDragger* dragger);
     ~TaskCSysDragger() override = default;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
