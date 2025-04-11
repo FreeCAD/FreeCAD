@@ -101,6 +101,21 @@ short Pipe::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
+const char* Pipe::getPropertyLabel(const App::Property* prop) const
+{
+    if (prop == &AuxiliarySpine) {
+        return "Auxiliary Spine";
+    }
+    if (prop == &AuxiliarySpineTangent) {
+        return "Auxiliary Spine Tangent";
+    }
+    if (prop == &AuxiliaryCurvilinear) {
+        return "Auxiliary Curvilinear";
+    }
+
+    return ProfileBased::getPropertyLabel(prop);
+}
+
 App::DocumentObjectExecReturn *Pipe::execute()
 {
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
