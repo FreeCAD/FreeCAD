@@ -116,7 +116,7 @@ class _Profile(Draft._DraftObject):
         obj.removeProperty("Height")
         obj.removeProperty("WebThickness")
         obj.removeProperty("FlangeThickness")
-        obj.removeProperty("OutDiameter")
+        obj.removeProperty("OutsideDiameter")
         obj.removeProperty("Thickness")
 
 
@@ -126,7 +126,7 @@ class _ProfileC(_Profile):
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","OutDiameter","Draft",QT_TRANSLATE_NOOP("App::Property","Outside Diameter")).OutDiameter = profile[4]
+        obj.addProperty("App::PropertyLength","OutsideDiameter","Draft",QT_TRANSLATE_NOOP("App::Property","Outside Diameter")).OutsideDiameter = profile[4]
         obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Wall thickness")).Thickness = profile[5]
         _Profile.__init__(self,obj,profile)
 
@@ -134,9 +134,9 @@ class _ProfileC(_Profile):
         import Part
         pl = obj.Placement
         c1=Part.Circle()
-        c1.Radius=obj.OutDiameter.Value/2
+        c1.Radius=obj.OutsideDiameter.Value/2
         c2=Part.Circle()
-        c2.Radius=obj.OutDiameter.Value/2-obj.Thickness.Value
+        c2.Radius=obj.OutsideDiameter.Value/2-obj.Thickness.Value
         cs1=c1.toShape()
         cs2=c2.toShape()
         p=Part.makeRuledSurface(cs2,cs1)
