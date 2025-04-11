@@ -1,7 +1,8 @@
 if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
-)
+    add_subdirectory(OndselSolver)
+    include_directories(
+        ${CMAKE_SOURCE_DIR}/src/Mod/Assembly/OndselSolver
+    )
 else ()
     check_include_file_cxx(OndselSolver/enum.h HAVE_ONDSELSOLVER_H)
     if (NOT HAVE_ONDSELSOLVER_H)

@@ -1,8 +1,8 @@
 
 if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
-	target_include_directories(Assembly_tests_run PUBLIC
-		${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
-	)
+    target_include_directories(Assembly_tests_run PUBLIC
+        ${CMAKE_SOURCE_DIR}/src/Mod/Assembly/OndselSolver
+    )
 endif ()
 
 target_link_libraries(Assembly_tests_run
