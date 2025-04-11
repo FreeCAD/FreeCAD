@@ -172,7 +172,8 @@ class CalculiXTools:
 
     def _load_ccxfrd_results(self):
         frd_result_prefix = os.path.join(self.obj.WorkingDirectory, self.input_deck)
-        Fem.frdToVTK(frd_result_prefix + ".frd")
+        binary_mode = self.fem_param.GetGroup("Ccx").GetBool("BinaryOutput", False)
+        Fem.frdToVTK(frd_result_prefix + ".frd", binary_mode)
         files = os.listdir(self.obj.WorkingDirectory)
         for f in files:
             if f.endswith(".vtm"):

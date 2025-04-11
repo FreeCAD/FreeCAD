@@ -252,14 +252,14 @@ private:
     Py::Object frdToVTK(const Py::Tuple& args)
     {
         char* filename = nullptr;
-
-        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &filename)) {
+        PyObject* binary = Py_True;
+        if (!PyArg_ParseTuple(args.ptr(), "et|O!", "utf-8", &filename, &PyBool_Type, &binary)) {
             throw Py::Exception();
         }
         std::string encodedName = std::string(filename);
         PyMem_Free(filename);
 
-        FemVTKTools::frdToVTK(encodedName.c_str());
+        FemVTKTools::frdToVTK(encodedName.c_str(), Base::asBoolean(binary));
 
         return Py::None();
     }
