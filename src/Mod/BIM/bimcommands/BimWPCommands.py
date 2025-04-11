@@ -91,7 +91,7 @@ class BIM_WPView:
             "MenuText": QT_TRANSLATE_NOOP("BIM_WPView", "Working Plane View"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_WPView",
-                "Aligns the view on the current item in BIM Views window or on the current working plane",
+                "Aligns the view to the current item in BIM Views window or to the current working plane",
             ),
             "Accel": "9",
         }
@@ -101,32 +101,22 @@ class BIM_WPView:
         return v
 
     def Activated(self):
-        done = False
-        try:
-            import BimViews
-        except ImportError:
-            pass
-        else:
-            v = BimViews.findWidget()
-            if v:
-                i = v.tree.currentItem()
-                if i:
-                    # Aligning on current widget item
-                    BimViews.show(i)
-                    done = True
-                elif hasattr(v, "lastSelected"):
-                    BimViews.show(v.lastSelected)
-                    # Aligning on stored widget item
-                    done = True
-            elif hasattr(FreeCAD, "DraftWorkingPlane"):
-                if hasattr(FreeCAD.DraftWorkingPlane, "lastBuildingPart"):
-                    BimViews.show(FreeCAD.DraftWorkingPlane.lastBuildingPart)
-                    done = True
-        if not done:
-            # Aligning on current working plane
-            c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-            r = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
-            c.orientation.setValue(r)
+        from bimcommands import BimViews
+        import WorkingPlane
+
+        vm = BimViews.findWidget()
+        if vm:
+            sel = vm.tree.selectedItems()
+            if sel:
+                # Aligning to current widget item
+                BimViews.show(sel[0])
+                return
+            if hasattr(vm, "lastSelected"):
+                # Aligning to stored widget item
+                BimViews.show(vm.lastSelected)
+                return
+        # Aligning to current working plane
+        WorkingPlane.get_working_plane().align_view()
 
 
 FreeCADGui.addCommand("BIM_WPView", BIM_WPView())
