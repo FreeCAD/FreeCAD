@@ -11589,7 +11589,7 @@ int SketchObject::renameConstraint(int GeoId, std::string name)
         Base::StateLocker lock(managedoperation, true);
 
         Constraint* copy = item->clone();
-        copy->Name = name;
+        copy->Name = std::move(name);
 
         Constraints.set1Value(GeoId, copy);
         delete copy;
