@@ -2340,7 +2340,7 @@ template<typename... args>
 void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
 {
     // NOLINTNEXTLINE(runtime/printf)
-    std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
+    std::string formattedMessage = std::format(format, std::forward<args>(argValuess)...);
     // We place these formatted messages in a map, count their occurrences and not their first
     // occurrence.
     if (m_unsupportedFeaturesNoted[formattedMessage].first++ == 0) {
