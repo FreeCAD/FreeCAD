@@ -432,6 +432,7 @@ void SketcherSettingsDisplay::saveSettings()
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
     ui->checkBoxTVForceOrtho->onSave();
+    ui->checkBoxTVAlignView->onSave();
     ui->checkBoxTVSectionView->onSave();
 }
 
@@ -454,6 +455,8 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxTVRestoreCamera->onRestore();
     ui->checkBoxTVForceOrtho->onRestore();
     this->ui->checkBoxTVForceOrtho->setEnabled(this->ui->checkBoxTVRestoreCamera->isChecked());
+    ui->checkBoxTVAlignView->onRestore();
+    this->ui->checkBoxTVAlignView->setEnabled(this->ui->checkBoxTVRestoreCamera->isChecked());
     ui->checkBoxTVSectionView->onRestore();
 }
 
@@ -482,12 +485,14 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
                                 "        sketch.ViewObject.ShowSupport = %s\n"
                                 "        sketch.ViewObject.RestoreCamera = %s\n"
                                 "        sketch.ViewObject.ForceOrtho = %s\n"
+                                "        sketch.ViewObject.AlignView = %s\n"
                                 "        sketch.ViewObject.SectionView = %s\n",
                                 this->ui->checkBoxTVHideDependent->isChecked() ? "True" : "False",
                                 this->ui->checkBoxTVShowLinks->isChecked() ? "True" : "False",
                                 this->ui->checkBoxTVShowSupport->isChecked() ? "True" : "False",
                                 this->ui->checkBoxTVRestoreCamera->isChecked() ? "True" : "False",
                                 this->ui->checkBoxTVForceOrtho->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVAlignView->isChecked() ? "True" : "False",
                                 this->ui->checkBoxTVSectionView->isChecked() ? "True" : "False");
     }
     catch (Base::PyException& e) {
