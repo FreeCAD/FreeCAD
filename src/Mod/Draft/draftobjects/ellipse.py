@@ -42,23 +42,23 @@ class Ellipse(DraftObject):
         super().__init__(obj, "Ellipse")
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Start angle of the elliptical arc")
-        obj.addProperty("App::PropertyAngle", "FirstAngle", "Draft", _tip)
+        obj.addProperty("App::PropertyAngle", "FirstAngle", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","End angle of the elliptical arc \n\
                 (for a full circle, give it same value as First Angle)")
-        obj.addProperty("App::PropertyAngle", "LastAngle", "Draft", _tip)
+        obj.addProperty("App::PropertyAngle", "LastAngle", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Minor radius of the ellipse")
-        obj.addProperty("App::PropertyLength", "MinorRadius", "Draft", _tip)
+        obj.addProperty("App::PropertyLength", "MinorRadius", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Major radius of the ellipse")
-        obj.addProperty("App::PropertyLength", "MajorRadius", "Draft", _tip)
+        obj.addProperty("App::PropertyLength", "MajorRadius", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Create a face")
-        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Area of this object")
-        obj.addProperty("App::PropertyArea", "Area","Draft", _tip)
+        obj.addProperty("App::PropertyArea", "Area","Draft", _tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
 

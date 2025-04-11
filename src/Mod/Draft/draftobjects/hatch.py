@@ -46,22 +46,22 @@ class Hatch(DraftObject):
         pl = obj.PropertiesList
         if not "Base" in pl:
             obj.addProperty("App::PropertyLink","Base","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The base object used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The base object used by this object"), locked=True)
         if not "File" in pl:
             obj.addProperty("App::PropertyFile","File","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The PAT file used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The PAT file used by this object"), locked=True)
         if not "Pattern" in pl:
             obj.addProperty("App::PropertyString","Pattern","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern name used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The pattern name used by this object"), locked=True)
         if not "Scale" in pl:
             obj.addProperty("App::PropertyFloat","Scale","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern scale used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The pattern scale used by this object"), locked=True)
         if not "Rotation" in pl:
             obj.addProperty("App::PropertyAngle","Rotation","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern rotation used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The pattern rotation used by this object"), locked=True)
         if not "Translate" in pl:
             obj.addProperty("App::PropertyBool","Translate","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)"))
+                            QT_TRANSLATE_NOOP("App::Property","If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)"), locked=True)
             obj.Translate = True
         self.Type = "Hatch"
 

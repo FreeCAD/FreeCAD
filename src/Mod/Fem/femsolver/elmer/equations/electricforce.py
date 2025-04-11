@@ -54,6 +54,7 @@ class Proxy(linear.Proxy, equationbase.ElectricforceProxy):
                 "That solver is only executed after solution converged\n"
                 "To execute always, change to 'Always'"
             ),
+            locked=True,
         )
 
         obj.ExecSolver = SOLVER_EXEC_METHODS

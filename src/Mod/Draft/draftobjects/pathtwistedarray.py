@@ -84,14 +84,16 @@ class PathTwistedArray(DraftLink):
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."))
+                            QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."),
+                            locked=True)
             obj.Base = None
 
         if "PathObject" not in properties:
             obj.addProperty("App::PropertyLink",
                             "PathObject",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."))
+                            QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."),
+                            locked=True)
             obj.PathObject = None
 
         if "Fuse" not in properties:
@@ -102,28 +104,32 @@ class PathTwistedArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Fuse = False
 
         if "Count" not in properties:
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Number of copies to create."))
+                            QT_TRANSLATE_NOOP("App::Property","Number of copies to create."),
+                            locked=True)
             obj.Count = 15
 
         if "RotationFactor" not in properties:
             obj.addProperty("App::PropertyFloat",
                             "RotationFactor",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."))
+                            QT_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."),
+                            locked=True)
             obj.RotationFactor = 0.25
 
         if self.use_link and "ExpandArray" not in properties:
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"))
+                            QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"),
+                            locked=True)
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape', 'Transient')
 
@@ -134,7 +140,8 @@ class PathTwistedArray(DraftLink):
                 obj.addProperty("App::PropertyPlacementList",
                                 "PlacementList",
                                 "Objects",
-                                _tip)
+                                _tip,
+                                locked=True)
                 obj.PlacementList = []
 
     def linkSetup(self, obj):

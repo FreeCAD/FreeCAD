@@ -42,13 +42,13 @@ class Point(DraftObject):
         super().__init__(obj, "Point")
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "X Location")
-        obj.addProperty("App::PropertyDistance", "X", "Draft", _tip)
+        obj.addProperty("App::PropertyDistance", "X", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Y Location")
-        obj.addProperty("App::PropertyDistance", "Y", "Draft", _tip)
+        obj.addProperty("App::PropertyDistance", "Y", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Z Location")
-        obj.addProperty("App::PropertyDistance", "Z", "Draft", _tip)
+        obj.addProperty("App::PropertyDistance", "Z", "Draft", _tip, locked=True)
 
         obj.X = x
         obj.Y = y
