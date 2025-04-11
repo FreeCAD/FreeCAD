@@ -65,6 +65,7 @@
     #endif
 #endif
 
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
@@ -179,13 +180,16 @@ public:
         //create the action buttons
         auto* menu = new QMenu(this);
         auto* actionGrp = new QActionGroup(menu);
-        int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-        for (int i = 0; i < num; i++) {
-            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(i));
+
+        auto setAction = [&, index {0}](const std::string&) mutable {
+            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(index));
             actionGrp->addAction(action);
             action->setCheckable(true);
-            action->setData(i);
-        }
+            action->setData(index++);
+        };
+        auto descriptions = Base::UnitsApi::getDescriptions();
+        std::for_each(descriptions.begin(), descriptions.end(), setAction);
+
         QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
             int userSchema = action->data().toInt();
             setUserSchema(userSchema);
@@ -236,7 +240,7 @@ public:
             getWindowParameter()->SetInt("UserSchema", userSchema);
 
         unitChanged();
-        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+        Base::UnitsApi::setSchema(userSchema);
         // Update the main window to show the unit change
         Gui::Application::Instance->onUpdate();
     }
@@ -261,12 +265,12 @@ private:
 
     void retranslateUi() {
         auto actions = menu()->actions();
-        int maxSchema = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-        assert(actions.size() <= maxSchema);
-        for(int i = 0; i < maxSchema ; i++)
-        {
-            actions[i]->setText(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
-        }
+        auto addAction = [&, index {0}](const std::string& action)mutable {
+            actions[index++]->setText(QString::fromStdString(action));
+        };
+        auto descriptions = Base::UnitsApi::getDescriptions();
+        assert(actions.size() <= static_cast<qsizetype>(descriptions.size()));
+        std::for_each(descriptions.begin(), descriptions.end(), addAction);
     }
 };
 
