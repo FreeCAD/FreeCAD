@@ -3372,7 +3372,6 @@ int Sketch::addAngleConstraint(int geoId1,
     return ConstraintsCounter;
 }
 
-
 int Sketch::addEqualConstraint(int geoId1, int geoId2)
 {
     geoId1 = checkGeoId(geoId1);
@@ -3395,9 +3394,8 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
             GCSsys.addConstraintEqualRadius(c1, c2, tag);
             return ConstraintsCounter;
         }
-        else {
-            std::swap(geoId1, geoId2);
-        }
+        // ensure that if there's a circle, it is geoId1
+        std::swap(geoId1, geoId2);
     }
 
     if (Geoms[geoId2].type == Ellipse) {
@@ -3408,19 +3406,16 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
             GCSsys.addConstraintEqualRadii(e1, e2, tag);
             return ConstraintsCounter;
         }
-        else {
-            std::swap(geoId1, geoId2);
-        }
+        // ensure that if there's an ellipse, it is geoId1
+        std::swap(geoId1, geoId2);
     }
 
-    if (Geoms[geoId1].type == Circle) {
+    if (Geoms[geoId1].type == Circle && Geoms[geoId2].type == Arc) {
         GCS::Circle& c1 = Circles[Geoms[geoId1].index];
-        if (Geoms[geoId2].type == Arc) {
-            GCS::Arc& a2 = Arcs[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintEqualRadius(c1, a2, tag);
-            return ConstraintsCounter;
-        }
+        GCS::Arc& a2 = Arcs[Geoms[geoId2].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintEqualRadius(c1, a2, tag);
+        return ConstraintsCounter;
     }
 
     if (Geoms[geoId1].type == Arc && Geoms[geoId2].type == Arc) {
@@ -3431,44 +3426,36 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         return ConstraintsCounter;
     }
 
-    if (Geoms[geoId2].type == ArcOfEllipse) {
-        if (Geoms[geoId1].type == ArcOfEllipse) {
-            GCS::ArcOfEllipse& a1 = ArcsOfEllipse[Geoms[geoId1].index];
-            GCS::ArcOfEllipse& a2 = ArcsOfEllipse[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintEqualRadii(a1, a2, tag);
-            return ConstraintsCounter;
-        }
+    if (Geoms[geoId2].type == ArcOfEllipse && Geoms[geoId1].type == ArcOfEllipse) {
+        GCS::ArcOfEllipse& a1 = ArcsOfEllipse[Geoms[geoId1].index];
+        GCS::ArcOfEllipse& a2 = ArcsOfEllipse[Geoms[geoId2].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintEqualRadii(a1, a2, tag);
+        return ConstraintsCounter;
     }
 
-    if (Geoms[geoId2].type == ArcOfHyperbola) {
-        if (Geoms[geoId1].type == ArcOfHyperbola) {
-            GCS::ArcOfHyperbola& a1 = ArcsOfHyperbola[Geoms[geoId1].index];
-            GCS::ArcOfHyperbola& a2 = ArcsOfHyperbola[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintEqualRadii(a1, a2, tag);
-            return ConstraintsCounter;
-        }
+    if (Geoms[geoId2].type == ArcOfHyperbola && Geoms[geoId1].type == ArcOfHyperbola) {
+        GCS::ArcOfHyperbola& a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+        GCS::ArcOfHyperbola& a2 = ArcsOfHyperbola[Geoms[geoId2].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintEqualRadii(a1, a2, tag);
+        return ConstraintsCounter;
     }
 
-    if (Geoms[geoId2].type == ArcOfParabola) {
-        if (Geoms[geoId1].type == ArcOfParabola) {
-            GCS::ArcOfParabola& a1 = ArcsOfParabola[Geoms[geoId1].index];
-            GCS::ArcOfParabola& a2 = ArcsOfParabola[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintEqualFocus(a1, a2, tag);
-            return ConstraintsCounter;
-        }
+    if (Geoms[geoId2].type == ArcOfParabola && Geoms[geoId1].type == ArcOfParabola) {
+        GCS::ArcOfParabola& a1 = ArcsOfParabola[Geoms[geoId1].index];
+        GCS::ArcOfParabola& a2 = ArcsOfParabola[Geoms[geoId2].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintEqualFocus(a1, a2, tag);
+        return ConstraintsCounter;
     }
 
-    if (Geoms[geoId1].type == Ellipse) {
+    if (Geoms[geoId1].type == Ellipse && Geoms[geoId2].type == ArcOfEllipse) {
         GCS::Ellipse& e1 = Ellipses[Geoms[geoId1].index];
-        if (Geoms[geoId2].type == ArcOfEllipse) {
-            GCS::ArcOfEllipse& a2 = ArcsOfEllipse[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintEqualRadii(a2, e1, tag);
-            return ConstraintsCounter;
-        }
+        GCS::ArcOfEllipse& a2 = ArcsOfEllipse[Geoms[geoId2].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintEqualRadii(a2, e1, tag);
+        return ConstraintsCounter;
     }
 
     Base::Console().warning("Equality constraints between %s and %s are not supported.\n",
