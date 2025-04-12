@@ -2672,109 +2672,118 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
         }
     }
 
-    if (Geoms[geoId1].type == Line) {
-        GCS::Line& l = Lines[Geoms[geoId1].index];
-        if (Geoms[geoId2].type == Arc) {
-            GCS::Arc& a = Arcs[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(l, a, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == Circle) {
-            GCS::Circle& c = Circles[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(l, c, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == Ellipse) {
-            GCS::Ellipse& e = Ellipses[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(l, e, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == ArcOfEllipse) {
-            GCS::ArcOfEllipse& a = ArcsOfEllipse[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(l, a, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().error("Direct tangency constraint between line and B-spline is not "
+    switch (Geoms[geoId1].type) {
+        case Line: {
+            GCS::Line& l = Lines[Geoms[geoId1].index];
+            if (Geoms[geoId2].type == Arc) {
+                GCS::Arc& a = Arcs[Geoms[geoId2].index];
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangent(l, a, tag);
+                return ConstraintsCounter;
+            }
+            else if (Geoms[geoId2].type == Circle) {
+                GCS::Circle& c = Circles[Geoms[geoId2].index];
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangent(l, c, tag);
+                return ConstraintsCounter;
+            }
+            else if (Geoms[geoId2].type == Ellipse) {
+                GCS::Ellipse& e = Ellipses[Geoms[geoId2].index];
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangent(l, e, tag);
+                return ConstraintsCounter;
+            }
+            else if (Geoms[geoId2].type == ArcOfEllipse) {
+                GCS::ArcOfEllipse& a = ArcsOfEllipse[Geoms[geoId2].index];
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangent(l, a, tag);
+                return ConstraintsCounter;
+            }
+            else if (Geoms[geoId2].type == BSpline) {
+                Base::Console().error("Direct tangency constraint between line and B-spline is not "
+                                      "supported. Use tangent-via-point instead.");
+                return -1;
+            }
+
+        } break;
+        case Circle: {
+            GCS::Circle& c = Circles[Geoms[geoId1].index];
+            if (Geoms[geoId2].type == Circle) {
+                GCS::Circle& c2 = Circles[Geoms[geoId2].index];
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangent(c, c2, tag);
+                return ConstraintsCounter;
+            }
+            else if (Geoms[geoId2].type == Ellipse) {
+                Base::Console().error(
+                    "Direct tangency constraint between circle and ellipse is not "
+                    "supported. Use tangent-via-point instead.");
+                return -1;
+            }
+            else if (Geoms[geoId2].type == Arc) {
+                GCS::Arc& a = Arcs[Geoms[geoId2].index];
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangent(c, a, tag);
+                return ConstraintsCounter;
+            }
+            else if (Geoms[geoId2].type == BSpline) {
+                Base::Console().error(
+                    "Direct tangency constraint between circle and B-spline is not "
+                    "supported. Use tangent-via-point instead.");
+                return -1;
+            }
+        } break;
+        case Ellipse: {
+            if (Geoms[geoId2].type == Circle) {
+                Base::Console().error(
+                    "Direct tangency constraint between circle and ellipse is not "
+                    "supported. Use tangent-via-point instead.");
+                return -1;
+            }
+            else if (Geoms[geoId2].type == Arc) {
+                Base::Console().error("Direct tangency constraint between arc and ellipse is not "
+                                      "supported. Use tangent-via-point instead.");
+                return -1;
+            }
+            else if (Geoms[geoId2].type == BSpline) {
+                Base::Console().error(
+                    "Direct tangency constraint between ellipse and B-spline is not "
+                    "supported. Use tangent-via-point instead.");
+                return -1;
+            }
+        } break;
+        case Arc: {
+            GCS::Arc& a = Arcs[Geoms[geoId1].index];
+            if (Geoms[geoId2].type == Circle) {
+                GCS::Circle& c = Circles[Geoms[geoId2].index];
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangent(c, a, tag);
+                return ConstraintsCounter;
+            }
+            else if (Geoms[geoId2].type == Ellipse) {
+                Base::Console().error("Direct tangency constraint between arc and ellipse is not "
+                                      "supported. Use tangent-via-point instead.");
+                return -1;
+            }
+            else if (Geoms[geoId2].type == Arc) {
+                GCS::Arc& a2 = Arcs[Geoms[geoId2].index];
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangent(a, a2, tag);
+                return ConstraintsCounter;
+            }
+            else if (Geoms[geoId2].type == BSpline) {
+                Base::Console().error("Direct tangency constraint between arc and B-spline is not "
+                                      "supported. Use tangent-via-point instead.");
+                return -1;
+            }
+        } break;
+        case BSpline: {
+            Base::Console().error("Direct tangency constraint including B-splines is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
-        }
-    }
-    else if (Geoms[geoId1].type == Circle) {
-        GCS::Circle& c = Circles[Geoms[geoId1].index];
-        if (Geoms[geoId2].type == Circle) {
-            GCS::Circle& c2 = Circles[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(c, c2, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == Ellipse) {
-            Base::Console().error("Direct tangency constraint between circle and ellipse is not "
-                                  "supported. Use tangent-via-point instead.");
-            return -1;
-        }
-        else if (Geoms[geoId2].type == Arc) {
-            GCS::Arc& a = Arcs[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(c, a, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().error("Direct tangency constraint between circle and B-spline is not "
-                                  "supported. Use tangent-via-point instead.");
-            return -1;
-        }
-    }
-    else if (Geoms[geoId1].type == Ellipse) {
-        if (Geoms[geoId2].type == Circle) {
-            Base::Console().error("Direct tangency constraint between circle and ellipse is not "
-                                  "supported. Use tangent-via-point instead.");
-            return -1;
-        }
-        else if (Geoms[geoId2].type == Arc) {
-            Base::Console().error("Direct tangency constraint between arc and ellipse is not "
-                                  "supported. Use tangent-via-point instead.");
-            return -1;
-        }
-        else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().error("Direct tangency constraint between ellipse and B-spline is not "
-                                  "supported. Use tangent-via-point instead.");
-            return -1;
-        }
-    }
-    else if (Geoms[geoId1].type == Arc) {
-        GCS::Arc& a = Arcs[Geoms[geoId1].index];
-        if (Geoms[geoId2].type == Circle) {
-            GCS::Circle& c = Circles[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(c, a, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == Ellipse) {
-            Base::Console().error("Direct tangency constraint between arc and ellipse is not "
-                                  "supported. Use tangent-via-point instead.");
-            return -1;
-        }
-        else if (Geoms[geoId2].type == Arc) {
-            GCS::Arc& a2 = Arcs[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(a, a2, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().error("Direct tangency constraint between arc and B-spline is not "
-                                  "supported. Use tangent-via-point instead.");
-            return -1;
-        }
-    }
-    else if (Geoms[geoId1].type == BSpline) {
-        Base::Console().error("Direct tangency constraint including B-splines is not "
-                              "supported. Use tangent-via-point instead.");
-        return -1;
+        } break;
+        default:
+            break;
     }
 
     return -1;
@@ -2933,7 +2942,8 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     if (avp) {
         pointId = getPointId(geoId3, pos3);
     }
-    else if (e2e || e2c) {
+    else {
+        // (e2e || e2c) has to be true
         pointId = getPointId(geoId1, pos1);
     }
 
@@ -2961,9 +2971,9 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     // The same functionality is implemented in SketchObject.cpp, where
     //  it is used to permanently lock down the autodecision.
     if (cTyp != Angle) {
-        // The same functionality is implemented in SketchObject.cpp, where
-        //  it is used to permanently lock down the autodecision.
-        // the difference between the datum value and the actual angle to apply.
+        // The same functionality is implemented in SketchObject.cpp, where it is used to
+        // permanently lock down the autodecision.
+        // The difference between the datum value and the actual angle to apply.
         // (datum=angle+offset)
         double angleOffset = 0.0;
         // the desired angle value (and we are to decide if 180* should be added to it)
@@ -2977,16 +2987,12 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
             angleDesire = pi / 2;
         }
 
-        if (*value
-            == 0.0) {  // autodetect tangency internal/external (and same for perpendicularity)
-            double angleErr = GCSsys.calculateAngleViaPoint(*crv1, *crv2, p) - angleDesire;
-            // bring angleErr to -pi..pi
-            if (angleErr > pi) {
-                angleErr -= pi * 2;
-            }
-            if (angleErr < -pi) {
-                angleErr += pi * 2;
-            }
+        if (*value == 0.0) {
+            // autodetect tangency internal/external (and same for perpendicularity)
+            // remainder brings angleErr to -pi..pi
+            double angleErr =
+                std::remainder(GCSsys.calculateAngleViaPoint(*crv1, *crv2, p) - angleDesire,
+                               pi * 2);
 
             // the autodetector
             if (fabs(angleErr) > pi / 2) {
@@ -3007,30 +3013,27 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
             GCS::Point& p1 = Points[getPointId(geoId1, pos1)];
             auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
             double uNear;
+
             partBsp->closestParameter(Base::Vector3d(*p1.x, *p1.y, 0.0), uNear);
-            double* pointparam = new double(uNear);
-            Parameters.push_back(pointparam);
-            --ConstraintsCounter;  // Do this just before point-on-object because ConstraintsCounter
-                                   // is increased again before being used
-            tag = addPointOnObjectConstraint(geoId1,
-                                             pos1,
-                                             geoId2,
-                                             pointparam,
-                                             driving);  // increases ConstraintsCounter
+            double* pointParam = new double(uNear);
+            Parameters.push_back(pointParam);
+            // Do this just before point-on-object because ConstraintsCounter is
+            // increased again in addPointOnObjectConstraint before being used
+            --ConstraintsCounter;
+            tag = addPointOnObjectConstraint(geoId1, pos1, geoId2, pointParam, driving);
+
             GCSsys.addConstraintAngleViaPointAndParam(*crv2,
                                                       *crv1,
                                                       p,
-                                                      pointparam,
+                                                      pointParam,
                                                       angle,
                                                       tag,
                                                       driving);
         }
         else {
             // increases ConstraintsCounter
-            tag = Sketch::addPointOnObjectConstraint(geoId1,
-                                                     pos1,
-                                                     geoId2,
-                                                     driving);  // increases ConstraintsCounter
+            tag = Sketch::addPointOnObjectConstraint(geoId1, pos1, geoId2, driving);
+
             GCSsys.addConstraintAngleViaPoint(*crv1, *crv2, p, angle, tag, driving);
         }
     }
@@ -3044,76 +3047,70 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
             GCSsys.addConstraintAngleViaPoint(*crv1, *crv2, p, angle, tag, driving);
         }
     }
-    if (avp) {
-        tag = ++ConstraintsCounter;
-        if (Geoms[geoId1].type == BSpline || Geoms[geoId2].type == BSpline) {
-            if (Geoms[geoId1].type == BSpline && Geoms[geoId2].type == BSpline) {
-                GCS::Point& p3 = Points[getPointId(geoId3, pos3)];
-                auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId1].geo);
-                double uNear;
-                partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
-                double* pointparam1 = new double(uNear);
-                Parameters.push_back(pointparam1);
-                --ConstraintsCounter;  // Do this just before point-on-object because
-                                       // ConstraintsCounter is increased again before being used
-                addPointOnObjectConstraint(geoId3,
-                                           pos3,
-                                           geoId1,
-                                           pointparam1,
-                                           driving);  // increases ConstraintsCounter
-                partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
-                partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
-                double* pointparam2 = new double(uNear);
-                --ConstraintsCounter;  // Do this just before point-on-object because
-                                       // ConstraintsCounter is increased again before being used
-                addPointOnObjectConstraint(geoId3,
-                                           pos3,
-                                           geoId2,
-                                           pointparam2,
-                                           driving);  // increases ConstraintsCounter
-                Parameters.push_back(pointparam2);
-                GCSsys.addConstraintAngleViaPointAndTwoParams(*crv1,
-                                                              *crv2,
-                                                              p,
-                                                              pointparam1,
-                                                              pointparam2,
-                                                              angle,
-                                                              tag,
-                                                              driving);
-            }
-            else {
-                if (Geoms[geoId1].type != BSpline) {
-                    std::swap(geoId1, geoId2);
-                    std::swap(crv1, crv2);
-                    std::swap(pos1, pos2);
-                    // FIXME: Confirm whether or not this is needed
-                    // *angle = -*angle;
-                }
-                GCS::Point& p3 = Points[getPointId(geoId3, pos3)];
-                auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId1].geo);
-                double uNear;
-                partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
-                double* pointparam = new double(uNear);
-                Parameters.push_back(pointparam);
-                --ConstraintsCounter;  // Do this just before point-on-object because
-                                       // ConstraintsCounter is increased again before being used
-                addPointOnObjectConstraint(geoId3,
-                                           pos3,
-                                           geoId1,
-                                           pointparam,
-                                           driving);  // increases ConstraintsCounter
-                GCSsys.addConstraintAngleViaPointAndParam(*crv1,
-                                                          *crv2,
-                                                          p,
-                                                          pointparam,
-                                                          angle,
-                                                          tag,
-                                                          driving);
-            }
+    if (!avp) {
+        return ConstraintsCounter;
+    }
+
+    // From here on we are only doing angle-via-point
+    tag = ++ConstraintsCounter;
+    if (!(Geoms[geoId1].type == BSpline || Geoms[geoId2].type == BSpline)) {
+        GCSsys.addConstraintAngleViaPoint(*crv1, *crv2, p, angle, tag, driving);
+        return ConstraintsCounter;
+    }
+
+    // From here on we are only considering avp involving B-splines
+    if (Geoms[geoId1].type == BSpline && Geoms[geoId2].type == BSpline) {
+        GCS::Point& p3 = Points[getPointId(geoId3, pos3)];
+        auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId1].geo);
+        double uNear;
+
+        partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
+        double* pointparam1 = new double(uNear);
+        Parameters.push_back(pointparam1);
+        // Do this just before point-on-object because ConstraintsCounter is
+        // increased again in addPointOnObjectConstraint before being used
+        --ConstraintsCounter;
+        addPointOnObjectConstraint(geoId3, pos3, geoId1, pointparam1, driving);
+
+        partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
+        partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
+        double* pointparam2 = new double(uNear);
+        // Do this just before point-on-object because ConstraintsCounter is
+        // increased again in addPointOnObjectConstraint before being used
+        --ConstraintsCounter;
+        addPointOnObjectConstraint(geoId3, pos3, geoId2, pointparam2, driving);
+
+        Parameters.push_back(pointparam2);
+        GCSsys.addConstraintAngleViaPointAndTwoParams(*crv1,
+                                                      *crv2,
+                                                      p,
+                                                      pointparam1,
+                                                      pointparam2,
+                                                      angle,
+                                                      tag,
+                                                      driving);
+    }
+    else {
+        if (Geoms[geoId1].type != BSpline) {
+            std::swap(geoId1, geoId2);
+            std::swap(crv1, crv2);
+            std::swap(pos1, pos2);
+            // FIXME: Confirm whether or not this is needed
+            // *angle = -*angle;
         }
-        else {
-            GCSsys.addConstraintAngleViaPoint(*crv1, *crv2, p, angle, tag, driving);
-        }
+        GCS::Point& p3 = Points[getPointId(geoId3, pos3)];
+        auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId1].geo);
+        double uNear;
+
+        partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
+        double* pointParam = new double(uNear);
+        Parameters.push_back(pointParam);
+        // Do this just before point-on-object because ConstraintsCounter is
+        // increased again in addPointOnObjectConstraint before being used
+        --ConstraintsCounter;
+        addPointOnObjectConstraint(geoId3, pos3, geoId1, pointParam, driving);
+
+        GCSsys.addConstraintAngleViaPointAndParam(*crv1, *crv2, p, pointParam, angle, tag, driving);
     }
 
     return ConstraintsCounter;
