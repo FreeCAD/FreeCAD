@@ -391,7 +391,7 @@ class DraftToolBar:
         self.relativeMode = params.get_param("RelativeMode")
         self.globalMode = params.get_param("GlobalMode")
         self.makeFaceMode = params.get_param("MakeFaceMode")
-        self.continueMode = params.get_param(self.sourceCmd.featureName, "Mod/Draft/ContinueMode")
+        self.continueMode = params.get_param(self.sourceCmd.featureName, "Mod/Draft/ContinueMode", silent=True)
         self.chainedMode = params.get_param("ChainedMode")
 
         # Note: The order of the calls to self._checkbox() below controls

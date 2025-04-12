@@ -654,7 +654,7 @@ def _get_param_dictionary():
 PARAM_DICT = _get_param_dictionary()
 
 
-def get_param(entry, path="Mod/Draft", ret_default=False):
+def get_param(entry, path="Mod/Draft", ret_default=False, silent=False):
     """Return a stored parameter value or its default.
 
     Parameters
@@ -668,13 +668,17 @@ def get_param(entry, path="Mod/Draft", ret_default=False):
     ret_default: bool, optional
         Defaults to `False`.
         If `True`, always return the default value even if a stored value is available.
+    silent: bool, optional
+        Defaults to `False`.
+        If `True`, do not log anything if entry wasn't found.
 
     Returns
     -------
     bool, float, int or str (if successful) or `None`.
     """
     if path not in PARAM_DICT or entry not in PARAM_DICT[path]:
-        print(f"draftutils.params.get_param: Unable to find '{entry}' in '{path}'")
+        if not silent:
+            print(f"draftutils.params.get_param: Unable to find '{entry}' in '{path}'")
         return None
     param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ, default = PARAM_DICT[path][entry]
