@@ -118,7 +118,7 @@ jobs:
           mkdir -p ~/Library/Provisioning\ Profiles
           cp $PP_PATH ~/Library/Provisioning\ Profiles
 
-          xcrun notarytool store-credentials "FreeCAD Weekly" --keychain "$KEYCHAIN_PATH" --apple-id "${APPLE_ID}" --password "${APP_SPECIFIC_PASSWORD}" --team-id "${DEVELOPER_TEAM_ID}"
+          xcrun notarytool store-credentials "FreeCAD" --keychain "$KEYCHAIN_PATH" --apple-id "${APPLE_ID}" --password "${APP_SPECIFIC_PASSWORD}" --team-id "${DEVELOPER_TEAM_ID}"
 
       - name: Build and Release Packages
         shell: bash
