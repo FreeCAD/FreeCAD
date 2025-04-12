@@ -416,6 +416,7 @@ def _get_param_dictionary():
         "FilletRadius":                ("float",     100.0),
         "FilletChamferMode":           ("bool",      False),
         "FilletDeleteMode":            ("bool",      False),
+        "ChainedMode":                 ("bool",      False),
         "GlobalMode":                  ("bool",      False),
         "GridHideInOtherWorkbenches":  ("bool",      True),
         "HatchPatternFile":            ("string",    hatch_pattern_file),
