@@ -70,7 +70,7 @@ rm -rf ${conda_env}/Library
 
 if [[ "${SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg
-    ./macos_sign_and_notarize.zsh -p "FreeCAD Weekly" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
+    ./macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
     # create the dmg
     dmgbuild -s dmg_settings.py "FreeCAD" "${version_name}.dmg"
