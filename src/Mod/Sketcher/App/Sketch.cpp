@@ -468,69 +468,63 @@ void Sketch::calculateDependentParametersElements()
 
     int i = 0;
     for (auto geo : Geoms) {
-
         if (!geo.geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
             geo.geo->setExtension(std::make_unique<Sketcher::SolverGeometryExtension>());
         }
 
-        auto solvext = std::static_pointer_cast<Sketcher::SolverGeometryExtension>(
+        auto solveExt = std::static_pointer_cast<Sketcher::SolverGeometryExtension>(
             geo.geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
 
-        if (GCSsys.isEmptyDiagnoseMatrix()) {
-            solvext->init(SolverGeometryExtension::Dependent);
-        }
-        else {
-            solvext->init(SolverGeometryExtension::Independent);
-        }
+        solveExt->init(GCSsys.isEmptyDiagnoseMatrix() ? SolverGeometryExtension::Dependent
+                                                      : SolverGeometryExtension::Independent);
 
-        solverExtensions[i] = solvext;
-        i++;
+        solverExtensions[i] = solveExt;
+        ++i;
     }
 
     for (auto param : pDependentParametersList) {
-
-        // auto element = param2geoelement.at(param);
         auto element = param2geoelement.find(param);
+        if (element == param2geoelement.end()) {
+            continue;
+        }
 
-        if (element != param2geoelement.end()) {
-            auto geoid = std::get<0>(element->second);
-            auto geopos = std::get<1>(element->second);
-            auto solvext = std::static_pointer_cast<Sketcher::SolverGeometryExtension>(
-                Geoms[geoid]
-                    .geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId())
-                    .lock());
+        auto geoId = std::get<0>(element->second);
+        auto geoPos = std::get<1>(element->second);
+        auto solveExt = std::static_pointer_cast<Sketcher::SolverGeometryExtension>(
+            Geoms[geoId]
+                .geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId())
+                .lock());
 
-            auto index = std::get<2>(element->second);
+        auto index = std::get<2>(element->second);
 
-            switch (geopos) {
-                case PointPos::none:
-                    solvext->setEdge(index, SolverGeometryExtension::Dependent);
-                    break;
-                case PointPos::start:
-                    if (index == 0) {
-                        solvext->setStartx(SolverGeometryExtension::Dependent);
-                    }
-                    else {
-                        solvext->setStarty(SolverGeometryExtension::Dependent);
-                    }
-                    break;
-                case PointPos::end:
-                    if (index == 0) {
-                        solvext->setEndx(SolverGeometryExtension::Dependent);
-                    }
-                    else {
-                        solvext->setEndy(SolverGeometryExtension::Dependent);
-                    }
-                    break;
-                case PointPos::mid:
-                    if (index == 0) {
-                        solvext->setMidx(SolverGeometryExtension::Dependent);
-                    }
-                    else {
-                        solvext->setMidy(SolverGeometryExtension::Dependent);
-                    }
-                    break;
-            }
+        switch (geoPos) {
+            case PointPos::none:
+                solveExt->setEdge(index, SolverGeometryExtension::Dependent);
+                break;
+            case PointPos::start:
+                if (index == 0) {
+                    solveExt->setStartx(SolverGeometryExtension::Dependent);
+                }
+                else {
+                    solveExt->setStarty(SolverGeometryExtension::Dependent);
+                }
+                break;
+            case PointPos::end:
+                if (index == 0) {
+                    solveExt->setEndx(SolverGeometryExtension::Dependent);
+                }
+                else {
+                    solveExt->setEndy(SolverGeometryExtension::Dependent);
+                }
+                break;
+            case PointPos::mid:
+                if (index == 0) {
+                    solveExt->setMidx(SolverGeometryExtension::Dependent);
+                }
+                else {
+                    solveExt->setMidy(SolverGeometryExtension::Dependent);
+                }
+                break;
         }
     }
 
@@ -553,10 +547,7 @@ void Sketch::calculateDependentParametersElements()
     }
 
     // check if groups have a common element, if yes merge the groups
-    auto havecommonelement = [](std::set<std::pair<int, Sketcher::PointPos>>::iterator begin1,
-                                std::set<std::pair<int, Sketcher::PointPos>>::iterator end1,
-                                std::set<std::pair<int, Sketcher::PointPos>>::iterator begin2,
-                                std::set<std::pair<int, Sketcher::PointPos>>::iterator end2) {
+    auto haveCommonElement = [](auto begin1, auto end1, auto begin2, auto end2) {
         while (begin1 != end1 && begin2 != end2) {
             if (*begin1 < *begin2) {
                 ++begin1;
@@ -572,19 +563,22 @@ void Sketch::calculateDependentParametersElements()
         return false;
     };
 
-    if (pDependencyGroups.size() > 1) {  // only if there is more than 1 group
-        size_t endcount = pDependencyGroups.size() - 1;
+    if (pDependencyGroups.size() <= 1) {
+        return;
+    }
 
-        for (size_t i = 0; i < endcount; i++) {
-            if (havecommonelement(pDependencyGroups[i].begin(),
-                                  pDependencyGroups[i].end(),
-                                  pDependencyGroups[i + 1].begin(),
-                                  pDependencyGroups[i + 1].end())) {
-                pDependencyGroups[i].insert(pDependencyGroups[i + 1].begin(),
-                                            pDependencyGroups[i + 1].end());
-                pDependencyGroups.erase(pDependencyGroups.begin() + i + 1);
-                endcount--;
-            }
+    // only if there is more than 1 group
+    size_t endcount = pDependencyGroups.size() - 1;
+
+    for (size_t i = 0; i < endcount; i++) {
+        if (haveCommonElement(pDependencyGroups[i].begin(),
+                              pDependencyGroups[i].end(),
+                              pDependencyGroups[i + 1].begin(),
+                              pDependencyGroups[i + 1].end())) {
+            pDependencyGroups[i].insert(pDependencyGroups[i + 1].begin(),
+                                        pDependencyGroups[i + 1].end());
+            pDependencyGroups.erase(pDependencyGroups.begin() + i + 1);
+            --endcount;
         }
     }
 }
