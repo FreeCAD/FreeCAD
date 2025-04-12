@@ -4991,18 +4991,14 @@ int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds,
         initToPoint = toPoint;
         moveStep = 0;
     }
-    else {
-        if (!relative && RecalculateInitialSolutionWhileMovingPoint) {
-            if (moveStep == 0) {
-                moveStep = (toPoint - initToPoint).Length();
-            }
-            else {
-                // I am getting too far away from the original solution so reinit the solution
-                if ((toPoint - initToPoint).Length() > 20 * moveStep) {
-                    initMove(geoEltIds);
-                    initToPoint = toPoint;
-                }
-            }
+    else if (!relative && RecalculateInitialSolutionWhileMovingPoint) {
+        if (moveStep == 0) {
+            moveStep = (toPoint - initToPoint).Length();
+        }
+        else if ((toPoint - initToPoint).Length() > 20 * moveStep) {
+            // I am getting too far away from the original solution so reinit the solution
+            initMove(geoEltIds);
+            initToPoint = toPoint;
         }
     }
 
@@ -5011,79 +5007,101 @@ int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds,
             MoveParameters[i] = InitParameters[i] + toPoint.x;
             MoveParameters[i + 1] = InitParameters[i + 1] + toPoint.y;
         }
+        return solve();
     }
-    else {
-        size_t i = 0;
-        for (auto& pair : geoEltIds) {
-            if (i >= MoveParameters.size()) {
-                break;
-            }
-            int geoId = checkGeoId(pair.GeoId);
-            Sketcher::PointPos pos = pair.Pos;
 
-            if (Geoms[geoId].type == Point) {
+    // `relative == false` from here on
+    size_t i = 0;
+    for (auto& pair : geoEltIds) {
+        if (i >= MoveParameters.size()) {
+            break;
+        }
+        int geoId = checkGeoId(pair.GeoId);
+        Sketcher::PointPos pos = pair.Pos;
+
+        switch (Geoms[geoId].type) {
+            case Point: {
                 if (pos == PointPos::start) {
                     MoveParameters[i] = toPoint.x;
                     MoveParameters[i + 1] = toPoint.y;
                     i += 2;
                 }
-            }
-            else if (Geoms[geoId].type == Line) {
-                if (pos == PointPos::start || pos == PointPos::end) {
-                    MoveParameters[i] = toPoint.x;
-                    MoveParameters[i + 1] = toPoint.y;
-                    i += 2;
+            } break;
+            case Line: {
+                switch (pos) {
+                    case PointPos::start:
+                    case PointPos::end: {
+                        MoveParameters[i] = toPoint.x;
+                        MoveParameters[i + 1] = toPoint.y;
+                        i += 2;
+                    } break;
+                    case PointPos::mid:
+                    case PointPos::none: {
+                        double dx = (InitParameters[i + 2] - InitParameters[i]) * 0.5;
+                        double dy = (InitParameters[i + 3] - InitParameters[i + 1]) * 0.5;
+                        MoveParameters[i] = toPoint.x - dx;
+                        MoveParameters[i + 1] = toPoint.y - dy;
+                        MoveParameters[i + 2] = toPoint.x + dx;
+                        MoveParameters[i + 3] = toPoint.y + dy;
+                        i += 4;
+                    } break;
                 }
-                else if (pos == PointPos::none || pos == PointPos::mid) {
-                    double dx = (InitParameters[i + 2] - InitParameters[i]) * 0.5;
-                    double dy = (InitParameters[i + 3] - InitParameters[i + 1]) * 0.5;
-                    MoveParameters[i] = toPoint.x - dx;
-                    MoveParameters[i + 1] = toPoint.y - dy;
-                    MoveParameters[i + 2] = toPoint.x + dx;
-                    MoveParameters[i + 3] = toPoint.y + dy;
-                    i += 4;
+            } break;
+            case Circle:
+            case Ellipse: {
+                switch (pos) {
+                    case PointPos::mid:
+                    case PointPos::none: {
+                        MoveParameters[i] = toPoint.x;
+                        MoveParameters[i + 1] = toPoint.y;
+                        i += 2;
+                    } break;
+                    default:
+                        break;
                 }
-            }
-            else if (Geoms[geoId].type == Circle || Geoms[geoId].type == Ellipse) {
-                if (pos == PointPos::mid || pos == PointPos::none) {
-                    MoveParameters[i] = toPoint.x;
-                    MoveParameters[i + 1] = toPoint.y;
-                    i += 2;
-                }
-            }
-            else if (Geoms[geoId].type == Arc || Geoms[geoId].type == ArcOfEllipse
-                     || Geoms[geoId].type == ArcOfHyperbola || Geoms[geoId].type == ArcOfParabola) {
+            } break;
+            case Arc:
+            case ArcOfEllipse:
+            case ArcOfHyperbola:
+            case ArcOfParabola: {
                 MoveParameters[i] = toPoint.x;
                 MoveParameters[i + 1] = toPoint.y;
                 i += 2;
-            }
-            else if (Geoms[geoId].type == BSpline) {
-                if (pos == PointPos::start || pos == PointPos::end) {
-                    MoveParameters[i] = toPoint.x;
-                    MoveParameters[i + 1] = toPoint.y;
-                    i += 2;
-                }
-                else if (pos == PointPos::none || pos == PointPos::mid) {
-                    GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
+            } break;
+            case BSpline: {
+                switch (pos) {
+                    case PointPos::start:
+                    case PointPos::end: {
+                        MoveParameters[i] = toPoint.x;
+                        MoveParameters[i + 1] = toPoint.y;
+                        i += 2;
+                    } break;
+                    case PointPos::none: {
+                        GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
 
-                    double cx = 0, cy = 0;  // geometric center
-                    for (size_t j = 0; j < bsp.poles.size() * 2; j += 2) {
-                        cx += InitParameters[i + j];
-                        cy += InitParameters[i + j + 1];
-                        j += 2;
+                        double cx = 0, cy = 0;  // geometric center
+                        for (size_t j = 0; j < bsp.poles.size() * 2; j += 2) {
+                            cx += InitParameters[i + j];
+                            cy += InitParameters[i + j + 1];
+                            j += 2;
+                        }
+
+                        cx /= bsp.poles.size();
+                        cy /= bsp.poles.size();
+
+                        for (size_t j = 0; j < bsp.poles.size() * 2; j += 2) {
+                            MoveParameters[i + j] = toPoint.x + InitParameters[i + j] - cx;
+                            MoveParameters[i + j + 1] = toPoint.y + InitParameters[i + j + 1] - cy;
+                            j += 2;
+                        }
+                        i += bsp.poles.size() * 2;
                     }
-
-                    cx /= bsp.poles.size();
-                    cy /= bsp.poles.size();
-
-                    for (size_t j = 0; j < bsp.poles.size() * 2; j += 2) {
-                        MoveParameters[i + j] = toPoint.x + InitParameters[i + j] - cx;
-                        MoveParameters[i + j + 1] = toPoint.y + InitParameters[i + j + 1] - cy;
-                        j += 2;
-                    }
-                    i += bsp.poles.size() * 2;
+                    default:
+                        break;
                 }
-            }
+            } break;
+            default:
+                break;
         }
     }
 
