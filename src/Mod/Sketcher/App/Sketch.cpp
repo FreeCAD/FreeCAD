@@ -1857,46 +1857,35 @@ int Sketch::addConstraint(const Constraint* constraint)
     c.constr = const_cast<Constraint*>(constraint);
     c.driving = constraint->isDriving;
 
-    switch (constraint->Type) {
-        case DistanceX:
-            if (constraint->FirstPos == PointPos::none) {  // horizontal length of a line
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
+    auto setCValueAndPutInBucket = [this, &c](double value) {
+        c.value = new double(value);
+        if (c.driving) {
+            FixParameters.push_back(c.value);
+        }
+        else {
+            Parameters.push_back(c.value);
+            DrivenParameters.push_back(c.value);
+        }
+    };
 
+    switch (constraint->Type) {
+        case DistanceX: {
+            if (constraint->FirstPos == PointPos::none) {
+                // horizontal length of a line
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addDistanceXConstraint(constraint->First, c.value, c.driving);
             }
-            else if (constraint->Second == GeoEnum::GeoUndef) {  // point on fixed x-coordinate
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+            else if (constraint->Second == GeoEnum::GeoUndef) {
+                // point on fixed x-coordinate
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addCoordinateXConstraint(constraint->First,
                                                constraint->FirstPos,
                                                c.value,
                                                c.driving);
             }
-            else if (constraint->SecondPos
-                     != PointPos::none) {  // point to point horizontal distance
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+            else if (constraint->SecondPos != PointPos::none) {
+                // point to point horizontal distance
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addDistanceXConstraint(constraint->First,
                                              constraint->FirstPos,
                                              constraint->Second,
@@ -1904,45 +1893,24 @@ int Sketch::addConstraint(const Constraint* constraint)
                                              c.value,
                                              c.driving);
             }
-            break;
-        case DistanceY:
-            if (constraint->FirstPos == PointPos::none) {  // vertical length of a line
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+        } break;
+        case DistanceY: {
+            if (constraint->FirstPos == PointPos::none) {
+                // vertical length of a line
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addDistanceYConstraint(constraint->First, c.value, c.driving);
             }
-            else if (constraint->Second == GeoEnum::GeoUndef) {  // point on fixed y-coordinate
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+            else if (constraint->Second == GeoEnum::GeoUndef) {
+                // point on fixed y-coordinate
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addCoordinateYConstraint(constraint->First,
                                                constraint->FirstPos,
                                                c.value,
                                                c.driving);
             }
-            else if (constraint->SecondPos != PointPos::none) {  // point to point vertical distance
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+            else if (constraint->SecondPos != PointPos::none) {
+                // point to point vertical distance
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addDistanceYConstraint(constraint->First,
                                              constraint->FirstPos,
                                              constraint->Second,
@@ -1950,8 +1918,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                                              c.value,
                                              c.driving);
             }
-            break;
-        case Horizontal:
+        } break;
+        case Horizontal: {
             if (constraint->Second == GeoEnum::GeoUndef) {  // horizontal line
                 rtn = addHorizontalConstraint(constraint->First);
             }
@@ -1961,8 +1929,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                                               constraint->Second,
                                               constraint->SecondPos);
             }
-            break;
-        case Vertical:
+        } break;
+        case Vertical: {
             if (constraint->Second == GeoEnum::GeoUndef) {  // vertical line
                 rtn = addVerticalConstraint(constraint->First);
             }
@@ -1972,14 +1940,14 @@ int Sketch::addConstraint(const Constraint* constraint)
                                             constraint->Second,
                                             constraint->SecondPos);
             }
-            break;
-        case Coincident:
+        } break;
+        case Coincident: {
             rtn = addPointCoincidentConstraint(constraint->First,
                                                constraint->FirstPos,
                                                constraint->Second,
                                                constraint->SecondPos);
-            break;
-        case PointOnObject:
+        } break;
+        case PointOnObject: {
             if (Geoms[checkGeoId(constraint->Second)].type == BSpline) {
                 c.value = new double(constraint->getValue());
                 // Driving doesn't make sense here
@@ -1995,11 +1963,11 @@ int Sketch::addConstraint(const Constraint* constraint)
                                                  constraint->FirstPos,
                                                  constraint->Second);
             }
-            break;
-        case Parallel:
+        } break;
+        case Parallel: {
             rtn = addParallelConstraint(constraint->First, constraint->Second);
-            break;
-        case Perpendicular:
+        } break;
+        case Perpendicular: {
             if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
                 && constraint->Third == GeoEnum::GeoUndef) {
                 // simple perpendicularity
@@ -2007,15 +1975,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
             else {
                 // any other point-wise perpendicularity
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addAngleAtPointConstraint(constraint->First,
                                                 constraint->FirstPos,
                                                 constraint->Second,
@@ -2026,7 +1986,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                                                 constraint->Type,
                                                 c.driving);
             }
-            break;
+        } break;
         case Tangent: {
             bool isSpecialCase = false;
 
@@ -2076,15 +2036,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             if (!isSpecialCase) {
                 // any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint,
                 // tangent-via-point)
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addAngleAtPointConstraint(constraint->First,
                                                 constraint->FirstPos,
                                                 constraint->Second,
@@ -2095,18 +2047,11 @@ int Sketch::addConstraint(const Constraint* constraint)
                                                 constraint->Type,
                                                 c.driving);
             }
-            break;
-        }
-        case Distance:
-            if (constraint->SecondPos != PointPos::none) {  // point to point distance
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
+        } break;
+        case Distance: {
+            if (constraint->SecondPos != PointPos::none) {
+                // point to point distance
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addDistanceConstraint(constraint->First,
                                             constraint->FirstPos,
                                             constraint->Second,
@@ -2117,32 +2062,18 @@ int Sketch::addConstraint(const Constraint* constraint)
             else if (constraint->FirstPos == PointPos::none
                      && constraint->SecondPos == PointPos::none
                      && constraint->Second != GeoEnum::GeoUndef
-                     && constraint->Third
-                         == GeoEnum::GeoUndef) {  // circle to circle, circle to arc, etc.
-
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
+                     && constraint->Third == GeoEnum::GeoUndef) {
+                // circle to circle, circle to arc, etc.
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addDistanceConstraint(constraint->First,
                                             constraint->Second,
                                             c.value,
                                             c.driving);
             }
             else if (constraint->Second != GeoEnum::GeoUndef) {
-                if (constraint->FirstPos != PointPos::none) {  // point to line distance
-                    c.value = new double(constraint->getValue());
-                    if (c.driving) {
-                        FixParameters.push_back(c.value);
-                    }
-                    else {
-                        Parameters.push_back(c.value);
-                        DrivenParameters.push_back(c.value);
-                    }
+                if (constraint->FirstPos != PointPos::none) {
+                    // point to line distance
+                    setCValueAndPutInBucket(constraint->getValue());
                     rtn = addDistanceConstraint(constraint->First,
                                                 constraint->FirstPos,
                                                 constraint->Second,
@@ -2150,30 +2081,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                                                 c.driving);
                 }
             }
-            else {  // line length, arc length
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+            else {
+                // line length, arc length
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addDistanceConstraint(constraint->First, c.value, c.driving);
             }
-            break;
-        case Angle:
+        } break;
+        case Angle: {
             if (constraint->Third != GeoEnum::GeoUndef) {
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addAngleAtPointConstraint(constraint->First,
                                                 constraint->FirstPos,
                                                 constraint->Second,
@@ -2186,15 +2102,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
             // angle between two lines (with explicit start points)
             else if (constraint->SecondPos != PointPos::none) {
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addAngleConstraint(constraint->First,
                                          constraint->FirstPos,
                                          constraint->Second,
@@ -2202,74 +2110,33 @@ int Sketch::addConstraint(const Constraint* constraint)
                                          c.value,
                                          c.driving);
             }
-            else if (constraint->Second != GeoEnum::GeoUndef) {  // angle between two lines
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+            else if (constraint->Second != GeoEnum::GeoUndef) {
+                // angle between two lines
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addAngleConstraint(constraint->First, constraint->Second, c.value, c.driving);
             }
-            else if (constraint->First != GeoEnum::GeoUndef) {  // orientation angle of a line
-                c.value = new double(constraint->getValue());
-                if (c.driving) {
-                    FixParameters.push_back(c.value);
-                }
-                else {
-                    Parameters.push_back(c.value);
-                    DrivenParameters.push_back(c.value);
-                }
-
+            else if (constraint->First != GeoEnum::GeoUndef) {
+                // orientation angle of a line
+                setCValueAndPutInBucket(constraint->getValue());
                 rtn = addAngleConstraint(constraint->First, c.value, c.driving);
             }
-            break;
+        } break;
         case Radius: {
-            c.value = new double(constraint->getValue());
-            if (c.driving) {
-                FixParameters.push_back(c.value);
-            }
-            else {
-                Parameters.push_back(c.value);
-                DrivenParameters.push_back(c.value);
-            }
-
+            setCValueAndPutInBucket(constraint->getValue());
             rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
+        } break;
         case Diameter: {
-            c.value = new double(constraint->getValue());
-            if (c.driving) {
-                FixParameters.push_back(c.value);
-            }
-            else {
-                Parameters.push_back(c.value);
-                DrivenParameters.push_back(c.value);
-            }
-
+            setCValueAndPutInBucket(constraint->getValue());
             rtn = addDiameterConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
+        } break;
         case Weight: {
-            c.value = new double(constraint->getValue());
-            if (c.driving) {
-                FixParameters.push_back(c.value);
-            }
-            else {
-                Parameters.push_back(c.value);
-                DrivenParameters.push_back(c.value);
-            }
-
+            setCValueAndPutInBucket(constraint->getValue());
             rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
-        case Equal:
+        } break;
+        case Equal: {
             rtn = addEqualConstraint(constraint->First, constraint->Second);
-            break;
-        case Symmetric:
+        } break;
+        case Symmetric: {
             if (constraint->ThirdPos != PointPos::none) {
                 rtn = addSymmetricConstraint(constraint->First,
                                              constraint->FirstPos,
@@ -2285,8 +2152,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                                              constraint->SecondPos,
                                              constraint->Third);
             }
-            break;
-        case InternalAlignment:
+        } break;
+        case InternalAlignment: {
             switch (constraint->AlignmentType) {
                 case EllipseMajorDiameter:
                     rtn = addInternalAlignmentEllipseMajorDiameter(constraint->First,
@@ -2334,8 +2201,9 @@ int Sketch::addConstraint(const Constraint* constraint)
                 default:
                     break;
             }
-            break;
+        } break;
         case SnellsLaw: {
+            setCValueAndPutInBucket(constraint->getValue());
             c.value = new double(constraint->getValue());
             c.secondvalue = new double(constraint->getValue());
 
