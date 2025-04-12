@@ -295,7 +295,6 @@ class _CommandStructure:
             self.Length = params.get_param_arch("StructureLength")
             self.Height = params.get_param_arch("StructureHeight")
         self.Profile = None
-        self.continueCmd = False
         self.bpoint = None
         self.bmode = False
         self.precastvalues = None
@@ -338,6 +337,7 @@ class _CommandStructure:
             title=translate("Arch","Base point of column")+":"
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
+        FreeCADGui.draftToolBar.continueCmd.show()
 
     def getPoint(self,point=None,obj=None):
 
@@ -423,7 +423,7 @@ class _CommandStructure:
         FreeCAD.ActiveDocument.recompute()
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
-        if self.continueCmd:
+        if FreeCADGui.draftToolBar.continueCmd.isChecked():
             self.Activated()
 
     def _createItemlist(self, baselist):
@@ -505,21 +505,10 @@ class _CommandStructure:
         grid.addWidget(self.vHeight,6,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Switch Length/Height"))
-        grid.addWidget(value5,7,0,1,1)
-        value6 = QtGui.QPushButton(translate("Arch","Switch Length/Width"))
-        grid.addWidget(value6,7,1,1,1)
-
-        # continue button
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
-        value4 = QtGui.QCheckBox()
-        value4.setObjectName("ContinueCmd")
-        value4.setLayoutDirection(QtCore.Qt.RightToLeft)
-        label4.setBuddy(value4)
-        self.continueCmd = params.get_param("ContinueMode")
-        value4.setChecked(self.continueCmd)
-        grid.addWidget(label4,8,0,1,1)
-        grid.addWidget(value4,8,1,1,1)
+        value4 = QtGui.QPushButton(translate("Arch","Switch Length/Height"))
+        grid.addWidget(value4,7,0,1,1)
+        value5 = QtGui.QPushButton(translate("Arch","Switch Length/Width"))
+        grid.addWidget(value5,7,1,1,1)
 
         # connect slots
         QtCore.QObject.connect(self.valuec,QtCore.SIGNAL("currentIndexChanged(int)"),self.setCategory)
@@ -527,9 +516,8 @@ class _CommandStructure:
         QtCore.QObject.connect(self.vLength,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(self.vWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(self.vHeight,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
-        QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
-        QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotateLH)
-        QtCore.QObject.connect(value6,QtCore.SIGNAL("pressed()"),self.rotateLW)
+        QtCore.QObject.connect(value4,QtCore.SIGNAL("pressed()"),self.rotateLH)
+        QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotateLW)
         QtCore.QObject.connect(self.modeb,QtCore.SIGNAL("toggled(bool)"),self.switchLH)
 
         # restore preset
@@ -601,11 +589,6 @@ class _CommandStructure:
             params.set_param_arch("StructureHeight",d)
         else:
             params.set_param_arch("StructureLength",d)
-
-    def setContinue(self,i):
-
-        self.continueCmd = bool(i)
-        params.set_param("ContinueMode", bool(i))
 
     def setCategory(self,i):
 

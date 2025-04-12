@@ -443,7 +443,8 @@ def _get_param_dictionary():
         "useSupport":                  ("bool",      False),
     }
 
-    param_dict["Mod/Draft/ContinueMode"] = {
+    param_dict["Mod/ContinueMode"] = {
+        # Draft
         "Line": ("bool", False),
         "Polyline": ("bool", False),
         "Arc": ("bool", False),
@@ -459,8 +460,15 @@ def _get_param_dictionary():
         "Text": ("bool", False),
         "Dimension": ("bool", False),
 
+        # Standard operations (Draft)
         "Move": ("bool", False),
         "Copy": ("bool", False),
+        
+        # Arch/BIM
+        "Wall": ("bool", False),
+        "Column": ("bool", False),
+        "Beam": ("bool", False),
+        "Panel": ("bool", False),
     }
 
     # Arch parameters that are not in the preferences:

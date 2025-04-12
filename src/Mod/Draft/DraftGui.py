@@ -391,7 +391,10 @@ class DraftToolBar:
         self.relativeMode = params.get_param("RelativeMode")
         self.globalMode = params.get_param("GlobalMode")
         self.makeFaceMode = params.get_param("MakeFaceMode")
-        self.continueMode = params.get_param(self.sourceCmd.featureName, "Mod/Draft/ContinueMode", silent=True)
+
+        feature_name = getattr(FreeCAD.activeDraftCommand, "featureName", None)
+        self.continueMode = params.get_param(feature_name, "Mod/ContinueMode", silent=True)
+
         self.chainedMode = params.get_param("ChainedMode")
 
         # Note: The order of the calls to self._checkbox() below controls
@@ -930,7 +933,7 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def setContinue(self, val):
-        params.set_param(self.sourceCmd.featureName, bool(val), "Mod/Draft/ContinueMode")
+        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(val), "Mod/ContinueMode")
         self.continueMode = bool(val)
         self.chainedModeCmd.setEnabled(not val)
 
