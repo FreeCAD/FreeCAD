@@ -19,7 +19,7 @@ from Part import (
     OCCError
 )
 
-def _precision_step(precision):
+def _tolerance(precision):
     return 10**(-precision)
 
 def _arc_end_to_center(lastvec, currentvec, rx, ry,
@@ -230,7 +230,7 @@ def _make_wire(path : list[Edge], precision : int, checkclosed : bool=False, don
         # Code from wmayer forum p15549 to fix the tolerance problem
         # original tolerance = 0.00001
         comp = Compound(path)
-        _sh = comp.connectEdgesToWires(False, _precision_step(precision))
+        _sh = comp.connectEdgesToWires(False, _tolerance(precision))
         sh = _sh.Wires[0]
         if len(sh.Edges) != len(path):
             _wrn("Unable to form a wire. Resort to a Compound of Edges.")
@@ -588,8 +588,8 @@ class SvgPathElement:
                     seg = e1a.toShape()
                     if swap_axis:
                         seg.rotate(v_center, Vector(0, 0, 1), 90)
-                    _precision = _precision_step(self.precision)
-                    if abs(x_rotation) > _precision:
+                    _tol = _tolerance(self.precision)
+                    if abs(x_rotation) > _tol:
                         seg.rotate(v_center, Vector(0, 0, 1), -x_rotation)
                     if sweep_flag:
                         seg.reverse()
@@ -598,10 +598,10 @@ class SvgPathElement:
                 case "cbezier":
                     pole1 = pds["pole1"]
                     pole2 = pds["pole2"]
-                    _precision = _precision_step(self.precision + 2)
+                    _tol = _tolerance(self.precision + 2)
                     _d1 = pole1.distanceToLine(last_v, next_v)
                     _d2 = pole2.distanceToLine(last_v, next_v)
-                    if _d1 < _precision and _d2 < _precision:
+                    if _d1 < _tol and _d2 < _tol:
                         # poles and endpints are all on a line
                         if equals(last_v, next_v, self.precision):
                             # in this case we don't accept (nearly) zero
@@ -621,9 +621,9 @@ class SvgPathElement:
                         next_v = last_v
                     else:
                         pole = pds["pole"]
-                        _precision = _precision_step(self.precision + 2)
+                        _tol = _tolerance(self.precision + 2)
                         _distance = pole.distanceToLine(last_v, next_v)
-                        if _distance < _precision:
+                        if _distance < _tol:
                             # pole is on the line
                             _seg = LineSegment(last_v, next_v)
                             seg = _seg.toShape()
@@ -756,13 +756,13 @@ class SvgPathParser:
                               .format(face_name, res))
                     else:
                         add_wire = False
-                    if not (face.Area < 10 * (_precision_step(precision) ** 2)):
+                    if not (face.Area < 10 * (_tolerance(precision) ** 2)):
                         self.faces.insert(face, face_name)
                 except:
                     _wrn("Failed to make a shape from '{}'. ".format(face_name) 
                           + "This Path will be discarded.")
             if add_wire:
-                if wrcpy.Length > _precision_step(precision):
+                if wrcpy.Length > _tolerance(precision):
                     _msg("Adding wire for '{}' - reason: {}."
                           .format(face_name, wire_reason))
                     openShapes.append((face_name + "_w", wrcpy))
