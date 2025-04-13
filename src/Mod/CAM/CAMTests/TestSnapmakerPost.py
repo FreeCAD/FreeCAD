@@ -277,7 +277,7 @@ M5
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A250T --toolhead=200W_CNC --no-header",
+            "--machine=A250T --toolhead=200W_CNC --bracing-kit --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
@@ -298,7 +298,7 @@ M5
 
         gcode = self.get_gcode(
             [command],
-            "--machine=A350T --toolhead=200W_CNC --no-header",
+            "--machine=A350T --toolhead=200W_CNC --bracing-kit --no-header",
         )
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
@@ -313,6 +313,11 @@ M5
     def test_mod_kits(self):
         """Test the various mod kits against various models."""
 
+        # Reference for boundaries with the bracing kit and quick swap kit combinations
+        # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
+        # Reference for quick swap kit
+        # [2] https://support.snapmaker.com/hc/en-us/articles/15320624494103-Pre-sale-FAQ-for-Quick-Swap-Kit
+
         command = Path.Command("G0 X10 Y20 Z30")
         expected = "G0 X10.000 Y20.000 Z30.000"
 
@@ -323,7 +328,8 @@ M5
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
         self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], [])
-        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=90, Y=90, Z=50))
+        # https://forum.snapmaker.com/t/cnc-work-area-size/5178
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=125, Y=125, Z=50))
 
         gcode = self.get_gcode(
             [command],
@@ -337,6 +343,16 @@ M5
         gcode = self.get_gcode(
             [command],
             "--machine=Original --bracing-kit --no-header",
+        )
+        # I don't understand why export returns the arguments
+        # if snapmaker_process_arguments fails.
+        self.assertTrue(isinstance(gcode, argparse.Namespace))
+        self.assertFalse(isinstance(gcode, str))
+
+        # This is incompatible according to [2]
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A150 --quick-swap --no-header",
         )
         # I don't understand why export returns the arguments
         # if snapmaker_process_arguments fails.
@@ -370,6 +386,17 @@ M5
         self.assertTrue(isinstance(gcode, argparse.Namespace))
         self.assertFalse(isinstance(gcode, str))
 
+        # This test case is covered in reference [1]
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A150 --toolhead=50W_CNC --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], [])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=145, Y=160, Z=90))
+
+        # This test case is covered in reference [1]
         gcode = self.get_gcode(
             [command],
             "--machine=A150 --toolhead=50W_CNC --bracing-kit --no-header",
@@ -377,17 +404,9 @@ M5
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
         self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=160, Y=148, Z=84))
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=145, Y=148, Z=90))
 
-        gcode = self.get_gcode(
-            [command],
-            "--machine=A150 --toolhead=50W_CNC --quick-swap --no-header",
-        )
-        result = gcode.splitlines()[18]
-        self.assertEqual(result, expected)
-        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS"])
-        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=160, Y=145, Z=75))
-
+        # This test case is covered in reference [1]
         gcode = self.get_gcode(
             [command],
             "--machine=A250 --toolhead=50W_CNC --bracing-kit --quick-swap --no-header",
@@ -395,8 +414,9 @@ M5
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
         self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS", "BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=230, Y=223, Z=159))
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=230, Y=223, Z=180))
 
+        # This test case is covered in reference [1]
         gcode = self.get_gcode(
             [command],
             "--machine=A250T --toolhead=50W_CNC --quick-swap --no-header",
@@ -404,8 +424,39 @@ M5
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
         self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS"])
-        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=230, Y=235, Z=165))
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=230, Y=235, Z=180))
 
+        # This test case is covered in reference [1]
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A250T --toolhead=200W_CNC --bracing-kit --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=230, Y=225, Z=180))
+
+        # This test case is covered in reference [1]
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A350 --toolhead=50W_CNC --bracing-kit --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=338, Z=275))
+
+        # This test case is covered in reference [1]
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A350 --toolhead=50W_CNC --quick-swap --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=335, Z=275))
+
+        # This test case is covered in reference [1]
         gcode = self.get_gcode(
             [command],
             "--machine=A350 --toolhead=50W_CNC --bracing-kit --quick-swap --no-header",
@@ -413,8 +464,9 @@ M5
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
         self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS", "BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=323, Z=254))
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=323, Z=275))
 
+        # This test case is covered in reference [1]
         gcode = self.get_gcode(
             [command],
             "--machine=A350T --toolhead=50W_CNC --bracing-kit --quick-swap --no-header",
@@ -422,8 +474,19 @@ M5
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
         self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS", "BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=323, Z=254))
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=323, Z=275))
 
+        # This test case is covered in reference [1]
+        gcode = self.get_gcode(
+            [command],
+            "--machine=A350T --toolhead=200W_CNC --bracing-kit --no-header",
+        )
+        result = gcode.splitlines()[18]
+        self.assertEqual(result, expected)
+        self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["BK"])
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=325, Z=275))
+
+        # This test case is covered in reference [1]
         gcode = self.get_gcode(
             [command],
             "--machine=A350T --toolhead=200W_CNC --bracing-kit --quick-swap --no-header",
@@ -431,7 +494,7 @@ M5
         result = gcode.splitlines()[18]
         self.assertEqual(result, expected)
         self.assertEqual(self.post.values["MOD_KITS_INSTALLED"], ["QS", "BK"])
-        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=310, Z=254))
+        self.assertEqual(self.post.values["BOUNDARIES"], dict(X=320, Y=310, Z=275))
 
     def test_toolhead_selection(self):
         """Test automatic selection of toolhead where appropriate"""
@@ -485,7 +548,9 @@ M5
         self.assertEqual(gcode.splitlines()[18], "M3 P30")
 
         # test 200W toolhead
-        gcode = self.get_gcode([command], "--machine=A350 --toolhead=200W_CNC --no-header")
+        gcode = self.get_gcode(
+            [command], "--machine=A350 --toolhead=200W_CNC --bracing-kit --no-header"
+        )
         self.assertEqual(gcode.splitlines()[18], "M3 S3600")
 
         # test 200W toolhead
@@ -505,14 +570,15 @@ M5
 
         # test 200W toolhead
         gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=200W_CNC --spindle-percent --no-header"
+            [command],
+            "--machine=A350 --toolhead=200W_CNC --bracing-kit --spindle-percent --no-header",
         )
         self.assertEqual(gcode.splitlines()[18], "M3 P20")
 
         # test custom spindle speed extrema
         gcode = self.get_gcode(
             [command],
-            "--machine=A350 --toolhead=200W_CNC --spindle-percent --no-header --spindle-speeds=3000,4000",
+            "--machine=A350 --toolhead=200W_CNC --bracing-kit --spindle-percent --no-header --spindle-speeds=3000,4000",
         )
         self.assertEqual(gcode.splitlines()[18], "M3 P90")
 
