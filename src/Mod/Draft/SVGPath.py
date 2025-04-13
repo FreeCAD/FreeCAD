@@ -502,10 +502,10 @@ class SvgPathElement:
         
         # for cbeziers we also relocate the second pole
         if pds["type"] == "cbezier":
-                pds["pole2"] = pds["pole2"].add(delta)
+            pds["pole2"] = pds["pole2"].add(delta)
         # for qbeziers we also relocate the pole by half of the delta
         elif pds["type"] == "qbezier":
-                pds["pole"] = pds["pole"].add(delta.scale(0.5, 0.5, 0))
+            pds["pole"] = pds["pole"].add(delta.scale(0.5, 0.5, 0))
         # all data types have last_v
         pds["last_v"] = last_v
 
