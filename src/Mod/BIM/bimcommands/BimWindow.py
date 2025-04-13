@@ -35,6 +35,30 @@ translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 ALLOWEDHOSTS = ["Wall","Structure","Roof"]
 
+def sketch_has_width_and_height_constraint(sketch):
+    width_found = False
+    height_found = False
+
+    for constr in sketch.Constraints:
+        if width_found and height_found:
+            break
+
+        if constr.Name == "Width":
+            width_found = True
+        elif constr.Name == "Height":
+            height_found = True
+
+    return (width_found and height_found)
+
+def get_attachment_object(obj):
+    if not obj.AttachmentSupport:
+        return None
+    if isinstance(obj.AttachmentSupport,tuple):
+        return obj.AttachmentSupport[0]
+    elif isinstance(obj.AttachmentSupport,list):
+        return obj.AttachmentSupport[0][0]
+    else:
+        return obj.AttachmentSupport
 
 class Arch_Window:
 
@@ -58,11 +82,15 @@ class Arch_Window:
 
     def Activated(self):
 
+        """
+        Executed when Arch Window is activated.
+
+        Creates a window from the object selected by the user. If no objects are
+        selected, enters an interactive mode to create a window using selected
+        points to create a base.
+        """
+
         from draftutils import params
-        import Draft
-        import WorkingPlane
-        import draftguitools.gui_trackers as DraftTrackers
-        self.sel = FreeCADGui.Selection.getSelection()
         self.W1 = params.get_param_arch("WindowW1")  # thickness of the fixed frame
         if self.doormode:
             self.Width = params.get_param_arch("DoorWidth")
@@ -79,54 +107,65 @@ class Arch_Window:
         self.wparams = ["Width","Height","H1","H2","H3","W1","W2","O1","O2"]
         self.wp = None
 
-        # autobuild mode
-        if FreeCADGui.Selection.getSelectionEx():
-            FreeCADGui.draftToolBar.offUi()
-            obj = self.sel[0]
-            if hasattr(obj,'Shape'):
-                if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
-                    FreeCADGui.Control.closeDialog()
-                    host = None
-                    if hasattr(obj,"AttachmentSupport"):
-                        if obj.AttachmentSupport:
-                            if isinstance(obj.AttachmentSupport,tuple):
-                                host = obj.AttachmentSupport[0]
-                            elif isinstance(obj.AttachmentSupport,list):
-                                host = obj.AttachmentSupport[0][0]
-                            else:
-                                host = obj.AttachmentSupport
-                            obj.AttachmentSupport = None # remove
-                    elif Draft.isClone(obj,"Window"):
-                        if obj.Objects[0].Inlist:
-                            host = obj.Objects[0].Inlist[0]
+        self.sel = FreeCADGui.Selection.getSelection()
 
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-                    FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                    if host and self.Include:
-                        FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
-                        siblings = host.Proxy.getSiblings(host)
-                        sibs = [host]
-                        for sibling in siblings:
-                            if not sibling in sibs:
-                                sibs.append(sibling)
-                                FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
-                    FreeCAD.ActiveDocument.commitTransaction()
-                    FreeCAD.ActiveDocument.recompute()
-                    return
+        if self.sel and self.handleSelectionMode():
+            return
 
-                # Try to detect an object to use as a window type - TODO we must make this safer
+        # Fallback to interactive mode
+        self.handleInteractiveMode()
 
-                elif obj.Shape.Solids and (Draft.getType(obj) not in ["Wall","Structure","Roof"]):
-                    # we consider the selected object as a type
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-                    FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                    FreeCAD.ActiveDocument.commitTransaction()
-                    FreeCAD.ActiveDocument.recompute()
-                    return
+    def handleSelectionMode(self):
+        import Draft
 
-        # interactive mode
+        FreeCADGui.draftToolBar.offUi()
+        obj = self.sel[0]
+        if not hasattr(obj,'Shape'):
+            return False
+
+        obj_only_has_wires = obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells)
+        if obj_only_has_wires:
+            FreeCADGui.Control.closeDialog()
+
+            host = None
+            if hasattr(obj,"AttachmentSupport"):
+                host = get_attachment_object(obj)
+            elif Draft.isClone(obj,"Window") and obj.Objects[0].Inlist:
+                host = obj.Objects[0].Inlist[0]
+
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+            if host and self.Include:
+                FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
+                siblings = host.Proxy.getSiblings(host)
+                sibs = [host]
+                for sibling in siblings:
+                    if not sibling in sibs:
+                        sibs.append(sibling)
+                        FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+            return True
+
+        # Try to detect an object to use as a window type - TODO we must make this safer
+
+        elif obj.Shape.Solids and (Draft.getType(obj) not in ALLOWEDHOSTS):
+
+            # we consider the selected object as a type
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+            return True
+
+        return False
+
+    def handleInteractiveMode(self):
+        import WorkingPlane
+        import draftguitools.gui_trackers as DraftTrackers
+
         self.wp = WorkingPlane.get_working_plane()
 
         self.tracker = DraftTrackers.boxTracker()
@@ -134,31 +173,39 @@ class Arch_Window:
         self.tracker.width(self.W1)
         self.tracker.height(self.Height)
         self.tracker.on()
+
         FreeCAD.Console.PrintMessage(translate("Arch","Choose a face on an existing object or select a preset")+"\n")
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+        FreeCADGui.Snapper.getPoint(callback=self.onSnapperPoint,movecallback=self.onSnapperMove,extradlg=self.taskbox())
         #FreeCADGui.Snapper.setSelectMode(True)
 
-    def has_width_and_height_constraint(self, sketch):
-        width_found = False
-        height_found = False
+    def getLibraryPresetWindow(self):
+        import Draft
+        from draftutils.messages import _wrn
 
-        for constr in sketch.Constraints:
-            if constr.Name == "Width":
-                width_found = True
-            elif constr.Name == "Height":
-                height_found = True
-            elif width_found and height_found:
-                break
+        num_existing_objects = len(FreeCAD.ActiveDocument.Objects)
+        path = self.librarypresets[self.LibraryPreset][1]
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('" + path + "')")
 
-        return (width_found and height_found)
+        for object in FreeCAD.ActiveDocument.Objects[num_existing_objects:]:
+            if not Draft.getType(object) == "Window":
+                continue
 
-    def getPoint(self,point=None,obj=None):
+            if Draft.getType(object.Base) == "Sketcher::SketchObject":
+                if not sketch_has_width_and_height_constraint(object.Base):
+                    _wrn(translate("Arch", "No Width and/or Height constraint in window sketch. Window not resized."))
+            else:
+                _wrn(translate("Arch", "Window not based on sketch. Window not aligned or resized."))
 
-        "this function is called by the snapper when it has a 3D point"
+            return object
+        else:
+            _wrn(translate("Arch", "No window found. Cannot continue."))
+            return None
+
+    def onSnapperPoint(self,point=None,obj=None):
+
+        "this function is called by the snapper when it has a snap point"
 
         import Draft
-        from draftutils import gui_utils
-        from draftutils.messages import _wrn
         from ArchWindowPresets import WindowPresets
         self.tracker.off()
         if point is None:
@@ -181,32 +228,18 @@ class Arch_Window:
 
         FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + ", " + str(point.y) + ", " + str(point.z) + ")")
 
-        if self.Preset >= len(WindowPresets):
-            # library object
-            col = FreeCAD.ActiveDocument.Objects
-            path = self.librarypresets[self.Preset - len(WindowPresets)][1]
-            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('" + path + "')")
-            # find the latest added window
-            nol = FreeCAD.ActiveDocument.Objects
-            for o in nol[len(col):]:
-                if Draft.getType(o) == "Window":
-                    if Draft.getType(o.Base) != "Sketcher::SketchObject":
-                        _wrn(translate("Arch", "Window not based on sketch. Window not aligned or resized."))
-                        self.Include = False
-                        break
-                    FreeCADGui.doCommand("win = FreeCAD.ActiveDocument.getObject('" + o.Name + "')")
-                    FreeCADGui.doCommand("win.Base.Placement = pl")
-                    FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
-                    FreeCADGui.doCommand("win.Width = " + str(self.Width))
-                    FreeCADGui.doCommand("win.Height = " + str(self.Height))
-                    FreeCADGui.doCommand("win.Base.recompute()")
-                    if not self.has_width_and_height_constraint(o.Base):
-                        _wrn(translate("Arch", "No Width and/or Height constraint in window sketch. Window not resized."))
-                    break
+        is_library_preset = self.LibraryPreset >= 0
+        if is_library_preset:
+            window = self.getLibraryPresetWindow()
+            if window:
+                FreeCADGui.doCommand("win = FreeCAD.ActiveDocument.getObject('" + window.Name + "')")
+                FreeCADGui.doCommand("win.Base.Placement = pl")
+                FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
+                FreeCADGui.doCommand("win.Width = " + str(self.Width))
+                FreeCADGui.doCommand("win.Height = " + str(self.Height))
+                FreeCADGui.doCommand("win.Base.recompute()")
             else:
-                _wrn(translate("Arch", "No window found. Cannot continue."))
                 self.Include = False
-
         else:
             # preset
             wp = ""
@@ -232,7 +265,7 @@ class Arch_Window:
         self.tracker.finalize()
         return
 
-    def update(self,point,info):
+    def onSnapperMove(self,point,info):
 
         "this function is called by the Snapper when the mouse is moved"
 
@@ -256,6 +289,37 @@ class Arch_Window:
         if r != (0,0,0,1):
             delta = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(delta.x,-delta.y,-delta.z))
         self.tracker.pos(point.add(delta))
+
+    def getLibraryPresetPath(self):
+        p = FreeCAD.ParamGet("User parameter:Plugins/parts_library").GetString("destination", "")
+        # librarypath should have only forward slashes already, but let's use replace() anyway just to be sure:
+        return p.replace("\\", "/") + "/Architectural Parts"
+
+    def scanLibraryPresets(self):
+        # because of the use of FreeCADGui.doCommand() backslashes in the
+        # paths in librarypresets need to be double escaped "\\\\", so let's
+        # use forward slashes instead...
+
+        presets = []
+        librarypath = self.getLibraryPresetPath()
+        presetdir = FreeCAD.getUserAppDataDir().replace("\\", "/") + "/Arch"
+        for path in [librarypath, presetdir]:
+            if not os.path.isdir(path):
+                continue
+            for wtype in ["Windows", "Doors"]:
+                wdir = path + "/" + wtype
+                if not os.path.isdir(wdir):
+                    continue
+                for subtype in os.listdir(wdir):
+                    subdir = wdir + "/" + subtype
+                    if not os.path.isdir(subdir):
+                        continue
+                for subfile in os.listdir(subdir):
+                    if (os.path.isfile(subdir + "/" + subfile) and subfile.lower().endswith(".fcstd")):
+                        p1 = wtype + " - " + subtype + " - " + subfile[:-6]
+                        p2 = subdir + "/" + subfile
+                        presets.append([p1, p2])
+        return presets
 
     def taskbox(self):
 
@@ -283,28 +347,7 @@ class Arch_Window:
         values.valueChanged.connect(self.setSill)
 
         # check for Parts library and Arch presets
-
-        # because of the use of FreeCADGui.doCommand() backslashes in the
-        # paths in librarypresets need to be double escaped "\\\\", so let's
-        # use forward slashes instead...
-        self.librarypresets = []
-        librarypath = FreeCAD.ParamGet("User parameter:Plugins/parts_library").GetString("destination", "")
-        # librarypath should have only forward slashes already, but let's use replace() anyway just to be sure:
-        librarypath = librarypath.replace("\\", "/") + "/Architectural Parts"
-        presetdir = FreeCAD.getUserAppDataDir().replace("\\", "/") + "/Arch"
-        for path in [librarypath, presetdir]:
-            if os.path.isdir(path):
-                for wtype in ["Windows", "Doors"]:
-                    wdir = path + "/" + wtype
-                    if os.path.isdir(wdir):
-                        for subtype in os.listdir(wdir):
-                            subdir = wdir + "/" + subtype
-                            if os.path.isdir(subdir):
-                                for subfile in os.listdir(subdir):
-                                    if (os.path.isfile(subdir + "/" + subfile)
-                                            and subfile.lower().endswith(".fcstd")):
-                                        self.librarypresets.append([wtype + " - " + subtype + " - " + subfile[:-6],
-                                                                    subdir + "/" + subfile])
+        self.librarypresets = self.scanLibraryPresets()
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset"))
@@ -395,71 +438,82 @@ class Arch_Window:
         prefix = "Door" if self.doormode and param in ("Width","Height") else "Window"
         params.set_param_arch(prefix+param,d)
 
-    def setPreset(self,i):
+    def loadThumbnailFromFCStd(self,path):
 
         from PySide import QtGui
+        try:
+            import tempfile
+            import zipfile
+        except Exception:
+            return None
+
+        zfile = zipfile.ZipFile(path)
+        files = zfile.namelist()
+        # check for meta-file if it's really a FreeCAD document
+        if files[0] == "Document.xml":
+            image="thumbnails/Thumbnail.png"
+            if not image in files:
+                return None
+
+            image = zfile.read(image)
+            thumbfile = tempfile.mkstemp(suffix='.png')[1]
+            thumb = open(thumbfile,"wb")
+            thumb.write(image)
+            thumb.close()
+            return QtGui.QPixmap(thumbfile)
+
+    def setPresetThumbnail(self, i):
+        from ArchWindowPresets import WindowPresets, getWindowPresetIcon
+
+        self.pic.hide()
+        self.im.show()
+
+        is_builtin_preset = i < len(WindowPresets)
+        if is_builtin_preset:
+            self.im.load(getWindowPresetIcon(i))
+        else:
+            # From Library
+            self.im.hide()
+            path = self.librarypresets[i - len(WindowPresets)][1]
+            is_fcstd_file = path.lower().endswith(".fcstd")
+            if is_fcstd_file:
+                qpixmap = self.loadThumbnailFromFCStd(path)
+                if qpixmap:
+                    self.pic.setPixmap(qpixmap)
+                    self.pic.show()
+        #for param in self.wparams:
+        #    getattr(self,"val"+param).setEnabled(True)
+
+    def savePresetToParams(self,i):
         from draftutils import params
-        from ArchWindowPresets import WindowPresets
-        self.Preset = i
         if self.doormode:
             params.set_param_arch("DoorPreset",i)
         else:
             params.set_param_arch("WindowPreset",i)
-        if i >= 0:
-            FreeCADGui.Snapper.setSelectMode(False)
-            self.tracker.length(self.Width)
-            self.tracker.height(self.Height)
-            self.tracker.width(self.W1)
-            self.tracker.on()
-            self.pic.hide()
-            self.im.show()
-            if i == 0:
-                self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i in [1,8]:
-                self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i in [2,4,7]:
-                self.im.load(":/ui/ParametersWindowDouble.svg")
-            elif i == 3:
-                self.im.load(":/ui/ParametersWindowStash.svg")
-            elif i == 5:
-                self.im.load(":/ui/ParametersDoorSimple.svg")
-            elif i == 6:
-                self.im.load(":/ui/ParametersDoorGlass.svg")
-            elif i == 9:
-                self.im.load(":/ui/ParametersOpening.svg")
-            else:
-                # From Library
-                self.im.hide()
-                path = self.librarypresets[i-len(WindowPresets)][1]
-                if path.lower().endswith(".fcstd"):
-                    try:
-                        import tempfile
-                        import zipfile
-                    except Exception:
-                        pass
-                    else:
-                        zfile = zipfile.ZipFile(path)
-                        files = zfile.namelist()
-                        # check for meta-file if it's really a FreeCAD document
-                        if files[0] == "Document.xml":
-                            image="thumbnails/Thumbnail.png"
-                            if image in files:
-                                image = zfile.read(image)
-                                thumbfile = tempfile.mkstemp(suffix='.png')[1]
-                                thumb = open(thumbfile,"wb")
-                                thumb.write(image)
-                                thumb.close()
-                                im = QtGui.QPixmap(thumbfile)
-                                self.pic.setPixmap(im)
-                                self.pic.show()
-            #for param in self.wparams:
-            #    getattr(self,"val"+param).setEnabled(True)
-        else:
+
+    def setPreset(self,i):
+        from ArchWindowPresets import WindowPresets
+
+        self.Preset = i
+        self.LibraryPreset = self.Preset - len(WindowPresets)
+
+        self.savePresetToParams(i)
+
+        is_valid_preset = i >= 0
+        if not is_valid_preset:
             FreeCADGui.Snapper.setSelectMode(True)
             self.tracker.off()
             self.im.hide()
             for param in self.wparams:
                 getattr(self,"val"+param).setEnabled(False)
+            return
 
+        FreeCADGui.Snapper.setSelectMode(False)
+        self.tracker.length(self.Width)
+        self.tracker.height(self.Height)
+        self.tracker.width(self.W1)
+        self.tracker.on()
+
+        self.setPresetThumbnail(i)
 
 FreeCADGui.addCommand('Arch_Window', Arch_Window())
