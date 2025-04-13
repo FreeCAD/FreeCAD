@@ -6360,7 +6360,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
 
         // look for coincident constraints between curves, take the coincident closest to the
         // refpoints
-        double dist = INFINITY;
+        double dist = std::numeric_limits<double>::infinity;
 
         if ((curve1->getStartPoint() - curve2->getStartPoint()).Length() < Precision::Confusion()) {
             Base::Vector3d tmpp1 = curve1->getStartPoint();
