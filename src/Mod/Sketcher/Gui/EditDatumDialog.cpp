@@ -50,12 +50,16 @@ using namespace SketcherGui;
 
 /* TRANSLATOR SketcherGui::EditDatumDialog */
 
-bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch, std::string constraintName)
+bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch,
+                                      std::string constraintName)
 {
     if (constraintName != Base::Tools::getIdentifier(constraintName)) {
         Gui::NotifyUserError(
-            sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"),
-            QT_TRANSLATE_NOOP("Notifications", "Invalid constraint name (must only contain alphanumericals and underscores, and must not start with digit)"));
+            sketch,
+            QT_TRANSLATE_NOOP("Notifications", "Value Error"),
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Invalid constraint name (must only contain alphanumericals and "
+                              "underscores, and must not start with digit)"));
         return false;
     }
 
