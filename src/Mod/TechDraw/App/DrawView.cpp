@@ -110,6 +110,20 @@ DrawView::DrawView():
 }
 
 
+App::DocumentObjectExecReturn* DrawView::recompute()
+{
+    try {
+        return App::DocumentObject::recompute();
+    }
+    catch (Standard_Failure& e) {
+        auto ret = new App::DocumentObjectExecReturn(e.GetMessageString());
+        if (ret->Why.empty()) {
+            ret->Why = "Unknown OCC exception";
+        }
+        return ret;
+    }
+}
+
 App::DocumentObjectExecReturn *DrawView::execute()
 {
 //    Base::Console().message("DV::execute() - %s touched: %d\n", getNameInDocument(), isTouched());
