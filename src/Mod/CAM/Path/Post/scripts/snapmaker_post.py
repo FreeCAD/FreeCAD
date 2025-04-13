@@ -61,57 +61,93 @@ SNAPMAKER_MACHINES = dict(
     Original=dict(
         key="Original",
         name="Snapmaker Original",
-        boundaries=dict(X=90, Y=90, Z=50),
-        compatible_toolheads={"Original_CNC"},
+        boundaries_table=[
+            # https://forum.snapmaker.com/t/cnc-work-area-size/5178
+            dict( boundaries=dict(X=125, Y=125, Z=50), toolhead="Original_CNC", mods=set() ),
+        ],
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     Original_Z_Extension=dict(
         key="Original_Z_Extension",
         name="Snapmaker Original with Z extension",
-        boundaries=dict(X=90, Y=90, Z=146),
-        compatible_toolheads={"Original_CNC"},
+        boundaries_table=[
+            # https://forum.snapmaker.com/t/cnc-work-area-size/5178
+            dict( boundaries=dict(X=125, Y=125, Z=146), toolhead="Original_CNC", mods=set() ),
+        ],
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A150=dict(
         key="A150",
         name="Snapmaker 2 A150",
-        boundaries=dict(X=160, Y=160, Z=90),
-        compatible_toolheads={"50W_CNC"},
+        boundaries_table=[
+            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
+            dict( boundaries=dict(X=145, Y=160, Z=90), toolhead="50W_CNC", mods=set() ),
+            dict( boundaries=dict(X=145, Y=148, Z=90), toolhead="50W_CNC", mods={"BK"} ),
+        ],
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A250=dict(
         key="A250",
         name="Snapmaker 2 A250",
-        boundaries=dict(X=230, Y=250, Z=180),
-        compatible_toolheads={"50W_CNC", "200W_CNC"},
+        boundaries_table=[
+            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
+            dict( boundaries=dict(X=230, Y=250, Z=180), toolhead="50W_CNC", mods=set() ),
+            dict( boundaries=dict(X=230, Y=238, Z=180), toolhead="50W_CNC", mods={"BK"} ),
+            dict( boundaries=dict(X=230, Y=235, Z=180), toolhead="50W_CNC", mods={"QS"} ),
+            dict( boundaries=dict(X=230, Y=223, Z=180), toolhead="50W_CNC", mods={"BK","QS"} ),
+            dict( boundaries=dict(X=230, Y=225, Z=180), toolhead="200W_CNC", mods={"BK"} ),
+            dict( boundaries=dict(X=230, Y=210, Z=180), toolhead="200W_CNC", mods={"BK","QS"} ),
+        ],
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A250T=dict(
         key="A250T",
         name="Snapmaker 2 A250T",
-        boundaries=dict(X=230, Y=250, Z=180),
-        compatible_toolheads={"50W_CNC", "200W_CNC"},
+        boundaries_table=[
+            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
+            dict( boundaries=dict(X=230, Y=250, Z=180), toolhead="50W_CNC", mods=set() ),
+            dict( boundaries=dict(X=230, Y=238, Z=180), toolhead="50W_CNC", mods={"BK"} ),
+            dict( boundaries=dict(X=230, Y=235, Z=180), toolhead="50W_CNC", mods={"QS"} ),
+            dict( boundaries=dict(X=230, Y=223, Z=180), toolhead="50W_CNC", mods={"BK","QS"} ),
+            dict( boundaries=dict(X=230, Y=225, Z=180), toolhead="200W_CNC", mods={"BK"} ),
+            dict( boundaries=dict(X=230, Y=210, Z=180), toolhead="200W_CNC", mods={"BK","QS"} ),
+        ],
         lead=dict(X=20, Y=20, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A350=dict(
         key="A350",
         name="Snapmaker 2 A350",
-        boundaries=dict(X=320, Y=350, Z=275),
-        compatible_toolheads={"50W_CNC", "200W_CNC"},
+        boundaries_table=[
+            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
+            dict( boundaries=dict(X=320, Y=350, Z=275), toolhead="50W_CNC", mods=set() ),
+            dict( boundaries=dict(X=320, Y=338, Z=275), toolhead="50W_CNC", mods={"BK"} ),
+            dict( boundaries=dict(X=320, Y=335, Z=275), toolhead="50W_CNC", mods={"QS"} ),
+            dict( boundaries=dict(X=320, Y=323, Z=275), toolhead="50W_CNC", mods={"BK","QS"} ),
+            dict( boundaries=dict(X=320, Y=325, Z=275), toolhead="200W_CNC", mods={"BK"} ),
+            dict( boundaries=dict(X=320, Y=310, Z=275), toolhead="200W_CNC", mods={"BK","QS"} ),
+        ],
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     A350T=dict(
         key="A350T",
         name="Snapmaker 2 A350T",
-        boundaries=dict(X=320, Y=350, Z=275),
-        compatible_toolheads={"50W_CNC", "200W_CNC"},
+        boundaries_table=[
+            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
+            dict( boundaries=dict(X=320, Y=350, Z=275), toolhead="50W_CNC", mods=set() ),
+            dict( boundaries=dict(X=320, Y=338, Z=275), toolhead="50W_CNC", mods={"BK"} ),
+            dict( boundaries=dict(X=320, Y=335, Z=275), toolhead="50W_CNC", mods={"QS"} ),
+            dict( boundaries=dict(X=320, Y=323, Z=275), toolhead="50W_CNC", mods={"BK","QS"} ),
+            dict( boundaries=dict(X=320, Y=325, Z=275), toolhead="200W_CNC", mods={"BK"} ),
+            dict( boundaries=dict(X=320, Y=310, Z=275), toolhead="200W_CNC", mods={"BK","QS"} ),
+        ],
         lead=dict(X=20, Y=20, Z=8),  # Linear module screw pitch (mm/turn)
     ),
     Artisan=dict(
         key="Artisan",
         name="Snapmaker Artisan",
-        boundaries=dict(X=400, Y=413, Z=400),
-        compatible_toolheads={"200W_CNC"},
+        boundaries_table=[
+            dict( boundaries=dict(X=400, Y=400, Z=400), toolhead="200W_CNC", mods=set() ),
+        ],
         lead=dict(X=40, Y=40, Z=8),  # Linear module screw pitch (mm/turn)
     ),
 )
@@ -124,16 +160,12 @@ SNAPMAKER_MOD_KITS = {
         name="Quick Swap Kit",
         option_name="--quick-swap",
         option_help_text="Indicates that the quick swap kit is installed. Only compatible with Snapmaker 2 machines.",
-        compatible_machines={"A150", "A250", "A250T", "A350", "A350T"},
-        boundaries_delta=dict(X=0, Y=-15, Z=-15),
     ),
     "BK": dict(
         key="BK",
         name="Bracing Kit",
         option_name="--bracing-kit",
         option_help_text="Indicates that the bracing kit is installed. Only compatible with Snapmaker 2 machines.",
-        compatible_machines={"A150", "A250", "A250T", "A350", "A350T"},
-        boundaries_delta=dict(X=0, Y=-12, Z=-6),
     ),
 }
 
@@ -456,25 +488,25 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             machine = self.values["MACHINES"][args.machine]
             self.values["MACHINE_KEY"] = machine["key"]
             self.values["MACHINE_NAME"] = machine["name"]
-            # The deepcopy is necessary to avoid modifying the boundaries in the MACHINES dict.
-            self.values["BOUNDARIES"] = copy.deepcopy(machine["boundaries"])
+
+            compatible_toolheads = { bt["toolhead"] for bt in machine["boundaries_table"] }
 
             if args.toolhead:
-                if args.toolhead not in machine["compatible_toolheads"]:
+                if args.toolhead not in compatible_toolheads:
                     FreeCAD.Console.PrintError(
                         f"Selected --toolhead={args.toolhead} is not compatible with machine {machine['name']}."
-                        + f" Choose from [{machine['compatible_toolheads']}]\n"
+                        + f" Choose from [{compatible_toolheads}]\n"
                     )
                     flag = False
                     return (flag, args)
                 toolhead = self.values["TOOLHEADS"][args.toolhead]
-            elif len(machine["compatible_toolheads"]) == 1:
-                toolhead_key = next(iter(machine["compatible_toolheads"]))
+            elif len(compatible_toolheads) == 1:
+                toolhead_key = next(iter(compatible_toolheads))
                 toolhead = self.values["TOOLHEADS"][toolhead_key]
             else:
                 FreeCAD.Console.PrintError(
                     f"Machine {machine['name']} has multiple compatible toolheads:\n"
-                    f"{machine['compatible_toolheads']}\n"
+                    f"{compatible_toolheads}\n"
                     "Please add --toolhead argument.\n"
                 )
                 flag = False
@@ -514,23 +546,32 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                 self.values["BOUNDARIES"] = args.boundaries
                 self.values["MACHINE_NAME"] += " Boundaries overide=" + str(args.boundaries)
             else:
-                # Update machine dimensions based on installed kits
+                compatible_modkit_combos = [ bt["mods"] for bt in machine["boundaries_table"] if toolhead["key"] == bt["toolhead"] ]
+                configured_modkits = set()
+
+                # Determine which mod kits are requested from the options
                 for mod_kit in self.values["MOD_KITS_ALL"].values():
                     if getattr(args, convert_option_to_attr(mod_kit["option_name"])):
-                        if self.values["MACHINE_KEY"] not in mod_kit["compatible_machines"]:
-                            FreeCAD.Console.PrintError(
-                                f"Machine {machine['name']} is not compatible with {mod_kit["option_name"]}.\n"
-                            )
-                            flag = False
-                            return (flag, args)
+                        configured_modkits.add( mod_kit["key"] )
                         self.values["MACHINE_NAME"] += " " + mod_kit["name"]
                         self.values["MOD_KITS_INSTALLED"].append(mod_kit["key"])
-                        for axis in mod_kit["boundaries_delta"].keys():
-                            self.values["BOUNDARIES"][axis] += mod_kit["boundaries_delta"][axis]
+                
+                if configured_modkits not in compatible_modkit_combos:
+                    FreeCAD.Console.PrintError(
+                        f"Machine {machine['name']} with toolhead {toolhead['name']}"
+                        +f" is not compatible with modkit {configured_modkits if configured_modkits else None}.\n"
+                        +f" Choose from {compatible_modkit_combos}."
+                    )
+                    flag = False
+                    return (flag, args)
 
-                # Update machine dimensions based on installed toolhead
-                for axis in toolhead["boundaries_delta"].keys():
-                    self.values["BOUNDARIES"][axis] += toolhead["boundaries_delta"][axis]
+                # Update machine dimensions based on installed toolhead and mod kits
+                boundaries_table_entry_l = [ bt for bt in machine["boundaries_table"] if bt["toolhead"] == toolhead["key"] and bt["mods"] == configured_modkits ]
+                assert(len(boundaries_table_entry_l) == 1)
+                boundaries_table_entry = boundaries_table_entry_l[0]
+
+                # The deepcopy is necessary to avoid modifying the boundaries in the MACHINES dict.
+                self.values["BOUNDARIES"] = copy.deepcopy(boundaries_table_entry["boundaries"])
                 self.values["MACHINE_NAME"] += " " + toolhead["name"]
 
             self.values["THUMBNAIL"] = args.thumbnail
