@@ -1223,11 +1223,9 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     // b) that the text in the widget item, basename, is not ""
     // otherwise a checkbox change will trigger a rename on the first execution, bloating the
     // constraint icons with the default constraint name "constraint1, constraint2"
+    printf("task");
     if (newName != currConstraintName && !basename.empty()) {
-        if (newName != Base::Tools::getIdentifier(newName)) {
-            Gui::NotifyUserError(
-                sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"),
-                "Invalid constraint name (must only contain alphanumericals, underscores, and must not start with digit)");
+        if (!SketcherGui::checkConstraintName(sketch, newName)) {
             newName = currConstraintName;
         }
 
