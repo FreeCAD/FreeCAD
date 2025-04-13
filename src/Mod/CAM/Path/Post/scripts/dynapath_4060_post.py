@@ -59,11 +59,11 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\nG90\nG80\nG40"',
+    help='set commands to be issued before the first command, default="G17\\nG90\\nG80\\nG40"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M09\nM05\nG80\nG40\nG17\nG90\nM30"',
+    help='set commands to be issued after the last command, default="M09\\nM05\\nG80\\nG40\\nG17\\nG90\\nM30"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G70)"
@@ -173,9 +173,9 @@ def processArguments(argstring):
         if args.precision is not None:
             PRECISION = args.precision
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.inches:
             UNITS = "G70"
             UNIT_SPEED_FORMAT = "in/min"

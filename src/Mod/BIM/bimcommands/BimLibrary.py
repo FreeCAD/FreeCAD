@@ -1,23 +1,26 @@
 # -*- coding: utf-8 -*-
+
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -25,13 +28,15 @@ from __future__ import print_function
 
 """The BIM library tool"""
 
-import sys
 import os
+import sys
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 FILTERS = [
@@ -108,7 +113,7 @@ class BIM_Library_TaskPanel:
 
     def __init__(self, offlinemode=False):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.mainDocName = FreeCAD.Gui.ActiveDocument.Document.Name
         self.previewDocName = "Viewer"
@@ -345,7 +350,9 @@ class BIM_Library_TaskPanel:
     def addtolibrary(self):
         # DISABLED
 
-        import Part, Mesh, os
+        import os
+        import Mesh
+        import Part
 
         self.fileDialog = QtGui.QFileDialog.getSaveFileName(
             None, "Save As", self.librarypath
@@ -380,7 +387,6 @@ class BIM_Library_TaskPanel:
 
     def setSearchModel(self, text):
 
-        import PartGui
         from PySide import QtGui
 
         def add_line(f, dp):
@@ -445,7 +451,6 @@ class BIM_Library_TaskPanel:
     def setOnlineModel(self):
 
         from PySide import QtGui
-        import PartGui
 
         def addItems(root, d, path):
             for k, v in d.items():
@@ -813,8 +818,8 @@ class BIM_Library_TaskPanel:
     def getOnlineContentsAPI(self, url):
         """same as getOnlineContents but uses github API (faster)"""
 
-        import requests
         import json
+        import requests
 
         result = {}
         count = 0

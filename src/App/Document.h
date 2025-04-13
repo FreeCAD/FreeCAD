@@ -357,6 +357,7 @@ public:
     /// Returns a list of all Objects
     const std::vector<DocumentObject*>& getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
+    std::vector<DocumentObject*> getObjectsOfType(const std::vector<Base::Type>& types) const;
     /// Returns all object with given extensions. If derived=true also all objects with extensions
     /// derived from the given one
     std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId,

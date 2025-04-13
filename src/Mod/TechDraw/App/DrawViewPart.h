@@ -235,6 +235,10 @@ public:
     virtual bool waitingForResult() const;
     void progressValueChanged(const int v);
 
+    bool isCosmeticVertex(const std::string& element);
+    bool isCosmeticEdge(const std::string& element);
+    bool isCenterLine(const std::string& element);
+
 public Q_SLOTS:
     void onHlrFinished(void);
     void onFacesFinished(void);

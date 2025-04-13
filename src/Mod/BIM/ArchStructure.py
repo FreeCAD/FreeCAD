@@ -1,45 +1,32 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
 #Modified 2016-01-03 JAndersM
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
-from FreeCAD import Vector
-import ArchProfile
-from draftutils import params
-from draftutils import gui_utils
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    import ArchPrecast
-    import draftguitools.gui_trackers as DraftTrackers
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__= "FreeCAD Structure"
+__author__ = "Yorik van Havre"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchStructure
 #  \ingroup ARCH
@@ -50,9 +37,31 @@ else:
 #  elements that have a structural function, that is, that
 #  support other parts of the building.
 
-__title__= "FreeCAD Structure"
-__author__ = "Yorik van Havre"
-__url__ = "https://www.freecad.org"
+import FreeCAD
+import ArchComponent
+import ArchCommands
+import ArchProfile
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Vector
+from draftutils import params
+from draftutils import gui_utils
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import ArchPrecast
+    import draftguitools.gui_trackers as DraftTrackers
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 #Reads preset profiles and categorizes them
@@ -786,7 +795,8 @@ class _Structure(ArchComponent.Component):
 
         "creates the structure shape"
 
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         if self.clone(obj):
             return
@@ -905,7 +915,8 @@ class _Structure(ArchComponent.Component):
             IfcType = obj.IfcType
         else:
             IfcType = None
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         data = ArchComponent.Component.getExtrusionData(self,obj)
         if data:
             if not isinstance(data[0],list):
@@ -1544,7 +1555,8 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
     def execute(self,obj):
         "creates the structure shape"
 
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         # creating base shape
         pl = obj.Placement

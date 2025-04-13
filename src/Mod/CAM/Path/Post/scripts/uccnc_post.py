@@ -336,14 +336,14 @@ def processArguments(argstring):
         PRECISION = args.precision
 
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         elif OUTPUT_COMMENTS:
             PREAMBLE = PREAMBLE_DEFAULT
         else:
             PREAMBLE = PREAMBLE_DEFAULT_NO_COMMENT
 
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         elif OUTPUT_COMMENTS:
             POSTAMBLE = POSTAMBLE_DEFAULT
         else:

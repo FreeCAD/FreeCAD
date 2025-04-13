@@ -66,16 +66,17 @@ TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
 void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removables)
 {
     // Base::Console().Message("CEx::deleteCosmeticElements(%d removables)\n", removables.size());
+    DrawViewPart* viewPart = getOwner();
     for (auto& name : removables) {
         if (DU::getGeomTypeFromName(name) == "Vertex" &&
-         DU::isCosmeticVertex(getOwner(), name)) {
+         viewPart->isCosmeticVertex(name)) {
          CosmeticVertex* vert = getCosmeticVertexBySelection(name);
          removeCosmeticVertex(vert->getTagAsString());
          continue;
         }
         if (DU::getGeomTypeFromName(name) == "Edge" &&
-         ( DU::isCosmeticEdge(getOwner(), name)  ||
-           DU::isCenterLine(getOwner(), name) ) ) {
+         ( viewPart->isCosmeticEdge(name)  ||
+           viewPart->isCenterLine(name))) {
              CosmeticEdge* edge = getCosmeticEdgeBySelection(name);
              if (edge) {
                  // if not edge, something has gone very wrong!
