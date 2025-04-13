@@ -60,7 +60,7 @@ echo -e "################"
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 
-export tag="weekly-builds" # should retreive from git tag
+export tag="weekly-builds" # should retrieve from git tag
 
 curl -LO https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$(uname -m).AppImage
 chmod a+x appimagetool-$(uname -m).AppImage

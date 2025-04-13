@@ -84,7 +84,7 @@ class CoordinateSystem(PyObjectBase):
 
     def setPlacement(self, placement: Placement) -> None:
         """
-        setPlacment(placement) -> None
+        setPlacement(placement) -> None
 
         Set placement to the coordinate system.
 
