@@ -122,6 +122,7 @@ class CAMWorkbench(Workbench):
         drillingcmdlist = ["CAM_Drilling", "CAM_Tapping"]
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
+            "CAM_DressupArray",
             "CAM_DressupAxisMap",
             "CAM_DressupPathBoundary",
             "CAM_DressupDogbone",

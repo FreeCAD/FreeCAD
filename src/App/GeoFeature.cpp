@@ -160,11 +160,11 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
         return nullptr;
     }
     auto linked = sobj->getLinkedObject(true);
-    auto geo = freecad_cast<GeoFeature>(linked);
+    auto geo = freecad_cast<GeoFeature*>(linked);
     if (!geo && linked) {
         auto ext = linked->getExtensionByType<LinkBaseExtension>(true);
         if (ext) {
-            geo = freecad_cast<GeoFeature>(ext->getTrueLinkedObject(true));
+            geo = freecad_cast<GeoFeature*>(ext->getTrueLinkedObject(true));
         }
     }
     if (geoFeature) {

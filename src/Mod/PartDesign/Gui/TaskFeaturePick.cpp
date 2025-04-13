@@ -391,7 +391,7 @@ TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool indepe
 
             // we are a independent copy, therefore no external geometry was copied. WE therefore
             // can delete all constraints
-            if (auto* sketchObj = freecad_cast<Sketcher::SketchObject>(obj)) {
+            if (auto* sketchObj = freecad_cast<Sketcher::SketchObject*>(obj)) {
                 sketchObj->delConstraintsToExternal();
             }
         }

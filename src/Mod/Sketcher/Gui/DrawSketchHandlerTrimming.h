@@ -93,48 +93,48 @@ public:
         Q_UNUSED(onSketchPos);
         if (mousePressed) {
             executeCommands(onSketchPos);
+            return;
+        }
+
+        int GeoId = getPreselectCurve();
+
+        if (GeoId < 0) {
+            EditMarkers.resize(0);
+            drawEditMarkers(EditMarkers, 2);
+        }
+
+        auto sk = sketchgui->getObject<Sketcher::SketchObject>();
+        int GeoId1, GeoId2;
+        Base::Vector3d intersect1, intersect2;
+        if (!sk->seekTrimPoints(GeoId,
+                                Base::Vector3d(onSketchPos.x, onSketchPos.y, 0),
+                                GeoId1,
+                                intersect1,
+                                GeoId2,
+                                intersect2)) {
+            return;
+        }
+
+        EditMarkers.resize(0);
+
+        if (GeoId1 != Sketcher::GeoEnum::GeoUndef) {
+            EditMarkers.emplace_back(intersect1.x, intersect1.y);
         }
         else {
-            int GeoId = getPreselectCurve();
-
-            if (GeoId > -1) {
-                auto sk = sketchgui->getObject<Sketcher::SketchObject>();
-                int GeoId1, GeoId2;
-                Base::Vector3d intersect1, intersect2;
-                if (sk->seekTrimPoints(GeoId,
-                                       Base::Vector3d(onSketchPos.x, onSketchPos.y, 0),
-                                       GeoId1,
-                                       intersect1,
-                                       GeoId2,
-                                       intersect2)) {
-
-                    EditMarkers.resize(0);
-
-                    if (GeoId1 != Sketcher::GeoEnum::GeoUndef) {
-                        EditMarkers.emplace_back(intersect1.x, intersect1.y);
-                    }
-                    else {
-                        auto start = sk->getPoint(GeoId, Sketcher::PointPos::start);
-                        EditMarkers.emplace_back(start.x, start.y);
-                    }
-
-                    if (GeoId2 != Sketcher::GeoEnum::GeoUndef) {
-                        EditMarkers.emplace_back(intersect2.x, intersect2.y);
-                    }
-                    else {
-                        auto end = sk->getPoint(GeoId, Sketcher::PointPos::end);
-                        EditMarkers.emplace_back(end.x, end.y);
-                    }
-
-                    // maker augmented by two sizes (see supported marker sizes)
-                    drawEditMarkers(EditMarkers, 2);
-                }
-            }
-            else {
-                EditMarkers.resize(0);
-                drawEditMarkers(EditMarkers, 2);
-            }
+            auto start = sk->getPoint(GeoId, Sketcher::PointPos::start);
+            EditMarkers.emplace_back(start.x, start.y);
         }
+
+        if (GeoId2 != Sketcher::GeoEnum::GeoUndef) {
+            EditMarkers.emplace_back(intersect2.x, intersect2.y);
+        }
+        else {
+            auto end = sk->getPoint(GeoId, Sketcher::PointPos::end);
+            EditMarkers.emplace_back(end.x, end.y);
+        }
+
+        // maker augmented by two sizes (see supported marker sizes)
+        drawEditMarkers(EditMarkers, 2);
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
@@ -163,6 +163,11 @@ public:
         if (GeoId < 0) {
             return;
         }
+
+        // FIXME: Attempt to avoid double trimming. This messes up the cursor.
+        // Possibly `mouseMove` gets triggered after first trim, but before preselection,
+        // resulting in another edge being deleted.
+        Gui::Selection().rmvPreselect();
 
         const Part::Geometry* geo = sketchgui->getSketchObject()->getGeometry(GeoId);
         if (geo->isDerivedFrom<Part::GeomTrimmedCurve>() || geo->is<Part::GeomCircle>()

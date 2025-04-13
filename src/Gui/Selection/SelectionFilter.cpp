@@ -291,7 +291,7 @@ int SelectionFilterlex();
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
-#include "lex.SelectionFilter.c"
+#include "SelectionFilter.lex.cpp"
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)

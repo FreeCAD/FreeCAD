@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-//! CommandHelpers is a collection of methods for common actions in commands
 
 
 #ifndef COMMANDHELPERS_H
@@ -46,6 +45,9 @@ namespace TechDraw {
 class DrawView;
 class DrawViewPart;
 
+/**
+ * CommandHelpers is a collection of methods for common actions in commands.
+ */
 namespace CommandHelpers {
 TechDraw::DrawView* firstViewInSelection(Gui::Command* cmd);
 TechDraw::DrawView* firstNonSpreadsheetInSelection(Gui::Command* cmd);

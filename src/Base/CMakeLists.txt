@@ -167,8 +167,8 @@ SET(FreeCADBase_UNITAPI_SRCS
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp
-    QuantityParser.l
-    QuantityParser.y
+    Quantity.l
+    Quantity.y
     Unit.h
     Unit.cpp
     UnitPyImp.cpp

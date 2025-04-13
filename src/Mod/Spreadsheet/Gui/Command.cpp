@@ -71,7 +71,7 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -101,7 +101,7 @@ bool CmdSpreadsheetMergeCells::isActive()
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             return (sheetView->selectedIndexesRaw().size() > 1);
@@ -132,7 +132,7 @@ void CmdSpreadsheetSplitCell::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -157,7 +157,7 @@ bool CmdSpreadsheetSplitCell::isActive()
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             QModelIndex current = sheetView->currentIndex();
@@ -246,7 +246,7 @@ void CmdSpreadsheetExport::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -263,7 +263,7 @@ bool CmdSpreadsheetExport::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -292,7 +292,7 @@ void CmdSpreadsheetAlignLeft::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -320,7 +320,7 @@ bool CmdSpreadsheetAlignLeft::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -349,7 +349,7 @@ void CmdSpreadsheetAlignCenter::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -377,7 +377,7 @@ bool CmdSpreadsheetAlignCenter::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -406,7 +406,7 @@ void CmdSpreadsheetAlignRight::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -434,7 +434,7 @@ bool CmdSpreadsheetAlignRight::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -463,7 +463,7 @@ void CmdSpreadsheetAlignTop::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -491,7 +491,7 @@ bool CmdSpreadsheetAlignTop::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -520,7 +520,7 @@ void CmdSpreadsheetAlignBottom::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -548,7 +548,7 @@ bool CmdSpreadsheetAlignBottom::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -577,7 +577,7 @@ void CmdSpreadsheetAlignVCenter::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -605,7 +605,7 @@ bool CmdSpreadsheetAlignVCenter::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -635,7 +635,7 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -689,7 +689,7 @@ bool CmdSpreadsheetStyleBold::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -719,7 +719,7 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -773,7 +773,7 @@ bool CmdSpreadsheetStyleItalic::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -803,7 +803,7 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -857,7 +857,7 @@ bool CmdSpreadsheetStyleUnderline::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -887,7 +887,7 @@ void CmdSpreadsheetSetAlias::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -921,7 +921,7 @@ bool CmdSpreadsheetSetAlias::isActive()
 
         if (activeWindow) {
             SpreadsheetGui::SheetView* sheetView =
-                freecad_cast<SpreadsheetGui::SheetView>(activeWindow);
+                freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
             if (sheetView) {
                 QModelIndexList selection = sheetView->selectedIndexes();

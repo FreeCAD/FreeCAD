@@ -140,7 +140,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
     if (cell && cell->getExpression()) {
         auto expr = cell->getExpression();
         if (expr->isDerivedFrom<FunctionExpression>()) {
-            auto fexpr = freecad_cast<FunctionExpression>(cell->getExpression());
+            auto fexpr = freecad_cast<FunctionExpression*>(cell->getExpression());
             if (fexpr
                 && (fexpr->getFunction() == FunctionExpression::HREF
                     || fexpr->getFunction() == FunctionExpression::HIDDENREF)
@@ -148,11 +148,11 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
                 expr = fexpr->getArgs().front();
             }
         }
-        auto vexpr = freecad_cast<VariableExpression>(expr);
+        auto vexpr = freecad_cast<VariableExpression*>(expr);
         if (vexpr) {
-            auto prop = freecad_cast<PropertyEnumeration>(vexpr->getPath().getProperty());
+            auto prop = freecad_cast<PropertyEnumeration*>(vexpr->getPath().getProperty());
             if (prop) {
-                auto obj = freecad_cast<DocumentObject>(prop->getContainer());
+                auto obj = freecad_cast<DocumentObject*>(prop->getContainer());
                 if (obj && prop->hasName()) {
                     path = ObjectIdentifier(sheet);
                     path.setDocumentObjectName(obj, true);

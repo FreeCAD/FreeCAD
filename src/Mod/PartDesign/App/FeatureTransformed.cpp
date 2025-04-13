@@ -95,7 +95,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     // first
     App::DocumentObject* firstOriginal = originals.empty() ? nullptr : originals.front();
     if (firstOriginal) {
-        rv = freecad_cast<Part::Feature>(firstOriginal);
+        rv = freecad_cast<Part::Feature*>(firstOriginal);
         if (!rv) {
             err = QT_TRANSLATE_NOOP("Exception",
                                     "Transformation feature Linked object is not a Part object");
@@ -117,19 +117,19 @@ App::DocumentObject* Transformed::getSketchObject() const
     std::vector<DocumentObject*> originals = Originals.getValues();
     DocumentObject const* firstOriginal = !originals.empty() ? originals.front() : nullptr;
 
-    if (auto feature = freecad_cast<PartDesign::ProfileBased>(firstOriginal)) {
+    if (auto feature = freecad_cast<PartDesign::ProfileBased*>(firstOriginal)) {
         return feature->getVerifiedSketch(true);
     }
-    if (freecad_cast<PartDesign::FeatureAddSub>(firstOriginal)) {
+    if (freecad_cast<PartDesign::FeatureAddSub*>(firstOriginal)) {
         return nullptr;
     }
-    if (auto pattern = freecad_cast<LinearPattern>(this)) {
+    if (auto pattern = freecad_cast<LinearPattern*>(this)) {
         return pattern->Direction.getValue();
     }
-    if (auto pattern = freecad_cast<PolarPattern>(this)) {
+    if (auto pattern = freecad_cast<PolarPattern*>(this)) {
         return pattern->Axis.getValue();
     }
-    if (auto pattern = freecad_cast<Mirrored>(this)) {
+    if (auto pattern = freecad_cast<Mirrored*>(this)) {
         return pattern->MirrorPlane.getValue();
     }
 
@@ -147,7 +147,7 @@ bool Transformed::isMultiTransformChild() const
     // because the dependencies are only established after creation.
     /*
     for (auto const* obj : getInList()) {
-        auto mt = freecad_cast<PartDesign::MultiTransform>(obj);
+        auto mt = freecad_cast<PartDesign::MultiTransform*>(obj);
         if (!mt) {
             continue;
         }
@@ -175,7 +175,7 @@ void Transformed::handleChangedPropertyType(Base::XMLReader& reader,
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
     // to PropertyAngle and the property 'Length' has changed to PropertyLength.
     Base::Type inputType = Base::Type::fromName(TypeName);
-    if (auto property = freecad_cast<App::PropertyFloat>(prop);
+    if (auto property = freecad_cast<App::PropertyFloat*>(prop);
         property != nullptr && inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
@@ -214,7 +214,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     // there
     auto eraseIter =
         std::remove_if(originals.begin(), originals.end(), [](App::DocumentObject const* obj) {
-            auto feature = freecad_cast<PartDesign::Feature>(obj);
+            auto feature = freecad_cast<PartDesign::Feature*>(obj);
             return feature != nullptr && feature->Suppressed.getValue();
         });
     originals.erase(eraseIter, originals.end());
@@ -298,7 +298,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 Part::TopoShape fuseShape;
                 Part::TopoShape cutShape;
 
-                auto feature = freecad_cast<PartDesign::FeatureAddSub>(original);
+                auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
                 if (!feature) {
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                         "Exception",

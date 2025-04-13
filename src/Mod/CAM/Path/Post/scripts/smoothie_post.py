@@ -68,11 +68,11 @@ parser.add_argument(
 parser.add_argument("--precision", default="4", help="number of digits of precision, default=4")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\nG90"',
+    help='set commands to be issued before the first command, default="G17\\nG90"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"',
+    help='set commands to be issued after the last command, default="M05\\nG17 G90\\nM2"',
 )
 parser.add_argument("--IP_ADDR", help="IP Address for machine target machine")
 parser.add_argument(
@@ -172,9 +172,9 @@ def processArguments(argstring):
         print("Show editor = %d" % SHOW_EDITOR)
         PRECISION = args.precision
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.inches:
             UNITS = "G20"
             UNIT_SPEED_FORMAT = "in/min"

@@ -29,11 +29,6 @@ if(DOXYGEN_FOUND)
         message("Note: Gui is not built. Documentation may lack some parts.")
     endif (NOT BUILD_GUI)
 
-    # Check required options
-    if(NOT BUILD_FEM)
-      message(FATAL_ERROR "Web documentation requires BUILD_FEM to be ON.")
-    endif()
-
     # directory order seems important for correct macro expansion
     # (files containing macros definitions must be parsed before the files using them)
     SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIRS}/Inventor/fields/SoSubField.h

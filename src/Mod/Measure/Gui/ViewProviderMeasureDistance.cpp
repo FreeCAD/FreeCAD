@@ -237,8 +237,8 @@ SbMatrix ViewProviderMeasureDistance::getMatrix()
         return {};
     }
 
-    auto prop1 = freecad_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
-    auto prop2 = freecad_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
+    auto prop1 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position1"));
+    auto prop2 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position2"));
 
     if (!prop1 || !prop2) {
         return {};
@@ -456,8 +456,8 @@ void ViewProviderMeasureDistance::redrawAnnotation()
         return;
     }
 
-    auto prop1 = freecad_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
-    auto prop2 = freecad_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
+    auto prop1 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position1"));
+    auto prop2 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position2"));
 
     if (!prop1 || !prop2) {
         return;
