@@ -1095,6 +1095,11 @@ Note that the calculation can take some time</string>
          <string>Points, circles and arcs</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Points</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>

@@ -1082,23 +1082,30 @@ int TaskHoleParameters::comboBoxIndexToBaseProfilesOption(int index) const
     // More options could be made available
     if (index == 0) {
         return PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs;
-    } else if (index == 1) {
-        return PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs;
-    } else {
-        Base::Console().Error("Unexpected hole base profile combobox index: %i", index);
-        return 0;
     }
+    if (index == 1) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs;
+    }
+     if (index == 2) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
+    } 
+    Base::Console().Error("Unexpected hole base profile combobox index: %i", index);
+    return 0;
 }
 int TaskHoleParameters::baseProfilesOptionToComboboxIndex(int baseprofilesoptions) const
 {
     if (baseprofilesoptions == PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs) {
         return 0;
-    } else if (baseprofilesoptions == PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs) {
+    } 
+    if (baseprofilesoptions == PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs) {
         return 1;
-    } else {
-        Base::Console().Error("Unexpected hole base profile bitmask: %i", baseprofilesoptions);
-        return -1;
+    } 
+    if (baseprofilesoptions == PartDesign::Hole::BaseProfileTypeOptions::OnPoints) {
+        return 2;
     }
+
+    Base::Console().Error("Unexpected hole base profile bitmask: %i", baseprofilesoptions);
+    return -1;
 }
 void TaskHoleParameters::apply()
 {

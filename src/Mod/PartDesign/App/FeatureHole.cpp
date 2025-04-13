@@ -1676,10 +1676,20 @@ void Hole::onChanged(const App::Property* prop)
 }
 void Hole::setupObject()
 {
-    // Set the BaseProfileType to "Points, Circles and Arcs"
+    // Set the BaseProfileType to the user defined value
     // here so that new objects use points, but older files
     // keep the default value of "Circles and Arcs"
-    BaseProfileType.setValue(BaseProfileTypeOptions::OnPointsCirclesArcs);
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    
+
+    if (hGrp->GetBool("AllowCirclesAndArcs", true)) {
+        BaseProfileType.setValue(BaseProfileTypeOptions::OnPointsCirclesArcs);
+    } else {
+        BaseProfileType.setValue(BaseProfileTypeOptions::OnPoints);
+    }
+    
     ProfileBased::setupObject();
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>333</height>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,6 +93,37 @@
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Features settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkAllowCirclesAndArcs4Holes">
+        <property name="text">
+         <string>Allow circles and arcs as base for the hole feature</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AllowCirclesAndArcs</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign</cstring>
         </property>
        </widget>
       </item>
