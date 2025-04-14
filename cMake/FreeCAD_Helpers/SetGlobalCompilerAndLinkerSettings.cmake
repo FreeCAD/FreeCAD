@@ -19,6 +19,14 @@ macro(SetGlobalCompilerAndLinkerSettings)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mxgot")
     endif()
 
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Og")
+        set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og")
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Og")
+        set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og")
+    endif()
+
     if(MSVC)
         # set default compiler settings
         add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR -DNOMINMAX)
