@@ -6,6 +6,10 @@ endif(MSVC)
 
 add_definitions(-DYAML_CPP_STATIC_DEFINE)
 
+if(BUILD_MATERIAL_EXTERNAL)
+    add_definitions(-DBUILD_MATERIAL_EXTERNAL)
+endif(BUILD_MATERIAL_EXTERNAL)
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
@@ -54,6 +58,11 @@ generate_from_py(ModelProperty)
 generate_from_py(MaterialProperty)
 generate_from_py(Model)
 generate_from_py(UUIDs)
+
+SET(MaterialsAPI_Files
+    MaterialAPI/__init__.py
+    MaterialAPI/MaterialManagerExternal.py
+)
 
 SET(Python_SRCS
     Exceptions.h
@@ -126,6 +135,12 @@ SET(Materials_SRCS
     PyVariants.h
     trim.h
 )
+if(BUILD_MATERIAL_EXTERNAL)
+    list(APPEND Materials_SRCS
+        ExternalManager.cpp
+        ExternalManager.h
+    )
+endif(BUILD_MATERIAL_EXTERNAL)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
@@ -143,3 +158,14 @@ SET_BIN_DIR(Materials Materials /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(Materials)
 
 INSTALL(TARGETS Materials DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+ADD_CUSTOM_TARGET(MaterialsAPILib ALL
+    SOURCES ${MaterialsAPI_Files} ${Material_QRC_SRCS}
+)
+
+fc_target_copy_resource(MaterialsAPILib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${MaterialsAPI_Files})
+
+INSTALL(FILES ${MaterialsAPI_Files} DESTINATION Mod/Material/MaterialAPI)
