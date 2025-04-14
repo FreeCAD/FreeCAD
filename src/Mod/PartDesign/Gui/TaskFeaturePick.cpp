@@ -138,8 +138,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
         // check if we need to set any origin in temporary visibility mode
         auto* datum = dynamic_cast<App::DatumElement*>(*objIt);
-        if (*statusIt != invalidShape && datum) {
-            App::Origin* origin = dynamic_cast<App::Origin*>(datum->getLCS());
+        if ((*statusIt == validFeature || *statusIt == basePlane) && datum) {
+            auto* origin = dynamic_cast<App::Origin*>(datum->getLCS());
             if (origin) {
                 if ((*objIt)->isDerivedFrom<App::Plane>()) {
                     originVisStatus[origin].setFlag(Gui::DatumElement::Planes, true);
@@ -155,7 +155,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     for (const auto& originPair : originVisStatus) {
         const auto& origin = originPair.first;
 
-        Gui::ViewProviderCoordinateSystem* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
+        auto* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(originVisStatus[origin]);
