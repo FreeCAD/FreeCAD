@@ -72,7 +72,7 @@
         </size>
        </property>
        <property name="autoFillBackground">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
