@@ -106,9 +106,9 @@ jobs:
         mkdir -p ${{ env.reportdir }}
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
-    - uses: prefix-dev/setup-pixi@v0.8.3
+    - uses: prefix-dev/setup-pixi@v0.8.7
       with:
-        pixi-version: v0.43.3
+        pixi-version: v0.45.0
         cache: false
 
     - name: Restore Compiler Cache
