@@ -35,7 +35,7 @@
 #include "FemPostFilterPy.cpp"
 // clang-format on
 
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
     #include <vtkUnstructuredGrid.h>
     #include <vtkPythonUtil.h>
 #endif //BUILD_FEM_VTK
@@ -54,7 +54,7 @@ std::string FemPostFilterPy::representation() const
 
 PyObject* FemPostFilterPy::addFilterPipeline(PyObject* args)
 {
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
     const char* name;
     PyObject *source = nullptr;
     PyObject *target = nullptr;
@@ -116,7 +116,7 @@ PyObject* FemPostFilterPy::getParentPostGroup(PyObject* args)
 
 PyObject* FemPostFilterPy::getInputData(PyObject* args)
 {
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
     // we take no arguments
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;

@@ -652,7 +652,7 @@ def makePostVtkFilterContours(doc, base_vtk_result, name="VtkFilterContours"):
     base_vtk_result.addObject(obj)
     return obj
 
-def makePostVtkFilterGlyph(doc, base_vtk_result, name="Glyph"):
+def makePostFilterGlyph(doc, base_vtk_result, name="Glyph"):
     """makePostVtkFilterGlyph(document, [name]):
     creates a FEM post processing filter that visualizes vector fields with glyphs
     """

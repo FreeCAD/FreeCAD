@@ -148,8 +148,8 @@ class CommandManager:
             self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_selobj_expand_noset_edit":
             self.add_obj_on_gui_selobj_expand_noset_edit(self.__class__.__name__.lstrip("_"))
-        elif self.do_activated == "add_filter":
-            self.add_filter(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_filter_set_edit":
+            self.add_filter_set_edit(self.__class__.__name__.lstrip("_"))
         # in all other cases Activated is implemented it the command class
 
     def results_present(self):
@@ -377,7 +377,7 @@ class CommandManager:
         # expand selobj in tree view
         expandParentObject()
 
-    def add_filter(self, filtertype):
+    def add_filter_set_edit(self, filtertype):
         # like add_obj_on_gui_selobj_noset_edit but the selection is kept
         # and the selobj is expanded in the tree to see the added obj
 
@@ -404,5 +404,14 @@ class CommandManager:
             "FreeCAD.ActiveDocument.{}.ViewObject.Visibility = False".format(self.selobj.Name)
         )
 
-        # expand selobj in tree view
+        # recompute, expand selobj in tree view
         expandParentObject()
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument.ActiveObject.recompute()"
+        )
+
+        # set edit
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.doCommand(
+            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
+        )

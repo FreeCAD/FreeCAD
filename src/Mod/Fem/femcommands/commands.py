@@ -1187,7 +1187,7 @@ class _PostFilterGlyph(CommandManager):
         self.accel = "F, G"
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_PostFilterGlyph", "Post processing filter that adds glyphs to the mesh vertices for vertex data visualization")
         self.is_active = "with_vtk_selresult"
-        self.do_activated = "add_filter"
+        self.do_activated = "add_filter_set_edit"
 
 
 # the string in add command will be the page name on FreeCAD wiki
@@ -1244,4 +1244,6 @@ FreeCADGui.addCommand("FEM_SolverElmer", _SolverElmer())
 FreeCADGui.addCommand("FEM_SolverMystran", _SolverMystran())
 FreeCADGui.addCommand("FEM_SolverRun", _SolverRun())
 FreeCADGui.addCommand("FEM_SolverZ88", _SolverZ88())
-FreeCADGui.addCommand("FEM_PostFilterGlyph", _PostFilterGlyph())
+
+if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
+    FreeCADGui.addCommand("FEM_PostFilterGlyph", _PostFilterGlyph())

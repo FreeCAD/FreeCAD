@@ -1,6 +1,12 @@
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
+
+    # we may use VTK but do not have the python wrappers available
+    if(BUILD_FEM_VTK_PYTHON)
+        add_definitions(-DFC_USE_VTK_PYTHON)
+    endif(BUILD_FEM_VTK_PYTHON)
+
 endif(BUILD_FEM_VTK)
 
 
@@ -202,10 +208,16 @@ SET(FemObjects_SRCS
     femobjects/mesh_netgen.py
     femobjects/mesh_region.py
     femobjects/mesh_result.py
-    femobjects/post_glyphfilter.py
     femobjects/result_mechanical.py
     femobjects/solver_ccxtools.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemObjects_SRCS
+        ${FemObjects_SRCS}
+        femobjects/post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemResult_SRCS
     femresult/__init__.py
@@ -603,10 +615,16 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_group.py
     femtaskpanels/task_mesh_region.py
     femtaskpanels/task_mesh_netgen.py
-    femtaskpanels/task_post_glyphfilter.py
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_ccxtools.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemGuiTaskPanels_SRCS
+        ${FemGuiTaskPanels_SRCS}
+        femtaskpanels/task_post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemGuiTests_SRCS
     femtest/gui/__init__.py
@@ -653,10 +671,16 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_mesh_netgen.py
     femviewprovider/view_mesh_region.py
     femviewprovider/view_mesh_result.py
-    femviewprovider/view_post_glyphfilter.py
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_ccxtools.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemGuiViewProvider_SRCS
+        ${FemGuiViewProvider_SRCS}
+        femviewprovider/view_post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemGuiPreferencePages_SRCS
     fempreferencepages/__init__.py
