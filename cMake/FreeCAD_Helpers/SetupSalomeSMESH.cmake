@@ -64,9 +64,11 @@ macro(SetupSalomeSMESH)
 
         set(BUILD_FEM_VTK ON)
 
-        # check if PythonWrapperCore was found (vtk 9 only)
+        # Check if PythonWrapperCore was found
+        # Note: vtk 9 only, as the implementations use the vtk modules introduced in 9.0
+        #       VTK_WrappingPythonCore_FOUND is named differently for versions <9.0
         if (${VTK_WrappingPythonCore_FOUND})
-            add_compile_definitions(BUILD_FEM_VTK_WRAPPER)
+            set(BUILD_FEM_VTK_PYTHON 1)
             message(STATUS "VTK python wrapper: available")
         else()
             message(STATUS "VTK python wrapper: NOT available")
