@@ -42,7 +42,7 @@
 #include <vtkXMLUnstructuredGridReader.h>
 #endif
 
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
 #include <vtkPythonUtil.h>
 #endif
 
@@ -166,7 +166,7 @@ int PropertyPostDataObject::getDataType()
 
 PyObject* PropertyPostDataObject::getPyObject()
 {
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
     //create a copy first
     auto copy = static_cast<PropertyPostDataObject*>(Copy());
 
@@ -182,9 +182,22 @@ PyObject* PropertyPostDataObject::getPyObject()
 #endif
 }
 
-void PropertyPostDataObject::setPyObject(PyObject* /*value*/)
+void PropertyPostDataObject::setPyObject(PyObject* value)
 {
+#ifdef FC_USE_VTK_PYTHON
+    vtkObjectBase *obj = vtkPythonUtil::GetPointerFromObject(value, "vtkDataObject");
+    if (!obj) {
+        throw Base::TypeError("Can only set vtkDataObject");
+    }
+    auto dobj = static_cast<vtkDataObject*>(obj);
+    createDataObjectByExternalType(dobj);
+
+    aboutToSetValue();
+    m_dataObject->DeepCopy(dobj);
+    hasSetValue();
+#else
     throw Base::NotImplementedError();
+#endif
 }
 
 App::Property* PropertyPostDataObject::Copy() const
