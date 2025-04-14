@@ -183,7 +183,7 @@ rm -rf build && mkdir build && cd build
 
 # Update submodules so they are available
 # when rpkg fetches git source from remote
-%if ! %{init_submodules}
+%if %{init_submodules}
 {{{git_submodule_update_init}}}
 %endif
 
