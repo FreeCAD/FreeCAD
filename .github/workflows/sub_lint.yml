@@ -121,7 +121,7 @@ on:
         type: string
         required: false
       spellingIgnore:
-        default: ./.git,*.po,*.ts,*.svg,./ChangeLog.txt,./src/3rdParty,./src/Mod/Assembly/App/opendcm,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL*,./src/WindowsInstaller,./src/Doc/FreeCAD.uml,./build/
+        default: ./.git*,*.po,*.ts,*.svg,./src/3rdParty,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL*,./src/Doc/FreeCAD.uml,./build/
         type: string
         required: false
       codespellFailSilent:
