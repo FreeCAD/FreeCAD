@@ -482,7 +482,6 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(
     const Base::Vector2d& Dir,
     AutoConstraint::TargetType type)
 {
-    SketchObject* obj = sketchgui->getSketchObject();
     PreselectionData preSel = getPreselectionData();
 
     if (preSel.geoId != GeoEnum::GeoUndef) {
