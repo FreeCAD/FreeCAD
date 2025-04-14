@@ -44,6 +44,8 @@
 
 #ifdef FC_USE_VTK_PYTHON
 #include <vtkPythonUtil.h>
+#else
+#include <Base/PyObjectBase.h>
 #endif
 
 #include <App/Application.h>
