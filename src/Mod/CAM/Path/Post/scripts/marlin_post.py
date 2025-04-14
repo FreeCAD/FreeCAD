@@ -156,7 +156,7 @@ parser.add_argument(
     "--preamble", help='set commands to be issued before the first command, default=""'
 )
 parser.add_argument(
-    "--postamble", help='set commands to be issued after the last command, default="M5"'
+    "--postamble", help='set commands to be issued after the last command, default="M5\\n"'
 )
 parser.add_argument("--tool-change", action="store_true", help="Insert M6 for all tool changes")
 parser.add_argument(

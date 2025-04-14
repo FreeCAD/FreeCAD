@@ -123,11 +123,11 @@ parser.add_argument(
 )
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17 G90"',
+    help='set commands to be issued before the first command, default="G17 G90\\n"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M5\\nG17 G90\\nM2"',
+    help='set commands to be issued after the last command, default="M5\\nG17 G90\\nM2\\n"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
