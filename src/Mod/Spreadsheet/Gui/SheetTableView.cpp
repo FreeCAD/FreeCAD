@@ -56,7 +56,17 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
-namespace sp = std::placeholders;
+
+void SheetViewHeader::mouseMoveEvent(QMouseEvent *e)
+{
+    // for some reason QWidget::setCursor() has no effect in QGraphicsView
+    // therefore we resort to override cursor
+    const QCursor current_cursor = this->cursor();
+    QHeaderView::mouseMoveEvent(e);
+    const QCursor newer_cursor = this->cursor();
+    if (newer_cursor != current_cursor)
+        qApp->setOverrideCursor(newer_cursor);
+}
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent* event)
 {
