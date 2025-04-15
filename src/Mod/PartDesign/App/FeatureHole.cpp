@@ -69,8 +69,11 @@ namespace PartDesign {
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
 const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", nullptr};
-const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
+
+const char* Hole::ClearanceNoneEnums[]               = { "-", "-", "-", nullptr};
+const char* Hole::ClearanceMetricEnums[]             = { "Medium", "Fine", "Coarse", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
+const char* Hole::ClearanceOtherEnums[]              = { "Normal", "Close", "Wide", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
 
 /* "None" profile */
@@ -526,7 +529,7 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
 const double Hole::metricHoleDiameters[51][4] =
 {
     /* ISO metric clearance hole diameters according to ISO 273 */
-    // {screw diameter, close, standard, coarse}
+    // {screw diameter, fine, medium, coarse}
         { 1.0,    1.1,    1.2,    1.3},
         { 1.2,    1.3,    1.4,    1.5},
         { 1.4,    1.5,    1.6,    1.8},
@@ -1415,6 +1418,7 @@ void Hole::onChanged(const App::Property* prop)
             Threaded.setValue(false);
             ModelThread.setValue(false);
             UseCustomThreadClearance.setValue(false);
+            ThreadFit.setEnums(ClearanceNoneEnums);
         }
         else if (type == "ISOMetricProfile") {
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
@@ -1444,18 +1448,22 @@ void Hole::onChanged(const App::Property* prop)
         else if (type == "BSP") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_BSP_Enums);
+            ThreadFit.setEnums(ClearanceMetricEnums);
         }
         else if (type == "NPT") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_NPT_Enums);
+            ThreadFit.setEnums(ClearanceUTSEnums);
         }
         else if (type == "BSW") {
             ThreadClass.setEnums(ThreadClass_BSW_Enums);
             HoleCutType.setEnums(HoleCutType_BSW_Enums);
+            ThreadFit.setEnums(ClearanceOtherEnums);
         }
         else if (type == "BSF") {
             ThreadClass.setEnums(ThreadClass_BSF_Enums);
             HoleCutType.setEnums(HoleCutType_BSF_Enums);
+            ThreadFit.setEnums(ClearanceOtherEnums);
         }
 
         bool isNone = type == "None";
