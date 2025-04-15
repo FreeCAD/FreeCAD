@@ -652,20 +652,19 @@ def makePostVtkFilterContours(doc, base_vtk_result, name="VtkFilterContours"):
     base_vtk_result.addObject(obj)
     return obj
 
-if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
-    def makePostFilterGlyph(doc, base_vtk_result, name="Glyph"):
-        """makePostVtkFilterGlyph(document, [name]):
-        creates a FEM post processing filter that visualizes vector fields with glyphs
-        """
-        obj = doc.addObject("Fem::PostFilterPython", name)
-        from femobjects import post_glyphfilter
+def makePostFilterGlyph(doc, base_vtk_result, name="Glyph"):
+    """makePostVtkFilterGlyph(document, [name]):
+    creates a FEM post processing filter that visualizes vector fields with glyphs
+    """
+    obj = doc.addObject("Fem::PostFilterPython", name)
+    from femobjects import post_glyphfilter
 
-        post_glyphfilter.PostGlyphFilter(obj)
-        base_vtk_result.addObject(obj)
-        if FreeCAD.GuiUp:
-            from femviewprovider import view_post_glyphfilter
-            view_post_glyphfilter.VPPostGlyphFilter(obj.ViewObject)
-        return obj
+    post_glyphfilter.PostGlyphFilter(obj)
+    base_vtk_result.addObject(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_glyphfilter
+        view_post_glyphfilter.VPPostGlyphFilter(obj.ViewObject)
+    return obj
 
 def makePostVtkResult(doc, result_data, name="VtkResult"):
     """makePostVtkResult(document, base_result, [name]):

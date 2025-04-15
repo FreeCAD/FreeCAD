@@ -79,11 +79,11 @@ class TestObjectCreate(unittest.TestCase):
         # solver children: equations --> 10
         # gmsh mesh children: group, region, boundary layer --> 3
         # result children: mesh result --> 1
-        # post pipeline children: region, scalar, cut, wrap --> 5
+        # post pipeline children: region, scalar, cut, wrap, glyph --> 6
         # analysis itself is not in analysis group --> 1
-        # thus: -20
+        # thus: -21
 
-        self.assertEqual(len(doc.Analysis.Group), count_defmake - 20)
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - 21)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print(
@@ -1154,7 +1154,7 @@ def create_all_fem_objects_doc(doc):
         ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
         ObjectsFem.makePostVtkFilterWarp(doc, vres)
         ObjectsFem.makePostVtkFilterContours(doc, vres)
-        ObjectsFem.makePostVtkFilterGlyph(doc, vres)
+        ObjectsFem.makePostFilterGlyph(doc, vres)
 
     analysis.addObject(ObjectsFem.makeSolverCalculiXCcxTools(doc))
     analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
