@@ -76,6 +76,9 @@ sysroot_linux-64 = "*"
 xorg-x11-server-common-cos7-x86_64 = "*"
 xorg-x11-server-xvfb-cos7-x86_64 = "*"
 xorg-xproto = "*"
+clang = ">=19.1.7,<20"
+clangxx = ">=19.1.7,<20"
+llvm-openmp = ">=20.1.2,<21"
 
 ## Linux Dependencies (aarch64)
 [target.linux-aarch64.dependencies]
@@ -111,6 +114,9 @@ sysroot_linux-aarch64 = "*"
 xorg-x11-server-common-cos7-aarch64 = "*"
 xorg-x11-server-xvfb-cos7-aarch64 = "*"
 xorg-xproto = "*"
+clang = ">=19.1.7,<20"
+clangxx = ">=19.1.7,<20"
+llvm-openmp = ">=20.1.2,<21"
 
 ## macOS Dependencies (Intel)
 [target.osx-64.dependencies]
