@@ -119,6 +119,14 @@
         },
         "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
+          "CMAKE_C_COMPILER": {
+            "type": "STRING",
+            "value": "clang"
+          },
+          "CMAKE_CXX_COMPILER": {
+            "type": "STRING",
+            "value": "clang++"
+          },
           "CMAKE_EXE_LINKER_FLAGS": {
             "type": "STRING",
             "value": "-fuse-ld=mold"
