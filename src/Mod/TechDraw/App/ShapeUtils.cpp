@@ -65,6 +65,7 @@
 #endif// #ifndef _PreComp_
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 #include "DrawUtil.h"
 #include "ShapeUtils.h"
@@ -266,19 +267,17 @@ TopoDS_Shape ShapeUtils::mirrorShape(const TopoDS_Shape& input, const gp_Pnt& in
 
 //!rotates a shape about a viewAxis
 TopoDS_Shape ShapeUtils::rotateShape(const TopoDS_Shape& input, const gp_Ax2& viewAxis,
-                                   double rotAngle)
+                                     double rotAngle)
 {
     TopoDS_Shape transShape;
     if (input.IsNull()) {
         return transShape;
     }
 
-    gp_Ax1 rotAxis = viewAxis.Axis();
-    double rotation = rotAngle * std::numbers::pi / 180.0;
-
     try {
+        gp_Ax1 rotAxis = viewAxis.Axis();
         gp_Trsf tempTransform;
-        tempTransform.SetRotation(rotAxis, rotation);
+        tempTransform.SetRotation(rotAxis, Base::toRadians(rotAngle));
         BRepBuilderAPI_Transform mkTrf(input, tempTransform);
         transShape = mkTrf.Shape();
     }

@@ -32,6 +32,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -964,7 +965,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         highlight->setPos(0.0, 0.0);//sb setPos(center.x, center.y)?
 
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
-        double rotationRad = viewPart->Rotation.getValue() * std::numbers::pi / 180.0;
+        double rotationRad = Base::toRadians(viewPart->Rotation.getValue());
         center.RotateZ(rotationRad);
 
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();

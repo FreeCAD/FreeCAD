@@ -25,6 +25,7 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 #endif
 
+#include <Base/Tools.h>
 #include <Mod/Points/App/Points.h>
 
 #include "RegionGrowing.h"
@@ -88,7 +89,7 @@ void RegionGrowing::perform(int ksearch)
     reg.setInputCloud(cloud);
     // reg.setIndices (indices);
     reg.setInputNormals(normals);
-    reg.setSmoothnessThreshold(3.0 / 180.0 * std::numbers::pi);
+    reg.setSmoothnessThreshold(Base::toRadians(3.0));
     reg.setCurvatureThreshold(1.0);
 
     std::vector<pcl::PointIndices> clusters;
@@ -142,7 +143,7 @@ void RegionGrowing::perform(const std::vector<Base::Vector3f>& myNormals)
     reg.setInputCloud(cloud);
     // reg.setIndices (indices);
     reg.setInputNormals(normals);
-    reg.setSmoothnessThreshold(3.0 / 180.0 * std::numbers::pi);
+    reg.setSmoothnessThreshold(Base::toRadians(3.0));
     reg.setCurvatureThreshold(1.0);
 
     std::vector<pcl::PointIndices> clusters;
