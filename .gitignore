@@ -1,5 +1,6 @@
 # file types to ignore
 .*
+!/.tito/
 !/.clang-format
 !/.clang-tidy
 !/.git-blame-ignore-revs
