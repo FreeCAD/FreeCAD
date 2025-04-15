@@ -59,7 +59,7 @@ template<> PyObject* FemGui::ViewProviderPostFilterPython::getPyObject()
 }
 
 // explicit template instantiation
-template class GuiExport ViewProviderFeaturePythonT<FemGui::ViewProviderFemPostFilterPythonBase>;
+template class FemGuiExport ViewProviderFeaturePythonT<FemGui::ViewProviderFemPostFilterPythonBase>;
 
 }
 
