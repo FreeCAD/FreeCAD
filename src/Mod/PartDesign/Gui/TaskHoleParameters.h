@@ -80,8 +80,6 @@ public:
     long getThreadDepthType() const;
     double getThreadDepth() const;
     int getBaseProfileType() const;
-    int comboBoxIndexToBaseProfilesOption(int index) const;
-    int baseProfilesOptionToComboboxIndex(int baseprofilesoptions) const;
 
 private Q_SLOTS:
     void threadedChanged();

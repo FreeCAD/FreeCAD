@@ -21,11 +21,11 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
-        <property name="text">
+       <widget class="Gui::PrefCheckBox" name="checkBooleanCheck" native="true">
+        <property name="text" stdset="0">
          <string>Automatically check model after boolean operation</string>
         </property>
-        <property name="checked">
+        <property name="checked" stdset="0">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -37,11 +37,11 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBooleanRefine">
-        <property name="text">
+       <widget class="Gui::PrefCheckBox" name="checkBooleanRefine" native="true">
+        <property name="text" stdset="0">
          <string>Automatically refine model after boolean operation</string>
         </property>
-        <property name="checked">
+        <property name="checked" stdset="0">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -53,11 +53,11 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
-        <property name="text">
+       <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine" native="true">
+        <property name="text" stdset="0">
          <string>Automatically refine model after sketch-based operation</string>
         </property>
-        <property name="checked">
+        <property name="checked" stdset="0">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -84,8 +84,8 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
-        <property name="text">
+       <widget class="Gui::PrefCheckBox" name="checkObjectNaming" native="true">
+        <property name="text" stdset="0">
          <string>Add name of base object</string>
         </property>
         <property name="prefEntry" stdset="0">
@@ -110,21 +110,40 @@
      <property name="title">
       <string>Features settings</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkAllowCirclesAndArcs4Holes">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Allow circles and arcs as base for the hole feature</string>
+         <string>Default profile type for holes</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefComboBox" name="comboDefaultProfileTypeForHole">
+        <property name="currentIndex">
+         <number>1</number>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>AllowCirclesAndArcs</cstring>
+         <cstring>defaultBaseTypeHole</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/PartDesign</cstring>
         </property>
+        <item>
+         <property name="text">
+          <string>Circles and arcs</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Points, circles and arcs</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Points</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
@@ -185,13 +204,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

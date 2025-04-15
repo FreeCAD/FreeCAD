@@ -1683,12 +1683,7 @@ void Hole::setupObject()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     
-
-    if (hGrp->GetBool("AllowCirclesAndArcs", true)) {
-        BaseProfileType.setValue(BaseProfileTypeOptions::OnPointsCirclesArcs);
-    } else {
-        BaseProfileType.setValue(BaseProfileTypeOptions::OnPoints);
-    }
+    BaseProfileType.setValue(baseProfileOption_idxToBitmask(hGrp->GetInt("defaultBaseTypeHole", 1)));
     
     ProfileBased::setupObject();
 }
@@ -2610,5 +2605,38 @@ void Hole::readCutDefinitions()
         }
     }
 }
+
+int Hole::baseProfileOption_idxToBitmask(int index)
+{
+    // Translate combobox index to bitmask value
+    // More options could be made available
+    if (index == 0) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs;
+    }
+    if (index == 1) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs;
+    }
+     if (index == 2) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
+    } 
+    Base::Console().Error("Unexpected hole base profile combobox index: %i", index);
+    return 0;
+}
+int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
+{
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs) {
+        return 0;
+    } 
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs) {
+        return 1;
+    } 
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnPoints) {
+        return 2;
+    }
+
+    Base::Console().Error("Unexpected hole base profile bitmask: %i", bitmask);
+    return -1;
+}
+
 
 } // namespace PartDesign

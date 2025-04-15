@@ -183,7 +183,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
 
-    ui->BaseProfileType->setCurrentIndex(baseProfilesOptionToComboboxIndex(pcHole->BaseProfileType.getValue()));
+    ui->BaseProfileType->setCurrentIndex(PartDesign::Hole::baseProfileOption_bitmaskToIdx(pcHole->BaseProfileType.getValue()));
 
     setCutDiagram();
 
@@ -416,7 +416,7 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
 void TaskHoleParameters::baseProfileTypeChanged(int index)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
-        hole->BaseProfileType.setValue(comboBoxIndexToBaseProfilesOption(index));
+        hole->BaseProfileType.setValue(PartDesign::Hole::baseProfileOption_idxToBitmask(index));
         recomputeFeature();
     }
 }
@@ -922,7 +922,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         updateSpinBox(ui->ThreadDepth, hole->ThreadDepth.getValue());
     } else if (&Prop == &hole->BaseProfileType) {
         ui->BaseProfileType->setEnabled(true);
-        updateComboBox(ui->BaseProfileType, baseProfilesOptionToComboboxIndex(hole->BaseProfileType.getValue()));
+        updateComboBox(ui->BaseProfileType, PartDesign::Hole::baseProfileOption_bitmaskToIdx(hole->BaseProfileType.getValue()));
     }
 }
 
@@ -1074,38 +1074,7 @@ double TaskHoleParameters::getThreadDepth() const
 }
 int TaskHoleParameters::getBaseProfileType() const
 {
-    return comboBoxIndexToBaseProfilesOption(ui->BaseProfileType->currentIndex());
-}
-int TaskHoleParameters::comboBoxIndexToBaseProfilesOption(int index) const
-{
-    // Translate combobox index to bitmask value
-    // More options could be made available
-    if (index == 0) {
-        return PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs;
-    }
-    if (index == 1) {
-        return PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs;
-    }
-     if (index == 2) {
-        return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
-    } 
-    Base::Console().Error("Unexpected hole base profile combobox index: %i", index);
-    return 0;
-}
-int TaskHoleParameters::baseProfilesOptionToComboboxIndex(int baseprofilesoptions) const
-{
-    if (baseprofilesoptions == PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs) {
-        return 0;
-    } 
-    if (baseprofilesoptions == PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs) {
-        return 1;
-    } 
-    if (baseprofilesoptions == PartDesign::Hole::BaseProfileTypeOptions::OnPoints) {
-        return 2;
-    }
-
-    Base::Console().Error("Unexpected hole base profile bitmask: %i", baseprofilesoptions);
-    return -1;
+    return PartDesign::Hole::baseProfileOption_idxToBitmask(ui->BaseProfileType->currentIndex());
 }
 void TaskHoleParameters::apply()
 {

@@ -85,6 +85,8 @@ public:
         OnPointsCirclesArcs = OnPoints | OnCircles | OnArcs,
         OnCirclesArcs = OnCircles | OnArcs
     };
+    static int baseProfileOption_idxToBitmask(int index);
+    static int baseProfileOption_bitmaskToIdx(int bitmask);
 
     /** @name methods override feature */
     //@{
