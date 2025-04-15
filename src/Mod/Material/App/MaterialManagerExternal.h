@@ -64,7 +64,8 @@ public:
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries();
     std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
-    void createLibrary(const QString& libraryName, const QString& iconPath, bool readOnly = true);
+    void
+    createLibrary(const QString& libraryName, const QByteArray& icon, bool readOnly = true);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryMaterials(const QString& libraryName);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>

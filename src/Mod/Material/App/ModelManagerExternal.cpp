@@ -97,10 +97,10 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerExternal::
 }
 
 void ModelManagerExternal::createLibrary(const QString& libraryName,
-                                         const QString& iconPath,
+                                         const QByteArray& icon,
                                          bool readOnly)
 {
-    ExternalManager::getManager()->createLibrary(libraryName, iconPath, readOnly);
+    ExternalManager::getManager()->createLibrary(libraryName, icon, readOnly);
 }
 
 //=====

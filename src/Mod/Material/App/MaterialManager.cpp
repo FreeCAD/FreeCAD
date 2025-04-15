@@ -561,7 +561,8 @@ void MaterialManager::dereference(std::shared_ptr<Material> material) const
 void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library)
 {
     _externalManager->createLibrary(library->getName(),
-                                    library->getIconPath(),
+                                    QByteArray(library->getIconPath().toStdString().c_str(),
+                                               library->getIconPath().toStdString().size()),
                                     library->isReadOnly());
 
     auto materials = _localManager->libraryMaterials(library->getName());

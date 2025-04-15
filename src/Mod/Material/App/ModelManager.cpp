@@ -126,10 +126,12 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocal
     return _localManager->getLibraries();
 }
 
-void ModelManager::createLibrary(const QString& libraryName, const QString& iconPath, bool readOnly)
+void ModelManager::createLibrary(const QString& libraryName,
+                                 const QByteArray& icon,
+                                 bool readOnly)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
-    _externalManager->createLibrary(libraryName, iconPath, readOnly);
+    _externalManager->createLibrary(libraryName, icon, readOnly);
 #endif
 }
 
@@ -226,7 +228,8 @@ bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType)
 void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library)
 {
     _externalManager->createLibrary(library->getName(),
-                                    library->getIconPath(),
+                                    QByteArray(library->getIconPath().toStdString().c_str(),
+                                               library->getIconPath().toStdString().size()),
                                     library->isReadOnly());
 
     auto models = _localManager->libraryModels(library->getName());

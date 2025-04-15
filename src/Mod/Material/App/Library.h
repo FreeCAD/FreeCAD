@@ -23,6 +23,7 @@
 #define MATERIAL_LIBRARY_H
 
 #include <QDir>
+#include <QByteArray>
 #include <QString>
 
 #include <Base/BaseClass.h>
@@ -39,10 +40,22 @@ class MaterialsExport Library: public Base::BaseClass
 public:
     Library() = default;
     Library(const QString& libraryName, const QString& iconPath, bool readOnly = true);
-    Library(const QString& libraryName, const QString& iconPath, bool readOnly, const QString& timestamp);
+    Library(const QString& libraryName,
+            const QString& iconPath,
+            bool readOnly,
+            const QString& timestamp);
     Library(const QString& libraryName,
             const QString& dir,
             const QString& iconPath,
+            bool readOnly = true);
+    Library(const QString& libraryName, const QByteArray& icon, bool readOnly = true);
+    Library(const QString& libraryName,
+            const QByteArray& icon,
+            bool readOnly,
+            const QString& timestamp);
+    Library(const QString& libraryName,
+            const QString& dir,
+            const QByteArray& icon,
             bool readOnly = true);
     ~Library() override = default;
 
@@ -63,9 +76,21 @@ public:
     {
         return _iconPath;
     }
-    void setIconPath(const QString& icon)
+    void setIconPath(const QString& iconPath)
     {
-        _iconPath = icon;
+        _iconPath = iconPath;
+    }
+    QByteArray getIcon() const
+    {
+        return _icon;
+    }
+    void setIcon(const QByteArray& icon)
+    {
+        _icon = icon;
+    }
+    bool hasIcon() const
+    {
+        return _icon.size() > 0;
     }
     bool isReadOnly() const
     {
@@ -115,6 +140,7 @@ private:
     QString _name;
     QString _directory;
     QString _iconPath;
+    QByteArray _icon;
     bool _readOnly;
     QString _timestamp;
 };

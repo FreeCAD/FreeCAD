@@ -60,6 +60,31 @@ Library::Library(const QString& libraryName,
     , _readOnly(readOnly)
 {}
 
+Library::Library(const QString& libraryName, const QByteArray& icon, bool readOnly)
+    : _name(libraryName)
+    , _icon(icon)
+    , _readOnly(readOnly)
+{}
+
+Library::Library(const QString& libraryName,
+                 const QByteArray& icon,
+                 bool readOnly,
+                 const QString& timestamp)
+    : _name(libraryName)
+    , _icon(icon)
+    , _readOnly(readOnly)
+    , _timestamp(timestamp)
+{}
+
+Library::Library(const QString& libraryName,
+                 const QString& dir,
+                 const QByteArray& icon,
+                 bool readOnly)
+    : _name(libraryName)
+    , _icon(icon)
+    , _readOnly(readOnly)
+{}
+
 bool Library::operator==(const Library& library) const
 {
     return (getName() == library.getName()) && (_directory == library._directory);

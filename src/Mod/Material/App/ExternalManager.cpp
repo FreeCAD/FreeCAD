@@ -197,6 +197,12 @@ ExternalManager::libraryFromTuple(const Py::Tuple& entry)
     return library;
 }
 
+Py::Byte ExternalManager::bytesFromImage(const QByteArray& icon)
+{
+    return Py::Byte(PyBytes_FromStringAndSize(const_cast<char*>(icon.data()), icon.size()),
+                    true);
+}
+
 std::shared_ptr<std::vector<std::shared_ptr<Library>>>
 ExternalManager::libraries()
 {
@@ -313,7 +319,9 @@ std::shared_ptr<Library> ExternalManager::getLibrary(const QString& name)
     }
 }
 
-void ExternalManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+void ExternalManager::createLibrary(const QString& libraryName,
+                                    const QByteArray& icon,
+                                    bool readOnly)
 {
     connect();
 
@@ -323,7 +331,7 @@ void ExternalManager::createLibrary(const QString& libraryName, const QString& i
             Py::Callable libraries(_managerObject.getAttr("createLibrary"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
-            args.setItem(1, Py::String(icon.toStdString()));
+            args.setItem(1, bytesFromImage(icon));
             args.setItem(2, Py::Boolean(readOnly));
             libraries.apply(args);  // No return expected
         }
@@ -362,7 +370,7 @@ void ExternalManager::renameLibrary(const QString& libraryName, const QString& n
     }
 }
 
-void ExternalManager::changeIcon(const QString& libraryName, const QString& icon)
+void ExternalManager::changeIcon(const QString& libraryName, const QByteArray& icon)
 {
     connect();
 
@@ -372,7 +380,7 @@ void ExternalManager::changeIcon(const QString& libraryName, const QString& icon
             Py::Callable libraries(_managerObject.getAttr("changeIcon"));
             Py::Tuple args(2);
             args.setItem(0, Py::String(libraryName.toStdString()));
-            args.setItem(1, Py::String(icon.toStdString()));
+            args.setItem(1, bytesFromImage(icon));
             libraries.apply(args);  // No return expected
         }
         else {
