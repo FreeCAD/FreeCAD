@@ -122,7 +122,6 @@ protected:
                                    const char* typeName,
                                    const char* propName) override;
 
-    virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
     void updateVtk();
     void setRangeOfColorBar(float min, float max);
