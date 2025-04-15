@@ -1,7 +1,7 @@
 name: Weekly Build
 on:
   schedule:
-   - cron: "0 23 * * *"
+   - cron: "0 18 * * *"
 
 permissions:
   contents: write
