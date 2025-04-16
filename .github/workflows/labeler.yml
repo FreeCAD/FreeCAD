@@ -9,6 +9,9 @@ on:
   pull_request_target:
     types: [opened, reopened]
 
+permissions:
+  contents: read
+
 jobs:
   label:
     runs-on: ubuntu-latest
@@ -17,7 +20,12 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/labeler@v5
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+      with:
+        egress-policy: audit
+
+    - uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: ".github/labels.yml"
