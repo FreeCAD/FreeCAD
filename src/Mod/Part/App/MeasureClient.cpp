@@ -189,6 +189,9 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                     return App::MeasureElementType::SURFACE; }
             }
         }
+        case TopAbs_SHELL: {
+            return App::MeasureElementType::SURFACE;
+        }
         case TopAbs_SOLID: {
             return App::MeasureElementType::VOLUME;
         }
@@ -341,7 +344,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
-    if (sType != TopAbs_FACE) {
+    if (sType != TopAbs_FACE && sType != TopAbs_SHELL && sType != TopAbs_SOLID) {
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
 
