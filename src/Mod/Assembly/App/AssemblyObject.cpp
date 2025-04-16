@@ -29,9 +29,6 @@
 #include <unordered_map>
 #endif
 
-#include <thread>
-#include <chrono>
-
 #include <App/Application.h>
 #include <App/Datums.h>
 #include <App/Document.h>
@@ -88,7 +85,6 @@
 #include "AssemblyUtils.h"
 #include "JointGroup.h"
 #include "ViewGroup.h"
-#include "SimulationGroup.h"
 
 FC_LOG_LEVEL_INIT("Assembly", true, true, true)
 
