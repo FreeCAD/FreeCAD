@@ -38,7 +38,7 @@ Group:          Applications/Engineering
 
 License:        LGPLv2+
 URL:            https://www.freecad.org/
-Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.gz
+Source0:        {{{git_repo_pack_with_submodules}}}
 
 
 # Utilities
@@ -162,7 +162,7 @@ Data files for FreeCAD
 
 
 %prep
-%autosetup -p1 -n FreeCAD-%{branch}
+%autosetup -p1 -n FreeCAD
 # Remove bundled pycxx if we're not using it
 %if ! %{bundled_pycxx}
 rm -rf src/CXX
