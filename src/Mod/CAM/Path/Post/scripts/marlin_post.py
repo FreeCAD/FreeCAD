@@ -335,7 +335,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin preamble)\n"
     for line in PREAMBLE.splitlines():
-        gcode += linenumber() + line + '\n'
+        gcode += linenumber() + line + "\n"
 
     # Write these settings AFTER the preamble,
     # to prevent the preamble from changing these:
@@ -410,7 +410,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin postamble)\n"
     for line in POSTAMBLE.splitlines():
-        gcode += linenumber() + line + '\n'
+        gcode += linenumber() + line + "\n"
 
     # Optionally add a final XYZ position to the end of the gcode:
     if RETURN_TO:

@@ -236,7 +236,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin preamble)\n"
     for line in PREAMBLE.splitlines():
-        gcode += linenumber() + line + '\n'
+        gcode += linenumber() + line + "\n"
     # verify if PREAMBLE have changed UNITS
     if "G21" in PREAMBLE:
         UNITS = "G21"

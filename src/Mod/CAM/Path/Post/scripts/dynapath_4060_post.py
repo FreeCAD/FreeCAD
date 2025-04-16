@@ -226,7 +226,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(T)" + "BEGIN PREAMBLE$\n"
     for line in PREAMBLE.splitlines():
-        gcode += linenumber() + line + '\n'
+        gcode += linenumber() + line + "\n"
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
@@ -290,7 +290,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(T)" + "BEGIN POSTAMBLE$\n"
     for line in POSTAMBLE.splitlines():
-        gcode += linenumber() + line + '\n'
+        gcode += linenumber() + line + "\n"
     # Following is required by Dynapath Controls to signify "EOF" when loading in to control
     # from external media. The control strips the "E" off as part of the load process.
     gcode += "E\n"

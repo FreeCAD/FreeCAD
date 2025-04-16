@@ -354,7 +354,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_COMMENTS:
         gcode += linenumber() + COMMENT_CHAR + "(begin postamble)\n"
     for line in POSTAMBLE.splitlines():
-        gcode += linenumber() + line + '\n'
+        gcode += linenumber() + line + "\n"
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         final = gcode
