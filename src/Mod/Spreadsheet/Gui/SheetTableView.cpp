@@ -57,7 +57,7 @@ using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
 
-void SheetViewHeader::mouseMoveEvent(QMouseEvent *e)
+void SheetViewHeader::mouseMoveEvent(QMouseEvent* e)
 {
     // for some reason QWidget::setCursor() has no effect in QGraphicsView
     // therefore we resort to override cursor
