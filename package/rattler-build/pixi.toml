@@ -20,7 +20,7 @@ backend = { name = "pixi-build-rattler-build", version = "*" }
 freecad = { path = "." }
 
 [feature.package.dependencies]
-python = "==3.12.9"
+python = ">=3.11,<3.12"
 
 ## Linux (x86-64)
 [feature.package.target.linux-64.dependencies]
