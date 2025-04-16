@@ -21,13 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD post line plot"
+__title__ = "FreeCAD post histogram"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
 ## @package post_histogram
 #  \ingroup FEM
-#  \brief Post processing plot displaying lines
+#  \brief Post processing plot displaying histograms
 
 from . import base_fempythonobject
 _PropHelper = base_fempythonobject._PropHelper
@@ -46,7 +46,7 @@ from femguiutils import post_visualization
 post_visualization.register_visualization("Histogram",
                                           ":/icons/FEM_PostHistogram.svg",
                                           "ObjectsFem",
-                                          "makePostVtkHistogram")
+                                          "makePostHistogram")
 
 post_visualization.register_extractor("Histogram",
                                       "HistogramFieldData",
@@ -54,7 +54,7 @@ post_visualization.register_extractor("Histogram",
                                       "1D",
                                       "Field",
                                       "ObjectsFem",
-                                      "makePostVtkHistogramFieldData")
+                                      "makePostHistogramFieldData")
 
 
 # Implementation

@@ -36,7 +36,7 @@ SET(FemBaseModules_SRCS
     coding_conventions.md
     Init.py
     InitGui.py
-    # ObjectsFem.py
+    ObjectsFem.py
     TestFemApp.py
     CreateLabels.py
 )
@@ -220,7 +220,9 @@ if(BUILD_FEM_VTK_PYTHON)
         ${FemObjects_SRCS}
         femobjects/post_glyphfilter.py
         femobjects/post_extract1D.py
+        femobjects/post_extract2D.py
         femobjects/post_histogram.py
+        femobjects/post_lineplot.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 
@@ -634,6 +636,7 @@ if(BUILD_FEM_VTK_PYTHON)
         ${FemGuiTaskPanels_SRCS}
         femtaskpanels/task_post_glyphfilter.py
         femtaskpanels/task_post_histogram.py
+        femtaskpanels/task_post_lineplot.py
         femtaskpanels/task_post_extractor.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
@@ -700,6 +703,7 @@ if(BUILD_FEM_VTK_PYTHON)
         femviewprovider/view_post_glyphfilter.py
         femviewprovider/view_post_extract.py
         femviewprovider/view_post_histogram.py
+        femviewprovider/view_post_lineplot.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 

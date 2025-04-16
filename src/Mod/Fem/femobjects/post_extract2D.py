@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD post line plot"
+__title__ = "FreeCAD post extractors 2D"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
@@ -36,9 +36,9 @@ _PropHelper = base_fempythonobject._PropHelper
 from vtkmodules.vtkCommonDataModel import vtkTable
 from vtkmodules.vtkCommonExecutionModel import vtkStreamingDemandDrivenPipeline
 
-class PostFieldData1D(base_fempostextractors.Extractor1D):
+class PostFieldData2D(base_fempostextractors.Extractor2D):
     """
-    A post processing extraction of one dimensional field data
+    A post processing extraction of two dimensional field data
     """
 
     ExtractionType = "Field"
@@ -56,6 +56,7 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
             ),
         ]
         return super()._get_properties() + prop
+
 
     def execute(self, obj):
 
@@ -83,32 +84,47 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
 
         if not frames:
             # get the dataset and extract the correct array
-            array = self._x_array_from_dataset(obj, dataset)
-            if array.GetNumberOfComponents() > 1:
-                array.SetName(obj.XField + " (" + obj.XComponent + ")")
+            xarray = self._x_array_from_dataset(obj, dataset)
+            if xarray.GetNumberOfComponents() > 1:
+                xarray.SetName(obj.XField + " (" + obj.XComponent + ")")
             else:
-                array.SetName(obj.XField)
+                xarray.SetName(obj.XField)
 
-            self._x_array_component_to_table(obj, array, table)
+            self._x_array_component_to_table(obj, xarray, table)
+
+            yarray = self._y_array_from_dataset(obj, dataset)
+            if yarray.GetNumberOfComponents() > 1:
+                yarray.SetName(obj.YField + " (" + obj.YComponent + ")")
+            else:
+                yarray.SetName(obj.YField)
+
+            self._y_array_component_to_table(obj, yarray, table)
 
         else:
             algo = obj.Source.getOutputAlgorithm()
             for timestep in timesteps:
                 algo.UpdateTimeStep(timestep)
                 dataset = algo.GetOutputDataObject(0)
-                array = self._x_array_from_dataset(obj, dataset)
 
-                if array.GetNumberOfComponents() > 1:
-                    array.SetName(f"{obj.XField} ({obj.XComponent}) - {timestep}")
+                xarray = self._x_array_from_dataset(obj, dataset)
+                if xarray.GetNumberOfComponents() > 1:
+                    xarray.SetName(f"X - {obj.XField} ({obj.XComponent}) - {timestep}")
                 else:
-                    array.SetName(f"{obj.XField} - {timestep}")
-                self._x_array_component_to_table(obj, array, table)
+                    xarray.SetName(f"X - {obj.XField} - {timestep}")
+                self._x_array_component_to_table(obj, xarray, table)
+
+                yarray = self._y_array_from_dataset(obj, dataset)
+                if yarray.GetNumberOfComponents() > 1:
+                    yarray.SetName(f"{obj.YField} ({obj.YComponent}) - {timestep}")
+                else:
+                    yarray.SetName(f"{obj.YField} - {timestep}")
+                self._y_array_component_to_table(obj, yarray, table)
 
         # set the final table
         obj.Table = table
 
 
-class PostIndexData1D(base_fempostextractors.Extractor1D):
+class PostIndexData2D(base_fempostextractors.Extractor2D):
     """
     A post processing extraction of one dimensional index data
     """

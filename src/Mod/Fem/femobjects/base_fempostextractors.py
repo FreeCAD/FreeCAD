@@ -29,6 +29,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief base objects for data extractors
 
+from vtkmodules.vtkCommonCore import vtkIntArray
+from vtkmodules.vtkCommonCore import vtkDoubleArray
 from vtkmodules.vtkCommonDataModel import vtkTable
 
 from . import base_fempythonobject
@@ -117,6 +119,10 @@ class Extractor(base_fempythonobject.BaseFemPythonObject):
             case _:
                 return ["Not a vector"]
 
+    def get_representive_fieldname(self):
+        # should return the representive field name, e.g. Position (X)
+        return ""
+
 
 class Extractor1D(Extractor):
 
@@ -196,4 +202,179 @@ class Extractor1D(Extractor):
 
         self._setup_x_component_property(obj, point_data)
 
+    def _x_array_component_to_table(self, obj, array, table):
+        # extracts the component out of the array according to XComponent setting
+        # Note: Uses the array name unchanged
 
+        if array.GetNumberOfComponents() == 1:
+            table.AddColumn(array)
+        else:
+            component_array = vtkDoubleArray();
+            component_array.SetNumberOfComponents(1)
+            component_array.SetNumberOfTuples(array.GetNumberOfTuples())
+            c_idx = obj.getEnumerationsOfProperty("XComponent").index(obj.XComponent)
+            component_array.CopyComponent(0, array, c_idx)
+            component_array.SetName(array.GetName())
+            table.AddColumn(component_array)
+
+    def _x_array_from_dataset(self, obj, dataset):
+        # extracts the relevant array from the dataset and returns a copy
+
+        match obj.XField:
+            case "Index":
+                num = dataset.GetPoints().GetNumberOfPoints()
+                array = vtkIntArray()
+                array.SetNumberOfTuples(num)
+                array.SetNumberOfComponents(1)
+                for i in range(num):
+                    array.SetValue(i,i)
+
+            case "Position":
+                orig_array = dataset.GetPoints().GetData()
+                array = vtkDoubleArray()
+                array.DeepCopy(orig_array)
+
+            case _:
+                point_data = dataset.GetPointData()
+                orig_array = point_data.GetAbstractArray(obj.XField)
+                array = vtkDoubleArray()
+                array.DeepCopy(orig_array)
+
+        return array
+
+    def get_representive_fieldname(self, obj):
+        # representive field is the x field
+        label = obj.XField
+        if not label:
+            return ""
+
+        if len(obj.getEnumerationsOfProperty("XComponent")) > 1:
+            label += f" ({obj.XComponent})"
+
+        return label
+
+class Extractor2D(Extractor1D):
+
+    ExtractionDimension = "2D"
+
+    def __init__(self, obj):
+        super().__init__(obj)
+
+
+    def _get_properties(self):
+        prop = [
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="YField",
+                group="Y Data",
+                doc="The field to use as Y data",
+                value=[],
+            ),
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="YComponent",
+                group="Y Data",
+                doc="Which part of the Y field vector to use for the Y axis",
+                value=[],
+            ),
+        ]
+
+        return super()._get_properties() + prop
+
+
+    def onChanged(self, obj, prop):
+
+        super().onChanged(obj, prop)
+
+        if prop == "YField" and obj.Source and obj.Source.getDataSet():
+            point_data = obj.Source.getDataSet().GetPointData()
+            self._setup_y_component_property(obj, point_data)
+
+        if prop == "Source":
+            if obj.Source:
+                dset = obj.Source.getDataSet()
+                if dset:
+                    self._setup_y_properties(obj, dset)
+                else:
+                    self._clear_y_properties(obj)
+            else:
+                self._clear_y_properties(obj)
+
+    def _setup_y_component_property(self, obj, point_data):
+
+        if obj.YField == "Position":
+            obj.YComponent = self.component_options(3)
+        else:
+            array = point_data.GetAbstractArray(obj.YField)
+            obj.YComponent = self.component_options(array.GetNumberOfComponents())
+
+    def _clear_y_properties(self, obj):
+        if hasattr(obj, "YComponent"):
+            obj.YComponent = []
+        if hasattr(obj, "YField"):
+            obj.YField = []
+
+    def _setup_y_properties(self, obj, dataset):
+        # Set all X Data properties correctly for the given dataset
+        fields = ["Position"]
+        point_data = dataset.GetPointData()
+
+        for i in range(point_data.GetNumberOfArrays()):
+            fields.append(point_data.GetArrayName(i))
+
+        current_field = obj.YField
+        obj.YField = fields
+        if current_field in fields:
+            obj.YField = current_field
+
+        self._setup_y_component_property(obj, point_data)
+
+    def _y_array_component_to_table(self, obj, array, table):
+        # extracts the component out of the array according to XComponent setting
+
+        if array.GetNumberOfComponents() == 1:
+            table.AddColumn(array)
+        else:
+            component_array = vtkDoubleArray();
+            component_array.SetNumberOfComponents(1)
+            component_array.SetNumberOfTuples(array.GetNumberOfTuples())
+            c_idx = obj.getEnumerationsOfProperty("YComponent").index(obj.YComponent)
+            component_array.CopyComponent(0, array, c_idx)
+            component_array.SetName(array.GetName())
+            table.AddColumn(component_array)
+
+    def _y_array_from_dataset(self, obj, dataset):
+        # extracts the relevant array from the dataset and returns a copy
+
+        match obj.YField:
+            case "Index":
+                num = dataset.GetPoints().GetNumberOfPoints()
+                array = vtkIntArray()
+                array.SetNumberOfTuples(num)
+                array.SetNumberOfComponents(1)
+                for i in range(num):
+                    array.SetValue(i,i)
+
+            case "Position":
+                orig_array = dataset.GetPoints().GetData()
+                array = vtkDoubleArray()
+                array.DeepCopy(orig_array)
+
+            case _:
+                point_data = dataset.GetPointData()
+                orig_array = point_data.GetAbstractArray(obj.YField)
+                array = vtkDoubleArray()
+                array.DeepCopy(orig_array)
+
+        return array
+
+    def get_representive_fieldname(self, obj):
+        # representive field is the y field
+        label = obj.YField
+        if not label:
+            return ""
+
+        if len(obj.getEnumerationsOfProperty("YComponent")) > 1:
+            label += f" ({obj.YComponent})"
+
+        return label
