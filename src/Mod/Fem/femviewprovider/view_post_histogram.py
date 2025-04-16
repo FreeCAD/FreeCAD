@@ -232,12 +232,14 @@ class VPPostHistogramFieldData(view_post_extract.VPPostExtractor):
     def getIcon(self):
         return ":/icons/FEM_PostField.svg"
 
-    def get_edit_widgets(self, post_dialog):
-        return [ EditAppWidget(self.Object, post_dialog),
-                 EditViewWidget(self.Object, post_dialog)]
+    def get_app_edit_widget(self, post_dialog):
+        return EditAppWidget(self.Object, post_dialog)
 
-    def get_preview_widget(self, post_dialog):
-        return QtGui.QComboBox()
+    def get_view_edit_widget(self, post_dialog):
+        return EditViewWidget(self.Object, post_dialog)
+
+    def get_preview(self):
+        return (QtGui.QPixmap(), self.ViewObject.Legend)
 
     def get_kw_args(self):
         # builds kw args from the properties
