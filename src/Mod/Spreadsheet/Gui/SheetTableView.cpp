@@ -61,11 +61,12 @@ void SheetViewHeader::mouseMoveEvent(QMouseEvent *e)
 {
     // for some reason QWidget::setCursor() has no effect in QGraphicsView
     // therefore we resort to override cursor
-    const QCursor current_cursor = this->cursor();
+    const QCursor currentCursor = this->cursor();
     QHeaderView::mouseMoveEvent(e);
-    const QCursor newer_cursor = this->cursor();
-    if (newer_cursor != current_cursor)
-        qApp->setOverrideCursor(newer_cursor);
+    const QCursor newerCursor = this->cursor();
+    if (newerCursor != currentCursor) {
+        qApp->setOverrideCursor(newerCursor);
+    }
 }
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent* event)
