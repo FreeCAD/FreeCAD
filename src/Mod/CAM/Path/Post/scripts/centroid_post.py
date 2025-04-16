@@ -193,8 +193,8 @@ def export(objectslist, filename, argstring):
             ):
                 gcode += ";T{}={}\n".format(item.ToolNumber, item.Name)
         gcode += linenumber() + ";begin preamble\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     gcode += linenumber() + UNITS + "\n"
 
@@ -221,8 +221,8 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() + line
     for line in SAFETYBLOCK.splitlines(True):
         gcode += linenumber() + line
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     if SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()

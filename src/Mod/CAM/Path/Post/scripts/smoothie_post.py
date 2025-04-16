@@ -68,11 +68,11 @@ parser.add_argument(
 parser.add_argument("--precision", default="4", help="number of digits of precision, default=4")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\\nG90"',
+    help='set commands to be issued before the first command, default="G17\\nG90\\n"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G90\\nM2"',
+    help='set commands to be issued after the last command, default="M05\\nG17 G90\\nM2\\n"',
 )
 parser.add_argument("--IP_ADDR", help="IP Address for machine target machine")
 parser.add_argument(
@@ -228,8 +228,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
@@ -252,8 +252,8 @@ def export(objectslist, filename, argstring):
 
     if OUTPUT_COMMENTS:
         gcode += "(begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     if SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
