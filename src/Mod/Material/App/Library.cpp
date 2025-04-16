@@ -34,6 +34,14 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::Library, Base::BaseClass)
 
+Library::Library(const Library& other)
+    : _name(other._name)
+    , _directory(other._directory)
+    , _iconPath(other._iconPath)
+    , _readOnly(other._readOnly)
+    , _timestamp(other._timestamp)
+{}
+
 Library::Library(const QString& libraryName, const QString& icon, bool readOnly)
     : _name(libraryName)
     , _iconPath(icon)
