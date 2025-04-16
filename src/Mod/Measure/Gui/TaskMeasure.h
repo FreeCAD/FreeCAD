@@ -59,7 +59,7 @@ public:
 
     void invoke();
     void update();
-    void close();
+    void closeDialog();
     bool apply();
     bool apply(bool reset);
     bool reject() override;
@@ -93,10 +93,10 @@ private:
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
-    Measure::MeasureBase* createObject(const App::MeasureType* measureType);
+    void createObject(const App::MeasureType* measureType);
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
-    void initViewObject();
+    void initViewObject(Measure::MeasureBase* measure);
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;

@@ -212,11 +212,11 @@ void TaskMeasure::enableAnnotateButton(bool state)
 }
 
 
-Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureType)
+void TaskMeasure::createObject(const App::MeasureType* measureType)
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) {
-        return nullptr;
+        return;
     }
 
     if (measureType->isPython) {
@@ -242,8 +242,6 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
         _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(
             doc->addObject(measureType->measureObject.c_str(), measureType->label.c_str()));
     }
-
-    return _mMeasureObject;
 }
 
 void TaskMeasure::update()
@@ -330,31 +328,34 @@ void TaskMeasure::tryUpdate()
     // we have a valid measure object so we can enable the annotate button
     enableAnnotateButton(true);
 
-    // Fill measure object's properties from selection
-    _mMeasureObject->parseSelection(selection);
+    if (_mMeasureObject) {
+        // Fill measure object's properties from selection
+        _mMeasureObject->parseSelection(selection);
 
-    // Get result
-    valueResult->setText(_mMeasureObject->getResultString());
+        // Get result
+        valueResult->setText(_mMeasureObject->getResultString());
 
-    // Initialite the measurement's viewprovider
-    initViewObject();
+
+        // Initialite the measurement's viewprovider
+        initViewObject(_mMeasureObject);
+    }
 }
 
 
-void TaskMeasure::initViewObject()
+void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 {
     Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
     if (!guiDoc) {
         return;
     }
 
-    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(_mMeasureObject);
+    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(measure);
     if (!viewObject) {
         return;
     }
 
     // Init the position of the annotation
-    dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(_mMeasureObject);
+    dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(measure);
 
     // Set the ShowDelta Property if it exists on the measurements view object
     auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
@@ -366,7 +367,7 @@ void TaskMeasure::initViewObject()
 }
 
 
-void TaskMeasure::close()
+void TaskMeasure::closeDialog()
 {
     Gui::Control().closeDialog();
 }
@@ -382,16 +383,13 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
     }
 
     App::Document* doc = measurement->getDocument();
-    App::DocumentObject* obj = doc->getObject(measurementGroupName);
-
-
-    if (!obj || !obj->isValid() || !obj->isDerivedFrom<App::DocumentObjectGroup>()) {
-        obj = doc->addObject<App::DocumentObjectGroup>(measurementGroupName,
-                                                       true,
-                                                       "MeasureGui::ViewProviderMeasureGroup");
+    auto group = dynamic_cast<App::DocumentObjectGroup*>(doc->getObject(measurementGroupName));
+    if (!group || !group->isValid()) {
+        group = doc->addObject<App::DocumentObjectGroup>(measurementGroupName,
+                                                         true,
+                                                         "MeasureGui::ViewProviderMeasureGroup");
     }
 
-    auto group = static_cast<App::DocumentObjectGroup*>(obj);
     group->addObject(measurement);
 }
 
@@ -424,7 +422,7 @@ bool TaskMeasure::apply(bool reset)
 bool TaskMeasure::reject()
 {
     removeObject();
-    close();
+    closeDialog();
 
     // Abort transaction
     App::GetApplication().closeActiveTransaction(true);
