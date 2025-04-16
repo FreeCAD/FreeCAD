@@ -98,11 +98,10 @@ App::DocumentObjectExecReturn* Feature::recompute()
         FC_ERR("Failed to recompute suppressed feature " << getFullName());
     }
 
+    Shape.setValue(getBaseTopoShape(true));
+
     if (!failed) {
         updateSuppressedShape();
-    }
-    else {
-        Shape.setValue(getBaseTopoShape(true));
     }
     return App::DocumentObject::StdReturn;
 }
@@ -121,7 +120,6 @@ void Feature::setMaterialToBodyMaterial()
 
 void Feature::updateSuppressedShape()
 {
-    auto baseShape = getBaseTopoShape(true);
     TopoShape res(getID());
     TopoShape shape = Shape.getShape();
     shape.setPlacement(Base::Placement());
@@ -139,7 +137,6 @@ void Feature::updateSuppressedShape()
         res.makeElementCompound(generated);
         res.setPlacement(Placement.getValue());
     }
-    Shape.setValue(baseShape);
     SuppressedShape.setValue(res);
 }
 
@@ -195,6 +192,13 @@ void Feature::onChanged(const App::Property *prop)
                     != ShapeMaterial.getValue().getUUID()) {
                     body->ShapeMaterial.setValue(ShapeMaterial.getValue());
                 }
+            }
+        } else if (prop == &Suppressed){
+            if (Suppressed.getValue()) {
+                SuppressedPlacement = Placement.getValue();
+            } else {
+                Placement.setValue(SuppressedPlacement);
+                SuppressedPlacement = Base::Placement();
             }
         }
     }
