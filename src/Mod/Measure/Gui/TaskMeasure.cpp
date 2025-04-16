@@ -46,6 +46,7 @@
 #include <QSettings>
 #include <QAction>
 #include <QMenu>
+#include <QShortcut>
 #include <QToolTip>
 
 using namespace MeasureGui;
@@ -62,13 +63,13 @@ using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
 
 TaskMeasure::TaskMeasure()
 {
-    qApp->installEventFilter(this);
-
     this->setButtonPosition(TaskMeasure::South);
     auto taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("umf-measurement"),
                                               tr("Measurement"),
                                               true,
                                               nullptr);
+
+    setupShortcuts(taskbox);
 
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
@@ -153,7 +154,7 @@ TaskMeasure::TaskMeasure()
     auto* settingsLayout = new QHBoxLayout();
     settingsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
     settingsLayout->addWidget(mSettings);
-    formLayout->addRow(QStringLiteral(""), settingsLayout);
+    formLayout->addRow(QLatin1String(), settingsLayout);
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
@@ -177,15 +178,13 @@ TaskMeasure::~TaskMeasure()
 {
     Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
     detachSelection();
-    qApp->removeEventFilter(this);
 }
-
 
 void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box)
 {
 
     QPushButton* btn = box->button(QDialogButtonBox::Apply);
-    btn->setText(tr("Save"));
+    btn->setText(QCoreApplication::translate("QPlatformTheme", "Save"));
     btn->setToolTip(tr("Saves the measurement in the active document"));
     connect(btn, &QPushButton::released, this, qOverload<>(&TaskMeasure::apply));
 
@@ -193,7 +192,7 @@ void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box)
     btn->setEnabled(false);
     btn = box->button(QDialogButtonBox::Abort);
     btn->setText(tr("Close"));
-    btn->setToolTip(tr("Closes the measurement task"));
+    btn->setToolTip(tr("Close the measurement task."));
 
     // Connect reset button
     btn = box->button(QDialogButtonBox::Reset);
@@ -295,7 +294,7 @@ void TaskMeasure::tryUpdate()
     // Get valid measure type
     App::MeasureType* measureType = nullptr;
     auto measureTypes = App::MeasureManager::getValidMeasureTypes(selection, mode);
-    if (measureTypes.size() > 0) {
+    if (!measureTypes.empty()) {
         measureType = measureTypes.front();
     }
 
@@ -497,35 +496,36 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     update();
 }
 
-bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
+void TaskMeasure::setupShortcuts(QWidget* parent)
 {
+    auto shortcutSave = new QShortcut(parent);
+    shortcutSave->setKey(QKeySequence(QStringLiteral("Return")));
+    shortcutSave->setContext(Qt::ApplicationShortcut);
+    connect(shortcutSave, &QShortcut::activated, this, &TaskMeasure::saveMeasurement);
 
-    if (event->type() == QEvent::KeyPress) {
-        auto keyEvent = static_cast<QKeyEvent*>(event);
+    auto shortcutQuit = new QShortcut(parent);
+    shortcutQuit->setKey(QKeySequence(QStringLiteral("ESC")));
+    shortcutQuit->setContext(Qt::ApplicationShortcut);
+    connect(shortcutQuit, &QShortcut::activated, this, &TaskMeasure::quitMeasurement);
+}
 
-        if (keyEvent->key() == Qt::Key_Escape) {
-
-            if (this->hasSelection()) {
-                this->reset();
-            }
-            else {
-                this->reject();
-            }
-
-            return true;
-        }
-
-        if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-            // Save object. Indirectly dependent on whether the apply button is enabled
-            // enabled if valid measurement object.
-            if (buttonBox) {
-                buttonBox->button(QDialogButtonBox::Apply)->click();
-            }
-            return true;
-        }
+void TaskMeasure::saveMeasurement()
+{
+    // Save object. Indirectly dependent on whether the apply button is enabled
+    // enabled if valid measurement object.
+    if (buttonBox) {
+        buttonBox->button(QDialogButtonBox::Apply)->click();
     }
+}
 
-    return TaskDialog::eventFilter(obj, event);
+void TaskMeasure::quitMeasurement()
+{
+    if (this->hasSelection()) {
+        this->reset();
+    }
+    else {
+        this->reject();
+    }
 }
 
 void TaskMeasure::setDeltaPossible(bool possible)

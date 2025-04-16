@@ -67,11 +67,13 @@ public:
 
     bool hasSelection();
     void clearSelection();
-    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
+    void setupShortcuts(QWidget* parent);
     void tryUpdate();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void saveMeasurement();
+    void quitMeasurement();
 
     Measure::MeasureBase* _mMeasureObject = nullptr;
 
