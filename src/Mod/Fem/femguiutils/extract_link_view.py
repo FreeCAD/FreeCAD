@@ -145,7 +145,10 @@ def build_add_from_data_tree_model(vis_type):
 
     return model
 
-class TreeChoiceButton(QtGui.QToolButton):
+# implementation of GUI and its functionality
+# ###########################################
+
+class _TreeChoiceButton(QtGui.QToolButton):
 
     selection = QtCore.Signal(object,object)
 
@@ -191,15 +194,157 @@ class TreeChoiceButton(QtGui.QToolButton):
         # check if we should be disabled
         self.setEnabled(bool(model.rowCount()))
 
+class _SettingsPopup(QtGui.QGroupBox):
 
-# implementationof GUI and its functionality
-# ##########################################
+    close = QtCore.Signal()
 
-class _ShowVisualization:
-    def __init__(self, st_object):
+    def __init__(self, setting):
+
+        toplevel = QtGui.QApplication.topLevelWidgets()
+        for i in toplevel:
+            if i.metaObject().className() == "Gui::MainWindow":
+                main = i
+                break
+
+        super().__init__(main)
+
+        self.setFocusPolicy(QtGui.Qt.ClickFocus)
+
+        vbox = QtGui.QVBoxLayout()
+        vbox.addWidget(setting)
+
+        buttonBox = QtGui.QDialogButtonBox()
+        buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
+        vbox.addWidget(buttonBox)
+
+        buttonBox.accepted.connect(self.accept)
+        self.setLayout(vbox)
+
+    @QtCore.Slot()
+    def accept(self):
+        self.close.emit()
+
+    def showEvent(self, event):
+        self.setFocus()
+
+    def keyPressEvent(self, event):
+        if event.key() == QtGui.Qt.Key_Enter or event.key() == QtGui.Qt.Key_Return:
+            self.accept()
+
+
+
+class _SummaryWidget(QtGui.QWidget):
+
+    delete = QtCore.Signal(object, object) # to delete: document object, summary widget
+
+    def __init__(self, st_object, extractor, post_dialog):
+        super().__init__()
+
         self._st_object = st_object
+        self._extractor = extractor
+        self._post_dialog = post_dialog
 
-    def __call__(self):
+        extr_label = extractor.Proxy.get_representive_fieldname(extractor)
+        extr_repr = extractor.ViewObject.Proxy.get_preview()
+
+        # build the UI
+
+        self.stButton = self._button(st_object.Label)
+        self.stButton.setIcon(st_object.ViewObject.Icon)
+
+        self.extrButton = self._button(extr_label)
+        self.extrButton.setIcon(extractor.ViewObject.Icon)
+
+        self.viewButton = self._button(extr_repr[1])
+        size = self.viewButton.iconSize()
+        size.setWidth(size.width()*2)
+        self.viewButton.setIconSize(size)
+        self.viewButton.setIcon(extr_repr[0])
+
+
+        self.rmButton = QtGui.QToolButton(self)
+        self.rmButton.setIcon(QtGui.QIcon.fromTheme("delete"))
+        self.rmButton.setAutoRaise(True)
+
+        # add the separation line
+        self.frame = QtGui.QFrame(self)
+        self.frame.setFrameShape(QtGui.QFrame.HLine);
+
+        policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        self.setSizePolicy(policy)
+        self.setMinimumSize(self.stButton.sizeHint()+self.frame.sizeHint()*3)
+
+        # connect actions. We add functions to widget, as well as the data we need,
+        # and use those as callback. This way every widget knows which objects to use
+        self.stButton.clicked.connect(self.showVisualization)
+        self.extrButton.clicked.connect(self.editApp)
+        self.viewButton.clicked.connect(self.editView)
+        self.rmButton.clicked.connect(self.deleteTriggered)
+
+        # make sure initial drawing happened
+        self._redraw()
+
+    def _button(self, text):
+        btn = QtGui.QPushButton(self)
+        btn.full_text = text
+
+        #size = btn.sizeHint()
+        #size.setWidth(size.width()*2)
+        btn.setMinimumSize(btn.sizeHint())
+
+        btn.setFlat(True)
+        btn.setText(text)
+        btn.setStyleSheet("text-align:left;padding:6px");
+        btn.setToolTip(text)
+
+        return btn
+
+    def _redraw(self):
+
+        btn_total_size = ((self.size() - self.rmButton.size()).width() - 20) #20 is space to rmButton
+        btn_margin = (self.rmButton.size() - self.rmButton.iconSize()).width()
+        fm = self.fontMetrics()
+        min_text_width = fm.size(QtGui.Qt.TextSingleLine, "...").width()*2
+
+        pos = 0
+        btns = [self.stButton, self.extrButton, self.viewButton]
+        btn_rel_size = [0.4, 0.4, 0.2]
+        btn_elide_mode = [QtGui.Qt.ElideMiddle, QtGui.Qt.ElideMiddle, QtGui.Qt.ElideRight]
+        for i, btn in enumerate(btns):
+
+            btn_size = btn_total_size*btn_rel_size[i]
+            txt_size = btn_size - btn.iconSize().width() - btn_margin/2*3
+
+            # we elide only if there is enough space for a meaningful text
+            if txt_size >= min_text_width:
+
+                text = fm.elidedText(btn.full_text, btn_elide_mode[i], txt_size)
+                btn.setText(text)
+                btn.setStyleSheet("text-align:left;padding:6px");
+            else:
+                btn.setText("")
+                btn.setStyleSheet("text-align:center;");
+
+            rect = QtCore.QRect(pos,0, btn_size, btn.sizeHint().height())
+            btn.setGeometry(rect)
+            pos+=btn_size
+
+        rmsize = self.stButton.height()
+        pos = self.size().width() - rmsize
+        self.rmButton.setGeometry(pos, 0, rmsize, rmsize)
+
+        frame_hint = self.frame.sizeHint()
+        rect = QtCore.QRect(0, self.stButton.height()+frame_hint.height(), self.size().width(), frame_hint.height())
+        self.frame.setGeometry(rect)
+
+    def resizeEvent(self, event):
+
+        # calculate the allowed text length
+        self._redraw()
+        super().resizeEvent(event)
+
+    @QtCore.Slot()
+    def showVisualization(self):
         if vis.is_visualization_object(self._st_object):
             # show the visualization
             self._st_object.ViewObject.Proxy.show_visualization()
@@ -208,67 +353,76 @@ class _ShowVisualization:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(self._st_object)
 
-class _ShowEditDialog:
-    def __init__(self, extractor, post_dialog, widget):
-        self._extractor = extractor
-        self._post_dialog = post_dialog
-        self._widget = widget
+    def _position_dialog(self, dialog):
 
-        widgets = self._extractor.ViewObject.Proxy.get_edit_widgets(self._post_dialog)
-        vbox = QtGui.QVBoxLayout()
+        main = dialog.parent()
+        list_widget = self.parent().parent().parent()
+        widget_rect = list_widget.geometry()
+        diag_size = dialog.sizeHint()
+        # default is towards main window center
+        if main.geometry().center().x() >= list_widget.mapToGlobal(widget_rect.center()).x():
+            rigth_point = list_widget.mapToGlobal(widget_rect.topRight())
+            dialog.setGeometry(QtCore.QRect(rigth_point, diag_size))
+        else:
+            left_point = list_widget.mapToGlobal(widget_rect.topLeft())
+            left_point -= QtCore.QPoint(diag_size.width(), 0)
+            dialog.setGeometry(QtCore.QRect(left_point, diag_size))
 
-        buttonBox = QtGui.QDialogButtonBox()
-        buttonBox.setCenterButtons(True)
-        buttonBox.setStandardButtons(self._post_dialog.getStandardButtons())
-        vbox.addWidget(buttonBox)
+    @QtCore.Slot()
+    def editApp(self):
+        if not hasattr(self, "appDialog"):
+            widget = self._extractor.ViewObject.Proxy.get_app_edit_widget(self._post_dialog)
+            self.appDialog = _SettingsPopup(widget)
+            self.appDialog.close.connect(self.appAccept)
 
-        started = False
-        for widget in widgets:
+        if not self.appDialog.isVisible():
+            # position correctly and show
+            self._position_dialog(self.appDialog)
+            self.appDialog.show()
+            #self.appDialog.raise_()
 
-            if started:
-                # add a seperator line
-                frame = QtGui.QFrame()
-                frame.setFrameShape(QtGui.QFrame.HLine);
-                vbox.addWidget(frame);
-            else:
-                started = True
+    @QtCore.Slot()
+    def editView(self):
 
-            vbox.addWidget(widget)
+        if not hasattr(self, "viewDialog"):
+            widget = self._extractor.ViewObject.Proxy.get_view_edit_widget(self._post_dialog)
+            self.viewDialog = _SettingsPopup(widget)
+            self.viewDialog.close.connect(self.viewAccept)
 
-        vbox.addStretch()
+        if not self.viewDialog.isVisible():
+            # position correctly and show
+            self._position_dialog(self.viewDialog)
+            self.viewDialog.show()
+            #self.viewDialog.raise_()
 
-        self.dialog = QtGui.QDialog(self._widget)
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.dialog.close)
-        buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.apply)
-        self.dialog.setLayout(vbox)
+    @QtCore.Slot()
+    def deleteTriggered(self):
+        self.delete.emit(self._extractor, self)
+
+    @QtCore.Slot()
+    def viewAccept(self):
+
+        self.viewDialog.hide()
+
+        # update the preview
+        extr_repr = self._extractor.ViewObject.Proxy.get_preview()
+        self.viewButton.setIcon(extr_repr[0])
+        self.viewButton.full_text = extr_repr[1]
+        self.viewButton.setToolTip(extr_repr[1])
+        self._redraw()
+
+    @QtCore.Slot()
+    def appAccept(self):
+
+        self.appDialog.hide()
+
+        # update the preview
+        extr_label = self._extractor.Proxy.get_representive_fieldname(self._extractor)
+        self.extrButton.full_text = extr_label
+        self.extrButton.setToolTip(extr_label)
+        self._redraw()
 
 
-    def accept(self):
-        # recompute and close
-        self._extractor.Document.recompute()
-        self.dialog.close()
-
-    def apply(self):
-        self._extractor.Document.recompute()
-
-    def __call__(self):
-        # create the widgets, add it to dialog
-        self.dialog.show()
-
-class _DeleteExtractor:
-    def __init__(self, extractor, widget):
-        self._extractor = extractor
-        self._widget = widget
-
-    def __call__(self):
-        # remove the document object
-        doc = self._extractor.Document
-        doc.removeObject(self._extractor.Name)
-        doc.recompute()
-
-        # remove the widget
-        self._widget.deleteLater()
 
 class ExtractLinkView(QtGui.QWidget):
 
@@ -300,19 +454,19 @@ class ExtractLinkView(QtGui.QWidget):
 
         if self._is_source:
 
-            self._add = TreeChoiceButton(build_add_to_visualization_tree_model())
+            self._add = _TreeChoiceButton(build_add_to_visualization_tree_model())
             self._add.setText("Add data to")
             self._add.selection.connect(self.addExtractionToVisualization)
             hbox.addWidget(self._add)
 
-            self._create = TreeChoiceButton(build_new_visualization_tree_model())
+            self._create = _TreeChoiceButton(build_new_visualization_tree_model())
             self._create.setText("New")
             self._create.selection.connect(self.newVisualization)
             hbox.addWidget(self._create)
 
         else:
             vis_type = vis.get_visualization_type(self._object)
-            self._add = TreeChoiceButton(build_add_from_data_tree_model(vis_type))
+            self._add = _TreeChoiceButton(build_add_from_data_tree_model(vis_type))
             self._add.setText("Add data from")
             self._add.selection.connect(self.addExtractionToPostObject)
             hbox.addWidget(self._add)
@@ -324,45 +478,30 @@ class ExtractLinkView(QtGui.QWidget):
 
         self.setLayout(vbox)
 
-
-
         # add the content
         self.repopulate()
 
     def _build_summary_widget(self, extractor):
-
-        widget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/PostExtractionSummaryWidget.ui"
-        )
-
-        # add the separation line
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.HLine);
-        widget.layout().addWidget(frame);
 
         if self._is_source:
             st_object = extractor.getParentGroup()
         else:
             st_object = extractor.Source
 
-        widget.RemoveButton.setIcon(QtGui.QIcon.fromTheme("delete"))
-
-        widget.STButton.setIcon(st_object.ViewObject.Icon)
-        widget.STButton.setText(st_object.Label)
-
-        widget.ExtractButton.setIcon(extractor.ViewObject.Icon)
-
-        extr_label = extr.get_extraction_dimension(extractor)
-        extr_label += " " + extr.get_extraction_type(extractor)
-        widget.ExtractButton.setText(extr_label)
-
-        # connect actions. We add functions to widget, as well as the data we need,
-        # and use those as callback. This way every widget knows which objects to use
-        widget.STButton.clicked.connect(_ShowVisualization(st_object))
-        widget.ExtractButton.clicked.connect(_ShowEditDialog(extractor, self._post_dialog, widget))
-        widget.RemoveButton.clicked.connect(_DeleteExtractor(extractor, widget))
+        widget = _SummaryWidget(st_object, extractor, self._post_dialog)
+        widget.delete.connect(self._delete_extraction)
 
         return widget
+
+    def _delete_extraction(self, extractor, widget):
+        # remove the document object
+        doc = extractor.Document
+        doc.removeObject(extractor.Name)
+        doc.recompute()
+
+        # remove the widget
+        self._widgets.remove(widget)
+        widget.deleteLater()
 
     def repopulate(self):
         # collect all links that are available and shows them

@@ -48,7 +48,14 @@ class _ExtractorTaskPanel(base_fempostpanel._BasePostTaskPanel):
         super().__init__(obj)
 
         # form is used to display individual task panels
-        self.form = obj.ViewObject.Proxy.get_edit_widgets(self)
+        app = obj.ViewObject.Proxy.get_app_edit_widget(self)
+        app.setWindowTitle("Data extraction")
+        app.setWindowIcon(obj.ViewObject.Icon)
+        view = obj.ViewObject.Proxy.get_view_edit_widget(self)
+        view.setWindowTitle("Visualization settings")
+        view.setWindowIcon(obj.ViewObject.Icon)
+
+        self.form = [app, view]
 
 
 

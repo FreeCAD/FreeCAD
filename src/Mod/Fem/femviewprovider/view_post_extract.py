@@ -109,16 +109,21 @@ class VPPostExtractor:
         # of the object
         return {}
 
-    def get_edit_widgets(self, post_dialog):
-        # Returns a list of widgets for editing the object/viewprovider.
+    def get_app_edit_widget(self, post_dialog):
+        # Returns a widgets for editing the object (not viewprovider!)
         # The widget will be part of the provided post_dialog, and
         # should use its functionality to inform of changes.
         raise FreeCAD.Base.FreeCADError("Not implemented")
 
-    def get_preview_widget(self, post_dialog):
-        # Returns a widget for editing the object/viewprovider.
+    def get_view_edit_widget(self, post_dialog):
+        # Returns a widgets for editing the viewprovider (not object!)
         # The widget will be part of the provided post_dialog, and
         # should use its functionality to inform of changes.
+        raise FreeCAD.Base.FreeCADError("Not implemented")
+
+    def get_preview(self):
+        # Returns the preview tuple of icon and label: (QPixmap, str)
+        # Note: QPixmap in ratio 2:1
         raise FreeCAD.Base.FreeCADError("Not implemented")
 
 
