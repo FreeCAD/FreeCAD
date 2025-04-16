@@ -283,8 +283,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
     # verify if PREAMBLE have changed MOTION_MODE or UNITS
     if "G90" in PREAMBLE:
         MOTION_MODE = "G90"
@@ -370,8 +370,8 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() + "(Block-enable: 1)\n"
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     # show the gCode result dialog
     if FreeCAD.GuiUp and SHOW_EDITOR:

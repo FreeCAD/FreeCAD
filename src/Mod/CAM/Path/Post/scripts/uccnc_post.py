@@ -443,7 +443,7 @@ def export(objectslist, filename, argstring):
         #    if isinstance(obj.Proxy, Path.Tool.Controller.ToolController):
         #        gcode += append("(T{}={})\n".format(obj.ToolNumber, item.Name))
         # error: global name 'PathScripts' is not defined
-    for line in PREAMBLE.splitlines(False):
+    for line in PREAMBLE.splitlines():
         gcode += append(line + "\n")
     if OUTPUT_COMMENTS:
         gcode += append("(preamble: done)\n")

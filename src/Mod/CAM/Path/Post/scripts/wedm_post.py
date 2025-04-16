@@ -271,7 +271,7 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + COMMENT_CHAR + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines(False):
+    for line in PREAMBLE.splitlines():
         gcode += linenumber() + line + "\n"
     if not OMIT_UNITS:
         gcode += linenumber() + UNITS + ENDLINE + "\n"
@@ -353,8 +353,8 @@ def export(objectslist, filename, argstring):
     # do the post_amble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + COMMENT_CHAR + "(begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + '\n'
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         final = gcode
