@@ -127,7 +127,6 @@
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
 #include "SuppressibleExtension.h"
-#include "SuppressibleExtensionPy.h"
 #include "Part.h"
 #include "GeoFeaturePy.h"
 #include "Placement.h"
