@@ -1,6 +1,6 @@
 area==1.1.1
 cog==0.6.1
-ConfigParser==5.3.0
+ConfigParser==7.2.0
 defusedxml==0.7.1
 ifcopenshell==0.7.0.230318
 ladybug-core==0.42.2
