@@ -47,7 +47,9 @@
 #include <Mod/Sketcher/App/PythonConverter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
+#include <Gui/Application.h>
 
+#include "CommandSketcherTools.h"
 #include "DrawSketchHandler.h"
 #include "SketchRectangularArrayDialog.h"
 #include "Utils.h"
@@ -2522,3 +2524,15 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherPaste());
 }
 // clang-format on
+
+void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
+{
+    std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
+                        std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
+                        
+    SketcherGui::ViewProviderSketch* vp =
+    static_cast<SketcherGui::ViewProviderSketch*>(Gui::Application::Instance->activeDocument()->getInEdit());
+    DrawSketchHandlerScale scaler(allGeoIds, scale_factor, Base::Vector2d(0.0, 0.0));
+    scaler.setSketchGui(vp);
+    scaler.executeCommands();
+}

@@ -75,6 +75,14 @@ public:
         , length(0.0)
         , scaleFactor(0.0)
     {}
+    explicit DrawSketchHandlerScale(std::vector<int> listOfGeoIds, double scaleFactor, Base::Vector2d referencePoint)
+        : listOfGeoIds(listOfGeoIds)
+        , referencePoint(referencePoint)
+        , deleteOriginal(true)
+        , refLength(0.0)
+        , length(0.0)
+        , scaleFactor(scaleFactor)
+    {}
 
     DrawSketchHandlerScale(const DrawSketchHandlerScale&) = delete;
     DrawSketchHandlerScale(DrawSketchHandlerScale&&) = delete;
@@ -82,6 +90,39 @@ public:
     DrawSketchHandlerScale& operator=(DrawSketchHandlerScale&&) = delete;
 
     ~DrawSketchHandlerScale() override = default;
+
+public:
+
+    void executeCommands() override
+    {
+        try {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
+
+            createShape(false);
+
+            commandAddShapeGeometryAndConstraints();
+
+            if (deleteOriginal) {
+                deleteOriginalGeos();
+            }
+
+            Gui::Command::commitCommand();
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+            Gui::NotifyError(sketchgui,
+                            QT_TRANSLATE_NOOP("Notifications", "Error"),
+                            QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
+
+            Gui::Command::abortCommand();
+            THROWM(Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Tool execution aborted") "\n")  // This prevents constraints from being
+                                                        // applied on non existing geometry
+        }
+    }
+
 
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -106,36 +147,6 @@ private:
             } break;
             default:
                 break;
-        }
-    }
-
-    void executeCommands() override
-    {
-        try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
-
-            createShape(false);
-
-            commandAddShapeGeometryAndConstraints();
-
-            if (deleteOriginal) {
-                deleteOriginalGeos();
-            }
-
-            Gui::Command::commitCommand();
-        }
-        catch (const Base::Exception& e) {
-            e.ReportException();
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
-
-            Gui::Command::abortCommand();
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP(
-                       "Notifications",
-                       "Tool execution aborted") "\n")  // This prevents constraints from being
-                                                        // applied on non existing geometry
         }
     }
 
@@ -354,9 +365,6 @@ private:
                 }
                 else if ((cstr->Type == Block || cstr->Type == Weight) && firstIndex >= 0) {
                     newConstr->First = firstCurveCreated + firstIndex;
-                }
-                else {
-                    continue;
                 }
 
                 ShapeConstraints.push_back(std::move(newConstr));

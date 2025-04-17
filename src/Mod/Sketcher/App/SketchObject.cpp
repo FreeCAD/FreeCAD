@@ -855,13 +855,20 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     newVals[ConstrId]->setValue(Datum);
 
     this->Constraints.setValues(std::move(newVals));
-
+        
     int err = solve();
 
     if (err)
         this->Constraints.getValues()[ConstrId]->setValue(oldDatum);// newVals is a shell now
 
     return err;
+}
+double SketchObject::getDatum(int ConstrId) const
+{
+    if (!this->Constraints[ConstrId]->isDimensional()) {
+        return 0.0;
+    }
+    return this->Constraints[ConstrId]->getValue();
 }
 
 int SketchObject::setDriving(int ConstrId, bool isdriving)
@@ -8112,6 +8119,18 @@ int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) c
         return completeGeometryIndex;
     else
         return (completeGeometryIndex - completeGeometryCount);
+}
+int SketchObject::getNumDimensionalConstraints() const
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    int n_dimensionals = 0;
+    for (auto val : vals) {
+        if (val->isDimensional()) {
+            n_dimensionals++;
+        }
+    }
+    return n_dimensionals;
 }
 
 std::unique_ptr<const GeometryFacade> SketchObject::getGeometryFacade(int GeoId) const

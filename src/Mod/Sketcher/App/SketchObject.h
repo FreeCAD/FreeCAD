@@ -212,7 +212,7 @@ public:
 
     /** deletes all external geometry */
     int delAllExternal();
-
+      
     const Part::Geometry* _getGeometry(int GeoId) const;
     int setGeometry(int GeoId, const Part::Geometry*);
     /// returns GeoId of all geometries projected from the same external geometry reference
@@ -272,6 +272,8 @@ public:
 
     int getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) const;
 
+    int getNumDimensionalConstraints() const;
+
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts() const;
     /**
@@ -299,6 +301,8 @@ public:
     int solve(bool updateGeoAfterSolving = true);
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
+    /// get the datum of a Distance or Angle constraint
+    double getDatum(int ConstrId) const;
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint

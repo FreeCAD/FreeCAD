@@ -41,9 +41,12 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "EditDatumDialog.h"
+#include "CommandSketcherTools.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
+
+#include <numeric>
 
 
 using namespace SketcherGui;
@@ -205,11 +208,22 @@ void EditDatumDialog::accepted()
                 else {
                     auto unitString = newQuant.getUnit().getString();
                     unitString = Base::Tools::escapeQuotesFromString(unitString);
+                    
+                    
+                    // There is a single constraint in the sketch so it can
+                    // be used as a reference to scale the geometries around the origin
+                    if(sketch->getNumDimensionalConstraints() == 1) {
+                        double oldDatum = sketch->getDatum(ConstrNbr);
+                        double scale_factor = newDatum / oldDatum;
+                        centerScale(sketch, scale_factor);
+                    }
+
                     Gui::cmdAppObjectArgs(sketch,
                                           "setDatum(%i,App.Units.Quantity('%f %s'))",
                                           ConstrNbr,
                                           newDatum,
                                           unitString);
+                    
                 }
             }
 
