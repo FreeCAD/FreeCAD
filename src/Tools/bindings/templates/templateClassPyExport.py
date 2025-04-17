@@ -167,7 +167,7 @@ public:
     static int descriptorSetter(PyObject* self, PyObject* obj, PyObject* value);
 -
     static PyGetSetDef    GetterSetter[];
-    PyTypeObject *GetType() override {return &Type;}
+    PyTypeObject *GetType() const override {return &Type;}
 
 public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
@@ -196,6 +196,9 @@ public:
 = elif i.Class:
     /// implementer for the @i.Name@() method
     static PyObject*  @i.Name@(PyObject *self, PyObject *args, PyObject *kwd);
+= elif i.Const:
+    /// implementer for the @i.Name@() method
+    PyObject*  @i.Name@(PyObject *args, PyObject *kwd) const;
 = else:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@(PyObject *args, PyObject *kwd);
@@ -209,6 +212,9 @@ public:
 = elif i.Class:
     /// implementer for the @i.Name@() method
     static PyObject*  @i.Name@(PyObject *self);
+= elif i.Const:
+    /// implementer for the @i.Name@() method
+    PyObject*  @i.Name@() const;
 = else:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@();
@@ -222,6 +228,9 @@ public:
 = elif i.Class:
     /// implementer for the @i.Name@() method
     static PyObject*  @i.Name@(PyObject *self, PyObject *args);
+= elif i.Const:
+    /// implementer for the @i.Name@() method
+    PyObject*  @i.Name@(PyObject *args) const;
 = else:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@(PyObject *args);
