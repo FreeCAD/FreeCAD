@@ -814,10 +814,6 @@ public:
         MsgType_Notification = 32,  // Special message to for notifications to the user
     };
 
-    /// Change mode
-    void SetConsoleMode(ConsoleMode mode);
-    /// Change mode
-    void UnsetConsoleMode(ConsoleMode mode);
     /// Enables or disables message types of a certain console observer
     ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on);
     /// Checks if message types of a certain console observer are enabled
@@ -869,7 +865,6 @@ private:
     static PyObject* sPyGetStatus(PyObject* self, PyObject* args);
     static PyObject* sPyGetObservers(PyObject* self, PyObject* args);
 
-    bool _bVerbose {true};
     bool _bCanRefresh {true};
     ConnectionMode connectionMode {Direct};
 
