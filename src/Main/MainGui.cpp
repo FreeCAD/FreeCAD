@@ -105,33 +105,33 @@ static bool inGuiMode()
         || App::Application::Config()["RunMode"] == "Internal";
 }
 
-static void DisplayInfo(const QString& msg, bool preformatted = true)
+static void displayInfo(const QString& msg, bool preformatted = true)
 {
-    if (App::Application::Config()["Console"] == "1") {
-        std::cout << msg.toStdString();
-        return;
+    if (inGuiMode()) {
+        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setWindowTitle(appName);
+        msgBox.setDetailedText(msg);
+        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg);
+        msgBox.exec();
     }
-
-    QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
-    QMessageBox msgBox;
-    msgBox.setIcon(QMessageBox::Information);
-    msgBox.setWindowTitle(appName);
-    msgBox.setDetailedText(msg);
-    msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg);
-    msgBox.exec();
+    else {
+        std::cout << msg.toStdString();
+    }
 }
 
-static void DisplayCritical(const QString& msg, bool preformatted = true)
+static void displayCritical(const QString& msg, bool preformatted = true)
 {
-    if (App::Application::Config()["Console"] == "1") {
-        std::cerr << msg.toStdString();
-        return;
+    if (inGuiMode()) {
+        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString title = QObject::tr("Initialization of %1 failed").arg(appName);
+        QString text = preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg;
+        QMessageBox::critical(nullptr, title, text);
     }
-
-    QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
-    QString title = QObject::tr("Initialization of %1 failed").arg(appName);
-    QString text = preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg;
-    QMessageBox::critical(nullptr, title, text);
+    else {
+        std::cerr << msg.toStdString();
+    }
 }
 
 int main(int argc, char** argv)
@@ -254,7 +254,7 @@ int main(int argc, char** argv)
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc, argv);
         QString msg = QString::fromLatin1(e.what());
-        DisplayCritical(msg);
+        displayCritical(msg);
         exit(1);
     }
     catch (const Base::ProgramInformation& e) {
@@ -271,7 +271,7 @@ int main(int argc, char** argv)
 
             msg = data;
         }
-        DisplayInfo(msg);
+        displayInfo(msg);
         exit(0);
     }
     catch (const Base::Exception& e) {
@@ -298,7 +298,7 @@ int main(int argc, char** argv)
                 "\nPlease contact the application's support team for more information.\n\n");
         }
 
-        DisplayCritical(msg, false);
+        displayCritical(msg, false);
         exit(100);
     }
     catch (...) {
@@ -309,7 +309,7 @@ int main(int argc, char** argv)
             QObject::tr("Unknown runtime error occurred while initializing %1.\n\n"
                         "Please contact the application's support team for more information.\n\n")
                 .arg(appName);
-        DisplayCritical(msg, false);
+        displayCritical(msg, false);
         exit(101);
     }
 
