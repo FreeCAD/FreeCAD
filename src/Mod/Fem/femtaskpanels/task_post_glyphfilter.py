@@ -50,6 +50,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/TaskPostGlyph.ui"
         )
+        self.widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostFilterGlyph.svg"))
         self.__init_widget()
 
         # form made from param and selection widget
