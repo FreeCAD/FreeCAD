@@ -2644,8 +2644,6 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverStd->bWrn = false;
         _pConsoleObserverStd->bErr = false;
     }
-    if (mConfig["Verbose"] == "Strict")
-        Base::Console().UnsetConsoleMode(Base::ConsoleSingleton::Verbose);
 
     // file logging Init ===========================================================
     if (mConfig["LoggingFile"] == "1") {
