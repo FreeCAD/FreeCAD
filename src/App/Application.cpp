@@ -64,6 +64,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
 #include <Inventor/C/basic.h>
