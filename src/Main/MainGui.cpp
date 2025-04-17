@@ -226,7 +226,7 @@ int main(int argc, char** argv)
 #endif
         // to set window icon on wayland, the desktop file has to be available to the compositor
         QGuiApplication::setDesktopFileName(
-            QString::fromLatin1(App::Application::Config()["DesktopFileName"].c_str()));
+            QString::fromStdString(App::Application::Config()["DesktopFileName"]));
 
 #if defined(_MSC_VER)
         // create a dump file when the application crashes
@@ -277,7 +277,7 @@ int main(int argc, char** argv)
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
         QString msg;
         msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n"
                           "Python is searching for its files in the following directories:\n%3\n\n"
@@ -304,7 +304,7 @@ int main(int argc, char** argv)
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
         QString msg =
             QObject::tr("Unknown runtime error occurred while initializing %1.\n\n"
                         "Please contact the application's support team for more information.\n\n")
