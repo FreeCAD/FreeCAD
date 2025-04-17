@@ -37,7 +37,7 @@
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
-#include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Curve.hxx>
 # include <Geom_Circle.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <Geom_TrimmedCurve.hxx>
