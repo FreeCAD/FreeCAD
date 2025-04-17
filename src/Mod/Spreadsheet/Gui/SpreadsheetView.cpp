@@ -40,6 +40,7 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/SheetPy.h>
@@ -302,9 +303,10 @@ void SheetView::printPdf()
                                     QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
-        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under:
+        // setPdfVersion sets the printed PDF Version to what is chosen in
+        // Preferences/Import-Export/PDF more details under:
         // https://www.kdab.com/creating-pdfa-documents-qt/
-        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+        printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
