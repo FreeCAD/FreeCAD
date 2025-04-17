@@ -7,7 +7,7 @@ ladybug-core==0.42.2
 matplotlib==3.6.3
 numpy==1.24.2
 opencamlib==2023.1.11
-packaging==23.0
+packaging==24.2
 Pivy==0.6.8
 ply==3.11
 debugpy==1.8.14
