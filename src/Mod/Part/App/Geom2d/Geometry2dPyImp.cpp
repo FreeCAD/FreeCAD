@@ -151,7 +151,7 @@ PyObject* Geometry2dPy::translate(PyObject *args)
     return nullptr;
 }
 
-PyObject* Geometry2dPy::copy(PyObject *args)
+PyObject* Geometry2dPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

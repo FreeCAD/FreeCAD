@@ -76,7 +76,7 @@ Py::Object DocumentObjectPy::getDocument() const
     }
 }
 
-PyObject* DocumentObjectPy::isAttachedToDocument(PyObject* args)
+PyObject* DocumentObjectPy::isAttachedToDocument(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -452,7 +452,7 @@ PyObject* DocumentObjectPy::recompute(PyObject* args)
     }
 }
 
-PyObject* DocumentObjectPy::isValid(PyObject* args)
+PyObject* DocumentObjectPy::isValid(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -467,7 +467,7 @@ PyObject* DocumentObjectPy::isValid(PyObject* args)
     }
 }
 
-PyObject* DocumentObjectPy::getStatusString(PyObject* args)
+PyObject* DocumentObjectPy::getStatusString(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -872,7 +872,7 @@ PyObject* DocumentObjectPy::getPathsByOutList(PyObject* args)
     }
 }
 
-PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args)
+PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args) const
 {
     const char* name;
     PyObject* restored = Py_False;
@@ -908,7 +908,7 @@ Py::Boolean DocumentObjectPy::getRemoving() const
     return {getDocumentObjectPtr()->testStatus(ObjectStatus::Remove)};
 }
 
-PyObject* DocumentObjectPy::resolve(PyObject* args)
+PyObject* DocumentObjectPy::resolve(PyObject* args) const
 {
     const char* subname;
     if (!PyArg_ParseTuple(args, "s", &subname)) {
@@ -934,7 +934,7 @@ PyObject* DocumentObjectPy::resolve(PyObject* args)
     Py_Return;
 }
 
-PyObject* DocumentObjectPy::resolveSubElement(PyObject* args)
+PyObject* DocumentObjectPy::resolveSubElement(PyObject* args) const
 {
     const char* subname;
     PyObject* append = Py_False;

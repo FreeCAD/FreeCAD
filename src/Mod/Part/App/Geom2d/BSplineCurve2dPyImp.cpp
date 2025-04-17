@@ -494,7 +494,7 @@ PyObject* BSplineCurve2dPy::getWeights(PyObject * args)
     }
 }
 
-PyObject* BSplineCurve2dPy::getResolution(PyObject * args)
+PyObject* BSplineCurve2dPy::getResolution(PyObject * args) const
 {
     double tol;
     if (!PyArg_ParseTuple(args, "d", &tol))

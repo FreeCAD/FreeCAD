@@ -49,7 +49,7 @@ int GeometryExtensionPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* GeometryExtensionPy::copy(PyObject *args)
+PyObject* GeometryExtensionPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

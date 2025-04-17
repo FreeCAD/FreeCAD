@@ -48,7 +48,7 @@ int GeomFormatPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* GeomFormatPy::clone(PyObject *args)
+PyObject* GeomFormatPy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -75,7 +75,7 @@ PyObject* GeomFormatPy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* GeomFormatPy::copy(PyObject *args)
+PyObject* GeomFormatPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

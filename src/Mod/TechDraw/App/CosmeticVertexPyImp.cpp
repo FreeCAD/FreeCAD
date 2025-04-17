@@ -56,7 +56,7 @@ int CosmeticVertexPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* CosmeticVertexPy::clone(PyObject *args)
+PyObject* CosmeticVertexPy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -84,7 +84,7 @@ PyObject* CosmeticVertexPy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* CosmeticVertexPy::copy(PyObject *args)
+PyObject* CosmeticVertexPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

@@ -53,7 +53,7 @@ int CenterLinePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* CenterLinePy::clone(PyObject *args)
+PyObject* CenterLinePy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -80,7 +80,7 @@ PyObject* CenterLinePy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* CenterLinePy::copy(PyObject *args)
+PyObject* CenterLinePy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

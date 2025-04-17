@@ -52,7 +52,7 @@ std::string QuantityPy::representation() const
     return ret.str();
 }
 
-PyObject* QuantityPy::toStr(PyObject* args)
+PyObject* QuantityPy::toStr(PyObject* args) const
 {
     int prec = getQuantityPtr()->getFormat().precision;
     if (!PyArg_ParseTuple(args, "|i", &prec)) {
@@ -163,7 +163,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* QuantityPy::getUserPreferred(PyObject* /*args*/)
+PyObject* QuantityPy::getUserPreferred(PyObject* /*args*/) const
 {
     std::string uus;
     double factor {};
@@ -178,7 +178,7 @@ PyObject* QuantityPy::getUserPreferred(PyObject* /*args*/)
     return Py::new_reference_to(res);
 }
 
-PyObject* QuantityPy::getValueAs(PyObject* args)
+PyObject* QuantityPy::getValueAs(PyObject* args) const
 {
     Quantity quant;
     quant.setInvalid();
@@ -260,7 +260,7 @@ PyObject* QuantityPy::getValueAs(PyObject* args)
     return new QuantityPy(new Quantity(quant));
 }
 
-PyObject* QuantityPy::__round__(PyObject* args)
+PyObject* QuantityPy::__round__(PyObject* args) const
 {
     double val = getQuantityPtr()->getValue();
     Unit unit = getQuantityPtr()->getUnit();

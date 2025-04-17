@@ -149,7 +149,7 @@ PyObject* CommandPy::run(PyObject *args)
     }
 }
 
-PyObject* CommandPy::isActive(PyObject *args)
+PyObject* CommandPy::isActive(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -386,4 +386,3 @@ int CommandPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-

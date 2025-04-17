@@ -50,7 +50,7 @@ std::string ComplexGeoDataPy::representation() const
     return {"<ComplexGeoData object>"};
 }
 
-PyObject* ComplexGeoDataPy::getElementTypes(PyObject* args)
+PyObject* ComplexGeoDataPy::getElementTypes(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -64,7 +64,7 @@ PyObject* ComplexGeoDataPy::getElementTypes(PyObject* args)
     return Py::new_reference_to(list);
 }
 
-PyObject* ComplexGeoDataPy::countSubElements(PyObject* args)
+PyObject* ComplexGeoDataPy::countSubElements(PyObject* args) const
 {
     char* type;
     if (!PyArg_ParseTuple(args, "s", &type)) {
@@ -81,7 +81,7 @@ PyObject* ComplexGeoDataPy::countSubElements(PyObject* args)
     }
 }
 
-PyObject* ComplexGeoDataPy::getFacesFromSubElement(PyObject* args)
+PyObject* ComplexGeoDataPy::getFacesFromSubElement(PyObject* args) const
 {
     char* type;
     unsigned long index;
@@ -119,7 +119,7 @@ PyObject* ComplexGeoDataPy::getFacesFromSubElement(PyObject* args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject* args)
+PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject* args) const
 {
     char* type;
     int index;
@@ -155,7 +155,7 @@ PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject* args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getPoints(PyObject* args)
+PyObject* ComplexGeoDataPy::getPoints(PyObject* args) const
 {
     double accuracy = 0.05;
     if (!PyArg_ParseTuple(args, "d", &accuracy)) {
@@ -187,7 +187,7 @@ PyObject* ComplexGeoDataPy::getPoints(PyObject* args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getLines(PyObject* args)
+PyObject* ComplexGeoDataPy::getLines(PyObject* args) const
 {
     double accuracy = 0.05;
     if (!PyArg_ParseTuple(args, "d", &accuracy)) {
@@ -221,7 +221,7 @@ PyObject* ComplexGeoDataPy::getLines(PyObject* args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getFaces(PyObject* args)
+PyObject* ComplexGeoDataPy::getFaces(PyObject* args) const
 {
     double accuracy = 0.05;
     if (!PyArg_ParseTuple(args, "d", &accuracy)) {
@@ -310,7 +310,7 @@ PyObject* ComplexGeoDataPy::transformGeometry(PyObject* args)
     }
 }
 
-PyObject* ComplexGeoDataPy::getElementName(PyObject* args)
+PyObject* ComplexGeoDataPy::getElementName(PyObject* args) const
 {
     char* input;
     int direction = 0;
@@ -334,7 +334,7 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject* args)
     }
 }
 
-PyObject* ComplexGeoDataPy::getElementIndexedName(PyObject* args)
+PyObject* ComplexGeoDataPy::getElementIndexedName(PyObject* args) const
 {
     char* input;
     PyObject* returnID = Py_False;
@@ -358,7 +358,7 @@ PyObject* ComplexGeoDataPy::getElementIndexedName(PyObject* args)
     return Py::new_reference_to(Py::TupleN(name, list));
 }
 
-PyObject* ComplexGeoDataPy::getElementMappedName(PyObject* args)
+PyObject* ComplexGeoDataPy::getElementMappedName(PyObject* args) const
 {
     char* input;
     PyObject* returnID = Py_False;
