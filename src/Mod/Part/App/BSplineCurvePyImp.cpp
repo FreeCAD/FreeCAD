@@ -101,7 +101,7 @@ PyObject*  BSplineCurvePy::__reduce__(PyObject *args) const
     tuple.setItem(0, type);
 
     // create an argument tuple to create a copy
-    Py::Object self(this);
+    Py::Object self(const_cast<BSplineCurvePy*>(this));
     Py::Tuple data(7);
     data.setItem(0, Py::Callable(self.getAttr("getPoles")).apply());
     data.setItem(1, Py::Callable(self.getAttr("getMultiplicities")).apply());

@@ -159,7 +159,7 @@ PyObject* GeometryPy::copy(PyObject *args) const
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<GeometryPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of geometry");
         return nullptr;
@@ -186,7 +186,7 @@ PyObject* GeometryPy::clone(PyObject *args) const
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<GeometryPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of geometry");
         return nullptr;
