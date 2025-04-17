@@ -404,6 +404,7 @@ def _get_param_dictionary():
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
+        "ChainedMode":                 ("bool",      False),
         "CenterPlaneOnView":           ("bool",      False),
         "CopyMode":                    ("bool",      False),
         "DefaultAnnoDisplayMode":      ("int",       0),
@@ -416,7 +417,6 @@ def _get_param_dictionary():
         "FilletRadius":                ("float",     100.0),
         "FilletChamferMode":           ("bool",      False),
         "FilletDeleteMode":            ("bool",      False),
-        "ChainedMode":                 ("bool",      False),
         "GlobalMode":                  ("bool",      False),
         "GridHideInOtherWorkbenches":  ("bool",      True),
         "HatchPatternFile":            ("string",    hatch_pattern_file),
@@ -443,7 +443,7 @@ def _get_param_dictionary():
         "useSupport":                  ("bool",      False),
     }
 
-    param_dict["Mod/ContinueMode"] = {
+    param_dict["Mod/Draft/ContinueMode"] = {
         # Draft
         "Line": ("bool", False),
         "Polyline": ("bool", False),
@@ -463,6 +463,7 @@ def _get_param_dictionary():
         # Standard operations (Draft)
         "Move": ("bool", False),
         "Copy": ("bool", False),
+        "Rotate": ("bool", False),
         
         # Arch/BIM
         "Wall": ("bool", False),
