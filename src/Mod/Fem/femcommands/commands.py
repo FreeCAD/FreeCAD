@@ -1178,6 +1178,7 @@ class _SolverZ88(CommandManager):
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_expand_noset_edit"
 
+
 class _PostFilterGlyph(CommandManager):
     "The FEM_PostFilterGlyph command definition"
 
@@ -1185,7 +1186,10 @@ class _PostFilterGlyph(CommandManager):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_PostFilterGlyph", "Glyph filter")
         self.accel = "F, G"
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_PostFilterGlyph", "Post processing filter that adds glyphs to the mesh vertices for vertex data visualization")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_PostFilterGlyph",
+            "Post processing filter that adds glyphs to the mesh vertices for vertex data visualization",
+        )
         self.is_active = "with_vtk_selresult"
         self.do_activated = "add_filter_set_edit"
 

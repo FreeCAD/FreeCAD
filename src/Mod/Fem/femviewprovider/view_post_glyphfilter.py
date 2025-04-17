@@ -70,7 +70,7 @@ class VPPostGlyphFilter:
         # build up the task panel
         taskd = task_post_glyphfilter._TaskPanel(vobj)
 
-        #show it
+        # show it
         FreeCADGui.Control.showDialog(taskd)
 
         return True

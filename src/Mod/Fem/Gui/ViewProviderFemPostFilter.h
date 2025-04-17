@@ -50,7 +50,8 @@ public:
 
 
 // Viewprovider for the python filters
-using ViewProviderPostFilterPython  = Gui::ViewProviderFeaturePythonT<ViewProviderFemPostFilterPythonBase>;
+using ViewProviderPostFilterPython =
+    Gui::ViewProviderFeaturePythonT<ViewProviderFemPostFilterPythonBase>;
 
 
 // ***************************************************************************
