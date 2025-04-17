@@ -111,7 +111,7 @@ jobs:
         mkdir -p ${{ env.reportdir }}
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
-    - uses: prefix-dev/setup-pixi@5044b250243a57e8c78f7c38acd73f6d7954a3cf # v0.8.7
+    - uses: prefix-dev/setup-pixi@19eac09b398e3d0c747adc7921926a6d802df4da # v0.8.8
       with:
         pixi-version: v0.45.0
         cache: false
