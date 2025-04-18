@@ -4,7 +4,7 @@ ConfigParser==7.2.0
 defusedxml==0.7.1
 ifcopenshell==0.7.0.230318
 ladybug-core==0.42.2
-matplotlib==3.6.3
+matplotlib==3.9.4
 numpy==1.24.2
 opencamlib==2023.1.11
 packaging==24.2
