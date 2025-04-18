@@ -355,25 +355,15 @@ class ToolBitShape(abc.ABC):
             # Update parameters with loaded values and types
             for name, (value, prop_type) in loaded_params_with_types.items():
                  if name in instance._params:
-                     # Update the value and property type from the loaded data
-                     instance._params[name] = (value, prop_type)
+                      # Update the value and property type from the loaded data
+                      instance._params[name] = value, prop_type
                  else:
-                     # This case should ideally not happen if expected_params is correct,
-                     # but handle it just in case. Add as a new parameter with loaded type.
-                     FreeCAD.Console.PrintWarning(
-                         f"Loaded parameter '{name}' not found in default parameters for shape '{cls.__name__}'. Adding it.\n"
-                     )
-                     instance._params[name] = (value, prop_type)
-
-
-            # Call __init__ to ensure full initialization, but pass an empty dict
-            # as parameters are already set in _params
-            # instance.__init__() # This might need adjustment depending on __init__ usage
-            # Instead of calling __init__, manually set attributes if needed,
-            # or ensure set_default_parameters and parameter setting is sufficient.
-            # Assuming set_default_parameters and the subsequent loop are sufficient
-            # to set up the instance state based on loaded parameters.
-
+                      # This case should ideally not happen if expected_params is correct,
+                      # but handle it just in case. Add as a new parameter with loaded type.
+                      FreeCAD.Console.PrintWarning(
+                          f"Loaded parameter '{name}' not found in default parameters for shape '{cls.__name__}'. Adding it.\n"
+                      )
+                      instance._params[name] = value, prop_type
 
             return instance
 
@@ -401,6 +391,7 @@ class ToolBitShape(abc.ABC):
             return None
 
         doc = None
+        original_active_doc = FreeCAD.ActiveDocument # Save the current active document
         try:
             # Open the shape file hidden
             doc = FreeCAD.openDocument(str(self.filepath), hidden=True)
@@ -437,6 +428,9 @@ class ToolBitShape(abc.ABC):
             # Close the shape document
             if doc:
                 FreeCAD.closeDocument(doc.Name)
+            # Restore the original active document
+            if original_active_doc:
+                FreeCAD.setActiveDocument(original_active_doc.Name)
 
 
     def __str__(self):

@@ -36,7 +36,7 @@ for cls in ToolBitShape.__subclasses__():
 
 # Create a sorted list of user-friendly shape names (class names)
 TOOL_BIT_SHAPE_NAMES = sorted(
-    [cls.__name__ for cls in TOOL_BIT_SHAPE_CLASSES.values()]
+    [cls.__name__ for cls in set(TOOL_BIT_SHAPE_CLASSES.values())]
 )
 
 
