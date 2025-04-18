@@ -55,10 +55,8 @@ cp ssl-patch.py ${copy_dir}/bin/Lib/ssl.py
 echo '[Paths]' >> ${copy_dir}/bin/qt6.conf
 echo 'Prefix = ../lib/qt6' >> ${copy_dir}/bin/qt6.conf
 
-build_tag=$(git describe --tags)
 python_version=$(python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
-version_name="FreeCAD_${build_tag}-Windows-$(uname -m)-${python_version}"
-application_menu_name="FreeCAD_${build_tag}"
+version_name="FreeCAD_${BUILD_TAG}-Windows-$(uname -m)-${python_version}"
 
 echo -e "################"
 echo -e "version_name:  ${version_name}"
