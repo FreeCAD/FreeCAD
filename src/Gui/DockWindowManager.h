@@ -91,7 +91,7 @@ public:
     /// Returns a list of all widgets which set to a QDockWidget.
     QList<QWidget*> getDockWindows() const;
     /// If the corresponding dock widget isn't visible then activate it
-    void activate(QWidget* widget);
+    void activate(QWidget* widget, bool setFocus = true);
 
     void saveState();
     void loadState();

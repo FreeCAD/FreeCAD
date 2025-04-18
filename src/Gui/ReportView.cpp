@@ -310,8 +310,8 @@ ReportOutputObserver::ReportOutputObserver(ReportOutput *report)
 
 void ReportOutputObserver::showReportView()
 {
-    // get the QDockWidget parent of the report view
-    DockWindowManager::instance()->activate(reportView);
+    // get the QDockWidget parent of the report view but don't set focus on it
+    DockWindowManager::instance()->activate(reportView, false);
 }
 
 bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
