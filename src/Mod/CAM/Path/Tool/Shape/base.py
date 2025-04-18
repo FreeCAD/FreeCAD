@@ -17,7 +17,7 @@ class ToolBitShape(abc.ABC):
     """Abstract base class for tool bit shapes."""
 
     # Subclasses must define this dictionary mapping internal param names
-    # to user-facing labels.
+    # to user-facing labels, for translatability.
     _LABELS: Dict[str, str] = {}
 
     def __init__(self, **kwargs):
@@ -52,7 +52,6 @@ class ToolBitShape(abc.ABC):
         Get the user-facing label for a given parameter name.
         Uses the _LABELS dictionary defined in the subclass.
         """
-        # Ensure param_name is treated as str for lookup and default
         str_param_name = str(param_name)
         label = self._LABELS.get(str_param_name)
         # Return the found label or the param_name itself if not found
@@ -99,7 +98,15 @@ class ToolBitShape(abc.ABC):
         if name not in self._params:
             # Allow setting if it's a known label's internal name? No, strict.
             raise KeyError(f"Shape '{self.name}' has no parameter '{name}'")
-        # TODO: Add type/unit validation if necessary, comparing to default type
+
+        # Check if the type of the new value matches the type of the default value
+        # This provides basic type consistency, especially for Quantity types.
+        if name in self._params and not isinstance(value, type(self._params[name])):
+            FreeCAD.Console.PrintWarning(
+                f"Setting parameter '{name}' for shape '{self.name}' with "
+                f"incompatible type. Expected {type(self._params[name])}, "
+                f"got {type(value)}.\n"
+            )
         self._params[name] = value
 
     def set_parameters(self, **kwargs):
@@ -139,7 +146,7 @@ class ToolBitShape(abc.ABC):
         expected parameters for this shape class.
 
         Args:
-            filepath (str): Path to the .FCStd file.
+            filepath (pathlib.Path): Path to the .FCStd file.
 
         Returns:
             bool: True if the file is valid for this shape type, False otherwise.
@@ -176,10 +183,22 @@ class ToolBitShape(abc.ABC):
                 # Decide if missing params constitute failure. For now, let's say yes.
                 return False
 
-            # Optional: Add type checking here if needed
-            # for name in expected_params:
-            #     # Compare type of getattr(shape_obj, name) with default type
-            #     pass
+            type_mismatches = cls._check_parameter_types(shape_obj, expected_params)
+
+            if missing_params or type_mismatches:
+                if missing_params:
+                    FreeCAD.Console.PrintWarning(
+                        f"Validation Warning: Object '{shape_obj.Label}' in "
+                        f"{filepath} is missing parameters for {cls.__name__}: "
+                        f"{', '.join(missing_params)}\n"
+                    )
+                if type_mismatches:
+                     FreeCAD.Console.PrintWarning(
+                        f"Validation Warning: Object '{shape_obj.Label}' in "
+                        f"{filepath} has type mismatches for {cls.__name__}: "
+                        f"{', '.join(type_mismatches)}\n"
+                    )
+                return False
 
             return True
 
@@ -189,6 +208,28 @@ class ToolBitShape(abc.ABC):
         finally:
             if doc:
                 FreeCAD.closeDocument(doc.Name)
+
+    @classmethod
+    def _check_parameter_types(cls, shape_obj: Any, expected_params: List[str]) -> List[str]:
+        """
+        Helper method to check if parameters on a shape object have the expected types.
+        """
+        temp_instance = cls.__new__(cls)
+        temp_instance._params = {}
+        temp_instance.set_default_parameters()
+        default_params = temp_instance._params
+
+        type_mismatches = []
+        for name in expected_params:
+            # Only check type if the attribute exists on the object
+            if hasattr(shape_obj, name):
+                obj_value = getattr(shape_obj, name)
+                expected_type = type(default_params[name])
+                if not isinstance(obj_value, expected_type):
+                    type_mismatches.append(
+                        f"{name} (Expected: {expected_type}, Got: {type(obj_value)})"
+                    )
+        return type_mismatches
 
     @classmethod
     def from_file(cls: Type["ToolBitShape"],
