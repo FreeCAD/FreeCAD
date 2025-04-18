@@ -36,9 +36,9 @@ def find_shape_object(doc: "FreeCAD.Document") -> Optional["FreeCAD.DocumentObje
 
 def get_object_properties(
     obj: "FreeCAD.DocumentObject", expected_params: List[str]
-) -> Dict[str, Any]:
+) -> Dict[str, Tuple[Any, Optional[str]]]:
     """
-    Extract properties matching expected_params from a FreeCAD object.
+    Extract properties matching expected_params and their types from a FreeCAD object.
 
     Issues warnings for missing parameters but does not raise an error.
 
@@ -47,19 +47,33 @@ def get_object_properties(
         expected_params (List[str]): A list of property names to look for.
 
     Returns:
-        Dict[str, Any]: A dictionary of found properties and their values.
+        Dict[str, Tuple[Any, Optional[str]]]: A dictionary mapping property names
+                                              to a tuple of (value, property_type_string).
+                                              property_type_string is None if not found.
     """
-    params = {}
+    params_with_types = {}
     for name in expected_params:
         if hasattr(obj, name):
-            params[name] = getattr(obj, name)
+            value = getattr(obj, name)
+            # Attempt to get the property type string
+            try:
+                prop_type = obj.getTypeIdOfProperty(name)
+            except Exception:
+                # Handle cases where getTypeIdOfProperty might fail
+                prop_type = None
+                FreeCAD.Console.PrintWarning(
+                    f"Could not get type for property '{name}' on object '{obj.Label}'"
+                )
+
+            params_with_types[name] = value, prop_type
         else:
             # Log a warning if a parameter expected by the shape class is missing
             FreeCAD.Console.PrintWarning(
                 f"Parameter '{name}' not found on object '{obj.Label}' "
                 f"({obj.Name}). Default value will be used by the shape class.\n"
             )
-    return params
+            params_with_types[name] = None, None  # missing value and type
+    return params_with_types
 
 
 def load_doc_and_get_properties(
@@ -104,3 +118,82 @@ def load_doc_and_get_properties(
 
     # Return the doc and params; caller is responsible for closing the doc
     return doc, params
+
+
+def update_shape_object_properties(
+    obj: "FreeCAD.DocumentObject", parameters: Dict[str, Any]
+) -> None:
+    """
+    Update properties of a FreeCAD object based on a dictionary of parameters.
+
+    Args:
+        obj (FreeCAD.DocumentObject): The object to update properties on.
+        parameters (Dict[str, Any]): A dictionary of property names and values.
+    """
+    for name, value in parameters.items():
+        if hasattr(obj, name):
+            try:
+                setattr(obj, name, value)
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    f"Failed to set property '{name}' on object '{obj.Label}'"
+                    f" ({obj.Name}) with value '{value}': {e}\n"
+                )
+        else:
+            FreeCAD.Console.PrintWarning(
+                f"Property '{name}' not found on object '{obj.Label}'"
+                f" ({obj.Name}). Skipping.\n"
+            )
+
+
+def _find_file_in_directory(directory: pathlib.Path, file_name: str) -> Optional[pathlib.Path]:
+    """Recursively search for the file in a directory."""
+    for root, _, files in os.walk(str(directory)):
+        if file_name in files:
+            return pathlib.Path(os.path.join(root, file_name))
+    return None
+
+
+def _get_shape_search_paths(relative_to_path: Optional[pathlib.Path] = None) -> List[pathlib.Path]:
+    """Get the list of directories to search for shape files."""
+    paths = []
+    if relative_to_path:
+        # Search relative to the provided path (e.g., the .fctb file's directory)
+        root_path = relative_to_path.parent.parent
+        paths.append(root_path / "Shape")
+
+    # Add configured tool shape search paths
+    try:
+        import Path.Preferences
+        # Assuming searchPathsTool returns a list of strings
+        paths.extend([pathlib.Path(p) for p in Path.Preferences.searchPathsTool("Shape")])
+    except ImportError:
+        FreeCAD.Console.PrintWarning(
+            "Could not import Path.Preferences. Cannot use configured search paths.\n"
+        )
+    return paths
+
+
+def find_shape_file(name: str, relative_to_path: Optional[pathlib.Path] = None) -> Optional[pathlib.Path]:
+    """
+    Find a tool shape file by name in configured search paths.
+
+    Args:
+        name (str): The name of the shape file (e.g., "endmill.fcstd").
+        relative_to_path (Optional[pathlib.Path]): Optional path to search relative to.
+
+    Returns:
+        Optional[pathlib.Path]: The found file path or None.
+    """
+    # Check if the name is an absolute path
+    if os.path.exists(name):
+        return pathlib.Path(name)
+
+    search_paths = _get_shape_search_paths(relative_to_path)
+
+    for search_path in search_paths:
+        found_path = _find_file_in_directory(search_path, name)
+        if found_path:
+            return found_path
+
+    return None

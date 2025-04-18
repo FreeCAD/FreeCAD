@@ -2,10 +2,12 @@
 # Defines the SlittingSaw tool bit shape.
 
 import FreeCAD
+from typing import Tuple
 from .base import ToolBitShape
 
 
 class ToolBitShapeSlittingSaw(ToolBitShape):
+    aliases: Tuple[str, ...] = "slitting-saw", "slittingsaw"
     _LABELS = {
         "BladeThickness": "Blade thickness",
         "CapDiameter": "Cap diameter",
@@ -15,12 +17,22 @@ class ToolBitShapeSlittingSaw(ToolBitShape):
         "ShankDiameter": "Shank diameter", # Arbor diameter?
     }
 
+    @property
+    def label(self) -> str:
+        return "Slitting Saw"  # TODO translatable
+
     def set_default_parameters(self):
         self._params = {
-            "BladeThickness": FreeCAD.Units.Quantity("1 mm"),
-            "CapDiameter": FreeCAD.Units.Quantity("20 mm"),
-            "CapHeight": FreeCAD.Units.Quantity("5 mm"),
-            "Diameter": FreeCAD.Units.Quantity("50 mm"),
-            "Length": FreeCAD.Units.Quantity("30 mm"),
-            "ShankDiameter": FreeCAD.Units.Quantity("16 mm"),
+            "BladeThickness": (FreeCAD.Units.Quantity("1 mm"),
+                               'App::PropertyLength'),
+            "CapDiameter": (FreeCAD.Units.Quantity("20 mm"),
+                            'App::PropertyLength'),
+            "CapHeight": (FreeCAD.Units.Quantity("5 mm"),
+                          'App::PropertyLength'),
+            "Diameter": (FreeCAD.Units.Quantity("50 mm"),
+                         'App::PropertyLength'),
+            "Length": (FreeCAD.Units.Quantity("30 mm"),
+                       'App::PropertyLength'),
+            "ShankDiameter": (FreeCAD.Units.Quantity("16 mm"),
+                               'App::PropertyLength'),
         }

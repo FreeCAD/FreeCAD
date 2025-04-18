@@ -18,14 +18,21 @@ from .threadmill import ToolBitShapeThreadMill
 from .torus import ToolBitShapeTorus
 from .vbit import ToolBitShapeVBit
 
-# Recreate the dictionary mapping shape names (lowercase class names) to classes
-# We gather all direct subclasses of ToolBitShape that are defined *within* this module's scope
+# Maps aliases to ToolBitShape
 # Note: This relies on the classes being imported above.
-TOOL_BIT_SHAPE_CLASSES: Dict[str, Type[ToolBitShape]] = {
-    cls.__name__.lower(): cls
-    for cls in ToolBitShape.__subclasses__()
-    if cls.__module__.startswith(__name__)
-}
+TOOL_BIT_SHAPE_CLASSES: Dict[str, Type[ToolBitShape]] = {}
+
+for cls in ToolBitShape.__subclasses__():
+    if cls.__module__.startswith(__name__) and hasattr(cls, 'aliases') and cls.aliases:
+        for alias in cls.aliases:
+            if alias in TOOL_BIT_SHAPE_CLASSES:
+                raise ValueError(
+                    f"Duplicate alias '{alias}' found for shape class '{cls.__name__}'. "
+                    f"It was already mapped to '{TOOL_BIT_SHAPE_CLASSES[alias].__name__}'. "
+                    "Aliases must be unique."
+                )
+            TOOL_BIT_SHAPE_CLASSES[alias] = cls
+            TOOL_BIT_SHAPE_CLASSES[alias+".fcstd"] = cls
 
 # Create a sorted list of user-friendly shape names (class names)
 TOOL_BIT_SHAPE_NAMES = sorted(

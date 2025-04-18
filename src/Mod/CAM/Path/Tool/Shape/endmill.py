@@ -2,10 +2,12 @@
 # Defines the EndMill tool bit shape.
 
 import FreeCAD
+from typing import Tuple
 from .base import ToolBitShape
 
 
 class ToolBitShapeEndMill(ToolBitShape):
+    aliases: Tuple[str, ...] = ("endmill",)
     _LABELS = {
         "CuttingEdgeHeight": "Cutting edge height",
         "Diameter": "Diameter",
@@ -13,10 +15,18 @@ class ToolBitShapeEndMill(ToolBitShape):
         "ShankDiameter": "Shank diameter",
     }
 
+    @property
+    def label(self) -> str:
+        return "Endmill"  # TODO translatable
+
     def set_default_parameters(self):
         self._params = {
-            "CuttingEdgeHeight": FreeCAD.Units.Quantity("20 mm"),
-            "Diameter": FreeCAD.Units.Quantity("10 mm"),
-            "Length": FreeCAD.Units.Quantity("75 mm"),
-            "ShankDiameter": FreeCAD.Units.Quantity("10 mm"),
+            "CuttingEdgeHeight": (FreeCAD.Units.Quantity("20 mm"),
+                                  'App::PropertyLength'),
+            "Diameter": (FreeCAD.Units.Quantity("10 mm"),
+                         'App::PropertyLength'),
+            "Length": (FreeCAD.Units.Quantity("75 mm"),
+                       'App::PropertyLength'),
+            "ShankDiameter": (FreeCAD.Units.Quantity("10 mm"),
+                              'App::PropertyLength'),
         }
