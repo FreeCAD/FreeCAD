@@ -2,6 +2,7 @@ from Base.Metadata import constmethod
 from Base.BoundBox import BoundBox
 from App.ExtensionContainer import ExtensionContainer
 from typing import Any, Final, List, Optional
+import enum
 
 
 class ViewProvider(ExtensionContainer):
@@ -11,6 +12,11 @@ class ViewProvider(ExtensionContainer):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    class ToggleVisibilityMode(enum.Enum):
+        CanToggleVisibility = "CanToggleVisibility"
+        NoToggleVisibility = "NoToggleVisibility"
+
 
     def addProperty(
         self,
@@ -367,3 +373,7 @@ class ViewProvider(ExtensionContainer):
 
     DropPrefix: Final[str] = ""
     """Subname referencing the sub-object for holding dropped object."""
+
+    ToggleVisibility: ToggleVisibilityMode = ToggleVisibilityMode.CanToggleVisibility
+    """Get/set whether the viewprovider can toggle the visibility of
+    the object."""

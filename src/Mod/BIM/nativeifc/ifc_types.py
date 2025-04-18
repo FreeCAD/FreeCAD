@@ -76,6 +76,10 @@ def convert_to_type(obj, keep_object=False):
     if FreeCAD.GuiUp:
         import FreeCADGui
         dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogConvertType.ui")
+        
+        original_text = dlg.label.text()
+        dlg.label.setText(original_text.replace("%1", obj.Class+"Type"))
+        
         result = dlg.exec_()
         if not result:
             return

@@ -55,7 +55,7 @@ public:
     Base::Vector3d getDirection() const;
     Base::Vector3d getBaseDirection() const;
 
-    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
+    bool getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const override;
 
     /// Returns true if this DatumElement is part of a App::Origin.
     bool isOriginFeature() const;
@@ -118,7 +118,7 @@ public:
         return "Gui::ViewProviderCoordinateSystem";
     }
 
-    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
+    bool getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const override;
 
     /** @name Axis and plane access
      * This functions returns casted axis and planes objects and asserts they are set correctly

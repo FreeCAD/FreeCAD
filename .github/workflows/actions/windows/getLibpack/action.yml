@@ -41,11 +41,11 @@ inputs:
   libpackdownloadurl:
     description: "URL where to download libpack"
     required: false
-    default: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.1.0/LibPack-1.1.0-v3.1.0-Release.7z
+    default: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.1.1.1/LibPack-1.1.0-v3.1.1.1-Release.7z
   libpackname:
     description: "Libpack name (once downloaded)"
     required: false
-    default: LibPack-1.1.0-v3.1.0-Release
+    default: LibPack-1.1.0-v3.1.1.1-Release
 
 runs:
   using: "composite"

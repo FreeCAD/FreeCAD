@@ -3564,11 +3564,13 @@ void View3DInventorViewer::alignToSelection()
     const auto geoFeatureSubName = !splitSubName.empty() ? splitSubName.back() : "";
 
     Base::Vector3d alignmentZ;
-    if (geoFeature->getCameraAlignmentDirection(alignmentZ, geoFeatureSubName.c_str())) {
+    Base::Vector3d alignmentX (0, 0, 0);
+    if (geoFeature->getCameraAlignmentDirection(alignmentZ, alignmentX, geoFeatureSubName.c_str())) {
 
-        // Find the x alignment
-        Base::Vector3d alignmentX;
-        Base::Rotation(Base::Vector3d(0, 0, -1), alignmentZ).multVec(Base::Vector3d(1, 0, 0), alignmentX);
+        // Find a x alignment if the geoFeature did not suggest any
+        if (alignmentX == Base::Vector3d (0, 0, 0)) {
+            Base::Rotation(-Base::Vector3d::UnitZ, alignmentZ).multVec(Base::Vector3d::UnitX, alignmentX);
+        }
 
         // Convert to global coordinates
         globalRotation.multVec(alignmentZ, alignmentZ);

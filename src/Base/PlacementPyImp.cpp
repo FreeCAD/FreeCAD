@@ -100,7 +100,7 @@ int PlacementPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // NOTE: The first parameter defines the translation, the second the rotation axis
         // and the last parameter defines the rotation angle in degree.
         Base::Rotation rot(static_cast<Base::VectorPy*>(d)->value(),
-                           angle / 180.0 * std::numbers::pi);
+                           Base::toRadians(angle));
         *getPlacementPtr() = Base::Placement(static_cast<Base::VectorPy*>(o)->value(), rot);
         return 0;
     }

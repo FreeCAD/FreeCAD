@@ -113,7 +113,7 @@ void TaskCosmeticLine::setUiPrimary()
     setWindowTitle(QObject::tr("Create Cosmetic Line"));
 
     // double rotDeg = m_partFeat->Rotation.getValue();
-    // double rotRad = rotDeg * std::numbers::pi / 180.0;
+    // double rotRad = Base::toRadians(rotDeg);
     Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
     Base::Vector3d p1, p2;
     if (m_is3d.front()) {

@@ -532,8 +532,8 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 	double bx = e.X() - p.X();
 	double by = e.Y() - p.Y();
 
-	double start_angle = atan2(ay, ax) * 180 / std::numbers::pi;
-	double end_angle = atan2(by, bx) * 180 / std::numbers::pi;
+	double start_angle = Base::toDegrees(atan2(ay, ax));
+	double end_angle = Base::toDegrees(atan2(by, bx));
 
 	if (a > 0) {
 		double temp = start_angle;

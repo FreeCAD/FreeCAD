@@ -6204,13 +6204,13 @@ double suggestFilletRadius(const GeomLineSegment *lineSeg1, const GeomLineSegmen
     return r1 < r2 ? r1 : r2;
 }
 
-GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
+GeomArcOfCircle* create2LinesFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius)
 {
     Base::Vector3d corner;
-    if (!Part::find2DLinesIntersection(lineSeg1, lineSeg2, corner))
-        // Parallel Lines so return null pointer
-        return nullptr;
+    if (!Part::find2DLinesIntersection(lineSeg1, lineSeg2, corner)) {
+        return nullptr;  // Parallel Lines
+    }
 
     Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
     Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
@@ -6243,6 +6243,415 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
     return arc;
+}
+
+GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2, const Base::Vector3d& refPnt1,
+    const Base::Vector3d& refPnt2, double radius, int& pos1, int& pos2, bool& reverse)
+{
+    if (geo1->is<GeomLineSegment>() && geo2->is<GeomLineSegment>()) {
+        auto* line1 = static_cast<const GeomLineSegment*>(geo1);
+        auto* line2 = static_cast<const GeomLineSegment*>(geo2);
+
+        Base::Vector3d filletCenter;
+        if (!findFilletCenter(line1, line2, radius, refPnt1, refPnt2, filletCenter)) {
+            return nullptr;
+        }
+        auto arc = create2LinesFilletGeometry(line1, line2, filletCenter, radius);
+
+        // Before returning arc, we find pos and reverse. Note PointPos is in sketcher only so we use int.
+        Base::Vector3d intersection, dist1, dist2;
+        find2DLinesIntersection(line1, line2, intersection);
+
+        Base::Vector3d p1 = arc->getStartPoint(true);
+
+        Base::Vector3d dir1 = line1->getEndPoint() - line1->getStartPoint();
+        Base::Vector3d dir2 = line2->getEndPoint() - line2->getStartPoint();
+        dist1.ProjectToLine(p1 - intersection, dir1);
+        dist2.ProjectToLine(p1 - intersection, dir2);
+
+        pos1 = (filletCenter - intersection) * dir1 > 0 ? 1 : 2;
+        pos2 = (filletCenter - intersection) * dir2 > 0 ? 1 : 2;
+        reverse = dist1.Length() < dist2.Length();
+
+        return arc;
+    }
+    else if (geo1->isDerivedFrom<GeomBoundedCurve>() && geo2->isDerivedFrom<GeomBoundedCurve>()) {
+
+        auto distanceToRefPoints =
+            [](Base::Vector3d ip1, Base::Vector3d ip2, Base::Vector3d ref1, Base::Vector3d ref2) {
+                return (ip1 - ref1).Length() + (ip2 - ref2).Length();
+            };
+
+        auto selectIntersection =
+            [&distanceToRefPoints](std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
+                                   std::pair<Base::Vector3d, Base::Vector3d>& interpoints,
+                                   const Base::Vector3d& refPnt1,
+                                   const Base::Vector3d& refPnt2) {
+                if (points.empty()) {
+                    return -1;
+                }
+
+                double dist = distanceToRefPoints(points[0].first, points[0].second, refPnt1, refPnt2);
+                int i = 0, si = 0;
+
+                for (auto ipoints : points) {
+                    double d =  distanceToRefPoints(ipoints.first, ipoints.second, refPnt1, refPnt2);
+
+                    if (d < dist) {
+                        si = i;
+                        dist = d;
+                    }
+
+                    i++;
+                }
+
+                interpoints = points[si];
+
+                return 0;
+            };
+
+        // NOTE: While it is not a requirement that the endpoints of the corner to trim are
+        // coincident
+        //       for GeomTrimmedCurves, it is for GeomBoundedCurves. The reason is that there is no
+        //       basiscurve that can be extended to find an intersection.
+        //
+        //       However, GeomTrimmedCurves sometimes run into problems when trying to calculate the
+        //       intersection of basis curves, for example in the case of hyperbola sometimes the
+        //       cosh goes out of range while calculating this intersection of basis curves.
+        //
+        //        Consequently:
+        //        i. for GeomBoundedCurves, other than GeomTrimmedCurves, a coincident endpoint is
+        //        mandatory. ii. for GeomTrimmedCurves, if there is a coincident endpoint, it is
+        //        used for the fillet, iii. for GeomTrimmedCurves, if there is not a coincident
+        //        endpoint, an intersection of basis curves
+        //             is attempted.
+
+        auto* curve1 = static_cast<const GeomBoundedCurve*>(geo1);
+        auto* curve2 = static_cast<const GeomBoundedCurve*>(geo2);
+
+        double refparam1;
+        double refparam2;
+
+        try {
+            if (!curve1->closestParameter(refPnt1, refparam1)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError,
+                   "Unable to determine the parameter of the first selected curve at the reference "
+                   "point.")
+        }
+
+        try {
+            if (!curve2->closestParameter(refPnt2, refparam2)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError,
+                   "Unable to determine the parameter of the second selected curve at the "
+                   "reference point.")
+        }
+
+        std::pair<Base::Vector3d, Base::Vector3d> interpoints;
+        std::vector<std::pair<Base::Vector3d, Base::Vector3d>> points;
+
+        // look for coincident constraints between curves, take the coincident closest to the
+        // refpoints
+        double dist = INFINITY;
+
+        if ((curve1->getStartPoint() - curve2->getStartPoint()).Length() < Precision::Confusion()) {
+            Base::Vector3d tmpp1 = curve1->getStartPoint();
+            Base::Vector3d tmpp2 = curve2->getStartPoint();
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            if (tmpdist < dist) {
+                dist = tmpdist;
+                interpoints = std::make_pair(tmpp1, tmpp2);
+                pos1 = 1;
+                pos2 = 1;
+            }
+        }
+        else if ((curve1->getEndPoint() - curve2->getStartPoint()).Length() < Precision::Confusion()) {
+            Base::Vector3d tmpp1 = curve1->getEndPoint();
+            Base::Vector3d tmpp2 = curve2->getStartPoint();
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            if (tmpdist < dist) {
+                dist = tmpdist;
+                interpoints = std::make_pair(tmpp1, tmpp2);
+                pos1 = 2;
+                pos2 = 1;
+            }
+        }
+        else if ((curve1->getStartPoint() - curve2->getEndPoint()).Length() < Precision::Confusion()) {
+            Base::Vector3d tmpp1 = curve1->getStartPoint();
+            Base::Vector3d tmpp2 = curve2->getEndPoint();
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            if (tmpdist < dist) {
+                dist = tmpdist;
+                interpoints = std::make_pair(tmpp1, tmpp2);
+                pos1 = 1;
+                pos2 = 2;
+            }
+        }
+        else if ((curve1->getEndPoint() - curve2->getEndPoint()).Length() < Precision::Confusion()) {
+            Base::Vector3d tmpp1 = curve1->getEndPoint();
+            Base::Vector3d tmpp2 = curve2->getEndPoint();
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            if (tmpdist < dist) {
+                dist = tmpdist;
+                interpoints = std::make_pair(tmpp1, tmpp2);
+                pos1 = 2;
+                pos2 = 2;
+            }
+        }
+
+        if (dist == INFINITY) {
+            // no coincident was found, try basis curve intersection if GeomTrimmedCurve
+            if (!geo1->isDerivedFrom<GeomTrimmedCurve>() || !geo2->isDerivedFrom<GeomTrimmedCurve>()) {
+                return nullptr;// not a GeomTrimmedCurve and no coincident point.
+            }
+        
+            auto* tcurve1 = static_cast<const GeomTrimmedCurve*>(geo1);
+            auto* tcurve2 = static_cast<const GeomTrimmedCurve*>(geo2);
+        
+            try {
+                if (!tcurve1->intersectBasisCurves(tcurve2, points)) {
+                    return nullptr;
+                }
+            }
+            catch (Base::CADKernelError& e) {
+                e.ReportException();
+                THROWMT(Base::CADKernelError,
+                    QT_TRANSLATE_NOOP("Exceptions",
+                        "Unable to guess intersection of curves. Try adding "
+                        "a coincident constraint between the vertices of the "
+                        "curves you are intending to fillet."))
+            }
+        
+            int res = selectIntersection(points, interpoints, refPnt1, refPnt2);
+        
+            if (res != 0) {
+                return nullptr;
+            }
+        }
+
+        // Now that we know where the curves intersect, get the parameters in the curves of those
+        // points
+        double intparam1;
+        double intparam2;
+
+        try {
+            if (!curve1->closestParameter(interpoints.first, intparam1)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError,
+                   "Unable to determine the parameter of the first selected curve at the "
+                   "intersection of the curves.")
+        }
+
+        try {
+            if (!curve2->closestParameter(interpoints.second, intparam2)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError,
+                   "Unable to determine the parameter of the second selected curve at the "
+                   "intersection of the curves.")
+        }
+
+        // get the starting parameters of each curve
+        double spc1 = curve1->getFirstParameter();
+        double spc2 = curve2->getFirstParameter();
+
+        // get a fillet radius if zero was given
+        Base::Vector3d ref21 = refPnt2 - refPnt1;
+
+        if (radius == .0f) {
+            // guess a radius
+            // https://forum.freecad.org/viewtopic.php?f=3&t=31594&start=50#p266658
+            //
+            // We do not know the actual tangency points until we intersect the offset curves, but
+            // we do not have offset curves before with decide on a radius.
+            //
+            // This estimation guesses a radius as the average of the distances from the reference
+            // points with respect to the intersection of the normals at those reference points.
+
+            try {
+                Base::Vector3d tdir1;
+                Base::Vector3d tdir2;
+
+                // We want normals, but OCCT normals require curves to be 2 times derivable, and
+                // lines are not tangency calculation requires 1 time derivable.
+
+                if (!curve1->tangent(refparam1, tdir1) || !curve2->tangent(refparam2, tdir2)) {
+                    return nullptr;
+                }
+
+                Base::Vector3d dir1(tdir1.y, -tdir1.x, 0);
+                Base::Vector3d dir2(tdir2.y, -tdir2.x, 0);
+
+                double det = -dir1.x * dir2.y + dir2.x * dir1.y;
+
+                if (std::abs(det) < Precision::Confusion()) {
+                    throw Base::RuntimeError("No intersection of normals");
+                }
+
+                Base::Vector3d refp1 = curve1->pointAtParameter(refparam1);
+                Base::Vector3d refp2 = curve2->pointAtParameter(refparam2);
+
+                Base::Vector3d normalintersect(
+                    (-dir1.x * dir2.x * refp1.y + dir1.x * dir2.x * refp2.y
+                     - dir1.x * dir2.y * refp2.x + dir2.x * dir1.y * refp1.x)
+                        / det,
+                    (-dir1.x * dir2.y * refp1.y + dir2.x * dir1.y * refp2.y
+                     + dir1.y * dir2.y * refp1.x - dir1.y * dir2.y * refp2.x)
+                        / det,
+                    0);
+
+                radius = ((refp1 - normalintersect).Length() + (refp2 - normalintersect).Length()) / 2;
+            }
+            catch (const Base::Exception&) {
+                radius = ref21.Length();// fall-back to simplest estimation.
+            }
+        }
+
+        // We create Offset curves at the suggested radius, the direction of offset is estimated
+        // from the tangency vector
+        Base::Vector3d tdir1 = curve1->firstDerivativeAtParameter(refparam1);
+        Base::Vector3d tdir2 = curve2->firstDerivativeAtParameter(refparam2);
+
+        Base::Vector3d vn(0, 0, 1);
+
+        double sdir1 = tdir1.Cross(ref21).Dot(vn);
+        double sdir2 = tdir2.Cross(-ref21).Dot(vn);
+
+        auto* ocurve1 = new GeomOffsetCurve(
+            Handle(Geom_Curve)::DownCast(curve1->handle()), (sdir1 < 0) ? radius : -radius, vn);
+
+        auto* ocurve2 = new GeomOffsetCurve(
+            Handle(Geom_Curve)::DownCast(curve2->handle()), (sdir2 < 0) ? radius : -radius, vn);
+
+        // Next we calculate the intersection of offset curves to get the center of the fillet
+        std::pair<Base::Vector3d, Base::Vector3d> filletcenterpoint;
+        std::vector<std::pair<Base::Vector3d, Base::Vector3d>> offsetintersectionpoints;
+
+        try {
+            if (!ocurve1->intersect(ocurve2, offsetintersectionpoints)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError, "Unable to find intersection between offset curves.")
+        }
+
+        int res = selectIntersection(offsetintersectionpoints, filletcenterpoint, refPnt1, refPnt2);
+
+        if (res != 0) {
+            return nullptr;
+        }
+
+        double refoparam1;
+        double refoparam2;
+
+        try {
+            if (!curve1->closestParameter(filletcenterpoint.first, refoparam1)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError, "Unable to determine the starting point of the arc.")
+        }
+
+        try {
+            if (!curve2->closestParameter(filletcenterpoint.second, refoparam2)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError, "Unable to determine the end point of the arc.")
+        }
+
+        // Next we calculate the closest points to the fillet center, so the points where tangency
+        // is to be applied
+        Base::Vector3d refp1 = curve1->pointAtParameter(refoparam1);
+        Base::Vector3d refp2 = curve2->pointAtParameter(refoparam2);
+
+        // Now we create arc for the fillet
+        double startAngle, endAngle, range;
+
+        Base::Vector3d radDir1 = refp1 - filletcenterpoint.first;
+        Base::Vector3d radDir2 = refp2 - filletcenterpoint.first;
+
+        startAngle = atan2(radDir1.y, radDir1.x);
+
+        range = atan2(-radDir1.y * radDir2.x + radDir1.x * radDir2.y,
+                      radDir1.x * radDir2.x + radDir1.y * radDir2.y);
+
+        if (fmod(fabs(range), 2 * std::numbers::pi) < Precision::Approximation()) {
+            return nullptr;
+        }
+
+        endAngle = startAngle + range;
+
+        if (endAngle < startAngle) {
+            std::swap(startAngle, endAngle);
+        }
+
+        if (endAngle > 2 * std::numbers::pi) {
+            endAngle -= 2 * std::numbers::pi;
+        }
+
+        if (startAngle < 0) {
+            endAngle += 2 * std::numbers::pi;
+        }
+
+        // Create Arc Segment
+        auto* arc = new GeomArcOfCircle();
+        arc->setRadius(radDir1.Length());
+        arc->setCenter(filletcenterpoint.first);
+        arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
+
+        delete ocurve1;
+        delete ocurve2;
+
+        // Before returning arc, we find pos and reverse. Note PointPos is in sketcher only so we use int.
+        auto selectend = [](double intparam, double refparam, double startparam) {
+            if ((intparam > refparam && startparam >= refparam)
+                || (intparam < refparam && startparam <= refparam)) {
+                return 1;
+            }
+            else {
+                return 2;
+            }
+        };
+
+        if (pos1 == 0) {
+            pos1 = selectend(intparam1, refoparam1, spc1);
+            pos2 = selectend(intparam2, refoparam2, spc2);
+        }
+
+        Base::Vector3d p1 = arc->getStartPoint(true);
+        Base::Vector3d p2 = arc->getEndPoint(true);
+
+        double dist1 = (refp1 - p1).Length();
+        double dist2 = (refp1 - p2).Length();
+        reverse = dist1 < dist2;
+
+        return arc;
+    }
+
+    return nullptr;
 }
 
 std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)& s, bool silent)

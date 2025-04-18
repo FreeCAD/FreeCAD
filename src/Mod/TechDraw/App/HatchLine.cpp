@@ -35,6 +35,7 @@
 
 #include <Base/Console.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 
 #include "HatchLine.h"
@@ -396,7 +397,7 @@ double PATLineSpec::getSlope()
     } else if (angle < -90.0) {
         angle = (180 + angle);
     }
-    return tan(angle * std::numbers::pi/180.0);
+    return tan(Base::toRadians(angle));
 }
 
 bool PATLineSpec::isDashed()
@@ -413,7 +414,7 @@ double PATLineSpec::getIntervalX()
         return getInterval();
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() / cos(perpAngle * std::numbers::pi/180.0));
+        return fabs(getInterval() / cos(Base::toRadians(perpAngle)));
     }
 }
 
@@ -426,7 +427,7 @@ double PATLineSpec::getIntervalY()
         return 0.0;
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() * tan(perpAngle * std::numbers::pi/180.0));
+        return fabs(getInterval() * tan(Base::toRadians(perpAngle)));
     }
 }
 

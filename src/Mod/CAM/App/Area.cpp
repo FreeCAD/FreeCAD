@@ -72,6 +72,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/CrossSection.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/FuzzyHelper.h>
@@ -2632,7 +2633,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 for (int j = 0; j < steps; ++j, offset += stepover) {
                     Point p1(-r, offset), p2(r, offset);
                     if (a > Precision::Confusion()) {
-                        double r = a * std::numbers::pi / 180.0;
+                        double r = Base::toRadians(a);
                         p1.Rotate(r);
                         p2.Rotate(r);
                     }

@@ -1028,7 +1028,7 @@ class Component(ArchIFC.IfcProduct):
             for f in fset:
                 try:
                     import TechDraw
-                    pf = Part.Face(DraftGeomUtils.findWires(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                    pf = Part.makeFace(DraftGeomUtils.findWires(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges), "Part::FaceMakerCheese")
                 except Part.OCCError:
                     # error in computing the areas. Better set them to zero than show a wrong value
                     if obj.HorizontalArea.Value != 0:
@@ -1037,9 +1037,9 @@ class Component(ArchIFC.IfcProduct):
                     if hasattr(obj,"PerimeterLength"):
                         if obj.PerimeterLength.Value != 0:
                             obj.PerimeterLength = 0
+                    return
                 else:
                     pset.append(pf)
-
 
             if pset:
                 self.flatarea = pset.pop()

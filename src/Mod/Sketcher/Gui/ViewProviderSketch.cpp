@@ -3998,7 +3998,7 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
         getCoordsOnSketchPlane(pos0, vol.getProjectionDirection(), x0, y0);
         getCoordsOnSketchPlane(pos1, vol.getProjectionDirection(), x1, y1);
 
-        return -atan2((y1 - y0), (x1 - x0)) * 180 / std::numbers::pi;
+        return Base::toDegrees(-atan2((y1 - y0), (x1 - x0)));
     }
     catch (const Base::ZeroDivisionError&) {
         return 0;

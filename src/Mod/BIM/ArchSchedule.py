@@ -203,14 +203,16 @@ class _ArchSchedule:
         if not (obj.CreateSpreadsheet or force):
             return
         sp = self.getSpreadSheet(obj, force=True)
+        widths = [sp.getColumnWidth(col) for col in ("A", "B", "C")]
         sp.clearAll()
-        # clearAll removes the custom property, we need to re-add it:
-        self.setSchedulePropertySpreadsheet(sp, obj)
+        # clearAll resets the column widths:
+        for col, width in zip(("A", "B", "C"), widths):
+            sp.setColumnWidth(col, width)
         # set headers
-        sp.set("A1","Operation")
-        sp.set("B1","Value")
-        sp.set("C1","Unit")
-        sp.setStyle('A1:C1', 'bold', 'add')
+        sp.set("A1", "Operation")
+        sp.set("B1", "Value")
+        sp.set("C1", "Unit")
+        sp.setStyle("A1:C1", "bold", "add")
         # write contents
         for k,v in self.data.items():
             sp.set(k,v)
