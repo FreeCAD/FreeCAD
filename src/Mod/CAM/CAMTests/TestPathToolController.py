@@ -22,6 +22,7 @@
 
 import FreeCAD
 import Path
+from Path.Tool.Shape import ToolBitShapeEndMill
 import Path.Tool.Bit as PathToolBit
 import Path.Tool.Controller as PathToolController
 
@@ -39,8 +40,7 @@ class TestPathToolController(PathTestBase):
 
     def createTool(self, name="t1", diameter=1.75):
         attrs = {
-            "shape": None,
-            "name": name,
+            "shape": ToolBitShapeEndMill,
             "parameter": {"Diameter": diameter},
             "attribute": [],
         }
@@ -72,7 +72,7 @@ class TestPathToolController(PathTestBase):
         self.assertEqual(attrs["hrapid"], "28.0 mm/s")
         self.assertEqual(attrs["dir"], "Reverse")
         self.assertEqual(attrs["speed"], 12000)
-        self.assertEqual(attrs["tool"], t.Proxy.templateAttrs(t))
+        self.assertEqual(attrs["tool"], t.Proxy.to_dict(t))
 
         return tc
 

@@ -389,7 +389,7 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         with patch('Path.Tool.Shape.base.FreeCAD', new=mock_freecad):
             shape = ToolBitShapeEndMill()
             params = shape.get_parameters()
-            self.assertEqual(str(params["Diameter"]), "10.0 mm")
+            self.assertEqual(str(params["Diameter"]), "5.0 mm")
             self.assertEqual(str(params["CuttingEdgeHeight"]), "20.0 mm")
             self.assertEqual(
                 shape.get_parameter_label("CuttingEdgeHeight"),

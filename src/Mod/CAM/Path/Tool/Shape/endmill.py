@@ -23,7 +23,7 @@ class ToolBitShapeEndMill(ToolBitShape):
         self._params = {
             "CuttingEdgeHeight": (FreeCAD.Units.Quantity("20 mm"),
                                   'App::PropertyLength'),
-            "Diameter": (FreeCAD.Units.Quantity("10 mm"),
+            "Diameter": (FreeCAD.Units.Quantity("5 mm"),
                          'App::PropertyLength'),
             "Length": (FreeCAD.Units.Quantity("75 mm"),
                        'App::PropertyLength'),

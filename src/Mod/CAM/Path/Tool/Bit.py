@@ -23,7 +23,6 @@
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
-import Path.Base.PropertyBag as PathPropertyBag
 import json
 import os
 import zipfile
@@ -36,9 +35,10 @@ Part = LazyLoader("Part", globals(), "Part")
 
 from .Shape.base import ToolBitShape
 from .Shape.endmill import ToolBitShapeEndMill
+from .Shape import TOOL_BIT_SHAPE_NAMES, get_shape_class
 
 __title__ = "Tool bits."
-__author__ = "sliptonic (Brad Collette)"
+__author__ = "sliptonic (Brad Collette), Samuel Abels"
 __url__ = "https://www.freecad.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
@@ -121,31 +121,24 @@ def _findRelativePath(path, typ):
     return relative
 
 
-# Unused due to bug fix related to relative paths
-"""
-def findRelativePathShape(path):
-    return _findRelativePath(path, 'Shape')
-
-
-def findRelativePathTool(path):
-    return _findRelativePath(path, 'Bit')
-"""
-
-
 def findRelativePathLibrary(path):
     return _findRelativePath(path, "Library")
 
 
 class ToolBit(object):
-    def __init__(self, obj, shapeFile, path=None):
-        Path.Log.track(obj.Label, shapeFile, path)
+    def __init__(self, obj, tool_bit_shape: ToolBitShape, path=None):
+        Path.Log.track(obj.Label, tool_bit_shape.name, path)
         self.obj = obj
+        self._tool_bit_shape = tool_bit_shape
+
         obj.addProperty(
-            "App::PropertyFile",
+            "App::PropertyEnumeration",
             "BitShape",
             "Base",
-            QT_TRANSLATE_NOOP("App::Property", "Shape for bit shape"),
+            QT_TRANSLATE_NOOP("App::Property", "Shape type for the tool bit"),
         )
+        obj.BitShape = TOOL_BIT_SHAPE_NAMES
+
         obj.addProperty(
             "App::PropertyLink",
             "BitBody",
@@ -159,12 +152,6 @@ class ToolBit(object):
             QT_TRANSLATE_NOOP("App::Property", "The file of the tool"),
         )
         obj.addProperty(
-            "App::PropertyString",
-            "ShapeName",
-            "Base",
-            QT_TRANSLATE_NOOP("App::Property", "The name of the shape file"),
-        )
-        obj.addProperty(
             "App::PropertyStringList",
             "BitPropertyNames",
             "Base",
@@ -173,13 +160,14 @@ class ToolBit(object):
 
         if path:
             obj.File = path
-        if shapeFile is None:
-            obj.BitShape = "endmill.fcstd"
-            self._setupBitShape(obj)
-            self.unloadBitBody(obj)
-        else:
-            obj.BitShape = shapeFile
-            self._setupBitShape(obj)
+
+        # Set the initial shape based on the provided instance
+        obj.BitShape = self._tool_bit_shape.name
+
+        # Initialize properties and visual representation
+        self._initialize_properties_from_shape(obj)
+        self._update_visual_representation(obj)
+
         self.onDocumentRestored(obj)
 
     def dumps(self):
@@ -193,12 +181,27 @@ class ToolBit(object):
         return None
 
     def onDocumentRestored(self, obj):
+        Path.Log.track(obj.Label)
         # when files are shared it is essential to be able to change/set the shape file,
         # otherwise the file is hard to use
         # obj.setEditorMode('BitShape', 1)
         obj.setEditorMode("BitBody", 2)
         obj.setEditorMode("File", 1)
         obj.setEditorMode("Shape", 2)
+
+        # If BitBody exists and is in a different document after document restore,
+        # it means a shallow copy occurred. We need to re-initialize the visual
+        # representation and properties to ensure a deep copy of the BitBody
+        # and its properties.
+        # Only re-initialize properties from shape if not restoring from file
+        if obj.BitBody and obj.BitBody.Document != obj.Document:
+            Path.Log.debug(f"onDocumentRestored: Re-initializing BitBody for {obj.Label} after copy")
+            self._update_visual_representation(obj)
+            # Only re-initialize properties from shape if not restoring from file
+            if 'Restore' not in obj.State:
+                Path.Log.debug(f"onDocumentRestored: Re-initializing properties from shape for {obj.Label}")
+                self._initialize_properties_from_shape(obj)
+
         if not hasattr(obj, "BitPropertyNames"):
             obj.addProperty(
                 "App::PropertyStringList",
@@ -236,7 +239,7 @@ class ToolBit(object):
     def onChanged(self, obj, prop):
         Path.Log.track(obj.Label, prop)
         if prop == "BitShape" and "Restore" not in obj.State:
-            self._setupBitShape(obj)
+            self._handle_shape_change(obj, obj.BitShape)
 
     def onDelete(self, obj, arg2=None):
         Path.Log.track(obj.Label)
@@ -271,54 +274,11 @@ class ToolBit(object):
         else:
             obj.Shape = Part.Shape()
 
-    def _loadBitBody(self, obj, path=None):
-        Path.Log.track(obj.Label, path)
-        p = path if path else obj.BitShape
-        docOpened = False
-        doc = None
-        for d in FreeCAD.listDocuments():
-            if FreeCAD.getDocument(d).FileName == p:
-                doc = FreeCAD.getDocument(d)
-                break
-        if doc is None:
-            p = findToolShape(p, path if path else obj.File)
-            if p is None:
-                raise FileNotFoundError
-
-            if not path and p != obj.BitShape:
-                obj.BitShape = p
-            Path.Log.debug("ToolBit {} using shape file: {}".format(obj.Label, p))
-            doc = FreeCAD.openDocument(p, True)
-            obj.ShapeName = doc.Name
-            docOpened = True
-        else:
-            Path.Log.debug("ToolBit {} already open: {}".format(obj.Label, doc))
-        return (doc, docOpened)
-
     def _removeBitBody(self, obj):
         if obj.BitBody:
             obj.BitBody.removeObjectsFromDocument()
             obj.Document.removeObject(obj.BitBody.Name)
             obj.BitBody = None
-
-    def _deleteBitSetup(self, obj):
-        Path.Log.track(obj.Label)
-        self._removeBitBody(obj)
-        self._copyBitShape(obj)
-        for prop in obj.BitPropertyNames:
-            obj.removeProperty(prop)
-
-    def loadBitBody(self, obj, force=False):
-        if force or not obj.BitBody:
-            activeDoc = FreeCAD.ActiveDocument
-            if force:
-                self._removeBitBody(obj)
-            (doc, opened) = self._loadBitBody(obj)
-            obj.BitBody = obj.Document.copyObject(doc.RootObjects[0], True)
-            if opened:
-                FreeCAD.setActiveDocument(activeDoc.Name)
-                FreeCAD.closeDocument(doc.Name)
-            self._updateBitShape(obj)
 
     def unloadBitBody(self, obj):
         self._removeBitBody(obj)
@@ -336,48 +296,6 @@ class ToolBit(object):
 
         obj.setEditorMode(prop, 1)
         PathUtil.setProperty(obj, prop, val)
-
-    def _setupBitShape(self, obj, path=None):
-        Path.Log.track(obj.Label)
-
-        activeDoc = FreeCAD.ActiveDocument
-        try:
-            (doc, docOpened) = self._loadBitBody(obj, path)
-        except FileNotFoundError:
-            Path.Log.error(
-                "Could not find shape file {} for tool bit {}".format(obj.BitShape, obj.Label)
-            )
-            return
-
-        obj.Label = doc.RootObjects[0].Label
-        self._deleteBitSetup(obj)
-        bitBody = obj.Document.copyObject(doc.RootObjects[0], True)
-
-        docName = doc.Name
-        if docOpened:
-            FreeCAD.setActiveDocument(activeDoc.Name)
-            FreeCAD.closeDocument(doc.Name)
-
-        if bitBody.ViewObject:
-            bitBody.ViewObject.Visibility = False
-
-        Path.Log.debug("bitBody.{} ({}): {}".format(bitBody.Label, bitBody.Name, type(bitBody)))
-
-        propNames = []
-        for attributes in [o for o in bitBody.Group if PathPropertyBag.IsPropertyBag(o)]:
-            Path.Log.debug("Process properties from {}".format(attributes.Label))
-            for prop in attributes.Proxy.getCustomProperties():
-                self._setupProperty(obj, prop, attributes)
-                propNames.append(prop)
-        if not propNames:
-            Path.Log.error(
-                "Did not find a PropertyBag in {} - not a ToolBit shape?".format(docName)
-            )
-
-        # has to happen last because it could trigger op.execute evaluations
-        obj.BitPropertyNames = propNames
-        obj.BitBody = bitBody
-        self._copyBitShape(obj)
 
     def toolShapeProperties(self, obj):
         """toolShapeProperties(obj) ... return all properties defining it's shape"""
@@ -429,7 +347,7 @@ class ToolBit(object):
         Path.Log.track(path)
         try:
             with open(path, "w") as fp:
-                json.dump(self.templateAttrs(obj), fp, indent="  ")
+                json.dump(self.to_dict(obj), fp, indent="  ")
             if setFile:
                 obj.File = path
             return True
@@ -437,27 +355,157 @@ class ToolBit(object):
             Path.Log.error("Could not save tool {} to {} ({})".format(obj.Label, path, e))
             raise
 
-    def templateAttrs(self, obj):
+
+    def _initialize_properties_from_shape(self, obj):
+        Path.Log.track(obj.Label)
+
+        Path.Log.track(obj.Label)
+
+        prop_names = []
+        # Add/update properties based on the current shape's parameters
+        for name, value in self._tool_bit_shape.get_parameters().items():
+            prop_type = self._tool_bit_shape.get_parameter_property_type(name)
+
+            if prop_type:
+                # Use the parameter label for the property documentation
+                docstring = self._tool_bit_shape.get_parameter_label(name)
+
+                # Only add the property if it doesn't exist
+                if not hasattr(obj, name):
+                    obj.addProperty(prop_type, name, PropertyGroupShape, docstring)
+                    PathUtil.setProperty(obj, name, value) # Set to default value
+                    obj.setEditorMode(name, 0)  # Allow editing in property editor
+                else:
+                    # Property already exists, preserve its value.
+                    # Ensure editor mode is correct for existing shape properties.
+                    obj.setEditorMode(name, 0) # Allow editing
+
+                prop_names.append(name) # Collect the property name
+            else:
+                Path.Log.error(
+                    f"Could not determine FreeCAD property type for parameter '{name}'"
+                    f" in shape '{self._tool_bit_shape.name}'. Skipping."
+                )
+
+        # Update the list of properties inherited from the bit
+        # This list should now only contain the shape properties
+        obj.BitPropertyNames = prop_names
+
+    def _update_visual_representation(self, obj):
+        Path.Log.track(obj.Label)
+        # Remove existing BitBody if it exists
+        if obj.BitBody:
+            obj.Document.removeObject(obj.BitBody.Name)
+            obj.BitBody = None
+
+        # Load the shape file and copy the root object to create the BitBody
+        activeDoc = FreeCAD.ActiveDocument
+        try:
+            # Use the shape's name to find the corresponding shape file
+            shape_file_path = self._tool_bit_shape.filepath
+            if shape_file_path is None:
+                 Path.Log.error(
+                    f"Could not find shape file for tool bit shape '{self._tool_bit_shape.name}'"
+                 )
+                 return
+
+            # Open the shape file in a temporary document
+            # Convert PosixPath to string for FreeCAD.openDocument
+            doc = FreeCAD.openDocument(str(shape_file_path), True)
+            if not doc or not doc.RootObjects:
+                 Path.Log.error(
+                    f"Could not open shape file '{shape_file_path}' or it is empty"
+                 )
+                 if doc:
+                     FreeCAD.closeDocument(doc.Name)
+                 return
+
+            # Copy the root object from the shape file document to the current document
+            bitBody = obj.Document.copyObject(doc.RootObjects[0], True)
+
+            # Close the temporary shape file document
+            FreeCAD.setActiveDocument(activeDoc.Name)
+            FreeCAD.closeDocument(doc.Name)
+
+            # Assign the copied object to BitBody
+            obj.BitBody = bitBody
+
+            # Hide the visual representation
+            if obj.BitBody and hasattr(obj.BitBody, 'ViewObject') and obj.BitBody.ViewObject:
+                obj.BitBody.ViewObject.Visibility = False
+
+        except Exception as e:
+            Path.Log.error(
+                f"Failed to create visual representation by copying from shape file"
+                f" for shape '{self._tool_bit_shape.name}': {e}"
+            )
+
+    def _handle_shape_change(self, obj, new_shape_name):
+        Path.Log.track(obj.Label, new_shape_name)
+
+        old_shape_params = self._tool_bit_shape.get_parameters() if self._tool_bit_shape else {}
+
+        shape_class = get_shape_class(new_shape_name)
+        if shape_class is None:
+            Path.Log.error(f"Unknown tool bit shape: {new_shape_name}. Keeping current shape.")
+            # Revert the enumeration property in the UI if possible
+            # This might not be strictly necessary as the UI might handle it,
+            # but it's safer to keep the internal state consistent.
+            if self._tool_bit_shape:
+                 obj.BitShape = self._tool_bit_shape.name
+            return
+
+        # Attempt to preserve parameters from the old shape if they exist in the new one
+        new_shape_params = {}
+        try:
+            # Temporarily instantiate the new shape to get its default parameters
+            temp_instance = shape_class()
+            for name in temp_instance.get_parameters():
+                if name in old_shape_params:
+                    new_shape_params[name] = old_shape_params[name]
+        except Exception as e:
+             Path.Log.warning(
+                f"Failed to get default parameters for new shape '{new_shape_name}': {e}."
+                " Cannot preserve parameters."
+             )
+             new_shape_params = {} # Start with empty parameters if defaults fail
+
+        try:
+            self._tool_bit_shape = shape_class(**new_shape_params)
+            # Re-initialize properties and visual representation based on the new shape
+            self._initialize_properties_from_shape(obj)
+            self._update_visual_representation(obj)
+        except Exception as e:
+            Path.Log.error(
+                f"Failed to instantiate or set up new shape '{new_shape_name}': {e}"
+            )
+            # Optionally, revert to the previous shape or a default shape on error
+            # For now, we'll just log the error and keep the potentially broken state
+
+    def to_dict(self, obj):
+        Path.Log.track(obj.Label)
         attrs = {}
         attrs["version"] = 2
         attrs["name"] = obj.Label
-        if Path.Preferences.toolsStoreAbsolutePaths():
-            attrs["shape"] = obj.BitShape
-        else:
-            # attrs['shape'] = findRelativePathShape(obj.BitShape)
-            # Extract the name of the shape file
-            __, filShp = os.path.split(
-                obj.BitShape
-            )  #  __ is an ignored placeholder acknowledged by LGTM
-            attrs["shape"] = str(filShp)
-        params = {}
-        for name in obj.BitPropertyNames:
-            params[name] = PathUtil.getPropertyValueString(obj, name)
-        attrs["parameter"] = params
-        params = {}
-        attrs["attribute"] = params
-        return attrs
 
+        if self._tool_bit_shape:
+            attrs["shape"] = self._tool_bit_shape.name
+            attrs["parameter"] = {
+                name: PathUtil.getPropertyValueString(obj, name)
+                for name in self._tool_bit_shape.get_parameters()
+            }
+        else:
+            attrs["shape"] = ""
+            attrs["parameter"] = {}
+
+        # Include additional attributes (non-shape properties)
+        attrs["attribute"] = {
+            prop: PathUtil.getPropertyValueString(obj, prop)
+            for prop in obj.BitPropertyNames
+            if obj.getGroupOfProperty(prop) != PropertyGroupShape
+        }
+
+        return attrs
 
 def Declaration(path):
     Path.Log.track(path)
@@ -468,16 +516,52 @@ def Declaration(path):
 class ToolBitFactory(object):
     def CreateFromAttrs(self, attrs, name="ToolBit", path=None):
         Path.Log.track(attrs, path)
-        obj = Factory.Create(name, attrs["shape"], path)
-        obj.Label = attrs["name"]
-        params = attrs["parameter"]
-        for prop in params:
-            PathUtil.setProperty(obj, prop, params[prop])
-        attributes = attrs["attribute"]
+        shape_val = attrs.get("shape")
+        params_dict = attrs.get("parameter", {})
+        attributes = attrs.get("attribute", {})
+
+        shape_class = None
+        shape_name = None
+
+        # Find the shape class
+        if isinstance(shape_val, str):
+            shape_class = get_shape_class(shape_val)
+        elif isinstance(shape_val, type) and issubclass(shape_val, ToolBitShape):
+            shape_class = shape_val
+        else:
+            Path.Log.error(f"Invalid tool bit shape value in file: {shape_val}")
+            shape_class = ToolBitShapeEndMill
+
+        if shape_class is None:
+            Path.Log.error(f"Unknown tool bit shape: {shape_name}")
+            shape_class = ToolBitShapeEndMill
+
+
+        # Instantiate the shape with parameters from the file
+        try:
+            shape = shape_class(**params_dict)
+        except Exception as e:
+            Path.Log.error(
+                f"Failed to instantiate shape '{shape_class}' with parameters"
+                f" {params_dict}: {e}. Falling back to default shape."
+            )
+            shape = ToolBitShapeEndMill()
+
+
+        # Create the ToolBit object with the instantiated shape
+        obj = FreeCAD.ActiveDocument.addObject(
+            "Part::FeaturePython", name
+        )
+        obj.Label = attrs.get("name", name)
+        obj.Proxy = ToolBit(obj, shape, path)
+
+        # Set additional attributes on the ToolBit object using the proxy
         for att in attributes:
-            PathUtil.setProperty(obj, att, attributes[att])
-        obj.Proxy._updateBitShape(obj)
-        obj.Proxy.unloadBitBody(obj)
+            if hasattr(obj.Proxy, att): # Check if property exists on the proxy
+                 PathUtil.setProperty(obj, att, attributes[att])
+            else:
+                 Path.Log.warning(f"Attribute '{att}' not found on ToolBit proxy. Skipping.")
+
         return obj
 
     def CreateFrom(self, path, name="ToolBit"):
@@ -493,10 +577,29 @@ class ToolBitFactory(object):
             Path.Log.error("%s not a valid tool file (%s)" % (path, e))
             raise
 
-    def Create(self, name="ToolBit", shapeFile=None, path=None):
-        Path.Log.track(name, shapeFile, path)
+    def Create(self, name="ToolBit", shape_name=None, path=None):
+        Path.Log.track(name, shape_name, path)
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
-        obj.Proxy = ToolBit(obj, shapeFile, path)
+
+        # Instantiate the specified shape or a default one
+        tool_bit_shape = None
+        if shape_name:
+            shape_class = get_shape_class(shape_name)
+            if shape_class:
+                try:
+                    tool_bit_shape = shape_class() # Instantiate with defaults
+                except Exception as e:
+                    Path.Log.error(
+                        f"Failed to instantiate shape '{shape_name}': {e}."
+                        " Falling back to default."
+                    )
+            else:
+                Path.Log.error(f"Unknown tool bit shape: {shape_name}. Falling back to default.")
+
+        if tool_bit_shape is None:
+            tool_bit_shape = ToolBitShapeEndMill() # Default shape
+
+        obj.Proxy = ToolBit(obj, tool_bit_shape, path)
         return obj
 
 
