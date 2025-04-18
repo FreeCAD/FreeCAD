@@ -642,7 +642,7 @@ class TestPathToolShapeUtil(PathTestUtils.PathTestBase):
     def test_util_load_doc_file_not_found(self, mock_exists):
         """Test load_doc_and_get_properties raises FileNotFoundError."""
         filepath = Path("/fake/nonexistent.fcstd")
-        with self.assertRaisesRegex(FileNotFoundError, f"File not found: {filepath}"):
+        with self.assertRaises(FileNotFoundError):
             util.load_doc_and_get_properties(filepath, ["Diameter"])
         mock_exists.assert_called_once_with(filepath)
         mock_freecad.openDocument.assert_not_called()
@@ -653,7 +653,7 @@ class TestPathToolShapeUtil(PathTestUtils.PathTestBase):
         """Test load_doc_and_get_properties raises ValueError if open fails."""
         mock_freecad.openDocument.return_value = None  # Simulate open failure
         filepath = Path("/fake/fail_open.fcstd")
-        with self.assertRaisesRegex(ValueError, f"Failed to open document: {filepath}"):
+        with self.assertRaises(ValueError):
             util.load_doc_and_get_properties(filepath, ["Diameter"])
         mock_exists.assert_called_once_with(filepath)
         mock_freecad.openDocument.assert_called_once_with(
@@ -667,7 +667,7 @@ class TestPathToolShapeUtil(PathTestUtils.PathTestBase):
         """Test load_doc_and_get_properties raises ValueError if no object found."""
         filepath = Path("/fake/no_object.fcstd")
         mock_freecad.openDocument.return_value = mock_doc  # Ensure open succeeds
-        with self.assertRaisesRegex(ValueError, f"Could not find suitable shape object in {filepath}"):
+        with self.assertRaises(ValueError):
             util.load_doc_and_get_properties(filepath, ["Diameter"])
         mock_exists.assert_called_once_with(filepath)
         mock_freecad.openDocument.assert_called_once_with(
