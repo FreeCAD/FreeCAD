@@ -27,10 +27,6 @@
 #undef _PreComp_
 #endif
 
-#ifdef FC_OS_LINUX
-#include <unistd.h>
-#endif
-
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif  // HAVE_CONFIG_H

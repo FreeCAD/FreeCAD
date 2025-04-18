@@ -28,13 +28,8 @@
 #include <dbghelp.h>
 #endif
 
-
 #ifdef _PreComp_
 #undef _PreComp_
-#endif
-
-#ifdef FC_OS_LINUX
-#include <unistd.h>
 #endif
 
 #if HAVE_CONFIG_H
