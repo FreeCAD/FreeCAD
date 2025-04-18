@@ -210,6 +210,14 @@ bool areCollinear(const Base::Vector2d& p1, const Base::Vector2d& p2, const Base
 
 int indexOfGeoId(const std::vector<int>& vec, int elem);
 
+inline void scrollTo(QListWidget* list, int i, bool select)
+{
+    if (select && list->model()) {  // scrollTo only on select, not de-select
+        QModelIndex index = list->model()->index(i, 0);
+        list->scrollTo(index, QAbstractItemView::PositionAtCenter);
+    }
+}
+
 }  // namespace SketcherGui
 
 /// converts a 2D vector into a 3D vector in the XY plane
