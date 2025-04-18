@@ -129,6 +129,24 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/Controller.py
 )
 
+SET(PathPythonToolsShape_SRCS
+    Path/Tool/Shape/__init__.py
+    Path/Tool/Shape/ballend.py
+    Path/Tool/Shape/base.py
+    Path/Tool/Shape/chamfer.py
+    Path/Tool/Shape/dovetail.py
+    Path/Tool/Shape/drill.py
+    Path/Tool/Shape/endmill.py
+    Path/Tool/Shape/probe.py
+    Path/Tool/Shape/reamer.py
+    Path/Tool/Shape/slittingsaw.py
+    Path/Tool/Shape/tap.py
+    Path/Tool/Shape/threadmill.py
+    Path/Tool/Shape/torus.py
+    Path/Tool/Shape/util.py
+    Path/Tool/Shape/vbit.py
+)
+
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
@@ -346,6 +364,7 @@ SET(Tests_SRCS
     CAMTests/TestPathThreadMilling.py
     CAMTests/TestPathThreadMillingGenerator.py
     CAMTests/TestPathToolBit.py
+    CAMTests/TestPathToolShape.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
@@ -414,6 +433,7 @@ SET(all_files
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
     ${PathPythonToolsGui_SRCS}
+    ${PathPythonToolsShape_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -547,6 +567,13 @@ INSTALL(
         ${PathPythonToolsGui_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsShape_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/Shape
 )
 
 INSTALL(

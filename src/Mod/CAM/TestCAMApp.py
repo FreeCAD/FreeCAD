@@ -62,6 +62,9 @@ from CAMTests.TestPathTapGenerator import TestPathTapGenerator
 from CAMTests.TestPathThreadMilling import TestPathThreadMilling
 from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
 from CAMTests.TestPathToolBit import TestPathToolBit
+from CAMTests.TestPathToolShape import TestPathToolShapeClasses, \
+                                       TestPathToolShapeInitHelpers, \
+                                       TestPathToolShapeUtil
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
 from CAMTests.TestPathUtil import TestPathUtil
