@@ -1305,9 +1305,11 @@ void TreeWidget::addDependentToSelection(App::Document* doc, App::DocumentObject
     Selection().addSelection(doc->getName(), docObject->getNameInDocument());
     // get the dependent
     auto subObjectList = docObject->getOutList();
-    // the dependent can in turn have dependents, thus add them recursively
-    for (auto itDepend = subObjectList.begin(); itDepend != subObjectList.end(); ++itDepend)
-        addDependentToSelection(doc, (*itDepend));
+    for (auto itDepend : subObjectList) {
+        if (!Selection().isSelected(itDepend)) {
+            addDependentToSelection(doc, itDepend);
+        }
+    }
 }
 
 // add dependents of the selected tree object to selection
