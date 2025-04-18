@@ -31,10 +31,6 @@
 #include <windows.h>
 #endif
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-#include <unistd.h>
-#endif
-
 #ifdef FC_OS_MACOSX
 #include <mach-o/dyld.h>
 #include <string>
