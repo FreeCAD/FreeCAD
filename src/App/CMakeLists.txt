@@ -74,6 +74,7 @@ endif()
 include_directories(
     ${QtCore_INCLUDE_DIRS}
     ${QtXml_INCLUDE_DIRS}
+    ${COIN3D_INCLUDE_DIR}
 )
 list(APPEND FreeCADApp_LIBS
         ${QtCore_LIBRARIES}
