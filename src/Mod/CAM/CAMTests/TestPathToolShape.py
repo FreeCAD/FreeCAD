@@ -6,7 +6,7 @@ import unittest
 import os
 import sys
 from pathlib import Path
-from unittest.mock import patch, MagicMock, mock_open
+from unittest.mock import patch, MagicMock, mock_open, call
 
 # Mock FreeCAD modules before they are imported by the module under test
 # This is crucial for running tests outside the FreeCAD environment
@@ -72,8 +72,10 @@ class DummyShape(ToolBitShape):
 
     def set_default_parameters(self):
         self._params = {
-            "Param1": mock_units.Quantity("10", "mm"),
-            "Param2": mock_units.Quantity("5", "deg"),
+            "Param1": (mock_units.Quantity("10", "mm"),
+                       'App::PropertyLength'),
+            "Param2": (mock_units.Quantity("5", "deg"),
+                       'App::PropertyAngle'),
         }
 
 
@@ -475,13 +477,13 @@ class TestPathToolShapeInitHelpers(PathTestUtils.PathTestBase):
 
     def test_tool_bit_shape_classes_dict(self):
         """Verify the TOOL_BIT_SHAPE_CLASSES dictionary."""
-        self.assertIn("toolbitshapeballend", TOOL_BIT_SHAPE_CLASSES)
+        self.assertIn("ballend", TOOL_BIT_SHAPE_CLASSES)
         self.assertEqual(
-            TOOL_BIT_SHAPE_CLASSES["toolbitshapeballend"],
+            TOOL_BIT_SHAPE_CLASSES["ballend"],
             ToolBitShapeBallEnd)
-        self.assertIn("toolbitshapevbit", TOOL_BIT_SHAPE_CLASSES)
+        self.assertIn("vbit", TOOL_BIT_SHAPE_CLASSES)
         self.assertEqual(
-            TOOL_BIT_SHAPE_CLASSES["toolbitshapevbit"],
+            TOOL_BIT_SHAPE_CLASSES["vbit"],
             ToolBitShapeVBit)
         # Check number of classes (ensure all were imported and added)
         # Count subclasses of ToolBitShape defined in the Shape package
@@ -490,27 +492,24 @@ class TestPathToolShapeInitHelpers(PathTestUtils.PathTestBase):
             if cls.__module__.startswith("Path.Tool.Shape")
         ])
         self.assertEqual(
-            len(TOOL_BIT_SHAPE_CLASSES), expected_count)
+            len(set(TOOL_BIT_SHAPE_CLASSES.values())), expected_count)
 
     def test_get_shape_class(self):
         """Test the get_shape_class function."""
         self.assertEqual(
-            get_shape_class("toolbitshapeballend"),
+            get_shape_class("ballend"),
             ToolBitShapeBallEnd)
         self.assertEqual(
-            get_shape_class("ToolBitShapeBallEnd"),
+            get_shape_class("BallEnd"),
             ToolBitShapeBallEnd)
         self.assertEqual(
-            get_shape_class("TOOLBITSHAPEBALLEND"),
+            get_shape_class("BALLEND"),
             ToolBitShapeBallEnd)
         self.assertEqual(
-            get_shape_class("toolbitshapevbit"),
+            get_shape_class("vbit"),
             ToolBitShapeVBit)
         self.assertEqual(
-            get_shape_class("ToolBitShapeVBit"),
-            ToolBitShapeVBit)
-        self.assertEqual(
-            get_shape_class("TOOLBITSHAPEVBIT"),
+            get_shape_class("V-Bit"),
             ToolBitShapeVBit)
         self.assertIsNone(get_shape_class("nonexistent"))
 
@@ -580,7 +579,8 @@ class TestPathToolShapeUtil(PathTestUtils.PathTestBase):
         setattr(mock_obj, "Diameter", "10 mm")
         setattr(mock_obj, "Length", "50 mm")
         params = util.get_object_properties(mock_obj, ["Diameter", "Length"])
-        self.assertEqual(params, {"Diameter": "10 mm", "Length": "50 mm"})
+        self.assertEqual(params, {"Diameter": ("10 mm", None),
+                                  "Length": ("50 mm", None)})
         mock_freecad.Console.PrintWarning.assert_not_called()
 
     @patch('Path.Tool.Shape.util.FreeCAD', new=mock_freecad)
@@ -594,11 +594,17 @@ class TestPathToolShapeUtil(PathTestUtils.PathTestBase):
         if hasattr(mock_obj, 'Height'):
             delattr(mock_obj, 'Height')
         params = util_patched.get_object_properties(mock_obj, ["Diameter", "Height"])
-        self.assertEqual(params, {"Diameter": "10 mm"})  # Height is missing
-        mock_freecad.Console.PrintWarning.assert_called_once()
-        call_args, _ = mock_freecad.Console.PrintWarning.call_args
-        self.assertIn("Parameter 'Height' not found", call_args[0])
-        self.assertIn("MockObjectLabel", call_args[0])
+        self.assertEqual(params, {"Diameter": ("10 mm", None),
+                                  "Height": (None, None)})  # Height is missing
+        expected_calls = [
+            call("Could not get type for property 'Diameter' on object "
+                 "'MockObjectLabel'"),
+            call("Parameter 'Height' not found on object 'MockObjectLabel' "
+                 "(MockObjectName). Default value will be used by the shape "
+                 "class.\n")
+        ]
+        mock_freecad.Console.PrintWarning.assert_has_calls(expected_calls,
+                                                          any_order=True)
 
     @patch('os.path.exists', return_value=True)
     @patch('FreeCAD.openDocument', return_value=mock_doc)
