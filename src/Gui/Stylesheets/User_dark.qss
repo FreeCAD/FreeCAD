@@ -113,15 +113,11 @@ QDialog {
     background-color: @ThemeGradientColor1;
 }
 
-QDialog#Gui__Dialog__DlgPreferences { /* Preferences dialog */
-    background-color: @ThemeGradientColor1;
-}
+/* QDialog#Gui__Dialog__DlgPreferences { /*Preferences dialog her if you need it*/
+   /* background-color: @ThemeGradientColor1;
+} */
 
-QMdiArea {
-  /* background-image: url(qss:images_classic/background_freecad_light.svg);
-  background-position: center center;
-  background-repeat: no-repeat; */
-}
+
 
 /*navgation src/Mod/Tux/NavigationIndicatorGui.py */
 Gui--NavigationIndicatorGui--BlenderNavigationStyle {
@@ -780,8 +776,8 @@ QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on {
 QScrollBar::sub-line:horizontal {
   margin: 0px 2px 0px 2px;
   border-image: url(qss:images_classic/arrow-left-lightgray.svg);
-  padding-left: 2px;
-  padding-bottom:1px;
+  height: 10px;
+  width: 10px;
   subcontrol-position: left;
   subcontrol-origin: margin;
 }
@@ -995,6 +991,7 @@ QToolBar[objectName="Edit"] > QToolButton::menu-arrow:hover {
 QToolBar[objectName="Edit"] > QToolButton::menu-arrow:open {
   image: url(qss:images_classic/arrow-down-white.svg);
 }
+
 
 /* QAbstractSpinBox -------------------------------------------------------
 
@@ -1308,16 +1305,23 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
 
 --------------------------------------------------------------------------- */
 QToolButton {
-  background-color: transparent;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeGradientColor1,stop:1 @ThemeGradientColor2);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  border-radius: 3px;
+  padding: 2px;
+}
 
-  /* border-radius: 1px; */
+QToolBar QToolButton {
+  background-color: transparent;
   padding: 2px;
   outline: none;
   border: none;
   border-radius: 3px;
-  /* The subcontrols below are used only in the DelayedPopup mode */
-  /* The subcontrols below are used only in the MenuButtonPopup mode */
-  /* The subcontrol below is used only in the InstantPopup or DelayedPopup mode */
+}
+
+QDialog QToolButton:hover {
+  background-color: @ThemeGradientColor1;
+  /* border: 1px solid @ThemeAccentColor1; */
 }
 
 QToolButton:disabled {
@@ -1327,10 +1331,7 @@ QToolButton:disabled {
 QToolButton:checked {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeGradientColor2, stop:0.7 @ThemeGradientColor1, stop:1 @ThemeGradientColor1);
   border-radius: 3px;
-  border-left: 1px solid rgba(0, 0, 0, 0.5);
-  border-top: 1px solid rgba(0, 0, 0, 0.5);
-  border-right: 1px solid rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QToolButton:checked:disabled {
@@ -1338,12 +1339,12 @@ QToolButton:checked:disabled {
 }
 
 QToolButton:checked:hover {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeGradientColor2, stop:0.7 @ThemeGradientColor1,stop:1 @ThemeGradientColor2 );
-  border: 1px solid rgba(0, 0, 0, 0.8);
+  background-color: @ThemeGradientColor1;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QToolButton:checked:pressed {
-  border: 1px solid @ThemeAccentColor1;
+  background-color: @ThemeGradientColor1;
 }
 
 QToolButton:checked:selected {
@@ -1352,16 +1353,15 @@ QToolButton:checked:selected {
   }
 
 QToolButton:hover {
-  border: 1px solid rgba(0, 0, 0, 0.8);
   background-color: @ThemeGradientColor1;
 }
 
 QToolButton:pressed {
+    background-color: @ThemeGradientColor1;
 }
 
 QToolButton:selected {
   border: 1px solid @ThemeAccentColor1;
-
 }
 
 QToolButton#qt_toolbutton_menubutton {
@@ -1780,7 +1780,6 @@ QSlider::handle:horizontal {
 
 QSlider::handle:horizontal:hover {
   background-color: @ThemeAccentColor1;
-  border: 1px solid rgba(0, 0, 0, 0.8);
 }
 
 QSlider::handle:horizontal:focus {
@@ -1799,7 +1798,6 @@ QSlider::handle:vertical {
 
 QSlider::handle:vertical:hover {
   background-color: @ThemeAccentColor1;
-  border: 1px solid rgba(0, 0, 0, 0.8);
 }
 
 QSlider::handle:vertical:focus {
