@@ -2,10 +2,12 @@
 # Defines the ThreadMill tool bit shape.
 
 import FreeCAD
+from typing import Tuple
 from .base import ToolBitShape
 
 
 class ToolBitShapeThreadMill(ToolBitShape):
+    aliases: Tuple[str, ...] = "thread-mill", "threadmill"
     _LABELS = {
         "Crest": "Crest height",
         "Diameter": "Major diameter",
@@ -16,13 +18,24 @@ class ToolBitShapeThreadMill(ToolBitShape):
         "CuttingAngle": "Cutting angle",
     }
 
+    @property
+    def label(self) -> str:
+        return "Thread Mill"  # TODO translatable
+
     def set_default_parameters(self):
         self._params = {
-            "Crest": FreeCAD.Units.Quantity("0.5 mm"),
-            "Diameter": FreeCAD.Units.Quantity("8 mm"),
-            "Length": FreeCAD.Units.Quantity("60 mm"),
-            "NeckDiameter": FreeCAD.Units.Quantity("6 mm"),
-            "NeckLength": FreeCAD.Units.Quantity("10 mm"),
-            "ShankDiameter": FreeCAD.Units.Quantity("8 mm"),
-            "CuttingAngle": FreeCAD.Units.Quantity("60 deg"),
+            "Crest": (FreeCAD.Units.Quantity("0.5 mm"),
+                       'App::PropertyLength'),
+            "Diameter": (FreeCAD.Units.Quantity("8 mm"),
+                         'App::PropertyLength'),
+            "Length": (FreeCAD.Units.Quantity("60 mm"),
+                       'App::PropertyLength'),
+            "NeckDiameter": (FreeCAD.Units.Quantity("6 mm"),
+                              'App::PropertyLength'),
+            "NeckLength": (FreeCAD.Units.Quantity("10 mm"),
+                           'App::PropertyLength'),
+            "ShankDiameter": (FreeCAD.Units.Quantity("8 mm"),
+                               'App::PropertyLength'),
+            "CuttingAngle": (FreeCAD.Units.Quantity("60 deg"),
+                              'App::PropertyAngle'),
         }

@@ -2,10 +2,12 @@
 # Defines the BallEnd tool bit shape.
 
 import FreeCAD
+from typing import Tuple
 from .base import ToolBitShape
 
 
 class ToolBitShapeBallEnd(ToolBitShape):
+    aliases: Tuple[str, ...] = ("ballend",)
     _LABELS = {
         "CuttingEdgeHeight": "Cutting edge height",
         "Diameter": "Diameter",
@@ -13,10 +15,18 @@ class ToolBitShapeBallEnd(ToolBitShape):
         "ShankDiameter": "Shank diameter",
     }
 
+    @property
+    def label(self) -> str:
+        return "Ballend"  # TODO translatable
+
     def set_default_parameters(self):
         self._params = {
-            "CuttingEdgeHeight": FreeCAD.Units.Quantity("10 mm"),
-            "Diameter": FreeCAD.Units.Quantity("6 mm"),
-            "Length": FreeCAD.Units.Quantity("50 mm"),
-            "ShankDiameter": FreeCAD.Units.Quantity("6 mm"),
+            "CuttingEdgeHeight": (FreeCAD.Units.Quantity("10 mm"),
+                                  'App::PropertyLength'),
+            "Diameter": (FreeCAD.Units.Quantity("6 mm"),
+                         'App::PropertyLength'),
+            "Length": (FreeCAD.Units.Quantity("50 mm"),
+                       'App::PropertyLength'),
+            "ShankDiameter": (FreeCAD.Units.Quantity("6 mm"),
+                              'App::PropertyLength'),
         }
