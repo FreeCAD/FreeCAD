@@ -34,6 +34,9 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 
+from .Shape.base import ToolBitShape
+from .Shape.endmill import ToolBitShapeEndMill
+
 __title__ = "Tool bits."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
