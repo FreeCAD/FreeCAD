@@ -64,6 +64,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     environment: weekly-build
     steps:
+      # prevent running out of disk space on Ubuntu runners.
+      - name: Maximize build space
+        if: runner.os == 'Linux'
+        uses: AdityaGarg8/remove-unwanted-software@v5
+        with:
+          verbose: 'true'
+          remove-android: 'true'      # (frees ~9 GB)
+          remove-cached-tools: 'true' # (frees ~8.3 GB)
+
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
         with:

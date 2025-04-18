@@ -38,6 +38,7 @@ class BIM_Beam(ArchStructure._CommandStructure):
     def __init__(self):
         super().__init__()
         self.beammode = True
+        self.featureName = "Beam"
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")

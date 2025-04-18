@@ -38,6 +38,7 @@ class BIM_Column(ArchStructure._CommandStructure):
     def __init__(self):
         super().__init__()
         self.beammode = False
+        self.featureName = "Column"
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
