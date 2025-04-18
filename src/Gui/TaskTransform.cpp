@@ -37,7 +37,7 @@
 #include <Base/ServiceProvider.h>
 #include <Base/Tools.h>
 
-#include "Document.h"  // must be before TaskCSysDragger.h
+#include "Document.h"  // must be before TaskTransform.h
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -46,8 +46,8 @@
 #include "ViewProviderDragger.h"
 #include "TaskView/TaskView.h"
 
-#include "TaskCSysDragger.h"
-#include "ui_TaskCSysDragger.h"
+#include "TaskTransform.h"
+#include "ui_TaskTransform.h"
 
 #include <Inventor/nodes/SoPickStyle.h>
 
@@ -90,7 +90,7 @@ TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
     , subObjectPlacementProvider(subObjectPlacemenProvider)
     , centerOfMassProvider(centerOfMassProvider)
     , dragger(dragger)
-    , ui(new Ui_TaskCSysDragger)
+    , ui(new Ui_TaskTransformDialog)
 {
     blockSelection(true);
 
@@ -708,14 +708,14 @@ void TaskTransform::onRotationChange(QuantitySpinBox* changed)
     resetReferencePlacement();
 }
 
-TaskCSysDragger::TaskCSysDragger(ViewProviderDragger* vp, SoTransformDragger* dragger)
+TaskTransformDialog::TaskTransformDialog(ViewProviderDragger* vp, SoTransformDragger* dragger)
     : vp(vp)
 {
     transform = new TaskTransform(vp, dragger);
     Content.push_back(transform);
 }
 
-void TaskCSysDragger::open()
+void TaskTransformDialog::open()
 {
     // we can't have user switching camera types while dragger is shown.
     Gui::Application::Instance->commandManager()
@@ -732,7 +732,7 @@ void TaskCSysDragger::open()
         QT_TRANSLATE_NOOP("Command", "Transform"));
 }
 
-bool TaskCSysDragger::accept()
+bool TaskTransformDialog::accept()
 {
     if (auto documentObject = vp->getObject()) {
         Gui::Document* document =
@@ -746,7 +746,7 @@ bool TaskCSysDragger::accept()
     return Gui::TaskView::TaskDialog::accept();
 }
 
-bool TaskCSysDragger::reject()
+bool TaskTransformDialog::reject()
 {
     if (auto documentObject = vp->getObject()) {
         Gui::Document* document =
@@ -760,4 +760,4 @@ bool TaskCSysDragger::reject()
     return Gui::TaskView::TaskDialog::reject();
 }
 
-#include "moc_TaskCSysDragger.cpp"
+#include "moc_TaskTransform.cpp"
