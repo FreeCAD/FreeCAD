@@ -70,7 +70,7 @@ class Arch_Panel:
         self.Width = params.get_param_arch("PanelWidth")
         self.Thickness = params.get_param_arch("PanelThickness")
         self.Profile = None
-        self.continueCmd = False
+        self.featureName = "Panel"
         self.rotated = False
         sel = FreeCADGui.Selection.getSelection()
         if sel:
@@ -96,7 +96,9 @@ class Arch_Panel:
         self.tracker.height(self.Thickness)
         self.tracker.length(self.Length)
         self.tracker.on()
+        FreeCAD.activeDraftCommand = self
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+        FreeCADGui.draftToolBar.continueCmd.show()
 
     def getPoint(self,point=None,obj=None):
 
@@ -105,6 +107,7 @@ class Arch_Panel:
         import DraftVecUtils
         self.tracker.finalize()
         if point is None:
+            FreeCAD.activeDraftCommand = None
             return
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Panel"))
         FreeCADGui.addModule("Arch")
@@ -120,7 +123,8 @@ class Arch_Panel:
             FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1.00,0.00,0.00),90.00)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        if self.continueCmd:
+        FreeCAD.activeDraftCommand = None
+        if FreeCADGui.draftToolBar.continueCmd.isChecked():
             self.Activated()
 
     def taskbox(self):
@@ -166,26 +170,14 @@ class Arch_Panel:
         grid.addWidget(self.vHeight,3,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Rotate"))
-        grid.addWidget(value5,4,0,1,2)
-
-        # continue button
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
-        value4 = QtGui.QCheckBox()
-        value4.setObjectName("ContinueCmd")
-        value4.setLayoutDirection(QtCore.Qt.RightToLeft)
-        label4.setBuddy(value4)
-        self.continueCmd = params.get_param("ContinueMode")
-        value4.setChecked(self.continueCmd)
-        grid.addWidget(label4,5,0,1,1)
-        grid.addWidget(value4,5,1,1,1)
+        value4= QtGui.QPushButton(translate("Arch","Rotate"))
+        grid.addWidget(value4,4,0,1,2)
 
         valuep.currentIndexChanged.connect(self.setPreset)
         self.vLength.valueChanged.connect(self.setLength)
         self.vWidth.valueChanged.connect(self.setWidth)
         self.vHeight.valueChanged.connect(self.setThickness)
-        value4.stateChanged.connect(self.setContinue)
-        value5.pressed.connect(self.rotate)
+        value4.pressed.connect(self.rotate)
         return w
 
     def update(self,point,info):
@@ -220,12 +212,6 @@ class Arch_Panel:
         from draftutils import params
         self.Length = d.Value
         params.set_param_arch("PanelLength",d)
-
-    def setContinue(self,i):
-
-        from draftutils import params
-        self.continueCmd = bool(i)
-        params.set_param("ContinueMode", bool(i))
 
     def setPreset(self,i):
 
