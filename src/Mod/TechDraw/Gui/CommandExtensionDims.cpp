@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <cmath>
 # include <sstream>
 # include <BRepGProp.hxx>
 # include <GProp_GProps.hxx>
@@ -2062,7 +2063,7 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
         dim->Y.setValue(-yMax);
         float dx = allVertexes[0].point.x - allVertexes[1].point.x;
         float dy = allVertexes[0].point.y - allVertexes[1].point.y;
-        float alpha = round(Base::toDegrees(abs(atan(dy / dx))));
+        float alpha = std::round(Base::toDegrees(std::abs<float>(std::atan(dy / dx))));
         std::string sAlpha = std::to_string((int)alpha);
         std::string formatSpec = dim->FormatSpec.getStrValue();
         formatSpec = formatSpec + " x" + sAlpha + "°";
@@ -2130,7 +2131,7 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
         dim->Y.setValue(-mid.y);
         float dx = allVertexes[0].point.x - allVertexes[1].point.x;
         float dy = allVertexes[0].point.y - allVertexes[1].point.y;
-        float alpha = round(Base::toDegrees(abs(atan(dx / dy))));
+        float alpha = std::round(Base::toDegrees(std::abs<float>(std::atan(dx / dy))));
         std::string sAlpha = std::to_string((int)alpha);
         std::string formatSpec = dim->FormatSpec.getStrValue();
         formatSpec = formatSpec + " x" + sAlpha + "°";

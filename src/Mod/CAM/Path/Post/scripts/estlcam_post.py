@@ -114,11 +114,11 @@ parser.add_argument(
 )
 parser.add_argument(
     "--preamble",
-    help="set commands to be issued before the first command",
+    help='set commands to be issued before the first command, default=""',
 )
 parser.add_argument(
     "--postamble",
-    help="set commands to be issued after the last command",
+    help='set commands to be issued after the last command, default="M5\\n"',
 )
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument("--inches", action="store_true", help="convert output for US imperial mode")
@@ -235,8 +235,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
     # verify if PREAMBLE have changed UNITS
     if "G21" in PREAMBLE:
         UNITS = "G21"
@@ -310,8 +310,8 @@ def export(objectslist, filename, argstring):
     # do the post_amble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     # show the gCode result dialog
     if FreeCAD.GuiUp and SHOW_EDITOR:

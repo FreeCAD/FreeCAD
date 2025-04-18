@@ -250,6 +250,17 @@ int main(int argc, char** argv)
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
         QString msg = QString::fromUtf8(e.what());
+        if (msg == QLatin1String(App::Application::verboseVersionEmitMessage)) {
+            QString data;
+            QTextStream str(&data);
+            const std::map<std::string, std::string> config = App::Application::Config();
+
+            App::Application::getVerboseCommonInfo(str, config);
+            Gui::Application::getVerboseDPIStyleInfo(str);
+            App::Application::getVerboseAddOnsInfo(str, config);
+
+            msg = data;
+        }
         DisplayInfo(msg);
         exit(0);
     }

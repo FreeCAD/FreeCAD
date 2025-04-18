@@ -31,7 +31,6 @@
 #include <App/FeaturePython.h>
 #include <App/Part.h>
 #include <App/PropertyLinks.h>
-#include "SimulationGroup.h"
 
 #include <OndselSolver/enum.h>
 
@@ -130,7 +129,7 @@ public:
         std::shared_ptr<MbD::ASMTPart> part;
         Base::Placement offsetPlc;  // This is the offset within the bundled parts
     };
-    MbDPartData getMbDData(App::DocumentObject* obj);
+    MbDPartData getMbDData(App::DocumentObject* part);
     std::shared_ptr<MbD::ASMTMarker> makeMbdMarker(std::string& name, Base::Placement& plc);
     std::vector<std::shared_ptr<MbD::ASMTJoint>> makeMbdJoint(App::DocumentObject* joint);
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint,

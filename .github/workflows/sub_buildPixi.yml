@@ -69,6 +69,11 @@ jobs:
         os: [windows-latest, ubuntu-latest, macos-latest]
 
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+      with:
+        egress-policy: audit
+
     - name: Set Platform Environment Variables
       shell: bash -l {0}
       env:
@@ -81,7 +86,7 @@ jobs:
         fi
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
     - name: Add GCC Problem Matcher
       if: runner.os == 'Linux'
@@ -106,13 +111,13 @@ jobs:
         mkdir -p ${{ env.reportdir }}
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
-    - uses: prefix-dev/setup-pixi@v0.8.7
+    - uses: prefix-dev/setup-pixi@19eac09b398e3d0c747adc7921926a6d802df4da # v0.8.8
       with:
         pixi-version: v0.45.0
         cache: false
 
     - name: Restore Compiler Cache
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -195,14 +200,14 @@ jobs:
 
     - name: Save Compiler Cache
       if: always()
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
 
     - name: Upload logs
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-Logs
         path: |
@@ -211,7 +216,7 @@ jobs:
 
     - name: Upload report
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: ${{ env.reportfilename }}
         path: |
