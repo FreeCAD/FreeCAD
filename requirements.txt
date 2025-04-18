@@ -5,7 +5,7 @@ defusedxml==0.7.1
 ifcopenshell==0.7.0.230318
 ladybug-core==0.42.2
 matplotlib==3.6.3
-numpy==1.24.2
+numpy==2.0.2
 opencamlib==2023.1.11
 packaging==24.2
 Pivy==0.6.8
