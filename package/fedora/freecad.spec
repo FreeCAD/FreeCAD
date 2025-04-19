@@ -93,32 +93,23 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description data
 Data files for FreeCAD
+# plugins and private shared libs in %%{_libdir}/freecad/lib are private;
+# prevent private capabilities being advertised in Provides/Requires
+%define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|$iGui"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
+%{?filter_setup:
+    %filter_provides_in %{_libdir}/%{name}/lib
+    %filter_from_requires %{plugin_regexp}
+    %filter_from_provides %{plugin_regexp}
 
-
-# This package depends on automagic byte compilation
-# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
-%global py_bytecompile 1
-
-# Setup python target for shiboken so the right cmake file is imported.
-%global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")
+    %filter_provides_in %{_libdir}/%{name}/Mod
+    %filter_requires_in %{_libdir}/%{name}/Mod
+%filter_setup}
 
 
 #path that contain main FreeCAD sources for cmake
 %global _vpath_srcdir  %_builddir/{{{ git_repo_name  }}}
 #use absolute path for cmake macro
 %global _vpath_builddir  %_builddir/%_vpath_builddir
-
-# plugins and private shared libs in %%{_libdir}/freecad/lib are private;
-# prevent private capabilities being advertised in Provides/Requires
-%define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|$iGui"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
-%{?filter_setup:
-%filter_provides_in %{_libdir}/%{name}/lib
-%filter_from_requires %{plugin_regexp}
-%filter_from_provides %{plugin_regexp}
-%filter_provides_in %{_libdir}/%{name}/Mod
-%filter_requires_in %{_libdir}/%{name}/Mod
-%filter_setup
-}
 
 %prep
 {{{ git_repo_setup_macro }}}
@@ -141,7 +132,6 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DFREECAD_USE_EXTERNAL_FMT=TRUE \
        -DFREECAD_USE_PCL:BOOL=OFF \
        -DFREECAD_QT_VERSION:STRING=6 \
-       -DPYTHON_SUFFIX=.%{py_suffix} \
        -DOpenGL_GL_PREFERENCE=GLVND \
        -DUSE_OCC=TRUE \
 %if %{without bundled_smesh}
@@ -248,7 +238,7 @@ fi
 %{_datadir}/pixmaps/*
 %{_datadir}/mime/packages/*
 %{_datadir}/thumbnailers/*
-%{_libdir}/../lib/python*/site-packages/%{name}/*
+%{python3_sitelib}/%{name}/*
 
 %files data
 %{_datadir}/%{name}/
