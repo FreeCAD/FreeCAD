@@ -138,8 +138,8 @@ class CAMWorkbench(Workbench):
         toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
         toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
-        if FreeCADGui.Command.get('CAM_ToolBitLibraryOpenBTL'):
-            toolcmdlist.append('CAM_ToolBitLibraryOpenBTL')
+        if FreeCADGui.Command.get("CAM_ToolBitLibraryOpenBTL"):
+            toolcmdlist.append("CAM_ToolBitLibraryOpenBTL")
 
         engravecmdgroup = ["CAM_EngraveTools"]
         FreeCADGui.addCommand(
