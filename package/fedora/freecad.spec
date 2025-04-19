@@ -1,3 +1,36 @@
+
+Name:           freecad
+
+Epoch:          2
+Version:        {{{ git_repo_version  lead=1.1 follow="~"}}}
+Release:        enable_test_%autorelease
+
+Summary:        A general purpose 3D CAD modeler
+Group:          Applications/Engineering
+
+License:        GPL-2.0-or-later
+URL:            https://www.freecad.org/
+VCS:            {{{ git_repo_vcs }}}
+
+Source0:        {{{git_repo_pack_with_submodules}}}
+
+%description
+FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
+directly at mechanical engineering and product design but also fits a wider
+range of uses in engineering, such as architecture or other engineering
+specialities. It is a feature-based parametric modeler with a modular software
+architecture which makes it easy to provide additional functionality without
+modifying the core system.
+
+%package data
+Summary:        Data files for FreeCAD
+BuildArch:      noarch
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description data
+Data files for FreeCAD
+
+
 # This package depends on automagic byte compilation
 # https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
 %global py_bytecompile 1
@@ -5,41 +38,35 @@
 # Setup python target for shiboken so the right cmake file is imported.
 %global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")
 
+
 # Maintainers:  keep this list of plugins up to date
-# List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
+# List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
-# Some configuration options for other environments
-# rpmbuild --with=bundled_zipios:  use bundled version of zipios++
-%global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 1}
-# rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
-%global bundled_pycxx %{?_with_bundled_pycxx: 1} %{?!_with_bundled_pycxx: 0}
-# rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
-%global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
 
-# Prevent RPM from doing its magical 'build' directory for now
-%global __cmake_in_source_build 0
+# Some configuVCS:            {{{ git_repo_vcs }}}ration options for other environments
+# rpmbuild --with=bundled_zipios: use bundled version of zipios++
+%bcond_wit  bundled_zipios
+# rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
+%bcond_with bundled_pycxx
+# rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
+%bcond_without bundled_smesh
+# rpmbuild --without=tests:  exclude tests from build
+%bcond_without tests
+%if %{with tests}
+%global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
+%endif
+
+#path that contain main FreeCAD sources for cmake
+%global _vpath_srcdir  %_builddir/{{{ git_repo_name  }}}
+#use absolute path for cmake macro
+%global _vpath_builddir  %_builddir/%_vpath_builddir
+
 
 # See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 
-# Some plugins go in the Mod folder instead of lib. Deal with those here:
 %global mod_plugins Mod/PartDesign
-%define name freecad
-%define github_name FreeCAD
-%define branch main
-
-Name:           %{name}
-Epoch:          1
-Version:        1.1.0
-Release:        pre_{{{git_commit_no}}}%{?dist}
-Summary:        A general purpose 3D CAD modeler
-Group:          Applications/Engineering
-
-License:        LGPLv2+
-URL:            https://www.freecad.org/
-Source0:        {{{git_repo_pack_with_submodules}}}
-
 
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext
@@ -74,16 +101,16 @@ BuildRequires:  libspnav-devel
 BuildRequires:  python3-shiboken6-devel
 BuildRequires:  python3-pyside6-devel
 BuildRequires:  pyside6-tools
-%if ! %{bundled_smesh}
+%if %{without bundled_smesh}
 BuildRequires:  smesh-devel
 %endif
 BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
-%if ! %{bundled_zipios}
+%if %{without bundled_zipios}
 BuildRequires:  zipios++-devel
 %endif
 
-%if ! %{bundled_pycxx}
+%if %{without bundled_pycxx}
 BuildRequires:  python3-pycxx-devel
 %endif
 BuildRequires:  python3-pybind11
@@ -121,10 +148,10 @@ Requires:       python3-pyside6
 Requires:       qt6-assistant
 
 
-%if %{bundled_smesh}
+%if %{with bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
 %endif
-%if %{bundled_pycxx}
+%if %{with bundled_pycxx}
 Provides:       bundled(python-pycxx)
 %endif
 Recommends:     python3-pysolar
@@ -143,47 +170,15 @@ Recommends:     python3-pysolar
 %filter_setup
 }
 
-%description
-FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
-directly at mechanical engineering and product design but also fits a wider
-range of uses in engineering, such as architecture or other engineering
-specialities. It is a feature-based parametric modeler with a modular software
-architecture which makes it easy to provide additional functionality without
-modifying the core system.
-
-
-%package data
-Summary:        Data files for FreeCAD
-BuildArch:      noarch
-Requires:       %{name} = %{epoch}:%{version}-%{release}
-
-%description data
-Data files for FreeCAD
-
+h
 
 %prep
-%autosetup -p1 -n FreeCAD
-# Remove bundled pycxx if we're not using it
-%if ! %{bundled_pycxx}
-rm -rf src/CXX
-%endif
-
-%if ! %{bundled_zipios}
-rm -rf src/zipios++
-#sed -i "s/zipios-config.h/zipios-config.hpp/g" \
-#    src/Base/Reader.cpp src/Base/Writer.h
-%endif
-
-# Removed bundled libraries
+{{{ git_repo_setup_macro }}}
 
 %build
-rm -rf build && mkdir build && cd build
-
 # Deal with cmake projects that tend to link excessively.
 CXXFLAGS='-Wno-error=cast-function-type'; export CXXFLAGS
 LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
-
-%define MEDFILE_INCLUDE_DIRS %{_includedir}/med/
 
 %cmake \
        -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
@@ -195,47 +190,29 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DFREECAD_USE_EXTERNAL_FMT=TRUE \
        -DFREECAD_USE_PCL:BOOL=OFF \
        -DFREECAD_QT_VERSION:STRING=6 \
-       -DSHIBOKEN_INCLUDE_DIR=%{_includedir}/shiboken6 \
-       -DSHIBOKEN_LIBRARY=-lshiboken6.%{py_suffix} \
        -DPYTHON_SUFFIX=.%{py_suffix} \
-       -DPYSIDE_INCLUDE_DIR=/usr/include/PySide6 \
-       -DPYSIDE_LIBRARY=-lpyside6.%{py_suffix} \
-       -DPython3_EXECUTABLE:FILEPATH=/usr/bin/python3 \
-       -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        -DOpenGL_GL_PREFERENCE=GLVND \
-       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
-       -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
        -DUSE_OCC=TRUE \
-%if ! %{bundled_smesh}
+%if %{without bundled_smesh}
        -DFREECAD_USE_EXTERNAL_SMESH=TRUE \
-       -DSMESH_FOUND=TRUE \
-       -DSMESH_INCLUDE_DIR=%{_includedir}/smesh \
-       -DSMESH_DIR=`pwd`/../cMake \
 %endif
-%if ! %{bundled_zipios}
+%if %{without bundled_zipios}
        -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
 %endif
-%if ! %{bundled_pycxx}
-       -DPYCXX_INCLUDE_DIR=$(pkg-config --variable=includedir PyCXX) \
-       -DPYCXX_SOURCE_DIR=$(pkg-config --variable=srcdir PyCXX) \
-%endif
-       -DPACKAGE_WCREF="%{release} (Git)" \
-       -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git main" \
+       -DPACKAGE_WCREF="{{{ git_repo_release_branched }}}" \
+       -DPACKAGE_WCURL="{{{ git_repo_vcs }}}"\
+%if %{with tests}
+       -DENABLE_DEVELOPER_TESTS=TRUE \
+%else
        -DENABLE_DEVELOPER_TESTS=FALSE \
-       -DBUILD_GUI=TRUE \
-       ../
+%endif
+       -DBUILD_GUI=TRUE
 
-make fc_version
-for I in src/Build/Version.h src/Build/Version.h.out; do
-	sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' $I
-	sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git main\",' $I
-done
-
-%{make_build}
+%cmake_build
 
 %install
-cd build
-%make_install
+cd %_vpath_builddir
+%cmake_install
 
 # Symlink binaries to /usr/bin
 mkdir -p %{buildroot}%{_bindir}
@@ -311,6 +288,9 @@ desktop-file-validate \
 %{?fedora:appstream-util validate-relax --nonet \
     %{buildroot}%{_metainfodir}/*.metainfo.xml}
 
+%if %{with tests}
+%ctest
+%endif
 
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
