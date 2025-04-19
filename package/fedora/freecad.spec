@@ -33,6 +33,7 @@ Source0:        {{{git_repo_pack_with_submodules}}}
 %bcond_with bundled_pycxx
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %bcond_without bundled_smesh
+
 # rpmbuild --with=tests:  include  tests in build
 %bcond_with tests
 %if %{with tests}
@@ -102,6 +103,14 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description data
     Data files for FreeCAD
+
+%package libondselsolver-devel
+Summary:        Development file for OndselSolver
+BuildArch:      noarch
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description data
+    Development file for OndselSolver
 
 
 
@@ -174,11 +183,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     ln -s ../%{_lib}/%{name}/bin/FreeCAD %{buildroot}%{_bindir}/FreeCAD
     ln -s ../%{_lib}/%{name}/bin/FreeCADCmd %{buildroot}%{_bindir}/FreeCADCmd
 
-    # Remove header from external library that's erroneously installed
-    rm -rf %{buildroot}%{_includedir}/OndselSolver/*
-    rm -f %{buildroot}%{_libdir}/%{name}/share/pkgconfig/OndselSolver.pc
-
-    pushd %{buildroot}%{_libdir}/%{name}/share/
 
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
@@ -243,7 +247,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_datadir}/pixmaps/*
     %{_datadir}/mime/packages/*
     %{_datadir}/thumbnailers/*
-    %{_datadir}/pkgconfig/OndselSolver.pc
     %{python3_sitelib}/%{name}/*
 
 %files data
@@ -251,4 +254,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_docdir}/%{name}/LICENSE.html
     %{_docdir}/%{name}/ThirdPartyLibraries.html
 
-
+%files libondselsolver-devel
+    %{buildroot}%{_datadir}/pkgconfig/OndselSolver.pc
+    %{buildroot}%{_includedir}/OndselSolver/*
