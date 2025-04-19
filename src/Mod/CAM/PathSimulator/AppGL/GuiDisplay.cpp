@@ -28,20 +28,20 @@
 using namespace MillSim;
 
 GuiItem guiItems[] = {
-    {eGuiItemSlider, 0, 0, 240, -36, 0},
+    {eGuiItemSlider, 0, 0, 40, -36, 0},
     {eGuiItemThumb, 0, 0, 328, -50, 1},
-    {eGuiItemPause, 0, 0, 40, -50, 'P', true},
-    {eGuiItemPlay, 0, 0, 40, -50, 'S', false},
-    {eGuiItemSingleStep, 0, 0, 80, -50, 'T'},
-    {eGuiItemFaster, 0, 0, 120, -50, 'F'},
-    {eGuiItemRotate, 0, 0, -140, -50, ' ', false, GUIITEM_CHECKABLE},
-    {eGuiItemCharXImg, 0, 0, 160, -50, 0, false, 0},  // 620
-    {eGuiItemChar0Img, 0, 0, 200, -50, 0, false, 0},
-    {eGuiItemChar1Img, 0, 0, 185, -50, 0, false, 0},
-    {eGuiItemChar4Img, 0, 0, 180, -50, 0, true, 0},
-    {eGuiItemPath, 0, 0, -100, -50, 'L', false, GUIITEM_CHECKABLE},
-    {eGuiItemAmbientOclusion, 0, 0, -60, -50, 'A', false, GUIITEM_CHECKABLE},
-    {eGuiItemView, 0, 0, -180, -50, 'V', false},
+    {eGuiItemPause, 0, 0, 30, -100, 'P', true},
+    {eGuiItemPlay, 0, 0, 30, -100, 'S', false},
+    {eGuiItemSingleStep, 0, 0, 70, -100, 'T'},
+    {eGuiItemFaster, 0, 0, 110, -100, 'F'},
+    {eGuiItemRotate, 0, 0, -140, -100, ' ', false, GUIITEM_CHECKABLE},
+    {eGuiItemCharXImg, 0, 0, 150, -100, 0, false, 0},  // 620
+    {eGuiItemChar0Img, 0, 0, 190, -100, 0, false, 0},
+    {eGuiItemChar1Img, 0, 0, 175, -100, 0, false, 0},
+    {eGuiItemChar4Img, 0, 0, 170, -100, 0, true, 0},
+    {eGuiItemPath, 0, 0, -100, -100, 'L', false, GUIITEM_CHECKABLE},
+    {eGuiItemAmbientOclusion, 0, 0, -60, -100, 'A', false, GUIITEM_CHECKABLE},
+    {eGuiItemView, 0, 0, -180, -100, 'V', false},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
@@ -69,6 +69,7 @@ void GuiDisplay::UpdateProjection()
     mat4x4_ortho(projmat, 0, gWindowSizeW, gWindowSizeH, 0, -1, 1);
     mShader.Activate();
     mShader.UpdateProjectionMat(projmat);
+    mThumbMaxMotion = gWindowSizeW - mThumbStartX * 2 - guiItems[eGuiItemThumb].texItem.w;
 }
 
 bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
@@ -135,8 +136,7 @@ bool GuiDisplay::InitGui()
         GenerateGlItem(&(guiItems[i]));
     }
 
-    mThumbStartX = guiItems[eGuiItemSlider].posx() - guiItems[eGuiItemThumb].texItem.w / 2;
-    mThumbMaxMotion = (float)guiItems[eGuiItemSlider].texItem.w;
+    mThumbStartX = 20;
 
     // init shader
     mShader.CompileShader("GuiDisplay", (char*)VertShader2DTex, (char*)FragShader2dTex);
