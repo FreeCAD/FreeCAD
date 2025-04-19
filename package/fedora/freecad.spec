@@ -34,7 +34,7 @@ Source0:        {{{git_repo_pack_with_submodules}}}
 
 # Some configuVCS:            {{{ git_repo_vcs }}}ration options for other environments
 # rpmbuild --with=bundled_zipios: use bundled version of zipios++
-%bcond_with  bundled_zipios
+%bcond_without  bundled_zipios
 # rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
 %bcond_with bundled_pycxx
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
