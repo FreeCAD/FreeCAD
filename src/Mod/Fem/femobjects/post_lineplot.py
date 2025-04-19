@@ -56,6 +56,14 @@ post_visualization.register_extractor("Lineplot",
                                       "ObjectsFem",
                                       "makePostLineplotFieldData")
 
+post_visualization.register_extractor("Lineplot",
+                                      "LineplotIndexOverFrames",
+                                      ":/icons/FEM_PostIndex.svg",
+                                      "2D",
+                                      "Index",
+                                      "ObjectsFem",
+                                      "makePostLineplotIndexOverFrames")
+
 
 # Implementation
 # ##############
@@ -74,6 +82,12 @@ def is_lineplot_extractor(obj):
 class PostLineplotFieldData(post_extract2D.PostFieldData2D):
     """
     A 2D Field extraction for lineplot.
+    """
+    VisualizationType = "Lineplot"
+
+class PostLineplotIndexOverFrames(post_extract2D.PostIndexOverFrames2D):
+    """
+    A 2D index extraction for lineplot.
     """
     VisualizationType = "Lineplot"
 

@@ -64,6 +64,7 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
 
         self.data_widget.setLayout(vbox)
         self.data_widget.setWindowTitle("Histogram data")
+        self.data_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostHistogram.svg"))
 
 
         # histogram parameter widget
@@ -71,6 +72,8 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/TaskPostHistogram.ui"
         )
         self.view_widget.setWindowTitle("Histogram view settings")
+        self.view_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostHistogram.svg"))
+
         self.__init_widgets()
 
         # form made from param and selection widget

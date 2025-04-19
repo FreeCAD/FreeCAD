@@ -40,10 +40,12 @@ from vtkmodules.vtkFiltersGeneral import vtkSplitColumnComponents
 import FreeCAD
 import FreeCADGui
 
+import femobjects.base_fempostextractors as extr
 from femtaskpanels.base_fempostpanel import _BasePostTaskPanel
 
 from . import extract_link_view
 ExtractLinkView = extract_link_view.ExtractLinkView
+
 
 class DataExtraction(_BasePostTaskPanel):
     # The class is not a widget itself, but provides a widget. It implements
@@ -137,3 +139,12 @@ class DataExtraction(_BasePostTaskPanel):
 
     def apply(self):
         pass
+
+    def initiallyCollapsed(self):
+        # if we do not have any extractions to show we hide initially to remove clutter
+
+        for obj in self.Object.InList:
+            if extr.is_extractor_object(obj):
+                return False
+
+        return True

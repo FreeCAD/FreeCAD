@@ -36,6 +36,7 @@ import Plot
 import FemGui
 from PySide import QtGui, QtCore
 
+import io
 import numpy as np
 import matplotlib as mpl
 
@@ -73,25 +74,59 @@ class EditViewWidget(QtGui.QWidget):
         self._post_dialog._enumPropertyToCombobox(vobj, "LineStyle", self.widget.LineStyle)
         self.widget.LineWidth.setValue(vobj.LineWidth)
         self.widget.HatchDensity.setValue(vobj.HatchDensity)
-        self.widget.BarColor.setProperty("color", QtGui.QColor(*[v*255 for v in vobj.BarColor]))
-        self.widget.LineColor.setProperty("color", QtGui.QColor(*[v*255 for v in vobj.LineColor]))
+
+        # setup the color buttons (don't use FreeCADs color button, as this does not work in popups!)
+        self._setup_color_button(self.widget.BarColor, vobj.BarColor, self.barColorChanged)
+        self._setup_color_button(self.widget.LineColor, vobj.LineColor, self.lineColorChanged)
 
         self.widget.Legend.editingFinished.connect(self.legendChanged)
         self.widget.Hatch.activated.connect(self.hatchPatternChanged)
         self.widget.LineStyle.activated.connect(self.lineStyleChanged)
         self.widget.HatchDensity.valueChanged.connect(self.hatchDensityChanged)
         self.widget.LineWidth.valueChanged.connect(self.lineWidthChanged)
-        self.widget.LineColor.changed.connect(self.lineColorChanged)
-        self.widget.BarColor.changed.connect(self.barColorChanged)
 
-    @QtCore.Slot()
-    def lineColorChanged(self):
-        color = self.widget.LineColor.property("color")
+        # sometimes wierd sizes occur with spinboxes
+        self.widget.HatchDensity.setMaximumHeight(self.widget.Hatch.sizeHint().height())
+        self.widget.LineWidth.setMaximumHeight(self.widget.LineStyle.sizeHint().height())
+
+
+    def _setup_color_button(self, button, fcColor, callback):
+
+        barColor = QtGui.QColor(*[v*255 for v in fcColor])
+        icon_size = button.iconSize()
+        icon_size.setWidth(icon_size.width()*2)
+        button.setIconSize(icon_size)
+        pixmap = QtGui.QPixmap(icon_size)
+        pixmap.fill(barColor)
+        button.setIcon(pixmap)
+
+        action = QtGui.QWidgetAction(button)
+        diag = QtGui.QColorDialog(barColor, parent=button)
+        diag.accepted.connect(action.trigger)
+        diag.rejected.connect(action.trigger)
+        diag.colorSelected.connect(callback)
+
+        action.setDefaultWidget(diag)
+        button.addAction(action)
+        button.setPopupMode(QtGui.QToolButton.InstantPopup)
+
+
+    @QtCore.Slot(QtGui.QColor)
+    def lineColorChanged(self, color):
+
+        pixmap = QtGui.QPixmap(self.widget.LineColor.iconSize())
+        pixmap.fill(color)
+        self.widget.LineColor.setIcon(pixmap)
+
         self._object.ViewObject.LineColor = color.getRgb()
 
-    @QtCore.Slot()
-    def barColorChanged(self):
-        color = self.widget.BarColor.property("color")
+    @QtCore.Slot(QtGui.QColor)
+    def barColorChanged(self, color):
+
+        pixmap = QtGui.QPixmap(self.widget.BarColor.iconSize())
+        pixmap.fill(color)
+        self.widget.BarColor.setIcon(pixmap)
+
         self._object.ViewObject.BarColor = color.getRgb()
 
     @QtCore.Slot(float)
@@ -115,7 +150,7 @@ class EditViewWidget(QtGui.QWidget):
         self._object.ViewObject.Legend = self.widget.Legend.text()
 
 
-class EditAppWidget(QtGui.QWidget):
+class EditFieldAppWidget(QtGui.QWidget):
 
     def __init__(self, obj, post_dialog):
         super().__init__()
@@ -158,6 +193,54 @@ class EditAppWidget(QtGui.QWidget):
     @QtCore.Slot(bool)
     def extractionChanged(self, extract):
         self._object.ExtractFrames = extract
+        self._post_dialog._recompute()
+
+class EditIndexAppWidget(QtGui.QWidget):
+
+    def __init__(self, obj, post_dialog):
+        super().__init__()
+
+        self._object = obj
+        self._post_dialog = post_dialog
+
+        # load the ui and set it up
+        self.widget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/PostHistogramIndexAppEdit.ui"
+        )
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(self.widget)
+        self.setLayout(layout)
+
+        self.__init_widget()
+
+    def __init_widget(self):
+        # set the other properties
+
+        self.widget.Index.setValue(self._object.Index)
+        self._post_dialog._enumPropertyToCombobox(self._object, "XField", self.widget.Field)
+        self._post_dialog._enumPropertyToCombobox(self._object, "XComponent", self.widget.Component)
+
+        self.widget.Index.valueChanged.connect(self.indexChanged)
+        self.widget.Field.activated.connect(self.fieldChanged)
+        self.widget.Component.activated.connect(self.componentChanged)
+
+        # sometimes wierd sizes occur with spinboxes
+        self.widget.Index.setMaximumHeight(self.widget.Field.sizeHint().height())
+
+    @QtCore.Slot(int)
+    def fieldChanged(self, index):
+        self._object.XField = index
+        self._post_dialog._enumPropertyToCombobox(self._object, "XComponent", self.widget.Component)
+        self._post_dialog._recompute()
+
+    @QtCore.Slot(int)
+    def componentChanged(self, index):
+        self._object.XComponent = index
+        self._post_dialog._recompute()
+
+    @QtCore.Slot(int)
+    def indexChanged(self, value):
+        self._object.Index = value
         self._post_dialog._recompute()
 
 
@@ -233,13 +316,30 @@ class VPPostHistogramFieldData(view_post_extract.VPPostExtractor):
         return ":/icons/FEM_PostField.svg"
 
     def get_app_edit_widget(self, post_dialog):
-        return EditAppWidget(self.Object, post_dialog)
+        return EditFieldAppWidget(self.Object, post_dialog)
 
     def get_view_edit_widget(self, post_dialog):
         return EditViewWidget(self.Object, post_dialog)
 
     def get_preview(self):
-        return (QtGui.QPixmap(), self.ViewObject.Legend)
+
+        fig = mpl.pyplot.figure(figsize=(0.4,0.2), dpi=500)
+        ax = mpl.pyplot.Axes(fig, [0., 0., 2, 1])
+        ax.set_axis_off()
+        fig.add_axes(ax)
+
+        kwargs = self.get_kw_args()
+        patch = mpl.patches.Rectangle(xy=(0,0), width=2, height=1, **kwargs)
+        ax.add_patch(patch)
+
+        data = io.BytesIO()
+        mpl.pyplot.savefig(data, bbox_inches=0, transparent=True)
+        mpl.pyplot.close()
+
+        pixmap = QtGui.QPixmap()
+        pixmap.loadFromData(data.getvalue())
+
+        return (pixmap, self.ViewObject.Legend)
 
     def get_kw_args(self):
         # builds kw args from the properties
@@ -254,6 +354,21 @@ class VPPostHistogramFieldData(view_post_extract.VPPostExtractor):
             kwargs["hatch"] = self.ViewObject.Hatch*self.ViewObject.HatchDensity
 
         return kwargs
+
+
+class VPPostHistogramIndexOverFrames(VPPostHistogramFieldData):
+    """
+    A View Provider for extraction of 1D index over frames data
+    """
+
+    def __init__(self, vobj):
+        super().__init__(vobj)
+
+    def getIcon(self):
+        return ":/icons/FEM_PostIndex.svg"
+
+    def get_app_edit_widget(self, post_dialog):
+        return EditIndexAppWidget(self.Object, post_dialog)
 
 
 class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
@@ -365,14 +480,25 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
     def show_visualization(self):
 
         if not hasattr(self, "_plot") or not self._plot:
+            main = Plot.getMainWindow()
             self._plot = Plot.Plot()
-            self._dialog = QtGui.QDialog(Plot.getMainWindow())
+            self._plot.destroyed.connect(self.destroyed)
+            self._dialog = QtGui.QDialog(main)
             box = QtGui.QVBoxLayout()
             box.addWidget(self._plot)
+            self._dialog.resize(main.size().height()/2, main.size().height()/3) # keep it square
             self._dialog.setLayout(box)
 
         self.drawPlot()
         self._dialog.show()
+
+
+    def destroyed(self, obj):
+        print("*********************************************************")
+        print("****************                       ******************")
+        print("****************         destroy       ******************")
+        print("****************                       ******************")
+        print("*********************************************************")
 
     def get_kw_args(self, obj):
         view = obj.ViewObject

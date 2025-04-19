@@ -116,6 +116,8 @@ class Extractor(base_fempythonobject.BaseFemPythonObject):
                 return ["X", "Y"]
             case 3:
                 return ["X", "Y", "Z"]
+            case 6:
+                return ["XX", "YY", "ZZ", "XY", "XZ", "YZ"]
             case _:
                 return ["Not a vector"]
 
@@ -217,11 +219,13 @@ class Extractor1D(Extractor):
             component_array.SetName(array.GetName())
             table.AddColumn(component_array)
 
-    def _x_array_from_dataset(self, obj, dataset):
+    def _x_array_from_dataset(self, obj, dataset, copy=True):
         # extracts the relevant array from the dataset and returns a copy
+        # indices = None uses all indices, otherwise the values in this list
 
         match obj.XField:
             case "Index":
+                # index needs always to be build, ignore copy argument
                 num = dataset.GetPoints().GetNumberOfPoints()
                 array = vtkIntArray()
                 array.SetNumberOfTuples(num)
@@ -230,15 +234,22 @@ class Extractor1D(Extractor):
                     array.SetValue(i,i)
 
             case "Position":
+
                 orig_array = dataset.GetPoints().GetData()
-                array = vtkDoubleArray()
-                array.DeepCopy(orig_array)
+                if copy:
+                    array = vtkDoubleArray()
+                    array.DeepCopy(orig_array)
+                else:
+                    array = orig_array
 
             case _:
                 point_data = dataset.GetPointData()
                 orig_array = point_data.GetAbstractArray(obj.XField)
-                array = vtkDoubleArray()
-                array.DeepCopy(orig_array)
+                if copy:
+                    array = vtkDoubleArray()
+                    array.DeepCopy(orig_array)
+                else:
+                    array = orig_array
 
         return array
 
@@ -343,28 +354,29 @@ class Extractor2D(Extractor1D):
             component_array.SetName(array.GetName())
             table.AddColumn(component_array)
 
-    def _y_array_from_dataset(self, obj, dataset):
+    def _y_array_from_dataset(self, obj, dataset, copy=True):
         # extracts the relevant array from the dataset and returns a copy
+        # indices = None uses all indices, otherwise the values in this list
 
         match obj.YField:
-            case "Index":
-                num = dataset.GetPoints().GetNumberOfPoints()
-                array = vtkIntArray()
-                array.SetNumberOfTuples(num)
-                array.SetNumberOfComponents(1)
-                for i in range(num):
-                    array.SetValue(i,i)
-
             case "Position":
+
                 orig_array = dataset.GetPoints().GetData()
-                array = vtkDoubleArray()
-                array.DeepCopy(orig_array)
+                if copy:
+                    array = vtkDoubleArray()
+                    array.DeepCopy(orig_array)
+                else:
+                    array = orig_array
 
             case _:
                 point_data = dataset.GetPointData()
                 orig_array = point_data.GetAbstractArray(obj.YField)
-                array = vtkDoubleArray()
-                array.DeepCopy(orig_array)
+
+                if copy:
+                    array = vtkDoubleArray()
+                    array.DeepCopy(orig_array)
+                else:
+                    array = orig_array
 
         return array
 

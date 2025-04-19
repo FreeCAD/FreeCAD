@@ -166,4 +166,22 @@ void TaskPostExtraction::apply()
     }
 }
 
+bool TaskPostExtraction::initiallyCollapsed()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (m_panel.hasAttr(std::string("initiallyCollapsed"))) {
+            Py::Callable method(m_panel.getAttr(std::string("initiallyCollapsed")));
+            auto result = Py::Boolean(method.apply());
+            return result.as_bool();
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return false;
+}
+
 #include "moc_TaskPostExtraction.cpp"

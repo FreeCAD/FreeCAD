@@ -699,6 +699,7 @@ def makePostLineplot(doc, name="Lineplot"):
         view_post_lineplot.VPPostLineplot(obj.ViewObject)
     return obj
 
+
 def makePostLineplotFieldData(doc, name="FieldData2D"):
     """makePostLineplotFieldData(document, [name]):
     creates a FEM post processing data extractor for 2D Field data
@@ -711,6 +712,21 @@ def makePostLineplotFieldData(doc, name="FieldData2D"):
         from femviewprovider import view_post_lineplot
         view_post_lineplot.VPPostLineplotFieldData(obj.ViewObject)
     return obj
+
+
+def makePostLineplotIndexOverFrames(doc, name="IndexOverFrames2D"):
+    """makePostLineplotIndexOverFrames(document, [name]):
+    creates a FEM post processing data extractor for 2D index data
+    """
+    obj = doc.addObject("App::FeaturePython", name)
+    from femobjects import post_lineplot
+
+    post_lineplot.PostLineplotIndexOverFrames(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_lineplot
+        view_post_lineplot.VPPostLineplotIndexOverFrames(obj.ViewObject)
+    return obj
+
 
 def makePostHistogram(doc, name="Histogram"):
     """makePostHistogram(document, [name]):
@@ -725,8 +741,9 @@ def makePostHistogram(doc, name="Histogram"):
         view_post_histogram.VPPostHistogram(obj.ViewObject)
     return obj
 
+
 def makePostHistogramFieldData(doc, name="FieldData1D"):
-    """makePostHistogramFieldData1D(document, [name]):
+    """makePostHistogramFieldData(document, [name]):
     creates a FEM post processing data extractor for 1D Field data
     """
     obj = doc.addObject("App::FeaturePython", name)
@@ -736,6 +753,20 @@ def makePostHistogramFieldData(doc, name="FieldData1D"):
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_histogram
         view_post_histogram.VPPostHistogramFieldData(obj.ViewObject)
+    return obj
+
+
+def makePostHistogramIndexOverFrames(doc, name="IndexOverFrames1D"):
+    """makePostHistogramIndexOverFrames(document, [name]):
+    creates a FEM post processing data extractor for 1D Field data
+    """
+    obj = doc.addObject("App::FeaturePython", name)
+    from femobjects import post_histogram
+
+    post_histogram.PostHistogramIndexOverFrames(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_histogram
+        view_post_histogram.VPPostHistogramIndexOverFrames(obj.ViewObject)
     return obj
 
 

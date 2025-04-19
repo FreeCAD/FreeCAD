@@ -64,6 +64,7 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
 
         self.data_widget.setLayout(vbox)
         self.data_widget.setWindowTitle("Lineplot data")
+        self.data_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostLineplot.svg"))
 
 
         # lineplot parameter widget
@@ -71,6 +72,8 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/TaskPostLineplot.ui"
         )
         self.view_widget.setWindowTitle("Lineplot view settings")
+        self.view_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostLineplot.svg"))
+
         self.__init_widgets()
 
         # form made from param and selection widget
