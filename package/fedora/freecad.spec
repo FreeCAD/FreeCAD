@@ -134,6 +134,8 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
        -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
        -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
+       -DCMAKE_INSTALL_DATAROOTDIR=%{_datadir} \
+       -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
        -DRESOURCEDIR=%{_datadir}/%{name} \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
        -DFREECAD_USE_EXTERNAL_FMT=TRUE \
@@ -167,32 +169,6 @@ cd %_vpath_builddir
 mkdir -p %{buildroot}%{_bindir}
 ln -s ../%{_lib}/%{name}/bin/FreeCAD %{buildroot}%{_bindir}/FreeCAD
 ln -s ../%{_lib}/%{name}/bin/FreeCADCmd %{buildroot}%{_bindir}/FreeCADCmd
-
-mkdir %{buildroot}%{_metainfodir}/
-mv %{buildroot}%{_libdir}/%{name}/share/metainfo/* %{buildroot}%{_metainfodir}/
-
-mkdir %{buildroot}%{_datadir}/applications/
-mv %{buildroot}%{_libdir}/%{name}/share/applications/* %{buildroot}%{_datadir}/applications/
-
-
-mkdir -p %{buildroot}%{_datadir}/thumbnailers/
-mv %{buildroot}%{_libdir}/%{name}/share/thumbnailers/* %{buildroot}%{_datadir}/thumbnailers/
-
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/
-mv %{buildroot}%{_libdir}/%{name}/share/icons/hicolor/scalable/* %{buildroot}%{_datadir}/icons/hicolor/scalable/
-
-mkdir -p %{buildroot}%{_datadir}/pixmaps/
-mv %{buildroot}%{_libdir}/%{name}/share/pixmaps/* %{buildroot}%{_datadir}/pixmaps/
-
-mkdir -p %{buildroot}%{_datadir}/mime/packages/
-mv %{buildroot}%{_libdir}/%{name}/share/mime/packages/* %{buildroot}%{_datadir}/mime/packages/
-
-pushd %{buildroot}%{_libdir}/%{name}/share/
-rmdir metainfo/
-rmdir applications/
-rm -rf mime
-rm -rf icons
-popd
 
 # Remove obsolete Start_Page.html
 rm -f %{buildroot}%{_docdir}/%{name}/Start_Page.html
