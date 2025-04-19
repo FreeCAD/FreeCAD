@@ -61,7 +61,7 @@ from Path.Tool.Shape import (
     ToolBitShapeDovetail, ToolBitShapeDrill, ToolBitShapeEndMill,
     ToolBitShapeProbe, ToolBitShapeReamer, ToolBitShapeSlittingSaw,
     ToolBitShapeTap, ToolBitShapeThreadMill, ToolBitShapeTorus,
-    ToolBitShapeVBit, TOOL_BIT_SHAPE_CLASSES, get_shape_class
+    ToolBitShapeVBit, TOOL_BIT_SHAPE_CLASSES, get_shape_class_from_alias
 )
 
 # Helper dummy class for testing abstract methods
@@ -497,21 +497,21 @@ class TestPathToolShapeInitHelpers(PathTestUtils.PathTestBase):
     def test_get_shape_class(self):
         """Test the get_shape_class function."""
         self.assertEqual(
-            get_shape_class("ballend"),
+            get_shape_class_from_alias("ballend"),
             ToolBitShapeBallEnd)
         self.assertEqual(
-            get_shape_class("BallEnd"),
+            get_shape_class_from_alias("BallEnd"),
             ToolBitShapeBallEnd)
         self.assertEqual(
-            get_shape_class("BALLEND"),
+            get_shape_class_from_alias("BALLEND"),
             ToolBitShapeBallEnd)
         self.assertEqual(
-            get_shape_class("vbit"),
+            get_shape_class_from_alias("vbit"),
             ToolBitShapeVBit)
         self.assertEqual(
-            get_shape_class("V-Bit"),
+            get_shape_class_from_alias("V-Bit"),
             ToolBitShapeVBit)
-        self.assertIsNone(get_shape_class("nonexistent"))
+        self.assertIsNone(get_shape_class_from_alias("nonexistent"))
 
 
 @patch.dict(sys.modules, {'FreeCAD': mock_freecad, 'FreeCAD.Units': mock_units})

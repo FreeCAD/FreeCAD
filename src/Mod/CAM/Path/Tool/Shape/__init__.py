@@ -18,7 +18,7 @@ from .threadmill import ToolBitShapeThreadMill
 from .torus import ToolBitShapeTorus
 from .vbit import ToolBitShapeVBit
 
-# Maps aliases to ToolBitShape
+# Maps ToolBitShape.aliases to ToolBitShape
 # Note: This relies on the classes being imported above.
 TOOL_BIT_SHAPE_CLASSES: Dict[str, Type[ToolBitShape]] = {}
 
@@ -34,15 +34,14 @@ for cls in ToolBitShape.__subclasses__():
             TOOL_BIT_SHAPE_CLASSES[alias] = cls
             TOOL_BIT_SHAPE_CLASSES[alias+".fcstd"] = cls
 
-# Create a sorted list of user-friendly shape names (class names)
+# A list of the first alias of each ToolBitShape
 TOOL_BIT_SHAPE_NAMES = sorted(
-    [cls.__name__ for cls in set(TOOL_BIT_SHAPE_CLASSES.values())]
+    [cls.aliases[0] for cls in set(TOOL_BIT_SHAPE_CLASSES.values())]
 )
 
-
-def get_shape_class(name: str) -> Optional[Type[ToolBitShape]]:
+def get_shape_class_from_alias(alias: str) -> Optional[Type[ToolBitShape]]:
     """Get the shape class corresponding to the given name (case-insensitive)."""
-    return TOOL_BIT_SHAPE_CLASSES.get(name.lower())
+    return TOOL_BIT_SHAPE_CLASSES.get(alias.lower())
 
 # Define __all__ for explicit public interface
 __all__ = [
