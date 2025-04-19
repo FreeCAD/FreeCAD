@@ -3,7 +3,7 @@ Name:           freecad
 
 Epoch:          2
 Version:        {{{ git_repo_version  lead=1.1 follow="~"}}}
-Release:        enable_test_%autorelease
+Release:        disable_test_%autorelease
 
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
@@ -14,21 +14,9 @@ VCS:            {{{ git_repo_vcs }}}
 
 Source0:        {{{git_repo_pack_with_submodules}}}
 
-%description
-FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
-directly at mechanical engineering and product design but also fits a wider
-range of uses in engineering, such as architecture or other engineering
-specialities. It is a feature-based parametric modeler with a modular software
-architecture which makes it easy to provide additional functionality without
-modifying the core system.
 
-%package data
-Summary:        Data files for FreeCAD
-BuildArch:      noarch
-Requires:       %{name} = %{epoch}:%{version}-%{release}
 
-%description data
-Data files for FreeCAD
+
 
 
 # This package depends on automagic byte compilation
@@ -46,13 +34,13 @@ Data files for FreeCAD
 
 # Some configuVCS:            {{{ git_repo_vcs }}}ration options for other environments
 # rpmbuild --with=bundled_zipios: use bundled version of zipios++
-%bcond_wit  bundled_zipios
+%bcond_with  bundled_zipios
 # rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
 %bcond_with bundled_pycxx
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %bcond_without bundled_smesh
-# rpmbuild --without=tests:  exclude tests from build
-%bcond_without tests
+# rpmbuild --with=tests:  include  tests in build
+%bcond_with tests
 %if %{with tests}
 %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
 %endif
@@ -156,7 +144,21 @@ Provides:       bundled(python-pycxx)
 %endif
 Recommends:     python3-pysolar
 
+%description
+FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
+directly at mechanical engineering and product design but also fits a wider
+range of uses in engineering, such as architecture or other engineering
+specialities. It is a feature-based parametric modeler with a modular software
+architecture which makes it easy to provide additional functionality without
+modifying the core system.
 
+%package data
+Summary:        Data files for FreeCAD
+BuildArch:      noarch
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description data
+Data files for FreeCAD
 
 # plugins and private shared libs in %%{_libdir}/freecad/lib are private;
 # prevent private capabilities being advertised in Provides/Requires
@@ -170,12 +172,12 @@ Recommends:     python3-pysolar
 %filter_setup
 }
 
-h
 
 %prep
 {{{ git_repo_setup_macro }}}
 
 %build
+cd %_vpath_srcdir
 # Deal with cmake projects that tend to link excessively.
 CXXFLAGS='-Wno-error=cast-function-type'; export CXXFLAGS
 LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
@@ -206,7 +208,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 %else
        -DENABLE_DEVELOPER_TESTS=FALSE \
 %endif
-       -DBUILD_GUI=TRUE
+       -DBUILD_GUI=TRUE \
 
 %cmake_build
 
