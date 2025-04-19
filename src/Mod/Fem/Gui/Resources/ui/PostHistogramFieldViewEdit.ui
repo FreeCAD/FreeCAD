@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>126</height>
+    <width>278</width>
+    <height>110</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -68,7 +68,7 @@
      <item row="1" column="2">
       <widget class="QComboBox" name="Hatch">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -93,7 +93,7 @@
      <item row="1" column="3">
       <widget class="QSpinBox" name="HatchDensity">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -113,10 +113,20 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1" colspan="3">
+      <widget class="QLineEdit" name="Legend"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Legend:</string>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="1">
-      <widget class="Gui::ColorButton" name="LineColor">
+      <widget class="QToolButton" name="LineColor">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -127,7 +137,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::ColorButton" name="BarColor">
+      <widget class="QToolButton" name="BarColor">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -139,27 +149,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1" colspan="3">
-      <widget class="QLineEdit" name="Legend"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Legend:</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>Legend</tabstop>
   <tabstop>BarColor</tabstop>

@@ -56,6 +56,7 @@ protected:
     bool isGuiTaskOnly() override;
     void apply() override;
     void onPostDataChanged(Fem::FemPostObject* obj) override;
+    bool initiallyCollapsed() override;
 
 private:
     Py::Object m_panel;
