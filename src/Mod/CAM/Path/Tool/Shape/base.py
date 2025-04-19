@@ -45,11 +45,6 @@ class ToolBitShape(abc.ABC):
         self.set_parameters(**kwargs)  # Override with provided values
 
     @property
-    def name(self) -> str:
-        """Return the class name, representing the shape type."""
-        return self.__class__.__name__
-
-    @property
     def label(self) -> str:
         """Return a user friendly, translatable display name."""
         raise NotImplementedError

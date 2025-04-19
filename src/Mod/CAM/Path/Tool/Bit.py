@@ -35,7 +35,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 from .Shape.base import ToolBitShape
 from .Shape.endmill import ToolBitShapeEndMill
-from .Shape import TOOL_BIT_SHAPE_NAMES, get_shape_class
+from .Shape import TOOL_BIT_SHAPE_NAMES, get_shape_class_from_alias
 
 __title__ = "Tool bits."
 __author__ = "sliptonic (Brad Collette), Samuel Abels"
@@ -127,7 +127,7 @@ def findRelativePathLibrary(path):
 
 class ToolBit(object):
     def __init__(self, obj, tool_bit_shape: ToolBitShape, path=None):
-        Path.Log.track(obj.Label, tool_bit_shape.name, path)
+        Path.Log.track(obj.Label, tool_bit_shape.label, path)
         self.obj = obj
         self._tool_bit_shape = tool_bit_shape
 
@@ -162,7 +162,7 @@ class ToolBit(object):
             obj.File = path
 
         # Set the initial shape based on the provided instance
-        obj.BitShape = self._tool_bit_shape.name
+        obj.BitShape = self._tool_bit_shape.aliases[0]
 
         # Initialize properties and visual representation
         self._initialize_properties_from_shape(obj)
@@ -239,7 +239,7 @@ class ToolBit(object):
     def onChanged(self, obj, prop):
         Path.Log.track(obj.Label, prop)
         if prop == "BitShape" and "Restore" not in obj.State:
-            self._handle_shape_change(obj, obj.BitShape)
+            self._handle_shape_change(obj)
 
     def onDelete(self, obj, arg2=None):
         Path.Log.track(obj.Label)
@@ -440,12 +440,12 @@ class ToolBit(object):
                 f" for shape '{self._tool_bit_shape.name}': {e}"
             )
 
-    def _handle_shape_change(self, obj, new_shape_name):
-        Path.Log.track(obj.Label, new_shape_name)
+    def _handle_shape_change(self, obj):
+        Path.Log.track(obj, obj.label)
 
         old_shape_params = self._tool_bit_shape.get_parameters() if self._tool_bit_shape else {}
 
-        shape_class = get_shape_class(new_shape_name)
+        shape_class = get_shape_class_from_alias(obj)
         if shape_class is None:
             Path.Log.error(f"Unknown tool bit shape: {new_shape_name}. Keeping current shape.")
             # Revert the enumeration property in the UI if possible
@@ -489,7 +489,7 @@ class ToolBit(object):
         attrs["name"] = obj.Label
 
         if self._tool_bit_shape:
-            attrs["shape"] = self._tool_bit_shape.name
+            attrs["shape"] = self._tool_bit_shape.aliases[0]
             attrs["parameter"] = {
                 name: PathUtil.getPropertyValueString(obj, name)
                 for name in self._tool_bit_shape.get_parameters()
@@ -521,11 +521,10 @@ class ToolBitFactory(object):
         attributes = attrs.get("attribute", {})
 
         shape_class = None
-        shape_name = None
 
         # Find the shape class
         if isinstance(shape_val, str):
-            shape_class = get_shape_class(shape_val)
+            shape_class = get_shape_class_from_alias(shape_val)
         elif isinstance(shape_val, type) and issubclass(shape_val, ToolBitShape):
             shape_class = shape_val
         else:
@@ -533,7 +532,7 @@ class ToolBitFactory(object):
             shape_class = ToolBitShapeEndMill
 
         if shape_class is None:
-            Path.Log.error(f"Unknown tool bit shape: {shape_name}")
+            Path.Log.error(f"Unknown tool bit shape: {shape_val}")
             shape_class = ToolBitShapeEndMill
 
 
@@ -584,7 +583,7 @@ class ToolBitFactory(object):
         # Instantiate the specified shape or a default one
         tool_bit_shape = None
         if shape_name:
-            shape_class = get_shape_class(shape_name)
+            shape_class = get_shape_class_from_alias(shape_name)
             if shape_class:
                 try:
                     tool_bit_shape = shape_class() # Instantiate with defaults
