@@ -19,8 +19,12 @@ Source0:        {{{git_repo_pack_with_submodules}}}
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
-# See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
+# See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
+# See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
+%global bundled_pycxx_version 7.1.9
+# See /src/3rdParty/OndselSolver/CMakeLists.txt to find this out.
+%global bundled_ondsel_solver_version 1.0.1
 
 # Some configuration options for other environments
 # rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
@@ -71,8 +75,10 @@ Obsoletes:      %{name}-doc < 0.22-1
 Provides:       bundled(smesh) = %{bundled_smesh_version}
 %endif
 %if %{with bundled_pycxx}
-Provides:       bundled(python-pycxx)
+Provides:       bundled(python3-pycxx) = %{bundled_pycxx_version}
 %endif
+
+Provides:       bundled(ondsel-solver) = %{bundled_ondsel_solver_version}
 
 Recommends:     python3-pysolar
 
@@ -80,7 +86,7 @@ Recommends:     python3-pysolar
     FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
     directly at mechanical engineering and product design but also fits a wider
     range of uses in engineering, such as architecture or other engineering
-    specialities. It is a feature-based parametric modeler with a modular software
+    specialties. It is a feature-based parametric modeler with a modular software
     architecture which makes it easy to provide additional functionality without
     modifying the core system.
 
@@ -134,6 +140,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DCMAKE_INSTALL_DATAROOTDIR=%_datadir \
         -DCMAKE_INSTALL_DATADIR=%_datadir/%name \
         -DRESOURCEDIR=%_datadir/%name \
+        #path defined here src/Ext/freecad/CMakeLists.txt
+        -DSITE_PACKAGE_DIR=%{python3_sitelib}/%{name} \
         -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
         -DFREECAD_USE_EXTERNAL_FMT=TRUE \
         -DFREECAD_USE_PCL:BOOL=OFF \
@@ -169,6 +177,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     # Remove header from external library that's erroneously installed
     rm -rf %{buildroot}%{_includedir}/OndselSolver/*
     rm -f %{buildroot}%{_libdir}/%{name}/share/pkgconfig/OndselSolver.pc
+
+    pushd %{buildroot}%{_libdir}/%{name}/share/
 
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
@@ -222,17 +232,18 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %files
     %{_bindir}/*
-    %{_metainfodir}/*
+    %{_metainfodir}/*src/Ext/freecad/CMakeLists.tx
     %dir %{_libdir}/%{name}
     %{_libdir}/%{name}/bin/
     %{_libdir}/%{name}/%{_lib}/
     %{_libdir}/%{name}/Ext/
     %{_libdir}/%{name}/Mod/
-    %{_datadir}/applications/*
-    %{_datadir}/icons/hicolor/scalable/*
+    %{_datadir}/applications/*/usr/share
+    %{_datadir}/icons/hicolor/*
     %{_datadir}/pixmaps/*
     %{_datadir}/mime/packages/*
     %{_datadir}/thumbnailers/*
+    %{_datadir}/pkgconfig/OndselSolver.pc
     %{python3_sitelib}/%{name}/*
 
 %files data
