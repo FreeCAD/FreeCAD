@@ -109,7 +109,7 @@ Summary:        Development file for OndselSolver
 BuildArch:      noarch
 Requires:       %{name} = %{epoch}:%{version}-%{release}
 
-%description data
+%description libondselsolver-devel
     Development file for OndselSolver
 
 
@@ -149,7 +149,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DCMAKE_INSTALL_DATAROOTDIR=%_datadir \
         -DCMAKE_INSTALL_DATADIR=%_datadir/%name \
         -DRESOURCEDIR=%_datadir/%name \
-        #path defined here src/Ext/freecad/CMakeLists.txt
         -DSITE_PACKAGE_DIR=%{python3_sitelib}/%{name} \
         -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
         -DFREECAD_USE_EXTERNAL_FMT=TRUE \
