@@ -2772,4 +2772,3 @@ QMainWindow QHeaderView::section::horizontal {
 QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-one {
   border-left: 0px solid transparent;
 }
-
