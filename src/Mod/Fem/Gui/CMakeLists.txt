@@ -445,11 +445,12 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/TaskPostExtraction.ui
     Resources/ui/TaskPostHistogram.ui
     Resources/ui/TaskPostLineplot.ui
-    Resources/ui/PostExtractionSummaryWidget.ui
     Resources/ui/PostHistogramFieldViewEdit.ui
     Resources/ui/PostHistogramFieldAppEdit.ui
+    Resources/ui/PostHistogramIndexAppEdit.ui
     Resources/ui/PostLineplotFieldViewEdit.ui
     Resources/ui/PostLineplotFieldAppEdit.ui
+    Resources/ui/PostLineplotIndexAppEdit.ui
 )
 
 ADD_CUSTOM_TARGET(FemPythonUi ALL

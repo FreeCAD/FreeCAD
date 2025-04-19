@@ -33,6 +33,7 @@ from . import base_fempostextractors
 from . import base_fempythonobject
 _PropHelper = base_fempythonobject._PropHelper
 
+from vtkmodules.vtkCommonCore import vtkDoubleArray
 from vtkmodules.vtkCommonDataModel import vtkTable
 from vtkmodules.vtkCommonExecutionModel import vtkStreamingDemandDrivenPipeline
 
@@ -124,9 +125,9 @@ class PostFieldData2D(base_fempostextractors.Extractor2D):
         obj.Table = table
 
 
-class PostIndexData2D(base_fempostextractors.Extractor2D):
+class PostIndexOverFrames2D(base_fempostextractors.Extractor2D):
     """
-    A post processing extraction of one dimensional index data
+    A post processing extraction for two dimensional data with X always being the frames
     """
 
     ExtractionType = "Index"
@@ -135,19 +136,83 @@ class PostIndexData2D(base_fempostextractors.Extractor2D):
         super().__init__(obj)
 
     def _get_properties(self):
-        prop =[ _PropHelper(
-                type="App::PropertyBool",
-                name="ExtractFrames",
-                group="Multiframe",
-                doc="Specify if the data at the index should be extracted for each frame",
-                value=False,
-            ),
-            _PropHelper(
+        prop =[_PropHelper(
                 type="App::PropertyInteger",
-                name="XIndex",
-                group="X Data",
+                name="Index",
+                group="Data",
                 doc="Specify for which point index the data should be extracted",
                 value=0,
             ),
         ]
         return super()._get_properties() + prop
+
+    def _setup_x_component_property(self, obj, point_data):
+        # override to only allow "Frames" as X data
+        obj.XComponent = ["Not a vector"]
+
+    def _setup_x_properties(self, obj, dataset):
+        # override to only allow "Frames" as X data
+        obj.XField = ["Frames"]
+
+    def execute(self, obj):
+
+        # on execution we populate the vtk table
+        table = vtkTable()
+
+        if not obj.Source:
+            obj.Table = table
+            return
+
+        dataset = obj.Source.getDataSet()
+        if not dataset:
+            obj.Table = table
+            return
+
+        # check if we have timesteps (required!)
+        abort = True
+        info = obj.Source.getOutputAlgorithm().GetOutputInformation(0)
+        if info.Has(vtkStreamingDemandDrivenPipeline.TIME_STEPS()):
+            timesteps = info.Get(vtkStreamingDemandDrivenPipeline.TIME_STEPS())
+            if len(timesteps) > 1:
+                abort = False
+
+        if abort:
+            FreeCAD.Console.PrintWarning("Not sufficient frames available in data, cannot extract data")
+            obj.Table = table
+            return
+
+        algo = obj.Source.getOutputAlgorithm()
+
+        frame_x_array = vtkDoubleArray()
+        frame_x_array.SetNumberOfTuples(len(timesteps))
+        frame_x_array.SetNumberOfComponents(1)
+
+
+        frame_y_array = vtkDoubleArray()
+        idx = obj.Index
+        setup = False
+        for i, timestep in enumerate(timesteps):
+
+            frame_x_array.SetTuple1(i, timestep)
+
+            algo.UpdateTimeStep(timestep)
+            dataset = algo.GetOutputDataObject(0)
+            array = self._y_array_from_dataset(obj, dataset, copy=False)
+            if not setup:
+                frame_y_array.SetNumberOfComponents(array.GetNumberOfComponents())
+                frame_y_array.SetNumberOfTuples(len(timesteps))
+                setup = True
+
+            frame_y_array.SetTuple(i, idx, array)
+
+        frame_x_array.SetName("Frames")
+        if frame_y_array.GetNumberOfComponents() > 1:
+            frame_y_array.SetName(f"{obj.YField} ({obj.YComponent})")
+        else:
+            frame_y_array.SetName(obj.YField)
+
+        table.AddColumn(frame_x_array)
+        self._y_array_component_to_table(obj, frame_y_array, table)
+
+        # set the final table
+        obj.Table = table

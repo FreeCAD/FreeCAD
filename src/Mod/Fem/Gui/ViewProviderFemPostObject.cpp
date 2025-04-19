@@ -1007,6 +1007,7 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
             postDlg = new TaskDlgPost(this);
             setupTaskDialog(postDlg);
             postDlg->connectSlots();
+            postDlg->processCollapsedWidgets();
             Gui::Control().showDialog(postDlg);
         }
 

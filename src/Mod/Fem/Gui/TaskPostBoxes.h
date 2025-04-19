@@ -156,6 +156,11 @@ public:
     // executed when the apply button is pressed in the task dialog
     virtual void apply() {};
 
+    // returns if the widget shall be collapsed when opening the task dialog
+    virtual bool initiallyCollapsed() {
+        return false;
+    };
+
 protected:
     App::DocumentObject* getObject() const
     {
@@ -235,6 +240,9 @@ public:
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
+    /// makes sure all widgets are collapsed, if they want to be
+    void processCollapsedWidgets();
+
 protected:
     void recompute();
 
@@ -299,6 +307,8 @@ public:
     ~TaskPostFrames() override;
 
     void applyPythonCode() override;
+
+    bool initiallyCollapsed() override;
 
 private:
     void setupConnections();

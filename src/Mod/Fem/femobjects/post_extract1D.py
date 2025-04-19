@@ -33,6 +33,7 @@ from . import base_fempostextractors
 from . import base_fempythonobject
 _PropHelper = base_fempythonobject._PropHelper
 
+from vtkmodules.vtkCommonCore import vtkDoubleArray
 from vtkmodules.vtkCommonDataModel import vtkTable
 from vtkmodules.vtkCommonExecutionModel import vtkStreamingDemandDrivenPipeline
 
@@ -108,7 +109,7 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
         obj.Table = table
 
 
-class PostIndexData1D(base_fempostextractors.Extractor1D):
+class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
     """
     A post processing extraction of one dimensional index data
     """
@@ -119,19 +120,67 @@ class PostIndexData1D(base_fempostextractors.Extractor1D):
         super().__init__(obj)
 
     def _get_properties(self):
-        prop =[ _PropHelper(
-                type="App::PropertyBool",
-                name="ExtractFrames",
-                group="Multiframe",
-                doc="Specify if the data at the index should be extracted for each frame",
-                value=False,
-            ),
-            _PropHelper(
+        prop =[_PropHelper(
                 type="App::PropertyInteger",
-                name="XIndex",
+                name="Index",
                 group="X Data",
-                doc="Specify for which point index the data should be extracted",
+                doc="Specify for which index the data should be extracted",
                 value=0,
             ),
         ]
         return super()._get_properties() + prop
+
+    def execute(self, obj):
+
+        # on execution we populate the vtk table
+        table = vtkTable()
+
+        if not obj.Source:
+            obj.Table = table
+            return
+
+        dataset = obj.Source.getDataSet()
+        if not dataset:
+            obj.Table = table
+            return
+
+        # check if we have timesteps (required!)
+        abort = True
+        info = obj.Source.getOutputAlgorithm().GetOutputInformation(0)
+        if info.Has(vtkStreamingDemandDrivenPipeline.TIME_STEPS()):
+            timesteps = info.Get(vtkStreamingDemandDrivenPipeline.TIME_STEPS())
+            if len(timesteps) > 1:
+                abort = False
+
+        if abort:
+            FreeCAD.Console.PrintWarning("Not sufficient frames available in data, cannot extract data")
+            obj.Table = table
+            return
+
+        algo = obj.Source.getOutputAlgorithm()
+        setup = False
+        frame_array = vtkDoubleArray()
+
+        idx = obj.Index
+        for i, timestep in enumerate(timesteps):
+
+            algo.UpdateTimeStep(timestep)
+            dataset = algo.GetOutputDataObject(0)
+            array = self._x_array_from_dataset(obj, dataset, copy=False)
+
+            if not setup:
+                frame_array.SetNumberOfComponents(array.GetNumberOfComponents())
+                frame_array.SetNumberOfTuples(len(timesteps))
+                setup = True
+
+            frame_array.SetTuple(i, idx, array)
+
+        if frame_array.GetNumberOfComponents() > 1:
+            frame_array.SetName(f"{obj.XField} ({obj.XComponent})")
+        else:
+            frame_array.SetName(f"{obj.XField}")
+
+        self._x_array_component_to_table(obj, frame_array, table)
+
+        # set the final table
+        obj.Table = table

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>335</width>
-    <height>124</height>
+    <width>274</width>
+    <height>114</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,25 +28,6 @@
    </property>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="4">
-      <widget class="QDoubleSpinBox" name="MarkerSize">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Width of all lines (outline and hatch)</string>
-       </property>
-       <property name="maximum">
-        <double>99.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.100000000000000</double>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -57,7 +38,7 @@
      <item row="1" column="2">
       <widget class="QComboBox" name="LineStyle">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -107,18 +88,8 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
-      <widget class="QDoubleSpinBox" name="LineWidth">
-       <property name="maximum">
-        <double>99.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.100000000000000</double>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="1">
-      <widget class="Gui::ColorButton" name="Color">
+      <widget class="QToolButton" name="Color">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -130,24 +101,50 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="3">
+      <widget class="QDoubleSpinBox" name="LineWidth">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximum">
+        <double>99.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QDoubleSpinBox" name="MarkerSize">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Width of all lines (outline and hatch)</string>
+       </property>
+       <property name="maximum">
+        <double>99.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>Legend</tabstop>
   <tabstop>Color</tabstop>
   <tabstop>LineStyle</tabstop>
-  <tabstop>LineWidth</tabstop>
   <tabstop>MarkerStyle</tabstop>
-  <tabstop>MarkerSize</tabstop>
  </tabstops>
  <resources/>
  <connections/>

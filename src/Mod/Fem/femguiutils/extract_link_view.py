@@ -198,16 +198,10 @@ class _SettingsPopup(QtGui.QGroupBox):
 
     close = QtCore.Signal()
 
-    def __init__(self, setting):
+    def __init__(self, setting, parent):
+        super().__init__(parent)
 
-        toplevel = QtGui.QApplication.topLevelWidgets()
-        for i in toplevel:
-            if i.metaObject().className() == "Gui::MainWindow":
-                main = i
-                break
-
-        super().__init__(main)
-
+        self.setWindowFlags(QtGui.Qt.Popup)
         self.setFocusPolicy(QtGui.Qt.ClickFocus)
 
         vbox = QtGui.QVBoxLayout()
@@ -217,20 +211,22 @@ class _SettingsPopup(QtGui.QGroupBox):
         buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
         vbox.addWidget(buttonBox)
 
-        buttonBox.accepted.connect(self.accept)
+        buttonBox.accepted.connect(self.hide)
         self.setLayout(vbox)
 
-    @QtCore.Slot()
-    def accept(self):
-        self.close.emit()
-
     def showEvent(self, event):
+        # required to get keyboard events
         self.setFocus()
 
-    def keyPressEvent(self, event):
-        if event.key() == QtGui.Qt.Key_Enter or event.key() == QtGui.Qt.Key_Return:
-            self.accept()
+    def hideEvent(self, event):
+        # emit on hide: this happens for OK button as well as
+        # "click away" closing of the popup
+        self.close.emit()
 
+    def keyPressEvent(self, event):
+        # close on hitting enter
+        if event.key() == QtGui.Qt.Key_Enter or event.key() == QtGui.Qt.Key_Return:
+            self.hide()
 
 
 class _SummaryWidget(QtGui.QWidget):
@@ -284,14 +280,12 @@ class _SummaryWidget(QtGui.QWidget):
         # make sure initial drawing happened
         self._redraw()
 
+
     def _button(self, text):
         btn = QtGui.QPushButton(self)
         btn.full_text = text
 
-        #size = btn.sizeHint()
-        #size.setWidth(size.width()*2)
         btn.setMinimumSize(btn.sizeHint())
-
         btn.setFlat(True)
         btn.setText(text)
         btn.setStyleSheet("text-align:left;padding:6px");
@@ -313,7 +307,7 @@ class _SummaryWidget(QtGui.QWidget):
         for i, btn in enumerate(btns):
 
             btn_size = btn_total_size*btn_rel_size[i]
-            txt_size = btn_size - btn.iconSize().width() - btn_margin/2*3
+            txt_size = btn_size - btn.iconSize().width() - btn_margin
 
             # we elide only if there is enough space for a meaningful text
             if txt_size >= min_text_width:
@@ -355,24 +349,28 @@ class _SummaryWidget(QtGui.QWidget):
 
     def _position_dialog(self, dialog):
 
-        main = dialog.parent()
-        list_widget = self.parent().parent().parent()
-        widget_rect = list_widget.geometry()
-        diag_size = dialog.sizeHint()
-        # default is towards main window center
-        if main.geometry().center().x() >= list_widget.mapToGlobal(widget_rect.center()).x():
-            rigth_point = list_widget.mapToGlobal(widget_rect.topRight())
-            dialog.setGeometry(QtCore.QRect(rigth_point, diag_size))
-        else:
-            left_point = list_widget.mapToGlobal(widget_rect.topLeft())
-            left_point -= QtCore.QPoint(diag_size.width(), 0)
-            dialog.setGeometry(QtCore.QRect(left_point, diag_size))
+        # the scroll area does mess the mapping to global up, somehow
+        # the transformation from the widget ot the scroll area gives
+        # very weird values. Hence we build the coords of the widget
+        # ourself
+
+        summary = dialog.parent() # == self
+        base_widget = summary.parent()
+        viewport = summary.parent()
+        scroll = viewport.parent()
+
+        top_left = summary.geometry().topLeft() + base_widget.geometry().topLeft() + viewport.geometry().topLeft()
+        delta = (summary.width() - dialog.sizeHint().width())/2
+        local_point = QtCore.QPoint(top_left.x()+delta, top_left.y()+summary.height())
+        global_point = scroll.mapToGlobal(local_point)
+
+        dialog.setGeometry(QtCore.QRect(global_point, dialog.sizeHint()))
 
     @QtCore.Slot()
     def editApp(self):
         if not hasattr(self, "appDialog"):
             widget = self._extractor.ViewObject.Proxy.get_app_edit_widget(self._post_dialog)
-            self.appDialog = _SettingsPopup(widget)
+            self.appDialog = _SettingsPopup(widget, self)
             self.appDialog.close.connect(self.appAccept)
 
         if not self.appDialog.isVisible():
@@ -386,7 +384,7 @@ class _SummaryWidget(QtGui.QWidget):
 
         if not hasattr(self, "viewDialog"):
             widget = self._extractor.ViewObject.Proxy.get_view_edit_widget(self._post_dialog)
-            self.viewDialog = _SettingsPopup(widget)
+            self.viewDialog = _SettingsPopup(widget, self)
             self.viewDialog.close.connect(self.viewAccept)
 
         if not self.viewDialog.isVisible():
@@ -402,8 +400,6 @@ class _SummaryWidget(QtGui.QWidget):
     @QtCore.Slot()
     def viewAccept(self):
 
-        self.viewDialog.hide()
-
         # update the preview
         extr_repr = self._extractor.ViewObject.Proxy.get_preview()
         self.viewButton.setIcon(extr_repr[0])
@@ -413,8 +409,6 @@ class _SummaryWidget(QtGui.QWidget):
 
     @QtCore.Slot()
     def appAccept(self):
-
-        self.appDialog.hide()
 
         # update the preview
         extr_label = self._extractor.Proxy.get_representive_fieldname(self._extractor)

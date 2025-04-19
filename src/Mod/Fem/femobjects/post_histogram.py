@@ -57,6 +57,14 @@ post_visualization.register_extractor("Histogram",
                                       "makePostHistogramFieldData")
 
 
+post_visualization.register_extractor("Histogram",
+                                      "HistogramIndexOverFrames",
+                                      ":/icons/FEM_PostIndex.svg",
+                                      "1D",
+                                      "Index",
+                                      "ObjectsFem",
+                                      "makePostHistogramIndexOverFrames")
+
 # Implementation
 # ##############
 
@@ -77,7 +85,11 @@ class PostHistogramFieldData(post_extract1D.PostFieldData1D):
     """
     VisualizationType = "Histogram"
 
-
+class PostHistogramIndexOverFrames(post_extract1D.PostIndexOverFrames1D):
+    """
+    A 1D index extraction for histogram.
+    """
+    VisualizationType = "Histogram"
 
 
 class PostHistogram(base_fempostvisualizations.PostVisualization):

@@ -39,7 +39,6 @@ from PySide import QtGui, QtCore
 import io
 import numpy as np
 import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 from vtkmodules.numpy_interface.dataset_adapter import VTKArray
 
@@ -75,18 +74,47 @@ class EditViewWidget(QtGui.QWidget):
         self._post_dialog._enumPropertyToCombobox(vobj, "MarkerStyle", self.widget.MarkerStyle)
         self.widget.LineWidth.setValue(vobj.LineWidth)
         self.widget.MarkerSize.setValue(vobj.MarkerSize)
-        self.widget.Color.setProperty("color", QtGui.QColor(*[v*255 for v in vobj.Color]))
+
+        self._setup_color_button(self.widget.Color, vobj.Color, self.colorChanged)
 
         self.widget.Legend.editingFinished.connect(self.legendChanged)
         self.widget.MarkerStyle.activated.connect(self.markerStyleChanged)
         self.widget.LineStyle.activated.connect(self.lineStyleChanged)
         self.widget.MarkerSize.valueChanged.connect(self.markerSizeChanged)
         self.widget.LineWidth.valueChanged.connect(self.lineWidthChanged)
-        self.widget.Color.changed.connect(self.colorChanged)
 
-    @QtCore.Slot()
-    def colorChanged(self):
-        color = self.widget.Color.property("color")
+        # sometimes wierd sizes occur with spinboxes
+        self.widget.MarkerSize.setMaximumHeight(self.widget.MarkerStyle.sizeHint().height())
+        self.widget.LineWidth.setMaximumHeight(self.widget.LineStyle.sizeHint().height())
+
+    def _setup_color_button(self, button, fcColor, callback):
+
+        barColor = QtGui.QColor(*[v*255 for v in fcColor])
+        icon_size = button.iconSize()
+        icon_size.setWidth(icon_size.width()*2)
+        button.setIconSize(icon_size)
+        pixmap = QtGui.QPixmap(icon_size)
+        pixmap.fill(barColor)
+        button.setIcon(pixmap)
+
+        action = QtGui.QWidgetAction(button)
+        diag = QtGui.QColorDialog(barColor, parent=button)
+        diag.accepted.connect(action.trigger)
+        diag.rejected.connect(action.trigger)
+        diag.colorSelected.connect(callback)
+
+        action.setDefaultWidget(diag)
+        button.addAction(action)
+        button.setPopupMode(QtGui.QToolButton.InstantPopup)
+
+
+    @QtCore.Slot(QtGui.QColor)
+    def colorChanged(self, color):
+
+        pixmap = QtGui.QPixmap(self.widget.Color.iconSize())
+        pixmap.fill(color)
+        self.widget.Color.setIcon(pixmap)
+
         self._object.ViewObject.Color = color.getRgb()
 
     @QtCore.Slot(float)
@@ -110,7 +138,7 @@ class EditViewWidget(QtGui.QWidget):
         self._object.ViewObject.Legend = self.widget.Legend.text()
 
 
-class EditAppWidget(QtGui.QWidget):
+class EditFieldAppWidget(QtGui.QWidget):
 
     def __init__(self, obj, post_dialog):
         super().__init__()
@@ -171,9 +199,58 @@ class EditAppWidget(QtGui.QWidget):
         self._post_dialog._recompute()
 
 
+class EditIndexAppWidget(QtGui.QWidget):
+
+    def __init__(self, obj, post_dialog):
+        super().__init__()
+
+        self._object = obj
+        self._post_dialog = post_dialog
+
+        # load the ui and set it up
+        self.widget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/PostLineplotIndexAppEdit.ui"
+        )
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(self.widget)
+        self.setLayout(layout)
+
+        self.__init_widget()
+
+    def __init_widget(self):
+        # set the other properties
+
+        self.widget.Index.setValue(self._object.Index)
+        self._post_dialog._enumPropertyToCombobox(self._object, "YField", self.widget.YField)
+        self._post_dialog._enumPropertyToCombobox(self._object, "YComponent", self.widget.YComponent)
+
+        self.widget.Index.valueChanged.connect(self.indexChanged)
+        self.widget.YField.activated.connect(self.yFieldChanged)
+        self.widget.YComponent.activated.connect(self.yComponentChanged)
+
+        # sometimes wierd sizes occur with spinboxes
+        self.widget.Index.setMaximumHeight(self.widget.YField.sizeHint().height())
+
+    @QtCore.Slot(int)
+    def indexChanged(self, value):
+        self._object.Index = value
+        self._post_dialog._recompute()
+
+    @QtCore.Slot(int)
+    def yFieldChanged(self, index):
+        self._object.YField = index
+        self._post_dialog._enumPropertyToCombobox(self._object, "YComponent", self.widget.YComponent)
+        self._post_dialog._recompute()
+
+    @QtCore.Slot(int)
+    def yComponentChanged(self, index):
+        self._object.YComponent = index
+        self._post_dialog._recompute()
+
+
 class VPPostLineplotFieldData(view_post_extract.VPPostExtractor):
     """
-    A View Provider for extraction of 1D field data specialy for histograms
+    A View Provider for extraction of 2D field data specialy for histograms
     """
 
     def __init__(self, vobj):
@@ -236,7 +313,7 @@ class VPPostLineplotFieldData(view_post_extract.VPPostExtractor):
         return ":/icons/FEM_PostField.svg"
 
     def get_app_edit_widget(self, post_dialog):
-        return EditAppWidget(self.Object, post_dialog)
+        return EditFieldAppWidget(self.Object, post_dialog)
 
     def get_view_edit_widget(self, post_dialog):
         return EditViewWidget(self.Object, post_dialog)
@@ -245,16 +322,16 @@ class VPPostLineplotFieldData(view_post_extract.VPPostExtractor):
         # Returns the preview tuple of icon and label: (QPixmap, str)
         # Note: QPixmap in ratio 2:1
 
-        fig = plt.figure(figsize=(0.2,0.1), dpi=1000)
-        ax = plt.Axes(fig, [0., 0., 1., 1.])
+        fig = mpl.pyplot.figure(figsize=(0.2,0.1), dpi=1000)
+        ax = mpl.pyplot.Axes(fig, [0., 0., 1., 1.])
         ax.set_axis_off()
         fig.add_axes(ax)
         kwargs = self.get_kw_args()
         kwargs["markevery"] = [1]
         ax.plot([0,0.5,1],[0.5,0.5,0.5], **kwargs)
         data = io.BytesIO()
-        plt.savefig(data, bbox_inches=0, transparent=True)
-        plt.close()
+        mpl.pyplot.savefig(data, bbox_inches=0, transparent=True)
+        mpl.pyplot.close()
 
         pixmap = QtGui.QPixmap()
         pixmap.loadFromData(data.getvalue())
@@ -275,6 +352,21 @@ class VPPostLineplotFieldData(view_post_extract.VPPostExtractor):
         kwargs["marker"] = self.ViewObject.MarkerStyle
         kwargs["markersize"] = self.ViewObject.MarkerSize
         return kwargs
+
+
+class VPPostLineplotIndexOverFrames(VPPostLineplotFieldData):
+    """
+    A View Provider for extraction of 2D index over frames data
+    """
+
+    def __init__(self, vobj):
+        super().__init__(vobj)
+
+    def getIcon(self):
+        return ":/icons/FEM_PostIndex.svg"
+
+    def get_app_edit_widget(self, post_dialog):
+        return EditIndexAppWidget(self.Object, post_dialog)
 
 
 class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
@@ -366,9 +458,11 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
 
         if not hasattr(self, "_plot") or not self._plot:
             self._plot = Plot.Plot()
-            self._dialog = QtGui.QDialog(Plot.getMainWindow())
+            main = Plot.getMainWindow()
+            self._dialog = QtGui.QDialog(main)
             box = QtGui.QVBoxLayout()
             box.addWidget(self._plot)
+            self._dialog.resize(main.size().height()/2, main.size().height()/3) # keep aspect ratio constant
             self._dialog.setLayout(box)
 
         self.drawPlot()
