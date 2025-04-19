@@ -2,8 +2,8 @@
 Name:           freecad
 
 Epoch:          2
-Version:        {{{ git_repo_version  lead=1.1 follow="~"}}}
-Release:        disable_test_%autorelease
+Version:        {{{ git_repo_version  lead=1.1 follow=0~pre }}}.{{{ echo $GIT_BRANCH }}}
+Release:        %autorelease
 
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
@@ -16,24 +16,12 @@ Source0:        {{{git_repo_pack_with_submodules}}}
 
 
 
-
-
-
-# This package depends on automagic byte compilation
-# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
-%global py_bytecompile 1
-
-# Setup python target for shiboken so the right cmake file is imported.
-%global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")
-
-
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
-
 # Some configuVCS:            {{{ git_repo_vcs }}}ration options for other environments
-# rpmbuild --with=bundled_zipios: use bundled version of zipios++
+# rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
 %bcond_without  bundled_zipios
 # rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
 %bcond_with bundled_pycxx
@@ -45,96 +33,41 @@ Source0:        {{{git_repo_pack_with_submodules}}}
 %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
 %endif
 
-#path that contain main FreeCAD sources for cmake
-%global _vpath_srcdir  %_builddir/{{{ git_repo_name  }}}
-#use absolute path for cmake macro
-%global _vpath_builddir  %_builddir/%_vpath_builddir
-
-
 # See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 
 %global mod_plugins Mod/PartDesign
 
 # Utilities
-BuildRequires:  cmake gcc-c++ gettext
-BuildRequires:  doxygen swig graphviz
-BuildRequires:  gcc-gfortran
-BuildRequires:  desktop-file-utils
-BuildRequires:  git
-
-BuildRequires:  tbb-devel
-
+BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel
 # Development Libraries
-BuildRequires:  freeimage-devel
-BuildRequires:  libXmu-devel
-BuildRequires:  mesa-libEGL-devel
-BuildRequires:  mesa-libGLU-devel
-BuildRequires:  opencascade-devel
-BuildRequires:  Coin4-devel
-BuildRequires:  python3-devel
-BuildRequires:  python3-matplotlib
-BuildRequires:  python3-pivy
-BuildRequires:  boost-devel
-BuildRequires:  eigen3-devel
-BuildRequires:  qt6-qtsvg-devel
-BuildRequires:  qt6-qttools-static
-
-BuildRequires:  fmt-devel
-
-BuildRequires:  xerces-c
-BuildRequires:  xerces-c-devel
-BuildRequires:  libspnav-devel
-
-BuildRequires:  python3-shiboken6-devel
-BuildRequires:  python3-pyside6-devel
-BuildRequires:  pyside6-tools
+BuildRequires:  freeimage-devel libXmu-devel mesa-libEGL-devel mesa-libGLU-devel opencascade-devel
+BuildRequires:  Coin4-devel boost-devel eigen3-devel qt6-qtsvg-devel qt6-qttools-static fmt-devel
+BuildRequires:  python3 python3-devel python3-matplotlib python3-shiboken6-devel python3-pivy
+BuildRequires:  pyside6-tools python3-pyside6-devel python3-pybind11 xerces-c xerces-c-devel libspnav-devel
+BuildRequires:  netgen-mesher-devel netgen-mesher-devel-private libicu-devel vtk-devel openmpi-devel
+BuildRequires:  med-devel libkdtree++-devel libglvnd-devel yaml-cpp-devel
+#BuildRequires:  pcl-devel zlib-devel
 %if %{without bundled_smesh}
 BuildRequires:  smesh-devel
 %endif
-BuildRequires:  netgen-mesher-devel
-BuildRequires:  netgen-mesher-devel-private
 %if %{without bundled_zipios}
 BuildRequires:  zipios++-devel
 %endif
-
 %if %{without bundled_pycxx}
 BuildRequires:  python3-pycxx-devel
 %endif
-BuildRequires:  python3-pybind11
-BuildRequires:  libicu-devel
-BuildRequires:  vtk-devel
-BuildRequires:  openmpi-devel
-BuildRequires:  med-devel
-BuildRequires:  libkdtree++-devel
-
-BuildRequires:  pcl-devel
-BuildRequires:  python3
-BuildRequires:  libglvnd-devel
-BuildRequires:  yaml-cpp-devel
-#BuildRequires:  zlib-devel
-
 # For appdata
 %if 0%{?fedora}
 BuildRequires:  libappstream-glib
 %endif
 
-# Packages separated because they are noarch, but not optional so require them
-# here.
+Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-collada python3-pyside6
+Requires:       qt6-assistant
+# Packages separated because they are noarch, but not optional so require them here.
 Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 # Obsolete old doc package since it's required for functionality.
 Obsoletes:      %{name}-doc < 0.22-1
-
-Requires:       hicolor-icon-theme
-
-Requires:       fmt
-
-Requires:       python3-pivy
-Requires:       python3-matplotlib
-Requires:       python3-collada
-Requires:       python3-pyside6
-Requires:       qt6-assistant
-
 
 %if %{with bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
@@ -142,6 +75,7 @@ Provides:       bundled(smesh) = %{bundled_smesh_version}
 %if %{with bundled_pycxx}
 Provides:       bundled(python-pycxx)
 %endif
+
 Recommends:     python3-pysolar
 
 %description
@@ -160,6 +94,20 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 %description data
 Data files for FreeCAD
 
+
+# This package depends on automagic byte compilation
+# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
+%global py_bytecompile 1
+
+# Setup python target for shiboken so the right cmake file is imported.
+%global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")
+
+
+#path that contain main FreeCAD sources for cmake
+%global _vpath_srcdir  %_builddir/{{{ git_repo_name  }}}
+#use absolute path for cmake macro
+%global _vpath_builddir  %_builddir/%_vpath_builddir
+
 # plugins and private shared libs in %%{_libdir}/freecad/lib are private;
 # prevent private capabilities being advertised in Provides/Requires
 %define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|$iGui"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
@@ -171,7 +119,6 @@ Data files for FreeCAD
 %filter_requires_in %{_libdir}/%{name}/Mod
 %filter_setup
 }
-
 
 %prep
 {{{ git_repo_setup_macro }}}
