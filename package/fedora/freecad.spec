@@ -17,8 +17,8 @@ Source0:        {{{git_repo_pack_with_submodules}}}
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
-
+%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
+%global exported_libs libOndselSolver
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 # See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
@@ -49,7 +49,7 @@ BuildRequires:  Coin4-devel boost-devel eigen3-devel qt6-qtsvg-devel qt6-qttools
 BuildRequires:  python3 python3-devel python3-matplotlib python3-shiboken6-devel python3-pivy
 BuildRequires:  pyside6-tools python3-pyside6-devel python3-pybind11 xerces-c xerces-c-devel libspnav-devel
 BuildRequires:  netgen-mesher-devel netgen-mesher-devel-private libicu-devel vtk-devel openmpi-devel
-BuildRequires:  med-devel libkdtree++-devel libglvnd-devel yaml-cpp-devel
+BuildRequires:  med-devel libkdtree++-devel libglvnd-devel yaml-cpp-devel pcl-devel
 #BuildRequires:  pcl-devel zlib-devel
 %if %{without bundled_smesh}
 BuildRequires:  smesh-devel
@@ -183,17 +183,24 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     ln -s ../%{_lib}/%{name}/bin/FreeCAD %{buildroot}%{_bindir}/FreeCAD
     ln -s ../%{_lib}/%{name}/bin/FreeCADCmd %{buildroot}%{_bindir}/FreeCADCmd
 
+    # Remove header from external library that's erroneously installed
+    rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
 
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
     # Make sure there are no plugins that need to be added to plugins macro
-    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}'`
+    %define exported_libs_regexp /^\\\(libFreeCAD.*%(for i in %{exported_libs}; do echo -n "\\\|$i\\\|$iGui"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
+    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' | sed -e %{exported_libs_regexp}`
+
     if [ -n "$new_plugins" ]; then
         echo -e "\n\n\n**** ERROR:\n" \
-            "\nPlugins not caught by regexp:  " $new_plugins \
+            "\nPlugins not caught by regexps:"
+            "\n" $new_plugins \
             "\n\nPlugins in %{_libdir}/%{name}/lib do not exist in" \
-            "\nspecfile %%{plugins} macro.  Please add these to" \
-            "\n%%{plugins} macro at top of specfile and rebuild.\n****\n" 1>&2
+            "\nspecfile %%{plugins} or %%{exported_libs_regexp} macro." \
+            "\nPlease add these to %%{plugins} or %%{exported_libs_regexp}" \
+            "\nmacro at top of specfile"
+            "\nand rebuild.\n****\n" 1>&2
         exit 1
     fi
     # Make sure there are no entries in the plugins macro that don't match plugins
@@ -203,6 +210,17 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
             echo -e "\n\n\n**** ERROR:\n" \
                 "\nExtra entry in %%{plugins} macro with no matching plugin:" \
                 "'$p'.\n\nPlease remove from %%{plugins} macro at top of" \
+                "\nspecfile and rebuild.\n****\n" 1>&2
+            exit 1
+        fi
+    done
+    # Make sure there are no entries in the exported_libs_regexp macro that don't match plugins
+    for p in %{exported_libs}; do
+        if [ -z "`ls %{buildroot}%{_libdir}/%{name}/%{_lib}/$p*.so`" ]; then
+            set +x
+            echo -e "\n\n\n**** ERROR:\n" \
+                "\nExtra entry in %%{exported_libs} macro with no matching lib:" \
+                "'$p'.\n\nPlease remove from %%{exported_libs} macro at top of" \
                 "\nspecfile and rebuild.\n****\n" 1>&2
             exit 1
         fi
