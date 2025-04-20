@@ -7,32 +7,34 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeSlittingSaw(ToolBitShape):
-    aliases: Tuple[str, ...] = "slitting-saw", "slittingsaw"
-    _LABELS = {
-        "BladeThickness": "Blade thickness",
-        "CapDiameter": "Cap diameter",
-        "CapHeight": "Cap height",
-        "Diameter": "Diameter",
-        "Length": "Overall Tool Length",
-        "ShankDiameter": "Shank diameter", # Arbor diameter?
+    name = "slittingsaw"
+    aliases = ("slitting-saw",)
+    _schema = {
+        "BladeThickness": 'App::PropertyLength',
+        "CapDiameter": 'App::PropertyLength',
+        "CapHeight": 'App::PropertyLength',
+        "Diameter": 'App::PropertyLength',
+        "Length": 'App::PropertyLength',
+        "ShankDiameter": 'App::PropertyLength',
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._labels = {
+            "BladeThickness": FreeCAD.Qt.translate(
+                "ToolBitShapeSlittingSaw", "Blade thickness"),
+            "CapDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeSlittingSaw", "Cap diameter"),
+            "CapHeight": FreeCAD.Qt.translate(
+                "ToolBitShapeSlittingSaw", "Cap height"),
+            "Diameter": FreeCAD.Qt.translate(
+                "ToolBitShapeSlittingSaw", "Diameter"),
+            "Length": FreeCAD.Qt.translate(
+                "ToolBitShapeSlittingSaw", "Overall Tool Length"),
+            "ShankDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeSlittingSaw", "Shank diameter"),
+        }
 
     @property
     def label(self) -> str:
-        return "Slitting Saw"  # TODO translatable
-
-    def set_default_parameters(self):
-        self._params = {
-            "BladeThickness": (FreeCAD.Units.Quantity("1 mm"),
-                               'App::PropertyLength'),
-            "CapDiameter": (FreeCAD.Units.Quantity("20 mm"),
-                            'App::PropertyLength'),
-            "CapHeight": (FreeCAD.Units.Quantity("5 mm"),
-                          'App::PropertyLength'),
-            "Diameter": (FreeCAD.Units.Quantity("50 mm"),
-                         'App::PropertyLength'),
-            "Length": (FreeCAD.Units.Quantity("30 mm"),
-                       'App::PropertyLength'),
-            "ShankDiameter": (FreeCAD.Units.Quantity("16 mm"),
-                               'App::PropertyLength'),
-        }
+        return FreeCAD.Qt.translate("ToolBitShapeSlittingSaw", "Slitting Saw")

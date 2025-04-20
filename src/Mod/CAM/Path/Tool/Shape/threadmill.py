@@ -7,35 +7,37 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeThreadMill(ToolBitShape):
-    aliases: Tuple[str, ...] = "thread-mill", "threadmill"
-    _LABELS = {
-        "Crest": "Crest height",
-        "Diameter": "Major diameter",
-        "Length": "Overall Tool Length",
-        "NeckDiameter": "Neck diameter",
-        "NeckLength": "Neck length",
-        "ShankDiameter": "Shank diameter",
-        "CuttingAngle": "Cutting angle",
+    name = "thread-mill"
+    aliases: Tuple[str, ...] = ("threadmill",)
+    _schema = {
+        "Crest": 'App::PropertyLength',
+        "Diameter": 'App::PropertyLength',
+        "Length": 'App::PropertyLength',
+        "NeckDiameter": 'App::PropertyLength',
+        "NeckLength": 'App::PropertyLength',
+        "ShankDiameter": 'App::PropertyLength',
+        "cuttingAngle": 'App::PropertyAngle',  # TODO rename to CuttingAngle
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._labels = {
+            "Crest": FreeCAD.Qt.translate(
+                "ToolBitShapeThreadMill", "Crest height"),
+            "Diameter": FreeCAD.Qt.translate(
+                "ToolBitShapeThreadMill", "Major diameter"),
+            "Length": FreeCAD.Qt.translate(
+                "ToolBitShapeThreadMill", "Overall Tool Length"),
+            "NeckDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeThreadMill", "Neck diameter"),
+            "NeckLength": FreeCAD.Qt.translate(
+                "ToolBitShapeThreadMill", "Neck length"),
+            "ShankDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeThreadMill", "Shank diameter"),
+            "cuttingAngle": FreeCAD.Qt.translate(
+                "ToolBitShapeThreadMill", "Cutting angle"),
+        }
 
     @property
     def label(self) -> str:
-        return "Thread Mill"  # TODO translatable
-
-    def set_default_parameters(self):
-        self._params = {
-            "Crest": (FreeCAD.Units.Quantity("0.5 mm"),
-                       'App::PropertyLength'),
-            "Diameter": (FreeCAD.Units.Quantity("8 mm"),
-                         'App::PropertyLength'),
-            "Length": (FreeCAD.Units.Quantity("60 mm"),
-                       'App::PropertyLength'),
-            "NeckDiameter": (FreeCAD.Units.Quantity("6 mm"),
-                              'App::PropertyLength'),
-            "NeckLength": (FreeCAD.Units.Quantity("10 mm"),
-                           'App::PropertyLength'),
-            "ShankDiameter": (FreeCAD.Units.Quantity("8 mm"),
-                               'App::PropertyLength'),
-            "CuttingAngle": (FreeCAD.Units.Quantity("60 deg"),
-                              'App::PropertyAngle'),
-        }
+        return FreeCAD.Qt.translate("ToolBitShapeThreadMill", "Thread Mill")

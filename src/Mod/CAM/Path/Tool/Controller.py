@@ -314,7 +314,7 @@ def Create(
 
     if assignTool:
         if not tool:
-            tool = PathToolBit.Factory.Create()
+            tool = PathToolBit.Factory.Create("endmill")
             if tool.ViewObject:
                 tool.ViewObject.Visibility = False
         obj.Tool = tool

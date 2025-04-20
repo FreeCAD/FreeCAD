@@ -4,146 +4,9 @@
 import os
 import pathlib
 import FreeCAD
-from typing import Dict, List, Any, Optional, Tuple
-
-
-def find_shape_object(doc: "FreeCAD.Document") -> Optional["FreeCAD.DocumentObject"]:
-    """
-    Find the primary object representing the shape in a document.
-
-    Looks for PartDesign::Body, then Part::Feature. Falls back to the first
-    object if no better candidate is found.
-
-    Args:
-        doc (FreeCAD.Document): The document to search within.
-
-    Returns:
-        Optional[FreeCAD.DocumentObject]: The found object or None.
-    """
-    obj = None
-    # Prioritize Body
-    for o in doc.Objects:
-        if o.isDerivedFrom("PartDesign::Body"):
-            return o
-        # Keep track of the first Part::Feature found as a fallback
-        if obj is None and o.isDerivedFrom("Part::Feature"):
-            obj = o
-    if obj:
-        return obj
-    # Fallback to the very first object if nothing else suitable found
-    return doc.Objects[0] if doc.Objects else None
-
-
-def get_object_properties(
-    obj: "FreeCAD.DocumentObject", expected_params: List[str]
-) -> Dict[str, Tuple[Any, Optional[str]]]:
-    """
-    Extract properties matching expected_params and their types from a FreeCAD object.
-
-    Issues warnings for missing parameters but does not raise an error.
-
-    Args:
-        obj (FreeCAD.DocumentObject): The object to extract properties from.
-        expected_params (List[str]): A list of property names to look for.
-
-    Returns:
-        Dict[str, Tuple[Any, Optional[str]]]: A dictionary mapping property names
-                                              to a tuple of (value, property_type_string).
-                                              property_type_string is None if not found.
-    """
-    params_with_types = {}
-    for name in expected_params:
-        if hasattr(obj, name):
-            value = getattr(obj, name)
-            # Attempt to get the property type string
-            try:
-                prop_type = obj.getTypeIdOfProperty(name)
-            except Exception:
-                # Handle cases where getTypeIdOfProperty might fail
-                prop_type = None
-                FreeCAD.Console.PrintWarning(
-                    f"Could not get type for property '{name}' on object '{obj.Label}'"
-                )
-
-            params_with_types[name] = value, prop_type
-        else:
-            # Log a warning if a parameter expected by the shape class is missing
-            FreeCAD.Console.PrintWarning(
-                f"Parameter '{name}' not found on object '{obj.Label}' "
-                f"({obj.Name}). Default value will be used by the shape class.\n"
-            )
-            params_with_types[name] = None, None  # missing value and type
-    return params_with_types
-
-
-def load_doc_and_get_properties(
-    filepath: pathlib.Path, expected_params: List[str]
-) -> Tuple["FreeCAD.Document", Dict[str, Any]]:
-    """
-    Helper to open an FCStd doc, find the shape object, and extract properties.
-
-    Handles file opening, object finding, and property extraction. Closes the
-    document before returning extracted properties but returns the doc object
-    itself for potential further use before closing by the caller.
-
-    Args:
-        filepath (pathlib.Path): Path to the .FCStd file.
-        expected_params (List[str]): Parameter names expected by the shape class.
-
-    Returns:
-        Tuple[FreeCAD.Document, Dict[str, Any]]: The opened document and a
-                                                 dictionary of extracted parameters.
-
-    Raises:
-        FileNotFoundError: If the file does not exist.
-        ValueError: If the document cannot be opened or no suitable object found.
-    """
-    if not os.path.exists(filepath):
-        raise FileNotFoundError(f"File not found: {filepath}")
-
-    # Important: Open hidden to avoid GUI interference if possible
-    doc = FreeCAD.openDocument(str(filepath), Hidden=True)
-    if not doc:
-        # This case might occur if FreeCAD fails silently, though it usually raises
-        raise ValueError(f"Failed to open document: {filepath}")
-
-    shape_obj = find_shape_object(doc)
-    if not shape_obj:
-        # Close the doc before raising if we can't find the object
-        FreeCAD.closeDocument(doc.Name)
-        raise ValueError(f"Could not find suitable shape object in {filepath}")
-
-    # Extract properties based on what the specific shape class expects
-    params = get_object_properties(shape_obj, expected_params)
-
-    # Return the doc and params; caller is responsible for closing the doc
-    return doc, params
-
-
-def update_shape_object_properties(
-    obj: "FreeCAD.DocumentObject", parameters: Dict[str, Any]
-) -> None:
-    """
-    Update properties of a FreeCAD object based on a dictionary of parameters.
-
-    Args:
-        obj (FreeCAD.DocumentObject): The object to update properties on.
-        parameters (Dict[str, Any]): A dictionary of property names and values.
-    """
-    for name, value in parameters.items():
-        if hasattr(obj, name):
-            try:
-                setattr(obj, name, value)
-            except Exception as e:
-                FreeCAD.Console.PrintWarning(
-                    f"Failed to set property '{name}' on object '{obj.Label}'"
-                    f" ({obj.Name}) with value '{value}': {e}\n"
-                )
-        else:
-            FreeCAD.Console.PrintWarning(
-                f"Property '{name}' not found on object '{obj.Label}'"
-                f" ({obj.Name}). Skipping.\n"
-            )
+import Path
+from typing import List, Tuple, Optional, Type
+from .base import ToolBitShape
 
 
 def _find_file_in_directory(directory: pathlib.Path, file_name: str) -> Optional[pathlib.Path]:
@@ -172,6 +35,81 @@ def _get_shape_search_paths(relative_to_path: Optional[pathlib.Path] = None) -> 
             "Could not import Path.Preferences. Cannot use configured search paths.\n"
         )
     return paths
+
+
+def get_builtin_shape_file_from_name(name):
+    """
+    Find the path to a built-in tool shape file using its alias.
+
+    Iterates through FreeCAD.__ModDirs__ to find the CAM module directory
+    by matching the last two path components ('Mod' and 'CAM') and
+    constructs the path to the shape file.
+
+    Args:
+        name (str): The name or alias of the tool shape (e.g., "endmill").
+
+    Returns:
+        pathlib.Path: The full path to the shape file.
+
+    Raises:
+        FileNotFoundError: If the CAM module directory cannot be found
+                           in FreeCAD.__ModDirs__ with the expected structure.
+    """
+    cam_mod_dir = None
+    for mod_dir_str in FreeCAD.__ModDirs__:
+        mod_path = pathlib.Path(mod_dir_str)
+        # Check if the last two components are 'Mod' and 'CAM'
+        if (
+            len(mod_path.parts) >= 2
+            and mod_path.parts[-2] == "Mod"
+            and mod_path.parts[-1] == "CAM"
+        ):
+            cam_mod_dir = mod_path
+            break
+
+    if cam_mod_dir is None:
+        raise FileNotFoundError(
+            "CAM module directory with expected structure not found in FreeCAD.__ModDirs__"
+        )
+
+    return cam_mod_dir / "Tools" / "Shape" / (name + ".fcstd")
+
+
+def get_shape_class_from_name(name: str) -> Optional[Type[ToolBitShape]]:
+    for cls in ToolBitShape.__subclasses__():
+        if cls.name == name or name in cls.aliases:
+            return cls
+    return None
+
+
+def get_shape_from_name(
+    name: str,
+    path: Optional[pathlib.Path] = None,
+    params: Optional[dict] = None
+) -> Tuple["ToolBitShape", pathlib.Path]:
+    # Find the shape class for the new shape
+    shape_class = get_shape_class_from_name(name)
+    if shape_class is None:
+        err = f"Could not find shape class for '{name}'."
+        Path.Log.error(err+"\n")
+        raise AttributeError(err)
+
+    # Find the shape file path for the new shape
+    if path is None:
+        path = get_builtin_shape_file_from_name(name)
+        if not path:
+            err = f"Could not find shape file for new shape '{name}'."
+            Path.Log.error(err+"\n")
+            raise AttributeError(err)
+        path = pathlib.Path(path)
+
+    # Instantiate the new shape with the found file path and preserved parameters
+    try:
+        return shape_class(filepath=path, **(params or {})), path
+    except Exception as e:
+        err = f"Could not create instance of shape '{name}': {e}"
+        Path.Log.error(err+"\n")
+        raise AttributeError(err)
 
 
 def find_shape_file(name: str, relative_to_path: Optional[pathlib.Path] = None) -> Optional[pathlib.Path]:

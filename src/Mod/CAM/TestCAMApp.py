@@ -62,9 +62,9 @@ from CAMTests.TestPathTapGenerator import TestPathTapGenerator
 from CAMTests.TestPathThreadMilling import TestPathThreadMilling
 from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
 from CAMTests.TestPathToolBit import TestPathToolBit
-from CAMTests.TestPathToolShape import TestPathToolShapeClasses, \
-                                       TestPathToolShapeInitHelpers, \
-                                       TestPathToolShapeUtil
+from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
+from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
+from CAMTests.TestPathToolShapeUtil import TestPathToolShapeUtil
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
 from CAMTests.TestPathUtil import TestPathUtil
@@ -120,6 +120,9 @@ False if TestPathTapGenerator.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathThreadMillingGenerator.__name__ else True
 False if TestPathToolBit.__name__ else True
+False if TestPathToolShapeClasses.__name__ else True
+False if TestPathToolShapeDoc.__name__ else True
+False if TestPathToolShapeUtil.__name__ else True
 False if TestPathToolChangeGenerator.__name__ else True
 False if TestPathToolController.__name__ else True
 False if TestPathUtil.__name__ else True

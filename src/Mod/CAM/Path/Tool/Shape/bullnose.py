@@ -1,33 +1,36 @@
 # -*- coding: utf-8 -*-
-# Defines the Reamer tool bit shape.
+# Defines the Torus (Bullnose) tool bit shape.
 
 import FreeCAD
 from typing import Tuple
 from .base import ToolBitShape
 
 
-class ToolBitShapeReamer(ToolBitShape):
-    name = "reamer"
+class ToolBitShapeBullnose(ToolBitShape):
+    name = "bullnose"
     _schema = {
         "CuttingEdgeHeight": 'App::PropertyLength',
         "Diameter": 'App::PropertyLength',
         "Length": 'App::PropertyLength',
         "ShankDiameter": 'App::PropertyLength',
+        "FlatRadius": 'App::PropertyLength',
     }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._labels = {
             "CuttingEdgeHeight": FreeCAD.Qt.translate(
-                "ToolBitShapeReamer", "Cutting edge height"),
+                "ToolBitShapeBullnose", "Cutting edge height"),
             "Diameter": FreeCAD.Qt.translate(
-                "ToolBitShapeReamer", "Diameter"),
+                "ToolBitShapeBullnose", "Diameter"),
             "Length": FreeCAD.Qt.translate(
-                "ToolBitShapeReamer", "Overall Tool Length"),
+                "ToolBitShapeBullnose", "Overall Tool Length"),
             "ShankDiameter": FreeCAD.Qt.translate(
-                "ToolBitShapeReamer", "Shank diameter"),
+                "ToolBitShapeBullnose", "Shank diameter"),
+            "FlatRadius": FreeCAD.Qt.translate(
+                "ToolBitShapeBullnose", "Torus radius"),
         }
 
     @property
     def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShapeReamer", "Reamer")
+        return FreeCAD.Qt.translate("ToolBitShapeBullnose", "Torus")

@@ -7,32 +7,38 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeVBit(ToolBitShape):
-    aliases: Tuple[str, ...] = "v-bit", "vbit"
-    _LABELS = {
-        "CuttingEdgeAngle": "Cutting edge angle",
-        "CuttingEdgeHeight": "Cutting edge height",
-        "Diameter": "Diameter",
-        "Length": "Overall Tool Length",
-        "ShankDiameter": "Shank diameter",
-        "TipDiameter": "Tip diameter",
+    name = "v-bit"
+    aliases: Tuple[str, ...] = ("vbit",)
+    _schema = {
+        "CuttingEdgeAngle": "App::PropertyAngle",
+        "CuttingEdgeHeight": "App::PropertyLength",
+        "Diameter": "App::PropertyLength",
+        "Length": "App::PropertyLength",
+        "ShankDiameter": "App::PropertyLength",
+        "TipDiameter": "App::PropertyLength",
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._labels = {
+            "CuttingEdgeAngle": FreeCAD.Qt.translate(
+                "ToolBitShapeVBit", "Cutting edge angle"
+            ),
+            "CuttingEdgeHeight": FreeCAD.Qt.translate(
+                "ToolBitShapeVBit", "Cutting edge height"
+            ),
+            "Diameter": FreeCAD.Qt.translate("ToolBitShapeVBit", "Diameter"),
+            "Length": FreeCAD.Qt.translate(
+                "ToolBitShapeVBit", "Overall Tool Length"
+            ),
+            "ShankDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeVBit", "Shank diameter"
+            ),
+            "TipDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeVBit", "Tip diameter"
+            ),
+        }
 
     @property
     def label(self) -> str:
-        return "V-Bit"  # TODO translatable
-
-    def set_default_parameters(self):
-        self._params = {
-            "CuttingEdgeAngle": (FreeCAD.Units.Quantity("60 deg"),
-                                 'App::PropertyAngle'),
-            "CuttingEdgeHeight": (FreeCAD.Units.Quantity("10 mm"),
-                                  'App::PropertyLength'),
-            "Diameter": (FreeCAD.Units.Quantity("12 mm"),
-                         'App::PropertyLength'),
-            "Length": (FreeCAD.Units.Quantity("50 mm"),
-                       'App::PropertyLength'),
-            "ShankDiameter": (FreeCAD.Units.Quantity("6 mm"),
-                               'App::PropertyLength'),
-            "TipDiameter": (FreeCAD.Units.Quantity("0.2 mm"),
-                           'App::PropertyLength'),
-        }
+        return FreeCAD.Qt.translate("ToolBitShapeVBit", "V-Bit")

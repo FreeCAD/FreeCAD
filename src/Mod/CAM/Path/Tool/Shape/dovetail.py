@@ -7,38 +7,39 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeDovetail(ToolBitShape):
-    aliases: Tuple[str, ...] = ("dovetail",)
-    _LABELS = {
-        "Crest": "Crest height",
-        "CuttingAngle": "Cutting angle",
-        "Diameter": "Major diameter",
-        "DovetailHeight": "Dovetail height",
-        "Length": "Overall Tool Length",
-        "NeckDiameter": "Neck diameter",
-        "NeckLength": "Neck length",
-        "ShankDiameter": "Shank diameter",
+    name = "dovetail"
+    _schema = {
+        "TipDiameter": 'App::PropertyLength',
+        "CuttingEdgeAngle": 'App::PropertyAngle',
+        "CuttingEdgeHeight": 'App::PropertyLength',
+        "Diameter": 'App::PropertyLength',
+        "Length": 'App::PropertyLength',
+        "NeckDiameter": 'App::PropertyLength',
+        "NeckHeight": 'App::PropertyLength',
+        "ShankDiameter": 'App::PropertyLength',
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._labels = {
+            "Crest": FreeCAD.Qt.translate(
+                "ToolBitShapeDovetail", "Crest height"),
+            "CuttingEdgeAngle": FreeCAD.Qt.translate(
+                "ToolBitShapeDovetail", "Cutting angle"),
+            "Diameter": FreeCAD.Qt.translate(
+                "ToolBitShapeDovetail", "Major diameter"),
+            "DovetailHeight": FreeCAD.Qt.translate(
+                "ToolBitShapeDovetail", "Dovetail height"),
+            "Length": FreeCAD.Qt.translate(
+                "ToolBitShapeDovetail", "Overall Tool Length"),
+            "NeckDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeDovetail", "Neck diameter"),
+            "NeckHeight": FreeCAD.Qt.translate(
+                "ToolBitShapeDovetail", "Neck length"),
+            "ShankDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeDovetail", "Shank diameter"),
+        }
 
     @property
     def label(self) -> str:
-        return "Dovetail"  # TODO translatable
-
-    def set_default_parameters(self):
-        self._params = {
-            "Crest": (FreeCAD.Units.Quantity("1 mm"),
-                       'App::PropertyLength'),
-            "CuttingAngle": (FreeCAD.Units.Quantity("45 deg"),
-                              'App::PropertyAngle'),
-            "Diameter": (FreeCAD.Units.Quantity("10 mm"),
-                         'App::PropertyLength'),
-            "DovetailHeight": (FreeCAD.Units.Quantity("5 mm"),
-                               'App::PropertyLength'),
-            "Length": (FreeCAD.Units.Quantity("60 mm"),
-                       'App::PropertyLength'),
-            "NeckDiameter": (FreeCAD.Units.Quantity("6 mm"),
-                              'App::PropertyLength'),
-            "NeckLength": (FreeCAD.Units.Quantity("10 mm"),
-                           'App::PropertyLength'),
-            "ShankDiameter": (FreeCAD.Units.Quantity("10 mm"),
-                               'App::PropertyLength'),
-        }
+        return FreeCAD.Qt.translate("ToolBitShapeDovetail", "Dovetail")

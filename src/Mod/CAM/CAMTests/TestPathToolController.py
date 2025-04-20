@@ -40,7 +40,7 @@ class TestPathToolController(PathTestBase):
 
     def createTool(self, name="t1", diameter=1.75):
         attrs = {
-            "shape": ToolBitShapeEndMill,
+            "shape": 'endmill',
             "parameter": {"Diameter": diameter},
             "attribute": [],
         }

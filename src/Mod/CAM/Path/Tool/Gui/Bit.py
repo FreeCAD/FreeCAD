@@ -162,16 +162,29 @@ class TaskPanel:
 
 
 class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
-    def Create(self, name="ToolBit", shapeFile=None, path=None):
-        """Create(name = 'ToolBit') ... creates a new tool bit.
-        It is assumed the tool will be edited immediately so the internal bit body is still attached.
+    def Create(self, shape_name: str, name="ToolBit", path=None, document=None):
+        """Create(shape_name, name = 'ToolBit') ... creates a new tool bit.
+        It is assumed the tool will be edited immediately so the internal bit
+        body is still attached.
         """
+        Path.Log.track(name, shape_name, path, document)
 
-        Path.Log.track(name, shapeFile, path)
+        # Use the base class factory to create the tool bit object
         FreeCAD.ActiveDocument.openTransaction("Create ToolBit")
-        tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile, path)
-        PathIconViewProvider.Attach(tool.ViewObject, name)
+        tool = PathToolBit.ToolBitFactory.Create(
+            self, shape_name, name, path, document
+        )
+
+        # Attach the ViewProvider if the tool object has a ViewObject
+        if hasattr(tool, "ViewObject") and tool.ViewObject:
+            PathIconViewProvider.Attach(tool.ViewObject, name)
+        else:
+            FreeCAD.Console.PrintWarning(
+                f"WARNING: ViewObject not available for tool {name}. "
+                "ViewProvider not attached.\n"
+            )
         FreeCAD.ActiveDocument.commitTransaction()
+
         return tool
 
 
