@@ -25,7 +25,6 @@ import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
 import Path.Base.MachineState as PathMachineState
-from Path.Tool.Shape import ToolBitShapeEndMill
 import Path.Tool.Bit as PathToolBit
 import Path.Tool.Controller as PathToolController
 import PathScripts.PathUtils as PathUtils
