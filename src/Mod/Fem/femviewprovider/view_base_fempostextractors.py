@@ -66,7 +66,7 @@ class VPPostExtractor:
 
     def onChanged(self, vobj, prop):
 
-        # one of our view properties was changed. Lets inform our parent plot
+        # one of our view properties was changed. Lets inform our parent visualization
         # that this happend, as this is the one that needs to redraw
 
         if prop == "Proxy":
@@ -92,6 +92,10 @@ class VPPostExtractor:
 
         return True
 
+    def unsetEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        return True
+
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
 
@@ -104,10 +108,20 @@ class VPPostExtractor:
 
         return True
 
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+
+    # To be implemented by subclasses:
+    # ################################
+
     def get_kw_args(self):
-        # should return the plot keyword arguments that represent the properties
-        # of the object
-        return {}
+        # Returns the matplotlib plot keyword arguments that represent the
+        # properties of the object.
+        raise FreeCAD.Base.FreeCADError("Not implemented")
 
     def get_app_edit_widget(self, post_dialog):
         # Returns a widgets for editing the object (not viewprovider!)
@@ -125,10 +139,3 @@ class VPPostExtractor:
         # Returns the preview tuple of icon and label: (QPixmap, str)
         # Note: QPixmap in ratio 2:1
         raise FreeCAD.Base.FreeCADError("Not implemented")
-
-
-    def dumps(self):
-        return None
-
-    def loads(self, state):
-        return None

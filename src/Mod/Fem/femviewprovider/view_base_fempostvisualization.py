@@ -45,6 +45,8 @@ class VPPostVisualization:
     def __init__(self, vobj):
         vobj.Proxy = self
         self._setup_properties(vobj)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+
 
     def _setup_properties(self, vobj):
         pl = vobj.PropertiesList
@@ -52,15 +54,20 @@ class VPPostVisualization:
             if not prop.name in pl:
                 prop.add_to_object(vobj)
 
+
     def _get_properties(self):
         return []
+
 
     def attach(self, vobj):
         self.Object = vobj.Object
         self.ViewObject = vobj
 
+
     def isShow(self):
+        # Mark ourself as visible in the tree
         return True
+
 
     def doubleClicked(self,vobj):
 
@@ -71,21 +78,47 @@ class VPPostVisualization:
             FreeCADGui.Control.closeDialog()
             guidoc.resetEdit()
 
+        # open task dialog
         guidoc.setEdit(vobj.Object.Name)
+
+        # show visualization
+        self.show_visualization()
+
         return True
 
-    def show_visualization(self):
-        # shows the visualization without going into edit mode
-        # to be implemented by subclasses
-        pass
+    def unsetEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        return True
 
-    def get_kw_args(self, obj):
-        # returns a dictionary with all visualization options needed for plotting
-        # based on the view provider properties
-        return {}
+    def updateData(self, obj, prop):
+        # If the data changed we need to update the visualization
+        if prop == "Table":
+            self.update_visualization()
+
+    def onChanged(self, vobj, prop):
+        # for all property changes we need to update the visualization
+        self.update_visualization()
+
+    def childViewPropertyChanged(self, vobj, prop):
+        # One of the extractors view properties has changed, we need to
+        # update the visualization
+        self.update_visualization()
 
     def dumps(self):
         return None
 
     def loads(self, state):
         return None
+
+
+    # To be implemented by subclasses:
+    # ################################
+
+    def update_visualization(self):
+        # The visualization data or any relevant view property has changed,
+        # and the visualization itself needs to update to reflect that
+        raise FreeCAD.Base.FreeCADError("Not implemented")
+
+    def show_visualization(self):
+        # Shows the visualization without going into edit mode
+        raise FreeCAD.Base.FreeCADError("Not implemented")

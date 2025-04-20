@@ -34,14 +34,23 @@ from PySide import QtCore
 
 class VtkTableModel(QtCore.QAbstractTableModel):
     # Simple table model. Only supports single component columns
+    # One can supply a header_names dict to replace the table column names
+    # in the header. It is a dict "column_idx (int)" to "new name"" or
+    # "orig_name (str)" to "new name"
 
-    def __init__(self):
+    def __init__(self, header_names = None):
         super().__init__()
         self._table = None
+        if header_names:
+            self._header = header_names
+        else:
+            self._header = {}
 
-    def setTable(self, table):
+    def setTable(self, table, header_names = None):
         self.beginResetModel()
         self._table = table
+        if header_names:
+            self._header = header_names
         self.endResetModel()
 
     def rowCount(self, index):
@@ -70,7 +79,14 @@ class VtkTableModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
 
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
-            return self._table.GetColumnName(section)
+            if section in self._header:
+                return self._header[section]
+
+            name = self._table.GetColumnName(section)
+            if name in self._header:
+                return self._header[name]
+
+            return name
 
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return section

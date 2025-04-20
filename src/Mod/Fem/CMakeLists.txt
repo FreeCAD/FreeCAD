@@ -223,6 +223,7 @@ if(BUILD_FEM_VTK_PYTHON)
         femobjects/post_extract2D.py
         femobjects/post_histogram.py
         femobjects/post_lineplot.py
+        femobjects/post_table.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 
@@ -637,6 +638,7 @@ if(BUILD_FEM_VTK_PYTHON)
         femtaskpanels/task_post_glyphfilter.py
         femtaskpanels/task_post_histogram.py
         femtaskpanels/task_post_lineplot.py
+        femtaskpanels/task_post_table.py
         femtaskpanels/task_post_extractor.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
@@ -666,6 +668,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_base_femmeshelement.py
     femviewprovider/view_base_femobject.py
     femviewprovider/view_base_fempostvisualization.py
+    femviewprovider/view_base_fempostextractors.py
     femviewprovider/view_constant_vacuumpermittivity.py
     femviewprovider/view_constraint_bodyheatsource.py
     femviewprovider/view_constraint_centrif.py
@@ -704,6 +707,7 @@ if(BUILD_FEM_VTK_PYTHON)
         femviewprovider/view_post_extract.py
         femviewprovider/view_post_histogram.py
         femviewprovider/view_post_lineplot.py
+        femviewprovider/view_post_table.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 

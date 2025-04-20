@@ -770,6 +770,48 @@ def makePostHistogramIndexOverFrames(doc, name="IndexOverFrames1D"):
     return obj
 
 
+def makePostTable(doc, name="Table"):
+    """makePostTable(document, [name]):
+    creates a FEM post processing histogram plot
+    """
+    obj = doc.addObject("App::FeaturePython", name)
+    from femobjects import post_table
+
+    post_table.PostTable(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_table
+        view_post_table.VPPostTable(obj.ViewObject)
+    return obj
+
+
+def makePostTableFieldData(doc, name="FieldData1D"):
+    """makePostTableFieldData(document, [name]):
+    creates a FEM post processing data extractor for 1D Field data
+    """
+    obj = doc.addObject("App::FeaturePython", name)
+    from femobjects import post_table
+
+    post_table.PostTableFieldData(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_table
+        view_post_table.VPPostTableFieldData(obj.ViewObject)
+    return obj
+
+
+def makePostTableIndexOverFrames(doc, name="IndexOverFrames1D"):
+    """makePostTableIndexOverFrames(document, [name]):
+    creates a FEM post processing data extractor for 1D Field data
+    """
+    obj = doc.addObject("App::FeaturePython", name)
+    from femobjects import post_table
+
+    post_table.PostTableIndexOverFrames(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_table
+        view_post_table.VPPostTableIndexOverFrames(obj.ViewObject)
+    return obj
+
+
 # ********* solver objects ***********************************************************************
 def makeEquationDeformation(doc, base_solver=None, name="Deformation"):
     """makeEquationDeformation(document, [base_solver], [name]):
