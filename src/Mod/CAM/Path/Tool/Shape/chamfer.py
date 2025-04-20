@@ -7,29 +7,30 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeChamfer(ToolBitShape):
-    aliases: Tuple[str, ...] = ("chamfer",)
-    _LABELS = {
-        "CuttingEdgeHeight": "Cutting edge height",
-        "Diameter": "Diameter",
-        "Length": "Overall Tool Length",
-        "Radius": "Radius",
-        "ShankDiameter": "Shank diameter",
+    name = "chamfer"
+    _schema = {
+        "CuttingEdgeAngle": 'App::PropertyAngle',
+        "CuttingEdgeHeight": 'App::PropertyLength',
+        "Diameter": 'App::PropertyLength',
+        "Length": 'App::PropertyLength',
+        "ShankDiameter": 'App::PropertyLength',
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._labels = {
+            "CuttingEdgeAngle": FreeCAD.Qt.translate(
+                "ToolBitShapeChamfer", "Cutting edge angle"),
+            "CuttingEdgeHeight": FreeCAD.Qt.translate(
+                "ToolBitShapeChamfer", "Cutting edge height"),
+            "Diameter": FreeCAD.Qt.translate(
+                "ToolBitShapeChamfer", "Diameter"),
+            "Length": FreeCAD.Qt.translate(
+                "ToolBitShapeChamfer", "Overall Tool Length"),
+            "ShankDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeChamfer", "Shank diameter"),
+        }
 
     @property
     def label(self) -> str:
-        return "Chamfer"  # TODO translatable
-
-    def set_default_parameters(self):
-        self._params = {
-            "CuttingEdgeHeight": (FreeCAD.Units.Quantity("5 mm"),
-                                  'App::PropertyLength'),
-            "Diameter": (FreeCAD.Units.Quantity("6 mm"),
-                         'App::PropertyLength'),
-            "Length": (FreeCAD.Units.Quantity("50 mm"),
-                       'App::PropertyLength'),
-            "Radius": (FreeCAD.Units.Quantity("1 mm"),
-                       'App::PropertyLength'),
-            "ShankDiameter": (FreeCAD.Units.Quantity("6 mm"),
-                              'App::PropertyLength'),
-        }
+        return FreeCAD.Qt.translate("ToolBitShapeChamfer", "Chamfer")

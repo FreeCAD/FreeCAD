@@ -7,26 +7,27 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeEndMill(ToolBitShape):
-    aliases: Tuple[str, ...] = ("endmill",)
-    _LABELS = {
-        "CuttingEdgeHeight": "Cutting edge height",
-        "Diameter": "Diameter",
-        "Length": "Overall Tool Length",
-        "ShankDiameter": "Shank diameter",
+    name = "endmill"
+    _schema = {
+        "CuttingEdgeHeight": 'App::PropertyLength',
+        "Diameter": 'App::PropertyLength',
+        "Length": 'App::PropertyLength',
+        "ShankDiameter": 'App::PropertyLength',
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._labels = {
+            "CuttingEdgeHeight": FreeCAD.Qt.translate(
+                "ToolBitShapeEndMill", "Cutting edge height"),
+            "Diameter": FreeCAD.Qt.translate(
+                "ToolBitShapeEndMill", "Diameter"),
+            "Length": FreeCAD.Qt.translate(
+                "ToolBitShapeEndMill", "Overall Tool Length"),
+            "ShankDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeEndMill", "Shank diameter"),
+        }
 
     @property
     def label(self) -> str:
-        return "Endmill"  # TODO translatable
-
-    def set_default_parameters(self):
-        self._params = {
-            "CuttingEdgeHeight": (FreeCAD.Units.Quantity("20 mm"),
-                                  'App::PropertyLength'),
-            "Diameter": (FreeCAD.Units.Quantity("5 mm"),
-                         'App::PropertyLength'),
-            "Length": (FreeCAD.Units.Quantity("75 mm"),
-                       'App::PropertyLength'),
-            "ShankDiameter": (FreeCAD.Units.Quantity("10 mm"),
-                              'App::PropertyLength'),
-        }
+        return FreeCAD.Qt.translate("ToolBitShapeEndMill", "Endmill")

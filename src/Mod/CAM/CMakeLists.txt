@@ -134,6 +134,7 @@ SET(PathPythonToolsShape_SRCS
     Path/Tool/Shape/ballend.py
     Path/Tool/Shape/base.py
     Path/Tool/Shape/chamfer.py
+    Path/Tool/Shape/doc.py
     Path/Tool/Shape/dovetail.py
     Path/Tool/Shape/drill.py
     Path/Tool/Shape/endmill.py
@@ -142,7 +143,7 @@ SET(PathPythonToolsShape_SRCS
     Path/Tool/Shape/slittingsaw.py
     Path/Tool/Shape/tap.py
     Path/Tool/Shape/threadmill.py
-    Path/Tool/Shape/torus.py
+    Path/Tool/Shape/bullnose.py
     Path/Tool/Shape/util.py
     Path/Tool/Shape/vbit.py
 )
@@ -309,6 +310,7 @@ SET(Tools_Shape_SRCS
     Tools/Shape/drill.fcstd
     Tools/Shape/endmill.fcstd
     Tools/Shape/probe.fcstd
+    Tools/Shape/reamer.fcstd
     Tools/Shape/slittingsaw.fcstd
     Tools/Shape/tap.fcstd
     Tools/Shape/thread-mill.fcstd
@@ -364,7 +366,9 @@ SET(Tests_SRCS
     CAMTests/TestPathThreadMilling.py
     CAMTests/TestPathThreadMillingGenerator.py
     CAMTests/TestPathToolBit.py
-    CAMTests/TestPathToolShape.py
+    CAMTests/TestPathToolShapeClasses.py
+    CAMTests/TestPathToolShapeDoc.py
+    CAMTests/TestPathToolShapeUtil.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
