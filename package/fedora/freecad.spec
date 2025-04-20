@@ -85,7 +85,7 @@ Provides:       bundled(smesh) = %{bundled_smesh_version}
 Provides:       bundled(python3-pycxx) = %{bundled_pycxx_version}
 %endif
 
-Provides:       bundled(ondsel-solver) = %{bundled_ondsel_solver_version}
+Provides:       bundled(libondselsolver) = %{bundled_ondsel_solver_version}
 
 Recommends:     python3-pysolar
 
