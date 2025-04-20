@@ -130,6 +130,7 @@ def restore_doc_state(state):
     if doc_name:
         FreeCAD.setActiveDocument(doc_name)
     if FreeCAD.GuiUp:
+        import FreeCADGui
         for sel in selection:
             FreeCADGui.Selection.addSelection(
                 doc_name, sel.Name
