@@ -109,13 +109,12 @@ class ViewProvider(object):
         return []
 
     def doubleClicked(self, vobj):
-        if os.path.exists(vobj.Object.BitShape):
-            self.setEdit(vobj)
-        else:
-            msg = translate("CAM_Toolbit", "Toolbit cannot be edited: Shapefile not found")
-            diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
-            diag.setWindowModality(QtCore.Qt.ApplicationModal)
-            diag.exec_()
+        pass
+
+    def setupContextMenu(self, vobj, menu):
+        # Override the base class method to prevent adding the "Edit" action
+        # for ToolBit objects.
+        pass  # TODO: call setEdit here once we have a new editor panel
 
 
 class TaskPanel:
