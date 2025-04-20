@@ -32,12 +32,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 from .Shape.base import ToolBitShape
 from .Shape.util import get_shape_from_name
 from .Shape import TOOL_BIT_SHAPE_NAMES
-
-# lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
-
+GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
 
 __title__ = "Tool bits."
 __author__ = "sliptonic (Brad Collette), Samuel Abels"
@@ -194,6 +192,12 @@ class ToolBit(object):
             if 'Restore' not in obj.State:
                 Path.Log.debug(f"onDocumentRestored: Re-initializing properties from shape for {obj.Label}")
                 self._initialize_properties_from_shape(obj)
+
+        # Ensure the correct ViewProvider is attached during document restore
+        if hasattr(obj, "ViewObject") and obj.ViewObject:
+            if not isinstance(obj.ViewObject.Proxy, GuiBit.ViewProvider):
+                Path.Log.debug(f"onDocumentRestored: Attaching ViewProvider for {obj.Label}")
+                GuiBit.ViewProvider(obj.ViewObject, "ToolBit")
 
         if not hasattr(obj, "BitPropertyNames"):
             obj.addProperty(
