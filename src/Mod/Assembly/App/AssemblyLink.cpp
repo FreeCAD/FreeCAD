@@ -491,8 +491,6 @@ JointGroup* AssemblyLink::ensureJointGroup()
         jGroup = new JointGroup();
         getDocument()->addObject(jGroup, tr("Joints").toStdString().c_str());
 
-        // we want to add jgroup at the start, so we don't use
-        // addObject(jGroup);
         std::vector<DocumentObject*> grp = Group.getValues();
         grp.insert(grp.begin(), jGroup);
         Group.setValues(grp);

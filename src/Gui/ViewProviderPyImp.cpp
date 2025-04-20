@@ -706,3 +706,34 @@ Py::String ViewProviderPy::getDropPrefix() const
 {
     return {getViewProviderPtr()->getDropPrefix()};
 }
+
+void ViewProviderPy::setToggleVisibility(Py::Object arg)
+{
+    std::string val;
+
+    if (PyObject_HasAttrString(arg.ptr(), "value")) {
+        // we are dealing with the enum
+        val = Py::String(arg.getAttr("value"));
+    }
+    else {
+        // we are dealing with a string
+        val = Py::String(arg);
+    }
+
+    if (val == "CanToggleVisibility") {
+        getViewProviderPtr()->setToggleVisibility(ViewProvider::ToggleVisibilityMode::CanToggleVisibility);
+    }
+    else if (val == "NoToggleVisibility") {
+        getViewProviderPtr()->setToggleVisibility(ViewProvider::ToggleVisibilityMode::NoToggleVisibility);
+    }
+    else {
+        throw Py::ValueError("Invalid ToggleVisibility mode. Use 'CanToggleVisibility' or 'NoToggleVisibility'.");
+    }
+}
+
+Py::Object ViewProviderPy::getToggleVisibility() const
+{
+    bool canToggleVisibility = getViewProviderPtr()->canToggleVisibility();
+
+    return Py::String(canToggleVisibility ? "CanToggleVisibility" : "NoToggleVisibility");
+}

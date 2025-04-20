@@ -1071,6 +1071,10 @@ SET(Inventor_CPP_SRCS
     Inventor/SoFCBoundingBox.cpp
     Inventor/SoMouseWheelEvent.cpp
     Inventor/SoFCTransform.cpp
+    Inventor/Draggers/SoTransformDragger.cpp
+    Inventor/Draggers/SoLinearDragger.cpp
+    Inventor/Draggers/SoPlanarDragger.cpp
+    Inventor/Draggers/SoRotationDragger.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1089,7 +1093,6 @@ SET(Inventor_CPP_SRCS
     SoTextLabel.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
-    SoFCCSysDragger.cpp
     ArcEngine.cpp
 )
 SET(Inventor_SRCS
@@ -1104,6 +1107,10 @@ SET(Inventor_SRCS
     Inventor/SoFCBoundingBox.h
     Inventor/SoMouseWheelEvent.h
     Inventor/SoFCTransform.h
+    Inventor/Draggers/SoTransformDragger.h
+    Inventor/Draggers/SoLinearDragger.h
+    Inventor/Draggers/SoPlanarDragger.h
+    Inventor/Draggers/SoRotationDragger.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1122,7 +1129,6 @@ SET(Inventor_SRCS
     SoTextLabel.h
     SoDatumLabel.h
     SoTouchEvents.h
-    SoFCCSysDragger.h
     ArcEngine.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
@@ -1428,9 +1434,12 @@ if (EIGEN3_NO_DEPRECATED_COPY)
     set_source_files_properties(
         NaviCube.cpp
         Inventor/SoAutoZoomTranslation.cpp
+        Inventor/Draggers/SoTransformDragger.cpp
+        Inventor/Draggers/SoLinearDragger.cpp
+        Inventor/Draggers/SoPlanarDragger.cpp
+        Inventor/Draggers/SoRotationDragger.cpp
         SoFCOffscreenRenderer.cpp
         Selection/SoFCSelectionAction.cpp
-        SoFCCSysDragger.cpp
         Quarter/QuarterWidget.cpp
         View3DInventorViewer.cpp
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})

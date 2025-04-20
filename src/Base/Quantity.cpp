@@ -523,14 +523,14 @@ namespace QuantityParser
 #define yylex QuantityLexer
 int QuantityLexer();
 
-// Parser, defined in QuantityParser.y
+// Parser, defined in Quantity.y
 // NOLINTNEXTLINE
-#include "QuantityParser.c"
+#include "Quantity.tab.c"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in QuantityParser.l
+// Scanner, defined in Quantity.l
 // NOLINTNEXTLINE
-#include "QuantityLexer.c"
+#include "Quantity.lex.c"
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 class StringBufferCleaner

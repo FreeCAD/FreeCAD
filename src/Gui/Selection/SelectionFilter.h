@@ -53,8 +53,8 @@ class GuiExport SelectionFilter
 
 public:
     /** Constructs a SelectionFilter object. */
-    explicit SelectionFilter(const char* filter);
-    explicit SelectionFilter(const std::string& filter);
+    explicit SelectionFilter(const char* filter, App::DocumentObject* container = nullptr);
+    explicit SelectionFilter(const std::string& filter, App::DocumentObject* container = nullptr);
     virtual ~SelectionFilter();
 
     /// Set a new filter string
@@ -88,6 +88,7 @@ protected:
     std::string Filter;
     std::string Errors;
     bool parse();
+    App::DocumentObject* container;
 
     std::shared_ptr<Node_Block> Ast;
 };

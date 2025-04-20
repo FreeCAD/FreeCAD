@@ -93,6 +93,7 @@ PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
     : overrideMode("As Is")
+    , toggleVisibilityMode(ToggleVisibilityMode::CanToggleVisibility)
 {
     setStatus(UpdateData, true);
 

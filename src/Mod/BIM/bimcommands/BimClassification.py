@@ -1,34 +1,37 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """The BIM Classification command"""
 
+import os
 
 import FreeCAD
 import FreeCADGui
-import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -306,7 +309,7 @@ class BIM_Classification:
         # self.spanTopLevels()
 
     def updateByTree(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # order by hierarchy
         def istop(obj):
@@ -368,8 +371,8 @@ class BIM_Classification:
         self.form.treeObjects.expandAll()
 
     def updateDefault(self):
+        from PySide import QtGui
         import Draft
-        from PySide import QtCore, QtGui
 
         d = self.objectslist.copy()
         d.update(self.matlist)
@@ -389,7 +392,7 @@ class BIM_Classification:
                         self.form.treeObjects.setCurrentItem(it)
 
     def updateClasses(self, search=""):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.form.treeClass.clear()
 
@@ -436,7 +439,7 @@ class BIM_Classification:
                 first = False
 
     def addChildren(self, children, parent, search=""):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         if children:
             for c in children:
@@ -526,7 +529,8 @@ class BIM_Classification:
         )
         if not os.path.exists(preset):
             return None
-        import codecs, re
+        import codecs
+        import re
 
         d = Item()
         with codecs.open(preset, "r", "utf-8") as f:
@@ -663,7 +667,7 @@ class BIM_Classification:
     def getIcon(self,obj):
         """returns a QIcon for an object"""
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         import Arch_rc
 
         if hasattr(obj.ViewObject, "Icon"):

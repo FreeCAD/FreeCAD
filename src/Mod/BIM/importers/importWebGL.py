@@ -1,25 +1,28 @@
-#***************************************************************************
-#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-#*   Copyright (c) 2020 Travis Apple <travisapple@gmail.com>               *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
-#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2020 Travis Apple <travisapple@gmail.com>               *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
 # REFS:
 # https://github.com/mrdoob/three.js/blob/master/examples/webgl_interactive_buffergeometry.html
 # https://threejs.org/examples/#webgl_buffergeometry_lines
@@ -35,18 +38,27 @@
 # Development reload oneliner:
 # def re(): from importlib import reload;import importWebGL;reload(importWebGL);o=FreeCAD.getDocument("YourDocName");importWebGL.export([o.getObject("YourBodyName")],u"C:/path/to/your/file.htm");
 
+## @package importWebGL
+#  \ingroup ARCH
+#  \brief FreeCAD WebGL Exporter
+#
+#  This module provides tools to export HTML files containing the
+#  exported objects in WebGL format and a simple three.js-based viewer.
+
 """FreeCAD WebGL Exporter"""
 
-from typing import NotRequired, TypedDict
-
-import FreeCAD
-import Mesh
-import Draft
-import Part
-import OfflineRenderingUtils
 import json
 import textwrap
 from builtins import open as pyopen
+from typing import NotRequired, TypedDict
+
+import numpy as np
+
+import FreeCAD
+import Draft
+import Mesh
+import OfflineRenderingUtils
+import Part
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -57,15 +69,6 @@ else:
     def translate(ctxt, txt):
         return txt
 
-
-import numpy as np
-
-## @package importWebGL
-#  \ingroup ARCH
-#  \brief FreeCAD WebGL Exporter
-#
-#  This module provides tools to export HTML files containing the
-#  exported objects in WebGL format and a simple three.js-based viewer.
 
 disableCompression = False  # Compress object data before sending to JS
 base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&()*+-:;/=>?@[]^_,.{|}~`"  # safe str chars for js in all cases

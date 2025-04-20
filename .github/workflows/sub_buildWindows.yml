@@ -62,8 +62,13 @@ jobs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+
       - name: Checking out source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           submodules: true
       - name: Make needed directories, files and initializations
@@ -85,7 +90,7 @@ jobs:
         with:
           libpackdir: ${{ env.libpackdir }}
       - name: Restore compiler cache
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           save-always: true
           path: ${{ env.CCACHE_DIR }}
@@ -99,7 +104,7 @@ jobs:
           . $env:ccachebindir\ccache -z
           . $env:ccachebindir\ccache -p
       - name: Install cmake
-        uses: jwlawson/actions-setup-cmake@v2
+        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
         with:
           cmake-version: '3.31.6'
       - name: Configuring CMake
@@ -115,7 +120,7 @@ jobs:
           -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=ON
           -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2.0.0
       - name: Compiling sources
         run: |
           cd $env:builddir
@@ -133,7 +138,7 @@ jobs:
           . ${{ env.builddir }}\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}\integrationTests.log
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |

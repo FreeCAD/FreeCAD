@@ -649,7 +649,7 @@ public:
 };
 
 #define YYSTYPE semantic_type
-#include "ExpressionParser.tab.h"
+#include "Expression.tab.h"
 #undef YYTOKENTYPE
 #undef YYSTYPE
 #undef YYSTYPE_ISDECLARED

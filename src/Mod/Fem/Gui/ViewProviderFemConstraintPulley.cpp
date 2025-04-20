@@ -30,6 +30,7 @@
 #include <Precision.hxx>
 #endif
 
+#include <Base/Tools.h>
 #include "Gui/Control.h"
 #include "FemGuiTools.h"
 #include "TaskFemConstraintPulley.h"
@@ -84,7 +85,7 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             if (dia < 2 * radius) {
                 dia = 2 * radius;
             }
-            double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * pi;
+            double forceAngle = Base::toRadians(pcConstraint->ForceAngle.getValue());
             double beltAngle = pcConstraint->BeltAngle.getValue();
             double rat1 = 0.8, rat2 = 0.2;
             double f1 = pcConstraint->BeltForce1.getValue();
@@ -136,7 +137,7 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             if (dia < 2 * radius) {
                 dia = 2 * radius;
             }
-            double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * pi;
+            double forceAngle = Base::toRadians(pcConstraint->ForceAngle.getValue());
             double beltAngle = pcConstraint->BeltAngle.getValue();
             double rat1 = 0.8, rat2 = 0.2;
             double f1 = pcConstraint->BeltForce1.getValue();
@@ -189,7 +190,7 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             if (dia < 2 * radius) {
                 dia = 2 * radius;
             }
-            double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * pi;
+            double forceAngle = Base::toRadians(pcConstraint->ForceAngle.getValue());
             double beltAngle = pcConstraint->BeltAngle.getValue();
 
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));

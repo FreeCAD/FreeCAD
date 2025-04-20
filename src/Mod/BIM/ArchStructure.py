@@ -1,45 +1,32 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
 #Modified 2016-01-03 JAndersM
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
-from FreeCAD import Vector
-import ArchProfile
-from draftutils import params
-from draftutils import gui_utils
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    import ArchPrecast
-    import draftguitools.gui_trackers as DraftTrackers
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__= "FreeCAD Structure"
+__author__ = "Yorik van Havre"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchStructure
 #  \ingroup ARCH
@@ -50,9 +37,31 @@ else:
 #  elements that have a structural function, that is, that
 #  support other parts of the building.
 
-__title__= "FreeCAD Structure"
-__author__ = "Yorik van Havre"
-__url__ = "https://www.freecad.org"
+import FreeCAD
+import ArchComponent
+import ArchCommands
+import ArchProfile
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Vector
+from draftutils import params
+from draftutils import gui_utils
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import ArchPrecast
+    import draftguitools.gui_trackers as DraftTrackers
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 #Reads preset profiles and categorizes them
@@ -286,7 +295,6 @@ class _CommandStructure:
             self.Length = params.get_param_arch("StructureLength")
             self.Height = params.get_param_arch("StructureHeight")
         self.Profile = None
-        self.continueCmd = False
         self.bpoint = None
         self.bmode = False
         self.precastvalues = None
@@ -329,6 +337,7 @@ class _CommandStructure:
             title=translate("Arch","Base point of column")+":"
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
+        FreeCADGui.draftToolBar.continueCmd.show()
 
     def getPoint(self,point=None,obj=None):
 
@@ -414,7 +423,7 @@ class _CommandStructure:
         FreeCAD.ActiveDocument.recompute()
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
-        if self.continueCmd:
+        if FreeCADGui.draftToolBar.continueCmd.isChecked():
             self.Activated()
 
     def _createItemlist(self, baselist):
@@ -496,21 +505,10 @@ class _CommandStructure:
         grid.addWidget(self.vHeight,6,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Switch Length/Height"))
-        grid.addWidget(value5,7,0,1,1)
-        value6 = QtGui.QPushButton(translate("Arch","Switch Length/Width"))
-        grid.addWidget(value6,7,1,1,1)
-
-        # continue button
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
-        value4 = QtGui.QCheckBox()
-        value4.setObjectName("ContinueCmd")
-        value4.setLayoutDirection(QtCore.Qt.RightToLeft)
-        label4.setBuddy(value4)
-        self.continueCmd = params.get_param("ContinueMode")
-        value4.setChecked(self.continueCmd)
-        grid.addWidget(label4,8,0,1,1)
-        grid.addWidget(value4,8,1,1,1)
+        value4 = QtGui.QPushButton(translate("Arch","Switch Length/Height"))
+        grid.addWidget(value4,7,0,1,1)
+        value5 = QtGui.QPushButton(translate("Arch","Switch Length/Width"))
+        grid.addWidget(value5,7,1,1,1)
 
         # connect slots
         QtCore.QObject.connect(self.valuec,QtCore.SIGNAL("currentIndexChanged(int)"),self.setCategory)
@@ -518,9 +516,8 @@ class _CommandStructure:
         QtCore.QObject.connect(self.vLength,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(self.vWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(self.vHeight,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
-        QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
-        QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotateLH)
-        QtCore.QObject.connect(value6,QtCore.SIGNAL("pressed()"),self.rotateLW)
+        QtCore.QObject.connect(value4,QtCore.SIGNAL("pressed()"),self.rotateLH)
+        QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotateLW)
         QtCore.QObject.connect(self.modeb,QtCore.SIGNAL("toggled(bool)"),self.switchLH)
 
         # restore preset
@@ -592,11 +589,6 @@ class _CommandStructure:
             params.set_param_arch("StructureHeight",d)
         else:
             params.set_param_arch("StructureLength",d)
-
-    def setContinue(self,i):
-
-        self.continueCmd = bool(i)
-        params.set_param("ContinueMode", bool(i))
 
     def setCategory(self,i):
 
@@ -786,7 +778,8 @@ class _Structure(ArchComponent.Component):
 
         "creates the structure shape"
 
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         if self.clone(obj):
             return
@@ -905,7 +898,8 @@ class _Structure(ArchComponent.Component):
             IfcType = obj.IfcType
         else:
             IfcType = None
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         data = ArchComponent.Component.getExtrusionData(self,obj)
         if data:
             if not isinstance(data[0],list):
@@ -1544,7 +1538,8 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
     def execute(self,obj):
         "creates the structure shape"
 
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         # creating base shape
         pl = obj.Placement

@@ -9,6 +9,13 @@ macro(CompilerChecksAndSetups)
 
     # ================================================================================
 
+    # Use a heuristic of 1 GiB of RAM needed per compiler job and limit to
+    # a single link job. Modern linkers are multithreaded and running them concurrently
+    # can exhaust resources.
+    cmake_host_system_information(RESULT avail_mem_MiB QUERY TOTAL_PHYSICAL_MEMORY)
+    math(EXPR max_compile_procs "${avail_mem_MiB} / 1024")
+    set_property(GLOBAL PROPERTY JOB_POOLS compile_jobs=${max_compile_procs} link_jobs=1)
+
     # Allow developers to use Boost < 1.74
     if (NOT BOOST_MIN_VERSION)
         set(BOOST_MIN_VERSION 1.74)

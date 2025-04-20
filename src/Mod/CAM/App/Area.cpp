@@ -72,6 +72,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/CrossSection.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/FuzzyHelper.h>
@@ -875,7 +876,7 @@ static inline void getEndPoints(const TopoDS_Wire& wire, gp_Pnt& p1, gp_Pnt& p2)
 }
 
 // Toponaming integration note: there's a new class called WireJoiner in Mod/Part/App/ that has been
-// imported from RT's fork. Is's an improved version of the following struct, therefor
+// imported from RT's fork. It's an improved version of the following struct, therefore
 // probably at some point this struct should be replaced with the new imported class.
 // See https://github.com/realthunder/FreeCAD/blob/LinkStable/src/Mod/Part/App/WireJoiner.h for the
 // original implementation of the class and https://github.com/FreeCAD/FreeCAD/pull/12535 for the
@@ -2632,7 +2633,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 for (int j = 0; j < steps; ++j, offset += stepover) {
                     Point p1(-r, offset), p2(r, offset);
                     if (a > Precision::Confusion()) {
-                        double r = a * std::numbers::pi / 180.0;
+                        double r = Base::toRadians(a);
                         p1.Rotate(r);
                         p2.Rotate(r);
                     }

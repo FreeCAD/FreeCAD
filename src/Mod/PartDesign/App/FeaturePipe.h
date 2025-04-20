@@ -39,9 +39,9 @@ public:
 
     App::PropertyLinkSub Spine;
     App::PropertyBool SpineTangent;
-    App::PropertyLinkSub AuxillerySpine;
-    App::PropertyBool AuxillerySpineTangent;
-    App::PropertyBool AuxilleryCurvelinear;
+    App::PropertyLinkSub AuxiliarySpine;
+    App::PropertyBool AuxiliarySpineTangent;
+    App::PropertyBool AuxiliaryCurvilinear;
     App::PropertyEnumeration Mode;
     App::PropertyVector Binormal;
     App::PropertyEnumeration Transition;
@@ -59,7 +59,7 @@ public:
                                                    const TopLoc_Location &invObjLoc = TopLoc_Location(),
                                                    int transition = 0,
                                                    const TopoShape &auxpath = TopoShape(),
-                                                   bool auxCurveLinear = true,
+                                                   bool auxCurviLinear = true,
                                                    int mode = 2,
                                                    const Base::Vector3d &binormalVector = Base::Vector3d(),
                                                    int transformation = 0,
@@ -74,6 +74,8 @@ protected:
     void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS_Shape& auxshape);
     /// handle changed property
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
+    void handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName,
+                                   const char* PropName) override;
 
 private:
     static const char* TypeEnums[];

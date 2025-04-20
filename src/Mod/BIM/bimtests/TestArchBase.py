@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2025 Furgo                                              *
@@ -36,7 +37,7 @@ class TestArchBase(unittest.TestCase):
 
     def printTestMessage(self, text, prepend_text="Test ", end="\n"):
         """Write messages to the console including the line ending.
-        
+
         Messages will be prepended with "Test ", unless an empty string is
         passed as the prepend_text argument
         """

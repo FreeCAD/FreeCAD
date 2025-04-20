@@ -63,6 +63,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
@@ -1060,8 +1061,8 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector
 
     // remove the effect of the Rotation property
     double rotDeg = dvp.Rotation.getValue();
-    double rotRad = rotDeg * std::numbers::pi / 180.0;
     if (rotDeg != 0.0) {
+        double rotRad = Base::toRadians(rotDeg);
         // we always rotate around the origin.
         appPoint.RotateZ(-rotRad);
     }
@@ -1857,40 +1858,6 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
     }
     QString qTranslated = qApp->translate(context.c_str(), baseName.c_str());
     return qTranslated.toStdString() + suffix;
-}
-
-// true if owner->element is a cosmetic vertex
-bool DrawUtil::isCosmeticVertex(App::DocumentObject* owner, std::string element)
-{
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto vertexIndex = DrawUtil::getIndexFromName(element);
-    auto vertex = ownerView->getProjVertexByIndex(vertexIndex);
-    if (vertex) {
-        return vertex->getCosmetic();
-    }
-    return false;
-}
-
-// true if owner->element is a cosmetic edge
-bool DrawUtil::isCosmeticEdge(App::DocumentObject* owner, std::string element)
-{
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto edge = ownerView->getEdge(element);
-    if (edge && edge->source() == SourceType::COSMETICEDGE && edge->getCosmetic()) {
-        return true;
-    }
-    return false;
-}
-
-// true if owner->element is a center line
-bool DrawUtil::isCenterLine(App::DocumentObject* owner, std::string element)
-{
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto edge = ownerView->getEdge(element);
-    if (edge && edge->source() == SourceType::CENTERLINE && edge->getCosmetic()) {
-        return true;
-    }
-    return false;
 }
 
 //! convert a filespec (string) containing '\' to only use '/'.

@@ -25,6 +25,7 @@
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "PathSegmentWalker.h"
 
@@ -187,7 +188,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             if (nrot != lrot) {
                 double amax = std::max(fmod(fabs(a - A), 360),
                                        std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
-                double angle = amax / 180 * std::numbers::pi;
+                double angle = Base::toRadians(amax);
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0 / (deviation / angle));
 
                 double da = (a - A) / segments;
@@ -329,7 +330,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             if (nrot != lrot) {
                 double amax = std::max(fmod(fabs(a - A), 360),
                                        std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
-                double angle = amax / 180 * std::numbers::pi;
+                double angle = Base::toRadians(amax);
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0 / (deviation / angle));
 
                 double da = (a - A) / segments;

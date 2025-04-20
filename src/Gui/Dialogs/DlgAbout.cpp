@@ -47,6 +47,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <CXX/WrapPython.h>
+#include <Gui/Application.h>
 
 #include <filesystem>
 #include <LibraryVersions.h>
@@ -61,59 +62,6 @@
 using namespace Gui;
 using namespace Gui::Dialog;
 namespace fs = std::filesystem;
-
-static QString prettyProductInfoWrapper()
-{
-    auto productName = QSysInfo::prettyProductName();
-#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
-#ifdef FC_OS_MACOSX
-    auto macosVersionFile =
-        QStringLiteral("/System/Library/CoreServices/.SystemVersionPlatform.plist");
-    auto fi = QFileInfo(macosVersionFile);
-    if (fi.exists() && fi.isReadable()) {
-        auto plistFile = QFile(macosVersionFile);
-        plistFile.open(QIODevice::ReadOnly);
-        while (!plistFile.atEnd()) {
-            auto line = plistFile.readLine();
-            if (line.contains("ProductUserVisibleVersion")) {
-                auto nextLine = plistFile.readLine();
-                if (nextLine.contains("<string>")) {
-                    QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
-                    auto matches = re.match(QString::fromUtf8(nextLine));
-                    if (matches.hasMatch()) {
-                        productName = QStringLiteral("macOS ") + matches.captured(1);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-#endif
-#endif
-#ifdef FC_OS_WIN64
-    QSettings regKey {
-        QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"),
-        QSettings::NativeFormat};
-    if (regKey.contains(QStringLiteral("CurrentBuildNumber"))) {
-        auto buildNumber = regKey.value(QStringLiteral("CurrentBuildNumber")).toInt();
-        if (buildNumber > 0) {
-            if (buildNumber < 9200) {
-                productName = QStringLiteral("Windows 7 build %1").arg(buildNumber);
-            }
-            else if (buildNumber < 10240) {
-                productName = QStringLiteral("Windows 8 build %1").arg(buildNumber);
-            }
-            else if (buildNumber < 22000) {
-                productName = QStringLiteral("Windows 10 build %1").arg(buildNumber);
-            }
-            else {
-                productName = QStringLiteral("Windows 11 build %1").arg(buildNumber);
-            }
-        }
-    }
-#endif
-    return productName;
-}
 
 // ------------------------------------------------------------------------------
 
@@ -296,7 +244,7 @@ void AboutDialog::setupLabels()
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QStringLiteral("Unknown"), prettyProductInfoWrapper());
+    os.replace(QStringLiteral("Unknown"), App::Application::prettyProductInfoWrapper());
     ui->labelBuildOS->setText(os);
 
     QString architecture = ui->labelBuildRunArchitecture->text();
@@ -527,230 +475,14 @@ void AboutDialog::linkActivated(const QUrl& link)
     licenseView->setSource(link);
 }
 
-void AboutDialog::addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod)
-{
-    QFileInfo mod(modPath);
-    if (mod.isHidden()) {  // Ignore hidden directories
-        return;
-    }
-    if (firstMod) {
-        firstMod = false;
-        str << "Installed mods: \n";
-    }
-    str << "  * " << (mod.isDir() ? QDir(modPath).dirName() : mod.fileName());
-    try {
-        auto metadataFile =
-            std::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
-        if (std::filesystem::exists(metadataFile)) {
-            App::Metadata metadata(metadataFile);
-            if (metadata.version() != App::Meta::Version()) {
-                str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
-            }
-        }
-    }
-    catch (const Base::Exception& e) {
-        auto what = QString::fromUtf8(e.what()).trimmed().replace(QChar::fromLatin1('\n'),
-                                                                  QChar::fromLatin1(' '));
-        str << " (Malformed metadata: " << what << ")";
-    }
-    QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
-    if (disablingFile.exists()) {
-        str << " (Disabled)";
-    }
-
-    str << "\n";
-}
-
 void AboutDialog::copyToClipboard()
 {
     QString data;
     QTextStream str(&data);
     std::map<std::string, std::string>& config = App::Application::Config();
-    std::map<std::string, std::string>::iterator it;
-    QString exe = QString::fromStdString(App::Application::getExecutableName());
-
-    QString major = QString::fromStdString(config["BuildVersionMajor"]);
-    QString minor = QString::fromStdString(config["BuildVersionMinor"]);
-    QString point = QString::fromStdString(config["BuildVersionPoint"]);
-    QString suffix = QString::fromStdString(config["BuildVersionSuffix"]);
-    QString build = QString::fromStdString(config["BuildRevision"]);
-    QString buildDate = QString::fromStdString(config["BuildRevisionDate"]);
-
-    QString deskEnv =
-        QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),
-                                                       QString());
-    QString deskSess =
-        QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
-                                                       QString());
-    QStringList deskInfoList;
-    QString deskInfo;
-
-    if (!deskEnv.isEmpty()) {
-        deskInfoList.append(deskEnv);
-    }
-    if (!deskSess.isEmpty()) {
-        deskInfoList.append(deskSess);
-    }
-    if (qGuiApp->platformName() != QLatin1String("windows")
-        && qGuiApp->platformName() != QLatin1String("cocoa")) {
-        deskInfoList.append(qGuiApp->platformName());
-    }
-    if (!deskInfoList.isEmpty()) {
-        deskInfo = QLatin1String(" (") + deskInfoList.join(QLatin1String("/")) + QLatin1String(")");
-    }
-
-    str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
-    if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()) {
-        str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "\n";
-    }
-    else {
-        str << "Architecture: " << QSysInfo::buildCpuArchitecture()
-            << "(running on: " << QSysInfo::currentCpuArchitecture() << ")\n";
-    }
-    str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
-#ifdef FC_CONDA
-    str << " Conda";
-#endif
-#ifdef FC_FLATPAK
-    str << " Flatpak";
-#endif
-    char* appimage = getenv("APPIMAGE");
-    if (appimage) {
-        str << " AppImage";
-    }
-    char* snap = getenv("SNAP_REVISION");
-    if (snap) {
-        str << " Snap " << snap;
-    }
-    str << '\n';
-    str << "Build date: " << buildDate << "\n";
-
-#if defined(_DEBUG) || defined(DEBUG)
-    str << "Build type: Debug\n";
-#elif defined(NDEBUG)
-    str << "Build type: Release\n";
-#elif defined(CMAKE_BUILD_TYPE)
-    str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
-#else
-    str << "Build type: Unknown\n";
-#endif
-    it = config.find("BuildRevisionBranch");
-    if (it != config.end()) {
-        str << "Branch: " << QString::fromStdString(it->second) << '\n';
-    }
-    it = config.find("BuildRevisionHash");
-    if (it != config.end()) {
-        str << "Hash: " << QString::fromStdString(it->second) << '\n';
-    }
-    // report also the version numbers of the most important libraries in FreeCAD
-    str << "Python " << PY_VERSION << ", ";
-    str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << COIN_VERSION << ", ";
-    str << "Vtk " << fcVtkVersion << ", ";
-
-    const char* cmd = "import ifcopenshell\n"
-                      "version = ifcopenshell.version";
-    PyObject * ifcopenshellVer = nullptr;
-
-    try {
-        ifcopenshellVer = Base::Interpreter().getValue(cmd, "version");
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Log("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
-    }
-
-    if (ifcopenshellVer) {
-        const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
-
-        if (ifcopenshellVerAsStr) {
-            str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
-        }
-        Py_DECREF(ifcopenshellVer);
-    }
-
-#if defined(HAVE_OCC_VERSION)
-    str << "OCC " << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE
-#ifdef OCC_VERSION_DEVELOPMENT
-        << "." OCC_VERSION_DEVELOPMENT
-#endif
-        << '\n';
-#endif
-    QLocale loc;
-    str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
-#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-        << QLocale::countryToString(loc.country())
-#else
-        << QLocale::territoryToString(loc.territory())
-#endif
-        << " (" << loc.name() << ")";
-    if (loc != QLocale::system()) {
-        loc = QLocale::system();
-        str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
-#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-            << QLocale::countryToString(loc.country())
-#else
-            << QLocale::territoryToString(loc.territory())
-#endif
-            << " (" << loc.name() << ") ]";
-    }
-    str << "\n";
-
-    // Add Stylesheet/Theme/Qtstyle information
-    std::string styleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet");
-    std::string theme =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("Theme");
-#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
-    std::string style = qApp->style()->name().toStdString();
-#else
-    std::string style =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("QtStyle");
-    if (style.empty()) {
-        style = "Qt default";
-    }
-#endif
-    if (styleSheet.empty()) {
-        styleSheet = "unset";
-    }
-    if (theme.empty()) {
-        theme = "unset";
-    }
-
-    str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
-        << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
-
-    // Add DPI information
-    str << "Logical DPI/Physical DPI/Pixel Ratio: "
-        << QApplication::primaryScreen()->logicalDotsPerInch()
-        << "/"
-        << QApplication::primaryScreen()->physicalDotsPerInch()
-        << "/"
-        << QApplication::primaryScreen()->devicePixelRatio()
-        << "\n";
-
-    // Add installed module information:
-    auto modDir = fs::path(App::Application::getUserAppDataDir()) / "Mod";
-    bool firstMod = true;
-    if (fs::exists(modDir) && fs::is_directory(modDir)) {
-        for (const auto& mod : fs::directory_iterator(modDir)) {
-            auto dirName = mod.path().string();
-            addModuleInfo(str, QString::fromStdString(dirName), firstMod);
-        }
-    }
-    auto additionalModules = config.find("AdditionalModulePaths");
-
-    if (additionalModules != config.end()) {
-        auto mods = QString::fromStdString(additionalModules->second).split(QChar::fromLatin1(';'));
-        for (const auto& mod : mods) {
-            addModuleInfo(str, mod, firstMod);
-        }
-    }
+    App::Application::getVerboseCommonInfo(str, config);
+    Gui::Application::getVerboseDPIStyleInfo(str);
+    App::Application::getVerboseAddOnsInfo(str, config);
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

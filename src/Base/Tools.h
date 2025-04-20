@@ -113,31 +113,54 @@ inline manipulator<int> blanks(int n)
 // ----------------------------------------------------------------------------
 
 template<class T>
+    requires std::is_arithmetic_v<T>
 inline T clamp(T num, T lower, T upper)
 {
-    return std::max<T>(std::min<T>(upper, num), lower);
+    return std::clamp<T>(num, lower, upper);
 }
 
-template<class T>
-inline T sgn(T t)
+/// Returns -1, 0 or 1 depending on if the value is negative, zero or positive
+/// As this function might be used in hot paths, it uses branchless implementation
+template<typename T>
+constexpr std::enable_if_t<std::is_arithmetic_v<T> && std::is_signed_v<T>, T> sgn(T val)
 {
-    if (t == 0) {
-        return T(0);
-    }
-
-    return (t > 0) ? T(1) : T(-1);
+    int oneIfPositive = int(0 < val);
+    int oneIfNegative = int(val < 0);
+    return T(oneIfPositive - oneIfNegative);  // 0/1 - 0/1 = -1/0/1
 }
 
-template<class T>
-inline T toRadians(T d)
+/// Convert degrees to radians, allow deduction for floating point types
+template<std::floating_point T>
+constexpr T toRadians(T degrees)
 {
-    return static_cast<T>((d * std::numbers::pi) / 180.0);
+    constexpr auto degToRad = std::numbers::pi_v<T> / T(180);
+    return degrees * degToRad;
 }
 
-template<class T>
-inline T toDegrees(T r)
+/// Convert degrees to radians, allow **explicit-only** for any arithmetic type
+template<typename T>
+    requires(std::is_arithmetic_v<T> && !std::floating_point<T>)
+constexpr T toRadians(std::type_identity_t<T> degrees)
 {
-    return static_cast<T>((r / std::numbers::pi) * 180.0);
+    using ResultT = std::conditional_t<std::is_integral_v<T>, double, T>;
+    return static_cast<T>(toRadians<ResultT>(static_cast<ResultT>(degrees)));
+}
+
+/// Convert radians to degrees, allow deduction for floating point types
+template<std::floating_point T>
+constexpr T toDegrees(T radians)
+{
+    constexpr auto radToDeg = T(180) / std::numbers::pi_v<T>;
+    return radians * radToDeg;
+}
+
+/// Convert radians to degrees, allow **explicit-only** for any arithmetic type
+template<typename T>
+    requires(std::is_arithmetic_v<T> && !std::floating_point<T>)
+constexpr T toDegrees(std::type_identity_t<T> radians)
+{
+    using ResultT = std::conditional_t<std::is_integral_v<T>, double, T>;
+    return static_cast<T>(toDegrees<ResultT>(static_cast<ResultT>(radians)));
 }
 
 inline float fromPercent(const long value)
@@ -150,7 +173,7 @@ inline long toPercent(float value)
     return std::lround(100.0 * value);
 }
 
-template<class T>
+template<std::floating_point T>
 inline T fmod(T numerator, T denominator)
 {
     T modulo = std::fmod(numerator, denominator);
