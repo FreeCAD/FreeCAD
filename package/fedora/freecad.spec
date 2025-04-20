@@ -175,6 +175,10 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DFREECAD_QT_VERSION:STRING=6 \
         -DOpenGL_GL_PREFERENCE=GLVND \
         -DUSE_OCC=TRUE \
+    %if %{without bundled_pycxx}
+        -DPYCXX_INCLUDE_DIR=$(pkg-config --variable=includedir PyCXX) \
+        -DPYCXX_SOURCE_DIR=$(pkg-config --variable=srcdir PyCXX) \
+    %endif
     %if %{without bundled_smesh}
         -DFREECAD_USE_EXTERNAL_SMESH=TRUE \
     %endif
