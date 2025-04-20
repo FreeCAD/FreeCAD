@@ -186,9 +186,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
 --------------------------------------------------------------------------- */
 QStatusBar {
   border: 0px solid rgba(255, 255, 255, 0.08) ;
-  /* Fixes Spyder #9120, #9121 */
   background-color: @ThemeBackground;
-  /* Fixes #205, white vertical borders separating items */
 }
 
 QStatusBar::item {
@@ -205,7 +203,6 @@ QStatusBar QToolTip {
 }
 
 QStatusBar QLabel {
-  /* Fixes Spyder #9120, #9121 */
   background-color: transparent;
 }
 
@@ -361,8 +358,6 @@ QRadioButton {
   color: white;
   border: none;
   spacing: 8px;
-  /* padding-top: 4px;
-  padding-bottom: 4px;*/
   outline: none;
 }
 
@@ -466,7 +461,7 @@ QMenu {
 }
 
 QMenu::item:disabled {
-  color: rgba(75, 75, 75, 0.8);
+  color: rgba(175, 175, 175, 0.8);
 }
 
 QMenu::separator {
@@ -835,7 +830,6 @@ QToolBar:horizontal {
 
 QMenu QToolBar:horizontal {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 0.05), stop:0.01 @ThemeBackground ,stop:0.97 @ThemeBackground , stop:1 rgba(255, 255, 255, 0.05));
-  /* margin-top: -3px;*/
 }
 
 /* fix background color for toolbars that are the on menubar. */
@@ -889,17 +883,17 @@ QToolBar::separator:vertical {
 Qproperty works but breaks when you move the toolbar*/
 
 QToolButton#qt_toolbar_ext_button {
-background-repeat: none;
-background-position: center center;
-background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #7d7d7d, stop:1 #606060);
+  background-repeat: none;
+  background-position: center center;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #7d7d7d, stop:1 #606060);
   /* background: url(qss:images_classic/more-white.svg) top center no-repeat;*/
-padding: 0px;
+  padding: 0px;
 }
 
 QToolButton#qt_toolbar_ext_button:hover {
-background-color: #7d7d7d;
-border-color: #7d7d7d;
-padding: 0px;
+  background-color: #7d7d7d;
+  border-color: #7d7d7d;
+  padding: 0px;
 }
 
 QToolButton#qt_toolbar_ext_button:on {
@@ -1302,9 +1296,7 @@ QToolButton::menu-button:checked:hover {
 }
 
 QToolButton::menu-indicator {
-  /* Exclude a shift for better image */
   subcontrol-position: right center;
-  /* Shift it a bit */
 }
 
 QToolButton::menu-arrow {
@@ -1399,15 +1391,26 @@ QComboBox:on {
 }
 
 QComboBox::indicator {
-  padding-left: 6px;
-  border-image: url(qss:images_classic/check-mark-white.svg);
-  image: url(qss:images_classic/arrow-down-lightgray.svg);
+  padding-left: 8px;
+  background-color: transparent;
 }
 
 QComboBox::indicator:checked {
-  border-image: url(qss:images_classic/check-mark-white.svg);
+  width: 10px;
+  height: 10px;
   image: url(qss:images_classic/check-mark-white.svg);
-  background-image: url(qss:images_classic/check-mark-white.svg);
+}
+
+QComboBox::item {
+  /* Remove to fix #282, #285 and MR #288*/
+  /*&:checked {
+            font-weight: bold;
+        }
+
+        &:selected {
+            border: 0px solid transparent;
+        }
+        */
 }
 
 /* Background color of popup-list.*/
@@ -1574,7 +1577,6 @@ QSint--ActionGroup QToolButton::menu-button {
   width: 19px;/* 16px width + 4px for border = 20px allocated above */
   outline: none;
   background-color: transparent;
-  /* margin: 10px;*/
 }
 
 QSint--ActionGroup QToolButton#settingsButton,
@@ -2586,7 +2588,8 @@ Gui--StatefulLabel[state="empty_sketch"] {
 }
 
 Gui--StatefulLabel[state="under_constrained"] {
-  color : #ffffff}
+  color : #ffffff
+  }
 
 Gui--StatefulLabel[state="conflicting_constraints"] {
   color : #fc6c6c;
