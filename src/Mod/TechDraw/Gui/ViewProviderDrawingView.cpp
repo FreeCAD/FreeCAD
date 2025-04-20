@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <limits>
 #include <boost/signals2.hpp>
 #include <boost/signals2/connection.hpp>
 #endif
 
-#include <climits>
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -404,7 +404,7 @@ void ViewProviderDrawingView::stackTop()
         //no view, nothing to stack
         return;
     }
-    int maxZ = INT_MIN;
+    int maxZ = std::numeric_limits<int>::min();
     auto parent = qView->parentItem();
     if (parent) {
         //if we have a parentItem, we have to stack within the parentItem, not within the page
@@ -439,7 +439,7 @@ void ViewProviderDrawingView::stackBottom()
         //no view, nothing to stack
         return;
     }
-    int minZ = INT_MAX;
+    int minZ = std::numeric_limits<int>::max();
     auto parent = qView->parentItem();
     if (parent) {
         //if we have a parentItem, we have to stack within the parentItem, not within the page

@@ -330,6 +330,11 @@ void StartView::newArchFile() const
     catch (...) {
         Gui::Application::Instance->activateWorkbench("ArchWorkbench");
     }
+
+    // Set the camera zoom level to 10 m, which is more appropriate for architectural projects
+    Gui::Command::doCommand(
+        Gui::Command::Gui,
+        "Gui.activeDocument().activeView().viewDefaultOrientation(None, 10000.0)");
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 

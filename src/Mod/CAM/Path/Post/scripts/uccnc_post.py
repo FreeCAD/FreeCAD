@@ -256,11 +256,11 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\nG90\nG54"',
+    help='set commands to be issued before the first command, default="G17\\nG54\\G40\\nG49\\nG90\\nG80\\n"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\nM30"',
+    help='set commands to be issued after the last command, default="M05\\nG17\\nG54\\nG0\\nG90\\nG80\\nM30\\n"',
 )
 parser.add_argument("--inches", action="store_true", help="lengths in [in], G20")
 parser.add_argument("--metric", action="store_true", help="lengths in [mm], G21")
@@ -336,14 +336,14 @@ def processArguments(argstring):
         PRECISION = args.precision
 
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         elif OUTPUT_COMMENTS:
             PREAMBLE = PREAMBLE_DEFAULT
         else:
             PREAMBLE = PREAMBLE_DEFAULT_NO_COMMENT
 
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         elif OUTPUT_COMMENTS:
             POSTAMBLE = POSTAMBLE_DEFAULT
         else:
@@ -443,7 +443,7 @@ def export(objectslist, filename, argstring):
         #    if isinstance(obj.Proxy, Path.Tool.Controller.ToolController):
         #        gcode += append("(T{}={})\n".format(obj.ToolNumber, item.Name))
         # error: global name 'PathScripts' is not defined
-    for line in PREAMBLE.splitlines(False):
+    for line in PREAMBLE.splitlines():
         gcode += append(line + "\n")
     if OUTPUT_COMMENTS:
         gcode += append("(preamble: done)\n")

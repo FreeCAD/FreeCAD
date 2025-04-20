@@ -54,7 +54,7 @@ public:
     static bool writeToX3DOM(SoNode* node, std::string& buffer);
     // Write to Inventor, VRML, X3D or XHTML (based on X3DOM) file
     static bool writeToFile(SoNode* node, const char* filename, bool binary);
-    /*! container for app lifetime storage. See SoFCCSysDragger for details
+    /*! container for app lifetime storage. See SoTransformDragger for details
      * on why this is needed.
      */
     static SoGroup* getStorage();

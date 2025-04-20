@@ -50,6 +50,7 @@
 #include "SoFCDB.h"
 #include "Camera.h"
 #include "Flag.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
 #include "SelectionObject.h"
@@ -57,7 +58,6 @@
 #include "SoFCColorBar.h"
 #include "SoFCColorGradient.h"
 #include "SoFCColorLegend.h"
-#include "SoFCCSysDragger.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
 #include "SoFCSelectionAction.h"
@@ -142,7 +142,7 @@ void Gui::SoFCDB::init()
     SoFCTransform                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
-    SoFCCSysDragger                 ::initClass();
+    SoTransformDragger                 ::initClass();
     SmSwitchboard                   ::initClass();
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();

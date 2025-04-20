@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <algorithm>
 #include <iomanip>
+#include <limits>
 #include <QApplication>
 #include <QComboBox>
 #include <QFontDatabase>
@@ -157,7 +158,7 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
         try {
             // Check for 'DocumentObject' as parent because otherwise 'ObjectIdentifier' raises an
             // exception
-            auto* docObj = Base::freecad_dynamic_cast<App::DocumentObject>(prop.getContainer());
+            auto* docObj = freecad_cast<App::DocumentObject*>(prop.getContainer());
             if (docObj && !docObj->isReadOnly(&prop)) {
                 App::ObjectIdentifier id(prop);
                 std::vector<App::ObjectIdentifier> paths;
@@ -295,7 +296,7 @@ int PropertyItem::childCount() const
 
 int PropertyItem::columnCount() const
 {
-    return 2;
+    return PropertyItem::ColumnCount;
 }
 
 void PropertyItem::setReadOnly(bool ro)
@@ -649,7 +650,7 @@ void PropertyItem::setPropertyValue(const QString& value)
     setPropertyValue(value.toStdString());
 }
 
-QVariant PropertyItem::dataProperty(int role) const
+QVariant PropertyItem::dataPropertyName(int role) const
 {
     if (role == Qt::ForegroundRole && linked) {
         return QVariant::fromValue(QColor(0x20, 0xaa, 0x20));  // NOLINT
@@ -742,9 +743,8 @@ QVariant PropertyItem::dataValue(int role) const
 
 QVariant PropertyItem::data(int column, int role) const
 {
-    // property name
-    if (column == 0) {
-        return dataProperty(role);
+    if (column == PropertyItem::NameColumn) {
+        return dataPropertyName(role);
     }
 
     return dataValue(role);
@@ -968,7 +968,8 @@ QWidget* PropertyIntegerItem::createEditor(QWidget* parent,
 void PropertyIntegerItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     auto sb = qobject_cast<QSpinBox*>(editor);
-    sb->setRange(INT_MIN, INT_MAX);
+    sb->setRange(std::numeric_limits<int>::min(),
+                 std::numeric_limits<int>::max());
     sb->setValue(data.toInt());
 }
 
@@ -1128,7 +1129,8 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const std::function<vo
 void PropertyFloatItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     auto sb = qobject_cast<QDoubleSpinBox*>(editor);
-    sb->setRange((double)INT_MIN, (double)INT_MAX);
+    sb->setRange(static_cast<double>(std::numeric_limits<int>::min()),
+                static_cast<double>(std::numeric_limits<int>::max()));
     sb->setValue(data.toDouble());
 }
 
@@ -4556,7 +4558,7 @@ void LinkLabel::updatePropertyLink()
 {
     QString text;
     auto owner = objProp.getObject();
-    auto prop = Base::freecad_dynamic_cast<App::PropertyLinkBase>(objProp.getProperty());
+    auto prop = freecad_cast<App::PropertyLinkBase*>(objProp.getProperty());
 
     link = QVariant();
 
@@ -4671,7 +4673,7 @@ QVariant PropertyLinkItem::data(int column, int role) const
 
 QVariant PropertyLinkItem::value(const App::Property* prop) const
 {
-    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+    auto propLink = freecad_cast<App::PropertyLinkBase*>(prop);
     if (!propLink) {
         return {};
     }

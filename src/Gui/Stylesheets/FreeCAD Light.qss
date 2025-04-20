@@ -956,31 +956,25 @@ QToolBar::separator:vertical {
 
 /* undo button */
 
+QToolBar[objectName="Edit"] > QToolButton {
+  padding-right:14px;
+}
+
 QToolBar[objectName="Edit"] > QToolButton::menu-arrow {
   background-image: url(qss:images_classic/arrow-down-lightgray.png);
   background-position: center center;
   background-repeat: none;
   subcontrol-origin: padding;
-  subcontrol-position: bottom right;
+  subcontrol-position: center center;
   height: 6px;
 }
 
 QToolBar[objectName="Edit"] > QToolButton::menu-arrow:hover {
   background-image: url(qss:images_classic/arrow-down-black.png);
-  background-position: center center;
-  background-repeat: none;
-  subcontrol-origin: padding;
-  subcontrol-position: bottom right;
-  height: 6px;
 }
 
 QToolBar[objectName="Edit"] > QToolButton::menu-arrow:open {
   background-image: url(qss:images_classic/arrow-down-black.png);
-  background-position: center center;
-  background-repeat: none;
-  subcontrol-origin: padding;
-  subcontrol-position: bottom right;
-  height: 6px;
 }
 
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working Qproperty works but breaks when you move the toolbar see also */

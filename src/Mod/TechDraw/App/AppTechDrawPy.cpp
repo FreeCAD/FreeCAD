@@ -567,7 +567,7 @@ private:
 
         TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
         if (!gObj) {
-            // this test might be redundent here since we already checked hasGeometry.
+            // this test might be redundant here since we already checked hasGeometry.
             Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
             return;
         }

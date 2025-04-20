@@ -62,13 +62,14 @@ public:
     // clang-format off
     enum Part
     {
-        Axes           = 1 << 0,
-        PlaneIndicator = 1 << 1,
-        Labels         = 1 << 2,
-        ArrowHeads     = 1 << 3,
+        Axes            = 1 << 0,
+        ArrowHeads      = 1 << 1,
+        Labels          = 1 << 2,
+        PlaneIndicator  = 1 << 3,
+        OriginIndicator = 1 << 4,
 
         // common configurations
-        AllParts       = Axes | PlaneIndicator | Labels | ArrowHeads,
+        AllParts       = Axes | OriginIndicator | Labels | ArrowHeads,
         AxisCross      = Axes | Labels | ArrowHeads
     };
 

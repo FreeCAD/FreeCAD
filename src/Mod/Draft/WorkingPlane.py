@@ -1269,7 +1269,7 @@ class PlaneGui(PlaneBase):
         place = FreeCAD.Placement(mtx)
 
         typ = utils.get_type(obj)
-        if typ in ["App::Part", "PartDesign::Plane", "Axis", "SectionPlane"]:
+        if typ in ["App::Part", "Part::DatumPlane", "PartDesign::Plane", "Axis", "SectionPlane"]:
             ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
         elif typ == "WorkingPlaneProxy":
             ret = self.align_to_wp_proxy(obj, offset, place, _hist_add)
@@ -1788,19 +1788,7 @@ if FreeCAD.GuiUp:
         except Exception:
             pass
 
-    def _view_observer_callback(sub_win):
-        if sub_win is None:
-            return
-        view = gui_utils.get_3d_view()
-        if view is None:
-            return
-        if not hasattr(FreeCADGui, "draftToolBar"):
-            return
-        tray = FreeCADGui.draftToolBar.tray
-        if tray is None:
-            return
-        if FreeCADGui.draftToolBar.tray.isVisible() is False:
-            return
+    def _view_observer_callback():
         ToDo.delay(_update_gui, None)
 
     _view_observer_active = False
@@ -1812,7 +1800,7 @@ if FreeCAD.GuiUp:
         if not _view_observer_active:
             mdi.subWindowActivated.connect(_view_observer_callback)
             _view_observer_active = True
-            _view_observer_callback(mdi.activeSubWindow())  # Trigger initial update.
+            _view_observer_callback()  # Trigger initial update.
 
     def _view_observer_stop():
         mw = FreeCADGui.getMainWindow()

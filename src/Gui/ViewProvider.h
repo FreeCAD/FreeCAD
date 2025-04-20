@@ -121,6 +121,11 @@ class GuiExport ViewProvider : public App::TransactionalObject
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProvider);
 
 public:
+    enum class ToggleVisibilityMode : bool {
+        CanToggleVisibility = true,
+        NoToggleVisibility = false
+    };
+
     /// constructor.
     ViewProvider();
 
@@ -246,6 +251,22 @@ public:
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon() const;
+
+    /**
+     * @brief Whether the viewprovider should allow to toggle the visibility.
+     *
+     * Some document objects are not rendered and for those document objects,
+     * it makes no sense to be able to toggle the visibility.  Examples are
+     * VarSet and Spreadsheet.
+     *
+     * Note that "rendered" should be seen broadly here.  Objects such as
+     * TechDraw pages, templates, views, and dimensions are not rendered by
+     * Coin but are "rendered" on the TechDraw page and hence this function can
+     * return true for those items.
+     */
+    bool canToggleVisibility() const {
+        return toggleVisibilityMode == ToggleVisibilityMode::CanToggleVisibility;
+    }
 
      /** @name Methods used by the Tree
      * If you want to take control over the
@@ -571,6 +592,8 @@ protected:
     /// Turn on mode switch
     virtual void setModeSwitch();
 
+    void setToggleVisibility(ToggleVisibilityMode mode) { toggleVisibilityMode = mode; }
+
 protected:
     /// The root Separator of the ViewProvider
     SoSeparator *pcRoot;
@@ -584,6 +607,10 @@ protected:
     ViewProviderPy* pyViewObject{nullptr};
     std::string overrideMode;
     std::bitset<32> StatusBits;
+    /// whether visibility can toggled
+    ToggleVisibilityMode toggleVisibilityMode;
+
+    friend class ViewProviderPy;
 
 private:
     int _iActualMode{-1};

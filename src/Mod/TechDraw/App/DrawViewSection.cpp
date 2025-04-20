@@ -71,6 +71,7 @@
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
+#include <limits>
 #include <sstream>
 #endif
 

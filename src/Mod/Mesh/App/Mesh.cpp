@@ -952,7 +952,7 @@ void MeshObject::offsetSpecial2(float fSize)
     Base::Builder3D builder;
     std::vector<Base::Vector3f> PointNormals = _kernel.CalcVertexNormals();
     std::vector<Base::Vector3f> FaceNormals;
-    std::set<FacetIndex> fliped;
+    std::set<FacetIndex> flipped;
 
     MeshCore::MeshFacetIterator it(_kernel);
     for (it.Init(); it.More(); it.Next()) {
@@ -988,20 +988,20 @@ void MeshObject::offsetSpecial2(float fSize)
                                       drawStyle,
                                       Base::ColorRGB {1.0F, 0.0F, 0.0F}};
                 builder.addNode(item);
-                fliped.insert(it.Position());
+                flipped.insert(it.Position());
             }
         }
 
         // if there are no flipped triangles -> stop
-        // int f =fliped.size();
-        if (fliped.empty()) {
+        // int f =flipped.size();
+        if (flipped.empty()) {
             break;
         }
 
-        for (FacetIndex It : fliped) {
+        for (FacetIndex It : flipped) {
             alg.CollapseFacet(It);
         }
-        fliped.clear();
+        flipped.clear();
     }
 
     alg.Cleanup();

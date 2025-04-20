@@ -169,26 +169,6 @@ ConsoleSingleton::~ConsoleSingleton()
 // methods
 
 /**
- *  sets the console in a special mode
- */
-void ConsoleSingleton::SetConsoleMode(ConsoleMode mode)
-{
-    if (mode & Verbose) {
-        _bVerbose = true;
-    }
-}
-
-/**
- *  unsets the console from a special mode
- */
-void ConsoleSingleton::UnsetConsoleMode(ConsoleMode mode)
-{
-    if (mode & Verbose) {
-        _bVerbose = false;
-    }
-}
-
-/**
  * \a type can be OR'ed with any of the FreeCAD_ConsoleMsgType flags to enable -- if \a b is true --
  * or to disable -- if \a b is false -- a console observer with name \a sObs.
  * The return value is an OR'ed value of all message types that have changed their state. For

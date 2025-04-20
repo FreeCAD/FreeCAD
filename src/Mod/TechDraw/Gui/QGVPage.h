@@ -152,7 +152,6 @@ protected:
 
     QColor getBackgroundColor();
 
-    double getDevicePixelRatio() const;
     QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
 
     void drawForeground(QPainter* painter, const QRectF& rect) override;

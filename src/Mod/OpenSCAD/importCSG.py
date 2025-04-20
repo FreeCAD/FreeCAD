@@ -780,8 +780,6 @@ def process_linear_extrude_with_transform(base,height,twist,scale) :
             ViewProviderTree(newobj.ViewObject)
         else:
             newobj.ViewObject.Proxy = 0
-    #import ViewProviderTree from OpenSCADFeatures
-    #ViewProviderTree(obj.ViewObject)
     return newobj
 
 def p_linear_extrude_with_transform(p):

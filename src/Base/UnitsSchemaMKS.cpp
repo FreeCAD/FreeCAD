@@ -320,6 +320,10 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
         unitString = "C/m^2";
         factor = 1e-6;
     }
+    else if (unit == Unit::VolumeChargeDensity) {
+        unitString = "C/m^3";
+        factor = 1e-9;
+    }
     else if (unit == Unit::CurrentDensity) {
         if (UnitValue <= 1e3) {
             unitString = "A/m^2";

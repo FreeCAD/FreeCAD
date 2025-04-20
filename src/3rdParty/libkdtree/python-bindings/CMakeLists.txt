@@ -10,7 +10,7 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/..)
 # Build the _kdtree python module
 set_source_files_properties (py-kdtree.i PROPERTIES CPLUSPLUS ON)
 swig_add_module (kdtree python py-kdtree.i)
-swig_link_libraries (kdtree ${Python3_LIBRARIES})
+swig_link_libraries (kdtree ${PYTHON_LIBRARIES})
 
 # Copy the test file into the build dir
 install (FILES py-kdtree_test.py DESTINATION ${CMAKE_INSTALL_PREFIX}/python)

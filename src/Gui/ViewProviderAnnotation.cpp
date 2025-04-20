@@ -155,7 +155,7 @@ void ViewProviderAnnotation::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &Rotation) {
-        pRotationXYZ->angle = (Rotation.getValue()/360)*(2*M_PI);
+        pRotationXYZ->angle = (Rotation.getValue()/360)*(2*std::numbers::pi);
     }
     else {
         ViewProviderDocumentObject::onChanged(prop);
@@ -248,15 +248,8 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
             const char* cs = line.c_str();
             if (line.empty())
                 cs = " "; // empty lines make coin crash, we use a space instead
-#if (COIN_MAJOR_VERSION <= 3)
-            QByteArray latin1str;
-            latin1str = (QString::fromUtf8(cs)).toLatin1();
-            pLabel->string.set1Value(index, SbString(latin1str.constData()));
-            pLabel3d->string.set1Value(index, SbString(latin1str.constData()));
-#else
             pLabel->string.set1Value(index, SbString(cs));
             pLabel3d->string.set1Value(index, SbString(cs));
-#endif
             index++;
         }
     }

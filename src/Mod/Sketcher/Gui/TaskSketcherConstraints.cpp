@@ -33,6 +33,7 @@
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <limits>
 #endif
 
 #include <App/Application.h>
@@ -720,8 +721,9 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt("ConstraintFilterState",
-                                   INT_MAX);// INT_MAX = 1111111111111111111111111111111 in binary.
+    int filterState = hGrp->GetInt(
+        "ConstraintFilterState",
+        std::numeric_limits<int>::max()); // INT_MAX = 01111111111111111111111111111111 in binary.
 
     normalFilterCount = filterItems.size() - 2;// All filter but selected and associated
     selectedFilterIndex = normalFilterCount;
@@ -1371,10 +1373,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                if (select && ui->listWidgetConstraints->model()) { // scrollTo only on select, not de-select
-                                    QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
-                                    ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
-                                }
+                                SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
                                 break;
                             }
                         }

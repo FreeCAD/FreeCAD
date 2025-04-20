@@ -114,8 +114,11 @@ class ViewProvider:
         for action in menu.actions():
             menu.removeAction(action)
         action = QtGui.QAction(translate("CAM", "Edit"), menu)
-        action.triggered.connect(self.setEdit)
+        action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
+
+    def _editInContextMenuTriggered(self, checked):
+        self.setEdit()
 
     def claimChildren(self):
         obj = self.vobj.Object

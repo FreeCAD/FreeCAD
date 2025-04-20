@@ -132,6 +132,7 @@ void Translator::destruct ()
 Translator::Translator()
 {
     // This is needed for Qt's lupdate
+    // clang-format off
     d = new TranslatorP;
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"               )] = "ar";
@@ -143,6 +144,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Traditional"  )] = "zh-TW";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"             )] = "hr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Czech"                )] = "cs";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish"               )] = "da";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                )] = "nl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"              )] = "en";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"             )] = "fil";
@@ -176,7 +178,6 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish")] = "da";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
@@ -190,6 +191,7 @@ Translator::Translator()
         QString tld = match.captured(2);
         d->mapLanguageTopLevelDomain[language.toStdString()] = tld.toStdString();
     }
+    // clang-format on
 
     d->activatedLanguage = "English";
 

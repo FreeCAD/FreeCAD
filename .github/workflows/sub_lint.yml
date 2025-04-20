@@ -168,6 +168,9 @@ on:
       reportFile:
         value: ${{ jobs.Lint.outputs.reportFile }}
 
+permissions:
+  contents: read
+
 jobs:
 
   Lint:
@@ -185,8 +188,13 @@ jobs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           submodules: true
 
@@ -335,7 +343,7 @@ jobs:
 
       - name: Upload logs and fixes
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -344,7 +352,7 @@ jobs:
 
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ env.reportfilename }}
           path: |

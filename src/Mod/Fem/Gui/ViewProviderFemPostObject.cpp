@@ -38,6 +38,8 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <functional>
+#include <limits>
+
 
 #include <vtkCellArray.h>
 #include <vtkCellData.h>
@@ -261,27 +263,40 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
 
 ViewProviderFemPostObject::~ViewProviderFemPostObject()
 {
-    FemPostObjectSelectionObserver::instance().unregisterFemPostObject(this);
-    m_transpType->unref();
-    m_depthBuffer->unref();
-    m_shapeHints->unref();
-    m_coordinates->unref();
-    m_materialBinding->unref();
-    m_drawStyle->unref();
-    m_normalBinding->unref();
-    m_normals->unref();
-    m_faces->unref();
-    m_triangleStrips->unref();
-    m_markers->unref();
-    m_lines->unref();
-    m_sepMarkerLine->unref();
-    m_separator->unref();
-    m_material->unref();
-    m_matPlainEdges->unref();
-    m_switchMatEdges->unref();
-    deleteColorBar();
-    m_colorStyle->unref();
-    m_colorRoot->unref();
+    try {
+        FemPostObjectSelectionObserver::instance().unregisterFemPostObject(this);
+        m_transpType->unref();
+        m_depthBuffer->unref();
+        m_shapeHints->unref();
+        m_coordinates->unref();
+        m_materialBinding->unref();
+        m_drawStyle->unref();
+        m_normalBinding->unref();
+        m_normals->unref();
+        m_faces->unref();
+        m_triangleStrips->unref();
+        m_markers->unref();
+        m_lines->unref();
+        m_sepMarkerLine->unref();
+        m_separator->unref();
+        m_material->unref();
+        m_matPlainEdges->unref();
+        m_switchMatEdges->unref();
+        m_colorStyle->unref();
+        m_colorRoot->unref();
+        deleteColorBar();
+    }
+    catch (Base::Exception& e) {
+        Base::Console().DestructorError(
+            "ViewProviderFemPostObject",
+            "ViewProviderFemPostObject destructor threw an exception: %s\n",
+            e.what());
+    }
+    catch (...) {
+        Base::Console().DestructorError(
+            "ViewProviderFemPostObject",
+            "ViewProviderFemPostObject destructor threw an unknown exception");
+    }
 }
 
 void ViewProviderFemPostObject::deleteColorBar()
@@ -856,12 +871,6 @@ bool ViewProviderFemPostObject::setupPipeline()
     if (!dset) {
         return false;
     }
-    std::string FieldName;
-    auto numFields = dset->GetPointData()->GetNumberOfArrays();
-    for (int i = 0; i < numFields; ++i) {
-        FieldName = std::string(dset->GetPointData()->GetArrayName(i));
-        addAbsoluteField(dset, FieldName);
-    }
 
     m_outline->SetInputData(dset);
     m_points->SetInputData(dset);
@@ -1096,77 +1105,6 @@ void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges& 
     if (sel.Type == Gui::SelectionChanges::AddSelection) {
         if (this->getObject()->Visibility.getValue()) {
             updateMaterial();
-        }
-    }
-}
-
-// if there is a real and an imaginary field, an absolute field is added
-void ViewProviderFemPostObject::addAbsoluteField(vtkDataSet* dset, std::string FieldName)
-{
-    // real field names have the suffix " re", given by Elmer
-    // if the field does not have this suffix, we can return
-    auto suffix = FieldName.substr(FieldName.size() - 3, FieldName.size() - 1);
-    if (strcmp(suffix.c_str(), " re") != 0) {
-        return;
-    }
-
-    // absolute fields might have already been created, then do nothing
-    auto strAbsoluteFieldName = FieldName.substr(0, FieldName.size() - 2) + "abs";
-    vtkDataArray* testArray = dset->GetPointData()->GetArray(strAbsoluteFieldName.c_str());
-    if (testArray) {
-        return;
-    }
-
-    // safety check
-    vtkDataArray* realDdata = dset->GetPointData()->GetArray(FieldName.c_str());
-    if (!realDdata) {
-        return;
-    }
-
-    // now check if the imaginary counterpart exists
-    auto strImaginaryFieldName = FieldName.substr(0, FieldName.size() - 2) + "im";
-    vtkDataArray* imagDdata = dset->GetPointData()->GetArray(strImaginaryFieldName.c_str());
-    if (!imagDdata) {
-        return;
-    }
-
-    // create a new array and copy over the real data
-    // since one cannot directly access the values of a vtkDataSet
-    // we need to copy them over in a loop
-    vtkSmartPointer<vtkDoubleArray> absoluteData = vtkSmartPointer<vtkDoubleArray>::New();
-    absoluteData->SetNumberOfComponents(realDdata->GetNumberOfComponents());
-    auto numTuples = realDdata->GetNumberOfTuples();
-    absoluteData->SetNumberOfTuples(numTuples);
-    double tuple[] = {0, 0, 0};
-    for (vtkIdType i = 0; i < numTuples; ++i) {
-        absoluteData->SetTuple(i, tuple);
-    }
-    // name the array
-    auto strAbsFieldName = FieldName.substr(0, FieldName.size() - 2) + "abs";
-    absoluteData->SetName(strAbsFieldName.c_str());
-
-    // add array to data set
-    dset->GetPointData()->AddArray(absoluteData);
-
-    // step through all mesh points and calculate them
-    double realValue = 0;
-    double imaginaryValue = 0;
-    double absoluteValue = 0;
-    for (int i = 0; i < dset->GetNumberOfPoints(); ++i) {
-        if (absoluteData->GetNumberOfComponents() == 1) {
-            realValue = realDdata->GetComponent(i, 0);
-            imaginaryValue = imagDdata->GetComponent(i, 0);
-            absoluteValue = sqrt(pow(realValue, 2) + pow(imaginaryValue, 2));
-            absoluteData->SetComponent(i, 0, absoluteValue);
-        }
-        // if field is a vector
-        else {
-            for (int j = 0; j < absoluteData->GetNumberOfComponents(); ++j) {
-                realValue = realDdata->GetComponent(i, j);
-                imaginaryValue = imagDdata->GetComponent(i, j);
-                absoluteValue = sqrt(pow(realValue, 2) + pow(imaginaryValue, 2));
-                absoluteData->SetComponent(i, j, absoluteValue);
-            }
         }
     }
 }

@@ -120,7 +120,7 @@ void ToolHandler::setSvgCursor(const QString& cursorName,
     //
     qreal pRatio = devicePixelRatio();
     bool isRatioOne = (pRatio == 1.0);
-    qreal defaultCursorSize = isRatioOne ? 64 : 32;
+    qreal cursorSize = isRatioOne ? 64 : 32;
     qreal hotX = x;
     qreal hotY = y;
 #if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
@@ -129,15 +129,13 @@ void ToolHandler::setSvgCursor(const QString& cursorName,
         hotY *= pRatio;
     }
 #endif
-    qreal cursorSize = defaultCursorSize * pRatio;
 
     QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(),
-                                                         QSizeF(cursorSize, cursorSize),
+                                                         QSizeF{cursorSize, cursorSize},
                                                          colorMapping);
     if (isRatioOne) {
         pointer = pointer.scaled(32, 32);
     }
-    pointer.setDevicePixelRatio(pRatio);
     setCursor(pointer, hotX, hotY, false);
 }
 

@@ -42,7 +42,7 @@
 #include "BitmapFactory.h"
 #include "Control.h"
 #include "Document.h"
-#include "SoFCCSysDragger.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
 #include "Inventor/SoFCPlacementIndicatorKit.h"
 #include "SoFCUnifiedSelection.h"
 #include "TaskCSysDragger.h"
@@ -53,6 +53,7 @@
 #include <ViewProviderLink.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
+#include <Inventor/So3DAnnotation.h>
 
 using namespace Gui;
 
@@ -61,11 +62,6 @@ PROPERTY_SOURCE(Gui::ViewProviderDragger, Gui::ViewProviderDocumentObject)
 ViewProviderDragger::ViewProviderDragger()
 {
     ADD_PROPERTY_TYPE(TransformOrigin, ({}), nullptr, App::Prop_Hidden, nullptr);
-    ADD_PROPERTY_TYPE(ShowPlacement,
-                      (false),
-                      "Display Options",
-                      App::Prop_None,
-                      "If true, placement of object is additionally rendered.");
 
     pcPlacement = new SoSwitch;
     pcPlacement->whichChild = SO_SWITCH_NONE;
@@ -107,16 +103,13 @@ void ViewProviderDragger::onChanged(const App::Property* property)
     if (property == &TransformOrigin) {
         updateDraggerPosition();
     }
-    else if (property == &ShowPlacement) {
-        pcPlacement->whichChild = ShowPlacement.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
-    }
 
     ViewProviderDocumentObject::onChanged(property);
 }
 
 TaskView::TaskDialog* ViewProviderDragger::getTransformDialog()
 {
-    return new TaskCSysDragger(this, csysDragger);
+    return new TaskCSysDragger(this, transformDragger);
 }
 
 bool ViewProviderDragger::doubleClicked()
@@ -186,17 +179,17 @@ bool ViewProviderDragger::setEdit(int ModNum)
         return true;
     }
 
-    assert(!csysDragger);
+    assert(!transformDragger);
 
-    csysDragger = new SoFCCSysDragger();
-    csysDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
+    transformDragger = new SoTransformDragger();
+    transformDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
                                Gui::ViewParams::instance()->getAxisYColor(),
                                Gui::ViewParams::instance()->getAxisZColor());
-    csysDragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
+    transformDragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
 
-    csysDragger->addStartCallback(dragStartCallback, this);
-    csysDragger->addFinishCallback(dragFinishCallback, this);
-    csysDragger->addMotionCallback(dragMotionCallback, this);
+    transformDragger->addStartCallback(dragStartCallback, this);
+    transformDragger->addFinishCallback(dragFinishCallback, this);
+    transformDragger->addMotionCallback(dragMotionCallback, this);
 
     Gui::Control().showDialog(getTransformDialog());
 
@@ -209,7 +202,7 @@ void ViewProviderDragger::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
 
-    csysDragger.reset();
+    transformDragger.reset();
 
     Gui::Control().closeDialog();
 }
@@ -218,14 +211,14 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
 {
     Q_UNUSED(ModNum);
 
-    if (csysDragger && viewer) {
-        csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+    if (transformDragger && viewer) {
+        transformDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
         auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject()) * getObjectPlacement().inverse();
         auto mat = originPlacement.toMatrix();
 
         viewer->getDocument()->setEditingTransform(mat);
-        viewer->setupEditingRoot(csysDragger, &mat);
+        viewer->setupEditingRoot(transformDragger, &mat);
     }
 }
 
@@ -238,7 +231,7 @@ void ViewProviderDragger::dragStartCallback(void* data, [[maybe_unused]] SoDragg
     auto vp = static_cast<ViewProviderDragger*>(data);
 
     vp->draggerPlacement = vp->getDraggerPlacement();
-    vp->csysDragger->clearIncrementCounts();
+    vp->transformDragger->clearIncrementCounts();
 }
 
 void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDragger* d)
@@ -247,7 +240,7 @@ void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDrag
     auto vp = static_cast<ViewProviderDragger*>(data);
 
     vp->draggerPlacement = vp->getDraggerPlacement();
-    vp->csysDragger->clearIncrementCounts();
+    vp->transformDragger->clearIncrementCounts();
 
     vp->updatePlacementFromDragger();
 }
@@ -289,10 +282,10 @@ Base::Placement ViewProviderDragger::getObjectPlacement() const
 
 Base::Placement ViewProviderDragger::getDraggerPlacement() const
 {
-    const double translationStep = csysDragger->translationIncrement.getValue();
-    const int xSteps = csysDragger->translationIncrementCountX.getValue();
-    const int ySteps = csysDragger->translationIncrementCountY.getValue();
-    const int zSteps = csysDragger->translationIncrementCountZ.getValue();
+    const double translationStep = transformDragger->translationIncrement.getValue();
+    const int xSteps = transformDragger->translationIncrementCountX.getValue();
+    const int ySteps = transformDragger->translationIncrementCountY.getValue();
+    const int zSteps = transformDragger->translationIncrementCountZ.getValue();
 
     const auto rotation = draggerPlacement.getRotation();
     const auto xBase = rotation.multVec(Base::Vector3d(1, 0, 0));
@@ -304,10 +297,10 @@ Base::Placement ViewProviderDragger::getDraggerPlacement() const
         yBase * (translationStep * ySteps) +
         zBase * (translationStep * zSteps);
 
-    const double rotationStep = csysDragger->rotationIncrement.getValue();
-    const int xRotationSteps = csysDragger->rotationIncrementCountX.getValue();
-    const int yRotationSteps = csysDragger->rotationIncrementCountY.getValue();
-    const int zRotationSteps = csysDragger->rotationIncrementCountZ.getValue();
+    const double rotationStep = transformDragger->rotationIncrement.getValue();
+    const int xRotationSteps = transformDragger->rotationIncrementCountX.getValue();
+    const int yRotationSteps = transformDragger->rotationIncrementCountY.getValue();
+    const int zRotationSteps = transformDragger->rotationIncrementCountZ.getValue();
 
     auto newRotation = rotation;
     newRotation = newRotation * Base::Rotation(Base::Vector3d(1, 0, 0), xRotationSteps * rotationStep);
@@ -327,11 +320,11 @@ Base::Placement ViewProviderDragger::getOriginalDraggerPlacement() const
 
 void ViewProviderDragger::setDraggerPlacement(const Base::Placement& placement)
 {
-    csysDragger->translation.setValue(Base::convertTo<SbVec3f>(placement.getPosition()));
-    csysDragger->rotation.setValue(Base::convertTo<SbRotation>(placement.getRotation()));
+    transformDragger->translation.setValue(Base::convertTo<SbVec3f>(placement.getPosition()));
+    transformDragger->rotation.setValue(Base::convertTo<SbRotation>(placement.getRotation()));
 
     draggerPlacement = placement;
-    csysDragger->clearIncrementCounts();
+    transformDragger->clearIncrementCounts();
 }
 
 void ViewProviderDragger::attach(App::DocumentObject* pcObject)
@@ -341,12 +334,16 @@ void ViewProviderDragger::attach(App::DocumentObject* pcObject)
     getAnnotation()->addChild(pcPlacement);
 
     auto* pcAxisCrossKit = new Gui::SoFCPlacementIndicatorKit();
-    pcPlacement->addChild(pcAxisCrossKit);
+
+    auto* pcAnnotation = new So3DAnnotation();
+    pcAnnotation->addChild(pcAxisCrossKit);
+
+    pcPlacement->addChild(pcAnnotation);
 }
 
 void ViewProviderDragger::updateDraggerPosition()
 {
-    if (!csysDragger) {
+    if (!transformDragger) {
         return;
     }
 

@@ -32,6 +32,7 @@
 # include <QImageReader>
 # include <QPainter>
 # include <QPalette>
+# include <QScreen>
 # include <QString>
 # include <QSvgRenderer>
 # include <QStyleOption>
@@ -277,6 +278,8 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
 QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
                                          const ColorMap& colorMapping) const
 {
+    static qreal dpr = getMaximumDPR();
+    
     // If an absolute path is given
     QPixmap icon;
     QString iconPath;
@@ -304,21 +307,15 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
         QFile file(iconPath);
         if (file.open(QFile::ReadOnly | QFile::Text)) {
             QByteArray content = file.readAll();
-            icon = pixmapFromSvg(content, size, colorMapping);
+            icon = pixmapFromSvg(content, size * dpr, colorMapping);
         }
     }
 
-    return icon;
-}
+    if (!icon.isNull()) {
+        icon.setDevicePixelRatio(dpr);
+    }
 
-QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size, qreal dpr,
-                                         const ColorMap& colorMapping) const
-{
-    qreal width = size.width() * dpr;
-    qreal height = size.height() * dpr;
-    QPixmap px(pixmapFromSvg(name, QSizeF(width, height), colorMapping));
-    px.setDevicePixelRatio(dpr);
-    return px;
+    return icon;
 }
 
 QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, const QSizeF& size,
@@ -676,4 +673,15 @@ QIcon BitmapFactoryInst::mergePixmap (const QIcon &base, const QPixmap &px, Gui:
                                                        px,position), QIcon::Normal, QIcon::Off);
 
     return overlayedIcon;
+}
+
+qreal BitmapFactoryInst::getMaximumDPR()
+{
+    qreal dpr = 1.0F;
+
+    for (QScreen* screen: QGuiApplication::screens()) {
+        dpr = std::max(screen->devicePixelRatio(), dpr);
+    }
+
+    return dpr;
 }

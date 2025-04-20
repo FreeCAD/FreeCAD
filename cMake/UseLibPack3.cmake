@@ -27,6 +27,12 @@ endif()
 find_package(XercesC REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 XercesC ${XercesC_VERSION}")
 
+if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.1.1")
+    set(FREECAD_USE_EXTERNAL_E57FORMAT ON)
+    find_package(E57Format REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake/e57format NO_DEFAULT_PATH)
+    message(STATUS "Found LibPack 3 e57format ${e57format_VERSION}")
+endif()
+
 find_package(yaml-cpp REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 yaml-cpp ${yaml-cpp_VERSION}")
 

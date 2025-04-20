@@ -45,17 +45,15 @@ public:
     void setPen(QPen pen) { m_pen = pen; }
     QPen getPen()  { return m_pen; }
     void setParent(QGraphicsItem* parent) { m_parent = parent; }
-
+   
     void lineSetToFillItems(TechDraw::LineSet& ls);
 
 protected:
     QGraphicsPathItem* geomToLine(TechDraw::BaseGeomPtr base, TechDraw::LineSet& ls);
     QGraphicsPathItem* simpleLine(TechDraw::BaseGeomPtr base);
-    QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeomPtr base, double offset, TechDraw::LineSet& ls);
     QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, TechDraw::DashSpec ds);
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
-    double dashRemain(const std::vector<double> dv, const double offset);
     double calcOffset(TechDraw::BaseGeomPtr g, TechDraw::LineSet ls);
     std::vector<double> decodeDashSpec(TechDraw::DashSpec d);
 

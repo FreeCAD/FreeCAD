@@ -24,12 +24,14 @@
 #ifndef _PreComp_
 #include <QMessageBox>
 #include <gp_Pnt.hxx>
+#include <numbers>
 #endif// #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -193,7 +195,7 @@ void TaskComplexSection::setUiEdit()
         ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
         Base::Vector3d projectedViewDirection = m_baseView->projectPoint(sectionNormalVec, false);
         double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
-        m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+        m_compass->setDialAngle(Base::toDegrees(viewAngle));
         m_viewDirectionWidget->setValueNoNotify(projectedViewDirection * -1.0);
     }
     else {
@@ -308,7 +310,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
     }
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+    m_compass->setDialAngle(Base::toDegrees(viewAngle));
     checkAll(false);
     applyAligned();
 }
@@ -318,7 +320,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
 void TaskComplexSection::slotChangeAngle(double newAngle)
 {
     //    Base::Console().Message("TCS::slotAngleChanged(%.3f)\n", newAngle);
-    double angleRadians = newAngle * M_PI / 180.0;
+    double angleRadians = Base::toRadians(newAngle);
     double unitX = cos(angleRadians);
     double unitY = sin(angleRadians);
     Base::Vector3d localUnit(unitX, unitY, 0.0);

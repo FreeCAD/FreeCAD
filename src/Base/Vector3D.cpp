@@ -23,8 +23,11 @@
 
 #include "PreCompiled.h"
 
-#include <cmath>
+#ifndef _PreComp_
 #include <limits>
+#endif
+
+#include <cmath>
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #include "Vector3D.h"

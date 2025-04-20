@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Support file to show FreeCAD thumbnails on Free Desktop Environments (like GNOME or KDE)
 
 Installation:

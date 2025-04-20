@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <iomanip>
+# include <limits>
 # include <sstream>
 
 #include <Bnd_Box.hxx>
@@ -52,6 +53,7 @@
 #include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "DrawGeomHatch.h"
 #include "DrawGeomHatchPy.h" // generated from DrawGeomHatchPy.xml
@@ -385,6 +387,8 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 /* static */
 std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox, double scale, double rotation)
 {
+    using std::numbers::pi;
+
     const size_t MaxNumberOfEdges = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
 
     std::vector<TopoDS_Edge> result;
@@ -399,12 +403,13 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, B
     double interval = hatchLine.getInterval() * scale;
     double offset = hatchLine.getOffset() * scale;
     double angle = hatchLine.getAngle() + rotation;
-    origin.RotateZ(rotation * M_PI / 180.);
+    origin.RotateZ(Base::toRadians(rotation));
 
     if (scale == 0. || interval == 0.)
         return {};
 
-    Base::Vector3d hatchDirection(cos(angle * M_PI / 180.), sin(angle * M_PI / 180.), 0.);
+    const double hatchAngle = Base::toRadians(angle);
+    Base::Vector3d hatchDirection(cos(hatchAngle), sin(hatchAngle), 0.);
     Base::Vector3d hatchPerpendicular(-hatchDirection.y, hatchDirection.x, 0.);
     Base::Vector3d hatchIntervalAndOffset = offset * hatchDirection + interval * hatchPerpendicular;
 

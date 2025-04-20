@@ -462,7 +462,7 @@ void ImpExpDxfRead::ExpandInsert(const std::string& name,
                                  double rotation,
                                  const Base::Vector3d& scale)
 {
-    if (Blocks.count(name) == 0) {
+    if (!Blocks.contains(name)) {
         ImportError("Reference to undefined or external block '%s'\n", name);
         return;
     }
@@ -607,15 +607,14 @@ ImpExpDxfRead::Layer::Layer(const std::string& name,
                             std::string&& lineType,
                             PyObject* drawingLayer)
     : CDxfRead::Layer(name, color, std::move(lineType))
-    , DraftLayerView(drawingLayer == nullptr ? nullptr
+    , DraftLayerView(drawingLayer == nullptr ? Py_None
                                              : PyObject_GetAttrString(drawingLayer, "ViewObject"))
-    , GroupContents(
-          drawingLayer == nullptr
-              ? nullptr
-              : (App::PropertyLinkListHidden*)(((App::FeaturePythonPyT<App::DocumentObjectPy>*)
-                                                    drawingLayer)
-                                                   ->getPropertyContainerPtr())
-                    ->getDynamicPropertyByName("Group"))
+    , GroupContents(drawingLayer == nullptr
+                        ? nullptr
+                        : dynamic_cast<App::PropertyLinkListHidden*>(
+                              (((App::FeaturePythonPyT<App::DocumentObjectPy>*)drawingLayer)
+                                   ->getPropertyContainerPtr())
+                                  ->getDynamicPropertyByName("Group")))
 {}
 ImpExpDxfRead::Layer::~Layer()
 {
@@ -631,7 +630,7 @@ void ImpExpDxfRead::Layer::FinishLayer() const
         // App::FeaturePython, and its Proxy is a draftobjects.layer.Layer
         GroupContents->setValue(Contents);
     }
-    if (DraftLayerView != nullptr && Hidden) {
+    if (DraftLayerView != Py_None && Hidden) {
         // Hide the Hidden layers if possible (if GUI exists)
         // We do this now rather than when the layer is created so all objects
         // within the layers also become hidden.
@@ -672,7 +671,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
                                                          "Solid");
         }
         auto result = new Layer(name, color, std::move(lineType), layer);
-        if (result->DraftLayerView != nullptr) {
+        if (result->DraftLayerView != Py_None) {
             PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", Py_False);
             PyObject_SetAttrString(result->DraftLayerView,
                                    "OverrideShapeAppearanceChildren",
@@ -977,8 +976,8 @@ void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
     // rotation appears to be the clockwise(?) angle between major & +Y??
     double rotation = xaxis.AngleWithRef(gp_Dir(0, 1, 0), gp_Dir(0, 0, 1));
 
-    // 2*M_PI = 6.28319 is invalid(doesn't display in LibreCAD), but 2PI = 6.28318 is valid!
-    // writeEllipse(center, major, minor, rotation, 0.0, 2 * M_PI, true );
+    // 2*pi = 6.28319 is invalid(doesn't display in LibreCAD), but 2PI = 6.28318 is valid!
+    // writeEllipse(center, major, minor, rotation, 0.0, 2 * std::numbers::pi, true );
     writeEllipse(center, major, minor, rotation, 0.0, 6.28318, true);
 }
 
@@ -1036,8 +1035,8 @@ void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
                                      // a > 0 ==> v2 is CCW from v1 (righthanded)?
                                      // a < 0 ==> v2 is CW from v1 (lefthanded)?
 
-    double startAngle = fmod(f, 2.0 * M_PI);  // revolutions
-    double endAngle = fmod(l, 2.0 * M_PI);
+    double startAngle = fmod(f, 2.0 * std::numbers::pi);  // revolutions
+    double endAngle = fmod(l, 2.0 * std::numbers::pi);
     bool endIsCW = (a < 0) ? true : false;  // if !endIsCW swap(start,end)
     // not sure if this is a hack or not. seems to make valid arcs.
     if (!endIsCW) {

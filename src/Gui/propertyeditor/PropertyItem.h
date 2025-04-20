@@ -130,6 +130,12 @@ class GuiExport PropertyItem: public QObject, public ExpressionBinding
     PROPERTYITEM_HEADER
 
 public:
+    enum Column {
+        NameColumn = 0,
+        ValueColumn = 1,
+        ColumnCount
+    };
+
     ~PropertyItem() override;
 
     /** Sets the current property objects. */
@@ -216,7 +222,7 @@ protected:
     void onChange() override;
 
 private:
-    QVariant dataProperty(int role) const;
+    QVariant dataPropertyName(int role) const;
     QVariant dataValue(int role) const;
     QString toString(const Py::Object&) const;
     QString asNone(const Py::Object&) const;
@@ -360,8 +366,8 @@ protected:
     PropertyIntegerConstraintItem();
 
 private:
-    int min = INT_MIN;
-    int max = INT_MAX;
+    int min = std::numeric_limits<int>::min();
+    int max = std::numeric_limits<int>::max();
     int steps = 1;
 };
 
@@ -434,8 +440,8 @@ protected:
     PropertyUnitConstraintItem();
 
 private:
-    double min = double(INT_MIN);
-    double max = double(INT_MAX);
+    double min = static_cast<double>(std::numeric_limits<int>::min());
+    double max = static_cast<double>(std::numeric_limits<int>::max());
     double steps = 0.1;
 };
 
@@ -472,8 +478,8 @@ protected:
     PropertyFloatConstraintItem();
 
 private:
-    double min = double(INT_MIN);
-    double max = double(INT_MAX);
+    double min = static_cast<double>(std::numeric_limits<int>::min());
+    double max = static_cast<double>(std::numeric_limits<int>::max());
     double steps = 0.1;
 };
 

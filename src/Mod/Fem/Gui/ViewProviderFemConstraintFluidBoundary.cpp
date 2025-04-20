@@ -145,8 +145,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
 
             for (const auto& point : points) {
                 SbVec3f base(point.x, point.y, point.z);
-                if (forceDirection.GetAngle(normal)
-                    < M_PI_2) {  // Move arrow so it doesn't disappear inside the solid
+                if (forceDirection.GetAngle(normal) < std::numbers::pi
+                        / 2) {  // Move arrow so it doesn't disappear inside the solid
                     base = base + dir * scaledlength;  // OvG: Scaling
                 }
 #ifdef USE_MULTIPLE_COPY
@@ -191,7 +191,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
 
             for (const auto& point : points) {
                 SbVec3f base(point.x, point.y, point.z);
-                if (forceDirection.GetAngle(normal) < M_PI_2) {
+                if (forceDirection.GetAngle(normal) < std::numbers::pi / 2) {
                     base = base + dir * scaledlength;  // OvG: Scaling
                 }
 #ifdef USE_MULTIPLE_COPY

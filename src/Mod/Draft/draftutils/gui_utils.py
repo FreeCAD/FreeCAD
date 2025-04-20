@@ -373,16 +373,16 @@ def get_diffuse_color(objs):
                 if obj.ColoredElements is None:
                     return cols
                 face_num = len(base.Shape.Faces)
-                for elm, overide in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
                     if "Face" in elm: # Examples: "Face3" and "1.Face6". Int before "." is zero-based, other int is 1-based.
                         if "." in elm:
                             elm0, elm1 = elm.split(".")
                             i = (int(elm0) * face_num) + int(elm1[4:]) - 1
-                            cols[i] = overide
+                            cols[i] = override
                         else:
                             i = int(elm[4:]) - 1
                             for j in range(count):
-                                cols[(j * face_num) + i] = overide
+                                cols[(j * face_num) + i] = override
                 return cols
             elif hasattr(obj, "ElementList"):
                 # LinkGroup
@@ -392,10 +392,10 @@ def get_diffuse_color(objs):
                     if obj.ColoredElements is None:
                         cols += sub_cols
                     else:
-                        for elm, overide in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                        for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
                             if sub.Name + ".Face" in elm:
                                 i = int(elm[(len(sub.Name) + 5):]) - 1
-                                sub_cols[i] = overide
+                                sub_cols[i] = override
                         cols += sub_cols
                 return cols
             else:

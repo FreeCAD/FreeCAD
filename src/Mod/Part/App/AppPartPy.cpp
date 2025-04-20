@@ -1622,7 +1622,8 @@ private:
     }
     Py::Object makeRevolution(const Py::Tuple& args)
     {
-        double vmin = DBL_MAX, vmax=-DBL_MAX;
+        constexpr double doubleMax = std::numeric_limits<double>::max();
+        double vmin = doubleMax, vmax=-doubleMax;
         double angle=360;
         PyObject *pPnt=nullptr, *pDir=nullptr, *pCrv;
         Handle(Geom_Curve) curve;
@@ -1641,10 +1642,10 @@ private:
                 if (curve.IsNull()) {
                     throw Py::Exception(PyExc_TypeError, "geometry is not a curve");
                 }
-                if (vmin == DBL_MAX)
+                if (vmin == doubleMax)
                     vmin = curve->FirstParameter();
 
-                if (vmax == -DBL_MAX)
+                if (vmax == -doubleMax)
                     vmax = curve->LastParameter();
                 break;
             }
@@ -1675,9 +1676,9 @@ private:
                     throw Py::Exception(PartExceptionOCCError, "invalid curve in edge");
                 }
 
-                if (vmin == DBL_MAX)
+                if (vmin == doubleMax)
                     vmin = adapt.FirstParameter();
-                if (vmax == -DBL_MAX)
+                if (vmax == -doubleMax)
                     vmax = adapt.LastParameter();
                 break;
             }

@@ -103,12 +103,7 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy() const
     auto cpy = std::make_unique<SketchGeometryExtension>();
 
     copyAttributes(cpy.get());
-
-#if defined(__GNUC__) && (__GNUC__ <= 4)
-    return std::move(cpy);
-#else
     return cpy;
-#endif
 }
 
 PyObject* SketchGeometryExtension::getPyObject()

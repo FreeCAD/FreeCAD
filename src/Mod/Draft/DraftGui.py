@@ -156,6 +156,7 @@ class DraftToolBar:
         self.paramconstr = utils.rgba_to_argb(params.get_param("constructioncolor"))
         self.constrMode = False
         self.continueMode = False
+        self.chainedMode = False
         self.relativeMode = True
         self.globalMode = False
         self.state = None
@@ -390,7 +391,11 @@ class DraftToolBar:
         self.relativeMode = params.get_param("RelativeMode")
         self.globalMode = params.get_param("GlobalMode")
         self.makeFaceMode = params.get_param("MakeFaceMode")
-        self.continueMode = params.get_param("ContinueMode")
+
+        feature_name = getattr(FreeCAD.activeDraftCommand, "featureName", None)
+        self.continueMode = params.get_param(feature_name, "Mod/Draft/ContinueMode", silent=True)
+
+        self.chainedMode = params.get_param("ChainedMode")
 
         # Note: The order of the calls to self._checkbox() below controls
         #       the position of the checkboxes in the task panel.
@@ -399,7 +404,11 @@ class DraftToolBar:
         self.isRelative = self._checkbox("isRelative", self.layout, checked=self.relativeMode)
         self.isGlobal = self._checkbox("isGlobal", self.layout, checked=self.globalMode)
         self.makeFace = self._checkbox("makeFace", self.layout, checked=self.makeFaceMode)
-        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=self.continueMode)
+        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=bool(self.continueMode))
+        self.chainedModeCmd = self._checkbox("chainedModeCmd", self.layout, checked=self.chainedMode)
+
+        self.chainedModeCmd.setEnabled(not (hasattr(self.sourceCmd, "contMode") and self.continueMode))
+        self.continueCmd.setEnabled(not (hasattr(self.sourceCmd, "chain") and self.chainedMode))
 
         # update checkboxes without parameters and without internal modes:
         self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
@@ -449,6 +458,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
         QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
 
         QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
         QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
@@ -549,6 +559,9 @@ class DraftToolBar:
                      + "the command button again"))
         self.continueCmd.setText(translate(
             "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
+        self.chainedModeCmd.setText(translate("draft", "Chained Mode"))
+        self.chainedModeCmd.setToolTip(translate("draft", "If checked, next Dimension will be placed in a chain" \
+                                       " with the previously placed Dimension"))
         self.occOffset.setToolTip(translate(
             "draft", "If checked, an OCC-style offset will be performed"
                      + " instead of the classic offset"))
@@ -920,8 +933,14 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def setContinue(self, val):
-        params.set_param("ContinueMode", bool(val))
+        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(val), "Mod/Draft/ContinueMode")
         self.continueMode = bool(val)
+        self.chainedModeCmd.setEnabled(not val)
+
+    def setChainedMode(self, val):
+        params.set_param("ChainedMode", bool(val))
+        self.chainedMode = bool(val)
+        self.continueCmd.setEnabled(not val)
 
     # val=-1 is used to temporarily switch to relativeMode and disable the checkbox.
     # val=-2 is used to switch back.

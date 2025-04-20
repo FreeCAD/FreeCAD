@@ -37,7 +37,15 @@ def compareFiles(file1, file2):
 class TemplateClassPyExport(template.ModelTemplate):
     # TODO: This is temporary, once all XML files are migrated, this can be removed.
     def getPath(self, path):
-        if self.is_python and not self.export.ModuleName in ["Base", "App", "Gui", "PartDesign"]:
+        if self.is_python and not self.export.ModuleName in [
+            "Base",
+            "App",
+            "Gui",
+            "Part",
+            "PartDesign",
+            "Material",
+            "Sketcher",
+        ]:
             root, ext = os.path.splitext(path)
             return f"{root}_{ext}"
         return path
@@ -115,6 +123,7 @@ class TemplateClassPyExport(template.ModelTemplate):
 #ifndef @self.export.Namespace.upper().replace("::", "_")@_@self.export.Name.upper()@_H
 #define @self.export.Namespace.upper().replace("::", "_")@_@self.export.Name.upper()@_H
 
+#include <CXX/Objects.hxx>
 #include <@self.export.FatherInclude@>
 #include <@self.export.Include@>
 #include <string>
