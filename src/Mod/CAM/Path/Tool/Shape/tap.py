@@ -7,29 +7,30 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeTap(ToolBitShape):
-    aliases: Tuple[str, ...] = ("tap",)
-    _LABELS = {
-        "CuttingEdgeLength": "Cutting edge length",
-        "Diameter": "Tap Diameter",
-        "Length": "Overall Length of Tap",
-        "ShankDiameter": "Shank Diameter",
-        "TipAngle": "Tip Angle",
+    name = "tap"
+    _schema = {
+        "CuttingEdgeLength": 'App::PropertyLength',
+        "Diameter": 'App::PropertyLength',
+        "Length": 'App::PropertyLength',
+        "ShankDiameter": 'App::PropertyLength',
+        "TipAngle": 'App::PropertyAngle',
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._labels = {
+            "CuttingEdgeLength": FreeCAD.Qt.translate(
+                "ToolBitShapeTap", "Cutting edge length"),
+            "Diameter": FreeCAD.Qt.translate(
+                "ToolBitShapeTap", "Tap Diameter"),
+            "Length": FreeCAD.Qt.translate(
+                "ToolBitShapeTap", "Overall Length of Tap"),
+            "ShankDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeTap", "Shank Diameter"),
+            "TipAngle": FreeCAD.Qt.translate(
+                "ToolBitShapeTap", "Tip Angle"),
+        }
 
     @property
     def label(self) -> str:
-        return "Tap"  # TODO translatable
-
-    def set_default_parameters(self):
-        self._params = {
-            "CuttingEdgeLength": (FreeCAD.Units.Quantity("15 mm"),
-                                  'App::PropertyLength'),
-            "Diameter": (FreeCAD.Units.Quantity("6 mm"),
-                         'App::PropertyLength'),
-            "Length": (FreeCAD.Units.Quantity("60 mm"),
-                       'App::PropertyLength'),
-            "ShankDiameter": (FreeCAD.Units.Quantity("6 mm"),
-                               'App::PropertyLength'),
-            "TipAngle": (FreeCAD.Units.Quantity("90 deg"),
-                         'App::PropertyAngle'),
-        }
+        return FreeCAD.Qt.translate("ToolBitShapeTap", "Tap")

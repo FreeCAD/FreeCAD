@@ -2,84 +2,85 @@
 # This file defines the abstract base class for representing CAM tool bit shapes.
 
 import abc
-import os
 import pathlib
 import FreeCAD
-from typing import Dict, List, Any, Optional, Type, Tuple
-from .util import (
+from typing import Dict, List, Any, Optional, Tuple
+from .doc import (
     find_shape_object,
+    find_property_object,
+    get_doc_state,
     get_object_properties,
-    load_doc_and_get_properties,
-    find_shape_file,
+    restore_doc_state,
     update_shape_object_properties,
+    ShapeDocFromBytes,
 )
 
 
 class ToolBitShape(abc.ABC):
     """Abstract base class for tool bit shapes."""
 
-    # Subclasses must define this dictionary mapping internal param names
-    # to user-facing labels, for translatability.
-    _LABELS: Dict[str, str] = {}
-
-    # Define a tuple of aliases. The first alias is used as a base for the
-    # default filename. E.g. if the alias is "endmill", then by default the
+    # Define name and a tuple of aliases. The name is used as a base for the
+    # default filename. E.g. if the name is "endmill", then by default the
     # file is "endmill.fcstd"
-    aliases: Tuple[str, ...]
+    name: str
+    aliases: Tuple[str, ...] = tuple()
 
-    def __init__(self, **kwargs):
+    # Subclasses must define this dictionary mapping parameter names to
+    # FreeCAD property type strings (e.g., 'App::PropertyLength').
+    _schema: Dict[str, str] = {}
+
+    def __init__(self, filepath: pathlib.Path, **kwargs: Any):
         """
         Initialize the shape.
 
         Args:
-            **kwargs: Keyword arguments for shape parameters (e.g., Diameter=...).
+            filepath: Path to an FCStd file to load the shape
+            **kwargs: Keyword arguments for shape parameters (e.g., Diameter).
                       Values should be FreeCAD.Units.Quantity where applicable.
         """
-        # Use the first alias for the filename
-        default_filename = self.aliases[0] + '.fcstd'
-        self.filepath = find_shape_file(default_filename)
+        # Subclasses must define this dictionary mapping internal param names
+        # to user-facing labels, for translatability.
+        self._labels: Dict[str, str] = {}
 
-        # Store parameters as {name: (value, property_type_string)}
-        self._params: Dict[str, Tuple[Any, Optional[str]]] = {}
-        self.set_default_parameters()  # Initialize with defaults first
-        self.set_parameters(**kwargs)  # Override with provided values
+        # _params will be populated with default values after loading
+        self._params: Dict[str, Any] = {}
+
+        # Stores default parameter values loaded from the FCStd file
+        self._defaults: Dict[str, Any] = {}
+
+        # Cache for the loaded FreeCAD document content for this instance
+        self._cache: Optional[bytes] = None
+
+        # Assign parameters and load the file
+        self.load_file(filepath)
+        for param, value in kwargs.items():
+            self.set_parameter(param, value)
 
     @property
     def label(self) -> str:
         """Return a user friendly, translatable display name."""
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def set_default_parameters(self):
-        """
-        Initialize the expected parameters for this shape type with defaults.
-        Subclasses must implement this to define their specific parameters.
-        Store parameters in self._params as {name: (default_value, property_type_string)}.
-        Use FreeCAD.Units.Quantity for dimensional values and the corresponding
-        FreeCAD property type string (e.g., 'App::PropertyLength').
-        """
-        pass
+    def reset_parameters(self):
+        """Reset parameters to their default values."""
+        self._params.update(self._defaults)
 
     def get_parameter_label(self, param_name: str) -> str:
         """
         Get the user-facing label for a given parameter name.
-        Uses the _LABELS dictionary defined in the subclass.
+        Uses the _labels dictionary defined in the subclass.
         """
         str_param_name = str(param_name)
-        label = self._LABELS.get(str_param_name)
+        label = self._labels.get(str_param_name)
         # Return the found label or the param_name itself if not found
         return label if label is not None else str_param_name
 
     def get_parameter_property_type(self, param_name: str) -> Optional[str]:
         """
         Get the FreeCAD property type string for a given parameter name.
-        Retrieves the stored property type from the _params dictionary.
+        Retrieves the stored property type from the class-level _schema.
         """
-        if param_name not in self._params:
-            return None
-
-        # Return the stored property type string
-        return self._params[param_name][1]
+        return self._schema.get(param_name)
 
     def get_parameters(self) -> Dict[str, Any]:
         """
@@ -88,8 +89,7 @@ class ToolBitShape(abc.ABC):
         Returns:
             dict: A dictionary mapping parameter names to their values.
         """
-        # Return only the values, not the types
-        return {name: value for name, (value, _) in self._params.items()}
+        return self._params
 
     def get_parameter(self, name: str) -> Any:
         """
@@ -106,8 +106,7 @@ class ToolBitShape(abc.ABC):
         """
         if name not in self._params:
             raise KeyError(f"Shape '{self.name}' has no parameter '{name}'")
-        # Return only the value
-        return self._params[name][0]
+        return self._params[name]
 
     def set_parameter(self, name: str, value: Any):
         """
@@ -121,39 +120,12 @@ class ToolBitShape(abc.ABC):
         Raises:
             KeyError: If the parameter name is not valid for this shape.
         """
-        if name not in self._params:
-            # Allow setting if it's a known label's internal name? No, strict.
-            raise KeyError(f"Shape '{self.name}' has no parameter '{name}'")
-
-        # Get the original type information
-        original_value, prop_type = self._params[name]
-
-        # If the original value was a Quantity and the new value is a string,
-        # attempt to convert the string to a Quantity.
-        if isinstance(original_value, FreeCAD.Units.Quantity) and isinstance(value, str):
-            try:
-                value = FreeCAD.Units.Quantity(value)
-            except Exception as e:
-                FreeCAD.Console.PrintWarning(
-                    f"Could not convert string value '{value}' to Quantity for "
-                    f"parameter '{name}' in shape '{self.name}': {e}. "
-                    "Using raw string value.\n"
-                )
-                # Continue with the raw string value if conversion fails
-
-        # Check if the type of the new value matches the type of the original value
-        # This provides basic type consistency, especially for Quantity types.
-        # We compare against the type of the original value, not the stored type string.
-        # Only warn if the original value was not None and the types don't match
-        if original_value is not None and not isinstance(value, type(original_value)):
-            FreeCAD.Console.PrintWarning(
-                f"Setting parameter '{name}' for shape '{self.name}' with "
-                f"incompatible type. Expected {type(original_value)}, "
-                f"got {type(value)}.\n"
+        if name not in self._params.keys():
+            FreeCAD.Console.PrintError(
+                f"Shape '{self.name}' was given an invalid parameter '{name}'. Has {self._params}"
             )
 
-        # Update the value, keeping the original property type
-        self._params[name] = value, prop_type
+        self._params[name] = value
 
     def set_parameters(self, **kwargs):
         """
@@ -177,23 +149,18 @@ class ToolBitShape(abc.ABC):
     def get_expected_parameter_names(cls) -> List[str]:
         """
         Get a list of parameter names expected by this shape class based on
-        its default parameters.
+        its schema.
 
         Returns:
             list[str]: List of parameter names.
         """
-        # Instantiate temporarily to access set_default_parameters logic
-        temp_instance = cls.__new__(cls)
-        # Initialize the _params dictionary for the temporary instance
-        temp_instance._params = {}
-        temp_instance.set_default_parameters()
-        return list(temp_instance._params.keys())
+        return list(cls._schema.keys())
 
     @classmethod
-    def validate(cls, filepath: pathlib.Path) -> bool:
+    def validate(cls, filepath: pathlib.Path) -> Optional[str]:
         """
         Check if an FCStd file contains a suitable object with all the
-        expected parameters for this shape class.
+        expected parameters for this shape class based on the class schema.
 
         Args:
             filepath (pathlib.Path): Path to the .FCStd file.
@@ -203,131 +170,54 @@ class ToolBitShape(abc.ABC):
         """
         doc = None
         try:
-            if not os.path.exists(filepath):
-                FreeCAD.Console.PrintError(f"Validation Error: File not found: {filepath}\n")
-                return False
+            if not filepath.exists():
+                err = f"Validation Error: File not found: {filepath}"
+                FreeCAD.Console.PrintError(err+"\n")
+                return err
 
-            doc = FreeCAD.openDocument(filepath, Hidden=True)
+            doc = FreeCAD.openDocument(str(filepath), hidden=True)
             if not doc:
-                FreeCAD.Console.PrintError(f"Validation Error: Failed to open document: {filepath}\n")
-                return False
+                err = f"Validation Error: Failed to open document: {filepath}"
+                FreeCAD.Console.PrintError(err+"\n")
+                return err
 
-            shape_obj = find_shape_object(doc)
-            if not shape_obj:
-                FreeCAD.Console.PrintError(
-                    f"Validation Error: No suitable shape object found in {filepath}\n"
-                )
-                return False
+            property_obj = find_property_object(doc)
+            if not property_obj:
+                err = f"Validation Error: No suitable property_obj object found in {filepath}"
+                FreeCAD.Console.PrintError(err+"\n")
+                return err
 
             expected_params = cls.get_expected_parameter_names()
-            # Use the updated get_object_properties that returns values and types
-            loaded_params_with_types = get_object_properties(shape_obj, expected_params)
+            loaded_params = get_object_properties(property_obj, expected_params)
 
-            missing_params = []
-            type_mismatches = []
-            # Instantiate temporarily to get default parameters with types
-            temp_instance = cls.__new__(cls)
-            temp_instance._params = {} # Initialize _params for the temp instance
-            temp_instance.set_default_parameters()
-            default_params_with_types = temp_instance._params
+            missing_params = [
+                name for name in expected_params
+                if name not in loaded_params or loaded_params[name] is None
+            ]
 
-
-            for name in expected_params:
-                loaded_tuple = loaded_params_with_types.get(name, (None, None))
-                loaded_value, loaded_prop_type = loaded_tuple
-
-                default_tuple = default_params_with_types.get(name, (None, None))
-                default_value, expected_prop_type = default_tuple
-
-
-                if loaded_value is None and loaded_prop_type is None:
-                     missing_params.append(name)
-                else:
-                    # Compare loaded type with expected default type
-                    if expected_prop_type is not None and loaded_prop_type != expected_prop_type:
-                         type_mismatches.append(
-                             f"{name} (Expected Type: {expected_prop_type}, Got Type: {loaded_prop_type})"
-                         )
-                    # Also check value type consistency if default value exists
-                    elif default_value is not None and not isinstance(loaded_value, type(default_value)):
-                         type_mismatches.append(
-                             f"{name} (Expected Value Type: {type(default_value)}, Got Value Type: {type(loaded_value)})"
-                         )
-
-
-            if missing_params or type_mismatches:
-                if missing_params:
-                    FreeCAD.Console.PrintWarning(
-                        f"Validation Warning: Object '{shape_obj.Label}' in {filepath} "
-                        f"is missing parameters for {cls.__name__}: {', '.join(missing_params)}\n"
-                    )
-                if type_mismatches:
-                     FreeCAD.Console.PrintWarning(
-                        f"Validation Warning: Object '{shape_obj.Label}' in "
-                        f"{filepath} has type mismatches for {cls.__name__}: "
-                        f"{', '.join(type_mismatches)}\n"
-                    )
-                return False
-
-            return True
+            if missing_params:
+                err = f"Validation Warning: Object '{property_obj.Label}' in {filepath} " \
+                    + f"is missing parameters for {cls.__name__}: {', '.join(missing_params)}"
+                FreeCAD.Console.PrintError(err+"\n")
+                return err
 
         except Exception as e:
-            FreeCAD.Console.PrintError(f"Validation Error for {filepath}: {e}\n")
-            return False
+            err = f"Validation Error for {filepath}: {e}"
+            FreeCAD.Console.PrintError(err+"\n")
+            return err
         finally:
+            # Ensure the temporary document is closed
             if doc:
                 FreeCAD.closeDocument(doc.Name)
 
-    @classmethod
-    def _check_parameter_types(cls, shape_obj: Any, expected_params: List[str]) -> List[str]:
+    def load_file(self, filepath: pathlib.Path) -> "ToolBitShape":
         """
-        Helper method to check if parameters on a shape object have the expected types.
-        This method might become less necessary with the new loading logic,
-        but keeping it for now.
-        """
-        temp_instance = cls.__new__(cls)
-        temp_instance._params = {} # Initialize _params for the temp instance
-        temp_instance.set_default_parameters()
-        default_params_with_types = temp_instance._params
-
-        type_mismatches = []
-        for name in expected_params:
-            # Only check type if the attribute exists on the object
-            if hasattr(shape_obj, name):
-                obj_value = getattr(shape_obj, name)
-                # Get the expected value type from the default parameters
-                default_tuple = default_params_with_types.get(name, (None, None))
-                expected_value = default_tuple[0]
-
-                if expected_value is not None and not isinstance(obj_value, type(expected_value)):
-                    type_mismatches.append(
-                        f"{name} (Expected Value Type: {type(expected_value)}, Got Value Type: {type(obj_value)})"
-                    )
-                # Also check the property type string if available
-                try:
-                    obj_prop_type = shape_obj.getTypeIdOfProperty(name)
-                    expected_prop_type = default_tuple[1]
-                    if expected_prop_type is not None and obj_prop_type != expected_prop_type:
-                         type_mismatches.append(
-                             f"{name} (Expected Property Type: {expected_prop_type}, Got Property Type: {obj_prop_type})"
-                         )
-                except Exception:
-                    # Ignore if we can't get the property type from the object
-                    pass
-
-        return type_mismatches
-
-    @classmethod
-    def from_file(cls: Type["ToolBitShape"],
-                  filepath: pathlib.Path) -> "ToolBitShape":
-        """
-        Load a shape's parameters from properties of an object in an FCStd file.
+        Load a shape's parameters from properties of an object in an FCStd file
+        and cache the document content and default parameters within the instance.
+        Does not create a body in the active document.
 
         Args:
             filepath (pathlib.Path): Path to the .FCStd file.
-
-        Returns:
-            ToolBitShape: An instance of the shape subclass with loaded parameters.
 
         Raises:
             FileNotFoundError: If the file does not exist.
@@ -335,34 +225,41 @@ class ToolBitShape(abc.ABC):
                         found, or essential data is missing.
             Exception: For other potential FreeCAD errors during loading.
         """
-        doc = None
+        temp_doc = None
+        original_doc_state = get_doc_state() # Save the current document state
         try:
-            expected_params = cls.get_expected_parameter_names()
-            # load_doc_and_get_properties now returns tuples of (value, type)
-            doc, loaded_params_with_types = load_doc_and_get_properties(filepath, expected_params)
+            # Open the shape file in a temporary hidden document to extract parameters
+            temp_doc = FreeCAD.openDocument(str(filepath), hidden=True)
+            if not temp_doc:
+                raise ValueError(f"Failed to open shape document: {filepath}")
 
-            # Create a new instance
-            instance = cls.__new__(cls)
-            # Initialize the _params dictionary with default values and types
-            instance._params = {} # Initialize _params for the new instance
-            instance.set_default_parameters()
+            # Find the object holding the parameters (usually "Attributes" PropertyBag)
+            props_obj = find_property_object(temp_doc)
+            if not props_obj:
+                raise ValueError(
+                    f"No 'Attributes' PropertyBag object found in {filepath}"
+                )
 
-            # Update parameters with loaded values and types
-            for name, (value, prop_type) in loaded_params_with_types.items():
-                 if name in instance._params:
-                      # Update the value and property type from the loaded data
-                      instance._params[name] = value, prop_type
-                 else:
-                      # This case should ideally not happen if expected_params is correct,
-                      # but handle it just in case. Add as a new parameter with loaded type.
-                      FreeCAD.Console.PrintWarning(
-                          f"Loaded parameter '{name}' not found in default parameters for shape '{cls.__name__}'. Adding it.\n"
-                      )
-                      instance._params[name] = value, prop_type
+            # Get properties based on the class schema from the properties object
+            expected_params = self.get_expected_parameter_names()
+            loaded_params = get_object_properties(props_obj, expected_params)
 
-            return instance
+            # Store the default parameters
+            self._defaults = loaded_params
+            # Update instance parameters, prioritizing loaded defaults but not
+            # overwriting parameters already set by kwargs during __init__
+            self._params = self._defaults | self._params
 
-        # Keep specific exceptions if needed, otherwise catch broader Exception
+            # Close the temporary document as we don't need it open anymore
+            FreeCAD.closeDocument(temp_doc.Name)
+            temp_doc = None # Ensure temp_doc is None in finally block
+
+            # Read the raw file content for caching
+            with open(filepath, 'rb') as f:
+                self._cache = f.read()
+
+            return self
+
         except (FileNotFoundError, ValueError) as e:
             # Re-raise known exceptions for clarity
             raise e
@@ -370,63 +267,47 @@ class ToolBitShape(abc.ABC):
             # Catch other potential FreeCAD or OS errors
             raise RuntimeError(f"Failed to load shape from {filepath}: {e}")
         finally:
-            # Ensure the document is closed even if errors occurred
-            if doc:
-                FreeCAD.closeDocument(doc.Name)
+             # Ensure the temporary document is closed if it was opened
+             if temp_doc:
+                  FreeCAD.closeDocument(temp_doc.Name)
+             # Restore the original document state
+             restore_doc_state(original_doc_state)
 
-    def create_feature(self) -> Optional[FreeCAD.GeoFeature]:
+    def make_body(self, doc: "FreeCAD.Document"):
         """
-        Create and return a FreeCAD object representing the visual shape of the tool bit.
-        This method loads the corresponding .FCStd file and updates its properties.
+        Generates the body of the ToolBitShape and copies it to the provided
+        document.
         """
-        if not self.filepath:
-            FreeCAD.Console.PrintError(
-                f"ToolBitShape subclass '{self.name}' has no valid filepath.\n"
-            )
-            return None
-
-        doc = None
-        original_active_doc = FreeCAD.ActiveDocument # Save the current active document
-        try:
-            # Open the shape file hidden
-            doc = FreeCAD.openDocument(str(self.filepath), hidden=True)
-            if not doc:
-                FreeCAD.Console.PrintError(
-                    f"Failed to open shape document: {self.filepath}\n"
+        assert self._cache is not None
+        with ShapeDocFromBytes(self._cache) as tmp_doc:
+            shape = find_shape_object(tmp_doc)
+            if not shape:
+                FreeCAD.Console.PrintWarning(
+                    "No suitable shape object found in document. "
+                    "Cannot create solid shape.\n"
                 )
                 return None
 
-            # Find the main shape object in the document
-            shape_obj = find_shape_object(doc)
-            if not shape_obj:
-                FreeCAD.Console.PrintError(
-                    f"No suitable shape object found in {self.filepath}\n"
+            props = find_property_object(tmp_doc)
+            if not props:
+                FreeCAD.Console.PrintWarning(
+                    "No suitable shape object found in document. "
+                    "Cannot create solid shape.\n"
                 )
                 return None
 
-            # Update the shape object's properties with the parameter values
-            update_shape_object_properties(shape_obj, self.get_parameters())
-            # Recompute the document to update the shape based on new parameters
-            doc.recompute()
+            update_shape_object_properties(props, self.get_parameters())
 
-            # Return the updated shape object
-            # We need to copy it to the active document later in ToolBit
-            return shape_obj
+            # Recompute the document to apply property changes
+            tmp_doc.recompute()
 
-        except Exception as e:
-            FreeCAD.Console.PrintError(
-                f"Error creating FreeCAD shape for '{self.name}' from"
-                f" {self.filepath}: {e}\n"
-            )
-            return None
-        finally:
-            # Close the shape document
-            if doc:
-                FreeCAD.closeDocument(doc.Name)
-            # Restore the original active document
-            if original_active_doc:
-                FreeCAD.setActiveDocument(original_active_doc.Name)
-
+            # Copy the body to the given document.
+            doc.openTransaction("Create ToolBit Shape")
+            body = doc.copyObject(shape, True)
+            #copied_obj = tmp_doc.copyObject(shape, False)
+            #doc.addObject(copied_obj.Name)
+            doc.commitTransaction()
+            return body
 
     def __str__(self):
         params_str = ", ".join(

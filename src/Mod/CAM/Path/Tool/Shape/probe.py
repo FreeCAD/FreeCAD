@@ -7,23 +7,24 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeProbe(ToolBitShape):
-    aliases: Tuple[str, ...] = ("probe",)
-    _LABELS = {
-        "Diameter": "Ball diameter",
-        "Length": "Length of probe",
-        "ShankDiameter": "Shaft diameter", # Using ShankDiameter internally
+    name = "probe"
+    _schema = {
+        "Diameter": 'App::PropertyLength',
+        "Length": 'App::PropertyLength',
+        "ShaftDiameter": 'App::PropertyLength',
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._labels = {
+            "Diameter": FreeCAD.Qt.translate(
+                "ToolBitShapeProbe", "Ball diameter"),
+            "Length": FreeCAD.Qt.translate(
+                "ToolBitShapeProbe", "Length of probe"),
+            "ShaftDiameter": FreeCAD.Qt.translate(
+                "ToolBitShapeProbe", "Shaft diameter"),
+        }
 
     @property
     def label(self) -> str:
-        return "Probe"  # TODO translatable
-
-    def set_default_parameters(self):
-        self._params = {
-            "Diameter": (FreeCAD.Units.Quantity("3 mm"),
-                         'App::PropertyLength'),
-            "Length": (FreeCAD.Units.Quantity("40 mm"),
-                       'App::PropertyLength'),
-            "ShankDiameter": (FreeCAD.Units.Quantity("6 mm"),
-                               'App::PropertyLength'),
-        }
+        return FreeCAD.translate("ToolBitShapeProbe", "Probe")
