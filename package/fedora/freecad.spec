@@ -12,7 +12,13 @@ License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
 VCS:            {{{ git_repo_vcs }}}
 
-Source0:        {{{git_repo_pack_with_submodules}}}
+Source0:        {{{ git_repo_pack }}}
+#add all submodule as source
+Source1:        {{{ git_pack    path=$GIT_ROOT/src/3rdParty/OndselSolver/   }}}
+Source2:        {{{ git_pack    path=$GIT_ROOT/src/3rdParty/GSL/            }}}
+Source3:        {{{ git_pack    path=$GIT_ROOT/src/Mod/AddonManager/        }}}
+Source4:        {{{ git_pack    path=$GIT_ROOT/tests/lib/                   }}}
+
 
 
 # Maintainers:  keep this list of plugins up to date
@@ -92,7 +98,8 @@ Recommends:     python3-pysolar
     modifying the core system.
 
 %changelog
-    {{{ git_dir_changelog }}}
+    {{{ git_repo_changelog }}}
+    * Sun Apr 20 2025 Filippo Rossoni Clean Up and use rpkg macro to build on copr
     * Mon Mar 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.1.0-1
     - Adding support for building with Qt6 and PySide6 for Fedora 40+
 
@@ -134,9 +141,22 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %prep
     {{{ git_repo_setup_macro }}}
+    # extract submodule archive and move in correct path
+    {{{ git_setup_macro  path=$GIT_ROOT/src/3rdParty/OndselSolver/ source_indices=1  }}}
+                  mv * %{_vpath_srcdir}/src/3rdParty/OndselSolver/
+    {{{ git_setup_macro  path=$GIT_ROOT/src/3rdParty/GSL/          source_indices=2  }}}
+                  mv * %{_vpath_srcdir}/src/3rdParty/GSL/
+    {{{ git_setup_macro  path=$GIT_ROOT/src/Mod/AddonManager/      source_indices=3  }}}
+                  mv * %{_vpath_srcdir}/src/Mod/AddonManager/
+    %if %{with tests}
+    {{{ git_setup_macro  path=$GIT_ROOT/tests/lib/                 source_indices=4  }}}
+                  mv * %{_vpath_srcdir}/tests/lib/
+    %endif
+    cd %_vpath_srcdir
+
+
 
 %build
-    cd %_vpath_srcdir
     # Deal with cmake projects that tend to link excessively.
     CXXFLAGS='-Wno-error=cast-function-type'; export CXXFLAGS
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
