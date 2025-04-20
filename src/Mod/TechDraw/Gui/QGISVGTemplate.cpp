@@ -213,7 +213,7 @@ std::vector<TemplateTextField*> QGISVGTemplate::getTextFields()
     QList<QGraphicsItem*> templateChildren = childItems();
     for (auto& child : templateChildren) {
         if (child->type() == TemplateTextFieldType) {
-            result.push_back(dynamic_cast<TemplateTextField*>(child));
+            result.push_back(static_cast<TemplateTextField*>(child));
         }
     }
 
