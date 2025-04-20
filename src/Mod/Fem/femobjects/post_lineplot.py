@@ -29,16 +29,9 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief Post processing plot displaying lines
 
-from . import base_fempythonobject
-_PropHelper = base_fempythonobject._PropHelper
-
 from . import base_fempostextractors
 from . import base_fempostvisualizations
 from . import post_extract2D
-
-from vtkmodules.vtkCommonCore import vtkDoubleArray
-from vtkmodules.vtkCommonDataModel import vtkTable
-
 
 from femguiutils import post_visualization
 
@@ -85,6 +78,7 @@ class PostLineplotFieldData(post_extract2D.PostFieldData2D):
     """
     VisualizationType = "Lineplot"
 
+
 class PostLineplotIndexOverFrames(post_extract2D.PostIndexOverFrames2D):
     """
     A 2D index extraction for lineplot.
@@ -97,56 +91,7 @@ class PostLineplot(base_fempostvisualizations.PostVisualization):
     """
     A post processing plot for showing extracted data as line plots
     """
-
     VisualizationType = "Lineplot"
 
-    def __init__(self, obj):
-        super().__init__(obj)
-        obj.addExtension("App::GroupExtensionPython")
-
-    def _get_properties(self):
-        prop = [
-            _PropHelper(
-                type="Fem::PropertyPostDataObject",
-                name="Table",
-                group="Base",
-                doc="The data table that stores the plotted data, two columns per lineplot (x,y)",
-                value=vtkTable(),
-            ),
-        ]
-        return super()._get_properties() + prop
-
-
-    def onChanged(self, obj, prop):
-
-        if prop == "Group":
-            # check if all objects are allowed
-
-            children = obj.Group
-            for child in obj.Group:
-                if not is_lineplot_extractor(child):
-                    FreeCAD.Console.PrintWarning(f"{child.Label} is not a data lineplot data extraction object, cannot be added")
-                    children.remove(child)
-
-            if len(obj.Group) != len(children):
-                obj.Group = children
-
-    def execute(self, obj):
-
-        # during execution we collect all child data into our table
-        table = vtkTable()
-        for child in obj.Group:
-
-            c_table = child.Table
-            for i in range(c_table.GetNumberOfColumns()):
-                c_array = c_table.GetColumn(i)
-                # TODO: check which array type it is and use that one
-                array = vtkDoubleArray()
-                array.DeepCopy(c_array)
-                array.SetName(f"{child.Source.Label}: {c_array.GetName()}")
-                table.AddColumn(array)
-
-        obj.Table = table
-        return False
 
 

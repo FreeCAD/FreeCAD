@@ -252,11 +252,13 @@ class _SummaryWidget(QtGui.QWidget):
         self.extrButton.setIcon(extractor.ViewObject.Icon)
 
         self.viewButton = self._button(extr_repr[1])
-        size = self.viewButton.iconSize()
-        size.setWidth(size.width()*2)
-        self.viewButton.setIconSize(size)
-        self.viewButton.setIcon(extr_repr[0])
-
+        if not extr_repr[0].isNull():
+            size = self.viewButton.iconSize()
+            size.setWidth(size.width()*2)
+            self.viewButton.setIconSize(size)
+            self.viewButton.setIcon(extr_repr[0])
+        else:
+            self.viewButton.setIconSize(QtCore.QSize(0,0))
 
         self.rmButton = QtGui.QToolButton(self)
         self.rmButton.setIcon(QtGui.QIcon.fromTheme("delete"))
