@@ -23,6 +23,7 @@ Source4:        {{{ git_pack    path=$GIT_ROOT/tests/lib/                   }}}
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
+#FemGui.so FreeCADGui.so ImportGui.so InspectionGui.so MeasureGui.so MeshGui.so MeshPartGui.so PartGui.so PathGui.so PointsGui.so ReverseEngineeringGui.so RobotGui.so SketcherGui.so SpreadsheetGui.so StartGui.so
 %global exported_libs libOndselSolver
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
@@ -48,6 +49,9 @@ Source4:        {{{ git_pack    path=$GIT_ROOT/tests/lib/                   }}}
 
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel
+%if %{with tests}
+BuildRequires:  xorg-x11-server-Xvfb
+%endif
 # Development Libraries
 BuildRequires:  freeimage-devel libXmu-devel mesa-libEGL-devel mesa-libGLU-devel opencascade-devel
 BuildRequires:  Coin4-devel boost-devel eigen3-devel qt6-qtsvg-devel qt6-qttools-static fmt-devel
@@ -161,6 +165,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
     %cmake \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
         -DCMAKE_INSTALL_PREFIX=%_libdir/%name \
         -DCMAKE_INSTALL_DATADIR=%_datadir/%name \
         -DCMAKE_INSTALL_DOCDIR=%_docdir/%name \
@@ -211,7 +216,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
     # Make sure there are no plugins that need to be added to plugins macro
-    %define exported_libs_regexp /^\\\(libFreeCAD.*%(for i in %{exported_libs}; do echo -n "\\\|$i\\\|$iGui"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
+    %define exported_libs_regexp /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so/d
     new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' | sed -e '%{exported_libs_regexp}'`
 
     if [ -n "$new_plugins" ]; then
@@ -255,6 +260,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
     %if %{with tests}
         %ctest
+        %{buildroot}/%{_lib}/%{name}/bin/FreeCADCmd -t 0
+        xvfb-run %{buildroot}/%{_lib}/%{name}/bin/FreeCAD -t 0
     %endif
 
 %post
@@ -295,5 +302,5 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_docdir}/%{name}/ThirdPartyLibraries.html
 
 %files libondselsolver-devel
-    %{buildroot}%{_datadir}/pkgconfig/OndselSolver.pc
-    %{buildroot}%{_includedir}/OndselSolver/*
+    %{_datadir}/pkgconfig/OndselSolver.pc
+    %{_includedir}/OndselSolver/*
