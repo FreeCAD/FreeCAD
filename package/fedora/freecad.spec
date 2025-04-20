@@ -1,4 +1,3 @@
-
 Name:           freecad
 
 Epoch:          1
@@ -41,7 +40,7 @@ Source4:        {{{ git_pack    path=$GIT_ROOT/tests/lib/                   }}}
 %bcond_without bundled_smesh
 
 # rpmbuild --with=tests:  include  tests in build
-%bcond_without tests
+%bcond_with tests
 %if %{with tests}
 %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
 %endif
@@ -209,16 +208,16 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     #
     # Make sure there are no plugins that need to be added to plugins macro
     %define exported_libs_regexp /^\\\(libFreeCAD.*%(for i in %{exported_libs}; do echo -n "\\\|$i\\\|$iGui"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
-    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' | sed -e %{exported_libs_regexp}`
+    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' | sed -e '%{exported_libs_regexp}'`
 
     if [ -n "$new_plugins" ]; then
         echo -e "\n\n\n**** ERROR:\n" \
-            "\nPlugins not caught by regexps:"
+            "\nPlugins not caught by regexps:" \
             "\n" $new_plugins \
             "\n\nPlugins in %{_libdir}/%{name}/lib do not exist in" \
             "\nspecfile %%{plugins} or %%{exported_libs_regexp} macro." \
             "\nPlease add these to %%{plugins} or %%{exported_libs_regexp}" \
-            "\nmacro at top of specfile"
+            "\nmacro at top of specfile" \
             "\nand rebuild.\n****\n" 1>&2
         exit 1
     fi
@@ -273,13 +272,13 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %files
     %{_bindir}/*
-    %{_metainfodir}/*src/Ext/freecad/CMakeLists.tx
+    %{_metainfodir}/*
     %dir %{_libdir}/%{name}
     %{_libdir}/%{name}/bin/
     %{_libdir}/%{name}/%{_lib}/
     %{_libdir}/%{name}/Ext/
     %{_libdir}/%{name}/Mod/
-    %{_datadir}/applications/*/usr/share
+    %{_datadir}/applications/*
     %{_datadir}/icons/hicolor/*
     %{_datadir}/pixmaps/*
     %{_datadir}/mime/packages/*
