@@ -41,7 +41,7 @@ Source4:        {{{ git_pack    path=$GIT_ROOT/tests/lib/                   }}}
 %bcond_without bundled_smesh
 
 # rpmbuild --with=tests:  include  tests in build
-%bcond_with tests
+%bcond_without tests
 %if %{with tests}
 %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
 %endif
@@ -85,7 +85,7 @@ Provides:       bundled(smesh) = %{bundled_smesh_version}
 Provides:       bundled(python3-pycxx) = %{bundled_pycxx_version}
 %endif
 
-Provides:       bundled(libondselsolver) = %{bundled_ondsel_solver_version}
+Provides:       bundled(libondselsolverb) = %{bundled_ondsel_solver_version}
 
 Recommends:     python3-pysolar
 
