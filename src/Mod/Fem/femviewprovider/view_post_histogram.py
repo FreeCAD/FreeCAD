@@ -42,7 +42,7 @@ import matplotlib as mpl
 
 from vtkmodules.numpy_interface.dataset_adapter import VTKArray
 
-from . import view_post_extract
+from . import view_base_fempostextractors
 from . import view_base_fempostvisualization
 from femtaskpanels import task_post_histogram
 
@@ -244,7 +244,7 @@ class EditIndexAppWidget(QtGui.QWidget):
         self._post_dialog._recompute()
 
 
-class VPPostHistogramFieldData(view_post_extract.VPPostExtractor):
+class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
     """
     A View Provider for extraction of 1D field data specialy for histograms
     """
@@ -378,7 +378,7 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
 
     def __init__(self, vobj):
         super().__init__(vobj)
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+
 
     def _get_properties(self):
 
@@ -458,13 +458,10 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
         ]
         return prop
 
+
     def getIcon(self):
         return ":/icons/FEM_PostHistogram.svg"
 
-    def doubleClicked(self,vobj):
-
-        self.show_visualization()
-        super().doubleClicked(vobj)
 
     def setEdit(self, vobj, mode):
 
@@ -482,23 +479,11 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
         if not hasattr(self, "_plot") or not self._plot:
             main = Plot.getMainWindow()
             self._plot = Plot.Plot()
-            self._plot.destroyed.connect(self.destroyed)
-            self._dialog = QtGui.QDialog(main)
-            box = QtGui.QVBoxLayout()
-            box.addWidget(self._plot)
-            self._dialog.resize(main.size().height()/2, main.size().height()/3) # keep it square
-            self._dialog.setLayout(box)
+            self._plot.resize(main.size().height()/2, main.size().height()/3) # keep it square
+            self.update_visualization()
 
-        self.drawPlot()
-        self._dialog.show()
+        self._plot.show()
 
-
-    def destroyed(self, obj):
-        print("*********************************************************")
-        print("****************                       ******************")
-        print("****************         destroy       ******************")
-        print("****************                       ******************")
-        print("*********************************************************")
 
     def get_kw_args(self, obj):
         view = obj.ViewObject
@@ -508,7 +493,8 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
             return {}
         return view.Proxy.get_kw_args()
 
-    def drawPlot(self):
+
+    def update_visualization(self):
 
         if not hasattr(self, "_plot") or not self._plot:
             return
@@ -579,26 +565,3 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
 
         self._plot.update()
 
-
-    def updateData(self, obj, prop):
-        # we only react if the table changed, as then know that new data is available
-        if prop == "Table":
-            self.drawPlot()
-
-
-    def onChanged(self, vobj, prop):
-
-        # for all property changes we need to redraw the plot
-        self.drawPlot()
-
-    def childViewPropertyChanged(self, vobj, prop):
-
-        # on of our extractors has a changed view property.
-        self.drawPlot()
-
-    def dumps(self):
-        return None
-
-
-    def loads(self, state):
-        return None

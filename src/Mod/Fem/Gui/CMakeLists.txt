@@ -451,6 +451,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/PostLineplotFieldViewEdit.ui
     Resources/ui/PostLineplotFieldAppEdit.ui
     Resources/ui/PostLineplotIndexAppEdit.ui
+    Resources/ui/PostTableFieldViewEdit.ui
 )
 
 ADD_CUSTOM_TARGET(FemPythonUi ALL

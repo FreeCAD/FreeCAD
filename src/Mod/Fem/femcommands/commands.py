@@ -1293,4 +1293,5 @@ if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
     # setup all visualization commands (register by importing)
     import femobjects.post_lineplot
     import femobjects.post_histogram
+    import femobjects.post_table
     post_visualization.setup_commands("FEM_PostVisualization")

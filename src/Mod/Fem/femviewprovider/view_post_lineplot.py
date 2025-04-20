@@ -42,9 +42,10 @@ import matplotlib as mpl
 
 from vtkmodules.numpy_interface.dataset_adapter import VTKArray
 
-from . import view_post_extract
+from . import view_base_fempostextractors
 from . import view_base_fempostvisualization
 from femtaskpanels import task_post_lineplot
+from femguiutils import post_visualization as pv
 
 _GuiPropHelper = view_base_fempostvisualization._GuiPropHelper
 
@@ -248,7 +249,7 @@ class EditIndexAppWidget(QtGui.QWidget):
         self._post_dialog._recompute()
 
 
-class VPPostLineplotFieldData(view_post_extract.VPPostExtractor):
+class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
     """
     A View Provider for extraction of 2D field data specialy for histograms
     """
@@ -376,7 +377,7 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
 
     def __init__(self, vobj):
         super().__init__(vobj)
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+
 
     def _get_properties(self):
 
@@ -435,13 +436,10 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
         ]
         return prop
 
+
     def getIcon(self):
         return ":/icons/FEM_PostLineplot.svg"
 
-    def doubleClicked(self,vobj):
-
-        self.show_visualization()
-        super().doubleClicked(vobj)
 
     def setEdit(self, vobj, mode):
 
@@ -457,16 +455,13 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
     def show_visualization(self):
 
         if not hasattr(self, "_plot") or not self._plot:
-            self._plot = Plot.Plot()
             main = Plot.getMainWindow()
-            self._dialog = QtGui.QDialog(main)
-            box = QtGui.QVBoxLayout()
-            box.addWidget(self._plot)
-            self._dialog.resize(main.size().height()/2, main.size().height()/3) # keep aspect ratio constant
-            self._dialog.setLayout(box)
+            self._plot = Plot.Plot()
+            self._plot.resize(main.size().height()/2, main.size().height()/3) # keep the aspect ratio
+            self.update_visualization()
 
-        self.drawPlot()
-        self._dialog.show()
+        self._plot.show()
+
 
     def get_kw_args(self, obj):
         view = obj.ViewObject
@@ -476,7 +471,8 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
             return {}
         return view.Proxy.get_kw_args()
 
-    def drawPlot(self):
+
+    def update_visualization(self):
 
         if not hasattr(self, "_plot") or not self._plot:
             return
@@ -545,26 +541,3 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
 
         self._plot.update()
 
-
-    def updateData(self, obj, prop):
-        # we only react if the table changed, as then know that new data is available
-        if prop == "Table":
-            self.drawPlot()
-
-
-    def onChanged(self, vobj, prop):
-
-        # for all property changes we need to redraw the plot
-        self.drawPlot()
-
-    def childViewPropertyChanged(self, vobj, prop):
-
-        # on of our extractors has a changed view property.
-        self.drawPlot()
-
-    def dumps(self):
-        return None
-
-
-    def loads(self, state):
-        return None

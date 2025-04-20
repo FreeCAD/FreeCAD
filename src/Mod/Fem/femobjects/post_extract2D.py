@@ -29,6 +29,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief Post processing plot displaying lines
 
+import FreeCAD
+
 from . import base_fempostextractors
 from . import base_fempythonobject
 _PropHelper = base_fempythonobject._PropHelper
@@ -207,9 +209,9 @@ class PostIndexOverFrames2D(base_fempostextractors.Extractor2D):
 
         frame_x_array.SetName("Frames")
         if frame_y_array.GetNumberOfComponents() > 1:
-            frame_y_array.SetName(f"{obj.YField} ({obj.YComponent})")
+            frame_y_array.SetName(f"{obj.YField} ({obj.YComponent}) @Idx {obj.Index}")
         else:
-            frame_y_array.SetName(obj.YField)
+            frame_y_array.SetName(f"{obj.YField} @Idx {obj.Index}")
 
         table.AddColumn(frame_x_array)
         self._y_array_component_to_table(obj, frame_y_array, table)

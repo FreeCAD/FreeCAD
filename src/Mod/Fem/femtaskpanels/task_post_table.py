@@ -21,70 +21,74 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD task panel base for post object task panels"
+__title__ = "FreeCAD FEM histogram plot task panel"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
-## @package base_fempostpanel
+## @package task_post_histogram
 #  \ingroup FEM
-#  \brief task panel base for post objects
+#  \brief task panel for post histogram plot
 
 from PySide import QtCore, QtGui
 
 import FreeCAD
 import FreeCADGui
 
-from femguiutils import selection_widgets
-from . import base_femtaskpanel
+from . import base_fempostpanel
+from femguiutils import extract_link_view as elv
+from femguiutils import vtk_table_view
 
-
-class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
+class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
     """
-    The TaskPanel for post objects, mimicing the c++ functionality
+    The TaskPanel for editing properties of glyph filter
     """
 
-    def __init__(self, obj):
-        super().__init__(obj)
+    def __init__(self, vobj):
+        super().__init__(vobj.Object)
 
-        # get the settings group
-        self.__settings_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        # data widget
+        self.data_widget = QtGui.QWidget()
+        self.data_widget.show_table = QtGui.QPushButton()
+        self.data_widget.show_table.setText("Show table")
 
-    # Implement parent functions
-    # ##########################
+        vbox = QtGui.QVBoxLayout()
+        vbox.addWidget(self.data_widget.show_table)
+        vbox.addSpacing(10)
 
-    def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+        extracts = elv.ExtractLinkView(self.obj, False, self)
+        vbox.addWidget(extracts)
 
-    def clicked(self, button):
-        # apply button hit?
-        if button == QtGui.QDialogButtonBox.Apply:
-            self.obj.Document.recompute()
-
-    def accept(self):
-        print("accept")
-        return super().accept()
-
-    def reject(self):
-        print("reject")
-        return super().reject()
-
-    # Helper functions
-    # ################
-
-    def _recompute(self):
-        # only recompute if the user wants automatic recompute
-        if self.__settings_grp.GetBool("PostAutoRecompute", True):
-            self.obj.Document.recompute()
-
-    def _enumPropertyToCombobox(self, obj, prop, cbox):
-        cbox.blockSignals(True)
-        cbox.clear()
-        entries = obj.getEnumerationsOfProperty(prop)
-        for entry in entries:
-            cbox.addItem(entry)
-
-        cbox.setCurrentText(getattr(obj, prop))
-        cbox.blockSignals(False)
+        self.data_widget.setLayout(vbox)
+        self.data_widget.setWindowTitle("Table data")
+        self.data_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostSpreadsheet.svg"))
 
 
+        # histogram parameter widget
+        #self.view_widget = FreeCADGui.PySideUic.loadUi(
+        #    FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/TaskPostTable.ui"
+        #)
+        #self.view_widget.setWindowTitle("Table view settings")
+        #self.view_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostTable.svg"))
+
+        self.__init_widgets()
+
+        # form made from param and selection widget
+        self.form = [self.data_widget]
+
+
+    # Setup functions
+    # ###############
+
+    def __init_widgets(self):
+
+        # connect data widget
+        self.data_widget.show_table.clicked.connect(self.showTable)
+
+        # set current values to view widget
+        viewObj = self.obj.ViewObject
+
+
+    @QtCore.Slot()
+    def showTable(self):
+        self.obj.ViewObject.Proxy.show_visualization()
 
