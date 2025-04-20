@@ -82,13 +82,13 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
 DlgAddProperty::~DlgAddProperty() = default;
 
 static std::string containerName(const App::PropertyContainer *c) {
-    auto doc = freecad_cast<App::Document>(c);
+    auto doc = freecad_cast<App::Document*>(c);
     if(doc)
         return doc->getName();
-    auto obj = freecad_cast<App::DocumentObject>(c);
+    auto obj = freecad_cast<App::DocumentObject*>(c);
     if(obj)
         return obj->getFullName();
-    auto vpd = freecad_cast<ViewProviderDocumentObject>(c);
+    auto vpd = freecad_cast<ViewProviderDocumentObject*>(c);
     if(vpd)
         return vpd->getObject()->getFullName();
     return "?";

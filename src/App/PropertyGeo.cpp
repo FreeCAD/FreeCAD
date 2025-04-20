@@ -1301,7 +1301,7 @@ std::string PropertyComplexGeoData::getElementMapVersion(bool) const
     if (!data) {
         return std::string();
     }
-    auto owner = freecad_cast<DocumentObject>(getContainer());
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
     std::ostringstream ss;
     if (owner && owner->getDocument() && owner->getDocument()->getStringHasher() == data->Hasher) {
         ss << "1.";
@@ -1319,7 +1319,7 @@ bool PropertyComplexGeoData::checkElementMapVersion(const char* ver) const
     if (!data) {
         return false;
     }
-    auto owner = freecad_cast<DocumentObject>(getContainer());
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
     std::ostringstream ss;
     const char* prefix;
     if (owner && owner->getDocument() && owner->getDocument()->getStringHasher() == data->Hasher) {
@@ -1340,7 +1340,7 @@ void PropertyComplexGeoData::afterRestore()
     auto data = getComplexData();
     if (data && data->isRestoreFailed()) {
         data->resetRestoreFailure();
-        auto owner = freecad_cast<DocumentObject>(getContainer());
+        auto owner = freecad_cast<DocumentObject*>(getContainer());
         if (owner && owner->getDocument()
             && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
             owner->getDocument()->addRecomputeObject(owner);

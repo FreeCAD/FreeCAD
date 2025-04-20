@@ -698,7 +698,7 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
         radius = radius * scale;
         radius += Rez::guiX(3.0);
-        offsetLR = (tan(30 * pi / 180) * radius);
+        offsetLR = tan(Base::toRadians(30.0)) * radius;
         QPolygonF triangle;
         double startAngle = -pi / 2;
         double angle = startAngle;
@@ -807,7 +807,7 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
             dirballoonLinesLine = (arrowTipPosInParent - dLineStart).Normalize();
         }
 
-        float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / pi;
+        float arAngle = Base::toDegrees(atan2(dirballoonLinesLine.y, dirballoonLinesLine.x));
 
         if ((endType == ArrowType::FILLED_TRIANGLE) && (prefOrthoPyramid())) {
             if (arAngle < 0.0) {
@@ -826,7 +826,7 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
             else {
                 arAngle = 0;
             }
-            double radAngle = arAngle * pi / 180.0;
+            double radAngle = Base::toRadians(arAngle);
             double sinAngle = sin(radAngle);
             double cosAngle = cos(radAngle);
             xAdj = Rez::guiX(arrowAdj * cosAngle);

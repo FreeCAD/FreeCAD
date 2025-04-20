@@ -153,7 +153,7 @@ public:
 
     static bool isElementMappingDisabled(App::PropertyContainer *container);
 
-    bool getCameraAlignmentDirection(Base::Vector3d &direction, const char *subname) const override;
+    bool getCameraAlignmentDirection(Base::Vector3d &directionZ, Base::Vector3d &directionX, const char *subname) const override;
 
     static void guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink);
 

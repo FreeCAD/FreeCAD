@@ -148,12 +148,12 @@ public:
     template<typename T>
     inline T* getObjectAs() const
     {
-        return freecad_cast<T>(getObject());
+        return freecad_cast<T*>(getObject());
     }
     template<typename T>
     inline T* getPropertyAs() const
     {
-        return freecad_cast<T>(getProperty());
+        return freecad_cast<T*>(getProperty());
     }
 
 private:
@@ -409,7 +409,7 @@ public:
     template<typename T>
     inline T* get() const noexcept
     {
-        return freecad_cast<T>(_get());
+        return freecad_cast<T*>(_get());
     }
 
 private:

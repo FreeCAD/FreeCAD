@@ -111,7 +111,7 @@ public:
         }
         Base::Matrix4D linkMat;
         auto linked = sobj->getLinkedObject(true, &linkMat, false);
-        auto vp = freecad_cast<ViewProviderPath>(Application::Instance->getViewProvider(linked));
+        auto vp = freecad_cast<ViewProviderPath*>(Application::Instance->getViewProvider(linked));
         if (!vp) {
             setArrow();
             return;

@@ -1,24 +1,28 @@
 # -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
 __title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"
@@ -199,14 +203,16 @@ class _ArchSchedule:
         if not (obj.CreateSpreadsheet or force):
             return
         sp = self.getSpreadSheet(obj, force=True)
+        widths = [sp.getColumnWidth(col) for col in ("A", "B", "C")]
         sp.clearAll()
-        # clearAll removes the custom property, we need to re-add it:
-        self.setSchedulePropertySpreadsheet(sp, obj)
+        # clearAll resets the column widths:
+        for col, width in zip(("A", "B", "C"), widths):
+            sp.setColumnWidth(col, width)
         # set headers
-        sp.set("A1","Operation")
-        sp.set("B1","Value")
-        sp.set("C1","Unit")
-        sp.setStyle('A1:C1', 'bold', 'add')
+        sp.set("A1", "Operation")
+        sp.set("B1", "Value")
+        sp.set("C1", "Unit")
+        sp.setStyle("A1:C1", "bold", "add")
         # write contents
         for k,v in self.data.items():
             sp.set(k,v)

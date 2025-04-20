@@ -25,6 +25,7 @@
 #endif
 
 #include <Base/Vector3D.h>
+#include <Base/Tools.h>
 
 #include "Voronoi.h"
 
@@ -291,7 +292,7 @@ bool Voronoi::diagram_type::segmentsAreConnected(int i, int j) const
 void Voronoi::colorColinear(Voronoi::color_type color, double degree)
 {
     using std::numbers::pi;
-    double rad = degree * pi / 180;
+    double rad = Base::toRadians(degree);
 
     Voronoi::diagram_type::angle_map_t angle;
     int psize = vd->points.size();

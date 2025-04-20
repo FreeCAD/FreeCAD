@@ -146,6 +146,8 @@ class ObjectArray:
         self.setEditorModes(obj)
         obj.Proxy = self
 
+        self.FirstRun = True
+
     def dumps(self):
         return None
 
@@ -205,19 +207,19 @@ class ObjectArray:
         self.setEditorModes(obj)
 
     def execute(self, obj):
-        if FreeCAD.GuiUp:
-
+        if FreeCAD.GuiUp and self.FirstRun:
+            self.FirstRun = False
             QtGui.QMessageBox.warning(
                 None,
-                QT_TRANSLATE_NOOP("CAM_ArrayOp", "Operation is depreciated"),
+                QT_TRANSLATE_NOOP("CAM_ArrayOp", "Operation is deprecated"),
                 QT_TRANSLATE_NOOP(
                     "CAM_ArrayOp",
                     (
-                        "CAM -> Path Modification -> Array operation is depreciated "
+                        "CAM -> Path Modification -> Array operation is deprecated "
                         "and will be removed in future FreeCAD versions.\n\n"
                         "Please use CAM -> Path Dressup -> Array instead.\n\n"
                         "DO NOT USE CURRENT ARRAY OPERATION WHEN MACHINING WITH COOLANT!\n"
-                        "Due to a bug - collant will not be enabled for array paths."
+                        "Due to a bug - coolant will not be enabled for array paths."
                     ),
                 ),
             )

@@ -404,8 +404,8 @@ def _get_param_dictionary():
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
+        "ChainedMode":                 ("bool",      False),
         "CenterPlaneOnView":           ("bool",      False),
-        "ContinueMode":                ("bool",      False),
         "CopyMode":                    ("bool",      False),
         "DefaultAnnoDisplayMode":      ("int",       0),
         "DefaultDisplayMode":          ("int",       0),
@@ -441,6 +441,35 @@ def _get_param_dictionary():
         "SubelementMode":              ("bool",      False),
         "SvgLinesBlack":               ("bool",      True),
         "useSupport":                  ("bool",      False),
+    }
+
+    param_dict["Mod/Draft/ContinueMode"] = {
+        # Draft
+        "Line": ("bool", False),
+        "Polyline": ("bool", False),
+        "Arc": ("bool", False),
+        "Arc_3Points": ("bool", False),
+        "Circle": ("bool", False),
+        "Ellipse": ("bool", False),
+        "Rectangle": ("bool", False),
+        "Polygon": ("bool", False),
+        "Bspline": ("bool", False),
+        "CubicBezCurve": ("bool", False),
+        "BezCurve": ("bool", False),
+        "Point": ("bool", False),
+        "Text": ("bool", False),
+        "Dimension": ("bool", False),
+
+        # Standard operations (Draft)
+        "Move": ("bool", False),
+        "Copy": ("bool", False),
+        "Rotate": ("bool", False),
+        
+        # Arch/BIM
+        "Wall": ("bool", False),
+        "Column": ("bool", False),
+        "Beam": ("bool", False),
+        "Panel": ("bool", False),
     }
 
     # Arch parameters that are not in the preferences:
@@ -634,7 +663,7 @@ def _get_param_dictionary():
 PARAM_DICT = _get_param_dictionary()
 
 
-def get_param(entry, path="Mod/Draft", ret_default=False):
+def get_param(entry, path="Mod/Draft", ret_default=False, silent=False):
     """Return a stored parameter value or its default.
 
     Parameters
@@ -648,13 +677,17 @@ def get_param(entry, path="Mod/Draft", ret_default=False):
     ret_default: bool, optional
         Defaults to `False`.
         If `True`, always return the default value even if a stored value is available.
+    silent: bool, optional
+        Defaults to `False`.
+        If `True`, do not log anything if entry wasn't found.
 
     Returns
     -------
     bool, float, int or str (if successful) or `None`.
     """
     if path not in PARAM_DICT or entry not in PARAM_DICT[path]:
-        print(f"draftutils.params.get_param: Unable to find '{entry}' in '{path}'")
+        if not silent:
+            print(f"draftutils.params.get_param: Unable to find '{entry}' in '{path}'")
         return None
     param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ, default = PARAM_DICT[path][entry]

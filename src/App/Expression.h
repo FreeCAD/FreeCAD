@@ -84,7 +84,7 @@ template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
     explicit ExpressionModifier(P & _prop)
         : prop(_prop)
-        , propLink(freecad_cast<App::PropertyLinkBase>(&prop))
+        , propLink(freecad_cast<App::PropertyLinkBase*>(&prop))
         , signaller(_prop,false)
     {}
 

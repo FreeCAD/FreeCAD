@@ -386,12 +386,12 @@ void ViewProviderMesh::setOpenEdgeColorFrom(const Base::Color& c)
 
 const Mesh::PropertyMeshKernel& ViewProviderMesh::getMeshProperty() const
 {
-    return freecad_cast<Mesh::Feature>(getObject())->Mesh;
+    return freecad_cast<Mesh::Feature*>(getObject())->Mesh;
 }
 
 Mesh::PropertyMeshKernel& ViewProviderMesh::getMeshProperty()
 {
-    return freecad_cast<Mesh::Feature>(getObject())->Mesh;
+    return freecad_cast<Mesh::Feature*>(getObject())->Mesh;
 }
 
 const Mesh::MeshObject& ViewProviderMesh::getMeshObject() const
@@ -2420,14 +2420,15 @@ void ViewProviderMesh::highlightColors()
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     {
-        auto prop = freecad_cast<App::PropertyColorList>(pcObject->getPropertyByName("FaceColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
         if (prop && prop->getSize() == int(rMesh.countFacets())) {
             setColorPerFace(prop);
         }
     }
     {
         auto prop =
-            freecad_cast<App::PropertyColorList>(pcObject->getPropertyByName("VertexColors"));
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
         if (prop && prop->getSize() == int(rMesh.countPoints())) {
             setColorPerVertex(prop);
         }
@@ -2438,14 +2439,15 @@ bool ViewProviderMesh::canHighlightColors() const
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     {
-        auto prop = freecad_cast<App::PropertyColorList>(pcObject->getPropertyByName("FaceColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
         if (prop && prop->getSize() == int(rMesh.countFacets())) {
             return true;
         }
     }
     {
         auto prop =
-            freecad_cast<App::PropertyColorList>(pcObject->getPropertyByName("VertexColors"));
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
         if (prop && prop->getSize() == int(rMesh.countPoints())) {
             return true;
         }

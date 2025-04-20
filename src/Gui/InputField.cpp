@@ -89,7 +89,7 @@ InputField::InputField(QWidget * parent)
     iconLabel->setCursor(Qt::ArrowCursor);
     QFontMetrics fm(font());
     int iconSize = fm.height();
-    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(iconSize, iconSize));
+    QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(iconSize, iconSize));
     iconLabel->setPixmap(pixmap);
     iconLabel->hide();
     connect(this, &QLineEdit::textChanged, this, &InputField::updateIconLabel);
@@ -120,7 +120,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
 {
     ExpressionBinding::bind(_path);
 
-    auto * prop = freecad_cast<PropertyQuantity>(getPath().getProperty());
+    auto * prop = freecad_cast<PropertyQuantity*>(getPath().getProperty());
 
     if (prop)
         actQuantity = Base::Quantity(prop->getValue());
@@ -259,7 +259,7 @@ void InputField::newInput(const QString & text)
 
             std::unique_ptr<Expression> evalRes(getExpression()->eval());
 
-            auto * value = freecad_cast<NumberExpression>(evalRes.get());
+            auto * value = freecad_cast<NumberExpression*>(evalRes.get());
             if (value) {
                 res.setValue(value->getValue());
                 res.setUnit(value->getUnit());
@@ -270,8 +270,9 @@ void InputField::newInput(const QString & text)
     }
     catch(Base::Exception &e){
         QString errorText = QString::fromLatin1(e.what());
-        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", iconLabel->sizeHint());
-        iconLabel->setPixmap(pixmap);
+        if (iconLabel->isHidden()) {
+            iconLabel->setVisible(true);
+        }
         Q_EMIT parseError(errorText);
         validInput = false;
         return;
@@ -282,16 +283,17 @@ void InputField::newInput(const QString & text)
 
     // check if unit fits!
     if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
-        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", iconLabel->sizeHint());
-        iconLabel->setPixmap(pixmap);
+        if (iconLabel->isHidden()) {
+            iconLabel->setVisible(true);
+        }
         Q_EMIT parseError(QStringLiteral("Wrong unit"));
         validInput = false;
         return;
     }
 
-
-    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", iconLabel->sizeHint());
-    iconLabel->setPixmap(pixmap);
+    if (iconLabel->isVisible()) {
+        iconLabel->setVisible(false);
+    }
     validInput = true;
 
     if (res.getValue() > Maximum){

@@ -30,7 +30,6 @@ from PySide.QtWidgets import QFileDialog
 if App.GuiUp:
     import FreeCADGui as Gui
 
-# translate = App.Qt.translate
 
 __title__ = "Assembly Command Create Assembly"
 __author__ = "Ondsel"

@@ -398,7 +398,7 @@ static void linkConvert(bool unlink) {
         for(auto &v : infos) {
             auto &info = v.second;
             auto parent = info.parent.getObject();
-            auto parentVp = freecad_cast<ViewProviderDocumentObject>(
+            auto parentVp = freecad_cast<ViewProviderDocumentObject*>(
                     Application::Instance->getViewProvider(parent));
             auto obj = info.obj.getObject();
             if(!parent || !obj || !parentVp)
@@ -418,7 +418,7 @@ static void linkConvert(bool unlink) {
                     FC_THROWM(Base::RuntimeError,"Failed to create link");
                 link->setLink(-1,obj);
                 link->Label.setValue(obj->Label.getValue());
-                auto pla = freecad_cast<App::PropertyPlacement>(
+                auto pla = freecad_cast<App::PropertyPlacement*>(
                         obj->getPropertyByName("Placement"));
                 if(pla)
                     link->Placement.setValue(pla->getValue());
@@ -662,7 +662,7 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
     auto sobj = sels[0].pObject->getSubObject(sels[0].SubName);
     if(!sobj)
         return nullptr;
-    auto vp = freecad_cast<ViewProviderDocumentObject>(
+    auto vp = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(sobj));
     if(!vp)
         return nullptr;

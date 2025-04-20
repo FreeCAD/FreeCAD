@@ -39,6 +39,7 @@
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -1000,8 +1001,8 @@ void QGIViewDimension::drawSingleArc(QPainterPath& painterPath, const Base::Vect
                                  arcCenter.x + arcRadius, arcCenter.y + arcRadius)));
 
     // In arc drawing are for some reason Qt's angles counterclockwise as in our computations...
-    painterPath.arcMoveTo(qtArcRectangle, toDeg(startAngle));
-    painterPath.arcTo(qtArcRectangle, toDeg(startAngle), toDeg(endAngle - startAngle));
+    painterPath.arcMoveTo(qtArcRectangle, Base::toDegrees(startAngle));
+    painterPath.arcTo(qtArcRectangle, Base::toDegrees(startAngle), Base::toDegrees(endAngle - startAngle));
 }
 
 void QGIViewDimension::drawMultiArc(QPainterPath& painterPath, const Base::Vector2d& arcCenter,
@@ -1838,9 +1839,9 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
 
     if (dimension->AngleOverride.getValue()) {
         drawDistanceOverride(fromQtApp(linePoints.first()), fromQtApp(linePoints.second()),
-                             dimension->LineAngle.getValue() * std::numbers::pi / 180.0, labelRectangle,
+                             Base::toRadians(dimension->LineAngle.getValue()), labelRectangle,
                              standardStyle, renderExtent, flipArrows,
-                             dimension->ExtensionAngle.getValue() * std::numbers::pi / 180.0);
+                             Base::toRadians(dimension->ExtensionAngle.getValue()));
     }
     else {
         drawDistanceExecutive(fromQtApp(linePoints.extensionLineFirst()), fromQtApp(linePoints.extensionLineSecond()),
@@ -2468,11 +2469,11 @@ void QGIViewDimension::setPens()
     aHead2->setWidth(m_lineWidth);
 }
 
-double QGIViewDimension::toDeg(double angle) { return angle * 180 / std::numbers::pi; }
+double QGIViewDimension::toDeg(double angle) { return Base::toDegrees(angle); }
 
 double QGIViewDimension::toQtRad(double angle) { return -angle; }
 
-double QGIViewDimension::toQtDeg(double angle) { return -angle * 180.0 / std::numbers::pi; }
+double QGIViewDimension::toQtDeg(double angle) { return Base::toDegrees(-angle); }
 
 void QGIViewDimension::makeMarkC(double xPos, double yPos, QColor color) const
 {

@@ -184,30 +184,29 @@ public:
 template<typename T>
 bool BaseClass::is() const
 {
-    static_assert(std::is_base_of<BaseClass, T>::value, "T must be derived from Base::BaseClass");
+    static_assert(std::is_base_of_v<BaseClass, T>, "T must be derived from Base::BaseClass");
     return getTypeId() == T::getClassTypeId();
 }
 
 template<typename T>
 bool BaseClass::isDerivedFrom() const
 {
-    static_assert(std::is_base_of<BaseClass, T>::value, "T must be derived from Base::BaseClass");
+    static_assert(std::is_base_of_v<BaseClass, T>, "T must be derived from Base::BaseClass");
     return getTypeId().isDerivedFrom(T::getClassTypeId());
 }
 
 /**
  * Template that works just like dynamic_cast, but expects the argument to
  * inherit from Base::BaseClass.
- *
  */
-template<typename T>
-T* freecad_cast(Base::BaseClass* type)
+template<typename T, typename U = std::remove_pointer_t<T>>
+    requires(std::is_pointer_v<T>)
+T freecad_cast(Base::BaseClass* type)
 {
-    static_assert(std::is_base_of<Base::BaseClass, T>::value,
-                  "T must be derived from Base::BaseClass");
+    static_assert(std::is_base_of_v<Base::BaseClass, U>, "T must be derived from Base::BaseClass");
 
-    if (type && type->isDerivedFrom(T::getClassTypeId())) {
-        return static_cast<T*>(type);
+    if (type && type->isDerivedFrom(U::getClassTypeId())) {
+        return static_cast<T>(type);
     }
 
     return nullptr;
@@ -216,16 +215,15 @@ T* freecad_cast(Base::BaseClass* type)
 /**
  * Template that works just like dynamic_cast, but expects the argument to
  * inherit from a const Base::BaseClass.
- *
  */
-template<typename T>
-const T* freecad_cast(const Base::BaseClass* type)
+template<typename T, typename U = std::remove_pointer_t<T>>
+    requires(std::is_pointer_v<T>)
+const U* freecad_cast(const Base::BaseClass* type)
 {
-    static_assert(std::is_base_of<Base::BaseClass, T>::value,
-                  "T must be derived from Base::BaseClass");
+    static_assert(std::is_base_of_v<Base::BaseClass, U>, "T must be derived from Base::BaseClass");
 
-    if (type && type->isDerivedFrom(T::getClassTypeId())) {
-        return static_cast<const T*>(type);
+    if (type && type->isDerivedFrom(U::getClassTypeId())) {
+        return static_cast<const U*>(type);
     }
 
     return nullptr;

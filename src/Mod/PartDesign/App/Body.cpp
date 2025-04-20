@@ -194,7 +194,7 @@ bool Body::isSolidFeature(const App::DocumentObject *obj)
             // Datum objects are not solid
             return false;
         }
-        if (auto transFeature = freecad_cast<PartDesign::Transformed>(obj)) {
+        if (auto transFeature = freecad_cast<PartDesign::Transformed*>(obj)) {
             // Transformed Features inside a MultiTransform are not solid features
             return !transFeature->isMultiTransformChild();
         }
