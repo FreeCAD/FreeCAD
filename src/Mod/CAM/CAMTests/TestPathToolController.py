@@ -22,7 +22,6 @@
 
 import FreeCAD
 import Path
-from Path.Tool.Shape import ToolBitShapeEndMill
 import Path.Tool.Bit as PathToolBit
 import Path.Tool.Controller as PathToolController
 
