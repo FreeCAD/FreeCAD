@@ -162,18 +162,15 @@ class TaskPanel:
 
 
 class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
-    def Create(self, shape_name: str, name="ToolBit", path=None, document=None):
-        """Create(shape_name, name = 'ToolBit') ... creates a new tool bit.
-        It is assumed the tool will be edited immediately so the internal bit
-        body is still attached.
+    def CreateFromAttrs(self, attrs, name="ToolBit", path=None, document=None):
         """
-        Path.Log.track(name, shape_name, path, document)
+        Creates a new tool bit from attributes.
+        This method is overridden to attach the ViewProvider.
+        """
+        Path.Log.track(attrs, name, path, document)
 
         # Use the base class factory to create the tool bit object
-        FreeCAD.ActiveDocument.openTransaction("Create ToolBit")
-        tool = PathToolBit.ToolBitFactory.Create(
-            self, shape_name, name, path, document
-        )
+        tool = super().CreateFromAttrs(attrs, name, path, document)
 
         # Attach the ViewProvider if the tool object has a ViewObject
         if hasattr(tool, "ViewObject") and tool.ViewObject:
@@ -183,7 +180,20 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
                 f"WARNING: ViewObject not available for tool {name}. "
                 "ViewProvider not attached.\n"
             )
-        FreeCAD.ActiveDocument.commitTransaction()
+
+        return tool
+
+    def Create(self, shape_name: str, name="ToolBit", path=None, document=None):
+        """
+        Creates a new tool bit.
+        It is assumed the tool will be edited immediately so the internal bit
+        body is still attached.
+        """
+        Path.Log.track(name, shape_name, path, document)
+
+        # Use the base class factory to create the tool bit object
+        # The ViewProvider attachment is now handled in CreateFromAttrs
+        tool = super().Create(shape_name, name, path, document)
 
         return tool
 
