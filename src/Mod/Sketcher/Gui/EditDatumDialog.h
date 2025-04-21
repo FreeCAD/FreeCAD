@@ -38,6 +38,8 @@ namespace SketcherGui
 class ViewProviderSketch;
 class Ui_InsertDatum;
 
+bool checkConstraintName(const Sketcher::SketchObject* sketch, std::string constraintName);
+
 class EditDatumDialog: public QObject
 {
     Q_OBJECT

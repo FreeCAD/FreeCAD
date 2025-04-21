@@ -36,10 +36,10 @@ import FreeCADGui
 
 from femmesh import gmshtools
 
-from . import base_femmeshtaskpanel
+from . import base_femlogtaskpanel
 
 
-class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
+class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
     """
     The TaskPanel for editing References property of
     MeshGmsh objects and creation of new FEM mesh
@@ -78,16 +78,16 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
             self.form.pb_get_gmsh_version, QtCore.SIGNAL("clicked()"), self.get_version
         )
 
-        self.get_mesh_params()
+        self.get_object_params()
         self.set_widgets()
 
-    def get_mesh_params(self):
+    def get_object_params(self):
         self.clmax = self.obj.CharacteristicLengthMax
         self.clmin = self.obj.CharacteristicLengthMin
         self.dimension = self.obj.ElementDimension
         self.order = self.obj.ElementOrder
 
-    def set_mesh_params(self):
+    def set_object_params(self):
         self.obj.CharacteristicLengthMax = self.clmax
         self.obj.CharacteristicLengthMin = self.clmin
         self.obj.ElementDimension = self.dimension

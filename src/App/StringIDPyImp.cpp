@@ -35,7 +35,7 @@ std::string StringIDPy::representation() const
     return getStringIDPtr()->toString(this->_index);
 }
 
-PyObject* StringIDPy::isSame(PyObject* args)
+PyObject* StringIDPy::isSame(PyObject* args) const
 {
     PyObject* other = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &StringIDPy::Type, &other)) {

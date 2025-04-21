@@ -53,7 +53,7 @@ int CenterLinePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* CenterLinePy::clone(PyObject *args)
+PyObject* CenterLinePy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -63,7 +63,7 @@ PyObject* CenterLinePy::clone(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<CenterLinePy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_RuntimeError, "failed to create clone of CenterLine");
         return nullptr;
@@ -80,7 +80,7 @@ PyObject* CenterLinePy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* CenterLinePy::copy(PyObject *args)
+PyObject* CenterLinePy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -90,7 +90,7 @@ PyObject* CenterLinePy::copy(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<CenterLinePy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_RuntimeError, "failed to create copy of CenterLine");
         return nullptr;

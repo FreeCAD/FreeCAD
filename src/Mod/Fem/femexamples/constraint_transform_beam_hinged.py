@@ -155,7 +155,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_pressure)
 
     # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="FemConstraintDisplacment")
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="FemConstraintDisplacement")
     con_disp.References = [(geom_obj, "Face4"), (geom_obj, "Face5")]
     con_disp.xFree = False
     con_disp.xDisplacement = 0.0

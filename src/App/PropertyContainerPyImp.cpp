@@ -510,7 +510,7 @@ Py::List PropertyContainerPy::getPropertiesList() const
 }
 
 
-PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds)
+PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds) const
 {
     int compression = 3;
     const char* property {};

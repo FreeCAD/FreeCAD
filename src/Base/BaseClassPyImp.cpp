@@ -36,7 +36,7 @@ std::string BaseClassPy::representation() const
 }
 
 
-PyObject* BaseClassPy::isDerivedFrom(PyObject* args)
+PyObject* BaseClassPy::isDerivedFrom(PyObject* args) const
 {
     char* name {};
     if (!PyArg_ParseTuple(args, "s", &name)) {
@@ -48,7 +48,7 @@ PyObject* BaseClassPy::isDerivedFrom(PyObject* args)
     return PyBool_FromLong(valid ? 1 : 0);
 }
 
-PyObject* BaseClassPy::getAllDerivedFrom(PyObject* args)
+PyObject* BaseClassPy::getAllDerivedFrom(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;

@@ -188,7 +188,7 @@ Py::Object TopoShapeSolidPy::getOuterShell() const
     return shape2pyshape(res);
 }
 
-PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
+PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args) const
 {
     PyObject *p,*d;
     if (!PyArg_ParseTuple(args, "O!O!",&Base::VectorPy::Type,&p
@@ -211,7 +211,7 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
     }
 }
 
-PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
+PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args) const
 {
     PyObject *p,*d;
     if (!PyArg_ParseTuple(args, "O!O!",&Base::VectorPy::Type,&p
@@ -234,7 +234,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
     }
 }
 
-PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
+PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args) const
 {
     PyObject *obj;
     Standard_Real offset;

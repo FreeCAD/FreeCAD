@@ -151,7 +151,7 @@ PyObject* Geometry2dPy::translate(PyObject *args)
     return nullptr;
 }
 
-PyObject* Geometry2dPy::copy(PyObject *args)
+PyObject* Geometry2dPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -161,7 +161,7 @@ PyObject* Geometry2dPy::copy(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<Geometry2dPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of geometry");
         return nullptr;

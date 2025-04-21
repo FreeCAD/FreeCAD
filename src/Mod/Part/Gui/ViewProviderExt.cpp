@@ -691,7 +691,7 @@ std::map<std::string,Base::Color> ViewProviderPartExt::getElementColors(const ch
             }
             if(size && singleColor) {
                 color = ShapeAppearance.getDiffuseColor(0);
-                color.setTransparency(Base::fromPercent(100.0F));
+                color.setTransparency(Base::fromPercent(0.0F));
                 ret.clear();
             }
             ret["Face"] = color;

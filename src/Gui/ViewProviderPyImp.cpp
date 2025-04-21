@@ -390,7 +390,7 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
     return nullptr;
 }
 
-PyObject* ViewProviderPy::claimChildren(PyObject* args)
+PyObject* ViewProviderPy::claimChildren(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -406,7 +406,7 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
-PyObject* ViewProviderPy::claimChildrenRecursive(PyObject* args)
+PyObject* ViewProviderPy::claimChildrenRecursive(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -499,7 +499,7 @@ PyObject* ViewProviderPy::setElementColors(PyObject* args)
     Py_Return;
 }
 
-PyObject* ViewProviderPy::getElementPicked(PyObject* args)
+PyObject* ViewProviderPy::getElementPicked(PyObject* args) const
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O",&obj))
@@ -518,7 +518,7 @@ PyObject* ViewProviderPy::getElementPicked(PyObject* args)
     return Py::new_reference_to(Py::String(name));
 }
 
-PyObject* ViewProviderPy::getDetailPath(PyObject* args)
+PyObject* ViewProviderPy::getDetailPath(PyObject* args) const
 {
     const char *sub;
     PyObject *path;
@@ -541,7 +541,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", static_cast<void*>(det), 0);
 }
 
-PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)
+PyObject *ViewProviderPy::signalChangeIcon(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

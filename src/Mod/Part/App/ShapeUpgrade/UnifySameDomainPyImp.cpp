@@ -234,7 +234,7 @@ PyObject* UnifySameDomainPy::build(PyObject *args)
     }
 }
 
-PyObject* UnifySameDomainPy::shape(PyObject *args)
+PyObject* UnifySameDomainPy::shape(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

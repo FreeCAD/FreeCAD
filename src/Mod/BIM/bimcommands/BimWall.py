@@ -130,7 +130,7 @@ class Arch_Wall:
         ----------
         point: <class 'Base.Vector'>
             The point the user has selected.
-        obj: <Part::PartFeature>, optional
+        obj: <Part::Feature>, optional
             The object the user's cursor snapped to, if any.
         """
 

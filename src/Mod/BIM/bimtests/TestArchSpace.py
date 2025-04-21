@@ -151,7 +151,7 @@ class TestArchSpace(TestArchBase.TestArchBase):
             # space = App.ActiveDocument.Space
         else:
             # Also tests the alternative way of specifying the boundaries
-            # [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+            # [ (<Part::Feature>, ["Face1", ...]), ... ]
             space = Arch.makeSpace([(wall, boundaries)])
 
         App.ActiveDocument.recompute() # To calculate space area

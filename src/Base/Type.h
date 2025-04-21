@@ -59,7 +59,7 @@ struct TypeData;
     if (anode->is<Mesh::MeshFeature>()) {
       // do something..
     }
-    else if (anode->is<Part::PartFeature>()) {
+    else if (anode->is<Part::Feature>()) {
       // do something..
     }
     else {

@@ -108,7 +108,7 @@ void Array3DPy::setDepth(Py::Long arg)
     getArray3DPtr()->setDepth(arg);
 }
 
-PyObject* Array3DPy::getRows(PyObject* args)
+PyObject* Array3DPy::getRows(PyObject* args) const
 {
     int depth = getArray3DPtr()->currentDepth();
     if (!PyArg_ParseTuple(args, "|i", &depth)) {
@@ -118,7 +118,7 @@ PyObject* Array3DPy::getRows(PyObject* args)
     return PyLong_FromLong(getArray3DPtr()->rows(depth));
 }
 
-PyObject* Array3DPy::getValue(PyObject* args)
+PyObject* Array3DPy::getValue(PyObject* args) const
 {
     int depth;
     int row;
@@ -138,7 +138,7 @@ PyObject* Array3DPy::getValue(PyObject* args)
     return nullptr;
 }
 
-PyObject* Array3DPy::getDepthValue(PyObject* args)
+PyObject* Array3DPy::getDepthValue(PyObject* args) const
 {
     int depth;
     if (!PyArg_ParseTuple(args, "i", &depth)) {
