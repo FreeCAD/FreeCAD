@@ -54,19 +54,19 @@ class Extension;
  */
 enum PropertyType
 {
-    /// @brief No special property type.
+    /// No special property type.
     Prop_None        = 0,
-    /// @brief The property is read-only in the editor.
+    /// The property is read-only in the editor.
     Prop_ReadOnly    = 1,
-    /// @brief The property content won't be saved to file, but still saves name, type and status.
+    /// The property content won't be saved to file, but still saves name, type and status.
     Prop_Transient   = 2,
-    /// @brief The property is hidden in the editor.
+    /// The property is hidden in the editor.
     Prop_Hidden      = 4,
-    /// @brief A modified property doesn't touch its parent container.
+    /// A modified property doesn't touch its parent container.
     Prop_Output      = 8,
-    /// @brief A modified property doesn't touch its container for recompute.
+    /// A modified property doesn't touch its container for recompute.
     Prop_NoRecompute = 16,
-    /// @brief property won't be saved to file at all.
+    /// The property won't be saved to file at all.
     Prop_NoPersist   = 32,
 };
 // clang-format on
@@ -583,16 +583,15 @@ protected:
 
 public:
 
-  /// @brief The copy constructor is deleted to prevent copying.
+  /// The copy constructor is deleted to prevent copying.
   PropertyContainer(const PropertyContainer&) = delete;
 
-  /// @brief The assignment operator is deleted to prevent assignment.
+  /// The assignment operator is deleted to prevent assignment.
   PropertyContainer& operator = (const PropertyContainer&) = delete;
 
 protected:
-  /**
-   * @brief The container for dynamic properties.
-   */
+
+  /// The container for dynamic properties.
   DynamicProperty dynamicProps;
 
 private:

@@ -595,7 +595,7 @@ protected:
 };
 
 /**
- * Namespace for parsing expressions.
+ * @brief Namespace for parsing expressions.
  *
  * Contains functionality for parsing expressions, the units of
  * expressions, whether a token is an identifier, unit, or constant.

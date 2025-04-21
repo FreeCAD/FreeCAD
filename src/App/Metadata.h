@@ -40,7 +40,7 @@ namespace App
 {
 
 /**
- * A namespace for metadata for Python external addons.
+ * @brief A namespace for metadata for Python external addons.
  *
  * This namespace contains functionality to define the contents of a
  * package.xml file, such as Contact, License, Url, and Dependency.
