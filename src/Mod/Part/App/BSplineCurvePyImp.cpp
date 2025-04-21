@@ -89,7 +89,7 @@ int BSplineCurvePy::PyInit(PyObject* args, PyObject* kwd)
     return -1;
 }
 
-PyObject*  BSplineCurvePy::__reduce__(PyObject *args)
+PyObject*  BSplineCurvePy::__reduce__(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -101,7 +101,7 @@ PyObject*  BSplineCurvePy::__reduce__(PyObject *args)
     tuple.setItem(0, type);
 
     // create an argument tuple to create a copy
-    Py::Object self(this);
+    Py::Object self(const_cast<BSplineCurvePy*>(this));
     Py::Tuple data(7);
     data.setItem(0, Py::Callable(self.getAttr("getPoles")).apply());
     data.setItem(1, Py::Callable(self.getAttr("getMultiplicities")).apply());
@@ -115,7 +115,7 @@ PyObject*  BSplineCurvePy::__reduce__(PyObject *args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* BSplineCurvePy::isRational(PyObject *args)
+PyObject* BSplineCurvePy::isRational(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -125,7 +125,7 @@ PyObject* BSplineCurvePy::isRational(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BSplineCurvePy::isPeriodic(PyObject *args)
+PyObject* BSplineCurvePy::isPeriodic(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -135,7 +135,7 @@ PyObject* BSplineCurvePy::isPeriodic(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BSplineCurvePy::isClosed(PyObject *args)
+PyObject* BSplineCurvePy::isClosed(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -335,7 +335,7 @@ PyObject* BSplineCurvePy::setKnot(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getKnot(PyObject * args)
+PyObject* BSplineCurvePy::getKnot(PyObject * args) const
 {
     int Index;
     if (!PyArg_ParseTuple(args, "i", &Index))
@@ -379,7 +379,7 @@ PyObject* BSplineCurvePy::setKnots(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getKnots(PyObject * args)
+PyObject* BSplineCurvePy::getKnots(PyObject * args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -424,7 +424,7 @@ PyObject* BSplineCurvePy::setPole(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getPole(PyObject * args)
+PyObject* BSplineCurvePy::getPole(PyObject * args) const
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
@@ -445,7 +445,7 @@ PyObject* BSplineCurvePy::getPole(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getPoles(PyObject * args)
+PyObject* BSplineCurvePy::getPoles(PyObject * args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -469,7 +469,7 @@ PyObject* BSplineCurvePy::getPoles(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getPolesAndWeights(PyObject * args)
+PyObject* BSplineCurvePy::getPolesAndWeights(PyObject * args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -518,7 +518,7 @@ PyObject* BSplineCurvePy::setWeight(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getWeight(PyObject * args)
+PyObject* BSplineCurvePy::getWeight(PyObject * args) const
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
@@ -537,7 +537,7 @@ PyObject* BSplineCurvePy::getWeight(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getWeights(PyObject * args)
+PyObject* BSplineCurvePy::getWeights(PyObject * args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -558,7 +558,7 @@ PyObject* BSplineCurvePy::getWeights(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getResolution(PyObject * args)
+PyObject* BSplineCurvePy::getResolution(PyObject * args) const
 {
     double tol;
     if (!PyArg_ParseTuple(args, "d", &tol))
@@ -646,7 +646,7 @@ PyObject* BSplineCurvePy::setOrigin(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getMultiplicity(PyObject * args)
+PyObject* BSplineCurvePy::getMultiplicity(PyObject * args) const
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
@@ -663,7 +663,7 @@ PyObject* BSplineCurvePy::getMultiplicity(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::getMultiplicities(PyObject * args)
+PyObject* BSplineCurvePy::getMultiplicities(PyObject * args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -765,7 +765,7 @@ Py::List BSplineCurvePy::getKnotSequence() const
     return list;
 }
 
-PyObject* BSplineCurvePy::toBiArcs(PyObject * args)
+PyObject* BSplineCurvePy::toBiArcs(PyObject * args) const
 {
     double tolerance = 0.001;
     if (!PyArg_ParseTuple(args, "d", &tolerance))
@@ -940,7 +940,7 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
     }
 }
 
-PyObject* BSplineCurvePy::getCardinalSplineTangents(PyObject *args, PyObject *kwds)
+PyObject* BSplineCurvePy::getCardinalSplineTangents(PyObject *args, PyObject *kwds) const
 {
     PyObject* pts;
     PyObject* tgs;
@@ -1333,7 +1333,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
 }
 
 
-PyObject* BSplineCurvePy::toBezier(PyObject *args)
+PyObject* BSplineCurvePy::toBezier(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

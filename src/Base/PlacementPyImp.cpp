@@ -223,7 +223,7 @@ PyObject* PlacementPy::rotate(PyObject* args, PyObject* kwds)
 }
 // clang-format on
 
-PyObject* PlacementPy::multiply(PyObject* args)
+PyObject* PlacementPy::multiply(PyObject* args) const
 {
     PyObject* plm {};
     if (!PyArg_ParseTuple(args, "O!", &(PlacementPy::Type), &plm)) {
@@ -233,7 +233,7 @@ PyObject* PlacementPy::multiply(PyObject* args)
     return new PlacementPy(new Placement(mult));
 }
 
-PyObject* PlacementPy::multVec(PyObject* args)
+PyObject* PlacementPy::multVec(PyObject* args) const
 {
     PyObject* vec {};
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &vec)) {
@@ -244,7 +244,7 @@ PyObject* PlacementPy::multVec(PyObject* args)
     return new VectorPy(new Vector3d(pnt));
 }
 
-PyObject* PlacementPy::copy(PyObject* args)
+PyObject* PlacementPy::copy(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -252,7 +252,7 @@ PyObject* PlacementPy::copy(PyObject* args)
     return new PlacementPy(new Placement(*getPlacementPtr()));
 }
 
-PyObject* PlacementPy::toMatrix(PyObject* args)
+PyObject* PlacementPy::toMatrix(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -261,7 +261,7 @@ PyObject* PlacementPy::toMatrix(PyObject* args)
     return new MatrixPy(new Matrix4D(mat));
 }
 
-PyObject* PlacementPy::inverse(PyObject* args)
+PyObject* PlacementPy::inverse(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -270,7 +270,7 @@ PyObject* PlacementPy::inverse(PyObject* args)
     return new PlacementPy(new Placement(p));
 }
 
-PyObject* PlacementPy::pow(PyObject* args)
+PyObject* PlacementPy::pow(PyObject* args) const
 {
     double t {};
     PyObject* shorten = Py_True;
@@ -282,7 +282,7 @@ PyObject* PlacementPy::pow(PyObject* args)
 }
 
 
-PyObject* PlacementPy::sclerp(PyObject* args)
+PyObject* PlacementPy::sclerp(PyObject* args) const
 {
     PyObject* pyplm2 {};
     double t {};
@@ -302,7 +302,7 @@ PyObject* PlacementPy::sclerp(PyObject* args)
     return new PlacementPy(new Placement(ret));
 }
 
-PyObject* PlacementPy::slerp(PyObject* args)
+PyObject* PlacementPy::slerp(PyObject* args) const
 {
     PyObject* pyplm2 {};
     double t {};
@@ -314,7 +314,7 @@ PyObject* PlacementPy::slerp(PyObject* args)
     return new PlacementPy(new Placement(ret));
 }
 
-PyObject* PlacementPy::isIdentity(PyObject* args)
+PyObject* PlacementPy::isIdentity(PyObject* args) const
 {
     double tol = 0.0;
     if (!PyArg_ParseTuple(args, "|d", &tol)) {
@@ -324,7 +324,7 @@ PyObject* PlacementPy::isIdentity(PyObject* args)
     return Py_BuildValue("O", (none ? Py_True : Py_False));
 }
 
-PyObject* PlacementPy::isSame(PyObject* args)
+PyObject* PlacementPy::isSame(PyObject* args) const
 {
     PyObject* plm {};
     double tol = 0.0;

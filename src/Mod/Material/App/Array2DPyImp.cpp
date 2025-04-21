@@ -106,7 +106,7 @@ void Array2DPy::setColumns(Py::Long arg)
     getArray2DPtr()->setColumns(arg);
 }
 
-PyObject* Array2DPy::getRow(PyObject* args)
+PyObject* Array2DPy::getRow(PyObject* args) const
 {
     int row;
     if (!PyArg_ParseTuple(args, "i", &row)) {
@@ -132,7 +132,7 @@ PyObject* Array2DPy::getRow(PyObject* args)
     return nullptr;
 }
 
-PyObject* Array2DPy::getValue(PyObject* args)
+PyObject* Array2DPy::getValue(PyObject* args) const
 {
     int row;
     int column;
