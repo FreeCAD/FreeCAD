@@ -28,7 +28,7 @@ import os
 import pathlib
 import zipfile
 import enum
-from typing import Optional, Type
+from typing import List, Optional, Tuple, Type, Union
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from .Shape.base import ToolBitShape
