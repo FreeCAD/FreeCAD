@@ -609,9 +609,9 @@ class ToolBitLibrary(object):
         loc, fil = os.path.split(filename)
         fname = os.path.splitext(fil)[0]
         fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
-        Path.Log.debug("fullpath: {}".format(fullpath))
 
-        self.temptool = PathToolBit.ToolBitFactory().Create(name=fname)
+        Path.Log.debug(f"Attempting to create tool bit with name: {fullpath}")
+        self.temptool = PathToolBit.ToolBitFactory().Create(path=fullpath)
         self.temptool.ShapeFile = shapefile
         self.temptool.Proxy.unloadBitBody(self.temptool)
         self.temptool.Label = fname

@@ -612,10 +612,12 @@ class ToolBit(object):
             attrs["shape"] = ""
             attrs["parameter"] = {}
 
-        attrs["attribute"] = {
+        attrs["parameter"].update({
             name: PathUtil.getPropertyValueString(obj, name)
             for name in self._get_props(obj, "Attributes")
-        }
+        })
+
+        attrs["attribute"] = {}
         return attrs
 
     def get_spindle_direction(self, obj) -> toolchange.SpindleDirection:
@@ -641,7 +643,12 @@ def Declaration(path):
 
 
 class ToolBitFactory(object):
-    def CreateFromAttrs(self, attrs, name="ToolBit", path=None, document=None) -> Type[ToolBit]:
+    def CreateFromAttrs(
+        self, attrs, name="ToolBit", path=None, shape_path=None, document=None
+    ) -> Type[ToolBit]:
+        """
+        path: path to a toolbit file
+        """
         document = document if document else FreeCAD.ActiveDocument
         if not document:
             raise Exception('no open document found')
@@ -655,7 +662,7 @@ class ToolBitFactory(object):
             # Use the utility function to get the shape instance.
             # The file path is now stored within the instance itself.
             tool_bit_shape, _ = get_shape_from_name(
-                shape_val, pathlib.Path(path) if path else None, params_dict
+                shape_val, shape_path, params_dict
             )
         except Exception as e:
             Path.Log.error(
@@ -691,23 +698,35 @@ class ToolBitFactory(object):
             raise FileNotFoundError(f"{path} not found")
         try:
             data = Declaration(path)
-            bit = Factory.CreateFromAttrs(data, name, document)
-            return bit
         except (OSError, IOError) as e:
             Path.Log.error("%s not a valid tool file (%s)" % (path, e))
             raise
 
-    def Create(self, shape_name: str, name="ToolBit", path=None, document=None):
-        Path.Log.track(name, shape_name, path)
+        return Factory.CreateFromAttrs(data, name, path, document)
+
+    def Create(self, path, shape_path=None):
+        """
+        path is a path to the tool file
+        shape_path is a path to the file that defines a shape (built-in or not)
+        """
+        Path.Log.track(path, shape_path)
+
+        # Workaround for now, as the UI does not yet support explicit shape type
+        # selection, it only supports using shape file, but doesn't recognize the
+        # shape type.
+        shape_name = get_shape_name_from_basename(path)
+        if not shape_name:
+            Path.Log.error(f"cannot infer tool type from shape filename {shape_path}. assuming endmill")
+            shape_name = "endmill"
 
         # Construct the attributes dictionary for CreateFromAttrs
         attrs = {
-            "shape": shape_name,
+            "shape": shape_name + ".fcstd",
             "parameter": {},  # Parameters will be loaded from the shape file
             "attribute": {},  # Attributes will be loaded from the shape file
         }
 
         # Use CreateFromAttrs to create the tool bit
-        return self.CreateFromAttrs(attrs, name, path, document)
+        return self.CreateFromAttrs(attrs, shape_path=shape_path, path=path)
 
 Factory = ToolBitFactory()
