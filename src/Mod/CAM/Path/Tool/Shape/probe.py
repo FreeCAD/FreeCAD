@@ -2,7 +2,6 @@
 # Defines the Probe tool bit shape.
 
 import FreeCAD
-from typing import Tuple
 from .base import ToolBitShape
 
 
@@ -27,4 +26,7 @@ class ToolBitShapeProbe(ToolBitShape):
 
     @property
     def label(self) -> str:
-        return FreeCAD.translate("ToolBitShapeProbe", "Probe")
+        return FreeCAD.Qt.translate("ToolBitShapeProbe", "Probe")
+
+    def can_rotate(self) -> bool:
+        return False
