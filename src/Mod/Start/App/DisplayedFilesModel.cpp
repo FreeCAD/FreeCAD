@@ -67,10 +67,10 @@ std::string humanReadableSize(unsigned int bytes)
     }
     if (base == 0) {
         // Don't include a decimal point for bytes
-        return fmt::format("{:.0f} {}", inUnits, siPrefix[base]);
+        return std::format("{:.0f} {}", inUnits, siPrefix[base]);
     }
     // For all others, include one digit after the decimal place
-    return fmt::format("{:.1f} {}", inUnits, siPrefix[base]);
+    return std::format("{:.1f} {}", inUnits, siPrefix[base]);
 }
 
 FileStats fileInfoFromFreeCADFile(const std::string& path)

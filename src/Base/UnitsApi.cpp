@@ -23,12 +23,12 @@
 
 #include "PreCompiled.h"
 
-#include <sstream>
+#include <format>
 #include <iomanip>
 #include <memory>
+#include <sstream>
 
 #include <CXX/WrapPython.h>
-#include <fmt/format.h>
 #include <QString>
 #include "Exception.h"
 
@@ -129,7 +129,7 @@ void UnitsApi::setSchema(UnitSystem system)
 
 std::string UnitsApi::toString(const Base::Quantity& quantity, const QuantityFormat& format)
 {
-    return fmt::format("'{} {}'", toNumber(quantity, format), quantity.getUnit().getString());
+    return std::format("'{} {}'", toNumber(quantity, format), quantity.getUnit().getString());
 }
 
 std::string UnitsApi::toNumber(const Base::Quantity& quantity, const QuantityFormat& format)

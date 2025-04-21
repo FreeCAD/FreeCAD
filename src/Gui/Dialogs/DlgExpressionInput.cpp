@@ -22,13 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <format>
 #include <QApplication>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QTreeWidget>
 #endif
-
-#include <fmt/format.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -247,7 +246,7 @@ void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
         auto valStr = value.getUserString();
         auto minStr = minVal.getUserString();
         auto maxStr = maxVal.getUserString();
-        throw Base::ValueError(fmt::format("Value out of range ({} out of [{}, {}])", valStr, minStr, maxStr));
+        throw Base::ValueError(std::format("Value out of range ({} out of [{}, {}])", valStr, minStr, maxStr));
     }
 }
 

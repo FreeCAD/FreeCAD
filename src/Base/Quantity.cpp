@@ -24,11 +24,11 @@
 #ifndef _PreComp_
 #include <array>
 #include <cmath>
+#include <format>
 #include <limits>
 #include <numbers>
 #endif
 
-#include <fmt/format.h>
 #include <Base/Tools.h>
 
 #include "Exception.h"
@@ -255,7 +255,7 @@ std::string Quantity::getSafeUserString() const
         auto feedbackQty = parse(ret);
         auto feedbackVal = feedbackQty.getValue();
         if (feedbackVal == 0) {
-            ret = fmt::format("{} {}", this->myValue, this->getUnit().getString());
+            ret = std::format("{} {}", this->myValue, this->getUnit().getString());
         }
     }
     return Base::Tools::escapeQuotesFromString(ret);
