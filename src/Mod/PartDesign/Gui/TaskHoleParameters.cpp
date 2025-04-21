@@ -662,22 +662,19 @@ void TaskHoleParameters::threadTypeChanged(int index)
         ui->ThreadFit->setItemText(2, noneText);
     }
     else if (TypeClass == QByteArray("ISO")) {
-        const char* disambiguation = "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible";
-        ui->ThreadFit->setItemText(0, tr("Medium", disambiguation));
-        ui->ThreadFit->setItemText(1, tr("Fine", disambiguation));
-        ui->ThreadFit->setItemText(2, tr("Coarse", disambiguation));
+        ui->ThreadFit->setItemText(0, tr("Medium", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(1, tr("Fine", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(2, tr("Coarse", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
     }
     else if (TypeClass == QByteArray("UTS")) {
-        const char* disambiguation = "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible";
-        ui->ThreadFit->setItemText(0, tr("Normal", disambiguation));
-        ui->ThreadFit->setItemText(1, tr("Close", disambiguation));
-        ui->ThreadFit->setItemText(2, tr("Loose", disambiguation));
+        ui->ThreadFit->setItemText(0, tr("Normal", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(1, tr("Close", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(2, tr("Loose", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
     }
     else {
-        const char* disambiguation = "Distance between thread crest and hole wall";
-        ui->ThreadFit->setItemText(0, tr("Normal", disambiguation));
-        ui->ThreadFit->setItemText(1, tr("Close", disambiguation));
-        ui->ThreadFit->setItemText(2, tr("Wide", disambiguation));
+        ui->ThreadFit->setItemText(0, tr("Normal", "Distance between thread crest and hole wall"));
+        ui->ThreadFit->setItemText(1, tr("Close", "Distance between thread crest and hole wall"));
+        ui->ThreadFit->setItemText(2, tr("Wide", "Distance between thread crest and hole wall"));
     }
 
     // Class and cut type
