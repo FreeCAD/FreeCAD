@@ -612,7 +612,7 @@ class ToolBitLibrary(object):
         Path.Log.debug("fullpath: {}".format(fullpath))
 
         self.temptool = PathToolBit.ToolBitFactory().Create(name=fname)
-        self.temptool.BitShape = shapefile
+        self.temptool.ShapeFile = shapefile
         self.temptool.Proxy.unloadBitBody(self.temptool)
         self.temptool.Label = fname
         self.temptool.Proxy.saveToFile(self.temptool, fullpath)
