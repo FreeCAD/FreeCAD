@@ -35,6 +35,7 @@ import FreeCADGui
 import Plot
 import FemGui
 from PySide import QtGui, QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import io
 import numpy as np
@@ -47,6 +48,7 @@ from . import view_base_fempostvisualization
 from femtaskpanels import task_post_histogram
 
 _GuiPropHelper = view_base_fempostvisualization._GuiPropHelper
+
 
 class EditViewWidget(QtGui.QWidget):
 
@@ -260,49 +262,49 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
                 type="App::PropertyString",
                 name="Legend",
                 group="HistogramPlot",
-                doc="The name used in the plots legend",
+                doc=QT_TRANSLATE_NOOP("FEM", "The name used in the plots legend"),
                 value="",
             ),
             _GuiPropHelper(
                 type="App::PropertyColor",
                 name="BarColor",
                 group="HistogramBar",
-                doc="The color the data bin area is drawn with",
+                doc=QT_TRANSLATE_NOOP("FEM", "The color the data bin area is drawn with"),
                 value=(0, 85, 255, 255),
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
                 name="Hatch",
                 group="HistogramBar",
-                doc="The hatch pattern drawn in the bar",
+                doc=QT_TRANSLATE_NOOP("FEM", "The hatch pattern drawn in the bar"),
                 value=['None', '/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'],
             ),
             _GuiPropHelper(
                 type="App::PropertyIntegerConstraint",
                 name="HatchDensity",
                 group="HistogramBar",
-                doc="The line width of the hatch",
+                doc=QT_TRANSLATE_NOOP("FEM", "The line width of the hatch)"),
                 value=(1, 1, 99, 1),
             ),
             _GuiPropHelper(
                 type="App::PropertyColor",
                 name="LineColor",
                 group="HistogramLine",
-                doc="The color the data bin area is drawn with",
+                doc=QT_TRANSLATE_NOOP("FEM", "The color the data bin area is drawn with"),
                 value=(0, 0, 0, 1), # black
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
                 name="LineWidth",
                 group="HistogramLine",
-                doc="The width of the bar, between 0 and 1 (1 being without gaps)",
+                doc=QT_TRANSLATE_NOOP("FEM", "The width of the bar, between 0 and 1 (1 being without gaps)"),
                 value=(1, 0, 99, 0.1),
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
                 name="LineStyle",
                 group="HistogramLine",
-                doc="The style the line is drawn in",
+                doc=QT_TRANSLATE_NOOP("FEM", "The style the line is drawn in"),
                 value=['None', '-', '--', '-.', ':'],
             ),
         ]
@@ -390,70 +392,70 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                 type="App::PropertyBool",
                 name="Cumulative",
                 group="Histogram",
-                doc="If be the bars shoud show the cumulative sum left to rigth",
+                doc=QT_TRANSLATE_NOOP("FEM", "If be the bars shoud show the cumulative sum left to rigth"),
                 value=False,
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
                 name="Type",
                 group="Histogram",
-                doc="The type of histogram plotted",
+                doc=QT_TRANSLATE_NOOP("FEM", "The type of histogram plotted"),
                 value=["bar","barstacked", "step", "stepfilled"],
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
                 name="BarWidth",
                 group="Histogram",
-                doc="The width of the bar, between 0 and 1 (1 being without gaps)",
+                doc=QT_TRANSLATE_NOOP("FEM", "The width of the bar, between 0 and 1 (1 being without gaps)"),
                 value=(0.9, 0, 1, 0.05),
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
                 name="HatchLineWidth",
                 group="Histogram",
-                doc="The line width of all drawn hatch patterns",
+                doc=QT_TRANSLATE_NOOP("FEM", "The line width of all drawn hatch patterns"),
                 value=(1, 0, 99, 0.1),
             ),
             _GuiPropHelper(
                 type="App::PropertyInteger",
                 name="Bins",
                 group="Histogram",
-                doc="The number of bins the data is split into",
+                doc=QT_TRANSLATE_NOOP("FEM", "The number of bins the data is split into"),
                 value=10,
             ),
             _GuiPropHelper(
                 type="App::PropertyString",
                 name="Title",
                 group="Plot",
-                doc="The histogram plot title",
+                doc=QT_TRANSLATE_NOOP("FEM", "The histogram plot title"),
                 value="",
             ),
             _GuiPropHelper(
                 type="App::PropertyString",
                 name="XLabel",
                 group="Plot",
-                doc="The label shown for the histogram X axis",
+                doc=QT_TRANSLATE_NOOP("FEM", "The label shown for the histogram X axis"),
                 value="",
             ),
             _GuiPropHelper(
                 type="App::PropertyString",
                 name="YLabel",
                 group="Plot",
-                doc="The label shown for the histogram Y axis",
+                doc=QT_TRANSLATE_NOOP("FEM", "The label shown for the histogram Y axis"),
                 value="",
             ),
             _GuiPropHelper(
                 type="App::PropertyBool",
                 name="Legend",
                 group="Plot",
-                doc="Determines if the legend is plotted",
+                doc=QT_TRANSLATE_NOOP("FEM", "Determines if the legend is plotted"),
                 value=True,
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
                 name="LegendLocation",
                 group="Plot",
-                doc="Determines if the legend is plotted",
+                doc=QT_TRANSLATE_NOOP("FEM", "Determines if the legend is plotted"),
                 value=['best','upper right','upper left','lower left','lower right','right',
                        'center left','center right','lower center','upper center','center'],
             ),

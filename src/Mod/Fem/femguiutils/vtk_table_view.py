@@ -37,6 +37,8 @@ import FreeCADGui
 
 from vtkmodules.vtkIOCore import vtkDelimitedTextWriter
 
+translate = FreeCAD.Qt.translate
+
 class VtkTableModel(QtCore.QAbstractTableModel):
     # Simple table model. Only supports single component columns
     # One can supply a header_names dict to replace the table column names
@@ -160,14 +162,14 @@ class VtkTableView(QtGui.QWidget):
         csv_action = QtGui.QAction(self)
         csv_action.triggered.connect(self.exportCsv)
         csv_action.setIcon(FreeCADGui.getIcon("Std_Export"))
-        csv_action.setToolTip("Export to CSV")
+        csv_action.setToolTip(translate("FEM", "Export to CSV"))
         self.toolbar.addAction(csv_action)
 
         copy_action = QtGui.QAction(self)
         copy_action.triggered.connect(self.copyToClipboard)
         copy_action.setIcon(FreeCADGui.getIcon("edit-copy"))
         shortcut = QtGui.QKeySequence(QtGui.QKeySequence.Copy)
-        copy_action.setToolTip(f"Copy to clipboard ({shortcut.toString()})")
+        copy_action.setToolTip(translate("FEM", "Copy selection to clipboard ({})".format(shortcut.toString())))
         copy_action.setShortcut(shortcut)
         self.toolbar.addAction(copy_action)
 
@@ -195,9 +197,9 @@ class VtkTableView(QtGui.QWidget):
     @QtCore.Slot(bool)
     def exportCsv(self, state):
 
-        file_path, filter = QtGui.QFileDialog.getSaveFileName(None, "Save as csv file", "", "CSV (*.csv)")
+        file_path, filter = QtGui.QFileDialog.getSaveFileName(None, translate("FEM", "Save as csv file"), "", "CSV (*.csv)")
         if not file_path:
-            FreeCAD.Console.PrintMessage("CSV file export aborted: no filename selected")
+            FreeCAD.Console.PrintMessage(translate("FEM", "CSV file export aborted: no filename selected"))
             return
 
         writer = vtkDelimitedTextWriter()
