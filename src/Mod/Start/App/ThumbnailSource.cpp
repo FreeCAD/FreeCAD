@@ -57,7 +57,9 @@ void ThumbnailSource::run()
 {
     _thumbnailPath = getPathToCachedThumbnail(_file);
     if (!useCachedThumbnail(_thumbnailPath, _file)) {
-        setupF3D();  // Go through the mutex to ensure data is not stale
+        // Go through the mutex to ensure data is not stale.
+        // Contention on the lock is diminished because of first checking the cache.
+        setupF3D();
         if (_f3d.major < 2) {
             return;
         }
