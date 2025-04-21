@@ -66,10 +66,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadType->addItem(tr("UTS coarse"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS fine"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS extra fine"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("ANSI pipes"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("ISO/BSP pipes"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("ANSI pipes"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("ISO/BSP pipes"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("Other"));
+    ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("Other"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
@@ -655,29 +655,26 @@ void TaskHoleParameters::threadTypeChanged(int index)
     ui->labelSize->setHidden(isNone);
     ui->ClearanceWidget->setHidden(isNone || isThreaded);
 
-    if (TypeClass == QByteArray("ISO")) {
-        // the names of the clearance types are different in ISO and UTS
-        ui->ThreadFit->setItemText(
-            0,
-            QCoreApplication::translate("TaskHoleParameters", "Standard", nullptr));
-        ui->ThreadFit->setItemText(
-            1,
-            QCoreApplication::translate("TaskHoleParameters", "Close", nullptr));
-        ui->ThreadFit->setItemText(
-            2,
-            QCoreApplication::translate("TaskHoleParameters", "Wide", nullptr));
+    if (TypeClass == QByteArray("None")) {
+        QString noneText = QStringLiteral("-");
+        ui->ThreadFit->setItemText(0, noneText);
+        ui->ThreadFit->setItemText(1, noneText);
+        ui->ThreadFit->setItemText(2, noneText);
+    }
+    else if (TypeClass == QByteArray("ISO")) {
+        ui->ThreadFit->setItemText(0, tr("Medium", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(1, tr("Fine", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(2, tr("Coarse", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
     }
     else if (TypeClass == QByteArray("UTS")) {
-        // the names of the clearance types are different in ISO and UTS
-        ui->ThreadFit->setItemText(
-            0,
-            QCoreApplication::translate("TaskHoleParameters", "Normal", nullptr));
-        ui->ThreadFit->setItemText(
-            1,
-            QCoreApplication::translate("TaskHoleParameters", "Close", nullptr));
-        ui->ThreadFit->setItemText(
-            2,
-            QCoreApplication::translate("TaskHoleParameters", "Loose", nullptr));
+        ui->ThreadFit->setItemText(0, tr("Normal", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(1, tr("Close", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(2, tr("Loose", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
+    }
+    else {
+        ui->ThreadFit->setItemText(0, tr("Normal", "Distance between thread crest and hole wall"));
+        ui->ThreadFit->setItemText(1, tr("Close", "Distance between thread crest and hole wall"));
+        ui->ThreadFit->setItemText(2, tr("Wide", "Distance between thread crest and hole wall"));
     }
 
     // Class and cut type
