@@ -8,6 +8,7 @@ from .base import ToolBitShape
 
 class ToolBitShapeBullnose(ToolBitShape):
     name = "bullnose"
+    aliases = ("torus",)
     _schema = {
         "CuttingEdgeHeight": 'App::PropertyLength',
         "Diameter": 'App::PropertyLength',
