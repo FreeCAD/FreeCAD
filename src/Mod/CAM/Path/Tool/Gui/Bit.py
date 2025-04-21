@@ -161,7 +161,7 @@ class TaskPanel:
 
 
 class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
-    def CreateFromAttrs(self, attrs, name="ToolBit", path=None, document=None):
+    def CreateFromAttrs(self, attrs, name="ToolBit", path=None, shape_path=None, document=None):
         """
         Creates a new tool bit from attributes.
         This method is overridden to attach the ViewProvider.
@@ -169,7 +169,7 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
         Path.Log.track(attrs, name, path, document)
 
         # Use the base class factory to create the tool bit object
-        tool = super().CreateFromAttrs(attrs, name, path, document)
+        tool = super().CreateFromAttrs(attrs, name, path, shape_path, document)
 
         # Attach the ViewProvider if the tool object has a ViewObject
         if hasattr(tool, "ViewObject") and tool.ViewObject:
@@ -182,19 +182,17 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
 
         return tool
 
-    def Create(self, shape_name: str, name="ToolBit", path=None, document=None):
+    def Create(self, path: str, shape_path=None):
         """
         Creates a new tool bit.
         It is assumed the tool will be edited immediately so the internal bit
         body is still attached.
         """
-        Path.Log.track(name, shape_name, path, document)
+        Path.Log.track(path, shape_path)
 
         # Use the base class factory to create the tool bit object
         # The ViewProvider attachment is now handled in CreateFromAttrs
-        tool = super().Create(shape_name, name, path, document)
-
-        return tool
+        return super().Create(path, shape_path)
 
 
 def isValidFileName(filename):
