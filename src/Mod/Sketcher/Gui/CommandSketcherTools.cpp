@@ -42,6 +42,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
+#include <Gui/View3DInventor.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Sketcher/App/PythonConverter.h>
@@ -2529,10 +2530,16 @@ void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
 {
     std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
                         std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
-                        
+ 
+    auto doc = Gui::Application::Instance->activeDocument();
     SketcherGui::ViewProviderSketch* vp =
-    static_cast<SketcherGui::ViewProviderSketch*>(Gui::Application::Instance->activeDocument()->getInEdit());
+    static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     DrawSketchHandlerScale scaler(allGeoIds, scale_factor, Base::Vector2d(0.0, 0.0));
     scaler.setSketchGui(vp);
     scaler.executeCommands();
+
+    auto view3d = dynamic_cast<Gui::View3DInventor *>(doc->getActiveView());
+    if (view3d) {
+        view3d->getViewer()->viewAll();
+    }
 }
