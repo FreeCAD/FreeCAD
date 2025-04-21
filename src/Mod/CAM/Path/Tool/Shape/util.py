@@ -55,6 +55,12 @@ def get_builtin_shape_file_from_name(name):
         FileNotFoundError: If the CAM module directory cannot be found
                            in FreeCAD.__ModDirs__ with the expected structure.
     """
+    # Find class to resolve from alias to name.
+    cls = get_shape_class_from_name(name)
+    if not cls:
+        return
+
+    # Find the FreeCAD CAM module directory.
     cam_mod_dir = None
     for mod_dir_str in FreeCAD.__ModDirs__:
         mod_path = pathlib.Path(mod_dir_str)
@@ -72,7 +78,8 @@ def get_builtin_shape_file_from_name(name):
             "CAM module directory with expected structure not found in FreeCAD.__ModDirs__"
         )
 
-    return cam_mod_dir / "Tools" / "Shape" / (name + ".fcstd")
+    # The built-in shapes are stored in the CAM directory.
+    return cam_mod_dir / "Tools" / "Shape" / (cls.name + ".fcstd")
 
 
 def get_shape_class_from_name(name: str) -> Optional[Type[ToolBitShape]]:
@@ -96,9 +103,9 @@ def get_shape_from_name(
 
     # Find the shape file path for the new shape
     if path is None:
-        path = get_builtin_shape_file_from_name(name)
+        path = get_builtin_shape_file_from_name(shape_class.name)
         if not path:
-            err = f"Could not find shape file for new shape '{name}'."
+            err = f"Could not find shape file for new shape '{shape_class.name}'."
             Path.Log.error(err+"\n")
             raise AttributeError(err)
         path = pathlib.Path(path)
@@ -107,9 +114,9 @@ def get_shape_from_name(
     try:
         return shape_class(filepath=path, **(params or {})), path
     except Exception as e:
-        err = f"Could not create instance of shape '{name}': {e}"
+        err = f"Could not create instance of shape '{name}' ({shape_class.name}): {e}"
         Path.Log.error(err+"\n")
-        raise AttributeError(err)
+        raise
 
 
 def find_shape_file(name: str, relative_to_path: Optional[pathlib.Path] = None) -> Optional[pathlib.Path]:
@@ -135,3 +142,19 @@ def find_shape_file(name: str, relative_to_path: Optional[pathlib.Path] = None) 
             return found_path
 
     return None
+
+
+def get_shape_name_from_basename(filepath: str | pathlib.Path) -> Optional[str]:
+    """
+    Returns the name, from a name or alias of a built-in tool shape.
+
+    Args:
+        filepath: The path to the shape file.
+
+    Returns:
+        str: The name, None if none found
+    """
+    file_path_obj = pathlib.Path(filepath)
+    file_base_name = file_path_obj.stem.lower()
+    cls = get_shape_class_from_name(file_base_name)
+    return cls.name if cls else None

@@ -84,8 +84,8 @@ class ToolBitEditor(object):
 
         self.tool = tool
         self.loadbitbody = loadBitBody
-        if not tool.BitShape:
-            self.tool.BitShape = "endmill.fcstd"
+        if not tool.ShapeFile:
+            self.tool.ShapeFile = "endmill.fcstd"
 
         if self.loadbitbody:
             self.tool.Proxy.loadBitBody(self.tool)
@@ -203,20 +203,20 @@ class ToolBitEditor(object):
     def updateUI(self):
         Path.Log.track()
         self.form.toolName.setText(self.tool.Label)
-        self.form.shapePath.setText(self.tool.BitShape)
+        self.form.shapePath.setText(self.tool.ShapeFile)
 
         for lbl, qsb, editor in self.widgets:
             editor.updateSpinBox()
 
-    def _updateBitShape(self, shapePath):
+    def _updateShapeFile(self, shapePath):
         # Only need to go through this exercise if the shape actually changed.
-        if self.tool.BitShape != shapePath:
-            # Before setting a new  bitshape we need to make sure that none of
+        if self.tool.ShapeFile != shapePath:
+            # Before setting a new  shape file we need to make sure that none of
             # editors fires an event and tries to access its old property, which
             # might not exist anymore.
             for lbl, qsb, editor in self.widgets:
                 editor.attachTo(self.tool, "File")
-            self.tool.BitShape = shapePath
+            self.tool.ShapeFile = shapePath
             self.setupTool(self.tool)
             self.form.toolName.setText(self.tool.Label)
             if self.tool.BitBody and self.tool.BitBody.ViewObject:
@@ -230,7 +230,7 @@ class ToolBitEditor(object):
         Path.Log.track()
         shapePath = str(self.form.shapePath.text())
         # Only need to go through this exercise if the shape actually changed.
-        if self._updateBitShape(shapePath):
+        if self._updateShapeFile(shapePath):
             for lbl, qsb, editor in self.widgets:
                 editor.updateSpinBox()
 
@@ -241,12 +241,12 @@ class ToolBitEditor(object):
         shape = str(self.form.shapePath.text())
         if self.tool.Label != label:
             self.tool.Label = label
-        self._updateBitShape(shape)
+        self._updateShapeFile(shape)
 
         for lbl, qsb, editor in self.widgets:
             editor.updateProperty()
 
-        self.tool.Proxy._updateBitShape(self.tool)
+        self.tool.Proxy._updateShapeFile(self.tool)
 
     def refresh(self):
         Path.Log.track()
@@ -257,7 +257,7 @@ class ToolBitEditor(object):
 
     def selectShape(self):
         Path.Log.track()
-        path = self.tool.BitShape
+        path = self.tool.ShapeFile
         if not path:
             path = Path.Preferences.lastPathToolShape()
         foo = QtGui.QFileDialog.getOpenFileName(self.form, "Path - Tool Shape", path, "*.fcstd")
