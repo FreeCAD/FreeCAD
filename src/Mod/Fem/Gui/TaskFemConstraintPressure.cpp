@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
+#include <limits>
 #include <sstream>
 #endif
 
@@ -64,7 +65,7 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     // Fill data into dialog elements
     ui->if_pressure->setUnit(pcConstraint->Pressure.getUnit());
     ui->if_pressure->setMinimum(0);
-    ui->if_pressure->setMaximum(FLOAT_MAX);
+    ui->if_pressure->setMaximum(std::numeric_limits<float>::max());
     ui->if_pressure->setValue(pcConstraint->Pressure.getQuantityValue());
     ui->if_pressure->bind(pcConstraint->Pressure);
 

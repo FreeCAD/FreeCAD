@@ -33,6 +33,7 @@
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <limits>
 #endif
 
 #include <App/Application.h>
@@ -720,8 +721,9 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt("ConstraintFilterState",
-                                   INT_MAX);// INT_MAX = 1111111111111111111111111111111 in binary.
+    int filterState = hGrp->GetInt(
+        "ConstraintFilterState",
+        std::numeric_limits<int>::max()); // INT_MAX = 01111111111111111111111111111111 in binary.
 
     normalFilterCount = filterItems.size() - 2;// All filter but selected and associated
     selectedFilterIndex = normalFilterCount;
@@ -1221,13 +1223,16 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     // b) that the text in the widget item, basename, is not ""
     // otherwise a checkbox change will trigger a rename on the first execution, bloating the
     // constraint icons with the default constraint name "constraint1, constraint2"
+    printf("task");
     if (newName != currConstraintName && !basename.empty()) {
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(newName.c_str());
+        if (!SketcherGui::checkConstraintName(sketch, newName)) {
+            newName = currConstraintName;
+        }
 
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
-                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, escapedstr.c_str());
+                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, newName.c_str());
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
@@ -1371,10 +1376,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                if (select && ui->listWidgetConstraints->model()) { // scrollTo only on select, not de-select
-                                    QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
-                                    ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
-                                }
+                                SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
                                 break;
                             }
                         }

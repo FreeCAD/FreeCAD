@@ -153,7 +153,7 @@ static void printFocusChain(QWidget *widget) {
     QWidget* start = widget;
     int i = 0;
     do {
-        FC_ERR(" " << widget->objectName().toStdString();
+        FC_ERR(" " << widget->objectName().toStdString());
         widget = widget->nextInFocusChain();
         i++;
     } while (widget != nullptr && i < 30 && start != widget);
@@ -245,13 +245,27 @@ static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
     return item;
 }
 
+void DlgAddPropertyVarSet::removeSelectionEditor()
+{
+    // If the editor has a lineedit, then Qt selects the string inside it when
+    // the editor is created.  This interferes with the editor getting focus.
+    // For example, units will then be selected as well, whereas this is not
+    // the behavior we want.  We therefore deselect the text in the lineedit.
+    if (auto lineEdit = editor->findChild<QLineEdit*>()) {
+        lineEdit->deselect();
+    }
+}
+
 void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
                                      [[maybe_unused]]std::string& type)
 {
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
     }));
-    propertyItem->setEditorData(editor.get(), QVariant());
+    editor->blockSignals(true);
+    propertyItem->setEditorData(
+            editor.get(),
+            propertyItem->data(PropertyEditor::PropertyItem::ValueColumn, Qt::EditRole));
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QStringLiteral("editor"));
     auto formLayout = qobject_cast<QFormLayout*>(layout());
@@ -259,6 +273,9 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
 
     QWidget::setTabOrder(ui->comboBoxType, editor.get());
     QWidget::setTabOrder(editor.get(), ui->checkBoxAdd);
+
+    removeSelectionEditor();
+    editor->blockSignals(false);
 
     // FC_ERR("add editor");
     // printFocusChain(editor.get());

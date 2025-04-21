@@ -43,7 +43,7 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
 
     rotation1     = new SoRotationXYZ   ;
     rotation1->axis.setValue(SoRotationXYZ::X);
-    rotation1->angle.setValue(-M_PI/2);
+    rotation1->angle.setValue(-std::numbers::pi/2);
     workplace->addChild(rotation1);
 
     rotation2     = new SoRotationXYZ   ;
@@ -104,7 +104,7 @@ void View3DInventorRiftViewer::setSceneGraph(SoNode *sceneGraph)
 void View3DInventorRiftViewer::keyPressEvent(QKeyEvent *event)
 {
     static const float increment = 0.02; // move two centimeter per key
-    static const float rotIncrement = M_PI/4; // move two 90° per key
+    static const float rotIncrement = std::numbers::pi / 4; // move two 90° per key
 
 
     if (event->key() == Qt::Key_Plus) {

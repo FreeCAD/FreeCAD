@@ -48,7 +48,6 @@ SET (Draft_geoutils
 
 SET(Draft_tests
     drafttests/__init__.py
-    drafttests/README.md
     drafttests/auxiliary.py
     drafttests/draft_test_objects.py
     drafttests/test_airfoildat.py
@@ -65,22 +64,24 @@ SET(Draft_tests
     drafttests/test_oca.py
     drafttests/test_pivy.py
     drafttests/test_svg.py
+    drafttests/README.md
 )
 
 SET(Draft_utilities
     draftutils/__init__.py
+    draftutils/doc_observer.py
+    draftutils/grid_observer.py
     draftutils/groups.py
-    draftutils/init_tools.py
-    draftutils/init_draft_statusbar.py
-    draftutils/params.py
-    draftutils/units.py
-    draftutils/utils.py
     draftutils/gui_utils.py
+    draftutils/init_draft_statusbar.py
+    draftutils/init_tools.py
+    draftutils/messages.py
+    draftutils/params.py
     draftutils/todo.py
     draftutils/translate.py
-    draftutils/messages.py
+    draftutils/units.py
+    draftutils/utils.py
     draftutils/README.md
-    draftutils/grid_observer.py
 )
 
 SET(Draft_functions

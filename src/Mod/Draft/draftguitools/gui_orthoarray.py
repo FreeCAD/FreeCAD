@@ -32,8 +32,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft
-import Draft_rc  # include resources, icons, ui files
 from draftguitools import gui_base
 from draftutils import gui_utils
 from draftutils import todo
@@ -41,19 +39,14 @@ from draftutils.messages import _log
 from draftutils.translate import translate
 from drafttaskpanels import task_orthoarray
 
-# The module is used to prevent complaints from code checkers (flake8)
-bool(Draft_rc.__name__)
-
 
 class OrthoArray(gui_base.GuiCommandBase):
     """Gui command for the OrthoArray tool."""
 
     def __init__(self):
-        super().__init__()
-        self.command_name = "Orthogonal array"
+        super().__init__(name="OrthoArray")
         # self.location = None
         self.mouse_event = None
-        self.view = None
         # self.callback_move = None
         self.callback_click = None
         self.ui = None
@@ -71,11 +64,10 @@ class OrthoArray(gui_base.GuiCommandBase):
         We add callbacks that connect the 3D view with
         the widgets of the task panel.
         """
-        _log("GuiCommand: {}".format(self.command_name))
+        super().Activated()
 
         # self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
-        self.view = Draft.get3DView()
         # self.callback_move = \
         #     self.view.addEventCallbackPivy(self.location, self.move)
         self.callback_click = \
@@ -120,7 +112,7 @@ class OrthoArray(gui_base.GuiCommandBase):
         self.callback_click = None
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            self.finish()
+        self.finish()
 
 
 Gui.addCommand('Draft_OrthoArray', OrthoArray())

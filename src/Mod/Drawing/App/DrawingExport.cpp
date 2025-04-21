@@ -207,9 +207,10 @@ void SVGOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     }
     // arc of circle
     else {
+        using std::numbers::pi;
         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
-        char xar = '0';                         // x-axis-rotation
-        char las = (l - f > D_PI) ? '1' : '0';  // large-arc-flag
+        char xar = '0';                       // x-axis-rotation
+        char las = (l - f > pi) ? '1' : '0';  // large-arc-flag
         char swp = (a < 0) ? '1' : '0';  // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
         out << "<path d=\"M" << s.X() << " " << s.Y() << " A" << r << " " << r << " " << xar << " "
             << las << " " << swp << " " << e.X() << " " << e.Y() << "\" />";
@@ -255,7 +256,8 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     }
     // arc of ellipse
     else {
-        char las = (l - f > D_PI) ? '1' : '0';  // large-arc-flag
+        using std::numbers::pi;
+        char las = (l - f > pi) ? '1' : '0';  // large-arc-flag
         char swp = (a < 0) ? '1' : '0';  // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
         out << "<path d=\"M" << s.X() << " " << s.Y() << " A" << r1 << " " << r2 << " " << angle
             << " " << las << " " << swp << " " << e.X() << " " << e.Y() << "\" />" << std::endl;
@@ -502,8 +504,8 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
         double bx = e.X() - p.X();
         double by = e.Y() - p.Y();
 
-        double start_angle = atan2(ay, ax) * 180 / D_PI;
-        double end_angle = atan2(by, bx) * 180 / D_PI;
+        double start_angle = Base::toDegrees(atan2(ay, ax));
+        double end_angle = Base::toDegrees(atan2(by, bx));
 
         if (a > 0) {
             double temp = start_angle;

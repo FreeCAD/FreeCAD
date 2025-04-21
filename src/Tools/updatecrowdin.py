@@ -108,11 +108,6 @@ GENERATE_QM = {
 # locations list contains Module name, relative path to translation folder and relative path to qrc file
 
 locations = [
-    [
-        "AddonManager",
-        "../Mod/AddonManager/Resources/translations",
-        "../Mod/AddonManager/Resources/AddonManager.qrc",
-    ],
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
     ["Arch", "../Mod/BIM/Resources/translations", "../Mod/BIM/Resources/Arch.qrc"],
     [

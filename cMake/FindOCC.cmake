@@ -9,7 +9,7 @@
 
 # we first try to find opencascade directly:
 if (NOT OCCT_CMAKE_FALLBACK)
-    find_package(OpenCASCADE "7.5.1" CONFIG QUIET)
+    find_package(OpenCASCADE CONFIG QUIET)
     get_property(flags DIRECTORY PROPERTY COMPILE_DEFINITIONS)
     # OCCT 7.5 adds this define that causes hundreds of compiler warnings with Qt5.x, so remove it again
     list(FILTER flags EXCLUDE REGEX [[GL_GLEXT_LEGACY]])
@@ -130,7 +130,7 @@ if (OCC_FOUND)
     else ()
         list(APPEND OCC_LIBRARIES TKDESTEP TKDEIGES TKDEGLTF TKDESTL)
     endif ()
-    message(STATUS "-- Found OpenCASCADE version: ${OCC_VERSION_STRING}")
-    message(STATUS "-- OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")
-    message(STATUS "-- OpenCASCADE shared libraries directory: ${OCC_LIBRARY_DIR}")
+    message(STATUS "Found OpenCASCADE version: ${OCC_VERSION_STRING}")
+    message(STATUS "  OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")
+    message(STATUS "  OpenCASCADE shared libraries directory: ${OCC_LIBRARY_DIR}")
 endif ()

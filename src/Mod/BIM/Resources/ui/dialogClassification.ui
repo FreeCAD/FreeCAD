@@ -173,7 +173,7 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Apply the selected class to selected materials</string>
+            <string>Apply the selected class to selected objects</string>
            </property>
            <property name="text">
             <string>&lt;&lt; Apply to selected</string>

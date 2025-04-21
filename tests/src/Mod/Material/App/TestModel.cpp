@@ -46,7 +46,7 @@ class TestModel : public ::testing::Test {
   }
 
   void SetUp() override {
-    _modelManager = new Materials::ModelManager();
+    _modelManager = &(Materials::ModelManager::getManager());
   }
 
   // void TearDown() override {}
@@ -76,7 +76,7 @@ TEST_F(TestModel, TestInstallation)
     ASSERT_NE(_modelManager, nullptr);
 
     // We should have loaded at least the system library
-    auto libraries = _modelManager->getModelLibraries();
+    auto libraries = _modelManager->getLibraries();
     ASSERT_GT(libraries->size(), 0);
 
     // We should have at least one model

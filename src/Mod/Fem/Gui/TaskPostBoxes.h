@@ -30,9 +30,9 @@
 
 #include "ViewProviderFemPostFunction.h"
 
-
 class QComboBox;
 class Ui_TaskPostDisplay;
+class Ui_TaskPostCalculator;
 class Ui_TaskPostClip;
 class Ui_TaskPostContours;
 class Ui_TaskPostDataAlongLine;
@@ -40,6 +40,8 @@ class Ui_TaskPostDataAtPoint;
 class Ui_TaskPostScalarClip;
 class Ui_TaskPostWarpVector;
 class Ui_TaskPostCut;
+class Ui_TaskPostFrames;
+class Ui_TaskPostBranch;
 
 class SoFontStyle;
 class SoText2;
@@ -81,7 +83,7 @@ public:
     template<class T>
     T* getObject() const
     {
-        return Base::freecad_dynamic_cast<T>(getObject());
+        return freecad_cast<T*>(getObject());
     }
     QMetaObject::Connection connSelectPoint;
 
@@ -140,11 +142,14 @@ public:
                 QWidget* parent = nullptr);
     ~TaskPostBox() override;
 
-    virtual void applyPythonCode() = 0;
+    virtual void applyPythonCode() {};
     virtual bool isGuiTaskOnly()
     {
         return false;
     }  // return true if only gui properties are manipulated
+
+    // executed when the apply button is pressed in the task dialog
+    virtual void apply() {};
 
 protected:
     App::DocumentObject* getObject() const
@@ -154,7 +159,7 @@ protected:
     template<class T>
     T* getObject() const
     {
-        return Base::freecad_dynamic_cast<T>(getObject());
+        return freecad_cast<T*>(getObject());
     }
     template<typename T>
     T* getTypedObject() const
@@ -276,11 +281,54 @@ public:
     void applyPythonCode() override;
 };
 
+// ***************************************************************************
+// frames
+class TaskPostFrames: public TaskPostBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPostFrames(ViewProviderFemPostObject* view, QWidget* parent = nullptr);
+    ~TaskPostFrames() override;
+
+    void applyPythonCode() override;
+
+private:
+    void setupConnections();
+    void onSelectionChanged();
+
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostFrames> ui;
+};
+
 
 // ***************************************************************************
 // in the following, the different filters sorted alphabetically
 // ***************************************************************************
 
+
+// ***************************************************************************
+// branch
+class ViewProviderFemPostBranchFilter;
+
+class TaskPostBranch: public TaskPostBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* parent = nullptr);
+    ~TaskPostBranch() override;
+
+    void applyPythonCode() override;
+
+private:
+    void setupConnections();
+    void onModeIndexChanged(int);
+    void onOutputIndexChanged(int);
+
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostBranch> ui;
+};
 
 // ***************************************************************************
 // data along line filter
@@ -509,6 +557,35 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostWarpVector> ui;
+};
+
+
+// ***************************************************************************
+// calculator filter
+class ViewProviderFemPostCalculator;
+
+class TaskPostCalculator: public TaskPostBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPostCalculator(ViewProviderFemPostCalculator* view, QWidget* parent = nullptr);
+    ~TaskPostCalculator() override;
+
+protected:
+    void apply() override;
+
+private:
+    void setupConnections();
+    void onReplaceInvalidChanged(bool state);
+    void onReplacementValueChanged(double value);
+    void onScalarsActivated(int index);
+    void onVectorsActivated(int index);
+    void onOperatorsActivated(int index);
+
+private:
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostCalculator> ui;
 };
 
 }  // namespace FemGui

@@ -126,10 +126,23 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
 
 ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
 {
-    pcColorRoot->unref();
-    pcColorMat->unref();
-    deleteColorBar();
-    pcLinkRoot->unref();
+    try {
+        pcColorRoot->unref();
+        pcColorMat->unref();
+        pcLinkRoot->unref();
+        deleteColorBar();
+    }
+    catch (Base::Exception& e) {
+        Base::Console().DestructorError(
+            "ViewProviderMeshCurvature",
+            "ViewProviderMeshCurvature::deleteColorBar() threw an exception: %s\n",
+            e.what());
+    }
+    catch (...) {
+        Base::Console().DestructorError(
+            "ViewProviderInspection",
+            "ViewProviderInspection destructor threw an unknown exception");
+    }
 }
 
 void ViewProviderMeshCurvature::onChanged(const App::Property* prop)

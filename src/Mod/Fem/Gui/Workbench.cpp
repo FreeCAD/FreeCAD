@@ -166,7 +166,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
     if (!Fem::Tools::checkIfBinaryExists("Ccx", "ccx", "ccx").empty()) {
-        *solve << "FEM_SolverCalculiXCcxTools";
+        *solve << "FEM_SolverCalculiX";
     }
     if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty()) {
         *solve << "FEM_SolverElmer";
@@ -199,6 +199,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *results << "Separator"
              << "FEM_PostApplyChanges"
              << "FEM_PostPipelineFromResult"
+             << "FEM_PostBranchFilter"
              << "Separator"
              << "FEM_PostFilterWarp"
              << "FEM_PostFilterClipScalar"
@@ -208,6 +209,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostFilterLinearizedStresses"
              << "FEM_PostFilterDataAtPoint"
+             << "FEM_PostFilterCalculator"
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif
@@ -245,7 +247,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     elec->setCommand("&Electromagnetic boundary conditions");
     *elec << "FEM_ConstraintElectrostaticPotential"
           << "FEM_ConstraintCurrentDensity"
-          << "FEM_ConstraintMagnetization";
+          << "FEM_ConstraintMagnetization"
+          << "FEM_ConstraintElectricChargeDensity";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid boundary conditions");
@@ -323,7 +326,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* solve = new Gui::MenuItem;
     root->insertItem(item, solve);
     solve->setCommand("&Solve");
-    *solve << "FEM_SolverCalculiXCcxTools"
+    *solve << "FEM_SolverCalculiX"
            << "FEM_SolverElmer"
            << "FEM_SolverMystran"
            << "FEM_SolverZ88"
@@ -355,6 +358,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostFilterLinearizedStresses"
              << "FEM_PostFilterDataAtPoint"
+             << "FEM_PostFilterCalculator"
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif

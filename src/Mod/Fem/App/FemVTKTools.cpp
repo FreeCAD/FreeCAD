@@ -1711,7 +1711,7 @@ vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
 
 }  // namespace FRDReader
 
-void FemVTKTools::frdToVTK(const char* filename)
+void FemVTKTools::frdToVTK(const char* filename, bool binary)
 {
     Base::FileInfo fi(filename);
 
@@ -1733,6 +1733,8 @@ void FemVTKTools::frdToVTK(const char* filename)
         std::string type = info->GetValue(0).c_str();
 
         auto writer = vtkSmartPointer<vtkXMLMultiBlockDataWriter>::New();
+        writer->SetDataMode(binary ? vtkXMLMultiBlockDataWriter::Binary
+                                   : vtkXMLMultiBlockDataWriter::Ascii);
 
         std::string blockFile =
             dir + "/" + fi.fileNamePure() + type + "." + writer->GetDefaultFileExtension();

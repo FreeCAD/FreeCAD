@@ -42,7 +42,6 @@
 #include <TopoDS_Iterator.hxx>
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_Location.hxx>
-#include <climits>
 #include <gp_Pln.hxx>  // for Precision::Confusion()
 #include <gp_Trsf.hxx>
 #endif

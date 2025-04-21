@@ -247,7 +247,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
         return nullptr;
     }
 
-    auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+    auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
     std::bitset<32> status(prop->getStatus());
 
     std::vector<Py::Object> items;
@@ -326,7 +326,7 @@ PyObject* PropertyContainerPy::getPropertyStatus(PyObject* args)
             return nullptr;
         }
 
-        auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+        auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
         if (linkProp && linkProp->testFlag(App::PropertyLinkBase::LinkAllowPartial)) {
             ret.append(Py::String("AllowPartial"));
         }
@@ -510,7 +510,7 @@ Py::List PropertyContainerPy::getPropertiesList() const
 }
 
 
-PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds)
+PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds) const
 {
     int compression = 3;
     const char* property {};

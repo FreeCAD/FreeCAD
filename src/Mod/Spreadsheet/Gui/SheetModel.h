@@ -65,6 +65,10 @@ private:
     QColor textFgColor;
     QColor positiveFgColor;
     QColor negativeFgColor;
+
+    QVariantList columnLabels, rowLabels;
+
+    static constexpr int maxRowCount = 16384, maxColumnCount = 26 + 26 * 26;
 };
 
 }  // namespace SpreadsheetGui

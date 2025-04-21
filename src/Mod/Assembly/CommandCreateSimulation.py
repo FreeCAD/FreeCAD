@@ -175,7 +175,6 @@ class Simulation:
 
     def execute(self, feaPy):
         """Do something when doing a recomputation, this method is mandatory"""
-        # App.Console.PrintMessage("Recompute Python Box feature\n")
         pass
 
     def getAssembly(self, feaPy):
@@ -329,7 +328,6 @@ class Motion:
 
     def execute(self, feaPy):
         """Do something when doing a recomputation, this method is mandatory"""
-        # App.Console.PrintMessage("Recompute Python Box feature\n")
         pass
 
     def getSimulation(self, feaPy):

@@ -1,23 +1,26 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
 __title__  = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
@@ -34,9 +37,11 @@ __url__    = "https://www.freecad.org"
 '''The Arch module provides tools specialized in BIM modeling.'''
 
 import FreeCAD
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     FreeCADGui.updateLocale()
+
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -50,6 +55,7 @@ from ArchWindowPresets import *
 # TODO: migrate this one
 
 from ArchStructure import *
+
 
 # make functions
 
@@ -824,7 +830,7 @@ def makeSpace(objects=None,baseobj=None,name=None):
         # We assume that the objects list is not a mixed set. The type of the first
         # object will determine the type of the set.
         # Input to this function can come into three different formats. First convert it
-        # to a common format: [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+        # to a common format: [ (<Part::Feature>, ["Face1", ...]), ... ]
         if (hasattr(objects[0], "isDerivedFrom") and
                 objects[0].isDerivedFrom("Gui::SelectionObject")):
             # Selection set: convert to common format
@@ -832,12 +838,12 @@ def makeSpace(objects=None,baseobj=None,name=None):
             objects = [(obj.Object, obj.SubElementNames) for obj in objects]
         elif (isinstance(objects[0], tuple) or isinstance(objects[0], list)):
             # Tuple or list of object with subobjects: pass unmodified
-            # [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+            # [ (<Part::Feature>, ["Face1", ...]), ... ]
             pass
         else:
             # Single object: assume anything else passed is a single object with no
             # boundaries.
-            # [ <Part::PartFeature> ]
+            # [ <Part::Feature> ]
             objects = [(objects[0], [])]
 
         if isSingleObject(objects):
@@ -1085,7 +1091,7 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=Non
 
     Parameters
     ----------
-    baseobj: <Part::PartFeature>, optional
+    baseobj: <Part::Feature>, optional
         The base object with which to build the wall. This can be a sketch, a
         draft object, a face, or a solid. It can also be left as None.
     height: float, optional

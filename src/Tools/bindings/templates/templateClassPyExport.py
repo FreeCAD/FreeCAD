@@ -37,7 +37,15 @@ def compareFiles(file1, file2):
 class TemplateClassPyExport(template.ModelTemplate):
     # TODO: This is temporary, once all XML files are migrated, this can be removed.
     def getPath(self, path):
-        if self.is_python and not self.export.ModuleName in ["Base", "App"]:
+        if self.is_python and not self.export.ModuleName in [
+            "Base",
+            "App",
+            "Gui",
+            "Part",
+            "PartDesign",
+            "Material",
+            "Sketcher",
+        ]:
             root, ext = os.path.splitext(path)
             return f"{root}_{ext}"
         return path
@@ -115,6 +123,7 @@ class TemplateClassPyExport(template.ModelTemplate):
 #ifndef @self.export.Namespace.upper().replace("::", "_")@_@self.export.Name.upper()@_H
 #define @self.export.Namespace.upper().replace("::", "_")@_@self.export.Name.upper()@_H
 
+#include <CXX/Objects.hxx>
 #include <@self.export.FatherInclude@>
 #include <@self.export.Include@>
 #include <string>
@@ -158,7 +167,7 @@ public:
     static int descriptorSetter(PyObject* self, PyObject* obj, PyObject* value);
 -
     static PyGetSetDef    GetterSetter[];
-    PyTypeObject *GetType() override {return &Type;}
+    PyTypeObject *GetType() const override {return &Type;}
 
 public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
@@ -187,6 +196,9 @@ public:
 = elif i.Class:
     /// implementer for the @i.Name@() method
     static PyObject*  @i.Name@(PyObject *self, PyObject *args, PyObject *kwd);
+= elif i.Const:
+    /// implementer for the @i.Name@() method
+    PyObject*  @i.Name@(PyObject *args, PyObject *kwd) const;
 = else:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@(PyObject *args, PyObject *kwd);
@@ -200,6 +212,9 @@ public:
 = elif i.Class:
     /// implementer for the @i.Name@() method
     static PyObject*  @i.Name@(PyObject *self);
+= elif i.Const:
+    /// implementer for the @i.Name@() method
+    PyObject*  @i.Name@() const;
 = else:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@();
@@ -213,6 +228,9 @@ public:
 = elif i.Class:
     /// implementer for the @i.Name@() method
     static PyObject*  @i.Name@(PyObject *self, PyObject *args);
+= elif i.Const:
+    /// implementer for the @i.Name@() method
+    PyObject*  @i.Name@(PyObject *args) const;
 = else:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@(PyObject *args);

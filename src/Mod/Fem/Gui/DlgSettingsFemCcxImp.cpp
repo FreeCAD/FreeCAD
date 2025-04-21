@@ -43,8 +43,8 @@ DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
 {
     ui->setupUi(this);
     // set ranges
-    ui->dsb_ccx_analysis_time->setMaximum(FLOAT_MAX);
-    ui->dsb_ccx_initial_time_step->setMaximum(FLOAT_MAX);
+    ui->dsb_ccx_analysis_time->setMaximum(std::numeric_limits<float>::max());
+    ui->dsb_ccx_initial_time_step->setMaximum(std::numeric_limits<float>::max());
 
     connect(ui->fc_ccx_binary_path,
             &Gui::PrefFileChooser::fileNameChanged,
@@ -72,6 +72,8 @@ void DlgSettingsFemCcxImp::saveSettings()
     ui->dsb_ccx_analysis_time->onSave();      // Analysis time
     ui->dsb_ccx_minimum_time_step->onSave();  // Minimum time step
     ui->dsb_ccx_maximum_time_step->onSave();  // Maximum time step
+    ui->ckb_pipeline_result->onSave();
+    ui->ckb_result_format->onSave();
 
     ui->cb_analysis_type->onSave();
     ui->cb_BeamShellOutput->onSave();  // Beam shell output 3d or 2d
@@ -99,6 +101,8 @@ void DlgSettingsFemCcxImp::loadSettings()
     ui->dsb_ccx_analysis_time->onRestore();      // Analysis time
     ui->dsb_ccx_minimum_time_step->onRestore();  // Minimum time step
     ui->dsb_ccx_maximum_time_step->onRestore();  // Maximum time step
+    ui->ckb_pipeline_result->onRestore();
+    ui->ckb_result_format->onRestore();
 
     ui->cb_analysis_type->onRestore();
     ui->cb_BeamShellOutput->onRestore();  // Beam shell output 3d or 2d

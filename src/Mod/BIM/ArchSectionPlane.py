@@ -1,51 +1,26 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import FreeCAD
-import math
-import Draft
-import ArchCommands
-import DraftVecUtils
-import ArchComponent
-import re
-import tempfile
-import uuid
-import time
-
-from FreeCAD import Vector
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from pivy import coin
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
 ## @package ArchSectionPlane
 #  \ingroup ARCH
@@ -54,6 +29,35 @@ else:
 #  This module provides tools to build Section plane objects.
 #  It also contains functionality to produce SVG rendering of
 #  section planes, to be used in the TechDraw module
+
+import math
+import re
+import tempfile
+import time
+import uuid
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Vector
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from pivy import coin
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 ISRENDERING = False # flag to prevent concurrent runs of the coin renderer
 
@@ -94,7 +98,8 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
     obtained from performing a series of booleans against the given cut plane
     """
 
-    import Part,DraftGeomUtils
+    import Part
+    import DraftGeomUtils
     shapes = []
     hshapes = []
     sshapes = []
@@ -364,7 +369,8 @@ def getSVG(source,
         if should_update_svg_cache:
             svgcache = ''
             # render using the Arch Vector Renderer
-            import ArchVRM, WorkingPlane
+            import ArchVRM
+            import WorkingPlane
             wp = WorkingPlane.PlaneBase()
             pl = FreeCAD.Placement(source.Placement)
             if source.ViewObject and hasattr(source.ViewObject,"CutMargin"):
@@ -416,7 +422,8 @@ def getSVG(source,
         if should_update_svg_cache:
             svgcache = ""
             # render using the TechDraw module
-            import TechDraw, Part
+            import TechDraw
+            import Part
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
                 style = {'stroke':       "SVGLINECOLOR",
@@ -560,7 +567,8 @@ def getDXF(obj):
     allOn = getattr(obj, "AllOn", True)
     showHidden = getattr(obj, "ShowHidden", False)
     result = []
-    import TechDraw, Part
+    import TechDraw
+    import Part
     if not obj.Source:
         return result
     source = obj.Source
@@ -1348,4 +1356,3 @@ class SectionPlaneTaskPanel:
         self.resizeButton.setToolTip(QtGui.QApplication.translate("Arch", "Resizes the plane to fit the objects in the list above", None))
         self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Center", None))
         self.recenterButton.setToolTip(QtGui.QApplication.translate("Arch", "Centers the plane on the objects in the list above", None))
-

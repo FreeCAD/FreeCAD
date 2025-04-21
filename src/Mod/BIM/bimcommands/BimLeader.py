@@ -1,32 +1,32 @@
-# -*- coding: utf8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """The BIM Leader command"""
 
-
 import FreeCAD
 import FreeCADGui
+
 from draftguitools import gui_lines  # Line tool from Draft
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -54,45 +54,26 @@ class BIM_Leader(gui_lines.Line):
 
     def finish(self, closed=False, cont=False):
         import DraftVecUtils
+        from draftutils import params
         self.end_callbacks(self.call)
         self.removeTemporaryObject()
-        if getattr(self,"oldWP",None):
-            FreeCAD.DraftWorkingPlane = self.oldWP
-            if hasattr(Gui, "Snapper"):
-                FreeCADGui.Snapper.setGrid()
-                FreeCADGui.Snapper.restack()
-            self.oldWP = None
-        rot, sup, pts, fil = self.getStrings()
-        if self.node:
+        if len(self.node) > 1:
+            rot, sup, pts, fil = self.getStrings()
             base = DraftVecUtils.toString(self.node[0])
-        else:
-            base = DraftVecUtils.toString(FreeCAD.Vector())
-        color = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Draft"
-        ).GetUnsigned("DefaultTextColor", 255)
-        r = ((color >> 24) & 0xFF) / 255.0
-        g = ((color >> 16) & 0xFF) / 255.0
-        b = ((color >> 8) & 0xFF) / 255.0
-        cmd_list = [
-            "pl = FreeCAD.Placement()",
-            "pl.Rotation.Q = " + rot,
-            "pl.Base = " + base,
-            "points = " + pts,
-            "leader = Draft.makeWire(points,placement=pl)",
-            "leader.ViewObject.LineColor = "
-            + str(
-                (
-                    r,
-                    g,
-                    b,
-                )
-            ),
-            "leader.ViewObject.EndArrow = True",
-            "Draft.autogroup(leader)",
-            "FreeCAD.ActiveDocument.recompute()",
-        ]
-        FreeCADGui.addModule("Draft")
-        self.commit(translate("BIM", "Create Leader"), cmd_list)
+            color = params.get_param("DefaultTextColor") | 0x000000FF
+            cmd_list = [
+                "pl = FreeCAD.Placement()",
+                "pl.Rotation.Q = " + rot,
+                "pl.Base = " + base,
+                "points = " + pts,
+                "leader = Draft.make_wire(points, placement=pl)",
+                "leader.ViewObject.LineColor = " + str(color),
+                "leader.ViewObject.EndArrow = True",
+                "Draft.autogroup(leader)",
+                "FreeCAD.ActiveDocument.recompute()",
+            ]
+            FreeCADGui.addModule("Draft")
+            self.commit(translate("BIM", "Create Leader"), cmd_list)
         super(gui_lines.Line, self).finish()
         if self.ui and self.ui.continueMode:
             self.Activated()

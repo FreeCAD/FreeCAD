@@ -313,9 +313,8 @@ void TaskCenterLine::onColorChanged()
         return;
     }
 
-    Base::Color ac;
-    ac.setValue<QColor>(ui->cpLineColor->color());
-    m_cl->m_format.getColor().setValue<QColor>(ui->cpLineColor->color());
+    Base::Color color = Base::Color::fromValue<QColor>(ui->cpLineColor->color());
+    m_cl->m_format.setColor(color);
     m_partFeat->recomputeFeature();
 }
 

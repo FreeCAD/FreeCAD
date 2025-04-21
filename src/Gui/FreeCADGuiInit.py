@@ -29,7 +29,7 @@
 
 # imports the one and only
 import FreeCAD, FreeCADGui
-from enum import IntEnum
+from enum import IntEnum, Enum
 
 # shortcuts
 Gui = FreeCADGui
@@ -51,6 +51,11 @@ Gui.Selection.ResolveMode = ResolveMode
 class SelectionStyle(IntEnum):
     NormalSelection = 0
     GreedySelection = 1
+
+# The values must match with that of the Python enum class in ViewProvider.pyi
+class ToggleVisibilityMode(Enum):
+    CanToggleVisibility = "CanToggleVisibility"
+    NoToggleVisibility = "NoToggleVisibility"
 
 Gui.Selection.SelectionStyle = SelectionStyle
 

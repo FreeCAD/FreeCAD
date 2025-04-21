@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <gp_Dir.hxx>
 # include <BRep_Builder.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
@@ -68,8 +69,11 @@ namespace PartDesign {
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
 const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", nullptr};
-const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
+
+const char* Hole::ClearanceNoneEnums[]               = { "-", "-", "-", nullptr};
+const char* Hole::ClearanceMetricEnums[]             = { "Medium", "Fine", "Coarse", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
+const char* Hole::ClearanceOtherEnums[]              = { "Normal", "Close", "Wide", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
 
 /* "None" profile */
@@ -525,7 +529,7 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
 const double Hole::metricHoleDiameters[51][4] =
 {
     /* ISO metric clearance hole diameters according to ISO 273 */
-    // {screw diameter, close, standard, coarse}
+    // {screw diameter, fine, medium, coarse}
         { 1.0,    1.1,    1.2,    1.3},
         { 1.2,    1.3,    1.4,    1.5},
         { 1.4,    1.5,    1.6,    1.8},
@@ -732,7 +736,7 @@ PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 180.0 - Base::toDegrees<double>(Precision::Angular()), 1.0 };
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
-const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), FLT_MAX, 1.0 };
+const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0 };
 
 Hole::Hole()
 {
@@ -1414,6 +1418,7 @@ void Hole::onChanged(const App::Property* prop)
             Threaded.setValue(false);
             ModelThread.setValue(false);
             UseCustomThreadClearance.setValue(false);
+            ThreadFit.setEnums(ClearanceNoneEnums);
         }
         else if (type == "ISOMetricProfile") {
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
@@ -1443,18 +1448,22 @@ void Hole::onChanged(const App::Property* prop)
         else if (type == "BSP") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_BSP_Enums);
+            ThreadFit.setEnums(ClearanceMetricEnums);
         }
         else if (type == "NPT") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_NPT_Enums);
+            ThreadFit.setEnums(ClearanceUTSEnums);
         }
         else if (type == "BSW") {
             ThreadClass.setEnums(ThreadClass_BSW_Enums);
             HoleCutType.setEnums(HoleCutType_BSW_Enums);
+            ThreadFit.setEnums(ClearanceOtherEnums);
         }
         else if (type == "BSF") {
             ThreadClass.setEnums(ThreadClass_BSF_Enums);
             HoleCutType.setEnums(HoleCutType_BSF_Enums);
+            ThreadFit.setEnums(ClearanceOtherEnums);
         }
 
         bool isNone = type == "None";
@@ -2168,9 +2177,7 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
 {
     TopoShape result(0);
 
-    int i = 0;
     for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
-        ++i;
         Standard_Real c_start;
         Standard_Real c_end;
         TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
@@ -2246,7 +2253,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         //      | base-sharpV             Rmaj     H
 
         // the little adjustment of p1 and p4 is here to prevent coincidencies
-        double marginX = std::tan(62.5 * M_PI / 180.0) * marginZ;
+        double marginX = std::tan(Base::toRadians(62.5)) * marginZ;
 
         gp_Pnt p1 = toPnt(
             (RmajC - 5 * H / 6 + marginX) * xDir
@@ -2283,7 +2290,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         //       | base-sharpV    Rmaj
 
         // the little adjustment of p1 and p4 is here to prevent coincidencies
-        double marginX = std::tan(60.0 * M_PI / 180.0) * marginZ;
+        double marginX = std::tan(Base::toRadians(60.0)) * marginZ;
         gp_Pnt p1 = toPnt(
             (RmajC - h + marginX) * xDir
             + marginZ * zDir
@@ -2345,7 +2352,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // Reverse the direction of the helix. So that it goes into the material
     gp_Trsf mov;
-    mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
     TopLoc_Location loc1(mov);
     helix.Move(loc1);
 

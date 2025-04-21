@@ -22,6 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 
+# NOTE: "isNull() note"
+# After performing cut operations, checking the resulting shape.isNull() will
+# sometimes return False even when the resulting shape is infinitesimal and
+# further operations with it will raise exceptions. Instead checking if the
+# shape.Wires list is non-empty bypasses this issue.
+
 import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
@@ -72,6 +78,9 @@ sceneGraph = None
 scenePathNodes = []  # for scene cleanup afterwards
 topZ = 10
 
+# Constants to avoid magic numbers in the code
+_ADAPTIVE_MIN_STEPDOWN = 0.1
+
 
 def sceneDrawPath(path, color=(0, 0, 1)):
     coPoint = coin.SoCoordinate3()
@@ -117,7 +126,7 @@ def CalcHelixConePoint(height, cur_z, radius, angle):
 
 
 def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
-    if len(adaptiveResults) == 0 or len(adaptiveResults[0]["AdaptivePaths"]) == 0:
+    if not adaptiveResults or not adaptiveResults[0]["AdaptivePaths"]:
         return
 
     # minLiftDistance = op.tool.Diameter
@@ -125,74 +134,55 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
     for region in adaptiveResults:
         p1 = region["HelixCenterPoint"]
         p2 = region["StartPoint"]
-        r = math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]))
-        if r > helixRadius:
-            helixRadius = r
+        helixRadius = max(math.dist(p1[:2], p2[:2]), helixRadius)
 
-    stepDown = obj.StepDown.Value
-    passStartDepth = obj.StartDepth.Value
-
-    if stepDown < 0.1:
-        stepDown = 0.1
+    stepDown = max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN)
 
     length = 2 * math.pi * helixRadius
 
-    if float(obj.HelixAngle) < 1:
-        obj.HelixAngle = 1
-    if float(obj.HelixAngle) > 89:
-        obj.HelixAngle = 89
+    obj.HelixAngle = min(89, max(obj.HelixAngle.Value, 1))
+    obj.HelixConeAngle = max(obj.HelixConeAngle, 0)
 
-    if float(obj.HelixConeAngle) < 0:
-        obj.HelixConeAngle = 0
-
-    helixAngleRad = math.pi * float(obj.HelixAngle) / 180.0
+    helixAngleRad = math.radians(obj.HelixAngle)
     depthPerOneCircle = length * math.tan(helixAngleRad)
-    # print("Helix circle depth: {}".format(depthPerOneCircle))
 
-    stepUp = obj.LiftDistance.Value
-    if stepUp < 0:
-        stepUp = 0
+    stepUp = max(obj.LiftDistance.Value, 0)
 
-    finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-    if finish_step > stepDown:
-        finish_step = stepDown
+    # TODO: finishStep is of limited utility with how regions are now broken
+    # up based on the model geometry- the "finish" step gets applied to each
+    # region separately, which results in excessive "finish" steps being taken
+    # where they really need not be. Leaving stock in Z generally makes more
+    # sense, but both technically have their uses, so leaving this here as
+    # option. Implementing flat area detection would make better use of both.
+    finishStep = min(obj.FinishDepth.Value, stepDown) if hasattr(obj, "FinishDepth") else 0.0
 
-    depth_params = PathUtils.depth_params(
-        clearance_height=obj.ClearanceHeight.Value,
-        safe_height=obj.SafeHeight.Value,
-        start_depth=obj.StartDepth.Value,
-        step_down=stepDown,
-        z_finish_step=finish_step,
-        final_depth=obj.FinalDepth.Value,
-        user_depths=None,
-    )
+    # Track Z position to determine when changing height is necessary prior to a move
+    lz = obj.StartDepth.Value
 
-    # ml: this is dangerous because it'll hide all unused variables hence forward
-    #     however, I don't know what lx and ly signify so I'll leave them for now
-    # lx = adaptiveResults[0]["HelixCenterPoint"][0]
-    # ly = adaptiveResults[0]["HelixCenterPoint"][1]
-    lz = passStartDepth
-    step = 0
+    for region in adaptiveResults:
+        passStartDepth = region["TopDepth"]
 
-    for passEndDepth in depth_params.data:
-        step = step + 1
+        depthParams = PathUtils.depth_params(
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=region["TopDepth"],
+            step_down=stepDown,
+            z_finish_step=finishStep,
+            final_depth=region["BottomDepth"],
+            user_depths=None,
+        )
 
-        for region in adaptiveResults:
+        for passEndDepth in depthParams.data:
             startAngle = math.atan2(
                 region["StartPoint"][1] - region["HelixCenterPoint"][1],
                 region["StartPoint"][0] - region["HelixCenterPoint"][0],
             )
 
-            # lx = region["HelixCenterPoint"][0]
-            # ly = region["HelixCenterPoint"][1]
-
             passDepth = passStartDepth - passEndDepth
 
             p1 = region["HelixCenterPoint"]
             p2 = region["StartPoint"]
-            helixRadius = math.sqrt(
-                (p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1])
-            )
+            helixRadius = math.dist(p1[:2], p2[:2])
 
             # Helix ramp
             if helixRadius > 0.01:
@@ -256,8 +246,6 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                             op.commandlist.append(
                                 Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.vertFeed})
                             )
-                            # lx = x
-                            # ly = y
                             fi = fi + math.pi / 16
 
                         # one more circle at target depth to make sure center is cleared
@@ -269,13 +257,11 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                             op.commandlist.append(
                                 Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.horizFeed})
                             )
-                            # lx = x
-                            # ly = y
                             fi = fi + math.pi / 16
 
                     else:
                         # Cone
-                        _HelixAngle = 360 - (float(obj.HelixAngle) * 4)
+                        _HelixAngle = 360 - (obj.HelixAngle.Value * 4)
 
                         if obj.HelixConeAngle > 6:
                             obj.HelixConeAngle = 6
@@ -510,8 +496,6 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                             },
                         )
                     )
-                    # lx = x
-                    # ly = y
 
             else:  # no helix entry
                 # rapid move to clearance height
@@ -551,8 +535,6 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     x = pt[0]
                     y = pt[1]
 
-                    # dist = math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
-
                     if motionType == area.AdaptiveMotionType.Cutting:
                         z = passEndDepth
                         if z != lz:
@@ -576,13 +558,6 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
                         op.commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
 
-                    # elif motionType == area.AdaptiveMotionType.LinkClearAtPrevPass:
-                    #     if lx!=x or ly!=y:
-                    #         op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":passStartDepth+stepUp}))
-                    #     op.commandlist.append(Path.Command("G0", { "X": x, "Y":y, "Z":passStartDepth+stepUp}))
-
-                    # lx = x
-                    # ly = y
                     lz = z
 
             # return to safe height in this Z pass
@@ -592,14 +567,14 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
             lz = z
 
-        passStartDepth = passEndDepth
+            passStartDepth = passEndDepth
 
-        # return to safe height in this Z pass
-        z = obj.ClearanceHeight.Value
-        if z != lz:
-            op.commandlist.append(Path.Command("G0", {"Z": z}))
+            # return to safe height in this Z pass
+            z = obj.ClearanceHeight.Value
+            if z != lz:
+                op.commandlist.append(Path.Command("G0", {"Z": z}))
 
-        lz = z
+            lz = z
 
     z = obj.ClearanceHeight.Value
     if z != lz:
@@ -634,70 +609,108 @@ def Execute(op, obj):
         topZ = op.stock.Shape.BoundBox.ZMax
         obj.Stopped = False
         obj.StopProcessing = False
-        if obj.Tolerance < 0.001:
-            obj.Tolerance = 0.001
+        obj.Tolerance = max(0.001, obj.Tolerance)
 
-        # Get list of working edges for adaptive algorithm
-        pathArray = op.pathArray
-        if not pathArray:
-            msg = translate(
-                "CAM",
-                "Adaptive operation couldn't determine the boundary wire. Did you select base geometry?",
+        # NOTE: Reminder that stock is formatted differently than inside/outside!
+        stockPaths = {d: convertTo2d(op.stockPathArray[d]) for d in op.stockPathArray}
+
+        outsideOpType = area.AdaptiveOperationType.ClearingOutside
+        insideOpType = area.AdaptiveOperationType.ClearingInside
+
+        # List every REGION separately- we can then calculate a toolpath based
+        # on the region. One or more stepdowns may use that same toolpath by
+        # keeping a reference to the region without requiring we calculate the
+        # toolpath once per step down OR forcing all stepdowns of a region into
+        # a single list.
+        regionOps = list()
+        outsidePathArray2dDepthTuples = list()
+        insidePathArray2dDepthTuples = list()
+        # NOTE: Make sure the depth lists are sorted for use in order-by-depth
+        # and order-by-region algorithms below
+        # NOTE: Pretty sure sorting is already guaranteed by how these are
+        # created, but best to not assume that
+        for rdict in op.outsidePathArray:
+            regionOps.append(
+                {
+                    "opType": outsideOpType,
+                    "path2d": convertTo2d(rdict["edges"]),
+                    "id": rdict["id"],
+                    "children": rdict["children"],
+                    # FIXME: Kinda gross- just use this to match up with the
+                    # appropriate stockpaths entry...
+                    "startdepth": rdict["depths"][0],
+                }
             )
-            FreeCAD.Console.PrintUserWarning(msg)
-            return
-
-        path2d = convertTo2d(pathArray)
-
-        # Use the 2D outline of the stock as the stock
-        # FIXME: This does not account for holes in the middle of stock!
-        outer_wire = TechDraw.findShapeOutline(op.stock.Shape, 1, FreeCAD.Vector(0, 0, 1))
-        stockPaths = [[discretize(outer_wire)]]
-
-        stockPath2d = convertTo2d(stockPaths)
-
-        # opType = area.AdaptiveOperationType.ClearingInside  # Commented out per LGTM suggestion
-        if obj.OperationType == "Clearing":
-            if obj.Side == "Outside":
-                opType = area.AdaptiveOperationType.ClearingOutside
-
-            else:
-                opType = area.AdaptiveOperationType.ClearingInside
-
-        else:  # profiling
-            if obj.Side == "Outside":
-                opType = area.AdaptiveOperationType.ProfilingOutside
-
-            else:
-                opType = area.AdaptiveOperationType.ProfilingInside
+            outsidePathArray2dDepthTuples.append(
+                (sorted(rdict["depths"], reverse=True), regionOps[-1])
+            )
+        for rdict in op.insidePathArray:
+            regionOps.append(
+                {
+                    "opType": insideOpType,
+                    "path2d": convertTo2d(rdict["edges"]),
+                    "id": rdict["id"],
+                    "children": rdict["children"],
+                    # FIXME: Kinda gross- just use this to match up with the
+                    # appropriate stockpaths entry...
+                    "startdepth": rdict["depths"][0],
+                }
+            )
+            insidePathArray2dDepthTuples.append(
+                (sorted(rdict["depths"], reverse=True), regionOps[-1])
+            )
 
         keepToolDownRatio = 3.0
         if hasattr(obj, "KeepToolDownRatio"):
-            keepToolDownRatio = float(obj.KeepToolDownRatio)
+            keepToolDownRatio = obj.KeepToolDownRatio.Value
 
-        # put here all properties that influence calculation of adaptive base paths,
-
-        inputStateObject = {
-            "tool": float(op.tool.Diameter),
-            "tolerance": float(obj.Tolerance),
-            "geometry": path2d,
-            "stockGeometry": stockPath2d,
-            "stepover": float(obj.StepOver),
-            "effectiveHelixDiameter": float(helixDiameter),
-            "operationType": obj.OperationType,
-            "side": obj.Side,
+        # These fields are used to determine if toolpaths should be recalculated
+        outsideInputStateObject = {
+            "tool": op.tool.Diameter.Value,
+            "tolerance": obj.Tolerance,
+            "geometry": [k["path2d"] for k in regionOps if k["opType"] == outsideOpType],
+            "stockGeometry": stockPaths,
+            "stepover": obj.StepOver,
+            "effectiveHelixDiameter": helixDiameter,
+            "operationType": "Clearing",
+            "side": "Outside",
             "forceInsideOut": obj.ForceInsideOut,
             "finishingProfile": obj.FinishingProfile,
             "keepToolDownRatio": keepToolDownRatio,
-            "stockToLeave": float(obj.StockToLeave),
+            "stockToLeave": obj.StockToLeave.Value,
+            "zStockToLeave": obj.ZStockToLeave.Value,
+            "orderCutsByRegion": obj.OrderCutsByRegion,
         }
+
+        insideInputStateObject = {
+            "tool": op.tool.Diameter.Value,
+            "tolerance": obj.Tolerance,
+            "geometry": [k["path2d"] for k in regionOps if k["opType"] == insideOpType],
+            "stockGeometry": stockPaths,
+            "stepover": obj.StepOver,
+            "effectiveHelixDiameter": helixDiameter,
+            "operationType": "Clearing",
+            "side": "Inside",
+            "forceInsideOut": obj.ForceInsideOut,
+            "finishingProfile": obj.FinishingProfile,
+            "keepToolDownRatio": keepToolDownRatio,
+            "stockToLeave": obj.StockToLeave.Value,
+            "zStockToLeave": obj.ZStockToLeave.Value,
+            "orderCutsByRegion": obj.OrderCutsByRegion,
+        }
+
+        inputStateObject = [outsideInputStateObject, insideInputStateObject]
 
         inputStateChanged = False
         adaptiveResults = None
 
-        if obj.AdaptiveOutputState is not None and obj.AdaptiveOutputState != "":
+        # If we have a valid... path? Something. Generated, make that
+        # tentatively the output
+        if obj.AdaptiveOutputState:
             adaptiveResults = obj.AdaptiveOutputState
 
+        # If ANYTHING in our input-cutting parameters, cutting regions,
+        # etc.- changes, force recalculating
         if json.dumps(obj.AdaptiveInputState) != json.dumps(inputStateObject):
             inputStateChanged = True
             adaptiveResults = None
@@ -721,31 +734,85 @@ def Execute(op, obj):
         start = time.time()
 
         if inputStateChanged or adaptiveResults is None:
-            a2d = area.Adaptive2d()
-            a2d.stepOverFactor = 0.01 * obj.StepOver
-            a2d.toolDiameter = float(op.tool.Diameter)
-            a2d.helixRampDiameter = helixDiameter
-            a2d.keepToolDownDistRatio = keepToolDownRatio
-            a2d.stockToLeave = float(obj.StockToLeave)
-            a2d.tolerance = float(obj.Tolerance)
-            a2d.forceInsideOut = obj.ForceInsideOut
-            a2d.finishingProfile = obj.FinishingProfile
-            a2d.opType = opType
+            # NOTE: Seem to need to create a new a2d for each area when we're
+            # stepping down depths like this. If we don't, it will keep history
+            # from the last region we did.
 
-            # EXECUTE
-            results = a2d.Execute(stockPath2d, path2d, progressFn)
+            # TODO: QThread/QRunnable trigger Python's global interpretor lock
+            # (GIL). To calculate toolpaths in parallel, making a C++ shim that
+            # takes in the array of regions/stock paths and parallelizes in
+            # C++-land is probably the way to do it.
+
+            # Create a toolpath for each region to avoid re-calculating for
+            # identical stepdowns
+            for rdict in regionOps:
+                path2d = rdict["path2d"]
+                opType = rdict["opType"]
+
+                a2d = area.Adaptive2d()
+                a2d.stepOverFactor = 0.01 * obj.StepOver
+                a2d.toolDiameter = op.tool.Diameter.Value
+                a2d.helixRampDiameter = helixDiameter
+                a2d.keepToolDownDistRatio = keepToolDownRatio
+                # NOTE: Z stock is handled in our stepdowns
+                a2d.stockToLeave = obj.StockToLeave.Value
+                a2d.tolerance = obj.Tolerance
+                a2d.forceInsideOut = obj.ForceInsideOut
+                a2d.finishingProfile = obj.FinishingProfile
+                a2d.opType = opType
+
+                rdict["toolpaths"] = a2d.Execute(
+                    stockPaths[rdict["startdepth"]], path2d, progressFn
+                )
+
+            # Sort regions to cut by either depth or area.
+            # TODO: Bonus points for ordering to minimize rapids
+            cutlist = list()
+            # Region IDs that have been cut already
+            cutids = list()
+            # Create sorted list of unique depths
+            # NOTE: reverse because we cut top-down!
+            depths = list()
+            # NOTE: alltuples is sorted by depth already
+            alltuples = outsidePathArray2dDepthTuples + insidePathArray2dDepthTuples
+            for t in alltuples:
+                depths += [d for d in t[0]]
+            depths = sorted(list(set(depths)), reverse=True)
+            if obj.OrderCutsByRegion:
+                # Translate child ID numbers to an actual reference to the
+                # associated tuple
+                for rdict in regionOps:
+                    rdict["childTuples"] = [t for t in alltuples if t[1]["id"] in rdict["children"]]
+
+                # Helper function to recurse down children
+                def addToCutList(tuples):
+                    for k in tuples:
+                        if k in cutlist:
+                            continue
+                        cutlist.append(k)
+                        addToCutList(k[1]["childTuples"])
+
+                addToCutList(alltuples)
+            else:
+                for d in depths:
+                    cutlist += [([d], o[1]) for o in outsidePathArray2dDepthTuples if d in o[0]]
+                    cutlist += [([d], i[1]) for i in insidePathArray2dDepthTuples if d in i[0]]
 
             # need to convert results to python object to be JSON serializable
-            adaptiveResults = []
-            for result in results:
-                adaptiveResults.append(
-                    {
-                        "HelixCenterPoint": result.HelixCenterPoint,
-                        "StartPoint": result.StartPoint,
-                        "AdaptivePaths": result.AdaptivePaths,
-                        "ReturnMotionType": result.ReturnMotionType,
-                    }
-                )
+            stepdown = max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN)
+            adaptiveResults = list()
+            for depths, region in cutlist:
+                for result in region["toolpaths"]:
+                    adaptiveResults.append(
+                        {
+                            "HelixCenterPoint": result.HelixCenterPoint,
+                            "StartPoint": result.StartPoint,
+                            "AdaptivePaths": result.AdaptivePaths,
+                            "ReturnMotionType": result.ReturnMotionType,
+                            "TopDepth": depths[0] + stepdown,
+                            "BottomDepth": depths[-1],
+                        }
+                    )
 
         # GENERATE
         GenerateGCode(op, obj, adaptiveResults, helixDiameter)
@@ -765,71 +832,559 @@ def Execute(op, obj):
             sceneClean()
 
 
-def _get_working_edges(op, obj):
-    """_get_working_edges(op, obj)...
-    Compile all working edges from the Base Geometry selection (obj.Base)
-    for the current operation.
-    Additional modifications to selected region(face), such as extensions,
-    should be placed within this function.
+def projectFacesToXY(faces, minEdgeLength=1e-10):
+    """projectFacesToXY(faces, minEdgeLength)
+    Calculates the projection of the provided list of faces onto the XY plane.
+    The returned value is a single shape that may contain multiple faces if
+    there were disjoint projections. Each individual face will be clean, without
+    triangulated geometry, etc., and will be at Z=0 on the XY plane
+
+    minEdgeLength is provided to (eg) filter out the tips of cones that are
+    internally represented as arbitrarily-small circular faces- using those for
+    additional operations causes problems.
     """
-    all_regions = list()
-    edge_list = list()
-    avoidFeatures = list()
-    rawEdges = list()
+    projdir = FreeCAD.Vector(0, 0, 1)
+    outfaces = []
+    for f in faces:
+        # Vertical cones and spheres will still have a projection on the XY
+        # plane. Cylinders and flat faces will not.
+        if Path.Geom.isVertical(f) and type(f.Surface) not in [Part.Cone, Part.Sphere]:
+            continue
+
+        # NOTE: Wires/edges get clipped if we have an "exact fit" bounding box
+        projface = Path.Geom.makeBoundBoxFace(f.BoundBox, offset=1, zHeight=0)
+
+        # NOTE: Cylinders, cones, and spheres are messy:
+        # - Internal representation of non-truncted cones and spheres includes
+        # the "tip" with a ~0-area closed edge. This is different than the
+        # "isNull() note" at the top in magnitude
+        # - Projecting edges doesn't naively work due to the way seams are handled
+        # - There may be holes at either end that may or may not line up- any
+        # overlap is a hole in the projection
+        if type(f.Surface) in [Part.Cone, Part.Cylinder, Part.Sphere]:
+            # This gets most of the face outline, but since cylinder/cone faces
+            # are hollow, if the ends overlap in the projection there may be a
+            # hole we need to remove from the solid projection
+            oface = Part.makeFace(TechDraw.findShapeOutline(f, 1, projdir))
+
+            # "endfacewires" is JUST the end faces of a cylinder/cone, used to
+            # determine if there's a hole we can see through the shape that
+            # should NOT be solid in the projection
+            endfacewires = DraftGeomUtils.findWires(
+                [e for e in f.Edges if not e.isSeam(f) and e.Length > minEdgeLength]
+            )
+
+            # Need to verify that there actually is a projection before taking
+            # a wire from the list, else this could nicely be one line.
+            projwires = []
+            for w in endfacewires:
+                pp = projface.makeParallelProjection(w, projdir).Wires
+                if pp:
+                    projwires.append(pp[0])
+
+            if len(projwires) > 1:
+                faces = [Part.makeFace(x) for x in projwires]
+                overlap = faces[0].common(faces[1:])
+                outfaces.append(oface.cut(overlap))
+            else:
+                outfaces.append(oface)
+        # For other cases, projecting the wires to a plane should suffice
+        else:
+            facewires = list()
+            for w in f.Wires:
+                if w.isClosed():
+                    projwire = projface.makeParallelProjection(w, projdir).Wires[0]
+                    if projwire.isClosed():
+                        facewires.append(projwire)
+            if facewires:
+                outfaces.append(Part.makeFace(facewires))
+    if outfaces:
+        fusion = outfaces[0].fuse(outfaces[1:])
+        # removeSplitter fixes occasional concatenate issues for some face orders
+        return DraftGeomUtils.concatenate(fusion.removeSplitter())
+    else:
+        return Part.Shape()
+
+
+def _getSolidProjection(shp, z):
+    """_getSolidProjection(shp, z)
+    Calculates a shape obtained by slicing shp at the height z, then projecting
+    the solids above that height onto a region of proj_face, and creating a
+    simplified face
+    """
+    bb = shp.BoundBox
+
+    # Find all faces above the machining depth. This is used to mask future
+    # interior cuts, and the outer wire is used as the external wire
+    bbCutTop = Part.makeBox(
+        bb.XLength,
+        bb.YLength,
+        max(bb.ZLength, bb.ZLength - z),
+        FreeCAD.Vector(bb.XMin, bb.YMin, z),
+    )
+    aboveSolids = shp.common(bbCutTop).Solids
+
+    faces = list()
+    for s in aboveSolids:
+        faces += s.Faces
+
+    return projectFacesToXY(faces)
+
+
+def _workingEdgeHelperRoughing(op, obj, depths):
+    # Final calculated regions- list of dicts with entries:
+    # "region" - actual shape
+    # "depths" - list of depths this region applies to
+    insideRegions = list()
+    outsideRegions = list()
+
+    # Multiple input solids can be selected- make a single part out of them,
+    # will process each solid separately as appropriate
+    shps = op.model[0].Shape.fuse([k.Shape for k in op.model[1:]])
+
+    projdir = FreeCAD.Vector(0, 0, 1)
+
+    # Take outline of entire model as our baseline machining region. No need to
+    # do this repeatedly inside the loop.
+    modelOutlineFaces = [
+        Part.makeFace(TechDraw.findShapeOutline(s, 1, projdir)) for s in shps.Solids
+    ]
+
+    lastdepth = obj.StartDepth.Value
+
+    for depth in depths:
+        # If we have no stock to machine, just skip all the rest of the math
+        if depth >= op.stock.Shape.BoundBox.ZMax:
+            lastdepth = depth
+            continue
+
+        # NOTE: To "leave" stock along Z without actually checking any face
+        # depths, we simply slice the model "lower" than our actual cut depth by
+        # the Z stock to leave, which ensures we stay at least that far from the
+        # actual faces
+        stockface = _getSolidProjection(op.stock.Shape, depth - obj.ZStockToLeave.Value)
+        aboveRefined = _getSolidProjection(shps, depth - obj.ZStockToLeave.Value)
+
+        # Outside is based on the outer wire of the above_faces
+        # Insides are based on the remaining "below" regions, masked by the
+        # "above"- if something is above an area, we can't machine it in 2.5D
+
+        # OUTSIDE REGIONS
+        # Outside: Take the outer wire of the above faces
+        # NOTE: Exactly one entry per depth (not necessarily one depth entry per
+        # stepdown, however), which is a LIST of the wires we're staying outside
+        # NOTE: Do this FIRST- if any inside regions share enough of an edge
+        # with an outside region for a tool to get through, we want to skip them
+        # for the current stepdown
+        if aboveModelFaces := [
+            Part.makeFace(TechDraw.findShapeOutline(f, 1, projdir)) for f in aboveRefined.Faces
+        ]:
+            aboveModelFaces = aboveModelFaces[0].fuse(aboveModelFaces[1:])
+        else:
+            aboveModelFaces = Part.Shape()
+        # If this region exists in our list, it has to be the last entry, due to
+        # proceeding in order and having only one per depth. If it's already
+        # there, replace with the new, deeper depth, else add new
+        # NOTE: Check for NULL regions to not barf on regions between the top of
+        # the model and the top of the stock, which are "outside" of nothing
+        # NOTE: See "isNull() note" at top of file
+        if (
+            outsideRegions
+            and outsideRegions[-1]["region"].Wires
+            and aboveModelFaces.Wires
+            and not aboveModelFaces.cut(outsideRegions[-1]["region"]).Wires
+        ):
+            outsideRegions[-1]["depths"].append(depth)
+        else:
+            outsideRegions.append({"region": aboveModelFaces, "depths": [depth]})
+
+        # NOTE: If you don't care about controlling depth vs region ordering,
+        # you can actually just do everything with "outside" processing, if you
+        # don't remove internal holes from the regions above
+
+        # INSIDE REGIONS
+        # NOTE: Nothing inside if there's no model above us
+        # NOTE: See "isNull() note" at top of file
+        if aboveModelFaces.Wires:
+            # Remove any overlapping areas already machined from the outside.
+            outsideface = stockface.cut(outsideRegions[-1]["region"].Faces)
+            # NOTE: See "isNull() note" at top of file
+            if outsideface.Wires:
+                belowFaces = [f.cut(outsideface) for f in modelOutlineFaces]
+            else:
+                # NOTE: Doesn't matter here, but ensure we're making a new list so
+                # we don't clobber modelOutlineFaces
+                belowFaces = [f for f in modelOutlineFaces]
+
+            # This isn't really necessary unless the user inputs bad data- eg, a
+            # min depth above the top of the model. In which case we still want to
+            # clear the stock
+            if belowFaces:
+                # Remove the overhangs from the desired region to cut
+                belowCut = belowFaces[0].fuse(belowFaces[1:]).cut(aboveRefined)
+                # NOTE: See "isNull() note" at top of file
+                if belowCut.Wires:
+                    # removeSplitter fixes occasional concatenate issues for
+                    # some face orders
+                    finalCut = DraftGeomUtils.concatenate(belowCut.removeSplitter())
+                else:
+                    finalCut = Part.Shape()
+            else:
+                # Make a dummy shape if we don't have anything actually below
+                finalCut = Part.Shape()
+
+            # Split up into individual faces if any are disjoint, then update
+            # insideRegions- either by adding a new entry OR by updating the depth
+            # of an existing entry
+            for f in finalCut.Faces:
+                addNew = True
+                # Brute-force search all existing regions to see if any are the same
+                newtop = lastdepth
+                for rdict in insideRegions:
+                    # FIXME: Smarter way to do this than a full cut operation?
+                    if not rdict["region"].cut(f).Wires:
+                        rdict["depths"].append(depth)
+                        addNew = False
+                        break
+                if addNew:
+                    insideRegions.append({"region": f, "depths": [depth]})
+
+        # Update the last depth step
+        lastdepth = depth
+    # end for depth
+
+    return insideRegions, outsideRegions
+
+
+def _workingEdgeHelperManual(op, obj, depths):
+    # Final calculated regions- list of dicts with entries:
+    # "region" - actual shape
+    # "depths" - list of depths this region applies to
+    insideRegions = list()
+    outsideRegions = list()
+
+    # User selections, with extensions
+    selectedRegions = list()
+    selectedEdges = list()
 
     # Get extensions and identify faces to avoid
     extensions = FeatureExtensions.getExtensions(obj)
-    for e in extensions:
-        if e.avoid:
-            avoidFeatures.append(e.feature)
+    avoidFeatures = [e for e in extensions if e.avoid]
 
-    # Get faces selected by user
-    for base, subs in obj.Base:
-        for sub in subs:
-            if sub.startswith("Face"):
-                if sub not in avoidFeatures:
-                    if obj.UseOutline:
-                        face = base.Shape.getElement(sub)
-                        # get outline with wire_A method used in PocketShape, but it does not play nicely later
-                        # wire_A = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
-                        wire_B = face.OuterWire
-                        shape = Part.Face(wire_B)
-                    else:
-                        shape = base.Shape.getElement(sub)
-                    all_regions.append(shape)
-            elif sub.startswith("Edge"):
-                # Save edges for later processing
-                rawEdges.append(base.Shape.getElement(sub))
-    # Efor
-
-    # Process selected edges
-    if rawEdges:
-        edgeWires = DraftGeomUtils.findWires(rawEdges)
-        if edgeWires:
-            for w in edgeWires:
-                for e in w.Edges:
-                    edge_list.append([discretize(e)])
-
-    # Apply regular Extensions
-    op.exts = []
+    # Similarly, expand selected regions with extensions
     for ext in extensions:
         if not ext.avoid:
-            wire = ext.getWire()
-            if wire:
-                for f in ext.getExtensionFaces(wire):
-                    op.exts.append(f)
-                    all_regions.append(f)
+            if wire := ext.getWire():
+                selectedRegions += [f for f in ext.getExtensionFaces(wire)]
 
-    # Second face-combining method attempted
-    horizontal = Path.Geom.combineHorizontalFaces(all_regions)
-    if horizontal:
-        obj.removalshape = Part.makeCompound(horizontal)
-        for f in horizontal:
-            for w in f.Wires:
-                for e in w.Edges:
-                    edge_list.append([discretize(e)])
+    for base, subs in obj.Base:
+        for sub in subs:
+            element = base.Shape.getElement(sub)
+            if sub.startswith("Face") and sub not in avoidFeatures:
+                shape = Part.Face(element.OuterWire) if obj.UseOutline else element
+                selectedRegions.append(shape)
+            # Omit vertical edges, since they project to nothing in the XY plane
+            # and cause processing failures later if included
+            elif sub.startswith("Edge") and not Path.Geom.isVertical(element):
+                selectedEdges.append(element)
 
-    return edge_list
+    # Multiple input solids can be selected- make a single part out of them,
+    # will process each solid separately as appropriate
+    shps = op.model[0].Shape.fuse([k.Shape for k in op.model[1:]])
+
+    # Make a face to project onto
+    # NOTE: Use 0 as the height, since that's what TechDraw.findShapeOutline
+    # uses, which we use to find the machining boundary, and the actual depth
+    # is tracked separately.
+    # NOTE: Project to the PART bounding box- with some padding- not the stock,
+    # since the stock may be smaller than the part
+    projface = Path.Geom.makeBoundBoxFace(shps.BoundBox, offset=1, zHeight=0)
+    projdir = FreeCAD.Vector(0, 0, 1)
+
+    # When looking for selected edges, project to a single plane first, THEN try
+    # to find wires. Take all the resulting wires and make faces in one shot to
+    # make bullseye-style cutouts where selected wires nest.
+    edgefaces = list()
+    if selectedEdges:
+        pp = [projface.makeParallelProjection(e, projdir).Wires[0] for e in selectedEdges]
+        ppe = list()
+        for w in pp:
+            ppe += w.Edges
+        edgeWires = DraftGeomUtils.findWires(ppe)
+        edgefaces = Part.makeFace(edgeWires).Faces
+
+    selectedRefined = projectFacesToXY(selectedRegions + edgefaces)
+
+    # If the user selected only faces that don't have an XY projection AND no
+    # edges, give a useful message
+    if not selectedRefined.Wires:
+        Path.Log.warning("Selected faces/wires have no projection on the XY plane")
+        return insideRegions, outsideRegions
+
+    lastdepth = obj.StartDepth.Value
+
+    for depth in depths:
+        # If our depth is above the top of the stock, there's nothing to machine
+        if depth >= op.stock.Shape.BoundBox.ZMax:
+            lastdepth = depth
+            continue
+
+        # NOTE: See note in _workingEdgeHelperRoughing- tl;dr slice stock
+        # lower than cut depth to effectively leave (at least) obj.ZStockToLeave
+        aboveRefined = _getSolidProjection(shps, depth - obj.ZStockToLeave.Value)
+
+        # Create appropriate tuples and add to list, processing inside/outside
+        # as requested by operation
+        if obj.Side == "Outside":
+            # Outside is based on the outer wire of the faces of aboveRefined
+            # Insides are based on the remaining "below" regions, masked by the
+            # "above"- if something is above an area, we can't machine it in 2.5D
+
+            # Outside: Take the outer wire of the above faces, added to selected
+            # edges and regions
+            # NOTE: Exactly one entry per depth (not necessarily one depth entry per
+            # stepdown, however), which is a LIST of the wires we're staying outside
+            # NOTE: Do this FIRST- if any inside regions share enough of an edge
+            # with an outside region for a tool to get through, we want to skip them
+            # for the current stepdown
+            # NOTE: This check naively seems unnecessary, but it's possible the
+            # user selected a vertical face as the only face to stay outside of,
+            # and we're above the model, causing keepOutFaces to be empty
+            if keepOutFaces := [
+                Part.makeFace(TechDraw.findShapeOutline(f, 1, projdir))
+                for f in aboveRefined.Faces + selectedRefined.Faces
+            ]:
+                finalMerge = keepOutFaces[0].fuse(keepOutFaces[1:])
+            else:
+                finalMerge = selectedRefined
+            # Without removeSplitter(), concatenate will sometimes fail when
+            # trying to merge faces that are (eg) connected A-B and B-C,
+            # seemingly when trying to merge A-C
+            regions = DraftGeomUtils.concatenate(finalMerge.removeSplitter())
+
+            # If this region exists in our list, it has to be the last entry, due to
+            # proceeding in order and having only one per depth. If it's already
+            # there, replace with the new, deeper depth, else add new
+            # NOTE: Do NOT need a check for whether outsideRegions[-1]["region"]
+            # is valid since we have a user-specified region regardless of depth
+            # NOTE: See "isNull() note" at top of file
+            if (
+                outsideRegions
+                and regions.Wires
+                and not regions.cut(outsideRegions[-1]["region"]).Wires
+            ):
+                outsideRegions[-1]["depths"].append(depth)
+            else:
+                outsideRegions.append({"region": regions, "depths": [depth]})
+
+        # Inside
+        # For every area selected by the user, project to a plane
+        # NOTE: See "isNull() note" at top of file
+        else:
+            if aboveRefined.Wires:
+                finalCut = selectedRefined.cut(aboveRefined)
+            else:
+                finalCut = selectedRefined
+
+            # Split up into individual faces if any are disjoint, then update
+            # insideRegions- either by adding a new entry OR by updating the depth
+            # of an existing entry
+            for f in finalCut.Faces:
+                addNew = True
+                # Brute-force search all existing regions to see if any are the same
+                newtop = lastdepth
+                for rdict in insideRegions:
+                    # FIXME: Smarter way to do this than a full cut operation?
+                    if not rdict["region"].cut(f).Wires:
+                        rdict["depths"].append(depth)
+                        addNew = False
+                        break
+                if addNew:
+                    insideRegions.append({"region": f, "depths": [depth]})
+
+        # Update the last depth step
+        lastdepth = depth
+    # end for depth
+
+    return insideRegions, outsideRegions
+
+
+def _getWorkingEdges(op, obj):
+    """_getWorkingEdges(op, obj)...
+    Compile all working edges from the Base Geometry selection (obj.Base)
+    for the current operation (or the entire model if no selections).
+    Additional modifications to selected region(face), such as extensions,
+    should be placed within this function.
+    This version will return two lists- one for outside (keepout) edges and one
+    for inside ("machine inside") edges. Each list will be a dict with "region"
+    and "depths" entries- the former being discretized geometry of the region,
+    the latter being a list of every depth the geometry is machined on
+    """
+
+    # Find depth steps, throwing out all depths above anywhere we might cut
+    # NOTE: Finish stepdown = 0 here- it's actually applied when gcode is
+    # generated; doing so here would cause it to be applied twice.
+    depthParams = PathUtils.depth_params(
+        clearance_height=obj.ClearanceHeight.Value,
+        safe_height=obj.SafeHeight.Value,
+        start_depth=obj.StartDepth.Value,
+        step_down=max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN),
+        z_finish_step=0.0,
+        final_depth=obj.FinalDepth.Value,
+        user_depths=None,
+    )
+
+    depths = [d for d in depthParams.data if d < op.stock.Shape.BoundBox.ZMax]
+
+    # Get the stock outline at each stepdown. Used to calculate toolpaths and
+    # for calcuating cut regions in some instances
+    # NOTE: See note in _workingEdgeHelperRoughing- tl;dr slice stock lower
+    # than cut depth to effectively leave (at least) obj.ZStockToLeave
+    # NOTE: Stock is handled DIFFERENTLY than inside and outside regions!
+    # Combining different depths just adds code to look up the correct outline
+    # when computing inside/outside regions, for no real benefit.
+    stockProjectionDict = {
+        d: _getSolidProjection(op.stock.Shape, d - obj.ZStockToLeave.Value) for d in depths
+    }
+
+    # If user specified edges, calculate the machining regions based on that
+    # input. Otherwise, process entire model
+    # Output are lists of dicts with "region" and "depths" entries. Depths are
+    # a list of Z depths that the region applies to
+    # Inside regions are a single face; outside regions consist of ALL geometry
+    # to be avoided at those depths.
+    if obj.Base:
+        insideRegions, outsideRegions = _workingEdgeHelperManual(op, obj, depths)
+    else:
+        insideRegions, outsideRegions = _workingEdgeHelperRoughing(op, obj, depths)
+
+    # Find all children of each region. A child of region X is any region Y such
+    # that Y is a subset of X AND Y starts within one stepdown of X (ie, direct
+    # children only).
+    # NOTE: Inside and outside regions are inverses of each other, so above
+    # refers to the area to be machined!
+
+    # Assign an ID number to track each region
+    idnumber = 0
+    for r in insideRegions + outsideRegions:
+        r["id"] = idnumber
+        r["children"] = list()
+        idnumber += 1
+
+    # NOTE: Inside and outside regions are inverses of each other
+    # NOTE: Outside regions can't have parents
+    for rx in insideRegions:
+        for ry in [k for k in insideRegions if k != rx]:
+            dist = min(rx["depths"]) - max(ry["depths"])
+            # Ignore regions at our level or above, or more than one step down
+            if dist <= 0 or dist > depthParams.step_down:
+                continue
+            if not ry["region"].cut(rx["region"]).Wires:
+                rx["children"].append(ry["id"])
+        # See which outside region this is a child of- basically inverse of above
+        for ry in [k for k in outsideRegions]:
+            dist = min(ry["depths"]) - max(rx["depths"])
+            # Ignore regions at our level or above, or more than one step down
+            if dist <= 0 or dist > depthParams.step_down:
+                continue
+            # child if there is NO overlap between the stay-outside and stay-
+            # inside regions
+            # Also a child if the outer region is NULL (includes everything)
+            # NOTE: See "isNull() note" at top of file
+            if not ry["region"].Wires or not rx["region"].common(ry["region"]).Wires:
+                ry["children"].append(rx["id"])
+
+    # Further split regions as necessary for when the stock changes- a region as
+    # reported here is where a toolpath will be generated, and can be projected
+    # along all of the depths associated with it. By doing this, we can minimize
+    # the number of toolpaths that need to be generated AND avoid more complex
+    # logic in depth-first vs region-first sorting of regions.
+    # NOTE: For internal regions, stock is "the same" if the region cut with
+    # the stock results in the same region.
+    # NOTE: For external regions, stock is "the same" if the stock cut by the
+    # region results in the same region
+    def _regionChildSplitterHelper(regions, areInsideRegions):
+        nonlocal stockProjectionDict
+        nonlocal idnumber
+        for r in regions:
+            depths = sorted(r["depths"], reverse=True)
+            if areInsideRegions:
+                rcut = r["region"].cut(stockProjectionDict[depths[0]])
+            else:
+                # NOTE: We may end up with empty "outside" regions in the space
+                # between the top of the stock and the top of the model- want
+                # to machine the entire stock in that case
+                # NOTE: See "isNull() note" at top of file
+                if not r["region"].Wires:
+                    rcut = stockProjectionDict[depths[0]]
+                else:
+                    rcut = stockProjectionDict[depths[0]].cut(r["region"])
+            parentdepths = depths[0:1]
+            # If the region cut with the stock at a new depth is different than
+            # the original cut, we need to split this region
+            # The new region gets all of the children, and becomes a child of
+            # the existing region.
+            for d in depths[1:]:
+                if (
+                    areInsideRegions and r["region"].cut(stockProjectionDict[d]).cut(rcut).Wires
+                ) or stockProjectionDict[d].cut(r["region"]).cut(rcut).Wires:
+                    newregion = {
+                        "id": idnumber,
+                        "depths": [k for k in depths if k not in parentdepths],
+                        "region": r["region"],
+                        "children": r["children"],
+                    }
+                    # Update parent with the new region as a child, along with all
+                    # the depths it was unchanged on
+                    r["children"] = [idnumber]
+                    r["depths"] = parentdepths
+
+                    # Add the new region to the end of the list and stop processing
+                    # this region
+                    # When the new region is processed at the end, we'll effectively
+                    # recurse and handle splitting that new region if required
+                    regions.append(newregion)
+                    idnumber += 1
+                    continue
+                # If we didn't split at this depth, the parent will keep "control"
+                # of this depth
+                parentdepths.append(d)
+
+    _regionChildSplitterHelper(insideRegions, True)
+    _regionChildSplitterHelper(outsideRegions, False)
+
+    # Create discretized regions
+    def _createDiscretizedRegions(regionDicts):
+        discretizedRegions = list()
+        for rdict in regionDicts:
+            discretizedRegions.append(
+                {
+                    "edges": [[discretize(w)] for w in rdict["region"].Wires],
+                    "depths": rdict["depths"],
+                    "id": rdict["id"],
+                    "children": rdict["children"],
+                }
+            )
+        return discretizedRegions
+
+    insideDiscretized = _createDiscretizedRegions(insideRegions)
+    outsideDiscretized = _createDiscretizedRegions(outsideRegions)
+
+    # NOTE: REMINDER: This is notably different from machining regions- just
+    # a dict with depth: region entries, single depth for easy lookup
+    stockDiscretized = {}
+    for d in stockProjectionDict:
+        discretizedEdges = list()
+        for a in stockProjectionDict[d].Faces:
+            for w in a.Wires:
+                discretizedEdges.append([discretize(w)])
+        stockDiscretized[d] = discretizedEdges
+
+    # Return found inside and outside regions/depths. Up to the caller to decide
+    # which ones it cares about.
+    # NOTE: REMINDER: Stock is notably different from machining regions- just
+    # a dict with depth: region entries, single depth for easy lookup
+    return insideDiscretized, outsideDiscretized, stockDiscretized
 
 
 class PathAdaptive(PathOp.ObjectOp):
@@ -898,11 +1453,6 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Side of selected faces that tool should cut",
             ),
         )
-        # obj.Side = [
-        #     "Outside",
-        #     "Inside",
-        # ]  # side of profile that cutter is on in relation to direction of profile
-
         obj.addProperty(
             "App::PropertyEnumeration",
             "OperationType",
@@ -912,18 +1462,13 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Type of adaptive operation",
             ),
         )
-        # obj.OperationType = [
-        #     "Clearing",
-        #     "Profiling",
-        # ]  # side of profile that cutter is on in relation to direction of profile
-
         obj.addProperty(
             "App::PropertyFloat",
             "Tolerance",
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Influences accuracy and performance",
+                "Influences calculation performance vs stability and accuracy.\n\nLarger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.",
             ),
         )
         obj.addProperty(
@@ -959,7 +1504,16 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "How much stock to leave (i.e. for finishing operation)",
+                "How much stock to leave in the XY plane (eg for finishing operation)",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "ZStockToLeave",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "How much stock to leave along the Z axis (eg for finishing operation)",
             ),
         )
         obj.addProperty(
@@ -987,7 +1541,6 @@ class PathAdaptive(PathOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Stop processing"),
         )
         obj.setEditorMode("Stopped", 2)  # hide this property
-
         obj.addProperty(
             "App::PropertyBool",
             "StopProcessing",
@@ -998,7 +1551,6 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
         obj.setEditorMode("StopProcessing", 2)  # hide this property
-
         obj.addProperty(
             "App::PropertyBool",
             "UseHelixArcs",
@@ -1008,7 +1560,6 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Use Arcs (G2) for helix ramp",
             ),
         )
-
         obj.addProperty(
             "App::PropertyPythonObject",
             "AdaptiveInputState",
@@ -1056,7 +1607,6 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used",
             ),
         )
-
         obj.addProperty(
             "App::PropertyBool",
             "UseOutline",
@@ -1066,7 +1616,15 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Uses the outline of the base geometry.",
             ),
         )
-
+        obj.addProperty(
+            "App::PropertyBool",
+            "OrderCutsByRegion",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Orders cuts by region instead of depth.",
+            ),
+        )
         obj.addProperty(
             "Part::PropertyPartShape",
             "removalshape",
@@ -1098,9 +1656,11 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.AdaptiveInputState = ""
         obj.AdaptiveOutputState = ""
         obj.StockToLeave = 0
+        obj.ZStockToLeave = 0
         obj.KeepToolDownRatio = 3.0
         obj.UseHelixArcs = False
         obj.UseOutline = False
+        obj.OrderCutsByRegion = False
         FeatureExtensions.set_default_property_values(obj, job)
 
     def opExecute(self, obj):
@@ -1108,7 +1668,14 @@ class PathAdaptive(PathOp.ObjectOp):
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses."""
 
-        self.pathArray = _get_working_edges(self, obj)
+        # Contains both geometry to machine and the applicable depths
+        # NOTE: Reminder that stock is formatted differently than inside/outside!
+        inside, outside, stock = _getWorkingEdges(self, obj)
+
+        self.insidePathArray = inside
+        self.outsidePathArray = outside
+        self.stockPathArray = stock
+
         Execute(self, obj)
 
     def opOnDocumentRestored(self, obj):
@@ -1128,14 +1695,33 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Uses the outline of the base geometry.",
             )
 
+        if not hasattr(obj, "OrderCutsByRegion"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "OrderCutsByRegion",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Orders cuts by region instead of depth.",
+                ),
+            )
+
+        if not hasattr(obj, "ZStockToLeave"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "ZStockToLeave",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "How much stock to leave along the Z axis (eg for finishing operation)",
+                ),
+            )
+
         if not hasattr(obj, "removalshape"):
             obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "")
         obj.setEditorMode("removalshape", 2)  # hide
 
         FeatureExtensions.initialize_properties(obj)
-
-
-# Eclass
 
 
 def SetupProperties():
@@ -1147,6 +1733,7 @@ def SetupProperties():
         "LiftDistance",
         "KeepToolDownRatio",
         "StockToLeave",
+        "ZStockToLeave",
         "ForceInsideOut",
         "FinishingProfile",
         "Stopped",
@@ -1158,6 +1745,7 @@ def SetupProperties():
         "HelixConeAngle",
         "HelixDiameterLimit",
         "UseOutline",
+        "OrderCutsByRegion",
     ]
     return setup
 

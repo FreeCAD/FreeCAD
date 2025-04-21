@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-//! a class to assist with exporting sketches to dxf
 
 #include <Mod/Import/ImportGlobal.h>
 
@@ -35,6 +34,9 @@ class DocumentObject;
 namespace Import
 {
 
+/**
+ * A class to assist with exporting sketches to dxf.
+ */
 class ImportExport SketchExportHelper
 {
 public:
