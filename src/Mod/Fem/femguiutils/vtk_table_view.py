@@ -32,6 +32,11 @@ __url__ = "https://www.freecad.org"
 from PySide import QtGui
 from PySide import QtCore
 
+import FreeCAD
+import FreeCADGui
+
+from vtkmodules.vtkIOCore import vtkDelimitedTextWriter
+
 class VtkTableModel(QtCore.QAbstractTableModel):
     # Simple table model. Only supports single component columns
     # One can supply a header_names dict to replace the table column names
@@ -91,6 +96,9 @@ class VtkTableModel(QtCore.QAbstractTableModel):
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return section
 
+    def getTable(self):
+        return self._table
+
 class VtkTableSummaryModel(QtCore.QAbstractTableModel):
     # Simple model showing a summary of the table.
     # Only supports single component columns
@@ -132,6 +140,9 @@ class VtkTableSummaryModel(QtCore.QAbstractTableModel):
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._table.GetColumnName(section)
 
+    def getTable(self):
+        return self._table
+
 
 class VtkTableView(QtGui.QWidget):
 
@@ -139,16 +150,87 @@ class VtkTableView(QtGui.QWidget):
         super().__init__()
 
         self.model = model
+
+        layout = QtGui.QVBoxLayout()
+        layout.setContentsMargins(0,0,0,0)
+        layout.setSpacing(0)
+
+        # start with the toolbar
+        self.toolbar = QtGui.QToolBar()
+        csv_action = QtGui.QAction(self)
+        csv_action.triggered.connect(self.exportCsv)
+        csv_action.setIcon(FreeCADGui.getIcon("Std_Export"))
+        csv_action.setToolTip("Export to CSV")
+        self.toolbar.addAction(csv_action)
+
+        copy_action = QtGui.QAction(self)
+        copy_action.triggered.connect(self.copyToClipboard)
+        copy_action.setIcon(FreeCADGui.getIcon("edit-copy"))
+        shortcut = QtGui.QKeySequence(QtGui.QKeySequence.Copy)
+        copy_action.setToolTip(f"Copy to clipboard ({shortcut.toString()})")
+        copy_action.setShortcut(shortcut)
+        self.toolbar.addAction(copy_action)
+
+        layout.addWidget(self.toolbar)
+
+        # now the table view
         self.table_view = QtGui.QTableView()
         self.table_view.setModel(model)
+        self.model.modelReset.connect(self.modelReset)
 
         # fast initial resize and manual resizing still allowed!
         header = self.table_view.horizontalHeader()
         header.setResizeContentsPrecision(10)
         self.table_view.resizeColumnsToContents()
 
-        layout = QtGui.QVBoxLayout()
-        layout.setContentsMargins(0,0,0,0)
         layout.addWidget(self.table_view)
         self.setLayout(layout)
+
+    @QtCore.Slot()
+    def modelReset(self):
+        # The model is reset, make sure the header visibility is working
+        # This is needed in case new data was added
+        self.table_view.resizeColumnsToContents()
+
+    @QtCore.Slot(bool)
+    def exportCsv(self, state):
+
+        file_path, filter = QtGui.QFileDialog.getSaveFileName(None, "Save as csv file", "", "CSV (*.csv)")
+        if not file_path:
+            FreeCAD.Console.PrintMessage("CSV file export aborted: no filename selected")
+            return
+
+        writer = vtkDelimitedTextWriter()
+        writer.SetFileName(file_path)
+        writer.SetInputData(self.model.getTable());
+        writer.Write();
+
+    @QtCore.Slot()
+    def copyToClipboard(self):
+
+        sel_model = self.table_view.selectionModel()
+        selection = sel_model.selectedIndexes()
+
+        if len(selection) < 1:
+            return
+
+        copy_table = ""
+        previous = selection.pop(0)
+        for current in selection:
+
+            data = self.model.data(previous, QtCore.Qt.DisplayRole);
+            copy_table += str(data)
+
+            if current.row() != previous.row():
+                copy_table += '\n'
+            else:
+                copy_table += '\t'
+
+            previous = current
+
+        copy_table += str(self.model.data(selection[-1], QtCore.Qt.DisplayRole))
+        copy_table += '\n'
+
+        clipboard = QtGui.QApplication.instance().clipboard()
+        clipboard.setText(copy_table)
 
