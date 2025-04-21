@@ -289,7 +289,7 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
                 name="LineColor",
                 group="HistogramLine",
                 doc="The color the data bin area is drawn with",
-                value=(0, 85, 255, 255),
+                value=(0, 0, 0, 1), # black
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
@@ -354,6 +354,9 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
             kwargs["hatch"] = self.ViewObject.Hatch*self.ViewObject.HatchDensity
 
         return kwargs
+
+    def get_default_color_property(self):
+        return "BarColor"
 
 
 class VPPostHistogramIndexOverFrames(VPPostHistogramFieldData):
@@ -477,8 +480,10 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
     def show_visualization(self):
 
         if not hasattr(self, "_plot") or not self._plot:
-            main = Plot.getMainWindow()
+            main = FreeCADGui.getMainWindow()
             self._plot = Plot.Plot()
+            self._plot.setParent(main)
+            self._plot.setWindowFlags(QtGui.Qt.Dialog)
             self._plot.resize(main.size().height()/2, main.size().height()/3) # keep it square
             self.update_visualization()
 
@@ -565,3 +570,9 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
 
         self._plot.update()
 
+    def get_next_default_color(self):
+        # we use the next color in order. We do not check (yet) if this
+        # color is already taken
+        i = len(self.Object.Group)
+        cmap = mpl.pyplot.get_cmap("tab10")
+        return cmap(i)

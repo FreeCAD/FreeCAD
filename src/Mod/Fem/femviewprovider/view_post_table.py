@@ -211,6 +211,9 @@ class VPPostTableFieldData(view_base_fempostextractors.VPPostExtractor):
             name = self.ViewObject.Name
         return (QtGui.QPixmap(), name)
 
+    def get_default_color_property(self):
+        return None
+
 
 class VPPostTableIndexOverFrames(VPPostTableFieldData):
     """
@@ -254,8 +257,13 @@ class VPPostTable(view_base_fempostvisualization.VPPostVisualization):
     def show_visualization(self):
 
         if not hasattr(self, "_tableview") or not self._tableview:
+            main = FreeCADGui.getMainWindow()
             self._tableModel = vtv.VtkTableModel()
             self._tableview = vtv.VtkTableView(self._tableModel)
+            self._tableview.setParent(main)
+            self._tableview.setWindowFlags(QtGui.Qt.Dialog)
+            self._tableview.resize(main.size().height()/2, main.size().height()/3) # keep the aspect ratio
+
             self.update_visualization()
 
         self._tableview.show()

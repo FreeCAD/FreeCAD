@@ -354,6 +354,9 @@ class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
         kwargs["markersize"] = self.ViewObject.MarkerSize
         return kwargs
 
+    def get_default_color_property(self):
+        return "Color"
+
 
 class VPPostLineplotIndexOverFrames(VPPostLineplotFieldData):
     """
@@ -387,7 +390,7 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                 name="Grid",
                 group="Lineplot",
                 doc="If be the bars shoud show the cumulative sum left to rigth",
-                value=False,
+                value=True,
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
@@ -455,8 +458,10 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
     def show_visualization(self):
 
         if not hasattr(self, "_plot") or not self._plot:
-            main = Plot.getMainWindow()
+            main = FreeCADGui.getMainWindow()
             self._plot = Plot.Plot()
+            self._plot.setParent(main)
+            self._plot.setWindowFlags(QtGui.Qt.Dialog)
             self._plot.resize(main.size().height()/2, main.size().height()/3) # keep the aspect ratio
             self.update_visualization()
 
@@ -481,6 +486,7 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
 
         # we do not iterate the table, but iterate the children. This makes it possible
         # to attribute the correct styles
+        plotted = False
         for child in self.Object.Group:
 
             table = child.Table
@@ -491,6 +497,8 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
             legend_multiframe = table.GetNumberOfColumns() > 2
 
             for i in range(0,table.GetNumberOfColumns(),2):
+
+                plotted = True
 
                 # add the kw args, with some slide change over color for multiple frames
                 tmp_args = {}
@@ -534,10 +542,16 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
         if self.ViewObject.YLabel:
             self._plot.axes.set_ylabel(self.ViewObject.YLabel)
 
-        if self.ViewObject.Legend and self.Object.Group:
+        if self.ViewObject.Legend and plotted:
             self._plot.axes.legend(loc = self.ViewObject.LegendLocation)
 
         self._plot.axes.grid(self.ViewObject.Grid)
-
         self._plot.update()
+
+    def get_next_default_color(self):
+        # we use the next color in order. We do not check (yet) if this
+        # color is already taken
+        i = len(self.Object.Group)
+        cmap = mpl.pyplot.get_cmap("tab10")
+        return cmap(i)
 

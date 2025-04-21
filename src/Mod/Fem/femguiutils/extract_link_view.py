@@ -245,9 +245,6 @@ class _SummaryWidget(QtGui.QWidget):
 
         # build the UI
 
-        self.stButton = self._button(st_object.Label)
-        self.stButton.setIcon(st_object.ViewObject.Icon)
-
         self.extrButton = self._button(extr_label)
         self.extrButton.setIcon(extractor.ViewObject.Icon)
 
@@ -260,6 +257,19 @@ class _SummaryWidget(QtGui.QWidget):
         else:
             self.viewButton.setIconSize(QtCore.QSize(0,0))
 
+        if st_object:
+            self.stButton = self._button(st_object.Label)
+            self.stButton.setIcon(st_object.ViewObject.Icon)
+
+        else:
+            # that happens if the source of the extractor was deleted and now
+            # that property is set to None
+            self.extrButton.hide()
+            self.viewButton.hide()
+
+            self.warning = QtGui.QLabel(self)
+            self.warning.full_text = f"{extractor.Label}: Data source not available"
+
         self.rmButton = QtGui.QToolButton(self)
         self.rmButton.setIcon(QtGui.QIcon.fromTheme("delete"))
         self.rmButton.setAutoRaise(True)
@@ -270,13 +280,15 @@ class _SummaryWidget(QtGui.QWidget):
 
         policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         self.setSizePolicy(policy)
-        self.setMinimumSize(self.stButton.sizeHint()+self.frame.sizeHint()*3)
+        self.setMinimumSize(self.extrButton.sizeHint()+self.frame.sizeHint()*3)
 
         # connect actions. We add functions to widget, as well as the data we need,
         # and use those as callback. This way every widget knows which objects to use
-        self.stButton.clicked.connect(self.showVisualization)
-        self.extrButton.clicked.connect(self.editApp)
-        self.viewButton.clicked.connect(self.editView)
+        if st_object:
+            self.stButton.clicked.connect(self.showVisualization)
+            self.extrButton.clicked.connect(self.editApp)
+            self.viewButton.clicked.connect(self.editView)
+
         self.rmButton.clicked.connect(self.deleteTriggered)
 
         # make sure initial drawing happened
@@ -300,37 +312,47 @@ class _SummaryWidget(QtGui.QWidget):
         btn_total_size = ((self.size() - self.rmButton.size()).width() - 20) #20 is space to rmButton
         btn_margin = (self.rmButton.size() - self.rmButton.iconSize()).width()
         fm = self.fontMetrics()
-        min_text_width = fm.size(QtGui.Qt.TextSingleLine, "...").width()*2
 
-        pos = 0
-        btns = [self.stButton, self.extrButton, self.viewButton]
-        btn_rel_size = [0.4, 0.4, 0.2]
-        btn_elide_mode = [QtGui.Qt.ElideMiddle, QtGui.Qt.ElideMiddle, QtGui.Qt.ElideRight]
-        for i, btn in enumerate(btns):
+        if self._st_object:
 
-            btn_size = btn_total_size*btn_rel_size[i]
-            txt_size = btn_size - btn.iconSize().width() - btn_margin
+            min_text_width = fm.size(QtGui.Qt.TextSingleLine, "...").width()*2
 
-            # we elide only if there is enough space for a meaningful text
-            if txt_size >= min_text_width:
+            pos = 0
+            btns = [self.stButton, self.extrButton, self.viewButton]
+            btn_rel_size = [0.4, 0.4, 0.2]
+            btn_elide_mode = [QtGui.Qt.ElideMiddle, QtGui.Qt.ElideMiddle, QtGui.Qt.ElideRight]
+            for i, btn in enumerate(btns):
 
-                text = fm.elidedText(btn.full_text, btn_elide_mode[i], txt_size)
-                btn.setText(text)
-                btn.setStyleSheet("text-align:left;padding:6px");
-            else:
-                btn.setText("")
-                btn.setStyleSheet("text-align:center;");
+                btn_size = btn_total_size*btn_rel_size[i]
+                txt_size = btn_size - btn.iconSize().width() - btn_margin
 
-            rect = QtCore.QRect(pos,0, btn_size, btn.sizeHint().height())
-            btn.setGeometry(rect)
-            pos+=btn_size
+                # we elide only if there is enough space for a meaningful text
+                if txt_size >= min_text_width:
 
-        rmsize = self.stButton.height()
+                    text = fm.elidedText(btn.full_text, btn_elide_mode[i], txt_size)
+                    btn.setText(text)
+                    btn.setStyleSheet("text-align:left;padding:6px");
+                else:
+                    btn.setText("")
+                    btn.setStyleSheet("text-align:center;");
+
+                rect = QtCore.QRect(pos,0, btn_size, btn.sizeHint().height())
+                btn.setGeometry(rect)
+                pos+=btn_size
+
+        else:
+            warning_txt = fm.elidedText(self.warning.full_text, QtGui.Qt.ElideRight, btn_total_size)
+            self.warning.setText(warning_txt)
+            rect = QtCore.QRect(0,0, btn_total_size, self.extrButton.sizeHint().height())
+            self.warning.setGeometry(rect)
+
+
+        rmsize = self.extrButton.sizeHint().height()
         pos = self.size().width() - rmsize
         self.rmButton.setGeometry(pos, 0, rmsize, rmsize)
 
         frame_hint = self.frame.sizeHint()
-        rect = QtCore.QRect(0, self.stButton.height()+frame_hint.height(), self.size().width(), frame_hint.height())
+        rect = QtCore.QRect(0, self.extrButton.sizeHint().height()+frame_hint.height(), self.size().width(), frame_hint.height())
         self.frame.setGeometry(rect)
 
     def resizeEvent(self, event):
@@ -563,6 +585,7 @@ class ExtractLinkView(QtGui.QWidget):
         FreeCADGui.doCommand(
             f"visualization = {vis_data.module}.{vis_data.factory}(FreeCAD.ActiveDocument)"
         )
+
         analysis = self._find_parent_analysis(self._object)
         if analysis:
             FreeCADGui.doCommand(
@@ -576,9 +599,17 @@ class ExtractLinkView(QtGui.QWidget):
         FreeCADGui.doCommand(
             f"extraction.Source = FreeCAD.ActiveDocument.{self._object.Name}"
         )
+        # default values: color
+        color_prop = FreeCADGui.ActiveDocument.ActiveObject.Proxy.get_default_color_property()
+        if color_prop:
+            FreeCADGui.doCommand(
+                f"extraction.ViewObject.{color_prop} = visualization.ViewObject.Proxy.get_next_default_color()"
+            )
+
         FreeCADGui.doCommand(
             f"visualization.addObject(extraction)"
         )
+
 
         self._post_dialog._recompute()
         self.repopulate()
@@ -596,6 +627,14 @@ class ExtractLinkView(QtGui.QWidget):
         FreeCADGui.doCommand(
             f"extraction.Source = FreeCAD.ActiveDocument.{self._object.Name}"
         )
+
+        # default values: color
+        color_prop = FreeCADGui.ActiveDocument.ActiveObject.Proxy.get_default_color_property()
+        if color_prop:
+            FreeCADGui.doCommand(
+                f"extraction.ViewObject.{color_prop} = (Gui.ActiveDocument.{vis_obj.Name}.Proxy.get_next_default_color())"
+            )
+
         FreeCADGui.doCommand(
             f"App.ActiveDocument.{vis_obj.Name}.addObject(extraction)"
         )
@@ -616,6 +655,14 @@ class ExtractLinkView(QtGui.QWidget):
         FreeCADGui.doCommand(
             f"extraction.Source = FreeCAD.ActiveDocument.{post_obj.Name}"
         )
+
+        # default values for color
+        color_prop = FreeCADGui.ActiveDocument.ActiveObject.Proxy.get_default_color_property()
+        if color_prop:
+            FreeCADGui.doCommand(
+                f"extraction.ViewObject.{color_prop} = Gui.ActiveDocument.{self._object.Name}.Proxy.get_next_default_color()"
+            )
+
         FreeCADGui.doCommand(
             f"App.ActiveDocument.{self._object.Name}.addObject(extraction)"
         )

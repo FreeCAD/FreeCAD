@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 from PySide import QtGui, QtCore
 
 import Plot
+import FreeCAD
 import FreeCADGui
 
 from . import view_base_femobject
@@ -68,6 +69,8 @@ class VPPostVisualization:
         # Mark ourself as visible in the tree
         return True
 
+    def getDisplayModes(self, obj):
+        return ["Dialog"]
 
     def doubleClicked(self,vobj):
 
@@ -121,4 +124,11 @@ class VPPostVisualization:
 
     def show_visualization(self):
         # Shows the visualization without going into edit mode
+        raise FreeCAD.Base.FreeCADError("Not implemented")
+
+    def get_next_default_color(self):
+        # Returns the next default color a new object should use
+        # Returns color in FreeCAD proeprty notation (r,g,b,a)
+        # If the relevant extractors do not have color properties, this
+        # can stay unimplemented
         raise FreeCAD.Base.FreeCADError("Not implemented")

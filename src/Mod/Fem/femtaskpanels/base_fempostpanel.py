@@ -60,14 +60,6 @@ class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
         if button == QtGui.QDialogButtonBox.Apply:
             self.obj.Document.recompute()
 
-    def accept(self):
-        print("accept")
-        return super().accept()
-
-    def reject(self):
-        print("reject")
-        return super().reject()
-
     # Helper functions
     # ################
 
