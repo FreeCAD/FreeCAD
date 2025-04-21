@@ -143,7 +143,7 @@ class PostVisualization(base_fempythonobject.BaseFemPythonObject):
             # it would theoretical be possible that child source was set
             # to none without recompute, and the visualization was manually
             # recomputed afterwards
-            if not child.Source and (c_table.GetNumberOfColumns() > 0):
+            if not child.Source and (child.Table.GetNumberOfColumns() > 0):
                 FreeCAD.Console.PrintWarning(f"{child.Label} has data, but no Source object. Will be ignored")
                 continue
 

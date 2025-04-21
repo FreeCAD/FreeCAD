@@ -31,6 +31,7 @@
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostFilter.h"
 #include "ViewProviderFemPostFilterPy.h"
+#include "TaskPostExtraction.h"
 
 
 using namespace FemGui;
@@ -89,6 +90,10 @@ void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
     assert(dlg->getView() == this);
     auto panel = new TaskPostDataAlongLine(this);
     dlg->addTaskBox(panel->getIcon(), panel);
+
+    // and the extraction
+    auto extr_panel = new TaskPostExtraction(this);
+    dlg->addTaskBox(extr_panel->windowIcon().pixmap(32), extr_panel);
 }
 
 
@@ -138,6 +143,10 @@ void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg)
     assert(dlg->getView() == this);
     auto panel = new TaskPostDataAtPoint(this);
     dlg->addTaskBox(panel->getIcon(), panel);
+
+    // and the extraction
+    auto extr_panel = new TaskPostExtraction(this);
+    dlg->addTaskBox(extr_panel->windowIcon().pixmap(32), extr_panel);
 }
 
 
