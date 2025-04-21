@@ -1,5 +1,5 @@
 area==1.1.1
-cog==0.6.1
+cog==0.14.6
 ConfigParser==7.2.0
 defusedxml==0.7.1
 ifcopenshell==0.7.0.230318
