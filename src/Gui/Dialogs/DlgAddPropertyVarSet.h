@@ -28,6 +28,8 @@
 
 #include <QDialog>
 #include <QComboBox>
+#include <QFormLayout>
+
 #include <FCGlobal.h>
 
 #include <App/VarSet.h>
@@ -69,7 +71,7 @@ class GuiExport DlgAddPropertyVarSet : public QDialog
     Q_OBJECT
 
 public:
-    static const std::string Group_Base;
+    static const std::string GroupBase;
 
 public:
     DlgAddPropertyVarSet(QWidget* parent, ViewProviderVarSet* viewProvider);
@@ -90,10 +92,12 @@ public Q_SLOTS:
 
 private:
     enum class TransactionOption : bool {
-        COMMIT = false,
-        ABORT = true
+        Commit = false,
+        Abort = true
     };
 
+    int findLabelRow(const char* labelName, QFormLayout* layout);
+    void setWidgetForLabel(const char* labelName, QWidget* widget);
     void initializeGroup();
 
     std::vector<Base::Type> getSupportedTypes();
