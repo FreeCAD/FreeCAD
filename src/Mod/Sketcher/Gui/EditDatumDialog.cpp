@@ -232,7 +232,7 @@ void EditDatumDialog::accepted()
 
             std::string constraintName = ui_ins_datum->name->text().trimmed().toStdString();
             std::string currConstraintName = sketch->Constraints[ConstrNbr]->Name;
-            printf("datum");
+
             if (constraintName != currConstraintName) {
                 if (!SketcherGui::checkConstraintName(sketch, constraintName)) {
                     constraintName = currConstraintName;
