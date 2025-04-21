@@ -11,15 +11,23 @@ License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
 VCS:            {{{ git_repo_vcs }}}
 
-Source0:        {{{git_repo_pack_with_submodules}}}
-
+Source0:        {{{ git_repo_pack }}}
+#add all submodule as source
+Source1:        {{{ git_pack    path=$GIT_ROOT/src/3rdParty/OndselSolver/   }}}
+Source2:        {{{ git_pack    path=$GIT_ROOT/src/3rdParty/GSL/            }}}
+Source3:        {{{ git_pack    path=$GIT_ROOT/src/Mod/AddonManager/        }}}
+Source4:        {{{ git_pack    path=$GIT_ROOT/tests/lib/                   }}}
 
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
-#FemGui.so FreeCADGui.so ImportGui.so InspectionGui.so MeasureGui.so MeshGui.so MeshPartGui.so PartGui.so PathGui.so PointsGui.so ReverseEngineeringGui.so RobotGui.so SketcherGui.so SpreadsheetGui.so StartGui.so
-%global exported_libs libOndselSolver
+%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui \
+Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui \
+ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh \
+libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS \
+libStdMeshers libarea-native libOndselSolver
+
+%global exported_libs ""
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 # See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
@@ -139,6 +147,18 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %prep
     {{{ git_repo_setup_macro }}}
+    # extract submodule archive and move in correct path
+    {{{ git_setup_macro  path=$GIT_ROOT/src/3rdParty/OndselSolver/ source_indices=1  }}}
+                  mv * %{_vpath_srcdir}/src/3rdParty/OndselSolver/
+    {{{ git_setup_macro  path=$GIT_ROOT/src/3rdParty/GSL/          source_indices=2  }}}
+                  mv * %{_vpath_srcdir}/src/3rdParty/GSL/
+    {{{ git_setup_macro  path=$GIT_ROOT/src/Mod/AddonManager/      source_indices=3  }}}
+                  mv * %{_vpath_srcdir}/src/Mod/AddonManager/
+    %if %{with tests}
+    {{{ git_setup_macro  path=$GIT_ROOT/tests/lib/                 source_indices=4  }}}
+                  mv * %{_vpath_srcdir}/tests/lib/
+    %endif
+    cd %_vpath_srcdir
 
 
 %build
