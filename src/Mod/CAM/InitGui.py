@@ -154,6 +154,14 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
             ),
         )
+        dressupcmdgroup = ["CAM_DressupTools"]
+        FreeCADGui.addCommand(
+            "CAM_DressupTools",
+            PathCommandGroup(
+                dressupcmdlist,
+                QT_TRANSLATE_NOOP("CAM_DressupTools", "Dressup Operations"),
+            ),
+        )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
             prepcmdlist.append("CAM_Shape")
@@ -206,7 +214,9 @@ class CAMWorkbench(Workbench):
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
         )
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist)
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist + dressupcmdgroup
+        )
         if extracmdlist:
             self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Helpful Tools"), extracmdlist)
 
