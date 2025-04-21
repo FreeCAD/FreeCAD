@@ -29,6 +29,7 @@
 #include <App/GroupExtension.h>
 #include <App/Part.h>
 #include "Application.h"
+#include "cet_lut.hpp"
 #include "CommandT.h"
 #include "DockWindowManager.h"
 #include "Document.h"
@@ -90,10 +91,10 @@ void StdCmdRandomColor::activated(int iMsg)
 
     auto setRandomColor = [](ViewProvider* view) {
         // NOLINTBEGIN
-        auto fMax = (float)RAND_MAX;
-        auto fRed = (float)rand()/fMax;
-        auto fGrn = (float)rand()/fMax;
-        auto fBlu = (float)rand()/fMax;
+        int colIndex = rand() % (CET::R1.size() / 3) * 3;
+        float fRed = CET::R1[colIndex] / 255.0F;
+        float fGrn = CET::R1[colIndex + 1] / 255.0F;
+        float fBlu = CET::R1[colIndex + 2] / 255.0F;
         // NOLINTEND
         auto objColor = Base::Color(fRed, fGrn, fBlu);
 
