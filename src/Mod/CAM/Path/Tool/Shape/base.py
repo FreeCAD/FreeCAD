@@ -51,10 +51,22 @@ class ToolBitShape(abc.ABC):
         # Cache for the loaded FreeCAD document content for this instance
         self._cache: Optional[bytes] = None
 
+        # Path to the file this shape was loaded from
+        self.filepath: Optional[pathlib.Path] = None
+
         # Assign parameters and load the file
         self.load_file(filepath)
         for param, value in kwargs.items():
             self.set_parameter(param, value)
+
+    def __str__(self):
+        params_str = ", ".join(
+            f"{name}={val}" for name, val in self._params.items()
+        )
+        return f"{self.name}({params_str})"
+
+    def __repr__(self):
+        return self.__str__()
 
     @property
     def label(self) -> str:
@@ -258,6 +270,9 @@ class ToolBitShape(abc.ABC):
             with open(filepath, 'rb') as f:
                 self._cache = f.read()
 
+            # Store the path
+            self.filepath = filepath
+
             return self
 
         except (FileNotFoundError, ValueError) as e:
@@ -308,12 +323,3 @@ class ToolBitShape(abc.ABC):
             #doc.addObject(copied_obj.Name)
             doc.commitTransaction()
             return body
-
-    def __str__(self):
-        params_str = ", ".join(
-            f"{name}={val}" for name, val in self._params.items()
-        )
-        return f"{self.name}({params_str})"
-
-    def __repr__(self):
-        return self.__str__()
