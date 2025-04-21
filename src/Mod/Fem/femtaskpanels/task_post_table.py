@@ -38,6 +38,8 @@ from . import base_fempostpanel
 from femguiutils import extract_link_view as elv
 from femguiutils import vtk_table_view
 
+translate = FreeCAD.Qt.translate
+
 class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
     """
     The TaskPanel for editing properties of glyph filter
@@ -49,7 +51,7 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # data widget
         self.data_widget = QtGui.QWidget()
         self.data_widget.show_table = QtGui.QPushButton()
-        self.data_widget.show_table.setText("Show table")
+        self.data_widget.show_table.setText(translate("FEM", "Show table"))
 
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.data_widget.show_table)
@@ -59,16 +61,8 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         vbox.addWidget(extracts)
 
         self.data_widget.setLayout(vbox)
-        self.data_widget.setWindowTitle("Table data")
+        self.data_widget.setWindowTitle(translate("FEM", "Table data"))
         self.data_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostSpreadsheet.svg"))
-
-
-        # histogram parameter widget
-        #self.view_widget = FreeCADGui.PySideUic.loadUi(
-        #    FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/TaskPostTable.ui"
-        #)
-        #self.view_widget.setWindowTitle("Table view settings")
-        #self.view_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostTable.svg"))
 
         self.__init_widgets()
 

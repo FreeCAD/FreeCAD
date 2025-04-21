@@ -39,6 +39,9 @@ from vtkmodules.vtkCommonCore import vtkDoubleArray
 from vtkmodules.vtkCommonDataModel import vtkTable
 from vtkmodules.vtkCommonExecutionModel import vtkStreamingDemandDrivenPipeline
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+
 class PostFieldData2D(base_fempostextractors.Extractor2D):
     """
     A post processing extraction of two dimensional field data
@@ -54,7 +57,7 @@ class PostFieldData2D(base_fempostextractors.Extractor2D):
                 type="App::PropertyBool",
                 name="ExtractFrames",
                 group="Multiframe",
-                doc="Specify if the field shall be extracted for every available frame",
+                doc=QT_TRANSLATE_NOOP("FEM", "Specify if the field shall be extracted for every available frame"),
                 value=False,
             ),
         ]
@@ -142,7 +145,7 @@ class PostIndexOverFrames2D(base_fempostextractors.Extractor2D):
                 type="App::PropertyInteger",
                 name="Index",
                 group="Data",
-                doc="Specify for which point index the data should be extracted",
+                doc=QT_TRANSLATE_NOOP("FEM", "Specify for which point index the data should be extracted"),
                 value=0,
             ),
         ]

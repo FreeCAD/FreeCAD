@@ -95,7 +95,8 @@ class _VisualizationGroupCommand:
         return 0
 
     def GetResources(self):
-        return { 'MenuText': 'Data Visualizations', 'ToolTip': 'Different visualizations to show post processing data in'}
+        return { 'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM", 'Data Visualizations'),
+                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM", 'Different visualizations to show post processing data in')}
 
     def IsActive(self):
         if not FreeCAD.ActiveDocument:
@@ -117,7 +118,7 @@ class _VisualizationCommand:
 
         return {
                 "Pixmap": vis.icon,
-                "MenuText": QtCore.QT_TRANSLATE_NOOP(cmd, f"{self._visualization_type}"),
+                "MenuText": QtCore.QT_TRANSLATE_NOOP(cmd, "Create {}".format(self._visualization_type)),
                 "Accel": "",
                 "ToolTip": QtCore.QT_TRANSLATE_NOOP(cmd, tooltip),
                 "CmdType": "AlterDoc"

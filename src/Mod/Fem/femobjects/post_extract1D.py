@@ -39,6 +39,9 @@ from vtkmodules.vtkCommonCore import vtkDoubleArray
 from vtkmodules.vtkCommonDataModel import vtkTable
 from vtkmodules.vtkCommonExecutionModel import vtkStreamingDemandDrivenPipeline
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+
 class PostFieldData1D(base_fempostextractors.Extractor1D):
     """
     A post processing extraction of one dimensional field data
@@ -54,7 +57,7 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
                 type="App::PropertyBool",
                 name="ExtractFrames",
                 group="Multiframe",
-                doc="Specify if the field shall be extracted for every available frame",
+                doc=QT_TRANSLATE_NOOP("FEM", "Specify if the field shall be extracted for every available frame"),
                 value=False,
             ),
         ]
@@ -126,7 +129,7 @@ class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
                 type="App::PropertyInteger",
                 name="Index",
                 group="X Data",
-                doc="Specify for which index the data should be extracted",
+                doc=QT_TRANSLATE_NOOP("FEM", "Specify for which index the data should be extracted"),
                 value=0,
             ),
         ]
