@@ -54,7 +54,7 @@ BuildRequires:  python3 python3-devel python3-matplotlib python3-shiboken6-devel
 BuildRequires:  pyside6-tools python3-pyside6-devel python3-pybind11 xerces-c xerces-c-devel libspnav-devel
 BuildRequires:  netgen-mesher-devel netgen-mesher-devel-private libicu-devel vtk-devel openmpi-devel
 BuildRequires:  med-devel libkdtree++-devel libglvnd-devel yaml-cpp-devel pcl-devel
-#BuildRequires:  pcl-devel zlib-devel
+
 %if %{without bundled_smesh}
 BuildRequires:  smesh-devel
 %endif
@@ -143,12 +143,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %build
     # Deal with cmake projects that tend to link excessively.
-    CXXFLAGS='-Wno-error=cast-function-type'; export CXXFLAGS
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
-
-
-
-
 
     %cmake \
         -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -175,7 +170,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %if %{without bundled_zipios}
         -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
     %endif
-        -DPACKAGE_WCREF="{{{ git_repo_release_branched }}}" \
+        -DPACKAGE_WCREV="{{{ git_repo_release_branched }}}" \
         -DPACKAGE_WCURL="{{{ git_repo_vcs }}}"\
     %if %{with tests}
         -DENABLE_DEVELOPER_TESTS=TRUE \
@@ -183,6 +178,9 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif
         -DBUILD_GUI=TRUE \
+
+    sed -i -e 's|"$WCREV$"|"{{{ git_repo_release_branched }}}"|g' %_vpath_builddir/src/Build/Version.h.in
+    sed -i -e 's|"$WCURL$"|"{{{ git_repo_vcs }}}"|g'              %_vpath_builddir/src/Build/Version.h.in
 
     %cmake_build
 
