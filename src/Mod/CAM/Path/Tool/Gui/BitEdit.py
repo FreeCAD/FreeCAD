@@ -117,7 +117,7 @@ class ToolBitEditor(object):
         # or create additional ones for them if not enough have already been
         # created.
         usedRows = 0
-        for nr, name in enumerate(tool.Proxy.toolShapeProperties(tool)):
+        for nr, name in enumerate(tool.Proxy._get_props(tool, ("Shape", "Attributes"))):
             if nr < len(self.widgets):
                 Path.Log.debug("reuse row: {} [{}]".format(nr, name))
                 label, qsb, editor = self.widgets[nr]

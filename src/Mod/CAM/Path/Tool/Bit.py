@@ -151,19 +151,6 @@ class ToolBit(object):
 
     def _create_properties(self, obj):
         # Create the properties in the Base group.
-        if not hasattr(obj, "BitPropertyNames"):
-            obj.addProperty(
-                "App::PropertyStringList",
-                "BitPropertyNames",
-                "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "List of all properties of the shape"
-                ),
-            )
-            obj.BitPropertyNames = [] # Initialize empty
-        obj.setEditorMode("BitPropertyNames", 2) # Read-only
-
         if not hasattr(obj, "ShapeName"):
             obj.addProperty(
                 "App::PropertyEnumeration",
@@ -193,28 +180,8 @@ class ToolBit(object):
                 "Base",
                 QT_TRANSLATE_NOOP("App::Property", "The file of the tool"),
             )
-        if not hasattr(obj, "BitPropertyNames"):
-            obj.addProperty(
-                "App::PropertyStringList",
-                "BitPropertyNames",
-                "Base",
-                QT_TRANSLATE_NOOP("App::Property", "List of all properties inherited from the bit"),
-            )
 
         # Create the properties in the Base group.
-        if not hasattr(obj, "Attributes"):
-            obj.addProperty(
-                "App::PropertyStringList",
-                "Attributes",
-                "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "List of all attributes of the tool"
-                ),
-            )
-            obj.Attributes = [] # Initialize empty
-        obj.setEditorMode("Attributes", 2) # Read-only
-
         if not hasattr(obj, "SpindleDirection"):
             obj.addProperty(
                 "App::PropertyEnumeration",
@@ -368,19 +335,8 @@ class ToolBit(object):
                 Path.Log.debug(f"onDocumentRestored: Attaching ViewProvider for {obj.Label}")
                 GuiBit.ViewProvider(obj.ViewObject, "ToolBit")
 
-        # Ensure BitPropertyNames exists and is correct after restore.
+        # Ensure property state is correct after restore.
         self._update_properties(obj)
-
-        # Set editor modes for properties listed in BitPropertyNames.
-        for prop in obj.BitPropertyNames:
-            if obj.getGroupOfProperty(prop) != PropertyGroupShape:
-                # Properties in the Shape group can only be modified if we have the
-                # body.
-                obj.setEditorMode(prop, 0 if obj.BitBody else 1)
-            else:
-                # All other custom properties can and should be edited directly in the
-                # property editor widget.
-                obj.setEditorMode(prop, 0)
 
     def onChanged(self, obj, prop):
         Path.Log.track(obj.Label, prop)
@@ -410,9 +366,6 @@ class ToolBit(object):
                     # if the template shape has a new attribute defined we should add that
                     # to the local object
                     self._setupProperty(obj, prop, attributes)
-                    propNames = obj.BitPropertyNames
-                    propNames.append(prop)
-                    obj.BitPropertyNames = propNames
 
         self._copyBitShape(obj)
 
@@ -445,32 +398,29 @@ class ToolBit(object):
         obj.setEditorMode(prop, 1)
         PathUtil.setProperty(obj, prop, val)
 
-    def toolShapeProperties(self, obj):
-        """toolShapeProperties(obj) ... return all properties defining it's shape"""
-        return sorted(
-            [
-                prop
-                for prop in obj.BitPropertyNames
-                if obj.getGroupOfProperty(prop) == PropertyGroupShape
-            ]
-        )
-
-    def toolAdditionalProperties(self, obj):
-        """toolShapeProperties(obj) ... return all properties unrelated to it's shape"""
-        return sorted(
-            [
-                prop
-                for prop in obj.BitPropertyNames
-                if obj.getGroupOfProperty(prop) != PropertyGroupShape
-            ]
-        )
+    def _get_props(self, obj, group: Optional[Union[str, Tuple[str, ...]]]=None) -> List[str]:
+        """
+        Returns a list of property names from the given group(s) for the object.
+        Returns all groups if the group argument is None.
+        """
+        props_in_group = []
+        # Use PropertiesList to get all property names
+        for prop in obj.PropertiesList:
+            prop_group = obj.getGroupOfProperty(prop)
+            if group is None:
+                props_in_group.append(prop)
+            elif isinstance(group, str) and prop_group == group:
+                props_in_group.append(prop)
+            elif isinstance(group, tuple) and prop_group in group:
+                props_in_group.append(prop)
+        return props_in_group
 
     def toolGroupsAndProperties(self, obj, includeShape=True):
-        """toolGroupsAndProperties(obj) ... returns a dictionary of group names with a list of property names."""
         category = {}
-        for prop in obj.BitPropertyNames:
+
+        for prop in self._get_props(obj):
             group = obj.getGroupOfProperty(prop)
-            if includeShape or group != PropertyGroupShape:
+            if includeShape or group != "Shape":
                 properties = category.get(group, [])
                 properties.append(prop)
                 category[group] = properties
@@ -518,18 +468,13 @@ class ToolBit(object):
         """
         Initializes or updates the tool bit's properties based on the current
         _tool_bit_shape. Adds/updates shape parameters, removes obsolete shape
-        parameters, and updates BitPropertyNames to only list current shape
-        parameters. Does not handle updating the visual representation.
+        parameters, and updates the edit state of them.
+        Does not handle updating the visual representation.
         """
         Path.Log.track(obj.Label)
 
         # 1. Get current and new shape parameter names
-        # Use try-except in case BitPropertyNames exists but is None or invalid
-        try:
-            current_shape_prop_names = set(obj.BitPropertyNames)
-        except TypeError:
-             Path.Log.warning("BitPropertyNames was invalid, resetting.")
-             current_shape_prop_names = set()
+        current_shape_prop_names = set(self._get_props(obj, "Shape"))
         new_shape_params = self._tool_bit_shape.get_parameters()
         new_shape_param_names = set(new_shape_params.keys())
 
@@ -547,7 +492,7 @@ class ToolBit(object):
 
             if not hasattr(obj, name):
                 # Add new property
-                obj.addProperty(prop_type, name, PropertyGroupShape, docstring)
+                obj.addProperty(prop_type, name, "Shape", docstring)
                 PathUtil.setProperty(obj, name, value) # Set to default value
                 Path.Log.debug(f"Added new shape property: {name}")
 
@@ -560,7 +505,7 @@ class ToolBit(object):
         obsolete_prop_names = current_shape_prop_names - new_shape_param_names
         for name in obsolete_prop_names:
             if hasattr(obj, name):
-                if obj.getGroupOfProperty(name) == PropertyGroupShape:
+                if obj.getGroupOfProperty(name) == "Shape":
                     try:
                         obj.removeProperty(name)
                         Path.Log.debug(f"Removed obsolete shape property: {name}")
@@ -568,13 +513,10 @@ class ToolBit(object):
                         Path.Log.error(f"Failed removing obsolete property '{name}': {e}")
             else:
                  Path.Log.warning(
-                     f"'{name}' in BitPropertyNames but not on object."
+                     f"'{name}' failed to remove property, not found"
                  )
 
-        # 4. Update BitPropertyNames to exactly match the new shape's parameters
-        obj.BitPropertyNames = sorted(list(new_shape_param_names))
-
-        # 5. Update non-shape properties.
+        # 4. Update non-shape properties.
         # Set editor mode for SpindleDirection based on can_rotate()
         if hasattr(obj, "SpindleDirection"):
             if not self._tool_bit_shape.can_rotate():
@@ -600,8 +542,8 @@ class ToolBit(object):
 
             if not body:
                 Path.Log.error(
-                f"Failed to create visual representation for shape "
-                f"'{self._tool_bit_shape.name}'"
+                    f"Failed to create visual representation for shape "
+                    f"'{self._tool_bit_shape.name}'"
                 )
                 return
 
@@ -672,7 +614,7 @@ class ToolBit(object):
 
         attrs["attribute"] = {
             name: PathUtil.getPropertyValueString(obj, name)
-            for name in self.toolAdditionalProperties(obj)
+            for name in self._get_props(obj, "Attributes")
         }
         return attrs
 
