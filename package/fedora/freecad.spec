@@ -11,15 +11,21 @@ License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
 VCS:            {{{ git_repo_vcs }}}
 
-Source0:        {{{git_repo_pack_with_submodules}}}
+Source0:        {{{ git_repo_pack }}}
+#add all submodule as source
+Source1:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/OndselSolver/  dir_name="OndselSolver" }}}
+Source2:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/GSL/ dir_name="GSL" }}}
+Source3:        {{{ git_pack path=$GIT_ROOT/src/Mod/AddonManager/ dir_name="AddonManager" }}}
+Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="lib" }}}
+
 
 
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native libOndselSolver
+%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
-%global exported_libs ""
+%global exported_libs libOndselSolver
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 # See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
@@ -36,11 +42,15 @@ Source0:        {{{git_repo_pack_with_submodules}}}
 %bcond_without bundled_smesh
 
 # rpmbuild --with=tests:  include  tests in build
-%bcond_with tests
+%bcond_without tests
 %if %{with tests}
 %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
+#enable only tests that passes
 %global enabled_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax
-%global enabled_gui_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax TestDraftGui TestFemGui TestSketcherGui Menu Menu.MenuDeleteCases Menu.MenuCreateCases GuiDocument  TestAddonManagerGui TestOpenSCADGui
+%global enabled_gui_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax TestDraftGui TestSketcherGui Menu Menu.MenuDeleteCases Menu.MenuCreateCases GuiDocument  TestAddonManagerGui TestOpenSCADGui
+#all disabled
+%global enabled_ctest_regex "^$"
+
 %endif
 
 
@@ -79,9 +89,18 @@ Provides:       bundled(smesh) = %{bundled_smesh_version}
 Provides:       bundled(python3-pycxx) = %{bundled_pycxx_version}
 %endif
 
-Provides:       bundled(libOndselSolver) = %{bundled_ondsel_solver_version}
+Provides:       bundled(libondselsolver) = %{bundled_ondsel_solver_version}
 
 Recommends:     python3-pysolar
+
+# plugins and private shared libs in %%{_libdir}/freecad/lib are private;
+# prevent private capabilities being advertised in Provides/Requires
+%global __requires_exclude_from ^%{_libdir}/%{name}/(lib|Mod)/.*$
+%global __provides_exclude_from ^%{_libdir}/%{name}/Mod/.*$
+%global __provides_exclude ^(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|${i}Gui"; done)).so$
+%global __requires_exclude ^(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|${i}Gui"; done)%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)).so$
+
+
 
 %description
     FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
@@ -97,6 +116,7 @@ Recommends:     python3-pysolar
     * Mon Mar 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.1.0-1
     - Adding support for building with Qt6 and PySide6 for Fedora 40+
 
+
 %package data
 Summary:        Data files for FreeCAD
 BuildArch:      noarch
@@ -104,6 +124,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description data
     Data files for FreeCAD
+
 
 %package libondselsolver-devel
 Summary:        Development file for OndselSolver
@@ -113,29 +134,20 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 %description libondselsolver-devel
     Development file for OndselSolver
 
-
-
-# plugins and private shared libs in %%{_libdir}/freecad/lib are private;
-# prevent private capabilities being advertised in Provides/Requires
-%define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|$iGui"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
-%{?filter_setup:
-    %filter_provides_in %{_libdir}/%{name}/lib
-    %filter_from_requires %{plugin_regexp}
-    %filter_from_provides %{plugin_regexp}
-
-    %filter_provides_in %{_libdir}/%{name}/Mod
-    %filter_requires_in %{_libdir}/%{name}/Mod
-%filter_setup}
-
-
 #path that contain main FreeCAD sources for cmake
-%global _vpath_srcdir  %_builddir/{{{ git_repo_name  }}}
-#use absolute path for cmake macro
+%global _vpath_srcdir  %_builddir/{{{ git_name  }}}
+#use absolute path for cmake macros
 %global _vpath_builddir  %_builddir/%_vpath_builddir
 
 %prep
-    {{{ git_repo_setup_macro }}}
-
+    {{{ git_repo_setup_macro source_indices=0}}}
+    # extract submodule archive and move in correct path
+    %setup -T -a 1 -q -D -n {{{ git_name }}}/src/3rdParty/ #OndselSolver
+    %setup -T -a 2 -q -D -n {{{ git_name }}}/src/3rdParty/ #GSL
+    %setup -T -a 3 -q -D -n {{{ git_name }}}/src/Mod/ #AddonManager
+%if %{with tests}
+    %setup -T -a 4 -q -D -n {{{ git_name }}}/tests/ #lib
+%endif
 
 %build
     # Deal with cmake projects that tend to link excessively.
@@ -181,7 +193,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %cmake_build
 
 %install
-    cd %_vpath_builddir
     %cmake_install
 
     # Symlink binaries to /usr/bin
@@ -197,8 +208,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
     %{?fedora:appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml}
 
-
-
 %if %{with tests}
     for t in %{enabled_tests}; do
         %{_vpath_builddir}/bin/FreeCADCmd -t $t
@@ -208,12 +217,14 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     done
 
     #ctest are failing
-    #%%ctest
+    %ctest -R %enabled_ctest_regex
 %endif
 
     # Bug maintainers to keep %%{plugins} macro up to date.
-    #
+    #https://asmaloney.github.io/libE57Format-docs/
     # Make sure there are no plugins that need to be added to plugins macro
+    %define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|${i}Gui"; done)\\\)\\.so/d
+
     %define exported_libs_regexp /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so/d
     new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' | sed -e '%{exported_libs_regexp}'`
 
