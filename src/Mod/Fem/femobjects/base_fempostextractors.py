@@ -33,6 +33,8 @@ from vtkmodules.vtkCommonCore import vtkIntArray
 from vtkmodules.vtkCommonCore import vtkDoubleArray
 from vtkmodules.vtkCommonDataModel import vtkTable
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 from . import base_fempythonobject
 _PropHelper = base_fempythonobject._PropHelper
 
@@ -78,14 +80,14 @@ class Extractor(base_fempythonobject.BaseFemPythonObject):
                 type="Fem::PropertyPostDataObject",
                 name="Table",
                 group="Base",
-                doc="The data table that stores the extracted data",
+                doc=QT_TRANSLATE_NOOP("FEM", "The data table that stores the extracted data"),
                 value=vtkTable(),
             ),
             _PropHelper(
                 type="App::PropertyLink",
                 name="Source",
                 group="Base",
-                doc="The data source from which the data is extracted",
+                doc=QT_TRANSLATE_NOOP("FEM", "The data source from which the data is extracted"),
                 value=None,
             ),
         ]
@@ -140,14 +142,14 @@ class Extractor1D(Extractor):
                 type="App::PropertyEnumeration",
                 name="XField",
                 group="X Data",
-                doc="The field to use as X data",
+                doc=QT_TRANSLATE_NOOP("FEM", "The field to use as X data"),
                 value=[],
             ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="XComponent",
                 group="X Data",
-                doc="Which part of the X field vector to use for the X axis",
+                doc=QT_TRANSLATE_NOOP("FEM", "Which part of the X field vector to use for the X axis"),
                 value=[],
             ),
         ]
@@ -278,14 +280,14 @@ class Extractor2D(Extractor1D):
                 type="App::PropertyEnumeration",
                 name="YField",
                 group="Y Data",
-                doc="The field to use as Y data",
+                doc=QT_TRANSLATE_NOOP("FEM", "The field to use as Y data"),
                 value=[],
             ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="YComponent",
                 group="Y Data",
-                doc="Which part of the Y field vector to use for the Y axis",
+                doc=QT_TRANSLATE_NOOP("FEM", "Which part of the Y field vector to use for the Y axis"),
                 value=[],
             ),
         ]

@@ -35,6 +35,7 @@ import FreeCADGui
 import Plot
 import FemGui
 from PySide import QtGui, QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import io
 import numpy as np
@@ -186,7 +187,7 @@ class VPPostTableFieldData(view_base_fempostextractors.VPPostExtractor):
                 type="App::PropertyString",
                 name="Name",
                 group="Table",
-                doc="The name used in the table header. Default name is used if empty",
+                doc=QT_TRANSLATE_NOOP("FEM", "The name used in the table header. Default name is used if empty"),
                 value="",
             ),
         ]

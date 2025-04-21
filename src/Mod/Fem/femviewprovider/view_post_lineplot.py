@@ -35,6 +35,8 @@ import FreeCADGui
 import Plot
 import FemGui
 from PySide import QtGui, QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 
 import io
 import numpy as np
@@ -265,43 +267,43 @@ class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
                 type="App::PropertyString",
                 name="Legend",
                 group="Lineplot",
-                doc="The name used in the plots legend",
+                doc=QT_TRANSLATE_NOOP("FEM", "The name used in the plots legend"),
                 value="",
             ),
             _GuiPropHelper(
                 type="App::PropertyColor",
                 name="Color",
                 group="Lineplot",
-                doc="The color the line and the markers are drawn with",
+                doc=QT_TRANSLATE_NOOP("FEM", "The color the line and the markers are drawn with"),
                 value=(0, 85, 255, 255),
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
                 name="LineStyle",
                 group="Lineplot",
-                doc="The style the line is drawn in",
+                doc=QT_TRANSLATE_NOOP("FEM", "The style the line is drawn in"),
                 value=['-', '--', '-.', ':', 'None'],
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
                 name="LineWidth",
                 group="Lineplot",
-                doc="The width the line is drawn with",
+                doc=QT_TRANSLATE_NOOP("FEM", "The width the line is drawn with"),
                 value=(1, 0.1, 99, 0.1),
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
                 name="MarkerStyle",
                 group="Lineplot",
-                doc="The style the data markers are drawn with",
+                doc=QT_TRANSLATE_NOOP("FEM", "The style the data markers are drawn with"),
                 value=['None', '*', '+', 's', '.', 'o', 'x'],
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
                 name="MarkerSize",
                 group="Lineplot",
-                doc="The size the data markers are drawn in",
-                value=(10, 0.1, 99, 0.1),
+                doc=QT_TRANSLATE_NOOP("FEM", "The size the data markers are drawn in"),
+                value=(5, 0.1, 99, 0.1),
             ),
         ]
         return super()._get_properties() + prop
@@ -389,49 +391,49 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                 type="App::PropertyBool",
                 name="Grid",
                 group="Lineplot",
-                doc="If be the bars shoud show the cumulative sum left to rigth",
+                doc=QT_TRANSLATE_NOOP("FEM", "If be the bars shoud show the cumulative sum left to rigth"),
                 value=True,
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
                 name="Scale",
                 group="Lineplot",
-                doc="The scale the axis are drawn in",
+                doc=QT_TRANSLATE_NOOP("FEM", "The scale the axis are drawn in"),
                 value=["linear","semi-log x", "semi-log y", "log"],
             ),
              _GuiPropHelper(
                 type="App::PropertyString",
                 name="Title",
                 group="Plot",
-                doc="The histogram plot title",
+                doc=QT_TRANSLATE_NOOP("FEM", "The histogram plot title"),
                 value="",
             ),
             _GuiPropHelper(
                 type="App::PropertyString",
                 name="XLabel",
                 group="Plot",
-                doc="The label shown for the histogram X axis",
+                doc=QT_TRANSLATE_NOOP("FEM", "The label shown for the histogram X axis"),
                 value="",
             ),
             _GuiPropHelper(
                 type="App::PropertyString",
                 name="YLabel",
                 group="Plot",
-                doc="The label shown for the histogram Y axis",
+                doc=QT_TRANSLATE_NOOP("FEM", "The label shown for the histogram Y axis"),
                 value="",
             ),
             _GuiPropHelper(
                 type="App::PropertyBool",
                 name="Legend",
                 group="Plot",
-                doc="Determines if the legend is plotted",
+                doc=QT_TRANSLATE_NOOP("FEM", "Determines if the legend is plotted"),
                 value=True,
             ),
             _GuiPropHelper(
                 type="App::PropertyEnumeration",
                 name="LegendLocation",
                 group="Plot",
-                doc="Determines if the legend is plotted",
+                doc=QT_TRANSLATE_NOOP("FEM", "Determines if the legend is plotted"),
                 value=['best','upper right','upper left','lower left','lower right','right',
                        'center left','center right','lower center','upper center','center'],
             ),

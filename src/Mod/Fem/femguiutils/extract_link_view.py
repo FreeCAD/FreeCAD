@@ -39,6 +39,8 @@ import FreeCADGui
 
 from . import post_visualization as pv
 
+translate = FreeCAD.Qt.translate
+
 # a model showing available visualizations and possible extractions
 # #################################################################
 
@@ -50,14 +52,14 @@ def build_new_visualization_tree_model():
     visualizations = pv.get_registered_visualizations()
     for vis_name in visualizations:
         vis_icon = FreeCADGui.getIcon(visualizations[vis_name].icon)
-        vis_item = QtGui.QStandardItem(vis_icon, f"New {vis_name}")
+        vis_item = QtGui.QStandardItem(vis_icon, translate("FEM", "New {}").format(vis_name))
         vis_item.setFlags(QtGui.Qt.ItemIsEnabled)
         vis_item.setData(visualizations[vis_name])
 
         for ext in visualizations[vis_name].extractions:
             icon = FreeCADGui.getIcon(ext.icon)
             name = ext.name.removeprefix(vis_name)
-            ext_item = QtGui.QStandardItem(icon, f"with {name}")
+            ext_item = QtGui.QStandardItem(icon, translate("FEM", "with {}").format(name))
             ext_item.setData(ext)
             vis_item.appendRow(ext_item)
         model.appendRow(vis_item)
@@ -89,7 +91,7 @@ def build_add_to_visualization_tree_model():
                     for ext in visualizations[vis_type].extractions:
                         icon = FreeCADGui.getIcon(ext.icon)
                         name = ext.name.removeprefix(vis_type)
-                        ext_item = QtGui.QStandardItem(icon, f"Add {name}")
+                        ext_item = QtGui.QStandardItem(icon, translate("FEM", "Add {}").format(name))
                         ext_item.setData(ext)
                         vis_item.appendRow(ext_item)
 
@@ -101,7 +103,7 @@ def build_add_to_visualization_tree_model():
 def build_post_object_item(post_object, extractions, vis_type):
 
     # definitely build a item and add the extractions
-    post_item = QtGui.QStandardItem(post_object.ViewObject.Icon, f"From {post_object.Label}")
+    post_item = QtGui.QStandardItem(post_object.ViewObject.Icon, translate("FEM", "From {}").format(post_object.Label))
     post_item.setFlags(QtGui.Qt.ItemIsEnabled)
     post_item.setData(post_object)
 
@@ -109,7 +111,7 @@ def build_post_object_item(post_object, extractions, vis_type):
     for ext in extractions:
         icon = FreeCADGui.getIcon(ext.icon)
         name = ext.name.removeprefix(vis_type)
-        ext_item = QtGui.QStandardItem(icon, f"add {name}")
+        ext_item = QtGui.QStandardItem(icon, translate("FEM", "add {}").format(name))
         ext_item.setData(ext)
         post_item.appendRow(ext_item)
 
@@ -268,7 +270,7 @@ class _SummaryWidget(QtGui.QWidget):
             self.viewButton.hide()
 
             self.warning = QtGui.QLabel(self)
-            self.warning.full_text = f"{extractor.Label}: Data source not available"
+            self.warning.full_text = translate("FEM", "{}: Data source not available").format(extractor.Label)
 
         self.rmButton = QtGui.QToolButton(self)
         self.rmButton.setIcon(QtGui.QIcon.fromTheme("delete"))
@@ -462,9 +464,9 @@ class ExtractLinkView(QtGui.QWidget):
         self._scroll_view.setWidgetResizable(True)
 
         hbox = QtGui.QHBoxLayout()
-        label = QtGui.QLabel("Data used in:")
+        label = QtGui.QLabel(translate("FEM", "Data used in:"))
         if not self._is_source:
-            label.setText("Data used from:")
+            label.setText(translate("FEM", "Data used from:"))
 
         label.setAlignment(QtGui.Qt.AlignBottom)
         hbox.addWidget(label)
@@ -473,19 +475,19 @@ class ExtractLinkView(QtGui.QWidget):
         if self._is_source:
 
             self._add = _TreeChoiceButton(build_add_to_visualization_tree_model())
-            self._add.setText("Add data to")
+            self._add.setText(translate("FEM", "Add data to"))
             self._add.selection.connect(self.addExtractionToVisualization)
             hbox.addWidget(self._add)
 
             self._create = _TreeChoiceButton(build_new_visualization_tree_model())
-            self._create.setText("New")
+            self._create.setText(translate("FEM", "New"))
             self._create.selection.connect(self.newVisualization)
             hbox.addWidget(self._create)
 
         else:
             vis_type = vis.get_visualization_type(self._object)
             self._add = _TreeChoiceButton(build_add_from_data_tree_model(vis_type))
-            self._add.setText("Add data from")
+            self._add.setText(translate("FEM", "Add data from"))
             self._add.selection.connect(self.addExtractionToPostObject)
             hbox.addWidget(self._add)
 

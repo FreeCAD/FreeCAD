@@ -37,6 +37,8 @@ import FreeCADGui
 from femguiutils import selection_widgets
 from . import base_femtaskpanel
 
+translate = FreeCAD.Qt.translate
+
 
 class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
@@ -59,6 +61,12 @@ class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
         # apply button hit?
         if button == QtGui.QDialogButtonBox.Apply:
             self.obj.Document.recompute()
+
+    def open(self):
+        # open a new transaction if non is open
+        if not FreeCAD.getActiveTransaction():
+            FreeCAD.ActiveDocument.openTransaction(translate("FEM", "Edit {}").format(self.obj.Label))
+
 
     # Helper functions
     # ################
