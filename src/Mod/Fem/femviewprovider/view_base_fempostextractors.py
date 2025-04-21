@@ -118,6 +118,16 @@ class VPPostExtractor:
     # To be implemented by subclasses:
     # ################################
 
+    def get_default_color_property(self):
+        # Returns the property name to set the default color to.
+        # Return None if no such property
+        raise FreeCAD.Base.FreeCADError("Not implemented")
+
+    def get_default_field_properties(self):
+        # Returns the property name to which the default field name should be set
+        # ret: [FieldProperty, ComponentProperty]
+        raise FreeCAD.Base.FreeCADError("Not implemented")
+
     def get_kw_args(self):
         # Returns the matplotlib plot keyword arguments that represent the
         # properties of the object.
