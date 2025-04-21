@@ -244,32 +244,15 @@ class ToolController:
             attrs[ToolControllerTemplate.Expressions] = expressions
         return attrs
 
-    def execute(self, obj):
+    def execute(self, obj: PathToolBit):
         Path.Log.track(obj.Name)
 
         args = {
             "toolnumber": obj.ToolNumber,
             "toollabel": obj.Label,
             "spindlespeed": obj.SpindleSpeed,
-            "spindledirection": toolchange.SpindleDirection.OFF,
+            "spindledirection": obj.Tool.Proxy.get_spindle_direction(obj),
         }
-
-        if hasattr(obj.Tool, "SpindlePower"):
-            if not obj.Tool.SpindlePower:
-                args["spindledirection"] = toolchange.SpindleDirection.OFF
-            else:
-                if obj.SpindleDir == "Forward":
-                    args["spindledirection"] = toolchange.SpindleDirection.CW
-                else:
-                    args["spindledirection"] = toolchange.SpindleDirection.CCW
-
-        elif obj.SpindleDir == "None":
-            args["spindledirection"] = toolchange.SpindleDirection.OFF
-        else:
-            if obj.SpindleDir == "Forward":
-                args["spindledirection"] = toolchange.SpindleDirection.CW
-            else:
-                args["spindledirection"] = toolchange.SpindleDirection.CCW
 
         commands = toolchange.generate(**args)
 

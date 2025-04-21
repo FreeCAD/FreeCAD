@@ -29,6 +29,7 @@ import pathlib
 import zipfile
 from typing import Optional, Type
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from Path.Base.Generator import toolchange
 from .Shape.base import ToolBitShape
 from .Shape.util import (
     get_builtin_shape_file_from_name,
@@ -138,12 +139,26 @@ class ToolBit(object):
         obj.ShapeName = self._tool_bit_shape.name
 
         # Initialize properties and visual representation
-        self._update_properties_from_shape(obj)
+        self._update_properties(obj)
         self._update_visual_representation(obj)
 
         self.onDocumentRestored(obj)
 
     def _create_properties(self, obj):
+        # Create the properties in the Base group.
+        if not hasattr(obj, "BitPropertyNames"):
+            obj.addProperty(
+                "App::PropertyStringList",
+                "BitPropertyNames",
+                "Base",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "List of all properties of the shape"
+                ),
+            )
+            obj.BitPropertyNames = [] # Initialize empty
+        obj.setEditorMode("BitPropertyNames", 2) # Read-only
+
         if not hasattr(obj, "ShapeName"):
             obj.addProperty(
                 "App::PropertyEnumeration",
@@ -180,6 +195,29 @@ class ToolBit(object):
                 "Base",
                 QT_TRANSLATE_NOOP("App::Property", "List of all properties inherited from the bit"),
             )
+
+        # Create the properties in the Base group.
+        if not hasattr(obj, "Attributes"):
+            obj.addProperty(
+                "App::PropertyStringList",
+                "Attributes",
+                "Tool Attributes",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "List of all attributes of the tool"
+                ),
+            )
+            obj.Attributes = [] # Initialize empty
+        obj.setEditorMode("Attributes", 2) # Read-only
+
+        if not hasattr(obj, "SpindleDirection"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SpindleDirection",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
+            )
+            obj.SpindleDirection = ["Forward", "Reverse", "None"]
 
     def dumps(self):
         return None
@@ -232,13 +270,37 @@ class ToolBit(object):
                 "Setting ShapeFile to '{obj.ShapeFile}'."
             )
 
+        # Update SpindleDirection:
+        # Old tools may still have "CCW", "CW", "Off", "None".
+        # New tools use "None", "Forward", "Reverse".
+        Path.Log.debug(
+            f"Promoting tool bit {obj.Label}: SpindleDirection before normalization: {obj.SpindleDirection}"
+        )
+        old_direction = obj.SpindleDirection
+        normalized_direction = "None" # Default to None
+
+        if isinstance(old_direction, str):
+            lower_direction = old_direction.lower()
+            if lower_direction in ("none", "off"):
+                normalized_direction = "None"
+            elif lower_direction in ("cw", "forward"):
+                normalized_direction = "Forward"
+            elif lower_direction in ("ccw", "reverse"):
+                normalized_direction = "Reverse"
+
+        obj.SpindleDirection = ["Forward", "Reverse", "None"]
+        obj.SpindleDirection = normalized_direction
+        if old_direction != normalized_direction:
+            Path.Log.info(
+                f"Promoted tool bit {obj.Label}: SpindleDirection from {old_direction} to {obj.SpindleDirection}"
+            )
+
         # Remove the old BitShape property
         try:
             obj.removeProperty("BitShape")
             Path.Log.debug("Removed obsolete BitShape property.")
         except Exception as e:
             Path.Log.error(f"Failed removing obsolete BitShape property: {e}")
-
 
     def onDocumentRestored(self, obj):
         Path.Log.track(obj.Label)
@@ -273,7 +335,7 @@ class ToolBit(object):
                 Path.Log.debug(
                     f"onDocumentRestored: Re-initializing properties from shape for {obj.Label}"
                 )
-                self._update_properties_from_shape(obj)
+                self._update_properties(obj)
 
         # Ensure the correct ViewProvider is attached during document restore
         if hasattr(obj, "ViewObject") and obj.ViewObject:
@@ -282,7 +344,7 @@ class ToolBit(object):
                 GuiBit.ViewProvider(obj.ViewObject, "ToolBit")
 
         # Ensure BitPropertyNames exists and is correct after restore.
-        self._update_properties_from_shape(obj)
+        self._update_properties(obj)
 
         # Set editor modes for properties listed in BitPropertyNames.
         for prop in obj.BitPropertyNames:
@@ -427,31 +489,16 @@ class ToolBit(object):
             Path.Log.error("Could not save tool {} to {} ({})".format(obj.Label, path, e))
             raise
 
-    def _update_properties_from_shape(self, obj):
+    def _update_properties(self, obj):
         """
         Initializes or updates the tool bit's properties based on the current
-        _tool_bit_shape. Ensures BitPropertyNames exists, adds/updates shape
-        parameters, removes obsolete shape parameters, and updates
-        BitPropertyNames to only list current shape parameters.
-        Does not handle visual representation.
+        _tool_bit_shape. Adds/updates shape parameters, removes obsolete shape
+        parameters, and updates BitPropertyNames to only list current shape
+        parameters. Does not handle updating the visual representation.
         """
         Path.Log.track(obj.Label)
 
-        # 1. Ensure BitPropertyNames property exists
-        if not hasattr(obj, "BitPropertyNames"):
-            obj.addProperty(
-                "App::PropertyStringList",
-                "BitPropertyNames",
-                "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "List of all properties of the shape"
-                ),
-            )
-            obj.BitPropertyNames = [] # Initialize empty
-        obj.setEditorMode("BitPropertyNames", 2) # Read-only
-
-        # 2. Get current and new shape parameter names
+        # 1. Get current and new shape parameter names
         # Use try-except in case BitPropertyNames exists but is None or invalid
         try:
             current_shape_prop_names = set(obj.BitPropertyNames)
@@ -461,7 +508,7 @@ class ToolBit(object):
         new_shape_params = self._tool_bit_shape.get_parameters()
         new_shape_param_names = set(new_shape_params.keys())
 
-        # 3. Add/Update properties for the new shape
+        # 2. Add/Update properties for the new shape
         for name, value in new_shape_params.items():
             prop_type = self._tool_bit_shape.get_parameter_property_type(name)
             if not prop_type:
@@ -482,7 +529,7 @@ class ToolBit(object):
             # Ensure editor mode is correct
             obj.setEditorMode(name, 0)
 
-        # 4. Remove obsolete shape properties
+        # 3. Remove obsolete shape properties
         # These are properties currently listed AND in the Shape group,
         # but not required by the new shape.
         obsolete_prop_names = current_shape_prop_names - new_shape_param_names
@@ -499,8 +546,17 @@ class ToolBit(object):
                      f"'{name}' in BitPropertyNames but not on object."
                  )
 
-        # 5. Update BitPropertyNames to exactly match the new shape's parameters
+        # 4. Update BitPropertyNames to exactly match the new shape's parameters
         obj.BitPropertyNames = sorted(list(new_shape_param_names))
+
+        # 5. Update non-shape properties.
+        # Set editor mode for SpindleDirection based on can_rotate()
+        if hasattr(obj, "SpindleDirection"):
+            if not self._tool_bit_shape.can_rotate():
+                obj.SpindleDirection = "None"
+                obj.setEditorMode("SpindleDirection", 2) # Read-only
+            else:
+                obj.setEditorMode("SpindleDirection", 0) # Editable
 
     def _update_visual_representation(self, obj):
         Path.Log.track(obj.Label)
@@ -566,7 +622,7 @@ class ToolBit(object):
 
         # Re-initialize properties and visual representation based on the new shape
         self._tool_bit_shape = new_shape_instance
-        self._update_properties_from_shape(obj)
+        self._update_properties(obj)
         self._update_visual_representation(obj)
 
     def to_dict(self, obj):
@@ -591,10 +647,27 @@ class ToolBit(object):
         }
         return attrs
 
+    def get_spindle_direction(self, obj) -> toolchange.SpindleDirection:
+        # To be safe, never allow non-rotatable shapes (such as probes) to rotate.
+        if not self._tool_bit_shape.can_rotate():
+            return toolchange.SpindleDirection.OFF
+
+        # Otherwise use power from defined attribute.
+        if hasattr(obj, "SpindleDirection") and obj.SpindleDirection is not None:
+            if obj.SpindleDirection.lower() in ('cw', 'forward'):
+                return toolchange.SpindleDirection.CW
+            else:
+                return toolchange.SpindleDirection.CCW
+
+        # Default to keeping spindle off.
+        return toolchange.SpindleDirection.OFF
+
+
 def Declaration(path):
     Path.Log.track(path)
     with open(path, "r") as fp:
         return json.load(fp)
+
 
 class ToolBitFactory(object):
     def CreateFromAttrs(self, attrs, name="ToolBit", path=None, document=None) -> Type[ToolBit]:

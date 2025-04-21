@@ -323,3 +323,10 @@ class ToolBitShape(abc.ABC):
             #doc.addObject(copied_obj.Name)
             doc.commitTransaction()
             return body
+
+    def can_rotate(self) -> bool:
+        """
+        Whether the spindle is allowed to rotate for this kind of ToolBitShape.
+        This mostly exists as a safe-hold for probes, which should never rotate.
+        """
+        return True
