@@ -11,23 +11,15 @@ License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
 VCS:            {{{ git_repo_vcs }}}
 
-Source0:        {{{ git_repo_pack }}}
-#add all submodule as source
-Source1:        {{{ git_pack    path=$GIT_ROOT/src/3rdParty/OndselSolver/   }}}
-Source2:        {{{ git_pack    path=$GIT_ROOT/src/3rdParty/GSL/            }}}
-Source3:        {{{ git_pack    path=$GIT_ROOT/src/Mod/AddonManager/        }}}
-Source4:        {{{ git_pack    path=$GIT_ROOT/tests/lib/                   }}}
+Source0:        {{{git_repo_pack_with_submodules}}}
+
 
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui \
-Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui \
-ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh \
-libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS \
-libStdMeshers libarea-native libOndselSolver
+%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
-%global exported_libs ""
+%global exported_libs "libOndselSolver"
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 # See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
@@ -47,6 +39,8 @@ libStdMeshers libarea-native libOndselSolver
 %bcond_with tests
 %if %{with tests}
 %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
+%global enabled_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax
+%global enabled_gui_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax TestDraftGui TestFemGui TestSketcherGui Menu Menu.MenuDeleteCases Menu.MenuCreateCases GuiDocument  TestAddonManagerGui TestOpenSCADGui
 %endif
 
 
@@ -56,13 +50,7 @@ BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop
 BuildRequires:  xorg-x11-server-Xvfb
 %endif
 # Development Libraries
-BuildRequires:  freeimage-devel libXmu-devel mesa-libEGL-devel mesa-libGLU-devel opencascade-devel
-BuildRequires:  Coin4-devel boost-devel eigen3-devel qt6-qtsvg-devel qt6-qttools-static fmt-devel
-BuildRequires:  python3 python3-devel python3-matplotlib python3-shiboken6-devel python3-pivy
-BuildRequires:  pyside6-tools python3-pyside6-devel python3-pybind11 xerces-c xerces-c-devel libspnav-devel
-BuildRequires:  netgen-mesher-devel netgen-mesher-devel-private libicu-devel vtk-devel openmpi-devel
-BuildRequires:  med-devel libkdtree++-devel libglvnd-devel yaml-cpp-devel pcl-devel
-
+BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libkdtree++-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel pcl-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel
 %if %{without bundled_smesh}
 BuildRequires:  smesh-devel
 %endif
@@ -91,7 +79,7 @@ Provides:       bundled(smesh) = %{bundled_smesh_version}
 Provides:       bundled(python3-pycxx) = %{bundled_pycxx_version}
 %endif
 
-Provides:       bundled(libondselsolverb) = %{bundled_ondsel_solver_version}
+Provides:       bundled(libOndselSolver) = %{bundled_ondsel_solver_version}
 
 Recommends:     python3-pysolar
 
@@ -147,18 +135,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %prep
     {{{ git_repo_setup_macro }}}
-    # extract submodule archive and move in correct path
-    {{{ git_setup_macro  path=$GIT_ROOT/src/3rdParty/OndselSolver/ source_indices=1  }}}
-                  mv * %{_vpath_srcdir}/src/3rdParty/OndselSolver/
-    {{{ git_setup_macro  path=$GIT_ROOT/src/3rdParty/GSL/          source_indices=2  }}}
-                  mv * %{_vpath_srcdir}/src/3rdParty/GSL/
-    {{{ git_setup_macro  path=$GIT_ROOT/src/Mod/AddonManager/      source_indices=3  }}}
-                  mv * %{_vpath_srcdir}/src/Mod/AddonManager/
-    %if %{with tests}
-    {{{ git_setup_macro  path=$GIT_ROOT/tests/lib/                 source_indices=4  }}}
-                  mv * %{_vpath_srcdir}/tests/lib/
-    %endif
-    cd %_vpath_srcdir
 
 
 %build
@@ -222,13 +198,18 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{?fedora:appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml}
 
 
-    %if %{with tests}
-        %{buildroot}/%{_libdir}/%{name}/bin/FreeCADCmd -t 0
-        xvfb-run %{buildroot}/%{_libdir}/%{name}/bin/FreeCAD -t 0
 
-        #ctest are failing
-        #%%ctest
-    %endif
+%if %{with tests}
+    for t in %{enabled_tests}; do
+        %{buildroot}/%{_libdir}/%{name}/bin/FreeCADCmd -t $t
+    done
+    for t in %{enabled_gui_tests}; do
+        xvfb-run %{buildroot}/%{_libdir}/%{name}/bin/FreeCAD -t $t
+    done
+
+    #ctest are failing
+    #%%ctest
+%endif
 
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
@@ -259,12 +240,12 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         fi
     done
     # Make sure there are no entries in the exported_libs_regexp macro that don't match plugins
-    for p in %{exported_libs}; do
-        if [ -z "`ls %{buildroot}%{_libdir}/%{name}/%{_lib}/$p*.so`" ]; then
+    for d in %{exported_libs}; do
+        if [ -z "`ls %{buildroot}%{_libdir}/%{name}/%{_lib}/$d*.so`" ]; then
             set +x
             echo -e "\n\n\n**** ERROR:\n" \
                 "\nExtra entry in %%{exported_libs} macro with no matching lib:" \
-                "'$p'.\n\nPlease remove from %%{exported_libs} macro at top of" \
+                "'$d'.\n\nPlease remove from %%{exported_libs} macro at top of" \
                 "\nspecfile and rebuild.\n****\n" 1>&2
             exit 1
         fi
