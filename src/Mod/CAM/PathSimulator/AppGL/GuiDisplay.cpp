@@ -295,12 +295,7 @@ void MillSim::GuiDisplay::UpdateWindowScale()
 void GuiDisplay::Render(float progress)
 {
     if (mPressedItem == nullptr || mPressedItem->name != eGuiItemThumb) {
-        if (progress < 1) {
-            guiItems[eGuiItemThumb].setPosx((int)(mThumbMaxMotion * progress) + mThumbStartX);
-        }  // With Fast speed progress can be > 1
-        else {
-            guiItems[eGuiItemThumb].setPosx(mThumbMaxMotion + mThumbStartX);
-        }
+        guiItems[eGuiItemThumb].setPosx((int)(mThumbMaxMotion * progress) + mThumbStartX);
     }
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
