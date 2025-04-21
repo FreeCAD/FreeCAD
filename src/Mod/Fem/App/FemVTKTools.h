@@ -72,7 +72,7 @@ public:
     // write FemResult (activeObject if res= NULL) to vtkUnstructuredGrid dataset file
     static void writeResult(const char* filename, const App::DocumentObject* res = nullptr);
 
-    static void frdToVTK(const char* filename);
+    static void frdToVTK(const char* filename, bool binary = true);
 };
 }  // namespace Fem
 
