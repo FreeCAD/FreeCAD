@@ -29,7 +29,7 @@
 #include <string>
 
 /**
- * A namespace for utilities.
+ * @brief A namespace for utilities.
  *
  * Currently, this namespace contains functionality to define custom syntax to
  * parse command line options.
