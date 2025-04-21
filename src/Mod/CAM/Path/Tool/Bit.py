@@ -27,6 +27,7 @@ import json
 import os
 import pathlib
 import zipfile
+import enum
 from typing import Optional, Type
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
@@ -38,6 +39,10 @@ from .Shape.util import (
 )
 from .Shape import TOOL_BIT_SHAPE_NAMES
 from lazy_loader.lazy_loader import LazyLoader
+
+class ToolBitMaterial(enum.Enum):
+    HSS = "HSS"
+    Carbide = "Carbide"
 
 Part = LazyLoader("Part", globals(), "Part")
 GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
@@ -201,7 +206,7 @@ class ToolBit(object):
             obj.addProperty(
                 "App::PropertyStringList",
                 "Attributes",
-                "Tool Attributes",
+                "Base",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "List of all attributes of the tool"
@@ -218,6 +223,26 @@ class ToolBit(object):
                 QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
             )
             obj.SpindleDirection = ["Forward", "Reverse", "None"]
+
+        # Add new attributes: Material and Chipload
+        if not hasattr(obj, "Material"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Material",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Material of the tool bit"),
+            )
+            obj.Material = [m.value for m in ToolBitMaterial]
+            obj.Material = ToolBitMaterial.HSS.value
+
+        if not hasattr(obj, "Chipload"):
+            obj.addProperty(
+                "App::PropertyFloat",
+                "Chipload",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Chip load for the tool bit"),
+            )
+            obj.Chipload = 0.0
 
     def dumps(self):
         return None
@@ -557,6 +582,10 @@ class ToolBit(object):
                 obj.setEditorMode("SpindleDirection", 2) # Read-only
             else:
                 obj.setEditorMode("SpindleDirection", 0) # Editable
+        if hasattr(obj, "Material"):
+            obj.setEditorMode("Material", 0) # Editable
+        if hasattr(obj, "Chipload"):
+            obj.setEditorMode("Chipload", 0) # Editable
 
     def _update_visual_representation(self, obj):
         Path.Log.track(obj.Label)
@@ -570,11 +599,11 @@ class ToolBit(object):
             body = self._tool_bit_shape.make_body(obj.Document)
 
             if not body:
-                 Path.Log.error(
-                    f"Failed to create visual representation for shape "
-                    f"'{self._tool_bit_shape.name}'"
-                 )
-                 return
+                Path.Log.error(
+                f"Failed to create visual representation for shape "
+                f"'{self._tool_bit_shape.name}'"
+                )
+                return
 
             # Assign the created object to BitBody and copy its shape
             obj.BitBody = body
