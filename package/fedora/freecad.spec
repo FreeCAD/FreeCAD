@@ -17,9 +17,9 @@ Source0:        {{{git_repo_pack_with_submodules}}}
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
+%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native libOndselSolver
 
-%global exported_libs "libOndselSolver"
+%global exported_libs ""
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 # See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
@@ -201,10 +201,10 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %if %{with tests}
     for t in %{enabled_tests}; do
-        %{buildroot}/%{_libdir}/%{name}/bin/FreeCADCmd -t $t
+        %{_vpath_builddir}/bin/FreeCADCmd -t $t
     done
     for t in %{enabled_gui_tests}; do
-        xvfb-run %{buildroot}/%{_libdir}/%{name}/bin/FreeCAD -t $t
+        xvfb-run %{_vpath_builddir}/bin/FreeCAD -t $t
     done
 
     #ctest are failing
