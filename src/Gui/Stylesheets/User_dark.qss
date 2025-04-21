@@ -290,10 +290,10 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qgroupbox
 
 --------------------------------------------------------------------------- */
 QGroupBox {
-  background-color: @ThemeGradientColor1;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  margin: 18px 5px 2px 5px;/*leave space at the top for the title */
+  margin: 18px 0px 2px 0px;/*leave space at the top for the title */
 }
 
 QGroupBox::title {
@@ -1463,16 +1463,16 @@ QSint--ActionGroup {
   border-radius: 3px;
 }
 
-QSint--ActionGroup QGroupBox {
+/* QSint--ActionGroup QGroupBox {
   border: 1px solid rgba(0, 0, 0, 0.8);
   background-color: @ThemeGradientColor1;
   padding-bottom: 3px;
-}
+} */
 
-QSint--ActionGroup QGroupBox::title {
+/* QSint--ActionGroup QGroupBox::title {
   top: -18px;
   left: 3px;
-}
+} */
 
 /* Separator line */
 QSint--ActionGroup QFrame[height="1"],
@@ -1481,12 +1481,12 @@ QSint--ActionGroup QFrame[height="1"],
 QSint--ActionGroup QFrame[width="1"],
 QSint--ActionGroup QFrame[width="1"],
 QSint--ActionGroup QFrame[width="1"] {
-  border-color: rgba(0,0,0,60);
+  border-color: rgba(0, 0, 0, 0.8);
 }
 
 /* Panel header */
 QSint--ActionGroup QFrame[class="header"] {
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.8);
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeGradientColor1,stop:1 @ThemeGradientColor2 );
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
@@ -1528,9 +1528,9 @@ QSint--ActionGroup QFrame[class="content"] {
   background-color:  @ThemeGradientColor1;/* Task Panel background color */
   margin: 0px;
   padding: 0px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-  border-left: 1px solid rgba(0, 0, 0, 0.5);
-  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  border-left: 1px solid rgba(0, 0, 0, 0.8);
+  border-right: 1px solid rgba(0, 0, 0, 0.8);
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   border-bottom-left-radius: 3px;
@@ -1570,7 +1570,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
 
 /* QToolButtons with a menu found in Sketcher task panel*/
 QSint--ActionGroup QToolButton::menu-button {
-  border-left: 1px solid rgba(0, 0, 0, 0.5);
+  border-left: 1px solid rgba(0, 0, 0, 0.8);
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   padding: 0px;
