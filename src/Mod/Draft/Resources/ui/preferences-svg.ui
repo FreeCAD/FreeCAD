@@ -44,7 +44,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
           <property name="toolTip">
-           <string>Method chosen for importing SVG object colors to FreeCAD</string>
+           <string>Method for importing SVG object colors into FreeCAD</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
@@ -62,7 +62,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Use original svg style</string>
+            <string>Use original SVG style</string>
            </property>
           </item>
          </widget>
@@ -74,11 +74,11 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter.</string>
+           <string>If checked, no unit conversion will occur.
+One unit in the SVG file will be interpreted as one millimeter.</string>
           </property>
           <property name="text">
-           <string>Disable units scaling</string>
+           <string>Disable unit scaling</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -94,7 +94,7 @@ One unit in the SVG file will translate as one millimeter.</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>If face generation results in a degenerated face
+           <string>If face generation results in a degenerated face,
 a raw Wire from the original Shape is added.</string>
           </property>
           <property name="text">
@@ -114,10 +114,10 @@ a raw Wire from the original Shape is added.</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>Check to cut shapes following the even/odd svg fill rule.</string>
+           <string>Check to cut shapes according to the even/odd SVG fill rule.</string>
           </property>
           <property name="text">
-           <string>Make Cuts</string>
+           <string>Apply Cuts</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -137,7 +137,7 @@ a raw Wire from the original Shape is added.</string>
         <item>
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Coordinate precision (cruical for detecting closed paths)</string>
+           <string>Coordinate precision (crucial for detecting closed paths)</string>
           </property>
          </widget>
         </item>
@@ -163,8 +163,8 @@ a raw Wire from the original Shape is added.</string>
 	         </size>
 	        </property>
 	        <property name="toolTip">
-	         <string>The number of decimals used in internal coordinate operations (for example 3 = 0.001).
-	Values between 3 and 5 are usually considered the best trade-off.</string>
+	         <string>The number of decimal places used in internal coordinate operations (for example 3 = 0.001).
+	The optimal value depends on the absolute size of the import. Typical values are between 1 and 5.</string>
 	        </property>
 	        <property name="maximum">
 	         <number>10</number>
