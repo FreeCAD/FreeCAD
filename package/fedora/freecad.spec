@@ -1,3 +1,16 @@
+# Some configuration options for other environments
+# rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
+%bcond_without  bundled_zipios
+# rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
+%bcond_with bundled_pycxx
+# rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
+%bcond_without bundled_smesh
+
+# rpmbuild --without=tests:  esclude tests in %%check
+%bcond_without tests
+# rpmbuild --without=bundled_gtest:  don't use bundled version of gtest and gmock
+%bcond_without bundled_gtest
+
 Name:           freecad
 
 Epoch:          1
@@ -6,7 +19,6 @@ Release:        %autorelease
 
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
-
 License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
 
@@ -15,40 +27,35 @@ Source0:        {{{ git_repo_pack }}}
 Source1:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/OndselSolver/  dir_name="OndselSolver" }}}
 Source2:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/GSL/ dir_name="GSL" }}}
 Source3:        {{{ git_pack path=$GIT_ROOT/src/Mod/AddonManager/ dir_name="AddonManager" }}}
+%if %{with tests}  && %{with bundled_gtest}
 Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="lib" }}}
+%endif
 
+%global rootsrcfolder {{{ git_name }}}
+%global wcvrev {{{ git_repo_release_branched }}}
+%global wcurl  {{{ git_repo_vcs }}}
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 %global exported_libs libOndselSolver
 
-%global rootsrcfolder = {{{ git_name }}}
-%global wcvrev {{{ git_repo_release_branched }}}
-%global wcurl  {{{ git_repo_vcs }}}
-
-
+%if %{with bundled_smesh}
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
+%endif
+%if %{with bundled_pycxx}
 # See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
 %global bundled_pycxx_version 7.1.9
+%endif
 # See /src/3rdParty/OndselSolver/CMakeLists.txt to find this out.
 %global bundled_ondsel_solver_version 1.0.1
 
 
-# Some configuration options for other environments
-# rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
-%bcond_without  bundled_zipios
-# rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
-%bcond_with bundled_pycxxgit_repo_vcs }}}
-# rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
-%bcond_without bundled_smesh
 
-# rpmbuild --with=tests:  include  tests in build
-%bcond_without tests
+
 %if %{with tests}
-%global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
-#enable only tests that passes
+#enable only tests that pass
 %global enabled_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax
 %global enabled_gui_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax TestDraftGui TestSketcherGui Menu Menu.MenuDeleteCases Menu.MenuCreateCases GuiDocument  TestAddonManagerGui TestOpenSCADGui
 #all disabled
@@ -61,6 +68,9 @@ Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="l
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build
 %if %{with tests}
 BuildRequires:  xorg-x11-server-Xvfb
+%if %{without bundled_gtest}
+BuildRequires: gtest-devel gmock-devel
+%endif
 %endif
 # Development Libraries
 BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libkdtree++-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel pcl-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel
@@ -135,7 +145,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     Development file for OndselSolver
 
 #path that contain main FreeCAD sources for cmake
-%global _vpath_srcdir  %_builddir/
+%global _vpath_srcdir  %_builddir/%{rootsrcfolder}
 #use absolute path for cmake macros
 %global _vpath_builddir  %_builddir/%_vpath_builddir
 %global cmake_generator Ninja
@@ -146,7 +156,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %setup -T -a 1 -q -D -n %{rootsrcfolder}/src/3rdParty/ #OndselSolver
     %setup -T -a 2 -q -D -n %{rootsrcfolder}/src/3rdParty/ #GSL
     %setup -T -a 3 -q -D -n %{rootsrcfolder}/src/Mod/ #AddonManager
-%if %{with tests}
+%if %{with tests}  && %{with bundled_gtest}
     %setup -T -a 4 -q -D -n %{rootsrcfolder}/tests/ #lib
 %endif
 
@@ -180,17 +190,19 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
     %endif
         -DPACKAGE_WCREV="%{wcvrev}" \
-        -DPACKAGE_WCURL="wcurl"\
+        -DPACKAGE_WCURL="%{wcurl}"\
     %if %{with tests}
         -DENABLE_DEVELOPER_TESTS=TRUE \
+        -DINSTAL_GTEST=FALSE \
     %else
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif
+        -DONDSELSOLVER_BUILD_EXE=TRUE \
         -DBUILD_GUI=TRUE \
         -G Ninja \
 
     sed -i -e 's|"$WCREV$"|"%{wcvrev}"|g' %_vpath_builddir/src/Build/Version.h.in
-    sed -i -e 's|"$WCURL$"|"wcurl"|g'              %_vpath_builddir/src/Build/Version.h.in
+    sed -i -e 's|"$WCURL$"|"%{wcurl}"|g'  %_vpath_builddir/src/Build/Version.h.in
 
     %cmake_build
 
@@ -227,8 +239,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     # Make sure there are no plugins that need to be added to plugins macro
     %define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|${i}Gui"; done)\\\)\\.so/d
 
-    %define exported_libs_regexp /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so/d
-    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' | sed -e '%{exported_libs_regexp}'`
+    %define exported_libs_regexp /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so\\\)/d
+    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib}|sed -e '/^\(cmake\|pkgconfig\/d)' | sed -e  '%{plugin_reghexp}' | sed -e '%{exported_libs_regexp}'`
 
     if [ -n "$new_plugins" ]; then
         echo -e "\n\n\n**** ERROR:\n" \
