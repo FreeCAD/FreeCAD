@@ -162,6 +162,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemPostObject                           ::init();
     FemGui::ViewProviderFemPostPipeline                         ::init();
     FemGui::ViewProviderFemPostBranchFilter                     ::init();
+    FemGui::ViewProviderFemPostCalculator                       ::init();
     FemGui::ViewProviderFemPostClip                             ::init();
     FemGui::ViewProviderFemPostContours                         ::init();
     FemGui::ViewProviderFemPostCut                              ::init();

@@ -285,7 +285,7 @@ PyObject* MakePrismPy::performUntilHeight(PyObject *args)
     }
 }
 
-PyObject* MakePrismPy::curves(PyObject *args)
+PyObject* MakePrismPy::curves(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -305,7 +305,7 @@ PyObject* MakePrismPy::curves(PyObject *args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* MakePrismPy::barycCurve(PyObject *args)
+PyObject* MakePrismPy::barycCurve(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -317,7 +317,7 @@ PyObject* MakePrismPy::barycCurve(PyObject *args)
     return gc->getPyObject();
 }
 
-PyObject* MakePrismPy::shape(PyObject *args)
+PyObject* MakePrismPy::shape(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;

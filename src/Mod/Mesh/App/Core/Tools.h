@@ -24,6 +24,7 @@
 #define MESH_TOOLS_H
 
 #include <functional>
+#include <limits>
 
 #include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Triangle3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
@@ -209,7 +210,7 @@ public:
 
     // NOLINTBEGIN
     Index nearest_index;
-    float nearest_dist {FLOAT_MAX};
+    float nearest_dist {std::numeric_limits<float>::max()};
     // NOLINTEND
 
 private:

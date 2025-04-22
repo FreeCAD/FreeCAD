@@ -39,16 +39,16 @@ TEST(Tools, TestSignum)
 TEST(Tools, TestRadian)
 {
     EXPECT_EQ(Base::toRadians<int>(90), 1);
-    EXPECT_DOUBLE_EQ(Base::toRadians<double>(180), M_PI);
-    EXPECT_DOUBLE_EQ(Base::toRadians<double>(90.0), M_PI / 2.0);
+    EXPECT_DOUBLE_EQ(Base::toRadians<double>(180), std::numbers::pi);
+    EXPECT_DOUBLE_EQ(Base::toRadians<double>(90.0), std::numbers::pi / 2.0);
     EXPECT_DOUBLE_EQ(Base::toRadians<double>(0.0), 0.0);
 }
 
 TEST(Tools, TestDegree)
 {
     EXPECT_EQ(Base::toDegrees<int>(3), 171);
-    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(M_PI), 180.0);
-    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(M_PI / 2.0), 90.0);
+    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(std::numbers::pi), 180.0);
+    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(std::numbers::pi / 2.0), 90.0);
     EXPECT_DOUBLE_EQ(Base::toDegrees<double>(0.0), 0.0);
 }
 

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QApplication>
 # include <QDebug>
 # include <QFocusEvent>
@@ -66,8 +67,8 @@ public:
       pendingEmit(false),
       checkRangeInExpression(false),
       unitValue(0),
-      maximum(DOUBLE_MAX),
-      minimum(-DOUBLE_MAX),
+      maximum(std::numeric_limits<double>::max()),
+      minimum(-std::numeric_limits<double>::max()),
       singleStep(1.0),
       q_ptr(q)
     {
@@ -138,7 +139,7 @@ public:
             if (expr) {
 
                 std::unique_ptr<Expression> res(expr->eval());
-                NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(res.get());
+                NumberExpression * n = freecad_cast<NumberExpression*>(res.get());
                 if (n){
                     result = n->getQuantity();
                     value = result.getValue();

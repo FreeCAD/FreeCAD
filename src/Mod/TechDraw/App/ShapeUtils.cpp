@@ -27,6 +27,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <limits>
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -64,6 +65,7 @@
 #endif// #ifndef _PreComp_
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 #include "DrawUtil.h"
 #include "ShapeUtils.h"
@@ -96,7 +98,7 @@ gp_Ax2 ShapeUtils::getViewAxis(const Base::Vector3d origin, const Base::Vector3d
         cross = cross.Cross(stdZ);
     }
 
-    if (cross.IsEqual(stdOrg, FLT_EPSILON)) {
+    if (cross.IsEqual(stdOrg, std::numeric_limits<float>::epsilon())) {
         viewAxis = gp_Ax2(inputCenter, gp_Dir(direction.x, direction.y, direction.z));
         return viewAxis;
     }
@@ -142,7 +144,7 @@ gp_Ax2 ShapeUtils::legacyViewAxis1(const Base::Vector3d origin, const Base::Vect
         cross = cross.Cross(stdZ);
     }
 
-    if (cross.IsEqual(stdOrg, FLT_EPSILON)) {
+    if (cross.IsEqual(stdOrg, std::numeric_limits<float>::epsilon())) {
         return gp_Ax2(inputCenter, gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
     }
 
@@ -265,19 +267,17 @@ TopoDS_Shape ShapeUtils::mirrorShape(const TopoDS_Shape& input, const gp_Pnt& in
 
 //!rotates a shape about a viewAxis
 TopoDS_Shape ShapeUtils::rotateShape(const TopoDS_Shape& input, const gp_Ax2& viewAxis,
-                                   double rotAngle)
+                                     double rotAngle)
 {
     TopoDS_Shape transShape;
     if (input.IsNull()) {
         return transShape;
     }
 
-    gp_Ax1 rotAxis = viewAxis.Axis();
-    double rotation = rotAngle * M_PI / 180.0;
-
     try {
+        gp_Ax1 rotAxis = viewAxis.Axis();
         gp_Trsf tempTransform;
-        tempTransform.SetRotation(rotAxis, rotation);
+        tempTransform.SetRotation(rotAxis, Base::toRadians(rotAngle));
         BRepBuilderAPI_Transform mkTrf(input, tempTransform);
         transShape = mkTrf.Shape();
     }

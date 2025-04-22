@@ -49,9 +49,6 @@ class TestTEMPLATE(unittest.TestCase):
         """
         pass
 
-        # Close geometry document without saving
-        # FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
-
     # Setup and tear down methods called before and after each unit test
     def setUp(self):
         """setUp()...

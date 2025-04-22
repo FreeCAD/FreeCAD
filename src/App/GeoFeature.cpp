@@ -160,11 +160,11 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
         return nullptr;
     }
     auto linked = sobj->getLinkedObject(true);
-    auto geo = Base::freecad_dynamic_cast<GeoFeature>(linked);
+    auto geo = freecad_cast<GeoFeature*>(linked);
     if (!geo && linked) {
         auto ext = linked->getExtensionByType<LinkBaseExtension>(true);
         if (ext) {
-            geo = Base::freecad_dynamic_cast<GeoFeature>(ext->getTrueLinkedObject(true));
+            geo = freecad_cast<GeoFeature*>(ext->getTrueLinkedObject(true));
         }
     }
     if (geoFeature) {
@@ -213,10 +213,11 @@ void GeoFeature::setMaterialAppearance(const App::Material& material)
     Q_UNUSED(material)
 }
 
-bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const
 {
     Q_UNUSED(subname)
-    Q_UNUSED(direction)
+    Q_UNUSED(directionZ)
+    Q_UNUSED(directionX)
     return false;
 }
 

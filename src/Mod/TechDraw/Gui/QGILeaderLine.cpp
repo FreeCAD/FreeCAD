@@ -461,7 +461,7 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
 
 //! returns the point (on the parent) to which the leader is attached.
 //! result is relative to the center of the unscaled, unrotated parent.
-//! result is is not inverted (Y grows upwards).
+//! result is not inverted (Y grows upwards).
 QPointF QGILeaderLine::getAttachFromFeature()
 {
     TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
@@ -589,7 +589,7 @@ Base::Vector3d  QGILeaderLine::getAttachPoint()
     double yPos = Rez::guiX(featLeader->Y.getValue());
     Base::Vector3d vAttachPoint{xPos, yPos};
     vAttachPoint = vAttachPoint * baseScale;
-    double rotationRad = parent->Rotation.getValue() * M_PI / DegreesHalfCircle;
+    double rotationRad = parent->Rotation.getValue() * std::numbers::pi / DegreesHalfCircle;
     if (rotationRad != 0.0) {
         vAttachPoint.RotateZ(rotationRad);
     }

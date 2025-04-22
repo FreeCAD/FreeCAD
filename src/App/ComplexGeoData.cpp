@@ -28,6 +28,7 @@
 
 #ifndef _PreComp_
 #include <cstdlib>
+#include <limits>
 #endif
 
 #include <boost/regex.hpp>

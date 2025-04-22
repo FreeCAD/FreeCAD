@@ -29,7 +29,7 @@
 #include <Inventor/nodes/SoMarkerSet.h>
 
 #include <sstream>
-
+#include <limits>
 #include <QApplication>
 #include <QMessageBox>
 #include <QMetaMethod>
@@ -52,6 +52,7 @@
 #include <Mod/Fem/App/FemPostBranchFilter.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
+#include "ui_TaskPostCalculator.h"
 #include "ui_TaskPostClip.h"
 #include "ui_TaskPostContours.h"
 #include "ui_TaskPostCut.h"
@@ -323,6 +324,9 @@ void TaskDlgPost::open()
 void TaskDlgPost::clicked(int button)
 {
     if (button == QDialogButtonBox::Apply) {
+        for (auto box : m_boxes) {
+            box->apply();
+        }
         recompute();
     }
 }
@@ -388,7 +392,7 @@ TaskPostDisplay::TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* paren
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
                           ui->Representation);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 
     // get Transparency from ViewProvider
     int trans = getTypedView<ViewProviderFemPostObject>()->Transparency.getValue();
@@ -428,18 +432,18 @@ void TaskPostDisplay::onRepresentationActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
 
 void TaskPostDisplay::onFieldActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
 
 void TaskPostDisplay::onVectorModeActivated(int i)
 {
-    getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
+    getTypedView<ViewProviderFemPostObject>()->Component.setValue(i);
 }
 
 void TaskPostDisplay::onTransparencyValueChanged(int i)
@@ -656,7 +660,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* v
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
                           ui->Representation);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
 
 TaskPostDataAlongLine::~TaskPostDataAlongLine()
@@ -959,7 +963,7 @@ void TaskPostDataAlongLine::onRepresentationActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
 
 void TaskPostDataAlongLine::onFieldActivated(int i)
@@ -967,15 +971,15 @@ void TaskPostDataAlongLine::onFieldActivated(int i)
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
     getObject<Fem::FemPostDataAlongLineFilter>()->PlotData.setValue(FieldName);
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 
-    auto vecMode = static_cast<ViewProviderFemPostObject*>(getView())->VectorMode.getEnum();
+    auto vecMode = static_cast<ViewProviderFemPostObject*>(getView())->Component.getEnum();
     getObject<Fem::FemPostDataAlongLineFilter>()->PlotDataComponent.setValue(vecMode);
 }
 
 void TaskPostDataAlongLine::onVectorModeActivated(int i)
 {
-    getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
+    getTypedView<ViewProviderFemPostObject>()->Component.setValue(i);
     int comp = ui->VectorMode->currentIndex();
     getObject<Fem::FemPostDataAlongLineFilter>()->PlotDataComponent.setValue(comp);
 }
@@ -1624,7 +1628,7 @@ void TaskPostContours::onFieldsChanged(int idx)
     // we must also update the VectorMode
     if (!getObject<Fem::FemPostContoursFilter>()->NoColor.getValue()) {
         auto newMode = getTypedObject<Fem::FemPostContoursFilter>()->VectorMode.getValue();
-        getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(newMode);
+        getTypedView<ViewProviderFemPostObject>()->Component.setValue(newMode);
     }
 }
 
@@ -1640,7 +1644,7 @@ void TaskPostContours::onVectorModeChanged(int idx)
         updateFields();
         // now we can set the VectorMode
         if (!getObject<Fem::FemPostContoursFilter>()->NoColor.getValue()) {
-            getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(idx);
+            getTypedView<ViewProviderFemPostObject>()->Component.setValue(idx);
         }
     }
 }
@@ -1664,9 +1668,9 @@ void TaskPostContours::onNoColorChanged(bool state)
         // the ViewProvider field starts with an additional entry "None",
         // therefore the desired new setting is idx + 1
         getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField + 1);
-        // set the VectorMode too
+        // set the Component too
         auto currentMode = getTypedObject<Fem::FemPostContoursFilter>()->VectorMode.getValue();
-        getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(currentMode);
+        getTypedView<ViewProviderFemPostObject>()->Component.setValue(currentMode);
     }
     recompute();
 }
@@ -2122,5 +2126,131 @@ void TaskPostWarpVector::onMinValueChanged(double)
     ui->Slider->blockSignals(false);
 }
 
+
+// ***************************************************************************
+// calculator filter
+static const std::vector<std::string> calculatorOperators = {
+    "+",   "-",   "*",    "/",    "-",    "^",    "abs",   "cos", "sin", "tan", "exp",
+    "log", "pow", "sqrt", "iHat", "jHat", "kHat", "cross", "dot", "mag", "norm"};
+
+TaskPostCalculator::TaskPostCalculator(ViewProviderFemPostCalculator* view, QWidget* parent)
+    : TaskPostBox(view,
+                  Gui::BitmapFactory().pixmap("FEM_PostFilterCalculator"),
+                  tr("Calculator options"),
+                  parent)
+    , ui(new Ui_TaskPostCalculator)
+{
+    // we load the views widget
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    setupConnections();
+    this->groupLayout()->addWidget(proxy);
+
+    // load the default values
+    auto obj = getObject<Fem::FemPostCalculatorFilter>();
+    ui->let_field_name->blockSignals(true);
+    ui->let_field_name->setText(QString::fromUtf8(obj->FieldName.getValue()));
+    ui->let_field_name->blockSignals(false);
+
+    ui->let_function->blockSignals(true);
+    ui->let_function->setText(QString::fromUtf8(obj->Function.getValue()));
+    ui->let_function->blockSignals(false);
+
+    ui->ckb_replace_invalid->setChecked(obj->ReplaceInvalid.getValue());
+    ui->dsb_replacement_value->setEnabled(obj->ReplaceInvalid.getValue());
+    ui->dsb_replacement_value->setValue(obj->ReplacementValue.getValue());
+    ui->dsb_replacement_value->setMaximum(std::numeric_limits<double>::max());
+    ui->dsb_replacement_value->setMinimum(std::numeric_limits<double>::lowest());
+
+    // fill available fields
+    for (const auto& f : obj->getScalarVariables()) {
+        ui->cb_scalars->addItem(QString::fromStdString(f));
+    }
+    for (const auto& f : obj->getVectorVariables()) {
+        ui->cb_vectors->addItem(QString::fromStdString(f));
+    }
+
+    QStringList qOperators;
+    for (const auto& o : calculatorOperators) {
+        qOperators << QString::fromStdString(o);
+    }
+    ui->cb_operators->addItems(qOperators);
+
+    ui->cb_scalars->setCurrentIndex(-1);
+    ui->cb_vectors->setCurrentIndex(-1);
+    ui->cb_operators->setCurrentIndex(-1);
+}
+
+TaskPostCalculator::~TaskPostCalculator() = default;
+
+void TaskPostCalculator::setupConnections()
+{
+    connect(ui->dsb_replacement_value,
+            qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this,
+            &TaskPostCalculator::onReplacementValueChanged);
+    connect(ui->ckb_replace_invalid,
+            &QCheckBox::toggled,
+            this,
+            &TaskPostCalculator::onReplaceInvalidChanged);
+    connect(ui->cb_scalars,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPostCalculator::onScalarsActivated);
+    connect(ui->cb_vectors,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPostCalculator::onVectorsActivated);
+    connect(ui->cb_operators,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPostCalculator::onOperatorsActivated);
+}
+
+void TaskPostCalculator::onReplaceInvalidChanged(bool state)
+{
+    auto obj = static_cast<Fem::FemPostCalculatorFilter*>(getObject());
+    obj->ReplaceInvalid.setValue(state);
+    ui->dsb_replacement_value->setEnabled(state);
+    recompute();
+}
+
+void TaskPostCalculator::onReplacementValueChanged(double value)
+{
+    auto obj = static_cast<Fem::FemPostCalculatorFilter*>(getObject());
+    obj->ReplacementValue.setValue(value);
+    recompute();
+}
+
+void TaskPostCalculator::onScalarsActivated(int index)
+{
+    QString item = ui->cb_scalars->itemText(index);
+    ui->let_function->insert(item);
+}
+
+void TaskPostCalculator::onVectorsActivated(int index)
+{
+    QString item = ui->cb_vectors->itemText(index);
+    ui->let_function->insert(item);
+}
+
+void TaskPostCalculator::onOperatorsActivated(int index)
+{
+    QString item = ui->cb_operators->itemText(index);
+    ui->let_function->insert(item);
+}
+
+void TaskPostCalculator::apply()
+{
+    auto obj = getObject<Fem::FemPostCalculatorFilter>();
+    std::string function = ui->let_function->text().toStdString();
+    std::string name = ui->let_field_name->text().toStdString();
+    obj->Function.setValue(function);
+    obj->FieldName.setValue(name);
+    recompute();
+
+    auto view = getTypedView<ViewProviderFemPostCalculator>();
+    view->Field.setValue(obj->FieldName.getValue());
+}
 
 #include "moc_TaskPostBoxes.cpp"

@@ -26,6 +26,7 @@
 #include <QKeyEvent>
 #include <QSignalMapper>
 
+#include <Base/Tools.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
 
@@ -388,7 +389,8 @@ Base::Placement Transform::getPlacementData() const
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value().getValue()*D_PI/180.0);
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),
+                     Base::toRadians(ui->angle->value().getValue()));
     }
     else if (index == 1) {
         rot.setYawPitchRoll(

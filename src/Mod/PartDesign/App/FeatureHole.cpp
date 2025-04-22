@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
+# include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
 # include <BRep_Builder.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
@@ -36,6 +38,7 @@
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <BRepAdaptor_Curve.hxx>
 # include <Geom_Circle.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <Geom_TrimmedCurve.hxx>
@@ -59,6 +62,8 @@
 #include "FeatureHole.h"
 #include "json.hpp"
 
+#include <numbers>
+
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 namespace PartDesign {
@@ -68,8 +73,11 @@ namespace PartDesign {
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
 const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", nullptr};
-const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
+
+const char* Hole::ClearanceNoneEnums[]               = { "-", "-", "-", nullptr};
+const char* Hole::ClearanceMetricEnums[]             = { "Medium", "Fine", "Coarse", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
+const char* Hole::ClearanceOtherEnums[]              = { "Normal", "Close", "Wide", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
 
 /* "None" profile */
@@ -525,7 +533,7 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
 const double Hole::metricHoleDiameters[51][4] =
 {
     /* ISO metric clearance hole diameters according to ISO 273 */
-    // {screw diameter, close, standard, coarse}
+    // {screw diameter, fine, medium, coarse}
         { 1.0,    1.1,    1.2,    1.3},
         { 1.2,    1.3,    1.4,    1.5},
         { 1.4,    1.5,    1.6,    1.8},
@@ -732,7 +740,7 @@ PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 180.0 - Base::toDegrees<double>(Precision::Angular()), 1.0 };
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
-const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), FLT_MAX, 1.0 };
+const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0 };
 
 Hole::Hole()
 {
@@ -809,6 +817,9 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(CustomThreadClearance, (0.0), "Hole", App::Prop_None, "Custom thread clearance (overrides ThreadClass)");
 
+    // Defaults to circles & arcs so that older files are kept intact
+    // while new file get points, circles and arcs set in setupObject()
+    ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
 }
 
 void Hole::updateHoleCutParams()
@@ -1414,6 +1425,7 @@ void Hole::onChanged(const App::Property* prop)
             Threaded.setValue(false);
             ModelThread.setValue(false);
             UseCustomThreadClearance.setValue(false);
+            ThreadFit.setEnums(ClearanceNoneEnums);
         }
         else if (type == "ISOMetricProfile") {
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
@@ -1443,18 +1455,22 @@ void Hole::onChanged(const App::Property* prop)
         else if (type == "BSP") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_BSP_Enums);
+            ThreadFit.setEnums(ClearanceMetricEnums);
         }
         else if (type == "NPT") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_NPT_Enums);
+            ThreadFit.setEnums(ClearanceUTSEnums);
         }
         else if (type == "BSW") {
             ThreadClass.setEnums(ThreadClass_BSW_Enums);
             HoleCutType.setEnums(HoleCutType_BSW_Enums);
+            ThreadFit.setEnums(ClearanceOtherEnums);
         }
         else if (type == "BSF") {
             ThreadClass.setEnums(ThreadClass_BSF_Enums);
             HoleCutType.setEnums(HoleCutType_BSF_Enums);
+            ThreadFit.setEnums(ClearanceOtherEnums);
         }
 
         bool isNone = type == "None";
@@ -1667,6 +1683,19 @@ void Hole::onChanged(const App::Property* prop)
 
     ProfileBased::onChanged(prop);
 }
+void Hole::setupObject()
+{
+    // Set the BaseProfileType to the user defined value
+    // here so that new objects use points, but older files
+    // keep the default value of "Circles and Arcs"
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    
+    BaseProfileType.setValue(baseProfileOption_idxToBitmask(hGrp->GetInt("defaultBaseTypeHole", 1)));
+    
+    ProfileBased::setupObject();
+}
 
 /**
   * Computes 2D intersection between the lines (pa1, pa2) and (pb1, pb2).
@@ -1743,7 +1772,8 @@ short Hole::mustExecute() const
         UseCustomThreadClearance.isTouched() ||
         CustomThreadClearance.isTouched() ||
         ThreadDepthType.isTouched() ||
-        ThreadDepth.isTouched()
+        ThreadDepth.isTouched() ||
+        BaseProfileType.isTouched()
         )
         return 1;
     return ProfileBased::mustExecute();
@@ -1779,6 +1809,7 @@ void Hole::updateProps()
     onChanged(&CustomThreadClearance);
     onChanged(&ThreadDepthType);
     onChanged(&ThreadDepth);
+    onChanged(&BaseProfileType);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
@@ -1787,14 +1818,8 @@ static gp_Pnt toPnt(gp_Vec dir)
 }
 
 App::DocumentObjectExecReturn* Hole::execute()
-{
-     TopoShape profileshape;
-    try {
-        profileshape = getTopoShapeVerifiedFace();
-    }
-    catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+{ 
+    TopoShape profileshape = getProfileShape(/*needSubElement*/ false);
 
     // Find the base shape
     TopoShape base;
@@ -1817,10 +1842,6 @@ App::DocumentObjectExecReturn* Hole::execute()
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
         base.move(invObjLoc);
-
-        if (profileshape.isNull())
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Hole error: Creating a face from sketch failed"));
         profileshape.move(invObjLoc);
 
         /* Build the prototype hole */
@@ -2168,33 +2189,59 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
 {
     TopoShape result(0);
 
-    for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
-        Standard_Real c_start;
-        Standard_Real c_end;
-        TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
-        Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
-
-        // Circle?
-        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
-            continue;
-
-        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-        gp_Pnt loc = circle->Axis().Location();
-
-
+    auto addHole = [&](Part::TopoShape const& baseshape, gp_Pnt loc) {
         gp_Trsf localSketchTransformation;
         localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
                                                   gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
 
         Part::ShapeMapper mapper;
-        mapper.populate(Part::MappingStatus::Modified, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+        mapper.populate(Part::MappingStatus::Modified, baseshape, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
 
         TopoShape hole(-getID());
-        hole.makeShapeWithElementMap(protoHole, mapper, {profileEdge});
+        hole.makeShapeWithElementMap(protoHole, mapper, {baseshape});
 
         // transform and generate element map.
         hole = hole.makeElementTransform(localSketchTransformation);
         holes.push_back(hole);
+    };
+
+    int baseProfileType = BaseProfileType.getValue();
+
+    // Iterate over edges and filter out non-circle/non-arc types
+    if (baseProfileType & BaseProfileTypeOptions::OnCircles || 
+       baseProfileType & BaseProfileTypeOptions::OnArcs) {
+        for (const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
+            TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
+            BRepAdaptor_Curve adaptor(edge);
+
+            // Circle base?
+            if (adaptor.GetType() != GeomAbs_Circle) {
+                continue;
+            }
+            // Filter for circles
+            if (!(baseProfileType & BaseProfileTypeOptions::OnCircles) && adaptor.IsClosed()) {
+                continue;
+            }
+            
+            // Filter for arcs
+            if (!(baseProfileType & BaseProfileTypeOptions::OnArcs) && !adaptor.IsClosed()) {
+                continue;
+            }
+
+            gp_Circ circle = adaptor.Circle();
+            addHole(profileEdge, circle.Axis().Location());
+        }
+    }
+
+    // To avoid breaking older files which where not made with
+    // holes on points
+    if (baseProfileType & BaseProfileTypeOptions::OnPoints) {
+        // Iterate over vertices while avoiding edges so that curve handles are ignored
+        for (const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
+            TopoDS_Vertex vertex = TopoDS::Vertex(profileVertex.getShape());
+
+            addHole(profileVertex, BRep_Tool::Pnt(vertex));
+        }
     }
     return TopoShape().makeElementCompound(holes);
 }
@@ -2244,7 +2291,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         //      | base-sharpV             Rmaj     H
 
         // the little adjustment of p1 and p4 is here to prevent coincidencies
-        double marginX = std::tan(62.5 * M_PI / 180.0) * marginZ;
+        double marginX = std::tan(Base::toRadians(62.5)) * marginZ;
 
         gp_Pnt p1 = toPnt(
             (RmajC - 5 * H / 6 + marginX) * xDir
@@ -2281,7 +2328,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         //       | base-sharpV    Rmaj
 
         // the little adjustment of p1 and p4 is here to prevent coincidencies
-        double marginX = std::tan(60.0 * M_PI / 180.0) * marginZ;
+        double marginX = std::tan(Base::toRadians(60.0)) * marginZ;
         gp_Pnt p1 = toPnt(
             (RmajC - h + marginX) * xDir
             + marginZ * zDir
@@ -2343,7 +2390,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // Reverse the direction of the helix. So that it goes into the material
     gp_Trsf mov;
-    mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
     TopLoc_Location loc1(mov);
     helix.Move(loc1);
 
@@ -2567,5 +2614,38 @@ void Hole::readCutDefinitions()
         }
     }
 }
+
+int Hole::baseProfileOption_idxToBitmask(int index)
+{
+    // Translate combobox index to bitmask value
+    // More options could be made available
+    if (index == 0) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs;
+    }
+    if (index == 1) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs;
+    }
+     if (index == 2) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
+    } 
+    Base::Console().Error("Unexpected hole base profile combobox index: %i", index);
+    return 0;
+}
+int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
+{
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs) {
+        return 0;
+    } 
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs) {
+        return 1;
+    } 
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnPoints) {
+        return 2;
+    }
+
+    Base::Console().Error("Unexpected hole base profile bitmask: %i", bitmask);
+    return -1;
+}
+
 
 } // namespace PartDesign

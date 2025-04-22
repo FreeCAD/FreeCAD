@@ -1,22 +1,24 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Library General Public License (LGPL)   *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -86,7 +88,7 @@ class ifc_vp_object:
         from . import ifc_psets
         from . import ifc_materials
         from . import ifc_types
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
@@ -419,7 +421,7 @@ class ifc_vp_document(ifc_vp_object):
 
     def setupContextMenu(self, vobj, menu):
 
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
@@ -463,7 +465,7 @@ class ifc_vp_document(ifc_vp_object):
     def replace_file(self, obj, newfile):
         """Asks the user if the attached file path needs to be replaced"""
 
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         msg = "Replace the stored IFC file path in object "
         msg += self.Object.Label + " with the new one: "
@@ -484,7 +486,7 @@ class ifc_vp_document(ifc_vp_object):
             return False
 
     def schema_warning(self):
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         msg = "Warning: This operation will change the whole IFC file contents "
         msg += "and will not give versionable results. It is best to not do "
@@ -516,7 +518,7 @@ class ifc_vp_group:
         self.Object = vobj.Object
 
     def getIcon(self):
-        from PySide import QtCore, QtGui  # lazy loading
+        from PySide import QtGui  # lazy loading
         import Draft_rc
         import Arch_rc
 
@@ -602,7 +604,7 @@ class ifc_vp_material:
     def setupContextMenu(self, vobj, menu):
         from . import ifc_tools  # lazy import
         from . import ifc_psets
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
@@ -660,7 +662,7 @@ def get_filepath(project):
     """Saves the associated IFC file to another file"""
 
     from . import ifc_tools  # lazy import
-    from PySide import QtCore, QtGui  # lazy import
+    from PySide import QtGui  # lazy import
 
     sf = QtGui.QFileDialog.getSaveFileName(
         None,

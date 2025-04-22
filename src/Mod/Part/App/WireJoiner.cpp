@@ -26,6 +26,7 @@
 #include <boost/graph/graph_concepts.hpp>
 
 #ifndef _PreComp_
+# include <limits>
 # include <BRepLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
@@ -784,11 +785,12 @@ public:
                        const bool isLinear)
     {
         std::unique_ptr<Geometry> geo;
-        for (auto vit = vmap.qbegin(bgi::nearest(p1, INT_MAX)); vit != vmap.qend(); ++vit) {
+        constexpr int max = std::numeric_limits<int>::max();
+        for (auto vit = vmap.qbegin(bgi::nearest(p1, max)); vit != vmap.qend(); ++vit) {
             auto& vinfo = *vit;
             if (canShowShape()) {
 #if OCC_VERSION_HEX < 0x070800
-                FC_MSG("addcheck " << vinfo.edge().HashCode(INT_MAX));
+                FC_MSG("addcheck " << vinfo.edge().HashCode(max));
 #else
                 FC_MSG("addcheck " << std::hash<TopoDS_Edge> {}(vinfo.edge()));
 #endif
@@ -1568,7 +1570,8 @@ public:
                 }
                 info.iEnd[ic] = info.iStart[ic] = (int)adjacentList.size();
 
-                for (auto vit = vmap.qbegin(bgi::nearest(pt[ic], INT_MAX)); vit != vmap.qend();
+                constexpr int max = std::numeric_limits<int>::max();
+                for (auto vit = vmap.qbegin(bgi::nearest(pt[ic], max)); vit != vmap.qend();
                      ++vit) {
                     auto& vinfo = *vit;
                     if (vinfo.pt().SquareDistance(pt[ic]) > myTol2) {
@@ -1719,7 +1722,7 @@ public:
     }
 
     // Originally here there was the definition of the method checkStack(), which does nothing and
-    // therefor has been removed. See
+    // therefore has been removed. See
     // https://github.com/realthunder/FreeCAD/blob/6f15849be2505f98927e75d0e8352185e14e7b72/src/Mod/Part/App/WireJoiner.cpp#L1366
     // for reference
 
@@ -1765,7 +1768,7 @@ public:
                 ++stack.back().iEnd;
 
                 // Originally here there was a call to the method checkStack(),
-                // which does nothing and therefor has been removed.
+                // which does nothing and therefore has been removed.
             }
         }
     }
@@ -1982,7 +1985,7 @@ public:
         auto stackEnd = stack.size();
 
         // Originally here there was a call to the method checkStack(), which does nothing and
-        // therefor has been removed.
+        // therefore has been removed.
 
         // pstart and pend is the start and end vertex of the current wire
         while (true) {
@@ -2001,7 +2004,7 @@ public:
                                         beginInfo);
 
             // Originally here there was a call to the method checkStack(), which does nothing and
-            // therefor has been removed.
+            // therefore has been removed.
 
             if (proceed) {
                 if (_findClosedWiresUpdateEdges(currentVertex,
@@ -2179,7 +2182,7 @@ public:
             vertexStack.push_back(currentVertex);
 
             // Originally here there was a call to the method checkStack(), which does
-            // nothing and therefor has been removed.
+            // nothing and therefore has been removed.
 
             int idxEnd = (int)wireVertices.size();
             int stackStart = (int)stack.size() - 1;
@@ -2378,7 +2381,7 @@ public:
                     edgeSet.insert(wireVertices[idxV].edgeInfo());
 
                     // Originally here there was a call to the method checkStack(), which does
-                    // nothing and therefor has been removed.
+                    // nothing and therefore has been removed.
                 }
 
                 if (!newWire) {
@@ -2422,7 +2425,7 @@ public:
             vertexStack.push_back(currentVertex);
 
             // Originally here there a call to the method checkStack(), which
-            // does nothing and therefor has been removed.
+            // does nothing and therefore has been removed.
 
             TopoDS_Wire wire;
             if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
@@ -2508,7 +2511,7 @@ public:
             edgeSet.insert(wireVertices[idxV].edgeInfo());
 
             // Originally here there a call to the method checkStack(), which does
-            // nothing and therefor has been removed.
+            // nothing and therefore has been removed.
         }
     }
 
@@ -2717,7 +2720,8 @@ public:
         FC_MSG("init:");
         for (const auto& shape : sourceEdges) {
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.getShape().TShape().get() << ", " << shape.getShape().HashCode(INT_MAX));
+            constexpr int max = std::numeric_limits<int>::max();
+            FC_MSG(shape.getShape().TShape().get() << ", " << shape.getShape().HashCode(max));
 #else
             FC_MSG(shape.getShape().TShape().get()
                    << ", " << std::hash<TopoDS_Shape> {}(shape.getShape()));
@@ -2736,7 +2740,8 @@ public:
         for (int i = 1; i <= wireData->NbEdges(); ++i) {
             auto shape = wireData->Edge(i);
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.TShape().get() << ", " << shape.HashCode(INT_MAX));
+            constexpr int max = std::numeric_limits<int>::max();
+            FC_MSG(shape.TShape().get() << ", " << shape.HashCode(max));
 #else
             FC_MSG(shape.TShape().get() << ", " << std::hash<TopoDS_Edge> {}(shape));
 #endif
@@ -2800,9 +2805,10 @@ public:
         for (TopTools_ListIteratorOfListOfShape it(hist->Modified(shape.getShape())); it.More();
              it.Next()) {
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.getShape().TShape().get()
-                   << ", " << shape.getShape().HashCode(INT_MAX) << " -> "
-                   << it.Value().TShape().get() << ", " << it.Value().HashCode(INT_MAX));
+                constexpr int max = std::numeric_limits<int>::max();
+                FC_MSG(shape.getShape().TShape().get()
+                   << ", " << shape.getShape().HashCode(max) << " -> "
+                   << it.Value().TShape().get() << ", " << it.Value().HashCode(max));
 #else
             FC_MSG(shape.getShape().TShape().get()
                    << ", " << std::hash<TopoDS_Shape> {}(shape.getShape()) << " -> "

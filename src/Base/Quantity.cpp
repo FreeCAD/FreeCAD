@@ -22,9 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#define _USE_MATH_DEFINES
-#include <cmath>
 #include <array>
+#include <cmath>
+#include <limits>
+#include <numbers>
 #endif
 
 #include <fmt/format.h>
@@ -443,8 +444,8 @@ const Quantity Quantity::AngSecond(1.0 / 3600.0, Unit(0, 0, 0, 0, 0, 0, 0, 1)); 
 const Quantity
     Quantity::Degree(1.0,
                      Unit(0, 0, 0, 0, 0, 0, 0, 1));  // degree         (internal standard angle)
-const Quantity Quantity::Radian(180 / M_PI, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // radian
-const Quantity Quantity::Gon(360.0 / 400.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // gon
+const Quantity Quantity::Radian(180 / std::numbers::pi, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // radian
+const Quantity Quantity::Gon(360.0 / 400.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));              // gon
 
 
 // === Parser & Scanner stuff ===============================================
@@ -522,14 +523,14 @@ namespace QuantityParser
 #define yylex QuantityLexer
 int QuantityLexer();
 
-// Parser, defined in QuantityParser.y
+// Parser, defined in Quantity.y
 // NOLINTNEXTLINE
-#include "QuantityParser.c"
+#include "Quantity.tab.c"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in QuantityParser.l
+// Scanner, defined in Quantity.l
 // NOLINTNEXTLINE
-#include "QuantityLexer.c"
+#include "Quantity.lex.c"
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 class StringBufferCleaner
@@ -568,7 +569,7 @@ Quantity Quantity::parse(const std::string& string)
         QuantityParser::yy_scan_string(string.c_str());
     QuantityParser::StringBufferCleaner cleaner(my_string_buffer);
     // set the global return variables
-    QuantResult = Quantity(DOUBLE_MIN);
+    QuantResult = Quantity(std::numeric_limits<double>::min());
     // run the parser
     QuantityParser::yyparse();
 

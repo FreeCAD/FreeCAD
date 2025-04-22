@@ -658,7 +658,7 @@ Py::Object View3DInventorPy::viewRotateLeft()
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, (float)M_PI/2);
+      SbRotation nrot(vdir, (float)std::numbers::pi/2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -681,7 +681,7 @@ Py::Object View3DInventorPy::viewRotateRight()
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, (float)-M_PI/2);
+      SbRotation nrot(vdir, (float)-std::numbers::pi/2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -2135,6 +2135,9 @@ Py::Object View3DInventorPy::getSceneGraph()
 {
     try {
         SoNode* scene = getView3DInventorPtr()->getViewer()->getSceneGraph();
+        if (scene == nullptr) {
+            return Py::None();
+        }
         PyObject* proxy = nullptr;
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", static_cast<void*>(scene), 1);
         scene->ref();

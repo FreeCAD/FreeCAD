@@ -20,41 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-/*!
-\defgroup Document Document
-\ingroup APP
-\brief The Base class of the FreeCAD Document
-
-This (besides the App::Application class) is the most important class in FreeCAD.
-It contains all the data of the opened, saved, or newly created FreeCAD Document.
-The App::Document manages the Undo and Redo mechanism and the linking of documents.
-
-\namespace App \class App::Document
-This is besides the Application class the most important class in FreeCAD
-It contains all the data of the opened, saved or newly created FreeCAD Document.
-The Document manage the Undo and Redo mechanism and the linking of documents.
-
-Note: the documents are not free objects. They are completely handled by the
-App::Application. Only the Application can Open or destroy a document.
-
-\section Exception Exception handling
-As the document is the main data structure of FreeCAD we have to take a close
-look at how Exceptions affect the integrity of the App::Document.
-
-\section UndoRedo Undo Redo an Transactions
-Undo Redo handling is one of the major mechanism of a document in terms of
-user friendliness and speed (no one will wait for Undo too long).
-
-\section Dependency Graph and dependency handling
-The FreeCAD document handles the dependencies of its DocumentObjects with
-an adjacence list. This gives the opportunity to calculate the shortest
-recompute path. Also, it enables more complicated dependencies beyond trees.
-
-@see App::Application
-@see App::DocumentObject
-*/
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -1665,9 +1630,9 @@ std::vector<App::DocumentObject*> Document::importObjects(Base::XMLReader& reade
             o->setStatus(App::ObjImporting, true);
             FC_LOG("importing " << o->getFullName());
             if (auto propUUID =
-                    Base::freecad_dynamic_cast<PropertyUUID>(o->getPropertyByName("_ObjectUUID"))) {
+                    freecad_cast<PropertyUUID*>(o->getPropertyByName("_ObjectUUID"))) {
                 auto propSource =
-                    Base::freecad_dynamic_cast<PropertyUUID>(o->getPropertyByName("_SourceUUID"));
+                    freecad_cast<PropertyUUID*>(o->getPropertyByName("_SourceUUID"));
                 if (!propSource) {
                     propSource = static_cast<PropertyUUID*>(
                         o->addDynamicProperty("App::PropertyUUID",
@@ -2474,7 +2439,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             // refresh properties in case the object changes its property list
             obj->getPropertyList(props);
             for (auto prop : props) {
-                auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+                auto link = freecad_cast<PropertyLinkBase*>(prop);
                 int res;
                 std::string errMsg;
                 if (link && (res = link->checkRestore(&errMsg))) {
@@ -4022,7 +3987,7 @@ Document::importLinks(const std::vector<App::DocumentObject*>& objArray)
         propList.clear();
         obj->getPropertyList(propList);
         for (auto prop : propList) {
-            auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+            auto linkProp = freecad_cast<PropertyLinkBase*>(prop);
             if (linkProp && !prop->testStatus(Property::Immutable) && !obj->isReadOnly(prop)) {
                 auto copy = linkProp->CopyOnImportExternal(nameMap);
                 if (copy) {
@@ -4189,13 +4154,26 @@ const std::vector<DocumentObject*>& Document::getObjects() const
     return d->objectArray;
 }
 
-
 std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
 {
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
         if (it->isDerivedFrom(typeId)) {
             Objects.push_back(it);
+        }
+    }
+    return Objects;
+}
+
+std::vector<DocumentObject*> Document::getObjectsOfType(const std::vector<Base::Type>& types) const
+{
+    std::vector<DocumentObject*> Objects;
+    for (auto it : d->objectArray) {
+        for (auto& typeId : types) {
+            if (it->isDerivedFrom(typeId)) {
+                Objects.push_back(it);
+                break; // Prevent adding several times the same object.
+            }
         }
     }
     return Objects;

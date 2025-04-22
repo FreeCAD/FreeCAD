@@ -39,7 +39,6 @@
 
 // standard
 #include <cassert>
-#include <cfloat>
 #include <cmath>
 #include <cstdio>
 #include <fcntl.h>
@@ -51,6 +50,7 @@
 #include <iomanip>
 #include <iostream>
 #include <list>
+#include <limits>
 #include <map>
 #include <queue>
 #include <set>

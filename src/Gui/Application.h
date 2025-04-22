@@ -252,6 +252,9 @@ public:
     void tryClose( QCloseEvent * e );
     //@}
 
+    /// get verbose DPI and style info
+    static void getVerboseDPIStyleInfo(QTextStream& str);
+
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();
     /// return the status bits

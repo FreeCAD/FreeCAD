@@ -327,7 +327,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         // Offset to base plane
         // Find out which direction we need to offset
         double a = sketchVector.GetAngle(pnt);
-        if ((a < -M_PI_2) || (a > M_PI_2))
+        if ((a < -std::numbers::pi/2) || (a > std::numbers::pi/2))
             offset *= -1.0;
 
         std::string Datum = doc->getUniqueObjectName("DatumPlane");
@@ -504,7 +504,7 @@ bool isFeatureMovable(App::DocumentObject* const feat)
             }
         }
 
-        if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+        if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxiliarySpine"))) {
             App::DocumentObject* auxSpine = prop->getValue();
             if (auxSpine && !isFeatureMovable(auxSpine)) {
                 return false;
@@ -557,7 +557,7 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
                     unique_objs.insert(axis);
                 }
             }
-            if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+            if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxiliarySpine"))) {
                 App::DocumentObject* axis = prop->getValue();
                 if (axis && !axis->isDerivedFrom<App::DatumElement>()){
                     unique_objs.insert(axis);

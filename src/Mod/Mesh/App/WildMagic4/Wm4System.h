@@ -23,7 +23,6 @@
 // common standard library headers
 #include <cassert>
 #include <cctype>
-#include <cfloat>
 #include <cmath>
 #include <cstdarg>
 #include <cstddef>

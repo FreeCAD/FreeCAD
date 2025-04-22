@@ -211,10 +211,6 @@ Py::Object DocumentObjectProtectorPy::getattr(const char * attr)
         App::Property* prop = obj->getPropertyByName(attr);
         if (!prop) {
             return Py::PythonExtension<DocumentObjectProtectorPy>::getattr(attr);
-            //std::string s;
-            //std::ostringstream s_out;
-            //s_out << "No such attribute '" << attr << "'";
-            //throw Py::AttributeError(s_out.str());
         }
 
         return Py::asObject(prop->getPyObject());
