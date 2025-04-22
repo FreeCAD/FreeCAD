@@ -263,7 +263,7 @@ void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string
     }
 }
 
-std::string BomObject::getBomPropertyValue(App::DocumentObject* obj, std::string baseName)
+std::string BomObject::getBomPropertyValue(App::DocumentObject* obj, const std::string& baseName)
 {
     App::Property* prop = obj->getPropertyByName(baseName.c_str());
 

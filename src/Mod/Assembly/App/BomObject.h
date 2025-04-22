@@ -96,7 +96,7 @@ public:
     std::vector<App::DocumentObject*> obj_list;
 
 private:
-    std::string getBomPropertyValue(App::DocumentObject* obj, std::string baseName);
+    std::string getBomPropertyValue(App::DocumentObject* obj, const std::string& baseName);
 };
 
 
