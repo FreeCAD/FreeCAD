@@ -276,16 +276,6 @@ std::string BomObject::getBomPropertyValue(App::DocumentObject* obj, const std::
     if (auto propStr = dynamic_cast<App::PropertyString*>(prop)) {
         return propStr->getValue();
     }
-    else if (auto propLength = dynamic_cast<App::PropertyLength*>(prop)) {
-        auto unit = propLength->getUnit().getString();
-        auto value = std::to_string(propLength->getValue());
-        return value + " " + unit;
-    }
-    else if (auto propVolume = dynamic_cast<App::PropertyVolume*>(prop)) {
-        auto unit = propVolume->getUnit().getString();
-        auto value = std::to_string(propVolume->getValue());
-        return value + " " + unit;
-    }
     else if (auto propQuantity = dynamic_cast<App::PropertyQuantity*>(prop)) {
         auto unit = propQuantity->getUnit().getString();
         auto value = std::to_string(propQuantity->getValue());
