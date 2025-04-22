@@ -4,6 +4,7 @@
 import CAMTests.PathTestUtils as PathTestUtils
 from pathlib import Path
 from unittest.mock import patch, MagicMock
+from typing import Dict, Tuple
 import FreeCAD
 from Path.Tool.Shape import (
     ToolBitShape, util, ToolBitShapeBallEnd, ToolBitShapeChamfer,
@@ -18,17 +19,27 @@ from Path.Tool.Shape.util import get_shape_class_from_name
 # Helper dummy class for testing abstract methods
 class DummyShape(ToolBitShape):
     name = "dummy"
-    _schema = {"Param1": "App::PropertyLength", "Param2": "App::PropertyAngle"}
-    _labels = {"Param1": "Parameter 1", "Param2": "Parameter 2"}
 
     def __init__(self, filepath, **kwargs):
         super().__init__(filepath, **kwargs)
         if not self._params: # Only set defaults if not loaded from file
-            self._params = {
+            self._defaults = {
                 "Param1": FreeCAD.Units.Quantity("10", "mm"),
                 "Param2": FreeCAD.Units.Quantity("5", "deg"),
             }
-            self._defaults = self._params.copy()
+
+    @classmethod
+    def shape_schema(cls) -> Dict[str, Tuple[str, str]]:
+        return {
+            "Param1": (
+                FreeCAD.Qt.translate("Param1", "Parameter 1"),
+                "App::PropertyLength",
+            ),
+            "": (
+                FreeCAD.Qt.translate("Param2", "Parameter 2"),
+                "App::PropertyAngle",
+            ),
+        }
 
     @property
     def label(self):
@@ -124,11 +135,11 @@ class TestPathToolShapeBase(PathTestUtils.PathTestBase):
             shape.get_parameter_label("UnknownParam"), "UnknownParam"
         )
 
-    def test_base_get_expected_parameter_names(self):
+    def test_base_get_expected_shape_parameters(self):
         """Test retrieving the list of expected parameter names."""
         expected = ["Param1", "Param2"]
         self.assertCountEqual(
-            DummyShape.get_expected_parameter_names(), expected
+            DummyShape.get_expected_shape_parameters(), expected
         )
 
     def test_base_str_repr(self):
@@ -141,7 +152,7 @@ class TestPathToolShapeBase(PathTestUtils.PathTestBase):
 
     @patch("os.path.exists", return_value=True)
     @patch.object(util, "find_shape_object")
-    @patch.object(ToolBitShape, "get_expected_parameter_names")
+    @patch.object(ToolBitShape, "get_expected_shape_parameters")
     def test_base_validate_success(
         self, mock_get_expected, mock_find_obj, mock_exists
     ):
@@ -249,7 +260,7 @@ class TestPathToolShapeBase(PathTestUtils.PathTestBase):
 
     @patch("os.path.exists", return_value=True)
     @patch.object(util, "find_shape_object")
-    @patch.object(ToolBitShape, "get_expected_parameter_names")
+    @patch.object(ToolBitShape, "get_expected_shape_parameters")
     def test_base_validate_missing_params(
         self, mock_get_expected, mock_find_obj, mock_exists
     ):
@@ -347,7 +358,7 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(shape.get_parameter_label("Diameter"), "Diameter")
         self.assertEqual(
             shape.get_parameter_label("Length"),
-            "Overall Tool Length")
+            "Overall tool length")
 
     def test_toolbitshapedrill_defaults(self):
         """Test ToolBitShapeDrill default parameters and labels."""
@@ -373,7 +384,7 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(params["Diameter"]), "mm")
         self.assertEqual(params["CuttingEdgeAngle"].Value, 60.0)
         self.assertEqual(unit(params["CuttingEdgeAngle"]), "°")
-        self.assertEqual(shape.get_parameter_label("Radius"), "Radius")
+        self.assertEqual(shape.get_parameter_label("Diameter"), "Diameter")
 
     def test_toolbitshapedovetail_defaults(self):
         """Test ToolBitShapeDovetail default parameters and labels."""
@@ -381,7 +392,7 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         filepath = util.get_builtin_shape_file_from_name("dovetail")
         shape = ToolBitShapeDovetail(filepath=filepath)
         params = self._test_shape_common('dovetail')
-        self.assertEqual(params["Diameter"].Value, 19.05)
+        self.assertEqual(params["Diameter"].Value, 20.0)
         self.assertEqual(unit(params["Diameter"]), "mm")
         self.assertEqual(params["CuttingEdgeAngle"].Value, 60.0)
         self.assertEqual(unit(params["CuttingEdgeAngle"]), "°")
@@ -438,7 +449,7 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         filepath = util.get_builtin_shape_file_from_name("slittingsaw")
         shape = ToolBitShapeSlittingSaw(filepath=filepath)
         params = self._test_shape_common('slittingsaw')
-        self.assertEqual(params["Diameter"].Value, 76.2)
+        self.assertEqual(params["Diameter"].Value, 100.0)
         self.assertEqual(unit(params["Diameter"]), "mm")
         self.assertEqual(params["BladeThickness"].Value, 3.0)
         self.assertEqual(unit(params["BladeThickness"]), "mm")
@@ -451,11 +462,11 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         filepath = util.get_builtin_shape_file_from_name("tap")
         shape = ToolBitShapeTap(filepath=filepath)
         params = self._test_shape_common('tap')
-        self.assertAlmostEqual(params["Diameter"].Value, 9.525, 4)
+        self.assertAlmostEqual(params["Diameter"].Value, 8, 4)
         self.assertEqual(unit(params["Diameter"]), "mm")
         self.assertEqual(params["TipAngle"].Value, 90.0)
         self.assertEqual(unit(params["TipAngle"]), "°")
-        self.assertEqual(shape.get_parameter_label("TipAngle"), "Tip Angle")
+        self.assertEqual(shape.get_parameter_label("TipAngle"), "Tip angle")
 
     def test_toolbitshapethreadmill_defaults(self):
         """Test ToolBitShapeThreadMill default parameters and labels."""

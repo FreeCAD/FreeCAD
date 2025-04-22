@@ -2,6 +2,7 @@
 # Utility functions for working with ToolBitShape definitions in FCStd files.
 
 import FreeCAD
+import Path.Base.Util as PathUtil
 from typing import Dict, List, Any, Optional
 import tempfile
 import os
@@ -99,7 +100,7 @@ def update_shape_object_properties(
     for name, value in parameters.items():
         if hasattr(obj, name):
             try:
-                setattr(obj, name, value)
+                PathUtil.setProperty(obj, name, value)
             except Exception as e:
                 FreeCAD.Console.PrintWarning(
                     f"Failed to set property '{name}' on object '{obj.Label}'"

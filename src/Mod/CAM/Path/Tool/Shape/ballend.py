@@ -2,34 +2,53 @@
 # Defines the BallEnd tool bit shape.
 
 import FreeCAD
-from typing import Tuple
+from typing import Union, Tuple, Mapping, Any
 from .base import ToolBitShape
 
 
 class ToolBitShapeBallEnd(ToolBitShape):
     name: str = "ballend"
-    _schema = {
-        "CuttingEdgeHeight": "App::PropertyLength",
-        "Diameter": "App::PropertyLength",
-        "Length": "App::PropertyLength",
-        "ShankDiameter": "App::PropertyLength",
-    }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self._labels = {
-            "CuttingEdgeHeight": FreeCAD.Qt.translate(
-                "ToolBitShapeBallEnd", "Cutting edge height"
+    @classmethod
+    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+        return {
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                "App::PropertyLength",
             ),
-            "Diameter": FreeCAD.Qt.translate("ToolBitShapeBallEnd", "Diameter"),
-            "Length": FreeCAD.Qt.translate(
-                "ToolBitShapeBallEnd", "Overall Tool Length"
+            "Diameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                "App::PropertyLength",
             ),
-            "ShankDiameter": FreeCAD.Qt.translate(
-                "ToolBitShapeBallEnd", "Shank diameter"
+            "Flutes": (
+                FreeCAD.Qt.translate("ToolBitShape", "Flutes"),
+                "App::PropertyInteger",
+            ),
+            "Length": (
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                "App::PropertyLength",
+            ),
+            "ShankDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                "App::PropertyLength",
+            ),
+        }
+
+    @classmethod
+    def feature_schema(
+        cls,
+    ) -> Mapping[
+        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
+    ]:
+        return {
+            **super(ToolBitShapeBallEnd, cls).feature_schema(),
+            "Chipload": (
+                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
+                "App::PropertyLength",
+                0.0,  # Default value
             ),
         }
 
     @property
     def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShapeBallEnd", "Ballend")
+        return FreeCAD.Qt.translate("ToolBitShape", "Ballend")
