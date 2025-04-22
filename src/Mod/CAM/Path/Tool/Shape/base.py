@@ -316,13 +316,8 @@ class ToolBitShape(abc.ABC):
             # Recompute the document to apply property changes
             tmp_doc.recompute()
 
-            # Copy the body to the given document.
-            doc.openTransaction("Create ToolBit Shape")
-            body = doc.copyObject(shape, True)
-            #copied_obj = tmp_doc.copyObject(shape, False)
-            #doc.addObject(copied_obj.Name)
-            doc.commitTransaction()
-            return body
+            # Copy the body to the given document without immediate compute.
+            return doc.copyObject(shape, True)
 
     def can_rotate(self) -> bool:
         """
