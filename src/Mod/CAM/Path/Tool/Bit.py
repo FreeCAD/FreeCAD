@@ -64,6 +64,7 @@ if True:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+
 def _findToolFile(name, containerFile, typ) -> Optional[str]:
     Path.Log.track(name)
     if os.path.exists(name):  # absolute reference
@@ -94,10 +95,12 @@ def _findToolFile(name, containerFile, typ) -> Optional[str]:
             return path
     return None
 
+
 def findToolShape(name, path=None) -> Optional[str]:
     """findToolShape(name, path) ... search for name, if relative path look in path"""
     Path.Log.track(name, path)
     return _findToolFile(name, path, "Shape")
+
 
 def findToolBit(name, path=None):
     """findToolBit(name, path) ... search for name, if relative path look in path"""
@@ -106,6 +109,7 @@ def findToolBit(name, path=None):
         return _findToolFile(name, path, "Bit")
     return _findToolFile("{}.fctb".format(name), path, "Bit")
 
+
 # Only used in ToolBit unit test module: TestPathToolBit.py
 def findToolLibrary(name, path=None):
     """findToolLibrary(name, path) ... search for name, if relative path look in path"""
@@ -113,6 +117,7 @@ def findToolLibrary(name, path=None):
     if name.endswith(".fctl"):
         return _findToolFile(name, path, "Library")
     return _findToolFile("{}.fctl".format(name), path, "Library")
+
 
 def _findRelativePath(path, typ):
     Path.Log.track(path, typ)
@@ -126,14 +131,13 @@ def _findRelativePath(path, typ):
                 relative = p
     return relative
 
+
 def findRelativePathLibrary(path):
     return _findRelativePath(path, "Library")
 
+
 class ToolBit(object):
-    def __init__(self,
-                 obj,
-                 tool_bit_shape: ToolBitShape,
-                 path: Optional[pathlib.Path]=None):
+    def __init__(self, obj, tool_bit_shape: ToolBitShape, path: Optional[pathlib.Path] = None):
         Path.Log.track(obj.Label, tool_bit_shape.label, path)
         self.obj = obj
         self._tool_bit_shape = tool_bit_shape
@@ -177,7 +181,9 @@ class ToolBit(object):
                 "App::PropertyLink",
                 "BitBody",
                 "Base",
-                QT_TRANSLATE_NOOP("App::Property", "The parametrized body representing the tool bit"),
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "The parametrized body representing the tool bit"
+                ),
             )
         if not hasattr(obj, "File"):
             obj.addProperty(
@@ -202,7 +208,9 @@ class ToolBit(object):
         Ensure obj.ShapeName is set even for legacy tools
         """
         if not hasattr(obj, "BitShape"):  # not a legacy tool
-            assert get_shape_class_from_name(obj.ShapeName), "ToolBit requires a valid ShapeName attribute"
+            assert get_shape_class_from_name(
+                obj.ShapeName
+            ), "ToolBit requires a valid ShapeName attribute"
             return
 
         shape_file_legacy = obj.BitShape
@@ -214,10 +222,8 @@ class ToolBit(object):
                     f"legacy tool bit has no ShapeName: {obj.Label}. Inferring {inferred_shape_name}"
                 )
             else:
-                Path.Log.warning(
-                    f"legacy tool bit has no ShapeName: {obj.Label}. Assuming endmill"
-                )
-                shape_name = 'endmill'
+                Path.Log.warning(f"legacy tool bit has no ShapeName: {obj.Label}. Assuming endmill")
+                shape_name = "endmill"
         obj.ShapeName = shape_name
 
         # Determine the new ShapeFile value
@@ -226,8 +232,7 @@ class ToolBit(object):
         if inferred_shape_name:
             obj.ShapeFile = ""
             Path.Log.debug(
-                f"Legacy BitShape '{shape_file_legacy}' is built-in. "
-                "Setting ShapeFile to empty."
+                f"Legacy BitShape '{shape_file_legacy}' is built-in. " "Setting ShapeFile to empty."
             )
         else:
             obj.ShapeFile = shape_file_legacy
@@ -244,15 +249,13 @@ class ToolBit(object):
         and ShapeName.
         """
         Path.Log.track(obj.Label)
-        Path.Log.info(
-            f"Promoting tool bit {obj.Label} ({obj.ShapeName}) from v1 to v2"
-        )
+        Path.Log.info(f"Promoting tool bit {obj.Label} ({obj.ShapeName}) from v1 to v2")
 
         # Update SpindleDirection:
         # Old tools may still have "CCW", "CW", "Off", "None".
         # New tools use "None", "Forward", "Reverse".
         old_direction = obj.SpindleDirection
-        normalized_direction = "None" # Default to None
+        normalized_direction = "None"  # Default to None
 
         if isinstance(old_direction, str):
             lower_direction = old_direction.lower()
@@ -285,13 +288,13 @@ class ToolBit(object):
 
         # Move properties that are part of the shape schema to the "Shape" group
         for prop_name in obj.PropertiesList:
-            if obj.getGroupOfProperty(prop_name) == PropertyGroupShape \
-                or prop_name not in shape_schema_props:
+            if (
+                obj.getGroupOfProperty(prop_name) == PropertyGroupShape
+                or prop_name not in shape_schema_props
+            ):
                 continue
             try:
-                Path.Log.debug(
-                    f"Moving property '{prop_name}' to group '{PropertyGroupShape}'"
-                )
+                Path.Log.debug(f"Moving property '{prop_name}' to group '{PropertyGroupShape}'")
 
                 # Get property details before removing
                 prop_type = obj.getTypeIdOfProperty(prop_name)
@@ -305,9 +308,7 @@ class ToolBit(object):
                 obj.addProperty(prop_type, prop_name, PropertyGroupShape, prop_doc)
                 self._in_update = True  # Prevent onChanged from running
                 PathUtil.setProperty(obj, prop_name, prop_value)
-                Path.Log.info(
-                    f"Moved property '{prop_name}' to group '{PropertyGroupShape}'"
-                )
+                Path.Log.info(f"Moved property '{prop_name}' to group '{PropertyGroupShape}'")
             except Exception as e:
                 Path.Log.error(
                     f"Failed to move property '{prop_name}' to group '{PropertyGroupShape}': {e}"
@@ -327,8 +328,8 @@ class ToolBit(object):
         self._create_base_properties(obj)
         self._ensure_shape_name(obj)
 
-        obj.setEditorMode('ShapeName', 1)
-        obj.setEditorMode('ShapeFile', 1)
+        obj.setEditorMode("ShapeName", 1)
+        obj.setEditorMode("ShapeFile", 1)
         obj.setEditorMode("BitBody", 2)
         obj.setEditorMode("File", 1)
         obj.setEditorMode("Shape", 2)
@@ -345,7 +346,9 @@ class ToolBit(object):
         # and its properties.
         # Only re-initialize properties from shape if not restoring from file
         if obj.BitBody and obj.BitBody.Document != obj.Document:
-            Path.Log.debug(f"onDocumentRestored: Re-initializing BitBody for {obj.Label} after copy")
+            Path.Log.debug(
+                f"onDocumentRestored: Re-initializing BitBody for {obj.Label} after copy"
+            )
             self._update_visual_representation(obj)
 
         # Ensure the correct ViewProvider is attached during document restore,
@@ -371,7 +374,7 @@ class ToolBit(object):
         if "Restore" in obj.State:
             return
 
-        if hasattr(self, '_in_update') and self._in_update:
+        if hasattr(self, "_in_update") and self._in_update:
             Path.Log.debug(f"Skipping onChanged for {obj.Label} due to active update.")
             return
 
@@ -446,7 +449,7 @@ class ToolBit(object):
         obj.setEditorMode(prop, 1)
         PathUtil.setProperty(obj, prop, val)
 
-    def _get_props(self, obj, group: Optional[Union[str, Tuple[str, ...]]]=None) -> List[str]:
+    def _get_props(self, obj, group: Optional[Union[str, Tuple[str, ...]]] = None) -> List[str]:
         """
         Returns a list of property names from the given group(s) for the object.
         Returns all groups if the group argument is None.
@@ -522,9 +525,7 @@ class ToolBit(object):
                     except Exception as e:
                         Path.Log.error(f"Failed removing property '{group}.{name}': {e}")
             else:
-                 Path.Log.warning(
-                     f"'{group}.{name}' failed to remove property, not found"
-                 )
+                Path.Log.warning(f"'{group}.{name}' failed to remove property, not found")
 
     def _update_tool_properties(self, obj):
         """
@@ -553,7 +554,7 @@ class ToolBit(object):
             # Add new property
             if not hasattr(obj, name):
                 obj.addProperty(prop_type, name, "Shape", docstring)
-                PathUtil.setProperty(obj, name, value) # Set to default value
+                PathUtil.setProperty(obj, name, value)  # Set to default value
                 Path.Log.debug(f"Added new shape property: {name}")
 
             # Ensure editor mode is correct
@@ -576,9 +577,9 @@ class ToolBit(object):
             # Add new property
             if not hasattr(obj, name):
                 obj.addProperty(prop_type, name, "Attributes", docstring)
-                if prop_type == 'App::PropertyEnumeration' and len(item) == 4:
+                if prop_type == "App::PropertyEnumeration" and len(item) == 4:
                     setattr(obj, name, item[3])
-                PathUtil.setProperty(obj, name, value) # Set to default value
+                PathUtil.setProperty(obj, name, value)  # Set to default value
                 Path.Log.debug(f"Added new feature property: {name}")
 
             # Ensure editor mode is correct
@@ -588,7 +589,7 @@ class ToolBit(object):
             if hasattr(obj, "SpindleDirection"):
                 if not self._tool_bit_shape.can_rotate():
                     obj.SpindleDirection = "None"
-                    obj.setEditorMode("SpindleDirection", 2) # Read-only
+                    obj.setEditorMode("SpindleDirection", 2)  # Read-only
 
         # 4. Remove obsolete feature properties
         # These are properties currently listed AND in the Shape group,
@@ -616,10 +617,10 @@ class ToolBit(object):
 
             # Assign the created object to BitBody and copy its shape
             obj.BitBody = body
-            obj.Shape = obj.BitBody.Shape # Copy the evaluated Solid shape
+            obj.Shape = obj.BitBody.Shape  # Copy the evaluated Solid shape
 
             # Hide the visual representation and remove from tree
-            if hasattr(obj.BitBody, 'ViewObject') and obj.BitBody.ViewObject:
+            if hasattr(obj.BitBody, "ViewObject") and obj.BitBody.ViewObject:
                 obj.BitBody.ViewObject.Visibility = False
                 obj.BitBody.ViewObject.ShowInTree = False
 
@@ -646,10 +647,12 @@ class ToolBit(object):
             attrs["shape"] = ""
             attrs["parameter"] = {}
 
-        attrs["parameter"].update({
-            name: PathUtil.getPropertyValueString(obj, name)
-            for name in self._get_props(obj, "Attributes")
-        })
+        attrs["parameter"].update(
+            {
+                name: PathUtil.getPropertyValueString(obj, name)
+                for name in self._get_props(obj, "Attributes")
+            }
+        )
 
         attrs["attribute"] = {}
         return attrs
@@ -661,7 +664,7 @@ class ToolBit(object):
 
         # Otherwise use power from defined attribute.
         if hasattr(obj, "SpindleDirection") and obj.SpindleDirection is not None:
-            if obj.SpindleDirection.lower() in ('cw', 'forward'):
+            if obj.SpindleDirection.lower() in ("cw", "forward"):
                 return toolchange.SpindleDirection.CW
             else:
                 return toolchange.SpindleDirection.CCW
@@ -686,7 +689,7 @@ class ToolBitFactory(object):
         Path.Log.track(attrs, name, path, shape_path, document)
         document = document if document else FreeCAD.ActiveDocument
         if not document:
-            raise Exception('no open document found')
+            raise Exception("no open document found")
 
         shape_name = os.path.splitext(attrs.get("shape"))[0]
         params_dict = attrs.get("parameter", {})
@@ -695,9 +698,7 @@ class ToolBitFactory(object):
         try:
             # Use the utility function to get the shape instance.
             # The file path is now stored within the instance itself.
-            tool_bit_shape = get_shape_from_name(
-                shape_name, shape_path, params_dict
-            )
+            tool_bit_shape = get_shape_from_name(shape_name, shape_path, params_dict)
         except Exception as e:
             Path.Log.error(
                 f"Failed to create shape from attributes for '{shape_name}': {e}."
@@ -750,7 +751,9 @@ class ToolBitFactory(object):
         # shape type.
         shape_name = get_shape_name_from_basename(shape_path or "endmill.fcstd")
         if not shape_name:
-            Path.Log.error(f"cannot infer tool type from shape filename {shape_path}. assuming endmill")
+            Path.Log.error(
+                f"cannot infer tool type from shape filename {shape_path}. assuming endmill"
+            )
             shape_name = "endmill"
         else:
             shape_path = None
@@ -764,5 +767,6 @@ class ToolBitFactory(object):
 
         # Use CreateFromAttrs to create the tool bit
         return self.CreateFromAttrs(attrs, shape_path=shape_path, path=path)
+
 
 Factory = ToolBitFactory()

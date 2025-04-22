@@ -54,9 +54,7 @@ class ToolBitShape(abc.ABC):
             self.set_parameter(param, value)
 
     def __str__(self):
-        params_str = ", ".join(
-            f"{name}={val}" for name, val in self._params.items()
-        )
+        params_str = ", ".join(f"{name}={val}" for name, val in self._params.items())
         return f"{self.name}({params_str})"
 
     def __repr__(self):
@@ -76,8 +74,9 @@ class ToolBitShape(abc.ABC):
         raise NotImplementedError
 
     @classmethod
-    def feature_schema(cls) -> Mapping[str, Union[Tuple[str, str, Any],
-                                                  Tuple[str, str, Any, Tuple[str, ...]]]]:
+    def feature_schema(
+        cls,
+    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
         """
         This schema defines any properties that the tool supports and
         that are not part of the shape file.
@@ -90,21 +89,21 @@ class ToolBitShape(abc.ABC):
             "SpindleDirection": (
                 FreeCAD.Qt.translate("ToolBitShape", "Direction of spindle rotation"),
                 "App::PropertyEnumeration",
-                "Forward",   # Default value
-                ("Forward", "Reverse", "None")
+                "Forward",  # Default value
+                ("Forward", "Reverse", "None"),
             ),
             "Material": (
                 FreeCAD.Qt.translate("ToolBitShape", "Tool material"),
                 "App::PropertyEnumeration",
-                "HSS",   # Default value
-                ("HSS", "Carbide")
+                "HSS",  # Default value
+                ("HSS", "Carbide"),
             ),
         }
 
     @classmethod
     def schema(cls) -> Mapping[str, Union[Tuple[str, str], Tuple[str, str, Tuple[str, ...]]]]:
         feature: Dict[str, Union[Tuple[str, str], Tuple[str, str, Tuple[str, ...]]]] = {}
-        
+
         for name, value in cls.feature_schema().items():
             if len(value) == 2:
                 # Case: (description, property_type)
@@ -117,7 +116,7 @@ class ToolBitShape(abc.ABC):
                 # Case: (description, property_type, default_value, options)
                 # We keep description, property_type and options
                 feature[name] = (value[0], value[1], cast(Tuple[str, ...], value[3]))
-        
+
         # Combine with shape_schema
         return {**cls.shape_schema(), **feature}
 
@@ -202,9 +201,7 @@ class ToolBitShape(abc.ABC):
             try:
                 self.set_parameter(name, value)
             except KeyError:
-                Path.Log.debug(
-                    f"Ignoring unknown parameter '{name}' for shape '{self.name}'.\n"
-                )
+                Path.Log.debug(f"Ignoring unknown parameter '{name}' for shape '{self.name}'.\n")
 
     @classmethod
     def get_expected_shape_parameters(cls) -> List[str]:
@@ -236,38 +233,41 @@ class ToolBitShape(abc.ABC):
         try:
             if not filepath.exists():
                 err = f"Validation Error: File not found: {filepath}"
-                FreeCAD.Console.PrintError(err+"\n")
+                FreeCAD.Console.PrintError(err + "\n")
                 return err
 
             doc = FreeCAD.openDocument(str(filepath), hidden=True)
             if not doc:
                 err = f"Validation Error: Failed to open document: {filepath}"
-                FreeCAD.Console.PrintError(err+"\n")
+                FreeCAD.Console.PrintError(err + "\n")
                 return err
 
             property_obj = find_property_object(doc)
             if not property_obj:
                 err = f"Validation Error: No suitable property_obj object found in {filepath}"
-                FreeCAD.Console.PrintError(err+"\n")
+                FreeCAD.Console.PrintError(err + "\n")
                 return err
 
             expected_params = cls.get_expected_shape_parameters()
             loaded_params = get_object_properties(property_obj, expected_params)
 
             missing_params = [
-                name for name in expected_params
+                name
+                for name in expected_params
                 if name not in loaded_params or loaded_params[name] is None
             ]
 
             if missing_params:
-                err = f"Validation Warning: Object '{property_obj.Label}' in {filepath} " \
+                err = (
+                    f"Validation Warning: Object '{property_obj.Label}' in {filepath} "
                     + f"is missing parameters for {cls.__name__}: {', '.join(missing_params)}"
-                FreeCAD.Console.PrintError(err+"\n")
+                )
+                FreeCAD.Console.PrintError(err + "\n")
                 return err
 
         except Exception as e:
             err = f"Validation Error for {filepath}: {e}"
-            FreeCAD.Console.PrintError(err+"\n")
+            FreeCAD.Console.PrintError(err + "\n")
             return err
         finally:
             # Ensure the temporary document is closed
@@ -290,7 +290,7 @@ class ToolBitShape(abc.ABC):
             Exception: For other potential FreeCAD errors during loading.
         """
         temp_doc = None
-        original_doc_state = get_doc_state() # Save the current document state
+        original_doc_state = get_doc_state()  # Save the current document state
         try:
             # Open the shape file in a temporary hidden document to extract parameters
             temp_doc = FreeCAD.openDocument(str(filepath), hidden=True)
@@ -300,9 +300,7 @@ class ToolBitShape(abc.ABC):
             # Find the object holding the parameters (usually "Attributes" PropertyBag)
             props_obj = find_property_object(temp_doc)
             if not props_obj:
-                raise ValueError(
-                    f"No 'Attributes' PropertyBag object found in {filepath}"
-                )
+                raise ValueError(f"No 'Attributes' PropertyBag object found in {filepath}")
 
             # Get properties based on the class schema from the properties object
             expected_params = self.get_expected_shape_parameters()
@@ -316,10 +314,10 @@ class ToolBitShape(abc.ABC):
 
             # Close the temporary document as we don't need it open anymore
             FreeCAD.closeDocument(temp_doc.Name)
-            temp_doc = None # Ensure temp_doc is None in finally block
+            temp_doc = None  # Ensure temp_doc is None in finally block
 
             # Read the raw file content for caching
-            with open(filepath, 'rb') as f:
+            with open(filepath, "rb") as f:
                 self._cache = f.read()
 
             # Store the path
@@ -334,11 +332,11 @@ class ToolBitShape(abc.ABC):
             # Catch other potential FreeCAD or OS errors
             raise RuntimeError(f"Failed to load shape from {filepath}: {e}")
         finally:
-             # Ensure the temporary document is closed if it was opened
-             if temp_doc:
-                  FreeCAD.closeDocument(temp_doc.Name)
-             # Restore the original document state
-             restore_doc_state(original_doc_state)
+            # Ensure the temporary document is closed if it was opened
+            if temp_doc:
+                FreeCAD.closeDocument(temp_doc.Name)
+            # Restore the original document state
+            restore_doc_state(original_doc_state)
 
     def make_body(self, doc: "FreeCAD.Document"):
         """
@@ -350,16 +348,14 @@ class ToolBitShape(abc.ABC):
             shape = find_shape_object(tmp_doc)
             if not shape:
                 FreeCAD.Console.PrintWarning(
-                    "No suitable shape object found in document. "
-                    "Cannot create solid shape.\n"
+                    "No suitable shape object found in document. " "Cannot create solid shape.\n"
                 )
                 return None
 
             props = find_property_object(tmp_doc)
             if not props:
                 FreeCAD.Console.PrintWarning(
-                    "No suitable shape object found in document. "
-                    "Cannot create solid shape.\n"
+                    "No suitable shape object found in document. " "Cannot create solid shape.\n"
                 )
                 return None
 

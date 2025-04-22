@@ -49,9 +49,7 @@ class ToolBitShapeSlittingSaw(ToolBitShape):
     @classmethod
     def feature_schema(
         cls,
-    ) -> Mapping[
-        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
-    ]:
+    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
         return {
             **super(ToolBitShapeSlittingSaw, cls).feature_schema(),
             "Chipload": (
