@@ -108,9 +108,9 @@ def update_shape_object_properties(
                 )
         else:
             FreeCAD.Console.PrintWarning(
-                f"Property '{name}' not found on object '{obj.Label}'"
-                f" ({obj.Name}). Skipping.\n"
+                f"Property '{name}' not found on object '{obj.Label}'" f" ({obj.Name}). Skipping.\n"
             )
+
 
 def get_doc_state() -> Any:
     """
@@ -120,6 +120,7 @@ def get_doc_state() -> Any:
     doc_name = FreeCAD.ActiveDocument.Name if FreeCAD.ActiveDocument else None
     if FreeCAD.GuiUp:
         import FreeCADGui
+
         selection = FreeCADGui.Selection.getSelection()
     else:
         selection = []
@@ -132,16 +133,17 @@ def restore_doc_state(state):
         FreeCAD.setActiveDocument(doc_name)
     if FreeCAD.GuiUp:
         import FreeCADGui
+
         for sel in selection:
-            FreeCADGui.Selection.addSelection(
-                doc_name, sel.Name
-            )
+            FreeCADGui.Selection.addSelection(doc_name, sel.Name)
+
 
 class ShapeDocFromBytes:
     """
     Context manager to create and manage a temporary FreeCAD document,
     loading content from a byte string.
     """
+
     def __init__(self, content: bytes):
         self._content = content
         self._doc = None
@@ -151,9 +153,7 @@ class ShapeDocFromBytes:
     def __enter__(self) -> "FreeCAD.Document":
         """Creates a new temporary FreeCAD document or loads cache if provided."""
         # Create a temporary file and write the cache content to it
-        with tempfile.NamedTemporaryFile(
-            suffix=".FCStd", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(suffix=".FCStd", delete=False) as tmp_file:
             tmp_file.write(self._content)
             self._temp_file = tmp_file.name
 

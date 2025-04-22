@@ -45,16 +45,13 @@ class TestPathToolShapeUtil(unittest.TestCase):
 
     def test_get_shape_class(self):
         """Test the get_shape_class function."""
+        self.assertEqual(util.get_shape_class_from_name("ballend"), ToolBitShapeBallEnd)
+        self.assertEqual(util.get_shape_class_from_name("v-bit"), ToolBitShapeVBit)
         self.assertEqual(
-            util.get_shape_class_from_name("ballend"),
-            ToolBitShapeBallEnd)
-        self.assertEqual(
-            util.get_shape_class_from_name("v-bit"),
-            ToolBitShapeVBit)
-        self.assertEqual(
-            util.get_shape_class_from_name("vbit"),  # test using alias
-            ToolBitShapeVBit)
+            util.get_shape_class_from_name("vbit"), ToolBitShapeVBit  # test using alias
+        )
         self.assertIsNone(util.get_shape_class_from_name("nonexistent"))
+
 
 # Test execution
 if __name__ == "__main__":

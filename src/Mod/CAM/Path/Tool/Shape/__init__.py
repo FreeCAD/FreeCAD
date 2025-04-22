@@ -19,9 +19,7 @@ from .bullnose import ToolBitShapeBullnose
 from .vbit import ToolBitShapeVBit
 
 # A list of the name of each ToolBitShape
-TOOL_BIT_SHAPE_NAMES = sorted(
-    [cls.name for cls in ToolBitShape.__subclasses__()]
-)
+TOOL_BIT_SHAPE_NAMES = sorted([cls.name for cls in ToolBitShape.__subclasses__()])
 
 # Define __all__ for explicit public interface
 __all__ = [
