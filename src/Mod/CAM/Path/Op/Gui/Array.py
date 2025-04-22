@@ -206,6 +206,8 @@ class ObjectArray:
 
         self.setEditorModes(obj)
 
+        self.FirstRun = True
+
     def execute(self, obj):
         if FreeCAD.GuiUp and self.FirstRun:
             self.FirstRun = False
