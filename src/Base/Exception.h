@@ -67,7 +67,8 @@ using PyObject = struct _object;  // NOLINT
 
 /*
 #define THROWM(exc, msg) Base::setupAndThrowException<exc>((msg), std::source_location::current());
-#define THROWMT(exc, msg) Base::setupAndThrowException<exc>((msg), std::source_location::current(), true);
+#define THROWMT(exc, msg) Base::setupAndThrowException<exc>((msg), std::source_location::current(),
+true);
 #define FC_THROWM(_exception, _msg)                                                                \
     do {                                                                                           \
         std::stringstream ss;                                                                      \
@@ -83,10 +84,10 @@ namespace Base
 {
 template<typename ExceptionType>
 void setupAndThrowException(const std::string message,
-           const char* file,
-           const int line,
-           const char* func,
-           const bool translatable = false)
+                            const char* file,
+                            const int line,
+                            const char* func,
+                            const bool translatable = false)
 {
     ExceptionType exception {message};
     exception.setTranslatable(translatable);
