@@ -56,7 +56,7 @@ int CosmeticVertexPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* CosmeticVertexPy::clone(PyObject *args)
+PyObject* CosmeticVertexPy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -67,7 +67,7 @@ PyObject* CosmeticVertexPy::clone(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<CosmeticVertexPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of CosmeticVertex");
         return nullptr;
@@ -84,7 +84,7 @@ PyObject* CosmeticVertexPy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* CosmeticVertexPy::copy(PyObject *args)
+PyObject* CosmeticVertexPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -95,7 +95,7 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<CosmeticVertexPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of CosmeticVertex");
         return nullptr;

@@ -178,7 +178,7 @@ int ExtensionContainerPy::setCustomAttributes(const char* /*attr*/, PyObject* /*
     return 0;
 }
 
-PyObject* ExtensionContainerPy::hasExtension(PyObject* args)
+PyObject* ExtensionContainerPy::hasExtension(PyObject* args) const
 {
 
     char* type;

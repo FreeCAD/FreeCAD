@@ -62,6 +62,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkSketchBaseRefine->onSave();
     ui->checkObjectNaming->onSave();
     ui->checkAllowCompoundBody->onSave();
+    ui->comboDefaultProfileTypeForHole->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -71,6 +72,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkSketchBaseRefine->onRestore();
     ui->checkObjectNaming->onRestore();
     ui->checkAllowCompoundBody->onRestore();
+    ui->comboDefaultProfileTypeForHole->onRestore();
 }
 
 /**

@@ -72,7 +72,7 @@ PyObject* CoordinateSystemPy::setAxes(PyObject* args)
     return nullptr;
 }
 
-PyObject* CoordinateSystemPy::displacement(PyObject* args)
+PyObject* CoordinateSystemPy::displacement(PyObject* args) const
 {
     PyObject* cs {};
     if (!PyArg_ParseTuple(args, "O!", &(CoordinateSystemPy::Type), &cs)) {

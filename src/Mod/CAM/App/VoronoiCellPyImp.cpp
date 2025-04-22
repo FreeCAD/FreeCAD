@@ -168,7 +168,7 @@ Py::Object VoronoiCellPy::getIncidentEdge() const
     return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(c->dia, c->ptr->incident_edge())));
 }
 
-PyObject* VoronoiCellPy::containsPoint(PyObject* args)
+PyObject* VoronoiCellPy::containsPoint(PyObject* args) const
 {
     VoronoiCell* c = getVoronoiCellFromPy(this, args);
     PyObject* chk = c->ptr->contains_point() ? Py_True : Py_False;
@@ -176,7 +176,7 @@ PyObject* VoronoiCellPy::containsPoint(PyObject* args)
     return chk;
 }
 
-PyObject* VoronoiCellPy::containsSegment(PyObject* args)
+PyObject* VoronoiCellPy::containsSegment(PyObject* args) const
 {
     VoronoiCell* c = getVoronoiCellFromPy(this, args);
     PyObject* chk = c->ptr->contains_segment() ? Py_True : Py_False;
@@ -184,7 +184,7 @@ PyObject* VoronoiCellPy::containsSegment(PyObject* args)
     return chk;
 }
 
-PyObject* VoronoiCellPy::isDegenerate(PyObject* args)
+PyObject* VoronoiCellPy::isDegenerate(PyObject* args) const
 {
     VoronoiCell* c = getVoronoiCellFromPy(this, args);
     PyObject* chk = c->ptr->is_degenerate() ? Py_True : Py_False;
@@ -192,7 +192,7 @@ PyObject* VoronoiCellPy::isDegenerate(PyObject* args)
     return chk;
 }
 
-PyObject* VoronoiCellPy::getSource(PyObject* args)
+PyObject* VoronoiCellPy::getSource(PyObject* args) const
 {
     double z = 0;
     if (!PyArg_ParseTuple(args, "|d", &z)) {

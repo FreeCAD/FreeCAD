@@ -147,7 +147,7 @@ Py::Object VoronoiVertexPy::getIncidentEdge() const
     return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(v->dia, v->ptr->incident_edge())));
 }
 
-PyObject* VoronoiVertexPy::toPoint(PyObject* args)
+PyObject* VoronoiVertexPy::toPoint(PyObject* args) const
 {
     double z = 0.0;
     if (!PyArg_ParseTuple(args, "|d", &z)) {

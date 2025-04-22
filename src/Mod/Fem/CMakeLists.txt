@@ -203,6 +203,7 @@ SET(FemObjects_SRCS
     femobjects/mesh_region.py
     femobjects/mesh_result.py
     femobjects/result_mechanical.py
+    femobjects/solver_calculix.py
     femobjects/solver_ccxtools.py
 )
 
@@ -227,6 +228,7 @@ SET(FemSolver_SRCS
 
 SET(FemSolverCalculix_SRCS
     femsolver/calculix/__init__.py
+    femsolver/calculix/calculixtools.py
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
     femsolver/calculix/write_constraint_bodyheatsource.py
@@ -579,7 +581,7 @@ SET(FemGuiObjects_SRCS
 SET(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
     femtaskpanels/base_femtaskpanel.py
-    femtaskpanels/base_femmeshtaskpanel.py
+    femtaskpanels/base_femlogtaskpanel.py
     femtaskpanels/task_constraint_bodyheatsource.py
     femtaskpanels/task_constraint_centrif.py
     femtaskpanels/task_constraint_currentdensity.py
@@ -603,6 +605,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_region.py
     femtaskpanels/task_mesh_netgen.py
     femtaskpanels/task_result_mechanical.py
+    femtaskpanels/task_solver_calculix.py
     femtaskpanels/task_solver_ccxtools.py
 )
 
@@ -652,6 +655,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_mesh_region.py
     femviewprovider/view_mesh_result.py
     femviewprovider/view_result_mechanical.py
+    femviewprovider/view_solver_calculix.py
     femviewprovider/view_solver_ccxtools.py
 )
 

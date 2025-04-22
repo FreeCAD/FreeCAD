@@ -259,10 +259,6 @@ class TestObjectOpen(unittest.TestCase):
 
         self.assertEqual(SolverCcxTools, doc.SolverCcxTools.Proxy.__class__)
 
-        from femsolver.calculix.solver import Proxy
-
-        self.assertEqual(Proxy, doc.SolverCalculix.Proxy.__class__)
-
         from femsolver.elmer.solver import Proxy
 
         self.assertEqual(Proxy, doc.SolverElmer.Proxy.__class__)
