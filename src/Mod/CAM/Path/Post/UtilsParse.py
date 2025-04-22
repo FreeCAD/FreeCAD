@@ -174,11 +174,12 @@ def check_for_tool_change(
                 gcode.append(f"{linenumber(values)}M5{nl}")
             for line in values["TOOL_CHANGE"].splitlines(False):
                 gcode.append(f"{linenumber(values)}{line}{nl}")
-        elif values["OUTPUT_COMMENTS"]:
+            return False
+        if values["OUTPUT_COMMENTS"]:
             # convert the tool change to a comment
             comment = create_comment(values, format_command_line(values, command_line))
             gcode.append(f"{linenumber(values)}{comment}{nl}")
-            return True
+        return True
     return False
 
 
