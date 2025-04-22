@@ -32,9 +32,7 @@ class ToolBitShapeEndMill(ToolBitShape):
                 "App::PropertyLength",
             ),
             "ShankDiameter": (
-                FreeCAD.Qt.translate(
-                    "ToolBitToolBitShapeShapeEndMill", "Shank diameter"
-                ),
+                FreeCAD.Qt.translate("ToolBitToolBitShapeShapeEndMill", "Shank diameter"),
                 "App::PropertyLength",
             ),
         }
@@ -42,9 +40,7 @@ class ToolBitShapeEndMill(ToolBitShape):
     @classmethod
     def feature_schema(
         cls,
-    ) -> Mapping[
-        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
-    ]:
+    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
         return {
             **super(ToolBitShapeEndMill, cls).feature_schema(),
             "Chipload": (

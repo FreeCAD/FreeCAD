@@ -28,6 +28,7 @@ def _get_shape_search_paths(relative_to_path: Optional[pathlib.Path] = None) -> 
     # Add configured tool shape search paths
     try:
         import Path.Preferences
+
         # Assuming searchPathsTool returns a list of strings
         paths.extend([pathlib.Path(p) for p in Path.Preferences.searchPathsTool("Shape")])
     except ImportError:
@@ -65,11 +66,7 @@ def get_builtin_shape_file_from_name(name):
     for mod_dir_str in FreeCAD.__ModDirs__:
         mod_path = pathlib.Path(mod_dir_str)
         # Check if the last two components are 'Mod' and 'CAM'
-        if (
-            len(mod_path.parts) >= 2
-            and mod_path.parts[-2] == "Mod"
-            and mod_path.parts[-1] == "CAM"
-        ):
+        if len(mod_path.parts) >= 2 and mod_path.parts[-2] == "Mod" and mod_path.parts[-1] == "CAM":
             cam_mod_dir = mod_path
             break
 
@@ -90,15 +87,13 @@ def get_shape_class_from_name(name: str) -> Optional[Type[ToolBitShape]]:
 
 
 def get_shape_from_name(
-    name: str,
-    path: Optional[pathlib.Path] = None,
-    params: Optional[dict] = None
+    name: str, path: Optional[pathlib.Path] = None, params: Optional[dict] = None
 ) -> "ToolBitShape":
     # Find the shape class for the new shape
     shape_class = get_shape_class_from_name(name)
     if shape_class is None:
         err = f"Could not find shape class for '{name}'."
-        Path.Log.error(err+"\n")
+        Path.Log.error(err + "\n")
         raise AttributeError(err)
 
     # Find the shape file path for the new shape
@@ -107,7 +102,7 @@ def get_shape_from_name(
         path = get_builtin_shape_file_from_name(shape_class.name)
         if not path:
             err = f"Could not find shape file for new shape '{shape_class.name}'."
-            Path.Log.error(err+"\n")
+            Path.Log.error(err + "\n")
             raise AttributeError(err)
         path = pathlib.Path(path)
 
@@ -116,13 +111,16 @@ def get_shape_from_name(
         shape = shape_class(filepath=path, **(params or {}))
     except Exception as e:
         err = f"Could not create instance of shape '{name}' ({shape_class.name}): {e}"
-        Path.Log.error(err+"\n")
+        Path.Log.error(err + "\n")
         raise
 
     shape.is_builtin = is_builtin
     return shape
 
-def find_shape_file(name: str, relative_to_path: Optional[pathlib.Path] = None) -> Optional[pathlib.Path]:
+
+def find_shape_file(
+    name: str, relative_to_path: Optional[pathlib.Path] = None
+) -> Optional[pathlib.Path]:
     """
     Find a tool shape file by name in configured search paths.
 

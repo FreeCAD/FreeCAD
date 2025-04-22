@@ -35,25 +35,24 @@ class TestPathToolShapeDoc(unittest.TestCase):
         mock_obj.Label = "MockObjectLabel"
         mock_obj.Name = "MockObjectName"
         # Ensure mock_doc also has a Name attribute used in tests/code
-        mock_doc.Name = "Document_Mock" # Used in closeDocument calls
+        mock_doc.Name = "Document_Mock"  # Used in closeDocument calls
 
         # Clear attributes potentially added by setattr in previous tests.
         # reset_mock() doesn't remove attributes added this way.
         # Focus on attributes known to be added by tests in this file.
         for attr_name in ["Diameter", "Length", "Height"]:
-             if hasattr(mock_obj, attr_name):
-                 try:
-                     delattr(mock_obj, attr_name)
-                 except AttributeError:
-                     pass # Ignore if already gone
+            if hasattr(mock_obj, attr_name):
+                try:
+                    delattr(mock_obj, attr_name)
+                except AttributeError:
+                    pass  # Ignore if already gone
 
     """Tests for the document utility functions in Path/Tool/Shape/doc.py"""
+
     def test_doc_find_shape_object_body_priority(self):
         """Test find_shape_object prioritizes PartDesign::Body."""
         body_obj = MagicMock(Name="Body_Mock")
-        body_obj.isDerivedFrom = (
-            lambda typeName: typeName == "PartDesign::Body"
-        )
+        body_obj.isDerivedFrom = lambda typeName: typeName == "PartDesign::Body"
         part_obj = MagicMock(Name="Part_Mock")
         part_obj.isDerivedFrom = lambda typeName: typeName == "Part::Feature"
         mock_doc.Objects = [part_obj, body_obj]
@@ -110,9 +109,7 @@ class TestPathToolShapeDoc(unittest.TestCase):
         self.assertIsNone(found)
 
         # Test case 3: Object is present but not a PropertyBag (no 'Properties') (using a simple object)
-        not_a_propertybag = SimpleObject(
-            name="Attributes"
-        )  # No properties attribute
+        not_a_propertybag = SimpleObject(name="Attributes")  # No properties attribute
         mock_doc.Objects = [MagicMock(), not_a_propertybag, MagicMock()]
         found = doc.find_property_object(mock_doc)
         self.assertIsNone(found)
@@ -152,13 +149,9 @@ class TestPathToolShapeDoc(unittest.TestCase):
         # Explicitly delete Height to ensure hasattr returns False for MagicMock
         if hasattr(mock_obj, "Height"):
             delattr(mock_obj, "Height")
-        params = doc_patched.get_object_properties(
-            mock_obj, ["Diameter", "Height"]
-        )
+        params = doc_patched.get_object_properties(mock_obj, ["Diameter", "Height"])
         # Expecting just the values, not tuples
-        self.assertEqual(
-            params, {"Diameter": "10 mm", "Height": None}
-        )  # Height is missing
+        self.assertEqual(params, {"Diameter": "10 mm", "Height": None})  # Height is missing
         expected_calls = [
             # The 'Could not get type' warning is from base.py's set_parameter,
             # not get_object_properties. Removing it from expected calls here.
@@ -168,16 +161,12 @@ class TestPathToolShapeDoc(unittest.TestCase):
                 "class.\n"
             )
         ]
-        mock_freecad.Console.PrintWarning.assert_has_calls(
-            expected_calls, any_order=True
-        )
+        mock_freecad.Console.PrintWarning.assert_has_calls(expected_calls, any_order=True)
 
     @patch("FreeCAD.openDocument")
     @patch("FreeCAD.getDocument")
     @patch("FreeCAD.closeDocument")
-    def test_ShapeDocFromBytes(
-        self, mock_close_doc, mock_get_doc, mock_open_doc
-    ):
+    def test_ShapeDocFromBytes(self, mock_close_doc, mock_get_doc, mock_open_doc):
         """Test ShapeDocFromBytes loads doc from a byte string."""
         content = b"fake_content"
         mock_opened_doc = MagicMock(Name="OpenedDoc_Mock")
@@ -207,9 +196,7 @@ class TestPathToolShapeDoc(unittest.TestCase):
     @patch("FreeCAD.openDocument")
     @patch("FreeCAD.getDocument")
     @patch("FreeCAD.closeDocument")
-    def test_ShapeDocFromBytes_open_exception(
-        self, mock_close_doc, mock_get_doc, mock_open_doc
-    ):
+    def test_ShapeDocFromBytes_open_exception(self, mock_close_doc, mock_get_doc, mock_open_doc):
         """Test ShapeDocFromBytes propagates exceptions and cleans up."""
         content = b"fake_content_exception"
         load_error = Exception("Fake load error")
@@ -241,15 +228,12 @@ class TestPathToolShapeDoc(unittest.TestCase):
                 os.remove(temp_file_path)
             # Assert removal only if temp_file_path was set
             if temp_file_path:
-                 self.assertFalse(os.path.exists(temp_file_path))
-
+                self.assertFalse(os.path.exists(temp_file_path))
 
     @patch("FreeCAD.openDocument")
     @patch("FreeCAD.getDocument")
     @patch("FreeCAD.closeDocument")
-    def test_ShapeDocFromBytes_exit_cleans_up(
-        self, mock_close_doc, mock_get_doc, mock_open_doc
-    ):
+    def test_ShapeDocFromBytes_exit_cleans_up(self, mock_close_doc, mock_get_doc, mock_open_doc):
         """Test ShapeDocFromBytes __exit__ cleans up temp file."""
         content = b"fake_content_cleanup"
         mock_opened_doc = MagicMock(Name="OpenedDoc_Cleanup_Mock")
@@ -264,7 +248,7 @@ class TestPathToolShapeDoc(unittest.TestCase):
                 with open(temp_file_path, "rb") as f:
                     self.assertEqual(f.read(), content)
                 # No assertions on the returned doc here, focus is on cleanup
-                pass # Exit the context
+                pass  # Exit the context
 
             # Verify cleanup after exiting the context
             mock_close_doc.assert_called_once_with(mock_open_doc.return_value.Name)
@@ -274,6 +258,7 @@ class TestPathToolShapeDoc(unittest.TestCase):
             # Ensure cleanup even if test fails before assertion
             if temp_file_path and os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
+
 
 # Test execution
 if __name__ == "__main__":

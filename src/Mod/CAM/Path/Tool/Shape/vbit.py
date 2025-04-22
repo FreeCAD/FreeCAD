@@ -49,9 +49,7 @@ class ToolBitShapeVBit(ToolBitShape):
     @classmethod
     def feature_schema(
         cls,
-    ) -> Mapping[
-        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
-    ]:
+    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
         return {
             **super(ToolBitShapeVBit, cls).feature_schema(),
             "Chipload": (
