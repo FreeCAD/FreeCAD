@@ -273,21 +273,21 @@ std::string BomObject::getBomPropertyValue(App::DocumentObject* obj, const std::
     }
 
     // Only support a subset of property types for BOM
-    if (auto propStr = dynamic_cast<App::PropertyString*>(prop)) {
+    if (auto propStr = freecad_cast<App::PropertyString*>(prop)) {
         return propStr->getValue();
     }
-    else if (auto propQuantity = dynamic_cast<App::PropertyQuantity*>(prop)) {
+    else if (auto propQuantity = freecad_cast<App::PropertyQuantity*>(prop)) {
         auto unit = propQuantity->getUnit().getString();
         auto value = std::to_string(propQuantity->getValue());
         return value + " " + unit;
     }
-    else if (auto propFloat = dynamic_cast<App::PropertyFloat*>(prop)) {
+    else if (auto propFloat = freecad_cast<App::PropertyFloat*>(prop)) {
         return std::to_string(propFloat->getValue());
     }
-    else if (auto propInt = dynamic_cast<App::PropertyInteger*>(prop)) {
+    else if (auto propInt = freecad_cast<App::PropertyInteger*>(prop)) {
         return std::to_string(propInt->getValue());
     }
-    else if (auto propBool = dynamic_cast<App::PropertyBool*>(prop)) {
+    else if (auto propBool = freecad_cast<App::PropertyBool*>(prop)) {
         return propBool->getValue() ? "True" : "False";
     }
 
