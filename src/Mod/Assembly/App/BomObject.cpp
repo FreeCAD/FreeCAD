@@ -277,9 +277,7 @@ std::string BomObject::getBomPropertyValue(App::DocumentObject* obj, const std::
         return propStr->getValue();
     }
     else if (auto propQuantity = freecad_cast<App::PropertyQuantity*>(prop)) {
-        auto unit = propQuantity->getUnit().getString();
-        auto value = std::to_string(propQuantity->getValue());
-        return value + " " + unit;
+        return propQuantity->getQuantityValue().getUserString();
     }
     else if (auto propFloat = freecad_cast<App::PropertyFloat*>(prop)) {
         return std::to_string(propFloat->getValue());
