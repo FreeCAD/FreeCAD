@@ -58,7 +58,7 @@ __doc__ = "Class to deal with and represent a tool bit."
 
 PropertyGroupShape = "Shape"
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
