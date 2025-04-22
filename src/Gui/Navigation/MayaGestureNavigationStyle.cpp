@@ -279,11 +279,14 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
         case SoKeyboardEvent::H:
-            processed = true;
-            if (!press) {
-                setupPanningPlane(viewer->getCamera());
-                lookAtPoint(event->getPosition());
-            }
+                // Disable H key in editing mode because of conflict with sketcher
+                if (!viewer->isEditing()) {
+                    processed = true;
+                    if (!press) {
+                        setupPanningPlane(viewer->getCamera());
+                        lookAtPoint(event->getPosition());
+                    }
+                }
             break;
         default:
             break;
