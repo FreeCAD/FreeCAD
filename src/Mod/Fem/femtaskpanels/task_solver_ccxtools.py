@@ -56,7 +56,7 @@ class _TaskPanel:
 
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculix.ui"
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCcxTools.ui"
         )
 
         from femtools.ccxtools import CcxTools as ccx
