@@ -428,8 +428,8 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshRegion.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui
-    Resources/ui/SolverCalculix.ui
     Resources/ui/SolverCalculiX.ui
+    Resources/ui/SolverCcxTools.ui
 )
 
 ADD_CUSTOM_TARGET(FemPythonUi ALL
