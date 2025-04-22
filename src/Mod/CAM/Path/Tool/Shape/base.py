@@ -4,7 +4,8 @@
 import abc
 import pathlib
 import FreeCAD
-from typing import Dict, List, Any, Optional, Tuple
+import Path
+from typing import Dict, List, Any, Mapping, Optional, Tuple, Union, cast
 from .doc import (
     find_shape_object,
     find_property_object,
@@ -25,10 +26,6 @@ class ToolBitShape(abc.ABC):
     name: str
     aliases: Tuple[str, ...] = tuple()
 
-    # Subclasses must define this dictionary mapping parameter names to
-    # FreeCAD property type strings (e.g., 'App::PropertyLength').
-    _schema: Dict[str, str] = {}
-
     def __init__(self, filepath: pathlib.Path, **kwargs: Any):
         """
         Initialize the shape.
@@ -38,10 +35,6 @@ class ToolBitShape(abc.ABC):
             **kwargs: Keyword arguments for shape parameters (e.g., Diameter).
                       Values should be FreeCAD.Units.Quantity where applicable.
         """
-        # Subclasses must define this dictionary mapping internal param names
-        # to user-facing labels, for translatability.
-        self._labels: Dict[str, str] = {}
-
         # _params will be populated with default values after loading
         self._params: Dict[str, Any] = {}
 
@@ -53,6 +46,7 @@ class ToolBitShape(abc.ABC):
 
         # Path to the file this shape was loaded from
         self.filepath: Optional[pathlib.Path] = None
+        self.is_builtin: bool = True
 
         # Assign parameters and load the file
         self.load_file(filepath)
@@ -68,6 +62,65 @@ class ToolBitShape(abc.ABC):
     def __repr__(self):
         return self.__str__()
 
+    @classmethod
+    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+        """
+        Subclasses must define the dictionary mapping parameter names to
+        translations and FreeCAD property type strings (e.g.,
+        'App::PropertyLength').
+
+        The schema defines any parameters that MUST be in the shape file.
+        Any attempt to load a shape file that does not match the schema
+        will cause an error.
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def feature_schema(cls) -> Mapping[str, Union[Tuple[str, str, Any],
+                                                  Tuple[str, str, Any, Tuple[str, ...]]]]:
+        """
+        This schema defines any properties that the tool supports and
+        that are not part of the shape file.
+
+        Subclasses may extend the dictionary mapping parameter names to
+        translations and FreeCAD property type strings (e.g.,
+        'App::PropertyLength').
+        """
+        return {
+            "SpindleDirection": (
+                FreeCAD.Qt.translate("ToolBitShape", "Direction of spindle rotation"),
+                "App::PropertyEnumeration",
+                "Forward",   # Default value
+                ("Forward", "Reverse", "None")
+            ),
+            "Material": (
+                FreeCAD.Qt.translate("ToolBitShape", "Tool material"),
+                "App::PropertyEnumeration",
+                "HSS",   # Default value
+                ("HSS", "Carbide")
+            ),
+        }
+
+    @classmethod
+    def schema(cls) -> Mapping[str, Union[Tuple[str, str], Tuple[str, str, Tuple[str, ...]]]]:
+        feature: Dict[str, Union[Tuple[str, str], Tuple[str, str, Tuple[str, ...]]]] = {}
+        
+        for name, value in cls.feature_schema().items():
+            if len(value) == 2:
+                # Case: (description, property_type)
+                feature[name] = (value[0], value[1])
+            elif len(value) == 3:
+                # Case: (description, property_type, default_value)
+                # We drop the default_value for the schema
+                feature[name] = (value[0], value[1])
+            elif len(value) == 4:
+                # Case: (description, property_type, default_value, options)
+                # We keep description, property_type and options
+                feature[name] = (value[0], value[1], cast(Tuple[str, ...], value[3]))
+        
+        # Combine with shape_schema
+        return {**cls.shape_schema(), **feature}
+
     @property
     def label(self) -> str:
         """Return a user friendly, translatable display name."""
@@ -80,19 +133,17 @@ class ToolBitShape(abc.ABC):
     def get_parameter_label(self, param_name: str) -> str:
         """
         Get the user-facing label for a given parameter name.
-        Uses the _labels dictionary defined in the subclass.
         """
         str_param_name = str(param_name)
-        label = self._labels.get(str_param_name)
+        label = self.schema()[param_name][0]
         # Return the found label or the param_name itself if not found
         return label if label is not None else str_param_name
 
-    def get_parameter_property_type(self, param_name: str) -> Optional[str]:
+    def get_parameter_property_type(self, param_name: str) -> str:
         """
         Get the FreeCAD property type string for a given parameter name.
-        Retrieves the stored property type from the class-level _schema.
         """
-        return self._schema.get(param_name)
+        return self.schema()[param_name][1]
 
     def get_parameters(self) -> Dict[str, Any]:
         """
@@ -116,7 +167,7 @@ class ToolBitShape(abc.ABC):
         Raises:
             KeyError: If the parameter name is not valid for this shape.
         """
-        if name not in self._params:
+        if name not in self.schema():
             raise KeyError(f"Shape '{self.name}' has no parameter '{name}'")
         return self._params[name]
 
@@ -132,10 +183,11 @@ class ToolBitShape(abc.ABC):
         Raises:
             KeyError: If the parameter name is not valid for this shape.
         """
-        if name not in self._params.keys():
-            FreeCAD.Console.PrintError(
-                f"Shape '{self.name}' was given an invalid parameter '{name}'. Has {self._params}"
+        if name not in self.schema().keys():
+            Path.Log.debug(
+                f"Shape '{self.name}' was given an invalid parameter '{name}'. Has {self._params}\n"
             )
+            return
 
         self._params[name] = value
 
@@ -148,17 +200,14 @@ class ToolBitShape(abc.ABC):
         """
         for name, value in kwargs.items():
             try:
-                # When setting parameters from kwargs, we don't have type info
-                # from the file. We rely on set_parameter to maintain the type
-                # from the default parameters or the loaded parameters.
                 self.set_parameter(name, value)
             except KeyError:
-                FreeCAD.Console.PrintWarning(
+                Path.Log.debug(
                     f"Ignoring unknown parameter '{name}' for shape '{self.name}'.\n"
                 )
 
     @classmethod
-    def get_expected_parameter_names(cls) -> List[str]:
+    def get_expected_shape_parameters(cls) -> List[str]:
         """
         Get a list of parameter names expected by this shape class based on
         its schema.
@@ -166,7 +215,10 @@ class ToolBitShape(abc.ABC):
         Returns:
             list[str]: List of parameter names.
         """
-        return list(cls._schema.keys())
+        return list(cls.shape_schema().keys())
+
+    def has_feature(self, name: str) -> bool:
+        return name in self.feature_schema()
 
     @classmethod
     def validate(cls, filepath: pathlib.Path) -> Optional[str]:
@@ -199,7 +251,7 @@ class ToolBitShape(abc.ABC):
                 FreeCAD.Console.PrintError(err+"\n")
                 return err
 
-            expected_params = cls.get_expected_parameter_names()
+            expected_params = cls.get_expected_shape_parameters()
             loaded_params = get_object_properties(property_obj, expected_params)
 
             missing_params = [
@@ -253,7 +305,7 @@ class ToolBitShape(abc.ABC):
                 )
 
             # Get properties based on the class schema from the properties object
-            expected_params = self.get_expected_parameter_names()
+            expected_params = self.get_expected_shape_parameters()
             loaded_params = get_object_properties(props_obj, expected_params)
 
             # Store the default parameters

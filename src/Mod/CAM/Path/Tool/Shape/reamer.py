@@ -2,32 +2,52 @@
 # Defines the Reamer tool bit shape.
 
 import FreeCAD
-from typing import Tuple
+from typing import Tuple, Mapping, Any, Union
 from .base import ToolBitShape
 
 
 class ToolBitShapeReamer(ToolBitShape):
     name = "reamer"
-    _schema = {
-        "CuttingEdgeHeight": 'App::PropertyLength',
-        "Diameter": 'App::PropertyLength',
-        "Length": 'App::PropertyLength',
-        "ShankDiameter": 'App::PropertyLength',
-    }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._labels = {
-            "CuttingEdgeHeight": FreeCAD.Qt.translate(
-                "ToolBitShapeReamer", "Cutting edge height"),
-            "Diameter": FreeCAD.Qt.translate(
-                "ToolBitShapeReamer", "Diameter"),
-            "Length": FreeCAD.Qt.translate(
-                "ToolBitShapeReamer", "Overall Tool Length"),
-            "ShankDiameter": FreeCAD.Qt.translate(
-                "ToolBitShapeReamer", "Shank diameter"),
+
+    @classmethod
+    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+        return {
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                "App::PropertyLength",
+            ),
+            "Diameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                "App::PropertyLength",
+            ),
+            "Length": (
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                "App::PropertyLength",
+            ),
+            "ShankDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                "App::PropertyLength",
+            ),
+        }
+
+    @classmethod
+    def feature_schema(
+        cls,
+    ) -> Mapping[
+        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
+    ]:
+        return {
+            **super(ToolBitShapeReamer, cls).feature_schema(),
+            "Chipload": (
+                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
+                "App::PropertyLength",
+                0.0,  # Default value
+            ),
         }
 
     @property
     def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShapeReamer", "Reamer")
+        return FreeCAD.Qt.translate("ToolBitShape", "Reamer")
