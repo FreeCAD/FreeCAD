@@ -56,8 +56,8 @@ using PyObject = struct _object;  // NOLINT
 #define FC_THROW_INFO __FILE__, __LINE__, __func__
 #endif
 
-#define THROWM(exc, msg) Base::goExc<exc>(msg, FC_THROW_INFO);
-#define THROWMT(exc, msg) Base::goExc<exc>(msg, FC_THROW_INFO, true);
+#define THROWM(exc, msg) Base::setupAndThrowException<exc>(msg, FC_THROW_INFO);
+#define THROWMT(exc, msg) Base::setupAndThrowException<exc>(msg, FC_THROW_INFO, true);
 #define FC_THROWM(_exception, _msg)                                                                \
     do {                                                                                           \
         std::stringstream ss;                                                                      \
@@ -66,8 +66,8 @@ using PyObject = struct _object;  // NOLINT
     } while (0)
 
 /*
-#define THROWM(exc, msg) Base::goExc<exc>((msg), std::source_location::current());
-#define THROWMT(exc, msg) Base::goExc<exc>((msg), std::source_location::current(), true);
+#define THROWM(exc, msg) Base::setupAndThrowException<exc>((msg), std::source_location::current());
+#define THROWMT(exc, msg) Base::setupAndThrowException<exc>((msg), std::source_location::current(), true);
 #define FC_THROWM(_exception, _msg)                                                                \
     do {                                                                                           \
         std::stringstream ss;                                                                      \
@@ -82,7 +82,7 @@ using PyObject = struct _object;  // NOLINT
 namespace Base
 {
 template<typename ExceptionType>
-void goExc(const std::string message,
+void setupAndThrowException(const std::string message,
            const char* file,
            const int line,
            const char* func,
@@ -100,7 +100,7 @@ void goExc(const std::string message,
 namespace Base
 {
 template<typename ExceptionType>
-void goExc(const std::string message,
+void setupAndThrowException(const std::string message,
            const std::source_location location,
            const bool translatable = false)
 {
@@ -119,14 +119,14 @@ template<typename Exception>
 constexpr void THROWM_(const std::string& msg,
                        const std::source_location location = std::source_location::current())
 {
-    Base::goExc<Exception>(msg, location);
+    Base::setupAndThrowException<Exception>(msg, location);
 }
 
 template<typename Exception>
 constexpr void THROWMT_(const std::string& msg,
                         const std::source_location location = std::source_location::current())
 {
-    Base::goExc<Exception>(msg, location, true);
+    Base::setupAndThrowException<Exception>(msg, location, true);
 }
 
 template<typename Exception>
