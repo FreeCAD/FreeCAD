@@ -2327,8 +2327,8 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 if (handler->roundCorners || handler->makeFrame
                     || handler->constructionMethod() == ConstructionMethod::ThreePoints
@@ -2344,7 +2344,8 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
         case SelectMode::SeekThird: {
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (handler->roundCorners && onViewParameters[OnViewParameter::Fifth]->isSet) {
+                if (handler->roundCorners
+                    && onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
 
                     if (handler->makeFrame) {
                         handler->setState(SelectMode::SeekFourth);
@@ -2353,14 +2354,15 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                         handler->setState(SelectMode::End);
                     }
                 }
-                else if (handler->makeFrame && onViewParameters[OnViewParameter::Sixth]->isSet) {
+                else if (handler->makeFrame
+                         && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                     handler->setState(SelectMode::End);
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet
-                    && onViewParameters[OnViewParameter::Sixth]->isSet) {
+                if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
+                    && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                     if (handler->roundCorners || handler->makeFrame) {
                         handler->setState(SelectMode::SeekFourth);
                     }
@@ -2373,12 +2375,13 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
         case SelectMode::SeekFourth: {
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (onViewParameters[OnViewParameter::Sixth]->isSet) {
+                if (onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
             else {
-                if (handler->roundCorners && onViewParameters[OnViewParameter::Seventh]->isSet) {
+                if (handler->roundCorners
+                    && onViewParameters[OnViewParameter::Seventh]->hasFinishedEditing) {
 
                     if (handler->makeFrame) {
                         handler->setState(SelectMode::SeekFifth);
@@ -2387,13 +2390,15 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                         handler->setState(SelectMode::End);
                     }
                 }
-                else if (handler->makeFrame && onViewParameters[OnViewParameter::Eighth]->isSet) {
+                else if (handler->makeFrame
+                         && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
         } break;
         case SelectMode::SeekFifth: {
-            if (handler->makeFrame && onViewParameters[OnViewParameter::Eighth]->isSet) {
+            if (handler->makeFrame
+                && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;
