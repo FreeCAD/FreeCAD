@@ -48,6 +48,7 @@ class BIM_Unclone:
         return v
 
     def Activated(self):
+        import Arch
         import Draft
 
         # get selected object and face

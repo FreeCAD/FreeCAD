@@ -28,6 +28,7 @@ from __future__ import print_function
 
 import os
 import sys
+import tempfile
 
 import FreeCAD
 import FreeCADGui
