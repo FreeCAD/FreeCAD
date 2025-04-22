@@ -40,7 +40,7 @@ Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="l
 # rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
 %bcond_without  bundled_zipios
 # rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
-%bcond_with bundled_pycxx
+%bcond_with bundled_pycxxgit_repo_vcs }}}
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %bcond_without bundled_smesh
 
@@ -114,10 +114,7 @@ Recommends:     python3-pysolar
     modifying the core system.
 
 %changelog
-    {{{ git_repo_changelog }}}
-    * Sun Apr 20 2025 Filippo Rossoni Clean Up and use rpkg macro to build on copr
-    * Mon Mar 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.1.0-1
-    - Adding support for building with Qt6 and PySide6 for Fedora 40+
+    %autochangelog
 
 
 %package data

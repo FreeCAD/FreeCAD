@@ -1,0 +1,3 @@
+* Sun Apr 20 2025 Filippo Rossoni Clean Up and use rpkg macro to build on copr
+* Mon Mar 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.1.0-1
+- Adding support for building with Qt6 and PySide6 for Fedora 40+
