@@ -585,7 +585,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
 
                 handler->setState(SelectMode::End);
             }
-            else if (onViewParameters[OnViewParameter::Third]->isSet
+            else if (onViewParameters.size() > 3 && onViewParameters[OnViewParameter::Third]->isSet
                      && onViewParameters[OnViewParameter::Fourth]->isSet
                      && handler->constructionMethod()
                          == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
