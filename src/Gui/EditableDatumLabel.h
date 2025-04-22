@@ -85,6 +85,7 @@ public:
     // NOLINTBEGIN
     SoDatumLabel* label;
     bool isSet;
+    bool hasFinishedEditing;
     bool autoDistance;
     bool autoDistanceReverse;
     bool avoidMouseCursor;
@@ -93,6 +94,9 @@ public:
 
 Q_SIGNALS:
     void valueChanged(double val);
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     void positionSpinbox();

@@ -579,7 +579,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
                 && handler->constructionMethod()
                     == DrawSketchHandlerCircle::ConstructionMethod::Center) {
 
@@ -594,8 +594,8 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fifth]->isSet
-                && onViewParameters[OnViewParameter::Sixth]->isSet) {
+            if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
+                && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }
