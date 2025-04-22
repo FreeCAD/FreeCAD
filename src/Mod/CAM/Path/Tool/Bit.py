@@ -137,6 +137,7 @@ class ToolBit(object):
         self.obj = obj
         self._tool_bit_shape = tool_bit_shape
         self._update_timer = None
+        self._in_update = False
 
         self._create_properties(obj)
 
@@ -353,25 +354,25 @@ class ToolBit(object):
         if "Restore" in obj.State:
             return
 
+        if hasattr(self, '_in_update') and self._in_update:
+            Path.Log.debug(f"Skipping onChanged for {obj.Label} due to active update.")
+            return
+
         # We only care about updates that affect the Shape
         if obj.getGroupOfProperty(prop) != PropertyGroupShape:
             return
 
-        new_value = obj.getPropertyByName(prop)
-        Path.Log.debug(
-            f"Shape parameter '{prop}' changed to {new_value}. "
-            f"Scheduling visual representation update."
-        )
-        self._tool_bit_shape.set_parameter(prop, new_value)
-
-        # Cancel any pending updates
-        if self._update_timer and self._update_timer.isActive():
-            self._update_timer.stop()
-
-        # Schedule a new update after a delay (e.g., 500 milliseconds)
-        self._update_timer = QTimer.singleShot(
-            500, lambda: self._update_visual_representation(obj)
-        )
+        self._in_update = True
+        try:
+            new_value = obj.getPropertyByName(prop)
+            Path.Log.debug(
+                f"Shape parameter '{prop}' changed to {new_value}. "
+                f"Updating visual representation."
+            )
+            self._tool_bit_shape.set_parameter(prop, new_value)
+            self._update_visual_representation(obj)
+        finally:
+            self._in_update = False
 
     def onDelete(self, obj, arg2=None):
         Path.Log.track(obj.Label)
