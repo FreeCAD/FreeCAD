@@ -938,6 +938,7 @@ SET(Navigation_CPP_SRCS
     Navigation/CADNavigationStyle.cpp
     Navigation/RevitNavigationStyle.cpp
     Navigation/BlenderNavigationStyle.cpp
+    Navigation/SiemensNXStyle.cpp
     Navigation/SolidWorksNavigationStyle.cpp
     Navigation/MayaGestureNavigationStyle.cpp
     Navigation/OpenCascadeNavigationStyle.cpp

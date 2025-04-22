@@ -51,6 +51,7 @@ class SoCamera;
 class SoSensor;
 class SbSphereSheetProjector;
 
+// NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 namespace Gui {
 
 class View3DInventorViewer;
@@ -489,7 +490,38 @@ protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
 };
 
+class GuiExport SiemensNXStyle : public UserNavigationStyle {
+    using inherited = UserNavigationStyle;
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    SiemensNXStyle();
+    ~SiemensNXStyle() override;
+    const char* mouseButtons(ViewerMode mode) override;
+    std::string userFriendlyName() const override;
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processKeyboardEvent(const SoKeyboardEvent * const event) override;
+
+private:
+    struct Event;
+    struct NaviMachine;
+    struct IdleState;
+    struct AwaitingReleaseState;
+    struct AwaitingMoveState;
+    struct InteractState;
+    struct RotateState;
+    struct PanState;
+    struct ZoomState;
+    struct SelectionState;
+
+    std::unique_ptr<NaviMachine> naviMachine;
+};
+
 } // namespace Gui
+// NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
 
