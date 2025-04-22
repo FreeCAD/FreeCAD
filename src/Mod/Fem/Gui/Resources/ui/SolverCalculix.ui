@@ -1,35 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SolverCalculix</class>
- <widget class="QWidget" name="SolverCalculix">
+ <class>SolverCalculiX</class>
+ <widget class="QWidget" name="SolverCalculiX">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>347</width>
-    <height>458</height>
+    <width>400</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mechanical analysis</string>
+   <string>Solver CalculiX Control</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="gb_working_dir">
-     <property name="title">
-      <string>Working directory</string>
+    <widget class="QCheckBox" name="ckb_working_directory">
+     <property name="text">
+      <string>Working Directory</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gpb_working_directory">
+     <property name="title">
+      <string></string>
+     </property>
+     <layout class="QVBoxLayout" name="vbl_working_directory">
       <item>
-       <widget class="QLineEdit" name="le_working_dir">
-        <property name="enabled">
-         <bool>true</bool>
+       <layout class="QHBoxLayout" name="hbl_working_directory">
+        <item>
+         <widget class="QPushButton" name="pb_write_input">
+          <property name="text">
+           <string>Write</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pb_edit_input">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Edit</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="hbl_working_directory">
+        <item>
+         <widget class="QLineEdit" name="let_working_directory">
+          <property name="toolTip">
+           <string>Path to working directory</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="pb_working_directory">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gpb_solver_params">
+     <property name="title">
+      <string>Solver Parameters</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_9">
+      <item>
+       <layout class="QFormLayout" name="formLayout_1">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_analysis_type">
+          <property name="text">
+           <string>Analysis Type:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cb_analysis_type">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gb_solver_log">
+     <layout class="QVBoxLayout" name="verticalLayout_8">
+      <item>
+       <widget class="QTextEdit" name="te_output">
+        <property name="lineWrapMode">
+         <enum>QTextEdit::NoWrap</enum>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -37,130 +116,29 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="tb_choose_working_dir">
-        <property name="enabled">
-         <bool>true</bool>
+       <widget class="QLabel" name="l_time">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="text">
-         <string notr="true">...</string>
+         <string>Time:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pb_solver_version">
+        <property name="text">
+         <string>Solver Version</string>
         </property>
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="gb_analysis_type">
-     <property name="title">
-      <string>Analysis type</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
-      <item row="1" column="0">
-       <widget class="Gui::PrefRadioButton" name="rb_static_analysis">
-        <property name="text">
-         <string>Static</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="Gui::PrefRadioButton" name="rb_frequency_analysis">
-        <property name="text">
-         <string>Frequency</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="Gui::PrefRadioButton" name="rb_thermomech_analysis">
-        <property name="text">
-         <string>Thermo mechanical</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="Gui::PrefRadioButton" name="rb_check_mesh">
-        <property name="text">
-         <string>Check Mesh</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="Gui::PrefRadioButton" name="rb_buckling_analysis">
-        <property name="text">
-         <string>Buckling</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gl_actions">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pb_write_inp">
-       <property name="text">
-        <string>Write .inp file</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="pb_edit_inp">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Edit .inp file</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" colspan="2">
-      <widget class="QPushButton" name="pb_run_ccx">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Run CalculiX</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="textEdit_Output">
-     <property name="lineWrapMode">
-      <enum>QTextEdit::NoWrap</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="l_time">
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Time:</string>
-     </property>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Gui::PrefRadioButton</class>
-   <extends>QRadioButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
