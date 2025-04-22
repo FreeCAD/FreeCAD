@@ -174,7 +174,7 @@ class ToolBit(object):
                 "App::PropertyFile",
                 "ShapeFile",
                 "Base",
-                QT_TRANSLATE_NOOP("App::Property", "The file defining the tool shape"),
+                QT_TRANSLATE_NOOP("App::Property", "The file defining the tool shape (.fcstd)"),
             )
         if not hasattr(obj, "BitBody"):
             obj.addProperty(
@@ -190,7 +190,7 @@ class ToolBit(object):
                 "App::PropertyFile",
                 "File",
                 "Base",
-                QT_TRANSLATE_NOOP("App::Property", "The file of the tool"),
+                QT_TRANSLATE_NOOP("App::Property", "The toolbit file (.fctb)"),
             )
 
     def dumps(self):
