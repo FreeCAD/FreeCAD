@@ -517,7 +517,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         processed = true;
                     } else { //all buttons are released
                         //end of dragging/panning/whatever
-                        setViewingMode(NavigationStyle::SELECTION);
+                        setViewingMode(NavigationStyle::IDLE);
                         processed = true;
                     } //end of else (some buttons down)
                 break;
