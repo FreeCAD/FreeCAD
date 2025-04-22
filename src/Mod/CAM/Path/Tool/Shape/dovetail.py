@@ -2,44 +2,72 @@
 # Defines the Dovetail tool bit shape.
 
 import FreeCAD
-from typing import Tuple
+from typing import Tuple, Union, Mapping, Any
 from .base import ToolBitShape
 
 
 class ToolBitShapeDovetail(ToolBitShape):
     name = "dovetail"
-    _schema = {
-        "TipDiameter": 'App::PropertyLength',
-        "CuttingEdgeAngle": 'App::PropertyAngle',
-        "CuttingEdgeHeight": 'App::PropertyLength',
-        "Diameter": 'App::PropertyLength',
-        "Length": 'App::PropertyLength',
-        "NeckDiameter": 'App::PropertyLength',
-        "NeckHeight": 'App::PropertyLength',
-        "ShankDiameter": 'App::PropertyLength',
-    }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._labels = {
-            "Crest": FreeCAD.Qt.translate(
-                "ToolBitShapeDovetail", "Crest height"),
-            "CuttingEdgeAngle": FreeCAD.Qt.translate(
-                "ToolBitShapeDovetail", "Cutting angle"),
-            "Diameter": FreeCAD.Qt.translate(
-                "ToolBitShapeDovetail", "Major diameter"),
-            "DovetailHeight": FreeCAD.Qt.translate(
-                "ToolBitShapeDovetail", "Dovetail height"),
-            "Length": FreeCAD.Qt.translate(
-                "ToolBitShapeDovetail", "Overall Tool Length"),
-            "NeckDiameter": FreeCAD.Qt.translate(
-                "ToolBitShapeDovetail", "Neck diameter"),
-            "NeckHeight": FreeCAD.Qt.translate(
-                "ToolBitShapeDovetail", "Neck length"),
-            "ShankDiameter": FreeCAD.Qt.translate(
-                "ToolBitShapeDovetail", "Shank diameter"),
+
+    @classmethod
+    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+        return {
+            "TipDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Crest height"),
+                "App::PropertyLength",
+            ),
+            "CuttingEdgeAngle": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting angle"),
+                "App::PropertyAngle",
+            ),
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Dovetail height"),
+                "App::PropertyLength",
+            ),
+            "Diameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Major diameter"),
+                "App::PropertyLength",
+            ),
+            "Flutes": (
+                FreeCAD.Qt.translate("ToolBitShape", "Flutes"),
+                "App::PropertyInteger",
+            ),
+            "Length": (
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                "App::PropertyLength",
+            ),
+            "NeckDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Neck diameter"),
+                "App::PropertyLength",
+            ),
+            "NeckHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Neck length"),
+                "App::PropertyLength",
+            ),
+            "ShankDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                "App::PropertyLength",
+            ),
+        }
+
+    @classmethod
+    def feature_schema(
+        cls,
+    ) -> Mapping[
+        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
+    ]:
+        return {
+            **super(ToolBitShapeDovetail, cls).feature_schema(),
+            "Chipload": (
+                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
+                "App::PropertyLength",
+                0.0,  # Default value
+            ),
         }
 
     @property
     def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShapeDovetail", "Dovetail")
+        return FreeCAD.Qt.translate("ToolBitShape", "Dovetail")

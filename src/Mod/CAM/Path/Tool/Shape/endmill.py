@@ -2,32 +2,58 @@
 # Defines the EndMill tool bit shape.
 
 import FreeCAD
-from typing import Tuple
+from typing import Tuple, Union, Mapping, Any
 from .base import ToolBitShape
 
 
 class ToolBitShapeEndMill(ToolBitShape):
     name = "endmill"
-    _schema = {
-        "CuttingEdgeHeight": 'App::PropertyLength',
-        "Diameter": 'App::PropertyLength',
-        "Length": 'App::PropertyLength',
-        "ShankDiameter": 'App::PropertyLength',
-    }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._labels = {
-            "CuttingEdgeHeight": FreeCAD.Qt.translate(
-                "ToolBitShapeEndMill", "Cutting edge height"),
-            "Diameter": FreeCAD.Qt.translate(
-                "ToolBitShapeEndMill", "Diameter"),
-            "Length": FreeCAD.Qt.translate(
-                "ToolBitShapeEndMill", "Overall Tool Length"),
-            "ShankDiameter": FreeCAD.Qt.translate(
-                "ToolBitShapeEndMill", "Shank diameter"),
+
+    @classmethod
+    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+        return {
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                "App::PropertyLength",
+            ),
+            "Diameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                "App::PropertyLength",
+            ),
+            "Flutes": (
+                FreeCAD.Qt.translate("ToolBitShape", "Flutes"),
+                "App::PropertyInteger",
+            ),
+            "Length": (
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                "App::PropertyLength",
+            ),
+            "ShankDiameter": (
+                FreeCAD.Qt.translate(
+                    "ToolBitToolBitShapeShapeEndMill", "Shank diameter"
+                ),
+                "App::PropertyLength",
+            ),
+        }
+
+    @classmethod
+    def feature_schema(
+        cls,
+    ) -> Mapping[
+        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
+    ]:
+        return {
+            **super(ToolBitShapeEndMill, cls).feature_schema(),
+            "Chipload": (
+                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
+                "App::PropertyLength",
+                0.0,  # Default value
+            ),
         }
 
     @property
     def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShapeEndMill", "Endmill")
+        return FreeCAD.Qt.translate("ToolBitShape", "Endmill")

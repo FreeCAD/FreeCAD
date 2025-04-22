@@ -2,31 +2,36 @@
 # Defines the Probe tool bit shape.
 
 import FreeCAD
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeProbe(ToolBitShape):
     name = "probe"
-    _schema = {
-        "Diameter": 'App::PropertyLength',
-        "Length": 'App::PropertyLength',
-        "ShaftDiameter": 'App::PropertyLength',
-    }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._labels = {
-            "Diameter": FreeCAD.Qt.translate(
-                "ToolBitShapeProbe", "Ball diameter"),
-            "Length": FreeCAD.Qt.translate(
-                "ToolBitShapeProbe", "Length of probe"),
-            "ShaftDiameter": FreeCAD.Qt.translate(
-                "ToolBitShapeProbe", "Shaft diameter"),
+
+    @classmethod
+    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+        return {
+            "Diameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Ball diameter"),
+                "App::PropertyLength",
+            ),
+            "Length": (
+                FreeCAD.Qt.translate("ToolBitShape", "Length of probe"),
+                "App::PropertyLength",
+            ),
+            "ShaftDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Shaft diameter"),
+                "App::PropertyLength",
+            ),
         }
 
     @property
     def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShapeProbe", "Probe")
+        return FreeCAD.Qt.translate("ToolBitShape", "Probe")
 
     def can_rotate(self) -> bool:
         return False
