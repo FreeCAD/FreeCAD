@@ -29,7 +29,7 @@ import pathlib
 import zipfile
 import enum
 from typing import List, Optional, Tuple, Type, Union
-from PySide.QtCore import QT_TRANSLATE_NOOP
+from PySide.QtCore import QT_TRANSLATE_NOOP, QTimer
 from Path.Base.Generator import toolchange
 from .Shape.base import ToolBitShape
 from .Shape.util import (
@@ -40,12 +40,15 @@ from .Shape.util import (
 from .Shape import TOOL_BIT_SHAPE_NAMES
 from lazy_loader.lazy_loader import LazyLoader
 
+
+Part = LazyLoader("Part", globals(), "Part")
+GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
+
+
 class ToolBitMaterial(enum.Enum):
     HSS = "HSS"
     Carbide = "Carbide"
 
-Part = LazyLoader("Part", globals(), "Part")
-GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
 
 __title__ = "Tool bits."
 __author__ = "sliptonic (Brad Collette), Samuel Abels"
@@ -133,6 +136,7 @@ class ToolBit(object):
         Path.Log.track(obj.Label, tool_bit_shape.label, path)
         self.obj = obj
         self._tool_bit_shape = tool_bit_shape
+        self._update_timer = None
 
         self._create_properties(obj)
 
@@ -297,6 +301,11 @@ class ToolBit(object):
     def onDocumentRestored(self, obj):
         Path.Log.track(obj.Label)
 
+        # The way FreeCAD loads documents is to construct the object from C++,
+        # and there is no guarantee that the constructor will have been (re-)executed.
+        # So we must ensure to properly update/re-setup the properties.
+        self._update_timer = None
+
         # Promote legacy tool bits to the new format
         self._create_properties(obj)
         if hasattr(obj, "BitShape"):
@@ -340,8 +349,29 @@ class ToolBit(object):
 
     def onChanged(self, obj, prop):
         Path.Log.track(obj.Label, prop)
-        if prop == "ShapeName" and "Restore" not in obj.State:
-            self._handle_shape_change(obj)
+        # Avoid acting during document restore or internal updates
+        if "Restore" in obj.State:
+            return
+
+        # We only care about updates that affect the Shape
+        if obj.getGroupOfProperty(prop) != PropertyGroupShape:
+            return
+
+        new_value = obj.getPropertyByName(prop)
+        Path.Log.debug(
+            f"Shape parameter '{prop}' changed to {new_value}. "
+            f"Scheduling visual representation update."
+        )
+        self._tool_bit_shape.set_parameter(prop, new_value)
+
+        # Cancel any pending updates
+        if self._update_timer and self._update_timer.isActive():
+            self._update_timer.stop()
+
+        # Schedule a new update after a delay (e.g., 500 milliseconds)
+        self._update_timer = QTimer.singleShot(
+            500, lambda: self._update_visual_representation(obj)
+        )
 
     def onDelete(self, obj, arg2=None):
         Path.Log.track(obj.Label)
@@ -532,9 +562,7 @@ class ToolBit(object):
     def _update_visual_representation(self, obj):
         Path.Log.track(obj.Label)
         # Remove existing BitBody if it exists
-        if obj.BitBody:
-            obj.Document.removeObject(obj.BitBody.Name)
-            obj.BitBody = None
+        self._removeBitBody(obj)
 
         try:
             # Use the shape's make_body method to create the visual representation
@@ -551,9 +579,10 @@ class ToolBit(object):
             obj.BitBody = body
             obj.Shape = obj.BitBody.Shape # Copy the evaluated Solid shape
 
-            # Hide the visual representation
-            if obj.BitBody and hasattr(obj.BitBody, 'ViewObject') and obj.BitBody.ViewObject:
+            # Hide the visual representation and remove from tree
+            if hasattr(obj.BitBody, 'ViewObject') and obj.BitBody.ViewObject:
                 obj.BitBody.ViewObject.Visibility = False
+                obj.BitBody.ViewObject.ShowInTree = False
 
         except Exception as e:
             Path.Log.error(
@@ -561,40 +590,6 @@ class ToolBit(object):
                 f" '{self._tool_bit_shape.name}': {e}"
             )
             raise
-
-    def _handle_shape_change(self, obj):
-        Path.Log.track(obj, obj.label)
-
-        new_shape_name = obj.ShapeName
-
-        old_shape_params = self._tool_bit_shape.get_parameters() if self._tool_bit_shape else {}
-
-        try:
-            # Use the utility function to get the shape instance.
-            new_shape_instance, _ = get_shape_from_name(
-                new_shape_name, pathlib.Path(obj.File) if obj.File else None
-            )
-            obj.ShapeFile = str(new_shape_instance.filepath or "")
-
-            # Attempt to preserve parameters from the old shape if they exist
-            # in the new one. We iterate through the parameters of the new shape
-            # instance and copy values from the old shape's parameters if they exist.
-            for name in new_shape_instance.get_parameters():
-                if name in old_shape_params:
-                    new_shape_instance.set_parameter(name, old_shape_params[name])
-        except Exception as e:
-            Path.Log.error(
-                f"Failed to instantiate or set up new shape '{new_shape_name}': {e}"
-            )
-
-            # Revert to the previous shape
-            obj.ShapeName = self._tool_bit_shape.name
-            return
-
-        # Re-initialize properties and visual representation based on the new shape
-        self._tool_bit_shape = new_shape_instance
-        self._update_properties(obj)
-        self._update_visual_representation(obj)
 
     def to_dict(self, obj):
         Path.Log.track(obj.Label)
