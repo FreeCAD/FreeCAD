@@ -9,7 +9,6 @@ Group:          Applications/Engineering
 
 License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
-VCS:            {{{ git_repo_vcs }}}
 
 Source0:        {{{ git_repo_pack }}}
 #add all submodule as source
@@ -19,19 +18,23 @@ Source3:        {{{ git_pack path=$GIT_ROOT/src/Mod/AddonManager/ dir_name="Addo
 Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="lib" }}}
 
 
-
-
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
-
 %global exported_libs libOndselSolver
+
+%global rootsrcfolder = {{{ git_name }}}
+%global wcvrev {{{ git_repo_release_branched }}}
+%global wcurl  {{{ git_repo_vcs }}}
+
+
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 # See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
 %global bundled_pycxx_version 7.1.9
 # See /src/3rdParty/OndselSolver/CMakeLists.txt to find this out.
 %global bundled_ondsel_solver_version 1.0.1
+
 
 # Some configuration options for other environments
 # rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
@@ -55,7 +58,7 @@ Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="l
 
 
 # Utilities
-BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel
+BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build
 %if %{with tests}
 BuildRequires:  xorg-x11-server-Xvfb
 %endif
@@ -135,18 +138,19 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     Development file for OndselSolver
 
 #path that contain main FreeCAD sources for cmake
-%global _vpath_srcdir  %_builddir/{{{ git_name  }}}
+%global _vpath_srcdir  %_builddir/
 #use absolute path for cmake macros
 %global _vpath_builddir  %_builddir/%_vpath_builddir
+%global cmake_generator Ninja
 
 %prep
-    {{{ git_repo_setup_macro source_indices=0}}}
+    %setup -T -b 0 -q -n %{rootsrcfolder}
     # extract submodule archive and move in correct path
-    %setup -T -a 1 -q -D -n {{{ git_name }}}/src/3rdParty/ #OndselSolver
-    %setup -T -a 2 -q -D -n {{{ git_name }}}/src/3rdParty/ #GSL
-    %setup -T -a 3 -q -D -n {{{ git_name }}}/src/Mod/ #AddonManager
+    %setup -T -a 1 -q -D -n %{rootsrcfolder}/src/3rdParty/ #OndselSolver
+    %setup -T -a 2 -q -D -n %{rootsrcfolder}/src/3rdParty/ #GSL
+    %setup -T -a 3 -q -D -n %{rootsrcfolder}/src/Mod/ #AddonManager
 %if %{with tests}
-    %setup -T -a 4 -q -D -n {{{ git_name }}}/tests/ #lib
+    %setup -T -a 4 -q -D -n %{rootsrcfolder}/tests/ #lib
 %endif
 
 %build
@@ -178,17 +182,18 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %if %{without bundled_zipios}
         -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
     %endif
-        -DPACKAGE_WCREV="{{{ git_repo_release_branched }}}" \
-        -DPACKAGE_WCURL="{{{ git_repo_vcs }}}"\
+        -DPACKAGE_WCREV="%{wcvrev}" \
+        -DPACKAGE_WCURL="wcurl"\
     %if %{with tests}
         -DENABLE_DEVELOPER_TESTS=TRUE \
     %else
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif
         -DBUILD_GUI=TRUE \
+        -G Ninja \
 
-    sed -i -e 's|"$WCREV$"|"{{{ git_repo_release_branched }}}"|g' %_vpath_builddir/src/Build/Version.h.in
-    sed -i -e 's|"$WCURL$"|"{{{ git_repo_vcs }}}"|g'              %_vpath_builddir/src/Build/Version.h.in
+    sed -i -e 's|"$WCREV$"|"%{wcvrev}"|g' %_vpath_builddir/src/Build/Version.h.in
+    sed -i -e 's|"$WCURL$"|"wcurl"|g'              %_vpath_builddir/src/Build/Version.h.in
 
     %cmake_build
 
