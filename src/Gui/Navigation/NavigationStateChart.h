@@ -32,6 +32,8 @@
 namespace Gui
 {
 
+class NaviStateMachine;
+
 class GuiExport NavigationStateChart : public UserNavigationStyle {
     using inherited = UserNavigationStyle;
 
@@ -89,57 +91,49 @@ public:
         std::shared_ptr<Flags> flags;
     };
 
-    class StateMachine
-    {
-    public:
-        template <typename T>
-        void make_object(T* obj)
-        {
-            object = std::make_shared<Model<T>>(obj);
-        }
-
-        void process_event(const Event& ev)
-        {
-            if (object) {
-                object->process_event(ev);
-            }
-        }
-
-        struct Concept
-        {
-            virtual ~Concept() = default;
-            virtual void process_event(const Event&) = 0;
-        };
-
-        template< typename T >
-        struct Model : Concept
-        {
-            explicit Model(T* t) : object(t)
-            {
-                object->initiate();
-            }
-            ~Model() override
-            {
-                object.reset();
-            }
-            void process_event(const Event& ev) override
-            {
-                object->process_event(ev);
-            }
-
-        private:
-            std::shared_ptr<T> object;
-        };
-
-        std::shared_ptr<Concept> object;
-    };
-
     NavigationStateChart();
     ~NavigationStateChart() override;
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
-    std::unique_ptr<StateMachine> naviMachine;  // NOLINT
+    std::unique_ptr<NaviStateMachine> naviMachine;  // NOLINT
+};
+
+class GuiExport NaviStateMachine
+{
+public:
+    NaviStateMachine(const NaviStateMachine&) = delete;
+    NaviStateMachine(NaviStateMachine&&) = delete;
+    NaviStateMachine& operator= (const NaviStateMachine&) = delete;
+    NaviStateMachine& operator= (NaviStateMachine&&) = delete;
+
+    NaviStateMachine() = default;
+    virtual ~NaviStateMachine() = default;
+
+    virtual void process_event(const NavigationStateChart::Event&) = 0;
+};
+
+template< typename T >
+class NaviStateMachineT : public NaviStateMachine
+{
+public:
+     explicit NaviStateMachineT(T* t) : object(t)
+     {
+         object->initiate();
+     }
+
+     ~NaviStateMachineT() override
+     {
+         object.reset();
+     }
+
+     void process_event(const NavigationStateChart::Event& ev) override
+     {
+         object->process_event(ev);
+     }
+
+private:
+     std::unique_ptr<T> object;
 };
 
 }  // namespace Gui

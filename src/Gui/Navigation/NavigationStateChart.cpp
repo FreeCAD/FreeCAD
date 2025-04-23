@@ -145,9 +145,7 @@ bool NS::Event::isDownAlt() const
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStateChart, Gui::UserNavigationStyle)
 
 NavigationStateChart::NavigationStateChart()
-    : naviMachine(new NS::StateMachine())
-{
-}
+{}
 
 NavigationStateChart::~NavigationStateChart()
 {

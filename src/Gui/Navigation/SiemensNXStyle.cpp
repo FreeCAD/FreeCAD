@@ -402,7 +402,7 @@ TYPESYSTEM_SOURCE(Gui::SiemensNXStyle, Gui::UserNavigationStyle)
 
 SiemensNXStyle::SiemensNXStyle()
 {
-    naviMachine->make_object(new NS::NaviMachine(*this));
+    naviMachine.reset(new NaviStateMachineT(new NaviMachine(*this)));
 }
 
 SiemensNXStyle::~SiemensNXStyle()
