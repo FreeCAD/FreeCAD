@@ -53,9 +53,8 @@ class MgDynwriter:
             s["Equation"] = "MgDynHarmonic"
             s["Procedure"] = sifio.FileAttr("MagnetoDynamics/WhitneyAVHarmonicSolver")
             s["Variable"] = "av[av re:1 av im:1]"
-            # round to get rid of numerical artifacts
-            frequency = float(Units.Quantity(equation.AngularFrequency).Value)
-            s["Angular Frequency"] = round(frequency, 6)
+            frequency = equation.AngularFrequency.getValueAs("Hz")
+            s["Angular Frequency"] = frequency
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
         s["Stabilize"] = equation.Stabilize
@@ -88,8 +87,8 @@ class MgDynwriter:
         s["Exec Solver"] = "Before Saving"
         s["Procedure"] = sifio.FileAttr("MagnetoDynamics/MagnetoDynamicsCalcFields")
         if equation.IsHarmonic:
-            frequency = float(Units.Quantity(equation.AngularFrequency).Value)
-            s["Angular Frequency"] = round(frequency, 6)
+            frequency = equation.AngularFrequency.getValueAs("Hz")
+            s["Angular Frequency"] = frequency
         s["Potential Variable"] = "av"
         if equation.CalculateCurrentDensity is True:
             s["Calculate Current Density"] = True
@@ -118,16 +117,15 @@ class MgDynwriter:
         return s
 
     def handleMagnetodynamicConstants(self):
-        permeability = self.write.convert(
-            self.write.constsdef["PermeabilityOfVacuum"], "M*L/(T^2*I^2)"
+        permeability = Units.Quantity(self.write.constsdef["PermeabilityOfVacuum"]).getValueAs(
+            "H/m"
         )
-        # we round in the following to get rid of numerical artifacts
-        self.write.constant("Permeability Of Vacuum", round(permeability, 20))
+        self.write.constant("Permeability Of Vacuum", permeability)
 
-        permittivity = self.write.convert(
-            self.write.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)"
+        permittivity = Units.Quantity(self.write.constsdef["PermittivityOfVacuum"]).getValueAs(
+            "F/m"
         )
-        self.write.constant("Permittivity Of Vacuum", round(permittivity, 20))
+        self.write.constant("Permittivity Of Vacuum", permittivity)
 
     def handleMagnetodynamicMaterial(self, bodies):
         # check that all bodies have a set material
@@ -151,8 +149,7 @@ class MgDynwriter:
                         "The relative permeability must be specified for all materials.\n\n"
                     )
                 self.write.material(name, "Name", m["Name"])
-                conductivity = self.write.convert(m["ElectricalConductivity"], "T^3*I^2/(L^3*M)")
-                conductivity = round(conductivity, 10)  # to get rid of numerical artifacts
+                conductivity = Units.Quantity(m["ElectricalConductivity"]).getValueAs("S/m")
                 self.write.material(name, "Electric Conductivity", conductivity)
                 self.write.material(name, "Relative Permeability", float(m["RelativePermeability"]))
                 # permittivity might be necessary for the post processor
@@ -165,58 +162,58 @@ class MgDynwriter:
         if femutils.is_derived_from(obj, "Fem::ConstraintCurrentDensity") and obj.Mode == "Custom":
             # output only if current density is enabled and needed
             if obj.EnableCurrentDensity_re_1:
-                currentDensity = float(obj.CurrentDensity_re_1.getValueAs("A/m^2"))
-                self.write.bodyForce(name, "Current Density 1", round(currentDensity, 6))
+                current_density = obj.CurrentDensity_re_1.getValueAs("A/m^2")
+                self.write.bodyForce(name, "Current Density 1", current_density)
             if obj.EnableCurrentDensity_re_2:
-                currentDensity = float(obj.CurrentDensity_re_2.getValueAs("A/m^2"))
-                self.write.bodyForce(name, "Current Density 2", round(currentDensity, 6))
+                current_density = obj.CurrentDensity_re_2.getValueAs("A/m^2")
+                self.write.bodyForce(name, "Current Density 2", current_density)
             if obj.EnableCurrentDensity_re_3:
-                currentDensity = float(obj.CurrentDensity_re_3.getValueAs("A/m^2"))
-                self.write.bodyForce(name, "Current Density 3", round(currentDensity, 6))
+                current_density = obj.CurrentDensity_re_3.getValueAs("A/m^2")
+                self.write.bodyForce(name, "Current Density 3", current_density)
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
                 if obj.EnableCurrentDensity_im_1:
-                    currentDensity = float(obj.CurrentDensity_im_1.getValueAs("A/m^2"))
-                    self.write.bodyForce(name, "Current Density Im 1", round(currentDensity, 6))
+                    current_density = obj.CurrentDensity_im_1.getValueAs("A/m^2")
+                    self.write.bodyForce(name, "Current Density Im 1", current_density)
                 if obj.EnableCurrentDensity_im_2:
-                    currentDensity = float(obj.CurrentDensity_im_2.getValueAs("A/m^2"))
-                    self.write.bodyForce(name, "Current Density Im 2", round(currentDensity, 6))
+                    current_density = obj.CurrentDensity_im_2.getValueAs("A/m^2")
+                    self.write.bodyForce(name, "Current Density Im 2", current_density)
                 if obj.EnableCurrentDensity_im_3:
-                    currentDensity = float(obj.CurrentDensity_im_3.getValueAs("A/m^2"))
-                    self.write.bodyForce(name, "Current Density Im 3", round(currentDensity, 6))
+                    current_density = obj.CurrentDensity_im_3.getValueAs("A/m^2")
+                    self.write.bodyForce(name, "Current Density Im 3", current_density)
 
         if femutils.is_derived_from(obj, "Fem::ConstraintMagnetization"):
             # output only if magnetization is enabled and needed
             if obj.EnableMagnetization_1:
-                magnetization = float(obj.Magnetization_re_1.getValueAs("A/m"))
+                magnetization = obj.Magnetization_re_1.getValueAs("A/m")
                 self.write.bodyForce(name, "Magnetization 1", magnetization)
             if obj.EnableMagnetization_2:
-                magnetization = float(obj.Magnetization_re_2.getValueAs("A/m"))
+                magnetization = obj.Magnetization_re_2.getValueAs("A/m")
                 self.write.bodyForce(name, "Magnetization 2", magnetization)
             if obj.EnableMagnetization_3:
-                magnetization = float(obj.Magnetization_re_3.getValueAs("A/m"))
+                magnetization = obj.Magnetization_re_3.getValueAs("A/m")
                 self.write.bodyForce(name, "Magnetization 3", magnetization)
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
                 if obj.EnableMagnetization_1:
-                    magnetization = float(obj.Magnetization_im_1.getValueAs("A/m"))
+                    magnetization = obj.Magnetization_im_1.getValueAs("A/m")
                     self.write.bodyForce(name, "Magnetization Im 1", magnetization)
                 if obj.EnableMagnetization_2:
-                    magnetization = float(obj.Magnetization_im_2.getValueAs("A/m"))
+                    magnetization = obj.Magnetization_im_2.getValueAs("A/m")
                     self.write.bodyForce(name, "Magnetization Im 2", magnetization)
                 if obj.EnableMagnetization_3:
-                    magnetization = float(obj.Magnetization_im_3.getValueAs("A/m"))
+                    magnetization = obj.Magnetization_im_3.getValueAs("A/m")
                     self.write.bodyForce(name, "Magnetization Im 3", magnetization)
 
         if femutils.is_derived_from(obj, "Fem::ConstraintElectrostaticPotential"):
             if obj.PotentialEnabled:
                 # output only if potential is enabled and needed
-                potential = float(obj.Potential.getValueAs("V"))
-                self.write.bodyForce(name, "Electric Potential", round(potential, 6))
+                potential = obj.Potential.getValueAs("V")
+                self.write.bodyForce(name, "Electric Potential", potential)
                 # imaginary is only needed for harmonic equation
                 if equation.IsHarmonic:
-                    potential = float(obj.AV_im.getValueAs("V"))
-                    self.write.bodyForce(name, "Electric Potential Im", round(potential, 6))
+                    potential = obj.AV_im.getValueAs("V")
+                    self.write.bodyForce(name, "Electric Potential Im", potential)
 
     def handleMagnetodynamicBodyForces(self, bodies, equation):
         # the current density can either be a body force or a boundary constraint
@@ -277,46 +274,46 @@ class MgDynwriter:
 
     def _outputMagnetodynamicBndConditions(self, obj, name, equation):
         if femutils.is_derived_from(obj, "Fem::ConstraintCurrentDensity") and obj.Mode == "Normal":
-            currentDensity = float(obj.NormalCurrentDensity_re.getValueAs("A/m^2"))
-            self.write.boundary(name, "Electric Current Density", round(currentDensity, 6))
+            current_density = obj.NormalCurrentDensity_re.getValueAs("A/m^2")
+            self.write.boundary(name, "Electric Current Density", current_density)
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
-                currentDensity = float(obj.NormalCurrentDensity_im.getValueAs("A/m^2"))
-                self.write.boundary(name, "Electric Current Density Im", round(currentDensity, 6))
+                current_density = obj.NormalCurrentDensity_im.getValueAs("A/m^2")
+                self.write.boundary(name, "Electric Current Density Im", current_density)
 
         if femutils.is_derived_from(obj, "Fem::ConstraintElectrostaticPotential"):
             if obj.EnableAV:
-                potential = obj.AV_re.getValueAs("V").Value
+                potential = obj.AV_re.getValueAs("V")
                 if equation.IsHarmonic:
-                    self.write.boundary(name, "AV re", round(potential, 6))
-                    potential = obj.AV_im.getValueAs("V").Value
-                    self.write.boundary(name, "AV im", round(potential, 6))
+                    self.write.boundary(name, "AV re", potential)
+                    potential = obj.AV_im.getValueAs("V")
+                    self.write.boundary(name, "AV im", potential)
                 else:
-                    self.write.boundary(name, "AV", round(potential, 6))
+                    self.write.boundary(name, "AV", potential)
             if obj.EnableAV_1:
-                potential = obj.AV_re_1.getValueAs("Wb/m").Value
+                potential = obj.AV_re_1.getValueAs("Wb/m")
                 if equation.IsHarmonic:
-                    self.write.boundary(name, "AV re {e} 1", round(potential, 6))
-                    potential = obj.AV_im_1.getValueAs("Wb/m").Value
-                    self.write.boundary(name, "AV im {e} 1", round(potential, 6))
+                    self.write.boundary(name, "AV re {e} 1", potential)
+                    potential = obj.AV_im_1.getValueAs("Wb/m")
+                    self.write.boundary(name, "AV im {e} 1", potential)
                 else:
-                    self.write.boundary(name, "AV {e} 1", round(potential, 6))
+                    self.write.boundary(name, "AV {e} 1", potential)
             if obj.EnableAV_2:
-                potential = obj.AV_re_2.getValueAs("Wb/m").Value
+                potential = obj.AV_re_2.getValueAs("Wb/m")
                 if equation.IsHarmonic:
-                    self.write.boundary(name, "AV re {e} 2", round(potential, 6))
-                    potential = obj.AV_im_2.getValueAs("Wb/m").Value
-                    self.write.boundary(name, "AV im {e} 2", round(potential, 6))
+                    self.write.boundary(name, "AV re {e} 2", potential)
+                    potential = obj.AV_im_2.getValueAs("Wb/m")
+                    self.write.boundary(name, "AV im {e} 2", potential)
                 else:
-                    self.write.boundary(name, "AV {e} 2", round(potential, 6))
+                    self.write.boundary(name, "AV {e} 2", potential)
             if obj.EnableAV_3:
-                potential = obj.AV_re_3.getValueAs("Wb/m").Value
+                potential = obj.AV_re_3.getValueAs("Wb/m")
                 if equation.IsHarmonic:
-                    self.write.boundary(name, "AV re {e} 3", round(potential, 6))
-                    potential = obj.AV_im_3.getValueAs("Wb/m").Value
-                    self.write.boundary(name, "AV im {e} 3", round(potential, 6))
+                    self.write.boundary(name, "AV re {e} 3", potential)
+                    potential = obj.AV_im_3.getValueAs("Wb/m")
+                    self.write.boundary(name, "AV im {e} 3", potential)
                 else:
-                    self.write.boundary(name, "AV {e} 3", round(potential, 6))
+                    self.write.boundary(name, "AV {e} 3", potential)
 
     def handleMagnetodynamicBndConditions(self, equation):
         # the current density can either be a body force or a boundary constraint
