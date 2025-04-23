@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 from typing import Dict, Tuple
 import FreeCAD
-from Path.Tool.Shape import (
+from Path.Tool.shape import (
     ToolBitShape,
     util,
     ToolBitShapeBallEnd,
@@ -22,7 +22,7 @@ from Path.Tool.Shape import (
     ToolBitShapeBullnose,
     ToolBitShapeVBit,
 )
-from Path.Tool.Shape.util import get_shape_class_from_name
+from Path.Tool.shape.util import get_shape_class_from_name
 
 
 # Helper dummy class for testing abstract methods

@@ -2,7 +2,7 @@
 # Unit tests for the Path.Tool.Shape module and its document utilities.
 import unittest
 from unittest.mock import patch, MagicMock, call
-from Path.Tool.Shape import doc
+from Path.Tool.shape import doc
 import os
 
 
@@ -139,11 +139,11 @@ class TestPathToolShapeDoc(unittest.TestCase):
         self.assertEqual(params, {"Diameter": "10 mm", "Length": "50 mm"})
         mock_freecad.Console.PrintWarning.assert_not_called()
 
-    @patch("Path.Tool.Shape.doc.FreeCAD", new=mock_freecad)
+    @patch("Path.Tool.shape.doc.FreeCAD", new=mock_freecad)
     def test_doc_get_object_properties_missing(self):
         """Test get_object_properties handles missing properties with warning."""
         # Re-import doc within the patch context to use the mocked FreeCAD
-        import Path.Tool.Shape.doc as doc_patched
+        import Path.Tool.shape.doc as doc_patched
 
         setattr(mock_obj, "Diameter", "10 mm")
         # Explicitly delete Height to ensure hasattr returns False for MagicMock
