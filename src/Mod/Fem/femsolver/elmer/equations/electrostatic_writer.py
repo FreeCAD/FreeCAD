@@ -106,10 +106,9 @@ class ESwriter:
             equation.PotentialDifference = 0.0
 
     def handleElectrostaticConstants(self):
-        permittivity = self.write.convert(
-            self.write.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)"
+        permittivity = Units.Quantity(self.write.constsdef["PermittivityOfVacuum"]).getValueAs(
+            "F/m"
         )
-        permittivity = round(permittivity, 20)  # to get rid of numerical artifacts
         self.write.constant("Permittivity Of Vacuum", permittivity)
 
     def handleElectrostaticMaterial(self, bodies):
@@ -132,15 +131,11 @@ class ESwriter:
                         self.write.boundary(name, "! FreeCAD Name", obj.Label)
                     if obj.BoundaryCondition == "Dirichlet":
                         if obj.PotentialEnabled:
-                            self.write.boundary(
-                                name, "Potential", obj.Potential.getValueAs("V").Value
-                            )
+                            potential = obj.Potential.getValueAs("V")
+                            self.write.boundary(name, "Potential", potential)
                     elif obj.BoundaryCondition == "Neumann":
-                        self.write.boundary(
-                            name,
-                            "Electric Flux",
-                            obj.ElectricFluxDensity.getValueAs("C/m^2").Value,
-                        )
+                        flux_density = obj.ElectricFluxDensity.getValueAs("C/m^2")
+                        self.write.boundary(name, "Electric Flux", flux_density)
                     if obj.PotentialConstant:
                         self.write.boundary(name, "Potential Constant", True)
                     if obj.ElectricInfinity:
@@ -164,7 +159,9 @@ class ESwriter:
                 for name in sub_elem:
                     self.write.boundary(name, "! FreeCAD Name", obj.Label)
                     self.write.boundary(
-                        name, "Surface Charge Density", round(density.getValueAs("C/m^2").Value, 6)
+                        name,
+                        "Surface Charge Density",
+                        density.getValueAs("C/m^2"),
                     )
                     self.write.handled(obj)
 
@@ -181,9 +178,7 @@ class ESwriter:
             for feat, sub_elem in obj.References:
                 for name in sub_elem:
                     self.write.bodyForce(name, "! FreeCAD Name", obj.Label)
-                    self.write.bodyForce(
-                        name, "Charge Density", round(density.getValueAs("C/m^3").Value, 6)
-                    )
+                    self.write.bodyForce(name, "Charge Density", density.getValueAs("C/m^3"))
                     self.write.handled(obj)
 
 
