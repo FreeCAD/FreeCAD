@@ -25,6 +25,7 @@ import Part
 import Path.Main.Job as PathJob
 import Path.Op.Vcarve as PathVcarve
 import Path.Tool.Bit as PathToolBit
+from Path.Tool.toolbit.util import findToolBit
 import math
 
 from CAMTests.PathTestUtils import PathTestBase
@@ -56,7 +57,7 @@ class TestPathVcarve(PathTestBase):
         rect = Part.makePolygon([(0, 0, 0), (5, 0, 0), (5, 10, 0), (0, 10, 0), (0, 0, 0)])
         part.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
         job = PathJob.Create("Job", [part])
-        tool_file = PathToolBit.findToolBit("60degree_Vbit.fctb")
+        tool_file = findToolBit("60degree_Vbit.fctb")
         job.Tools.Group[0].Tool = PathToolBit.Factory.CreateFrom(tool_file)
 
         op = PathVcarve.Create("TestVCarve")

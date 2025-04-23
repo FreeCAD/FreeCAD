@@ -29,7 +29,6 @@ import Path.Tool.Bit as PathToolBit
 import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
 import Path.Tool.Gui.Controller as PathToolControllerGui
-import PathGui
 import PathScripts.PathUtilsGui as PathUtilsGui
 import PySide
 import glob
@@ -39,6 +38,7 @@ import shutil
 import uuid as UUID
 
 from functools import partial
+from ..toolbit.util import findToolBit
 
 from PySide.QtGui import QStandardItem, QStandardItemModel, QPixmap
 from PySide.QtCore import Qt
@@ -282,7 +282,7 @@ class ModelFactory:
         for tool_bit in library.get("tools", []):
             try:
                 nr = tool_bit["nr"]
-                bit = PathToolBit.findToolBit(tool_bit["path"], path)
+                bit = findToolBit(tool_bit["path"], path)
                 if bit:
                     Path.Log.track(bit)
                     tool = PathToolBit.Declaration(bit)
