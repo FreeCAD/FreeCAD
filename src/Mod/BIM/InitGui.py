@@ -103,11 +103,14 @@ class BIMWorkbench(Workbench):
             "Arch_AxisSystem",
             "Arch_Grid",
             "Arch_SectionPlane",
-            "BIM_DrawingView",
-            "BIM_Shape2DView",
-            "BIM_Shape2DCut",
             "BIM_TDPage",
             "BIM_TDView",
+        ]
+
+        self.create_2dviews = [
+             "BIM_DrawingView",
+             "BIM_Shape2DView",
+             "BIM_Shape2DCut",
         ]
 
         self.bimtools = [
@@ -255,7 +258,6 @@ class BIMWorkbench(Workbench):
         ]
 
         # create generic tools command
-
         class BIM_GenericTools:
             def __init__(self, tools):
                 self.tools = tools
@@ -270,6 +272,22 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         self.bimtools.append("BIM_GenericTools")
 
+        # create create 2D views command
+        class BIM_Create2DViews:
+            def __init__(self, tools):
+                self.tools = tools
+            def GetCommands(self):
+                return self.tools
+            def GetResources(self):
+                t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D views")
+                return { "MenuText": t, "ToolTip": t, "Icon": "BIM_DrawingView"}
+            def IsActive(self):
+                v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                return v
+        FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
+        insert_at_index = self.annotationtools.index("BIM_TDPage")
+        self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
+        
         # load rebar tools (Reinforcement addon)
 
         try:
