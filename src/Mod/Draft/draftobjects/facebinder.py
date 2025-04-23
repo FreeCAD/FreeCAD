@@ -44,22 +44,22 @@ class Facebinder(DraftObject):
         super().__init__(obj, "Facebinder")
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Linked faces")
-        obj.addProperty("App::PropertyLinkSubList", "Faces", "Draft", _tip)
+        obj.addProperty("App::PropertyLinkSubList", "Faces", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Specifies if splitter lines must be removed")
-        obj.addProperty("App::PropertyBool","RemoveSplitter", "Draft", _tip)
+        obj.addProperty("App::PropertyBool","RemoveSplitter", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","An optional extrusion value to be applied to all faces")
-        obj.addProperty("App::PropertyDistance","Extrusion", "Draft" , _tip)
+        obj.addProperty("App::PropertyDistance","Extrusion", "Draft" , _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","An optional offset value to be applied to all faces")
-        obj.addProperty("App::PropertyDistance","Offset", "Draft" , _tip)
+        obj.addProperty("App::PropertyDistance","Offset", "Draft" , _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","This specifies if the shapes sew")
-        obj.addProperty("App::PropertyBool","Sew", "Draft", _tip)
+        obj.addProperty("App::PropertyBool","Sew", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","The area of the faces of this Facebinder")
-        obj.addProperty("App::PropertyArea","Area", "Draft", _tip)
+        obj.addProperty("App::PropertyArea","Area", "Draft", _tip, locked=True)
         obj.setEditorMode("Area", 1)
 
     def onDocumentRestored(self, obj):

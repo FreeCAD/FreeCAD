@@ -61,7 +61,8 @@ class Layer:
             obj.addProperty("App::PropertyLinkListHidden",
                             "Group",
                             "Layer",
-                            _tip)
+                            _tip,
+                            locked=True)
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
