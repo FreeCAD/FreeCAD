@@ -46,11 +46,6 @@ Part = LazyLoader("Part", globals(), "Part")
 GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
 
 
-class ToolBitMaterial(enum.Enum):
-    HSS = "HSS"
-    Carbide = "Carbide"
-
-
 __title__ = "Tool bits."
 __author__ = "sliptonic (Brad Collette), Samuel Abels"
 __url__ = "https://www.freecad.org"
