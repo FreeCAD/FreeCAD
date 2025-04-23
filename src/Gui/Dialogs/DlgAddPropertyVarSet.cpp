@@ -261,7 +261,7 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
 {
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
-    }));
+    }, PropertyEditor::FrameOption::WithFrame));
     editor->blockSignals(true);
     propertyItem->setEditorData(
             editor.get(),
