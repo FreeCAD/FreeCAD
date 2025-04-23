@@ -2540,6 +2540,6 @@ void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
 
     auto view3d = dynamic_cast<Gui::View3DInventor *>(doc->getActiveView());
     if (view3d) {
-        view3d->getViewer()->viewAll();
+        view3d->getViewer()->scale(scale_factor);
     }
 }

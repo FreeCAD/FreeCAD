@@ -3378,6 +3378,10 @@ void View3DInventorViewer::boxZoom(const SbBox2s& box)
 {
     navigation->boxZoom(box);
 }
+void View3DInventorViewer::scale(float factor)
+{
+    navigation->scale(factor);
+}
 
 SbBox3f View3DInventorViewer::getBoundingBox() const
 {

@@ -482,16 +482,16 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
     // Set height or height angle of the camera
     float scaleX = (float)sizeX/(float)size[0];
     float scaleY = (float)sizeY/(float)size[1];
-    float scale = std::max<float>(scaleX, scaleY);
-    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        float height = static_cast<SoOrthographicCamera*>(cam)->height.getValue() * scale;
-        static_cast<SoOrthographicCamera*>(cam)->height = height;
-    }
-    else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
-        height = 2.0f * atan(tan(height) * scale);
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
-    }
+    float scale_factor = std::max<float>(scaleX, scaleY);
+
+    doScale(cam, scale_factor);
+}
+void NavigationStyle::scale(float factor)
+{
+    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+    if (!cam) // no camera
+        return;
+    doScale(cam, factor);
 }
 
 void NavigationStyle::viewAll()
@@ -814,7 +814,18 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         }
     }
 }
-
+void NavigationStyle::doScale(SoCamera * cam, float factor)
+{
+    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        float height = static_cast<SoOrthographicCamera*>(cam)->height.getValue() * factor;
+        static_cast<SoOrthographicCamera*>(cam)->height = height;
+    }
+    else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
+        height = 2.0f * atan(tan(height) * factor);
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
+    }
+}
 void NavigationStyle::doRotate(SoCamera * camera, float angle, const SbVec2f& pos)
 {
     SbBool zoomAtCur = this->zoomAtCursor;
