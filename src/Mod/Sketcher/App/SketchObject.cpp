@@ -8126,7 +8126,7 @@ int SketchObject::getNumDimensionalConstraints() const
 
     int n_dimensionals = 0;
     for (auto val : vals) {
-        if (val->isDimensional()) {
+        if (val->isDimensional() && val->Type != Angle) {
             n_dimensionals++;
         }
     }
