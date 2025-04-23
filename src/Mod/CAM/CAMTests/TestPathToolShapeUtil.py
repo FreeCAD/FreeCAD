@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-# Unit tests for the Path.Tool.Shape module and its utilities.
+# Unit tests for the Path.Tool.shape module and its utilities.
 
 import unittest
 from pathlib import Path
 from unittest.mock import patch, MagicMock, call
-from Path.Tool.Shape import util, ToolBitShapeBallEnd, ToolBitShapeVBit
+from Path.Tool.shape import util, ToolBitShapeBallEnd, ToolBitShapeVBit
 
 mock_freecad = MagicMock(Name="FreeCAD_Mock")
 mock_freecad.Console = MagicMock()

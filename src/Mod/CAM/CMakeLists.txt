@@ -135,22 +135,22 @@ SET(PathPythonToolsGui_SRCS
 )
 
 SET(PathPythonToolsShape_SRCS
-    Path/Tool/Shape/__init__.py
-    Path/Tool/Shape/ballend.py
-    Path/Tool/Shape/base.py
-    Path/Tool/Shape/chamfer.py
-    Path/Tool/Shape/doc.py
-    Path/Tool/Shape/dovetail.py
-    Path/Tool/Shape/drill.py
-    Path/Tool/Shape/endmill.py
-    Path/Tool/Shape/probe.py
-    Path/Tool/Shape/reamer.py
-    Path/Tool/Shape/slittingsaw.py
-    Path/Tool/Shape/tap.py
-    Path/Tool/Shape/threadmill.py
-    Path/Tool/Shape/bullnose.py
-    Path/Tool/Shape/util.py
-    Path/Tool/Shape/vbit.py
+    Path/Tool/shape/__init__.py
+    Path/Tool/shape/ballend.py
+    Path/Tool/shape/base.py
+    Path/Tool/shape/chamfer.py
+    Path/Tool/shape/doc.py
+    Path/Tool/shape/dovetail.py
+    Path/Tool/shape/drill.py
+    Path/Tool/shape/endmill.py
+    Path/Tool/shape/probe.py
+    Path/Tool/shape/reamer.py
+    Path/Tool/shape/slittingsaw.py
+    Path/Tool/shape/tap.py
+    Path/Tool/shape/threadmill.py
+    Path/Tool/shape/bullnose.py
+    Path/Tool/shape/util.py
+    Path/Tool/shape/vbit.py
 )
 
 SET(PathPythonPost_SRCS
