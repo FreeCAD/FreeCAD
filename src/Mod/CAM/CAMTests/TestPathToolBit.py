@@ -20,10 +20,10 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Path.Tool.Bit as PathToolBit
 import CAMTests.PathTestUtils as PathTestUtils
 import glob
 import os
+from Path.Tool.toolbit.util import findToolShape, findToolBit, findToolLibrary
 
 TestToolDir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Tools")
 TestInvalidDir = os.path.join(
@@ -71,69 +71,69 @@ class TestPathToolBit(PathTestUtils.PathTestBase):
 
     def test00(self):
         """Find a tool shape from file name"""
-        path = PathToolBit.findToolShape("endmill.fcstd")
+        path = findToolShape("endmill.fcstd")
         self.assertIsNot(path, None)
         self.assertNotEqual(path, "endmill.fcstd")
 
     def test01(self):
         """Not find a relative path shape if not stored in default location"""
-        path = PathToolBit.findToolShape(TestToolShapeName)
+        path = findToolShape(TestToolShapeName)
         self.assertIsNone(path)
 
     def test02(self):
         """Find a relative path shape if it's local to a bit path"""
-        path = PathToolBit.findToolShape(TestToolShapeName, testToolBit())
+        path = findToolShape(TestToolShapeName, testToolBit())
         self.assertIsNot(path, None)
         self.assertEqual(path, testToolShape())
 
     def test03(self):
         """Not find a tool shape from an invalid absolute path."""
-        path = PathToolBit.findToolShape(testToolShape(TestInvalidDir))
+        path = findToolShape(testToolShape(TestInvalidDir))
         self.assertIsNone(path)
 
     def test04(self):
         """Find a tool shape from a valid absolute path."""
-        path = PathToolBit.findToolShape(testToolShape())
+        path = findToolShape(testToolShape())
         self.assertIsNot(path, None)
         self.assertEqual(path, testToolShape())
 
     def test10(self):
         """Find a tool bit from file name"""
-        path = PathToolBit.findToolBit("5mm_Endmill.fctb")
+        path = findToolBit("5mm_Endmill.fctb")
         self.assertIsNot(path, None)
         self.assertNotEqual(path, "5mm_Endmill.fctb")
 
     def test11(self):
         """Not find a relative path bit if not stored in default location"""
-        path = PathToolBit.findToolBit(TestToolBitName)
+        path = findToolBit(TestToolBitName)
         self.assertIsNone(path)
 
     def test12(self):
         """Find a relative path bit if it's local to a library path"""
-        path = PathToolBit.findToolBit(TestToolBitName, testToolLibrary())
+        path = findToolBit(TestToolBitName, testToolLibrary())
         self.assertIsNot(path, None)
         self.assertEqual(path, testToolBit())
 
     def test13(self):
         """Not find a tool bit from an invalid absolute path."""
-        path = PathToolBit.findToolBit(testToolBit(TestInvalidDir))
+        path = findToolBit(testToolBit(TestInvalidDir))
         self.assertIsNone(path)
 
     def test14(self):
         """Find a tool bit from a valid absolute path."""
-        path = PathToolBit.findToolBit(testToolBit())
+        path = findToolBit(testToolBit())
         self.assertIsNot(path, None)
         self.assertEqual(path, testToolBit())
 
     def test20(self):
         """Find a tool library from file name"""
-        path = PathToolBit.findToolLibrary("Default.fctl")
+        path = findToolLibrary("Default.fctl")
         self.assertIsNot(path, None)
         self.assertNotEqual(path, "Default.fctl")
 
     def test21(self):
         """Not find a relative path library if not stored in default location"""
-        path = PathToolBit.findToolLibrary(TestToolLibraryName)
+        path = findToolLibrary(TestToolLibraryName)
         self.assertIsNone(path)
 
     def test22(self):
@@ -143,11 +143,11 @@ class TestPathToolBit(PathTestUtils.PathTestBase):
 
     def test23(self):
         """Not find a tool library from an invalid absolute path."""
-        path = PathToolBit.findToolLibrary(testToolLibrary(TestInvalidDir))
+        path = findToolLibrary(testToolLibrary(TestInvalidDir))
         self.assertIsNone(path)
 
     def test24(self):
         """Find a tool library from a valid absolute path."""
-        path = PathToolBit.findToolBit(testToolBit())
+        path = findToolBit(testToolBit())
         self.assertIsNot(path, None)
         self.assertEqual(path, testToolBit())

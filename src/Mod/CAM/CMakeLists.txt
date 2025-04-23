@@ -118,6 +118,11 @@ SET(PathPythonTools_SRCS
     Path/Tool/Controller.py
 )
 
+SET(PathPythonToolsToolBit_SRCS
+    Path/Tool/toolbit/__init__.py
+    Path/Tool/toolbit/util.py
+)
+
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Bit.py
@@ -437,6 +442,7 @@ SET(all_files
     ${PathPythonTools_SRCS}
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsShape_SRCS}
+    ${PathPythonToolsToolBit_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -577,6 +583,13 @@ INSTALL(
         ${PathPythonToolsShape_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/Shape
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBit_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit
 )
 
 INSTALL(
