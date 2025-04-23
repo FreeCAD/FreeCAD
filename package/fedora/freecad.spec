@@ -7,19 +7,19 @@
 %bcond_without bundled_smesh
 
 # rpmbuild --without=tests:  esclude tests in %%check
-%bcond_with tests
+%bcond_without tests
 # rpmbuild --without=bundled_gtest:  don't use bundled version of gtest and gmock
 %bcond_without bundled_gtest
 
 %global git_name {{{ git_name }}}
-%global wcvrev {{{ git_repo_release_branched }}}
-%global wcurl  {{{ git_repo_vcs }}}
-%global wcdate {{{ echo -n `git log -1 --format="%at" | xargs -I{} date -d @{} +"%Y/%m/%d %T"` }}}
+%global wcvrev   {{{ git_repo_release_branched }}}
+%global wcurl    {{{ git_repo_vcs }}}
+%global wcdate   {{{ echo -n `git log -1 --format="%at" | xargs -I{} date -d @{} +"%Y/%m/%d %T"` }}}
 Name:           freecad
 
 Epoch:          1
-Version:        1.1.0~pre
-Release:        %wcvrev%autorelease
+Version:        1.1.0~dev
+Release:        %{wcvrev}%{autorelease}
 
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
@@ -36,16 +36,6 @@ Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="l
 %endif
 
 
-
-# Maintainers:  keep this list of plugins up to date
-# List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
-%global exported_libs libOndselSolver
-%if %{with tests}  && %{with bundled_gtest}
-%global plugins %plugins libgmock libgtest
-%endif
-
-
 %if %{with bundled_smesh}
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
@@ -56,11 +46,6 @@ Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="l
 %endif
 # See /src/3rdParty/OndselSolver/CMakeLists.txt to find this out.
 %global bundled_ondsel_solver_version 1.0.1
-
-
-
-
-
 
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build
@@ -103,14 +88,7 @@ Provides:       bundled(python3-pycxx) = %{bundled_pycxx_version}
 Provides:       bundled(libondselsolver) = %{bundled_ondsel_solver_version}
 
 Recommends:     python3-pysolar
-
-# plugins and private shared libs in %%{_libdir}/freecad/lib are private;
-# prevent private capabilities being advertised in Provides/Requires
-%global __requires_exclude_from ^%{_libdir}/%{name}/(lib|Mod)/.*$
-%global __provides_exclude_from ^%{_libdir}/%{name}/Mod/.*$
-%global __provides_exclude ^(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|${i}Gui"; done)).so$
-%global __requires_exclude ^(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|${i}Gui"; done)%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)).so$
-
+Recommends:     IfcOpenShell-python3
 
 
 %description
@@ -138,22 +116,24 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 %description libondselsolver-devel
     Development file for OndselSolver
 
+
 #path that contain main FreeCAD sources for cmake
 %global _vpath_srcdir  %_builddir/%{git_name}
-#use absolute path for cmake macros
-%global _vpath_builddir  %_builddir/%_vpath_builddir
-
+%global tests_resultdir %{_datadir}/%{name}/%{_arch}/tests_result
 %prep
-    %setup -T -b 0 -q -n %{git_name}
+    rm -rf %{git_name}
+
     # extract submodule archive and move in correct path
-    %setup -T -a 1 -q -D -n %{git_name}/src/3rdParty/ #OndselSolver
-    %setup -T -a 2 -q -D -n %{git_name}/src/3rdParty/ #GSL
-    %setup -T -a 3 -q -D -n %{git_name}/src/Mod/ #AddonManager
+    %setup -T -a 1 -q -c -D -n %{git_name}/src/3rdParty/ #OndselSolver
+    %setup -T -a 2 -q -c -D -n %{git_name}/src/3rdParty/ #GSL
+    %setup -T -a 3 -q -c -D -n %{git_name}/src/Mod/ #AddonManager
 %if %{with tests}  && %{with bundled_gtest}
-    %setup -T -a 4 -q -D -n %{git_name}/tests/ #lib
+    %setup -T -a 4 -q -c -D -n %{git_name}/tests/ #lib
 %endif
+    %setup -T -b 0 -q -D -n %{git_name}
 
 %build
+    cd %_builddir
     # Deal with cmake projects that tend to link excessively.
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
@@ -192,16 +172,17 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DBUILD_GUI=TRUE \
         -G=Ninja
 
-    if ![ -d %_vpath_srcdir/.git ]; then
-        sed -i -e 's|"$WCREV$"|"%{wcvrev}"|g' %_vpath_builddir/src/Build/Version.h.in
-        sed -i -e 's|"$WCURL$"|"%{wcurl}"|g'  %_vpath_builddir/src/Build/Version.h.in
-        sed -i -e 's|"$WDATE$"|"%{wcdate}"|g'  %_vpath_builddir/src/Build/Version.h.in
-    fi
-
+    #adapt the script src/Tools/SubWCRev.py to extract the info during srpm generation
+    #and store it in a place that can be retrived at build time
+    #maybe in a string(json) that can be passed as cmake variable;
+    sed -i -e 's|"$WCREV$"|"%{wcvrev}"|g' %_vpath_builddir/src/Build/Version.h.in
+    sed -i -e 's|"$WCURL$"|"%{wcurl}"|g'  %_vpath_builddir/src/Build/Version.h.in
+    sed -i -e 's|"$WDATE$"|"%{wcdate}"|g'  %_vpath_builddir/src/Build/Version.h.in
 
     %cmake_build
 
 %install
+    cd %_builddir
     %cmake_install
 
     # Symlink binaries to /usr/bin
@@ -211,62 +192,28 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
     # Remove header from external library that's erroneously installed
     rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
+    rm -f %{buildroot}%{_includedir}/gmock
+    rm -f %{buildroot}%{_includedir}/gtest
 
 
 %check
+    cd %_builddir
     desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
     %{?fedora:appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml}
 
 %if %{with tests}
-    cd %_vpath_builddir
-    %{_vpath_builddir}/tests/Tests_run           || echo "--------------------------------------- Failed Test_run ----------------------------------------"
-    %{_vpath_builddir}/bin/FreeCADCmd -t 0       || echo "--------------------------------------- Failed FreeCADCmd -t 0 ---------------------------------"
-    xvfb-run %{_vpath_builddir}/bin/FreeCAD -t 0 || echo "--------------------------------------- Failed FreeCAD -t 0 ------------------------------------"
-    %ctest                                       || echo "--------------------------------------- Failed ctest -------------------------------------------"
+    mkdir -p %{buildroot}%tests_resultdir
+    pushd %_vpath_builddir
+    ./tests/Tests_run &> %{buildroot}%tests_resultdir/Tests_run.result              || echo "**** Failed Test_run ****"
+    tail -n 50 %{buildroot}%tests_resultdir/Tests_run.result
+    ./bin/FreeCADCmd -t 0  &> %{buildroot}%tests_resultdir/FreeCADCmd_test.result   || echo "**** Failed FreeCADCmd -t 0 ****"
+    tail -n 50 %{buildroot}%tests_resultdir/FreeCADCmd_test.result
+    xvfb-run ./bin/FreeCAD -t 0 &> %{buildroot}%tests_resultdir/FreeCAD_test.result || echo "**** Failed FreeCAD -t 0 ****"
+    tail -n 50 %{buildroot}%tests_resultdir/FreeCAD_test.result
+    popd
+    %ctest &> %{buildroot}%tests_resultdir/ctest.result                             || echo "Failed ctest"
+    tail -n 50 %{buildroot}%tests_resultdir/ctest.result
 %endif
-
-    # Bug maintainers to keep %%{plugins} macro up to date.
-    #https://asmaloney.github.io/libE57Format-docs/
-    # Make sure there are no plugins that need to be added to plugins macro
-    %define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins};       do echo -n "\\\|$i"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
-    %define exported_libs_regexp      /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so/d
-
-    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib}  | sed -e '%{plugin_regexp} ; %{exported_libs_regexp}'`
-
-    if [ -n "$new_plugins" ]; then
-        echo -e "\n\n\n**** ERROR:\n" \
-            "\nPlugins not caught by regexps:" \
-            "\n" $new_plugins \
-            "\n\nPlugins in %{_libdir}/%{name}/lib do not exist in" \
-            "\nspecfile %%{plugins} or %%{exported_libs_regexp} macro." \
-            "\nPlease add these to %%{plugins} or %%{exported_libs_regexp}" \
-            "\nmacro at top of specfile" \
-            "\nand rebuild.\n****\n" 1>&2
-        exit 1
-    fi
-    # Make sure there are no entries in the plugins macro that don't match plugins
-    for p in %{plugins}; do
-        if [ -z "`ls %{buildroot}%{_libdir}/%{name}/%{_lib}/$p*.so`" ]; then
-            set +x
-            echo -e "\n\n\n**** ERROR:\n" \
-                "\nExtra entry in %%{plugins} macro with no matching plugin:" \
-                "'$p'.\n\nPlease remove from %%{plugins} macro at top of" \
-                "\nspecfile and rebuild.\n****\n" 1>&2
-            exit 1
-        fi
-    done
-    # Make sure there are no entries in the exported_libs_regexp macro that don't match plugins
-    for d in %{exported_libs}; do
-        if [ -z "`ls %{buildroot}%{_libdir}/%{name}/%{_lib}/$d*.so`" ]; then
-            set +x
-            echo -e "\n\n\n**** ERROR:\n" \
-                "\nExtra entry in %%{exported_libs} macro with no matching lib:" \
-                "'$d'.\n\nPlease remove from %%{exported_libs} macro at top of" \
-                "\nspecfile and rebuild.\n****\n" 1>&2
-            exit 1
-        fi
-    done
-
 
 %post
     /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
@@ -299,6 +246,9 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_datadir}/mime/packages/*
     %{_datadir}/thumbnailers/*
     %{python3_sitelib}/%{name}/*
+%if %{with tests}
+    %tests_resultdir/*
+%endif
 
 %files data
     %{_datadir}/%{name}/
