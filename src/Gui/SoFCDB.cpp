@@ -53,6 +53,7 @@
 #include "Inventor/Draggers/SoTransformDragger.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
+#include "Navigation/NavigationStateChart.h"
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
@@ -188,6 +189,7 @@ void Gui::SoFCDB::init()
 
     NavigationStyle                 ::init();
     UserNavigationStyle             ::init();
+    NavigationStateChart            ::init();
     InventorNavigationStyle         ::init();
     CADNavigationStyle              ::init();
     RevitNavigationStyle            ::init();
