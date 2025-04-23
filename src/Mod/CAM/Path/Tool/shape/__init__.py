@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # This package aggregates tool bit shape classes.
 
-from typing import Dict, Optional, Type
-
 # Import the base class and all concrete shape classes
 from .base import ToolBitShape
 from .ballend import ToolBitShapeBallEnd
