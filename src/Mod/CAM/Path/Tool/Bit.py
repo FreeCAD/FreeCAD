@@ -27,7 +27,6 @@ import json
 import os
 import pathlib
 import zipfile
-import enum
 from typing import List, Optional, Tuple, Type, Union
 from PySide.QtCore import QT_TRANSLATE_NOOP, QTimer
 from Path.Base.Generator import toolchange
@@ -114,21 +113,6 @@ def findToolLibrary(name, path=None):
     return _findToolFile("{}.fctl".format(name), path, "Library")
 
 
-def _findRelativePath(path, typ):
-    Path.Log.track(path, typ)
-    relative = path
-    for p in Path.Preferences.searchPathsTool(typ):
-        if path.startswith(p):
-            p = path[len(p) :]
-            if os.path.sep == p[0]:
-                p = p[1:]
-            if len(p) < len(relative):
-                relative = p
-    return relative
-
-
-def findRelativePathLibrary(path):
-    return _findRelativePath(path, "Library")
 
 
 class ToolBit(object):
