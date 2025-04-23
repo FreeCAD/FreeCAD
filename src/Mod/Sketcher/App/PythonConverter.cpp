@@ -195,6 +195,17 @@ std::string PythonConverter::convert(const std::string& doc,
     return constraintlist;
 }
 
+std::string PythonConverter::makeArryString(const std::stringstream& ss)
+{
+    std::string res = ss.str();
+    // remove last comma and add brackets
+    int index = res.rfind(',');
+    res.resize(index);
+    res.insert(0, 1, '[');
+    res.append(1, ']');
+    return res;
+}
+
 PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* geo)
 {
     static std::map<const Base::Type, std::function<SingleGeometry(const Part::Geometry* geo)>>
@@ -312,17 +323,26 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  for (auto& pole : poles) {
                      stream << "App.Vector(" << pole.x << "," << pole.y << "),";
                  }
-                 std::string controlpoints = stream.str();
-                 // remove last comma and add brackets
-                 int index = controlpoints.rfind(',');
-                 controlpoints.resize(index);
-                 controlpoints.insert(0, 1, '[');
-                 controlpoints.append(1, ']');
+                 std::string controlpoints = makeArryString(stream);
+                 
+                 stream = std::stringstream();
+                 std::vector<int> mults = bSpline->getMultiplicities();
+                 for (const auto& mult : mults) {
+                     stream << mult << ",";
+                 }
+                 std::string strmults = makeArryString(stream);
+
+                 stream = std::stringstream();
+                 std::vector<double> knots = bSpline->getKnots();
+                 for (const auto& knot : knots) {
+                     stream << knot << ",";
+                 }
+                 std::string strknots = makeArryString(stream);
 
                  SingleGeometry sg;
                  sg.creation = boost::str(
-                     boost::format("Part.BSplineCurve (%s, None, None, %s, %d, None, False)")
-                     % controlpoints.c_str() % (bSpline->isPeriodic() ? "True" : "False")
+                     boost::format("Part.BSplineCurve (%s, %s, %s, %s, %d, None, False)")
+                     % controlpoints.c_str() % strmults.c_str() % strknots.c_str() % (bSpline->isPeriodic() ? "True" : "False")
                      % bSpline->getDegree());
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;

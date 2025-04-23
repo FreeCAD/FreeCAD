@@ -91,6 +91,8 @@ private:
 
     static std::string process(const Sketcher::Constraint* constraint,
                                GeoIdMode geoIdMode = GeoIdMode::DoNotChangeGeoIds);
+
+    static std::string makeArryString(const std::stringstream& ss);
 };
 
 }  // namespace Sketcher
