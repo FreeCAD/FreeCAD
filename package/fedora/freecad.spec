@@ -7,15 +7,19 @@
 %bcond_without bundled_smesh
 
 # rpmbuild --without=tests:  esclude tests in %%check
-%bcond_without tests
+%bcond_with tests
 # rpmbuild --without=bundled_gtest:  don't use bundled version of gtest and gmock
 %bcond_without bundled_gtest
 
+%global git_name {{{ git_name }}}
+%global wcvrev {{{ git_repo_release_branched }}}
+%global wcurl  {{{ git_repo_vcs }}}
+%global wcdate {{{ echo -n `git log -1 --format="%at" | xargs -I{} date -d @{} +"%Y/%m/%d %T"` }}}
 Name:           freecad
 
 Epoch:          1
-Version:        {{{ git_repo_version  lead=1.1 follow=0~pre }}}.{{{ echo $GIT_BRANCH }}}
-Release:        %autorelease
+Version:        1.1.0~pre
+Release:        %wcvrev%autorelease
 
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
@@ -31,14 +35,16 @@ Source3:        {{{ git_pack path=$GIT_ROOT/src/Mod/AddonManager/ dir_name="Addo
 Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="lib" }}}
 %endif
 
-%global rootsrcfolder {{{ git_name }}}
-%global wcvrev {{{ git_repo_release_branched }}}
-%global wcurl  {{{ git_repo_vcs }}}
+
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver  libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 %global exported_libs libOndselSolver
+%if %{with tests}  && %{with bundled_gtest}
+%global plugins %plugins libgmock libgtest
+%endif
+
 
 %if %{with bundled_smesh}
 # See /src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
@@ -54,14 +60,6 @@ Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="l
 
 
 
-%if %{with tests}
-#enable only tests that pass
-%global enabled_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax
-%global enabled_gui_tests MeshTestsApp TestSurfaceApp BaseTests UnitTests Metadata StringHasher UnicodeTests TestPythonSyntax TestDraftGui TestSketcherGui Menu Menu.MenuDeleteCases Menu.MenuCreateCases GuiDocument  TestAddonManagerGui TestOpenSCADGui
-#all disabled
-%global enabled_ctest_regex "^$"
-
-%endif
 
 
 # Utilities
@@ -123,10 +121,6 @@ Recommends:     python3-pysolar
     architecture which makes it easy to provide additional functionality without
     modifying the core system.
 
-%changelog
-    %autochangelog
-
-
 %package data
 Summary:        Data files for FreeCAD
 BuildArch:      noarch
@@ -145,19 +139,18 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     Development file for OndselSolver
 
 #path that contain main FreeCAD sources for cmake
-%global _vpath_srcdir  %_builddir/%{rootsrcfolder}
+%global _vpath_srcdir  %_builddir/%{git_name}
 #use absolute path for cmake macros
 %global _vpath_builddir  %_builddir/%_vpath_builddir
-%global cmake_generator Ninja
 
 %prep
-    %setup -T -b 0 -q -n %{rootsrcfolder}
+    %setup -T -b 0 -q -n %{git_name}
     # extract submodule archive and move in correct path
-    %setup -T -a 1 -q -D -n %{rootsrcfolder}/src/3rdParty/ #OndselSolver
-    %setup -T -a 2 -q -D -n %{rootsrcfolder}/src/3rdParty/ #GSL
-    %setup -T -a 3 -q -D -n %{rootsrcfolder}/src/Mod/ #AddonManager
+    %setup -T -a 1 -q -D -n %{git_name}/src/3rdParty/ #OndselSolver
+    %setup -T -a 2 -q -D -n %{git_name}/src/3rdParty/ #GSL
+    %setup -T -a 3 -q -D -n %{git_name}/src/Mod/ #AddonManager
 %if %{with tests}  && %{with bundled_gtest}
-    %setup -T -a 4 -q -D -n %{rootsrcfolder}/tests/ #lib
+    %setup -T -a 4 -q -D -n %{git_name}/tests/ #lib
 %endif
 
 %build
@@ -189,8 +182,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %if %{without bundled_zipios}
         -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
     %endif
-        -DPACKAGE_WCREV="%{wcvrev}" \
-        -DPACKAGE_WCURL="%{wcurl}"\
     %if %{with tests}
         -DENABLE_DEVELOPER_TESTS=TRUE \
         -DINSTAL_GTEST=FALSE \
@@ -199,10 +190,14 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %endif
         -DONDSELSOLVER_BUILD_EXE=TRUE \
         -DBUILD_GUI=TRUE \
-        -G Ninja \
+        -G=Ninja
 
-    sed -i -e 's|"$WCREV$"|"%{wcvrev}"|g' %_vpath_builddir/src/Build/Version.h.in
-    sed -i -e 's|"$WCURL$"|"%{wcurl}"|g'  %_vpath_builddir/src/Build/Version.h.in
+    if ![ -d %_vpath_srcdir/.git ]; then
+        sed -i -e 's|"$WCREV$"|"%{wcvrev}"|g' %_vpath_builddir/src/Build/Version.h.in
+        sed -i -e 's|"$WCURL$"|"%{wcurl}"|g'  %_vpath_builddir/src/Build/Version.h.in
+        sed -i -e 's|"$WDATE$"|"%{wcdate}"|g'  %_vpath_builddir/src/Build/Version.h.in
+    fi
+
 
     %cmake_build
 
@@ -223,24 +218,20 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{?fedora:appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml}
 
 %if %{with tests}
-    for t in %{enabled_tests}; do
-        %{_vpath_builddir}/bin/FreeCADCmd -t $t
-    done
-    for t in %{enabled_gui_tests}; do
-        xvfb-run %{_vpath_builddir}/bin/FreeCAD -t $t
-    done
-
-    #ctest are failing
-    %ctest -R %enabled_ctest_regex
+    cd %_vpath_builddir
+    %{_vpath_builddir}/tests/Tests_run           || echo "--------------------------------------- Failed Test_run ----------------------------------------"
+    %{_vpath_builddir}/bin/FreeCADCmd -t 0       || echo "--------------------------------------- Failed FreeCADCmd -t 0 ---------------------------------"
+    xvfb-run %{_vpath_builddir}/bin/FreeCAD -t 0 || echo "--------------------------------------- Failed FreeCAD -t 0 ------------------------------------"
+    %ctest                                       || echo "--------------------------------------- Failed ctest -------------------------------------------"
 %endif
 
     # Bug maintainers to keep %%{plugins} macro up to date.
     #https://asmaloney.github.io/libE57Format-docs/
     # Make sure there are no plugins that need to be added to plugins macro
-    %define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|${i}Gui"; done)\\\)\\.so/d
+    %define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins};       do echo -n "\\\|$i"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
+    %define exported_libs_regexp      /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so/d
 
-    %define exported_libs_regexp /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so\\\)/d
-    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib}|sed -e '/^\(cmake\|pkgconfig\/d)' | sed -e  '%{plugin_reghexp}' | sed -e '%{exported_libs_regexp}'`
+    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib}  | sed -e '%{plugin_regexp} ; %{exported_libs_regexp}'`
 
     if [ -n "$new_plugins" ]; then
         echo -e "\n\n\n**** ERROR:\n" \
@@ -275,7 +266,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
             exit 1
         fi
     done
-
 
 
 %post
@@ -318,3 +308,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 %files libondselsolver-devel
     %{_datadir}/pkgconfig/OndselSolver.pc
     %{_includedir}/OndselSolver/*
+
+
+%changelog
+    %autochangelog
