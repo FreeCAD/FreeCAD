@@ -113,6 +113,19 @@ bool MayaGestureNavigationStyle::testMoveThreshold(const SbVec2s currentPos) con
     return SbVec2f(movedBy).length() >= this->mouseMoveThreshold;
 }
 
+void MayaGestureNavigationStyle::zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos)
+{
+    const float dx = thispos[0] - prevpos[0];
+    const float dy = thispos[1] - prevpos[1];
+
+    // Compute zoom based on diagonal difference.
+    float value = (dx - dy) * 10.0f;
+
+    if (this->invertZoom)
+        value = -value;
+    zoom(viewer->getSoRenderManager()->getCamera(), value);
+}
+
 SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
