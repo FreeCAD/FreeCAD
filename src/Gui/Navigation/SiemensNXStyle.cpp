@@ -32,7 +32,7 @@
 #include <boost/statechart/state.hpp>
 
 #include "Camera.h"
-#include "NavigationStyle.h"
+#include "SiemensNXStyle.h"
 #include "View3DInventorViewer.h"
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-static-cast-downcast,
@@ -40,97 +40,8 @@
 //             readability-avoid-const-params-in-decls)
 using namespace Gui;
 namespace sc = boost::statechart;
+using SC = NavigationStateChart;
 using NS = SiemensNXStyle;
-
-struct NS::Event: public sc::event<NS::Event>
-{
-    Event() : flags(new Flags){}
-    using Button = SoMouseButtonEvent::Button;
-    using Key = SoKeyboardEvent::Key;
-    bool isMouseButtonEvent() const {
-        return this->inventor_event->isOfType(SoMouseButtonEvent::getClassTypeId());
-    }
-    const SoMouseButtonEvent* asMouseButtonEvent() const {
-        return static_cast<const SoMouseButtonEvent*>(this->inventor_event);
-    }
-    bool isPress(Button button) const {
-        return SoMouseButtonEvent::isButtonPressEvent(this->inventor_event, button);
-    }
-    bool isRelease(Button button) const {
-        return SoMouseButtonEvent::isButtonReleaseEvent(this->inventor_event, button);
-    }
-    bool isKeyPress(Key key) const {
-        return SoKeyboardEvent::isKeyPressEvent(this->inventor_event, key);
-    }
-    bool isKeyRelease(Key key) const {
-        return SoKeyboardEvent::isKeyReleaseEvent(this->inventor_event, key);
-    }
-    bool isKeyboardEvent() const {
-        return this->inventor_event->isOfType(SoKeyboardEvent::getClassTypeId());
-    }
-    const SoKeyboardEvent* asKeyboardEvent() const {
-        return static_cast<const SoKeyboardEvent*>(this->inventor_event);
-    }
-    bool isLocation2Event() const {
-        return this->inventor_event->isOfType(SoLocation2Event::getClassTypeId());
-    }
-    const SoLocation2Event* asLocation2Event() const {
-        return static_cast<const SoLocation2Event*>(this->inventor_event);
-    }
-    bool isMotion3Event() const {
-        return this->inventor_event->isOfType(SoMotion3Event::getClassTypeId());
-    }
-    const SoMotion3Event* asMotion3Event() const {
-        return static_cast<const SoMotion3Event*>(this->inventor_event);
-    }
-    bool isDownButton(unsigned int state) const {
-        return mbstate() == state;
-    }
-    bool isDownNoButton() const {
-        return mbstate() == 0;
-    }
-    bool isDownButton1() const {
-        return (mbstate() & BUTTON1DOWN) == BUTTON1DOWN;
-    }
-    bool isDownButton2() const {
-        return (mbstate() & BUTTON2DOWN) == BUTTON2DOWN;
-    }
-    bool isDownButton3() const {
-        return (mbstate() & BUTTON3DOWN) == BUTTON3DOWN;
-    }
-    bool isDownControl() const {
-        return (kbstate() & CTRLDOWN) == CTRLDOWN;
-    }
-    bool isDownShift() const {
-        return (kbstate() & SHIFTDOWN) == SHIFTDOWN;
-    }
-    bool isDownAlt() const {
-        return (kbstate() & ALTDOWN) == ALTDOWN;
-    }
-
-    enum {
-        // bits: 0-shift-ctrl-alt-0-lmb-mmb-rmb
-        BUTTON1DOWN = 0x00000100,
-        BUTTON2DOWN = 0x00000001,
-        BUTTON3DOWN = 0x00000010,
-        CTRLDOWN =    0x00100000,
-        SHIFTDOWN =   0x01000000,
-        ALTDOWN =     0x00010000,
-        MASKBUTTONS = BUTTON1DOWN | BUTTON2DOWN | BUTTON3DOWN,
-        MASKMODIFIERS = CTRLDOWN | SHIFTDOWN | ALTDOWN
-    };
-
-    const SoEvent* inventor_event{nullptr};
-    unsigned int modifiers{0};
-    unsigned int mbstate() const {return modifiers & MASKBUTTONS;}
-    unsigned int kbstate() const {return modifiers & MASKMODIFIERS;}
-
-    struct Flags{
-        bool processed = false;
-        bool propagated = false;
-    };
-    std::shared_ptr<Flags> flags;
-};
 
 struct NS::NaviMachine: public sc::state_machine<NS::NaviMachine, NS::IdleState>
 {
@@ -141,13 +52,13 @@ struct NS::NaviMachine: public sc::state_machine<NS::NaviMachine, NS::IdleState>
 
 struct NS::IdleState: public sc::state<NS::IdleState, NS::NaviMachine>
 {
-    using reactions = sc::custom_reaction<NS::Event>;
+    using reactions = sc::custom_reaction<SC::Event>;
     explicit IdleState(my_context ctx) : my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::IDLE);
     }
-    sc::result react(const NS::Event& ev)
+    sc::result react(const SC::Event& ev)
     {
         auto &ns = this->outermost_context().ns;
         switch (ns.getViewingMode()) {
@@ -194,7 +105,7 @@ struct NS::IdleState: public sc::state<NS::IdleState, NS::NaviMachine>
                 return transit<NS::PanState>();
             }
 
-            if (ev.isDownButton(NS::Event::BUTTON3DOWN)) {
+            if (ev.isDownButton(SC::Event::BUTTON3DOWN)) {
                 ev.flags->processed = true;
                 return transit<NS::AwaitingMoveState>();
             }
@@ -490,14 +401,12 @@ struct NS::SelectionState: public sc::state<NS::SelectionState, NS::NaviMachine>
 TYPESYSTEM_SOURCE(Gui::SiemensNXStyle, Gui::UserNavigationStyle)
 
 SiemensNXStyle::SiemensNXStyle()
-    : naviMachine(new NS::NaviMachine(*this))
 {
-    naviMachine->initiate();
+    naviMachine->make_object(new NS::NaviMachine(*this));
 }
 
 SiemensNXStyle::~SiemensNXStyle()
 {
-    naviMachine.reset();
 }
 
 const char* SiemensNXStyle::mouseButtons(ViewerMode mode)
@@ -557,83 +466,6 @@ SbBool SiemensNXStyle::processKeyboardEvent(const SoKeyboardEvent * const event)
     return inherited::processKeyboardEvent(event);
 }
 
-SbBool SiemensNXStyle::processSoEvent(const SoEvent * const ev)
-{
-    // Events when in "ready-to-seek" mode are ignored, except those
-    // which influence the seek mode itself -- these are handled further
-    // up the inheritance hierarchy.
-    if (this->isSeekMode()) {
-        return inherited::processSoEvent(ev);
-    }
-
-    // Switch off viewing mode (Bug #0000911)
-    if (!this->isSeekMode() && !this->isAnimating() && this->isViewing()) {
-        this->setViewing(false); // by default disable viewing mode to render the scene
-    }
-
-    // Mismatches in state of the modifier keys happens if the user
-    // presses or releases them outside the viewer window.
-    syncModifierKeys(ev);
-
-    // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!viewer->isEditing()) {
-        if (handleEventInForeground(ev)) {
-            return true;
-        }
-    }
-
-    NS::Event smev;
-    smev.inventor_event = ev;
-
-    // Spaceball/joystick handling
-    if (ev->isOfType(SoMotion3Event::getClassTypeId())){
-        smev.flags->processed = true;
-        this->processMotionEvent(static_cast<const SoMotion3Event*>(ev));
-        return true;
-    }
-
-    // Keyboard handling
-    if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
-        const auto event = static_cast<const SoKeyboardEvent *>(ev);
-        smev.flags->processed = processKeyboardEvent(event);
-    }
-
-    if (smev.isMouseButtonEvent()) {
-        const auto button = smev.asMouseButtonEvent()->getButton();
-        const SbBool press = smev.asMouseButtonEvent()->getState() == SoButtonEvent::DOWN;
-        switch (button) {
-        case SoMouseButtonEvent::BUTTON1:
-            this->button1down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON2:
-            this->button2down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON3:
-            this->button3down = press;
-            break;
-        default:
-            break;
-        }
-    }
-
-    smev.modifiers =
-        (this->button1down ? NS::Event::BUTTON1DOWN : 0) |
-        (this->button2down ? NS::Event::BUTTON2DOWN : 0) |
-        (this->button3down ? NS::Event::BUTTON3DOWN : 0) |
-        (this->ctrldown    ? NS::Event::CTRLDOWN : 0) |
-        (this->shiftdown   ? NS::Event::SHIFTDOWN : 0) |
-        (this->altdown     ? NS::Event::ALTDOWN : 0);
-
-    if (!smev.flags->processed) {
-        this->naviMachine->process_event(smev);
-    }
-
-    if (!smev.flags->propagated && !smev.flags->processed) {
-        return inherited::processSoEvent(ev);
-    }
-
-    return smev.flags->processed;
-}
 // NOLINTEND(cppcoreguidelines-pro-type-static-cast-downcast,
 //           cppcoreguidelines-avoid*,
 //           readability-avoid-const-params-in-decls)

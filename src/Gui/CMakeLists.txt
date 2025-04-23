@@ -958,6 +958,7 @@ SET(Navigation_SRCS
     Navigation/GestureNavigationStyle.h
     Navigation/NavigationAnimator.h
     Navigation/NavigationAnimation.h
+    Navigation/SiemensNXStyle.h
 )
 SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
 
