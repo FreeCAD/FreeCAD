@@ -194,7 +194,7 @@ public:
             std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     GeometryT* getGeometry()
     {
-        return dynamic_cast<GeometryT*>(const_cast<GeometryT*>(Geo));
+        return freecad_cast<GeometryT*>(const_cast<GeometryT*>(Geo));
     }
 
     // Geometry Element
@@ -204,7 +204,7 @@ public:
             std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     GeometryT* getGeometry() const
     {
-        return dynamic_cast<GeometryT*>(Geo);
+        return freecad_cast<GeometryT*>(Geo);
     }
 
     PyObject* getPyObject() override;
