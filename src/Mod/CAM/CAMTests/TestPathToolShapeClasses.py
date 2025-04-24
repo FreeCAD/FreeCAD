@@ -4,7 +4,7 @@
 import CAMTests.PathTestUtils as PathTestUtils
 from pathlib import Path
 from unittest.mock import patch, MagicMock
-from typing import Dict, Tuple
+from typing import Mapping, Tuple
 import FreeCAD
 from Path.Tool.shape import (
     ToolBitShape,
@@ -38,7 +38,7 @@ class DummyShape(ToolBitShape):
             }
 
     @classmethod
-    def shape_schema(cls) -> Dict[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "Param1": (
                 FreeCAD.Qt.translate("Param1", "Parameter 1"),
