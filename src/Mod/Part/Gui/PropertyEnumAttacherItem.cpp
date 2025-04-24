@@ -40,7 +40,8 @@ PROPERTYITEM_SOURCE(PartGui::PropertyEnumAttacherItem)
 PropertyEnumAttacherItem::PropertyEnumAttacherItem() = default;
 
 QWidget* PropertyEnumAttacherItem::createEditor(QWidget* parent,
-                                                const std::function<void()>& method) const
+                                                const std::function<void()>& method,
+                                                FrameOption /*frameOption*/) const
 {
     Gui::LabelButton* modeEditor = new Gui::LabelButton(parent);
     QObject::connect(modeEditor, &Gui::LabelButton::valueChanged, method);

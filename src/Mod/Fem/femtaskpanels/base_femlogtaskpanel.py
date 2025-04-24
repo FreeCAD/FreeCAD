@@ -21,13 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM mesh base task panel for mesh object object"
+__title__ = "FreeCAD FEM base task panel with logging"
 __author__ = "Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
-## @package base_femmeshtaskpanel
+## @package base_femlogtaskpanel
 #  \ingroup FEM
-#  \brief base task panel for mesh object
+#  \brief base task panel for logging
 
 from abc import ABC, abstractmethod
 
@@ -44,27 +44,34 @@ from . import base_femtaskpanel
 class _Thread(QtCore.QThread):
     """
     Class for thread and subprocess manipulation
-    'tool' argument must be  an object with 'compute' and 'prepare' methods
+    'tool' argument must be  an object with 'compute', 'prepare', 'update_properties' methods
     and a 'process' attribute of type QProcess object
     """
 
     def __init__(self, tool):
         super().__init__()
         self.tool = tool
+        self.prepare_ok = False
 
     def run(self):
-        self.tool.prepare()
+        try:
+            self.tool.prepare()
+            self.prepare_ok = True
+        except Exception as e:
+            self.prepare_ok = False
+            FreeCAD.Console.PrintError("{}\n".format(e))
 
 
-class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
+class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
     """
-    Abstract base class for FemMesh object TaskPanel
+    Abstract base class for TaskPanel with logging
     """
 
     def __init__(self, obj, tool):
         super().__init__(obj)
         self.tool = tool
         self.timer = QtCore.QTimer()
+        self.elapsed = QtCore.QElapsedTimer()
         self._thread = _Thread(self.tool)
         self.text_log = None
         self.text_time = None
@@ -97,17 +104,27 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
 
     def thread_started(self):
         self.text_log.clear()
-        self.write_log("Prepare meshing...\n", QtGui.QColor(getOutputWinColor("Text")))
+        self.write_log("Prepare process...\n", QtGui.QColor(getOutputWinColor("Text")))
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
     def thread_finished(self):
+        QtGui.QApplication.restoreOverrideCursor()
+        if self._thread.prepare_ok:
+            self.write_log("Preparation finished\n", QtGui.QColor(getOutputWinColor("Text")))
+            self.preparation_finished()
+        else:
+            self.timer.stop()
+            self.write_log("Preparation failed.\n", QtGui.QColor(getOutputWinColor("Error")))
+            return None
+
+    def preparation_finished(self):
         self.tool.compute()
 
     def process_finished(self, code, status):
         if status == QtCore.QProcess.ExitStatus.NormalExit:
             if code != 0:
                 self.write_log(
-                    "Process finished with errors. Mesh not updated\n",
+                    "Process finished with errors. Result not updated\n",
                     QtGui.QColor(getOutputWinColor("Error")),
                 )
                 return
@@ -117,7 +134,8 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
             self.write_log("Process crashed\n", QtGui.QColor(getOutputWinColor("Error")))
 
     def process_started(self):
-        self.write_log("Start meshing...\n", QtGui.QColor(getOutputWinColor("Text")))
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        self.write_log("Start process...\n", QtGui.QColor(getOutputWinColor("Text")))
 
     def write_output(self):
         self.write_log(
@@ -143,11 +161,11 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         self.text_log.ensureCursorVisible()
 
     @abstractmethod
-    def set_mesh_params(self):
+    def set_object_params(self):
         pass
 
     @abstractmethod
-    def get_mesh_params(self):
+    def get_object_params(self):
         pass
 
     def getStandardButtons(self):
@@ -166,7 +184,7 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
 
         self.timer.stop()
         QtGui.QApplication.restoreOverrideCursor()
-        self.set_mesh_params()
+        self.set_object_params()
         return super().accept()
 
     def reject(self):
@@ -190,8 +208,10 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
                 FreeCAD.Console.PrintWarning("Process already running\n")
                 return None
 
-            self.set_mesh_params()
-            self.run_mesher()
+            self.apply()
+
+    def apply(self):
+        self.run_process()
 
     def update_timer_text(self):
         self.text_time.setText(f"Time: {self.elapsed.elapsed()/1000:4.1f} s")
@@ -200,8 +220,8 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         self.timer.stop()
         QtGui.QApplication.restoreOverrideCursor()
 
-    def run_mesher(self):
-        self.elapsed = QtCore.QElapsedTimer()
+    def run_process(self):
+        self.set_object_params()
         self.elapsed.start()
         self.update_timer_text()
         self.timer.start(100)
@@ -210,4 +230,4 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
 
     def get_version(self):
         full_message = self.tool.version()
-        QtGui.QMessageBox.information(None, "{} - Information".format(self.tool.name), full_message)
+        QtGui.QMessageBox.information(None, "{} - Info".format(self.tool.name), full_message)

@@ -128,7 +128,7 @@ inline bool asBoolean(PyObject *obj) {
 public:                                                     \
     static PyTypeObject   Type;                             \
     static PyMethodDef    Methods[];                        \
-    virtual PyTypeObject *GetType(void) {return &Type;}
+    virtual PyTypeObject *GetType(void) const {return &Type;}
 
 /*------------------------------
  * PyObjectBase

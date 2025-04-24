@@ -88,7 +88,9 @@ class Proxy(solverbase.Proxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty("App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", "")
+        obj.addProperty(
+            "App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", "", locked=True
+        )
         obj.CoordinateSystem = COORDINATE_SYSTEM
         obj.CoordinateSystem = "Cartesian"
 
@@ -97,6 +99,7 @@ class Proxy(solverbase.Proxy):
             "BDFOrder",
             "Timestepping",
             "Order of time stepping method 'BDF'",
+            locked=True,
         )
         # according to the Elmer manual recommended is order 2
         # possible range is 1 - 5
@@ -107,6 +110,7 @@ class Proxy(solverbase.Proxy):
             "OutputIntervals",
             "Timestepping",
             "After how many time steps a result file is output",
+            locked=True,
         )
         obj.OutputIntervals = [1]
 
@@ -115,6 +119,7 @@ class Proxy(solverbase.Proxy):
             "TimestepIntervals",
             "Timestepping",
             ("List of times if 'Simulation Type'\nis either 'Scanning' or 'Transient'"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFloatList",
@@ -124,6 +129,7 @@ class Proxy(solverbase.Proxy):
                 "List of time steps sizes if 'Simulation Type'\n"
                 "is either 'Scanning' or 'Transient'"
             ),
+            locked=True,
         )
         # there is no universal default, it all depends on the analysis, however
         # we have to set something and set 10 seconds in steps of 0.1s
@@ -139,6 +145,7 @@ class Proxy(solverbase.Proxy):
             "SteadyStateMaxIterations",
             "Type",
             "Maximal steady state iterations",
+            locked=True,
         )
         obj.SteadyStateMaxIterations = 1
 
@@ -147,20 +154,29 @@ class Proxy(solverbase.Proxy):
             "SteadyStateMinIterations",
             "Type",
             "Minimal steady state iterations",
+            locked=True,
         )
         obj.SteadyStateMinIterations = 0
 
-        obj.addProperty("App::PropertyLink", "ElmerResult", "Base", "", 4 | 8)
+        obj.addProperty("App::PropertyLink", "ElmerResult", "Base", "", 4 | 8, locked=True)
 
-        obj.addProperty("App::PropertyLink", "ElmerOutput", "Base", "", 4 | 8)
+        obj.addProperty("App::PropertyLink", "ElmerOutput", "Base", "", 4 | 8, locked=True)
 
         obj.addProperty(
-            "App::PropertyBool", "BinaryOutput", "Result File", "Save result in binary format"
+            "App::PropertyBool",
+            "BinaryOutput",
+            "Result File",
+            "Save result in binary format",
+            locked=True,
         )
         obj.BinaryOutput = False
 
         obj.addProperty(
-            "App::PropertyBool", "SaveGeometryIndex", "Result File", "Save geometry IDs"
+            "App::PropertyBool",
+            "SaveGeometryIndex",
+            "Result File",
+            "Save geometry IDs",
+            locked=True,
         )
         obj.SaveGeometryIndex = False
 
@@ -170,14 +186,22 @@ class Proxy(solverbase.Proxy):
             obj.getPropertyByName("BinaryOutput")
         except FreeCAD.Base.PropertyError:
             obj.addProperty(
-                "App::PropertyBool", "BinaryOutput", "Result File", "Save result in binary format"
+                "App::PropertyBool",
+                "BinaryOutput",
+                "Result File",
+                "Save result in binary format",
+                locked=True,
             )
             obj.BinaryOutput = False
         try:
             obj.getPropertyByName("SaveGeometryIndex")
         except FreeCAD.Base.PropertyError:
             obj.addProperty(
-                "App::PropertyBool", "SaveGeometryIndex", "Result File", "Save geometry IDs"
+                "App::PropertyBool",
+                "SaveGeometryIndex",
+                "Result File",
+                "Save geometry IDs",
+                locked=True,
             )
             obj.SaveGeometryIndex = False
 

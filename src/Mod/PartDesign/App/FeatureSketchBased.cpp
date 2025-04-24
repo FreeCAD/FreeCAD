@@ -337,7 +337,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     }
     else if (AllowMultiFace.getValue()) {
         try {
-            auto shape = getProfileShape();
+            auto shape = getProfileShape(/*needSubElement*/ false);
             if (shape.isNull())
                 err = "Linked shape object is empty";
             else {
@@ -404,7 +404,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     return TopoDS_Face();
 }
 
-TopoShape ProfileBased::getProfileShape() const
+TopoShape ProfileBased::getProfileShape(bool needSubElement) const
 {
     TopoShape shape;
     const auto& subs = Profile.getSubValues();
@@ -416,7 +416,7 @@ TopoShape ProfileBased::getProfileShape() const
         std::vector<TopoShape> shapes;
         for (auto& sub : subs) {
             shapes.push_back(
-                Part::Feature::getTopoShape(profile, sub.c_str(), /* needSubElement */ true));
+                Part::Feature::getTopoShape(profile, sub.c_str(), needSubElement));
         }
         shape = TopoShape(shape.Tag).makeElementCompound(shapes);
     }
@@ -472,7 +472,7 @@ std::vector<TopoShape> ProfileBased::getTopoShapeProfileWires() const
     // tessellations for some faces. Making an explicit copy of the linked
     // shape seems to fix it.  The error mostly happens when re-computing the
     // shape but sometimes also for the first time
-    auto shape = getProfileShape().makeElementCopy();
+    auto shape = getProfileShape(/*needSubElement*/ false).makeElementCopy();
 
     if (shape.hasSubShape(TopAbs_WIRE)) {
         return shape.getSubTopoShapes(TopAbs_WIRE);
@@ -944,11 +944,14 @@ double ProfileBased::getThroughAllLength() const
 {
     TopoShape profileshape;
     TopoShape base;
-    profileshape = getTopoShapeVerifiedFace();
+    profileshape = getTopoShapeVerifiedFace(true);
     base = getBaseTopoShape();
     Bnd_Box box;
     BRepBndLib::Add(base.getShape(), box);
-    BRepBndLib::Add(profileshape.getShape(), box);
+
+    if (!profileshape.isNull()) {
+        BRepBndLib::Add(profileshape.getShape(), box);
+    }
     box.SetGap(0.0);
     // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
     // co-planar issues, gives a length that is guaranteed to go through all.

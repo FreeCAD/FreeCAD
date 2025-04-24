@@ -43,31 +43,31 @@ class BezCurve(DraftObject):
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The points of the Bezier curve")
-        obj.addProperty("App::PropertyVectorList", "Points", "Draft", _tip)
+        obj.addProperty("App::PropertyVectorList", "Points", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The degree of the Bezier function")
-        obj.addProperty("App::PropertyInteger", "Degree", "Draft", _tip)
+        obj.addProperty("App::PropertyInteger", "Degree", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Continuity")
-        obj.addProperty("App::PropertyIntegerList", "Continuity", "Draft", _tip)
+        obj.addProperty("App::PropertyIntegerList", "Continuity", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "If the Bezier curve should be closed or not")
-        obj.addProperty("App::PropertyBool", "Closed", "Draft", _tip)
+        obj.addProperty("App::PropertyBool", "Closed", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Create a face if this curve is closed")
-        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The length of this object")
-        obj.addProperty("App::PropertyLength", "Length", "Draft", _tip)
+        obj.addProperty("App::PropertyLength", "Length", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The area of this object")
-        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
+        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False

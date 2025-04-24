@@ -3257,8 +3257,8 @@ Evolumes
 
 ***********************************************************
 ** constraints displacement node sets
-** FemConstraintDisplacment
-*NSET,NSET=FemConstraintDisplacment
+** FemConstraintDisplacement
+*NSET,NSET=FemConstraintDisplacement
 4,
 5,
 7,
@@ -3648,9 +3648,9 @@ Evolumes
 
 ***********************************************************
 ** Displacement constraint applied
-** FemConstraintDisplacment
+** FemConstraintDisplacement
 *BOUNDARY
-FemConstraintDisplacment,1,1,0.0
+FemConstraintDisplacement,1,1,0.0
 
 
 ***********************************************************
@@ -3785,7 +3785,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint displacement constraining translation
-*NODE PRINT, NSET=FemConstraintDisplacment, TOTALS=ONLY
+*NODE PRINT, NSET=FemConstraintDisplacement, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

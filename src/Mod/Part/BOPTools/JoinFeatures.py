@@ -114,13 +114,13 @@ class FeatureConnect:
     """The PartJoinFeature object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","Connect","Object to be connected.")
+        obj.addProperty("App::PropertyLinkList","Objects","Connect","Object to be connected.", locked=True)
         obj.addProperty("App::PropertyBool","Refine","Connect",
-                        "True = refine resulting shape. False = output as is.")
+                        "True = refine resulting shape. False = output as is.", locked=True)
         obj.Refine = getParamRefine()
         obj.addProperty("App::PropertyLength","Tolerance","Connect",
                         "Tolerance when intersecting (fuzzy value). "
-                        "In addition to tolerances of the shapes.")
+                        "In addition to tolerances of the shapes.", locked=True)
 
         obj.Proxy = self
         self.Type = "FeatureConnect"
@@ -224,14 +224,14 @@ class FeatureEmbed:
     """The Part Embed object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Embed","Object to embed into.")
-        obj.addProperty("App::PropertyLink","Tool","Embed","Object to be embedded.")
+        obj.addProperty("App::PropertyLink","Base","Embed","Object to embed into.", locked=True)
+        obj.addProperty("App::PropertyLink","Tool","Embed","Object to be embedded.", locked=True)
         obj.addProperty("App::PropertyBool","Refine","Embed",
-                        "True = refine resulting shape. False = output as is.")
+                        "True = refine resulting shape. False = output as is.", locked=True)
         obj.Refine = getParamRefine()
         obj.addProperty("App::PropertyLength","Tolerance","Embed",
                         "Tolerance when intersecting (fuzzy value). "
-                        "In addition to tolerances of the shapes.")
+                        "In addition to tolerances of the shapes.", locked=True)
 
         obj.Proxy = self
         self.Type = "FeatureEmbed"
@@ -319,13 +319,13 @@ class FeatureCutout:
     """The Part Cutout object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Cutout","Object to be cut.")
-        obj.addProperty("App::PropertyLink","Tool","Cutout","Object to make cutout for.")
+        obj.addProperty("App::PropertyLink","Base","Cutout","Object to be cut.", locked=True)
+        obj.addProperty("App::PropertyLink","Tool","Cutout","Object to make cutout for.", locked=True)
         obj.addProperty("App::PropertyBool","Refine","Cutout",
-                        "True = refine resulting shape. False = output as is.")
+                        "True = refine resulting shape. False = output as is.", locked=True)
         obj.Refine = getParamRefine()
         obj.addProperty("App::PropertyLength","Tolerance","Cutout",
-                        "Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
+                        "Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.", locked=True)
 
         obj.Proxy = self
         self.Type = "FeatureCutout"

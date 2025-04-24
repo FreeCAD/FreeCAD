@@ -1110,7 +1110,6 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    @constmethod
     def clearCache(self) -> None:
         """
         Clear internal sub-shape cache

@@ -230,7 +230,7 @@ PyObject* TopoShapeWirePy::fixWire(PyObject *args)
     }
 }
 
-PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
+PyObject* TopoShapeWirePy::makeOffset(PyObject *args) const
 {
     double dist;
     if (!PyArg_ParseTuple(args, "d",&dist))
@@ -248,7 +248,7 @@ PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
     return new TopoShapePy(new TopoShape(mkOffset.Shape()));
 }
 
-PyObject* TopoShapeWirePy::makePipe(PyObject *args)
+PyObject* TopoShapeWirePy::makePipe(PyObject *args) const
 {
     PyObject *pShape;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pShape)) {
@@ -267,7 +267,7 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args)
     return nullptr;
 }
 
-PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
+PyObject* TopoShapeWirePy::makePipeShell(PyObject *args) const
 {
     PyObject *obj;
     PyObject *make_solid = Py_False;
@@ -308,7 +308,7 @@ profile = Part.makePolygon([v(0.,0.,0.), v(-60.,-60.,-100.), v(-60.,-60.,-140.)]
 spine = Part.makePolygon([v(0.,0.,0.), v(100.,0.,0.), v(100.,100.,0.), v(0.,100.,0.), v(0.,0.,0.)])
 evolve = spine.makeEvolved(Profile=profile, Join=PartEnums.JoinType.Arc)
 */
-PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds)
+PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds) const
 {
     PyObject* Profile;
     PyObject* AxeProf = Py_True;
@@ -363,7 +363,7 @@ PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds)
     }
 }
 
-PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
+PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args) const
 {
     PyObject* wire;
     if (!PyArg_ParseTuple(args, "O!",&(Part::TopoShapeWirePy::Type),&wire))
@@ -389,7 +389,7 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
     }
 }
 
-PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds)
+PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds) const
 {
     double tol2d = gp::Resolution();
     double tol3d = 0.0001;
@@ -419,7 +419,7 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds)
     }
 }
 
-PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
+PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
 {
     try {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
@@ -741,5 +741,3 @@ int TopoShapeWirePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/
 {
     return 0;
 }
-
-

@@ -79,7 +79,7 @@ PyObject* TypePy::getBadType(PyObject* args)
     return new TypePy(new Base::Type(Base::Type::BadType));
 }
 
-PyObject* TypePy::getParent(PyObject* args)
+PyObject* TypePy::getParent(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -89,7 +89,7 @@ PyObject* TypePy::getParent(PyObject* args)
     return new TypePy(new Base::Type(type));
 }
 
-PyObject* TypePy::isBad(PyObject* args)
+PyObject* TypePy::isBad(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -99,7 +99,7 @@ PyObject* TypePy::isBad(PyObject* args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* TypePy::isDerivedFrom(PyObject* args)
+PyObject* TypePy::isDerivedFrom(PyObject* args) const
 {
     Base::Type type;
 
@@ -156,7 +156,7 @@ PyObject* TypePy::getAllDerivedFrom(PyObject* args)
     return Py::new_reference_to(res);
 }
 
-PyObject* TypePy::getAllDerived(PyObject* args)
+PyObject* TypePy::getAllDerived(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;

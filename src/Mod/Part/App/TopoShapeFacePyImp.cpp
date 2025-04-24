@@ -389,7 +389,7 @@ PyObject* TopoShapeFacePy::addWire(PyObject *args)
     Py_Return;
 }
 
-PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
+PyObject* TopoShapeFacePy::makeOffset(PyObject *args) const
 {
     Py::Dict dict;
     return TopoShapePy::makeOffset2D(args, dict.ptr());
@@ -402,12 +402,12 @@ profile = Part.makePolygon([v(0.,0.,0.), v(-60.,-60.,-100.), v(-60.,-60.,-140.)]
 spine = Part.Face(Part.makePolygon([v(0.,0.,0.), v(100.,0.,0.), v(100.,100.,0.), v(0.,100.,0.), v(0.,0.,0.)]))
 evolve = spine.makeEvolved(Profile=profile, Join=PartEnums.JoinType.Arc)
 */
-PyObject* TopoShapeFacePy::makeEvolved(PyObject *args, PyObject *kwds)
+PyObject* TopoShapeFacePy::makeEvolved(PyObject *args, PyObject *kwds) const
 {
     return TopoShapePy::makeEvolved(args, kwds);
 }
 
-PyObject* TopoShapeFacePy::valueAt(PyObject *args)
+PyObject* TopoShapeFacePy::valueAt(PyObject *args) const
 {
     double u,v;
     if (!PyArg_ParseTuple(args, "dd",&u,&v))
@@ -421,7 +421,7 @@ PyObject* TopoShapeFacePy::valueAt(PyObject *args)
     return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
 }
 
-PyObject* TopoShapeFacePy::normalAt(PyObject *args)
+PyObject* TopoShapeFacePy::normalAt(PyObject *args) const
 {
     double u,v;
     if (!PyArg_ParseTuple(args, "dd",&u,&v))
@@ -441,7 +441,7 @@ PyObject* TopoShapeFacePy::normalAt(PyObject *args)
     return new Base::VectorPy(new Base::Vector3d(dir.X(),dir.Y(),dir.Z()));
 }
 
-PyObject* TopoShapeFacePy::getUVNodes(PyObject *args)
+PyObject* TopoShapeFacePy::getUVNodes(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -481,7 +481,7 @@ PyObject* TopoShapeFacePy::getUVNodes(PyObject *args)
     return Py::new_reference_to(list);
 }
 
-PyObject* TopoShapeFacePy::tangentAt(PyObject *args)
+PyObject* TopoShapeFacePy::tangentAt(PyObject *args) const
 {
     double u,v;
     if (!PyArg_ParseTuple(args, "dd",&u,&v))
@@ -513,7 +513,7 @@ PyObject* TopoShapeFacePy::tangentAt(PyObject *args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* TopoShapeFacePy::curvatureAt(PyObject *args)
+PyObject* TopoShapeFacePy::curvatureAt(PyObject *args) const
 {
     double u,v;
     if (!PyArg_ParseTuple(args, "dd",&u,&v))
@@ -536,7 +536,7 @@ PyObject* TopoShapeFacePy::curvatureAt(PyObject *args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* TopoShapeFacePy::derivative1At(PyObject *args)
+PyObject* TopoShapeFacePy::derivative1At(PyObject *args) const
 {
     double u,v;
     if (!PyArg_ParseTuple(args, "dd",&u,&v))
@@ -560,7 +560,7 @@ PyObject* TopoShapeFacePy::derivative1At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeFacePy::derivative2At(PyObject *args)
+PyObject* TopoShapeFacePy::derivative2At(PyObject *args) const
 {
     double u,v;
     if (!PyArg_ParseTuple(args, "dd",&u,&v))
@@ -584,7 +584,7 @@ PyObject* TopoShapeFacePy::derivative2At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeFacePy::isPartOfDomain(PyObject *args)
+PyObject* TopoShapeFacePy::isPartOfDomain(PyObject *args) const
 {
     double u,v;
     if (!PyArg_ParseTuple(args, "dd",&u,&v))
@@ -610,7 +610,7 @@ PyObject* TopoShapeFacePy::isPartOfDomain(PyObject *args)
     }
 }
 
-PyObject* TopoShapeFacePy::makeHalfSpace(PyObject *args)
+PyObject* TopoShapeFacePy::makeHalfSpace(PyObject *args) const
 {
     PyObject* pPnt;
     if (!PyArg_ParseTuple(args, "O!",&(Base::VectorPy::Type),&pPnt))
@@ -678,7 +678,7 @@ PyObject* TopoShapeFacePy::validate(PyObject *args)
     }
 }
 
-PyObject* TopoShapeFacePy::countNodes(PyObject *args)
+PyObject* TopoShapeFacePy::countNodes(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -695,7 +695,7 @@ PyObject* TopoShapeFacePy::countNodes(PyObject *args)
     return Py::new_reference_to(Py::Long(count));
 }
 
-PyObject* TopoShapeFacePy::countTriangles(PyObject *args)
+PyObject* TopoShapeFacePy::countTriangles(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -712,7 +712,7 @@ PyObject* TopoShapeFacePy::countTriangles(PyObject *args)
     return Py::new_reference_to(Py::Long(count));
 }
 
-PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
+PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args) const
 {
     PyObject* e;
     if (!PyArg_ParseTuple(args, "O!", &(TopoShapeEdgePy::Type), &e))
@@ -806,7 +806,6 @@ PyObject* TopoShapeFacePy::cutHoles(PyObject *args)
     PyErr_SetString(PyExc_RuntimeError, "invalid list of wires");
     return nullptr;
 }
-
 
 Py::Object TopoShapeFacePy::getSurface() const
 {
