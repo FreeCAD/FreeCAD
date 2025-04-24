@@ -5,7 +5,7 @@ import os
 import pathlib
 import FreeCAD
 import Path
-from typing import List, Tuple, Optional, Type
+from typing import List, Optional, Type
 from .base import ToolBitShape
 
 
