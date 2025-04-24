@@ -1,3 +1,5 @@
+<!-- Include a brief summary of the changes. -->
+
 <!--
 The FreeCAD community thanks you for your contribution!
 By creating a Pull Request you agree to the contributing policy. The complete policy can be found in the root of the source tree (CONTRIBUTING.md) or at https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md
@@ -6,9 +8,6 @@ This template provides guidance on creating a PR that can be reviewed and approv
 
 Unless you know exactly what you're doing, please leave the checkbox 'Allow edits by maintainers' enabled.  This will allow maintainers to help you.
 -->
-
-## Description
-<!-- Include a brief summary of the changes. -->
 
 ## Issues
 <!-- link to individual issues this PR closes by referencing the issue number (e.g., fixes #1234, closes #4321). -->
