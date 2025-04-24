@@ -28,7 +28,7 @@ import os
 import pathlib
 import zipfile
 from typing import List, Optional, Tuple, Type, Union
-from PySide.QtCore import QT_TRANSLATE_NOOP, QTimer
+from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from .shape.base import ToolBitShape
 from .shape.util import (
