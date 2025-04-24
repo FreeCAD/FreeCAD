@@ -325,7 +325,7 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             // get the view provider of the associated mesh feature
             App::Document* rDoc = pcObject->getDocument();
             Gui::Document* pDoc = Gui::Application::Instance->getDocument(rDoc);
-            if (auto view = dynamic_cast<ViewProviderMesh*>(pDoc->getViewProvider(object))) {
+            if (auto view = freecad_cast<ViewProviderMesh*>(pDoc->getViewProvider(object))) {
                 this->pcLinkRoot->addChild(view->getHighlightNode());
 
                 auto mesh = view->getObject<Mesh::Feature>();
@@ -563,7 +563,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (auto self = dynamic_cast<ViewProviderMeshCurvature*>(vp)) {
+            if (auto self = freecad_cast<ViewProviderMeshCurvature*>(vp)) {
                 const SoDetail* detail = point->getDetail(point->getPath()->getTail());
                 if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                     const auto facedetail = static_cast<const SoFaceDetail*>(detail);  // NOLINT
@@ -597,7 +597,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
         Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-        if (auto self = dynamic_cast<ViewProviderMeshCurvature*>(vp)) {
+        if (auto self = freecad_cast<ViewProviderMeshCurvature*>(vp)) {
             const SoDetail* detail = point->getDetail(point->getPath()->getTail());
             if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                 const auto facedetail = static_cast<const SoFaceDetail*>(detail);  // NOLINT
