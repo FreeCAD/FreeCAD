@@ -27,7 +27,8 @@ import json
 import os
 import pathlib
 import zipfile
-from typing import List, Optional, Tuple, Type, Union
+from abc import ABC, abstractmethod
+from typing import List, Optional, Tuple, Type, Union, Mapping, Any, Dict
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from ..shape.base import ToolBitShape
@@ -59,11 +60,13 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-class ToolBit(object):
-    def __init__(self, obj, tool_bit_shape: ToolBitShape, path: Optional[pathlib.Path] = None):
-        Path.Log.track(obj.Label, tool_bit_shape.label, path)
+class ToolBit(ABC):
+    SHAPE_CLASS: Type[ToolBitShape] # Abstract class attribute
+
+    def __init__(self, obj, tool_bit_shape: Optional[ToolBitShape] = None, path: Optional[pathlib.Path] = None):
+        Path.Log.track(f"ToolBit __init__ called for {obj.Label}", tool_bit_shape, path)
         self.obj = obj
-        self._tool_bit_shape = tool_bit_shape
+        self._tool_bit_shape = tool_bit_shape or get_shape_from_name(self.SHAPE_CLASS.name)
         self._update_timer = None
         self._in_update = False
 
@@ -115,6 +118,32 @@ class ToolBit(object):
                 "Base",
                 QT_TRANSLATE_NOOP("App::Property", "The toolbit file (.fctb)"),
             )
+
+    @classmethod
+    @abstractmethod
+    def schema(
+        cls,
+    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
+        """
+        This schema defines any properties that the tool supports and
+        that are not part of the shape file.
+
+        Subclasses must implement this method to define their specific features.
+        """
+        return {
+            "SpindleDirection": (
+                FreeCAD.Qt.translate("ToolBitShape", "Direction of spindle rotation"),
+                "App::PropertyEnumeration",
+                "Forward",  # Default value
+                ("Forward", "Reverse", "None"),
+            ),
+            "Material": (
+                FreeCAD.Qt.translate("ToolBitShape", "Tool material"),
+                "App::PropertyEnumeration",
+                "HSS",  # Default value
+                ("HSS", "Carbide"),
+            ),
+        }
 
     def dumps(self):
         return None
@@ -207,7 +236,7 @@ class ToolBit(object):
         shape_cls = get_shape_class_from_name(obj.ShapeName)
         if not shape_cls:
             raise ValueError(f"Failed to find shape class named '{obj.ShapeName}'")
-        shape_schema_props = shape_cls.shape_schema().keys()
+        shape_schema_props = shape_cls.schema().keys()
 
         # Move properties that are part of the shape schema to the "Shape" group
         for prop_name in obj.PropertiesList:
@@ -460,7 +489,7 @@ class ToolBit(object):
         Path.Log.track(obj.Label)
 
         # 1. Add/Update properties for the new shape
-        for name, item in self._tool_bit_shape.shape_schema().items():
+        for name, item in self._tool_bit_shape.schema().items():
             docstring = item[0]
             prop_type = item[1]
             value = self._tool_bit_shape.get_parameter(name)
@@ -487,12 +516,12 @@ class ToolBit(object):
         # These are properties currently listed AND in the Shape group,
         # but not required by the new shape.
         current_shape_prop_names = set(self._get_props(obj, "Shape"))
-        new_shape_param_names = self._tool_bit_shape.shape_schema().keys()
+        new_shape_param_names = self._tool_bit_shape.schema().keys()
         obsolete = current_shape_prop_names - new_shape_param_names
         self._remove_properties(obj, "Shape", obsolete)
 
-        # 3. Add/Update properties for shape-specific features
-        for name, item in self._tool_bit_shape.feature_schema().items():
+        # 3. Add/Update properties for tool bit specific features
+        for name, item in self.schema().items():
             docstring = item[0]
             prop_type = item[1]
             value = item[2]
@@ -515,15 +544,21 @@ class ToolBit(object):
                     obj.setEditorMode("SpindleDirection", 2)  # Read-only
 
         # 4. Remove obsolete feature properties
-        # These are properties currently listed AND in the Shape group,
-        # but not required by the new shape.
+        # These are properties currently listed AND in the Attributes group,
+        # but not required by the current tool bit's schema.
         current_feature_names = set(self._get_props(obj, "Attributes"))
-        new_feature_names = self._tool_bit_shape.feature_schema().keys()
+        new_feature_names = self.schema().keys()
         obsolete = current_feature_names - new_feature_names
         self._remove_properties(obj, "Attributes", obsolete)
 
     def _update_visual_representation(self, obj):
+        """
+        Updates the visual representation of the tool bit based on the current
+        _tool_bit_shape. Creates or updates the BitBody and copies its shape
+        to the main object.
+        """
         Path.Log.track(obj.Label)
+
         # Remove existing BitBody if it exists
         self._removeBitBody(obj)
 
@@ -619,8 +654,6 @@ class ToolBitFactory(object):
         attributes = attrs.get("attribute", {})
 
         try:
-            # Use the utility function to get the shape instance.
-            # The file path is now stored within the instance itself.
             tool_bit_shape = get_shape_from_name(shape_name, shape_path, params_dict)
         except Exception as e:
             Path.Log.error(
@@ -632,9 +665,14 @@ class ToolBitFactory(object):
             f"Create shape from attributes for '{shape_name}' from {tool_bit_shape.filepath}."
         )
 
-        # Create the ToolBit object with the instantiated shape
+        # Find the correct ToolBit subclass based on the shape name
+        tool_bit_classes = {b.SHAPE_CLASS.name: b for b in ToolBit.__subclasses__()}
+        tool_bit_class = tool_bit_classes[tool_bit_shape.name]
+ 
+        # Create the ToolBit proxy
+        Path.Log.track(f"ToolBitFactory.CreateFromAttrs: Creating {tool_bit_class.__name__}")
         obj = document.addObject("Part::FeaturePython", name)
-        obj.Proxy = ToolBit(obj, tool_bit_shape, path)
+        obj.Proxy = tool_bit_class(obj, tool_bit_shape, path)
         obj.Label = attrs.get("name", name)
 
         # Set additional attributes on the ToolBit object using the proxy

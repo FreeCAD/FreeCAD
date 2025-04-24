@@ -13,7 +13,7 @@ class ToolBitShapeTap(ToolBitShape):
         super().__init__(**kwargs)
 
     @classmethod
-    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CuttingEdgeLength": (
                 FreeCAD.Qt.translate("ToolBitShape", "Cutting edge length"),
@@ -38,19 +38,6 @@ class ToolBitShapeTap(ToolBitShape):
             "TipAngle": (
                 FreeCAD.Qt.translate("ToolBitShape", "Tip angle"),
                 "App::PropertyAngle",
-            ),
-        }
-
-    @classmethod
-    def feature_schema(
-        cls,
-    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
-        return {
-            **super(ToolBitShapeTap, cls).feature_schema(),
-            "Chipload": (
-                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
-                "App::PropertyLength",
-                0.0,  # Default value
             ),
         }
 

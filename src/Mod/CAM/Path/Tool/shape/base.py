@@ -61,7 +61,7 @@ class ToolBitShape(abc.ABC):
         return self.__str__()
 
     @classmethod
-    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         """
         Subclasses must define the dictionary mapping parameter names to
         translations and FreeCAD property type strings (e.g.,
@@ -72,53 +72,6 @@ class ToolBitShape(abc.ABC):
         will cause an error.
         """
         raise NotImplementedError
-
-    @classmethod
-    def feature_schema(
-        cls,
-    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
-        """
-        This schema defines any properties that the tool supports and
-        that are not part of the shape file.
-
-        Subclasses may extend the dictionary mapping parameter names to
-        translations and FreeCAD property type strings (e.g.,
-        'App::PropertyLength').
-        """
-        return {
-            "SpindleDirection": (
-                FreeCAD.Qt.translate("ToolBitShape", "Direction of spindle rotation"),
-                "App::PropertyEnumeration",
-                "Forward",  # Default value
-                ("Forward", "Reverse", "None"),
-            ),
-            "Material": (
-                FreeCAD.Qt.translate("ToolBitShape", "Tool material"),
-                "App::PropertyEnumeration",
-                "HSS",  # Default value
-                ("HSS", "Carbide"),
-            ),
-        }
-
-    @classmethod
-    def schema(cls) -> Mapping[str, Union[Tuple[str, str], Tuple[str, str, Tuple[str, ...]]]]:
-        feature: Dict[str, Union[Tuple[str, str], Tuple[str, str, Tuple[str, ...]]]] = {}
-
-        for name, value in cls.feature_schema().items():
-            if len(value) == 2:
-                # Case: (description, property_type)
-                feature[name] = (value[0], value[1])
-            elif len(value) == 3:
-                # Case: (description, property_type, default_value)
-                # We drop the default_value for the schema
-                feature[name] = (value[0], value[1])
-            elif len(value) == 4:
-                # Case: (description, property_type, default_value, options)
-                # We keep description, property_type and options
-                feature[name] = (value[0], value[1], cast(Tuple[str, ...], value[3]))
-
-        # Combine with shape_schema
-        return {**cls.shape_schema(), **feature}
 
     @property
     def label(self) -> str:
@@ -212,10 +165,7 @@ class ToolBitShape(abc.ABC):
         Returns:
             list[str]: List of parameter names.
         """
-        return list(cls.shape_schema().keys())
-
-    def has_feature(self, name: str) -> bool:
-        return name in self.feature_schema()
+        return list(cls.schema().keys())
 
     @classmethod
     def validate(cls, filepath: pathlib.Path) -> Optional[str]:
