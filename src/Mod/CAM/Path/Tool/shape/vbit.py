@@ -14,7 +14,7 @@ class ToolBitShapeVBit(ToolBitShape):
         super().__init__(**kwargs)
 
     @classmethod
-    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CuttingEdgeAngle": (
                 FreeCAD.Qt.translate("ToolBitShape", "Cutting edge angle"),
@@ -43,19 +43,6 @@ class ToolBitShapeVBit(ToolBitShape):
             "TipDiameter": (
                 FreeCAD.Qt.translate("ToolBitShape", "Tip diameter"),
                 "App::PropertyLength",
-            ),
-        }
-
-    @classmethod
-    def feature_schema(
-        cls,
-    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
-        return {
-            **super(ToolBitShapeVBit, cls).feature_schema(),
-            "Chipload": (
-                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
-                "App::PropertyLength",
-                0.0,  # Default value
             ),
         }
 

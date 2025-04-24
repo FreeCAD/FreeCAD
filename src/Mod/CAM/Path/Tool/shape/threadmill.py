@@ -14,7 +14,7 @@ class ToolBitShapeThreadMill(ToolBitShape):
         super().__init__(**kwargs)
 
     @classmethod
-    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "Crest": (
                 FreeCAD.Qt.translate("ToolBitShape", "Crest height"),
@@ -47,19 +47,6 @@ class ToolBitShapeThreadMill(ToolBitShape):
             "cuttingAngle": (  # TODO rename to CuttingAngle
                 FreeCAD.Qt.translate("ToolBitShape", "Cutting angle"),
                 "App::PropertyAngle",
-            ),
-        }
-
-    @classmethod
-    def feature_schema(
-        cls,
-    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
-        return {
-            **super(ToolBitShapeThreadMill, cls).feature_schema(),
-            "Chipload": (
-                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
-                "App::PropertyLength",
-                0.0,  # Default value
             ),
         }
 

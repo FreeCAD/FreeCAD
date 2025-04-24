@@ -10,7 +10,7 @@ class ToolBitShapeBallEnd(ToolBitShape):
     name: str = "ballend"
 
     @classmethod
-    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CuttingEdgeHeight": (
                 FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
@@ -31,19 +31,6 @@ class ToolBitShapeBallEnd(ToolBitShape):
             "ShankDiameter": (
                 FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
                 "App::PropertyLength",
-            ),
-        }
-
-    @classmethod
-    def feature_schema(
-        cls,
-    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
-        return {
-            **super(ToolBitShapeBallEnd, cls).feature_schema(),
-            "Chipload": (
-                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
-                "App::PropertyLength",
-                0.0,  # Default value
             ),
         }
 

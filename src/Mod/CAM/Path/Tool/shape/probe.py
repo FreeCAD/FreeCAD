@@ -13,7 +13,7 @@ class ToolBitShapeProbe(ToolBitShape):
         super().__init__(**kwargs)
 
     @classmethod
-    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "Diameter": (
                 FreeCAD.Qt.translate("ToolBitShape", "Ball diameter"),

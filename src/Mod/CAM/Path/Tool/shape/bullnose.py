@@ -14,7 +14,7 @@ class ToolBitShapeBullnose(ToolBitShape):
         super().__init__(**kwargs)
 
     @classmethod
-    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CuttingEdgeHeight": (
                 FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
@@ -39,19 +39,6 @@ class ToolBitShapeBullnose(ToolBitShape):
             "FlatRadius": (
                 FreeCAD.Qt.translate("ToolBitShape", "Torus radius"),
                 "App::PropertyLength",
-            ),
-        }
-
-    @classmethod
-    def feature_schema(
-        cls,
-    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
-        return {
-            **super(ToolBitShapeBullnose, cls).feature_schema(),
-            "Chipload": (
-                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
-                "App::PropertyLength",
-                0.0,  # Default value
             ),
         }
 

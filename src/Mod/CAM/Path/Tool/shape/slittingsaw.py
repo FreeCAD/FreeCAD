@@ -14,7 +14,7 @@ class ToolBitShapeSlittingSaw(ToolBitShape):
         super().__init__(**kwargs)
 
     @classmethod
-    def shape_schema(cls) -> Mapping[str, Tuple[str, str]]:
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "BladeThickness": (
                 FreeCAD.Qt.translate("ToolBitShape", "Blade thickness"),
@@ -43,19 +43,6 @@ class ToolBitShapeSlittingSaw(ToolBitShape):
             "ShankDiameter": (
                 FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
                 "App::PropertyLength",
-            ),
-        }
-
-    @classmethod
-    def feature_schema(
-        cls,
-    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
-        return {
-            **super(ToolBitShapeSlittingSaw, cls).feature_schema(),
-            "Chipload": (
-                FreeCAD.Qt.translate("ToolBitShape", "Chipload"),
-                "App::PropertyLength",
-                0.0,  # Default value
             ),
         }
 
