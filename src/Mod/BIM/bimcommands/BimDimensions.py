@@ -66,8 +66,7 @@ class BIM_DimensionHorizontal(gui_dimensions.Dimension):
         }
 
     def Activated(self):
-        self.dir = FreeCAD.DraftWorkingPlane.u
-        super().Activated()
+        super().Activated(dir_vec=FreeCAD.DraftWorkingPlane.u)
 
 
 class BIM_DimensionVertical(gui_dimensions.Dimension):
@@ -88,8 +87,7 @@ class BIM_DimensionVertical(gui_dimensions.Dimension):
         }
 
     def Activated(self):
-        self.dir = FreeCAD.DraftWorkingPlane.v
-        super().Activated()
+        super().Activated(dir_vec=FreeCAD.DraftWorkingPlane.v)
 
 
 FreeCADGui.addCommand("BIM_DimensionVertical", BIM_DimensionVertical())
