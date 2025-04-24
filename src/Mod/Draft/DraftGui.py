@@ -554,19 +554,18 @@ class DraftToolBar:
             "draft", "Finish") + " (" + _get_incmd_shortcut("Exit") + ")")
         self.finishButton.setToolTip(translate(
             "draft", "Finishes the current drawing or editing operation"))
+        self.continueCmd.setText(translate(
+            "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
         self.continueCmd.setToolTip(translate(
             "draft", "If checked, command will not finish until you press "
                      + "the command button again"))
-        self.continueCmd.setText(translate(
-            "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
-        self.chainedModeCmd.setText(translate("draft", "Chained Mode"))
-        self.chainedModeCmd.setToolTip(translate("draft", "If checked, next Dimension will be placed in a chain" \
+        self.chainedModeCmd.setText(translate("draft", "Chained mode"))
+        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next Dimension will be placed in a chain" \
                                        " with the previously placed Dimension"))
+        self.occOffset.setText(translate("draft", "OCC-style offset"))
         self.occOffset.setToolTip(translate(
             "draft", "If checked, an OCC-style offset will be performed"
                      + " instead of the classic offset"))
-        self.occOffset.setText(translate("draft", "OCC-style offset"))
-
         self.undoButton.setText(translate("draft", "Undo") + " (" + _get_incmd_shortcut("Undo") + ")")
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close") + " (" + _get_incmd_shortcut("Close") + ")")
