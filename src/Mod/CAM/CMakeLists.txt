@@ -115,12 +115,12 @@ SET(PathPythonMainSanity_SRCS
 
 SET(PathPythonTools_SRCS
     Path/Tool/__init__.py
-    Path/Tool/Bit.py
     Path/Tool/Controller.py
 )
 
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
+    Path/Tool/toolbit/base.py
     Path/Tool/toolbit/util.py
 )
 

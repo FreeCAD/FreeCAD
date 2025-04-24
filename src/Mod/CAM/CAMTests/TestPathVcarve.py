@@ -24,7 +24,7 @@ import FreeCAD
 import Part
 import Path.Main.Job as PathJob
 import Path.Op.Vcarve as PathVcarve
-import Path.Tool.Bit as PathToolBit
+from Path.Tool import ToolBitFactory
 from Path.Tool.toolbit.util import findToolBit
 import math
 
@@ -58,7 +58,7 @@ class TestPathVcarve(PathTestBase):
         part.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
         job = PathJob.Create("Job", [part])
         tool_file = findToolBit("60degree_Vbit.fctb")
-        job.Tools.Group[0].Tool = PathToolBit.Factory.CreateFrom(tool_file)
+        job.Tools.Group[0].Tool = ToolBitFactory.CreateFrom(tool_file)
 
         op = PathVcarve.Create("TestVCarve")
         op.Base = job.Model.Group[0]

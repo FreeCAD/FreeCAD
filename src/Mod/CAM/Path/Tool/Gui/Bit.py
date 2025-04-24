@@ -20,15 +20,16 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.IconViewProvider as PathIconViewProvider
-import Path.Tool.Bit as PathToolBit
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
-import os
+from Path.Tool import ToolBitFactory
+
 
 __title__ = "Tool Bit UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -160,7 +161,7 @@ class TaskPanel:
         self.editor.setupUI()
 
 
-class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
+class ToolBitGuiFactory(Path.Tool.toolbit.base.ToolBitFactory):
     def CreateFromAttrs(self, attrs, name="ToolBit", path=None, shape_path=None, document=None):
         """
         Creates a new tool bit from attributes.
@@ -274,17 +275,17 @@ def LoadTool(parent=None):
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
     """
     foo = GetToolFile(parent)
-    return PathToolBit.Factory.CreateFrom(foo) if foo else foo
+    return ToolBitFactory.CreateFrom(foo) if foo else foo
 
 
 def LoadTools(parent=None):
     """
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
     """
-    return [PathToolBit.Factory.CreateFrom(foo) for foo in GetToolFiles(parent)]
+    return [ToolBitFactory.CreateFrom(foo) for foo in GetToolFiles(parent)]
 
 
 # Set the factory so all tools are created with UI
-PathToolBit.Factory = ToolBitGuiFactory()
+Path.Tool.toolbit.base.Factory = ToolBitGuiFactory()
 
 PathIconViewProvider.RegisterViewProvider("ToolBit", ViewProvider)

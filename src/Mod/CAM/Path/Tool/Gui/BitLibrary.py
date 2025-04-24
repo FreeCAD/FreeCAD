@@ -25,7 +25,8 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Tool.Bit as PathToolBit
+from Path.Tool import ToolBitFactory
+from Path.Tool.toolbit.base import Declaration
 import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
 import Path.Tool.Gui.Controller as PathToolControllerGui
@@ -285,7 +286,7 @@ class ModelFactory:
                 bit = findToolBit(tool_bit["path"], path)
                 if bit:
                     Path.Log.track(bit)
-                    tool = PathToolBit.Declaration(bit)
+                    tool = Declaration(bit)
                     data_model.appendRow(ModelFactory._tool_add(nr, tool, bit))
                 else:
                     Path.Log.error(f"Could not find tool #{nr}: {tool_bit['path']}")
@@ -362,7 +363,7 @@ class ModelFactory:
                 )
                 + 1
             )
-            tool = PathToolBit.Declaration(path)
+            tool = Declaration(path)
         except Exception as e:
             Path.Log.error(e)
             return
@@ -526,7 +527,7 @@ class ToolBitSelector(object):
         for item in itemsToProcess:
             toolNr = int(item.data(PySide.QtCore.Qt.EditRole))
             toolPath = item.data(_PathRole)
-            tools.append((toolNr, PathToolBit.Factory.CreateFrom(toolPath)))
+            tools.append((toolNr, ToolBitFactory.CreateFrom(toolPath)))
         return tools
 
     def selectedOrAllToolControllers(self, index=None):
@@ -611,7 +612,7 @@ class ToolBitLibrary(object):
         fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
 
         Path.Log.debug(f"Attempting to create tool bit with name: {fullpath}")
-        self.temptool = PathToolBit.ToolBitFactory().Create(path=fullpath, shape_path=shapefile)
+        self.temptool = ToolBitFactory.Create(path=fullpath, shape_path=shapefile)
         self.temptool.Proxy.unloadBitBody(self.temptool)
         self.temptool.Label = fname
         self.temptool.Proxy.saveToFile(self.temptool, fullpath)
@@ -737,7 +738,7 @@ class ToolBitLibrary(object):
             pass
         else:
             tbpath = item.data(_PathRole)
-            self.temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, "temptool")
+            self.temptool = ToolBitFactory.CreateFrom(tbpath, "temptool")
             self.editor = PathToolBitEdit.ToolBitEditor(
                 self.temptool, self.form.toolTableGroup, loadBitBody=False
             )
@@ -926,7 +927,7 @@ class ToolBitLibrary(object):
                 )
                 toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
 
-                bit = PathToolBit.Factory.CreateFrom(toolPath)
+                bit = ToolBitFactory.CreateFrom(toolPath)
                 if bit:
                     Path.Log.track(bit)
 
@@ -1005,7 +1006,7 @@ class ToolBitLibrary(object):
             toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
             Path.Log.debug(toolPath)
             try:
-                bit = PathToolBit.Factory.CreateFrom(toolPath)
+                bit = ToolBitFactory.CreateFrom(toolPath)
             except FileNotFoundError as e:
                 FreeCAD.Console.PrintError(e)
                 continue

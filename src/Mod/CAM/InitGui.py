@@ -333,7 +333,7 @@ class CAMWorkbench(Workbench):
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
                     menuAppended = True
-            if isinstance(obj.Proxy, Path.Tool.Bit.ToolBit):
+            if isinstance(obj.Proxy, Path.Tool.ToolBit):
                 self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
                 menuAppended = True
         if menuAppended:
