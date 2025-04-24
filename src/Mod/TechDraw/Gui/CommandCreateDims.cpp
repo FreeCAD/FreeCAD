@@ -339,7 +339,7 @@ public:
 
     QGIDatumLabel* getDimLabel(DrawViewDimension* d)
     {
-        auto* vp = dynamic_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
+        auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
         if (!vp) {
             return nullptr;
         }
@@ -361,7 +361,7 @@ public:
     QPointF getDimPositionToBe(QPoint pos, QPointF curPos = QPointF(), bool textToMiddle = false, Base::Vector3d dir = Base::Vector3d(),
         Base::Vector3d delta = Base::Vector3d(), DimensionType type = DimensionType::Distance, int i = 0)
     {
-        auto* vpp = dynamic_cast<ViewProviderDrawingView*>(Gui::Application::Instance->getViewProvider(partFeat));
+        auto* vpp = freecad_cast<ViewProviderDrawingView*>(Gui::Application::Instance->getViewProvider(partFeat));
         if (!vpp) { return QPointF(); }
 
 
