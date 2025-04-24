@@ -72,7 +72,7 @@ protected:
     template<class T>
     T* getObject() const
     {
-        return dynamic_cast<T*>(getObject());
+        return freecad_cast<T*>(getObject());
     }
 
     bool blockObjectUpdates()
