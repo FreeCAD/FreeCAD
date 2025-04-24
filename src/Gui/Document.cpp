@@ -151,7 +151,7 @@ struct DocumentP
 
     static ViewProviderDocumentObject* throwIfCastFails(ViewProvider* p)
     {
-        if (auto vp = dynamic_cast<ViewProviderDocumentObject*>(p)) {
+        if (auto vp = freecad_cast<ViewProviderDocumentObject*>(p)) {
             return vp;
         }
 
@@ -223,7 +223,7 @@ struct DocumentP
     {
         auto svp = vp;
         if (sobj != obj) {
-            svp = dynamic_cast<ViewProviderDocumentObject*>(
+            svp = freecad_cast<ViewProviderDocumentObject*>(
                     Application::Instance->getViewProvider(sobj));
             if (!svp) {
                 std::stringstream str;
@@ -310,7 +310,7 @@ struct DocumentP
 
     void signalEditMode()
     {
-        if (auto vpd = dynamic_cast<ViewProviderDocumentObject*>(_editViewProvider)) {
+        if (auto vpd = freecad_cast<ViewProviderDocumentObject*>(_editViewProvider)) {
             vpd->getDocument()->signalInEdit(*vpd);
         }
     }
@@ -404,7 +404,7 @@ private:
                                                              const char* subname)
     {
         FC_LOG("deduced editing reference " << parentObj->getFullName() << '.' << subname);
-        auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+        auto vp = freecad_cast<ViewProviderDocumentObject*>(
                 Application::Instance->getViewProvider(parentObj));
         if (!vp || !vp->getDocument()) {
             throw Base::RuntimeError("invalid view provider for parent object");
@@ -611,7 +611,7 @@ View3DInventor* Document::openEditingView3D(const ViewProviderDocumentObject* vp
 
 View3DInventor* Document::openEditingView3D(const App::DocumentObject* obj)
 {
-    if (auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+    if (auto vp = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj))) {
         return openEditingView3D(vp);
     }
@@ -1022,8 +1022,8 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 void Document::beforeDelete() {
     auto editDoc = Application::Instance->editDocument();
     if(editDoc) {
-        auto vp = dynamic_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProvider);
-        auto vpp = dynamic_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProviderParent);
+        auto vp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProvider);
+        auto vpp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProviderParent);
         if(editDoc == this ||
            (vp && vp->getDocument()==this) ||
            (vpp && vpp->getDocument()==this))
@@ -1173,7 +1173,7 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
     App::DocumentObject *obj = nullptr;
     auto editDoc = Application::Instance->editDocument();
     if(editDoc) {
-        auto vp = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+        auto vp = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
         if(vp)
             obj = vp->getObject();
     }
@@ -1690,7 +1690,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 treeRank = int(localreader->getAttributeAsInteger("treeRank"));
             }
 
-            auto pObj = dynamic_cast<ViewProviderDocumentObject*>(getViewProviderByName(name.c_str()));
+            auto pObj = freecad_cast<ViewProviderDocumentObject*>(getViewProviderByName(name.c_str()));
             // check if this feature has been registered
             if (pObj) {
                 pObj->Restore(*localreader);
@@ -1742,7 +1742,7 @@ void Document::slotStartRestoreDocument(const App::Document& doc)
 }
 
 void Document::slotFinishRestoreObject(const App::DocumentObject &obj) {
-    auto vpd = dynamic_cast<ViewProviderDocumentObject*>(getViewProvider(&obj));
+    auto vpd = freecad_cast<ViewProviderDocumentObject*>(getViewProvider(&obj));
     if(vpd) {
         vpd->setStatus(Gui::isRestoring,false);
         vpd->finishRestoring();
@@ -1961,7 +1961,7 @@ void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &
     //     auto vp = getViewProvider(obj);
     //     if(!vp) continue;
     //     vp->setStatus(Gui::isRestoring,false);
-    //     auto vpd = dynamic_cast<ViewProviderDocumentObject*>(vp);
+    //     auto vpd = freecad_cast<ViewProviderDocumentObject*>(vp);
     //     if(vpd) vpd->finishRestoring();
     // }
 }
@@ -2422,7 +2422,7 @@ MDIView *Document::setActiveView(const ViewProviderDocumentObject* vp, Base::Typ
             else {
                 auto linked = obj->getLinkedObject(true);
                 if (linked != obj) {
-                    auto vpLinked = dynamic_cast<ViewProviderDocumentObject*>(
+                    auto vpLinked = freecad_cast<ViewProviderDocumentObject*>(
                                 Application::Instance->getViewProvider(linked));
                     if (vpLinked) {
                         view = vpLinked->getMDIView();

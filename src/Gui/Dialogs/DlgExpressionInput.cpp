@@ -487,8 +487,8 @@ void DlgExpressionInput::acceptWithVarSet()
     // The value of the property is going to be the value that was originally
     // meant to be the value for the property that this dialog is targeting.
     Expression* exprSimplfied = expression->simplify();
-    auto ne = dynamic_cast<NumberExpression*>(exprSimplfied);
-    auto se = dynamic_cast<StringExpression*>(exprSimplfied);
+    auto ne = freecad_cast<NumberExpression*>(exprSimplfied);
+    auto se = freecad_cast<StringExpression*>(exprSimplfied);
     if (ne) {
         // the value is a number: directly assign it to the property instead of
         // making it an expression in the variable set
