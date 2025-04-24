@@ -25,7 +25,7 @@ import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
 import Path.Base.MachineState as PathMachineState
-import Path.Tool.Bit as PathToolBit
+from Path.Tool import ToolBitFactory
 import Path.Tool.Controller as PathToolController
 import PathScripts.PathUtils as PathUtils
 
@@ -38,7 +38,7 @@ def createTool(name="t1", diameter=1.75):
         "parameter": {"Diameter": diameter},
         "attribute": [],
     }
-    return PathToolBit.Factory.CreateFromAttrs(attrs, name)
+    return ToolBitFactory.CreateFromAttrs(attrs, name)
 
 
 class TestPathHelpers(PathTestBase):

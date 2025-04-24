@@ -30,14 +30,14 @@ import zipfile
 from typing import List, Optional, Tuple, Type, Union
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
-from .shape.base import ToolBitShape
-from .shape.util import (
+from ..shape.base import ToolBitShape
+from ..shape.util import (
     get_builtin_shape_file_from_name,
     get_shape_class_from_name,
     get_shape_from_name,
     get_shape_name_from_basename,
 )
-from .shape import TOOL_BIT_SHAPE_NAMES
+from ..shape import TOOL_BIT_SHAPE_NAMES
 from lazy_loader.lazy_loader import LazyLoader
 
 

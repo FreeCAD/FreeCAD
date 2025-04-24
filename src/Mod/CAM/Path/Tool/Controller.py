@@ -25,7 +25,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import Path.Tool.Bit as PathToolBit
+from Path.Tool import ToolBitFactory
 import Path.Base.Generator.toolchange as toolchange
 
 
@@ -186,7 +186,7 @@ class ToolController:
                         ToolControllerTemplate.Version
                     )
                     if toolVersion == 2:
-                        obj.Tool = PathToolBit.Factory.CreateFromAttrs(
+                        obj.Tool = ToolBitFactory.CreateFromAttrs(
                             template.get(ToolControllerTemplate.Tool)
                         )
                     else:
@@ -244,7 +244,7 @@ class ToolController:
             attrs[ToolControllerTemplate.Expressions] = expressions
         return attrs
 
-    def execute(self, obj: PathToolBit):
+    def execute(self, obj):
         Path.Log.track(obj.Name)
 
         args = {
@@ -297,7 +297,7 @@ def Create(
 
     if assignTool:
         if not tool:
-            tool = PathToolBit.Factory.Create("endmill")
+            tool = ToolBitFactory.Create("endmill")
             if tool.ViewObject:
                 tool.ViewObject.Visibility = False
         obj.Tool = tool

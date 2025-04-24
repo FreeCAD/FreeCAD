@@ -21,8 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
-import Path.Tool.Bit as PathToolBit
+from Path.Tool import ToolBitFactory
 import Path.Tool.Controller as PathToolController
 
 from CAMTests.PathTestUtils import PathTestBase
@@ -43,7 +42,7 @@ class TestPathToolController(PathTestBase):
             "parameter": {"Diameter": diameter},
             "attribute": [],
         }
-        return PathToolBit.Factory.CreateFromAttrs(attrs, name)
+        return ToolBitFactory.CreateFromAttrs(attrs, name)
 
     def test00(self):
         """Verify ToolController templateAttrs"""
