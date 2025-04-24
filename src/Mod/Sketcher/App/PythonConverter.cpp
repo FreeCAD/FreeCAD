@@ -195,9 +195,22 @@ std::string PythonConverter::convert(const std::string& doc,
     return constraintlist;
 }
 
-std::string PythonConverter::makeArrayString(const std::stringstream& ss)
+template<typename T>
+std::string makeSplineInfoArrayString(const std::vector<T>& rInfoVec)
 {
-    std::string res = ss.str();
+    std::stringstream stream;
+    if constexpr (std::is_same_v<T, Base::Vector3d>) {
+        for (const auto& rInfo : rInfoVec) {
+            stream << "App.Vector(" << rInfo.x << ", " << rInfo.y << "), ";
+        }
+    }
+    else {
+        for (const auto& rInfo : rInfoVec) {
+            stream << rInfo << ", ";
+        }
+    }
+
+    std::string res = stream.str();
     // remove last comma and add brackets
     int index = res.rfind(',');
     res.resize(index);
@@ -318,40 +331,17 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              [](const Part::Geometry* geo) {
                  auto bSpline = static_cast<const Part::GeomBSplineCurve*>(geo);
 
-                 std::stringstream stream;
-                 std::vector<Base::Vector3d> poles = bSpline->getPoles();
-                 for (auto& pole : poles) {
-                     stream << "App.Vector(" << pole.x << "," << pole.y << "),";
-                 }
-                 std::string controlpoints = makeArrayString(stream);
-
-                 stream = std::stringstream();
-                 std::vector<int> mults = bSpline->getMultiplicities();
-                 for (const auto& mult : mults) {
-                     stream << mult << ",";
-                 }
-                 std::string strmults = makeArrayString(stream);
-
-                 stream = std::stringstream();
-                 std::vector<double> knots = bSpline->getKnots();
-                 for (const auto& knot : knots) {
-                     stream << knot << ",";
-                 }
-                 std::string strknots = makeArrayString(stream);
-
-                 stream = std::stringstream();
-                 std::vector<double> weights = bSpline->getWeights();
-                 for (const auto& weight : weights) {
-                     stream << weight << ",";
-                 }
-                 std::string strweights = makeArrayString(stream);
+                 std::string controlpoints = makeSplineInfoArrayString(bSpline->getPoles());
+                 std::string mults = makeSplineInfoArrayString(bSpline->getMultiplicities());
+                 std::string knots = makeSplineInfoArrayString(bSpline->getKnots());
+                 std::string weights = makeSplineInfoArrayString(bSpline->getWeights());
 
                  SingleGeometry sg;
                  sg.creation =
                      boost::str(boost::format("Part.BSplineCurve (%s, %s, %s, %s, %d, %s, False)")
-                                % controlpoints.c_str() % strmults.c_str() % strknots.c_str()
+                                % controlpoints.c_str() % mults.c_str() % knots.c_str()
                                 % (bSpline->isPeriodic() ? "True" : "False") % bSpline->getDegree()
-                                % strweights.c_str());
+                                % weights.c_str());
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
