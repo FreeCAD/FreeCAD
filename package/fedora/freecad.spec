@@ -192,8 +192,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
     # Remove header from external library that's erroneously installed
     rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
-    rm -f %{buildroot}%{_includedir}/gmock
-    rm -f %{buildroot}%{_includedir}/gtest
+    rm -rf %{buildroot}%{_includedir}/gmock
+    rm -rf %{buildroot}%{_includedir}/gtest
 
 
 %check
