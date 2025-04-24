@@ -324,7 +324,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                      stream << "App.Vector(" << pole.x << "," << pole.y << "),";
                  }
                  std::string controlpoints = makeArrayString(stream);
-                 
+
                  stream = std::stringstream();
                  std::vector<int> mults = bSpline->getMultiplicities();
                  for (const auto& mult : mults) {
@@ -347,10 +347,11 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  std::string strweights = makeArrayString(stream);
 
                  SingleGeometry sg;
-                 sg.creation = boost::str(
-                     boost::format("Part.BSplineCurve (%s, %s, %s, %s, %d, %s, False)")
-                     % controlpoints.c_str() % strmults.c_str() % strknots.c_str() % (bSpline->isPeriodic() ? "True" : "False")
-                     % bSpline->getDegree() % strweights.c_str());
+                 sg.creation =
+                     boost::str(boost::format("Part.BSplineCurve (%s, %s, %s, %s, %d, %s, False)")
+                                % controlpoints.c_str() % strmults.c_str() % strknots.c_str()
+                                % (bSpline->isPeriodic() ? "True" : "False") % bSpline->getDegree()
+                                % strweights.c_str());
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
