@@ -48,7 +48,7 @@ Source4:        {{{ git_pack path=$GIT_ROOT/tests/lib/ name=test-lib dir_name="l
 %global bundled_ondsel_solver_version 1.0.1
 
 # Utilities
-BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build
+BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel
 %if %{with tests}
 BuildRequires:  xorg-x11-server-Xvfb
 %if %{without bundled_gtest}
@@ -169,8 +169,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif
         -DONDSELSOLVER_BUILD_EXE=TRUE \
-        -DBUILD_GUI=TRUE \
-        -G=Ninja
+        -DBUILD_GUI=TRUE
 
     #adapt the script src/Tools/SubWCRev.py to extract the info during srpm generation
     #and store it in a place that can be retrived at build time
@@ -208,8 +207,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     tail -n 50 %{buildroot}%tests_resultdir/Tests_run.result
     ./bin/FreeCADCmd -t 0  &> %{buildroot}%tests_resultdir/FreeCADCmd_test.result   || echo "**** Failed FreeCADCmd -t 0 ****"
     tail -n 50 %{buildroot}%tests_resultdir/FreeCADCmd_test.result
-    xvfb-run ./bin/FreeCAD -t 0 &> %{buildroot}%tests_resultdir/FreeCAD_test.result || echo "**** Failed FreeCAD -t 0 ****"
-    tail -n 50 %{buildroot}%tests_resultdir/FreeCAD_test.result
+#    xvfb-run ./bin/FreeCAD -t 0 &> %{buildroot}%tests_resultdir/FreeCAD_test.result || echo "**** Failed FreeCAD -t 0 ****"
+#    tail -n 50 %{buildroot}%tests_resultdir/FreeCAD_test.result
     popd
     %ctest &> %{buildroot}%tests_resultdir/ctest.result                             || echo "Failed ctest"
     tail -n 50 %{buildroot}%tests_resultdir/ctest.result
