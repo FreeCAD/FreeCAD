@@ -64,7 +64,7 @@ int BSplineSurfacePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* BSplineSurfacePy::bounds(PyObject *args)
+PyObject* BSplineSurfacePy::bounds(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -81,7 +81,7 @@ PyObject* BSplineSurfacePy::bounds(PyObject *args)
     return Py::new_reference_to(bound);
 }
 
-PyObject* BSplineSurfacePy::isURational(PyObject *args)
+PyObject* BSplineSurfacePy::isURational(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -92,7 +92,7 @@ PyObject* BSplineSurfacePy::isURational(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BSplineSurfacePy::isVRational(PyObject *args)
+PyObject* BSplineSurfacePy::isVRational(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -103,7 +103,7 @@ PyObject* BSplineSurfacePy::isVRational(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BSplineSurfacePy::isUPeriodic(PyObject *args)
+PyObject* BSplineSurfacePy::isUPeriodic(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -114,7 +114,7 @@ PyObject* BSplineSurfacePy::isUPeriodic(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BSplineSurfacePy::isVPeriodic(PyObject *args)
+PyObject* BSplineSurfacePy::isVPeriodic(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -125,7 +125,7 @@ PyObject* BSplineSurfacePy::isVPeriodic(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BSplineSurfacePy::isUClosed(PyObject *args)
+PyObject* BSplineSurfacePy::isUClosed(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -136,7 +136,7 @@ PyObject* BSplineSurfacePy::isUClosed(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BSplineSurfacePy::isVClosed(PyObject *args)
+PyObject* BSplineSurfacePy::isVClosed(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -453,7 +453,7 @@ PyObject* BSplineSurfacePy::setVKnot(PyObject *args)
     Py_Return;
 }
 
-PyObject* BSplineSurfacePy::getUKnot(PyObject *args)
+PyObject* BSplineSurfacePy::getUKnot(PyObject *args) const
 {
     int Index;
     if (!PyArg_ParseTuple(args, "i", &Index))
@@ -466,7 +466,7 @@ PyObject* BSplineSurfacePy::getUKnot(PyObject *args)
     return Py_BuildValue("d",M);
 }
 
-PyObject* BSplineSurfacePy::getVKnot(PyObject *args)
+PyObject* BSplineSurfacePy::getVKnot(PyObject *args) const
 {
     int Index;
     if (!PyArg_ParseTuple(args, "i", &Index))
@@ -529,7 +529,7 @@ PyObject* BSplineSurfacePy::setVKnots(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getUKnots(PyObject *args)
+PyObject* BSplineSurfacePy::getUKnots(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -550,7 +550,7 @@ PyObject* BSplineSurfacePy::getUKnots(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getVKnots(PyObject *args)
+PyObject* BSplineSurfacePy::getVKnots(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -675,7 +675,7 @@ PyObject* BSplineSurfacePy::setPoleRow(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getPole(PyObject *args)
+PyObject* BSplineSurfacePy::getPole(PyObject *args) const
 {
     int uindex,vindex;
     if (!PyArg_ParseTuple(args, "ii", &uindex,&vindex))
@@ -697,7 +697,7 @@ PyObject* BSplineSurfacePy::getPole(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getPoles(PyObject *args)
+PyObject* BSplineSurfacePy::getPoles(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -792,7 +792,7 @@ PyObject* BSplineSurfacePy::setWeightRow(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getWeight(PyObject *args)
+PyObject* BSplineSurfacePy::getWeight(PyObject *args) const
 {
     int uindex,vindex;
     if (!PyArg_ParseTuple(args, "ii",&uindex,&vindex))
@@ -812,7 +812,7 @@ PyObject* BSplineSurfacePy::getWeight(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getWeights(PyObject *args)
+PyObject* BSplineSurfacePy::getWeights(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -837,7 +837,7 @@ PyObject* BSplineSurfacePy::getWeights(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getPolesAndWeights(PyObject *args)
+PyObject* BSplineSurfacePy::getPolesAndWeights(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -872,7 +872,7 @@ PyObject* BSplineSurfacePy::getPolesAndWeights(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getResolution(PyObject *args)
+PyObject* BSplineSurfacePy::getResolution(PyObject *args) const
 {
     double tol;
     if (!PyArg_ParseTuple(args, "d", &tol))
@@ -1012,7 +1012,7 @@ PyObject* BSplineSurfacePy::setVOrigin(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getUMultiplicity(PyObject *args)
+PyObject* BSplineSurfacePy::getUMultiplicity(PyObject *args) const
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
@@ -1029,7 +1029,7 @@ PyObject* BSplineSurfacePy::getUMultiplicity(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getVMultiplicity(PyObject *args)
+PyObject* BSplineSurfacePy::getVMultiplicity(PyObject *args) const
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
@@ -1046,7 +1046,7 @@ PyObject* BSplineSurfacePy::getVMultiplicity(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getUMultiplicities(PyObject *args)
+PyObject* BSplineSurfacePy::getUMultiplicities(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -1067,7 +1067,7 @@ PyObject* BSplineSurfacePy::getUMultiplicities(PyObject *args)
     }
 }
 
-PyObject* BSplineSurfacePy::getVMultiplicities(PyObject *args)
+PyObject* BSplineSurfacePy::getVMultiplicities(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -1099,7 +1099,7 @@ PyObject* BSplineSurfacePy::exchangeUV(PyObject *args)
     Py_Return;
 }
 
-PyObject* BSplineSurfacePy::reparametrize(PyObject * args)
+PyObject* BSplineSurfacePy::reparametrize(PyObject * args) const
 {
     int u,v;
     double tol = 0.000001;

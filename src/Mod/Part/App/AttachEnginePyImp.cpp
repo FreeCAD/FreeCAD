@@ -400,7 +400,7 @@ PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
     } ATTACHERPY_STDCATCH_METH;
 }
 
-PyObject* AttachEnginePy::copy(PyObject* args)
+PyObject* AttachEnginePy::copy(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -408,7 +408,7 @@ PyObject* AttachEnginePy::copy(PyObject* args)
     return new AttachEnginePy(this->getAttachEnginePtr()->copy());
 }
 
-PyObject* AttachEnginePy::calculateAttachedPlacement(PyObject* args)
+PyObject* AttachEnginePy::calculateAttachedPlacement(PyObject* args) const
 {
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &pcObj))
@@ -566,4 +566,3 @@ int AttachEnginePy::setCustomAttributes(const char*,PyObject*)
 {
     return 0;
 }
-

@@ -817,21 +817,21 @@ class _SectionPlane:
 
         pl = obj.PropertiesList
         if not "Placement" in pl:
-            obj.addProperty("App::PropertyPlacement","Placement","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
+            obj.addProperty("App::PropertyPlacement","Placement","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The placement of this object"), locked=True)
         if not "Shape" in pl:
-            obj.addProperty("Part::PropertyPartShape","Shape","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
+            obj.addProperty("Part::PropertyPartShape","Shape","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The shape of this object"), locked=True)
         if not "Objects" in pl:
-            obj.addProperty("App::PropertyLinkList","Objects","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The objects that must be considered by this section plane. Empty means the whole document."))
+            obj.addProperty("App::PropertyLinkList","Objects","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The objects that must be considered by this section plane. Empty means the whole document."), locked=True)
         if not "OnlySolids" in pl:
-            obj.addProperty("App::PropertyBool","OnlySolids","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If false, non-solids will be cut too, with possible wrong results."))
+            obj.addProperty("App::PropertyBool","OnlySolids","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If false, non-solids will be cut too, with possible wrong results."), locked=True)
             obj.OnlySolids = True
         if not "Clip" in pl:
-            obj.addProperty("App::PropertyBool","Clip","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If True, resulting views will be clipped to the section plane area."))
+            obj.addProperty("App::PropertyBool","Clip","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If True, resulting views will be clipped to the section plane area."), locked=True)
         if not "UseMaterialColorForFill" in pl:
-            obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."))
+            obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."), locked=True)
             obj.UseMaterialColorForFill = False
         if not "Depth" in pl:
-            obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."))
+            obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."), locked=True)
         self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):
@@ -894,43 +894,43 @@ class _ViewProviderSectionPlane:
             d = vobj.DisplaySize.Value
             vobj.removeProperty("DisplaySize")
         if not "DisplayLength" in pl:
-            vobj.addProperty("App::PropertyLength","DisplayLength","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"))
+            vobj.addProperty("App::PropertyLength","DisplayLength","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"), locked=True)
             if d:
                 vobj.DisplayLength = d
             else:
                 vobj.DisplayLength = 1000
         if not "DisplayHeight" in pl:
-            vobj.addProperty("App::PropertyLength","DisplayHeight","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The display height of this section plane"))
+            vobj.addProperty("App::PropertyLength","DisplayHeight","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The display height of this section plane"), locked=True)
             if d:
                 vobj.DisplayHeight = d
             else:
                 vobj.DisplayHeight = 1000
         if not "ArrowSize" in pl:
-            vobj.addProperty("App::PropertyLength","ArrowSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"))
+            vobj.addProperty("App::PropertyLength","ArrowSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"), locked=True)
             vobj.ArrowSize = 50
         if not "Transparency" in pl:
-            vobj.addProperty("App::PropertyPercent","Transparency","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The transparency of this object"))
+            vobj.addProperty("App::PropertyPercent","Transparency","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The transparency of this object"), locked=True)
             vobj.Transparency = 85
         if not "LineWidth" in pl:
-            vobj.addProperty("App::PropertyFloat","LineWidth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The line width of this object"))
+            vobj.addProperty("App::PropertyFloat","LineWidth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The line width of this object"), locked=True)
             vobj.LineWidth = 1
         if not "CutDistance" in pl:
-            vobj.addProperty("App::PropertyLength","CutDistance","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"))
+            vobj.addProperty("App::PropertyLength","CutDistance","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"), locked=True)
         if not "LineColor" in pl:
-            vobj.addProperty("App::PropertyColor","LineColor","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The color of this object"))
+            vobj.addProperty("App::PropertyColor","LineColor","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The color of this object"), locked=True)
             vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
         if not "CutView" in pl:
-            vobj.addProperty("App::PropertyBool","CutView","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"))
+            vobj.addProperty("App::PropertyBool","CutView","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"), locked=True)
         if not "CutMargin" in pl:
-            vobj.addProperty("App::PropertyLength","CutMargin","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The distance between the cut plane and the actual view cut (keep this a very small value but not zero)"))
+            vobj.addProperty("App::PropertyLength","CutMargin","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The distance between the cut plane and the actual view cut (keep this a very small value but not zero)"), locked=True)
             vobj.CutMargin = 1
         if not "ShowLabel" in pl:
-            vobj.addProperty("App::PropertyBool","ShowLabel","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the label in the 3D view"))
+            vobj.addProperty("App::PropertyBool","ShowLabel","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the label in the 3D view"), locked=True)
         if not "FontName" in pl:
-            vobj.addProperty("App::PropertyFont","FontName", "SectionPlane",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
+            vobj.addProperty("App::PropertyFont","FontName", "SectionPlane",QT_TRANSLATE_NOOP("App::Property","The name of the font"), locked=True)
             vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
-            vobj.addProperty("App::PropertyLength","FontSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
+            vobj.addProperty("App::PropertyLength","FontSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the text font"), locked=True)
             vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
 
 

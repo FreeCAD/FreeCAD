@@ -346,8 +346,8 @@ Evolumes
 
 ***********************************************************
 ** constraints displacement node sets
-** ConstraintDisplacmentPrescribed
-*NSET,NSET=ConstraintDisplacmentPrescribed
+** ConstraintDisplacementPrescribed
+*NSET,NSET=ConstraintDisplacementPrescribed
 1,
 2,
 3,
@@ -395,9 +395,9 @@ ConstraintFixed,3
 
 ***********************************************************
 ** Displacement constraint applied
-** ConstraintDisplacmentPrescribed
+** ConstraintDisplacementPrescribed
 *BOUNDARY
-ConstraintDisplacmentPrescribed,3,3,-250.0
+ConstraintDisplacementPrescribed,3,3,-250.0
 
 
 ***********************************************************
@@ -411,7 +411,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 ** reaction forces for Constraint displacement constraining translation
-*NODE PRINT, NSET=ConstraintDisplacmentPrescribed, TOTALS=ONLY
+*NODE PRINT, NSET=ConstraintDisplacementPrescribed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

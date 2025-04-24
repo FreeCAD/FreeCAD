@@ -74,7 +74,7 @@ int ExternalGeometryFacadePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* ExternalGeometryFacadePy::testFlag(PyObject* args)
+PyObject* ExternalGeometryFacadePy::testFlag(PyObject* args) const
 {
     char* flag;
     if (PyArg_ParseTuple(args, "s", &flag)) {
@@ -295,7 +295,7 @@ PyObject* ExternalGeometryFacadePy::setExtension(PyObject* args)
     return nullptr;
 }
 
-PyObject* ExternalGeometryFacadePy::getExtensionOfType(PyObject* args)
+PyObject* ExternalGeometryFacadePy::getExtensionOfType(PyObject* args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -338,7 +338,7 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfType(PyObject* args)
     return nullptr;
 }
 
-PyObject* ExternalGeometryFacadePy::getExtensionOfName(PyObject* args)
+PyObject* ExternalGeometryFacadePy::getExtensionOfName(PyObject* args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -372,7 +372,7 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfName(PyObject* args)
     return nullptr;
 }
 
-PyObject* ExternalGeometryFacadePy::hasExtensionOfType(PyObject* args)
+PyObject* ExternalGeometryFacadePy::hasExtensionOfType(PyObject* args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -400,7 +400,7 @@ PyObject* ExternalGeometryFacadePy::hasExtensionOfType(PyObject* args)
     return nullptr;
 }
 
-PyObject* ExternalGeometryFacadePy::hasExtensionOfName(PyObject* args)
+PyObject* ExternalGeometryFacadePy::hasExtensionOfName(PyObject* args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -467,7 +467,7 @@ PyObject* ExternalGeometryFacadePy::deleteExtensionOfName(PyObject* args)
     return nullptr;
 }
 
-PyObject* ExternalGeometryFacadePy::getExtensions(PyObject* args)
+PyObject* ExternalGeometryFacadePy::getExtensions(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         PyErr_SetString(Part::PartExceptionOCCError, "No arguments were expected");

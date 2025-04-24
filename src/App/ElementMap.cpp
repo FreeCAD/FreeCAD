@@ -258,7 +258,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
 
     std::vector<ElementMapPtr> childMaps;
     count = 0;
-    constexpr int practicalMaximum {1 << 30 / sizeof(ElementMapPtr)};  // a 1GB child map vector: almost certainly a bug
+    constexpr int practicalMaximum {(1 << 30) / sizeof(ElementMapPtr)};  // a 1GB child map vector: almost certainly a bug
     if (!(stream >> tmp >> count) || tmp != "MapCount" || count == 0 || count > practicalMaximum) {
         FC_THROWM(Base::RuntimeError, msg);  // NOLINT
     }

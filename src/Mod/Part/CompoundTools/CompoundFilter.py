@@ -49,13 +49,13 @@ class _CompoundFilter:
     """The CompoundFilter object."""
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base", "CompoundFilter", "Compound to be filtered")
+        obj.addProperty("App::PropertyLink", "Base", "CompoundFilter", "Compound to be filtered", locked=True)
 
         obj.addProperty("App::PropertyEnumeration",
                         "FilterType",
                         "CompoundFilter",
                         "Type of filter method to use; some of these methods "
-                        "require, or are affected by, a 'Stencil' object.")
+                        "require, or are affected by, a 'Stencil' object.", locked=True)
         obj.FilterType = ['bypass', 'specific items', 'collision-pass',
                           'window-volume', 'window-area', 'window-length',
                           'window-distance']
@@ -65,24 +65,24 @@ class _CompoundFilter:
         obj.addProperty("App::PropertyString", "items", "CompoundFilter",
                         "Indices of the pieces to be returned.\n"
                         "These are numbers separated by a semicolon, '1;3;5'.\n"
-                        "A range can also be provided using a colon, '1;4;8:10'.")
+                        "A range can also be provided using a colon, '1;4;8:10'.", locked=True)
 
         obj.addProperty("App::PropertyLink", "Stencil", "CompoundFilter",
-                        "Object that defines filtering")
+                        "Object that defines filtering", locked=True)
 
         obj.addProperty("App::PropertyFloat", "WindowFrom", "CompoundFilter",
-                        "Value of threshold, expressed as a percentage of maximum value.")
+                        "Value of threshold, expressed as a percentage of maximum value.", locked=True)
         obj.WindowFrom = 80.0
         obj.addProperty("App::PropertyFloat", "WindowTo", "CompoundFilter",
-                        "Value of threshold, expressed as a percentage of maximum value.")
+                        "Value of threshold, expressed as a percentage of maximum value.", locked=True)
         obj.WindowTo = 100.0
 
         obj.addProperty("App::PropertyFloat", "OverrideMaxVal", "CompoundFilter",
-                        "Volume threshold, expressed as percentage of the volume of largest child")
+                        "Volume threshold, expressed as percentage of the volume of largest child", locked=True)
         obj.OverrideMaxVal = 0
 
         obj.addProperty("App::PropertyBool", "Invert", "CompoundFilter",
-                        "Output shapes that are rejected by the filter, instead")
+                        "Output shapes that are rejected by the filter, instead", locked=True)
         obj.Invert = False
 
         self.Type = "CompoundFilter"
@@ -214,7 +214,7 @@ class _ViewProviderCompoundFilter:
                          "DontUnhideOnDelete",
                          "CompoundFilter",
                          "When this object is deleted, Base and Stencil are unhidden. "
-                         "This flag stops it from happening.")
+                         "This flag stops it from happening.", locked=True)
         vobj.setEditorMode("DontUnhideOnDelete", 2)  # set hidden
 
     def getIcon(self):

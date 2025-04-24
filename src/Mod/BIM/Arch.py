@@ -147,7 +147,7 @@ def makeBuilding(objectslist=None,baseobj=None,name=None):
     obj.IfcType = "Building"
     obj.CompositionType = "ELEMENT"
     t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
-    obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
+    obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t, locked=True)
     obj.BuildingType = ArchBuildingPart.BuildingTypes
     if FreeCAD.GuiUp:
         obj.ViewObject.ShowLevel = False
@@ -196,7 +196,7 @@ def convertFloors(floor=None):
                 nobj.IfcType = "Building"
                 nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
-                nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
+                nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t, locked=True)
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
             label = obj.Label
             for parent in obj.InList:
@@ -830,7 +830,7 @@ def makeSpace(objects=None,baseobj=None,name=None):
         # We assume that the objects list is not a mixed set. The type of the first
         # object will determine the type of the set.
         # Input to this function can come into three different formats. First convert it
-        # to a common format: [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+        # to a common format: [ (<Part::Feature>, ["Face1", ...]), ... ]
         if (hasattr(objects[0], "isDerivedFrom") and
                 objects[0].isDerivedFrom("Gui::SelectionObject")):
             # Selection set: convert to common format
@@ -838,12 +838,12 @@ def makeSpace(objects=None,baseobj=None,name=None):
             objects = [(obj.Object, obj.SubElementNames) for obj in objects]
         elif (isinstance(objects[0], tuple) or isinstance(objects[0], list)):
             # Tuple or list of object with subobjects: pass unmodified
-            # [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+            # [ (<Part::Feature>, ["Face1", ...]), ... ]
             pass
         else:
             # Single object: assume anything else passed is a single object with no
             # boundaries.
-            # [ <Part::PartFeature> ]
+            # [ <Part::Feature> ]
             objects = [(objects[0], [])]
 
         if isSingleObject(objects):
@@ -1091,7 +1091,7 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=Non
 
     Parameters
     ----------
-    baseobj: <Part::PartFeature>, optional
+    baseobj: <Part::Feature>, optional
         The base object with which to build the wall. This can be a sketch, a
         draft object, a face, or a solid. It can also be left as None.
     height: float, optional

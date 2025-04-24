@@ -471,7 +471,7 @@ class SH3DImporter:
             description (str): a short description of the property to add
         """
         if name not in obj.PropertiesList:
-            obj.addProperty(property_type, name, group, description)
+            obj.addProperty(property_type, name, group, description, locked=True)
 
     def add_fc_objects(self, obj):
         """Register `obj`.

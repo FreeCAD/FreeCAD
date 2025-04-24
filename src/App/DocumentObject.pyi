@@ -71,10 +71,11 @@ class DocumentObject(ExtensionContainer):
         attr: int = 0,
         read_only: bool = False,
         hidden: bool = False,
+        locked: bool = False,
         enum_vals: list = []
     ) -> "DocumentObject":
         """
-        addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False, enum_vals=[]) -- Add a generic property.
+        addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False, locked = False, enum_vals=[]) -- Add a generic property.
         """
         ...
 

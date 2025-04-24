@@ -162,59 +162,70 @@ class _Roof(ArchComponent.Component):
             obj.addProperty("App::PropertyFloatList",
                             "Angles",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of angles of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of angles of the roof segments"),
+                            locked=True)
         if not "Runs" in pl:
             obj.addProperty("App::PropertyFloatList",
                             "Runs",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of horizontal length projections of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of horizontal length projections of the roof segments"),
+                            locked=True)
         if not "IdRel" in pl:
             obj.addProperty("App::PropertyIntegerList",
                             "IdRel",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of IDs of the relative profiles of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of IDs of the relative profiles of the roof segments"),
+                            locked=True)
         if not "Thickness" in pl:
             obj.addProperty("App::PropertyFloatList",
                             "Thickness",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of thicknesses of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of thicknesses of the roof segments"),
+                            locked=True)
         if not "Overhang" in pl:
             obj.addProperty("App::PropertyFloatList",
                             "Overhang",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of overhangs of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of overhangs of the roof segments"),
+                            locked=True)
         if not "Heights" in pl:
             obj.addProperty("App::PropertyFloatList",
                             "Heights",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of calculated heights of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of calculated heights of the roof segments"),
+                            locked=True)
         if not "Face" in pl:
             obj.addProperty("App::PropertyInteger",
                             "Face",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The face number of the base object used to build the roof"))
+                            QT_TRANSLATE_NOOP("App::Property", "The face number of the base object used to build the roof"),
+                            locked=True)
         if not "RidgeLength" in pl:
             obj.addProperty("App::PropertyLength",
                             "RidgeLength",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The total length of the ridges and hips of the roof"))
+                            QT_TRANSLATE_NOOP("App::Property", "The total length of the ridges and hips of the roof"),
+                            locked=True)
             obj.setEditorMode("RidgeLength",1)
         if not "BorderLength" in pl:
             obj.addProperty("App::PropertyLength",
                             "BorderLength",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The total length of the borders of the roof"))
+                            QT_TRANSLATE_NOOP("App::Property", "The total length of the borders of the roof"),
+                            locked=True)
             obj.setEditorMode("BorderLength",1)
         if not "Flip" in pl:
             obj.addProperty("App::PropertyBool",
                             "Flip",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "Specifies if the direction of the roof should be flipped"))
+                            QT_TRANSLATE_NOOP("App::Property", "Specifies if the direction of the roof should be flipped"),
+                            locked=True)
         if not "Subvolume" in pl:
             obj.addProperty("App::PropertyLink",
                             "Subvolume",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume"))
+                            QT_TRANSLATE_NOOP("App::Property", "An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume"),
+                            locked=True)
         self.Type = "Roof"
 
     def onDocumentRestored(self, obj):

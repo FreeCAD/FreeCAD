@@ -277,7 +277,7 @@ PyObject* DocumentPy::createView(PyObject *args)
     PY_CATCH;
 }
 
-PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
+PyObject* DocumentPy::mdiViewsOfType(PyObject *args) const
 {
     char* sType;
     if (!PyArg_ParseTuple(args, "s", &sType))

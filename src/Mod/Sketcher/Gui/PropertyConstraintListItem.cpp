@@ -368,11 +368,12 @@ void PropertyConstraintListItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyConstraintListItem::createEditor(QWidget* parent,
-                                                  const std::function<void()>& method) const
+                                                  const std::function<void()>& method,
+                                                  FrameOption frameOption) const
 {
     Q_UNUSED(method);
     QLineEdit* le = new QLineEdit(parent);
-    le->setFrame(false);
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(true);
     return le;
 }

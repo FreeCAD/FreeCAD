@@ -72,22 +72,22 @@ class _Axis:
 
         pl = obj.PropertiesList
         if not "Distances" in pl:
-            obj.addProperty("App::PropertyFloatList","Distances","Axis", QT_TRANSLATE_NOOP("App::Property","The intervals between axes"))
+            obj.addProperty("App::PropertyFloatList","Distances","Axis", QT_TRANSLATE_NOOP("App::Property","The intervals between axes"), locked=True)
         if not "Angles" in pl:
-            obj.addProperty("App::PropertyFloatList","Angles","Axis", QT_TRANSLATE_NOOP("App::Property","The angles of each axis"))
+            obj.addProperty("App::PropertyFloatList","Angles","Axis", QT_TRANSLATE_NOOP("App::Property","The angles of each axis"), locked=True)
         if not "Labels" in pl:
-            obj.addProperty("App::PropertyStringList","Labels","Axis", QT_TRANSLATE_NOOP("App::Property","The label of each axis"))
+            obj.addProperty("App::PropertyStringList","Labels","Axis", QT_TRANSLATE_NOOP("App::Property","The label of each axis"), locked=True)
         if not "CustomNumber" in pl:
-            obj.addProperty("App::PropertyString","CustomNumber","Axis", QT_TRANSLATE_NOOP("App::Property","An optional custom bubble number"))
+            obj.addProperty("App::PropertyString","CustomNumber","Axis", QT_TRANSLATE_NOOP("App::Property","An optional custom bubble number"), locked=True)
         if not "Length" in pl:
-            obj.addProperty("App::PropertyLength","Length","Axis", QT_TRANSLATE_NOOP("App::Property","The length of the axes"))
+            obj.addProperty("App::PropertyLength","Length","Axis", QT_TRANSLATE_NOOP("App::Property","The length of the axes"), locked=True)
             obj.Length=3000
         if not "Placement" in pl:
-            obj.addProperty("App::PropertyPlacement","Placement","Base","")
+            obj.addProperty("App::PropertyPlacement","Placement","Base","", locked=True)
         if not "Shape" in pl:
-            obj.addProperty("Part::PropertyPartShape","Shape","Base","")
+            obj.addProperty("Part::PropertyPartShape","Shape","Base","", locked=True)
         if not "Limit" in pl:
-            obj.addProperty("App::PropertyLength","Limit","Axis", QT_TRANSLATE_NOOP("App::Property","If not zero, the axes are not represented as one full line but as two lines of the given length"))
+            obj.addProperty("App::PropertyLength","Limit","Axis", QT_TRANSLATE_NOOP("App::Property","If not zero, the axes are not represented as one full line but as two lines of the given length"), locked=True)
             obj.Limit=0
         self.Type = "Axis"
 
@@ -185,38 +185,38 @@ class _ViewProviderAxis:
         ts = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         pl = vobj.PropertiesList
         if not "BubbleSize" in pl:
-            vobj.addProperty("App::PropertyLength","BubbleSize","Axis", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"))
+            vobj.addProperty("App::PropertyLength","BubbleSize","Axis", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"), locked=True)
             vobj.BubbleSize = ts * 1.42
         if not "NumberingStyle" in pl:
-            vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Axis", QT_TRANSLATE_NOOP("App::Property","The numbering style"))
+            vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Axis", QT_TRANSLATE_NOOP("App::Property","The numbering style"), locked=True)
             vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
             vobj.NumberingStyle = "1,2,3"
         if not "DrawStyle" in pl:
-            vobj.addProperty("App::PropertyEnumeration","DrawStyle","Axis",QT_TRANSLATE_NOOP("App::Property","The type of line to draw this axis"))
+            vobj.addProperty("App::PropertyEnumeration","DrawStyle","Axis",QT_TRANSLATE_NOOP("App::Property","The type of line to draw this axis"), locked=True)
             vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
         vobj.DrawStyle = "Dashdot"
         if not "BubblePosition" in pl:
-            vobj.addProperty("App::PropertyEnumeration","BubblePosition","Axis",QT_TRANSLATE_NOOP("App::Property","Where to add bubbles to this axis: Start, end, both or none"))
+            vobj.addProperty("App::PropertyEnumeration","BubblePosition","Axis",QT_TRANSLATE_NOOP("App::Property","Where to add bubbles to this axis: Start, end, both or none"), locked=True)
             vobj.BubblePosition = ["Start","End","Both","None","Arrow left","Arrow right","Bar left","Bar right"]
         if not "LineWidth" in pl:
-            vobj.addProperty("App::PropertyFloat","LineWidth","Axis",QT_TRANSLATE_NOOP("App::Property","The line width to draw this axis"))
+            vobj.addProperty("App::PropertyFloat","LineWidth","Axis",QT_TRANSLATE_NOOP("App::Property","The line width to draw this axis"), locked=True)
             vobj.LineWidth = 1
         if not "LineColor" in pl:
-            vobj.addProperty("App::PropertyColor","LineColor","Axis",QT_TRANSLATE_NOOP("App::Property","The color of this axis"))
+            vobj.addProperty("App::PropertyColor","LineColor","Axis",QT_TRANSLATE_NOOP("App::Property","The color of this axis"), locked=True)
         vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
         if not "StartNumber" in pl:
-            vobj.addProperty("App::PropertyInteger","StartNumber","Axis",QT_TRANSLATE_NOOP("App::Property","The number of the first axis"))
+            vobj.addProperty("App::PropertyInteger","StartNumber","Axis",QT_TRANSLATE_NOOP("App::Property","The number of the first axis"), locked=True)
             vobj.StartNumber = 1
         if not "FontName" in pl:
-            vobj.addProperty("App::PropertyFont","FontName","Axis",QT_TRANSLATE_NOOP("App::Property","The font to use for texts"))
+            vobj.addProperty("App::PropertyFont","FontName","Axis",QT_TRANSLATE_NOOP("App::Property","The font to use for texts"), locked=True)
             vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
-            vobj.addProperty("App::PropertyLength","FontSize","Axis",QT_TRANSLATE_NOOP("App::Property","The font size"))
+            vobj.addProperty("App::PropertyLength","FontSize","Axis",QT_TRANSLATE_NOOP("App::Property","The font size"), locked=True)
             vobj.FontSize = ts
         if not "ShowLabel" in pl:
             vobj.addProperty("App::PropertyBool","ShowLabel","Axis",QT_TRANSLATE_NOOP("App::Property","If true, show the labels"))
         if not "LabelOffset" in pl:
-            vobj.addProperty("App::PropertyPlacement","LabelOffset","Axis",QT_TRANSLATE_NOOP("App::Property","A transformation to apply to each label"))
+            vobj.addProperty("App::PropertyPlacement","LabelOffset","Axis",QT_TRANSLATE_NOOP("App::Property","A transformation to apply to each label"), locked=True)
 
     def onDocumentRestored(self,vobj):
 

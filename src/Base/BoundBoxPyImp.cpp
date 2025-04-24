@@ -123,7 +123,7 @@ PyObject* BoundBoxPy::setVoid(PyObject* args)
     Py_Return;
 }
 
-PyObject* BoundBoxPy::isValid(PyObject* args)
+PyObject* BoundBoxPy::isValid(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -169,7 +169,7 @@ PyObject* BoundBoxPy::add(PyObject* args)
     return nullptr;
 }
 
-PyObject* BoundBoxPy::getPoint(PyObject* args)
+PyObject* BoundBoxPy::getPoint(PyObject* args) const
 {
     unsigned short index {};
     if (!PyArg_ParseTuple(args, "H", &index)) {
@@ -185,7 +185,7 @@ PyObject* BoundBoxPy::getPoint(PyObject* args)
     return new Base::VectorPy(new Base::Vector3d(pnt));
 }
 
-PyObject* BoundBoxPy::getEdge(PyObject* args)
+PyObject* BoundBoxPy::getEdge(PyObject* args) const
 {
     unsigned short index {};
     if (!PyArg_ParseTuple(args, "H", &index)) {
@@ -206,7 +206,7 @@ PyObject* BoundBoxPy::getEdge(PyObject* args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* BoundBoxPy::closestPoint(PyObject* args)
+PyObject* BoundBoxPy::closestPoint(PyObject* args) const
 {
     double x {};
     double y {};

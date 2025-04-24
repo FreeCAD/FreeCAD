@@ -60,7 +60,7 @@ public:
     inline qreal getY() { return y() * -1; }
 
     virtual void updateView(bool update = false);
-    std::vector<TemplateTextField *> getTextFields() { return textFields; };
+    virtual std::vector<TemplateTextField *> getTextFields() { return textFields; };
 
     virtual void draw() = 0;
 

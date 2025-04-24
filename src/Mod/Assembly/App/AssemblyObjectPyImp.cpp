@@ -46,7 +46,7 @@ int AssemblyObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*
     return 0;
 }
 
-PyObject* AssemblyObjectPy::solve(PyObject* args)
+PyObject* AssemblyObjectPy::solve(PyObject* args) const
 {
     PyObject* enableUndoPy;
     bool enableUndo;
@@ -68,7 +68,7 @@ PyObject* AssemblyObjectPy::solve(PyObject* args)
     return Py_BuildValue("i", ret);
 }
 
-PyObject* AssemblyObjectPy::generateSimulation(PyObject* args)
+PyObject* AssemblyObjectPy::generateSimulation(PyObject* args) const
 {
     PyObject* pyobj;
 
@@ -80,7 +80,7 @@ PyObject* AssemblyObjectPy::generateSimulation(PyObject* args)
     return Py_BuildValue("i", ret);
 }
 
-PyObject* AssemblyObjectPy::ensureIdentityPlacements(PyObject* args)
+PyObject* AssemblyObjectPy::ensureIdentityPlacements(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -89,7 +89,7 @@ PyObject* AssemblyObjectPy::ensureIdentityPlacements(PyObject* args)
     Py_Return;
 }
 
-PyObject* AssemblyObjectPy::updateForFrame(PyObject* args)
+PyObject* AssemblyObjectPy::updateForFrame(PyObject* args) const
 {
     unsigned long index {};
 
@@ -105,7 +105,7 @@ PyObject* AssemblyObjectPy::updateForFrame(PyObject* args)
     Py_Return;
 }
 
-PyObject* AssemblyObjectPy::numberOfFrames(PyObject* args)
+PyObject* AssemblyObjectPy::numberOfFrames(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -114,7 +114,7 @@ PyObject* AssemblyObjectPy::numberOfFrames(PyObject* args)
     return Py_BuildValue("k", ret);
 }
 
-PyObject* AssemblyObjectPy::undoSolve(PyObject* args)
+PyObject* AssemblyObjectPy::undoSolve(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -123,7 +123,7 @@ PyObject* AssemblyObjectPy::undoSolve(PyObject* args)
     Py_Return;
 }
 
-PyObject* AssemblyObjectPy::clearUndo(PyObject* args)
+PyObject* AssemblyObjectPy::clearUndo(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -132,7 +132,7 @@ PyObject* AssemblyObjectPy::clearUndo(PyObject* args)
     Py_Return;
 }
 
-PyObject* AssemblyObjectPy::isPartConnected(PyObject* args)
+PyObject* AssemblyObjectPy::isPartConnected(PyObject* args) const
 {
     PyObject* pyobj;
 
@@ -144,7 +144,7 @@ PyObject* AssemblyObjectPy::isPartConnected(PyObject* args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject* AssemblyObjectPy::isPartGrounded(PyObject* args)
+PyObject* AssemblyObjectPy::isPartGrounded(PyObject* args) const
 {
     PyObject* pyobj;
 
@@ -156,7 +156,7 @@ PyObject* AssemblyObjectPy::isPartGrounded(PyObject* args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject* AssemblyObjectPy::isJointConnectingPartToGround(PyObject* args)
+PyObject* AssemblyObjectPy::isJointConnectingPartToGround(PyObject* args) const
 {
     PyObject* pyobj;
     char* pname;
@@ -169,7 +169,7 @@ PyObject* AssemblyObjectPy::isJointConnectingPartToGround(PyObject* args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject* AssemblyObjectPy::exportAsASMT(PyObject* args)
+PyObject* AssemblyObjectPy::exportAsASMT(PyObject* args) const
 {
     char* utf8Name;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &utf8Name)) {

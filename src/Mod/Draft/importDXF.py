@@ -1734,7 +1734,7 @@ def drawInsert(insert, num=None, clone=False):
     Returns
     -------
     Part::TopoShape ('Compound') or
-    Part::Part2DObject or Part::PartFeature (`Draft Clone`)
+    Part::Part2DObject or Part::Feature (`Draft Clone`)
         The returned object is normally a copy of the `Part.Compound`
         extracted from `blockshapes` or created with `drawBlock()`.
 

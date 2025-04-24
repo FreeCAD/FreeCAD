@@ -61,7 +61,7 @@ PyObject* ViewProviderExtensionPy::setIgnoreOverlayIcon(PyObject *args)
     Py_Return;
 }
 
-PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject *args)
+PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject *args) const
 {
     const char* name = nullptr;
     if (!PyArg_ParseTuple(args, "s", &name))

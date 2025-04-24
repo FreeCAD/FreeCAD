@@ -823,7 +823,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         # fix property type if needed
 
                         obj.removeProperty("IfcProperties")
-                        obj.addProperty("App::PropertyLink","IfcProperties","Component","Stores IFC properties as a spreadsheet")
+                        obj.addProperty("App::PropertyLink","IfcProperties","Component","Stores IFC properties as a spreadsheet", locked=True)
 
                     ifc_spreadsheet = Arch.makeIfcSpreadsheet()
                     n = 2

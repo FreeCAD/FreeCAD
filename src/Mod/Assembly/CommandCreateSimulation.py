@@ -105,6 +105,7 @@ class Simulation:
                     "App::Property",
                     "Simulation start time.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "bTimeEnd"):
@@ -116,6 +117,7 @@ class Simulation:
                     "App::Property",
                     "Simulation end time.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "cTimeStepOutput"):
@@ -127,6 +129,7 @@ class Simulation:
                     "App::Property",
                     "Simulation time step for output.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "fGlobalErrorTolerance"):
@@ -138,6 +141,7 @@ class Simulation:
                     "App::Property",
                     "Integration global error tolerance.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "jFramesPerSecond"):
@@ -149,6 +153,7 @@ class Simulation:
                     "App::Property",
                     "Frames Per Second.",
                 ),
+                locked=True,
             )
 
         feaPy.aTimeStart = 0.0
@@ -200,6 +205,7 @@ class ViewProviderSimulation:
                 QT_TRANSLATE_NOOP(
                     "App::Property", "The number of decimals to use for calculated texts"
                 ),
+                locked=True,
             )
             vpDoc.Decimals = 9
 
@@ -296,6 +302,7 @@ class Motion:
                 "Joint",
                 "Motion",
                 QT_TRANSLATE_NOOP("App::Property", "The joint that is moved by the motion"),
+                locked=True,
             )
 
         if not hasattr(feaPy, "Formula"):
@@ -307,6 +314,7 @@ class Motion:
                     "App::Property",
                     "This is the formula of the motion. For example '1.0*time'.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "MotionType"):
@@ -315,6 +323,7 @@ class Motion:
                 "MotionType",
                 "Motion",
                 QT_TRANSLATE_NOOP("App::Property", "The type of the motion"),
+                locked=True,
             )
 
     def dumps(self):

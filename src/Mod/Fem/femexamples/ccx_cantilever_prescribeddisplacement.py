@@ -80,7 +80,7 @@ def setup(doc=None, solvertype="ccxtools"):
     geom_obj = doc.Box
 
     # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacementPrescribed")
     con_disp.References = [(geom_obj, "Face2")]
     con_disp.zFree = False
     con_disp.zDisplacement = -250.0

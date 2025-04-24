@@ -134,7 +134,7 @@ void SketchGeometryExtensionPy::setConstruction(Py::Boolean arg)
     getSketchGeometryExtensionPtr()->setGeometryMode(GeometryMode::Construction, arg);
 }
 
-PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject* args)
+PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject* args) const
 {
     char* flag;
     if (PyArg_ParseTuple(args, "s", &flag)) {

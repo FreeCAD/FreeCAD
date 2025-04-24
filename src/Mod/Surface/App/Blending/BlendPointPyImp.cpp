@@ -145,7 +145,7 @@ PyObject* BlendPointPy::setSize(PyObject* args)
     }
 }
 
-PyObject* BlendPointPy::getSize(PyObject* args)
+PyObject* BlendPointPy::getSize(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;

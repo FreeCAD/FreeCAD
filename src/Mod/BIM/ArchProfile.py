@@ -126,8 +126,8 @@ class _ProfileC(_Profile):
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","OutDiameter","Draft",QT_TRANSLATE_NOOP("App::Property","Outside Diameter")).OutDiameter = profile[4]
-        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Wall thickness")).Thickness = profile[5]
+        obj.addProperty("App::PropertyLength","OutDiameter","Draft",QT_TRANSLATE_NOOP("App::Property","Outside Diameter"), locked=True).OutDiameter = profile[4]
+        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Wall thickness"), locked=True).Thickness = profile[5]
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
@@ -151,10 +151,10 @@ class _ProfileH(_Profile):
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam")).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam")).Height = profile[5]
-        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the web")).WebThickness = profile[6]
-        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flanges")).FlangeThickness = profile[7]
+        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
+        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
+        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the web"), locked=True).WebThickness = profile[6]
+        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flanges"), locked=True).FlangeThickness = profile[7]
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
@@ -185,8 +185,8 @@ class _ProfileR(_Profile):
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam")).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam")).Height = profile[5]
+        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
+        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
@@ -209,9 +209,9 @@ class _ProfileRH(_Profile):
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam")).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam")).Height = profile[5]
-        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the sides")).Thickness = profile[6]
+        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
+        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
+        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the sides"), locked=True).Thickness = profile[6]
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
@@ -242,10 +242,10 @@ class _ProfileU(_Profile):
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam")).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam")).Height = profile[5]
-        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the webs")).WebThickness = profile[6]
-        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flange")).FlangeThickness = profile[7]
+        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
+        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
+        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the webs"), locked=True).WebThickness = profile[6]
+        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flange"), locked=True).FlangeThickness = profile[7]
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
@@ -272,9 +272,9 @@ class _ProfileL(_Profile):
 
     def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam")).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam")).Height = profile[5]
-        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the legs")).Thickness = profile[6]
+        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
+        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
+        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the legs"), locked=True).Thickness = profile[6]
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
@@ -299,10 +299,10 @@ class _ProfileT(_Profile):
 
     def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam")).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam")).Height = profile[5]
-        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the web")).WebThickness = profile[6]
-        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flanges")).FlangeThickness = profile[7]
+        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
+        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
+        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the web"), locked=True).WebThickness = profile[6]
+        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flanges"), locked=True).FlangeThickness = profile[7]
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):

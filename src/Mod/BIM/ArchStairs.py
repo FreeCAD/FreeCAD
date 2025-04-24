@@ -78,71 +78,71 @@ class _Stairs(ArchComponent.Component):
 
         # base properties
         if not "Length" in pl:
-            obj.addProperty("App::PropertyLength","Length","Stairs",QT_TRANSLATE_NOOP("App::Property","The length of these stairs, if no baseline is defined"))
+            obj.addProperty("App::PropertyLength","Length","Stairs",QT_TRANSLATE_NOOP("App::Property","The length of these stairs, if no baseline is defined"), locked=True)
         if not "Width" in pl:
-            obj.addProperty("App::PropertyLength","Width","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of these stairs"))
+            obj.addProperty("App::PropertyLength","Width","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of these stairs"), locked=True)
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","Stairs",QT_TRANSLATE_NOOP("App::Property","The total height of these stairs"))
+            obj.addProperty("App::PropertyLength","Height","Stairs",QT_TRANSLATE_NOOP("App::Property","The total height of these stairs"), locked=True)
         if not "Align" in pl:
-            obj.addProperty("App::PropertyEnumeration","Align","Stairs",QT_TRANSLATE_NOOP("App::Property","The alignment of these stairs on their baseline, if applicable"))
+            obj.addProperty("App::PropertyEnumeration","Align","Stairs",QT_TRANSLATE_NOOP("App::Property","The alignment of these stairs on their baseline, if applicable"), locked=True)
             obj.Align = ['Left','Right','Center']
 
         # TODO - To be combined into Width when PropertyLengthList is available
         if not "WidthOfLanding" in pl:
-            obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (Second edge and after - First edge follows Width property)"))
+            obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (Second edge and after - First edge follows Width property)"), locked=True)
 
         # steps and risers properties
 
         if not "NumberOfSteps" in pl:
-            obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",QT_TRANSLATE_NOOP("App::Property","The number of risers in these stairs"))
+            obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",QT_TRANSLATE_NOOP("App::Property","The number of risers in these stairs"), locked=True)
         if not "TreadDepth" in pl:
-            obj.addProperty("App::PropertyLength","TreadDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the treads of these stairs"))
+            obj.addProperty("App::PropertyLength","TreadDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the treads of these stairs"), locked=True)
             obj.setEditorMode("TreadDepth",1)
         if not "RiserHeight" in pl:
-            obj.addProperty("App::PropertyLength","RiserHeight","Steps",QT_TRANSLATE_NOOP("App::Property","The height of the risers of these stairs"))
+            obj.addProperty("App::PropertyLength","RiserHeight","Steps",QT_TRANSLATE_NOOP("App::Property","The height of the risers of these stairs"), locked=True)
             obj.setEditorMode("RiserHeight",1)
         if not "Nosing" in pl:
-            obj.addProperty("App::PropertyLength","Nosing","Steps",QT_TRANSLATE_NOOP("App::Property","The size of the nosing"))
+            obj.addProperty("App::PropertyLength","Nosing","Steps",QT_TRANSLATE_NOOP("App::Property","The size of the nosing"), locked=True)
         if not "TreadThickness" in pl:
-            obj.addProperty("App::PropertyLength","TreadThickness","Steps",QT_TRANSLATE_NOOP("App::Property","The thickness of the treads"))
+            obj.addProperty("App::PropertyLength","TreadThickness","Steps",QT_TRANSLATE_NOOP("App::Property","The thickness of the treads"), locked=True)
         if not "BlondelRatio" in pl:
-            obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"))
+            obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"), locked=True)
             obj.setEditorMode("BlondelRatio",1)
 
         if not "RiserThickness" in pl:
-            obj.addProperty("App::PropertyLength","RiserThickness","Steps",QT_TRANSLATE_NOOP("App::Property","The thickness of the risers"))
+            obj.addProperty("App::PropertyLength","RiserThickness","Steps",QT_TRANSLATE_NOOP("App::Property","The thickness of the risers"), locked=True)
 
         if not hasattr(obj,"LandingDepth"):
-            obj.addProperty("App::PropertyLength","LandingDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the landing of these stairs"))
+            obj.addProperty("App::PropertyLength","LandingDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the landing of these stairs"), locked=True)
 
         if not hasattr(obj,"TreadDepthEnforce"):
-            obj.addProperty("App::PropertyLength","TreadDepthEnforce","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the treads of these stairs - Enforced regardless of Length or edge's Length"))
+            obj.addProperty("App::PropertyLength","TreadDepthEnforce","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the treads of these stairs - Enforced regardless of Length or edge's Length"), locked=True)
         if not hasattr(obj,"RiserHeightEnforce"):
-            obj.addProperty("App::PropertyLength","RiserHeightEnforce","Steps",QT_TRANSLATE_NOOP("App::Property","The height of the risers of these stairs - Enforced regardless of Height or edge's Height"))
+            obj.addProperty("App::PropertyLength","RiserHeightEnforce","Steps",QT_TRANSLATE_NOOP("App::Property","The height of the risers of these stairs - Enforced regardless of Height or edge's Height"), locked=True)
 
         if not hasattr(obj,"Flight"):
-            obj.addProperty("App::PropertyEnumeration","Flight","Structure",QT_TRANSLATE_NOOP("App::Property","The direction of flight after landing"))
+            obj.addProperty("App::PropertyEnumeration","Flight","Structure",QT_TRANSLATE_NOOP("App::Property","The direction of flight after landing"), locked=True)
             obj.Flight = ["Straight","HalfTurnLeft","HalfTurnRight"]
 
         # Segment and Parts properties
         if not hasattr(obj,"LastSegment"):
-            obj.addProperty("App::PropertyLink","LastSegment","Segment and Parts","Last Segment (Flight or Landing) of Arch Stairs connecting to This Segment")
+            obj.addProperty("App::PropertyLink","LastSegment","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","Last Segment (Flight or Landing) of Arch Stairs connecting to This Segment"), locked=True)
         if not hasattr(obj,"AbsTop"):
-            obj.addProperty("App::PropertyVector","AbsTop","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'absolute' top level of a flight of stairs leads to"))
+            obj.addProperty("App::PropertyVector","AbsTop","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'absolute' top level of a flight of stairs leads to"), locked=True)
             obj.setEditorMode("AbsTop",1)
         if not hasattr(obj,"OutlineLeft"):
-            obj.addProperty("App::PropertyVectorList","OutlineLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs")) # Used for Outline of Railing
+            obj.addProperty("App::PropertyVectorList","OutlineLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs"), locked=True) # Used for Outline of Railing
             obj.setEditorMode("OutlineLeft",1)
         if not hasattr(obj,"OutlineRight"):
-            obj.addProperty("App::PropertyVectorList","OutlineRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs"))
+            obj.addProperty("App::PropertyVectorList","OutlineRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs"), locked=True)
             obj.setEditorMode("OutlineRight",1)
 
         # Can't accept 'None' in list, need NaN
         #if not hasattr(obj,"OutlineRailArcLeft"):
-            #obj.addProperty("App::PropertyVectorList","OutlineRailArcLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' 'arc points' of stairs railing"))
+            #obj.addProperty("App::PropertyVectorList","OutlineRailArcLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' 'arc points' of stairs railing"), locked=True)
             #obj.setEditorMode("OutlineRailArcLeft",1)
         #if not hasattr(obj,"OutlineRailArcRight"):
-            #obj.addProperty("App::PropertyVectorList","OutlineRailArcRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' 'arc points of stairs railing"))
+            #obj.addProperty("App::PropertyVectorList","OutlineRailArcRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' 'arc points of stairs railing"), locked=True)
             #obj.setEditorMode("OutlineRailArcRight",1)
         if not hasattr(self,"OutlineRailArcLeft"):
             self.OutlineRailArcLeft = []
@@ -150,23 +150,23 @@ class _Stairs(ArchComponent.Component):
             self.OutlineRailArcRight = []
 
         if not hasattr(obj,"RailingLeft"):
-            obj.addProperty("App::PropertyLinkHidden","RailingLeft","Segment and Parts","Name of Railing object (left) created")
+            obj.addProperty("App::PropertyLinkHidden","RailingLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","Name of Railing object (left) created"), locked=True)
         if not hasattr(obj,"RailingRight"):
-            obj.addProperty("App::PropertyLinkHidden","RailingRight","Segment and Parts","Name of Railing object (right) created")
+            obj.addProperty("App::PropertyLinkHidden","RailingRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","Name of Railing object (right) created"), locked=True)
 
         if not hasattr(obj,"OutlineLeftAll"):
-            obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs"))
+            obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs"), locked=True)
             obj.setEditorMode("OutlineLeftAll",1) # Used for Outline of Railing
         if not hasattr(obj,"OutlineRightAll"):
-            obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' of all segments of stairs"))
+            obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' of all segments of stairs"), locked=True)
             obj.setEditorMode("OutlineRightAll",1)
 
         # Can't accept 'None' in list, need NaN
         #if not hasattr(obj,"OutlineRailArcLeftAll"):
-            #obj.addProperty("App::PropertyVectorList","OutlineRailArcLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' 'arc points' of all segments of stairs railing"))
+            #obj.addProperty("App::PropertyVectorList","OutlineRailArcLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' 'arc points' of all segments of stairs railing"), locked=True)
             #obj.setEditorMode("OutlineRailArcLeftAll",1) # Used for Outline of Railing
         #if not hasattr(obj,"OutlineRailArcRightAll"):
-            #obj.addProperty("App::PropertyVectorList","OutlineRailArcRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' 'arc points' of all segments of stairs railing"))
+            #obj.addProperty("App::PropertyVectorList","OutlineRailArcRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' 'arc points' of all segments of stairs railing"), locked=True)
             #obj.setEditorMode("OutlineRailArcRightAll",1)
         if not hasattr(self,"OutlineRailArcLeftAll"):
             self.OutlineRailArcLeftAll = []
@@ -174,41 +174,41 @@ class _Stairs(ArchComponent.Component):
             self.OutlineRailArcRightAll = []
 
         if not hasattr(obj,"RailingHeightLeft"):
-            obj.addProperty("App::PropertyLength","RailingHeightLeft","Segment and Parts","Height of Railing on Left hand side from Stairs or Landing ")
+            obj.addProperty("App::PropertyLength","RailingHeightLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","Height of Railing on Left hand side from Stairs or Landing"), locked=True)
         if not hasattr(obj,"RailingHeightRight"):
-            obj.addProperty("App::PropertyLength","RailingHeightRight","Segment and Parts","Height of Railing on Right hand side from Stairs or Landing ")
+            obj.addProperty("App::PropertyLength","RailingHeightRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","Height of Railing on Right hand side from Stairs or Landing "), locked=True)
         if not hasattr(obj,"RailingOffsetLeft"):
-            obj.addProperty("App::PropertyLength","RailingOffsetLeft","Segment and Parts","Offset of Railing on Left hand side from stairs or landing Edge ")
+            obj.addProperty("App::PropertyLength","RailingOffsetLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","Offset of Railing on Left hand side from stairs or landing Edge "), locked=True)
         if not hasattr(obj,"RailingOffsetRight"):
-            obj.addProperty("App::PropertyLength","RailingOffsetRight","Segment and Parts","Offset of Railing on Right hand side from stairs or landing Edge ")
+            obj.addProperty("App::PropertyLength","RailingOffsetRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","Offset of Railing on Right hand side from stairs or landing Edge "), locked=True)
 
         # structural properties
         if not "Landings" in pl:
-            obj.addProperty("App::PropertyEnumeration","Landings","Structure",QT_TRANSLATE_NOOP("App::Property","The type of landings of these stairs"))
+            obj.addProperty("App::PropertyEnumeration","Landings","Structure",QT_TRANSLATE_NOOP("App::Property","The type of landings of these stairs"), locked=True)
             obj.Landings = ["None","At center","At each corner"]
         if not "Winders" in pl:
-            obj.addProperty("App::PropertyEnumeration","Winders","Structure",QT_TRANSLATE_NOOP("App::Property","The type of winders in these stairs"))
+            obj.addProperty("App::PropertyEnumeration","Winders","Structure",QT_TRANSLATE_NOOP("App::Property","The type of winders in these stairs"), locked=True)
             obj.Winders = ["None","All","Corners strict","Corners relaxed"]
         if not "Structure" in pl:
-            obj.addProperty("App::PropertyEnumeration","Structure","Structure",QT_TRANSLATE_NOOP("App::Property","The type of structure of these stairs"))
+            obj.addProperty("App::PropertyEnumeration","Structure","Structure",QT_TRANSLATE_NOOP("App::Property","The type of structure of these stairs"), locked=True)
             obj.Structure = ["None","Massive","One stringer","Two stringers"]
         if not "StructureThickness" in pl:
-            obj.addProperty("App::PropertyLength","StructureThickness","Structure",QT_TRANSLATE_NOOP("App::Property","The thickness of the massive structure or of the stringers"))
+            obj.addProperty("App::PropertyLength","StructureThickness","Structure",QT_TRANSLATE_NOOP("App::Property","The thickness of the massive structure or of the stringers"), locked=True)
         if not "StringerWidth" in pl:
-            obj.addProperty("App::PropertyLength","StringerWidth","Structure",QT_TRANSLATE_NOOP("App::Property","The width of the stringers"))
+            obj.addProperty("App::PropertyLength","StringerWidth","Structure",QT_TRANSLATE_NOOP("App::Property","The width of the stringers"), locked=True)
         if not "StructureOffset" in pl:
-            obj.addProperty("App::PropertyLength","StructureOffset","Structure",QT_TRANSLATE_NOOP("App::Property","The offset between the border of the stairs and the structure"))
+            obj.addProperty("App::PropertyLength","StructureOffset","Structure",QT_TRANSLATE_NOOP("App::Property","The offset between the border of the stairs and the structure"), locked=True)
         if not "StringerOverlap" in pl:
-            obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"))
+            obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"), locked=True)
         if not "DownSlabThickness" in pl:
-            obj.addProperty("App::PropertyLength","DownSlabThickness","Structure",QT_TRANSLATE_NOOP("App::Property","The thickness of the lower floor slab"))
+            obj.addProperty("App::PropertyLength","DownSlabThickness","Structure",QT_TRANSLATE_NOOP("App::Property","The thickness of the lower floor slab"), locked=True)
         if not "UpSlabThickness" in pl:
-            obj.addProperty("App::PropertyLength","UpSlabThickness","Structure",QT_TRANSLATE_NOOP("App::Property","The thickness of the upper floor slab"))
+            obj.addProperty("App::PropertyLength","UpSlabThickness","Structure",QT_TRANSLATE_NOOP("App::Property","The thickness of the upper floor slab"), locked=True)
         if not "ConnectionDownStartStairs" in pl:
-            obj.addProperty("App::PropertyEnumeration","ConnectionDownStartStairs","Structure",QT_TRANSLATE_NOOP("App::Property","The type of connection between the lower floor slab and the start of the stairs"))
+            obj.addProperty("App::PropertyEnumeration","ConnectionDownStartStairs","Structure",QT_TRANSLATE_NOOP("App::Property","The type of connection between the lower floor slab and the start of the stairs"), locked=True)
             obj.ConnectionDownStartStairs = ["HorizontalCut","VerticalCut","HorizontalVerticalCut"]
         if not "ConnectionEndStairsUp" in pl:
-            obj.addProperty("App::PropertyEnumeration","ConnectionEndStairsUp","Structure",QT_TRANSLATE_NOOP("App::Property","The type of connection between the end of the stairs and the upper floor slab"))
+            obj.addProperty("App::PropertyEnumeration","ConnectionEndStairsUp","Structure",QT_TRANSLATE_NOOP("App::Property","The type of connection between the end of the stairs and the upper floor slab"), locked=True)
             obj.ConnectionEndStairsUp = ["toFlightThickness","toSlabThickness"]
 
         # additional stairs properties
@@ -1118,7 +1118,7 @@ class _Stairs(ArchComponent.Component):
         # TODO
         # Upgrade obj if it is from an older version of FreeCAD
         if not hasattr(obj, "StringerOverlap"):
-            obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"))
+            obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"), locked=True)
 
         # general data
         if not numberofsteps:

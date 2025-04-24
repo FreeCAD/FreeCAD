@@ -357,7 +357,7 @@ PyObject* MatrixPy::scale(PyObject* args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::hasScale(PyObject* args)
+PyObject* MatrixPy::hasScale(PyObject* args) const
 {
     double tol = 0;
     if (!PyArg_ParseTuple(args, "|d", &tol)) {
@@ -370,7 +370,7 @@ PyObject* MatrixPy::hasScale(PyObject* args)
         mod.callMemberFunction("ScaleType", Py::TupleN(Py::Long(static_cast<int>(type)))));
 }
 
-PyObject* MatrixPy::decompose(PyObject* args)
+PyObject* MatrixPy::decompose(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -394,7 +394,7 @@ PyObject* MatrixPy::nullify()
     PY_CATCH;
 }
 
-PyObject* MatrixPy::isNull()
+PyObject* MatrixPy::isNull() const
 {
     PY_TRY
     {
@@ -414,7 +414,7 @@ PyObject* MatrixPy::unity()
     PY_CATCH;
 }
 
-PyObject* MatrixPy::isUnity(PyObject* args)
+PyObject* MatrixPy::isUnity(PyObject* args) const
 {
     double tol = 0.0;
     if (!PyArg_ParseTuple(args, "|d", &tol)) {
@@ -455,7 +455,7 @@ PyObject* MatrixPy::transform(PyObject* args)
     Py_Return;
 }
 
-PyObject* MatrixPy::col(PyObject* args)
+PyObject* MatrixPy::col(PyObject* args) const
 {
     int index {};
     if (!PyArg_ParseTuple(args, "i", &index)) {
@@ -491,7 +491,7 @@ PyObject* MatrixPy::setCol(PyObject* args)
     Py_Return;
 }
 
-PyObject* MatrixPy::row(PyObject* args)
+PyObject* MatrixPy::row(PyObject* args) const
 {
     int index {};
     if (!PyArg_ParseTuple(args, "i", &index)) {
@@ -527,7 +527,7 @@ PyObject* MatrixPy::setRow(PyObject* args)
     Py_Return;
 }
 
-PyObject* MatrixPy::diagonal()
+PyObject* MatrixPy::diagonal() const
 {
     Matrix4D* mat = getMatrixPtr();
     Base::Vector3d v = mat->diagonal();
@@ -637,7 +637,7 @@ PyObject* MatrixPy::rotateZ(PyObject* args)
     PY_CATCH;
 }
 
-PyObject* MatrixPy::multiply(PyObject* args)
+PyObject* MatrixPy::multiply(PyObject* args) const
 {
     PyObject* o {};
     if (PyArg_ParseTuple(args, "O!", &(MatrixPy::Type), &o)) {
@@ -655,7 +655,7 @@ PyObject* MatrixPy::multiply(PyObject* args)
     return nullptr;
 }
 
-PyObject* MatrixPy::multVec(PyObject* args)
+PyObject* MatrixPy::multVec(PyObject* args) const
 {
     PyObject* obj {};
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj)) {
@@ -682,7 +682,7 @@ PyObject* MatrixPy::invert()
     PY_CATCH;
 }
 
-PyObject* MatrixPy::inverse()
+PyObject* MatrixPy::inverse() const
 {
     PY_TRY
     {
@@ -698,12 +698,12 @@ PyObject* MatrixPy::inverse()
     PY_CATCH;
 }
 
-PyObject* MatrixPy::determinant()
+PyObject* MatrixPy::determinant() const
 {
     return PyFloat_FromDouble(getMatrixPtr()->determinant());
 }
 
-PyObject* MatrixPy::submatrix(PyObject* args)
+PyObject* MatrixPy::submatrix(PyObject* args) const
 {
     int dim {};
     if (!PyArg_ParseTuple(args, "i", &dim)) {
@@ -746,7 +746,7 @@ PyObject* MatrixPy::submatrix(PyObject* args)
     return new MatrixPy(sub);
 }
 
-PyObject* MatrixPy::isOrthogonal(PyObject* args)
+PyObject* MatrixPy::isOrthogonal(PyObject* args) const
 {
     double eps = 1.0e-06;
     if (!PyArg_ParseTuple(args, "|d", &eps)) {
@@ -780,7 +780,7 @@ PyObject* MatrixPy::isOrthogonal(PyObject* args)
     return Py::new_reference_to(Py::Float(ok ? mult : 0.0));
 }
 
-PyObject* MatrixPy::transposed()
+PyObject* MatrixPy::transposed() const
 {
     PY_TRY
     {
@@ -801,7 +801,7 @@ PyObject* MatrixPy::transpose()
     PY_CATCH;
 }
 
-PyObject* MatrixPy::analyze()
+PyObject* MatrixPy::analyze() const
 {
     PY_TRY
     {

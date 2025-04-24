@@ -45,7 +45,7 @@ class ArchSketch(ArchSketchObject):
             if "Hosts" not in prop:
                 fp.addProperty("App::PropertyLinkList","Hosts","Window",
                                QT_TRANSLATE_NOOP("App::Property",
-                               "The objects that host this window"))
+                               "The objects that host this window"), locked=True)
                                # Arch Window's code
 
 #from ArchSketchObjectExt import ArchSketch  # Doesn't work

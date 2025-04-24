@@ -10,10 +10,10 @@ from FreeCAD import Base
 class Epitrochoid:
     def __init__(self, obj):
         ''' Add the properties: Radius1, Radius2, Distance, Segments '''
-        obj.addProperty("App::PropertyLength","Radius1","Epitrochoid","Interior radius").Radius1=60.0
-        obj.addProperty("App::PropertyLength","Radius2","Epitrochoid","Exterior radius").Radius2=20.0
-        obj.addProperty("App::PropertyLength","Distance","Epitrochoid","Distance").Distance=10.0
-        obj.addProperty("App::PropertyInteger","Segments","Epitrochoid","Number of the line segments").Segments=72
+        obj.addProperty("App::PropertyLength","Radius1","Epitrochoid","Interior radius", locked=True).Radius1=60.0
+        obj.addProperty("App::PropertyLength","Radius2","Epitrochoid","Exterior radius", locked=True).Radius2=20.0
+        obj.addProperty("App::PropertyLength","Distance","Epitrochoid","Distance", locked=True).Distance=10.0
+        obj.addProperty("App::PropertyInteger","Segments","Epitrochoid","Number of the line segments", locked=True).Segments=72
         obj.Proxy = self
 
     def onChanged(self, fp, prop):

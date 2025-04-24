@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
@@ -417,6 +415,7 @@ class BIM_IfcProperties:
                             QT_TRANSLATE_NOOP(
                                 "App::Property", "IFC properties of this object"
                             ),
+                            locked=True,
                         )
                     if hasattr(obj, "IfcProperties"):
                         obj.IfcProperties = values[1]

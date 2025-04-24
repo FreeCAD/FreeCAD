@@ -49,7 +49,7 @@ int GeometryExtensionPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* GeometryExtensionPy::copy(PyObject *args)
+PyObject* GeometryExtensionPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -59,7 +59,7 @@ PyObject* GeometryExtensionPy::copy(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<GeometryExtensionPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of the geometry extension");
         return nullptr;

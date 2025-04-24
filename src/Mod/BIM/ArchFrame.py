@@ -65,23 +65,23 @@ class _Frame(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Profile" in pl:
-            obj.addProperty("App::PropertyLink","Profile","Frame",QT_TRANSLATE_NOOP("App::Property","The profile used to build this frame"))
+            obj.addProperty("App::PropertyLink","Profile","Frame",QT_TRANSLATE_NOOP("App::Property","The profile used to build this frame"), locked=True)
         if not "Align" in pl:
-            obj.addProperty("App::PropertyBool","Align","Frame",QT_TRANSLATE_NOOP("App::Property","Specifies if the profile must be aligned with the extrusion wires"))
+            obj.addProperty("App::PropertyBool","Align","Frame",QT_TRANSLATE_NOOP("App::Property","Specifies if the profile must be aligned with the extrusion wires"), locked=True)
             obj.Align = True
         if not "Offset" in pl:
-            obj.addProperty("App::PropertyVectorDistance","Offset","Frame",QT_TRANSLATE_NOOP("App::Property","An offset vector between the base sketch and the frame"))
+            obj.addProperty("App::PropertyVectorDistance","Offset","Frame",QT_TRANSLATE_NOOP("App::Property","An offset vector between the base sketch and the frame"), locked=True)
         if not "BasePoint" in pl:
-            obj.addProperty("App::PropertyInteger","BasePoint","Frame",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."))
+            obj.addProperty("App::PropertyInteger","BasePoint","Frame",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."), locked=True)
         if not "ProfilePlacement" in pl:
-            obj.addProperty("App::PropertyPlacement","ProfilePlacement","Frame",QT_TRANSLATE_NOOP("App::Property","An optional additional placement to add to the profile before extruding it"))
+            obj.addProperty("App::PropertyPlacement","ProfilePlacement","Frame",QT_TRANSLATE_NOOP("App::Property","An optional additional placement to add to the profile before extruding it"), locked=True)
         if not "Rotation" in pl:
-            obj.addProperty("App::PropertyAngle","Rotation","Frame",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"))
+            obj.addProperty("App::PropertyAngle","Rotation","Frame",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"), locked=True)
         if not "Edges" in pl:
-            obj.addProperty("App::PropertyEnumeration","Edges","Frame",QT_TRANSLATE_NOOP("App::Property","The type of edges to consider"))
+            obj.addProperty("App::PropertyEnumeration","Edges","Frame",QT_TRANSLATE_NOOP("App::Property","The type of edges to consider"), locked=True)
             obj.Edges = ["All edges","Vertical edges","Horizontal edges","Bottom horizontal edges","Top horizontal edges"]
         if not "Fuse" in pl:
-            obj.addProperty("App::PropertyBool","Fuse","Frame",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"))
+            obj.addProperty("App::PropertyBool","Fuse","Frame",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"), locked=True)
         self.Type = "Frame"
 
     def onDocumentRestored(self,obj):

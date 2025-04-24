@@ -62,24 +62,24 @@ class _Fence(ArchComponent.Component):
 
         if not "Section" in pl:
             obj.addProperty("App::PropertyLink", "Section", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "A single section of the fence"))
+                "App::Property", "A single section of the fence"), locked=True)
 
         if not "Post" in pl:
             obj.addProperty("App::PropertyLink", "Post", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "A single fence post"))
+                "App::Property", "A single fence post"), locked=True)
 
         if not "Path" in pl:
             obj.addProperty("App::PropertyLink", "Path", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The Path the fence should follow"))
+                "App::Property", "The Path the fence should follow"), locked=True)
 
         if not "NumberOfSections" in pl:
             obj.addProperty("App::PropertyInteger", "NumberOfSections", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The number of sections the fence is built of"))
+                "App::Property", "The number of sections the fence is built of"), locked=True)
             obj.setEditorMode("NumberOfSections", 1)
 
         if not "NumberOfPosts" in pl:
             obj.addProperty("App::PropertyInteger", "NumberOfPosts", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The number of posts used to build the fence"))
+                "App::Property", "The number of posts used to build the fence"), locked=True)
             obj.setEditorMode("NumberOfPosts", 1)
 
         self.Type = "Fence"
@@ -263,7 +263,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
 
         if not "UseOriginalColors" in pl:
             vobj.addProperty("App::PropertyBool", "UseOriginalColors", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "When true, the fence will be colored like the original post and section."))
+                "App::Property", "When true, the fence will be colored like the original post and section."), locked=True)
 
     def attach(self, vobj):
         self.setProperties(vobj)

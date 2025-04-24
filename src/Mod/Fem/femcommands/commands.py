@@ -29,6 +29,9 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM command definitions
 
+from PySide import QtCore
+from PySide import QtGui
+
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Qt
@@ -630,7 +633,7 @@ class _MaterialMechanicalNonlinear(CommandManager):
         # CalculiX solver or new frame work CalculiX solver
         if solver_object and (
             is_of_type(solver_object, "Fem::SolverCcxTools")
-            or is_of_type(solver_object, "Fem::SolverCalculix")
+            or is_of_type(solver_object, "Fem::SolverCalculiX")
         ):
             FreeCAD.Console.PrintMessage(
                 f"Set MaterialNonlinearity to nonlinear for {solver_object.Label}\n"
@@ -938,7 +941,7 @@ class _SolverCalculixContextManager:
 
     def __enter__(self):
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
+        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculiX")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.addModule("FemGui")
         FreeCADGui.doCommand(
@@ -1051,24 +1054,28 @@ class _SolverCcxTools(CommandManager):
                 FreeCADGui.doCommand(f"{cm.cli_name}.MaterialNonlinearity = 'nonlinear'")
 
 
-class _SolverCalculix(CommandManager):
-    "The FEM_SolverCalculix command definition"
+class _SolverCalculiX(CommandManager):
+    "The FEM_SolverCalculiX command definition"
 
     def __init__(self):
         super().__init__()
         self.pixmap = "FEM_SolverStandard"
-        self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculiX", "Solver CalculiX (new framework)"
-        )
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Solver CalculiX")
         self.accel = "S, C"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_SolverCalculiX",
-            "Creates a FEM solver CalculiX new framework (less result error handling)",
+            "Creates a FEM solver CalculiX",
         )
         self.is_active = "with_analysis"
 
     def Activated(self):
-        with _SolverCalculixContextManager("makeSolverCalculix", "solver") as cm:
+        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        if ccx_prefs.GetBool("ResultAsPipeline", False):
+            make_solver = "makeSolverCalculiX"
+        else:
+            make_solver = "makeSolverCalculiXCcxTools"
+
+        with _SolverCalculixContextManager(make_solver, "solver") as cm:
             has_nonlinear_material_obj = False
             for m in self.active_analysis.Group:
                 if is_of_type(m, "Fem::MaterialMechanicalNonlinear"):
@@ -1158,13 +1165,44 @@ class _SolverRun(CommandManager):
             "FEM_SolverRun", "Runs the calculations for the selected solver"
         )
         self.is_active = "with_solver"
+        self.tool = None
 
     def Activated(self):
-        from femsolver.run import run_fem_solver
+        if self.selobj.Proxy.Type == "Fem::SolverCalculiX":
+            QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+            try:
+                from femsolver.calculix.calculixtools import CalculiXTools
 
-        run_fem_solver(self.selobj)
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+                self.tool = CalculiXTools(self.selobj)
+                self._conn(self.tool)
+                self.tool.prepare()
+                self.tool.compute()
+            except Exception as e:
+                QtGui.QApplication.restoreOverrideCursor()
+                raise
+
+        else:
+            from femsolver.run import run_fem_solver
+
+            run_fem_solver(self.selobj)
+            FreeCADGui.Selection.clearSelection()
+            FreeCAD.ActiveDocument.recompute()
+
+    def _conn(self, tool):
+        QtCore.QObject.connect(
+            tool.process,
+            QtCore.SIGNAL("finished(int, QProcess::ExitStatus)"),
+            self._process_finished,
+        )
+
+    def _process_finished(self, code, status):
+        if status == QtCore.QProcess.ExitStatus.NormalExit and code == 0:
+            self.tool.update_properties()
+            FreeCAD.ActiveDocument.recompute()
+            QtGui.QApplication.restoreOverrideCursor()
+        else:
+            QtGui.QApplication.restoreOverrideCursor()
+            FreeCAD.Console.PrintError("Process finished with errors. Result not updated\n")
 
 
 class _SolverZ88(CommandManager):
@@ -1227,7 +1265,7 @@ FreeCADGui.addCommand("FEM_MeshRegion", _MeshRegion())
 FreeCADGui.addCommand("FEM_ResultShow", _ResultShow())
 FreeCADGui.addCommand("FEM_ResultsPurge", _ResultsPurge())
 FreeCADGui.addCommand("FEM_SolverCalculiXCcxTools", _SolverCcxTools())
-FreeCADGui.addCommand("FEM_SolverCalculiX", _SolverCalculix())
+FreeCADGui.addCommand("FEM_SolverCalculiX", _SolverCalculiX())
 FreeCADGui.addCommand("FEM_SolverControl", _SolverControl())
 FreeCADGui.addCommand("FEM_SolverElmer", _SolverElmer())
 FreeCADGui.addCommand("FEM_SolverMystran", _SolverMystran())

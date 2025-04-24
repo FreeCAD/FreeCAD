@@ -74,6 +74,19 @@ public:
     App::PropertyAngle          TaperedAngle;
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
+    App::PropertyInteger        BaseProfileType;
+
+    enum BaseProfileTypeOptions {
+        OnPoints    = 1 << 0,
+        OnCircles   = 1 << 1,
+        OnArcs      = 1 << 2,
+
+        // Common combos
+        OnPointsCirclesArcs = OnPoints | OnCircles | OnArcs,
+        OnCirclesArcs = OnCircles | OnArcs
+    };
+    static int baseProfileOption_idxToBitmask(int index);
+    static int baseProfileOption_bitmaskToIdx(int bitmask);
 
     /** @name methods override feature */
     //@{
@@ -113,14 +126,18 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
+    void setupObject() override;
+
     static const App::PropertyAngle::Constraints floatAngle;
 
 private:
     static const char* DepthTypeEnums[];
     static const char* ThreadDepthTypeEnums[];
     static const char* ThreadTypeEnums[];
+    static const char* ClearanceNoneEnums[];
     static const char* ClearanceMetricEnums[];
     static const char* ClearanceUTSEnums[];
+    static const char* ClearanceOtherEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
 
