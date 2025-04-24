@@ -1362,6 +1362,7 @@ SET(FreeCADGui_SRCS
     ${FreeCADGui_connexion_HDRS}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
+    ${FreeCADGui_Pyi_SRCS}
     ${qsint_MOC_SRCS}
     ${Gui_QRC_SRCS}
     ${Gui_UIC_HDRS}
