@@ -317,7 +317,7 @@ void CmdTechDrawView::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // switch to the page if it's not current active window
-    auto* vpp = dynamic_cast<ViewProviderPage*>
+    auto* vpp = freecad_cast<ViewProviderPage*>
         (Gui::Application::Instance->getViewProvider(page));
     if (vpp) {
         vpp->show();
@@ -1296,9 +1296,9 @@ void CmdTechDrawBalloon::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+    ViewProviderPage* pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
     ViewProviderDrawingView* viewVP =
-        dynamic_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
+        freecad_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
 
     if (pageVP && viewVP) {
         QGVPage* viewPage = pageVP->getQGVPage();
@@ -1820,7 +1820,7 @@ void CmdTechDrawExportPageSVG::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
 
     if (vpPage) {
         vpPage->show();  // make sure a mdi will be available

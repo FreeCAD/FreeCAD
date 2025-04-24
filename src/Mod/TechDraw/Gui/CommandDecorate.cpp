@@ -328,7 +328,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
 
     if (!vpPage) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
