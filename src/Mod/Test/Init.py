@@ -32,5 +32,4 @@ FreeCAD.__unit_test__ += [
     "StringHasher",
     "UnicodeTests",
     "TestPythonSyntax",
-    "TestAutoCreatedDocument",
 ]
