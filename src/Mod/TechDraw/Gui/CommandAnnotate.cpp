@@ -1517,7 +1517,7 @@ void CmdTechDrawShowAll::activated(int iMsg)
     }
 
     Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
-    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+    auto partVP = freecad_cast<ViewProviderViewPart*>(vp);
     if (partVP) {
         bool state = partVP->ShowAllEdges.getValue();
         state = !state;

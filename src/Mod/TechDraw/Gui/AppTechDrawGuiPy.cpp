@@ -137,7 +137,7 @@ private:
                     Gui::Document* activeGui =
                         Gui::Application::Instance->getDocument(page->getDocument());
                     Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
-                    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+                    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
                     if (!vpPage) {
                         throw Py::TypeError("TechDraw can not find Page");
                     }

@@ -272,7 +272,7 @@ ViewProviderPage* ViewProviderDrawingView::getViewProviderPage() const
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
     if (guiDoc) {
         Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
-        return dynamic_cast<ViewProviderPage*>(vp);
+        return freecad_cast<ViewProviderPage*>(vp);
     }
     return nullptr;
 }
