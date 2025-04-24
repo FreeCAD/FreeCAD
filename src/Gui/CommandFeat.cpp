@@ -98,7 +98,7 @@ void StdCmdRandomColor::activated(int iMsg)
         // NOLINTEND
         auto objColor = Base::Color(fRed, fGrn, fBlu);
 
-        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
+        auto vpLink = freecad_cast<ViewProviderLink*>(view);
         if (vpLink) {
             if (!vpLink->OverrideMaterial.getValue()) {
                 vpLink->OverrideMaterial.setValue(true);
