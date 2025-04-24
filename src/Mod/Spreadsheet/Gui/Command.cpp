@@ -251,7 +251,7 @@ void CmdSpreadsheetExport::activated(int iMsg)
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sheet);
-            auto* vps = dynamic_cast<ViewProviderSheet*>(vp);
+            auto* vps = freecad_cast<ViewProviderSheet*>(vp);
             if (vps) {
                 vps->exportAsFile();
             }
