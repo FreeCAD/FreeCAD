@@ -333,7 +333,7 @@ void SketchObject::buildShape()
     std::vector<Part::TopoShape> vertices;
     int geoId = 0;
 
-    auto addVertex = [this, &vertices](auto vertex, auto name) {
+    auto addVertex = [&vertices](auto vertex, auto name) {
         if (!vertex.hasElementMap()) {
             vertex.resetElementMap(std::make_shared<Data::ElementMap>());
         }
@@ -828,7 +828,7 @@ void SketchObject::generateId(const Part::Geometry* geo)
         return;
     }
 
-    auto isInIt2 = [this, &it2](auto& id) {
+    auto isInIt2 = [&it2](auto& id) {
         if (it2->find(id) != it2->end()) {
             return true;
         }
