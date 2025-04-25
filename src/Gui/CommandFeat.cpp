@@ -186,14 +186,8 @@ void StdCmdToggleFreeze::activated(int iMsg)
             obj->unfreeze();
             for (auto child : obj->getInListRecursive())
                 child->unfreeze();
-            if (obj->isDerivedFrom(Base::Type::fromName("PartDesign::Body"))) {
-                for (auto child : obj->getOutListRecursive())
-                    child->unfreeze();
-            }
-            else {
-                for (auto child : obj->getOutList())
-                    child->unfreeze();
-            }
+            for (auto child : obj->getOutListRecursive())
+                child->unfreeze();
         } else {
             obj->freeze();
             for (auto parent : obj->getOutListRecursive())
