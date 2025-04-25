@@ -491,7 +491,7 @@ PyObject* SketchObjectPy::renameConstraint(PyObject* args)
     Py_Return;
 }
 
-PyObject* SketchObjectPy::getIndexByName(PyObject* args)
+PyObject* SketchObjectPy::getIndexByName(PyObject* args) const
 {
     char* utf8Name;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &utf8Name)) {
@@ -788,7 +788,7 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
     Py_Return;
 }
 
-PyObject* SketchObjectPy::getDatum(PyObject* args)
+PyObject* SketchObjectPy::getDatum(PyObject* args) const
 {
     const std::vector<Constraint*>& vals = this->getSketchObjectPtr()->Constraints.getValues();
     Constraint* constr = nullptr;
@@ -907,7 +907,7 @@ PyObject* SketchObjectPy::moveDatumsToEnd(PyObject* args)
 }
 
 
-PyObject* SketchObjectPy::getDriving(PyObject* args)
+PyObject* SketchObjectPy::getDriving(PyObject* args) const
 {
     int constrid;
     bool driving;
@@ -1048,7 +1048,7 @@ PyObject* SketchObjectPy::setActive(PyObject* args)
     Py_Return;
 }
 
-PyObject* SketchObjectPy::getActive(PyObject* args)
+PyObject* SketchObjectPy::getActive(PyObject* args) const
 {
     int constrid;
     bool isactive;
@@ -1083,7 +1083,7 @@ PyObject* SketchObjectPy::toggleActive(PyObject* args)
     Py_Return;
 }
 
-PyObject* SketchObjectPy::getLabelPosition(PyObject* args)
+PyObject* SketchObjectPy::getLabelPosition(PyObject* args) const
 {
     int constrid {};
     float pos {};
@@ -1117,7 +1117,7 @@ PyObject* SketchObjectPy::setLabelPosition(PyObject* args)
     Py_Return;
 }
 
-PyObject* SketchObjectPy::getLabelDistance(PyObject* args)
+PyObject* SketchObjectPy::getLabelDistance(PyObject* args) const
 {
     int constrid {};
     float dist {};
@@ -1235,7 +1235,7 @@ PyObject* SketchObjectPy::moveGeometry(PyObject* args)
     Py_Return;
 }
 
-PyObject* SketchObjectPy::getGeoVertexIndex(PyObject* args)
+PyObject* SketchObjectPy::getGeoVertexIndex(PyObject* args) const
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index)) {
@@ -1252,7 +1252,7 @@ PyObject* SketchObjectPy::getGeoVertexIndex(PyObject* args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* SketchObjectPy::getPoint(PyObject* args)
+PyObject* SketchObjectPy::getPoint(PyObject* args) const
 {
     int GeoId, PointType;
     if (!PyArg_ParseTuple(args, "ii", &GeoId, &PointType)) {
@@ -1274,7 +1274,7 @@ PyObject* SketchObjectPy::getPoint(PyObject* args)
         new Base::Vector3d(obj->getPoint(GeoId, static_cast<Sketcher::PointPos>(PointType))));
 }
 
-PyObject* SketchObjectPy::getAxis(PyObject* args)
+PyObject* SketchObjectPy::getAxis(PyObject* args) const
 {
     int AxId;
     if (!PyArg_ParseTuple(args, "i", &AxId)) {
@@ -2035,7 +2035,7 @@ PyObject* SketchObjectPy::makeMissingEquality(PyObject* args)
     Py_Return;
 }
 
-PyObject* SketchObjectPy::evaluateConstraints()
+PyObject* SketchObjectPy::evaluateConstraints() const
 {
     bool ok = this->getSketchObjectPtr()->evaluateConstraints();
     return Py::new_reference_to(Py::Boolean(ok));

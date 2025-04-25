@@ -50,6 +50,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         )
         self.form.KeepToolDownRatio.setProperty("unit", obj.KeepToolDownRatio.getUserPreferred()[2])
         self.form.StockToLeave.setProperty("unit", obj.StockToLeave.getUserPreferred()[2])
+        self.form.ZStockToLeave.setProperty("unit", obj.ZStockToLeave.getUserPreferred()[2])
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -65,10 +66,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
+        signals.append(self.form.ZStockToLeave.valueChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ForceInsideOut.stateChanged)
         signals.append(self.form.FinishingProfile.stateChanged)
         signals.append(self.form.useOutline.stateChanged)
+        signals.append(self.form.orderCutsByRegion.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
 
@@ -97,9 +100,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if hasattr(obj, "StockToLeave"):
             self.form.StockToLeave.setProperty("rawValue", obj.StockToLeave.Value)
 
+        if hasattr(obj, "ZStockToLeave"):
+            self.form.ZStockToLeave.setProperty("rawValue", obj.ZStockToLeave.Value)
+
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
         self.form.FinishingProfile.setChecked(obj.FinishingProfile)
         self.form.useOutline.setChecked(obj.UseOutline)
+        self.form.orderCutsByRegion.setChecked(obj.OrderCutsByRegion)
         self.setupToolController(obj, self.form.ToolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
@@ -130,9 +137,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if hasattr(obj, "StockToLeave"):
             PathGuiUtil.updateInputField(obj, "StockToLeave", self.form.StockToLeave)
 
+        if hasattr(obj, "ZStockToLeave"):
+            PathGuiUtil.updateInputField(obj, "ZStockToLeave", self.form.ZStockToLeave)
+
         obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
         obj.FinishingProfile = self.form.FinishingProfile.isChecked()
         obj.UseOutline = self.form.useOutline.isChecked()
+        obj.OrderCutsByRegion = self.form.orderCutsByRegion.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()
         if obj.Stopped:
             self.form.StopButton.setChecked(False)  # reset the button

@@ -1224,12 +1224,14 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     // otherwise a checkbox change will trigger a rename on the first execution, bloating the
     // constraint icons with the default constraint name "constraint1, constraint2"
     if (newName != currConstraintName && !basename.empty()) {
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(newName.c_str());
+        if (!SketcherGui::checkConstraintName(sketch, newName)) {
+            newName = currConstraintName;
+        }
 
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
-                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, escapedstr.c_str());
+                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, newName.c_str());
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {

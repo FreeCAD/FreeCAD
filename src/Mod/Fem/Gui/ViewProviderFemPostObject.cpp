@@ -160,11 +160,11 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
                       "Coloring",
                       App::Prop_None,
                       "Select the field used for calculating the color");
-    ADD_PROPERTY_TYPE(VectorMode,
+    ADD_PROPERTY_TYPE(Component,
                       ((long)0),
                       "Coloring",
                       App::Prop_None,
-                      "Select what to show for a vector field");
+                      "Select component to display");
     ADD_PROPERTY_TYPE(Transparency,
                       (0),
                       "Object Style",
@@ -453,8 +453,8 @@ void ViewProviderFemPostObject::updateProperties()
     Field.purgeTouched();
 
     // Vector mode
-    if (VectorMode.hasEnums() && VectorMode.getValue() >= 0) {
-        val = VectorMode.getValueAsString();
+    if (Component.hasEnums() && Component.getValue() >= 0) {
+        val = Component.getValueAsString();
     }
 
     colorArrays.clear();
@@ -469,27 +469,41 @@ void ViewProviderFemPostObject::updateProperties()
         }
 
         if (data->GetNumberOfComponents() == 1) {
+            // scalar
             colorArrays.emplace_back("Not a vector");
         }
         else {
             colorArrays.emplace_back("Magnitude");
-            if (data->GetNumberOfComponents() >= 2) {
+            if (data->GetNumberOfComponents() == 2) {
+                // 2D vector
                 colorArrays.emplace_back("X");
                 colorArrays.emplace_back("Y");
             }
-            if (data->GetNumberOfComponents() >= 3) {
+            else if (data->GetNumberOfComponents() == 3) {
+                // 3D vector
+                colorArrays.emplace_back("X");
+                colorArrays.emplace_back("Y");
                 colorArrays.emplace_back("Z");
+            }
+            else if (data->GetNumberOfComponents() == 6) {
+                // symmetric tensor
+                colorArrays.emplace_back("XX");
+                colorArrays.emplace_back("YY");
+                colorArrays.emplace_back("ZZ");
+                colorArrays.emplace_back("XY");
+                colorArrays.emplace_back("YZ");
+                colorArrays.emplace_back("ZX");
             }
         }
     }
 
-    VectorMode.setValue(empty);
+    Component.setValue(empty);
     m_vectorEnum.setEnums(colorArrays);
-    VectorMode.setValue(m_vectorEnum);
+    Component.setValue(m_vectorEnum);
 
     it = std::ranges::find(colorArrays, val);
     if (!val.empty() && it != colorArrays.end()) {
-        VectorMode.setValue(val.c_str());
+        Component.setValue(val.c_str());
     }
 
     m_blockPropertyChanges = false;
@@ -693,10 +707,10 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
         return;
     }
 
-    int component = VectorMode.getValue() - 1;  // 0 is either "Not a vector" or magnitude,
-                                                // for -1 is correct for magnitude.
-                                                // x y and z are one number too high
-    if (strcmp(VectorMode.getValueAsString(), "Not a vector") == 0) {
+    int component = Component.getValue() - 1;  // 0 is either "Not a vector" or magnitude,
+                                               // for -1 is correct for magnitude.
+                                               // x y and z are one number too high
+    if (strcmp(Component.getValueAsString(), "Not a vector") == 0) {
         component = 0;
     }
 
@@ -920,7 +934,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
         updateProperties();
         WriteColorData(ResetColorBarRange);
     }
-    else if (prop == &VectorMode && setupPipeline()) {
+    else if (prop == &Component && setupPipeline()) {
         WriteColorData(ResetColorBarRange);
     }
     else if (prop == &Transparency) {
@@ -1106,5 +1120,19 @@ void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges& 
         if (this->getObject()->Visibility.getValue()) {
             updateMaterial();
         }
+    }
+}
+
+void ViewProviderFemPostObject::handleChangedPropertyName(Base::XMLReader& reader,
+                                                          const char* typeName,
+                                                          const char* propName)
+{
+    if (strcmp(propName, "Field") == 0 && strcmp(typeName, "App::PropertyEnumeration") == 0) {
+        App::PropertyEnumeration field;
+        field.Restore(reader);
+        Component.setValue(field.getValue());
+    }
+    else {
+        Gui::ViewProviderDocumentObject::handleChangedPropertyName(reader, typeName, propName);
     }
 }

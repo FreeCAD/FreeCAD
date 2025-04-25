@@ -73,6 +73,7 @@ class Flowwriter:
                 "Convection",
                 "Equation",
                 "Type of convection to be used",
+                locked=True,
             )
             equation.Convection = flow.CONVECTION_TYPE
             equation.Convection = "Computed"
@@ -85,10 +86,15 @@ class Flowwriter:
                     "Set to true for incompressible flow for more stable\n"
                     "discretization when Reynolds number increases"
                 ),
+                locked=True,
             )
         if not hasattr(equation, "FlowModel"):
             equation.addProperty(
-                "App::PropertyEnumeration", "FlowModel", "Flow", "Flow model to be used"
+                "App::PropertyEnumeration",
+                "FlowModel",
+                "Flow",
+                "Flow model to be used",
+                locked=True,
             )
             equation.FlowModel = flow.FLOW_MODEL
             equation.FlowModel = "Full"
@@ -101,6 +107,7 @@ class Flowwriter:
                     "If true pressure Dirichlet boundary conditions can be used.\n"
                     "Also mass flux is available as a natural boundary condition."
                 ),
+                locked=True,
             )
         if not hasattr(equation, "MagneticInduction"):
             equation.addProperty(
@@ -111,6 +118,7 @@ class Flowwriter:
                     "Magnetic induction equation will be solved\n"
                     "along with the Navier-Stokes equations"
                 ),
+                locked=True,
             )
         if not hasattr(equation, "Variable"):
             equation.addProperty(
@@ -118,6 +126,7 @@ class Flowwriter:
                 "Variable",
                 "Flow",
                 "Only for a 2D model change the '3' to '2'",
+                locked=True,
             )
             equation.Variable = "Flow Solution[Velocity:3 Pressure:1]"
 
