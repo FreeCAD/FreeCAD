@@ -255,6 +255,7 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
         elif result_analysis_type == "check":
             results_name = f"{result_name_prefix}Check"
             res_obj = make_result_mesh(results_name)
+            setupPipeline(doc, analysis, results_name, [res_obj])
             if analysis:
                 analysis.addObject(res_obj)
 
@@ -279,6 +280,7 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 results_name = "Results"
             res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
             res_obj.Mesh = result_mesh_object
+            setupPipeline(doc, analysis, results_name, [res_obj])
             # TODO, node numbers in result obj could be set
             if analysis:
                 analysis.addObject(res_obj)
