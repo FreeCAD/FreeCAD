@@ -27,7 +27,7 @@
 #include <Base/Tools.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
-// inclusion of the generated files (generated out of RotationPy.xml)
+// inclusion of the generated files (generated out of RotationPy.pyi)
 #include "RotationPy.h"
 #include "RotationPy.cpp"
 #include "VectorPy.h"
