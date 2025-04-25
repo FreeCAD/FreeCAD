@@ -314,7 +314,6 @@ SET(FreeCADBase_SRCS
     ${FreeCADBase_QRC_SRCS}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
-    ${FreeCADBase_XML_SRCS}
     ${FreeCADBase_Pyi_SRCS}
     ${FreeCADBase_UNITAPI_SRCS}
     PyTools.c
