@@ -230,7 +230,7 @@ class Arch_Window:
                 wPl = FreeCAD.SketchArchPl
                 SketchArch = True
             else:
-                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", placement=pl)")
+                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", placement=pl, window_sill=" + str(self.Sill.Value) + ")")
                 SketchArch = False
 
         if self.Include:
