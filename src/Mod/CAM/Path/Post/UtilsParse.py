@@ -560,11 +560,11 @@ def arc_translate(
 
     # This is in mm but I'm not sure how to say that
     arc_tolerance = Units.Quantity(values["ARC_TOLERANCE"], Units.Length)
-    #arc_tolerance = values["ARC_TOLERANCE"]
-    precision = Units.Quantity(math.pow(10,-values["AXIS_PRECISION"]), Units.Length)
+    # arc_tolerance = values["ARC_TOLERANCE"]
+    precision = Units.Quantity(math.pow(10, -values["AXIS_PRECISION"]), Units.Length)
 
     # Determine if this is a clockwise (G2) or counterclockwise (G3) arc
-    clockwise = command in ['G2', 'G02']
+    clockwise = command in ["G2", "G02"]
 
     # Current position
     start_x = Units.Quantity(current_location["X"], Units.Length)
@@ -580,20 +580,24 @@ def arc_translate(
         seg_out_x = start_x
         seg_out_y = start_y
         seg_out_z = start_z
-    else: # absolute movements
+    else:  # absolute movements
         end_x = Units.Quantity(params["X"], Units.Length) if "X" in params else start_x
         end_y = Units.Quantity(params["Y"], Units.Length) if "Y" in params else start_y
         end_z = Units.Quantity(params["Z"], Units.Length) if "Z" in params else start_z
 
     if "R" in params:
         radius = Units.Quantity(params["R"], Units.Length)
-        length = Units.Quantity(math.sqrt((end_x-start_x)**2 + (end_y-start_y)**2), Units.Length)
-        if 2*radius < length:
-            comment = create_comment(values, "Arc cycle error: 2R less than distance between start and end points")
+        length = Units.Quantity(
+            math.sqrt((end_x - start_x) ** 2 + (end_y - start_y) ** 2), Units.Length
+        )
+        if 2 * radius < length:
+            comment = create_comment(
+                values, "Arc cycle error: 2R less than distance between start and end points"
+            )
             gcode.append(f"{linenumber(values)}{comment}{nl}")
             return
 
-        if 2*radius == length:
+        if 2 * radius == length:
             center_x = (start_x + end_x) / 2
             center_y = (start_y + end_y) / 2
         else:
@@ -603,15 +607,15 @@ def arc_translate(
             uv_x = dx / length
             uv_y = dy / length
 
-            h = Units.Quantity(math.sqrt(radius**2 - (length/2)**2), Units.Length)
+            h = Units.Quantity(math.sqrt(radius**2 - (length / 2) ** 2), Units.Length)
 
             if clockwise:
-                center_x = dx/2 - uv_y * h
-                center_y = dy/2 + uv_x * h
+                center_x = dx / 2 - uv_y * h
+                center_y = dy / 2 + uv_x * h
             else:
-                center_x = dx/2 + uv_y * h
-                center_y = dy/2 - uv_x * h
-        
+                center_x = dx / 2 + uv_y * h
+                center_y = dy / 2 - uv_x * h
+
     elif "I" in params or "J" in params:
         offset_i = Units.Quantity(0, Units.Length)
         offset_j = Units.Quantity(0, Units.Length)
@@ -632,19 +636,26 @@ def arc_translate(
             comment = create_comment(values, "Arc cycle error: R less than or equal to 0")
             gcode.append(f"{linenumber(values)}{comment}{nl}")
             return
-        
-        end_radius = Units.Quantity(math.sqrt((end_x-center_x)**2 + (end_y-center_y)**2), Units.Length)
+
+        end_radius = Units.Quantity(
+            math.sqrt((end_x - center_x) ** 2 + (end_y - center_y) ** 2), Units.Length
+        )
         if abs(end_radius - start_radius) >= precision:
-            comment = create_comment(values, f"Arc cycle error: Radius to end of arc differs from radius to start. r1={start_radius} r2={end_radius}")
+            comment = create_comment(
+                values,
+                f"Arc cycle error: Radius to end of arc differs from radius to start. r1={start_radius} r2={end_radius}",
+            )
             gcode.append(f"{linenumber(values)}{comment}{nl}")
             return
-    
+
         radius = start_radius
     else:
-        comment = create_comment(values, "Arc cycle error: Need offsets I,J or Radius, but neither were provided.")
+        comment = create_comment(
+            values, "Arc cycle error: Need offsets I,J or Radius, but neither were provided."
+        )
         gcode.append(f"{linenumber(values)}{comment}{nl}")
         return
-    
+
     if "P" in params:
         num_turns = params["P"]
     else:
@@ -662,18 +673,18 @@ def arc_translate(
     else:
         if start_angle >= end_angle:
             end_angle += 2 * math.pi
-    
-    assert(start_angle != end_angle)
-    assert(clockwise == (end_angle < start_angle))
+
+    assert start_angle != end_angle
+    assert clockwise == (end_angle < start_angle)
 
     # Calculate the angular distance
-    delta_angle = abs(end_angle - start_angle) + (num_turns-1) * 2 * math.pi
+    delta_angle = abs(end_angle - start_angle) + (num_turns - 1) * 2 * math.pi
 
     # Calculate the number of segments based on tolerance
     # Chord length = 2 * R * sin(angle/2)
     # Chord height = R * (1 - cos(angle/2))  (maximum distance from chord to arc)
     # Chord height is equal to arc_tolerance, solve for angle:
-    segment_angle = 2 * math.acos(1 - arc_tolerance / radius )
+    segment_angle = 2 * math.acos(1 - arc_tolerance / radius)
 
     # Calculate number of segments
     num_segments = max(1, math.ceil(delta_angle / segment_angle))
@@ -719,6 +730,7 @@ def arc_translate(
         )
         gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}{nl}")
     gcode.append(f"{nl}")
+
 
 def format_command_line(values: Values, command_line: CommandLine) -> str:
     """Construct the command line for the final output."""
