@@ -2303,6 +2303,17 @@ void Sketch::getBlockedGeometry(std::vector<bool>& blockedGeometry,
             continue;
         }
 
+        // additionally any further constraint on auxiliary elements linked via Internal
+        // Alignment are also unenforceable.
+        if (std::ranges::any_of(internalAlignmentgeo, [&constr](auto& iag) {
+                return constr->involvesGeoId(iag);
+            })) {
+            unenforceableConstraints[i] = true;
+        }
+
+        std::array<bool, 3> isGeomUndef {constr->First == GeoEnum::GeoUndef,
+                                         constr->Second == GeoEnum::GeoUndef,
+                                         constr->Third == GeoEnum::GeoUndef};
         std::array<bool, 3> isGeomExternal {constr->First < 0,
                                             constr->Second < 0,
                                             constr->Third < 0};
@@ -2314,13 +2325,6 @@ void Sketch::getBlockedGeometry(std::vector<bool>& blockedGeometry,
             !isGeomExternal[1] && i < geo2BlockingConstraintIndex[constr->Second],
             !isGeomExternal[2] && i < geo2BlockingConstraintIndex[constr->Third]};
 
-        // additionally any further constraint on auxiliary elements linked via Internal
-        // Alignment are also unenforceable.
-        for (auto& iag : internalAlignmentgeo) {
-            if (constr->involvesGeoId(iag)) {
-                unenforceableConstraints[i] = true;
-            }
-        }
         // IMPORTANT NOTE:
         // The rest of the ignoring of redundant/conflicting applies to constraints introduced
         // before the blocking constraint only. Constraints introduced after the block will not
@@ -2329,34 +2333,29 @@ void Sketch::getBlockedGeometry(std::vector<bool>& blockedGeometry,
 
         // further, any constraint taking only one element, which is blocked is also
         // unenforceable
-        if (constr->Second == GeoEnum::GeoUndef && constr->Third == GeoEnum::GeoUndef
-            && isGeomBlocked[0]) {
-            if (isGeomBlocked[0] && isConstraintBeforeBlock[0]) {
-                unenforceableConstraints[i] = true;
-            }
+        if (isGeomUndef[1] && isGeomUndef[2] && !isGeomExternal[0]) {
+            unenforceableConstraints[i] =
+                unenforceableConstraints[i] || (isGeomBlocked[0] && isConstraintBeforeBlock[0]);
         }
         // further any constraint on only two elements where both elements are blocked or one is
         // blocked and the other is an axis or external provided that the constraints precede
         // the last block constraint.
-        else if (constr->Third == GeoEnum::GeoUndef) {
-            if ((isGeomBlocked[0] && isGeomBlocked[1]
-                 && (isConstraintBeforeBlock[0] || isConstraintBeforeBlock[1]))
+        else if (isGeomUndef[2]) {
+            unenforceableConstraints[i] = unenforceableConstraints[i]
+                || (isGeomBlocked[0] && isGeomBlocked[1]
+                    && (isConstraintBeforeBlock[0] || isConstraintBeforeBlock[1]))
                 || (isGeomExternal[0] && isGeomBlocked[1] && isConstraintBeforeBlock[1])
-                || (isGeomBlocked[0] && isGeomExternal[1] && isConstraintBeforeBlock[0])) {
-                unenforceableConstraints[i] = true;
-            }
+                || (isGeomBlocked[0] && isConstraintBeforeBlock[0] && isGeomExternal[1]);
         }
         // further any constraint on three elements where the three of them are blocked, or two
         // are blocked and the other is an axis or external geo or any constraint on three
         // elements where one is blocked and the other two are axis or external geo, provided
         // that the constraints precede the last block constraint.
         else {
-            if ((std::ranges::all_of(isGeomBlocked, std::identity())
-                 || std::ranges::any_of(isGeomExternal, std::identity()))
-                && std::ranges::any_of(isConstraintBeforeBlock, std::identity())) {
-
-                unenforceableConstraints[i] = true;
-            }
+            unenforceableConstraints[i] = unenforceableConstraints[i]
+                || ((std::ranges::all_of(isGeomBlocked, std::identity())
+                     || std::ranges::any_of(isGeomExternal, std::identity()))
+                    && std::ranges::any_of(isConstraintBeforeBlock, std::identity()));
         }
         ++i;
     }
