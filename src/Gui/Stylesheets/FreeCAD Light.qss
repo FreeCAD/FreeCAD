@@ -937,7 +937,7 @@ QAbstractSpinBox:up-button {
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 77);
-  border-top-right-radius: 3px;
+  border-top-right-radius: 2px;
   border-left: 1px solid rgba(0, 0, 0, 77);
   margin:1px;
   margin-bottom:-1px;
@@ -972,7 +972,7 @@ QAbstractSpinBox:down-button {
   border-bottom: 1px solid transparent;
   border-right: 1px solid transparent;
   border-top: 1px solid rgba(0, 0, 0, 77);
-  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 2px;
   border-left: 1px solid rgba(0, 0, 0, 77);
   margin:1px;
   margin-top:-1px;
