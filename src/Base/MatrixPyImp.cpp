@@ -27,7 +27,7 @@
 #include <limits>
 #endif
 
-// inclusion of the generated files (generated out of MatrixPy.xml)
+// inclusion of the generated files (generated out of MatrixPy.pyi)
 #include "RotationPy.h"
 #include "VectorPy.h"
 #include "GeometryPyCXX.h"

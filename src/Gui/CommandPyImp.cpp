@@ -37,7 +37,7 @@
 #include "Window.h"
 #include "PythonWrapper.h"
 
-// inclusion of the generated files (generated out of CommandPy.xml)
+// inclusion of the generated files (generated out of CommandPy.pyi)
 #include "CommandPy.h"
 #include "CommandPy.cpp"
 #include "ShortcutManager.h"
