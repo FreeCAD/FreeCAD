@@ -290,7 +290,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qgroupbox
 
 --------------------------------------------------------------------------- */
 QGroupBox {
-  background-color: rgba(255, 255, 255, 13);
+  background-color: rgba(255, 255, 255, 2);
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 55);
   margin: 18px 0px 2px 0px;/*leave space at the top for the title */
@@ -999,7 +999,7 @@ QAbstractSpinBox::down-arrow:hover {
 
 QAbstractSpinBox:disabled {
   color: rgba(100, 100, 100, 204);
-  background-color: rgba(80, 80, 80, 255);
+  background-color: rgb(80, 80, 80);
 }
 
 QAbstractSpinBox:hover {}
@@ -1656,7 +1656,7 @@ QSlider::sub-page:horizontal:disabled {
 
 QSlider::handle:horizontal {
   background-color: @ThemeAccentColor1;
-  border: 1px solid rgba(0, 0, 0, 255);
+  border: 1px solid rgb(0, 0, 0);
   width: 10px;
   height: 8px;
   margin: -4px 0px;
@@ -1675,7 +1675,7 @@ QSlider::handle:horizontal:focus {
 
 QSlider::handle:vertical {
   background-color: @ThemeAccentColor1;
-  border: 1px solid rgba(0, 0, 0, 255);
+  border: 1px solid rgb(0, 0, 0);
   width: 10px;
   height: 8px;
   margin: 0px -4px;
@@ -1746,7 +1746,7 @@ QTabWidget::pane {
   padding: 0px;
   background-color: @ThemeBackground;
   border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, 255);
+  border: 1px solid rgb(0, 0, 0);
 }
 
 QTabWidget::pane:selected {
@@ -2213,7 +2213,7 @@ QColumnView::indicator:indeterminate:pressed {
 QTableView,
 QColumnView {
   background-color: @ThemeBackground;/* background of a lot of stuff including spreadsheets.*/
-  gridline-color: rgba(0, 0, 0, 255);
+  gridline-color: rgb(0, 0, 0);
   border-radius: 0px;
   selection-background-color: @ThemeAccentColor1;
   alternate-background-color: rgba(0, 0, 0, 102);
@@ -2320,9 +2320,9 @@ QHeaderView::section:hover {
 }
 
 QHeaderView::section::horizontal {
-  border-bottom: 1px solid rgba(0, 0, 0, 255);
-  border-right: 1px solid rgba(0, 0, 0, 255);
-  border-top: 1px solid rgba(0, 0, 0, 0, 255);
+  border-bottom: 1px solid rgb(0, 0, 0);
+  border-right: 1px solid rgb(0, 0, 0);
+  border-top: 1px solid rgb(0, 0, 0, 0);
   border-left: 1px solid transparent;
 }
 
@@ -2336,9 +2336,9 @@ QHeaderView::section::horizontal:disabled {
 
 QHeaderView::section::vertical {
   border-bottom: 1px solid transparent;
-  border-right: 1px solid rgba(0, 0, 0, 255);
-  border-top: 1px solid rgba(0, 0, 0, 255);
-  border-left: 1px solid rgba(0, 0, 0, 255);
+  border-right: 1px solid rgb(0, 0, 0);
+  border-top: 1px solid rgb(0, 0, 0);
+  border-left: 1px solid rgb(0, 0, 0);
   margin-left: 1px;
   margin-right: 1px;
 }
@@ -2723,7 +2723,7 @@ QMainWindow QTableView {
   background-color: @ThemeBackground;/* background of the tables used in the settings*/
   border: 1px solid rgba(0, 0, 0, 204);
   border-radius: 0px;
-  gridline-color: rgba(255, 255, 255, 255);
+  gridline-color: rgb(255, 255, 255);
 }
 
 QMainWindow QListView {
