@@ -161,7 +161,7 @@ public:
     /** initializes a point (or curve) drag by setting the current
      * sketch status as a reference
      */
-    int initMove(std::vector<GeoElementId> geoEltIds, bool fine = true);
+    int initMove(const std::vector<GeoElementId>& geoEltIds, bool fine = true);
     int initMove(int geoId, PointPos pos, bool fine = true);
 
     /** Initializes a B-spline piece drag by setting the current
@@ -185,7 +185,7 @@ public:
      * a condition for satisfying the new point location!
      * The relative flag permits moving relatively to the current position
      */
-    int moveGeometries(std::vector<GeoElementId> geoEltIds,
+    int moveGeometries(const std::vector<GeoElementId>& geoEltIds,
                        Base::Vector3d toPoint,
                        bool relative = false);
     int moveGeometry(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);

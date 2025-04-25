@@ -4744,7 +4744,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
     return ret;
 }
 
-int Sketch::initMove(std::vector<GeoElementId> geoEltIds, bool fine)
+int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
 {
     if (hasConflicts()) {
         // don't try to move sketches that contain conflicting constraints
@@ -4769,7 +4769,7 @@ int Sketch::initMove(std::vector<GeoElementId> geoEltIds, bool fine)
             reserveSize += bsp.poles.size() * 2;
         }
         else {
-            reserveSize += 6;  // 6 is the max case for all other cases.
+            reserveSize += 6;  // 6 is the max for all other cases.
         }
     }
     MoveParameters.reserve(reserveSize);
@@ -5072,7 +5072,7 @@ int Sketch::initBSplinePieceMove(int geoId,
     return 0;
 }
 
-int Sketch::moveGeometries(std::vector<GeoElementId> geoEltIds,
+int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds,
                            Base::Vector3d toPoint,
                            bool relative)
 {
