@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
-# *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
+# *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -34,9 +35,9 @@ import PySide.QtGui as QtGui
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
+import WorkingPlane
 from draftguitools import gui_tool_utils
-from draftutils.messages import _err
-from draftutils.params import get_param
+from draftutils import params
 from draftutils.translate import translate
 from DraftVecUtils import toString
 
@@ -47,7 +48,7 @@ True if Draft_rc.__name__ else False
 class ShapeStringTaskPanel:
     """Base class for Draft_ShapeString task panel."""
 
-    def __init__(self, point=App.Vector(0,0,0), size=10, string="", font=""):
+    def __init__(self, point=None, size=10, string="", font=""):
 
         self.form = Gui.PySideUic.loadUi(":/ui/TaskShapeString.ui")
         self.form.setObjectName("ShapeStringTaskPanel")
@@ -55,39 +56,44 @@ class ShapeStringTaskPanel:
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_ShapeString.svg"))
 
         unit_length = App.Units.Quantity(0.0, App.Units.Length).getUserPreferred()[2]
-        self.form.sbX.setProperty('rawValue', point.x)
-        self.form.sbX.setProperty('unit', unit_length)
-        self.form.sbY.setProperty('rawValue', point.y)
-        self.form.sbY.setProperty('unit', unit_length)
-        self.form.sbZ.setProperty('rawValue', point.z)
-        self.form.sbZ.setProperty('unit', unit_length)
-        self.form.sbHeight.setProperty('rawValue', size)
-        self.form.sbHeight.setProperty('unit', unit_length)
+        self.form.sbX.setProperty("unit", unit_length)
+        self.form.sbY.setProperty("unit", unit_length)
+        self.form.sbZ.setProperty("unit", unit_length)
+        self.form.sbHeight.setProperty("unit", unit_length)
 
-        self.stringText = string if string else translate("draft", "Default")
-        self.form.leString.setText(self.stringText)
-        self.platWinDialog("Overwrite")
-        self.fileSpec = font if font else get_param("FontFile")
-        self.form.fcFontFile.setFileName(self.fileSpec)
-        self.point = point
+        self.global_mode = params.get_param("GlobalMode")
+        self.form.cbGlobalMode.setChecked(self.global_mode)
+        self.change_coord_labels()
+
+        self.wp = WorkingPlane.get_working_plane()
+        if point is not None:
+            self.point = point
+        elif self.global_mode:
+            self.point = App.Vector()
+        else:
+            self.point = self.wp.position
+        self.display_point(self.point)
         self.pointPicked = False
+
+        self.form.sbHeight.setProperty("rawValue", size)
+        self.string = string if string else translate("draft", "Default")
+        self.form.leString.setText(self.string)
+        self.platform_win_dialog("Overwrite")
+        self.font_file = font if font else params.get_param("FontFile")
+        self.form.fcFontFile.setFileName(self.font_file)
+        # Prevent cyclic processing of point values:
+        self.display_point_active = False
         # Default for the "DontUseNativeFontDialog" preference:
         self.font_dialog_pref = False
-        # Dummy attribute used by gui_tools_utils.getPoint in action method
+        # Dummy attribute used by gui_tool_utils.getPoint in action method
         self.node = None
 
-        QtCore.QObject.connect(self.form.fcFontFile, QtCore.SIGNAL("fileNameSelected(const QString&)"), self.fileSelect)
-        QtCore.QObject.connect(self.form.pbReset, QtCore.SIGNAL("clicked()"), self.resetPoint)
-
-    def fileSelect(self, fn):
-        """Assign the selected file."""
-        self.fileSpec = fn
-
-    def resetPoint(self):
-        """Reset the selected point."""
-        self.pointPicked = False
-        origin = App.Vector(0.0, 0.0, 0.0)
-        self.setPoint(origin)
+        self.form.sbX.valueChanged.connect(self.set_point_x)
+        self.form.sbY.valueChanged.connect(self.set_point_y)
+        self.form.sbZ.valueChanged.connect(self.set_point_z)
+        self.form.cbGlobalMode.stateChanged.connect(self.set_global_mode)
+        self.form.fcFontFile.fileNameSelected.connect(self.set_file)
+        self.form.pbReset.clicked.connect(self.reset_point)
 
     def action(self, arg):
         """scene event handler"""
@@ -95,35 +101,94 @@ class ShapeStringTaskPanel:
             if arg["Key"] == "ESCAPE":
                 self.reject()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            self.point,ctrlPoint,info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if not self.pointPicked:
-                self.setPoint(self.point)
+                self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
+                self.display_point(self.point)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                self.setPoint(self.point)
+                self.display_point(self.point)
                 self.pointPicked = True
 
-    def setPoint(self, point):
-        """Assign the selected point."""
-        self.form.sbX.setProperty('rawValue', point.x)
-        self.form.sbY.setProperty('rawValue', point.y)
-        self.form.sbZ.setProperty('rawValue', point.z)
+    def change_coord_labels(self):
+        if self.global_mode:
+            self.form.labelX.setText(translate("draft", "Global {}").format("X"))
+            self.form.labelY.setText(translate("draft", "Global {}").format("Y"))
+            self.form.labelZ.setText(translate("draft", "Global {}").format("Z"))
+        else:
+            self.form.labelX.setText(translate("draft", "Local {}").format("X"))
+            self.form.labelY.setText(translate("draft", "Local {}").format("Y"))
+            self.form.labelZ.setText(translate("draft", "Local {}").format("Z"))
 
+    def display_point(self, point):
+        """Display the selected point."""
+        self.display_point_active = True
+        if not self.global_mode:
+            point = self.wp.get_local_coords(point)
+        self.form.sbX.setProperty("rawValue", point.x)
+        self.form.sbY.setProperty("rawValue", point.y)
+        self.form.sbZ.setProperty("rawValue", point.z)
+        self.display_point_active = False
 
-    def platWinDialog(self, flag):
+    def escape_string(self, string):
+        return string.replace("\\", "\\\\").replace("\"", "\\\"")
+
+    def platform_win_dialog(self, flag):
         """Handle the type of dialog depending on the platform."""
         ParamGroup = App.ParamGet("User parameter:BaseApp/Preferences/Dialog")
         if flag == "Overwrite":
             if "DontUseNativeFontDialog" not in ParamGroup.GetBools():
                 # initialize nonexisting one
                 ParamGroup.SetBool("DontUseNativeFontDialog", True)
-
             param = ParamGroup.GetBool("DontUseNativeFontDialog")
             self.font_dialog_pref = ParamGroup.GetBool("DontUseNativeDialog")
             ParamGroup.SetBool("DontUseNativeDialog", param)
-
         elif flag == "Restore":
             ParamGroup.SetBool("DontUseNativeDialog", self.font_dialog_pref)
+
+    def reset_point(self):
+        """Reset the selected point and display new point in the task panel."""
+        if self.global_mode:
+            self.point = App.Vector()
+        else:
+            self.point = self.wp.position
+        self.pointPicked = False
+        self.display_point(self.point)
+
+    def set_file(self, val):
+        """Assign the selected font file."""
+        self.font_file = val
+
+    def set_global_mode(self, val):
+        self.global_mode = bool(val)
+        params.set_param("GlobalMode", self.global_mode)
+        self.change_coord_labels()
+        self.display_point(self.point)
+
+    def set_point_coord(self, coord, val):
+        """Change self.point based on  X, Y or Z value entered in the task panel.
+
+        coord should be "x", "y" or "z".
+        """
+        if self.display_point_active:
+            return
+        if self.global_mode:
+            point = self.point
+        else:
+            point = self.wp.get_local_coords(self.point)
+        setattr(point, coord, App.Units.Quantity(val).Value)
+        if self.global_mode:
+            self.point = point
+        else:
+            self.point = self.wp.get_global_coords(point)
+
+    def set_point_x(self, val):
+        self.set_point_coord("x", val)
+
+    def set_point_y(self, val):
+        self.set_point_coord("y", val)
+
+    def set_point_z(self, val):
+        self.set_point_coord("z", val)
 
 
 class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
@@ -135,85 +200,66 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
 
     def accept(self):
         """Execute when clicking the OK button."""
-        self.createObject()
+        self.create_object()
         self.reject()
-
         return True
+
+    def create_object(self):
+        """Create object in the current document."""
+        string = self.escape_string(self.form.leString.text())
+        size = App.Units.Quantity(self.form.sbHeight.text()).Value
+
+        Gui.addModule("Draft")
+        Gui.addModule("WorkingPlane")
+        cmd = "Draft.make_shapestring("
+        cmd += "String=\"" + string + "\", "
+        cmd += "FontFile=\"" + self.font_file + "\", "
+        cmd += "Size=" + str(size) + ", "
+        cmd += "Tracking=0.0"
+        cmd += ")"
+        self.sourceCmd.commit(
+            translate("draft", "Create ShapeString"),
+            ["ss = " + cmd,
+             "pl = FreeCAD.Placement()",
+             "pl.Base = " + toString(self.point),
+             "pl.Rotation = WorkingPlane.get_working_plane().get_placement().Rotation",
+             "ss.Placement = pl",
+             "Draft.autogroup(ss)",
+             "FreeCAD.ActiveDocument.recompute()"]
+        )
 
     def reject(self):
         """Run when clicking the Cancel button."""
         self.sourceCmd.finish()
-        self.platWinDialog("Restore")
+        self.platform_win_dialog("Restore")
         return True
-
-    def createObject(self):
-        """Create object in the current document."""
-        String = self.form.leString.text().replace('\\', '\\\\').replace('"', '\\"')
-        String = '"' + String + '"'
-        FFile = '"' + str(self.fileSpec) + '"'
-
-        Size = str(App.Units.Quantity(self.form.sbHeight.text()).Value)
-        Tracking = str(0.0)
-        x = App.Units.Quantity(self.form.sbX.text()).Value
-        y = App.Units.Quantity(self.form.sbY.text()).Value
-        z = App.Units.Quantity(self.form.sbZ.text()).Value
-        ssBase = App.Vector(x, y, z)
-        try:
-            Gui.addModule("Draft")
-            Gui.addModule("WorkingPlane")
-            self.sourceCmd.commit(translate('draft', 'Create ShapeString'),
-                                  ['ss = Draft.make_shapestring(String=' + String + ', FontFile=' + FFile + ', Size=' + Size + ', Tracking=' + Tracking + ')',
-                                   'pl = FreeCAD.Placement()',
-                                   'pl.Base = ' + toString(ssBase),
-                                   'pl.Rotation = WorkingPlane.get_working_plane().get_placement().Rotation',
-                                   'ss.Placement = pl',
-                                   'Draft.autogroup(ss)',
-                                   'FreeCAD.ActiveDocument.recompute()'])
-        except Exception:
-            _err("Draft_ShapeString: error delaying commit\n")
 
 
 class ShapeStringTaskPanelEdit(ShapeStringTaskPanel):
     """Task panel for Draft ShapeString object in edit mode."""
+
     def __init__(self, vobj):
 
-        base = vobj.Object.Placement.Base
-        size = vobj.Object.Size.Value
-        string = vobj.Object.String
-        font = vobj.Object.FontFile
-
-        super().__init__(base, size, string, font)
+        self.obj = vobj.Object
+        super().__init__(
+            self.obj.Placement.Base, self.obj.Size.Value, self.obj.String, self.obj.FontFile
+        )
         self.pointPicked = True
-        self.vobj = vobj
         self.call = Gui.activeView().addEventCallback("SoEvent", self.action)
 
     def accept(self):
 
-        x = App.Units.Quantity(self.form.sbX.text()).Value
-        y = App.Units.Quantity(self.form.sbY.text()).Value
-        z = App.Units.Quantity(self.form.sbZ.text()).Value
-
-        base = App.Vector(x, y, z)
+        string = self.escape_string(self.form.leString.text())
         size = App.Units.Quantity(self.form.sbHeight.text()).Value
-        string = self.form.leString.text()
-        font_file = self.fileSpec
 
-        o = "FreeCAD.ActiveDocument.getObject(\"" + self.vobj.Object.Name + "\")"
-        Gui.doCommand(o+".Placement.Base=" + toString(base))
-        Gui.doCommand(o+".Size=" + str(size))
-        Gui.doCommand(o+".String=\"" + string + "\"")
-        Gui.doCommand(o+".FontFile=\"" + font_file + "\"")
+        Gui.doCommand("ss = FreeCAD.ActiveDocument.getObject(\"" + self.obj.Name + "\")")
+        Gui.doCommand("ss.String=\"" + string + "\"")
+        Gui.doCommand("ss.FontFile=\"" + self.font_file + "\"")
+        Gui.doCommand("ss.Size=" + str(size))
+        Gui.doCommand("ss.Placement.Base=" + toString(self.point))
         Gui.doCommand("FreeCAD.ActiveDocument.recompute()")
 
         self.reject()
-
-        return True
-
-    def reject(self):
-
-        self.vobj.Document.resetEdit()
-        self.platWinDialog("Restore")
-
         return True
 
     def finish(self):
@@ -221,7 +267,13 @@ class ShapeStringTaskPanelEdit(ShapeStringTaskPanel):
         Gui.activeView().removeEventCallback("SoEvent", self.call)
         Gui.Snapper.off()
         Gui.Control.closeDialog()
-
         return None
+
+    def reject(self):
+
+        self.obj.ViewObject.Document.resetEdit()
+        self.platform_win_dialog("Restore")
+        return True
+
 
 ## @}
