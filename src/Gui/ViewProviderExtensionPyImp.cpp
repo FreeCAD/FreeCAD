@@ -27,7 +27,7 @@
 # include <sstream>
 #endif
 
-// inclusion of the generated files (generated out of PropertyContainerPy.xml)
+// inclusion of the generated files (generated out of PropertyContainerPy.pyi)
 #include "ViewProviderExtensionPy.h"
 #include "ViewProviderExtensionPy.cpp"
 #include "ViewProviderDocumentObject.h"

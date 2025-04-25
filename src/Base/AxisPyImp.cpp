@@ -24,7 +24,7 @@
 
 #include "GeometryPyCXX.h"
 
-// inclusion of the generated files (generated out of AxisPy.xml)
+// inclusion of the generated files (generated out of AxisPy.pyi)
 #include "AxisPy.h"
 #include "AxisPy.cpp"
 

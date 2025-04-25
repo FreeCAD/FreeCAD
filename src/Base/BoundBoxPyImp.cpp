@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 
-// inclusion of the generated files (generated out of BoundBoxPy.xml)
+// inclusion of the generated files (generated out of BoundBoxPy.pyi)
 #include "MatrixPy.h"
 #include "VectorPy.h"
 #include "GeometryPyCXX.h"

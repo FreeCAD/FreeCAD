@@ -26,7 +26,7 @@
 #include <limits>
 #endif
 
-// inclusion of the generated files (generated out of QuantityPy.xml)
+// inclusion of the generated files (generated out of QuantityPy.pyi)
 #include "QuantityPy.h"
 #include "UnitPy.h"
 #include "QuantityPy.cpp"
