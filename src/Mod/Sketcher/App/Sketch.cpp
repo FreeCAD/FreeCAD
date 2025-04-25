@@ -1960,20 +1960,18 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
         } break;
         case Tangent: {
-            bool isSpecialCase = false;
-
             if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
                 && constraint->Third == GeoEnum::GeoUndef) {
                 // simple tangency
                 rtn = addTangentConstraint(constraint->First, constraint->Second);
-
-                isSpecialCase = true;
+                break;
             }
             else if (constraint->FirstPos == PointPos::start
                      && constraint->Third == GeoEnum::GeoUndef) {
                 // check for B-Spline Knot to curve tangency
                 auto knotgeoId = checkGeoId(constraint->First);
-                if (Geoms[knotgeoId].type == Point) {
+                auto linegeoid = checkGeoId(constraint->Second);
+                if (Geoms[knotgeoId].type == Point && Geoms[linegeoid].type == Line) {
                     auto* point = static_cast<const GeomPoint*>(Geoms[knotgeoId].geo);
 
                     if (GeometryFacade::isInternalType(point, InternalType::BSplineKnotPoint)) {
@@ -1981,44 +1979,38 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                         bsplinegeoid = checkGeoId(bsplinegeoid);
 
-                        auto linegeoid = checkGeoId(constraint->Second);
+                        if (constraint->SecondPos == PointPos::none) {
+                            rtn = addTangentLineAtBSplineKnotConstraint(linegeoid,
+                                                                        bsplinegeoid,
+                                                                        knotgeoId);
 
-                        if (Geoms[linegeoid].type == Line) {
-                            if (constraint->SecondPos == PointPos::none) {
-                                rtn = addTangentLineAtBSplineKnotConstraint(linegeoid,
-                                                                            bsplinegeoid,
-                                                                            knotgeoId);
+                            break;
+                        }
+                        else if (constraint->SecondPos == PointPos::start
+                                 || constraint->SecondPos == PointPos::end) {
+                            rtn =
+                                addTangentLineEndpointAtBSplineKnotConstraint(linegeoid,
+                                                                              constraint->SecondPos,
+                                                                              bsplinegeoid,
+                                                                              knotgeoId);
 
-                                isSpecialCase = true;
-                            }
-                            else if (constraint->SecondPos == PointPos::start
-                                     || constraint->SecondPos == PointPos::end) {
-                                rtn = addTangentLineEndpointAtBSplineKnotConstraint(
-                                    linegeoid,
-                                    constraint->SecondPos,
-                                    bsplinegeoid,
-                                    knotgeoId);
-
-                                isSpecialCase = true;
-                            }
+                            break;
                         }
                     }
                 }
             }
-            if (!isSpecialCase) {
-                // any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint,
-                // tangent-via-point)
-                setCValueAndPutInBucket(constraint->getValue());
-                rtn = addAngleAtPointConstraint(constraint->First,
-                                                constraint->FirstPos,
-                                                constraint->Second,
-                                                constraint->SecondPos,
-                                                constraint->Third,
-                                                constraint->ThirdPos,
-                                                c.value,
-                                                constraint->Type,
-                                                c.driving);
-            }
+            // any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint,
+            // tangent-via-point)
+            setCValueAndPutInBucket(constraint->getValue());
+            rtn = addAngleAtPointConstraint(constraint->First,
+                                            constraint->FirstPos,
+                                            constraint->Second,
+                                            constraint->SecondPos,
+                                            constraint->Third,
+                                            constraint->ThirdPos,
+                                            c.value,
+                                            constraint->Type,
+                                            c.driving);
         } break;
         case Distance: {
             if (constraint->SecondPos != PointPos::none) {
