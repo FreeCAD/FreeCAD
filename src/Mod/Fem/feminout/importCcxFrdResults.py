@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 #  \brief FreeCAD Calculix FRD Reader for FEM workbench
 
 import os
+import math
 
 import FreeCAD
 from FreeCAD import Console
@@ -133,6 +134,8 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 else:
                     eigenmode_number = 0
                 step_time = result_set["time"]
+                if not math.isfinite(step_time):
+                    step_time = 0
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = "{}EigenMode_{}_Results".format(
