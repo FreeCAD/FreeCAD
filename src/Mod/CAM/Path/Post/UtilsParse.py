@@ -103,6 +103,33 @@ def check_for_drill_translate(
     return False
 
 
+def check_for_arc_translate(
+    values: Values,
+    gcode: Gcode,
+    command: str,
+    command_line: CommandLine,
+    params: PathParameters,
+    current_location: PathParameters,
+) -> bool:
+    """Check for arc commands to translate."""
+    comment: str
+    nl: str = "\n"
+
+    if values["TRANSLATE_ARC_CYCLES"] and command in values["ARC_CYCLES_TO_TRANSLATE"]:
+        if values["OUTPUT_COMMENTS"]:  # Comment the original command
+            comment = create_comment(values, format_command_line(values, command_line))
+            gcode.append(f"{linenumber(values)}{comment}{nl}")
+        arc_translate(
+            values,
+            gcode,
+            command,
+            params,
+            current_location,
+        )
+        return True
+    return False
+
+
 def check_for_machine_specific_commands(values: Values, gcode: Gcode, command: str) -> None:
     """Check for comments containing machine-specific commands."""
     m: object
@@ -345,7 +372,7 @@ def default_rotary_parameter(
     parameters: PathParameters,  # pylint: disable=unused-argument
     current_location: PathParameters,
 ) -> str:
-    """Process a rotarty parameter (such as A, B, and C)."""
+    """Process a rotary parameter (such as A, B, and C)."""
     #
     # used to compare two floating point numbers for "close-enough equality"
     #
@@ -475,6 +502,227 @@ def drill_translate(
         output_G73_G83_drill_moves(
             values, gcode, command, params, drill_z, retract_z, F_feedrate, G0_retract_z
         )
+
+
+def arc_translate(
+    values: Values,
+    gcode: Gcode,
+    command: str,
+    params: PathParameters,
+    current_location: PathParameters,
+) -> None:
+    """Translate arc cycles.
+
+    Convert an arc (G2/G3) to linear moves (G1)
+    """
+    cmd: str
+    comment: str
+    start_x: float
+    start_y: float
+    start_z: float
+    end_x: float
+    end_y: float
+    end_z: float
+    offset_i: float
+    offset_j: float
+    center_x: float
+    center_y: float
+    radius: float
+    start_radius: float
+    end_radius: float
+    dx: float
+    dy: float
+    uv_x: float
+    uv_y: float
+    length: float
+    num_turns: int
+    clockwise: bool
+    start_angle: float
+    end_angle: float
+    arc_tolerance: float
+    precision: float
+    seg_x: float
+    seg_y: float
+    seg_z: float
+    seg_out_x: float
+    seg_out_y: float
+    seg_out_z: float
+
+    nl: str = "\n"
+    F_feedrate: str
+
+    # This is in mm but I'm not sure how to say that
+    arc_tolerance = Units.Quantity(values["ARC_TOLERANCE"], Units.Length)
+    # arc_tolerance = values["ARC_TOLERANCE"]
+    precision = Units.Quantity(math.pow(10, -values["AXIS_PRECISION"]), Units.Length)
+
+    # Determine if this is a clockwise (G2) or counterclockwise (G3) arc
+    clockwise = command in ["G2", "G02"]
+
+    # Current position
+    start_x = Units.Quantity(current_location["X"], Units.Length)
+    start_y = Units.Quantity(current_location["Y"], Units.Length)
+    start_z = Units.Quantity(current_location["Z"], Units.Length)
+
+    # Final position
+    if values["MOTION_MODE"] == "G91":  # relative movements
+        end_x = start_x + Units.Quantity(params["X"] if "X" in params else 0, Units.Length)
+        end_y = start_y + Units.Quantity(params["Y"] if "Y" in params else 0, Units.Length)
+        end_z = start_z + Units.Quantity(params["Z"] if "Z" in params else 0, Units.Length)
+        # These are used later for computing relative output movements
+        seg_out_x = start_x
+        seg_out_y = start_y
+        seg_out_z = start_z
+    else:  # absolute movements
+        end_x = Units.Quantity(params["X"], Units.Length) if "X" in params else start_x
+        end_y = Units.Quantity(params["Y"], Units.Length) if "Y" in params else start_y
+        end_z = Units.Quantity(params["Z"], Units.Length) if "Z" in params else start_z
+
+    if "R" in params:
+        radius = Units.Quantity(params["R"], Units.Length)
+        length = Units.Quantity(
+            math.sqrt((end_x - start_x) ** 2 + (end_y - start_y) ** 2), Units.Length
+        )
+        if 2 * radius < length:
+            comment = create_comment(
+                values, "Arc cycle error: 2R less than distance between start and end points"
+            )
+            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            return
+
+        if 2 * radius == length:
+            center_x = (start_x + end_x) / 2
+            center_y = (start_y + end_y) / 2
+        else:
+            dx = end_x - start_x
+            dy = end_y - start_y
+
+            uv_x = dx / length
+            uv_y = dy / length
+
+            h = Units.Quantity(math.sqrt(radius**2 - (length / 2) ** 2), Units.Length)
+
+            if clockwise:
+                center_x = dx / 2 - uv_y * h
+                center_y = dy / 2 + uv_x * h
+            else:
+                center_x = dx / 2 + uv_y * h
+                center_y = dy / 2 - uv_x * h
+
+    elif "I" in params or "J" in params:
+        offset_i = Units.Quantity(0, Units.Length)
+        offset_j = Units.Quantity(0, Units.Length)
+
+        # Get center offsets (I and J)
+        if "I" in params:
+            offset_i = Units.Quantity(params["I"], Units.Length)
+        if "J" in params:
+            offset_j = Units.Quantity(params["J"], Units.Length)
+
+        # Calculate center coordinates
+        center_x = start_x + offset_i
+        center_y = start_y + offset_j
+
+        # Calculate radius
+        start_radius = Units.Quantity(math.sqrt(offset_i**2 + offset_j**2), Units.Length)
+        if start_radius <= 0:  # R less than or equal to zero is an error
+            comment = create_comment(values, "Arc cycle error: R less than or equal to 0")
+            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            return
+
+        end_radius = Units.Quantity(
+            math.sqrt((end_x - center_x) ** 2 + (end_y - center_y) ** 2), Units.Length
+        )
+        if abs(end_radius - start_radius) >= precision:
+            comment = create_comment(
+                values,
+                f"Arc cycle error: Radius to end of arc differs from radius to start. r1={start_radius} r2={end_radius}",
+            )
+            gcode.append(f"{linenumber(values)}{comment}{nl}")
+            return
+
+        radius = start_radius
+    else:
+        comment = create_comment(
+            values, "Arc cycle error: Need offsets I,J or Radius, but neither were provided."
+        )
+        gcode.append(f"{linenumber(values)}{comment}{nl}")
+        return
+
+    if "P" in params:
+        num_turns = params["P"]
+    else:
+        num_turns = 1
+
+    # Calculate start and end angles
+    # angle is positive anticlockwise from positive X axis
+    start_angle = math.atan2(start_y - center_y, start_x - center_x)
+    end_angle = math.atan2(end_y - center_y, end_x - center_x)
+
+    # Unwrap the angles if necessary
+    if clockwise:
+        if end_angle >= start_angle:
+            end_angle -= 2 * math.pi
+    else:
+        if start_angle >= end_angle:
+            end_angle += 2 * math.pi
+
+    assert start_angle != end_angle
+    assert clockwise == (end_angle < start_angle)
+
+    # Calculate the angular distance
+    delta_angle = abs(end_angle - start_angle) + (num_turns - 1) * 2 * math.pi
+
+    # Calculate the number of segments based on tolerance
+    # Chord length = 2 * R * sin(angle/2)
+    # Chord height = R * (1 - cos(angle/2))  (maximum distance from chord to arc)
+    # Chord height is equal to arc_tolerance, solve for angle:
+    segment_angle = 2 * math.acos(1 - arc_tolerance / radius)
+
+    # Calculate number of segments
+    num_segments = max(1, math.ceil(delta_angle / segment_angle))
+
+    # Generate G1 commands for each segment
+    increment_angle = (end_angle - start_angle) / num_segments
+    increment_z = (end_z - start_z) / num_segments
+
+    cmd = format_for_feed(values, Units.Quantity(params["F"], Units.Velocity))
+    F_feedrate = f'{values["COMMAND_SPACE"]}F{cmd}'
+
+    for i in range(1, num_segments + 1):
+        # Calculate the angle and Z position for this segment
+        if i == num_segments:
+            angle = end_angle
+            seg_z = end_z
+        else:
+            angle = start_angle + i * increment_angle
+            seg_z = start_z + i * increment_z
+
+        # Calculate the X,Y position for this segment
+        seg_x = center_x + radius * math.cos(angle)
+        seg_y = center_y + radius * math.sin(angle)
+
+        if values["MOTION_MODE"] == "G91":  # relative movements
+            seg_out_x = seg_x - seg_out_x
+            seg_out_y = seg_y - seg_out_y
+            seg_out_z = seg_z - seg_out_z
+        else:
+            seg_out_x = seg_x
+            seg_out_y = seg_y
+            seg_out_z = seg_z
+
+        # Create a G1 command for this segment
+        cmd = format_command_line(
+            values,
+            [
+                "G1",
+                f"X{format_for_axis(values, seg_out_x)}",
+                f"Y{format_for_axis(values, seg_out_y)}",
+                f"Z{format_for_axis(values, seg_out_z)}",
+            ],
+        )
+        gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}{nl}")
+    gcode.append(f"{nl}")
 
 
 def format_command_line(values: Values, command_line: CommandLine) -> str:
@@ -743,6 +991,17 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
                     command_line.append(f"{parameter}{parameter_value}")
 
         set_adaptive_op_speed(values, command, command_line, c.Parameters, adaptive_op_variables)
+
+        if check_for_arc_translate(
+            values,
+            gcode,
+            command,
+            command_line,
+            c.Parameters,
+            current_location,
+        ):
+            command_line = []
+
         # Remember the current command
         lastcommand = command
         # Remember the current location
