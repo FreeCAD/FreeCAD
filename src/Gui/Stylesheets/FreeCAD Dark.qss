@@ -290,9 +290,9 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qgroupbox
 
 --------------------------------------------------------------------------- */
 QGroupBox {
-  background-color: rgba(255, 255, 255, 25);
+  background-color: rgba(255, 255, 255, 13);
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 13);
+  border: 1px solid rgba(255, 255, 255, 55);
   margin: 18px 0px 2px 0px;/*leave space at the top for the title */
 }
 
