@@ -400,6 +400,40 @@ public:
     {
         return Edge;
     }
+
+    void setPosStatus(PointPos geoPos, int index, ParameterStatus status)
+    {
+        switch (geoPos) {
+            case PointPos::none:
+                setEdge(index, status);
+                break;
+            case PointPos::start:
+                if (index == 0) {
+                    setStartx(status);
+                }
+                else {
+                    setStarty(status);
+                }
+                break;
+            case PointPos::end:
+                if (index == 0) {
+                    setEndx(status);
+                }
+                else {
+                    setEndy(status);
+                }
+                break;
+            case PointPos::mid:
+                if (index == 0) {
+                    setMidx(status);
+                }
+                else {
+                    setMidy(status);
+                }
+                break;
+        }
+    }
+
     void setEdge(ParameterStatus status)
     {
         Edge.setStatus(status);

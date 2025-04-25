@@ -497,35 +497,7 @@ void Sketch::calculateDependentParametersElements()
 
         auto index = std::get<2>(element->second);
 
-        switch (geoPos) {
-            case PointPos::none:
-                solveExt->setEdge(index, SolverGeometryExtension::Dependent);
-                break;
-            case PointPos::start:
-                if (index == 0) {
-                    solveExt->setStartx(SolverGeometryExtension::Dependent);
-                }
-                else {
-                    solveExt->setStarty(SolverGeometryExtension::Dependent);
-                }
-                break;
-            case PointPos::end:
-                if (index == 0) {
-                    solveExt->setEndx(SolverGeometryExtension::Dependent);
-                }
-                else {
-                    solveExt->setEndy(SolverGeometryExtension::Dependent);
-                }
-                break;
-            case PointPos::mid:
-                if (index == 0) {
-                    solveExt->setMidx(SolverGeometryExtension::Dependent);
-                }
-                else {
-                    solveExt->setMidy(SolverGeometryExtension::Dependent);
-                }
-                break;
-        }
+        solveExt->setPosStatus(geoPos, index, SolverGeometryExtension::Dependent);
     }
 
     std::vector<std::vector<double*>> groups;
