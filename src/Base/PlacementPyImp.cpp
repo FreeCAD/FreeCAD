@@ -26,7 +26,7 @@
 #include "GeometryPyCXX.h"
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
-// inclusion of the generated files (generated out of PlacementPy.xml)
+// inclusion of the generated files (generated out of PlacementPy.pyi)
 #include "PlacementPy.h"
 #include "PlacementPy.cpp"
 #include "Matrix.h"

@@ -277,7 +277,7 @@ unsigned int PropertyPath::getMemSize() const
 // PropertyEnumeration
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyEnumeration, App::PropertyInteger)
+TYPESYSTEM_SOURCE(App::PropertyEnumeration, App::Property)
 
 //**************************************************************************
 // Construction/Destruction
