@@ -476,7 +476,8 @@ Select a set and then press the button to view said configurations.</string>
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.
-Trackball Classic: moving the mouse will rotate the part allowing precession</string>
+Trackball Classic: moving the mouse will rotate the part allowing precession
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.</string>
         </property>
         <property name="currentIndex">
          <number>1</number>
@@ -499,6 +500,11 @@ Trackball Classic: moving the mouse will rotate the part allowing precession</st
         <item>
          <property name="text">
           <string>Trackball Classic</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rounded Arcball</string>
          </property>
         </item>
        </widget>
