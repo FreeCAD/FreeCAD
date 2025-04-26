@@ -19,6 +19,11 @@ DlgSettingsPDF::DlgSettingsPDF(QWidget* parent)
     , ui(new Ui_DlgSettingsPDF)
 {
     ui->setupUi(this);
+    ui->warningLabel->setWordWrap(true);
+    connect(ui->comboBox,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            &DlgSettingsPDF::onComboBoxIndexChanged);
 }
  
 DlgSettingsPDF::~DlgSettingsPDF() = default;
@@ -31,6 +36,7 @@ void DlgSettingsPDF::saveSettings()
 void DlgSettingsPDF::loadSettings()
 {
     ui->comboBox->onRestore();
+    onComboBoxIndexChanged(ui->comboBox->currentIndex());
 }
 
 QPagedPaintDevice::PdfVersion DlgSettingsPDF::evaluatePDFVersion()
@@ -52,6 +58,28 @@ QPagedPaintDevice::PdfVersion DlgSettingsPDF::evaluatePDFVersion()
             return QPagedPaintDevice::PdfVersion_X4;
         default:
             return QPagedPaintDevice::PdfVersion_1_4;
+    }
+}
+
+void DlgSettingsPDF::onComboBoxIndexChanged(int index)
+{
+    switch (index) {
+        case 1:
+            ui->warningLabel->setText(
+                QCoreApplication::translate("Gui::Dialog::DlgSettingsPDF", "This archival PDF format does not support transparency or layers. All content must be self-contained and static."));
+            break;
+        case 2:
+            ui->warningLabel->setText(
+                QCoreApplication::translate("Gui::Dialog::DlgSettingsPDF", "While this version supports more modern features, older PDF readers may not fully handle it."));
+            break;
+        case 3:
+            ui->warningLabel->setText(
+                QCoreApplication::translate("Gui::Dialog::DlgSettingsPDF", "This PDF format is intended for professional printing and requires all fonts to be embedded; some interactive features may not be supported."));
+            break;
+        default:
+            ui->warningLabel->setText(
+                QCoreApplication::translate("Gui::Dialog::DlgSettingsPDF", "This PDF version has limited support for modern features like embedded multimedia and advanced transparency effects."));
+            break;
     }
 }
 

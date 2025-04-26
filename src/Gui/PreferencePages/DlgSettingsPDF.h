@@ -2,6 +2,7 @@
 #define GUI_DIALOG_DLGSETTINGSPDF_H
  
 #include <Gui/PropertyPage.h>
+#include <QPagedPaintDevice>
 #include <memory>
  
 namespace Gui {
@@ -28,6 +29,8 @@ protected:
     void changeEvent(QEvent *e) override;
  
 private:
+    void onComboBoxIndexChanged(int index);
+
     std::unique_ptr<Ui_DlgSettingsPDF> ui;
  
 //      Q_DISABLE_COPY_MOVE(DlgSettingsPDF)
