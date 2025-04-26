@@ -1379,31 +1379,40 @@ double Hole::getThreadProfileAngle()
 
 void Hole::findClosestDesignation()
 {
-    // Intended for thread type changes
-    // finds the closest diameter of the new thread type
     int threadType = ThreadType.getValue();
-    if (threadType == -1) {
+    const int numTypes = static_cast<int>(std::size(threadDescription)); 
+
+    if (threadType < 0 || threadType >= numTypes) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type is invalid"));
     }
-    int closestSize = 0;
-    double diameter = ThreadDiameter.getValue();
-    if (diameter == 0)
-        diameter = Diameter.getValue();
-    double closestDifference = std::numeric_limits<double>::infinity();
-    double difference;
 
-    for (size_t i = 0; i < threadDescription[threadType].size(); i++) {
-        difference = threadDescription[threadType][i].diameter - diameter;
-        if (difference == 0) {
-            closestSize = i;
-            break;
-        }
-        if (std::abs(difference) < closestDifference) {
-            closestSize = i;
-            closestDifference = std::abs(difference);
+    double diameter = ThreadDiameter.getValue();
+    if (diameter == 0.0) {
+        diameter = Diameter.getValue();
+    }
+
+    int oldSizeIndex = ThreadSize.getValue();
+    const auto &options = threadDescription[threadType];
+    double targetPitch = 0.0;
+    if (oldSizeIndex >= 0 && oldSizeIndex < static_cast<int>(options.size())) {
+        targetPitch = options[oldSizeIndex].pitch;
+    }
+
+    // Scan all entries to find the minimal (Δdiameter, Δpitch) Euclidean distance
+    size_t bestIndex = 0;
+    double bestMetric = std::numeric_limits<double>::infinity();
+
+    for (size_t i = 0; i < options.size(); ++i) {
+        double dDiff = options[i].diameter - diameter;
+        double pDiff = options[i].pitch - targetPitch;
+        double metric = std::hypot(dDiff, pDiff);
+        if (metric < bestMetric) {
+            bestMetric = metric;
+            bestIndex = i;
         }
     }
-    ThreadSize.setValue(closestSize);
+
+    ThreadSize.setValue(static_cast<int>(bestIndex));
 }
 
 void Hole::onChanged(const App::Property* prop)
