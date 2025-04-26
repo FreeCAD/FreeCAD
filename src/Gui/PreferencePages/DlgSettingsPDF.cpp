@@ -5,6 +5,7 @@
 #endif
  
 #include <App/Application.h>
+#include <Base/Console.h>
  
 #include "DlgSettingsPDF.h"
 #include "ui_DlgSettingsPDF.h"
@@ -36,7 +37,16 @@ void DlgSettingsPDF::saveSettings()
 void DlgSettingsPDF::loadSettings()
 {
     ui->comboBox->onRestore();
-    onComboBoxIndexChanged(ui->comboBox->currentIndex());
+    int currentIndex = ui->comboBox->currentIndex();
+#if QT_VERSION < QT_VERSION_CHECK(6,8,0)
+    if (currentIndex == 3) {
+        Base::Console().Warning("When using another copy of FreeCAD you had set the PDF version to X4, but this build of FreeCAD does not support it. Using 1.4 instead.\n");
+        currentIndex = 0;
+        ui->comboBox->setCurrentIndex(0);
+    }
+    ui->comboBox->removeItem(3);  // PdfVersion_X4
+#endif
+    onComboBoxIndexChanged(currentIndex);
 }
 
 QPagedPaintDevice::PdfVersion DlgSettingsPDF::evaluatePDFVersion()
@@ -54,8 +64,10 @@ QPagedPaintDevice::PdfVersion DlgSettingsPDF::evaluatePDFVersion()
             return QPagedPaintDevice::PdfVersion_A1b;
         case 2:
             return QPagedPaintDevice::PdfVersion_1_6;
+#if QT_VERSION >= QT_VERSION_CHECK(6,8,0)
         case 3:
             return QPagedPaintDevice::PdfVersion_X4;
+#endif
         default:
             return QPagedPaintDevice::PdfVersion_1_4;
     }
