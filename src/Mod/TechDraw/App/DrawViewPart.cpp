@@ -119,7 +119,7 @@ DrawViewPart::DrawViewPart()
 
     ADD_PROPERTY_TYPE(Direction, (0.0, -1.0, 0.0), group, App::Prop_None,
                       "Projection Plane normal. The direction you are looking from.");
-    ADD_PROPERTY_TYPE(XDirection, (0.0, 0.0, 0.0), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(XDirection, (1.0, 0.0, 0.0), group, App::Prop_None,
                       "Projection Plane X Axis in R3. Rotates/Mirrors View");
     ADD_PROPERTY_TYPE(Perspective, (false), group, App::Prop_None,
                       "Perspective(true) or Orthographic(false) projection");
@@ -170,17 +170,17 @@ DrawViewPart::~DrawViewPart()
 
 //! returns a compound of all the shapes from the DocumentObjects in the Source &
 //!  XSource property lists
-TopoDS_Shape DrawViewPart::getSourceShape(bool fuse) const
+TopoDS_Shape DrawViewPart::getSourceShape(bool fuse, bool allow2d) const
 {
 //    Base::Console().Message("DVP::getSourceShape()\n");
     const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty()) {
-        return TopoDS_Shape();
+        return {};
     }
     if (fuse) {
         return ShapeExtractor::getShapesFused(links);
     }
-    return ShapeExtractor::getShapes(links);
+    return ShapeExtractor::getShapes(links, allow2d);
 }
 
 //! deliver a shape appropriate for making a detail view based on this view
@@ -278,7 +278,13 @@ void DrawViewPart::onChanged(const App::Property* prop)
     // Otherwise bad things will happen because there'll be a normalization for direction calculations later.
     Base::Vector3d dir = Direction.getValue();
     if (DrawUtil::fpCompare(dir.Length(), 0.0)) {
+        Base::Console().Warning("%s Direction is null. Using (0, -1, 0).\n", Label.getValue());
         Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
+    }
+    Base::Vector3d xdir = XDirection.getValue();
+    if (DrawUtil::fpCompare(xdir.Length(), 0.0)) {
+        Base::Console().Warning("%s XDirection is null. Using (1, 0, 0).\n", Label.getValue());
+        XDirection.setValue(Base::Vector3d(1.0, 0.0, 0.0));
     }
 
     DrawView::onChanged(prop);
