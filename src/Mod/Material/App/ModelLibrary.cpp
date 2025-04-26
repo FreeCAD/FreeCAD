@@ -22,6 +22,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <string>
+#include <QLatin1Char>
 #endif
 
 #include <QFileInfo>
@@ -80,7 +81,7 @@ ModelLibrary::getModelTree(ModelFilter filter) const
 
         auto model = ModelManager::getManager().getModel(getName(), uuid);
         if (ModelManager::passFilter(filter, model->getType())) {
-            QStringList list = path.split(QStringLiteral("/"));
+            QStringList list = path.split(QLatin1Char('/'));
 
             // Start at the root
             std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> node = modelTree;
