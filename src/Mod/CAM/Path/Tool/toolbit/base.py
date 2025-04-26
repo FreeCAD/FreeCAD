@@ -33,10 +33,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from ..shape.base import ToolBitShape
 from ..shape.registry import SHAPE_REGISTRY
-from ..shape.util import (
-    get_shape_class_from_name,
-    get_shape_filename_from_alias,
-)
 from ..shape import TOOL_BIT_SHAPE_NAMES
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -182,8 +178,7 @@ class ToolBit(ABC):
         elif hasattr(obj, "ShapeFile") and obj.ShapeFile:
             filepath = pathlib.Path(obj.ShapeFile)
         elif hasattr(obj, "ShapeName") and obj.ShapeName:
-            filename = get_shape_filename_from_alias(obj.ShapeName)
-            filepath = SHAPE_REGISTRY.shape_dir / filename
+            filepath = SHAPE_REGISTRY.get_shape_filename_from_alias(obj.ShapeName)
         if filepath is None:
             raise ValueError("ToolBit is missing a shape filename")
         obj.ShapeFile = filepath.name  # Remove the path
@@ -247,7 +242,7 @@ class ToolBit(ABC):
             Path.Log.error(f"Failed removing obsolete BitShape property: {e}")
 
         # Get the schema properties from the current shape
-        shape_cls = get_shape_class_from_name(obj.ShapeName)
+        shape_cls = SHAPE_REGISTRY.get_shape_class_from_name(obj.ShapeName)
         if not shape_cls:
             raise ValueError(
                 f"Failed to find shape class named '{obj.ShapeName}'"

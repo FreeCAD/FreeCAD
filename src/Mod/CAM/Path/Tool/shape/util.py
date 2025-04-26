@@ -3,8 +3,6 @@
 
 import pathlib
 import FreeCAD
-from typing import Optional, Type
-from .base import ToolBitShape
 
 
 def get_mod_dir() -> pathlib.Path:
@@ -44,17 +42,3 @@ def get_builtin_shape_dir() -> pathlib.Path:
     Find the path to a built-in shape dir.
     """
     return get_mod_dir() / "Tools" / "Shape"
-
-
-def get_shape_class_from_name(name: str) -> Optional[Type[ToolBitShape]]:
-    for cls in ToolBitShape.__subclasses__():
-        if cls.name == name or name in cls.aliases:
-            return cls
-    return None
-
-
-def get_shape_filename_from_alias(alias: str) -> Optional[Type[ToolBitShape]]:
-    for cls in ToolBitShape.__subclasses__():
-        if cls.name == alias or alias in cls.aliases:
-            return cls.name.lower() + '.fcstd'
-    return None

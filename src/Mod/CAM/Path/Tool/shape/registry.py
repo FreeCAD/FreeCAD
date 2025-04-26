@@ -3,7 +3,7 @@
 import os
 import pathlib
 import zipfile
-from typing import Optional, Mapping
+from typing import Optional, Mapping, Type
 import Path
 import xml.etree.ElementTree as ET
 from . import util
@@ -21,6 +21,19 @@ class ShapeRegistry:
     def set_dir(self, shapes_dir: pathlib.Path):
         self.shape_dir = shapes_dir
         self.shape_dir.mkdir(parents=True, exist_ok=True)
+
+    @classmethod
+    def get_shape_class_from_name(cls, name: str) -> Optional[Type[ToolBitShape]]:
+        for cls in ToolBitShape.__subclasses__():
+            if cls.name == name or name in cls.aliases:
+                return cls
+        return None
+
+    def get_shape_filename_from_alias(self, alias: str) -> Optional[Type[ToolBitShape]]:
+        for cls in ToolBitShape.__subclasses__():
+            if cls.name == alias or alias in cls.aliases:
+                return self.shape_dir / (cls.name.lower() + '.fcstd')
+        return None
 
     def get_shape_name_from_filename(self, filename: str) -> str:
         # 1st try the most reliable method:
@@ -50,7 +63,7 @@ class ShapeRegistry:
         # 2nd:
         # If the shape name could not be determined (for example because the
         # file does not exist), try to infer it from the filename.
-        fname = util.get_shape_class_from_name(os.path.splitext(filename)[0])
+        fname = self.get_shape_class_from_name(os.path.splitext(filename)[0])
         if fname:
             return fname.name
 
@@ -65,11 +78,10 @@ class ShapeRegistry:
         # alias if the file does not exist.
         filepath = self.shape_dir / filename
         if not filepath.exists():
-            fname = util.get_shape_filename_from_alias(os.path.splitext(filename)[0])
-            if not fname:
+            filepath = self.get_shape_filename_from_alias(os.path.splitext(filename)[0])
+            if not filepath:
                 raise Exception(f"ToolBitShape file '{filename}' not found!\n")
-            Path.Log.warning(f"ToolBitShape '{filename}' not found. Trying legacy '{fname}'\n")
-            filepath = self.shape_dir / fname
+            Path.Log.warning(f"ToolBitShape '{filename}' not found. Trying legacy '{filepath}'\n")
 
         return ToolBitShape.from_file(filepath, **params)
 
