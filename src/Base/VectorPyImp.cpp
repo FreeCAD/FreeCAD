@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 #include <sstream>
 #endif
 
+#include "GeometryPyCXX.h"
 #include "Vector3D.h"
 
-// inclusion of the generated files (generated out of VectorPy.pyi)
-#include "GeometryPyCXX.h"
+// generated out of Vector.pyi
 #include "VectorPy.h"
 #include "VectorPy.cpp"
 
