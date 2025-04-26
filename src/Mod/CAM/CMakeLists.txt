@@ -120,8 +120,20 @@ SET(PathPythonTools_SRCS
 
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
+    Path/Tool/toolbit/ballend.py
     Path/Tool/toolbit/base.py
+    Path/Tool/toolbit/bullnose.py
+    Path/Tool/toolbit/chamfer.py
+    Path/Tool/toolbit/dovetail.py
+    Path/Tool/toolbit/drill.py
+    Path/Tool/toolbit/endmill.py
+    Path/Tool/toolbit/probe.py
+    Path/Tool/toolbit/reamer.py
+    Path/Tool/toolbit/slittingsaw.py
+    Path/Tool/toolbit/tap.py
+    Path/Tool/toolbit/threadmill.py
     Path/Tool/toolbit/util.py
+    Path/Tool/toolbit/vbit.py
 )
 
 SET(PathPythonToolsGui_SRCS
@@ -584,7 +596,7 @@ INSTALL(
     FILES
         ${PathPythonToolsShape_SRCS}
     DESTINATION
-        Mod/CAM/Path/Tool/Shape
+        Mod/CAM/Path/Tool/shape
 )
 
 INSTALL(
