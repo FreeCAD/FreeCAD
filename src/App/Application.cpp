@@ -962,7 +962,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // add it to _pendingDocsReopen to delay reloading.
                         for(auto obj2 : doc->getObjects())
                             objNames.emplace_back(obj2->getNameInDocument());
-                        _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
+                        _pendingDocMap[doc->FileName.getValue()] = objNames;
                         break;
                     }
                 }
@@ -2147,6 +2147,7 @@ void Application::initTypes()
             (DocumentObject::getClassTypeId());
 
     // register exception producer types
+    // NOLINTBEGIN
     new Base::ExceptionProducer<Base::AbortException>;
     new Base::ExceptionProducer<Base::XMLBaseException>;
     new Base::ExceptionProducer<Base::XMLParseException>;
@@ -2179,6 +2180,7 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
     new Base::ExceptionProducer<Base::PropertyError>;
+    // NOLINTEND
 
     Base::registerServiceImplementation<CenterOfMassProvider>(new NullCenterOfMass);
 }
@@ -3421,9 +3423,9 @@ std::string Application::FindHomePath(const char* sCall)
     }
 
     // should be an absolute path now
-    std::string::size_type pos = absPath.find_last_of("/");
+    std::string::size_type pos = absPath.find_last_of('/');
     homePath.assign(absPath,0,pos);
-    pos = homePath.find_last_of("/");
+    pos = homePath.find_last_of('/');
     homePath.assign(homePath,0,pos+1);
 
     return homePath;
