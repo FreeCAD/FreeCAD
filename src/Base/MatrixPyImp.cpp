@@ -40,7 +40,7 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string MatrixPy::representation() const
 {
-    const Base::Matrix4D& m = *(this->getMatrixPtr());
+    const Matrix4D& m = *(this->getMatrixPtr());
     std::stringstream str;
     str << "Matrix (";
     str << "(" << m[0][0] << "," << m[0][1] << "," << m[0][2] << "," << m[0][3] << ")"
@@ -88,7 +88,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     PyObject* o {};
-    if (PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
+    if (PyArg_ParseTuple(args, "O!", &(MatrixPy::Type), &o)) {
         MatrixPy::PointerType ptr = getMatrixPtr();
         (*ptr) = static_cast<MatrixPy*>(o)->value();
         return 0;
@@ -100,14 +100,14 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* o3 {};
     PyObject* o4 {};
     if (PyArg_ParseTuple(args, "O!O!O!|O!",
-                         &(Base::VectorPy::Type), &o1,
-                         &(Base::VectorPy::Type), &o2,
-                         &(Base::VectorPy::Type), &o3,
-                         &(Base::VectorPy::Type), &o4)) {
-        Base::Vector3d v1 = Py::Vector(o1, false).toVector();
-        Base::Vector3d v2 = Py::Vector(o2, false).toVector();
-        Base::Vector3d v3 = Py::Vector(o3, false).toVector();
-        Base::Vector3d v4;
+                         &(VectorPy::Type), &o1,
+                         &(VectorPy::Type), &o2,
+                         &(VectorPy::Type), &o3,
+                         &(VectorPy::Type), &o4)) {
+        Vector3d v1 = Py::Vector(o1, false).toVector();
+        Vector3d v2 = Py::Vector(o2, false).toVector();
+        Vector3d v3 = Py::Vector(o3, false).toVector();
+        Vector3d v4;
         if (o4) {
             v4 = Py::Vector(o4, false).toVector();
         }
@@ -147,8 +147,8 @@ PyObject* MatrixPy::number_add_handler(PyObject* self, PyObject* other)
         PyErr_SetString(PyExc_TypeError, "Second arg must be Matrix");
         return nullptr;
     }
-    Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
-    Base::Matrix4D b = static_cast<MatrixPy*>(other)->value();
+    Matrix4D a = static_cast<MatrixPy*>(self)->value();
+    Matrix4D b = static_cast<MatrixPy*>(other)->value();
     return new MatrixPy(a + b);
 }
 
@@ -162,15 +162,15 @@ PyObject* MatrixPy::number_subtract_handler(PyObject* self, PyObject* other)
         PyErr_SetString(PyExc_TypeError, "Second arg must be Matrix");
         return nullptr;
     }
-    Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
-    Base::Matrix4D b = static_cast<MatrixPy*>(other)->value();
+    Matrix4D a = static_cast<MatrixPy*>(self)->value();
+    Matrix4D b = static_cast<MatrixPy*>(other)->value();
     return new MatrixPy(a - b);
 }
 
 PyObject* MatrixPy::number_multiply_handler(PyObject* self, PyObject* other)
 {
     if (PyObject_TypeCheck(self, &(MatrixPy::Type))) {
-        Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
+        Matrix4D a = static_cast<MatrixPy*>(self)->value();
 
         if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
             auto b = static_cast<VectorPy*>(other)->value();
@@ -190,7 +190,7 @@ PyObject* MatrixPy::number_multiply_handler(PyObject* self, PyObject* other)
         }
 
         if (PyObject_TypeCheck(other, &(MatrixPy::Type))) {
-            Base::Matrix4D b = static_cast<MatrixPy*>(other)->value();
+            Matrix4D b = static_cast<MatrixPy*>(other)->value();
             return new MatrixPy(a * b);
         }
 
@@ -213,7 +213,7 @@ PyObject* MatrixPy::number_power_handler(PyObject* self, PyObject* other, PyObje
         return nullptr;
     }
 
-    Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
+    Matrix4D a = static_cast<MatrixPy*>(self)->value();
 
     long b = Py::Long(other);
     if (b == 0) {
@@ -269,7 +269,7 @@ PyObject* MatrixPy::move(PyObject* args)
     double x {};
     double y {};
     double z {};
-    Base::Vector3d vec;
+    Vector3d vec;
     PyObject* pcVecObj {};
 
     do {  // dummy do..while for cascaded if
@@ -289,10 +289,10 @@ PyObject* MatrixPy::move(PyObject* args)
         PyErr_Clear();
         if (PyArg_ParseTuple(args,
                              "O!;three floats, or a tuple, or a vector is needed",
-                             &(Base::VectorPy::Type),
+                             &(VectorPy::Type),
                              &pcVecObj)) {
-            Base::VectorPy* pcObject = static_cast<Base::VectorPy*>(pcVecObj);
-            Base::Vector3d* val = pcObject->getVectorPtr();
+            VectorPy* pcObject = static_cast<VectorPy*>(pcVecObj);
+            Vector3d* val = pcObject->getVectorPtr();
             vec.Set(val->x, val->y, val->z);
             break;
         }
@@ -312,7 +312,7 @@ PyObject* MatrixPy::scale(PyObject* args)
     double x {};
     double y {};
     double z {};
-    Base::Vector3d vec;
+    Vector3d vec;
     PyObject* pcVecObj {};
 
     do {  // dummy do..while for cascaded if
@@ -338,10 +338,10 @@ PyObject* MatrixPy::scale(PyObject* args)
         PyErr_Clear();
         if (PyArg_ParseTuple(args,
                              "O!;one or three floats, or a tuple, or a vector is needed",
-                             &(Base::VectorPy::Type),
+                             &(VectorPy::Type),
                              &pcVecObj)) {
-            Base::VectorPy* pcObject = static_cast<Base::VectorPy*>(pcVecObj);
-            Base::Vector3d* val = pcObject->getVectorPtr();
+            VectorPy* pcObject = static_cast<VectorPy*>(pcVecObj);
+            Vector3d* val = pcObject->getVectorPtr();
             vec.Set(val->x, val->y, val->z);
             break;
         }
@@ -430,7 +430,7 @@ PyObject* MatrixPy::isUnity(PyObject* args) const
 
 PyObject* MatrixPy::transform(PyObject* args)
 {
-    Base::Vector3d vec;
+    Vector3d vec;
     Matrix4D mat;
     PyObject* pcVecObj {};
     PyObject* pcMatObj {};
@@ -438,15 +438,15 @@ PyObject* MatrixPy::transform(PyObject* args)
     if (!PyArg_ParseTuple(
             args,
             "O!O!: a transform point (Vector) and a transform matrix (Matrix) is needed",
-            &(Base::VectorPy::Type),
+            &(VectorPy::Type),
             &pcVecObj,
             &(MatrixPy::Type),
             &pcMatObj)) {
         return nullptr;
     }
 
-    Base::VectorPy* pcObject = static_cast<Base::VectorPy*>(pcVecObj);
-    Base::Vector3d* val = pcObject->getVectorPtr();
+    VectorPy* pcObject = static_cast<VectorPy*>(pcVecObj);
+    Vector3d* val = pcObject->getVectorPtr();
     vec.Set(val->x, val->y, val->z);
     mat = *(static_cast<MatrixPy*>(pcMatObj)->getMatrixPtr());
 
@@ -467,7 +467,7 @@ PyObject* MatrixPy::col(PyObject* args) const
     }
 
     Matrix4D* mat = getMatrixPtr();
-    Base::Vector3d v = mat->getCol(index);
+    Vector3d v = mat->getCol(index);
     return Py::new_reference_to(Py::Vector(v));
 }
 
@@ -484,7 +484,7 @@ PyObject* MatrixPy::setCol(PyObject* args)
         return nullptr;
     }
 
-    Base::Vector3d v = Py::Vector(o, false).toVector();
+    Vector3d v = Py::Vector(o, false).toVector();
     Matrix4D* mat = getMatrixPtr();
     mat->setCol(index, v);
     Py_Return;
@@ -503,7 +503,7 @@ PyObject* MatrixPy::row(PyObject* args) const
     }
 
     Matrix4D* mat = getMatrixPtr();
-    Base::Vector3d v = mat->getRow(index);
+    Vector3d v = mat->getRow(index);
     return Py::new_reference_to(Py::Vector(v));
 }
 
@@ -520,7 +520,7 @@ PyObject* MatrixPy::setRow(PyObject* args)
         return nullptr;
     }
 
-    Base::Vector3d v = Py::Vector(o, false).toVector();
+    Vector3d v = Py::Vector(o, false).toVector();
     Matrix4D* mat = getMatrixPtr();
     mat->setRow(index, v);
     Py_Return;
@@ -529,7 +529,7 @@ PyObject* MatrixPy::setRow(PyObject* args)
 PyObject* MatrixPy::diagonal() const
 {
     Matrix4D* mat = getMatrixPtr();
-    Base::Vector3d v = mat->diagonal();
+    Vector3d v = mat->diagonal();
     return Py::new_reference_to(Py::Vector(v));
 }
 
@@ -540,7 +540,7 @@ PyObject* MatrixPy::setDiagonal(PyObject* args)
         return nullptr;
     }
 
-    Base::Vector3d v = Py::Vector(o, false).toVector();
+    Vector3d v = Py::Vector(o, false).toVector();
     Matrix4D* mat = getMatrixPtr();
     mat->setDiagonal(v);
     Py_Return;
@@ -551,10 +551,10 @@ PyObject* MatrixPy::rotateX(PyObject* args)
     double angle = 0;
     do {
         PyObject* object {};
-        if (PyArg_ParseTuple(args, "O!", &(Base::QuantityPy::Type), &object)) {
-            Quantity* q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
-            if (q->getUnit() == Base::Unit::Angle) {
-                angle = q->getValueAs(Base::Quantity::Radian);
+        if (PyArg_ParseTuple(args, "O!", &(QuantityPy::Type), &object)) {
+            Quantity* q = static_cast<QuantityPy*>(object)->getQuantityPtr();
+            if (q->getUnit() == Unit::Angle) {
+                angle = q->getValueAs(Quantity::Radian);
                 break;
             }
         }
@@ -581,10 +581,10 @@ PyObject* MatrixPy::rotateY(PyObject* args)
     double angle = 0;
     do {
         PyObject* object {};
-        if (PyArg_ParseTuple(args, "O!", &(Base::QuantityPy::Type), &object)) {
-            Quantity* q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
-            if (q->getUnit() == Base::Unit::Angle) {
-                angle = q->getValueAs(Base::Quantity::Radian);
+        if (PyArg_ParseTuple(args, "O!", &(QuantityPy::Type), &object)) {
+            Quantity* q = static_cast<QuantityPy*>(object)->getQuantityPtr();
+            if (q->getUnit() == Unit::Angle) {
+                angle = q->getValueAs(Quantity::Radian);
                 break;
             }
         }
@@ -611,10 +611,10 @@ PyObject* MatrixPy::rotateZ(PyObject* args)
     double angle = 0;
     do {
         PyObject* object {};
-        if (PyArg_ParseTuple(args, "O!", &(Base::QuantityPy::Type), &object)) {
-            Quantity* q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
-            if (q->getUnit() == Base::Unit::Angle) {
-                angle = q->getValueAs(Base::Quantity::Radian);
+        if (PyArg_ParseTuple(args, "O!", &(QuantityPy::Type), &object)) {
+            Quantity* q = static_cast<QuantityPy*>(object)->getQuantityPtr();
+            if (q->getUnit() == Unit::Angle) {
+                angle = q->getValueAs(Quantity::Radian);
                 break;
             }
         }
@@ -640,13 +640,13 @@ PyObject* MatrixPy::multiply(PyObject* args) const
 {
     PyObject* o {};
     if (PyArg_ParseTuple(args, "O!", &(MatrixPy::Type), &o)) {
-        Matrix4D mat = (*getMatrixPtr()) * static_cast<Base::MatrixPy*>(o)->value();
+        Matrix4D mat = (*getMatrixPtr()) * static_cast<MatrixPy*>(o)->value();
         return new MatrixPy(new Matrix4D(mat));
     }
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &o)) {
-        Vector3d vec = (*getMatrixPtr()) * static_cast<Base::VectorPy*>(o)->value();
+        Vector3d vec = (*getMatrixPtr()) * static_cast<VectorPy*>(o)->value();
         return new VectorPy(new Vector3d(vec));
     }
 
@@ -661,7 +661,7 @@ PyObject* MatrixPy::multVec(PyObject* args) const
         return nullptr;
     }
 
-    Base::Vector3d vec(static_cast<VectorPy*>(obj)->value());
+    Vector3d vec(static_cast<VectorPy*>(obj)->value());
     getMatrixPtr()->multVec(vec, vec);
     return new VectorPy(new Vector3d(vec));
 }
@@ -675,7 +675,7 @@ PyObject* MatrixPy::invert()
             Py_Return;
         }
 
-        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
+        PyErr_SetString(PyExc_FC_GeneralError, "Cannot invert singular matrix");
         return nullptr;
     }
     PY_CATCH;
@@ -686,12 +686,12 @@ PyObject* MatrixPy::inverse() const
     PY_TRY
     {
         if (fabs(getMatrixPtr()->determinant()) > std::numeric_limits<double>::epsilon()) {
-            Base::Matrix4D m = *getMatrixPtr();
+            Matrix4D m = *getMatrixPtr();
             m.inverseGauss();
             return new MatrixPy(m);
         }
 
-        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
+        PyErr_SetString(PyExc_FC_GeneralError, "Cannot invert singular matrix");
         return nullptr;
     }
     PY_CATCH;
@@ -714,8 +714,8 @@ PyObject* MatrixPy::submatrix(PyObject* args) const
         return nullptr;
     }
 
-    const Base::Matrix4D& mat = *getMatrixPtr();
-    Base::Matrix4D sub;
+    const Matrix4D& mat = *getMatrixPtr();
+    Matrix4D sub;
     switch (dim) {
         case 1:
             sub[0][0] = mat[0][0];
@@ -752,8 +752,8 @@ PyObject* MatrixPy::isOrthogonal(PyObject* args) const
         return nullptr;
     }
 
-    const Base::Matrix4D& mat = *getMatrixPtr();
-    Base::Matrix4D trp = mat;
+    const Matrix4D& mat = *getMatrixPtr();
+    Matrix4D trp = mat;
     trp.transpose();
     trp = trp * mat;
 
@@ -783,7 +783,7 @@ PyObject* MatrixPy::transposed() const
 {
     PY_TRY
     {
-        Base::Matrix4D m = *getMatrixPtr();
+        Matrix4D m = *getMatrixPtr();
         m.transpose();
         return new MatrixPy(m);
     }
@@ -1045,7 +1045,7 @@ PyObject* MatrixPy::number_negative_handler(PyObject* self)
         return nullptr;
     }
 
-    Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
+    Matrix4D a = static_cast<MatrixPy*>(self)->value();
     return new MatrixPy(a * -1);
 }
 
@@ -1056,7 +1056,7 @@ PyObject* MatrixPy::number_positive_handler(PyObject* self)
         return nullptr;
     }
 
-    Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
+    Matrix4D a = static_cast<MatrixPy*>(self)->value();
     return new MatrixPy(a);
 }
 

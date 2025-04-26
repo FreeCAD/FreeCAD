@@ -43,7 +43,7 @@ PyObject* BaseClassPy::isDerivedFrom(PyObject* args) const
         return nullptr;
     }
 
-    Base::Type type = Base::Type::fromName(name);
+    auto type = Type::fromName(name);
     bool valid = (!type.isBad() && getBaseClassPtr()->isDerivedFrom(type));
     return PyBool_FromLong(valid ? 1 : 0);
 }
@@ -55,7 +55,7 @@ PyObject* BaseClassPy::getAllDerivedFrom(PyObject* args) const
     }
 
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
+    Type::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
     Py::List res;
     for (const auto& it : ary) {
         res.append(Py::String(it.getName()));

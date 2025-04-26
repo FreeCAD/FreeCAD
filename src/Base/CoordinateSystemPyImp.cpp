@@ -132,7 +132,7 @@ Py::Object CoordinateSystemPy::getAxis() const
 
 void CoordinateSystemPy::setAxis(Py::Object arg)
 {
-    if (PyObject_TypeCheck(arg.ptr(), &(Base::AxisPy::Type))) {
+    if (PyObject_TypeCheck(arg.ptr(), &(AxisPy::Type))) {
         AxisPy* axis = static_cast<AxisPy*>(arg.ptr());
         getCoordinateSystemPtr()->setAxis(*axis->getAxisPtr());
         return;
