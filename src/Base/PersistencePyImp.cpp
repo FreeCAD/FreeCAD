@@ -43,7 +43,7 @@ std::string PersistencePy::representation() const
 
 Py::String PersistencePy::getContent() const
 {
-    Base::StringWriter writer;
+    StringWriter writer;
     // force all objects to write pure XML without files
     writer.setForceXML(true);
     getPersistencePtr()->Save(writer);
@@ -61,7 +61,7 @@ PyObject* PersistencePy::dumpContent(PyObject* args, PyObject* kwds) const
     int compression = 3;
     static const std::array<const char*, 2> kwds_def {"Compression", nullptr};
     PyErr_Clear();
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|i", kwds_def, &compression)) {
+    if (!Wrapped_ParseTupleAndKeywords(args, kwds, "|i", kwds_def, &compression)) {
         return nullptr;
     }
 
@@ -71,7 +71,7 @@ PyObject* PersistencePy::dumpContent(PyObject* args, PyObject* kwds) const
     try {
         getPersistencePtr()->dumpToStream(stream, compression);
     }
-    catch (Base::NotImplementedError&) {
+    catch (NotImplementedError&) {
         PyErr_SetString(PyExc_NotImplementedError,
                         "Dumping content of this object type is not implemented");
         return nullptr;
