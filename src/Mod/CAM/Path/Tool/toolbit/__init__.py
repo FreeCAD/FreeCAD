@@ -4,11 +4,11 @@
 # Import the base class and all concrete shape classes
 from .base import ToolBit, Factory as ToolBitFactory
 
-from .ballend import ToolBitBallEnd
+from .ballend import ToolBitBallend
 from .chamfer import ToolBitChamfer
 from .dovetail import ToolBitDovetail
 from .drill import ToolBitDrill
-from .endmill import ToolBitEndMill
+from .endmill import ToolBitEndmill
 from .probe import ToolBitProbe
 from .reamer import ToolBitReamer
 from .slittingsaw import ToolBitSlittingSaw
@@ -24,11 +24,11 @@ from .vbit import ToolBitVBit
 __all__ = [
     "ToolBit",
     "ToolBitFactory",
-    "ToolBitBallEnd",
+    "ToolBitBallend",
     "ToolBitChamfer",
     "ToolBitDovetail",
     "ToolBitDrill",
-    "ToolBitEndMill",
+    "ToolBitEndmill",
     "ToolBitProbe",
     "ToolBitReamer",
     "ToolBitSlittingSaw",

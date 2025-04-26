@@ -1,24 +1,23 @@
 # -*- coding: utf-8 -*-
 
 import FreeCAD
-from typing import Any, Mapping, Tuple, Union, Optional, cast
+from typing import Any, Mapping, Tuple, Union, Optional
 import Path
 from .base import ToolBit
-from ..shape.ballend import ToolBitShapeBallEnd
-from ..shape.util import get_shape_from_name
+from ..shape.ballend import ToolBitShapeBallend
 import pathlib
 
 
-class ToolBitBallEnd(ToolBit):
-    SHAPE_CLASS = ToolBitShapeBallEnd
+class ToolBitBallend(ToolBit):
+    SHAPE_CLASS = ToolBitShapeBallend
 
     def __init__(
         self,
         obj,
-        shape: ToolBitShapeBallEnd,
+        shape: ToolBitShapeBallend,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(f"ToolBitBallEnd __init__ called for {obj.Label}")
+        Path.Log.track(f"ToolBitBallend __init__ called for {obj.Label}")
         super().__init__(obj, shape, path)
 
     @classmethod
@@ -32,7 +31,7 @@ class ToolBitBallEnd(ToolBit):
         that are not part of the shape file.
         """
         return {
-            **super(ToolBitBallEnd, cls).schema(),
+            **super(ToolBitBallend, cls).schema(),
             "Chipload": (
                 FreeCAD.Qt.translate("ToolBit", "Chipload"),
                 "App::PropertyLength",

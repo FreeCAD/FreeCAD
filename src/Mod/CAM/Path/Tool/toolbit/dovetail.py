@@ -5,7 +5,6 @@ from typing import Any, Mapping, Tuple, Union, Optional, cast
 import Path
 from .base import ToolBit
 from ..shape.dovetail import ToolBitShapeDovetail
-from ..shape.util import get_shape_from_name
 import pathlib
 
 

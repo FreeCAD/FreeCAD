@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import FreeCAD
-from typing import Any, Mapping, Tuple, Union, Optional, cast
+from typing import Any, Mapping, Tuple, Union, Optional
 import Path
 from .base import ToolBit
 from ..shape.bullnose import ToolBitShapeBullnose
-from ..shape.util import get_shape_from_name
 import pathlib
 
 

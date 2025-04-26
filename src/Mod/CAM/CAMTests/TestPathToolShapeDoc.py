@@ -85,51 +85,6 @@ class TestPathToolShapeDoc(unittest.TestCase):
         found = doc.find_shape_object(mock_doc)
         self.assertIsNone(found)
 
-    def test_doc_find_property_object(self):
-        """Test find_property_object finds the 'Attributes' PropertyBag."""
-        # Mock a PropertyBag object named "Attributes" using MagicMock directly
-        attributes_obj = MagicMock(Label="Attributes")
-        attributes_obj.Properties = []  # Simulate having a 'Properties' attribute
-
-        # Test case 1: Object is present and named "Attributes"
-        mock_doc.Objects = [MagicMock(), attributes_obj, MagicMock()]
-        found = doc.find_property_object(mock_doc)
-        self.assertEqual(found, attributes_obj)
-
-        # Test case 2: Object is present but has a different name (using a simple object)
-        class SimpleObject:
-            def __init__(self, name, properties=None):
-                self.Name = name
-                if properties is not None:
-                    self.Properties = properties
-
-        other_obj = SimpleObject(name="OtherAttributes", properties=[])
-        mock_doc.Objects = [MagicMock(), other_obj, MagicMock()]
-        found = doc.find_property_object(mock_doc)
-        self.assertIsNone(found)
-
-        # Test case 3: Object is present but not a PropertyBag (no 'Properties') (using a simple object)
-        not_a_propertybag = SimpleObject(name="Attributes")  # No properties attribute
-        mock_doc.Objects = [MagicMock(), not_a_propertybag, MagicMock()]
-        found = doc.find_property_object(mock_doc)
-        self.assertIsNone(found)
-
-        # Test case 4: No objects in the document
-        mock_doc.Objects = []
-        found = doc.find_property_object(mock_doc)
-        self.assertIsNone(found)
-
-        # Test case 5: Object is present but has no Name attribute (using a simple object)
-        class SimpleObjectNoName:
-            def __init__(self, properties=None):
-                if properties is not None:
-                    self.Properties = properties
-
-        no_name_obj = SimpleObjectNoName(properties=[])
-        mock_doc.Objects = [MagicMock(), no_name_obj, MagicMock()]
-        found = doc.find_property_object(mock_doc)
-        self.assertIsNone(found)
-
     def test_doc_get_object_properties_found(self):
         """Test get_object_properties extracts existing properties."""
         setattr(mock_obj, "Diameter", "10 mm")

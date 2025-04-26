@@ -34,11 +34,12 @@ from CAMTests.PathTestUtils import PathTestBase
 
 def createTool(name="t1", diameter=1.75):
     attrs = {
-        "shape": "endmill",
+        "name": name or "t1",
+        "shape": "endmill.fcstd",
         "parameter": {"Diameter": diameter},
         "attribute": [],
     }
-    return ToolBitFactory.CreateFromAttrs(attrs, name)
+    return ToolBitFactory.create_bit_from_dict(attrs)
 
 
 class TestPathHelpers(PathTestBase):

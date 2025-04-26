@@ -2,15 +2,13 @@
 # Defines the Reamer tool bit shape.
 
 import FreeCAD
-from typing import Tuple, Mapping, Any, Union
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeReamer(ToolBitShape):
-    name = "reamer"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "Reamer"
+    aliases = ("reamer",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

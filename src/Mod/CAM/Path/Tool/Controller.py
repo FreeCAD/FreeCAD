@@ -113,7 +113,7 @@ class ToolController:
             self.ensureToolBit(obj)
 
     @classmethod
-    def propertyEnumerations(self, dataType="data"):
+    def propertyEnumerations(cls, dataType="data"):
         """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
         Args:
             dataType = 'data', 'raw', 'translated'
@@ -186,7 +186,7 @@ class ToolController:
                         ToolControllerTemplate.Version
                     )
                     if toolVersion == 2:
-                        obj.Tool = ToolBitFactory.CreateFromAttrs(
+                        obj.Tool = ToolBitFactory.create_bit_from_dict(
                             template.get(ToolControllerTemplate.Tool)
                         )
                     else:
@@ -297,7 +297,7 @@ def Create(
 
     if assignTool:
         if not tool:
-            tool = ToolBitFactory.Create("endmill")
+            tool = ToolBitFactory.create_bit()
             if tool.ViewObject:
                 tool.ViewObject.Visibility = False
         obj.Tool = tool

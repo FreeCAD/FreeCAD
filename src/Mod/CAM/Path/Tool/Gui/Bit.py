@@ -21,6 +21,8 @@
 # ***************************************************************************
 
 import os
+import pathlib
+from typing import Mapping, Optional
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -162,38 +164,37 @@ class TaskPanel:
 
 
 class ToolBitGuiFactory(Path.Tool.toolbit.base.ToolBitFactory):
-    def CreateFromAttrs(self, attrs, name="ToolBit", path=None, shape_path=None, document=None):
+    def create_bit_from_dict(self, attrs: Mapping, filepath: Optional[pathlib.Path]=None):
         """
         Creates a new tool bit from attributes.
         This method is overridden to attach the ViewProvider.
         """
-        Path.Log.track(attrs, name, path, document)
+        Path.Log.track(attrs)
 
         # Use the base class factory to create the tool bit object
-        tool = super().CreateFromAttrs(attrs, name, path, shape_path, document)
+        tool = super().create_bit_from_dict(attrs, filepath)
+        if not tool:
+            raise Exception("failed to create tool from {attrs} ({filepath})")
 
         # Attach the ViewProvider if the tool object has a ViewObject
         if hasattr(tool, "ViewObject") and tool.ViewObject:
-            PathIconViewProvider.Attach(tool.ViewObject, name)
+            PathIconViewProvider.Attach(tool.ViewObject, tool.Label)
         else:
             FreeCAD.Console.PrintWarning(
-                f"WARNING: ViewObject not available for tool {name}. "
+                f"WARNING: ViewObject not available for tool {tool.Label}. "
                 "ViewProvider not attached.\n"
             )
 
         return tool
 
-    def Create(self, path: str, shape_path=None):
+    def create_bit(self, path: str, shape_path=None):
         """
         Creates a new tool bit.
         It is assumed the tool will be edited immediately so the internal bit
         body is still attached.
         """
         Path.Log.track(path, shape_path)
-
-        # Use the base class factory to create the tool bit object
-        # The ViewProvider attachment is now handled in CreateFromAttrs
-        return super().Create(path, shape_path)
+        return super().create_bit(path, shape_path)
 
 
 def isValidFileName(filename):
@@ -275,14 +276,14 @@ def LoadTool(parent=None):
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
     """
     foo = GetToolFile(parent)
-    return ToolBitFactory.CreateFrom(foo) if foo else foo
+    return ToolBitFactory.create_bit_from_file(foo) if foo else foo
 
 
 def LoadTools(parent=None):
     """
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
     """
-    return [ToolBitFactory.CreateFrom(foo) for foo in GetToolFiles(parent)]
+    return [ToolBitFactory.create_bit_from_file(foo) for foo in GetToolFiles(parent)]
 
 
 # Set the factory so all tools are created with UI

@@ -4,20 +4,20 @@ import FreeCAD
 from typing import Any, Mapping, Tuple, Union, Optional
 import Path
 from .base import ToolBit
-from ..shape.endmill import ToolBitShapeEndMill
+from ..shape.endmill import ToolBitShapeEndmill
 import pathlib
 
 
-class ToolBitEndMill(ToolBit):
-    SHAPE_CLASS = ToolBitShapeEndMill
+class ToolBitEndmill(ToolBit):
+    SHAPE_CLASS = ToolBitShapeEndmill
 
     def __init__(
         self,
         obj,
-        shape: ToolBitShapeEndMill,
+        shape: ToolBitShapeEndmill,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(f"ToolBitEndMill __init__ called for {obj.Label}")
+        Path.Log.track(f"ToolBitEndmill __init__ called for {obj.Label}")
         super().__init__(obj, shape, path)
 
     @classmethod
@@ -31,7 +31,7 @@ class ToolBitEndMill(ToolBit):
         that are not part of the shape file.
         """
         return {
-            **super(ToolBitEndMill, cls).schema(),
+            **super(ToolBitEndmill, cls).schema(),
             "Chipload": (
                 FreeCAD.Qt.translate("ToolBit", "Chipload"),
                 "App::PropertyLength",

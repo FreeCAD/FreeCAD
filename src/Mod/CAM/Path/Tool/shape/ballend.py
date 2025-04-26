@@ -2,12 +2,13 @@
 # Defines the BallEnd tool bit shape.
 
 import FreeCAD
-from typing import Union, Tuple, Mapping, Any
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
-class ToolBitShapeBallEnd(ToolBitShape):
-    name: str = "ballend"
+class ToolBitShapeBallend(ToolBitShape):
+    name: str = "Ballend"
+    aliases = ("ballend",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

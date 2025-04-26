@@ -2,16 +2,13 @@
 # Defines the ThreadMill tool bit shape.
 
 import FreeCAD
-from typing import Tuple, Union, Mapping, Any
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeThreadMill(ToolBitShape):
-    name = "thread-mill"
-    aliases: Tuple[str, ...] = ("threadmill",)
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "ThreadMill"
+    aliases = "threadmill", "thread-mill"
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

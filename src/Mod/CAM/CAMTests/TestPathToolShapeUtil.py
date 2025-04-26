@@ -2,9 +2,14 @@
 # Unit tests for the Path.Tool.shape module and its utilities.
 
 import unittest
-from pathlib import Path
-from unittest.mock import patch, MagicMock, call
-from Path.Tool.shape import util, ToolBitShapeBallEnd, ToolBitShapeVBit
+from unittest.mock import MagicMock
+from Path.Tool.shape import (
+    util,
+    ToolBitShapeBallend,
+    ToolBitShapeVBit,
+    ToolBitShapeBullnose,
+    ToolBitShapeSlittingSaw,
+)
 
 mock_freecad = MagicMock(Name="FreeCAD_Mock")
 mock_freecad.Console = MagicMock()
@@ -45,11 +50,11 @@ class TestPathToolShapeUtil(unittest.TestCase):
 
     def test_get_shape_class(self):
         """Test the get_shape_class function."""
-        self.assertEqual(util.get_shape_class_from_name("ballend"), ToolBitShapeBallEnd)
+        self.assertEqual(util.get_shape_class_from_name("ballend"), ToolBitShapeBallend)
         self.assertEqual(util.get_shape_class_from_name("v-bit"), ToolBitShapeVBit)
-        self.assertEqual(
-            util.get_shape_class_from_name("vbit"), ToolBitShapeVBit  # test using alias
-        )
+        self.assertEqual(util.get_shape_class_from_name("VBit"), ToolBitShapeVBit)
+        self.assertEqual(util.get_shape_class_from_name("torus"), ToolBitShapeBullnose)
+        self.assertEqual(util.get_shape_class_from_name("slitting-saw"), ToolBitShapeSlittingSaw)
         self.assertIsNone(util.get_shape_class_from_name("nonexistent"))
 
 

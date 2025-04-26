@@ -2,16 +2,13 @@
 # Defines the Torus (Bullnose) tool bit shape.
 
 import FreeCAD
-from typing import Dict, Tuple, Union, Mapping, Any
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeBullnose(ToolBitShape):
-    name = "bullnose"
-    aliases = ("torus",)
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "Bullnose"
+    aliases = "bullnose", "torus"
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

@@ -2,15 +2,13 @@
 # Defines the Tap tool bit shape.
 
 import FreeCAD
-from typing import Tuple, Mapping, Any, Union
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeTap(ToolBitShape):
-    name = "tap"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "Tap"
+    aliases = ("Tap",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

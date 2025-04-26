@@ -2,15 +2,13 @@
 # Defines the Drill tool bit shape.
 
 import FreeCAD
-from typing import Tuple, Union, Mapping, Any
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeDrill(ToolBitShape):
-    name = "drill"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "Drill"
+    aliases = ("drill",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

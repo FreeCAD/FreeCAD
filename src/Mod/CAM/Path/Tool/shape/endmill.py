@@ -2,15 +2,13 @@
 # Defines the EndMill tool bit shape.
 
 import FreeCAD
-from typing import Tuple, Union, Mapping, Any
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
-class ToolBitShapeEndMill(ToolBitShape):
-    name = "endmill"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+class ToolBitShapeEndmill(ToolBitShape):
+    name = "Endmill"
+    aliases = ("endmill",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

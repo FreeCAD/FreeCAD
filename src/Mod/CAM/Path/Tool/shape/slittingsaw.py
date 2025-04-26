@@ -2,16 +2,13 @@
 # Defines the SlittingSaw tool bit shape.
 
 import FreeCAD
-from typing import Tuple, Union, Mapping, Any
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeSlittingSaw(ToolBitShape):
-    name = "slittingsaw"
-    aliases = ("slitting-saw",)
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "SlittingSaw"
+    aliases = "slittingsaw", "slitting-saw"
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

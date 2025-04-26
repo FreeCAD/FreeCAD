@@ -22,6 +22,7 @@
 # ***************************************************************************
 
 
+import pathlib
 import FreeCAD
 import FreeCADGui
 import Path
@@ -527,7 +528,7 @@ class ToolBitSelector(object):
         for item in itemsToProcess:
             toolNr = int(item.data(PySide.QtCore.Qt.EditRole))
             toolPath = item.data(_PathRole)
-            tools.append((toolNr, ToolBitFactory.CreateFrom(toolPath)))
+            tools.append((toolNr, ToolBitFactory.create_bit_from_file(toolPath)))
         return tools
 
     def selectedOrAllToolControllers(self, index=None):
@@ -609,10 +610,10 @@ class ToolBitLibrary(object):
         # Parse out the name of the file and write the structure
         loc, fil = os.path.split(filename)
         fname = os.path.splitext(fil)[0]
-        fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
+        fullpath = pathlib.Path("{}{}{}.fctb".format(loc, os.path.sep, fname))
 
         Path.Log.debug(f"Attempting to create tool bit with name: {fullpath}")
-        self.temptool = ToolBitFactory.Create(path=fullpath, shape_path=shapefile)
+        self.temptool = ToolBitFactory.create_bit(filepath=fullpath, shapefile=shapefile)
         self.temptool.Proxy.unloadBitBody(self.temptool)
         self.temptool.Label = fname
         self.temptool.Proxy.saveToFile(self.temptool, fullpath)
@@ -738,7 +739,7 @@ class ToolBitLibrary(object):
             pass
         else:
             tbpath = item.data(_PathRole)
-            self.temptool = ToolBitFactory.CreateFrom(tbpath, "temptool")
+            self.temptool = ToolBitFactory.create_bit_from_file(tbpath)
             self.editor = PathToolBitEdit.ToolBitEditor(
                 self.temptool, self.form.toolTableGroup, loadBitBody=False
             )
@@ -927,7 +928,7 @@ class ToolBitLibrary(object):
                 )
                 toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
 
-                bit = ToolBitFactory.CreateFrom(toolPath)
+                bit = ToolBitFactory.create_bit_from_file(toolPath)
                 if bit:
                     Path.Log.track(bit)
 
@@ -985,7 +986,7 @@ class ToolBitLibrary(object):
         SHAPEMAP = {
             "ballend": "Ballnose",
             "endmill": "Cylindrical",
-            "v-bit": "Conical",
+            "vbit": "Conical",
             "chamfer": "Snubnose",
         }
 
@@ -1006,7 +1007,7 @@ class ToolBitLibrary(object):
             toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
             Path.Log.debug(toolPath)
             try:
-                bit = ToolBitFactory.CreateFrom(toolPath)
+                bit = ToolBitFactory.create_bit_from_file(toolPath)
             except FileNotFoundError as e:
                 FreeCAD.Console.PrintError(e)
                 continue

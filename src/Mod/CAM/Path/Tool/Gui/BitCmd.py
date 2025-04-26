@@ -55,7 +55,7 @@ class CommandToolBitCreate:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        obj = ToolBitFactory.Create()
+        obj = ToolBitFactory.create_bit()
         obj.ViewObject.Proxy.setCreate(obj.ViewObject)
 
 

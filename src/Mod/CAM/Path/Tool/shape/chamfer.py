@@ -2,15 +2,13 @@
 # Defines the Chamfer tool bit shape.
 
 import FreeCAD
-from typing import Tuple, Union, Mapping, Any
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeChamfer(ToolBitShape):
-    name = "chamfer"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "Chamfer"
+    aliases = ("chamfer",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
