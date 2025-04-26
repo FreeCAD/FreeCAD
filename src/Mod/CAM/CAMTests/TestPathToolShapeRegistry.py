@@ -2,8 +2,14 @@
 # Unit tests for the Path.Tool.Shape module and its utilities.
 
 import CAMTests.PathTestUtils as PathTestUtils
-from Path.Tool.shape import ToolBitShape
 from Path.Tool.shape.registry import SHAPE_REGISTRY
+from Path.Tool.shape import (
+    ToolBitShape,
+    ToolBitShapeBallend,
+    ToolBitShapeVBit,
+    ToolBitShapeBullnose,
+    ToolBitShapeSlittingSaw,
+)
 
 
 class TestPathToolShapeRegistry(PathTestUtils.PathTestBase):
@@ -15,6 +21,15 @@ class TestPathToolShapeRegistry(PathTestUtils.PathTestBase):
         filename = "ballend.fcstd"
         shape_name = SHAPE_REGISTRY.get_shape_name_from_filename(filename)
         self.assertEqual(shape_name, "Ballend")
+
+    def test_get_shape_class(self):
+        """Test the get_shape_class function."""
+        self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("ballend"), ToolBitShapeBallend)
+        self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("v-bit"), ToolBitShapeVBit)
+        self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("VBit"), ToolBitShapeVBit)
+        self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("torus"), ToolBitShapeBullnose)
+        self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("slitting-saw"), ToolBitShapeSlittingSaw)
+        self.assertIsNone(SHAPE_REGISTRY.get_shape_class_from_name("nonexistent"))
 
     def test_get_shape_name_from_filename_from_filename(self):
         """Test inferring shape name from filename when XML extraction fails."""

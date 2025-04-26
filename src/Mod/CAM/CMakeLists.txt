@@ -375,7 +375,6 @@ SET(Tests_SRCS
     CAMTests/TestPathToolShapeClasses.py
     CAMTests/TestPathToolShapeDoc.py
     CAMTests/TestPathToolShapeRegistry.py
-    CAMTests/TestPathToolShapeUtil.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py

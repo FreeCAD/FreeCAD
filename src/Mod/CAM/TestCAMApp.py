@@ -65,7 +65,6 @@ from CAMTests.TestPathToolBit import TestPathToolBit
 from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
 from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
 from CAMTests.TestPathToolShapeRegistry import TestPathToolShapeRegistry
-from CAMTests.TestPathToolShapeUtil import TestPathToolShapeUtil
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
 from CAMTests.TestPathUtil import TestPathUtil
@@ -124,7 +123,6 @@ False if TestPathToolBit.__name__ else True
 False if TestPathToolShapeClasses.__name__ else True
 False if TestPathToolShapeDoc.__name__ else True
 False if TestPathToolShapeRegistry.__name__ else True
-False if TestPathToolShapeUtil.__name__ else True
 False if TestPathToolChangeGenerator.__name__ else True
 False if TestPathToolController.__name__ else True
 False if TestPathUtil.__name__ else True
