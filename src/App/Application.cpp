@@ -512,6 +512,11 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     return doc;
 }
 
+bool Application::closeDocument(const Document* doc)
+{
+    return closeDocument(doc->getName());
+}
+
 bool Application::closeDocument(const char* name)
 {
     const auto pos = DocMap.find( name );

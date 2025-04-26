@@ -439,26 +439,49 @@ PyObject* ApplicationPy::sSetActiveDocument(PyObject* /*self*/, PyObject* args)
 PyObject* ApplicationPy::sCloseDocument(PyObject* /*self*/, PyObject* args)
 {
     char* pstr = nullptr;
-    if (!PyArg_ParseTuple(args, "s", &pstr)) {
-        return nullptr;
+    if (PyArg_ParseTuple(args, "s", &pstr)) {
+        Document* doc = GetApplication().getDocument(pstr);
+        if (!doc) {
+            PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
+            return nullptr;
+        }
+        if (!doc->isClosable()) {
+            PyErr_Format(PyExc_RuntimeError, "The document '%s' is not closable for the moment", pstr);
+            return nullptr;
+        }
+
+        if (!GetApplication().closeDocument(pstr)) {
+            PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", pstr);
+            return nullptr;
+        }
+
+        Py_Return;
     }
 
-    Document* doc = GetApplication().getDocument(pstr);
-    if (!doc) {
-        PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
-        return nullptr;
-    }
-    if (!doc->isClosable()) {
-        PyErr_Format(PyExc_RuntimeError, "The document '%s' is not closable for the moment", pstr);
-        return nullptr;
+    PyErr_Clear();
+    PyObject* docpy {};
+    if (PyArg_ParseTuple(args, "O!", &App::DocumentPy::Type, &docpy)) {
+        Document* doc = static_cast<App::DocumentPy*>(docpy)->getDocumentPtr();
+        if (!doc) {
+            PyErr_Format(PyExc_RuntimeError, "Invalid document");
+            return nullptr;
+        }
+
+        if (!doc->isClosable()) {
+            PyErr_Format(PyExc_RuntimeError, "The document '%s' is not closable for the moment", doc->getName());
+            return nullptr;
+        }
+
+        if (!GetApplication().closeDocument(doc)) {
+            PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", doc->getName());
+            return nullptr;
+        }
+
+        Py_Return;
     }
 
-    if (!GetApplication().closeDocument(pstr)) {
-        PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", pstr);
-        return nullptr;
-    }
-
-    Py_Return;
+    PyErr_SetString(PyExc_TypeError, "Expect str or Document");
+    return nullptr;
 }
 
 PyObject* ApplicationPy::sSaveDocument(PyObject* /*self*/, PyObject* args)
