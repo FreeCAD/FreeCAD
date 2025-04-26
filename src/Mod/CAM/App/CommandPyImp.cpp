@@ -178,15 +178,12 @@ Py::Dict CommandPy::getParameters() const
     return parameters_copy_dict;
 }
 
-// NB setParameters does NOT set Parameters attribute with the new value, as in typical "setter" fn
-// rather it MERGES the contents of the arg with the existing Parameters dict
-// it should be called addParameters, there is NO setter method. Parameters can never be removed.
-
 void CommandPy::setParameters(Py::Dict arg)
 {
     PyObject* dict_copy = PyDict_Copy(arg.ptr());
     PyObject *key, *value;
     Py_ssize_t pos = 0;
+    getCommandPtr()->Parameters.clear();
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
         std::string ckey;
         if (PyUnicode_Check(key)) {
