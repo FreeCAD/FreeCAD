@@ -116,7 +116,7 @@ This causes much load time. DONT USE "QWidget { " This causes a lot of lag.
 
 QColorDialog {
   background-color: @ThemeGradientColor1;
-  border: 1px solid rgba(0, 0, 0, 31);
+  border: 1px solid rgb(230, 230, 230);
 }
 
 QColorDialog QWidget {
@@ -225,7 +225,7 @@ QCheckBox:focus {
 }
 
 QCheckBox QWidget:disabled {
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QCheckBox::indicator {
@@ -323,7 +323,7 @@ QGroupBox::indicator:unchecked:focus {
 }
 
 QGroupBox::indicator:unchecked:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
   border: 1px solid rgba(0, 0, 0, 77);
 }
 
@@ -343,7 +343,7 @@ QGroupBox::indicator:checked:focus {
 }
 
 QGroupBox::indicator:checked:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
   image:url(qss:images_classic/check-mark-lightgray.svg);
   border: 1px solid rgba(0, 0, 0, 77);
   }
@@ -366,7 +366,7 @@ QRadioButton:focus {
 }
 
 QRadioButton:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
 }
 
 QRadioButton QWidget {
@@ -426,7 +426,7 @@ QMenuBar {
 
 QMenuBar:disabled,
 QMenuBar::item:disabled{
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QMenuBar:focus {
@@ -617,7 +617,7 @@ QAbstractScrollArea {
 }
 
 QAbstractScrollArea:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
 }
 
 /* QScrollArea ------------------------------------------------------------
@@ -625,7 +625,7 @@ QAbstractScrollArea:disabled {
 ---------------------------------------------------------------------------
 text input field disabled!!!!*/
 QScrollArea QWidget:disabled {
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 /* QScrollBar -------------------------------------------------------------
@@ -639,7 +639,7 @@ QScrollBar:horizontal {
   border-left: 14px solid qlineargradient(x1:1, y1:0, x2:0, y2:0, stop:0 rgba(0, 0, 0, 77), stop:0.1 @ThemeGradientColor1 , stop:0.9 @ThemeGradientColor1 , stop:1 rgba(0, 0, 0, 77));
   border-top: 1px solid rgba(0, 0, 0, 77);
   border-bottom: 1px solid rgba(0, 0, 0, 77);
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgba(129, 129, 129, 100);
 }
 
 QScrollBar:vertical {
@@ -647,7 +647,7 @@ QScrollBar:vertical {
   border-bottom: 14px solid qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 77), stop:0.1 @ThemeGradientColor1 , stop:0.9 @ThemeGradientColor1 , stop:1 rgba(0, 0, 0, 77));
   border-left: 1px solid rgba(0, 0, 0, 77);
   border-right: 1px solid rgba(0, 0, 0, 77);
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgba(129, 129, 129, 100);
 }
 
 QScrollBar::handle:horizontal {
@@ -948,7 +948,7 @@ QAbstractSpinBox:up-button:hover{
 }
 
 QAbstractSpinBox:up-button:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
 }
 
 QAbstractSpinBox::up-arrow:disabled, QAbstractSpinBox::up-arrow:off {
@@ -979,7 +979,7 @@ QAbstractSpinBox:down-button {
 }
 
 QAbstractSpinBox:down-button:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
 }
 
 QAbstractSpinBox::down-arrow, QAbstractSpinBox::down-arrow:disabled, QAbstractSpinBox::down-arrow:off {
@@ -995,7 +995,7 @@ QAbstractSpinBox::down-arrow:hover {
 }
 
 QAbstractSpinBox:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
 }
 
 QAbstractSpinBox:hover {}
@@ -1020,7 +1020,7 @@ QLabel {
 }
 
 QLabel:disabled {
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QLabel[haslink="true"] {
@@ -1039,9 +1039,9 @@ QTextBrowser {
 }
 
 QTextBrowser:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
   border: 1px solid rgba(0, 0, 0, 77);
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QTextBrowser:hover, QTextBrowser:!hover, QTextBrowser:selected, QTextBrowser:pressed {}
@@ -1058,9 +1058,9 @@ QGraphicsView {
 }
 
 QGraphicsView:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
   border: 0px solid rgba(0, 0, 0, 77);
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
   border-radius: 0px;
 }
 
@@ -1077,8 +1077,8 @@ QCalendarWidget {
 }
 
 QCalendarWidget:disabled {
-  background-color: rgba(0, 0, 0, 31);
-  color: rgba(0, 0, 0, 77);
+  background-color: rgb(230, 230, 230);
+  color: rgb(20, 20, 20);
 }
 
 /* QLCDNumber -------------------------------------------------------------
@@ -1089,8 +1089,8 @@ QLCDNumber {
 }
 
 QLCDNumber:disabled {
-  background-color: rgba(0, 0, 0, 31);
-  color: rgba(0, 0, 0, 77);
+  background-color: rgb(230, 230, 230);
+  color: rgb(20, 20, 20);
 }
 
 /* QProgressBar -----------------------------------------------------------
@@ -1106,7 +1106,7 @@ QProgressBar {
 }
 
 QProgressBar:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
   border: 1px solid rgba(0, 0, 0, 77);
   color:  rgba(0, 0, 0, 77);
   border-radius: 3px;
@@ -1147,8 +1147,8 @@ QPushButton {
 }
 
 QPushButton:disabled {
-  background-color: rgba(0, 0, 0, 31);
-  color: rgba(0, 0, 0, 77);
+  background-color: rgb(230, 230, 230);
+  color: rgb(20, 20, 20);
   border: 1px solid rgba(0, 0, 0, 77);
 }
 
@@ -1162,7 +1162,7 @@ QPushButton:focus {
 
 QPushButton:checked:disabled {
   border: 1px solid  @ThemeAccentColor1;
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
   outline: none;
 }
 
@@ -1320,7 +1320,7 @@ QCommandLinkButton {
 
 QCommandLinkButton:disabled {
   background-color: transparent;
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 /* ------------------------------------------------------------------------ */
@@ -1369,8 +1369,8 @@ QComboBox:checked {
 }
 
 QComboBox:disabled {
-  background-color: rgba(0, 0, 0, 31);
-  color: rgba(0, 0, 0, 77);
+  background-color: rgb(230, 230, 230);
+  color: rgb(20, 20, 20);
 }
 
 QComboBox:hover {
@@ -1635,7 +1635,7 @@ QSlider::add-page:vertical {
 }
 
 QSlider::add-page:vertical :disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
 }
 
 QSlider::sub-page:horizontal {
@@ -1647,7 +1647,7 @@ QSlider::sub-page:horizontal {
 }
 
 QSlider::sub-page:horizontal:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
 }
 
 QSlider::handle:horizontal {
@@ -1704,7 +1704,7 @@ QLineEdit {
 }
 
 QLineEdit:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
   color rgba(0, 0, 0, 77);
 }
 
@@ -2227,7 +2227,7 @@ QTreeView:disabled,
 QListView:disabled,
 QTableView:disabled,
 QColumnView:disabled {
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QListView:selected,
@@ -2303,7 +2303,7 @@ QHeaderView {
 }
 
 QHeaderView:disabled {
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QHeaderView::section {
@@ -2327,7 +2327,7 @@ QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-
 }
 
 QHeaderView::section::horizontal:disabled {
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QHeaderView::section::vertical {
@@ -2397,7 +2397,7 @@ QToolBox::tab {
 }
 
 QToolBox::tab:disabled {
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QToolBox::tab:selected {
@@ -2405,16 +2405,16 @@ QToolBox::tab:selected {
 }
 
 QToolBox::tab:selected:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
   border-bottom: 0px solid @ThemeBackground;
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 QToolBox::tab:!selected {
 }
 
 QToolBox::tab:!selected:disabled {
-  background-color: rgba(0, 0, 0, 31);
+  background-color: rgb(230, 230, 230);
 }
 
 QToolBox::tab:hover {
@@ -2534,7 +2534,7 @@ QAbstractView:selected {
 --------------------------------------------------------------------------- */
 PlotWidget {
   padding: 0px;
-  color: rgba(0, 0, 0, 77);
+  color: rgb(20, 20, 20);
 }
 
 /*==================================================================================================
