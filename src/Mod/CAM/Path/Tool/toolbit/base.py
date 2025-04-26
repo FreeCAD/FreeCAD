@@ -660,7 +660,7 @@ class ToolBit(ABC):
 
     def can_rotate(self) -> bool:
         """
-        Whether the spindle is allowed to rotate for this kind of ToolBitShape.
+        Whether the spindle is allowed to rotate for this kind of ToolBit.
         This mostly exists as a safe-hold for probes, which should never rotate.
         """
         return True
