@@ -1,8 +1,4 @@
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <QApplication>
-#endif
  
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -78,19 +74,19 @@ void DlgSettingsPDF::onComboBoxIndexChanged(int index)
     switch (index) {
         case 1:
             ui->warningLabel->setText(
-                QCoreApplication::translate("Gui::Dialog::DlgSettingsPDF", "This archival PDF format does not support transparency or layers. All content must be self-contained and static."));
+                tr("This archival PDF format does not support transparency or layers. All content must be self-contained and static."));
             break;
         case 2:
             ui->warningLabel->setText(
-                QCoreApplication::translate("Gui::Dialog::DlgSettingsPDF", "While this version supports more modern features, older PDF readers may not fully handle it."));
+                tr("While this version supports more modern features, older PDF readers may not fully handle it."));
             break;
         case 3:
             ui->warningLabel->setText(
-                QCoreApplication::translate("Gui::Dialog::DlgSettingsPDF", "This PDF format is intended for professional printing and requires all fonts to be embedded; some interactive features may not be supported."));
+                tr("This PDF format is intended for professional printing and requires all fonts to be embedded; some interactive features may not be supported."));
             break;
         default:
             ui->warningLabel->setText(
-                QCoreApplication::translate("Gui::Dialog::DlgSettingsPDF", "This PDF version has limited support for modern features like embedded multimedia and advanced transparency effects."));
+                tr("This PDF version has limited support for modern features like embedded multimedia and advanced transparency effects."));
             break;
     }
 }
