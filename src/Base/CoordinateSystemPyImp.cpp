@@ -22,13 +22,15 @@
 
 #include "PreCompiled.h"
 
-#include "AxisPy.h"
+#include "GeometryPyCXX.h"
+
+// generated out of CoordinateSystem.pyi
 #include "CoordinateSystemPy.h"
 #include "CoordinateSystemPy.cpp"
-#include "GeometryPyCXX.h"
+
+#include "AxisPy.h"
 #include "PlacementPy.h"
 #include "VectorPy.h"
-
 
 using namespace Base;
 

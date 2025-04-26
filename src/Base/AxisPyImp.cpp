@@ -24,12 +24,12 @@
 
 #include "GeometryPyCXX.h"
 
-// inclusion of the generated files (generated out of AxisPy.pyi)
+// generated out of Axis.pyi
 #include "AxisPy.h"
 #include "AxisPy.cpp"
 
-#include "VectorPy.h"
 #include "PlacementPy.h"
+#include "VectorPy.h"
 
 using namespace Base;
 
