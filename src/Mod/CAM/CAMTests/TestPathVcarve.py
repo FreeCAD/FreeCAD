@@ -58,7 +58,8 @@ class TestPathVcarve(PathTestBase):
         part.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
         job = PathJob.Create("Job", [part])
         tool_file = findToolBit("60degree_Vbit.fctb")
-        job.Tools.Group[0].Tool = ToolBitFactory.CreateFrom(tool_file)
+        loaded_tool = ToolBitFactory.create_bit_from_file(tool_file)
+        job.Tools.Group[0].Tool = loaded_tool
 
         op = PathVcarve.Create("TestVCarve")
         op.Base = job.Model.Group[0]

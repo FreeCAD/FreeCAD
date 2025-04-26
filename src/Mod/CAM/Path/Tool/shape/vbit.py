@@ -2,16 +2,13 @@
 # Defines the Vbit tool bit shape.
 
 import FreeCAD
-from typing import Any, Tuple, Union, Mapping
+from typing import Tuple, Mapping
 from .base import ToolBitShape
 
 
 class ToolBitShapeVBit(ToolBitShape):
-    name = "v-bit"
-    aliases: Tuple[str, ...] = ("vbit",)
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "VBit"
+    aliases = "vbit", "v-bit"
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

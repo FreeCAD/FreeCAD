@@ -3,11 +3,11 @@
 
 # Import the base class and all concrete shape classes
 from .base import ToolBitShape
-from .ballend import ToolBitShapeBallEnd
+from .ballend import ToolBitShapeBallend
 from .chamfer import ToolBitShapeChamfer
 from .dovetail import ToolBitShapeDovetail
 from .drill import ToolBitShapeDrill
-from .endmill import ToolBitShapeEndMill
+from .endmill import ToolBitShapeEndmill
 from .probe import ToolBitShapeProbe
 from .reamer import ToolBitShapeReamer
 from .slittingsaw import ToolBitShapeSlittingSaw
@@ -22,11 +22,11 @@ TOOL_BIT_SHAPE_NAMES = sorted([cls.name for cls in ToolBitShape.__subclasses__()
 # Define __all__ for explicit public interface
 __all__ = [
     "ToolBitShape",
-    "ToolBitShapeBallEnd",
+    "ToolBitShapeBallend",
     "ToolBitShapeChamfer",
     "ToolBitShapeDovetail",
     "ToolBitShapeDrill",
-    "ToolBitShapeEndMill",
+    "ToolBitShapeEndmill",
     "ToolBitShapeProbe",
     "ToolBitShapeReamer",
     "ToolBitShapeSlittingSaw",

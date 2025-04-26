@@ -18,3 +18,6 @@ class ToolBitProbe(ToolBit):
     ):
         Path.Log.track(f"ToolBitProbe __init__ called for {obj.Label}")
         super().__init__(obj, shape, path)
+
+    def can_rotate(self) -> bool:
+        return False

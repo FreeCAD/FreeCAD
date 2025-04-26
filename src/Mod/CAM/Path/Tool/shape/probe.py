@@ -7,10 +7,8 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeProbe(ToolBitShape):
-    name = "probe"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    name = "Probe"
+    aliases = ("probe",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
@@ -32,6 +30,3 @@ class ToolBitShapeProbe(ToolBitShape):
     @property
     def label(self) -> str:
         return FreeCAD.Qt.translate("ToolBitShape", "Probe")
-
-    def can_rotate(self) -> bool:
-        return False

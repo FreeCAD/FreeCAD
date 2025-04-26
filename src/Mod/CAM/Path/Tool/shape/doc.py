@@ -35,28 +35,6 @@ def find_shape_object(doc: "FreeCAD.Document") -> Optional["FreeCAD.DocumentObje
     return doc.Objects[0] if doc.Objects else None
 
 
-def find_property_object(doc: "FreeCAD.Document") -> Optional["FreeCAD.DocumentObject"]:
-    """
-    Find the PropertyBag object named "Attributes" in a document.
-
-    Args:
-        doc (FreeCAD.Document): The document to search within.
-
-    Returns:
-        Optional[FreeCAD.DocumentObject]: The found object or None.
-    """
-    # Removed debug logging
-    for o in doc.Objects:
-        # Check if the object has a Label property and if its value is "Attributes"
-        # This seems to be the convention in the shape files.
-        if hasattr(o, "Label") and o.Label == "Attributes":
-            # We assume this object holds the parameters.
-            # Further type checking (e.g., for App::FeaturePython or PropertyBag)
-            # could be added if needed, but Label check might be sufficient.
-            return o
-    return None
-
-
 def get_object_properties(
     obj: "FreeCAD.DocumentObject", expected_params: List[str]
 ) -> Dict[str, Any]:
