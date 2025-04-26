@@ -673,45 +673,45 @@ class _Structure(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Tool" in pl:
-            obj.addProperty("App::PropertyLinkSubList", "Tool", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "An optional extrusion path for this element"), locked=True)
+            obj.addProperty("App::PropertyLinkSubList", "Tool", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "An optional extrusion path for this element"))
         if not "ComputedLength" in pl:
-            obj.addProperty("App::PropertyDistance", "ComputedLength", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "The computed length of the extrusion path"), 1, locked=True)
+            obj.addProperty("App::PropertyDistance", "ComputedLength", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "The computed length of the extrusion path"), 1)
         if not "ToolOffsetFirst" in pl:
-            obj.addProperty("App::PropertyDistance", "ToolOffsetFirst", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Start offset distance along the extrusion path (positive: extend, negative: trim)"), locked=True)
+            obj.addProperty("App::PropertyDistance", "ToolOffsetFirst", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Start offset distance along the extrusion path (positive: extend, negative: trim)"))
         if not "ToolOffsetLast" in pl:
-            obj.addProperty("App::PropertyDistance", "ToolOffsetLast", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "End offset distance along the extrusion path (positive: extend, negative: trim)"), locked=True)
+            obj.addProperty("App::PropertyDistance", "ToolOffsetLast", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "End offset distance along the extrusion path (positive: extend, negative: trim)"))
         if not "BasePerpendicularToTool" in pl:
-            obj.addProperty("App::PropertyBool", "BasePerpendicularToTool", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Automatically align the Base of the Structure perpendicular to the Tool axis"), locked=True)
+            obj.addProperty("App::PropertyBool", "BasePerpendicularToTool", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Automatically align the Base of the Structure perpendicular to the Tool axis"))
         if not "BaseOffsetX" in pl:
-            obj.addProperty("App::PropertyDistance", "BaseOffsetX", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)"), locked=True)
+            obj.addProperty("App::PropertyDistance", "BaseOffsetX", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)"))
         if not "BaseOffsetY" in pl:
-            obj.addProperty("App::PropertyDistance", "BaseOffsetY", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)"), locked=True)
+            obj.addProperty("App::PropertyDistance", "BaseOffsetY", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)"))
         if not "BaseMirror" in pl:
-            obj.addProperty("App::PropertyBool", "BaseMirror", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)"), locked=True)
+            obj.addProperty("App::PropertyBool", "BaseMirror", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)"))
         if not "BaseRotation" in pl:
-            obj.addProperty("App::PropertyAngle", "BaseRotation", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)"), locked=True)
+            obj.addProperty("App::PropertyAngle", "BaseRotation", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)"))
         if not "Length" in pl:
-            obj.addProperty("App::PropertyLength","Length","Structure",QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"), locked=True)
+            obj.addProperty("App::PropertyLength","Length","Structure",QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"))
         if not "Width" in pl:
-            obj.addProperty("App::PropertyLength","Width","Structure",QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"), locked=True)
+            obj.addProperty("App::PropertyLength","Width","Structure",QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"))
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","Structure",QT_TRANSLATE_NOOP("App::Property","The height or extrusion depth of this element. Keep 0 for automatic"), locked=True)
+            obj.addProperty("App::PropertyLength","Height","Structure",QT_TRANSLATE_NOOP("App::Property","The height or extrusion depth of this element. Keep 0 for automatic"))
         if not "Normal" in pl:
-            obj.addProperty("App::PropertyVector","Normal","Structure",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"), locked=True)
+            obj.addProperty("App::PropertyVector","Normal","Structure",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         if not "Nodes" in pl:
-            obj.addProperty("App::PropertyVectorList","Nodes","Structure",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"), locked=True)
+            obj.addProperty("App::PropertyVectorList","Nodes","Structure",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
         if not "Profile" in pl:
-            obj.addProperty("App::PropertyString","Profile","Structure",QT_TRANSLATE_NOOP("App::Property","A description of the standard profile this element is based upon"), locked=True)
+            obj.addProperty("App::PropertyString","Profile","Structure",QT_TRANSLATE_NOOP("App::Property","A description of the standard profile this element is based upon"))
         if not "NodesOffset" in pl:
-            obj.addProperty("App::PropertyDistance","NodesOffset","Structure",QT_TRANSLATE_NOOP("App::Property","Offset distance between the centerline and the nodes line"), locked=True)
+            obj.addProperty("App::PropertyDistance","NodesOffset","Structure",QT_TRANSLATE_NOOP("App::Property","Offset distance between the centerline and the nodes line"))
         if not "FaceMaker" in pl:
-            obj.addProperty("App::PropertyEnumeration","FaceMaker","Structure",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"), locked=True)
+            obj.addProperty("App::PropertyEnumeration","FaceMaker","Structure",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
             obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         if not "ArchSketchData" in pl:
-            obj.addProperty("App::PropertyBool","ArchSketchData","Structure",QT_TRANSLATE_NOOP("App::Property","Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties"), locked=True)
+            obj.addProperty("App::PropertyBool","ArchSketchData","Structure",QT_TRANSLATE_NOOP("App::Property","Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties"))
             obj.ArchSketchData = True
         if not "ArchSketchEdges" in pl:  # PropertyStringList
-            obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."), locked=True)
+            obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
         else:
             # test if the property was added but as IntegerList, then update;
             type = obj.getTypeIdOfProperty('ArchSketchEdges')
@@ -719,10 +719,10 @@ class _Structure(ArchComponent.Component):
                 oldIntValue = obj.ArchSketchEdges
                 newStrValue = [str(x) for x in oldIntValue]
                 obj.removeProperty("ArchSketchEdges")
-                obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."), locked=True)
+                obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
                 obj.ArchSketchEdges = newStrValue
         if not hasattr(obj,"ArchSketchPropertySet"):
-            obj.addProperty("App::PropertyEnumeration","ArchSketchPropertySet","Structure",QT_TRANSLATE_NOOP("App::Property","Select User Defined PropertySet to use in creating variant shape, with same ArchSketch "), locked=True)
+            obj.addProperty("App::PropertyEnumeration","ArchSketchPropertySet","Structure",QT_TRANSLATE_NOOP("App::Property","Select User Defined PropertySet to use in creating variant shape, with same ArchSketch "))
             obj.ArchSketchPropertySet = ['Default']
         if not hasattr(self,"ArchSkPropSetPickedUuid"):
             self.ArchSkPropSetPickedUuid = ''
@@ -955,11 +955,11 @@ class _Structure(ArchComponent.Component):
                                 # needs to take out those in Construction before
                                 # using as parameters.
                                 if (not obj.ArchSketchEdges and not geom.Construction) or str(ig) in obj.ArchSketchEdges:
-                                    # support Line, Arc, Circle, Ellipse for Sketch
+                                    # support Line, Arc, Circle, Ellipse, BSplineCurve for Sketch
                                     # as Base at the moment
                                     if isinstance(geom.Geometry, (Part.LineSegment,
                                                   Part.Circle, Part.ArcOfCircle,
-                                                  Part.Ellipse)):
+                                                  Part.Ellipse, Part.BSplineCurve)):
                                         skGeomEdgesI = geom.Geometry.toShape()
                                         skGeomEdges.append(skGeomEdgesI)
                             clusterTransformed = []
@@ -1186,17 +1186,17 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
 
         pl = vobj.PropertiesList
         if not "ShowNodes" in pl:
-            vobj.addProperty("App::PropertyBool","ShowNodes","Nodes",QT_TRANSLATE_NOOP("App::Property","If the nodes are visible or not"), locked=True).ShowNodes = False
+            vobj.addProperty("App::PropertyBool","ShowNodes","Nodes",QT_TRANSLATE_NOOP("App::Property","If the nodes are visible or not")).ShowNodes = False
         if not "NodeLine" in pl:
-            vobj.addProperty("App::PropertyFloat","NodeLine","Nodes",QT_TRANSLATE_NOOP("App::Property","The width of the nodes line"), locked=True)
+            vobj.addProperty("App::PropertyFloat","NodeLine","Nodes",QT_TRANSLATE_NOOP("App::Property","The width of the nodes line"))
         if not "NodeSize" in pl:
-            vobj.addProperty("App::PropertyFloat","NodeSize","Nodes",QT_TRANSLATE_NOOP("App::Property","The size of the node points"), locked=True)
+            vobj.addProperty("App::PropertyFloat","NodeSize","Nodes",QT_TRANSLATE_NOOP("App::Property","The size of the node points"))
             vobj.NodeSize = 6
         if not "NodeColor" in pl:
-            vobj.addProperty("App::PropertyColor","NodeColor","Nodes",QT_TRANSLATE_NOOP("App::Property","The color of the nodes line"), locked=True)
+            vobj.addProperty("App::PropertyColor","NodeColor","Nodes",QT_TRANSLATE_NOOP("App::Property","The color of the nodes line"))
             vobj.NodeColor = (1.0,1.0,1.0,1.0)
         if not "NodeType" in pl:
-            vobj.addProperty("App::PropertyEnumeration","NodeType","Nodes",QT_TRANSLATE_NOOP("App::Property","The type of structural node"), locked=True)
+            vobj.addProperty("App::PropertyEnumeration","NodeType","Nodes",QT_TRANSLATE_NOOP("App::Property","The type of structural node"))
             vobj.NodeType = ["Linear","Area"]
 
     def onDocumentRestored(self,vobj):
@@ -1495,7 +1495,7 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         if self.Object.getTypeIdOfProperty("Tool") != "App::PropertyLinkSubList":
             # Upgrade property Tool from App::PropertyLink to App::PropertyLinkSubList (note: Undo/Redo fails)
             self.Object.removeProperty("Tool")
-            self.Object.addProperty("App::PropertyLinkSubList", "Tool", "Structure", QT_TRANSLATE_NOOP("App::Property", "An optional extrusion path for this element"), locked=True)
+            self.Object.addProperty("App::PropertyLinkSubList", "Tool", "Structure", QT_TRANSLATE_NOOP("App::Property", "An optional extrusion path for this element"))
         self.Object.Tool = objectList
         QtCore.QObject.disconnect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setToolFromSelection)
         QtCore.QObject.connect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setSelectionFromTool)
@@ -1530,9 +1530,9 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkList","Axes","Arch",QT_TRANSLATE_NOOP("App::Property","Axes systems this structure is built on"), locked=True)
-        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",QT_TRANSLATE_NOOP("App::Property","The element numbers to exclude when this structure is based on axes"), locked=True)
-        obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","If true the element are aligned with axes"), locked=True).Align = False
+        obj.addProperty("App::PropertyLinkList","Axes","Arch",QT_TRANSLATE_NOOP("App::Property","Axes systems this structure is built on"))
+        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",QT_TRANSLATE_NOOP("App::Property","The element numbers to exclude when this structure is based on axes"))
+        obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","If true the element are aligned with axes")).Align = False
         self.Type = "StructuralSystem"
 
     def execute(self,obj):
