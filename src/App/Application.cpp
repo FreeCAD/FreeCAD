@@ -105,6 +105,7 @@
 #include "Application.h"
 #include "ApplicationDirectories.h"
 #include "ApplicationDirectoriesPy.h"
+#include "ApplicationPy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "Services.h"
@@ -276,7 +277,7 @@ void Application::setupPythonTypes()
     Base::PyGILStateLocker lock;
     PyObject* modules = PyImport_GetModuleDict();
 
-    ApplicationMethods = Application::Methods;
+    ApplicationMethods = ApplicationPy::Methods;
     PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
     if (!pAppModule) {
         PyErr_Clear();
@@ -2575,7 +2576,7 @@ void Application::initConfig(int argc, char ** argv)
 
         auto moduleName = "FreeCAD";
         PyImport_AddModule(moduleName);
-        ApplicationMethods = Application::Methods;
+        ApplicationMethods = ApplicationPy::Methods;
         PyObject *pyModule = init_freecad_module();
         PyDict_SetItemString(sysModules, moduleName, pyModule);
         Py_DECREF(pyModule);
