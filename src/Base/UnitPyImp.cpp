@@ -22,12 +22,13 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Unit.h>
+#include "Unit.h"
 
-// inclusion of the generated files (generated out of UnitPy.pyi)
-#include <Base/UnitPy.h>
-#include <Base/QuantityPy.h>
-#include <Base/UnitPy.cpp>
+// generated out of Unit.pyi
+#include "UnitPy.h"
+#include "UnitPy.cpp"
+
+#include "QuantityPy.h"
 
 using namespace Base;
 

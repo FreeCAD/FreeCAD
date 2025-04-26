@@ -20,11 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "Type.h"
 #include "BindingManager.h"
+
+// generated out of Type.pyi
 #include "TypePy.h"
 #include "TypePy.cpp"
 

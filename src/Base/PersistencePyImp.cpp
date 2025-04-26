@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <boost/iostreams/stream.hpp>
 
 #include "Persistence.h"
+#include "PyWrapParseTupleAndKeywords.h"
 #include "Writer.h"
-#include <Base/PyWrapParseTupleAndKeywords.h>
 
-// inclusion of the generated files (generated out of PersistencePy.pyi)
+// generated out of Persistence.pyi
 #include "PersistencePy.h"
 #include "PersistencePy.cpp"
 

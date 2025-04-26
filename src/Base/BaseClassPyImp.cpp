@@ -20,10 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-// inclusion of the generated files (generated out of BaseClassPy.pyi)
+#include "Type.h"
+
+// generated out of BaseClass.pyi
 #include "BaseClassPy.h"
 #include "BaseClassPy.cpp"
 
@@ -34,7 +35,6 @@ std::string BaseClassPy::representation() const
 {
     return {"<binding object>"};
 }
-
 
 PyObject* BaseClassPy::isDerivedFrom(PyObject* args) const
 {

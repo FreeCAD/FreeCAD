@@ -21,16 +21,17 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 #include <limits>
 #endif
 
-// inclusion of the generated files (generated out of QuantityPy.pyi)
+#include "Unit.h"
+
+// generated out of Quantity.pyi
 #include "QuantityPy.h"
-#include "UnitPy.h"
 #include "QuantityPy.cpp"
 
+#include "UnitPy.h"
 
 using namespace Base;
 

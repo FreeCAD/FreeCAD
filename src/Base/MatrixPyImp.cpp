@@ -20,21 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 #include <limits>
 #endif
 
-// inclusion of the generated files (generated out of MatrixPy.pyi)
-#include "RotationPy.h"
-#include "VectorPy.h"
 #include "GeometryPyCXX.h"
-#include "QuantityPy.h"
+
+// generated out of Matrix.pyi
 #include "MatrixPy.h"
 #include "MatrixPy.cpp"
 
+#include "RotationPy.h"
+#include "QuantityPy.h"
+#include "VectorPy.h"
 
 using namespace Base;
 

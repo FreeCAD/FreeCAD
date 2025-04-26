@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/Tools.h>
-#include <Base/PyWrapParseTupleAndKeywords.h>
+#include "GeometryPyCXX.h"
+#include "PyWrapParseTupleAndKeywords.h"
+#include "Tools.h"
 
-// inclusion of the generated files (generated out of RotationPy.pyi)
+// generated out of Rotation.pyi
 #include "RotationPy.h"
 #include "RotationPy.cpp"
-#include "VectorPy.h"
 
+#include "VectorPy.h"
 
 using namespace Base;
 

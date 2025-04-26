@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "GeometryPyCXX.h"
-#include <Base/PyWrapParseTupleAndKeywords.h>
+#include "Matrix.h"
+#include "PyWrapParseTupleAndKeywords.h"
+#include "Tools.h"
 
-// inclusion of the generated files (generated out of PlacementPy.pyi)
+// generated out of Placement.pyi
 #include "PlacementPy.h"
 #include "PlacementPy.cpp"
-#include "Matrix.h"
+
 #include "MatrixPy.h"
 #include "RotationPy.h"
 #include "VectorPy.h"
-#include "Tools.h"
 
 using namespace Base;
 
