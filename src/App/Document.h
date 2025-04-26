@@ -503,6 +503,13 @@ public:
     /**
      * @brief Remove an object from the document.
      *
+     * @param[in] object The object to remove.
+     */
+    void removeObject(const DocumentObject* object);
+
+    /**
+     * @brief Remove an object from the document.
+     *
      * @param[in] sName The name of the object to remove.
      */
     void removeObject(const char* sName);
