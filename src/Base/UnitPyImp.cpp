@@ -24,7 +24,7 @@
 
 #include <Base/Unit.h>
 
-// inclusion of the generated files (generated out of UnitPy.xml)
+// inclusion of the generated files (generated out of UnitPy.pyi)
 #include <Base/UnitPy.h>
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.cpp>

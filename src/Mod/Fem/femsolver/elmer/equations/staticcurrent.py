@@ -44,43 +44,58 @@ class Proxy(nonlinear.Proxy, equationbase.StaticCurrentProxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty("App::PropertyBool", "CalculateVolumeCurrent", "StaticCurrent", "")
+        obj.addProperty(
+            "App::PropertyBool", "CalculateVolumeCurrent", "StaticCurrent", "", locked=True
+        )
         obj.CalculateVolumeCurrent = True
-        obj.addProperty("App::PropertyBool", "CalculateJouleHeating", "StaticCurrent", "")
+        obj.addProperty(
+            "App::PropertyBool", "CalculateJouleHeating", "StaticCurrent", "", locked=True
+        )
         obj.addProperty(
             "App::PropertyBool",
             "ConstantWeights",
             "StaticCurrent",
             "Used to turn constant weighting on for the results",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateNodalHeating",
             "StaticCurrent",
             "Calculate nodal heating that may be used to couple the heat equation optimally when using conforming finite element meshes",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "HeatSource",
             "StaticCurrent",
             "Use Joule heating as a heat source in combination with heat equation",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "PowerControl",
             "StaticCurrent",
             "Apply power control with the desired heating power",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "CurrentControl",
             "StaticCurrent",
             "Apply current control with the desired current",
+            locked=True,
         )
         obj.addProperty(
-            "App::PropertyElectricCurrent", "Current", "StaticCurrent", "Current control value"
+            "App::PropertyElectricCurrent",
+            "Current",
+            "StaticCurrent",
+            "Current control value",
+            locked=True,
         )
-        obj.addProperty("App::PropertyPower", "Power", "StaticCurrent", "Power control value")
+        obj.addProperty(
+            "App::PropertyPower", "Power", "StaticCurrent", "Power control value", locked=True
+        )
 
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.StaticCurrentViewProxy):

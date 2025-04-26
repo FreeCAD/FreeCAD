@@ -148,6 +148,7 @@
         <file>ui/MeshRegion.ui</file>
         <file>ui/ResultHints.ui</file>
         <file>ui/ResultShow.ui</file>
-        <file>ui/SolverCalculix.ui</file>
+        <file>ui/SolverCalculiX.ui</file>
+        <file>ui/SolverCcxTools.ui</file>
     </qresource>
 </RCC>

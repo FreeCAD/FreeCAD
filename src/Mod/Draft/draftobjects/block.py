@@ -41,7 +41,7 @@ class Block(DraftObject):
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The components of this block")
-        obj.addProperty("App::PropertyLinkList","Components", "Draft", _tip)
+        obj.addProperty("App::PropertyLinkList","Components", "Draft", _tip, locked=True)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
