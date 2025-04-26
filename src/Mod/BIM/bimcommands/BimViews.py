@@ -434,17 +434,46 @@ class BIM_Views:
             FreeCAD.ActiveDocument.recompute()
 
     def isolate(self):
-        "turns all items off except the selected ones"
+        """
+        Traverse the tree and hide all items (and their ancestors) that are not the currently
+        selected item or a descendant of the currently selected item.
+
+        This ensures that only the selected item and its ancestors remain visible, while
+        all other items are hidden.
+        """
 
         vm = findWidget()
         if vm:
-            onnames = [item.toolTip(0) for item in vm.tree.selectedItems()]
-            for i in range(vm.tree.topLevelItemCount()):
-                item = vm.tree.topLevelItem(i)
-                if item.toolTip(0) not in onnames:
-                    obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+            onnames = vm.tree.selectedItems()
+            selectedItsTooltips = [item.toolTip(0) for item in vm.tree.selectedItems()]
+            def is_ancestor_of_any(potential_parent, selected_items):
+                """Check if potential_parent is an ancestor of ANY selected item."""
+                for item in selected_items:
+                    current = item.parent()
+                    while current:
+                        if current.toolTip(0) == potential_parent:
+                            return True
+                        current = current.parent()
+                return False
+
+            def traverse_and_hide(item):
+                """Recursively traverse the tree and hide/show parents accordingly."""
+                toolTip = item.toolTip(0)
+                obj = FreeCAD.ActiveDocument.getObject(toolTip)
+                if toolTip not in selectedItsTooltips and not is_ancestor_of_any(toolTip, onnames):
                     if obj:
                         obj.ViewObject.Visibility = False
+                
+                # Traverse on lower levels of this tree only if we didn't hide current level
+                if obj and obj.ViewObject.Visibility != False:
+                    for i in range(item.childCount()):
+                        traverse_and_hide(item.child(i))
+        
+            # Start from top-level items
+            for i in range(vm.tree.topLevelItemCount()):
+                top_item = vm.tree.topLevelItem(i)
+                traverse_and_hide(top_item)
+
             FreeCAD.ActiveDocument.recompute()
 
     def saveView(self):
