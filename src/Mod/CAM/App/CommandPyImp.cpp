@@ -41,17 +41,17 @@ std::string CommandPy::representation() const
 {
     std::stringstream str;
     str.precision(5);
-    str << "Command ";
+    str << "Command ( ";
     str << getCommandPtr()->Name;
-    str << " [";
+    str << ", {";
     for (std::map<std::string, double>::iterator i = getCommandPtr()->Parameters.begin();
-         i != getCommandPtr()->Parameters.end();
-         ++i) {
+         i != getCommandPtr()->Parameters.end(); ++i) {
         std::string k = i->first;
         double v = i->second;
-        str << " " << k << ":" << v;
+        str << "\'" << k << "\':" << v;
+        if ( i != std::prev(getCommandPtr()->Parameters.end())  ) str << ", ";
     }
-    str << " ]";
+    str << "} )";
     return str.str();
 }
 
