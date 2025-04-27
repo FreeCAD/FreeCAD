@@ -9,6 +9,9 @@ from Path.Tool.shape import ToolBitShape
 from Path.Tool.shape.registry import SHAPE_REGISTRY
 
 
+TestToolDir = Path(__file__).parent.parent / "Tools"
+
+
 # Helper dummy class for testing abstract methods
 class DummyShape(ToolBitShape):
     name = "dummy"
@@ -44,12 +47,9 @@ def unit(param):
 
 
 class TestPathToolShapeBase(PathTestUtils.PathTestBase):
-    def setUp(self):
-        """Reset mocks before each test."""
-        # No mocks for FreeCAD or FreeCAD.Units here
-        pass
-
     """Tests for the ToolBitShape abstract base class."""
+    def setUp(self):
+        SHAPE_REGISTRY.set_dir(TestToolDir / "Shape")
 
     def test_base_init_with_defaults(self):
         """Test base class initialization uses default parameters."""
