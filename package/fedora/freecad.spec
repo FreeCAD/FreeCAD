@@ -1,12 +1,10 @@
 # Some configuration options for other environments
-# rpmbuild --with=bundled_zipios:  use bundled version of zipios++
-%global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 1}
+# rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
+%bcond_without  bundled_zipios
 # rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
-%global bundled_pycxx %{?_with_bundled_pycxx: 1} %{?!_with_bundled_pycxx: 0}
+%bcond_with bundled_pycxx
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
-%global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
-
-
+%bcond_without bundled_smesh
 
 
 # Prevent RPM from doing its magical 'build' directory for now
@@ -85,16 +83,15 @@ BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop
 
 # Development Libraries
 BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libkdtree++-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel pcl-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel
-%if ! %{bundled_smesh}
+%if %{without bundled_smesh}
 BuildRequires:  smesh-devel
 %endif
-%if ! %{bundled_zipios}
+%if %{without bundled_zipios}
 BuildRequires:  zipios++-devel
 %endif
-%if ! %{bundled_pycxx}
+%if %{without bundled_pycxx}
 BuildRequires:  python3-pycxx-devel
 %endif
-
 # For appdata
 %if 0%{?fedora}
 BuildRequires:  libappstream-glib
@@ -108,10 +105,10 @@ Obsoletes:      %{name}-doc < 0.22-1
 
 Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-collada python3-pyside6 qt6-assistant
 
-%if %{bundled_smesh}
+%if %{with bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
 %endif
-%if %{bundled_pycxx}
+%if %{with bundled_pycxx}
 Provides:       bundled(python-pycxx)
 %endif
 Recommends:     python3-pysolar
@@ -152,11 +149,11 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     {{{ git_repo_setup_macro }}}
 
     # Remove bundled pycxx if we're not using it
-    %if ! %{bundled_pycxx}
+    %if %{without bundled_pycxx}
     rm -rf src/CXX
     %endif
 
-    %if ! %{bundled_zipios}
+    %if %{without bundled_zipios}
     rm -rf src/zipios++
     #sed -i "s/zipios-config.h/zipios-config.hpp/g" \
     #    src/Base/Reader.cpp src/Base/Writer.h
@@ -194,16 +191,16 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
         -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
         -DUSE_OCC=TRUE \
-    %if ! %{bundled_smesh}
+    %if %{with outbundled_smesh}
         -DFREECAD_USE_EXTERNAL_SMESH=TRUE \
         -DSMESH_FOUND=TRUE \
         -DSMESH_INCLUDE_DIR=%{_includedir}/smesh \
         -DSMESH_DIR=`pwd`/../cMake \
     %endif
-    %if ! %{bundled_zipios}
+    %if %{without bundled_zipios}
         -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
     %endif
-    %if ! %{bundled_pycxx}
+    %if %{without bundled_pycxx}
         -DPYCXX_INCLUDE_DIR=$(pkg-config --variable=includedir PyCXX) \
         -DPYCXX_SOURCE_DIR=$(pkg-config --variable=srcdir PyCXX) \
     %endif
