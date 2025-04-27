@@ -836,8 +836,6 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     }
     else {
         std::pair<Base::Vector3d, Base::Vector3d> dirsAligned = dcs->sectionArrowDirs();
-        dirsAligned.first = DrawUtil::invertY(dirsAligned.first);
-        dirsAligned.second = DrawUtil::invertY(dirsAligned.second);
         sectionLine->setArrowDirections(dirsAligned.first, dirsAligned.second);
     }
 
