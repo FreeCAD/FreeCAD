@@ -176,6 +176,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %define MEDFILE_INCLUDE_DIRS %{_includedir}/med/
 
      %cmake \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
         -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
