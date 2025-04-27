@@ -81,7 +81,8 @@ struct GuiItem
 };
 
 #define GUIITEM_CHECKABLE 0x01
-#define GUIITEM_CHECKED 0x02
+#define GUIITEM_CHECKED   0x02
+#define GUIITEM_STRETCHED 0x04
 
 
 struct Vertex2D
@@ -117,6 +118,7 @@ public:
 private:
     void UpdateProjection();
     bool GenerateGlItem(GuiItem* guiItem);
+    bool HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidth);
     void DestroyGlItem(GuiItem* guiItem);
     void RenderItem(int itemId);
 
