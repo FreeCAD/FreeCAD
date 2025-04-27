@@ -61,7 +61,7 @@ class ToolBit(ABC):
     def __init__(
         self,
         obj,
-        tool_bit_shape: Optional[ToolBitShape] = None,
+        tool_bit_shape: ToolBitShape = None,
         path: Optional[pathlib.Path] = None,
     ):
         Path.Log.track(
@@ -128,7 +128,6 @@ class ToolBit(ABC):
             )
 
     @classmethod
-    @abstractmethod
     def schema(
         cls,
     ) -> Mapping[
@@ -324,7 +323,8 @@ class ToolBit(ABC):
         # because some legacy fcstd files may still have references to old view
         # providers.
         if hasattr(obj, "ViewObject") and obj.ViewObject:
-            if not isinstance(obj.ViewObject.Proxy, GuiBit.ViewProvider):
+            if hasattr(obj.ViewObject, "Proxy") and \
+                 not isinstance(obj.ViewObject.Proxy, GuiBit.ViewProvider):
                 Path.Log.debug(
                     f"onDocumentRestored: Attaching ViewProvider for {obj.Label}"
                 )
@@ -621,7 +621,7 @@ class ToolBit(ABC):
         attrs["name"] = obj.Label
 
         if self._tool_bit_shape:
-            attrs["shape"] = str(self._tool_bit_shape.filepath)
+            attrs["shape"] = self._tool_bit_shape.filepath.name
             attrs["parameter"] = {
                 name: PathUtil.getPropertyValueString(obj, name)
                 for name in self._tool_bit_shape.get_parameters()

@@ -3,10 +3,11 @@
 import os
 import pathlib
 import zipfile
+import shutil
 from typing import Optional, Mapping, Type
 import Path
 import xml.etree.ElementTree as ET
-from . import util
+from Path.Preferences import addToolPreferenceObserver
 from .base import ToolBitShape
 
 
@@ -18,8 +19,26 @@ class ShapeRegistry:
     def __init__(self, shapes_dir: pathlib.Path):
         self.set_dir(shapes_dir)
 
-    def set_dir(self, shapes_dir: pathlib.Path):
-        self.shape_dir = shapes_dir
+    def is_empty(self):
+        return not any(self.shape_dir.iterdir())
+
+    def add_builtin_shapes(self):
+        """Copies built-in shapes to the shape directory"""
+        builtin = Path.Preferences.getBuiltinShapePath()
+        for filepath in builtin.iterdir():
+            dest = self.shape_dir / filepath.name
+            if dest.exists():
+                continue
+            shutil.copy(filepath, dest)
+
+    def ensure_initialized(self):
+        if self.is_empty():
+            Path.Log.info(f"ToolBitShape directory '{self.shape_dir}' empty; copying built-in shapes")
+            self.add_builtin_shapes()
+            Path.Log.info(f"ToolBitShapes successfully copied to '{self.shape_dir}'")
+
+    def set_dir(self, shapedir: pathlib.Path):
+        self.shape_dir = shapedir
         self.shape_dir.mkdir(parents=True, exist_ok=True)
 
     @classmethod
@@ -78,13 +97,26 @@ class ShapeRegistry:
         # alias if the file does not exist.
         filepath = self.shape_dir / filename
         if not filepath.exists():
-            filepath = self.get_shape_filename_from_alias(os.path.splitext(filename)[0])
+            base = os.path.splitext(filename)[0]
+            filepath = self.get_shape_filename_from_alias(base)
             if not filepath:
                 raise Exception(f"ToolBitShape file '{filename}' not found!\n")
-            Path.Log.warning(f"ToolBitShape '{filename}' not found. Trying legacy '{filepath}'\n")
+            Path.Log.warning(f"ToolBitShape '{filename}' not found. Trying legacy '{filepath}'")
+
+        # If that also fails, try to find a built-in shape file.
+        if not filepath.exists():
+            base = os.path.splitext(filename)[0]
+            filepath = Path.Preferences.getBuiltinShapePath() / filename
+            Path.Log.warning(f"ToolBitShape '{filename}' still not found. Trying built-in '{filepath}'")
 
         return ToolBitShape.from_file(filepath, **params)
 
 
+def on_tool_path_changed(group, key, value):
+    Path.Log.track("signal received:", group, key, value)
+    SHAPE_REGISTRY.set_dir(Path.Preferences.getShapePath())
+    SHAPE_REGISTRY.ensure_initialized()
+
 # Global instance of the ShapeRegistry
-SHAPE_REGISTRY = ShapeRegistry(util.get_builtin_shape_dir())
+SHAPE_REGISTRY = ShapeRegistry(Path.Preferences.getShapePath())
+addToolPreferenceObserver(on_tool_path_changed)
