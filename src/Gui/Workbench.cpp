@@ -860,13 +860,13 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
 DockWindowItems* StdWorkbench::setupDockWindows() const
 {
     auto root = new DockWindowItems();
-    root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, true, false);
-    root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, true, false);
-    root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, false, false);
-    root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, true, true);
-    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, true, true);
-    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, false, true);
-    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, false, true);
+    root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Visible);
+    root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Visible);
+    root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Hidden);
+    root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
+    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
+    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
+    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
 
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -874,7 +874,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
 
     bool enabled = group->GetBool("Enabled", false);
     if (enabled) {
-      root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);
+      root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, Gui::DockWindowOption::Hidden);
     }
 
     return root;
@@ -995,7 +995,7 @@ ToolBarItem* NoneWorkbench::setupCommandBars() const
 DockWindowItems* NoneWorkbench::setupDockWindows() const
 {
     auto root = new DockWindowItems();
-    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, false);
+    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::Visible);
     return root;
 }
 
