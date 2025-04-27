@@ -5,7 +5,10 @@
 %bcond_with bundled_pycxx
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %bcond_without bundled_smesh
-
+# rpmbuild --without=tests:  esclude tests in %%check
+%bcond_without tests
+# rpmbuild --without=bundled_gtest:  don't use bundled version of gtest and gmock
+%bcond_without bundled_gtest
 
 #ex: "FreeCAD"
 %global git_name {{{ git_name }}}
@@ -64,15 +67,21 @@ Source0:        {{{ git_repo_pack_with_submodules }}}
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
-
+%if %{with tests}
+ %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
+%endif
 
 
 # See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 
 # Utilities
-# Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils git tbb-devel
+%if %{with tests}
+BuildRequires:  xorg-x11-server-Xvfb
+%if %{without bundled_gtest}
+BuildRequires: gtest-devel gmock-devel
+%endif
 
 # Development Libraries
 BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libkdtree++-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel pcl-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel
@@ -140,6 +149,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 #path that contain main FreeCAD sources for cmake
 %global _vpath_srcdir  %_builddir/%{git_name}
+%global tests_resultdir %{_datadir}/%{name}/tests_result/%{_arch}
 %prep
     {{{ git_repo_setup_macro }}}
 
@@ -187,7 +197,12 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %if %{without bundled_zipios}
         -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
     %endif
+    %if %{with tests}
+        -DENABLE_DEVELOPER_TESTS=TRUE \
+        -DINSTAL_GTEST=FALSE \
+    %else
         -DENABLE_DEVELOPER_TESTS=FALSE \
+    %endif
     %endif
         -DONDSELSOLVER_BUILD_EXE=TRUE \
         -DBUILD_GUI=TRUE
@@ -212,6 +227,28 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
     rm -rf %{buildroot}%{_datadir}/pkgconfig/OndselSolver.pc
     rm -rf %{buildroot}%{_includedir}/OndselSolver/*
+    # Bytecompile Python modules
+    %py_byte_compile %{__python3} %{buildroot}%{_libdir}/%{name}
+
+
+%check
+    cd %_builddir
+    desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
+    %{?fedora:appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml}
+
+%if %{with tests}
+    mkdir -p %{buildroot}%tests_resultdir
+    pushd %_vpath_builddir
+    ./tests/Tests_run &> %{buildroot}%tests_resultdir/Tests_run.result              || echo "**** Failed Test_run ****"
+    tail -n 50 %{buildroot}%tests_resultdir/Tests_run.result
+    ./bin/FreeCADCmd -t 0  &> %{buildroot}%tests_resultdir/FreeCADCmd_test.result   || echo "**** Failed FreeCADCmd -t 0 ****"
+    tail -n 50 %{buildroot}%tests_resultdir/FreeCADCmd_test.result
+#    xvfb-run ./bin/FreeCAD -t 0 &> %{buildroot}%tests_resultdir/FreeCAD_test.result || echo "**** Failed FreeCAD -t 0 ****"
+#    tail -n 50 %{buildroot}%tests_resultdir/FreeCAD_test.result
+    popd
+    %ctest &> %{buildroot}%tests_resultdir/ctest.result                             || echo "Failed ctest"
+    tail -n 50 %{buildroot}%tests_resultdir/ctest.result
+%endif
 
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
@@ -236,17 +273,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
             exit 1
         fi
     done
-
-    # Bytecompile Python modules
-    %py_byte_compile %{__python3} %{buildroot}%{_libdir}/%{name}
-
-
-%check
-    cd %_builddir
-    desktop-file-validate \
-        %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
-    %{?fedora:appstream-util validate-relax --nonet \
-        %{buildroot}%{_metainfodir}/*.metainfo.xml}
 
 
 %post
@@ -279,7 +305,11 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_datadir}/pixmaps/*
     %{_datadir}/mime/packages/*
     %{_datadir}/thumbnailers/*
-    %{_libdir}/../lib/python*/site-packages/%{name}/*
+    #find a way to configure in cmake with %%name to avoid conflict with different package name
+    %{python3_sitelib}/freecad/*
+%if %{with tests}
+    %tests_resultdir/*
+%endif
 
 %files data
     %{_datadir}/%{name}/
