@@ -1,9 +1,26 @@
-function git_commit_no {
-	commits=$(curl -s 'https://api.github.com/repos/FreeCAD/FreeCAD/compare/120ca87015...main' | grep "\"ahead_by\":" | sed -s 's/ //g' | sed -s 's/"ahead_by"://' | sed -s 's/,//')
-	echo -n $((commits + 1))
+function git_wcrev() {
+    output "`python package/fedora/getVersion.py`"
+}
+
+function git_wcdate() {
+    output "`git log -1 --format="%at" | xargs -I{} date -d @{} +"%Y/%m/%d %T"`"
+}
+
+function package_name() (
+    output "freecad-git"
+)
+
+function build_version() (
+   output  "git"
+)
+
+function git_commit_hash() {
+    output "`git rev-parse HEAD`"
 }
 
 function git_repo_pack_with_submodules() {
+    python package/fedora/writeVersion.py
+    log_info "git info updated on src/Build/Version.h.cmake"
     declare path= dir_name= source_name=""
 
     path="$GIT_ROOT"
@@ -51,4 +68,3 @@ function git_repo_pack_with_submodules() {
 
     output "$source_name"
 }
-

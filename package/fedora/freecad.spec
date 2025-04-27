@@ -13,22 +13,56 @@
 %global __cmake_in_source_build 0
 
 
-# Some plugins go in the Mod folder instead of lib. Deal with those here:
-%global mod_plugins Mod/PartDesign
-%define name freecad
-%define github_name FreeCAD
-%define branch main
+#ex: "FreeCAD"
+%global git_name {{{ git_name }}}
+#ex "freecad-git"
+%global package_name {{{ package_name }}}
+#ex:"41384 +36 (Git Shallow)"
+%global wcvrev   {{{ git_wcrev }}}
+#ex: "2025/04/25 10:15:00"
+%global wcdate   {{{ git_wcdate }}}
+#ex1: "weekly-build"
+#ex2: "1.0.0"
+%global commit_id {{{ git_commit_hash }}}
+%global build_version  {{{ build_version }}}
 
-Name:           %{name}
+#ex1: weekly_build
+#ex2: "1.0.0"
+%global clean_version %{lua:
+local ver = rpm.expand("%{build_version}")
+    ver = ver:gsub("-","_")
+    print(ver)
+}
+#ex: "20250424.41384+36.Git.1.fc42"
+%global release_ver  %{lua:
+    local date = rpm.expand("%{wcdate}")
+        :match("^[^%s]+")  --remove time
+    local vcsrev = rpm.expand("%{wcvrev}")
+        :gsub("%s+", "")
+        :gsub("%(", ".")
+        :gsub("%)", "")
+    local commit = rpm.expand("%{commit_id}")
+        :sub(1, 7)
+    local rev = (date.."."..vcsrev.."."..commit)
+        :gsub("-", "")
+        :gsub(":", "_")
+        :gsub("%s+", ".")
+        :gsub("/", "")
+    print(rev)
+}
+
+
+Name:           %{package_name}
 Epoch:          1
-Version:        1.1.0
-Release:        pre_{{{git_commit_no}}}%{?dist}
+Version:        %clean_version
+Release:        %{release_ver}.%{autorelease}
+
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
-
-License:        LGPLv2+
+License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
-Source0:        {{{git_repo_pack_with_submodules}}}
+
+Source0:        {{{ git_repo_pack_with_submodules }}}
 # This package depends on automagic byte compilation
 # https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
 %global py_bytecompile 1
