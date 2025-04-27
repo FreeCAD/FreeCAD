@@ -61,9 +61,6 @@ Source0:        {{{ git_repo_pack_with_submodules }}}
 # https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
 %global py_bytecompile 1
 
-# Setup python target for shiboken so the right cmake file is imported.
-%global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")
-
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
@@ -163,56 +160,39 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
      cd %_builddir
 
     # Deal with cmake projects that tend to link excessively.
-    CXXFLAGS='-Wno-error=cast-function-type'; export CXXFLAGS
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
     %define MEDFILE_INCLUDE_DIRS %{_includedir}/med/
 
-    %cmake \
+     %cmake \
         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
         -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
         -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
+        -DCMAKE_INSTALL_DATAROOTDIR=%{_datadir} \
         -DRESOURCEDIR=%{_datadir}/%{name} \
         -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
         -DFREECAD_USE_EXTERNAL_FMT=TRUE \
         -DFREECAD_USE_PCL:BOOL=OFF \
         -DFREECAD_QT_VERSION:STRING=6 \
-        -DSHIBOKEN_INCLUDE_DIR=%{_includedir}/shiboken6 \
-        -DSHIBOKEN_LIBRARY=-lshiboken6.%{py_suffix} \
-        -DPYTHON_SUFFIX=.%{py_suffix} \
-        -DPYSIDE_INCLUDE_DIR=/usr/include/PySide6 \
-        -DPYSIDE_LIBRARY=-lpyside6.%{py_suffix} \
-        -DPython3_EXECUTABLE:FILEPATH=/usr/bin/python3 \
-        -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
         -DOpenGL_GL_PREFERENCE=GLVND \
-        -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
-        -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
         -DUSE_OCC=TRUE \
-    %if %{with outbundled_smesh}
-        -DFREECAD_USE_EXTERNAL_SMESH=TRUE \
-        -DSMESH_FOUND=TRUE \
-        -DSMESH_INCLUDE_DIR=%{_includedir}/smesh \
-        -DSMESH_DIR=`pwd`/../cMake \
-    %endif
-    %if %{without bundled_zipios}
-        -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
-    %endif
     %if %{without bundled_pycxx}
         -DPYCXX_INCLUDE_DIR=$(pkg-config --variable=includedir PyCXX) \
         -DPYCXX_SOURCE_DIR=$(pkg-config --variable=srcdir PyCXX) \
     %endif
-        -DPACKAGE_WCREF="%{release} (Git)" \
-        -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git main" \
+    %if %{without bundled_smesh}
+        -DFREECAD_USE_EXTERNAL_SMESH=TRUE \
+    %endif
+    %if %{without bundled_zipios}
+        -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
+    %endif
         -DENABLE_DEVELOPER_TESTS=FALSE \
-        -DBUILD_GUI=TRUE \
-        ../
+    %endif
+        -DONDSELSOLVER_BUILD_EXE=TRUE \
+        -DBUILD_GUI=TRUE
 
-    make fc_version
-    for I in src/Build/Version.h src/Build/Version.h.out; do
-        sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' $I
-        sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git main\",' $I
-    done
+
 
     %cmake_build
 
@@ -225,40 +205,13 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     ln -s ../%{_lib}/%{name}/bin/FreeCAD %{buildroot}%{_bindir}/FreeCAD
     ln -s ../%{_lib}/%{name}/bin/FreeCADCmd %{buildroot}%{_bindir}/FreeCADCmd
 
-    mkdir %{buildroot}%{_metainfodir}/
-    mv %{buildroot}%{_libdir}/%{name}/share/metainfo/* %{buildroot}%{_metainfodir}/
-
-    mkdir %{buildroot}%{_datadir}/applications/
-    mv %{buildroot}%{_libdir}/%{name}/share/applications/* %{buildroot}%{_datadir}/applications/
-
-
-    mkdir -p %{buildroot}%{_datadir}/thumbnailers/
-    mv %{buildroot}%{_libdir}/%{name}/share/thumbnailers/* %{buildroot}%{_datadir}/thumbnailers/
-
-    mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/
-    mv %{buildroot}%{_libdir}/%{name}/share/icons/hicolor/scalable/* %{buildroot}%{_datadir}/icons/hicolor/scalable/
-
-    mkdir -p %{buildroot}%{_datadir}/pixmaps/
-    mv %{buildroot}%{_libdir}/%{name}/share/pixmaps/* %{buildroot}%{_datadir}/pixmaps/
-
-    mkdir -p %{buildroot}%{_datadir}/mime/packages/
-    mv %{buildroot}%{_libdir}/%{name}/share/mime/packages/* %{buildroot}%{_datadir}/mime/packages/
-
-    pushd %{buildroot}%{_libdir}/%{name}/share/
-    rmdir metainfo/
-    rmdir applications/
-    rm -rf mime
-    rm -rf icons
-    popd
-
-    # Remove obsolete Start_Page.html
-    rm -f %{buildroot}%{_docdir}/%{name}/Start_Page.html
-
     # Remove header from external library that's erroneously installed
     rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
+    rm -rf %{buildroot}%{_includedir}/gmock
+    rm -rf %{buildroot}%{_includedir}/gtest
 
+    rm -rf %{buildroot}%{_datadir}/pkgconfig/OndselSolver.pc
     rm -rf %{buildroot}%{_includedir}/OndselSolver/*
-    rm -f %{buildroot}%{_libdir}/%{name}/share/pkgconfig/OndselSolver.pc
 
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
@@ -322,7 +275,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_libdir}/%{name}/Ext/
     %{_libdir}/%{name}/Mod/
     %{_datadir}/applications/*
-    %{_datadir}/icons/hicolor/scalable/*
+    %{_datadir}/icons/hicolor/*
     %{_datadir}/pixmaps/*
     %{_datadir}/mime/packages/*
     %{_datadir}/thumbnailers/*
