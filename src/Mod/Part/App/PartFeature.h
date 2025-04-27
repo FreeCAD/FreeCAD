@@ -137,7 +137,7 @@ public:
     static TopoShape getTopoShape(const App::DocumentObject *obj,
             const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
             App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true,
-            bool noElementMap=false);
+            bool noElementMap=false, bool simplifyCompound=true);
 
     static void clearShapeCache();
 

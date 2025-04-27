@@ -1818,8 +1818,10 @@ static gp_Pnt toPnt(gp_Vec dir)
 }
 
 App::DocumentObjectExecReturn* Hole::execute()
-{ 
-    TopoShape profileshape = getProfileShape(/*needSubElement*/ false);
+{
+    // simplifyCompound=false prevents a sketch with a single point
+    // and a single line to be reduced to a single line (removing the point which we might use for a hole)
+    TopoShape profileshape = getProfileShape(/*simplifyCompound*/ false);
 
     // Find the base shape
     TopoShape base;
