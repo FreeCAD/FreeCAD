@@ -428,7 +428,7 @@ void DocumentObject::getOutList(int options, std::vector<DocumentObject*>& res) 
     bool noHidden = !!(options & OutListNoHidden);
     std::size_t size = res.size();
     for (auto prop : props) {
-        auto link = dynamic_cast<PropertyLinkBase*>(prop);
+        auto link = freecad_cast<PropertyLinkBase*>(prop);
         if (link) {
             link->getLinks(res, noHidden);
         }
@@ -457,7 +457,7 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
         return ret;
     }
 
-    auto link = dynamic_cast<PropertyLinkBase*>(prop);
+    auto link = freecad_cast<PropertyLinkBase*>(prop);
     if (link) {
         link->getLinks(ret);
     }
@@ -629,7 +629,7 @@ DocumentObject::getPathsByOutList(App::DocumentObject* to) const
 
 DocumentObjectGroup* DocumentObject::getGroup() const
 {
-    return dynamic_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
+    return freecad_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(DocumentObject* linkTo) const
@@ -1130,7 +1130,7 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
         }
     }
     if (transform && mat) {
-        auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
+        auto pla = freecad_cast<PropertyPlacement*>(getPropertyByName("Placement"));
         if (pla) {
             *mat *= pla->getValue().toMatrix();
         }

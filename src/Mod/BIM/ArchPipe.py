@@ -73,25 +73,25 @@ class _ArchPipe(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Diameter" in pl:
-            obj.addProperty("App::PropertyLength", "Diameter",     "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "Diameter",     "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"), locked=True)
         if not "Width" in pl:
-            obj.addProperty("App::PropertyLength", "Width",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The width of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "Width",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The width of this pipe, if not based on a profile"), locked=True)
             obj.setPropertyStatus("Width", "Hidden")
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength", "Height",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The height of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "Height",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The height of this pipe, if not based on a profile"), locked=True)
             obj.setPropertyStatus("Height", "Hidden")
         if not "Length" in pl:
-            obj.addProperty("App::PropertyLength", "Length",       "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
+            obj.addProperty("App::PropertyLength", "Length",       "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"), locked=True)
         if not "Profile" in pl:
-            obj.addProperty("App::PropertyLink",   "Profile",      "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
+            obj.addProperty("App::PropertyLink",   "Profile",      "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"), locked=True)
         if not "OffsetStart" in pl:
-            obj.addProperty("App::PropertyLength", "OffsetStart",  "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
+            obj.addProperty("App::PropertyLength", "OffsetStart",  "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"), locked=True)
         if not "OffsetEnd" in pl:
-            obj.addProperty("App::PropertyLength", "OffsetEnd",    "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
+            obj.addProperty("App::PropertyLength", "OffsetEnd",    "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"), locked=True)
         if not "WallThickness" in pl:
-            obj.addProperty("App::PropertyLength", "WallThickness","Pipe", QT_TRANSLATE_NOOP("App::Property","The wall thickness of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "WallThickness","Pipe", QT_TRANSLATE_NOOP("App::Property","The wall thickness of this pipe, if not based on a profile"), locked=True)
         if not "ProfileType" in pl:
-            obj.addProperty("App::PropertyEnumeration", "ProfileType", "Pipe", QT_TRANSLATE_NOOP("App::Property","If not based on a profile, this controls the profile of this pipe"))
+            obj.addProperty("App::PropertyEnumeration", "ProfileType", "Pipe", QT_TRANSLATE_NOOP("App::Property","If not based on a profile, this controls the profile of this pipe"), locked=True)
             obj.ProfileType = ["Circle", "Square", "Rectangle"]
         self.Type = "Pipe"
 
@@ -287,11 +287,11 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Radius" in pl:
-            obj.addProperty("App::PropertyLength",      "Radius",        "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The curvature radius of this connector"))
+            obj.addProperty("App::PropertyLength",      "Radius",        "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The curvature radius of this connector"), locked=True)
         if not "Pipes" in pl:
-            obj.addProperty("App::PropertyLinkList",    "Pipes",         "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The pipes linked by this connector"))
+            obj.addProperty("App::PropertyLinkList",    "Pipes",         "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The pipes linked by this connector"), locked=True)
         if not "ConnectorType" in pl:
-            obj.addProperty("App::PropertyEnumeration", "ConnectorType", "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The type of this connector"))
+            obj.addProperty("App::PropertyEnumeration", "ConnectorType", "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The type of this connector"), locked=True)
             obj.ConnectorType = ["Corner","Tee"]
             obj.setEditorMode("ConnectorType",1)
         self.Type = "PipeConnector"

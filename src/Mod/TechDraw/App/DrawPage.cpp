@@ -116,7 +116,7 @@ void DrawPage::onChanged(const App::Property* prop)
         //     this is needed just to mark the Views to recompute??
         if (!isRestoring()) {
             for (auto* obj : getViews()) {
-                auto* view = dynamic_cast<DrawView*>(obj);
+                auto* view = freecad_cast<DrawView*>(obj);
                 if (view && view->ScaleType.isValue("Page")) {
                     if (std::abs(view->Scale.getValue() - Scale.getValue()) > std::numeric_limits<float>::epsilon()) {
                         view->Scale.setValue(Scale.getValue());
@@ -128,7 +128,7 @@ void DrawPage::onChanged(const App::Property* prop)
     else if (prop == &ProjectionType) {
         // touch all ortho views in the Page as they may be dependent on Projection Type  //(is this true?)
         for (auto* obj : getViews()) {
-            auto* view = dynamic_cast<DrawProjGroup*>(obj);
+            auto* view = freecad_cast<DrawProjGroup*>(obj);
             if (view && view->ProjectionType.isValue("Default")) {
                 view->ProjectionType.touch();
             }
@@ -239,7 +239,7 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
         return -1;
     }
 
-    auto* view = dynamic_cast<DrawView*>(docObj);
+    auto* view = freecad_cast<DrawView*>(docObj);
 
     if (!view) {
         auto* link = dynamic_cast<App::Link*>(docObj);
@@ -247,7 +247,7 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
             return -1;
         }
 
-        view = dynamic_cast<DrawView*>(link->getLinkedObject());
+        view = freecad_cast<DrawView*>(link->getLinkedObject());
         if (!view) {
             return -1;
         }
@@ -339,7 +339,7 @@ void DrawPage::updateAllViews()
 
     //first, make sure all the Parts have been executed so GeometryObjects exist
     for (auto& v : featViews) {
-        auto* part = dynamic_cast<DrawViewPart*>(v);
+        auto* part = freecad_cast<DrawViewPart*>(v);
         if (part) {
             //view, section, detail, dpgi
             part->recomputeFeature();
@@ -348,12 +348,12 @@ void DrawPage::updateAllViews()
     //second, do the rest of the views that may depend on a part view
     //TODO: check if we have 2 layers of dependency (ex. leader > weld > tile?)
     for (auto& v : featViews) {
-        auto* part = dynamic_cast<DrawViewPart*>(v);
+        auto* part = freecad_cast<DrawViewPart*>(v);
         if (part) {
             continue;
         }
 
-        auto* view = dynamic_cast<DrawView*>(v);
+        auto* view = freecad_cast<DrawView*>(v);
         if (view) {
             view->overrideKeepUpdated(true);
             view->recomputeFeature();

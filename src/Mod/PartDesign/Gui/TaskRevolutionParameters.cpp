@@ -114,7 +114,7 @@ Gui::ViewProviderCoordinateSystem* TaskRevolutionParameters::getOriginView() con
     PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject());
     if (body) {
         App::Origin *origin = body->getOrigin();
-        return dynamic_cast<ViewProviderCoordinateSystem*>(
+        return freecad_cast<ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
      }
 

@@ -353,7 +353,7 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
             // multiple pages in document, use active page if there is one
             auto* w = Gui::getMainWindow();
             auto* mv = w->activeWindow();
-            auto* mvp = dynamic_cast<MDIViewPage*>(mv);
+            auto* mvp = qobject_cast<MDIViewPage*>(mv);
             if (mvp) {
                 QGSPage* qp = mvp->getViewProviderPage()->getQGSPage();
                 return qp->getDrawPage();

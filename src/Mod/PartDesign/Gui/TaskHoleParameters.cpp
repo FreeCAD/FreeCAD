@@ -183,6 +183,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
 
+    ui->BaseProfileType->setCurrentIndex(PartDesign::Hole::baseProfileOption_bitmaskToIdx(pcHole->BaseProfileType.getValue()));
+
     setCutDiagram();
 
     // clang-format off
@@ -240,6 +242,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::threadDepthTypeChanged);
     connect(ui->ThreadDepth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskHoleParameters::threadDepthChanged);
+    connect(ui->BaseProfileType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::baseProfileTypeChanged);
     // clang-format on
 
     getViewObject()->show();
@@ -321,7 +325,6 @@ void TaskHoleParameters::threadDepthTypeChanged(int index)
         recomputeFeature();
     }
 }
-
 void TaskHoleParameters::threadDepthChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
@@ -409,6 +412,13 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
         );
     }
     setCutDiagram();
+}
+void TaskHoleParameters::baseProfileTypeChanged(int index)
+{
+    if (auto hole = getObject<PartDesign::Hole>()) {
+        hole->BaseProfileType.setValue(PartDesign::Hole::baseProfileOption_idxToBitmask(index));
+        recomputeFeature();
+    }
 }
 
 void TaskHoleParameters::setCutDiagram()
@@ -907,6 +917,9 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     else if (&Prop == &hole->ThreadDepth) {
         ui->ThreadDepth->setEnabled(true);
         updateSpinBox(ui->ThreadDepth, hole->ThreadDepth.getValue());
+    } else if (&Prop == &hole->BaseProfileType) {
+        ui->BaseProfileType->setEnabled(true);
+        updateComboBox(ui->BaseProfileType, PartDesign::Hole::baseProfileOption_bitmaskToIdx(hole->BaseProfileType.getValue()));
     }
 }
 
@@ -1056,7 +1069,10 @@ double TaskHoleParameters::getThreadDepth() const
 {
     return ui->ThreadDepth->value().getValue();
 }
-
+int TaskHoleParameters::getBaseProfileType() const
+{
+    return PartDesign::Hole::baseProfileOption_idxToBitmask(ui->BaseProfileType->currentIndex());
+}
 void TaskHoleParameters::apply()
 {
     auto hole = getObject<PartDesign::Hole>();
@@ -1122,6 +1138,9 @@ void TaskHoleParameters::apply()
     }
     if (!hole->Tapered.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "Tapered = " << getTapered());
+    }
+    if (!hole->BaseProfileType.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "BaseProfileType = " << getBaseProfileType());
     }
 
     isApplying = false;

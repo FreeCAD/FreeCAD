@@ -204,17 +204,30 @@ void QGISVGTemplate::updateView(bool update)
     draw();
 }
 
+std::vector<TemplateTextField*> QGISVGTemplate::getTextFields()
+{
+    constexpr int TemplateTextFieldType {QGraphicsItem::UserType + 160};
+    std::vector<TemplateTextField*> result;
+    result.reserve(childItems().size());
+
+    QList<QGraphicsItem*> templateChildren = childItems();
+    for (auto& child : templateChildren) {
+        if (child->type() == TemplateTextFieldType) {
+            result.push_back(static_cast<TemplateTextField*>(child));
+        }
+    }
+
+    return result;
+}
+
 void QGISVGTemplate::clearClickHandles()
 {
     prepareGeometryChange();
-    constexpr int TemplateTextFieldType{QGraphicsItem::UserType + 160};
-    auto templateChildren = childItems();
-    for (auto& child : templateChildren) {
-        if (child->type() == TemplateTextFieldType) {
-            child->hide();
-            scene()->removeItem(child);
-            delete child;
-        }
+    std::vector<TemplateTextField*> textFields = getTextFields(); 
+    for (auto& textField : textFields) {
+        textField->hide();
+        scene()->removeItem(textField);
+        delete textField;
      }
 }
 
@@ -317,7 +330,6 @@ void QGISVGTemplate::createClickHandles()
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
 
         addToGroup(item);
-        textFields.push_back(item);
     }
 }
 

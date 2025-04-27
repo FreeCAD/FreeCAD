@@ -146,7 +146,7 @@ DrawView* DrawLeaderLine::getBaseView() const
         return nullptr;
     }
 
-    auto cast = dynamic_cast<DrawView*>(baseObj);
+    auto cast = freecad_cast<DrawView*>(baseObj);
     return cast;
 }
 

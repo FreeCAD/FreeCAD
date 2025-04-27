@@ -225,7 +225,7 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
-    auto dvp = dynamic_cast<DrawViewPart*>(feature);
+    auto dvp = freecad_cast<DrawViewPart*>(feature);
     if (dvp  &&
         !dvp->hasGeometry()) {
         // too early. wait for updates to finish.
@@ -262,7 +262,7 @@ void QGIView::snapPosition(QPointF& newPosition)
             continue;
         }
         auto viewFeature = view->getViewObject();
-        auto viewDvp = dynamic_cast<DrawViewPart*>(viewFeature);
+        auto viewDvp = freecad_cast<DrawViewPart*>(viewFeature);
 
         auto viewScenePos = view->scenePos();
         if (viewDvp &&
@@ -316,7 +316,7 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
     if (!baseView) {
         return;
     }
-    auto* vpdv = dynamic_cast<ViewProviderDrawingView*>(getViewProvider(baseView));
+    auto* vpdv = freecad_cast<ViewProviderDrawingView*>(getViewProvider(baseView));
     if (!vpdv) {
         return;
     }
@@ -810,7 +810,7 @@ ViewProviderPage* QGIView::getViewProviderPage(TechDraw::DrawView* dView)
         return nullptr;
     }
 
-    return dynamic_cast<ViewProviderPage*>(activeGui->getViewProvider(page));
+    return freecad_cast<ViewProviderPage*>(activeGui->getViewProvider(page));
 }
 
 //remove a child of this from scene while keeping scene indexes valid
@@ -833,7 +833,7 @@ bool QGIView::getFrameState()
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpp = freecad_cast<ViewProviderPage*>(vp);
     if (!vpp) return true;
 
     return vpp->getFrameState();

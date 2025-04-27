@@ -65,16 +65,16 @@ class _PartJoinFeature:
             "App::PropertyEnumeration",
             "Mode",
             "Join",
-            "The mode of operation. bypass = make compound (fast)",
+            "The mode of operation. bypass = make compound (fast)", locked=True,
         )
         obj.Mode = ["bypass", "Connect", "Embed", "Cutout"]
-        obj.addProperty("App::PropertyLink", "Base", "Join", "First object")
-        obj.addProperty("App::PropertyLink", "Tool", "Join", "Second object")
+        obj.addProperty("App::PropertyLink", "Base", "Join", "First object", locked=True)
+        obj.addProperty("App::PropertyLink", "Tool", "Join", "Second object", locked=True)
         obj.addProperty(
             "App::PropertyBool",
             "Refine",
             "Join",
-            "True = refine resulting shape. False = output as is.",
+            "True = refine resulting shape. False = output as is.", locked=True,
         )
 
         obj.Proxy = self

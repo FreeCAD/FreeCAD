@@ -99,7 +99,7 @@ def show_classification(obj):
             for rel in ref.ClassificationRefForObjects:
                 if element in rel.RelatedObjects:
                     if not "Classification" in obj.PropertiesList:
-                        obj.addProperty("App::PropertyString", "Classification", "IFC")
+                        obj.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
                     sname = system.Name
                     cname = ref.Name or ref.Identification
                     obj.Classification = sname + " " + cname

@@ -68,13 +68,13 @@ class _Precast(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Length" in pl:
-            obj.addProperty("App::PropertyDistance","Length","Structure",QT_TRANSLATE_NOOP("App::Property","The length of this element"))
+            obj.addProperty("App::PropertyDistance","Length","Structure",QT_TRANSLATE_NOOP("App::Property","The length of this element"), locked=True)
         if not "Width" in pl:
-            obj.addProperty("App::PropertyDistance","Width","Structure",QT_TRANSLATE_NOOP("App::Property","The width of this element"))
+            obj.addProperty("App::PropertyDistance","Width","Structure",QT_TRANSLATE_NOOP("App::Property","The width of this element"), locked=True)
         if not "Height" in pl:
-            obj.addProperty("App::PropertyDistance","Height","Structure",QT_TRANSLATE_NOOP("App::Property","The height of this element"))
+            obj.addProperty("App::PropertyDistance","Height","Structure",QT_TRANSLATE_NOOP("App::Property","The height of this element"), locked=True)
         if not "Nodes" in pl:
-            obj.addProperty("App::PropertyVectorList","Nodes","Structure",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
+            obj.addProperty("App::PropertyVectorList","Nodes","Structure",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"), locked=True)
         self.Type = "Precast"
 
     def onDocumentRestored(self,obj):
@@ -102,13 +102,13 @@ class _PrecastBeam(_Precast):
 
         pl = obj.PropertiesList
         if not "Chamfer" in pl:
-            obj.addProperty("App::PropertyDistance","Chamfer","Beam",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"))
+            obj.addProperty("App::PropertyDistance","Chamfer","Beam",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"), locked=True)
         if not "DentLength" in pl:
-            obj.addProperty("App::PropertyDistance","DentLength","Beam",QT_TRANSLATE_NOOP("App::Property","The dent length of this element"))
+            obj.addProperty("App::PropertyDistance","DentLength","Beam",QT_TRANSLATE_NOOP("App::Property","The dent length of this element"), locked=True)
         if not "DentHeight" in pl:
-            obj.addProperty("App::PropertyDistance","DentHeight","Beam",QT_TRANSLATE_NOOP("App::Property","The dent height of this element"))
+            obj.addProperty("App::PropertyDistance","DentHeight","Beam",QT_TRANSLATE_NOOP("App::Property","The dent height of this element"), locked=True)
         if not "Dents" in pl:
-            obj.addProperty("App::PropertyStringList","Dents","Beam",QT_TRANSLATE_NOOP("App::Property","The dents of this element"))
+            obj.addProperty("App::PropertyStringList","Dents","Beam",QT_TRANSLATE_NOOP("App::Property","The dents of this element"), locked=True)
 
     def onDocumentRestored(self,obj):
 
@@ -224,9 +224,9 @@ class _PrecastIbeam(_Precast):
 
         pl = obj.PropertiesList
         if not "Chamfer" in pl:
-            obj.addProperty("App::PropertyDistance","Chamfer","Beam",QT_TRANSLATE_NOOP("App::Property","The chamfer length of this element"))
+            obj.addProperty("App::PropertyDistance","Chamfer","Beam",QT_TRANSLATE_NOOP("App::Property","The chamfer length of this element"), locked=True)
         if not "BeamBase" in pl:
-            obj.addProperty("App::PropertyDistance","BeamBase","Beam",QT_TRANSLATE_NOOP("App::Property","The base length of this element"))
+            obj.addProperty("App::PropertyDistance","BeamBase","Beam",QT_TRANSLATE_NOOP("App::Property","The base length of this element"), locked=True)
 
     def onDocumentRestored(self,obj):
 
@@ -290,17 +290,17 @@ class _PrecastPillar(_Precast):
 
         pl = obj.PropertiesList
         if not "Chamfer" in pl:
-            obj.addProperty("App::PropertyDistance","Chamfer","Column",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"))
+            obj.addProperty("App::PropertyDistance","Chamfer","Column",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"), locked=True)
         if not "GrooveDepth" in pl:
-            obj.addProperty("App::PropertyDistance","GrooveDepth","Column",QT_TRANSLATE_NOOP("App::Property","The groove depth of this element"))
+            obj.addProperty("App::PropertyDistance","GrooveDepth","Column",QT_TRANSLATE_NOOP("App::Property","The groove depth of this element"), locked=True)
         if not "GrooveHeight" in pl:
-            obj.addProperty("App::PropertyDistance","GrooveHeight","Column",QT_TRANSLATE_NOOP("App::Property","The groove height of this element"))
+            obj.addProperty("App::PropertyDistance","GrooveHeight","Column",QT_TRANSLATE_NOOP("App::Property","The groove height of this element"), locked=True)
         if not "GrooveSpacing" in pl:
-            obj.addProperty("App::PropertyDistance","GrooveSpacing","Column",QT_TRANSLATE_NOOP("App::Property","The spacing between the grooves of this element"))
+            obj.addProperty("App::PropertyDistance","GrooveSpacing","Column",QT_TRANSLATE_NOOP("App::Property","The spacing between the grooves of this element"), locked=True)
         if not "GrooveNumber" in pl:
-            obj.addProperty("App::PropertyInteger","GrooveNumber","Column",QT_TRANSLATE_NOOP("App::Property","The number of grooves of this element"))
+            obj.addProperty("App::PropertyInteger","GrooveNumber","Column",QT_TRANSLATE_NOOP("App::Property","The number of grooves of this element"), locked=True)
         if not "Dents" in pl:
-            obj.addProperty("App::PropertyStringList","Dents","Column",QT_TRANSLATE_NOOP("App::Property","The dents of this element"))
+            obj.addProperty("App::PropertyStringList","Dents","Column",QT_TRANSLATE_NOOP("App::Property","The dents of this element"), locked=True)
 
     def onDocumentRestored(self,obj):
 
@@ -431,11 +431,11 @@ class _PrecastPanel(_Precast):
 
         pl = obj.PropertiesList
         if not "Chamfer" in pl:
-            obj.addProperty("App::PropertyDistance","Chamfer","Panel",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"))
+            obj.addProperty("App::PropertyDistance","Chamfer","Panel",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"), locked=True)
         if not "DentWidth" in pl:
-            obj.addProperty("App::PropertyDistance","DentWidth","Panel",QT_TRANSLATE_NOOP("App::Property","The dent width of this element"))
+            obj.addProperty("App::PropertyDistance","DentWidth","Panel",QT_TRANSLATE_NOOP("App::Property","The dent width of this element"), locked=True)
         if not "DentHeight" in pl:
-            obj.addProperty("App::PropertyDistance","DentHeight","Panel",QT_TRANSLATE_NOOP("App::Property","The dent height of this element"))
+            obj.addProperty("App::PropertyDistance","DentHeight","Panel",QT_TRANSLATE_NOOP("App::Property","The dent height of this element"), locked=True)
 
     def onDocumentRestored(self,obj):
 
@@ -542,18 +542,18 @@ class _PrecastSlab(_Precast):
 
         pl = obj.PropertiesList
         if not "SlabType" in pl:
-            obj.addProperty("App::PropertyEnumeration","SlabType","Slab",QT_TRANSLATE_NOOP("App::Property","The type of this slab"))
+            obj.addProperty("App::PropertyEnumeration","SlabType","Slab",QT_TRANSLATE_NOOP("App::Property","The type of this slab"), locked=True)
             obj.SlabType = ["Champagne","Hat"]
         if not "SlabBase" in pl:
-            obj.addProperty("App::PropertyDistance","SlabBase","Slab",QT_TRANSLATE_NOOP("App::Property","The size of the base of this element"))
+            obj.addProperty("App::PropertyDistance","SlabBase","Slab",QT_TRANSLATE_NOOP("App::Property","The size of the base of this element"), locked=True)
         if not "HoleNumber" in pl:
-            obj.addProperty("App::PropertyInteger","HoleNumber","Slab",QT_TRANSLATE_NOOP("App::Property","The number of holes in this element"))
+            obj.addProperty("App::PropertyInteger","HoleNumber","Slab",QT_TRANSLATE_NOOP("App::Property","The number of holes in this element"), locked=True)
         if not "HoleMajor" in pl:
-            obj.addProperty("App::PropertyDistance","HoleMajor","Slab",QT_TRANSLATE_NOOP("App::Property","The major radius of the holes of this element"))
+            obj.addProperty("App::PropertyDistance","HoleMajor","Slab",QT_TRANSLATE_NOOP("App::Property","The major radius of the holes of this element"), locked=True)
         if not "HoleMinor" in pl:
-            obj.addProperty("App::PropertyDistance","HoleMinor","Slab",QT_TRANSLATE_NOOP("App::Property","The minor radius of the holes of this element"))
+            obj.addProperty("App::PropertyDistance","HoleMinor","Slab",QT_TRANSLATE_NOOP("App::Property","The minor radius of the holes of this element"), locked=True)
         if not "HoleSpacing" in pl:
-            obj.addProperty("App::PropertyDistance","HoleSpacing","Slab",QT_TRANSLATE_NOOP("App::Property","The spacing between the holes of this element"))
+            obj.addProperty("App::PropertyDistance","HoleSpacing","Slab",QT_TRANSLATE_NOOP("App::Property","The spacing between the holes of this element"), locked=True)
 
     def onDocumentRestored(self,obj):
 
@@ -653,13 +653,13 @@ class _PrecastStairs(_Precast):
 
         pl = obj.PropertiesList
         if not "DownLength" in pl:
-            obj.addProperty("App::PropertyDistance","DownLength","Stairs",QT_TRANSLATE_NOOP("App::Property","The length of the down floor of this element"))
+            obj.addProperty("App::PropertyDistance","DownLength","Stairs",QT_TRANSLATE_NOOP("App::Property","The length of the down floor of this element"), locked=True)
         if not "RiserNumber" in pl:
-            obj.addProperty("App::PropertyInteger","RiserNumber","Stairs",QT_TRANSLATE_NOOP("App::Property","The number of risers in this element"))
+            obj.addProperty("App::PropertyInteger","RiserNumber","Stairs",QT_TRANSLATE_NOOP("App::Property","The number of risers in this element"), locked=True)
         if not "Riser" in pl:
-            obj.addProperty("App::PropertyDistance","Riser","Stairs",QT_TRANSLATE_NOOP("App::Property","The riser height of this element"))
+            obj.addProperty("App::PropertyDistance","Riser","Stairs",QT_TRANSLATE_NOOP("App::Property","The riser height of this element"), locked=True)
         if not "Tread" in pl:
-            obj.addProperty("App::PropertyDistance","Tread","Stairs",QT_TRANSLATE_NOOP("App::Property","The tread depth of this element"))
+            obj.addProperty("App::PropertyDistance","Tread","Stairs",QT_TRANSLATE_NOOP("App::Property","The tread depth of this element"), locked=True)
 
     def onDocumentRestored(self,obj):
 

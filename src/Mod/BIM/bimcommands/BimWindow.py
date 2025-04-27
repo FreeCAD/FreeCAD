@@ -127,8 +127,9 @@ class Arch_Window:
                     return
 
         # interactive mode
-        self.wp = WorkingPlane.get_working_plane()
 
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        self.wp = WorkingPlane.get_working_plane()
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.length(self.Width)
         self.tracker.width(self.W1)
@@ -160,6 +161,9 @@ class Arch_Window:
         from draftutils import gui_utils
         from draftutils.messages import _wrn
         from ArchWindowPresets import WindowPresets
+
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
         self.tracker.off()
         if point is None:
             return
@@ -169,7 +173,7 @@ class Arch_Window:
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
 
-        FreeCADGui.doCommand("import math, FreeCAD, Arch, DraftGeomUtils, WorkingPlane")
+        FreeCADGui.doCommand("import FreeCAD, Arch, DraftGeomUtils, WorkingPlane")
         FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
 
         if self.baseFace is not None:
@@ -182,6 +186,7 @@ class Arch_Window:
         FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + ", " + str(point.y) + ", " + str(point.z) + ")")
 
         if self.Preset >= len(WindowPresets):
+            preset = False
             # library object
             col = FreeCAD.ActiveDocument.Objects
             path = self.librarypresets[self.Preset - len(WindowPresets)][1]
@@ -209,10 +214,22 @@ class Arch_Window:
 
         else:
             # preset
+            preset = True
             wp = ""
             for p in self.wparams:
-                wp += p.lower() + "=" + str(getattr(self,p)) + ", "
-            FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "', " + wp + "placement=pl)")
+                wp += ", " + p.lower() + "=" + str(getattr(self,p))
+            import ArchSketchObject
+            if hasattr(ArchSketchObject, 'attachToHost'):
+                # Window sketch's stay at orgin is good if addon exists
+                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")
+                FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(win)")
+                w = FreeCADGui.Selection.getSelection()[0]
+                FreeCADGui.doCommand("FreeCAD.SketchArchPl = pl")
+                wPl = FreeCAD.SketchArchPl
+                SketchArch = True
+            else:
+                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", placement=pl)")
+                SketchArch = False
 
         if self.Include:
             host = None
@@ -225,6 +242,9 @@ class Arch_Window:
                 siblings = host.Proxy.getSiblings(host)
                 for sibling in siblings:
                     FreeCADGui.doCommand("win.Hosts = win.Hosts + [FreeCAD.ActiveDocument." + sibling.Name + "]")
+                if preset == True and Draft.getType(host.Base) == "ArchSketch":
+                    if SketchArch:
+                        ArchSketchObject.attachToHost(w, target=host, pl=wPl)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

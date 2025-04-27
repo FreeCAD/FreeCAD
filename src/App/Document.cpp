@@ -797,7 +797,7 @@ void Document::onChanged(const Property* prop)
     }
     else if (prop == &UseHasher) {
         for (auto obj : d->objectArray) {
-            auto geofeature = dynamic_cast<GeoFeature*>(obj);
+            auto geofeature = freecad_cast<GeoFeature*>(obj);
             if (geofeature && geofeature->getPropertyOfGeometry()) {
                 geofeature->enforceRecompute();
             }

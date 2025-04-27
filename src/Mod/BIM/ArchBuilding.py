@@ -282,7 +282,7 @@ class _Building(ArchFloor._Floor):
 
         pl = obj.PropertiesList
         if not "BuildingType" in pl:
-            obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
+            obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",QT_TRANSLATE_NOOP("App::Property","The type of this building"), locked=True)
             obj.BuildingType = BuildingTypes
         obj.setEditorMode('Height',2)
         self.Type = "Building"

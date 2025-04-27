@@ -60,6 +60,7 @@ public:
     void updateView(bool update = false) override;
 
     TechDraw::DrawSVGTemplate* getSVGTemplate();
+    std::vector<TemplateTextField*> getTextFields() override;
 
 protected:
     void openFile(const QFile& file);

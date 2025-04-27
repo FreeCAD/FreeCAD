@@ -1793,7 +1793,7 @@ void ViewProviderMesh::fillHoleCallback(void* ud, SoEventCallback* cb)
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
         Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-        if (auto that = dynamic_cast<ViewProviderMesh*>(vp)) {
+        if (auto that = freecad_cast<ViewProviderMesh*>(vp)) {
             const SoDetail* detail = point->getDetail(that->getShapeNode());
             if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                 // get the boundary to the picked facet
@@ -1868,7 +1868,7 @@ void ViewProviderMesh::markPartCallback(void* ud, SoEventCallback* cb)
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (auto that = dynamic_cast<ViewProviderMesh*>(vp)) {
+            if (auto that = freecad_cast<ViewProviderMesh*>(vp)) {
                 const SoDetail* detail = point->getDetail(that->getShapeNode());
                 if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                     // get the boundary to the picked facet

@@ -577,7 +577,7 @@ void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelI
     int numChild = item->childCount();
     if (numChild > 0) {
         QModelIndex topLeft = this->index(0, column, parent);
-        QModelIndex bottomRight = this->index(numChild, column, parent);
+        QModelIndex bottomRight = this->index(numChild - 1, column, parent);
         Q_EMIT dataChanged(topLeft, bottomRight);
     }
 }

@@ -744,7 +744,7 @@ BaseGeomPtrVector DrawComplexSection::makeSectionLineGeometry()
 {
     //    Base::Console().Message("DCS::makeSectionLineGeometry()\n");
     BaseGeomPtrVector result;
-    DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
+    DrawViewPart* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
         TopoDS_Wire lineWire = makeSectionLineWire();
         TopoDS_Shape projectedWire =
@@ -775,7 +775,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionLineEnds()
     Base::Vector3d first = Base::Vector3d(gpFirst.X(), gpFirst.Y(), gpFirst.Z());
     Base::Vector3d last = Base::Vector3d(gpLast.X(), gpLast.Y(), gpLast.Z());
 
-    DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
+    DrawViewPart* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
         first = baseDvp->projectPoint(first);
         last = baseDvp->projectPoint(last);
@@ -831,7 +831,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionArrowDirs()
     Base::Vector3d vDir1 = Base::convertTo<Base::Vector3d>(gDir1);
     vDir0.Normalize();
     vDir1.Normalize();
-    DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
+    DrawViewPart* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
         vDir0 = baseDvp->projectPoint(vDir0, true);
         vDir1 = baseDvp->projectPoint(vDir1, true);
@@ -847,7 +847,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
 {
     TopoDS_Wire lineWire;
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
-    DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
+    DrawViewPart* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
         TopoDS_Shape toolShape = Part::Feature::getShape(toolObj);
         if (toolShape.IsNull()) {
@@ -884,7 +884,7 @@ ChangePointVector DrawComplexSection::getChangePointsFromSectionLine()
     //    Base::Console().Message("DCS::getChangePointsFromSectionLine()\n");
     ChangePointVector result;
     std::vector<gp_Pnt> allPoints;
-    DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
+    DrawViewPart* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
         TopoDS_Wire lineWire = makeSectionLineWire();
         TopoDS_Shape projectedWire =

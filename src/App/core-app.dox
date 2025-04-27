@@ -6,6 +6,12 @@
  * @ref DocumentGroup "Document", @ref DocumentObjectGroup "Document Object",
  * the @ref ExpressionFramework "Expression Framework", and the @ref
  * PropertyFramework "Property Framework".
+ *
+ * The largest difference between the functionality in @ref BASE "Base"
+ * compared to %App is that %App introduces the notion of properties, both used
+ * in @ref App::Document "Document" and @ref App::DocumentObject
+ * "DocumentObject".  In addition, %App has a representation of the running
+ * @ref App::Application "Application".
  */
 
 /**
@@ -58,11 +64,46 @@
  *
  * The property framework introduces the ability to access attributes (member
  * variables) of a class by name without knowing the class type. It's like the
- * reflection mechanism of Java or C#.  This ability is introduced by the
- * App::PropertyContainer class and can be used by all derived classes.
+ * reflection mechanism of Java or C#.  This ability is introduced by the @ref
+ * App::PropertyContainer "PropertyContainer" class and can be used by all
+ * derived classes.  In particular, there are two classes that inherit from
+ * @ref App::PropertyContainer "PropertyContainer" which are @ref App::Document
+ * "Document" and @ref App::DocumentObject "DocumentObject".  These two classes
+ * serve different purposes but are both able to hold properties.  @ref
+ * App::PropertyContainer "PropertyContainer" contains the shared logic to do
+ * so.
  *
- * This makes it possible in the first place to make an automatic mapping to python (e.g. in App::FeaturePy) and
- * abstract editing properties in Gui::PropertyEditor.
+ * In C++, it is possible to define properties as part of the class.  These can
+ * be considered "static" properties but this term is typically not used within
+ * FreeCAD.  Properties created in a class cannot be removed from a @ref
+ * App::PropertyContainer "PropertyContainer".
+ *
+ * However, it is also possible to add properties to a @ref
+ * App::PropertyContainer "PropertyContainer" at runtime.  These properties are
+ * called "dynamic properties" and these properties can be freely added and
+ * removed by users.
+ *
+ * In Python, all properties are dynamic properties.  This makes it difficult
+ * to understand whether properties are part of a Python class and are
+ * necessary for the functioning of the class, or whether a user has added
+ * these properties.  Therefore, it is possible to indicate that a property is
+ *  "locked":
+ *
+ * @code
+ * prop->setStatus(Property::LockDynamic, true);
+ * @endcode
+ *
+ * In Python, this can be indicated in the `addProperty()` function:
+ *
+ * @code
+ * addProperty(type: string, name: string, group="", doc="",
+ *             attr=0, read_only=False, hidden=False,
+ *             locked=False, enum_vals=[])
+ * @endcode
+ *
+ * The Property Framework makes it possible in the first place to make an
+ * automatic mapping to python (e.g. in App::FeaturePy) and abstract editing
+ * properties in Gui::PropertyEditor.
  *
  * @section Examples
  *

@@ -20,11 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "Type.h"
 #include "BindingManager.h"
+
+// generated out of Type.pyi
 #include "TypePy.h"
 #include "TypePy.cpp"
 
@@ -45,8 +46,7 @@ PyObject* TypePy::fromName(PyObject* args)
         return nullptr;
     }
 
-    Base::Type type = Base::Type::fromName(name);
-    return new TypePy(new Base::Type(type));
+    return new TypePy(new Base::Type(Type::fromName(name)));
 }
 
 PyObject* TypePy::fromKey(PyObject* args)
@@ -56,8 +56,7 @@ PyObject* TypePy::fromKey(PyObject* args)
         return nullptr;
     }
 
-    Base::Type type = Base::Type::fromKey(index);
-    return new TypePy(new Base::Type(type));
+    return new TypePy(new Base::Type(Type::fromKey(index)));
 }
 
 PyObject* TypePy::getNumTypes(PyObject* args)
@@ -66,7 +65,7 @@ PyObject* TypePy::getNumTypes(PyObject* args)
         return nullptr;
     }
 
-    int num = Base::Type::getNumTypes();
+    int num = Type::getNumTypes();
     return PyLong_FromLong(num);
 }
 
@@ -76,7 +75,7 @@ PyObject* TypePy::getBadType(PyObject* args)
         return nullptr;
     }
 
-    return new TypePy(new Base::Type(Base::Type::BadType));
+    return new TypePy(new Base::Type(Type::BadType));
 }
 
 PyObject* TypePy::getParent(PyObject* args) const
@@ -85,8 +84,7 @@ PyObject* TypePy::getParent(PyObject* args) const
         return nullptr;
     }
 
-    Base::Type type = getBaseTypePtr()->getParent();
-    return new TypePy(new Base::Type(type));
+    return new TypePy(new Base::Type(getBaseTypePtr()->getParent()));
 }
 
 PyObject* TypePy::isBad(PyObject* args) const
@@ -106,7 +104,7 @@ PyObject* TypePy::isDerivedFrom(PyObject* args) const
     do {
         const char* name {};
         if (PyArg_ParseTuple(args, "s", &name)) {
-            type = Base::Type::fromName(name);
+            type = Type::fromName(name);
             break;
         }
 
@@ -132,7 +130,7 @@ PyObject* TypePy::getAllDerivedFrom(PyObject* args)
     do {
         const char* name {};
         if (PyArg_ParseTuple(args, "s", &name)) {
-            type = Base::Type::fromName(name);
+            type = Type::fromName(name);
             break;
         }
 
@@ -148,7 +146,7 @@ PyObject* TypePy::getAllDerivedFrom(PyObject* args)
     } while (false);
 
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(type, ary);
+    Type::getAllDerivedFrom(type, ary);
     Py::List res;
     for (const auto& it : ary) {
         res.append(Py::asObject(new TypePy(new Base::Type(it))));
@@ -162,9 +160,9 @@ PyObject* TypePy::getAllDerived(PyObject* args) const
         return nullptr;
     }
 
-    Base::Type type = Base::Type::fromName(getBaseTypePtr()->getName());
+    Base::Type type = Type::fromName(getBaseTypePtr()->getName());
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(type, ary);
+    Type::getAllDerivedFrom(type, ary);
     Py::List res;
     for (const auto& it : ary) {
         res.append(Py::asObject(new TypePy(new Base::Type(it))));
@@ -176,29 +174,29 @@ namespace
 {
 void deallocPyObject(PyObject* py)
 {
-    Base::PyObjectBase* pybase = static_cast<Base::PyObjectBase*>(py);
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(pybase->getTwinPointer());
-    if (Base::BindingManager::instance().retrieveWrapper(base) == py) {
-        Base::BindingManager::instance().releaseWrapper(base, py);
+    PyObjectBase* pybase = static_cast<PyObjectBase*>(py);
+    BaseClass* base = static_cast<BaseClass*>(pybase->getTwinPointer());
+    if (BindingManager::instance().retrieveWrapper(base) == py) {
+        BindingManager::instance().releaseWrapper(base, py);
         delete base;
     }
 
-    Base::PyObjectBase::PyDestructor(py);
+    PyObjectBase::PyDestructor(py);
 }
 
-PyObject* createPyObject(Base::BaseClass* base)
+PyObject* createPyObject(BaseClass* base)
 {
     PyObject* py = base->getPyObject();
 
-    if (PyObject_TypeCheck(py, &Base::PyObjectBase::Type)) {
+    if (PyObject_TypeCheck(py, &PyObjectBase::Type)) {
         // if the Python wrapper is a sub-class of PyObjectBase then
         // check if the C++ object must be added to the list of tracked objects
-        Base::PyObjectBase* pybase = static_cast<Base::PyObjectBase*>(py);
+        PyObjectBase* pybase = static_cast<PyObjectBase*>(py);
         if (base == pybase->getTwinPointer()) {
             // steal a reference because at this point the counter is at 2
             Py_DECREF(py);
             Py_TYPE(py)->tp_dealloc = deallocPyObject;
-            Base::BindingManager::instance().registerWrapper(base, py);
+            BindingManager::instance().registerWrapper(base, py);
         }
         else {
             // The Python wrapper creates its own copy of the C++ object
@@ -235,9 +233,8 @@ PyObject* TypePy::createInstanceByName(PyObject* args)
         return nullptr;
     }
 
-    bool loadModule = Base::asBoolean(load);
-    Base::Type type =
-        Base::Type::getTypeIfDerivedFrom(name, Base::BaseClass::getClassTypeId(), loadModule);
+    bool loadModule = asBoolean(load);
+    Base::Type type = Type::getTypeIfDerivedFrom(name, BaseClass::getClassTypeId(), loadModule);
     if (type.isBad()) {
         Py_Return;
     }
@@ -247,7 +244,7 @@ PyObject* TypePy::createInstanceByName(PyObject* args)
         Py_Return;
     }
 
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(typeInstance);
+    BaseClass* base = static_cast<BaseClass*>(typeInstance);
 
     return createPyObject(base);
 }

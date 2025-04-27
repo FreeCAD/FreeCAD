@@ -65,9 +65,9 @@ class _AxisSystem:
 
         pl = obj.PropertiesList
         if not "Axes" in pl:
-            obj.addProperty("App::PropertyLinkList","Axes","AxisSystem", QT_TRANSLATE_NOOP("App::Property","The axes this system is made of"))
+            obj.addProperty("App::PropertyLinkList","Axes","AxisSystem", QT_TRANSLATE_NOOP("App::Property","The axes this system is made of"), locked=True)
         if not "Placement" in pl:
-            obj.addProperty("App::PropertyPlacement","Placement","AxisSystem",QT_TRANSLATE_NOOP("App::Property","The placement of this axis system"))
+            obj.addProperty("App::PropertyPlacement","Placement","AxisSystem",QT_TRANSLATE_NOOP("App::Property","The placement of this axis system"), locked=True)
         self.Type = "AxisSystem"
 
     def onDocumentRestored(self,obj):

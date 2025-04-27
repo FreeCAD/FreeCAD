@@ -2038,7 +2038,7 @@ std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
     std::string featName;
     TechDraw::DrawPage* page = objFeat->findParentPage();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    auto pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+    auto pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
     if (pageVP) {
         QGSPage* scenePage = pageVP->getQGSPage();
         featName = scenePage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");

@@ -67,7 +67,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Base = None
 
         if "PointObject" not in properties:
@@ -75,7 +76,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyLink",
                             "PointObject",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.PointObject = None
 
         if "Fuse" not in properties:
@@ -86,7 +88,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Fuse = False
 
         if "Count" not in properties:
@@ -94,7 +97,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Count = 0
             obj.setEditorMode("Count", 1)  # Read only
 
@@ -103,7 +107,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyPlacement",
                             "ExtraPlacement",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ExtraPlacement = App.Placement()
 
         if self.use_link and "ExpandArray" not in properties:
@@ -111,7 +116,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.setPropertyStatus('Shape', 'Transient')
 
         if not self.use_link:
@@ -121,7 +127,8 @@ class PointArray(DraftLink):
                 obj.addProperty("App::PropertyPlacementList",
                                 "PlacementList",
                                 "Objects",
-                                _tip)
+                                _tip,
+                                locked=True)
                 obj.PlacementList = []
 
     def execute(self, obj):

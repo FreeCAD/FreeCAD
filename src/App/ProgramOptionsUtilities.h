@@ -28,6 +28,12 @@
 #include <array>
 #include <string>
 
+/**
+ * @brief A namespace for utilities.
+ *
+ * Currently, this namespace contains functionality to define custom syntax to
+ * parse command line options.
+ */
 namespace App::Util
 {
 

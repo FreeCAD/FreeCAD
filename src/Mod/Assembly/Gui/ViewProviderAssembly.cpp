@@ -1064,7 +1064,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
         addSubComponents = [&](AssemblyLink* asmLink, std::vector<App::DocumentObject*>& objs) {
             std::vector<App::DocumentObject*> assemblyLinkGroup = asmLink->Group.getValues();
             for (auto* obj : assemblyLinkGroup) {
-                auto* subAsmLink = dynamic_cast<AssemblyLink*>(obj);
+                auto* subAsmLink = freecad_cast<AssemblyLink*>(obj);
                 auto* link = dynamic_cast<App::Link*>(obj);
                 if (subAsmLink || link) {
                     if (std::ranges::find(objs, obj) == objs.end()) {

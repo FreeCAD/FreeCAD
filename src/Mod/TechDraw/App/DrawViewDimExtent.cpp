@@ -71,7 +71,7 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
     App::DocumentObject* docObj = Source.getValue();
     if (!docObj)
         return App::DocumentObject::StdReturn;
-    DrawViewPart* dvp = dynamic_cast<DrawViewPart*>(docObj);
+    DrawViewPart* dvp = freecad_cast<DrawViewPart*>(docObj);
     if (!dvp)
         return App::DocumentObject::StdReturn;
 

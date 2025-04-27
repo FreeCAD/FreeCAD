@@ -482,7 +482,7 @@ PyObject* PropertyContainerPy::getEnumerationsOfProperty(PyObject* args)
         return nullptr;
     }
 
-    PropertyEnumeration* enumProp = dynamic_cast<PropertyEnumeration*>(prop);
+    PropertyEnumeration* enumProp = freecad_cast<PropertyEnumeration*>(prop);
     if (!enumProp) {
         Py_Return;
     }

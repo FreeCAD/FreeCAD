@@ -211,7 +211,7 @@ void DrawViewBalloon::handleXYLock()
 DrawView* DrawViewBalloon::getParentView() const
 {
     App::DocumentObject* obj = SourceView.getValue();
-    DrawView* result = dynamic_cast<DrawView*>(obj);
+    DrawView* result = freecad_cast<DrawView*>(obj);
     return result;
 }
 

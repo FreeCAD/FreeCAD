@@ -1934,17 +1934,17 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
 
             switch (shape->shapeType()) {
                 case TopAbs_VERTEX: {
-                    if (auto point = dynamic_cast<GeomPoint*>(geom.get())) {
+                    if (auto point = freecad_cast<GeomPoint*>(geom.get())) {
                         placement.setPosition(point->getPoint());
                     }
                 }
                 break;
 
                 case TopAbs_EDGE: {
-                    if (auto conic = dynamic_cast<GeomConic*>(geom.get())) {
+                    if (auto conic = freecad_cast<GeomConic*>(geom.get())) {
                         placement.setPosition(conic->getLocation());
                         placement.setRotation(conic->getRotation().value_or(Base::Rotation {}));
-                    } else if (auto line = dynamic_cast<GeomCurve*>(geom.get())) {
+                    } else if (auto line = freecad_cast<GeomCurve*>(geom.get())) {
                         auto u1 = line->getFirstParameter();
                         auto u2 = line->getLastParameter();
 
@@ -1963,11 +1963,11 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 break;
 
                 case TopAbs_FACE: {
-                    auto surface = dynamic_cast<GeomSurface*>(geom.get());
+                    auto surface = freecad_cast<GeomSurface*>(geom.get());
 
-                    if (auto sphere = dynamic_cast<GeomSphere*>(geom.get())) {
+                    if (auto sphere = freecad_cast<GeomSphere*>(geom.get())) {
                         placement.setPosition(sphere->getLocation());
-                    } else if (auto cone = dynamic_cast<GeomCone*>(geom.get())) {
+                    } else if (auto cone = freecad_cast<GeomCone*>(geom.get())) {
                         placement.setPosition(cone->getApex());
                     } else if (auto com = shape->centerOfGravity()) {
                         placement.setPosition(*com);

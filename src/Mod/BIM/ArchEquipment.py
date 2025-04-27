@@ -186,15 +186,15 @@ class _Equipment(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Model" in pl:
-            obj.addProperty("App::PropertyString","Model","Equipment",QT_TRANSLATE_NOOP("App::Property","The model description of this equipment"))
+            obj.addProperty("App::PropertyString","Model","Equipment",QT_TRANSLATE_NOOP("App::Property","The model description of this equipment"), locked=True)
         if not "ProductURL" in pl:
-            obj.addProperty("App::PropertyString","ProductURL","Equipment",QT_TRANSLATE_NOOP("App::Property","The URL of the product page of this equipment"))
+            obj.addProperty("App::PropertyString","ProductURL","Equipment",QT_TRANSLATE_NOOP("App::Property","The URL of the product page of this equipment"), locked=True)
         if not "StandardCode" in pl:
-            obj.addProperty("App::PropertyString","StandardCode","Equipment",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
+            obj.addProperty("App::PropertyString","StandardCode","Equipment",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"), locked=True)
         if not "SnapPoints" in pl:
-            obj.addProperty("App::PropertyVectorList","SnapPoints","Equipment",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
+            obj.addProperty("App::PropertyVectorList","SnapPoints","Equipment",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"), locked=True)
         if not "EquipmentPower" in pl:
-            obj.addProperty("App::PropertyFloat","EquipmentPower","Equipment",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
+            obj.addProperty("App::PropertyFloat","EquipmentPower","Equipment",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"), locked=True)
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)

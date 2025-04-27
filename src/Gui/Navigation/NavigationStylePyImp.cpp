@@ -21,7 +21,7 @@
 
 #include "PreCompiled.h"
 
-// inclusion of the generated files (generated out of NavigationStylePy.xml)
+// inclusion of the generated files (generated out of NavigationStylePy.pyi)
 #include "Navigation/NavigationStylePy.h"
 #include "Navigation/NavigationStylePy.cpp"
 

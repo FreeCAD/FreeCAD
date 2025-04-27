@@ -88,15 +88,15 @@ class Arch_Panel:
             return
 
         # interactive mode
-        WorkingPlane.get_working_plane()
 
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        WorkingPlane.get_working_plane()
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
         self.tracker.height(self.Thickness)
         self.tracker.length(self.Length)
         self.tracker.on()
-        FreeCAD.activeDraftCommand = self
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         FreeCADGui.draftToolBar.continueCmd.show()
 
@@ -105,9 +105,11 @@ class Arch_Panel:
         "this function is called by the snapper when it has a 3D point"
 
         import DraftVecUtils
+
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
         self.tracker.finalize()
         if point is None:
-            FreeCAD.activeDraftCommand = None
             return
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Panel"))
         FreeCADGui.addModule("Arch")
@@ -123,7 +125,6 @@ class Arch_Panel:
             FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1.00,0.00,0.00),90.00)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        FreeCAD.activeDraftCommand = None
         if FreeCADGui.draftToolBar.continueCmd.isChecked():
             self.Activated()
 

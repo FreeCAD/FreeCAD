@@ -80,7 +80,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
 
         auto qName = QString::fromStdString(fieldNameStr);
-        auto svgTemplate = dynamic_cast<DrawSVGTemplate*>(tmplte);
+        auto svgTemplate = freecad_cast<DrawSVGTemplate*>(tmplte);
         if (svgTemplate) {
             // preset the autofill with the current value - something might have changed since this field was created
             m_autofillString = svgTemplate->getAutofillByEditableName(qName);

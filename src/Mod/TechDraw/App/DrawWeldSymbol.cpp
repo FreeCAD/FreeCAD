@@ -77,7 +77,7 @@ void DrawWeldSymbol::onSettingDocument()
 
     std::string tileName1 = doc->getUniqueObjectName("TileWeld");
     auto tile1Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName1.c_str() ) );
-    DrawTileWeld* tile1 = dynamic_cast<DrawTileWeld*>(tile1Obj);
+    DrawTileWeld* tile1 = freecad_cast<DrawTileWeld*>(tile1Obj);
     if (tile1) {
         tile1->Label.setValue(DrawUtil::translateArbitrary("DrawTileWeld",  "TileWeld",  tileName1));
         tile1->TileParent.setValue(this);
@@ -85,7 +85,7 @@ void DrawWeldSymbol::onSettingDocument()
 
     std::string tileName2 = doc->getUniqueObjectName("TileWeld");
     auto tile2Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName2.c_str() ) );
-    DrawTileWeld* tile2 = dynamic_cast<DrawTileWeld*>(tile2Obj);
+    DrawTileWeld* tile2 = freecad_cast<DrawTileWeld*>(tile2Obj);
     if (tile2) {
         tile2->Label.setValue(DrawUtil::translateArbitrary("DrawTileWeld",  "TileWeld",  tileName2));
         tile2->TileParent.setValue(this);

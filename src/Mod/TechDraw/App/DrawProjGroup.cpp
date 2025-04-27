@@ -356,7 +356,7 @@ void DrawProjGroup::getViewArea(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUN
 App::DocumentObject* DrawProjGroup::getProjObj(const char* viewProjType) const
 {
     for (auto it : Views.getValues()) {
-        auto projPtr(dynamic_cast<DrawProjGroupItem*>(it));
+        auto projPtr(freecad_cast<DrawProjGroupItem*>(it));
         if (!projPtr) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Error("PROBLEM - DPG::getProjObj - non DPGI entry in Views! %s / %s\n",
@@ -540,7 +540,7 @@ int DrawProjGroup::purgeProjections()
     while (!Views.getValues().empty()) {
         std::vector<DocumentObject*> views = Views.getValues();
         DocumentObject* dObj = views.back();
-        auto* dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
+        auto* dpgi = freecad_cast<DrawProjGroupItem*>(dObj);
         if (dpgi) {
             std::string itemName = dpgi->Type.getValueAsString();
             removeProjection(itemName.c_str());
@@ -866,7 +866,7 @@ void DrawProjGroup::arrangeViewPointers(
 
     bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
     for (auto it : Views.getValues()) {
-        auto oView(dynamic_cast<DrawProjGroupItem*>(it));
+        auto oView(freecad_cast<DrawProjGroupItem*>(it));
         if (!oView) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Error(
@@ -944,7 +944,7 @@ void DrawProjGroup::recomputeChildren()
 {
     //    Base::Console().Message("DPG::recomputeChildren() - waiting: %d\n", waitingForChildren());
     for (const auto it : Views.getValues()) {
-        auto view(dynamic_cast<DrawProjGroupItem*>(it));
+        auto view(freecad_cast<DrawProjGroupItem*>(it));
         if (!view) {
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
@@ -959,7 +959,7 @@ void DrawProjGroup::autoPositionChildren()
     //    Base::Console().Message("DPG::autoPositionChildren() - %s - waiting: %d\n",
     //                            getNameInDocument(), waitingForChildren());
     for (const auto it : Views.getValues()) {
-        auto view(dynamic_cast<DrawProjGroupItem*>(it));
+        auto view(freecad_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
@@ -977,7 +977,7 @@ void DrawProjGroup::updateChildrenScale()
 {
     //    Base::Console().Message("DPG::updateChildrenScale() - waiting: %d\n", waitingForChildren());
     for (const auto it : Views.getValues()) {
-        auto view(dynamic_cast<DrawProjGroupItem*>(it));
+        auto view(freecad_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
@@ -995,7 +995,7 @@ void DrawProjGroup::updateChildrenScale()
 void DrawProjGroup::updateChildrenSource()
 {
     for (const auto it : Views.getValues()) {
-        auto view(dynamic_cast<DrawProjGroupItem*>(it));
+        auto view(freecad_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Error(
@@ -1019,7 +1019,7 @@ void DrawProjGroup::updateChildrenSource()
 void DrawProjGroup::updateChildrenLock()
 {
     for (const auto it : Views.getValues()) {
-        auto view(dynamic_cast<DrawProjGroupItem*>(it));
+        auto view(freecad_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Error(
@@ -1034,7 +1034,7 @@ void DrawProjGroup::updateChildrenLock()
 void DrawProjGroup::updateChildrenEnforce(void)
 {
     for (const auto it : Views.getValues()) {
-        auto view(dynamic_cast<DrawProjGroupItem*>(it));
+        auto view(freecad_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Error(

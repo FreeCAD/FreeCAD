@@ -17,9 +17,9 @@ class Box(PartFeature):
 	def __init__(self, obj):
 		PartFeature.__init__(self, obj)
 		''' Add some custom properties to our box feature '''
-		obj.addProperty("App::PropertyLength","Length","Box","Length of the box").Length=1.0
-		obj.addProperty("App::PropertyLength","Width","Box","Width of the box").Width=1.0
-		obj.addProperty("App::PropertyLength","Height","Box", "Height of the box").Height=1.0
+                obj.addProperty("App::PropertyLength","Length","Box","Length of the box", locked=True).Length=1.0
+                obj.addProperty("App::PropertyLength","Width","Box","Width of the box", locked=True).Width=1.0
+                obj.addProperty("App::PropertyLength","Height","Box", "Height of the box", locked=True).Height=1.0
 
 	def onChanged(self, fp, prop):
 		''' Print the name of the property that has changed '''
@@ -120,8 +120,8 @@ def makeBox():
 class Line:
 	def __init__(self, obj):
 		''' Add two point properties '''
-		obj.addProperty("App::PropertyVector","p1","Line","Start point")
-		obj.addProperty("App::PropertyVector","p2","Line","End point").p2=FreeCAD.Vector(1,0,0)
+                obj.addProperty("App::PropertyVector","p1","Line","Start point", locked=True)
+                obj.addProperty("App::PropertyVector","p2","Line","End point", locked=True).p2=FreeCAD.Vector(1,0,0)
 		obj.Proxy = self
 
 	def execute(self, fp):
@@ -150,10 +150,10 @@ def makeLine():
 class Octahedron:
 	def __init__(self, obj):
 		"Add some custom properties to our box feature"
-		obj.addProperty("App::PropertyLength","Length","Octahedron","Length of the octahedron").Length=1.0
-		obj.addProperty("App::PropertyLength","Width","Octahedron","Width of the octahedron").Width=1.0
-		obj.addProperty("App::PropertyLength","Height","Octahedron", "Height of the octahedron").Height=1.0
-		obj.addProperty("Part::PropertyPartShape","Shape","Octahedron", "Shape of the octahedron")
+                obj.addProperty("App::PropertyLength","Length","Octahedron","Length of the octahedron", locked=True).Length=1.0
+                obj.addProperty("App::PropertyLength","Width","Octahedron","Width of the octahedron", locked=True).Width=1.0
+                obj.addProperty("App::PropertyLength","Height","Octahedron", "Height of the octahedron", locked=True).Height=1.0
+                obj.addProperty("Part::PropertyPartShape","Shape","Octahedron", "Shape of the octahedron", locked=True)
 		obj.Proxy = self
  
 	def execute(self, fp):
@@ -186,7 +186,7 @@ class Octahedron:
 class ViewProviderOctahedron:
 	def __init__(self, obj):
 		"Set this object to the proxy object of the actual view provider"
-		obj.addProperty("App::PropertyColor","Color","Octahedron","Color of the octahedron").Color=(1.0,0.0,0.0)
+                obj.addProperty("App::PropertyColor","Color","Octahedron","Color of the octahedron", locked=True).Color=(1.0,0.0,0.0)
 		obj.Proxy = self
  
 	def attach(self, obj):
@@ -525,8 +525,8 @@ def makeMesh():
 class Molecule:
 	def __init__(self, obj):
 		''' Add two point properties '''
-		obj.addProperty("App::PropertyVector","p1","Line","Start point")
-		obj.addProperty("App::PropertyVector","p2","Line","End point").p2=FreeCAD.Vector(5,0,0)
+                obj.addProperty("App::PropertyVector","p1","Line","Start point", locked=True)
+                obj.addProperty("App::PropertyVector","p2","Line","End point", locked=True).p2=FreeCAD.Vector(5,0,0)
 
 		obj.Proxy = self
 
@@ -577,7 +577,7 @@ def makeMolecule():
 
 class CircleSet:
 	def __init__(self, obj):
-		obj.addProperty("Part::PropertyPartShape","Shape","Circle","Shape")
+                obj.addProperty("Part::PropertyPartShape","Shape","Circle","Shape", locked=True)
 		obj.Proxy = self
 
 	def execute(self, fp):
@@ -640,8 +640,8 @@ def makeCircleSet():
 class EnumTest:
 	def __init__(self, obj):
 		''' Add enum properties '''
-		obj.addProperty("App::PropertyEnumeration","Enum","","Enumeration").Enum=["One","Two","Three"]
-		obj.addProperty("App::PropertyEnumeration","Enum2","","Enumeration2").Enum2=["One","Two","Three"]
+                obj.addProperty("App::PropertyEnumeration","Enum","","Enumeration", locked=True).Enum=["One","Two","Three"]
+                obj.addProperty("App::PropertyEnumeration","Enum2","","Enumeration2", locked=True).Enum2=["One","Two","Three"]
 		obj.Proxy = self
 
 	def execute(self, fp):
@@ -650,8 +650,8 @@ class EnumTest:
 class ViewProviderEnumTest:
 	def __init__(self, obj):
 		''' Set this object to the proxy object of the actual view provider '''
-		obj.addProperty("App::PropertyEnumeration","Enum3","","Enumeration3").Enum3=["One","Two","Three"]
-		obj.addProperty("App::PropertyEnumeration","Enum4","","Enumeration4").Enum4=["One","Two","Three"]
+                obj.addProperty("App::PropertyEnumeration","Enum3","","Enumeration3", locked=True).Enum3=["One","Two","Three"]
+                obj.addProperty("App::PropertyEnumeration","Enum4","","Enumeration4", locked=True).Enum4=["One","Two","Three"]
 		obj.Proxy = self
 
 	def updateData(self, fp, prop):
@@ -674,10 +674,10 @@ def makeEnumTest():
 class DistanceBolt:
 	def __init__(self, obj):
 		''' Add the properties: Length, Edges, Radius, Height '''
-		obj.addProperty("App::PropertyInteger","Edges","Bolt","Number of edges of the outline").Edges=6
-		obj.addProperty("App::PropertyLength","Length","Bolt","Length of the edges of the outline").Length=10.0
-		obj.addProperty("App::PropertyLength","Radius","Bolt","Radius of the inner circle").Radius=4.0
-		obj.addProperty("App::PropertyLength","Height","Bolt","Height of the extrusion").Height=20.0
+                obj.addProperty("App::PropertyInteger","Edges","Bolt","Number of edges of the outline", locked=True).Edges=6
+                obj.addProperty("App::PropertyLength","Length","Bolt","Length of the edges of the outline", locked=True).Length=10.0
+                obj.addProperty("App::PropertyLength","Radius","Bolt","Radius of the inner circle", locked=True).Radius=4.0
+                obj.addProperty("App::PropertyLength","Height","Bolt","Height of the extrusion", locked=True).Height=20.0
 		obj.Proxy = self
 
 	def onChanged(self, fp, prop):

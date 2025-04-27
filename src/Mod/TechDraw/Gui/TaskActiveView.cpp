@@ -224,7 +224,7 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     if (guiDoc) {
         Gui::ViewProvider* vp = guiDoc->getViewProvider(newImg);
         if (vp) {
-            auto vpImage = dynamic_cast<ViewProviderImage*>(vp);
+            auto vpImage = freecad_cast<ViewProviderImage*>(vp);
             if (vpImage) {
                 vpImage->Crop.setValue(ui->cbCrop->isChecked());
             }

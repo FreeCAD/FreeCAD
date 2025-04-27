@@ -106,11 +106,11 @@ class FeatureToleranceSet:
     """The PartToleranceSetFeature object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","ToleranceSet","Objects to have tolerance adjusted.")
+        obj.addProperty("App::PropertyLinkList","Objects","ToleranceSet","Objects to have tolerance adjusted.", locked=True)
         obj.addProperty("App::PropertyBool","Refine","ToleranceSet",
-                        "True = refine resulting shape. False = output as is.")
-        obj.addProperty("App::PropertyLength","minTolerance","ToleranceSet", "0.1 nm")
-        obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0")
+                        "True = refine resulting shape. False = output as is.", locked=True)
+        obj.addProperty("App::PropertyLength","minTolerance","ToleranceSet", "0.1 nm", locked=True)
+        obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0", locked=True)
         obj.Refine = getParamRefine()
 
         obj.Proxy = self
@@ -118,7 +118,7 @@ class FeatureToleranceSet:
 
     def onDocumentRestored(self, obj):
         if not hasattr(obj, 'maxTolerance'):
-            obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0")
+            obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0", locked=True)
 
     def execute(self,selfobj):
         shapes = []

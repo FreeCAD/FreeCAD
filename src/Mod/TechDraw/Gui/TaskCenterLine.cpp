@@ -507,7 +507,7 @@ void TaskCenterLine::enableTaskButtons(bool isEnabled)
 double TaskCenterLine::getCenterWidth()
 {
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
-    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+    auto partVP = freecad_cast<ViewProviderViewPart*>(vp);
     if (!partVP) {
         return TechDraw::LineGroup::getDefaultWidth("Graphic");
     }

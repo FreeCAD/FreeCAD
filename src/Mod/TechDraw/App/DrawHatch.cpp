@@ -83,7 +83,7 @@ App::DocumentObjectExecReturn *DrawHatch::execute(void)
 DrawViewPart* DrawHatch::getSourceView(void) const
 {
     App::DocumentObject* obj = Source.getValue();
-    DrawViewPart* result = dynamic_cast<DrawViewPart*>(obj);
+    DrawViewPart* result = freecad_cast<DrawViewPart*>(obj);
     return result;
 }
 
@@ -183,7 +183,7 @@ void DrawHatch::unsetupObject(void)
 {
 //    Base::Console().Message("DH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
-    DrawView* dv = dynamic_cast<DrawView*>(source);
+    DrawView* dv = freecad_cast<DrawView*>(source);
     if (dv) {
         dv->requestPaint();
     }

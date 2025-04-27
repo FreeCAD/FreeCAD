@@ -392,7 +392,7 @@ JointGroup* getJointGroup(const App::Part* part)
     }
     for (auto jointGroup : jointGroups) {
         if (part->hasObject(jointGroup)) {
-            return dynamic_cast<JointGroup*>(jointGroup);
+            return freecad_cast<JointGroup*>(jointGroup);
         }
     }
     return nullptr;

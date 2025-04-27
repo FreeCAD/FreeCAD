@@ -22,13 +22,15 @@
 
 #include "PreCompiled.h"
 
-#include "AxisPy.h"
+#include "GeometryPyCXX.h"
+
+// generated out of CoordinateSystem.pyi
 #include "CoordinateSystemPy.h"
 #include "CoordinateSystemPy.cpp"
-#include "GeometryPyCXX.h"
+
+#include "AxisPy.h"
 #include "PlacementPy.h"
 #include "VectorPy.h"
-
 
 using namespace Base;
 
@@ -130,7 +132,7 @@ Py::Object CoordinateSystemPy::getAxis() const
 
 void CoordinateSystemPy::setAxis(Py::Object arg)
 {
-    if (PyObject_TypeCheck(arg.ptr(), &(Base::AxisPy::Type))) {
+    if (PyObject_TypeCheck(arg.ptr(), &(AxisPy::Type))) {
         AxisPy* axis = static_cast<AxisPy*>(arg.ptr());
         getCoordinateSystemPtr()->setAxis(*axis->getAxisPtr());
         return;
