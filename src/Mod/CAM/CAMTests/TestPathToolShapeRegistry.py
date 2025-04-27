@@ -64,6 +64,5 @@ class TestPathToolShapeRegistry(PathTestUtils.PathTestBase):
     def test_get_shape_from_filename_not_found(self):
         """Test raising exception if file and alias not found."""
         filename = "nonexistent_shape.fcstd"
-        with self.assertRaisesRegex(Exception,
-                                    f"ToolBitShape file '{filename}' not found!"):
+        with self.assertRaises(FileNotFoundError):
             SHAPE_REGISTRY.get_shape_from_filename(filename)

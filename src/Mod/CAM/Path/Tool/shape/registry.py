@@ -48,7 +48,7 @@ class ShapeRegistry:
                 return cls
         return None
 
-    def get_shape_filename_from_alias(self, alias: str) -> Optional[Type[ToolBitShape]]:
+    def get_shape_filename_from_alias(self, alias: str) -> Optional[pathlib.Path]:
         for cls in ToolBitShape.__subclasses__():
             if cls.name == alias or alias in cls.aliases:
                 return self.shape_dir / (cls.name.lower() + '.fcstd')
@@ -99,15 +99,19 @@ class ShapeRegistry:
         if not filepath.exists():
             base = os.path.splitext(filename)[0]
             filepath = self.get_shape_filename_from_alias(base)
-            if not filepath:
-                raise Exception(f"ToolBitShape file '{filename}' not found!\n")
-            Path.Log.warning(f"ToolBitShape '{filename}' not found. Trying legacy '{filepath}'")
+            Path.Log.warning(
+                f"ToolBitShape '{filename}' not found in "
+                f"{self.shape_dir}. Trying legacy '{filepath}'"
+            )
 
         # If that also fails, try to find a built-in shape file.
-        if not filepath.exists():
+        if not filepath or not filepath.exists():
             base = os.path.splitext(filename)[0]
             filepath = Path.Preferences.getBuiltinShapePath() / filename
-            Path.Log.warning(f"ToolBitShape '{filename}' still not found. Trying built-in '{filepath}'")
+            Path.Log.warning(
+                f"ToolBitShape '{filename}' still not found in "
+                f"{self.shape_dir}. Trying built-in '{filepath}'"
+            )
 
         return ToolBitShape.from_file(filepath, **params)
 
