@@ -442,9 +442,9 @@ class _Stairs(ArchComponent.Component):
                             if isinstance(baseGeom[ie], Part.LineSegment):
                                 edgeL.append(baseGeom[ie].toShape())
                 #if not ArchSketchData and obj.ArchSketchEdges (whether stock Sketch or ArchSketch)
-                elif len(obj.Base.Shape.Edges) == 1:				#elif not obj.ArchSketchData and len(obj.Base.Shape.Edges) == 1:
+                elif len(obj.Base.Shape.Edges) == 1:  #elif not obj.ArchSketchData and len(obj.Base.Shape.Edges) == 1:
                     edgeL = [obj.Base.Shape.Edges[0]]
-                elif len(obj.Base.Shape.Edges) > 1:				#elif not obj.ArchSketchData and len(obj.Base.Shape.Edges) > 1:  #  >= 1
+                elif len(obj.Base.Shape.Edges) > 1:  #elif not obj.ArchSketchData and len(obj.Base.Shape.Edges) > 1:  # >= 1
                     #if obj.NumberOfSteps == 1:
                     # Sort the edges so each vertex tested of its tangent direction in order
                     # TODO - Found Part.sortEdges() occasionally return less edges then 'input'
