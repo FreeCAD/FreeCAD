@@ -39,20 +39,18 @@ using namespace Path;
 // returns a string which represents the object e.g. when printed in python
 std::string CommandPy::representation() const
 {
+    const uint five_sf = 5; 
     std::stringstream str;
-    str.precision(5);
+    str.precision(five_sf);
     str << "Command ( ";
     str << getCommandPtr()->Name;
     str << ", {";
     for (std::map<std::string, double>::iterator i = getCommandPtr()->Parameters.begin();
-         i != getCommandPtr()->Parameters.end();
-         ++i) {
+         i != getCommandPtr()->Parameters.end(); ++i) {
         std::string k = i->first;
         double v = i->second;
         str << "\'" << k << "\':" << v;
-        if (i != std::prev(getCommandPtr()->Parameters.end())) {
-            str << ", ";
-        }
+        if ( i != std::prev(getCommandPtr()->Parameters.end())  ) str << ", ";
     }
     str << "} )";
     return str.str();
@@ -180,6 +178,10 @@ Py::Dict CommandPy::getParameters() const
     }
     return parameters_copy_dict;
 }
+
+// NB setParameters does NOT set Parameters attribute with the new value, as in typical "setter" fn
+// rather it MERGES the contents of the arg with the existing Parameters dict
+// it should be called addParameters, there is NO setter method. Parameters can never be removed.
 
 void CommandPy::setParameters(Py::Dict arg)
 {
