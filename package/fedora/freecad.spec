@@ -72,6 +72,10 @@ Source0:        {{{ git_repo_pack_with_submodules }}}
 
 # See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
+# See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
+%global bundled_pycxx_version 7.1.9
+# See /src/3rdParty/OndselSolver/CMakeLists.txt to find this out.
+%global bundled_ondsel_solver_version 1.0.1
 
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils git tbb-devel
@@ -143,6 +147,14 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description data
     Data files for FreeCAD
+
+%package libondselsolver-devel
+Summary:        Development file for OndselSolver
+BuildArch:      noarch
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description libondselsolver-devel
+    Development file for OndselSolver
 
 
 #path that contain main FreeCAD sources for cmake
@@ -223,8 +235,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     rm -rf %{buildroot}%{_includedir}/gmock
     rm -rf %{buildroot}%{_includedir}/gtest
 
-    rm -rf %{buildroot}%{_datadir}/pkgconfig/OndselSolver.pc
-    rm -rf %{buildroot}%{_includedir}/OndselSolver/*
+    rm -rf %{buildroot}%{_libdir}/%{name}/cmake
+    rm -rf %{buildroot}%{_libdir}/%{name}/pkgconfig
 
 %check
     cd %_builddir
@@ -313,6 +325,10 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_datadir}/%{name}/
     %{_docdir}/%{name}/LICENSE.html
     %{_docdir}/%{name}/ThirdPartyLibraries.html
+
+%files libondselsolver-devel
+    %{_datadir}/pkgconfig/OndselSolver.pc
+    %{_includedir}/OndselSolver/*
 
 %changelog
     * Mon Mar 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.1.0-1
