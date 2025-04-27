@@ -72,14 +72,11 @@
       </item>
       <item>
         <widget class="QLabel" name="warningLabel">
-            <property name="wordWrap">
-                <bool>true</bool>
-            </property>
-            <property name="alignment">
-                <set>Qt::AlignCenter</set>
-            </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
         </widget>
-     </item>
+      </item>
      </layout>
     </widget>
    </item>
