@@ -69,7 +69,7 @@ void GuiDisplay::UpdateProjection()
     mat4x4_ortho(projmat, 0, gWindowSizeW, gWindowSizeH, 0, -1, 1);
     mShader.Activate();
     mShader.UpdateProjectionMat(projmat);
-    mThumbMaxMotion = guiItems[eGuiItemView].posx() - guiItems[eGuiItemSlider].posx() 
+    mThumbMaxMotion = guiItems[eGuiItemView].posx() - guiItems[eGuiItemSlider].posx()
         - guiItems[eGuiItemThumb].texItem.w;
     HStretchGlItem(&(guiItems[eGuiItemSlider]), mThumbMaxMotion, 10.0f);
 }
@@ -113,8 +113,9 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
 
 bool MillSim::GuiDisplay::HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidth)
 {
-    if (guiItem->vbo == 0)
+    if (guiItem->vbo == 0) {
         return false;
+    }
 
     DestroyGlItem(guiItem);
     Vertex2D verts[12];

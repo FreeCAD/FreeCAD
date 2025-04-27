@@ -81,7 +81,7 @@ struct GuiItem
 };
 
 #define GUIITEM_CHECKABLE 0x01
-#define GUIITEM_CHECKED   0x02
+#define GUIITEM_CHECKED 0x02
 #define GUIITEM_STRETCHED 0x04
 
 
