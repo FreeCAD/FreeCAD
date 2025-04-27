@@ -237,9 +237,9 @@ public:
    * @brief Visit each property in the container.
    *
    * This method allows you to apply a function to each property in the
-   * container.  The visiting order is undefined. This mehod is necessary
+   * container. The visiting order is undefined. This method is necessary
    * because PropertyContainer has no begin and end methods and it is not
-   * practical to implement these.  What gets visited is undefined if the
+   * practical to implement these. What gets visited is undefined if the
    * collection of Properties is changed during this call.
    *
    * @param[in] visitor The function to apply to each property.
