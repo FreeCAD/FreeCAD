@@ -60,9 +60,7 @@ License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
 
 Source0:        {{{ git_repo_pack_with_submodules }}}
-# This package depends on automagic byte compilation
-# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
-%global py_bytecompile 1
+
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
@@ -207,9 +205,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
         -DONDSELSOLVER_BUILD_EXE=TRUE \
         -DBUILD_GUI=TRUE
 
-
-
     %cmake_build
+
 
 %install
     cd %_builddir
@@ -227,9 +224,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
     rm -rf %{buildroot}%{_datadir}/pkgconfig/OndselSolver.pc
     rm -rf %{buildroot}%{_includedir}/OndselSolver/*
-    # Bytecompile Python modules
-    %py_byte_compile %{__python3} %{buildroot}%{_libdir}/%{name}
-
 
 %check
     cd %_builddir
@@ -280,6 +274,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     /usr/bin/update-desktop-database &> /dev/null || :
     /usr/bin/update-mime-database %{_datadir}/mime &> /dev/null || :
 
+
 %postun
     if [ $1 -eq 0 ] ; then
         /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
@@ -287,6 +282,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     fi
     /usr/bin/update-desktop-database &> /dev/null || :
     /usr/bin/update-mime-database %{_datadir}/mime &> /dev/null || :
+
 
 %posttrans
     /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor/scalable/apps &>/dev/null || :
@@ -310,6 +306,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 %if %{with tests}
     %tests_resultdir/*
 %endif
+
 
 %files data
     %{_datadir}/%{name}/
