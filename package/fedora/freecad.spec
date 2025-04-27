@@ -67,7 +67,8 @@ Source0:        {{{ git_repo_pack_with_submodules }}}
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
+%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
+%global exported_libs libOndselSolver
 %if %{with tests}
  %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
 %endif
@@ -118,16 +119,20 @@ Provides:       bundled(smesh) = %{bundled_smesh_version}
 %if %{with bundled_pycxx}
 Provides:       bundled(python-pycxx)
 %endif
+Provides:       bundled(libondselsolver) = %{bundled_ondsel_solver_version}
+
 Recommends:     python3-pysolar
 
 
 
 # plugins and private shared libs in %%{_libdir}/freecad/lib are private;
 # prevent private capabilities being advertised in Provides/Requires
-%define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\|$iGui"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
+%define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins}; do echo -n "\\\|$i\\\"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
+%define exported_libs_regexp /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i\\\"; done)\\\)\\.so/d
 %{?filter_setup:
 %filter_provides_in %{_libdir}/%{name}/lib
 %filter_from_requires %{plugin_regexp}
+%filter_from_requires %{exported_libs_regexp}
 %filter_from_provides %{plugin_regexp}
 %filter_provides_in %{_libdir}/%{name}/Mod
 %filter_requires_in %{_libdir}/%{name}/Mod
@@ -263,27 +268,41 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
     # Make sure there are no plugins that need to be added to plugins macro
-    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}'`
-    if [ -n "$new_plugins" ]; then
-        echo -e "\n\n\n**** ERROR:\n" \
-            "\nPlugins not caught by regexp:  " $new_plugins \
-            "\n\nPlugins in %{_libdir}/%{name}/lib do not exist in" \
-            "\nspecfile %%{plugins} macro.  Please add these to" \
-            "\n%%{plugins} macro at top of specfile and rebuild.\n****\n" 1>&2
-        exit 1
-    fi
-    # Make sure there are no entries in the plugins macro that don't match plugins
-    for p in %{plugins}; do
-        if [ -z "`ls %{buildroot}%{_libdir}/%{name}/%{_lib}/$p*.so`" ]; then
-            set +x
-            echo -e "\n\n\n**** ERROR:\n" \
-                "\nExtra entry in %%{plugins} macro with no matching plugin:" \
-                "'$p'.\n\nPlease remove from %%{plugins} macro at top of" \
-                "\nspecfile and rebuild.\n****\n" 1>&2
-            exit 1
-        fi
-    done
 
+   new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}'` -e '%exported_libs_regexp'
+   if [ -n "$new_plugins" ]; then
+         echo -e "\n\n\n**** ERROR:\n" \
+             "\nPlugins not caught by regexps:" \
+             "\n" $new_plugins \
+             "\n\nPlugins in %{_libdir}/%{name}/lib do not exist in" \
+             "\nspecfile %%{plugins} or %%{exported_libs_regexp} macro." \
+             "\nPlease add these to %%{plugins} or %%{exported_libs}" \
+             "\nmacro at top of specfile" \
+             "\nand rebuild.\n****\n" 1>&2
+         exit 1
+     fi
+     # Make sure there are no entries in the plugins macro that don't match plugins
+     for p in %{plugins}; do
+         if [ -z "`ls %{buildroot}%{_libdir}/%{name}/%{_lib}/$p*.so`" ]; then
+             set +x
+             echo -e "\n\n\n**** ERROR:\n" \
+                 "\nExtra entry in %%{plugins} macro with no matching plugin:" \
+                 "'$p'.\n\nPlease remove from %%{plugins} macro at top of" \
+                 "\nspecfile and rebuild.\n****\n" 1>&2
+             exit 1
+         fi
+     done
+     # Make sure there are no entries in the exported_libs_regexp macro that don't match plugins
+     for d in %{exported_libs}; do
+         if [ -z "`ls %{buildroot}%{_libdir}/%{name}/%{_lib}/$d*.so`" ]; then
+             set +x
+             echo -e "\n\n\n**** ERROR:\n" \
+                 "\nExtra entry in %%{exported_libs} macro with no matching lib:" \
+                 "'$d'.\n\nPlease remove from %%{exported_libs} macro at top of" \
+                 "\nspecfile and rebuild.\n****\n" 1>&2
+             exit 1
+         fi
+     done
 
 %post
     /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
