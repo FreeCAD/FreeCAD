@@ -1152,7 +1152,7 @@ class _Stairs(ArchComponent.Component):
 
         # Upgrade obj if it is from an older version of FreeCAD
         if not hasattr(obj, "StringerOverlap"):
-            obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"), locked)
+            obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"), locked=True)
 
         v = DraftGeomUtils.vec(edge)
         v_proj = Vector(v.x, v.y, 0)  # Projected on XY plane.  May not be
