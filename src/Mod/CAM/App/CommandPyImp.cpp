@@ -39,18 +39,21 @@ using namespace Path;
 // returns a string which represents the object e.g. when printed in python
 std::string CommandPy::representation() const
 {
-    const uint five_sf = 5; 
+    const uint five_sf = 5;
     std::stringstream str;
     str.precision(five_sf);
     str << "Command ( ";
     str << getCommandPtr()->Name;
     str << ", {";
     for (std::map<std::string, double>::iterator i = getCommandPtr()->Parameters.begin();
-         i != getCommandPtr()->Parameters.end(); ++i) {
+         i != getCommandPtr()->Parameters.end();
+         ++i) {
         std::string k = i->first;
         double v = i->second;
         str << "\'" << k << "\':" << v;
-        if ( i != std::prev(getCommandPtr()->Parameters.end())  ) str << ", ";
+        if (i != std::prev(getCommandPtr()->Parameters.end())) {
+            str << ", ";
+        }
     }
     str << "} )";
     return str.str();
