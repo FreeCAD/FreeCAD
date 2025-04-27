@@ -87,6 +87,7 @@ BuildRequires:  xorg-x11-server-Xvfb
 %if %{without bundled_gtest}
 BuildRequires: gtest-devel gmock-devel
 %endif
+%endif
 
 # Development Libraries
 BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libkdtree++-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel pcl-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel
@@ -116,44 +117,23 @@ Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-c
 Provides:       bundled(smesh) = %{bundled_smesh_version}
 %endif
 %if %{with bundled_pycxx}
-Provides:       bundled(python-pycxx)
+Provides:       bundled(python-pycxx) = %{bundled_pycxx_version}
 %endif
 Provides:       bundled(libondselsolver) = %{bundled_ondsel_solver_version}
 
-Recommends:     python3-pysolar
+Recommends:     python3-pysolar IfcOpenShell-python3
 
 
 
 # plugins and private shared libs in %%{_libdir}/freecad/lib are private;
 # prevent private capabilities being advertised in Provides/Requires
-%global plugin_exclude %( \
-   first=1; \
-  for i in %{plugins}; do \
-    if [ $first -eq 1 ]; then \
-      echo -n "$i\(Gui\)\?"; \
-      first=0; \
-    else \
-      echo -n "\|$i\(Gui\)\?"; \
-    fi; \
-  done \
-)
-
+%global plugin_exclude %( for i in %{plugins}; do  echo -n "\|$i\(Gui\)\?"; done )
 # idem per le librerie esportate (non hanno “Gui” opzionale)
-%global lib_exclude %( \
-  first=1; \
-  for i in %{exported_libs}; do \
-    if [ $first -eq 1 ]; then \
-      echo -n "$i"; \
-      first=0; \
-    else \
-      echo -n "\|$i"; \
-    fi; \
-  done \
-)
+%global lib_exclude %( for i in %{exported_libs}; do echo -n "\|$i"; done )
 %global __requires_exclude_from ^%{_libdir}/%{name}/(lib|Mod)/.*
 %global __provides_exclude_from ^%{_libdir}/%{name}/Mod/.*
-%global __provides_exclude ^(libFreeCAD.*|%{plugin_exclude})\.so.*
-%global __requires_exclude ^(libFreeCAD.*|%{plugin_exclude}%{lib_exclude})\.so.*
+%global __provides_exclude ^(libFreeCAD.*%{plugin_exclude})\.so.*
+%global __requires_exclude ^(libFreeCAD.*%{plugin_exclude}%{lib_exclude})\.so.*
 
 
 
@@ -188,19 +168,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 %global tests_resultdir %{_datadir}/%{name}/tests_result/%{_arch}
 %prep
     {{{ git_repo_setup_macro }}}
-
-    # Remove bundled pycxx if we're not using it
-    %if %{without bundled_pycxx}
-    rm -rf src/CXX
-    %endif
-
-    %if %{without bundled_zipios}
-    rm -rf src/zipios++
-    #sed -i "s/zipios-config.h/zipios-config.hpp/g" \
-    #    src/Base/Reader.cpp src/Base/Writer.h
-    %endif
-
-# Removed bundled libraries
 
 %build
      cd %_builddir
@@ -240,7 +207,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %else
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif
-    %endif
         -DONDSELSOLVER_BUILD_EXE=TRUE \
         -DBUILD_GUI=TRUE
 
@@ -276,8 +242,8 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     tail -n 50 %{buildroot}%tests_resultdir/Tests_run.result
     ./bin/FreeCADCmd -t 0  &> %{buildroot}%tests_resultdir/FreeCADCmd_test.result   || echo "**** Failed FreeCADCmd -t 0 ****"
     tail -n 50 %{buildroot}%tests_resultdir/FreeCADCmd_test.result
-#    xvfb-run ./bin/FreeCAD -t 0 &> %{buildroot}%tests_resultdir/FreeCAD_test.result || echo "**** Failed FreeCAD -t 0 ****"
-#    tail -n 50 %{buildroot}%tests_resultdir/FreeCAD_test.result
+    xvfb-run ./bin/FreeCAD -t 0 &> %{buildroot}%tests_resultdir/FreeCAD_test.result || echo "**** Failed FreeCAD -t 0 ****"
+    tail -n 50 %{buildroot}%tests_resultdir/FreeCAD_test.result
     popd
     %ctest &> %{buildroot}%tests_resultdir/ctest.result                             || echo "Failed ctest"
     tail -n 50 %{buildroot}%tests_resultdir/ctest.result
@@ -289,7 +255,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins};       do echo -n "\\\|$i"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
     %define exported_libs_regexp      /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so/d
 
-   new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' -e '%exported_libs_regexp'`
+    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' -e '%exported_libs_regexp'`
     if [ -n "$new_plugins" ]; then
         echo -e "\n\n\n**** ERROR:\n" \
             "\nPlugins not caught by regexps:" \
