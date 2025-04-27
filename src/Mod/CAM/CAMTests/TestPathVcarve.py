@@ -46,6 +46,7 @@ Scale45 = 2.414214
 Scale60 = math.sqrt(3)
 
 TestToolDir = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
+TestToolBitDir = TestToolDir / "Bit"
 
 
 class TestPathVcarve(PathTestBase):
@@ -64,7 +65,10 @@ class TestPathVcarve(PathTestBase):
         rect = Part.makePolygon([(0, 0, 0), (5, 0, 0), (5, 10, 0), (0, 10, 0), (0, 0, 0)])
         part.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
         job = PathJob.Create("Job", [part])
-        tool_file = get_toolbit_filepath_from_name("60degree_Vbit.fctb")
+        tool_file = get_toolbit_filepath_from_name(
+            "60degree_Vbit.fctb",
+            TestToolBitDir
+        )
         loaded_tool = ToolBitFactory.create_bit_from_file(tool_file)
         job.Tools.Group[0].Tool = loaded_tool
 
