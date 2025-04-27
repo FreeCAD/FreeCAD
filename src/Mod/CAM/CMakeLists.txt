@@ -144,6 +144,7 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/BitLibraryCmd.py
     Path/Tool/Gui/BitLibrary.py
     Path/Tool/Gui/Controller.py
+    Path/Tool/Gui/Preferences.py
 )
 
 SET(PathPythonToolsShape_SRCS
@@ -162,7 +163,6 @@ SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/tap.py
     Path/Tool/shape/threadmill.py
     Path/Tool/shape/bullnose.py
-    Path/Tool/shape/util.py
     Path/Tool/shape/vbit.py
 )
 

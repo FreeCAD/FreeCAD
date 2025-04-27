@@ -21,133 +21,52 @@
 # ***************************************************************************
 
 import CAMTests.PathTestUtils as PathTestUtils
-import glob
+import FreeCAD
 import os
-from Path.Tool.toolbit.util import findToolShape, findToolBit, findToolLibrary
-
-TestToolDir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Tools")
-TestInvalidDir = os.path.join(
-    TestToolDir, "some", "silly", "path", "that", "should", "not", "exist"
+import pathlib
+from Path.Tool.toolbit.util import (
+    get_toolbit_filepath_from_name,
+    get_tool_library_from_name,
 )
+from Path.Tool.toolbit import ToolBitBullnose
 
-TestToolBitName = "test-path-tool-bit-bit-00.fctb"
-TestToolShapeName = "test-path-tool-bit-shape-00.fcstd"
-TestToolLibraryName = "test-path-tool-bit-library-00.fctl"
-
-
-def testToolShape(path=TestToolDir, name=TestToolShapeName):
-    return os.path.join(path, "Shape", name)
-
-
-def testToolBit(path=TestToolDir, name=TestToolBitName):
-    return os.path.join(path, "Bit", name)
-
-
-def testToolLibrary(path=TestToolDir, name=TestToolLibraryName):
-    return os.path.join(path, "Library", name)
-
-
-def printTree(path, indent):
-    print("{} {}".format(indent, os.path.basename(path)))
-    if os.path.isdir(path):
-        if os.path.basename(path).startswith("__"):
-            print("{}   ...".format(indent))
-        else:
-            for foo in sorted(glob.glob(os.path.join(path, "*"))):
-                printTree(foo, "{}  ".format(indent))
+TestToolDir = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
+TestToolBitDir = TestToolDir / "Bit"
 
 
 class TestPathToolBit(PathTestUtils.PathTestBase):
-    def test(self):
-        """Log test setup directory structure"""
-        # Enable this test if there are errors showing up in the build system with the
-        # paths that work OK locally. It'll print out the directory tree, and if it
-        # doesn't look right you know where to look for it
-        print()
-        print("realpath : {}".format(os.path.realpath(__file__)))
-        print("   Tools : {}".format(TestToolDir))
-        print("     dir : {}".format(os.path.dirname(os.path.realpath(__file__))))
-        printTree(os.path.dirname(os.path.realpath(__file__)), "         :")
-
-    def test00(self):
-        """Find a tool shape from file name"""
-        path = findToolShape("endmill.fcstd")
-        self.assertIsNot(path, None)
-        self.assertNotEqual(path, "endmill.fcstd")
-
-    def test01(self):
-        """Not find a relative path shape if not stored in default location"""
-        path = findToolShape(TestToolShapeName)
-        self.assertIsNone(path)
-
-    def test02(self):
-        """Find a relative path shape if it's local to a bit path"""
-        path = findToolShape(TestToolShapeName, testToolBit())
-        self.assertIsNot(path, None)
-        self.assertEqual(path, testToolShape())
-
-    def test03(self):
-        """Not find a tool shape from an invalid absolute path."""
-        path = findToolShape(testToolShape(TestInvalidDir))
-        self.assertIsNone(path)
-
-    def test04(self):
-        """Find a tool shape from a valid absolute path."""
-        path = findToolShape(testToolShape())
-        self.assertIsNot(path, None)
-        self.assertEqual(path, testToolShape())
-
-    def test10(self):
+    def testGetToolBit(self):
         """Find a tool bit from file name"""
-        path = findToolBit("5mm_Endmill.fctb")
+        path = get_toolbit_filepath_from_name(
+            "5mm_Endmill.fctb", TestToolBitDir
+        )
         self.assertIsNot(path, None)
         self.assertNotEqual(path, "5mm_Endmill.fctb")
 
-    def test11(self):
-        """Not find a relative path bit if not stored in default location"""
-        path = findToolBit(TestToolBitName)
-        self.assertIsNone(path)
-
-    def test12(self):
-        """Find a relative path bit if it's local to a library path"""
-        path = findToolBit(TestToolBitName, testToolLibrary())
-        self.assertIsNot(path, None)
-        self.assertEqual(path, testToolBit())
-
-    def test13(self):
-        """Not find a tool bit from an invalid absolute path."""
-        path = findToolBit(testToolBit(TestInvalidDir))
-        self.assertIsNone(path)
-
-    def test14(self):
-        """Find a tool bit from a valid absolute path."""
-        path = findToolBit(testToolBit())
-        self.assertIsNot(path, None)
-        self.assertEqual(path, testToolBit())
-
-    def test20(self):
+    def testGetLibrary(self):
         """Find a tool library from file name"""
-        path = findToolLibrary("Default.fctl")
+        path = get_tool_library_from_name("Default.fctl")
         self.assertIsNot(path, None)
         self.assertNotEqual(path, "Default.fctl")
 
-    def test21(self):
-        """Not find a relative path library if not stored in default location"""
-        path = findToolLibrary(TestToolLibraryName)
-        self.assertIsNone(path)
-
-    def test22(self):
-        """[skipped] Find a relative path library if it's local to <what?>"""
-        # this is not a valid test for libraries because t
-        self.assertTrue(True)
-
-    def test23(self):
-        """Not find a tool library from an invalid absolute path."""
-        path = findToolLibrary(testToolLibrary(TestInvalidDir))
-        self.assertIsNone(path)
-
-    def test24(self):
-        """Find a tool library from a valid absolute path."""
-        path = findToolBit(testToolBit())
-        self.assertIsNot(path, None)
-        self.assertEqual(path, testToolBit())
+    def testBullnose(self):
+        """Test ToolBitBullnose basic parameters"""
+        # Create a new document and a dummy FreeCAD object
+        FreeCAD.newDocument("TestBullnoseDoc")
+        obj = FreeCAD.ActiveDocument.addObject(
+            "Part::Feature", "TestBullnoseObj"
+        )
+        bullnose_shape = ToolBitBullnose.SHAPE_CLASS.from_file(
+            TestToolDir / "Shape" / "bullnose.fcstd"
+        )
+        bullnose_bit = ToolBitBullnose(obj, bullnose_shape)
+        self.assertEqual(bullnose_bit.obj.ShapeName, "Bullnose")
+        self.assertEqual(
+            bullnose_bit.obj.Diameter, FreeCAD.Units.Quantity("5.0 mm")
+        )
+        self.assertEqual(
+            bullnose_bit.obj.FlatRadius, FreeCAD.Units.Quantity("1.5 mm")
+        )
+        # Clean up the dummy object and close the document
+        FreeCAD.ActiveDocument.removeObject("TestBullnoseObj")
+        FreeCAD.closeDocument("TestBullnoseDoc")

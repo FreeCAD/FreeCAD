@@ -200,7 +200,7 @@ class ToolBitGuiFactory(Path.Tool.toolbit.base.ToolBitFactory):
 def isValidFileName(filename):
     print(filename)
     try:
-        with open(filename, "w") as tempfile:
+        with open(filename, "w"):
             return True
     except Exception:
         return False
@@ -210,41 +210,42 @@ def GetNewToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
 
-    foo = QtGui.QFileDialog.getSaveFileName(
-        parent, translate("CAM_Toolbit", "Tool"), Path.Preferences.lastPathToolBit(), "*.fctb"
+    bitdir = Path.Preferences.getToolBitPath()
+    bitfile = QtGui.QFileDialog.getSaveFileName(
+        parent, translate("CAM_Toolbit", "Tool"), str(bitdir), "*.fctb"
     )
-    if foo and foo[0]:
-        if not isValidFileName(foo[0]):
+    if bitfile and bitfile[0]:
+        if not isValidFileName(bitfile[0]):
             msgBox = QtGui.QMessageBox()
-            msg = translate("CAM_Toolbit", "Invalid Filename")
+            msg = translate("CAM_Toolbit", "Failed to open file for writing")
             msgBox.setText(msg)
             msgBox.exec_()
         else:
-            Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0]))
-            return foo[0]
+            return bitfile[0]
     return None
 
 
 def GetToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
-    foo = QtGui.QFileDialog.getOpenFileName(
-        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
+
+    bitdir = Path.Preferences.getToolBitPath()
+    bitfile = QtGui.QFileDialog.getOpenFileName(
+        parent, "Tool", str(bitdir), "*.fctb"
     )
-    if foo and foo[0]:
-        Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0]))
-        return foo[0]
+    if bitfile and bitfile[0]:
+        return bitfile[0]
     return None
 
 
 def GetToolFiles(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
+    bitdir = Path.Preferences.getToolBitPath()
     foo = QtGui.QFileDialog.getOpenFileNames(
-        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
+        parent, "Tool", str(bitdir), "*.fctb"
     )
     if foo and foo[0]:
-        Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0][0]))
         return foo[0]
     return []
 
@@ -253,22 +254,13 @@ def GetToolShapeFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
 
-    location = Path.Preferences.lastPathToolShape()
-    if os.path.isfile(location):
-        location = os.path.split(location)[0]
-    elif not os.path.isdir(location):
-        location = Path.Preferences.filePath()
-
+    location = Path.Preferences.getShapePath()
     fname = QtGui.QFileDialog.getOpenFileName(
-        parent, translate("CAM_Toolbit", "Select Tool Shape"), location, "*.fcstd"
+        parent, translate("CAM_Toolbit", "Select Tool Shape"), str(location), "*.fcstd"
     )
     if fname and fname[0]:
-        if fname != location:
-            newloc = os.path.dirname(fname[0])
-            Path.Preferences.setLastPathToolShape(newloc)
         return fname[0]
-    else:
-        return None
+    return None
 
 
 def LoadTool(parent=None):

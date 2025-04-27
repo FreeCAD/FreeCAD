@@ -105,7 +105,7 @@ class CommandToolBitSave:
                     fname = tool.File
                 else:
                     fname = os.path.join(
-                        Path.Preferences.lastPathToolBit(),
+                        Path.Preferences.getToolBitPath(),
                         tool.Label + ".fctb",
                     )
                 foo = QtGui.QFileDialog.getSaveFileName(
@@ -120,7 +120,6 @@ class CommandToolBitSave:
                 if not path.endswith(".fctb"):
                     path += ".fctb"
                 tool.Proxy.saveToFile(tool, path)
-                Path.Preferences.setLastPathToolBit(os.path.dirname(path))
 
 
 class CommandToolBitLoad:
