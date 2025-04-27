@@ -1,4 +1,5 @@
 function git_wcrev() {
+    cd "$GIT_ROOT" || exit 1
     output "`python package/fedora/getVersion.py`"
 }
 
@@ -19,8 +20,6 @@ function git_commit_hash() {
 }
 
 function git_repo_pack_with_submodules() {
-    python package/fedora/writeVersion.py
-    log_info "git info updated on src/Build/Version.h.cmake"
     declare path= dir_name= source_name=""
 
     path="$GIT_ROOT"
@@ -58,6 +57,10 @@ function git_repo_pack_with_submodules() {
 
     (
       cd "$GIT_ROOT" || exit 1
+      python package/fedora/writeVersion.py
+      log_info "git info updated on src/Build/Version.h.cmake"
+
+
       git ls-files --recurse-submodules \
        | tar caf "$OUTDIR/$source_name" \
          --xform "s:^:$dir_name/:" \
