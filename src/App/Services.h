@@ -81,4 +81,15 @@ public:
     virtual std::optional<PyObject*> getAttribute(DocumentObject* object, const char* attr) const = 0;
 };
 
+/**
+* This service should provide custom attribute access of a Python object
+*/
+class PseudoShapeProvider
+{
+public:
+    virtual ~PseudoShapeProvider() = default;
+
+    virtual Py::Object getElement(const Py::Object& module, const Py::Object& object, const std::string& subname) const = 0;
+};
+
 }
