@@ -29,11 +29,10 @@ ActionPanel::ActionPanel(QWidget *parent) :
 
 void ActionPanel::setScheme(ActionPanelScheme *scheme)
 {
-    if (!scheme) return;
-
+    if (!scheme) {
+        return;
+    }
     myScheme = scheme;
-    setStyleSheet(myScheme->actionStyle);
-
     update();
 }
 

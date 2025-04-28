@@ -10,6 +10,8 @@
 #include <QApplication>
 #include <QStyleOptionToolButton>
 #include <QAction>
+#include <QPainter>
+#include <cmath>
 
 namespace QSint
 {
@@ -66,6 +68,40 @@ QSize ActionLabel::sizeHint() const
 QSize ActionLabel::minimumSizeHint() const
 {
     return sizeHint();
+}
+
+void ActionLabel::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QPainter painter(this);
+
+    constexpr int elementSpacing = 5;
+    int iconSize = fontMetrics().height();
+    QIcon icon = this->icon();
+    QString text = this->text();
+
+    QRect contentRect = rect().adjusted(elementSpacing, elementSpacing, -elementSpacing, -elementSpacing); // Apply margins
+
+    int currentX = contentRect.left();
+
+    if (!icon.isNull()) {
+        QPixmap pixmap = icon.pixmap(iconSize, iconSize);
+        QRect iconRect(currentX, contentRect.center().y() - iconSize / 2, iconSize, iconSize);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        painter.drawPixmap(iconRect, pixmap);
+        currentX += iconSize + elementSpacing;
+    }
+
+    if (!text.isEmpty()) {
+        QRect textRect(currentX, contentRect.top(), contentRect.right() - currentX, contentRect.height());
+
+        QFont font = this->font();
+        font.setUnderline(underMouse());
+        painter.setFont(font);
+
+        painter.setRenderHint(QPainter::TextAntialiasing);
+        painter.drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, text);
+    }
 }
 
 } // namespace QSint
