@@ -660,6 +660,27 @@ PyObject* DocumentPy::isClosable(PyObject* args)
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
+PyObject *DocumentPy::setAutoCreated(PyObject *args)
+{
+    PyObject *autoCreated;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &autoCreated)) {
+        return nullptr;
+    }
+    bool value = (autoCreated == Py_True);
+    getDocumentPtr()->setAutoCreated(value);
+
+    Py_RETURN_NONE;
+}
+
+PyObject *DocumentPy::isAutoCreated(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    bool ok = getDocumentPtr()->isAutoCreated();
+    return Py::new_reference_to(Py::Boolean(ok));
+}
+
 PyObject* DocumentPy::recompute(PyObject* args)
 {
     PyObject* pyobjs = Py_None;

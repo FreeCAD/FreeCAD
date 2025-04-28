@@ -840,6 +840,7 @@ Document::Document(const char* documentName)
     // So, we must increment only if the interpreter gets a reference.
     // Remark: We force the document Python object to own the DocumentPy instance, thus we don't
     // have to care about ref counting any more.
+    setAutoCreated(false);
     d = new DocumentP;
     Base::PyGILStateLocker lock;
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
@@ -2503,6 +2504,14 @@ const char* Document::getName() const
 std::string Document::getFullName() const
 {
     return myName;
+}
+
+void Document::setAutoCreated(bool value) {
+    autoCreated = value;
+}
+
+bool Document::isAutoCreated() const {
+    return autoCreated;
 }
 
 const char* Document::getProgramVersion() const
