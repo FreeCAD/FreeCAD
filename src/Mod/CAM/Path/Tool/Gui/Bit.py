@@ -250,19 +250,6 @@ def GetToolFiles(parent=None):
     return []
 
 
-def GetToolShapeFile(parent=None):
-    if parent is None:
-        parent = QtGui.QApplication.activeWindow()
-
-    location = Path.Preferences.getShapePath()
-    fname = QtGui.QFileDialog.getOpenFileName(
-        parent, translate("CAM_Toolbit", "Select Tool Shape"), str(location), "*.fcstd"
-    )
-    if fname and fname[0]:
-        return fname[0]
-    return None
-
-
 def LoadTool(parent=None):
     """
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
