@@ -612,6 +612,8 @@ def retranslateUi():
     aTurntable.setText(translate("NavigationIndicator", "Turntable"))
     aFreeTurntable.setText(translate("NavigationIndicator", "Free Turntable"))
     aTrackball.setText(translate("NavigationIndicator", "Trackball"))
+    aTrackballClassic.setText(translate("NavigationIndicator", "Trackball Classic"))
+    aRoundedArcball.setText(translate("NavigationIndicator", "Rounded Arcball"))
     a0.setText(translate("NavigationIndicator", "Undefined"))
 
 
@@ -648,10 +650,18 @@ aTrackball.setCheckable(True)
 aFreeTurntable = QtGui.QAction(gOrbit)
 aFreeTurntable.setObjectName("NavigationIndicator_FreeTurntable")
 aFreeTurntable.setCheckable(True)
+aTrackballClassic = QtGui.QAction(gOrbit)
+aTrackballClassic.setObjectName("NavigationIndicator_TrackballClassic")
+aTrackballClassic.setCheckable(True)
+aRoundedArcball = QtGui.QAction(gOrbit)
+aRoundedArcball.setObjectName("NavigationIndicator_RoundedArcball")
+aRoundedArcball.setCheckable(True)
 
 menuOrbit.addAction(aTurntable)
 menuOrbit.addAction(aTrackball)
 menuOrbit.addAction(aFreeTurntable)
+menuOrbit.addAction(aTrackballClassic)
+menuOrbit.addAction(aRoundedArcball)
 
 menuSettings.addMenu(menuOrbit)
 menuSettings.addSeparator()
@@ -795,6 +805,10 @@ def onOrbit():
         pView.SetInt("OrbitStyle", 1)
     elif aFreeTurntable.isChecked():
         pView.SetInt("OrbitStyle", 2)
+    elif aTrackballClassic.isChecked():
+        pView.SetInt("OrbitStyle", 3)
+    elif aRoundedArcball.isChecked():
+        pView.SetInt("OrbitStyle", 4)
 
 
 def onOrbitShow():
@@ -808,6 +822,10 @@ def onOrbitShow():
         aTrackball.setChecked(True)
     elif OrbitStyle == 2:
         aFreeTurntable.setChecked(True)
+    elif OrbitStyle == 3:
+        aTrackballClassic.setChecked(True)
+    elif OrbitStyle == 4:
+        aRoundedArcball.setChecked(True)
     gOrbit.blockSignals(False)
 
 
