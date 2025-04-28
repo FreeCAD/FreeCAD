@@ -28,6 +28,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Tools.h>
 
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/Materials.h>
@@ -76,11 +77,8 @@ Array2D::Array2D(const QString& propertyName,
     connect(ui->tableView, &QWidget::customContextMenuRequested, this, &Array2D::onContextMenu);
 
     _deleteAction.setText(tr("Delete row"));
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        _deleteAction.setShortcut(QKeySequence(shortcut));
-    }
+    _deleteAction.setShortcut(Gui::QtTools::deleteKeySequence());
+
     connect(&_deleteAction, &QAction::triggered, this, &Array2D::onDelete);
     ui->tableView->addAction(&_deleteAction);
 

@@ -29,6 +29,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Tools.h>
 
 #include <Mod/Material/App/MaterialLibrary.h>
 
@@ -90,11 +91,8 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
             &MaterialSave::onContextMenu);
 
     _deleteAction.setText(tr("Delete"));
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        _deleteAction.setShortcut(QKeySequence(shortcut));
-    }
+    _deleteAction.setShortcut(Gui::QtTools::deleteKeySequence());
+
     connect(&_deleteAction, &QAction::triggered, this, &MaterialSave::onDelete);
     ui->treeMaterials->addAction(&_deleteAction);
 
