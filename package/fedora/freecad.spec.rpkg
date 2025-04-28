@@ -164,15 +164,13 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 
 #path that contain main FreeCAD sources for cmake
-%global _vpath_srcdir  %_builddir/%{git_name}
 %global tests_resultdir %{_datadir}/%{name}/tests_result/%{_arch}
 %prep
-    {{{ git_repo_setup_macro }}}
+    rm -rf %{git_name}
+    %setup -T -a 0 -q -c -D -n %{git_name}
 
 %build
-     cd %_builddir
-
-    # Deal with cmake projects that tend to link excessively.
+     # Deal with cmake projects that tend to link excessively.
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
     %define MEDFILE_INCLUDE_DIRS %{_includedir}/med/
@@ -214,7 +212,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 
 %install
-    cd %_builddir
     %cmake_install
 
     # Symlink binaries to /usr/bin
@@ -231,7 +228,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     rm -rf %{buildroot}%{_libdir}/%{name}/%{_lib}/pkgconfig
 
 %check
-    cd %_builddir
     desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
     %{?fedora:appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml}
 
@@ -339,5 +335,4 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_includedir}/OndselSolver/*
 
 %changelog
-    * Mon Mar 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.1.0-1
-    - Adding support for building with Qt6 and PySide6 for Fedora 40+
+
