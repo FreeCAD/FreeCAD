@@ -46,7 +46,7 @@ class MaterialsExport ModelLibrary: public Library,
 
 public:
     ModelLibrary();
-    ModelLibrary(const Library& other);
+    ModelLibrary(const Library& library);
     ModelLibrary(const QString& libraryName,
                  const QString& dir,
                  const QString& icon,
