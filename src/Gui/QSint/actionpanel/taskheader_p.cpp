@@ -35,6 +35,9 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
     myTitle->setText(title);
     myTitle->setIcon(icon);
     myTitle->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+    QFont font = myTitle->font();
+    font.setBold(true);
+    myTitle->setFont(font);
 
     connect(myTitle, &ActionLabel::clicked, this, &TaskHeader::fold);
 

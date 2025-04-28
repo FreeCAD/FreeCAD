@@ -192,6 +192,9 @@ protected:
     TaskGroup *myGroup = nullptr;          ///< The container for actions/widgets.
     QWidget *myDummy = nullptr;            ///< Dummy widget for animation.
     ActionPanelScheme *myScheme = nullptr; ///< The color scheme.
+
+private:
+    const int separatorHeight = 1;
 };
 } // namespace QSint
 
