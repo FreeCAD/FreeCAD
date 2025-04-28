@@ -39,10 +39,10 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-def _comment(path, msg):
+def _comment(commandlist, msg):
     """Nice for debugging to insert markers into generated g-code"""
     if False:
-        path.append(Path.Command("(------- {} -------)".format(msg)))
+        commandlist.append(Path.Command("(------- {} -------)".format(msg)))
 
 
 class _Thread(object):
@@ -54,16 +54,16 @@ class _Thread(object):
             self.pitch = pitch
         else:
             self.pitch = -pitch
-        self.hPitch = self.pitch / 2
+        self.halfPitch = self.pitch / 2
         self.zStart = zStart
         self.zFinal = zFinal
-        self.internal = internal
+        self.internalThread = internal
 
     def overshoots(self, z):
-        """overshoots(z) ... returns true if adding another half helix goes beyond the thread bounds"""
+        """overshoots(z) ... returns true if adding another half helix goes beyond the thread bounds. Negative pitch spirals down """
         if self.pitch < 0:
-            return z + self.hPitch < self.zFinal
-        return z + self.hPitch > self.zFinal
+            return z + self.halfPitch < self.zFinal
+        return z + self.halfPitch > self.zFinal
 
     def adjustX(self, x, dx):
         """adjustX(x, dx) ... move x by dx, the direction depends on the thread settings"""
@@ -72,77 +72,85 @@ class _Thread(object):
         return x - dx
 
     def adjustY(self, y, dy):
-        """adjustY(y, dy) ... move y by dy, the direction depends on the thread settings"""
-        if self.isG3():
-            return y - dy
+        """adjustY(y, dy) ... move y by dy, same for both directions"""
         return y - dy
 
     def isG3(self):
         """isG3() ... returns True if this is a G3 command"""
         return self.cmd in ["G3", "G03", "g3", "g03"]
 
-    def isUp(self):
-        """isUp() ... returns True if the thread goes from the bottom up"""
-        return self.pitch > 0
-
-    def g4Opposite(self):
+    def arcOpposite(self):
         return "G2" if self.isG3() else "G3"
 
-    def g4LeadInOut(self):
-        if self.internal:
+    def LeadInOutCmd(self):
+        if self.internalThread:
             return self.cmd
-        return self.g4Opposite()
-
-    def g4Start2Elevator(self):
-        return self.g4Opposite()
+        return self.arcOpposite()
 
 
-def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, start):
-    """generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, start) ... returns the g-code to mill the given internal thread"""
-    thread = _Thread(cmd, zStart, zFinal, pitch, radius > elevator)
+def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, start, feedRateAdj, tool_radius):
+    """generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, start, feedRateAdj, tooldiam)
+    ... returns the g-code to mill the given internal thread"""
+    thread = _Thread(cmd, zStart, zFinal, pitch, radius > retractOffset)
 
+ 
+    # FeedRateCheckbox.checked
+    r = radius # radius of path, ie spindle axis path radius
+    descentRate=thread.halfPitch/(math.pi*r)   # helix vertical gradient d(xy)/dz
+    if not feedRateAdj:
+        feedRateRatio = 0
+    elif thread.internalThread:  # always adj for outer tip feedrate
+        feedRateRatio = r / (r + tool_radius)  #  (hole_rad-tool_rad)/hole_rad 
+    elif (r - tool_radius) * 200 < r:
+        feedRateRatio = 200  # prevent div zero
+    else:  # external thread: increase spindle feed rate to maintain inner-cut chip-load
+        feedRateRatio = r / (r - tool_radius)
+
+    adjParamDict = {}
+    if r != 0:  # r == 0 is plunge cut at vert feedrate, feedRateAdj irrel
+        adjParamDict["DR"] = descentRate
+        if feedRateAdj:
+            adjParamDict ["FR"] = feedRateRatio
+
+    paramDict = dict(adjParamDict)
+    
     yMin = center.y - radius
     yMax = center.y + radius
 
-    path = []
-    # at this point the tool is at a safe heiht (depending on the previous thread), so we can move
+    ThrCommandList = []
+    # at this point the tool is at a safe height (depending on the previous thread), so we can move
     # into position first, and then drop to the start height. If there is any material in the way this
     # op hasn't been setup properly.
     if leadInOut:
-        _comment(path, "lead-in")
+        _comment(ThrCommandList, "lead-in")
         if start is None:
-            path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator}))
-            path.append(Path.Command("G0", {"Z": thread.zStart}))
+            ThrCommandList.append(Path.Command("G0", {"X": center.x, "Y": center.y + retractOffset}))
+            ThrCommandList.append(Path.Command("G0", {"Z": thread.zStart}))
         else:
-            path.append(
-                Path.Command(
-                    thread.g4Start2Elevator(),
-                    {
-                        "X": center.x,
-                        "Y": center.y + elevator,
-                        "Z": thread.zStart,
-                        "I": (center.x - start.x) / 2,
-                        "J": (center.y + elevator - start.y) / 2,
-                        "K": (thread.zStart - start.z) / 2,
-                    },
-                )
-            )
-        path.append(
-            Path.Command(
-                thread.g4LeadInOut(),
-                {"Y": yMax, "J": (yMax - (center.y + elevator)) / 2},
-            )
-        )
-        _comment(path, "lead-in")
+            paramDict = dict(adjParamDict)
+            paramDict.update({
+                "X": center.x,
+                "Y": center.y + retractOffset,
+                "Z": thread.zStart,
+                "I": (center.x - start.x) / 2,
+                "J": (center.y - start.y + retractOffset) / 2,
+                "K": (thread.zStart - start.z) / 2,
+            })
+            ThrCommandList.append(Path.Command(thread.arcOpposite(), paramDict))
+
+        paramDict = dict(adjParamDict)
+        paramDict.update({"Y": yMax, "J": (yMax - (center.y + retractOffset)) / 2})
+        ThrCommandList.append(Path.Command(thread.LeadInOutCmd(), paramDict))
+        _comment(ThrCommandList, "lead-in")
     else:
         if start is None:
-            path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator}))
-            path.append(Path.Command("G0", {"Z": thread.zStart}))
+            ThrCommandList.append(Path.Command("G0", {"X": center.x, "Y": center.y + retractOffset}))
+            ThrCommandList.append(Path.Command("G0", {"Z": thread.zStart}))
         else:
-            path.append(
-                Path.Command("G0", {"X": center.x, "Y": center.y + elevator, "Z": thread.zStart})
+            ThrCommandList.append(
+                Path.Command("G0", {"X": center.x, "Y": center.y + retractOffset, "Z": thread.zStart})
             )
-        path.append(Path.Command("G1", {"Y": yMax}))
+        ThrCommandList.append(Path.Command("G1", {"Y": yMax}))
 
     z = thread.zStart
     r = -radius
@@ -150,49 +158,53 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
     while not Path.Geom.isRoughly(z, thread.zFinal):
         if thread.overshoots(z):
             break
-        if 0 == (i & 0x01):
-            y = yMin
-        else:
-            y = yMax
-        path.append(Path.Command(thread.cmd, {"Y": y, "Z": z + thread.hPitch, "J": r}))
-        r = -r
-        i = i + 1
-        z = z + thread.hPitch
 
+        if (i & 0x01):
+            y = yMax
+        else:
+            y = yMin
+        paramDict = dict(adjParamDict)
+        paramDict.update({"Y": y, "Z": z + thread.halfPitch, "J": r})
+        ThrCommandList.append(Path.Command(thread.cmd, paramDict))
+
+        r = -r
+        i += 1
+        z += thread.halfPitch
+
+    # find remaining fractional arc segment to end of thread
     if Path.Geom.isRoughly(z, thread.zFinal):
         x = center.x
         y = yMin if (i & 0x01) else yMax
     else:
-        n = math.fabs(thread.zFinal - thread.zStart) / thread.hPitch
-        k = n - int(n)
-        dy = math.cos(k * math.pi)
-        dx = math.sin(k * math.pi)
-        y = thread.adjustY(center.y, r * dy)
-        x = thread.adjustX(center.x, r * dx)
-        _comment(path, "finish-thread")
-        path.append(Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "J": r}))
-        _comment(path, "finish-thread")
+        numSemiArcs = math.fabs(thread.zFinal - thread.zStart) / thread.halfPitch
+        arcFraction = numSemiArcs - int(numSemiArcs)
+        dy = r * math.cos(arcFraction * math.pi)
+        dx = r * math.sin(arcFraction * math.pi)
+        y = thread.adjustY(center.y, dy)
+        x = thread.adjustX(center.x, dx)
+        _comment(ThrCommandList, "finish-thread")
+        paramDict = dict(adjParamDict)
+        paramDict.update({"X": x, "Y": y, "Z": thread.zFinal, "J": r})
+        ThrCommandList.append(Path.Command(thread.cmd,paramDict))
+        _comment(ThrCommandList, "finish-thread")
 
     a = math.atan2(y - center.y, x - center.x)
-    dx = math.cos(a) * (radius - elevator)
-    dy = math.sin(a) * (radius - elevator)
+    dx = math.cos(a) * (radius - retractOffset)
+    dy = math.sin(a) * (radius - retractOffset)
     Path.Log.debug("")
     Path.Log.debug("a={}: dx={:.2f}, dy={:.2f}".format(a / math.pi * 180, dx, dy))
 
-    elevatorX = x - dx
-    elevatorY = y - dy
-    Path.Log.debug("({:.2f}, {:.2f}) -> ({:.2f}, {:.2f})".format(x, y, elevatorX, elevatorY))
+    retractX = x - dx
+    retractY = y - dy
+    Path.Log.debug("({:.2f}, {:.2f}) -> ({:.2f}, {:.2f})".format(x, y, retractX, retractY))
 
     if leadInOut:
-        _comment(path, "lead-out")
-        path.append(
-            Path.Command(
-                thread.g4LeadInOut(),
-                {"X": elevatorX, "Y": elevatorY, "I": -dx / 2, "J": -dy / 2},
-            )
-        )
-        _comment(path, "lead-out")
+        _comment(ThrCommandList, "lead-out")
+        paramDict = dict(adjParamDict)
+        paramDict.update({"X": retractX, "Y": retractY, "I": -dx / 2, "J": -dy / 2})
+        ThrCommandList.append(Path.Command(thread.LeadInOutCmd(),paramDict))
+        _comment(ThrCommandList, "lead-out")
     else:
-        path.append(Path.Command("G1", {"X": elevatorX, "Y": elevatorY}))
+        ThrCommandList.append(Path.Command("G1", {"X": retractX, "Y": retractY}))
 
-    return (path, FreeCAD.Vector(elevatorX, elevatorY, thread.zFinal))
+    return (ThrCommandList, FreeCAD.Vector(retractX, retractY, thread.zFinal))
