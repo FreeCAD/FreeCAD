@@ -30,7 +30,7 @@ import Path
 import Path.Base.FeedRate as PathFeedRate
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-
+from math import sqrt
 
 __title__ = "CAM Helix Operation"
 __author__ = "Lorenz Hüdepohl"
@@ -170,10 +170,10 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyLength",
+            "App::PropertyDistance",
             "StartRadius",
             "Helix Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
+            QT_TRANSLATE_NOOP("App::Property", "Start Radius"),
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -184,6 +184,15 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Extra value to stay away from final profile- good for roughing toolpath",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FeedRateAdj",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Apply radial feed-rate adjustment to correct tooltip speed",
+            ),
+        )
 
         ENUMS = self.helixOpPropertyEnumerations()
         for n in ENUMS:
@@ -191,13 +200,17 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StepOver = 50
 
     def opOnDocumentRestored(self, obj):
-        if not hasattr(obj, "StartRadius"):
-            obj.addProperty(
-                "App::PropertyLength",
-                "StartRadius",
-                "Helix Drill",
-                QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
-            )
+        for prop in obj.PropertiesList:
+            if (str(prop) == "StartRadius") and (obj.getTypeIdOfProperty(str(prop)) == "App::PropertyLength"):
+                tmpRad = obj.StartRadius.Value
+                obj.removeProperty("StartRadius") # ensure PropertyDistance, not Length
+                obj.addProperty(
+                    "App::PropertyDistance",
+                    "StartRadius",
+                    "Helix Drill",
+                    QT_TRANSLATE_NOOP("App::Property", "Start Radius"),
+                )
+                obj.StartRadius.Value = tmpRad
 
         if not hasattr(obj, "OffsetExtra"):
             obj.addProperty(
@@ -207,6 +220,17 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Extra value to stay away from final profile- good for roughing toolpath",
+                ),
+            )
+
+        if not hasattr(obj, "FeedRateAdj"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FeedRateAdj",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply radial feed-rate adjustment to correct tooltip speed",
                 ),
             )
 
@@ -256,10 +280,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "inner_radius": obj.StartRadius.Value + obj.OffsetExtra.Value,
             "direction": obj.Direction,
             "startAt": obj.StartSide,
+            "feedRateAdj": obj.FeedRateAdj,
         }
 
         for hole in holes:
-            args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetExtra.Value)
+            args["hole_radius"] = (hole["d"] / 2) - (obj.OffsetExtra.Value)
             startPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
@@ -280,9 +305,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z})
             )
 
-            results = helix.generate(**args)
+            helix_commands = helix.generate(**args)
 
-            for command in results:
+            for command in helix_commands:
                 self.commandlist.append(command)
 
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
@@ -295,6 +320,7 @@ def SetupProperties():
     setup.append("StartSide")
     setup.append("StepOver")
     setup.append("StartRadius")
+    setup.append("FeedRateAdj")
     return setup
 
 

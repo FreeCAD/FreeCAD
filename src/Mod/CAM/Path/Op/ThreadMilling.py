@@ -28,6 +28,7 @@ import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import Path.Base.FeedRate as PathFeedRate
 
 __title__ = "CAM Thread Milling Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -204,11 +205,11 @@ def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
     return passes
 
 
-def elevatorRadius(obj, center, internal, tool):
-    """elevatorLocation(obj, center, internal, tool) ... return suitable location for the tool elevator"""
+def retractRadius(obj, center, internal, tool):
+    """retractRadius(obj, center, internal, tool) ... return suitable radius for the tool retraction"""
     Path.Log.track(center, internal, tool.Diameter)
     if internal:
-        dy = float(obj.MinorDiameter - tool.Diameter) / 2 - 1
+        dy = float(obj.MinorDiameter - tool.Diameter) / 2 
         if dy < 0:
             if obj.MinorDiameter < tool.Diameter:
                 Path.Log.error(
@@ -218,7 +219,8 @@ def elevatorRadius(obj, center, internal, tool):
                 )
             dy = 0
     else:
-        dy = float(obj.MajorDiameter + tool.Diameter) / 2 + 1
+        dy = float(obj.MajorDiameter + tool.Diameter) / 2 
+        dy += tool.Diameter /4  # arbitrary extra clearance on external 
 
     return dy
 
@@ -318,6 +320,18 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         Path.Log.track()
         return PathOp.FeatureBaseGeometry
 
+    def opOnDocumentRestored(self, obj):
+        if not hasattr(obj,"FeedRateAdj"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FeedRateAdj",
+                "Operation",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Adjust spindle feedrate to ensure correct tool tip cutting speed",
+                )
+            )
+
     def initCircularHoleOperation(self, obj):
         Path.Log.track()
         obj.addProperty(
@@ -398,6 +412,15 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             ),
         )
         obj.addProperty(
+            "App::PropertyBool",
+            "FeedRateAdj",
+            "Operation",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Adjust spindle feedrate to ensure correct tool tip cutting speed",
+            ),
+        )
+        obj.addProperty(
             "App::PropertyLink",
             "ClearanceOp",
             "Operation",
@@ -419,12 +442,13 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             passes.append(rMajor - rPass * i)
         return list(reversed(passes))
 
-    def executeThreadMill(self, obj, loc, gcode, zStart, zFinal, pitch):
-        Path.Log.track(obj.Label, loc, gcode, zStart, zFinal, pitch)
-        elevator = elevatorRadius(obj, loc, _isThreadInternal(obj), self.tool)
+    def executeThreadMill(self, obj, holeXY, arcCmd, zStart, zFinal, pitch):
+        Path.Log.track(obj.Label, holeXY, arcCmd, zStart, zFinal, pitch)
+        retractOffset = retractRadius(obj, holeXY, _isThreadInternal(obj), self.tool)
 
-        move2clearance = Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        self.commandlist.append(move2clearance)
+        useFeedRatePy = True  ### make permanent when tested.
+        move2clearanceHt = Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+        self.commandlist.append(move2clearanceHt)
 
         start = None
         for radius in threadPasses(
@@ -441,33 +465,37 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
                 # and not obj.LeadInOut:
                 # external thread without lead in/out have to go up and over
                 # in other words we need a move to clearance and not take any
-                # shortcuts when moving to the elevator position
-                self.commandlist.append(move2clearance)
+                # shortcuts when moving to the retract position
+                self.commandlist.append(move2clearanceHt)
                 start = None
+
             commands, start = threadmilling.generate(
-                loc,
-                gcode,
+                holeXY,
+                arcCmd,
                 zStart,
                 zFinal,
                 pitch,
                 radius,
                 obj.LeadInOut,
-                elevator,
+                retractOffset,
                 start,
+                obj.FeedRateAdj,
+                float(self.tool.Diameter)/2,
             )
 
-            for cmd in commands:
-                p = cmd.Parameters
-                if cmd.Name in ["G0"]:
-                    p.update({"F": self.vertRapid})
-                if cmd.Name in ["G1", "G2", "G3"]:
-                    p.update({"F": self.horizFeed})
-                cmd.Parameters = p
+            if not useFeedRatePy:
+                for cmd in commands:
+                    p = cmd.Parameters
+                    if cmd.Name in ["G0"]:
+                        p.update({"F": self.vertRapid})
+                    if cmd.Name in ["G1", "G2", "G3"]:
+                        p.update({"F": self.horizFeed})
+                    cmd.Parameters = p
             self.commandlist.extend(commands)
 
-        self.commandlist.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
+        self.commandlist.append(move2clearanceHt)
+        if useFeedRatePy:
+            PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
     def circularHoleExecute(self, obj, holes):
         Path.Log.track()
@@ -482,11 +510,10 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
                 Path.Log.error("Cannot create thread with pitch {}".format(pitch))
                 return
 
-            # rapid to clearance height
-            for loc in holes:
+            for hole in holes:
                 self.executeThreadMill(
                     obj,
-                    FreeCAD.Vector(loc["x"], loc["y"], 0),
+                    FreeCAD.Vector(hole["x"], hole["y"], 0),
                     cmd,
                     zStart,
                     zFinal,
