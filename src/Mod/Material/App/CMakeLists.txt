@@ -24,6 +24,12 @@ include_directories(
 )
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
+if(BUILD_MATERIAL_EXTERNAL)
+    include_directories(
+        ${CMAKE_SOURCE_DIR}/src/3rdParty/lru-cache/include
+    )
+endif(BUILD_MATERIAL_EXTERNAL)
+
 set(Materials_LIBS
     FreeCADApp
 )
@@ -139,6 +145,8 @@ if(BUILD_MATERIAL_EXTERNAL)
     list(APPEND Materials_SRCS
         ExternalManager.cpp
         ExternalManager.h
+        ModelManagerExternal.cpp
+        ModelManagerExternal.h
     )
 endif(BUILD_MATERIAL_EXTERNAL)
 

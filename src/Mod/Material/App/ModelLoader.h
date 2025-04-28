@@ -29,6 +29,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include "Model.h"
+#include "ModelLibrary.h"
 
 namespace Materials
 {
@@ -36,7 +37,7 @@ namespace Materials
 class ModelEntry
 {
 public:
-    ModelEntry(const std::shared_ptr<ModelLibrary>& library,
+    ModelEntry(const std::shared_ptr<ModelLibraryLocal>& library,
                const QString& baseName,
                const QString& modelName,
                const QString& dir,
@@ -44,7 +45,7 @@ public:
                const YAML::Node& modelData);
     virtual ~ModelEntry() = default;
 
-    std::shared_ptr<ModelLibrary> getLibrary() const
+    std::shared_ptr<ModelLibraryLocal> getLibrary() const
     {
         return _library;
     }
@@ -85,7 +86,7 @@ public:
 private:
     ModelEntry();
 
-    std::shared_ptr<ModelLibrary> _library;
+    std::shared_ptr<ModelLibraryLocal> _library;
     QString _base;
     QString _name;
     QString _directory;
@@ -98,7 +99,7 @@ class ModelLoader
 {
 public:
     ModelLoader(std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> modelMap,
-                std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> libraryList);
+                std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> libraryList);
     virtual ~ModelLoader() = default;
 
     static const QString getUUIDFromPath(const QString& path);
@@ -120,13 +121,13 @@ private:
                      std::map<std::pair<QString, QString>, QString>* inheritances);
     std::shared_ptr<ModelEntry> getModelFromPath(std::shared_ptr<ModelLibrary> library,
                                                  const QString& path) const;
-    void addLibrary(std::shared_ptr<ModelLibrary> model);
-    void loadLibrary(std::shared_ptr<ModelLibrary> library);
+    void addLibrary(std::shared_ptr<ModelLibraryLocal> model);
+    void loadLibrary(std::shared_ptr<ModelLibraryLocal> library);
     void loadLibraries();
 
     static std::unique_ptr<std::map<QString, std::shared_ptr<ModelEntry>>> _modelEntryMap;
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> _modelMap;
-    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
+    std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> _libraryList;
 };
 
 }  // namespace Materials
