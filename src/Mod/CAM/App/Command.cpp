@@ -164,57 +164,59 @@ void Command::setFromGCode(const std::string& str)
                     }
                     else {
                         throw Base::BadFormatError("Badly formatted GCode command");
-                    } // fi !key
+                    }  // fi !key
                     mode = "argument";
-                } // not ==command
+                }  // not ==command
                 else {
                     if (mode == "none") {
-                       mode = "command";
+                        mode = "command";
                     }
                     else {
                         if (mode == "argument") {
-                            //if ((str[i] =='R' ) && ((key[0]=='F') || (key[0]=='D'))) {
-                            //  allow DR,FR pseudo-params for Helix FeedRateAdj
-                            if ((str[i] !='R' ) || ((key[0]!='F') && (key[0]!='D'))) {
+                            // if ((str[i] =='R' ) && ((key[0]=='F') || (key[0]=='D'))) {
+                            //   allow DR,FR pseudo-params for Helix FeedRateAdj
+                            if ((str[i] != 'R') || ((key[0] != 'F') && (key[0] != 'D'))) {
                                 if (!key.empty() && !value.empty()) {
-                                     double val = std::atof(value.c_str());
-                                     boost::to_upper(key);
-                                     Parameters[key] = val;
-                                     key = "";
-                                     value = "";
+                                    double val = std::atof(value.c_str());
+                                    boost::to_upper(key);
+                                    Parameters[key] = val;
+                                    key = "";
+                                    value = "";
                                 }
                                 else {
-                                     throw Base::BadFormatError("Badly formatted GCode argument");
-                                } // fi !key
-                            } // fi ==R
+                                    throw Base::BadFormatError("Badly formatted GCode argument");
+                                }  // fi !key
+                            }  // fi ==R
                         }
-                        else  if (mode == "comment") {
+                        else if (mode == "comment") {
                             value += str[i];
 
-                        } // fi ==arg
-                    } // fi ==none 
-                } // fi command
+                        }  // fi ==arg
+                    }  // fi ==none
+                }  // fi command
                 key += str[i];
-            
-            } // ie not isalpha
-            else { 
+
+            }  // ie not isalpha
+            else {
                 if (str[i] == '(') {
                     mode = "comment";
                 }
                 else {
-                      if (str[i] == ')') {
-                          key = "(";
-                          value += ")";
-                      }
-                      else {
-                          // add non-alphpa, non-numeric only in a comment
-                          if (mode == "comment") value += str[i];
-                      } // fi ==')'
-                }// fi == '('
-            } // fi isalpha
-        } // fi isDigit
-    } // for i
-    
+                    if (str[i] == ')') {
+                        key = "(";
+                        value += ")";
+                    }
+                    else {
+                        // add non-alphpa, non-numeric only in a comment
+                        if (mode == "comment") {
+                            value += str[i];
+                        }
+                    }  // fi ==')'
+                }  // fi == '('
+            }  // fi isalpha
+        }  // fi isDigit
+    }  // for i
+
     if (!key.empty() && !value.empty()) {
         if ((mode == "command") || (mode == "comment")) {
             std::string cmd = key + value;
@@ -227,7 +229,7 @@ void Command::setFromGCode(const std::string& str)
             double val = std::atof(value.c_str());
             boost::to_upper(key);
             Parameters[key] = val;
-        } // fi mode
+        }  // fi mode
     }
     else {
         throw Base::BadFormatError("Badly formatted GCode argument");
