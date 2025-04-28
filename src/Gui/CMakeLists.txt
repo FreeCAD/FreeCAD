@@ -418,6 +418,7 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
+    PreferencePages/DlgSettingsPDF.ui
     Dialogs/DlgCheckableMessageBox.ui
     Dialogs/DlgToolbars.ui
     Dialogs/DlgTreeWidget.ui
@@ -659,6 +660,7 @@ SET(Dialog_Settings_CPP_SRCS
     Dialogs/DlgOnlineHelpImp.cpp
     Dialogs/DlgPreferencesImp.cpp
     PreferencePages/DlgSettings3DViewImp.cpp
+    PreferencePages/DlgSettingsPDF.cpp
     PreferencePages/DlgSettingsCacheDirectory.cpp
     Dialogs/DlgSettingsColorGradientImp.cpp
     PreferencePages/DlgSettingsDocumentImp.cpp
@@ -681,6 +683,7 @@ SET(Dialog_Settings_HPP_SRCS
     Dialogs/DlgOnlineHelpImp.h
     Dialogs/DlgPreferencesImp.h
     PreferencePages/DlgSettings3DViewImp.h
+    PreferencePages/DlgSettingsPDF.h
     PreferencePages/DlgSettingsCacheDirectory.h
     Dialogs/DlgSettingsColorGradientImp.h
     PreferencePages/DlgSettingsDocumentImp.h
@@ -721,6 +724,7 @@ SET(Dialog_Settings_SRCS
     PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
+    PreferencePages/DlgSettingsPDF.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 
