@@ -152,20 +152,20 @@ App::DocumentObjectExecReturn *Groove::execute()
         }
 
         // revolve the face to a solid
-        TopoShape toolBody(0);
+        TopoShape result(0);
         try {
-            toolBody.makeElementRevolve(sketchshape, gp_Ax1(pnt, dir), angle);
+            result.makeElementRevolve(sketchshape, gp_Ax1(pnt, dir), angle);
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!"));
         }
-        this->AddSubShape.setValue(toolBody);
+        this->AddSubShape.setValue(result);
 
         if(base.isNull()) {
-            Shape.setValue(getSolid(toolBody));
+            Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
 
-        toolBody.Tag = -getID();
+        result.Tag = -getID();
         TopoShape boolOp(0);
 
         try {
@@ -181,7 +181,7 @@ App::DocumentObjectExecReturn *Groove::execute()
                     maker = Part::OpCodes::Cut;
             }
 //            this->fixShape(result);
-            boolOp.makeElementBoolean(maker, { base,toolBody }, nullptr, 1e-6);
+            boolOp.makeElementBoolean(maker, {base,result});
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Failed to cut base feature");
         }
