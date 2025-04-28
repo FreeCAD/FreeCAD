@@ -24,7 +24,10 @@
 #include "OpenGlWrapper.h"
 #include "MillSimulation.h"
 #include <cstddef>
-#include <qtooltip.h>
+#include <QToolTip>
+#include <QPoint>
+#include <QCoreApplication>
+
 
 using namespace MillSim;
 
