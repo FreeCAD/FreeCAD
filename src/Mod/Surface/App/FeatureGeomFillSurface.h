@@ -61,7 +61,7 @@ public:
     }
 };
 
-class GeomFillSurface: public Part::Spline
+class SurfaceExport GeomFillSurface: public Part::Spline
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Surface::GeomFillSurface);
 

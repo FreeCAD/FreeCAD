@@ -651,7 +651,7 @@ void MaterialsEditor::saveMaterialTree(const Base::Reference<ParameterGrp>& para
     treeParam->Clear();
 
     auto tree = ui->treeMaterials;
-    auto model = dynamic_cast<QStandardItemModel*>(tree->model());
+    auto model = qobject_cast<QStandardItemModel*>(tree->model());
 
     auto root = model->invisibleRootItem();
     for (int i = 0; i < root->rowCount(); i++) {
@@ -847,7 +847,7 @@ void MaterialsEditor::fillMaterialTree()
         "User parameter:BaseApp/Preferences/Mod/Material/Editor/MaterialTree");
 
     auto tree = ui->treeMaterials;
-    auto model = dynamic_cast<QStandardItemModel*>(tree->model());
+    auto model = qobject_cast<QStandardItemModel*>(tree->model());
 
     if (_filterOptions.includeFavorites()) {
         auto lib = new QStandardItem(tr("Favorites"));
@@ -898,7 +898,7 @@ void MaterialsEditor::createMaterialTree()
 void MaterialsEditor::refreshMaterialTree()
 {
     auto tree = ui->treeMaterials;
-    auto model = dynamic_cast<QStandardItemModel*>(tree->model());
+    auto model = qobject_cast<QStandardItemModel*>(tree->model());
     model->clear();
 
     fillMaterialTree();
@@ -1054,7 +1054,7 @@ QString MaterialsEditor::getColorHash(const QString& colorString, int colorRange
 void MaterialsEditor::updateMaterialAppearance()
 {
     QTreeView* tree = ui->treeAppearance;
-    auto treeModel = dynamic_cast<QStandardItemModel*>(tree->model());
+    auto treeModel = qobject_cast<QStandardItemModel*>(tree->model());
     treeModel->clear();
 
     QStringList headers;
@@ -1116,7 +1116,7 @@ void MaterialsEditor::updateMaterialAppearance()
 void MaterialsEditor::updateMaterialProperties()
 {
     QTreeView* tree = ui->treePhysicalProperties;
-    auto treeModel = dynamic_cast<QStandardItemModel*>(tree->model());
+    auto treeModel = qobject_cast<QStandardItemModel*>(tree->model());
     treeModel->clear();
 
     QStringList headers;
@@ -1233,7 +1233,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected,
 
     // Get the UUID before changing the underlying data model
     QString uuid;
-    auto model = dynamic_cast<QStandardItemModel*>(ui->treeMaterials->model());
+    auto model = qobject_cast<QStandardItemModel*>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++) {
         QStandardItem* item = model->itemFromIndex(*it);

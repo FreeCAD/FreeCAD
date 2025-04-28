@@ -37,7 +37,7 @@
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
 
-// inclusion of the generated files (generated out of ViewProviderPy.xml)
+// inclusion of the generated files (generated out of ViewProviderPy.pyi)
 #include <Gui/ViewProviderPy.h>
 #include <Gui/ViewProviderPy.cpp>
 #include <Gui/View3DPy.h>

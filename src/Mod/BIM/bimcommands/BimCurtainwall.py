@@ -67,6 +67,7 @@ class Arch_CurtainWall:
             FreeCAD.ActiveDocument.recompute()
         else:
             # interactive line drawing
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             self.points = []
             import WorkingPlane
             WorkingPlane.get_working_plane()
@@ -79,11 +80,15 @@ class Arch_CurtainWall:
 
         if point is None:
             # cancelled
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         self.points.append(point)
         if len(self.points) == 1:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint)
         elif len(self.points) == 2:
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             FreeCADGui.Control.closeDialog()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))
             FreeCADGui.addModule("Draft")

@@ -215,9 +215,10 @@ class Document(PropertyContainer):
         attr: int = 0,
         read_only: bool = False,
         hidden: bool = False,
+        locked: bool = False,
     ) -> "Document":
         """
-        addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False) -- Add a generic property.
+        addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False, locked=False) -- Add a generic property.
         """
         ...
 

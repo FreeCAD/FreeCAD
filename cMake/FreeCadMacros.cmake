@@ -134,7 +134,7 @@ macro(generate_from_xml BASE_NAME)
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.h" "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp"
         COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.xml
-        MAIN_DEPENDENCY "${BASE_NAME}.xml"
+        MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.xml"
         DEPENDS
         "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"
         "${TOOL_PATH}"
@@ -167,7 +167,7 @@ macro(generate_from_py_impl BASE_NAME SUFFIX)
     add_custom_command(
         OUTPUT "${SOURCE_H_PATH}" "${SOURCE_CPP_PATH}"
         COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.pyi
-        MAIN_DEPENDENCY "${BASE_NAME}.pyi"
+        MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.pyi"
         DEPENDS
             "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"
             "${TOOL_PATH}"

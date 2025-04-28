@@ -47,6 +47,7 @@ class BIM_Sketch:
         return v
 
     def Activated(self):
+        import WorkingPlane
         from draftutils import params
         issnap = False
         if hasattr(FreeCAD, "DraftWorkingPlane"):
@@ -65,9 +66,7 @@ class BIM_Sketch:
         sk.ViewObject.LineColor = params.get_param_view("DefaultShapeLineColor")
         sk.ViewObject.PointColor = params.get_param_view("DefaultShapeLineColor")
         sk.ViewObject.LineWidth = params.get_param_view("DefaultShapeLineWidth")
-        p = FreeCAD.DraftWorkingPlane.getPlacement()
-        p.Base = FreeCAD.DraftWorkingPlane.position
-        sk.Placement = p
+        sk.Placement = WorkingPlane.get_working_plane().get_placement()
         FreeCADGui.ActiveDocument.setEdit(sk.Name)
         FreeCADGui.activateWorkbench("SketcherWorkbench")
 
