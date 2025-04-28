@@ -249,6 +249,83 @@ class lineTracker(Tracker):
         p1 = Vector(self.coords.point.getValues()[0].getValue())
         p2 = Vector(self.coords.point.getValues()[-1].getValue())
         return (p2.sub(p1)).Length
+    
+
+class polygonTracker(Tracker):
+    """A Polygon tracker, used by the polygon tool."""
+
+    def __init__(self, dotted=False, scolor=None, swidth=None, face=False, sides=None):
+        self.origin = Vector(0, 0, 0)
+        self.line = coin.SoLineSet()
+        self.sides = sides if sides is not None else 3
+        self.base_angle = None
+        self.line.numVertices.setValue(self.sides + 1)
+        self.coords = coin.SoCoordinate3()  # this is the coordinate
+        self.coords.point.setValues(0, 50, [[0, 0, 0],
+                                            [2, 0, 0],
+                                            [1, 2, 0],
+                                            [0, 0, 0]])
+        if face:
+            m1 = coin.SoMaterial()
+            m1.transparency.setValue(0.5)
+            m1.diffuseColor.setValue([0.5, 0.5, 1.0])
+            f = coin.SoIndexedFaceSet()
+            f.coordIndex.setValues([0, 1, 2, 3])
+            super().__init__(dotted, scolor, swidth,
+                             [self.coords, self.line, m1, f],
+                             name="polygonTracker")
+        else:
+            super().__init__(dotted, scolor, swidth,
+                             [self.coords, self.line],
+                             name="polygonTracker")
+        wp = self._get_wp()
+        self.u = wp.u
+        self.v = wp.v
+    
+    def setNumVertices(self, num):
+        self.line.numVertices.setValue(num + 1)
+        self.sides = num
+
+    def setOrigin(self, point, radius=1.0):
+        self.origin = point
+
+        for i in range(self.sides):
+            angle = 2 * math.pi * i / self.sides
+            x = point.x + radius * math.cos(angle)
+            y = point.y + radius * math.sin(angle)
+            z = point.z
+
+            self.coords.point.set1Value(i, x, y, z)
+
+        self.coords.point.set1Value(self.sides, 
+                                    point.x + radius * math.cos(0), 
+                                    point.y + radius * math.sin(0), 
+                                    point.z)
+
+    def update(self, point):
+        """Set the opposite point and scale the polygon accordingly."""
+        diagonal = point.sub(self.origin)
+        
+        center = self.origin
+        
+        radius = diagonal.Length
+        
+        # For a regular polygon with n sides
+        n_sides = self.sides
+        
+        for i in range(n_sides):
+            # For a regular polygon, points are evenly distributed around a circle
+            angle = (2 * math.pi * i / n_sides)
+            
+            new_x = center.x + radius * math.cos(angle)
+            new_y = center.y + radius * math.sin(angle)
+            new_z = center.z
+            
+            # Update the point
+            self.coords.point.set1Value(i, new_x, new_y, new_z)
+
+        pt = self.coords.point[0]
+        self.coords.point.set1Value(n_sides, pt[0], pt[1], pt[2])
 
 
 class rectangleTracker(Tracker):
