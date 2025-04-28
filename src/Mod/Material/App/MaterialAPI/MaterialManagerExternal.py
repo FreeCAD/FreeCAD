@@ -62,7 +62,7 @@ class MaterialManagerExternal(ABC):
         """Returns a list of libraries managed by this interface
 
         The list contains a series of tuples describing all libraries managed by
-        this module. Each tuple containes the library name, icon, a boolean to indicate
+        this module. Each tuple contains the library name, icon, a boolean to indicate
         if it is a read only library, and a timestamp that indicates when it was last
         modified."""
         pass
@@ -72,7 +72,7 @@ class MaterialManagerExternal(ABC):
         """Returns a list of libraries managed by this interface
 
         The list contains a series of tuples describing all libraries managed by
-        this module. Each tuple containes the library name, icon, and a boolean to indicate
+        this module. Each tuple contains the library name, icon, and a boolean to indicate
         if it is a read only library, and a timestamp that indicates when it was last
         modified.
 
@@ -85,7 +85,7 @@ class MaterialManagerExternal(ABC):
         """Returns a list of libraries managed by this interface
 
         The list contains a series of tuples describing all libraries managed by
-        this module. Each tuple containes the library name, icon, and a boolean to indicate
+        this module. Each tuple contains the library name, icon, and a boolean to indicate
         if it is a read only library, and a timestamp that indicates when it was last
         modified.
 

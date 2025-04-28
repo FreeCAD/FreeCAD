@@ -168,7 +168,7 @@ void DrawGeomHatch::unsetupObject()
 {
 //    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
-    DrawView* dv = dynamic_cast<DrawView*>(source);
+    DrawView* dv = freecad_cast<DrawView*>(source);
     if (dv) {
         dv->requestPaint();
     }
@@ -211,7 +211,7 @@ std::vector<LineSet> DrawGeomHatch::makeLineSets(std::string fileSpec, std::stri
 DrawViewPart* DrawGeomHatch::getSourceView() const
 {
     App::DocumentObject* obj = Source.getValue();
-    DrawViewPart* result = dynamic_cast<DrawViewPart*>(obj);
+    DrawViewPart* result = freecad_cast<DrawViewPart*>(obj);
     return result;
 }
 

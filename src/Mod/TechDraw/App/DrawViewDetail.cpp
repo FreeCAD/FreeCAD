@@ -448,7 +448,7 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape& edgeShape, TopoD
 Base::Vector3d DrawViewDetail::mapPoint3dToDetail(const Base::Vector3d& inPoint) const
 {
     auto baseObj = BaseView.getValue();
-    auto baseDvp = dynamic_cast<DrawViewPart*>(baseObj);
+    auto baseDvp = freecad_cast<DrawViewPart*>(baseObj);
     if (!baseDvp) {
         throw Base::RuntimeError("Detail has no BaseView");
     }
@@ -502,7 +502,7 @@ void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const ch
 void DrawViewDetail::unsetupObject()
 {
     App::DocumentObject* baseObj = BaseView.getValue();
-    DrawView* base = dynamic_cast<DrawView*>(baseObj);
+    DrawView* base = freecad_cast<DrawView*>(baseObj);
     if (base) {
         base->requestPaint();
     }

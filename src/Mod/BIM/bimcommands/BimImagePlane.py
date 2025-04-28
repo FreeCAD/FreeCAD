@@ -59,6 +59,7 @@ class BIM_ImagePlane:
             translate("BIM", "Image file (*.png *.jpg *.bmp)"),
         )
         if filename:
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             self.filename = filename
             im = QtGui.QImage(self.filename)
             self.proportion = float(im.height()) / float(im.width())
@@ -85,9 +86,12 @@ class BIM_ImagePlane:
     def PointCallback(self, point, snapinfo):
         import os
         import DraftVecUtils
+        import WorkingPlane
 
         if not point:
             # cancelled
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             self.tracker.off()
             return
         elif not self.basepoint:
@@ -100,16 +104,19 @@ class BIM_ImagePlane:
             )
         else:
             # this is our second point
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             self.tracker.off()
             midpoint = self.basepoint.add(
                 self.opposite.sub(self.basepoint).multiply(0.5)
             )
-            rotation = FreeCAD.DraftWorkingPlane.getRotation().Rotation
+            wp = WorkingPlane.get_working_plane()
+            rotation = wp.get_placement().Rotation
             diagonal = self.opposite.sub(self.basepoint)
-            length = DraftVecUtils.project(diagonal, FreeCAD.DraftWorkingPlane.u).Length
-            height = DraftVecUtils.project(diagonal, FreeCAD.DraftWorkingPlane.v).Length
+            length = DraftVecUtils.project(diagonal, wp.u).Length
+            height = DraftVecUtils.project(diagonal, wp.v).Length
             FreeCAD.ActiveDocument.openTransaction("Create image plane")
-            image = FreeCAD.activeDocument().addObject(
+            image = FreeCAD.ActiveDocument.addObject(
                 "Image::ImagePlane", "ImagePlane"
             )
             image.Label = os.path.splitext(os.path.basename(self.filename))[0]

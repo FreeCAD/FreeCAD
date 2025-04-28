@@ -660,7 +660,7 @@ void DrawView::setScaleAttribute()
 //! existence of the parent DrawProjGroup
 bool DrawView::isProjGroupItem(DrawViewPart* item)
 {
-    auto dpgi = dynamic_cast<DrawProjGroupItem*>(item);
+    auto dpgi = freecad_cast<DrawProjGroupItem*>(item);
     if (!dpgi) {
         return false;
     }

@@ -188,7 +188,7 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     if (!annotation) {
         return;
     }
-    auto ViewProvider = dynamic_cast<ViewProviderAnnotation*>(getViewProvider(annotation));
+    auto ViewProvider = freecad_cast<ViewProviderAnnotation*>(getViewProvider(annotation));
     if (!ViewProvider) {
         qWarning() << "QGIViewAnnotation::mouseDoubleClickEvent: No valid view provider";
         return;
