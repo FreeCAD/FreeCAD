@@ -183,6 +183,7 @@ void CommandPy::setParameters(Py::Dict arg)
     PyObject* dict_copy = PyDict_Copy(arg.ptr());
     PyObject *key, *value;
     Py_ssize_t pos = 0;
+    getCommandPtr()->Parameters.clear();
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
         std::string ckey;
         if (PyUnicode_Check(key)) {
