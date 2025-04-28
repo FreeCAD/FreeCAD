@@ -255,7 +255,7 @@ void GuiDisplay::RenderItem(int itemId)
     glDrawElements(GL_TRIANGLES, nTriangles, GL_UNSIGNED_SHORT, nullptr);
 }
 
-    void MillSim::GuiDisplay::SetupTooltips()
+void MillSim::GuiDisplay::SetupTooltips()
 {
     guiItems[eGuiItemPause].toolTip =
         QCoreApplication::translate("CAM:Simulator:Tooltips", "Pause simulation", nullptr);
@@ -267,12 +267,14 @@ void GuiDisplay::RenderItem(int itemId)
         QCoreApplication::translate("CAM:Simulator:Tooltips", "Change simulation speed", nullptr);
     guiItems[eGuiItemPath].toolTip =
         QCoreApplication::translate("CAM:Simulator:Tooltips", "Show/Hide tool path", nullptr);
-    guiItems[eGuiItemRotate].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle turn table animation", nullptr);
+    guiItems[eGuiItemRotate].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
+                                                                   "Toggle turn table animation",
+                                                                   nullptr);
     guiItems[eGuiItemAmbientOclusion].toolTip =
         QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient oclusion", nullptr);
-    guiItems[eGuiItemView].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle view simulation/model", nullptr);
+    guiItems[eGuiItemView].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
+                                                                 "Toggle view simulation/model",
+                                                                 nullptr);
 }
 
 void GuiDisplay::MouseCursorPos(int x, int y)
@@ -293,10 +295,8 @@ void GuiDisplay::MouseCursorPos(int x, int y)
             mMouseOverItem = g;
         }
     }
-    if (mMouseOverItem != prevMouseOver)
-    {
-        if (mMouseOverItem != nullptr && !mMouseOverItem->toolTip.isEmpty())
-        {
+    if (mMouseOverItem != prevMouseOver) {
+        if (mMouseOverItem != nullptr && !mMouseOverItem->toolTip.isEmpty()) {
             QPoint pos(x, y);
             QPoint globPos = CAMSimulator::DlgCAMSimulator::GetInstance()->mapToGlobal(pos);
             QToolTip::showText(globPos, mMouseOverItem->toolTip);
