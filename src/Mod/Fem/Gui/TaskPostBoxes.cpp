@@ -316,7 +316,7 @@ void TaskDlgPost::appendBox(TaskPostBox* box)
 
 void TaskDlgPost::open()
 {
-    // only open a new command if non is pending (e.g. if the object was nely created)
+    // only open a new command if none is pending (e.g. if the object was newly created)
     if (!Gui::Command::hasPendingCommand()) {
         auto text = std::string("Edit ") + m_view->getObject()->Label.getValue();
         Gui::Command::openCommand(text.c_str());

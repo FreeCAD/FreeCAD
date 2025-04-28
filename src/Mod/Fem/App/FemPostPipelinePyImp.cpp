@@ -228,8 +228,8 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
         else {
             std::string error = std::string(
                 "Multistep load requires 4 arguments: ResultList, ValueList, unit, type");
-                PyErr_SetString(PyExc_ValueError, error.c_str());
-                return nullptr;
+            PyErr_SetString(PyExc_ValueError, error.c_str());
+            return nullptr;
         }
     }
     return nullptr;
