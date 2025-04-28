@@ -29,7 +29,7 @@ from PySide import QtGui, QtCore
 translate = FreeCAD.Qt.translate
 
 
-def _is_writable_dir(path: Path) -> bool:
+def _is_writable_dir(path: pathlib.Path) -> bool:
     """
     Check if a path is a writable directory.
     Returns True if writable, False otherwise.
