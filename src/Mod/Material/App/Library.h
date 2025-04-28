@@ -38,6 +38,7 @@ class MaterialsExport Library: public Base::BaseClass
 
 public:
     Library() = default;
+    Library(const Library &other) = default;
     Library(const QString& libraryName, const QString& icon, bool readOnly = true);
     Library(const QString& libraryName,
             const QString& icon,
