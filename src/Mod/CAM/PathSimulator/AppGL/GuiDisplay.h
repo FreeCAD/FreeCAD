@@ -61,6 +61,7 @@ struct GuiItem
     unsigned int flags {};
     bool mouseOver {};
     TextureItem texItem {};
+    QString toolTip;
 
     int posx()
     {
@@ -121,6 +122,7 @@ private:
     bool HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidth);
     void DestroyGlItem(GuiItem* guiItem);
     void RenderItem(int itemId);
+    void SetupTooltips();
 
     vec3 mStdColor = {0.8f, 0.8f, 0.4f};
     vec3 mToggleColor = {0.9f, 0.6f, 0.2f};
