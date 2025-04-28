@@ -63,7 +63,6 @@ function git_repo_pack_with_submodules() {
 
       git ls-files --recurse-submodules \
        | tar caf "$OUTDIR/$source_name" \
-         --xform "s:^:$dir_name/:" \
          --verbatim-files-from -T -
     )
 

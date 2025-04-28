@@ -9,8 +9,6 @@ REVISION_NUMBER=`grep rev_number:  freecad_version.txt | sed 's/^rev_number: //g
 COMMIT_HASH=`grep commit_hash: freecad_version.txt | sed 's/^commit_hash: //g'`
 # REMOTE_URL=`grep remote_url:  freecad_version.txt | sed 's/^remote_url: //g'`
 
-PREP_MACRO="rm -rf %{git_name}\n   %setup -T -a 0 -q -c -D -n %{git_name}"
-
 
 
 sed \
@@ -21,7 +19,6 @@ sed \
 -e 's@{{{ git_wcrev }}}@'"$REVISION_NUMBER"'@g' \
 -e 's@{{{ git_commit_hash }}}@'"$COMMIT_HASH"'@g' \
 -e 's@{{{ git_repo_pack_with_submodules }}}@'"$SOURCE_URL"'@g' \
--e 's@{{{ git_repo_setup_macro }}}@'"$PREP_MACRO"'@g' \
 freecad.spec.rpkg > freecad.spec
 
 rm freecad.spec.rpkg
