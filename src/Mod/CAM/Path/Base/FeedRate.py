@@ -52,41 +52,42 @@ def setFeedRate(commandlist_arg, ToolController):
     def _isVertical(currentposition, command):
         x = command.Parameters["X"] if "X" in command.Parameters else currentposition.x
         y = command.Parameters["Y"] if "Y" in command.Parameters else currentposition.y
-        return Path.Geom.isRoughly(x,currentposition.x) and Path.Geom.isRoughly(y,currentposition.y)
+        return Path.Geom.isRoughly(x, currentposition.x) and Path.Geom.isRoughly(
+            y, currentposition.y
+        )
 
     def _isHorizontal(currentposition, command):
         z = command.Parameters["Z"] if "Z" in command.Parameters else currentposition.z
-        return Path.Geom.isRoughly(z,currentposition.z) 
-
+        return Path.Geom.isRoughly(z, currentposition.z)
 
     machine = PathMachineState.MachineState()
 
     hFeed = ToolController.HorizFeed.Value
     vFeed = ToolController.VertFeed.Value
-    #print("commandlist_arg[-1] = ", commandlist_arg[-1])
-    #print("commandlist_arg[1].Parameters = ", commandlist_arg[1].Parameters.keys[1])
-    #print("commandlist_arg[1].Parameters = ", commandlist_arg[1].Parameters.values[1])
+    # print("commandlist_arg[-1] = ", commandlist_arg[-1])
+    # print("commandlist_arg[1].Parameters = ", commandlist_arg[1].Parameters.keys[1])
+    # print("commandlist_arg[1].Parameters = ", commandlist_arg[1].Parameters.values[1])
     for i in range(len(commandlist_arg)):
         print("Name: ", commandlist_arg[i].Name)
         print("Parameters: ", commandlist_arg[i].Parameters)
-        #print(" commandlist_arg[i]", commandlist_arg[i]) 
-        #print(" commandlist_arg", commandlist_arg) 
-        
+        # print(" commandlist_arg[i]", commandlist_arg[i])
+        # print(" commandlist_arg", commandlist_arg)
+
     for command in commandlist_arg:
         if command.Name not in Path.Geom.CmdMoveAll:
             continue
 
         params = command.Parameters
 
-        if _isVertical(machine.getPosition(), command): # also true for plunge helix
+        if _isVertical(machine.getPosition(), command):  # also true for plunge helix
             rate = (
-                ToolController.VertRapid.Value
-                if command.Name in Path.Geom.CmdMoveRapid
-                else vFeed
+                ToolController.VertRapid.Value if command.Name in Path.Geom.CmdMoveRapid else vFeed
             )
         else:
-            if "FR" in params: hFeed_adj = hFeed * params["FR"]
-            else: hFeed_adj = hFeed
+            if "FR" in params:
+                hFeed_adj = hFeed * params["FR"]
+            else:
+                hFeed_adj = hFeed
 
             if _isHorizontal(machine.getPosition(), command):
                 rate = (
@@ -94,19 +95,19 @@ def setFeedRate(commandlist_arg, ToolController):
                     if command.Name in Path.Geom.CmdMoveRapid
                     else hFeed_adj
                 )
-            elif (command.Name in ["G2", "G3"]):
-                if ("DR" in params):
-                    if params["DR"]==0:
-                         rate = hFeed_adj
-                    elif abs(params["DR"]) > 5: # arbitrary, why 5 ?
-                         rate = hFeed_adj  # steep helix: use V feedrate
+            elif command.Name in ["G2", "G3"]:
+                if "DR" in params:
+                    if params["DR"] == 0:
+                        rate = hFeed_adj
+                    elif abs(params["DR"]) > 5:  # arbitrary, why 5 ?
+                        rate = hFeed_adj  # steep helix: use V feedrate
                     else:
                         descentAngle = math.atan(abs(params["DR"]))
                         rate = math.sqrt(vFeed * vFeed + hFeed_adj * hFeed_adj)  # vector sum
                         # ensure v,h feedrates not exceeded by "FR" rate
                         rate = min(rate, vFeed / math.cos(descentAngle))
                         rate = min(rate, hFeed_adj / math.sin(descentAngle))
-    
+
                         # TODO modify pocket/contour arcs or ramps to use this code.
             else:
                 rate = hFeed  # fallback  non v, non H, non arc == ramp??? ### should never
@@ -119,4 +120,4 @@ def setFeedRate(commandlist_arg, ToolController):
 
         machine.addCommand(command)
 
-    return # commandlist_arg # return value unused !
+    return  # commandlist_arg # return value unused !

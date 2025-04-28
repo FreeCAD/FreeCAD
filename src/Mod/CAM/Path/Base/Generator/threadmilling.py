@@ -60,7 +60,7 @@ class _Thread(object):
         self.internalThread = internal
 
     def overshoots(self, z):
-        """overshoots(z) ... returns true if adding another half helix goes beyond the thread bounds. Negative pitch spirals down """
+        """overshoots(z) ... returns true if adding another half helix goes beyond the thread bounds. Negative pitch spirals down"""
         if self.pitch < 0:
             return z + self.halfPitch < self.zFinal
         return z + self.halfPitch > self.zFinal
@@ -88,19 +88,30 @@ class _Thread(object):
         return self.arcOpposite()
 
 
-def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, start, feedRateAdj, tool_radius):
+def generate(
+    center,
+    cmd,
+    zStart,
+    zFinal,
+    pitch,
+    radius,
+    leadInOut,
+    retractOffset,
+    start,
+    feedRateAdj,
+    tool_radius,
+):
     """generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, start, feedRateAdj, tooldiam)
     ... returns the g-code to mill the given internal thread"""
     thread = _Thread(cmd, zStart, zFinal, pitch, radius > retractOffset)
 
- 
     # FeedRateCheckbox.checked
-    r = radius # radius of path, ie spindle axis path radius
-    descentRate=thread.halfPitch/(math.pi*r)   # helix vertical gradient d(xy)/dz
+    r = radius  # radius of path, ie spindle axis path radius
+    descentRate = thread.halfPitch / (math.pi * r)  # helix vertical gradient d(xy)/dz
     if not feedRateAdj:
         feedRateRatio = 0
     elif thread.internalThread:  # always adj for outer tip feedrate
-        feedRateRatio = r / (r + tool_radius)  #  (hole_rad-tool_rad)/hole_rad 
+        feedRateRatio = r / (r + tool_radius)  #  (hole_rad-tool_rad)/hole_rad
     elif (r - tool_radius) * 200 < r:
         feedRateRatio = 200  # prevent div zero
     else:  # external thread: increase spindle feed rate to maintain inner-cut chip-load
@@ -110,10 +121,10 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffse
     if r != 0:  # r == 0 is plunge cut at vert feedrate, feedRateAdj irrel
         adjParamDict["DR"] = descentRate
         if feedRateAdj:
-            adjParamDict ["FR"] = feedRateRatio
+            adjParamDict["FR"] = feedRateRatio
 
     paramDict = dict(adjParamDict)
-    
+
     yMin = center.y - radius
     yMax = center.y + radius
 
@@ -124,18 +135,22 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffse
     if leadInOut:
         _comment(ThrCommandList, "lead-in")
         if start is None:
-            ThrCommandList.append(Path.Command("G0", {"X": center.x, "Y": center.y + retractOffset}))
+            ThrCommandList.append(
+                Path.Command("G0", {"X": center.x, "Y": center.y + retractOffset})
+            )
             ThrCommandList.append(Path.Command("G0", {"Z": thread.zStart}))
         else:
             paramDict = dict(adjParamDict)
-            paramDict.update({
-                "X": center.x,
-                "Y": center.y + retractOffset,
-                "Z": thread.zStart,
-                "I": (center.x - start.x) / 2,
-                "J": (center.y - start.y + retractOffset) / 2,
-                "K": (thread.zStart - start.z) / 2,
-            })
+            paramDict.update(
+                {
+                    "X": center.x,
+                    "Y": center.y + retractOffset,
+                    "Z": thread.zStart,
+                    "I": (center.x - start.x) / 2,
+                    "J": (center.y - start.y + retractOffset) / 2,
+                    "K": (thread.zStart - start.z) / 2,
+                }
+            )
             ThrCommandList.append(Path.Command(thread.arcOpposite(), paramDict))
 
         paramDict = dict(adjParamDict)
@@ -144,11 +159,15 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffse
         _comment(ThrCommandList, "lead-in")
     else:
         if start is None:
-            ThrCommandList.append(Path.Command("G0", {"X": center.x, "Y": center.y + retractOffset}))
+            ThrCommandList.append(
+                Path.Command("G0", {"X": center.x, "Y": center.y + retractOffset})
+            )
             ThrCommandList.append(Path.Command("G0", {"Z": thread.zStart}))
         else:
             ThrCommandList.append(
-                Path.Command("G0", {"X": center.x, "Y": center.y + retractOffset, "Z": thread.zStart})
+                Path.Command(
+                    "G0", {"X": center.x, "Y": center.y + retractOffset, "Z": thread.zStart}
+                )
             )
         ThrCommandList.append(Path.Command("G1", {"Y": yMax}))
 
@@ -159,7 +178,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffse
         if thread.overshoots(z):
             break
 
-        if (i & 0x01):
+        if i & 0x01:
             y = yMax
         else:
             y = yMin
@@ -185,7 +204,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffse
         _comment(ThrCommandList, "finish-thread")
         paramDict = dict(adjParamDict)
         paramDict.update({"X": x, "Y": y, "Z": thread.zFinal, "J": r})
-        ThrCommandList.append(Path.Command(thread.cmd,paramDict))
+        ThrCommandList.append(Path.Command(thread.cmd, paramDict))
         _comment(ThrCommandList, "finish-thread")
 
     a = math.atan2(y - center.y, x - center.x)
@@ -202,7 +221,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffse
         _comment(ThrCommandList, "lead-out")
         paramDict = dict(adjParamDict)
         paramDict.update({"X": retractX, "Y": retractY, "I": -dx / 2, "J": -dy / 2})
-        ThrCommandList.append(Path.Command(thread.LeadInOutCmd(),paramDict))
+        ThrCommandList.append(Path.Command(thread.LeadInOutCmd(), paramDict))
         _comment(ThrCommandList, "lead-out")
     else:
         ThrCommandList.append(Path.Command("G1", {"X": retractX, "Y": retractY}))

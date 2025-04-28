@@ -209,7 +209,7 @@ def retractRadius(obj, center, internal, tool):
     """retractRadius(obj, center, internal, tool) ... return suitable radius for the tool retraction"""
     Path.Log.track(center, internal, tool.Diameter)
     if internal:
-        dy = float(obj.MinorDiameter - tool.Diameter) / 2 
+        dy = float(obj.MinorDiameter - tool.Diameter) / 2
         if dy < 0:
             if obj.MinorDiameter < tool.Diameter:
                 Path.Log.error(
@@ -219,8 +219,8 @@ def retractRadius(obj, center, internal, tool):
                 )
             dy = 0
     else:
-        dy = float(obj.MajorDiameter + tool.Diameter) / 2 
-        dy += tool.Diameter /4  # arbitrary extra clearance on external 
+        dy = float(obj.MajorDiameter + tool.Diameter) / 2
+        dy += tool.Diameter / 4  # arbitrary extra clearance on external
 
     return dy
 
@@ -321,7 +321,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         return PathOp.FeatureBaseGeometry
 
     def opOnDocumentRestored(self, obj):
-        if not hasattr(obj,"FeedRateAdj"):
+        if not hasattr(obj, "FeedRateAdj"):
             obj.addProperty(
                 "App::PropertyBool",
                 "FeedRateAdj",
@@ -329,7 +329,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Adjust spindle feedrate to ensure correct tool tip cutting speed",
-                )
+                ),
             )
 
     def initCircularHoleOperation(self, obj):
@@ -480,7 +480,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
                 retractOffset,
                 start,
                 obj.FeedRateAdj,
-                float(self.tool.Diameter)/2,
+                float(self.tool.Diameter) / 2,
             )
 
             if not useFeedRatePy:

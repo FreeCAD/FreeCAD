@@ -201,9 +201,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         for prop in obj.PropertiesList:
-            if (str(prop) == "StartRadius") and (obj.getTypeIdOfProperty(str(prop)) == "App::PropertyLength"):
+            if (str(prop) == "StartRadius") and (
+                obj.getTypeIdOfProperty(str(prop)) == "App::PropertyLength"
+            ):
                 tmpRad = obj.StartRadius.Value
-                obj.removeProperty("StartRadius") # ensure PropertyDistance, not Length
+                obj.removeProperty("StartRadius")  # ensure PropertyDistance, not Length
                 obj.addProperty(
                     "App::PropertyDistance",
                     "StartRadius",
