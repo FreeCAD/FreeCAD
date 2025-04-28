@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 #endif
 #ifdef __GNUC__
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 
@@ -36,8 +36,11 @@
 
 using namespace Base;
 
-std::string
-UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, std::string& unitString)
+std::string UnitsSchemaInternal::schemaTranslate(
+    const Quantity& quant,
+    double& factor,
+    std::string& unitString
+)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();

@@ -38,11 +38,13 @@ ConstraintTemperature::ConstraintTemperature()
 {
     ADD_PROPERTY(Temperature, (300.0));
     ADD_PROPERTY(CFlux, (0.0));
-    ADD_PROPERTY_TYPE(ConstraintType,
-                      (1),
-                      "ConstraintTemperature",
-                      (App::PropertyType)(App::Prop_None),
-                      "Type of constraint, temperature or concentrated heat flux");
+    ADD_PROPERTY_TYPE(
+        ConstraintType,
+        (1),
+        "ConstraintTemperature",
+        (App::PropertyType)(App::Prop_None),
+        "Type of constraint, temperature or concentrated heat flux"
+    );
     ConstraintType.setEnums(ConstraintTypes);
 }
 
@@ -56,9 +58,11 @@ const char* ConstraintTemperature::getViewProviderName() const
     return "FemGui::ViewProviderFemConstraintTemperature";
 }
 
-void ConstraintTemperature::handleChangedPropertyType(Base::XMLReader& reader,
-                                                      const char* TypeName,
-                                                      App::Property* prop)
+void ConstraintTemperature::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     // property Temperature had App::PropertyFloat and was changed to App::PropertyTemperature
     if (prop == &Temperature && strcmp(TypeName, "App::PropertyFloat") == 0) {

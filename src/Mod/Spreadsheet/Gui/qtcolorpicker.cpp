@@ -47,23 +47,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 
-#include <QApplication>
-#include <QColorDialog>
-#include <QGridLayout>
-#include <QLayout>
-#include <QPainter>
-#include <QPushButton>
-#include <QStyle>
-#include <QtCore/QMap>
-#include <QtGui/QFocusEvent>
-#include <QtGui/QHideEvent>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QPixmap>
-#include <QtGui/QShowEvent>
+# include <QApplication>
+# include <QColorDialog>
+# include <QGridLayout>
+# include <QLayout>
+# include <QPainter>
+# include <QPushButton>
+# include <QStyle>
+# include <QtCore/QMap>
+# include <QtGui/QFocusEvent>
+# include <QtGui/QHideEvent>
+# include <QtGui/QKeyEvent>
+# include <QtGui/QMouseEvent>
+# include <QtGui/QPaintEvent>
+# include <QtGui/QPixmap>
+# include <QtGui/QShowEvent>
 #endif
 
 #include <Gui/FileDialog.h>

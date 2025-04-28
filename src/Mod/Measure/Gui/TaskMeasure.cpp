@@ -23,8 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QApplication>
-#include <QKeyEvent>
+# include <QApplication>
+# include <QKeyEvent>
 #endif
 
 
@@ -65,10 +65,12 @@ TaskMeasure::TaskMeasure()
     qApp->installEventFilter(this);
 
     this->setButtonPosition(TaskMeasure::South);
-    auto taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("umf-measurement"),
-                                              tr("Measurement"),
-                                              true,
-                                              nullptr);
+    auto taskbox = new Gui::TaskView::TaskBox(
+        Gui::BitmapFactory().pixmap("umf-measurement"),
+        tr("Measurement"),
+        true,
+        nullptr
+    );
 
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
@@ -90,22 +92,28 @@ TaskMeasure::TaskMeasure()
     autoSaveAction = new QAction(tr("Auto Save"));
     autoSaveAction->setCheckable(true);
     autoSaveAction->setChecked(mAutoSave);
-    autoSaveAction->setToolTip(tr("Auto saving of the last measurement when starting a new "
-                                  "measurement. Use SHIFT to temporarily invert the behaviour."));
+    autoSaveAction->setToolTip(
+        tr("Auto saving of the last measurement when starting a new "
+           "measurement. Use SHIFT to temporarily invert the behaviour.")
+    );
     connect(autoSaveAction, &QAction::triggered, this, &TaskMeasure::autoSaveChanged);
 
     newMeasurementBehaviourAction = new QAction(tr("Additive Selection"));
     newMeasurementBehaviourAction->setCheckable(true);
-    newMeasurementBehaviourAction->setChecked(Gui::Selection().getSelectionStyle()
-                                              == SelectionStyle::GreedySelection);
+    newMeasurementBehaviourAction->setChecked(
+        Gui::Selection().getSelectionStyle() == SelectionStyle::GreedySelection
+    );
     newMeasurementBehaviourAction->setToolTip(
         tr("If checked, new selection will be added to the measurement. If unchecked, CTRL must be "
            "pressed to add a "
-           "selection to the current measurement otherwise a new measurement will be started"));
-    connect(newMeasurementBehaviourAction,
-            &QAction::triggered,
-            this,
-            &TaskMeasure::newMeasurementBehaviourChanged);
+           "selection to the current measurement otherwise a new measurement will be started")
+    );
+    connect(
+        newMeasurementBehaviourAction,
+        &QAction::triggered,
+        this,
+        &TaskMeasure::newMeasurementBehaviourChanged
+    );
 
     mSettings = new QToolButton();
     mSettings->setToolTip(tr("Settings"));
@@ -127,10 +135,7 @@ TaskMeasure::TaskMeasure()
     }
 
     // Connect dropdown's change signal to our onModeChange slot
-    connect(modeSwitch,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskMeasure::onModeChanged);
+    connect(modeSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onModeChanged);
 
     // Result widget
     valueResult = new QLineEdit();
@@ -232,7 +237,8 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
     else {
         // Create measure object
         _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(
-            doc->addObject(measureType->measureObject.c_str(), measureType->label.c_str()));
+            doc->addObject(measureType->measureObject.c_str(), measureType->label.c_str())
+        );
     }
 
     return _mMeasureObject;
@@ -255,8 +261,7 @@ void TaskMeasure::update()
 
         std::string mod = Base::Type::getModuleName(sub->getTypeId().getName());
         if (!App::MeasureManager::hasMeasureHandler(mod.c_str())) {
-            Base::Console().Message("No measure handler available for geometry of module: %s\n",
-                                    mod);
+            Base::Console().Message("No measure handler available for geometry of module: %s\n", mod);
             clearSelection();
             return;
         }
@@ -369,9 +374,11 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
 
 
     if (!obj || !obj->isValid() || !obj->isDerivedFrom<App::DocumentObjectGroup>()) {
-        obj = doc->addObject<App::DocumentObjectGroup>(measurementGroupName,
-                                                       true,
-                                                       "MeasureGui::ViewProviderMeasureGroup");
+        obj = doc->addObject<App::DocumentObjectGroup>(
+            measurementGroupName,
+            true,
+            "MeasureGui::ViewProviderMeasureGroup"
+        );
     }
 
     auto group = static_cast<App::DocumentObjectGroup*>(obj);
@@ -454,8 +461,7 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // Skip non-relevant events
     if (msg.Type != SelectionChanges::AddSelection && msg.Type != SelectionChanges::RmvSelection
-        && msg.Type != SelectionChanges::SetSelection
-        && msg.Type != SelectionChanges::ClrSelection) {
+        && msg.Type != SelectionChanges::SetSelection && msg.Type != SelectionChanges::ClrSelection) {
 
         return;
     }

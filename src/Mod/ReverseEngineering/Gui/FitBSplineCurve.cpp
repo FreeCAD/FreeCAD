@@ -23,8 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <algorithm>
-#include <QMessageBox>
+# include <algorithm>
+# include <QMessageBox>
 #endif
 
 #include <Gui/CommandT.h>
@@ -101,8 +101,7 @@ void FitBSplineCurveWidget::tryAccept()
     QString object = QString::fromStdString(d->obj.getObjectPython());
 
     QStringList arguments;
-    arguments.append(
-        QStringLiteral("Points=getattr(%1, %1.getPropertyNameOfGeometry())").arg(object));
+    arguments.append(QStringLiteral("Points=getattr(%1, %1.getPropertyNameOfGeometry())").arg(object));
     if (!d->ui.groupBoxSmooth->isChecked()) {
         arguments.append(QStringLiteral("MinDegree = %1").arg(d->ui.degreeMin->value()));
     }
@@ -125,8 +124,10 @@ void FitBSplineCurveWidget::tryAccept()
     }
 
     QString argument = arguments.join(QLatin1String(", "));
-    QString command = QStringLiteral("%1.addObject(\"Part::Spline\", \"Spline\").Shape = "
-                                     "ReverseEngineering.approxCurve(%2).toShape()")
+    QString command = QStringLiteral(
+                          "%1.addObject(\"Part::Spline\", \"Spline\").Shape = "
+                          "ReverseEngineering.approxCurve(%2).toShape()"
+    )
                           .arg(document, argument);
 
     tryCommand(command);

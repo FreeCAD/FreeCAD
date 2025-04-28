@@ -23,9 +23,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <cmath>
-#include <vector>
-#include <QTimer>
+# include <cmath>
+# include <vector>
+# include <QTimer>
 #endif
 
 #include <App/Document.h>
@@ -147,9 +147,11 @@ void QuickMeasure::addSelectionToMeasurement()
     int count = 0;
     int limit = 100;
 
-    auto selObjs = Gui::Selection().getSelectionEx(nullptr,
-                                                   App::DocumentObject::getClassTypeId(),
-                                                   Gui::ResolveMode::NoResolve);
+    auto selObjs = Gui::Selection().getSelectionEx(
+        nullptr,
+        App::DocumentObject::getClassTypeId(),
+        Gui::ResolveMode::NoResolve
+    );
 
     for (auto& selObj : selObjs) {
         App::DocumentObject* rootObj = selObj.getObject();

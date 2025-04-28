@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QUuid>
+# include <QUuid>
 #endif
 
 #include <stdexcept>

@@ -159,11 +159,13 @@ struct DoublePoint
 //------------------------------------------------------------------------------
 
 #ifdef use_xyz
-typedef void (*ZFillCallback)(IntPoint& e1bot,
-                              IntPoint& e1top,
-                              IntPoint& e2bot,
-                              IntPoint& e2top,
-                              IntPoint& pt);
+typedef void (*ZFillCallback)(
+    IntPoint& e1bot,
+    IntPoint& e1top,
+    IntPoint& e2bot,
+    IntPoint& e2top,
+    IntPoint& pt
+);
 #endif
 
 enum InitOptions
@@ -332,14 +334,18 @@ class Clipper: public virtual ClipperBase
 public:
     Clipper(int initOptions = 0);
     ~Clipper();
-    bool Execute(ClipType clipType,
-                 Paths& solution,
-                 PolyFillType subjFillType = pftEvenOdd,
-                 PolyFillType clipFillType = pftEvenOdd);
-    bool Execute(ClipType clipType,
-                 PolyTree& polytree,
-                 PolyFillType subjFillType = pftEvenOdd,
-                 PolyFillType clipFillType = pftEvenOdd);
+    bool Execute(
+        ClipType clipType,
+        Paths& solution,
+        PolyFillType subjFillType = pftEvenOdd,
+        PolyFillType clipFillType = pftEvenOdd
+    );
+    bool Execute(
+        ClipType clipType,
+        PolyTree& polytree,
+        PolyFillType subjFillType = pftEvenOdd,
+        PolyFillType clipFillType = pftEvenOdd
+    );
     bool ReverseSolution()
     {
         return m_ReverseOutput;

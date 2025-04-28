@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <cstring>
-#include <limits>
-#include <sstream>
+# include <algorithm>
+# include <array>
+# include <cmath>
+# include <cstring>
+# include <limits>
+# include <sstream>
 #endif
 
 #include "Unit.h"

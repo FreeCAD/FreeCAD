@@ -23,13 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Cylinder.hxx>
-#include <gp_Sphere.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Cylinder.hxx>
+# include <gp_Sphere.hxx>
 #endif
 
 #include <App/Application.h>
@@ -86,9 +86,7 @@ void swapJCS(const App::DocumentObject* joint)
     }
 }
 
-bool isEdgeType(const App::DocumentObject* obj,
-                const std::string& elName,
-                const GeomAbs_CurveType type)
+bool isEdgeType(const App::DocumentObject* obj, const std::string& elName, const GeomAbs_CurveType type)
 {
     auto* base = dynamic_cast<const PartApp::Feature*>(obj);
     if (!base) {
@@ -104,9 +102,7 @@ bool isEdgeType(const App::DocumentObject* obj,
     return sf.GetType() == type;
 }
 
-bool isFaceType(const App::DocumentObject* obj,
-                const std::string& elName,
-                const GeomAbs_SurfaceType type)
+bool isFaceType(const App::DocumentObject* obj, const std::string& elName, const GeomAbs_SurfaceType type)
 {
     auto* base = dynamic_cast<const PartApp::Feature*>(obj);
     if (!base) {
@@ -534,17 +530,17 @@ App::DocumentObject* getObjFromRef(const App::DocumentObject* obj, const std::st
     const auto isBodySubObject = [](App::DocumentObject* obj) -> bool {
         // PartDesign::Point + Line + Plane + CoordinateSystem
         // getViewProviderName instead of isDerivedFrom to avoid dependency on sketcher
-        const auto isDerivedFromVpSketch =
-            strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0;
+        const auto isDerivedFromVpSketch
+            = strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0;
         return isDerivedFromVpSketch || obj->isDerivedFrom<PartApp::Datum>()
             || obj->isDerivedFrom<App::DatumElement>()
             || obj->isDerivedFrom<App::LocalCoordinateSystem>();
     };
 
     // Helper function to handle PartDesign::Body objects
-    const auto handlePartDesignBody =
-        [&](App::DocumentObject* obj,
-            std::vector<std::string>::const_iterator it) -> App::DocumentObject* {
+    const auto handlePartDesignBody = [&](App::DocumentObject* obj,
+                                          std::vector<std::string>::const_iterator it
+                                      ) -> App::DocumentObject* {
         const auto nextIt = std::next(it);
         if (nextIt != names.end()) {
             for (auto* obji : obj->getOutList()) {
@@ -642,9 +638,11 @@ App::DocumentObject* getLinkedObjFromRef(const App::DocumentObject* joint, const
     return nullptr;
 }
 
-App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
-                                          App::DocumentObject* obj,
-                                          const std::string& sub)
+App::DocumentObject* getMovingPartFromRef(
+    const AssemblyObject* assemblyObject,
+    App::DocumentObject* obj,
+    const std::string& sub
+)
 {
     if (!obj) {
         return nullptr;
@@ -697,8 +695,10 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
     return nullptr;
 }
 
-App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
-                                          App::PropertyXLinkSub* prop)
+App::DocumentObject* getMovingPartFromRef(
+    const AssemblyObject* assemblyObject,
+    App::PropertyXLinkSub* prop
+)
 {
     if (!prop) {
         return nullptr;
@@ -716,9 +716,11 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
     return getMovingPartFromRef(assemblyObject, obj, subs[0]);
 }
 
-App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
-                                          App::DocumentObject* joint,
-                                          const char* pName)
+App::DocumentObject* getMovingPartFromRef(
+    const AssemblyObject* assemblyObject,
+    App::DocumentObject* joint,
+    const char* pName
+)
 {
     if (!joint) {
         return nullptr;

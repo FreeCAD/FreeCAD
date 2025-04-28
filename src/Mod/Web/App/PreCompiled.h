@@ -28,15 +28,15 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdexcept>
+# include <stdexcept>
 
 // STL
-#include <memory>
-#include <sstream>
+# include <memory>
+# include <sstream>
 
 // Qt
-#include <QCoreApplication>
-#include <QTcpSocket>
+# include <QCoreApplication>
+# include <QTcpSocket>
 
 #endif  //_PreComp_
 

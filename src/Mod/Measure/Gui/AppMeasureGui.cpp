@@ -21,7 +21,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
+# include <QApplication>
 #endif
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -110,7 +110,8 @@ PyMOD_INIT_FUNC(MeasureGui)
 
     // register preferences pages
     new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(
-        QT_TRANSLATE_NOOP("QObject", "Measure"));
+        QT_TRANSLATE_NOOP("QObject", "Measure")
+    );
 
     //    Q_INIT_RESOURCE(Measure);
 

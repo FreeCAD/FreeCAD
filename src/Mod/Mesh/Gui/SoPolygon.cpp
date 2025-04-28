@@ -22,23 +22,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <limits>
-#ifdef FC_OS_WIN32
-#include <Windows.h>
-#endif
-#ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
-#include <algorithm>
+# include <limits>
+# ifdef FC_OS_WIN32
+#  include <Windows.h>
+# endif
+# ifdef FC_OS_MACOSX
+#  include <OpenGL/gl.h>
+# else
+#  include <GL/gl.h>
+# endif
+# include <algorithm>
 
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/misc/SoState.h>
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/bundles/SoMaterialBundle.h>
+# include <Inventor/bundles/SoTextureCoordinateBundle.h>
+# include <Inventor/elements/SoCoordinateElement.h>
+# include <Inventor/elements/SoLazyElement.h>
+# include <Inventor/misc/SoState.h>
 #endif
 
 #include "SoPolygon.h"

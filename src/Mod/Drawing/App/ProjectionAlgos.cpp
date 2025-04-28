@@ -22,19 +22,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <sstream>
+# include <sstream>
 
-#include <BRepLib.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
+# include <BRepLib.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <HLRAlgo_Projector.hxx>
+# include <HLRBRep_Algo.hxx>
+# include <HLRBRep_HLRToShape.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pnt.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -99,14 +99,16 @@ void ProjectionAlgos::execute(void)
     HI = build3dCurves(shapes.IsoLineHCompound());  // isoparamtriques   invisibly
 }
 
-string ProjectionAlgos::getSVG(ExtractionType type,
-                               double tolerance,
-                               XmlAttributes V_style,
-                               XmlAttributes V0_style,
-                               XmlAttributes V1_style,
-                               XmlAttributes H_style,
-                               XmlAttributes H0_style,
-                               XmlAttributes H1_style)
+string ProjectionAlgos::getSVG(
+    ExtractionType type,
+    double tolerance,
+    XmlAttributes V_style,
+    XmlAttributes V0_style,
+    XmlAttributes V1_style,
+    XmlAttributes H_style,
+    XmlAttributes H0_style,
+    XmlAttributes H1_style
+)
 {
     stringstream result;
     SVGOutput output;

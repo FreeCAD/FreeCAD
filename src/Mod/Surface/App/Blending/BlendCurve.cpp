@@ -23,14 +23,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BSplCLib.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Precision.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#include <gp_Pnt.hxx>
-#include <math_Gauss.hxx>
-#include <math_Matrix.hxx>
+# include <BSplCLib.hxx>
+# include <Geom_BezierCurve.hxx>
+# include <Precision.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TColgp_Array1OfPnt.hxx>
+# include <gp_Pnt.hxx>
+# include <math_Gauss.hxx>
+# include <math_Matrix.hxx>
 #endif
 #include "Blending/BlendCurve.h"
 #include "Blending/BlendCurvePy.h"
@@ -90,13 +90,15 @@ Handle(Geom_BezierCurve) BlendCurve::compute()
         for (size_t i = 0; i < nb_pts; ++i) {
             math_Matrix bezier_eval(1, blendPoints[i].nbVectors(), 1, num_poles, 0.0);
             Standard_Integer first_non_zero;
-            BSplCLib::EvalBsplineBasis(blendPoints[i].nbVectors() - 1,
-                                       num_poles,
-                                       knots,
-                                       params(cons_idx),
-                                       first_non_zero,
-                                       bezier_eval,
-                                       Standard_False);
+            BSplCLib::EvalBsplineBasis(
+                blendPoints[i].nbVectors() - 1,
+                num_poles,
+                knots,
+                params(cons_idx),
+                first_non_zero,
+                bezier_eval,
+                Standard_False
+            );
             int idx2 = 1;
             for (int it2 = 0; it2 < blendPoints[i].nbVectors(); ++it2) {
                 OCCmatrix.SetRow(row_idx, bezier_eval.Row(idx2));

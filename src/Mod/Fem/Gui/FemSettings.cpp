@@ -32,8 +32,9 @@ using namespace FemGui;
 
 FemSettings::FemSettings()
 {
-    pGroup =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
+    pGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem"
+    );
 }
 
 void FemSettings::setPostAutoRecompute(bool on)

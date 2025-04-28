@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <qmessagebox.h>
+# include <qmessagebox.h>
 #endif
 
 #include <App/Document.h>

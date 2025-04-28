@@ -30,17 +30,17 @@
 #ifdef _PreComp_
 
 // standard
-#include <cmath>
+# include <cmath>
 
 // STL
-#include <algorithm>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <map>
+# include <sstream>
+# include <string>
+# include <vector>
 
 // OpenCasCade
-#include <Mod/Part/App/OpenCascadeAll.h>
+# include <Mod/Part/App/OpenCascadeAll.h>
 
 
 #endif  //_PreComp_

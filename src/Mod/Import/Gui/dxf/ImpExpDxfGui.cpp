@@ -22,33 +22,33 @@
 
 #include <FCConfig.h>
 #ifndef _PreComp_
-#include <Standard_Version.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
-#include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRep_Builder.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GeomAPI_Interpolate.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Elips.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
+# include <Standard_Version.hxx>
+# if OCC_VERSION_HEX < 0x070600
+#  include <BRepAdaptor_HCurve.hxx>
+# endif
+# include <Approx_Curve3d.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRep_Builder.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GeomAPI_Interpolate.hxx>
+# include <GeomAPI_PointsToBSpline.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <TColgp_Array1OfPnt.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <gp_Ax1.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
 #endif
 #include <regex>
 
@@ -131,7 +131,8 @@ int ImpExpDxfReadGui::GetDrawStyle() const
         // starts with dot : return dotted
         std::basic_regex("^dot", std::regex::icase),
         // dash & dot or center/centre/divide/phantom : return DashDot
-        std::basic_regex("dot.*dash|dash.*dot|^cent(er|re)|^divide|^phantom", std::regex::icase)};
+        std::basic_regex("dot.*dash|dash.*dot|^cent(er|re)|^divide|^phantom", std::regex::icase)
+    };
     // Some line type names can match several patterns, in particular dotdash can also match ^dot
     // and dashdot can match ^dash Rather than code the latter patterns to forbid subsequent "dash"
     // or "dot" so they are mutually exclusive, we just match the more specific pattern, which is

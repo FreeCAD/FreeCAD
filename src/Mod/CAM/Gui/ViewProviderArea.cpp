@@ -59,8 +59,7 @@ void ViewProviderArea::dragObject(App::DocumentObject* obj)
 {
     Path::FeatureArea* area = getObject<Path::FeatureArea>();
     std::vector<App::DocumentObject*> sources = area->Sources.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end();
-         ++it) {
+    for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
         if (*it == obj) {
             sources.erase(it);
             area->Sources.setValues(sources);
@@ -91,8 +90,8 @@ void ViewProviderArea::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
     if (prop->isDerivedFrom<App::PropertyLinkList>()) {
-        std::vector<App::DocumentObject*> pShapes =
-            static_cast<const App::PropertyLinkList*>(prop)->getValues();
+        std::vector<App::DocumentObject*> pShapes
+            = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end();
              ++it) {
             if (*it) {
@@ -107,8 +106,7 @@ bool ViewProviderArea::onDelete(const std::vector<std::string>&)
     // get the input shapes
     Path::FeatureArea* area = getObject<Path::FeatureArea>();
     std::vector<App::DocumentObject*> pShapes = area->Sources.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end();
-         ++it) {
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
         if (*it) {
             Gui::Application::Instance->showViewProvider(*it);
         }
@@ -175,7 +173,8 @@ void ViewProviderAreaView::updateData(const App::Property* prop)
     PartGui::ViewProviderPlaneParametric::updateData(prop);
     if (prop->isDerivedFrom<App::PropertyLink>()) {
         Gui::Application::Instance->hideViewProvider(
-            static_cast<const App::PropertyLink*>(prop)->getValue());
+            static_cast<const App::PropertyLink*>(prop)->getValue()
+        );
     }
 }
 

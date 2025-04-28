@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <sstream>
+# include <sstream>
 #endif
 
 #include "Sheet.h"
@@ -73,8 +73,10 @@ std::string Spreadsheet::rowName(int row)
 }
 
 
-void Spreadsheet::createRectangles(std::set<std::pair<int, int>>& cells,
-                                   std::map<std::pair<int, int>, std::pair<int, int>>& rectangles)
+void Spreadsheet::createRectangles(
+    std::set<std::pair<int, int>>& cells,
+    std::map<std::pair<int, int>, std::pair<int, int>>& rectangles
+)
 {
     while (!cells.empty()) {
         int row, col;

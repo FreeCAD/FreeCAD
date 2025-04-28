@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <array>
-#include <cmath>
-#include <limits>
-#include <numbers>
+# include <array>
+# include <cmath>
+# include <limits>
+# include <numbers>
 #endif
 
 #include <fmt/format.h>
@@ -43,11 +43,11 @@
 
 // suppress annoying warnings from generated source files
 #ifdef _MSC_VER
-#pragma warning(disable : 4003)
-#pragma warning(disable : 4018)
-#pragma warning(disable : 4065)
-#pragma warning(disable : 4273)
-#pragma warning(disable : 4335)  // disable MAC file format warning on VC
+# pragma warning(disable : 4003)
+# pragma warning(disable : 4018)
+# pragma warning(disable : 4065)
+# pragma warning(disable : 4273)
+# pragma warning(disable : 4335)  // disable MAC file format warning on VC
 #endif
 
 using namespace Base;
@@ -121,7 +121,8 @@ bool Quantity::operator<(const Quantity& that) const
 {
     if (this->myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
-            "Quantity::operator <(): quantities need to have same unit to compare");
+            "Quantity::operator <(): quantities need to have same unit to compare"
+        );
     }
 
     return (this->myValue < that.myValue);
@@ -131,7 +132,8 @@ bool Quantity::operator>(const Quantity& that) const
 {
     if (this->myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
-            "Quantity::operator >(): quantities need to have same unit to compare");
+            "Quantity::operator >(): quantities need to have same unit to compare"
+        );
     }
 
     return (this->myValue > that.myValue);
@@ -141,7 +143,8 @@ bool Quantity::operator<=(const Quantity& that) const
 {
     if (this->myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
-            "Quantity::operator <=(): quantities need to have same unit to compare");
+            "Quantity::operator <=(): quantities need to have same unit to compare"
+        );
     }
 
     return (this->myValue <= that.myValue);
@@ -151,7 +154,8 @@ bool Quantity::operator>=(const Quantity& that) const
 {
     if (this->myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
-            "Quantity::operator >=(): quantities need to have same unit to compare");
+            "Quantity::operator >=(): quantities need to have same unit to compare"
+        );
     }
 
     return (this->myValue >= that.myValue);
@@ -183,8 +187,10 @@ Quantity Quantity::pow(const Quantity& other) const
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     }
 
-    return Quantity(std::pow(this->myValue, other.myValue),
-                    this->myUnit.pow(static_cast<signed char>(other.myValue)));
+    return Quantity(
+        std::pow(this->myValue, other.myValue),
+        this->myUnit.pow(static_cast<signed char>(other.myValue))
+    );
 }
 
 Quantity Quantity::pow(double exp) const
@@ -242,8 +248,7 @@ std::string Quantity::getUserString(double& factor, std::string& unitString) con
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
 }
 
-std::string
-Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
+std::string Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
 {
     return schema->schemaTranslate(*this, factor, unitString);
 }
@@ -368,15 +373,12 @@ const Quantity Quantity::GigaPascal(1e+6, Unit(-1, 1, -2));
 const Quantity Quantity::MilliBar(0.1, Unit(-1, 1, -2));
 const Quantity Quantity::Bar(100.0, Unit(-1, 1, -2));  // 1 bar = 100 kPa
 
-const Quantity
-    Quantity::Torr(101.325 / 760.0,
-                   Unit(-1, 1, -2));  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
-const Quantity
-    Quantity::mTorr(0.101325 / 760.0,
-                    Unit(-1, 1, -2));  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
-const Quantity
-    Quantity::yTorr(0.000101325 / 760.0,
-                    Unit(-1, 1, -2));  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::Torr(101.325 / 760.0, Unit(-1, 1, -2));    // Torr is a defined fraction of
+                                                                    // Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::mTorr(0.101325 / 760.0, Unit(-1, 1, -2));  // Torr is a defined fraction of
+                                                                    // Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::yTorr(0.000101325 / 760.0, Unit(-1, 1, -2));  // Torr is a defined fraction
+                                                                       // of Pascal (kg/m/s^2 or N/m^2)
 
 const Quantity Quantity::PSI(6.894744825494, Unit(-1, 1, -2));   // pounds/in^2
 const Quantity Quantity::KSI(6894.744825494, Unit(-1, 1, -2));   // 1000 x pounds/in^2
@@ -441,9 +443,8 @@ const Quantity Quantity::MPH(447.04, Unit(1, 0, -1));   // Mile/h
 
 const Quantity Quantity::AngMinute(1.0 / 60.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));    // angular minute
 const Quantity Quantity::AngSecond(1.0 / 3600.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // angular second
-const Quantity
-    Quantity::Degree(1.0,
-                     Unit(0, 0, 0, 0, 0, 0, 0, 1));  // degree         (internal standard angle)
+const Quantity Quantity::Degree(1.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // degree         (internal
+                                                                     // standard angle)
 const Quantity Quantity::Radian(180 / std::numbers::pi, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // radian
 const Quantity Quantity::Gon(360.0 / 400.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));              // gon
 
@@ -489,8 +490,8 @@ double num_change(char* yytext, char dez_delim, char grp_delim)
 // NOLINTEND
 
 #if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-noreturn"
 #endif
 
 // error func
@@ -500,18 +501,18 @@ void Quantity_yyerror(const char* errorinfo)
 }
 
 #if defined(__clang__)
-#pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #endif
 
 
 #if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wsign-compare"
-#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wsign-compare"
+# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #elif defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsign-compare"
-#pragma GCC diagnostic ignored "-Wfree-nonheap-object"
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wsign-compare"
+# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
 #endif
 
 namespace QuantityParser
@@ -530,7 +531,7 @@ int QuantityLexer();
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in Quantity.l
 // NOLINTNEXTLINE
-#include "Quantity.lex.c"
+# include "Quantity.lex.c"
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 class StringBufferCleaner
@@ -557,16 +558,15 @@ private:
 }  // namespace QuantityParser
 
 #if defined(__clang__)
-#pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #elif defined(__GNUC__)
-#pragma GCC diagnostic pop
+# pragma GCC diagnostic pop
 #endif
 
 Quantity Quantity::parse(const std::string& string)
 {
     // parse from buffer
-    QuantityParser::YY_BUFFER_STATE my_string_buffer =
-        QuantityParser::yy_scan_string(string.c_str());
+    QuantityParser::YY_BUFFER_STATE my_string_buffer = QuantityParser::yy_scan_string(string.c_str());
     QuantityParser::StringBufferCleaner cleaner(my_string_buffer);
     // set the global return variables
     QuantResult = Quantity(std::numeric_limits<double>::min());

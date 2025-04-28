@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QLineEdit>
-#include <QMenu>
+# include <QLineEdit>
+# include <QMenu>
 #endif
 
 #include <fmt/printf.h>
@@ -79,21 +79,25 @@ void pagesize(string& page_template, int dims[4], int block[4])
     try {
         while (getline(file, line)) {
             if (line.find("<!-- Working space") != string::npos) {
-                (void)sscanf(line.c_str(),
-                             "%*s %*s %*s %d %d %d %d",
-                             &dims[0],
-                             &dims[1],
-                             &dims[2],
-                             &dims[3]);  // eg "    <!-- Working space 10 10 410 287 -->"
+                (void)sscanf(
+                    line.c_str(),
+                    "%*s %*s %*s %d %d %d %d",
+                    &dims[0],
+                    &dims[1],
+                    &dims[2],
+                    &dims[3]
+                );  // eg "    <!-- Working space 10 10 410 287 -->"
                 getline(file, line);
 
                 if (line.find("<!-- Title block") != string::npos) {
-                    (void)sscanf(line.c_str(),
-                                 "%*s %*s %*s %d %d %d %d",
-                                 &t0,
-                                 &t1,
-                                 &t2,
-                                 &t3);  // eg "    <!-- Working space 10 10 410 287 -->"
+                    (void)sscanf(
+                        line.c_str(),
+                        "%*s %*s %*s %d %d %d %d",
+                        &t0,
+                        &t1,
+                        &t2,
+                        &t3
+                    );  // eg "    <!-- Working space 10 10 410 287 -->"
                 }
 
                 break;
@@ -136,10 +140,12 @@ void pagesize(string& page_template, int dims[4], int block[4])
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-orthoview::orthoview(App::Document* parent,
-                     App::DocumentObject* part,
-                     App::DocumentObject* page,
-                     Base::BoundBox3d* partbox)
+orthoview::orthoview(
+    App::Document* parent,
+    App::DocumentObject* part,
+    App::DocumentObject* page,
+    Base::BoundBox3d* partbox
+)
 {
     parent_doc = parent;
     myname = parent_doc->getUniqueObjectName("Ortho");
@@ -305,10 +311,12 @@ OrthoViews::OrthoViews(App::Document* doc, const char* pagename, const char* par
     scale = 0;
     num_gaps_x = num_gaps_y = 0;
 
-    this->connectDocumentDeletedObject =
-        doc->signalDeletedObject.connect(boost::bind(&OrthoViews::slotDeletedObject, this, bp::_1));
+    this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(
+        boost::bind(&OrthoViews::slotDeletedObject, this, bp::_1)
+    );
     this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(
-        boost::bind(&OrthoViews::slotDeletedDocument, this, bp::_1));
+        boost::bind(&OrthoViews::slotDeletedDocument, this, bp::_1)
+    );
 }
 
 OrthoViews::~OrthoViews()
@@ -438,9 +446,9 @@ void OrthoViews::choose_page()  // chooses which bit of page space to use depend
                                         //                      side of (0, 0) from title block
                 v_x_r = view_x / layout_width;  // make relative
                 v_y_r = view_y / layout_height;
-                if (v_x_r > rel_space_x
-                    && v_y_r > rel_space_y) {  // ## so that can use > in this condition regardless
-                                               // of position of block
+                if (v_x_r > rel_space_x && v_y_r > rel_space_y) {  // ## so that can use > in this
+                                                                   // condition regardless of
+                                                                   // position of block
                     interferes = true;
                 }
             }
@@ -479,12 +487,13 @@ void OrthoViews::calc_scale()  // compute scale required to meet minimum space r
 
     float valid_scales[2][8] = {
         {1, 1.25, 2, 2.5, 3.75, 5, 7.5, 10},  // equate to 1:10, 1:8, 1:5, 1:4, 3:8, 1:2, 3:4, 1:1
-        {1, 1.5, 2, 3, 4, 5, 8, 10}};         // equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
+        {1, 1.5, 2, 3, 4, 5, 8, 10}
+    };  // equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
 
     int i = 7;
-    while (valid_scales[(exponent >= 0)][i]
-           > working_scale) {  // choose closest value smaller than 'a' from list.
-        i -= 1;                // choosing top list if exponent -ve, bottom list for +ve exponent
+    while (valid_scales[(exponent >= 0)][i] > working_scale
+    ) {          // choose closest value smaller than 'a' from list.
+        i -= 1;  // choosing top list if exponent -ve, bottom list for +ve exponent
     }
 
     scale = valid_scales[(exponent >= 0)][i]
@@ -573,19 +582,21 @@ void OrthoViews::set_smooth(bool state)
     parent_doc->recompute();
 }
 
-void OrthoViews::set_primary(gp_Dir facing,
-                             gp_Dir right)  // set the orientation of the primary view
+void OrthoViews::set_primary(
+    gp_Dir facing,
+    gp_Dir right
+)  // set the orientation of the primary view
 {
     primary.SetDirection(facing);
     primary.SetXDirection(right);
     gp_Dir up = primary.YDirection();
 
     // compute dimensions of part when orientated according to primary view
-    width =
-        abs(right.X() * bbox.LengthX() + right.Y() * bbox.LengthY() + right.Z() * bbox.LengthZ());
+    width = abs(right.X() * bbox.LengthX() + right.Y() * bbox.LengthY() + right.Z() * bbox.LengthZ());
     height = abs(up.X() * bbox.LengthX() + up.Y() * bbox.LengthY() + up.Z() * bbox.LengthZ());
-    depth = abs(facing.X() * bbox.LengthX() + facing.Y() * bbox.LengthY()
-                + facing.Z() * bbox.LengthZ());
+    depth = abs(
+        facing.X() * bbox.LengthX() + facing.Y() * bbox.LengthY() + facing.Z() * bbox.LengthZ()
+    );
 
     if (views.size() == 0) {
         add_view(0, 0);
@@ -743,9 +754,11 @@ int OrthoViews::index(int rel_x, int rel_y)  // index in vector of view, -1 if d
     return index;
 }
 
-void OrthoViews::set_Axo_scale(int rel_x,
-                               int rel_y,
-                               float axo_scale)  // set an axo scale independent of ortho ones
+void OrthoViews::set_Axo_scale(
+    int rel_x,
+    int rel_y,
+    float axo_scale
+)  // set an axo scale independent of ortho ones
 {
     int num = index(rel_x, rel_y);
 
@@ -757,13 +770,15 @@ void OrthoViews::set_Axo_scale(int rel_x,
     }
 }
 
-void OrthoViews::set_Axo(int rel_x,
-                         int rel_y,
-                         gp_Dir up,
-                         gp_Dir right,
-                         bool away,
-                         int axo,
-                         bool tri)  // set custom axonometric view
+void OrthoViews::set_Axo(
+    int rel_x,
+    int rel_y,
+    gp_Dir up,
+    gp_Dir right,
+    bool away,
+    int axo,
+    bool tri
+)  // set custom axonometric view
 {
     double rotations[2];
 
@@ -864,14 +879,16 @@ void OrthoViews::set_Ortho(int rel_x, int rel_y)  // return view to orthographic
     }
 }
 
-bool OrthoViews::get_Axo(int rel_x,
-                         int rel_y,
-                         int& axo,
-                         gp_Dir& up,
-                         gp_Dir& right,
-                         bool& away,
-                         bool& tri,
-                         float& axo_scale)
+bool OrthoViews::get_Axo(
+    int rel_x,
+    int rel_y,
+    int& axo,
+    gp_Dir& up,
+    gp_Dir& right,
+    bool& away,
+    bool& tri,
+    float& axo_scale
+)
 {
     int num = index(rel_x, rel_y);
 
@@ -927,13 +944,15 @@ TaskOrthoViews::TaskOrthoViews(QWidget* parent)
 {
     Q_UNUSED(parent);
     ui->setupUi(this);
-    std::vector<App::DocumentObject*> obj =
-        Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(
+        Part::Feature::getClassTypeId()
+    );
     const char* part = obj.front()->getNameInDocument();
 
     App::Document* doc = App::GetApplication().getActiveDocument();
-    std::vector<App::DocumentObject*> pages =
-        Gui::Selection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    std::vector<App::DocumentObject*> pages = Gui::Selection().getObjectsOfType(
+        Drawing::FeaturePage::getClassTypeId()
+    );
     if (pages.empty()) {
         pages = doc->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
     }
@@ -965,14 +984,16 @@ TaskOrthoViews::TaskOrthoViews(QWidget* parent)
 
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
-            if ((abs(i - 2) + abs(j - 2))
-                < 3)  // if i,j combination corresponds to valid check box, then proceed with:
+            if ((abs(i - 2) + abs(j - 2)) < 3)  // if i,j combination corresponds to valid check
+                                                // box, then proceed with:
             {
                 connect(c_boxes[i][j], SIGNAL(toggled(bool)), this, SLOT(cb_toggled(bool)));
-                connect(c_boxes[i][j],
-                        SIGNAL(customContextMenuRequested(const QPoint&)),
-                        this,
-                        SLOT(ShowContextMenu(const QPoint&)));
+                connect(
+                    c_boxes[i][j],
+                    SIGNAL(customContextMenuRequested(const QPoint&)),
+                    this,
+                    SLOT(ShowContextMenu(const QPoint&))
+                );
             }
         }
     }
@@ -985,10 +1006,7 @@ TaskOrthoViews::TaskOrthoViews(QWidget* parent)
     inputs[4] = ui->spacing_v_4;
 
     for (int i = 0; i < 5; i++) {
-        connect(inputs[i],
-                SIGNAL(textEdited(const QString&)),
-                this,
-                SLOT(data_entered(const QString&)));
+        connect(inputs[i], SIGNAL(textEdited(const QString&)), this, SLOT(data_entered(const QString&)));
         connect(inputs[i], SIGNAL(returnPressed()), this, SLOT(text_return()));
     }
 
@@ -1005,10 +1023,7 @@ TaskOrthoViews::TaskOrthoViews(QWidget* parent)
     connect(ui->axoRight, SIGNAL(activated(int)), this, SLOT(change_axo(int)));
     connect(ui->vert_flip, SIGNAL(clicked()), this, SLOT(axo_button()));
     connect(ui->tri_flip, SIGNAL(clicked()), this, SLOT(axo_button()));
-    connect(ui->axoScale,
-            SIGNAL(textEdited(const QString&)),
-            this,
-            SLOT(axo_scale(const QString&)));
+    connect(ui->axoScale, SIGNAL(textEdited(const QString&)), this, SLOT(axo_scale(const QString&)));
     connect(ui->axoScale, SIGNAL(returnPressed()), this, SLOT(text_return()));
 
     ui->tabWidget->setTabEnabled(1, false);
@@ -1328,13 +1343,15 @@ void TaskOrthoViews::change_axo(int /*p*/)
     gp_Dir up = gp_Dir(u_vec[0], u_vec[1], u_vec[2]);
     gp_Dir right = gp_Dir(r_vec[0], r_vec[1], r_vec[2]);
 
-    orthos->set_Axo(axo_r_x,
-                    -axo_r_y,
-                    up,
-                    right,
-                    ui->vert_flip->isChecked(),
-                    ui->axoProj->currentIndex(),
-                    ui->tri_flip->isChecked());
+    orthos->set_Axo(
+        axo_r_x,
+        -axo_r_y,
+        up,
+        right,
+        ui->vert_flip->isChecked(),
+        ui->axoProj->currentIndex(),
+        ui->tri_flip->isChecked()
+    );
 
     if (ui->axoProj->currentIndex() == 2) {
         ui->tri_flip->setEnabled(true);

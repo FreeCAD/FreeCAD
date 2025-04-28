@@ -44,14 +44,14 @@ namespace SketcherGui
 
 class DrawSketchHandlerRotate;
 
-using DSHRotateController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerRotate,
-                                      StateMachines::ThreeSeekEnd,
-                                      /*PAutoConstraintSize =*/0,
-                                      /*OnViewParametersT =*/OnViewParameters<4>,
-                                      /*WidgetParametersT =*/WidgetParameters<1>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+using DSHRotateController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerRotate,
+    StateMachines::ThreeSeekEnd,
+    /*PAutoConstraintSize =*/0,
+    /*OnViewParametersT =*/OnViewParameters<4>,
+    /*WidgetParametersT =*/WidgetParameters<1>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 using DSHRotateControllerBase = DSHRotateController::ControllerBase;
 
@@ -130,16 +130,21 @@ private:
         }
         catch (const Base::Exception& e) {
             e.ReportException();
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to rotate"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to rotate")
+            );
 
             Gui::Command::abortCommand();
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP(
-                       "Notifications",
-                       "Tool execution aborted") "\n")  // This prevents constraints from being
-                                                        // applied on non existing geometry
+            THROWM(
+                Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Tool execution aborted"
+                ) "\n"
+            )  // This prevents constraints from being
+               // applied on non existing geometry
         }
     }
 
@@ -220,9 +225,7 @@ private:
         }
         stream << listOfGeoIds[listOfGeoIds.size() - 1];
         try {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "delGeometries([%s])",
-                                  stream.str().c_str());
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometries([%s])", stream.str().c_str());
         }
         catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
@@ -237,9 +240,11 @@ private:
 
         if (state() == SelectMode::SeekSecond) {
             if (length > Precision::Confusion()) {
-                addLineToShapeGeometry(toVector3d(centerPoint),
-                                       toVector3d(startPoint),
-                                       isConstructionMode());
+                addLineToShapeGeometry(
+                    toVector3d(centerPoint),
+                    toVector3d(startPoint),
+                    isConstructionMode()
+                );
             }
             return;
         }
@@ -270,45 +275,53 @@ private:
                 else if (isArcOfCircle(*geo)) {
                     auto* arcOfCircle = static_cast<Part::GeomArcOfCircle*>(geo);  // NOLINT
                     arcOfCircle->setCenter(
-                        getRotatedPoint(arcOfCircle->getCenter(), centerPoint, angle));
+                        getRotatedPoint(arcOfCircle->getCenter(), centerPoint, angle)
+                    );
                     double arcStartAngle, arcEndAngle;  // NOLINT
                     arcOfCircle->getRange(arcStartAngle, arcEndAngle, /*emulateCCWXY=*/true);
-                    arcOfCircle->setRange(arcStartAngle + angle,
-                                          arcEndAngle + angle,
-                                          /*emulateCCWXY=*/true);
+                    arcOfCircle->setRange(
+                        arcStartAngle + angle,
+                        arcEndAngle + angle,
+                        /*emulateCCWXY=*/true
+                    );
                 }
                 else if (isLineSegment(*geo)) {
                     auto* line = static_cast<Part::GeomLineSegment*>(geo);  // NOLINT
-                    line->setPoints(getRotatedPoint(line->getStartPoint(), centerPoint, angle),
-                                    getRotatedPoint(line->getEndPoint(), centerPoint, angle));
+                    line->setPoints(
+                        getRotatedPoint(line->getStartPoint(), centerPoint, angle),
+                        getRotatedPoint(line->getEndPoint(), centerPoint, angle)
+                    );
                 }
                 else if (isEllipse(*geo)) {
                     auto* ellipse = static_cast<Part::GeomEllipse*>(geo);  // NOLINT
                     ellipse->setCenter(getRotatedPoint(ellipse->getCenter(), centerPoint, angle));
                     ellipse->setMajorAxisDir(
-                        getRotatedPoint(ellipse->getMajorAxisDir(), Base::Vector2d(0., 0.), angle));
+                        getRotatedPoint(ellipse->getMajorAxisDir(), Base::Vector2d(0., 0.), angle)
+                    );
                 }
                 else if (isArcOfEllipse(*geo)) {
                     auto* arcOfEllipse = static_cast<Part::GeomArcOfEllipse*>(geo);  // NOLINT
                     arcOfEllipse->setCenter(
-                        getRotatedPoint(arcOfEllipse->getCenter(), centerPoint, angle));
-                    arcOfEllipse->setMajorAxisDir(getRotatedPoint(arcOfEllipse->getMajorAxisDir(),
-                                                                  Base::Vector2d(0., 0.),
-                                                                  angle));
+                        getRotatedPoint(arcOfEllipse->getCenter(), centerPoint, angle)
+                    );
+                    arcOfEllipse->setMajorAxisDir(
+                        getRotatedPoint(arcOfEllipse->getMajorAxisDir(), Base::Vector2d(0., 0.), angle)
+                    );
                 }
                 else if (isArcOfHyperbola(*geo)) {
                     auto* arcOfHyperbola = static_cast<Part::GeomArcOfHyperbola*>(geo);  // NOLINT
                     arcOfHyperbola->setCenter(
-                        getRotatedPoint(arcOfHyperbola->getCenter(), centerPoint, angle));
+                        getRotatedPoint(arcOfHyperbola->getCenter(), centerPoint, angle)
+                    );
                     arcOfHyperbola->setMajorAxisDir(
-                        getRotatedPoint(arcOfHyperbola->getMajorAxisDir(),
-                                        Base::Vector2d(0., 0.),
-                                        angle));
+                        getRotatedPoint(arcOfHyperbola->getMajorAxisDir(), Base::Vector2d(0., 0.), angle)
+                    );
                 }
                 else if (isArcOfParabola(*geo)) {
                     auto* arcOfParabola = static_cast<Part::GeomArcOfParabola*>(geo);  // NOLINT
                     arcOfParabola->setCenter(
-                        getRotatedPoint(arcOfParabola->getCenter(), centerPoint, angle));
+                        getRotatedPoint(arcOfParabola->getCenter(), centerPoint, angle)
+                    );
                     arcOfParabola->setAngleXU(arcOfParabola->getAngleXU() + angle);
                 }
                 else if (isBSplineCurve(*geo)) {
@@ -365,15 +378,13 @@ private:
                     }
                     else if ((cstr->Type == Coincident || cstr->Type == Tangent
                               || cstr->Type == Symmetric || cstr->Type == Perpendicular
-                              || cstr->Type == Parallel || cstr->Type == Equal
-                              || cstr->Type == Angle || cstr->Type == PointOnObject
-                              || cstr->Type == InternalAlignment)
+                              || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
+                              || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
                              && firstIndex >= 0 && secondIndex >= 0
                              && thirdIndex == GeoEnum::GeoUndef) {
                         newConstr->Second = secondIndexi;
                     }
-                    else if ((cstr->Type == Radius || cstr->Type == Diameter
-                              || cstr->Type == Weight)
+                    else if ((cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
                              && firstIndex >= 0) {
                         if (deleteOriginal || !cloneConstraints) {
                             newConstr->setValue(cstr->getValue());
@@ -438,8 +449,11 @@ private:
         }
     }
 
-    Base::Vector3d
-    getRotatedPoint(Base::Vector3d&& pointToRotate, const Base::Vector2d& centerPoint, double angle)
+    Base::Vector3d getRotatedPoint(
+        Base::Vector3d&& pointToRotate,
+        const Base::Vector2d& centerPoint,
+        double angle
+    )
     {
         Base::Vector2d pointToRotate2D = Base::Vector2d(pointToRotate.x, pointToRotate.y);
 
@@ -498,30 +512,37 @@ void DSHRotateController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_offset", "Apply equal constraints"));
+            QApplication::translate("TaskSketcherTool_c1_offset", "Apply equal constraints")
+        );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
             QStringLiteral("<p>")
-                + QApplication::translate("TaskSketcherTool_c1_offset",
-                                          "If this option is selected dimensional constraints are "
-                                          "excluded from the operation.\n"
-                                          "Instead equal constraints are applied between the "
-                                          "original objects and their copies.")
-                + QStringLiteral("</p>"));
+                + QApplication::translate(
+                    "TaskSketcherTool_c1_offset",
+                    "If this option is selected dimensional constraints are "
+                    "excluded from the operation.\n"
+                    "Instead equal constraints are applied between the "
+                    "original objects and their copies."
+                )
+                + QStringLiteral("</p>")
+        );
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
     onViewParameters[OnViewParameter::Third]->setLabelType(
         Gui::SoDatumLabel::ANGLE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
     onViewParameters[OnViewParameter::Fourth]->setLabelType(
         Gui::SoDatumLabel::ANGLE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p4_rotate", "Copies (+'U'/ -'J')"));
+        QApplication::translate("TaskSketcherTool_p4_rotate", "Copies (+'U'/ -'J')")
+    );
     toolWidget->setParameter(OnViewParameter::First, 0.0);
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
     toolWidget->configureParameterMin(OnViewParameter::First, 0.0);     // NOLINT
@@ -566,8 +587,7 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
         case SelectMode::SeekSecond: {
             if (onViewParameters[OnViewParameter::Third]->isSet) {
 
-                double arcAngle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Third]->getValue());
+                double arcAngle = Base::toRadians(onViewParameters[OnViewParameter::Third]->getValue());
                 if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                     return;
@@ -579,8 +599,9 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
         case SelectMode::SeekThird: {
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
 
-                double arcAngle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+                double arcAngle = Base::toRadians(
+                    onViewParameters[OnViewParameter::Fourth]->getValue()
+                );
                 if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
                     return;
@@ -611,10 +632,14 @@ void DSHRotateController::adaptParameters(Base::Vector2d onSketchPos)
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
             onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
             onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
+            onViewParameters[OnViewParameter::First]->setPoints(
+                Base::Vector3d(),
+                toVector3d(onSketchPos)
+            );
+            onViewParameters[OnViewParameter::Second]->setPoints(
+                Base::Vector3d(),
+                toVector3d(onSketchPos)
+            );
         } break;
         case SelectMode::SeekSecond: {
             double range = Base::toDegrees(handler->startAngle);
@@ -658,8 +683,9 @@ void DSHRotateController::doChangeDrawSketchHandlerMode()
         } break;
         case SelectMode::SeekSecond: {
             if (onViewParameters[OnViewParameter::Third]->isSet) {
-                handler->totalAngle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Third]->getValue());
+                handler->totalAngle = Base::toRadians(
+                    onViewParameters[OnViewParameter::Third]->getValue()
+                );
 
                 handler->setState(SelectMode::End);
             }

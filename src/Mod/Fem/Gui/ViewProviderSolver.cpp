@@ -23,9 +23,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QApplication>
-#include <QMessageBox>
-#include <QTextStream>
+# include <QApplication>
+# include <QMessageBox>
+# include <QTextStream>
 #endif
 
 #include <Gui/Document.h>

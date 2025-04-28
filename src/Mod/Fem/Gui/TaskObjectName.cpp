@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QString>
+# include <QString>
 #endif
 
 #include <App/DocumentObject.h>
@@ -49,10 +49,7 @@ TaskObjectName::TaskObjectName(App::DocumentObject* pcObject, QWidget* parent)
 
     this->groupLayout()->addWidget(proxy);
 
-    QObject::connect(ui->lineEdit_ObjectName,
-                     &QLineEdit::textChanged,
-                     this,
-                     &TaskObjectName::TextChanged);
+    QObject::connect(ui->lineEdit_ObjectName, &QLineEdit::textChanged, this, &TaskObjectName::TextChanged);
 
     if (strcmp(pcObject->Label.getValue(), "") != 0) {
         ui->lineEdit_ObjectName->setText(QString::fromUtf8(pcObject->Label.getValue()));

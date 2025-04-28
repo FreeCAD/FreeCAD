@@ -24,17 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QFile>
-#include <QFileIconProvider>
-#include <QImageReader>
-#include <QPainter>
-#include <QStyleOptionViewItem>
-#include <QLabel>
-#include <QModelIndex>
-#include <QVBoxLayout>
-#include <QApplication>
-#include <QPushButton>
-#include <QString>
+# include <QFile>
+# include <QFileIconProvider>
+# include <QImageReader>
+# include <QPainter>
+# include <QStyleOptionViewItem>
+# include <QLabel>
+# include <QModelIndex>
+# include <QVBoxLayout>
+# include <QApplication>
+# include <QPushButton>
+# include <QString>
 #endif
 
 #include "FileCardDelegate.h"
@@ -48,13 +48,16 @@ FileCardDelegate::FileCardDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
+        "User parameter:BaseApp/Preferences/Mod/Start"
+    );
     setObjectName(QStringLiteral("thumbnailWidget"));
 }
 
-void FileCardDelegate::paint(QPainter* painter,
-                             const QStyleOptionViewItem& option,
-                             const QModelIndex& index) const
+void FileCardDelegate::paint(
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     painter->save();
     // Step 1: Styling
@@ -75,8 +78,8 @@ void FileCardDelegate::paint(QPainter* painter,
     qApp->style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter, &styleButton);
 
     // Step 2: Fetch required data
-    auto thumbnailSize =
-        static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
+    auto thumbnailSize = static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128)
+    );  // NOLINT
     auto baseName = index.data(static_cast<int>(DisplayedFilesModelRoles::baseName)).toString();
     auto elidedName = painter->fontMetrics().elidedText(baseName, Qt::ElideRight, thumbnailSize);
     auto size = index.data(static_cast<int>(DisplayedFilesModelRoles::size)).toString();
@@ -91,24 +94,27 @@ void FileCardDelegate::paint(QPainter* painter,
         pixmap = generateThumbnail(path);
     }
 
-    QPixmap scaledPixmap = pixmap.scaled(QSize(thumbnailSize, thumbnailSize),
-                                         Qt::KeepAspectRatio,
-                                         Qt::SmoothTransformation);
+    QPixmap scaledPixmap = pixmap.scaled(
+        QSize(thumbnailSize, thumbnailSize),
+        Qt::KeepAspectRatio,
+        Qt::SmoothTransformation
+    );
 
     // Step 4: Positioning
-    QRect thumbnailRect(option.rect.x() + margin,
-                        option.rect.y() + margin,
-                        thumbnailSize,
-                        thumbnailSize);
-    QRect textRect(option.rect.x() + margin,
-                   thumbnailRect.bottom() + margin,
-                   thumbnailSize,
-                   painter->fontMetrics().lineSpacing());
+    QRect thumbnailRect(option.rect.x() + margin, option.rect.y() + margin, thumbnailSize, thumbnailSize);
+    QRect textRect(
+        option.rect.x() + margin,
+        thumbnailRect.bottom() + margin,
+        thumbnailSize,
+        painter->fontMetrics().lineSpacing()
+    );
 
-    QRect sizeRect(option.rect.x() + margin,
-                   textRect.bottom() + textspacing,
-                   thumbnailSize,
-                   painter->fontMetrics().lineSpacing() + margin);
+    QRect sizeRect(
+        option.rect.x() + margin,
+        textRect.bottom() + textspacing,
+        thumbnailSize,
+        painter->fontMetrics().lineSpacing() + margin
+    );
 
     // Step 5: Draw
     painter->drawPixmap(thumbnailRect, scaledPixmap);
@@ -137,17 +143,19 @@ namespace
 {
 QPixmap pixmapToSizedQImage(const QImage& pixmap, int size)
 {
-    return QPixmap::fromImage(pixmap).scaled(size,
-                                             size,
-                                             Qt::AspectRatioMode::KeepAspectRatio,
-                                             Qt::TransformationMode::SmoothTransformation);
+    return QPixmap::fromImage(pixmap).scaled(
+        size,
+        size,
+        Qt::AspectRatioMode::KeepAspectRatio,
+        Qt::TransformationMode::SmoothTransformation
+    );
 }
 }  // namespace
 
 QPixmap FileCardDelegate::generateThumbnail(const QString& path) const
 {
-    auto thumbnailSize =
-        static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
+    auto thumbnailSize = static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128)
+    );  // NOLINT
     if (path.endsWith(QLatin1String(".fcstd"), Qt::CaseSensitivity::CaseInsensitive)) {
         // This is a fallback, the model will have pulled the thumbnail out of the FCStd file if it
         // existed.

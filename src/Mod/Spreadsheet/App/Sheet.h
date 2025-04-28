@@ -24,8 +24,8 @@
 #define SRC_MOD_SPREADSHEET_APP_SHEET_H_
 
 #ifdef signals
-#undef signals
-#define signals signals
+# undef signals
+# define signals signals
 #endif
 
 #include <map>
@@ -85,17 +85,21 @@ public:
         return "SpreadsheetGui::ViewProviderSheet";
     }
 
-    bool importFromFile(const std::string& filename,
-                        char delimiter = '\t',
-                        char quoteChar = '\0',
-                        char escapeChar = '\\');
+    bool importFromFile(
+        const std::string& filename,
+        char delimiter = '\t',
+        char quoteChar = '\0',
+        char escapeChar = '\\'
+    );
 
     bool getCharsFromPrefs(char& delimiter, char& quote, char& escape, std::string& errMsg);
 
-    bool exportToFile(const std::string& filename,
-                      char delimiter = '\t',
-                      char quoteChar = '\0',
-                      char escapeChar = '\\') const;
+    bool exportToFile(
+        const std::string& filename,
+        char delimiter = '\t',
+        char quoteChar = '\0',
+        char escapeChar = '\\'
+    ) const;
 
     bool mergeCells(const App::Range& range);
 
@@ -115,10 +119,12 @@ public:
     };
     unsigned getCellBindingBorder(App::CellAddress address) const;
 
-    PropertySheet::BindingType getCellBinding(App::Range& range,
-                                              App::ExpressionPtr* pStart = nullptr,
-                                              App::ExpressionPtr* pEnd = nullptr,
-                                              App::ObjectIdentifier* pTarget = nullptr) const;
+    PropertySheet::BindingType getCellBinding(
+        App::Range& range,
+        App::ExpressionPtr* pStart = nullptr,
+        App::ExpressionPtr* pEnd = nullptr,
+        App::ObjectIdentifier* pTarget = nullptr
+    ) const;
 
     void setCell(const char* address, const char* value);
 
@@ -190,8 +196,7 @@ public:
 
     App::Property* getDynamicPropertyByName(const char* name) const override;
 
-    void
-    getPropertyNamedList(std::vector<std::pair<const char*, App::Property*>>& List) const override;
+    void getPropertyNamedList(std::vector<std::pair<const char*, App::Property*>>& List) const override;
 
     /// See PropertyContainer::visitProperties for semantics
     void visitProperties(const std::function<void(App::Property*)>& visitor) const override;
@@ -235,7 +240,8 @@ public:
     void observeDocument(App::Document* document);
 
     void renameObjectIdentifiers(
-        const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths) override;
+        const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths
+    ) override;
 
     void setCopyOrCutRanges(const std::vector<App::Range>& ranges, bool copy = true);
     const std::vector<App::Range>& getCopyOrCutRange(bool copy = true) const;

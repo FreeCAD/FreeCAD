@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QMenu>
-#include <QTimer>
+# include <QMenu>
+# include <QTimer>
 #endif
 
 #include <App/DocumentObject.h>

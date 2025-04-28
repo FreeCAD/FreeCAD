@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoDrawStyle.h>
 #endif
 
 #include <Mod/Fem/App/FemPostFilter.h>
@@ -62,9 +62,7 @@ void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
 // data at point filter
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAtPoint, FemGui::ViewProviderFemPostObject)
 
-App::PropertyFloatConstraint::Constraints ViewProviderFemPostDataAtPoint::sizeRange = {1.0,
-                                                                                       64.0,
-                                                                                       1.0};
+App::PropertyFloatConstraint::Constraints ViewProviderFemPostDataAtPoint::sizeRange = {1.0, 64.0, 1.0};
 
 ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint()
 {
@@ -124,7 +122,8 @@ void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg)
     // add the function box
     assert(dlg->getView() == this);
     dlg->appendBox(
-        new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function));
+        new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function)
+    );
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
@@ -166,7 +165,8 @@ void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
     // add the function box
     assert(dlg->getView() == this);
     dlg->appendBox(
-        new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function));
+        new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function)
+    );
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);

@@ -132,10 +132,12 @@ public:
      * assertion is raised if this happens. The ownership needs to be specified on the GeoListFacade
      * objects themselves (setOwner method).
      */
-    static GeoListModel<T>
-    getGeoListModel(std::vector<T>&& geometrylist, int intgeocount, bool ownerT = false);
-    static const GeoListModel<T> getGeoListModel(const std::vector<T>& geometrylist,
-                                                 int intgeocount);
+    static GeoListModel<T> getGeoListModel(
+        std::vector<T>&& geometrylist,
+        int intgeocount,
+        bool ownerT = false
+    );
+    static const GeoListModel<T> getGeoListModel(const std::vector<T>& geometrylist, int intgeocount);
 
 
     /** @brief
@@ -171,8 +173,7 @@ public:
      *
      * @param index: the index of the list of geometry in geomlist format.
      */
-    static const Part::Geometry* getGeometryFromGeoId(const std::vector<T>& geometrylist,
-                                                      int geoId);
+    static const Part::Geometry* getGeometryFromGeoId(const std::vector<T>& geometrylist, int geoId);
 
     /** @brief returns a geometry facade
      * @warning If the underlying model of the list is a naked pointed (Part::Geometry *), the
@@ -181,8 +182,10 @@ public:
      * This is not a problem when the model of the list is a
      * std::unique_ptr<Sketcher::GeometryFacade>, because the lifetime is tied to the model itself.
      */
-    static const Sketcher::GeometryFacade*
-    getGeometryFacadeFromGeoId(const std::vector<T>& geometrylist, int geoId);
+    static const Sketcher::GeometryFacade* getGeometryFacadeFromGeoId(
+        const std::vector<T>& geometrylist,
+        int geoId
+    );
 
     /** @brief
      *  Obtain a GeoElementId class {GeoId, Pos} given a VertexId.
@@ -254,8 +257,9 @@ private:
     int intGeoCount;
     bool OwnerT;
     mutable bool indexInit;
-    mutable std::vector<Sketcher::GeoElementId>
-        VertexId2GeoElementId;  // these maps a lazy initialised on first demand.
+    mutable std::vector<Sketcher::GeoElementId> VertexId2GeoElementId;  // these maps a lazy
+                                                                        // initialised on first
+                                                                        // demand.
     mutable std::map<Sketcher::GeoElementId, int> GeoElementId2VertexId;
 };
 

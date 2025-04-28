@@ -99,8 +99,10 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
     ui->lineEditToStart->setText(QLatin1String(toStart.c_str()));
     ui->lineEditToEnd->setText(QLatin1String(toEnd.c_str()));
 
-    ui->comboBox->addItem(QStringLiteral(". (%1)").arg(QString::fromUtf8(sheet->Label.getValue())),
-                          QByteArray(""));
+    ui->comboBox->addItem(
+        QStringLiteral(". (%1)").arg(QString::fromUtf8(sheet->Label.getValue())),
+        QByteArray("")
+    );
 
     App::DocumentObject* target = bindingTarget.getDocumentObject();
     for (auto obj : sheet->getDocument()->getObjectsOfType<Sheet>()) {
@@ -109,8 +111,10 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
         }
         QString label;
         if (obj->Label.getStrValue() != obj->getNameInDocument()) {
-            label = QStringLiteral("%1 (%2)").arg(QString::fromLatin1(obj->getNameInDocument()),
-                                                  QString::fromUtf8(obj->Label.getValue()));
+            label = QStringLiteral("%1 (%2)").arg(
+                QString::fromLatin1(obj->getNameInDocument()),
+                QString::fromUtf8(obj->Label.getValue())
+            );
         }
         else {
             label = QLatin1String(obj->getNameInDocument());
@@ -131,8 +135,10 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
             std::string fullname = obj->getFullName();
             QString label;
             if (obj->Label.getStrValue() != obj->getNameInDocument()) {
-                label = QStringLiteral("%1 (%2)").arg(QString::fromLatin1(fullname.c_str()),
-                                                      QString::fromUtf8(obj->Label.getValue()));
+                label = QStringLiteral("%1 (%2)").arg(
+                    QString::fromLatin1(fullname.c_str()),
+                    QString::fromUtf8(obj->Label.getValue())
+                );
             }
             else {
                 label = QLatin1String(fullname.c_str());
@@ -219,12 +225,14 @@ void DlgBindSheet::accept()
                 App::Range fromRange(fromCellStart, fromCellEnd, true);
                 App::Range toRange(toCellStart, toCellEnd, true);
                 if (fromRange.size() != toRange.size()) {
-                    auto res = QMessageBox::warning(this,
-                                                    tr("Bind cells"),
-                                                    tr("Source and target cell count mismatch. "
-                                                       "Partial binding may still work.\n\n"
-                                                       "Do you want to continue?"),
-                                                    QMessageBox::Yes | QMessageBox::No);
+                    auto res = QMessageBox::warning(
+                        this,
+                        tr("Bind cells"),
+                        tr("Source and target cell count mismatch. "
+                           "Partial binding may still work.\n\n"
+                           "Do you want to continue?"),
+                        QMessageBox::Yes | QMessageBox::No
+                    );
                     if (res == QMessageBox::No) {
                         return;
                     }
@@ -236,10 +244,7 @@ void DlgBindSheet::accept()
         commandActive = true;
 
         if (ui->checkBoxHREF->isChecked()) {
-            Gui::cmdAppObjectArgs(sheet,
-                                  "setExpression('.cells.Bind.%s.%s', None)",
-                                  fromStart,
-                                  fromEnd);
+            Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.Bind.%s.%s', None)", fromStart, fromEnd);
             Gui::cmdAppObjectArgs(
                 sheet,
                 "setExpression('.cells.BindHiddenRef.%s.%s', 'hiddenref(tuple(%s.cells, %s, %s))')",
@@ -247,20 +252,25 @@ void DlgBindSheet::accept()
                 fromEnd,
                 ref,
                 toStart,
-                toEnd);
+                toEnd
+            );
         }
         else {
-            Gui::cmdAppObjectArgs(sheet,
-                                  "setExpression('.cells.BindHiddenRef.%s.%s', None)",
-                                  fromStart,
-                                  fromEnd);
-            Gui::cmdAppObjectArgs(sheet,
-                                  "setExpression('.cells.Bind.%s.%s', 'tuple(%s.cells, %s, %s)')",
-                                  fromStart,
-                                  fromEnd,
-                                  ref,
-                                  toStart,
-                                  toEnd);
+            Gui::cmdAppObjectArgs(
+                sheet,
+                "setExpression('.cells.BindHiddenRef.%s.%s', None)",
+                fromStart,
+                fromEnd
+            );
+            Gui::cmdAppObjectArgs(
+                sheet,
+                "setExpression('.cells.Bind.%s.%s', 'tuple(%s.cells, %s, %s)')",
+                fromStart,
+                fromEnd,
+                ref,
+                toStart,
+                toEnd
+            );
         }
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
@@ -268,9 +278,11 @@ void DlgBindSheet::accept()
     }
     catch (Base::Exception& e) {
         e.ReportException();
-        QMessageBox::critical(this,
-                              tr("Bind Spreadsheet Cells"),
-                              tr("Error:\n") + QString::fromUtf8(e.what()));
+        QMessageBox::critical(
+            this,
+            tr("Bind Spreadsheet Cells"),
+            tr("Error:\n") + QString::fromUtf8(e.what())
+        );
         if (commandActive) {
             Gui::Command::abortCommand();
         }
@@ -283,14 +295,13 @@ void DlgBindSheet::onDiscard()
         std::string fromStart(ui->lineEditFromStart->text().trimmed().toLatin1().constData());
         std::string fromEnd(ui->lineEditFromEnd->text().trimmed().toLatin1().constData());
         Gui::Command::openCommand("Unbind cells");
-        Gui::cmdAppObjectArgs(sheet,
-                              "setExpression('.cells.Bind.%s.%s', None)",
-                              fromStart,
-                              fromEnd);
-        Gui::cmdAppObjectArgs(sheet,
-                              "setExpression('.cells.BindHiddenRef.%s.%s', None)",
-                              fromStart,
-                              fromEnd);
+        Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.Bind.%s.%s', None)", fromStart, fromEnd);
+        Gui::cmdAppObjectArgs(
+            sheet,
+            "setExpression('.cells.BindHiddenRef.%s.%s', None)",
+            fromStart,
+            fromEnd
+        );
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
         reject();

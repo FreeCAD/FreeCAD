@@ -22,13 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <memory>
+# include <memory>
 
-#include <QApplication>
-#include <QClipboard>
-#include <QMessageBox>
+# include <QApplication>
+# include <QClipboard>
+# include <QMessageBox>
 
-#include <Inventor/SbString.h>
+# include <Inventor/SbString.h>
 #endif
 
 #include <App/Application.h>

@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <iostream>
-#include <sstream>
+# include <iostream>
+# include <sstream>
 #endif
 
 #include "FeatureClip.h"
@@ -44,41 +44,22 @@ FeatureClip::FeatureClip(void)
     static const char* group = "Drawing view";
     App::PropertyType hidden = (App::PropertyType)(App::Prop_Hidden);
     ADD_PROPERTY_TYPE(ViewResult, (""), group, hidden, "Resulting SVG view of this clip");
-    ADD_PROPERTY_TYPE(X,
-                      (10),
-                      group,
-                      App::Prop_None,
-                      "The left margin of the view area of this clip");
-    ADD_PROPERTY_TYPE(Y,
-                      (10),
-                      group,
-                      App::Prop_None,
-                      "The top margin of the view area of this clip");
-    ADD_PROPERTY_TYPE(Height,
-                      (10),
-                      group,
-                      App::Prop_None,
-                      "The height of the view area of this clip");
-    ADD_PROPERTY_TYPE(Width,
-                      (10),
-                      group,
-                      App::Prop_None,
-                      "The width of the view area of this clip");
-    ADD_PROPERTY_TYPE(ShowFrame,
-                      (0),
-                      group,
-                      App::Prop_None,
-                      "Specifies if the clip frame appears on the page or not");
+    ADD_PROPERTY_TYPE(X, (10), group, App::Prop_None, "The left margin of the view area of this clip");
+    ADD_PROPERTY_TYPE(Y, (10), group, App::Prop_None, "The top margin of the view area of this clip");
+    ADD_PROPERTY_TYPE(Height, (10), group, App::Prop_None, "The height of the view area of this clip");
+    ADD_PROPERTY_TYPE(Width, (10), group, App::Prop_None, "The width of the view area of this clip");
+    ADD_PROPERTY_TYPE(
+        ShowFrame,
+        (0),
+        group,
+        App::Prop_None,
+        "Specifies if the clip frame appears on the page or not"
+    );
     // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag
     // set to avoid to call the execute() method. The view provider touches the page object,
     // instead.
-    App::PropertyType propType =
-        static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_Output);
-    ADD_PROPERTY_TYPE(Visible,
-                      (true),
-                      group,
-                      propType,
-                      "Control whether frame is visible in page object");
+    App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_Output);
+    ADD_PROPERTY_TYPE(Visible, (true), group, propType, "Control whether frame is visible in page object");
 }
 
 FeatureClip::~FeatureClip()

@@ -24,12 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QLabel>
-#include <QFont>
-#include <QIcon>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QString>
+# include <QLabel>
+# include <QFont>
+# include <QIcon>
+# include <QHBoxLayout>
+# include <QVBoxLayout>
+# include <QString>
 #endif
 
 #include "NewFileButton.h"
@@ -46,7 +46,8 @@ NewFileButton::NewFileButton(const NewButton& newButton)
 {
     setObjectName(QStringLiteral("newFileButton"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
+        "User parameter:BaseApp/Preferences/Mod/Start"
+    );
 
     constexpr int defaultWidth = 180;  // #newFileButton width in QSS
     labelWidth = int(hGrp->GetInt("FileCardLabelWith", defaultWidth));

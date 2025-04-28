@@ -22,16 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <algorithm>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <set>
+# include <algorithm>
+# include <tuple>
+# include <vector>
+# include <string>
+# include <set>
 #endif
 #include "UniqueNameManager.h"
 
-std::tuple<std::string, std::string, unsigned int, Base::UnlimitedUnsigned>
-Base::UniqueNameManager::decomposeName(const std::string& name) const
+std::tuple<std::string, std::string, unsigned int, Base::UnlimitedUnsigned> Base::UniqueNameManager::decomposeName(
+    const std::string& name
+) const
 {
     auto suffixStart = getNameSuffixStartPosition(name);
     auto digitsStart = std::find_if_not(suffixStart, name.crend(), [](char c) {
@@ -42,10 +43,10 @@ Base::UniqueNameManager::decomposeName(const std::string& name) const
         name.substr(0, name.crend() - digitsStart),
         name.substr(name.crend() - suffixStart),
         digitCount,
-        UnlimitedUnsigned::fromString(name.substr(name.crend() - digitsStart, digitCount))};
+        UnlimitedUnsigned::fromString(name.substr(name.crend() - digitsStart, digitCount))
+    };
 }
-bool Base::UniqueNameManager::haveSameBaseName(const std::string& first,
-                                               const std::string& second) const
+bool Base::UniqueNameManager::haveSameBaseName(const std::string& first, const std::string& second) const
 {
     auto firstSuffixStart = getNameSuffixStartPosition(first);
     auto secondSuffixStart = getNameSuffixStartPosition(second);
@@ -69,17 +70,17 @@ void Base::UniqueNameManager::addExactName(const std::string& name)
     auto baseNameEntry = uniqueSeeds.find(baseName);
     if (baseNameEntry == uniqueSeeds.end()) {
         // First use of baseName
-        baseNameEntry =
-            uniqueSeeds
-                .emplace(baseName, std::vector<PiecewiseSparseIntegerSet<UnlimitedUnsigned>>())
-                .first;
+        baseNameEntry
+            = uniqueSeeds
+                  .emplace(baseName, std::vector<PiecewiseSparseIntegerSet<UnlimitedUnsigned>>())
+                  .first;
     }
     if (digitCount >= baseNameEntry->second.size()) {
         // First use of this digitCount
         baseNameEntry->second.resize(digitCount + 1);
     }
-    PiecewiseSparseIntegerSet<UnlimitedUnsigned>& baseNameAndDigitCountEntry =
-        baseNameEntry->second[digitCount];
+    PiecewiseSparseIntegerSet<UnlimitedUnsigned>& baseNameAndDigitCountEntry
+        = baseNameEntry->second[digitCount];
 
     if (baseNameAndDigitCountEntry.contains(digitsValue)) {
         // We already have at least one instance of the name.
@@ -91,8 +92,10 @@ void Base::UniqueNameManager::addExactName(const std::string& name)
     }
     baseNameAndDigitCountEntry.add(digitsValue);
 }
-std::string Base::UniqueNameManager::makeUniqueName(const std::string& modelName,
-                                                    std::size_t minDigits) const
+std::string Base::UniqueNameManager::makeUniqueName(
+    const std::string& modelName,
+    std::size_t minDigits
+) const
 {
     auto [namePrefix, nameSuffix, digitCount, digitsValue] = decomposeName(modelName);
     std::string baseName = namePrefix + nameSuffix;
@@ -148,10 +151,10 @@ void Base::UniqueNameManager::removeExactName(const std::string& name)
     digitValueSets[digitCount].remove(digitsValue);
     // an element of digitValueSets may now be newly empty and so may other elements below it
     // Prune off all such trailing empty entries.
-    auto lastNonemptyEntry =
-        std::find_if(digitValueSets.crbegin(), digitValueSets.crend(), [](auto& it) {
-            return !it.empty();
-        });
+    auto lastNonemptyEntry
+        = std::find_if(digitValueSets.crbegin(), digitValueSets.crend(), [](auto& it) {
+              return !it.empty();
+          });
     if (lastNonemptyEntry == digitValueSets.crend()) {
         // All entries are empty, so the entire baseName can be forgotten.
         uniqueSeeds.erase(baseName);

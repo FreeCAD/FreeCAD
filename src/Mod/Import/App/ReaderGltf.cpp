@@ -24,19 +24,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost/core/ignore_unused.hpp>
-#include <Standard_Version.hxx>
-#include <BRep_Builder.hxx>
-#include <Message_ProgressRange.hxx>
-#include <Quantity_ColorRGBA.hxx>
-#include <RWGltf_CafReader.hxx>
-#include <TDF_Label.hxx>
-#include <TDF_TagSource.hxx>
-#include <XCAFDoc_DocumentTool.hxx>
-#include <XCAFDoc_ColorTool.hxx>
-#include <XCAFDoc_ShapeTool.hxx>
-#include <XCAFDoc_VisMaterial.hxx>
-#include <XCAFDoc_VisMaterialTool.hxx>
+# include <boost/core/ignore_unused.hpp>
+# include <Standard_Version.hxx>
+# include <BRep_Builder.hxx>
+# include <Message_ProgressRange.hxx>
+# include <Quantity_ColorRGBA.hxx>
+# include <RWGltf_CafReader.hxx>
+# include <TDF_Label.hxx>
+# include <TDF_TagSource.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_ColorTool.hxx>
+# include <XCAFDoc_ShapeTool.hxx>
+# include <XCAFDoc_VisMaterial.hxx>
+# include <XCAFDoc_VisMaterialTool.hxx>
 #endif
 
 #include "ReaderGltf.h"
@@ -95,8 +95,10 @@ void ReaderGltf::processDocument(Handle(TDocStd_Document) hDoc)
 }
 
 // NOLINTNEXTLINE
-TopoDS_Shape ReaderGltf::processSubShapes(Handle(TDocStd_Document) hDoc,
-                                          const TDF_LabelSequence& subShapeLabels)
+TopoDS_Shape ReaderGltf::processSubShapes(
+    Handle(TDocStd_Document) hDoc,
+    const TDF_LabelSequence& subShapeLabels
+)
 {
     TopoDS_Compound compound;
     Handle(XCAFDoc_ShapeTool) aShapeTool = XCAFDoc_DocumentTool::ShapeTool(hDoc->Main());

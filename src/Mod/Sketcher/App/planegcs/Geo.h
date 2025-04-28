@@ -28,7 +28,7 @@
 #include "../../SketcherGlobal.h"
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
+# pragma warning(disable : 4251)
 #endif
 
 namespace GCS
@@ -137,10 +137,12 @@ public:
     }
     DeriVector2 linCombi(double m1, const DeriVector2& v2, double m2) const
     {  // linear combination of two vectors
-        return DeriVector2(x * m1 + v2.x * m2,
-                           y * m1 + v2.y * m2,
-                           dx * m1 + v2.dx * m2,
-                           dy * m1 + v2.dy * m2);
+        return DeriVector2(
+            x * m1 + v2.x * m2,
+            y * m1 + v2.y * m2,
+            dx * m1 + v2.dx * m2,
+            dy * m1 + v2.dy * m2
+        );
     }
 };
 
@@ -161,12 +163,10 @@ public:
     // derivparam is a pointer to a curve parameter (or point coordinate) to
     //  compute the derivative for. The derivative is returned through dx,dy
     //  fields of DeriVector2.
-    virtual DeriVector2 CalculateNormal(const Point& p,
-                                        const double* derivparam = nullptr) const = 0;
+    virtual DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const = 0;
 
     // returns normal vector at parameter instead of at the given point.
-    virtual DeriVector2 CalculateNormal(const double* param,
-                                        const double* derivparam = nullptr) const
+    virtual DeriVector2 CalculateNormal(const double* param, const double* derivparam = nullptr) const
     {
         DeriVector2 pointDV = Value(*param, 0.0);
         Point p(&pointDV.x, &pointDV.y);
@@ -254,11 +254,14 @@ class SketcherExport MajorRadiusConic: public Curve
 public:
     ~MajorRadiusConic() override
     {}
-    virtual double getRadMaj(const DeriVector2& center,
-                             const DeriVector2& f1,
-                             double b,
-                             double db,
-                             double& ret_dRadMaj) const = 0;
+    virtual double getRadMaj(
+        const DeriVector2& center,
+        const DeriVector2& f1,
+        double b,
+        double db,
+        double& ret_dRadMaj
+    ) const
+        = 0;
     virtual double getRadMaj(double* derivparam, double& ret_dRadMaj) const = 0;
     virtual double getRadMaj() const = 0;
     // DeriVector2 CalculateNormal(Point &p, double* derivparam = 0) = 0;
@@ -276,11 +279,13 @@ public:
     Point center;
     Point focus1;
     double* radmin;
-    double getRadMaj(const DeriVector2& center,
-                     const DeriVector2& f1,
-                     double b,
-                     double db,
-                     double& ret_dRadMaj) const override;
+    double getRadMaj(
+        const DeriVector2& center,
+        const DeriVector2& f1,
+        double b,
+        double db,
+        double& ret_dRadMaj
+    ) const override;
     double getRadMaj(double* derivparam, double& ret_dRadMaj) const override;
     double getRadMaj() const override;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
@@ -326,11 +331,13 @@ public:
     Point center;
     Point focus1;
     double* radmin;
-    double getRadMaj(const DeriVector2& center,
-                     const DeriVector2& f1,
-                     double b,
-                     double db,
-                     double& ret_dRadMaj) const override;
+    double getRadMaj(
+        const DeriVector2& center,
+        const DeriVector2& f1,
+        double b,
+        double db,
+        double& ret_dRadMaj
+    ) const override;
     double getRadMaj(double* derivparam, double& ret_dRadMaj) const override;
     double getRadMaj() const override;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
@@ -428,17 +435,18 @@ public:
     VEC_D flattenedknots;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     // TODO: override parametric version
-    DeriVector2 CalculateNormal(const double* param,
-                                const double* derivparam = nullptr) const override;
+    DeriVector2 CalculateNormal(const double* param, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     // Returns value in homogeneous coordinates (x*w, y*w, w) at given parameter u
-    void valueHomogenous(const double u,
-                         double* xw,
-                         double* yw,
-                         double* w,
-                         double* dxwdu,
-                         double* dywdu,
-                         double* dwdu) const;
+    void valueHomogenous(
+        const double u,
+        double* xw,
+        double* yw,
+        double* w,
+        double* dxwdu,
+        double* dywdu,
+        double* dwdu
+    ) const;
     int PushOwnParams(VEC_pD& pvec) override;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
     BSpline* Copy() override;

@@ -35,8 +35,11 @@ namespace Base
 class UnitsSchemaImperial1: public UnitsSchema
 {
 public:
-    std::string
-    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
+    std::string schemaTranslate(
+        const Base::Quantity& quant,
+        double& factor,
+        std::string& unitString
+    ) override;
     std::string getBasicLengthUnit() const override
     {
         return {"in"};
@@ -50,8 +53,11 @@ public:
 class UnitsSchemaImperialDecimal: public UnitsSchema
 {
 public:
-    std::string
-    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
+    std::string schemaTranslate(
+        const Base::Quantity& quant,
+        double& factor,
+        std::string& unitString
+    ) override;
     std::string getBasicLengthUnit() const override
     {
         return {"in"};
@@ -65,8 +71,11 @@ public:
 class UnitsSchemaImperialBuilding: public UnitsSchema
 {
 public:
-    std::string
-    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
+    std::string schemaTranslate(
+        const Base::Quantity& quant,
+        double& factor,
+        std::string& unitString
+    ) override;
     std::string getBasicLengthUnit() const override
     {
         return {"ft"};
@@ -86,8 +95,11 @@ public:
 class UnitsSchemaImperialCivil: public UnitsSchema
 {
 public:
-    std::string
-    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
+    std::string schemaTranslate(
+        const Base::Quantity& quant,
+        double& factor,
+        std::string& unitString
+    ) override;
     std::string getBasicLengthUnit() const override
     {
         return {"ft"};

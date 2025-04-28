@@ -22,27 +22,27 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <limits>
-#ifdef FC_OS_LINUX
-#include <unistd.h>
-#endif
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRep_Tool.hxx>
-#include <BndLib_Add3dCurve.hxx>
-#include <Bnd_Box.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <GeomAPI_IntCS.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Plane.hxx>
-#include <Standard_Failure.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <gp_Pln.hxx>
+# include <limits>
+# ifdef FC_OS_LINUX
+#  include <unistd.h>
+# endif
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRep_Tool.hxx>
+# include <BndLib_Add3dCurve.hxx>
+# include <Bnd_Box.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
+# include <GeomAPI_IntCS.hxx>
+# include <Geom_Curve.hxx>
+# include <Geom_Plane.hxx>
+# include <Standard_Failure.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <gp_Pln.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -109,8 +109,7 @@ void CurveProjectorShape::Do()
 }
 
 
-void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
-                                       std::vector<FaceSplitEdge>& vSplitEdges)
+void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge, std::vector<FaceSplitEdge>& vSplitEdges)
 {
     Standard_Real fFirst, fLast;
     Handle(Geom_Curve) hCurve = BRep_Tool::Curve(aEdge, fFirst, fLast);
@@ -122,8 +121,8 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
     Base::Vector3f cStartPoint = Base::Vector3f((float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z());
     Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal;
     MeshCore::FacetIndex uStartFacetIdx, uCurFacetIdx;
-    MeshCore::FacetIndex uLastFacetIdx =
-        MeshCore::FACET_INDEX_MAX - 1;  // use another value as FACET_INDEX_MAX
+    MeshCore::FacetIndex uLastFacetIdx = MeshCore::FACET_INDEX_MAX
+        - 1;  // use another value as FACET_INDEX_MAX
     MeshCore::FacetIndex auNeighboursIdx[3];
     bool GoOn;
 
@@ -134,10 +133,12 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
     uCurFacetIdx = uStartFacetIdx;
     do {
         MeshGeomFacet cCurFacet = _Mesh.GetFacet(uCurFacetIdx);
-        _Mesh.GetFacetNeighbours(uCurFacetIdx,
-                                 auNeighboursIdx[0],
-                                 auNeighboursIdx[1],
-                                 auNeighboursIdx[2]);
+        _Mesh.GetFacetNeighbours(
+            uCurFacetIdx,
+            auNeighboursIdx[0],
+            auNeighboursIdx[1],
+            auNeighboursIdx[2]
+        );
         Base::Vector3f PointOnEdge[3];
 
         GoOn = false;
@@ -166,9 +167,10 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
                 cPlanePnt = cP0;
             }
 
-            Handle(Geom_Plane) hPlane =
-                new Geom_Plane(gp_Pln(gp_Pnt(cPlanePnt.x, cPlanePnt.y, cPlanePnt.z),
-                                      gp_Dir(cPlaneNormal.x, cPlaneNormal.y, cPlaneNormal.z)));
+            Handle(Geom_Plane) hPlane = new Geom_Plane(gp_Pln(
+                gp_Pnt(cPlanePnt.x, cPlanePnt.y, cPlanePnt.z),
+                gp_Dir(cPlaneNormal.x, cPlaneNormal.y, cPlaneNormal.z)
+            ));
 
             GeomAPI_IntCS Alg(hCurve, hPlane);
 
@@ -197,10 +199,12 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
                 }
                 else if (Alg.NbPoints() > 1) {
                     PointOnEdge[i] = Base::Vector3f(std::numeric_limits<float>::max(), 0, 0);
-                    Base::Console().Log("MeshAlgos::projectCurve(): More then one intersection in "
-                                        "Facet %lu, Edge %d\n",
-                                        uCurFacetIdx,
-                                        i);
+                    Base::Console().Log(
+                        "MeshAlgos::projectCurve(): More then one intersection in "
+                        "Facet %lu, Edge %d\n",
+                        uCurFacetIdx,
+                        i
+                    );
                 }
             }
         }
@@ -218,8 +222,10 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
             GoOn = true;
         }
         else {
-            Base::Console().Log("MeshAlgos::projectCurve(): Possible reentry in Facet %lu\n",
-                                uCurFacetIdx);
+            Base::Console().Log(
+                "MeshAlgos::projectCurve(): Possible reentry in Facet %lu\n",
+                uCurFacetIdx
+            );
         }
 
         if (uCurFacetIdx == uStartFacetIdx) {
@@ -229,10 +235,12 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
     } while (GoOn);
 }
 
-bool CurveProjectorShape::findStartPoint(const MeshKernel& MeshK,
-                                         const Base::Vector3f& Pnt,
-                                         Base::Vector3f& Rslt,
-                                         MeshCore::FacetIndex& FaceIndex)
+bool CurveProjectorShape::findStartPoint(
+    const MeshKernel& MeshK,
+    const Base::Vector3f& Pnt,
+    Base::Vector3f& Rslt,
+    MeshCore::FacetIndex& FaceIndex
+)
 {
     Base::Vector3f TempResultPoint;
     float MinLength = std::numeric_limits<float>::max();
@@ -283,9 +291,11 @@ void CurveProjectorSimple::Do()
     }
 }
 
-void CurveProjectorSimple::GetSampledCurves(const TopoDS_Edge& aEdge,
-                                            std::vector<Base::Vector3f>& rclPoints,
-                                            unsigned long ulNbOfPoints)
+void CurveProjectorSimple::GetSampledCurves(
+    const TopoDS_Edge& aEdge,
+    std::vector<Base::Vector3f>& rclPoints,
+    unsigned long ulNbOfPoints
+)
 {
     rclPoints.clear();
 
@@ -303,9 +313,11 @@ void CurveProjectorSimple::GetSampledCurves(const TopoDS_Edge& aEdge,
 
 // projectToNeighbours(Handle(Geom_Curve) hCurve,float pos
 
-void CurveProjectorSimple::projectCurve(const TopoDS_Edge& aEdge,
-                                        const std::vector<Base::Vector3f>&,
-                                        std::vector<FaceSplitEdge>&)
+void CurveProjectorSimple::projectCurve(
+    const TopoDS_Edge& aEdge,
+    const std::vector<Base::Vector3f>&,
+    std::vector<FaceSplitEdge>&
+)
 {
     Base::Vector3f TempResultPoint;
     bool bFirst = true;
@@ -336,7 +348,8 @@ void CurveProjectorSimple::projectCurve(const TopoDS_Edge& aEdge,
             if (It->IntersectWithLine(
                     Base::Vector3f((float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z()),
                     It->GetNormal(),
-                    TempResultPoint)) {
+                    TempResultPoint
+                )) {
                 FaceProjctMap[It.Position()].push_back(TempResultPoint);
                 str << TempResultPoint.x << " " << TempResultPoint.y << " " << TempResultPoint.z
                     << std::endl;
@@ -352,16 +365,16 @@ void CurveProjectorSimple::projectCurve(const TopoDS_Edge& aEdge,
     }
 
     str.close();
-    Base::Console().Log("Projection map [%d facets with %d points]\n",
-                        FaceProjctMap.size(),
-                        PointCount);
+    Base::Console().Log("Projection map [%d facets with %d points]\n", FaceProjctMap.size(), PointCount);
 }
 
 
-bool CurveProjectorSimple::findStartPoint(const MeshKernel& MeshK,
-                                          const Base::Vector3f& Pnt,
-                                          Base::Vector3f& Rslt,
-                                          MeshCore::FacetIndex& FaceIndex)
+bool CurveProjectorSimple::findStartPoint(
+    const MeshKernel& MeshK,
+    const Base::Vector3f& Pnt,
+    Base::Vector3f& Rslt,
+    MeshCore::FacetIndex& FaceIndex
+)
 {
     Base::Vector3f TempResultPoint;
     float MinLength = std::numeric_limits<float>::max();
@@ -392,9 +405,11 @@ bool CurveProjectorSimple::findStartPoint(const MeshKernel& MeshK,
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-CurveProjectorWithToolMesh::CurveProjectorWithToolMesh(const TopoDS_Shape& aShape,
-                                                       const MeshKernel& pMesh,
-                                                       MeshKernel& rToolMesh)
+CurveProjectorWithToolMesh::CurveProjectorWithToolMesh(
+    const TopoDS_Shape& aShape,
+    const MeshKernel& pMesh,
+    MeshKernel& rToolMesh
+)
     : CurveProjector(aShape, pMesh)
     , ToolMesh(rToolMesh)
 {
@@ -417,8 +432,7 @@ void CurveProjectorWithToolMesh::Do()
 
 // projectToNeighbours(Handle(Geom_Curve) hCurve,float pos
 
-void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge,
-                                              std::vector<MeshGeomFacet>& cVAry)
+void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge, std::vector<MeshGeomFacet>& cVAry)
 {
     Standard_Real fBegin, fEnd;
     Handle(Geom_Curve) hCurve = BRep_Tool::Curve(aEdge, fBegin, fEnd);
@@ -448,7 +462,8 @@ void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge,
             if (It->IntersectWithLine(
                     Base::Vector3f((float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z()),
                     It->GetNormal(),
-                    cResultPoint)) {
+                    cResultPoint
+                )) {
                 if (Base::Distance(LinePoint, cResultPoint) < 0.5) {
                     ResultNormal += It->GetNormal();
                 }
@@ -460,9 +475,7 @@ void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge,
         LineSegs.push_back(s);
     }
 
-    Base::Console().Log("Projection map [%d facets with %d points]\n",
-                        FaceProjctMap.size(),
-                        PointCount);
+    Base::Console().Log("Projection map [%d facets with %d points]\n", FaceProjctMap.size(), PointCount);
 
 
     // build up the new mesh
@@ -495,9 +508,11 @@ MeshProjection::MeshProjection(const MeshKernel& rMesh)
     : _rcMesh(rMesh)
 {}
 
-void MeshProjection::discretize(const TopoDS_Edge& aEdge,
-                                std::vector<Base::Vector3f>& polyline,
-                                std::size_t minPoints) const
+void MeshProjection::discretize(
+    const TopoDS_Edge& aEdge,
+    std::vector<Base::Vector3f>& polyline,
+    std::size_t minPoints
+) const
 {
     BRepAdaptor_Curve clCurve(aEdge);
 
@@ -514,10 +529,7 @@ void MeshProjection::discretize(const TopoDS_Edge& aEdge,
     }
 
     if (polyline.size() < minPoints) {
-        GCPnts_UniformAbscissa clAbsc(clCurve,
-                                      static_cast<Standard_Integer>(minPoints),
-                                      fFirst,
-                                      fLast);
+        GCPnts_UniformAbscissa clAbsc(clCurve, static_cast<Standard_Integer>(minPoints), fFirst, fLast);
         if (clAbsc.IsDone() == Standard_True) {
             polyline.clear();
             Standard_Integer nNbPoints = clAbsc.NbPoints();
@@ -546,10 +558,12 @@ void MeshProjection::splitMeshByShape(const TopoDS_Shape& aShape, float fMaxDist
     str.close();
 }
 
-bool MeshProjection::findIntersection(const Edge& edgeSegm,
-                                      const Edge& meshEdge,
-                                      const Base::Vector3f& dir,
-                                      Base::Vector3f& res) const
+bool MeshProjection::findIntersection(
+    const Edge& edgeSegm,
+    const Edge& meshEdge,
+    const Base::Vector3f& dir,
+    Base::Vector3f& res
+) const
 {
     Base::Vector3f planeNormal;
     planeNormal = dir.Cross(edgeSegm.cPt2 - edgeSegm.cPt1);
@@ -570,9 +584,11 @@ bool MeshProjection::findIntersection(const Edge& edgeSegm,
     return false;
 }
 
-void MeshProjection::findSectionParameters(const TopoDS_Edge& edge,
-                                           const Base::Vector3f& dir,
-                                           std::set<double>& parameters) const
+void MeshProjection::findSectionParameters(
+    const TopoDS_Edge& edge,
+    const Base::Vector3f& dir,
+    std::set<double>& parameters
+) const
 {
     MeshAlgorithm clAlg(_rcMesh);
     float fAvgLen = clAlg.GetAverageEdgeLength();
@@ -628,9 +644,11 @@ void MeshProjection::findSectionParameters(const TopoDS_Edge& edge,
     }
 }
 
-void MeshProjection::projectToMesh(const TopoDS_Shape& aShape,
-                                   float fMaxDist,
-                                   std::vector<PolyLine>& rPolyLines) const
+void MeshProjection::projectToMesh(
+    const TopoDS_Shape& aShape,
+    float fMaxDist,
+    std::vector<PolyLine>& rPolyLines
+) const
 {
     // calculate the average edge length and create a grid
     MeshAlgorithm clAlg(_rcMesh);
@@ -660,10 +678,12 @@ void MeshProjection::projectToMesh(const TopoDS_Shape& aShape,
     }
 }
 
-void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
-                                   const Base::Vector3f& dir,
-                                   float tolerance,
-                                   std::vector<Base::Vector3f>& pointsOut) const
+void MeshProjection::projectOnMesh(
+    const std::vector<Base::Vector3f>& pointsIn,
+    const Base::Vector3f& dir,
+    float tolerance,
+    std::vector<Base::Vector3f>& pointsOut
+) const
 {
     // calculate the average edge length and create a grid
     MeshAlgorithm clAlg(_rcMesh);
@@ -709,13 +729,15 @@ void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
         else {
             // go through the boundary points and check if the point can be directly projected
             // onto one of them
-            auto boundaryPnt = std::find_if(boundaryPoints.begin(),
-                                            boundaryPoints.end(),
-                                            [&it, &dir](const Base::Vector3f& pnt) -> bool {
-                                                Base::Vector3f vec = pnt - it;
-                                                float angle = vec.GetAngle(dir);
-                                                return angle < 1e-6f;
-                                            });
+            auto boundaryPnt = std::find_if(
+                boundaryPoints.begin(),
+                boundaryPoints.end(),
+                [&it, &dir](const Base::Vector3f& pnt) -> bool {
+                    Base::Vector3f vec = pnt - it;
+                    float angle = vec.GetAngle(dir);
+                    return angle < 1e-6f;
+                }
+            );
 
             if (boundaryPnt != boundaryPoints.end()) {
                 pointsOut.push_back(*boundaryPnt);
@@ -741,9 +763,11 @@ void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
     }
 }
 
-void MeshProjection::projectParallelToMesh(const TopoDS_Shape& aShape,
-                                           const Base::Vector3f& dir,
-                                           std::vector<PolyLine>& rPolyLines) const
+void MeshProjection::projectParallelToMesh(
+    const TopoDS_Shape& aShape,
+    const Base::Vector3f& dir,
+    std::vector<PolyLine>& rPolyLines
+) const
 {
     // calculate the average edge length and create a grid
     MeshAlgorithm clAlg(_rcMesh);
@@ -785,13 +809,15 @@ void MeshProjection::projectParallelToMesh(const TopoDS_Shape& aShape,
         PolyLine polyline;
         for (auto it : hitPointPairs) {
             points.clear();
-            if (meshProjection.projectLineOnMesh(cGrid,
-                                                 it.first.first,
-                                                 it.first.second,
-                                                 it.second.first,
-                                                 it.second.second,
-                                                 dir,
-                                                 points)) {
+            if (meshProjection.projectLineOnMesh(
+                    cGrid,
+                    it.first.first,
+                    it.first.second,
+                    it.second.first,
+                    it.second.second,
+                    dir,
+                    points
+                )) {
                 polyline.points.insert(polyline.points.end(), points.begin(), points.end());
             }
         }
@@ -801,9 +827,11 @@ void MeshProjection::projectParallelToMesh(const TopoDS_Shape& aShape,
     }
 }
 
-void MeshProjection::projectParallelToMesh(const std::vector<PolyLine>& aEdges,
-                                           const Base::Vector3f& dir,
-                                           std::vector<PolyLine>& rPolyLines) const
+void MeshProjection::projectParallelToMesh(
+    const std::vector<PolyLine>& aEdges,
+    const Base::Vector3f& dir,
+    std::vector<PolyLine>& rPolyLines
+) const
 {
     // calculate the average edge length and create a grid
     MeshAlgorithm clAlg(_rcMesh);
@@ -837,13 +865,15 @@ void MeshProjection::projectParallelToMesh(const std::vector<PolyLine>& aEdges,
         PolyLine polyline;
         for (auto it : hitPointPairs) {
             points.clear();
-            if (meshProjection.projectLineOnMesh(cGrid,
-                                                 it.first.first,
-                                                 it.first.second,
-                                                 it.second.first,
-                                                 it.second.second,
-                                                 dir,
-                                                 points)) {
+            if (meshProjection.projectLineOnMesh(
+                    cGrid,
+                    it.first.first,
+                    it.first.second,
+                    it.second.first,
+                    it.second.second,
+                    dir,
+                    points
+                )) {
                 polyline.points.insert(polyline.points.end(), points.begin(), points.end());
             }
         }
@@ -853,10 +883,12 @@ void MeshProjection::projectParallelToMesh(const std::vector<PolyLine>& aEdges,
     }
 }
 
-void MeshProjection::projectEdgeToEdge(const TopoDS_Edge& aEdge,
-                                       float fMaxDist,
-                                       const MeshFacetGrid& rGrid,
-                                       std::vector<SplitEdge>& rSplitEdges) const
+void MeshProjection::projectEdgeToEdge(
+    const TopoDS_Edge& aEdge,
+    float fMaxDist,
+    const MeshFacetGrid& rGrid,
+    std::vector<SplitEdge>& rSplitEdges
+) const
 {
     std::vector<MeshCore::FacetIndex> auFInds;
     std::map<std::pair<MeshCore::PointIndex, MeshCore::PointIndex>, std::list<MeshCore::FacetIndex>>
@@ -876,12 +908,13 @@ void MeshProjection::projectEdgeToEdge(const TopoDS_Edge& aEdge,
     for (MeshCore::FacetIndex index : auFInds) {
         const MeshFacet& rF = rclFAry[index];
         for (int i = 0; i < 3; i++) {
-            MeshCore::PointIndex ulPt0 =
-                std::min<MeshCore::PointIndex>(rF._aulPoints[i], rF._aulPoints[(i + 1) % 3]);
-            MeshCore::PointIndex ulPt1 =
-                std::max<MeshCore::PointIndex>(rF._aulPoints[i], rF._aulPoints[(i + 1) % 3]);
-            pEdgeToFace[std::pair<MeshCore::PointIndex, MeshCore::PointIndex>(ulPt0, ulPt1)]
-                .push_front(index);
+            MeshCore::PointIndex ulPt0
+                = std::min<MeshCore::PointIndex>(rF._aulPoints[i], rF._aulPoints[(i + 1) % 3]);
+            MeshCore::PointIndex ulPt1
+                = std::max<MeshCore::PointIndex>(rF._aulPoints[i], rF._aulPoints[(i + 1) % 3]);
+            pEdgeToFace[std::pair<MeshCore::PointIndex, MeshCore::PointIndex>(ulPt0, ulPt1)].push_front(
+                index
+            );
         }
     }
 
@@ -897,8 +930,8 @@ void MeshProjection::projectEdgeToEdge(const TopoDS_Edge& aEdge,
     MeshFacetIterator cFI(_rcMesh);
 
     Base::SequencerLauncher seq("Project curve on mesh", pEdgeToFace.size());
-    std::map<std::pair<MeshCore::PointIndex, MeshCore::PointIndex>,
-             std::list<MeshCore::FacetIndex>>::iterator it;
+    std::map<std::pair<MeshCore::PointIndex, MeshCore::PointIndex>, std::list<MeshCore::FacetIndex>>::iterator
+        it;
     for (it = pEdgeToFace.begin(); it != pEdgeToFace.end(); ++it) {
         seq.next();
 
@@ -923,9 +956,9 @@ void MeshProjection::projectEdgeToEdge(const TopoDS_Edge& aEdge,
 
         // create a plane from the edge normal and point
         Base::Vector3f cPlaneNormal = cEdgeNormal % (cE1 - cE0);
-        Handle(Geom_Plane) hPlane =
-            new Geom_Plane(gp_Pln(gp_Pnt(cE0.x, cE0.y, cE0.z),
-                                  gp_Dir(cPlaneNormal.x, cPlaneNormal.y, cPlaneNormal.z)));
+        Handle(Geom_Plane) hPlane = new Geom_Plane(
+            gp_Pln(gp_Pnt(cE0.x, cE0.y, cE0.z), gp_Dir(cPlaneNormal.x, cPlaneNormal.y, cPlaneNormal.z))
+        );
 
         // get intersection of curve and plane
         GeomAPI_IntCS Alg(hCurve, hPlane);

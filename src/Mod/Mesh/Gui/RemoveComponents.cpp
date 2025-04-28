@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <limits>
-#include <QPushButton>
+# include <limits>
+# include <QPushButton>
 #endif
 
 #include <Gui/Application.h>

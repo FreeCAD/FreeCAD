@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QButtonGroup>
-#include <QDialogButtonBox>
+# include <QButtonGroup>
+# include <QDialogButtonBox>
 #endif
 
 #include <Gui/Command.h>
@@ -150,8 +150,7 @@ TaskSmoothing::TaskSmoothing()
     addTaskBox(widget, false, nullptr);
 
     selection = new Selection();  // NOLINT
-    selection->setObjects(
-        Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
+    selection->setObjects(Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();
     QWidget* box = addTaskBoxWithoutHeader(selection);
     box->hide();

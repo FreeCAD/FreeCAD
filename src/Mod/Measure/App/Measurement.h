@@ -94,8 +94,7 @@ public:
     double radius() const;
 
     // Calculates the angle between two edges
-    double
-    angle(const Base::Vector3d& param = Base::Vector3d(0, 0, 0)) const;  // param is never used???
+    double angle(const Base::Vector3d& param = Base::Vector3d(0, 0, 0)) const;  // param is never used???
 
     // Calculate the center of mass
     Base::Vector3d massCenter() const;

@@ -23,34 +23,34 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <sstream>
-#include <QApplication>
-#include <Inventor/draggers/SoTranslate2Dragger.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoFontStyle.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/engines/SoCalculator.h>
-#include <Inventor/engines/SoComposeVec3f.h>
-#include <Inventor/engines/SoConcatenate.h>
-#include <Inventor/engines/SoComposeMatrix.h>
-#include <Inventor/engines/SoComposeRotation.h>
-#include <Inventor/engines/SoComposeRotationFromTo.h>
-#include <Inventor/engines/SoDecomposeRotation.h>
-#include <Inventor/engines/SoTransformVec3f.h>
-#include <Inventor/nodekits/SoShapeKit.h>
-#include <Inventor/nodes/SoFont.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoMatrixTransform.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/nodekits/SoBaseKit.h>
+# include <sstream>
+# include <QApplication>
+# include <Inventor/draggers/SoTranslate2Dragger.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoFontStyle.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/engines/SoCalculator.h>
+# include <Inventor/engines/SoComposeVec3f.h>
+# include <Inventor/engines/SoConcatenate.h>
+# include <Inventor/engines/SoComposeMatrix.h>
+# include <Inventor/engines/SoComposeRotation.h>
+# include <Inventor/engines/SoComposeRotationFromTo.h>
+# include <Inventor/engines/SoDecomposeRotation.h>
+# include <Inventor/engines/SoTransformVec3f.h>
+# include <Inventor/nodekits/SoShapeKit.h>
+# include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoMatrixTransform.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTransform.h>
+# include <Inventor/nodes/SoVertexProperty.h>
+# include <Inventor/nodekits/SoBaseKit.h>
 #endif
 
 #include <Precision.hxx>
@@ -168,22 +168,24 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
         zAxis = xAxis.Crossed(yAxis).Normalized();
 
-        dimSys = SbMatrix(xAxis.X(),
-                          yAxis.X(),
-                          zAxis.X(),
-                          origin.X(),
-                          xAxis.Y(),
-                          yAxis.Y(),
-                          zAxis.Y(),
-                          origin.Y(),
-                          xAxis.Z(),
-                          yAxis.Z(),
-                          zAxis.Z(),
-                          origin.Z(),
-                          0.0,
-                          0.0,
-                          0.0,
-                          1.0);
+        dimSys = SbMatrix(
+            xAxis.X(),
+            yAxis.X(),
+            zAxis.X(),
+            origin.X(),
+            xAxis.Y(),
+            yAxis.Y(),
+            zAxis.Y(),
+            origin.Y(),
+            xAxis.Z(),
+            yAxis.Z(),
+            zAxis.Z(),
+            origin.Z(),
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        );
         dimSys = dimSys.transpose();
 
         radius = midPointProjection.Magnitude();
@@ -236,22 +238,24 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         gp_Vec zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
         gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
 
-        dimSys = SbMatrix(xAxis.X(),
-                          yAxis.X(),
-                          zAxis.X(),
-                          dimensionOriginPoint.X(),
-                          xAxis.Y(),
-                          yAxis.Y(),
-                          zAxis.Y(),
-                          dimensionOriginPoint.Y(),
-                          xAxis.Z(),
-                          yAxis.Z(),
-                          zAxis.Z(),
-                          dimensionOriginPoint.Z(),
-                          0.0,
-                          0.0,
-                          0.0,
-                          1.0);
+        dimSys = SbMatrix(
+            xAxis.X(),
+            yAxis.X(),
+            zAxis.X(),
+            dimensionOriginPoint.X(),
+            xAxis.Y(),
+            yAxis.Y(),
+            zAxis.Y(),
+            dimensionOriginPoint.Y(),
+            xAxis.Z(),
+            yAxis.Z(),
+            zAxis.Z(),
+            dimensionOriginPoint.Z(),
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        );
 
         dimSys = dimSys.transpose();
     }
@@ -292,7 +296,8 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     engineAngle->A.connectFrom(&arcEngine->midpoint);
     engineAngle->B.connectFrom(&pLabelTranslation->translation);
     engineAngle->expression.setValue(
-        "tA=normalize(A); tB=normalize(B); oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])");
+        "tA=normalize(A); tB=normalize(B); oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])"
+    );
 
     Gui::ArcEngine* arcEngineSecondary = new Gui::ArcEngine();
     arcEngineSecondary->radius.connectFrom(&calculatorRadius->oa);
@@ -334,8 +339,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         pcTransform->setMatrix(matrix);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
-                              e.what());
+        Base::Console().Error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n", e.what());
         return;
     }
 

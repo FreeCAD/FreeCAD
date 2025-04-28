@@ -60,9 +60,11 @@ public:
     }
 
 private:
-    BlendPoint GetBlendPoint(App::PropertyLinkSub& link,
-                             App::PropertyFloatConstraint& param,
-                             App::PropertyIntegerConstraint& Continuity);
+    BlendPoint GetBlendPoint(
+        App::PropertyLinkSub& link,
+        App::PropertyFloatConstraint& param,
+        App::PropertyIntegerConstraint& Continuity
+    );
     double RelativeToRealParameters(double, double, double);
 
 protected:

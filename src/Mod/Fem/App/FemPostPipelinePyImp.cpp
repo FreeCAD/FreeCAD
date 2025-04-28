@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <Python.h>
+# include <Python.h>
 #endif
 
 #include <Base/FileInfo.h>
@@ -50,13 +50,7 @@ PyObject* FemPostPipelinePy::read(PyObject* args)
     PyObject* unitobj = nullptr;
     const char* value_type;
 
-    if (PyArg_ParseTuple(args,
-                         "O|OO!s",
-                         &files,
-                         &values,
-                         &(Base::UnitPy::Type),
-                         &unitobj,
-                         &value_type)) {
+    if (PyArg_ParseTuple(args, "O|OO!s", &files, &values, &(Base::UnitPy::Type), &unitobj, &value_type)) {
         if (!values) {
             // single argument version was called!
             if (!PyUnicode_Check(files)) {
@@ -71,8 +65,10 @@ PyObject* FemPostPipelinePy::read(PyObject* args)
             // multistep version!
             if (!(PyTuple_Check(files) || PyList_Check(files))
                 || !(PyTuple_Check(values) || PyList_Check(values))) {
-                PyErr_SetString(PyExc_TypeError,
-                                "Files and values must be list of strings and number respectively");
+                PyErr_SetString(
+                    PyExc_TypeError,
+                    "Files and values must be list of strings and number respectively"
+                );
                 return nullptr;
             }
 
@@ -137,13 +133,7 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
     PyObject* unitobj = nullptr;
     const char* value_type;
 
-    if (PyArg_ParseTuple(args,
-                         "O|OO!s",
-                         &py,
-                         &list,
-                         &(Base::UnitPy::Type),
-                         &unitobj,
-                         &value_type)) {
+    if (PyArg_ParseTuple(args, "O|OO!s", &py, &list, &(Base::UnitPy::Type), &unitobj, &value_type)) {
 
         if (!list) {
 
@@ -153,8 +143,7 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
                 PyErr_SetString(PyExc_TypeError, "object is not a result object");
                 return nullptr;
             }
-            App::DocumentObject* obj =
-                static_cast<App::DocumentObjectPy*>(py)->getDocumentObjectPtr();
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(py)->getDocumentObjectPtr();
             if (!obj->isDerivedFrom<FemResultObject>()) {
                 PyErr_SetString(PyExc_TypeError, "object is not a result object");
                 return nullptr;
@@ -171,7 +160,8 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
                 || !(PyTuple_Check(list) || PyList_Check(list))) {
 
                 std::string error = std::string(
-                    "Result and value must be list of ResultObject and number respectively.");
+                    "Result and value must be list of ResultObject and number respectively."
+                );
                 throw Base::TypeError(error);
             }
 
@@ -184,8 +174,7 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
             for (Py::Sequence::size_type i = 0; i < size; i++) {
                 Py::Object item = result_list[i];
                 if (!PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
-                    std::string error =
-                        std::string("type in result list must be 'ResultObject', not ");
+                    std::string error = std::string("type in result list must be 'ResultObject', not ");
                     throw Base::TypeError(error);
                 }
                 auto obj = static_cast<DocumentObjectPy*>(*item)->getDocumentObjectPtr();
@@ -222,7 +211,8 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
         }
         else {
             std::string error = std::string(
-                "Multistep load requires 4 arguments: ResultList, ValueList, unit, type");
+                "Multistep load requires 4 arguments: ResultList, ValueList, unit, type"
+            );
             throw Base::TypeError(error);
         }
     }

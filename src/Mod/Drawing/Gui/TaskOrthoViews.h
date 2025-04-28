@@ -44,10 +44,12 @@ class Ui_TaskOrthoViews;
 class orthoview
 {
 public:
-    orthoview(App::Document* parent,
-              App::DocumentObject* part,
-              App::DocumentObject* page,
-              Base::BoundBox3d* partbox);
+    orthoview(
+        App::Document* parent,
+        App::DocumentObject* part,
+        App::DocumentObject* page,
+        Base::BoundBox3d* partbox
+    );
     ~orthoview();
 
     void set_data(int r_x, int r_y);
@@ -103,25 +105,29 @@ public:
     void set_projection(int proj);
     void set_hidden(bool state);
     void set_smooth(bool state);
-    void set_Axo(int rel_x,
-                 int rel_y,
-                 gp_Dir up,
-                 gp_Dir right,
-                 bool away = false,
-                 int axo = 0,
-                 bool tri = false);
+    void set_Axo(
+        int rel_x,
+        int rel_y,
+        gp_Dir up,
+        gp_Dir right,
+        bool away = false,
+        int axo = 0,
+        bool tri = false
+    );
     void set_Axo(int rel_x, int rel_y);
     void set_Axo_scale(int rel_x, int rel_y, float axo_scale);
     void set_Ortho(int rel_x, int rel_y);
     int is_Ortho(int rel_x, int rel_y);
-    bool get_Axo(int rel_x,
-                 int rel_y,
-                 int& axo,
-                 gp_Dir& up,
-                 gp_Dir& right,
-                 bool& away,
-                 bool& tri,
-                 float& axo_scale);
+    bool get_Axo(
+        int rel_x,
+        int rel_y,
+        int& axo,
+        gp_Dir& up,
+        gp_Dir& right,
+        bool& away,
+        bool& tri,
+        float& axo_scale
+    );
     void auto_dims(bool setting);
     void set_configs(float configs[5]);
     void get_configs(float configs[5]);
@@ -131,9 +137,8 @@ private:
     void load_page();    // get page / titleblock dims from template
     void choose_page();  // determine correct portion of page to use to avoid interference with
                          // title block
-    void
-    set_all_orientations();   // update orientations of all views following change in primary view
-    void calc_layout_size();  // what's the real world size of chosen layout, excluding spaces
+    void set_all_orientations();  // update orientations of all views following change in primary view
+    void calc_layout_size();      // what's the real world size of chosen layout, excluding spaces
     void calc_offsets();
     void set_views();
     void calc_scale();

@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <TopoDS_Shape.hxx>
-#include <sstream>
+# include <TopoDS_Shape.hxx>
+# include <sstream>
 #endif
 
 #include <Mod/Part/App/PartFeature.h>
@@ -51,26 +51,28 @@ FeatureViewPart::FeatureViewPart(void)
 
     ADD_PROPERTY_TYPE(Direction, (0, 0, 1.0), group, App::Prop_None, "Projection direction");
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
-    ADD_PROPERTY_TYPE(ShowHiddenLines,
-                      (false),
-                      group,
-                      App::Prop_None,
-                      "Control the appearance of the dashed hidden lines");
-    ADD_PROPERTY_TYPE(ShowSmoothLines,
-                      (false),
-                      group,
-                      App::Prop_None,
-                      "Control the appearance of the smooth lines");
-    ADD_PROPERTY_TYPE(LineWidth,
-                      (0.35),
-                      vgroup,
-                      App::Prop_None,
-                      "The thickness of the viewed lines");
-    ADD_PROPERTY_TYPE(HiddenWidth,
-                      (0.15),
-                      vgroup,
-                      App::Prop_None,
-                      "The thickness of the hidden lines, if enabled");
+    ADD_PROPERTY_TYPE(
+        ShowHiddenLines,
+        (false),
+        group,
+        App::Prop_None,
+        "Control the appearance of the dashed hidden lines"
+    );
+    ADD_PROPERTY_TYPE(
+        ShowSmoothLines,
+        (false),
+        group,
+        App::Prop_None,
+        "Control the appearance of the smooth lines"
+    );
+    ADD_PROPERTY_TYPE(LineWidth, (0.35), vgroup, App::Prop_None, "The thickness of the viewed lines");
+    ADD_PROPERTY_TYPE(
+        HiddenWidth,
+        (0.15),
+        vgroup,
+        App::Prop_None,
+        "The thickness of the hidden lines, if enabled"
+    );
     ADD_PROPERTY_TYPE(Tolerance, (0.05), vgroup, App::Prop_None, "The tessellation tolerance");
     Tolerance.setConstraints(&floatRange);
 }
@@ -115,17 +117,21 @@ App::DocumentObjectExecReturn* FeatureViewPart::execute(void)
             type = (ProjectionAlgos::ExtractionType)(type | ProjectionAlgos::WithSmooth);
         }
         ProjectionAlgos::XmlAttributes visible_style = {
-            {"stroke-width", to_string(this->LineWidth.getValue() / this->Scale.getValue())}};
+            {"stroke-width", to_string(this->LineWidth.getValue() / this->Scale.getValue())}
+        };
         ProjectionAlgos::XmlAttributes hidden_style = {
-            {"stroke-width", to_string(this->HiddenWidth.getValue() / this->Scale.getValue())}};
-        result << Alg.getSVG(type,
-                             this->Tolerance.getValue(),
-                             visible_style,
-                             visible_style,
-                             visible_style,
-                             hidden_style,
-                             hidden_style,
-                             hidden_style);
+            {"stroke-width", to_string(this->HiddenWidth.getValue() / this->Scale.getValue())}
+        };
+        result << Alg.getSVG(
+            type,
+            this->Tolerance.getValue(),
+            visible_style,
+            visible_style,
+            visible_style,
+            hidden_style,
+            hidden_style,
+            hidden_style
+        );
 
         result << "</g>" << endl;
 

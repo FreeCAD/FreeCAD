@@ -22,15 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QCheckBox>
-#include <QGridLayout>
-#include <QInputDialog>
-#include <QLabel>
-#include <QMenu>
-#include <QMessageBox>
-#include <QSignalBlocker>
-#include <QWidgetAction>
+# include <QApplication>
+# include <QCheckBox>
+# include <QGridLayout>
+# include <QInputDialog>
+# include <QLabel>
+# include <QMenu>
+# include <QMessageBox>
+# include <QSignalBlocker>
+# include <QWidgetAction>
 #endif
 
 #include <App/DocumentObjectGroup.h>

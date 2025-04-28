@@ -92,9 +92,11 @@ protected:
     void unsetupObject() override;
 
     // update documents
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   const char* PropName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 };
 
 // ---------------------------------------------------------------------------

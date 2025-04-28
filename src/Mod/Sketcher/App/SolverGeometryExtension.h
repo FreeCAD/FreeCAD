@@ -143,11 +143,11 @@ public:
 
         ParameterStatus getStatus() const
         {
-            return std::all_of(pstatus.begin(),
-                               pstatus.end(),
-                               [](const auto& v) {
-                                   return v == Independent;
-                               })
+            return std::all_of(
+                       pstatus.begin(),
+                       pstatus.end(),
+                       [](const auto& v) { return v == Independent; }
+                   )
                 ? Independent
                 : Dependent;
         }

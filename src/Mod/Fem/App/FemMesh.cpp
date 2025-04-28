@@ -23,41 +23,41 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Python.h>
-#include <cstdlib>
-#include <memory>
+# include <Python.h>
+# include <cstdlib>
+# include <memory>
 
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_Box.hxx>
-#include <SMDS_MeshGroup.hxx>
-#include <SMESHDS_Group.hxx>
-#include <SMESHDS_GroupBase.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMESH_Gen.hxx>
-#include <SMESH_Group.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESH_MeshEditor.hxx>
-#include <ShapeAnalysis_ShapeTolerance.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_StartEndLength.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRep_Tool.hxx>
+# include <Bnd_Box.hxx>
+# include <SMDS_MeshGroup.hxx>
+# include <SMESHDS_Group.hxx>
+# include <SMESHDS_GroupBase.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMESH_Gen.hxx>
+# include <SMESH_Group.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMESH_MeshEditor.hxx>
+# include <ShapeAnalysis_ShapeTolerance.hxx>
+# include <StdMeshers_Deflection1D.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
+# include <StdMeshers_MaxLength.hxx>
+# include <StdMeshers_NumberOfSegments.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
+# include <StdMeshers_Regular_1D.hxx>
+# include <StdMeshers_StartEndLength.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <gp_Pnt.hxx>
 
-#include <boost/assign/list_of.hpp>
-#include <boost/tokenizer.hpp>  //to simplify parsing input files we use the boost lib
+# include <boost/assign/list_of.hpp>
+# include <boost/tokenizer.hpp>  //to simplify parsing input files we use the boost lib
 #endif
 
 #include <App/Application.h>
@@ -74,7 +74,7 @@
 #include <FemMeshPy.h>
 
 #ifdef FC_USE_VTK
-#include "FemVTKTools.h"
+# include "FemVTKTools.h"
 #endif
 
 
@@ -183,12 +183,14 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
                     editor.GetMeshDS()->AddPolyhedralVolumeWithID(
                         nodes,
                         static_cast<const SMDS_MeshVolume*>(elem)->GetQuantities(),
-                        ID);
+                        ID
+                    );
 #else
                     editor.GetMeshDS()->AddPolyhedralVolumeWithID(
                         nodes,
                         static_cast<const SMDS_VtkVolume*>(elem)->GetQuantities(),
-                        ID);
+                        ID
+                    );
 #endif
                     break;
                 case SMDSEntity_Ball: {
@@ -368,11 +370,13 @@ std::list<std::pair<int, int>> FemMesh::getVolumesByFace(const TopoDS_Face& face
         }
 
         std::vector<int> element_face_nodes;
-        std::set_intersection(nodes_on_face.begin(),
-                              nodes_on_face.end(),
-                              node_ids.begin(),
-                              node_ids.end(),
-                              std::back_insert_iterator<std::vector<int>>(element_face_nodes));
+        std::set_intersection(
+            nodes_on_face.begin(),
+            nodes_on_face.end(),
+            node_ids.begin(),
+            node_ids.end(),
+            std::back_insert_iterator<std::vector<int>>(element_face_nodes)
+        );
 
         if (element_face_nodes.size() == node_ids.size()) {
             face_nodes[face->GetID()] = node_ids;
@@ -392,11 +396,13 @@ std::list<std::pair<int, int>> FemMesh::getVolumesByFace(const TopoDS_Face& face
 
         for (const auto& it : face_nodes) {
             std::vector<int> element_face_nodes;
-            std::set_intersection(node_ids.begin(),
-                                  node_ids.end(),
-                                  it.second.begin(),
-                                  it.second.end(),
-                                  std::back_insert_iterator<std::vector<int>>(element_face_nodes));
+            std::set_intersection(
+                node_ids.begin(),
+                node_ids.end(),
+                it.second.begin(),
+                it.second.end(),
+                std::back_insert_iterator<std::vector<int>>(element_face_nodes)
+            );
 
             // For curved faces it is possible that a volume contributes more than one face
             if (element_face_nodes.size() == it.second.size()) {
@@ -427,11 +433,13 @@ std::list<int> FemMesh::getFacesByFace(const TopoDS_Face& face) const
         }
 
         std::vector<int> element_face_nodes;
-        std::set_intersection(nodes_on_face.begin(),
-                              nodes_on_face.end(),
-                              face_nodes.begin(),
-                              face_nodes.end(),
-                              std::back_insert_iterator<std::vector<int>>(element_face_nodes));
+        std::set_intersection(
+            nodes_on_face.begin(),
+            nodes_on_face.end(),
+            face_nodes.begin(),
+            face_nodes.end(),
+            std::back_insert_iterator<std::vector<int>>(element_face_nodes)
+        );
 
         // For curved faces it is possible that a volume contributes more than one face
         if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
@@ -459,11 +467,13 @@ std::list<int> FemMesh::getEdgesByEdge(const TopoDS_Edge& edge) const
         }
 
         std::vector<int> element_edge_nodes;
-        std::set_intersection(nodes_on_edge.begin(),
-                              nodes_on_edge.end(),
-                              edge_nodes.begin(),
-                              edge_nodes.end(),
-                              std::back_insert_iterator<std::vector<int>>(element_edge_nodes));
+        std::set_intersection(
+            nodes_on_edge.begin(),
+            nodes_on_edge.end(),
+            edge_nodes.begin(),
+            edge_nodes.end(),
+            std::back_insert_iterator<std::vector<int>>(element_edge_nodes)
+        );
 
         if (element_edge_nodes.size() == static_cast<std::size_t>(numNodes)) {
             result.push_back(edge->GetID());
@@ -514,11 +524,13 @@ std::map<int, int> FemMesh::getccxVolumesByFace(const TopoDS_Face& face) const
         std::vector<int> element_face_nodes;
         std::set<int> element_nodes;
         element_nodes.insert(apair.second.begin(), apair.second.end());
-        std::set_intersection(nodes_on_face.begin(),
-                              nodes_on_face.end(),
-                              element_nodes.begin(),
-                              element_nodes.end(),
-                              std::back_insert_iterator<std::vector<int>>(element_face_nodes));
+        std::set_intersection(
+            nodes_on_face.begin(),
+            nodes_on_face.end(),
+            element_nodes.begin(),
+            element_nodes.end(),
+            std::back_insert_iterator<std::vector<int>>(element_face_nodes)
+        );
 
         if ((element_face_nodes.size() == 3 && num_of_nodes == 4)
             || (element_face_nodes.size() == 6 && num_of_nodes == 10)) {
@@ -572,9 +584,7 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
     ShapeAnalysis_ShapeTolerance analysis;
     double limit = analysis.Tolerance(solid, 1, shapetype);
-    Base::Console().Log("The limit if a node is in or out: %.12lf in scientific: %.4e \n",
-                        limit,
-                        limit);
+    Base::Console().Log("The limit if a node is in or out: %.12lf in scientific: %.4e \n", limit, limit);
 
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
@@ -624,7 +634,8 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face& face) const
     BRepBndLib::Add(
         face,
         box,
-        Standard_False);  // https://forum.freecad.org/viewtopic.php?f=18&t=21571&start=70#p221591
+        Standard_False
+    );  // https://forum.freecad.org/viewtopic.php?f=18&t=21571&start=70#p221591
     // limit where the mesh node belongs to the face:
     double limit = BRep_Tool::Tolerance(face);
     box.Enlarge(limit);
@@ -807,13 +818,17 @@ std::set<int> FemMesh::getEdgesOnly() const
 
             // if aEdgeNodes is not a subset of any aFaceNodes --> aEdge does not belong to any Face
             std::vector<int> inodes;
-            std::set_intersection(aFaceNodes.begin(),
-                                  aFaceNodes.end(),
-                                  aEdgeNodes.begin(),
-                                  aEdgeNodes.end(),
-                                  std::back_inserter(inodes));
-            std::set<int> intersection_nodes(inodes.begin(),
-                                             inodes.end());  // convert vector to set
+            std::set_intersection(
+                aFaceNodes.begin(),
+                aFaceNodes.end(),
+                aEdgeNodes.begin(),
+                aEdgeNodes.end(),
+                std::back_inserter(inodes)
+            );
+            std::set<int> intersection_nodes(
+                inodes.begin(),
+                inodes.end()
+            );  // convert vector to set
             if (aEdgeNodes == intersection_nodes) {
                 edgeBelongsToAFace = true;
                 break;
@@ -872,13 +887,17 @@ std::set<int> FemMesh::getFacesOnly() const
             // if aFaceNodes is not a subset of any aVolNodes --> aFace does not belong to any
             // Volume
             std::vector<int> inodes;
-            std::set_intersection(aVolNodes.begin(),
-                                  aVolNodes.end(),
-                                  aFaceNodes.begin(),
-                                  aFaceNodes.end(),
-                                  std::back_inserter(inodes));
-            std::set<int> intersection_nodes(inodes.begin(),
-                                             inodes.end());  // convert vector to set
+            std::set_intersection(
+                aVolNodes.begin(),
+                aVolNodes.end(),
+                aFaceNodes.begin(),
+                aFaceNodes.end(),
+                std::back_inserter(inodes)
+            );
+            std::set<int> intersection_nodes(
+                inodes.begin(),
+                inodes.end()
+            );  // convert vector to set
             if (aFaceNodes == intersection_nodes) {
                 faceBelongsToAVolume = true;
                 break;
@@ -971,11 +990,13 @@ public:
             meshds->AddFaceWithID(n0, n1, n2, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
-                                    element_id,
-                                    elements[0],
-                                    elements[1],
-                                    elements[2]);
+            Base::Console().Warning(
+                "NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
+                element_id,
+                elements[0],
+                elements[1],
+                elements[2]
+            );
         }
     }
 };
@@ -1038,19 +1059,21 @@ public:
             meshds->AddVolumeWithID(n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, "
-                                    "%d, %d, %d, %d, %d, %d)\n",
-                                    element_id,
-                                    elements[1],
-                                    elements[0],
-                                    elements[2],
-                                    elements[3],
-                                    elements[4],
-                                    elements[6],
-                                    elements[5],
-                                    elements[8],
-                                    elements[7],
-                                    elements[9]);
+            Base::Console().Warning(
+                "NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, "
+                "%d, %d, %d, %d, %d, %d)\n",
+                element_id,
+                elements[1],
+                elements[0],
+                elements[2],
+                elements[3],
+                elements[4],
+                elements[6],
+                elements[5],
+                elements[8],
+                elements[7],
+                elements[9]
+            );
         }
     }
 };
@@ -1226,13 +1249,15 @@ class CWEDGEElement: public NastranElement
     }
     void addToMesh(SMESHDS_Mesh* meshds) override
     {
-        meshds->AddVolumeWithID(elements[0],
-                                elements[1],
-                                elements[2],
-                                elements[3],
-                                elements[4],
-                                elements[5],
-                                element_id);
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            element_id
+        );
     }
 };
 
@@ -1253,15 +1278,17 @@ class CHEXA1Element: public NastranElement
     }
     void addToMesh(SMESHDS_Mesh* meshds) override
     {
-        meshds->AddVolumeWithID(elements[0],
-                                elements[1],
-                                elements[2],
-                                elements[3],
-                                elements[4],
-                                elements[5],
-                                elements[6],
-                                elements[7],
-                                element_id);
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            elements[6],
+            elements[7],
+            element_id
+        );
     }
 };
 
@@ -1282,15 +1309,17 @@ class CHEXA2Element: public NastranElement
     }
     void addToMesh(SMESHDS_Mesh* meshds) override
     {
-        meshds->AddVolumeWithID(elements[0],
-                                elements[1],
-                                elements[2],
-                                elements[3],
-                                elements[4],
-                                elements[5],
-                                elements[6],
-                                elements[7],
-                                element_id);
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            elements[6],
+            elements[7],
+            element_id
+        );
     }
 };
 
@@ -1375,8 +1404,10 @@ void FemMesh::readNastran(const std::string& Filename)
     } while (inputfile.good());
     inputfile.close();
 
-    Base::Console().Log("    %f: File read, start building mesh\n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().Log(
+        "    %f: File read, start building mesh\n",
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+    );
 
     // Now fill the SMESH datastructure
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
@@ -1386,8 +1417,7 @@ void FemMesh::readNastran(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().Log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readNastran95(const std::string& Filename)
@@ -1502,8 +1532,10 @@ void FemMesh::readNastran95(const std::string& Filename)
     } while (inputfile.good());
     inputfile.close();
 
-    Base::Console().Log("    %f: File read, start building mesh\n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().Log(
+        "    %f: File read, start building mesh\n",
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+    );
 
     // Now fill the SMESH datastructure
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
@@ -1517,8 +1549,7 @@ void FemMesh::readNastran95(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().Log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readAbaqus(const std::string& FileName)
@@ -1557,8 +1588,7 @@ void FemMesh::readAbaqus(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().Log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readZ88(const std::string& FileName)
@@ -1597,8 +1627,7 @@ void FemMesh::readZ88(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().Log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::read(const char* FileName)
@@ -1656,12 +1685,14 @@ void FemMesh::writeVTK(const std::string& fileName, bool highest) const
     FemVTKTools::writeVTKMesh(fileName.c_str(), this, highest);
 }
 
-void FemMesh::writeABAQUS(const std::string& Filename,
-                          int elemParam,
-                          bool groupParam,
-                          ABAQUS_VolumeVariant volVariant,
-                          ABAQUS_FaceVariant faceVariant,
-                          ABAQUS_EdgeVariant edgeVariant) const
+void FemMesh::writeABAQUS(
+    const std::string& Filename,
+    int elemParam,
+    bool groupParam,
+    ABAQUS_VolumeVariant volVariant,
+    ABAQUS_FaceVariant faceVariant,
+    ABAQUS_EdgeVariant edgeVariant
+) const
 {
     /*
      * elemParam:
@@ -1860,8 +1891,8 @@ void FemMesh::writeABAQUS(const std::string& Filename,
     //
     // hexa20 FreeCAD --> C3D20, C3D20R CalculiX
     // N6, N7, N8, N5, N2, N3, N4, N1, N14, N15, N16, N13, N10, N11, N12, N9, N18, N19, N20, N17
-    std::vector<int> hexa20 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(10)(
-        11)(8)(17)(18)(19)(16);
+    std::vector<int> hexa20
+        = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(10)(11)(8)(17)(18)(19)(16);
     //
     // penta6 FreeCAD --> C3D6, F3D6 CalculiX
     // N5, N6, N4, N2, N3, N1
@@ -1869,8 +1900,8 @@ void FemMesh::writeABAQUS(const std::string& Filename,
     //
     // penta15 FreeCAD --> C3D15 CalculiX
     // N5, N6, N4, N2, N3, N1, N11, N12, N10, N8, N9, N7, N14, N15, N13
-    std::vector<int> penta15 =
-        boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12);
+    std::vector<int> penta15 = boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12
+    );
 
     elemOrderMap.insert(std::make_pair(variants["Tetra4"], tetra4));
     volTypeMap.insert(std::make_pair(tetra4.size(), variants["Tetra4"]));
@@ -2029,8 +2060,7 @@ void FemMesh::writeABAQUS(const std::string& Filename,
         default:
             anABAQUS_Output << "** Problem on writing" << std::endl;
             anABAQUS_Output.close();
-            throw std::runtime_error(
-                "Unknown ABAQUS element choice parameter, [0|1|2] are allowed.");
+            throw std::runtime_error("Unknown ABAQUS element choice parameter, [0|1|2] are allowed.");
     }
 
     // write nodes
@@ -2264,10 +2294,12 @@ void FemMesh::write(const char* FileName) const
     }
     else if (File.hasExtension("med")) {
         Base::Console().Log("FEM mesh object will be exported to med format.\n");
-        myMesh->ExportMED(File.filePath().c_str(),
-                          File.fileNamePure().c_str(),
-                          false,
-                          2);  // 2 means MED_V2_2 version!
+        myMesh->ExportMED(
+            File.filePath().c_str(),
+            File.fileNamePure().c_str(),
+            false,
+            2
+        );  // 2 means MED_V2_2 version!
     }
     else if (File.hasExtension("stl")) {
         Base::Console().Log("FEM mesh object will be exported to stl format.\n");
@@ -2476,10 +2508,12 @@ Data::Segment* FemMesh::getSubElement(const char* /*Type*/, unsigned long /*n*/)
     return nullptr;
 }
 
-void FemMesh::getPoints(std::vector<Base::Vector3d>& Points,
-                        std::vector<Base::Vector3d>& /*Normals*/,
-                        double /*Accuracy*/,
-                        uint16_t /*flags*/) const
+void FemMesh::getPoints(
+    std::vector<Base::Vector3d>& Points,
+    std::vector<Base::Vector3d>& /*Normals*/,
+    double /*Accuracy*/,
+    uint16_t /*flags*/
+) const
 {
     const SMESHDS_Mesh* data = getSMesh()->GetMeshDS();
     std::vector<Base::Vector3d> nodes;
@@ -2553,8 +2587,8 @@ Base::Quantity FemMesh::getVolume() const
         a_b_product.x = a.y * b.z - b.y * a.z;
         a_b_product.y = a.z * b.x - b.z * a.x;
         a_b_product.z = a.x * b.y - b.x * a.y;
-        volume +=
-            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
+        volume += 1.0 / 6.0
+            * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         // 5,9,8,7
         a = v8 - v4;
         b = v7 - v4;
@@ -2562,8 +2596,8 @@ Base::Quantity FemMesh::getVolume() const
         a_b_product.x = a.y * b.z - b.y * a.z;
         a_b_product.y = a.z * b.x - b.z * a.x;
         a_b_product.z = a.x * b.y - b.x * a.y;
-        volume +=
-            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
+        volume += 1.0 / 6.0
+            * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         // 5,2,9,7
         a = v1 - v4;
         b = v8 - v4;
@@ -2571,8 +2605,8 @@ Base::Quantity FemMesh::getVolume() const
         a_b_product.x = a.y * b.z - b.y * a.z;
         a_b_product.y = a.z * b.x - b.z * a.x;
         a_b_product.z = a.x * b.y - b.x * a.y;
-        volume +=
-            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
+        volume += 1.0 / 6.0
+            * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         // 2,6,9,7
         a = v5 - v1;
         b = v8 - v1;
@@ -2580,8 +2614,8 @@ Base::Quantity FemMesh::getVolume() const
         a_b_product.x = a.y * b.z - b.y * a.z;
         a_b_product.y = a.z * b.x - b.z * a.x;
         a_b_product.z = a.x * b.y - b.x * a.y;
-        volume +=
-            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
+        volume += 1.0 / 6.0
+            * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         // 9,6,10,7
         a = v5 - v8;
         b = v9 - v8;
@@ -2589,8 +2623,8 @@ Base::Quantity FemMesh::getVolume() const
         a_b_product.x = a.y * b.z - b.y * a.z;
         a_b_product.y = a.z * b.x - b.z * a.x;
         a_b_product.z = a.x * b.y - b.x * a.y;
-        volume +=
-            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
+        volume += 1.0 / 6.0
+            * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         // 6,3,10,7
         a = v2 - v5;
         b = v9 - v5;
@@ -2598,8 +2632,8 @@ Base::Quantity FemMesh::getVolume() const
         a_b_product.x = a.y * b.z - b.y * a.z;
         a_b_product.y = a.z * b.x - b.z * a.x;
         a_b_product.z = a.x * b.y - b.x * a.y;
-        volume +=
-            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
+        volume += 1.0 / 6.0
+            * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         // 8,9,10,7
         a = v8 - v7;
         b = v9 - v7;
@@ -2607,8 +2641,8 @@ Base::Quantity FemMesh::getVolume() const
         a_b_product.x = a.y * b.z - b.y * a.z;
         a_b_product.y = a.z * b.x - b.z * a.x;
         a_b_product.z = a.x * b.y - b.x * a.y;
-        volume +=
-            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
+        volume += 1.0 / 6.0
+            * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         // 8,9,10,4
         a = v8 - v7;
         b = v9 - v7;
@@ -2616,8 +2650,8 @@ Base::Quantity FemMesh::getVolume() const
         a_b_product.x = a.y * b.z - b.y * a.z;
         a_b_product.y = a.z * b.x - b.z * a.x;
         a_b_product.z = a.x * b.y - b.x * a.y;
-        volume +=
-            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
+        volume += 1.0 / 6.0
+            * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
     }
 
     return Base::Quantity(volume, Unit::Volume);
@@ -2648,8 +2682,10 @@ int FemMesh::addGroup(const std::string TypeString, const std::string Name, cons
         }
     }
     if (!typeStringValid) {
-        throw std::runtime_error("AddGroup: Invalid type string! Allowed: All, Node, Edge, Face, "
-                                 "Volume, 0DElement, Ball");
+        throw std::runtime_error(
+            "AddGroup: Invalid type string! Allowed: All, Node, Edge, Face, "
+            "Volume, 0DElement, Ball"
+        );
     }
     // add group to mesh
     SMESH_Group* group = this->getSMesh()->AddGroup(mapping[TypeString], Name.c_str(), aId);

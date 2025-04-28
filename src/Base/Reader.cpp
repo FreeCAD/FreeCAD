@@ -24,12 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <map>
-#include <vector>
-#include <iostream>
-#include <string>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
-#include <xercesc/sax2/Attributes.hpp>
+# include <map>
+# include <vector>
+# include <iostream>
+# include <string>
+# include <xercesc/sax2/XMLReaderFactory.hpp>
+# include <xercesc/sax2/Attributes.hpp>
 #endif
 
 #include <locale>
@@ -46,13 +46,13 @@
 #include "XMLTools.h"
 
 #ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
+# include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipinputstream.h>
 #include <boost/iostreams/filtering_stream.hpp>
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
+# define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
 #else
 XERCES_CPP_NAMESPACE_USE
@@ -123,8 +123,7 @@ long Base::XMLReader::getAttributeAsInteger(const char* AttrName, const char* de
     return stol(getAttribute(AttrName, defaultValue));
 }
 
-unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName,
-                                                      const char* defaultValue) const
+unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName, const char* defaultValue) const
 {
     return stoul(getAttribute(AttrName, defaultValue), nullptr);
 }
@@ -134,8 +133,10 @@ double Base::XMLReader::getAttributeAsFloat(const char* AttrName, const char* de
     return stod(getAttribute(AttrName, defaultValue), nullptr);
 }
 
-const char* Base::XMLReader::getAttribute(const char* AttrName,            // NOLINT
-                                          const char* defaultValue) const  // NOLINT
+const char* Base::XMLReader::getAttribute(
+    const char* AttrName,  // NOLINT
+    const char* defaultValue
+) const  // NOLINT
 {
     auto pos = AttrMap.find(AttrName);
 
@@ -302,8 +303,7 @@ std::streamsize Base::XMLReader::read(char_type* s, std::streamsize n)
     }
 
     for (;;) {
-        std::streamsize copy_size =
-            static_cast<std::streamsize>(Characters.size()) - CharacterOffset;
+        std::streamsize copy_size = static_cast<std::streamsize>(Characters.size()) - CharacterOffset;
         if (n < copy_size) {
             copy_size = n;
         }
@@ -370,7 +370,8 @@ std::istream& Base::XMLReader::beginCharStream(CharStreamFormat format)
     auto* filteringStream = dynamic_cast<boost::iostreams::filtering_istream*>(CharStream.get());
     if (format == CharStreamFormat::Base64Encoded) {
         filteringStream->push(
-            base64_decoder(Base::base64DefaultBufferSize, Base64ErrorHandling::silent));
+            base64_decoder(Base::base64DefaultBufferSize, Base64ErrorHandling::silent)
+        );
     }
     filteringStream->push(boost::ref(*this));
     return *CharStream;
@@ -440,8 +441,10 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // less data than the file size would allow.
                 // All what we need to do is to notify the user about the
                 // failure.
-                Base::Console().Error("Reading failed from embedded file: %s\n",
-                                      entry->toString().c_str());
+                Base::Console().Error(
+                    "Reading failed from embedded file: %s\n",
+                    entry->toString().c_str()
+                );
                 FailedFiles.push_back(jt->FileName);
             }
             // Go to the next registered file name
@@ -521,10 +524,12 @@ void Base::XMLReader::endDocument()
     ReadType = EndDocument;
 }
 
-void Base::XMLReader::startElement(const XMLCh* const /*uri*/,
-                                   const XMLCh* const localname,
-                                   const XMLCh* const /*qname*/,
-                                   const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
+void Base::XMLReader::startElement(
+    const XMLCh* const /*uri*/,
+    const XMLCh* const localname,
+    const XMLCh* const /*qname*/,
+    const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs
+)
 {
     Level++;  // new scope
     LocalName = StrX(localname).c_str();
@@ -538,9 +543,7 @@ void Base::XMLReader::startElement(const XMLCh* const /*uri*/,
     ReadType = StartElement;
 }
 
-void Base::XMLReader::endElement(const XMLCh* const /*uri*/,
-                                 const XMLCh* const localname,
-                                 const XMLCh* const /*qname*/)
+void Base::XMLReader::endElement(const XMLCh* const /*uri*/, const XMLCh* const localname, const XMLCh* const /*qname*/)
 {
     Level--;  // end of scope
     LocalName = StrX(localname).c_str();

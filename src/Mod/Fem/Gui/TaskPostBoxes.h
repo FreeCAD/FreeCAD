@@ -136,10 +136,12 @@ class TaskPostBox: public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskPostBox(Gui::ViewProviderDocumentObject* view,
-                const QPixmap& icon,
-                const QString& title,
-                QWidget* parent = nullptr);
+    TaskPostBox(
+        Gui::ViewProviderDocumentObject* view,
+        const QPixmap& icon,
+        const QString& title,
+        QWidget* parent = nullptr
+    );
     ~TaskPostBox() override;
 
     virtual void applyPythonCode() {};
@@ -339,8 +341,7 @@ class TaskPostDataAlongLine: public TaskPostBox
     Q_OBJECT
 
 public:
-    explicit TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* view,
-                                   QWidget* parent = nullptr);
+    explicit TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* view, QWidget* parent = nullptr);
     ~TaskPostDataAlongLine() override;
 
     void applyPythonCode() override;
@@ -414,9 +415,7 @@ class TaskPostClip: public TaskPostBox
     Q_OBJECT
 
 public:
-    TaskPostClip(ViewProviderFemPostClip* view,
-                 App::PropertyLink* function,
-                 QWidget* parent = nullptr);
+    TaskPostClip(ViewProviderFemPostClip* view, App::PropertyLink* function, QWidget* parent = nullptr);
     ~TaskPostClip() override;
 
     void applyPythonCode() override;
@@ -480,9 +479,7 @@ class TaskPostCut: public TaskPostBox
     Q_OBJECT
 
 public:
-    TaskPostCut(ViewProviderFemPostCut* view,
-                App::PropertyLink* function,
-                QWidget* parent = nullptr);
+    TaskPostCut(ViewProviderFemPostCut* view, App::PropertyLink* function, QWidget* parent = nullptr);
     ~TaskPostCut() override;
 
     void applyPythonCode() override;

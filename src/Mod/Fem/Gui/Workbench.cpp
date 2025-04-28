@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <qobject.h>
+# include <qobject.h>
 #endif
 
 #include <App/Application.h>

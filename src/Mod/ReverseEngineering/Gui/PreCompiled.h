@@ -26,32 +26,32 @@
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4181)
-#pragma warning(disable : 4267)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4305)
-#pragma warning(disable : 4522)
+# pragma warning(disable : 4181)
+# pragma warning(disable : 4267)
+# pragma warning(disable : 4275)
+# pragma warning(disable : 4305)
+# pragma warning(disable : 4522)
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <algorithm>
-#include <sstream>
+# include <algorithm>
+# include <sstream>
 
 // OpenCasCade
-#include <BRepBuilderAPI_MakePolygon.hxx>
-#include <BRep_Builder.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <Geom_Plane.hxx>
-#include <Standard_Failure.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Wire.hxx>
+# include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRep_Builder.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <Geom_Plane.hxx>
+# include <Standard_Failure.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Wire.hxx>
 
 // Qt Toolkit
-#include <QApplication>
-#include <QMessageBox>
-#include <QPushButton>
+# include <QApplication>
+# include <QMessageBox>
+# include <QPushButton>
 
 #endif  //_PreComp_
 

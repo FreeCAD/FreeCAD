@@ -25,8 +25,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <cassert>
-#include <iostream>
+# include <cassert>
+# include <iostream>
 #endif
 
 #include <QAtomicInt>

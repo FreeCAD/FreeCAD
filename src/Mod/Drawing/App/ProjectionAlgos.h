@@ -54,16 +54,18 @@ public:
     };
     using XmlAttributes = std::map<std::string, std::string>;
 
-    std::string getSVG(ExtractionType type,
-                       double tolerance = 0.05,
-                       XmlAttributes V_style = XmlAttributes(),
-                       XmlAttributes V0_style = XmlAttributes(),
-                       XmlAttributes V1_style = XmlAttributes(),
-                       XmlAttributes H_style = XmlAttributes(),
-                       XmlAttributes H0_style = XmlAttributes(),
-                       XmlAttributes H1_style = XmlAttributes());
-    std::string
-    getDXF(ExtractionType type, double scale, double tolerance);  // added by Dan Falck 2011/09/25
+    std::string getSVG(
+        ExtractionType type,
+        double tolerance = 0.05,
+        XmlAttributes V_style = XmlAttributes(),
+        XmlAttributes V0_style = XmlAttributes(),
+        XmlAttributes V1_style = XmlAttributes(),
+        XmlAttributes H_style = XmlAttributes(),
+        XmlAttributes H0_style = XmlAttributes(),
+        XmlAttributes H1_style = XmlAttributes()
+    );
+    std::string getDXF(ExtractionType type, double scale, double tolerance);  // added by Dan Falck
+                                                                              // 2011/09/25
 
 
     const TopoDS_Shape& Input;

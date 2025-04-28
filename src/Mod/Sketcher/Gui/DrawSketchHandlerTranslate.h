@@ -50,14 +50,14 @@ namespace SketcherGui
 
 class DrawSketchHandlerTranslate;
 
-using DSHTranslateController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerTranslate,
-                                      StateMachines::ThreeSeekEnd,
-                                      /*PAutoConstraintSize =*/0,
-                                      /*OnViewParametersT =*/OnViewParameters<6>,
-                                      /*WidgetParametersT =*/WidgetParameters<2>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+using DSHTranslateController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerTranslate,
+    StateMachines::ThreeSeekEnd,
+    /*PAutoConstraintSize =*/0,
+    /*OnViewParametersT =*/OnViewParameters<6>,
+    /*WidgetParametersT =*/WidgetParameters<2>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 using DSHTranslateControllerBase = DSHTranslateController::ControllerBase;
 
@@ -127,16 +127,21 @@ private:
         }
         catch (const Base::Exception& e) {
             e.ReportException();
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to translate"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to translate")
+            );
 
             Gui::Command::abortCommand();
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP(
-                       "Notifications",
-                       "Tool execution aborted") "\n")  // This prevents constraints from being
-                                                        // applied on non existing geometry
+            THROWM(
+                Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Tool execution aborted"
+                ) "\n"
+            )  // This prevents constraints from being
+               // applied on non existing geometry
         }
     }
 
@@ -201,8 +206,7 @@ private:
             return false;
         }
         if (state() == SelectMode::SeekThird
-            && secondTranslationVector.Length() < Precision::Confusion()
-            && secondNumberOfCopies > 1) {
+            && secondTranslationVector.Length() < Precision::Confusion() && secondNumberOfCopies > 1) {
             return false;
         }
         return true;
@@ -235,9 +239,7 @@ private:
         }
         stream << listOfGeoIds[listOfGeoIds.size() - 1];
         try {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "delGeometries([%s])",
-                                  stream.str().c_str());
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometries([%s])", stream.str().c_str());
         }
         catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
@@ -276,28 +278,26 @@ private:
                         circle->setCenter(circle->getCenter() + vec);
                     }
                     else if (isArcOfCircle(*geo)) {
-                        Part::GeomArcOfCircle* arc =
-                            static_cast<Part::GeomArcOfCircle*>(geo);  // NOLINT
+                        Part::GeomArcOfCircle* arc = static_cast<Part::GeomArcOfCircle*>(geo);  // NOLINT
                         arc->setCenter(arc->getCenter() + vec);
                     }
                     else if (isEllipse(*geo)) {
-                        Part::GeomEllipse* ellipse =
-                            static_cast<Part::GeomEllipse*>(geo);  // NOLINT
+                        Part::GeomEllipse* ellipse = static_cast<Part::GeomEllipse*>(geo);  // NOLINT
                         ellipse->setCenter(ellipse->getCenter() + vec);
                     }
                     else if (isArcOfEllipse(*geo)) {
-                        Part::GeomArcOfEllipse* aoe =
-                            static_cast<Part::GeomArcOfEllipse*>(geo);  // NOLINT
+                        Part::GeomArcOfEllipse* aoe = static_cast<Part::GeomArcOfEllipse*>(geo
+                        );  // NOLINT
                         aoe->setCenter(aoe->getCenter() + vec);
                     }
                     else if (isArcOfHyperbola(*geo)) {
-                        Part::GeomArcOfHyperbola* aoh =
-                            static_cast<Part::GeomArcOfHyperbola*>(geo);  // NOLINT
+                        Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(geo
+                        );  // NOLINT
                         aoh->setCenter(aoh->getCenter() + vec);
                     }
                     else if (isArcOfParabola(*geo)) {
-                        Part::GeomArcOfParabola* aop =
-                            static_cast<Part::GeomArcOfParabola*>(geo);  // NOLINT
+                        Part::GeomArcOfParabola* aop = static_cast<Part::GeomArcOfParabola*>(geo
+                        );  // NOLINT
                         aop->setCenter(aop->getCenter() + vec);
                     }
                     else if (isLineSegment(*geo)) {
@@ -325,15 +325,19 @@ private:
         if (onlyeditoutline) {
             // Add the lines to show angle
             if (firstTranslationVector.Length() > Precision::Confusion()) {
-                addLineToShapeGeometry(toVector3d(referencePoint),
-                                       toVector3d(firstTranslationPoint),
-                                       true);
+                addLineToShapeGeometry(
+                    toVector3d(referencePoint),
+                    toVector3d(firstTranslationPoint),
+                    true
+                );
             }
 
             if (secondTranslationVector.Length() > Precision::Confusion()) {
-                addLineToShapeGeometry(toVector3d(referencePoint),
-                                       toVector3d(secondTranslationPoint),
-                                       true);
+                addLineToShapeGeometry(
+                    toVector3d(referencePoint),
+                    toVector3d(secondTranslationPoint),
+                    true
+                );
             }
         }
         else {
@@ -374,10 +378,9 @@ private:
                         }
                         else if ((cstr->Type == Coincident || cstr->Type == Tangent
                                   || cstr->Type == Symmetric || cstr->Type == Perpendicular
-                                  || cstr->Type == Parallel || cstr->Type == Equal
-                                  || cstr->Type == Angle || cstr->Type == PointOnObject
-                                  || cstr->Type == Horizontal || cstr->Type == Vertical
-                                  || cstr->Type == InternalAlignment)
+                                  || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
+                                  || cstr->Type == PointOnObject || cstr->Type == Horizontal
+                                  || cstr->Type == Vertical || cstr->Type == InternalAlignment)
                                  && firstIndex >= 0 && secondIndex >= 0
                                  && thirdIndex == GeoEnum::GeoUndef) {
                             newConstr->Second = secondIndexi;
@@ -487,38 +490,48 @@ void DSHTranslateController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_translate", "Apply equal constraints"));
+            QApplication::translate("TaskSketcherTool_c1_translate", "Apply equal constraints")
+        );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_translate",
-                                    "If this option is selected dimensional constraints are "
-                                    "excluded from the operation.\n"
-                                    "Instead equal constraints are applied between the original "
-                                    "objects and their copies."));
+            QApplication::translate(
+                "TaskSketcherTool_c1_translate",
+                "If this option is selected dimensional constraints are "
+                "excluded from the operation.\n"
+                "Instead equal constraints are applied between the original "
+                "objects and their copies."
+            )
+        );
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
     onViewParameters[OnViewParameter::Third]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
     onViewParameters[OnViewParameter::Fourth]->setLabelType(
         Gui::SoDatumLabel::ANGLE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
 
     onViewParameters[OnViewParameter::Fifth]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
     onViewParameters[OnViewParameter::Sixth]->setLabelType(
         Gui::SoDatumLabel::ANGLE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p3_translate", "Copies (+'U'/-'J')"));
+        QApplication::translate("TaskSketcherTool_p3_translate", "Copies (+'U'/-'J')")
+    );
     toolWidget->setParameterLabel(
         WParameter::Second,
-        QApplication::translate("TaskSketcherTool_p5_translate", "Rows (+'R'/-'F')"));
+        QApplication::translate("TaskSketcherTool_p5_translate", "Rows (+'R'/-'F')")
+    );
 
     toolWidget->setParameter(OnViewParameter::First, 0.0);
     toolWidget->setParameter(OnViewParameter::Second, 1.0);
@@ -586,8 +599,7 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
             }
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+                double angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -610,8 +622,7 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
             }
 
             if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                double angle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
+                double angle = Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -637,10 +648,14 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
             onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
             onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
+            onViewParameters[OnViewParameter::First]->setPoints(
+                Base::Vector3d(),
+                toVector3d(onSketchPos)
+            );
+            onViewParameters[OnViewParameter::Second]->setPoints(
+                Base::Vector3d(),
+                toVector3d(onSketchPos)
+            );
         } break;
         case SelectMode::SeekSecond: {
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
@@ -648,8 +663,10 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::Third, length);
             }
 
-            Base::Vector2d vec2d = Base::Vector2d(handler->firstTranslationVector.x,
-                                                  handler->firstTranslationVector.y);
+            Base::Vector2d vec2d = Base::Vector2d(
+                handler->firstTranslationVector.x,
+                handler->firstTranslationVector.y
+            );
             double angle = vec2d.Angle();
             double range = angle * 180 / std::numbers::pi;
 
@@ -670,8 +687,10 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::Fifth, length);
             }
 
-            Base::Vector2d vec2d = Base::Vector2d(handler->secondTranslationVector.x,
-                                                  handler->secondTranslationVector.y);
+            Base::Vector2d vec2d = Base::Vector2d(
+                handler->secondTranslationVector.x,
+                handler->secondTranslationVector.y
+            );
             double angle = vec2d.Angle();
             double range = angle * 180 / std::numbers::pi;
 

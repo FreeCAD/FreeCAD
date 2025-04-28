@@ -28,27 +28,27 @@
 
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
+# pragma warning(disable : 4005)
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4503)
+# pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <cmath>
+# include <cmath>
 
 // STL
-#include <limits>
-#include <sstream>
+# include <limits>
+# include <sstream>
 
-#ifdef FC_OS_WIN32
-#include <windows.h>
-#endif
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
 
 // Qt Toolkit
-#include <Gui/QtAll.h>
+# include <Gui/QtAll.h>
 
 #endif  //_PreComp_
 

@@ -27,54 +27,54 @@
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-#define RobotExport __declspec(dllimport)
-#define PartExport __declspec(dllimport)
-#define PartGuiExport __declspec(dllimport)
-#define RobotGuiExport __declspec(dllexport)
+# define RobotExport __declspec(dllimport)
+# define PartExport __declspec(dllimport)
+# define PartGuiExport __declspec(dllimport)
+# define RobotGuiExport __declspec(dllexport)
 #else  // for Linux
-#define PartExport
-#define RobotExport
-#define PartGuiExport
-#define RobotGuiExport
+# define PartExport
+# define RobotExport
+# define PartGuiExport
+# define RobotGuiExport
 #endif
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4273)
+# pragma warning(disable : 4005)
+# pragma warning(disable : 4273)
 #endif
 
 #ifdef _PreComp_
 
 // STL
-#include <sstream>
+# include <sstream>
 
 // Qt
-#include <QAction>
-#include <QApplication>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <QInputDialog>
-#include <QMenu>
-#include <QMessageBox>
-#include <QString>
-#include <QTimer>
-#include <qobject.h>
-#include <qpalette.h>
+# include <QAction>
+# include <QApplication>
+# include <QDir>
+# include <QFile>
+# include <QFileInfo>
+# include <QInputDialog>
+# include <QMenu>
+# include <QMessageBox>
+# include <QString>
+# include <QTimer>
+# include <qobject.h>
+# include <qpalette.h>
 
 // Inventor
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/VRMLnodes/SoVRMLTransform.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/draggers/SoJackDragger.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoMarkerSet.h>
-#include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/SbVec3f.h>
+# include <Inventor/SoDB.h>
+# include <Inventor/SoInput.h>
+# include <Inventor/VRMLnodes/SoVRMLTransform.h>
+# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/draggers/SoJackDragger.h>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoMarkerSet.h>
+# include <Inventor/nodes/SoSeparator.h>
 
 #endif  //_PreComp_
 

@@ -27,40 +27,40 @@
 
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4273)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
+# pragma warning(disable : 4005)
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4503)
+# pragma warning(disable : 4275)
+# pragma warning(disable : 4273)
+# pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <ios>
+# include <ios>
 
 // STL
-#include <algorithm>
-#include <iomanip>
-#include <list>
-#include <map>
-#include <random>
-#include <sstream>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <iomanip>
+# include <list>
+# include <map>
+# include <random>
+# include <sstream>
+# include <string>
+# include <vector>
 
 // Qt Toolkit
-#include <Gui/QtAll.h>
+# include <Gui/QtAll.h>
 
 // Inventor
-#include <Gui/InventorAll.h>
+# include <Gui/InventorAll.h>
 
 #elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <Windows.h>
+# ifndef NOMINMAX
+#  define NOMINMAX
+# endif
+# include <Windows.h>
 #endif  //_PreComp_
 
 #endif  // MESHGUI_PRECOMPILED_H

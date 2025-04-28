@@ -25,7 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <list>
+# include <list>
 #endif
 
 #include "Factory.h"

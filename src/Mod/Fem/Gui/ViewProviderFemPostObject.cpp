@@ -23,33 +23,33 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDepthBuffer.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoIndexedPointSet.h>
-#include <Inventor/nodes/SoIndexedTriangleStripSet.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoPolygonOffset.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTransparencyType.h>
-#include <functional>
-#include <limits>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDepthBuffer.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoIndexedFaceSet.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoIndexedPointSet.h>
+# include <Inventor/nodes/SoIndexedTriangleStripSet.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoNormal.h>
+# include <Inventor/nodes/SoPolygonOffset.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoTransparencyType.h>
+# include <functional>
+# include <limits>
 
 
-#include <vtkCellArray.h>
-#include <vtkCellData.h>
-#include <vtkDoubleArray.h>
-#include <vtkImplicitFunction.h>
-#include <vtkPointData.h>
+# include <vtkCellArray.h>
+# include <vtkCellData.h>
+# include <vtkDoubleArray.h>
+# include <vtkImplicitFunction.h>
+# include <vtkPointData.h>
 
-#include <QApplication>
-#include <QMessageBox>
-#include <QTextStream>
+# include <QApplication>
+# include <QMessageBox>
+# include <QTextStream>
 #endif
 
 #include <App/Document.h>
@@ -128,7 +128,8 @@ private:
     {
         // NOLINTBEGIN
         this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
-            std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1));
+            std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1)
+        );
         // NOLINTEND
     }
 
@@ -155,31 +156,29 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObje
 ViewProviderFemPostObject::ViewProviderFemPostObject()
 {
     // initialize the properties
-    ADD_PROPERTY_TYPE(Field,
-                      ((long)0),
-                      "Coloring",
-                      App::Prop_None,
-                      "Select the field used for calculating the color");
-    ADD_PROPERTY_TYPE(Component,
-                      ((long)0),
-                      "Coloring",
-                      App::Prop_None,
-                      "Select component to display");
-    ADD_PROPERTY_TYPE(Transparency,
-                      (0),
-                      "Object Style",
-                      App::Prop_None,
-                      "Set object transparency.");
-    ADD_PROPERTY_TYPE(EdgeColor,
-                      (0.0f, 0.0f, 0.0f),
-                      "Object Style",
-                      App::Prop_None,
-                      "Set wireframe line color.");
-    ADD_PROPERTY_TYPE(PlainColorEdgeOnSurface,
-                      (false),
-                      "Object Style",
-                      App::Prop_None,
-                      "Use plain color for edges on surface.");
+    ADD_PROPERTY_TYPE(
+        Field,
+        ((long)0),
+        "Coloring",
+        App::Prop_None,
+        "Select the field used for calculating the color"
+    );
+    ADD_PROPERTY_TYPE(Component, ((long)0), "Coloring", App::Prop_None, "Select component to display");
+    ADD_PROPERTY_TYPE(Transparency, (0), "Object Style", App::Prop_None, "Set object transparency.");
+    ADD_PROPERTY_TYPE(
+        EdgeColor,
+        (0.0f, 0.0f, 0.0f),
+        "Object Style",
+        App::Prop_None,
+        "Set wireframe line color."
+    );
+    ADD_PROPERTY_TYPE(
+        PlainColorEdgeOnSurface,
+        (false),
+        "Object Style",
+        App::Prop_None,
+        "Use plain color for edges on surface."
+    );
     ADD_PROPERTY_TYPE(LineWidth, (1), "Object Style", App::Prop_None, "Set wireframe line width.");
     ADD_PROPERTY_TYPE(PointSize, (3), "Object Style", App::Prop_None, "Set node point size.");
 
@@ -290,12 +289,14 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
         Base::Console().DestructorError(
             "ViewProviderFemPostObject",
             "ViewProviderFemPostObject destructor threw an exception: %s\n",
-            e.what());
+            e.what()
+        );
     }
     catch (...) {
         Base::Console().DestructorError(
             "ViewProviderFemPostObject",
-            "ViewProviderFemPostObject destructor threw an unknown exception");
+            "ViewProviderFemPostObject destructor threw an unknown exception"
+        );
     }
 }
 
@@ -333,8 +334,9 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     m_separator->addChild(m_faces);
 
     // Check for an already existing color bar
-    Gui::SoFCColorBar* pcBar =
-        static_cast<Gui::SoFCColorBar*>(findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
+    Gui::SoFCColorBar* pcBar = static_cast<Gui::SoFCColorBar*>(
+        findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId())
+    );
     if (pcBar) {
         // Attach to the foreign color bar and delete our own bar
         pcBar->Attach(this);
@@ -615,9 +617,11 @@ void ViewProviderFemPostObject::update3D()
     }
 }
 
-void ViewProviderFemPostObject::WritePointData(vtkPoints* points,
-                                               vtkDataArray* normals,
-                                               vtkDataArray* tcoords)
+void ViewProviderFemPostObject::WritePointData(
+    vtkPoints* points,
+    vtkDataArray* normals,
+    vtkDataArray* tcoords
+)
 {
     Q_UNUSED(tcoords);
 
@@ -825,8 +829,7 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataSet* dset)
     m_blockPropertyChanges = true;
 
     Gui::Document* doc = this->getDocument();
-    Gui::View3DInventor* view =
-        qobject_cast<Gui::View3DInventor*>(doc->getViewOfViewProvider(this));
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(doc->getViewOfViewProvider(this));
 
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
@@ -897,7 +900,8 @@ bool ViewProviderFemPostObject::setupPipeline()
     // Data of the postObject was once created. The vtkDataObject type does not provide this info.
     // Therefore the only way is the hack to filter only if the used Elmer CPU cores are > 1.
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Elmer"
+    );
     bool FilterMultiCPUResults = hGrp->GetBool("FilterMultiCPUResults", true);
     int UseNumberOfCores = hGrp->GetInt("UseNumberOfCores", 1);
     // filtering is only necessary for pipelines and warp filters
@@ -1123,9 +1127,11 @@ void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges& 
     }
 }
 
-void ViewProviderFemPostObject::handleChangedPropertyName(Base::XMLReader& reader,
-                                                          const char* typeName,
-                                                          const char* propName)
+void ViewProviderFemPostObject::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
 {
     if (strcmp(propName, "Field") == 0 && strcmp(typeName, "App::PropertyEnumeration") == 0) {
         App::PropertyEnumeration field;

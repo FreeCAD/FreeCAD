@@ -95,9 +95,11 @@ class MeshGuiExport RemeshGmsh: public GmshWidget
     Q_OBJECT
 
 public:
-    explicit RemeshGmsh(Mesh::Feature* mesh,
-                        QWidget* parent = nullptr,
-                        Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit RemeshGmsh(
+        Mesh::Feature* mesh,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~RemeshGmsh() override;
 
 protected:

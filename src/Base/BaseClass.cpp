@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <cassert>
+# include <cassert>
 #endif
 
 #include "BaseClass.h"
@@ -77,10 +77,12 @@ Type BaseClass::getTypeId() const
 }
 
 
-void BaseClass::initSubclass(Base::Type& toInit,
-                             const char* ClassName,
-                             const char* ParentName,
-                             Type::instantiationMethod method)
+void BaseClass::initSubclass(
+    Base::Type& toInit,
+    const char* ClassName,
+    const char* ParentName,
+    Type::instantiationMethod method
+)
 {
     // don't init twice!
     assert(toInit.isBad());

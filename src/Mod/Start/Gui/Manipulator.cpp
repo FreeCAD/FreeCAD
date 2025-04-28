@@ -23,9 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QCoreApplication>
-#include <QCoreApplication>
-#include <QLayout>
+# include <QCoreApplication>
+# include <QCoreApplication>
+# include <QLayout>
 #endif
 
 #include "Manipulator.h"

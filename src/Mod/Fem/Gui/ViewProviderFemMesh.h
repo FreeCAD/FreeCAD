@@ -45,15 +45,17 @@ public:
     ViewProviderFEMMeshBuilder() = default;
     ~ViewProviderFEMMeshBuilder() override = default;
     void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
-    void createMesh(const App::Property*,
-                    SoCoordinate3*,
-                    SoIndexedFaceSet*,
-                    SoIndexedLineSet*,
-                    std::vector<unsigned long>&,
-                    std::vector<unsigned long>&,
-                    bool& edgeOnly,
-                    bool ShowInner,
-                    int MaxFacesShowInner) const;
+    void createMesh(
+        const App::Property*,
+        SoCoordinate3*,
+        SoIndexedFaceSet*,
+        SoIndexedLineSet*,
+        std::vector<unsigned long>&,
+        std::vector<unsigned long>&,
+        bool& edgeOnly,
+        bool ShowInner,
+        int MaxFacesShowInner
+    ) const;
 };
 
 class FemGuiExport ViewProviderFemMesh: public Gui::ViewProviderGeometryObject
@@ -115,15 +117,16 @@ public:
 
     /// set the color for each node
     void setColorByNodeId(const std::map<std::vector<long>, Base::Color>& NodeColorMap);
-    void setColorByNodeId(const std::vector<long>& NodeIds,
-                          const std::vector<Base::Color>& NodeColors);
+    void setColorByNodeId(const std::vector<long>& NodeIds, const std::vector<Base::Color>& NodeColors);
 
     /// reset the view of the node colors
     void resetColorByNodeId();
     /// set the displacement for each node
     void setDisplacementByNodeId(const std::map<long, Base::Vector3d>& NodeDispMap);
-    void setDisplacementByNodeId(const std::vector<long>& NodeIds,
-                                 const std::vector<Base::Vector3d>& NodeDisps);
+    void setDisplacementByNodeId(
+        const std::vector<long>& NodeIds,
+        const std::vector<Base::Vector3d>& NodeDisps
+    );
     /// reset the view of the node displacement
     void resetDisplacementByNodeId();
     /// reaply the node displacement with a certain factor and do a redraw
@@ -153,12 +156,16 @@ protected:
 
     void setColorByNodeIdHelper(const std::vector<Base::Color>&);
     void setDisplacementByNodeIdHelper(const std::vector<Base::Vector3d>& DispVector, long startId);
-    void setColorByIdHelper(const std::map<std::vector<long>, Base::Color>& elemColorMap,
-                            const std::vector<unsigned long>& vElementIdx,
-                            int rShift,
-                            App::PropertyColorList& prop);
-    void setMaterialByColorArray(const App::PropertyColorList* prop,
-                                 const std::vector<unsigned long>& vElementIdx) const;
+    void setColorByIdHelper(
+        const std::map<std::vector<long>, Base::Color>& elemColorMap,
+        const std::vector<unsigned long>& vElementIdx,
+        int rShift,
+        App::PropertyColorList& prop
+    );
+    void setMaterialByColorArray(
+        const App::PropertyColorList* prop,
+        const std::vector<unsigned long>& vElementIdx
+    ) const;
     void setMaterialOverall() const;
 
     /// index of elements to their triangles

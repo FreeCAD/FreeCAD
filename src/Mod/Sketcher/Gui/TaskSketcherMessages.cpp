@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QAction>
+# include <QAction>
 #endif
 
 #include <Gui/Application.h>

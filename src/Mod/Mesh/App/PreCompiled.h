@@ -28,59 +28,59 @@
 
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
-#pragma warning(disable : 4661)  // no suitable definition provided for explicit
-#endif                           // template instantiation request
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4503)
+# pragma warning(disable : 4275)
+# pragma warning(disable : 4786)  // specifier longer then 255 chars
+# pragma warning(disable : 4661)  // no suitable definition provided for explicit
+#endif                            // template instantiation request
 
 #ifdef _PreComp_
 
 // standard
-#include <cassert>
-#include <cmath>
-#include <cstdio>
-#include <fcntl.h>
-#include <fstream>
-#include <ios>
+# include <cassert>
+# include <cmath>
+# include <cstdio>
+# include <fcntl.h>
+# include <fstream>
+# include <ios>
 
 // STL
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <list>
-#include <limits>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <iomanip>
+# include <iostream>
+# include <list>
+# include <limits>
+# include <map>
+# include <queue>
+# include <set>
+# include <sstream>
+# include <stack>
+# include <string>
+# include <vector>
 
 // boost
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/core/ignore_unused.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
-#include <boost/tokenizer.hpp>
+# include <boost/algorithm/string/replace.hpp>
+# include <boost/core/ignore_unused.hpp>
+# include <boost/lexical_cast.hpp>
+# include <boost/regex.hpp>
+# include <boost/tokenizer.hpp>
 
 // Xerces
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMImplementationLS.hpp>
-#include <xercesc/framework/LocalFileFormatTarget.hpp>
-#include <xercesc/framework/LocalFileInputSource.hpp>
-#include <xercesc/framework/StdOutFormatTarget.hpp>
-#include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/sax/ErrorHandler.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/XMLUni.hpp>
-#include <xercesc/util/XMLUniDefs.hpp>
-#include <xercesc/util/XercesVersion.hpp>
+# include <xercesc/dom/DOM.hpp>
+# include <xercesc/dom/DOMImplementation.hpp>
+# include <xercesc/dom/DOMImplementationLS.hpp>
+# include <xercesc/framework/LocalFileFormatTarget.hpp>
+# include <xercesc/framework/LocalFileInputSource.hpp>
+# include <xercesc/framework/StdOutFormatTarget.hpp>
+# include <xercesc/parsers/XercesDOMParser.hpp>
+# include <xercesc/sax/ErrorHandler.hpp>
+# include <xercesc/sax/SAXParseException.hpp>
+# include <xercesc/util/PlatformUtils.hpp>
+# include <xercesc/util/XMLString.hpp>
+# include <xercesc/util/XMLUni.hpp>
+# include <xercesc/util/XMLUniDefs.hpp>
+# include <xercesc/util/XercesVersion.hpp>
 
 #endif  //_PreComp_
 

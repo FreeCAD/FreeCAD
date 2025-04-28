@@ -22,15 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <GeomFill_NSections.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <Precision.hxx>
-#include <Standard_Version.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopoDS.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <GeomFill_NSections.hxx>
+# include <Geom_BSplineSurface.hxx>
+# include <Geom_TrimmedCurve.hxx>
+# include <Precision.hxx>
+# include <Standard_Version.hxx>
+# include <TopLoc_Location.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include "FeatureSections.h"
@@ -63,10 +63,11 @@ App::DocumentObjectExecReturn* Sections::execute()
                 if (!edge.IsNull() && edge.ShapeType() == TopAbs_EDGE) {
                     BRepAdaptor_Curve curve_adapt(TopoDS::Edge(edge));
                     const TopLoc_Location& loc = edge.Location();
-                    Handle(Geom_TrimmedCurve) hCurve =
-                        new Geom_TrimmedCurve(curve_adapt.Curve().Curve(),
-                                              curve_adapt.FirstParameter(),
-                                              curve_adapt.LastParameter());
+                    Handle(Geom_TrimmedCurve) hCurve = new Geom_TrimmedCurve(
+                        curve_adapt.Curve().Curve(),
+                        curve_adapt.FirstParameter(),
+                        curve_adapt.LastParameter()
+                    );
                     if (!loc.IsIdentity()) {
                         hCurve->Transform(loc.Transformation());
                     }

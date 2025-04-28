@@ -29,110 +29,110 @@
 #ifdef _PreComp_
 
 // Python
-#include <Python.h>
+# include <Python.h>
 
 // standard
-#include <fcntl.h>
-#include <cstdio>
-#include <cassert>
-#include <ctime>
-#include <chrono>
-#include <cmath>
-#include <codecvt>
+# include <fcntl.h>
+# include <cstdio>
+# include <cassert>
+# include <ctime>
+# include <chrono>
+# include <cmath>
+# include <codecvt>
 
-#ifdef FC_OS_WIN32
-#include <direct.h>
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
-#include <crtdbg.h>
-#include <shellapi.h>
-#include <Rpc.h>
-#endif
+# ifdef FC_OS_WIN32
+#  include <direct.h>
+#  define WIN32_LEAN_AND_MEAN
+#  ifndef NOMINMAX
+#   define NOMINMAX
+#  endif
+#  include <windows.h>
+#  include <crtdbg.h>
+#  include <shellapi.h>
+#  include <Rpc.h>
+# endif
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-#include <dirent.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#endif
+# if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+#  include <dirent.h>
+#  include <unistd.h>
+#  include <sys/stat.h>
+# endif
 
 // STL
-#include <algorithm>
-#include <bitset>
-#include <iomanip>
-#include <list>
-#include <limits>
-#include <map>
-#include <memory>
-#include <mutex>
-#include <numbers>
-#include <queue>
-#include <set>
-#include <stack>
-#include <string>
-#include <string_view>
-#include <unordered_map>
-#include <vector>
+# include <algorithm>
+# include <bitset>
+# include <iomanip>
+# include <list>
+# include <limits>
+# include <map>
+# include <memory>
+# include <mutex>
+# include <numbers>
+# include <queue>
+# include <set>
+# include <stack>
+# include <string>
+# include <string_view>
+# include <unordered_map>
+# include <vector>
 
 // streams
-#include <iostream>
-#include <fstream>
-#include <sstream>
+# include <iostream>
+# include <fstream>
+# include <sstream>
 
 // Xerces
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XercesVersion.hpp>
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMImplementationLS.hpp>
-#include <xercesc/dom/DOMDocument.hpp>
-#include <xercesc/dom/DOMElement.hpp>
-#include <xercesc/dom/DOMText.hpp>
-#include <xercesc/framework/StdOutFormatTarget.hpp>
-#include <xercesc/framework/LocalFileFormatTarget.hpp>
-#include <xercesc/framework/LocalFileInputSource.hpp>
-#include <xercesc/framework/MemBufFormatTarget.hpp>
-#include <xercesc/framework/MemBufInputSource.hpp>
-#include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/util/XMLUni.hpp>
-#include <xercesc/util/XMLUniDefs.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
-#include <xercesc/sax/ErrorHandler.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
-#include <xercesc/sax/SAXException.hpp>
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
+# include <xercesc/util/PlatformUtils.hpp>
+# include <xercesc/util/XercesVersion.hpp>
+# include <xercesc/dom/DOM.hpp>
+# include <xercesc/dom/DOMImplementation.hpp>
+# include <xercesc/dom/DOMImplementationLS.hpp>
+# include <xercesc/dom/DOMDocument.hpp>
+# include <xercesc/dom/DOMElement.hpp>
+# include <xercesc/dom/DOMText.hpp>
+# include <xercesc/framework/StdOutFormatTarget.hpp>
+# include <xercesc/framework/LocalFileFormatTarget.hpp>
+# include <xercesc/framework/LocalFileInputSource.hpp>
+# include <xercesc/framework/MemBufFormatTarget.hpp>
+# include <xercesc/framework/MemBufInputSource.hpp>
+# include <xercesc/parsers/XercesDOMParser.hpp>
+# include <xercesc/util/XMLUni.hpp>
+# include <xercesc/util/XMLUniDefs.hpp>
+# include <xercesc/util/XMLString.hpp>
+# include <xercesc/util/PlatformUtils.hpp>
+# include <xercesc/sax/SAXParseException.hpp>
+# include <xercesc/sax/ErrorHandler.hpp>
+# include <xercesc/sax/SAXParseException.hpp>
+# include <xercesc/sax/SAXException.hpp>
+# include <xercesc/sax2/Attributes.hpp>
+# include <xercesc/sax2/DefaultHandler.hpp>
+# include <xercesc/sax2/Attributes.hpp>
+# include <xercesc/sax2/SAX2XMLReader.hpp>
+# include <xercesc/sax2/XMLReaderFactory.hpp>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
-#include <boost/tokenizer.hpp>
+# include <boost/filesystem/path.hpp>
+# include <boost/filesystem/operations.hpp>
+# include <boost/filesystem/exception.hpp>
+# include <boost/algorithm/string.hpp>
+# include <boost/algorithm/string/predicate.hpp>
+# include <boost/lexical_cast.hpp>
+# include <boost/regex.hpp>
+# include <boost/tokenizer.hpp>
 
 // QtCore
-#include <QBuffer>
-#include <QByteArray>
-#include <QCoreApplication>
-#include <QEvent>
-#include <QIODevice>
-#include <QDataStream>
-#include <QDateTime>
-#include <QElapsedTimer>
-#include <QWriteLocker>
-#include <QReadLocker>
-#include <QReadWriteLock>
-#include <QTime>
-#include <QUuid>
+# include <QBuffer>
+# include <QByteArray>
+# include <QCoreApplication>
+# include <QEvent>
+# include <QIODevice>
+# include <QDataStream>
+# include <QDateTime>
+# include <QElapsedTimer>
+# include <QWriteLocker>
+# include <QReadLocker>
+# include <QReadWriteLock>
+# include <QTime>
+# include <QUuid>
 
 
 #endif  //_PreComp_

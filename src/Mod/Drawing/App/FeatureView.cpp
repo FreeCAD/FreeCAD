@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <Standard_Failure.hxx>
-#include <sstream>
+# include <Standard_Failure.hxx>
+# include <sstream>
 #endif
 
 #include <Base/Exception.h>
@@ -43,32 +43,33 @@ PROPERTY_SOURCE(Drawing::FeatureView, App::DocumentObject)
 FeatureView::FeatureView(void)
 {
     static const char* group = "Drawing view";
-    ADD_PROPERTY_TYPE(X,
-                      (0),
-                      group,
-                      App::Prop_None,
-                      "X position of the view on the drawing in modelling units (mm)");
-    ADD_PROPERTY_TYPE(Y,
-                      (0),
-                      group,
-                      App::Prop_None,
-                      "Y position of the view on the drawing in modelling units (mm)");
+    ADD_PROPERTY_TYPE(
+        X,
+        (0),
+        group,
+        App::Prop_None,
+        "X position of the view on the drawing in modelling units (mm)"
+    );
+    ADD_PROPERTY_TYPE(
+        Y,
+        (0),
+        group,
+        App::Prop_None,
+        "Y position of the view on the drawing in modelling units (mm)"
+    );
     ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor of the view");
-    ADD_PROPERTY_TYPE(Rotation,
-                      (0),
-                      group,
-                      App::Prop_None,
-                      "Rotation of the view in degrees counterclockwise");
+    ADD_PROPERTY_TYPE(
+        Rotation,
+        (0),
+        group,
+        App::Prop_None,
+        "Rotation of the view in degrees counterclockwise"
+    );
     // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag
     // set to avoid to call the execute() method. The view provider touches the page object,
     // instead.
-    App::PropertyType propType =
-        static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_Output);
-    ADD_PROPERTY_TYPE(Visible,
-                      (true),
-                      group,
-                      propType,
-                      "Control whether view is visible in page object");
+    App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_Output);
+    ADD_PROPERTY_TYPE(Visible, (true), group, propType, "Control whether view is visible in page object");
 
     App::PropertyType type = (App::PropertyType)(App::Prop_Hidden);
     ADD_PROPERTY_TYPE(ViewResult, (nullptr), group, type, "Resulting SVG fragment of that view");
@@ -83,8 +84,7 @@ App::DocumentObjectExecReturn* FeatureView::recompute(void)
         return App::DocumentObject::recompute();
     }
     catch (Standard_Failure& e) {
-        App::DocumentObjectExecReturn* ret =
-            new App::DocumentObjectExecReturn(e.GetMessageString());
+        App::DocumentObjectExecReturn* ret = new App::DocumentObjectExecReturn(e.GetMessageString());
         if (ret->Why.empty()) {
             ret->Why = "Unknown OCC exception";
         }

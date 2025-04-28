@@ -27,8 +27,7 @@ TEST(Collection, TestCopy)
     EXPECT_EQ(copy.getEntry("inexistant", zipios::FileCollection::MatchPath::MATCH), nullptr);
     EXPECT_EQ(copy.getEntry("inexistant", zipios::FileCollection::MatchPath::IGNORE), nullptr);
     EXPECT_EQ(copy.getInputStream("inexistant", zipios::FileCollection::MatchPath::MATCH), nullptr);
-    EXPECT_EQ(copy.getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE),
-              nullptr);
+    EXPECT_EQ(copy.getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE), nullptr);
     EXPECT_EQ(copy.getName(), "-");  // default name is "-"
     EXPECT_EQ(copy.size(), 0);
 }
@@ -43,8 +42,7 @@ TEST(Collection, TestCopyAssign)
     EXPECT_EQ(copy.getEntry("inexistant", zipios::FileCollection::MatchPath::MATCH), nullptr);
     EXPECT_EQ(copy.getEntry("inexistant", zipios::FileCollection::MatchPath::IGNORE), nullptr);
     EXPECT_EQ(copy.getInputStream("inexistant", zipios::FileCollection::MatchPath::MATCH), nullptr);
-    EXPECT_EQ(copy.getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE),
-              nullptr);
+    EXPECT_EQ(copy.getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE), nullptr);
     EXPECT_EQ(copy.getName(), "-");  // default name is "-"
     EXPECT_EQ(copy.size(), 0);
 }
@@ -57,10 +55,8 @@ TEST(Collection, TestClone)
     EXPECT_EQ(pointer->entries().empty(), true);
     EXPECT_EQ(pointer->getEntry("inexistant", zipios::FileCollection::MatchPath::MATCH), nullptr);
     EXPECT_EQ(pointer->getEntry("inexistant", zipios::FileCollection::MatchPath::IGNORE), nullptr);
-    EXPECT_EQ(pointer->getInputStream("inexistant", zipios::FileCollection::MatchPath::MATCH),
-              nullptr);
-    EXPECT_EQ(pointer->getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE),
-              nullptr);
+    EXPECT_EQ(pointer->getInputStream("inexistant", zipios::FileCollection::MatchPath::MATCH), nullptr);
+    EXPECT_EQ(pointer->getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE), nullptr);
     EXPECT_EQ(pointer->getName(), "-");  // default name is "-"
     EXPECT_EQ(pointer->size(), 0);
 }

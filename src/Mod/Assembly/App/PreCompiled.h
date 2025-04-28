@@ -27,30 +27,30 @@
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-#pragma warning(disable : 5208)
+# pragma warning(disable : 5208)
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <cinttypes>
-#include <cmath>
-#include <iomanip>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <unordered_map>
+# include <cinttypes>
+# include <cmath>
+# include <iomanip>
+# include <map>
+# include <sstream>
+# include <string>
+# include <vector>
+# include <unordered_map>
 
-#include <boost/core/ignore_unused.hpp>
+# include <boost/core/ignore_unused.hpp>
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Cylinder.hxx>
-#include <gp_Sphere.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Cylinder.hxx>
+# include <gp_Sphere.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
 
 #endif  // _PreComp_
 #endif  // ASSEMBLY_PRECOMPILED_H

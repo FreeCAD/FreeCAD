@@ -23,11 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <sstream>
+# include <cmath>
+# include <sstream>
 #endif
 #ifdef __GNUC__
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #include "Quantity.h"
@@ -35,9 +35,11 @@
 
 using namespace Base;
 
-std::string UnitsSchemaImperial1::schemaTranslate(const Quantity& quant,
-                                                  double& factor,
-                                                  std::string& unitString)
+std::string UnitsSchemaImperial1::schemaTranslate(
+    const Quantity& quant,
+    double& factor,
+    std::string& unitString
+)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
@@ -128,9 +130,11 @@ std::string UnitsSchemaImperial1::schemaTranslate(const Quantity& quant,
     return toLocale(quant, factor, unitString);
 }
 
-std::string UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
-                                                        double& factor,
-                                                        std::string& unitString)
+std::string UnitsSchemaImperialDecimal::schemaTranslate(
+    const Base::Quantity& quant,
+    double& factor,
+    std::string& unitString
+)
 {
     Unit unit = quant.getUnit();
     // for imperial user/programmer mind; UnitValue is in internal system, that means
@@ -188,9 +192,11 @@ std::string UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& qu
     return toLocale(quant, factor, unitString);
 }
 
-std::string UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
-                                                         double& factor,
-                                                         std::string& unitString)
+std::string UnitsSchemaImperialBuilding::schemaTranslate(
+    const Quantity& quant,
+    double& factor,
+    std::string& unitString
+)
 {
     // this schema expresses distances in feet + inches + fractions
     // ex: 3'- 4 1/4" with proper rounding
@@ -316,9 +322,11 @@ std::string UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
     return toLocale(quant, factor, unitString);
 }
 
-std::string UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant,
-                                                      double& factor,
-                                                      std::string& unitString)
+std::string UnitsSchemaImperialCivil::schemaTranslate(
+    const Base::Quantity& quant,
+    double& factor,
+    std::string& unitString
+)
 {
     Unit unit = quant.getUnit();
     // for imperial user/programmer mind; UnitValue is in internal system, that means

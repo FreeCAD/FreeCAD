@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <limits>
+# include <limits>
 #endif
 
 #include "Unit.h"
@@ -116,15 +116,19 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();  // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args, "|diiiiiiii", &f, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
         if (f < std::numeric_limits<double>::max()) {
-            *self = Quantity(f,
-                             Unit {static_cast<int8_t>(i1),
-                                   static_cast<int8_t>(i2),
-                                   static_cast<int8_t>(i3),
-                                   static_cast<int8_t>(i4),
-                                   static_cast<int8_t>(i5),
-                                   static_cast<int8_t>(i6),
-                                   static_cast<int8_t>(i7),
-                                   static_cast<int8_t>(i8)});
+            *self = Quantity(
+                f,
+                Unit {
+                    static_cast<int8_t>(i1),
+                    static_cast<int8_t>(i2),
+                    static_cast<int8_t>(i3),
+                    static_cast<int8_t>(i4),
+                    static_cast<int8_t>(i5),
+                    static_cast<int8_t>(i6),
+                    static_cast<int8_t>(i7),
+                    static_cast<int8_t>(i8)
+                }
+            );
         }
         return 0;
     }
@@ -224,15 +228,19 @@ PyObject* QuantityPy::getValueAs(PyObject* args) const
         PyErr_Clear();
         if (PyArg_ParseTuple(args, "d|iiiiiiii", &f, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
             if (f < std::numeric_limits<double>::max()) {
-                quant = Quantity(f,
-                                 Unit {static_cast<int8_t>(i1),
-                                       static_cast<int8_t>(i2),
-                                       static_cast<int8_t>(i3),
-                                       static_cast<int8_t>(i4),
-                                       static_cast<int8_t>(i5),
-                                       static_cast<int8_t>(i6),
-                                       static_cast<int8_t>(i7),
-                                       static_cast<int8_t>(i8)});
+                quant = Quantity(
+                    f,
+                    Unit {
+                        static_cast<int8_t>(i1),
+                        static_cast<int8_t>(i2),
+                        static_cast<int8_t>(i3),
+                        static_cast<int8_t>(i4),
+                        static_cast<int8_t>(i5),
+                        static_cast<int8_t>(i6),
+                        static_cast<int8_t>(i7),
+                        static_cast<int8_t>(i8)
+                    }
+                );
             }
         }
     }

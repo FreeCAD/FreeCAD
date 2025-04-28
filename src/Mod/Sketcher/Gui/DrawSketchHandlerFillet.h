@@ -100,18 +100,18 @@ enum class FilletConstructionMethod
     End  // Must be the last one
 };
 
-}
+}  // namespace ConstructionMethods
 
-using DSHFilletController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerFillet,
-                                      StateMachines::TwoSeekEnd,
-                                      /*PAutoConstraintSize =*/0,
-                                      /*OnViewParametersT =*/OnViewParameters<0, 0>,  // NOLINT
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,  // NOLINT
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
-                                      ConstructionMethods::FilletConstructionMethod,
-                                      /*bool PFirstComboboxIsConstructionMethod =*/true>;
+using DSHFilletController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerFillet,
+    StateMachines::TwoSeekEnd,
+    /*PAutoConstraintSize =*/0,
+    /*OnViewParametersT =*/OnViewParameters<0, 0>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    ConstructionMethods::FilletConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
 using DSHFilletControllerBase = DSHFilletController::ControllerBase;
 
@@ -204,14 +204,16 @@ private:
                 // create fillet at point
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                    Gui::cmdAppObjectArgs(obj,
-                                          "fillet(%d,%d,%f,%s,%s,%s)",
-                                          GeoId,
-                                          static_cast<int>(PosId),
-                                          radius,
-                                          "True",
-                                          preserveCorner ? "True" : "False",
-                                          isChamfer ? "True" : "False");
+                    Gui::cmdAppObjectArgs(
+                        obj,
+                        "fillet(%d,%d,%f,%s,%s,%s)",
+                        GeoId,
+                        static_cast<int>(PosId),
+                        radius,
+                        "True",
+                        preserveCorner ? "True" : "False",
+                        isChamfer ? "True" : "False"
+                    );
 
                     if (construction) {
                         Gui::cmdAppObjectArgs(obj, "toggleConstruction(%d) ", filletGeoId);
@@ -223,7 +225,8 @@ private:
                     Gui::NotifyUserError(
                         obj,
                         QT_TRANSLATE_NOOP("Notifications", "Failed to create fillet"),
-                        e.what());
+                        e.what()
+                    );
                     Gui::Command::abortCommand();
                 }
 
@@ -238,8 +241,8 @@ private:
             const Part::Geometry* geo1 = obj->getGeometry(geoId1);
             const Part::Geometry* geo2 = obj->getGeometry(geoId2);
 
-            construction =
-                GeometryFacade::getConstruction(geo1) && GeometryFacade::getConstruction(geo2);
+            construction = GeometryFacade::getConstruction(geo1)
+                && GeometryFacade::getConstruction(geo2);
 
             double radius = 0;
 
@@ -271,22 +274,27 @@ private:
                     radius,
                     "True",
                     preserveCorner ? "True" : "False",
-                    isChamfer ? "True" : "False");
+                    isChamfer ? "True" : "False"
+                );
                 Gui::Command::commitCommand();
             }
             catch (const Base::CADKernelError& e) {
                 if (e.getTranslatable()) {
-                    Gui::TranslatedUserError(sketchgui,
-                                             QObject::tr("CAD Kernel Error"),
-                                             QObject::tr(e.getMessage().c_str()));
+                    Gui::TranslatedUserError(
+                        sketchgui,
+                        QObject::tr("CAD Kernel Error"),
+                        QObject::tr(e.getMessage().c_str())
+                    );
                 }
                 Gui::Selection().clearSelection();
                 Gui::Command::abortCommand();
             }
             catch (const Base::ValueError& e) {
-                Gui::TranslatedUserError(sketchgui,
-                                         QObject::tr("Value Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(
+                    sketchgui,
+                    QObject::tr("Value Error"),
+                    QObject::tr(e.getMessage().c_str())
+                );
                 Gui::Selection().clearSelection();
                 Gui::Command::abortCommand();
             }
@@ -394,7 +402,8 @@ private:
                         ss.str().c_str(),
                         onSketchPos.x,
                         onSketchPos.y,
-                        0.f);
+                        0.f
+                    );
                     moveToNextMode();
                 }
             }
@@ -421,23 +430,30 @@ void DSHFilletController::configureToolWidget()
         toolWidget->setComboboxItemIcon(
             WCombobox::FirstCombo,
             0,
-            Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+            Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet")
+        );
         toolWidget->setComboboxItemIcon(
             WCombobox::FirstCombo,
             1,
-            Gui::BitmapFactory().iconFromTheme("Sketcher_CreateChamfer"));
+            Gui::BitmapFactory().iconFromTheme("Sketcher_CreateChamfer")
+        );
 
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_fillet", "Preserve corner (U)"));
+            QApplication::translate("TaskSketcherTool_c1_fillet", "Preserve corner (U)")
+        );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_fillet",
-                                    "Preserves intersection point and most constraints"));
+            QApplication::translate(
+                "TaskSketcherTool_c1_fillet",
+                "Preserves intersection point and most constraints"
+            )
+        );
 
         toolWidget->setCheckboxIcon(
             WCheckbox::FirstBox,
-            Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+            Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet")
+        );
     }
     syncCheckboxToHandler(WCheckbox::FirstBox, handler->preserveCorner);
 }

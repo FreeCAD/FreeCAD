@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost/regex.hpp>
+# include <boost/regex.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -75,31 +75,39 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Drawing")
     {
-        add_varargs_method("project",
-                           &Module::project,
-                           "[visiblyG0,visiblyG1,hiddenG0,hiddenG1] = "
-                           "project(TopoShape[,App.Vector Direction, string type])\n"
-                           " -- Project a shape and return the visible/invisible parts of it.");
-        add_varargs_method("projectEx",
-                           &Module::projectEx,
-                           "[V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector "
-                           "Direction, string type])\n"
-                           " -- Project a shape and return the all parts of it.");
+        add_varargs_method(
+            "project",
+            &Module::project,
+            "[visiblyG0,visiblyG1,hiddenG0,hiddenG1] = "
+            "project(TopoShape[,App.Vector Direction, string type])\n"
+            " -- Project a shape and return the visible/invisible parts of it."
+        );
+        add_varargs_method(
+            "projectEx",
+            &Module::projectEx,
+            "[V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector "
+            "Direction, string type])\n"
+            " -- Project a shape and return the all parts of it."
+        );
         add_keyword_method(
             "projectToSVG",
             &Module::projectToSVG,
             "string = projectToSVG(TopoShape[, App.Vector direction, string type, float tolerance, "
             "dict vStyle, dict v0Style, dict v1Style, dict hStyle, dict h0Style, dict h1Style])\n"
-            " -- Project a shape and return the SVG representation as string.");
-        add_varargs_method("projectToDXF",
-                           &Module::projectToDXF,
-                           "string = projectToDXF(TopoShape[,App.Vector Direction, string type])\n"
-                           " -- Project a shape and return the DXF representation as string.");
+            " -- Project a shape and return the SVG representation as string."
+        );
+        add_varargs_method(
+            "projectToDXF",
+            &Module::projectToDXF,
+            "string = projectToDXF(TopoShape[,App.Vector Direction, string type])\n"
+            " -- Project a shape and return the DXF representation as string."
+        );
         add_varargs_method(
             "removeSvgTags",
             &Module::removeSvgTags,
             "string = removeSvgTags(string) -- Removes the opening and closing svg tags\n"
-            "and other metatags from a svg code, making it embeddable");
+            "and other metatags from a svg code, making it embeddable"
+        );
         initialize("This module is the Drawing module.");  // register with Python
     }
 
@@ -148,12 +156,14 @@ private:
         PyObject* pcObjShape;
         PyObject* pcObjDir = nullptr;
 
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "O!|O!",
-                              &(Part::TopoShapePy::Type),
-                              &pcObjShape,
-                              &(Base::VectorPy::Type),
-                              &pcObjDir)) {
+        if (!PyArg_ParseTuple(
+                args.ptr(),
+                "O!|O!",
+                &(Part::TopoShapePy::Type),
+                &pcObjShape,
+                &(Base::VectorPy::Type),
+                &pcObjDir
+            )) {
             throw Py::Exception();
         }
 
@@ -178,12 +188,14 @@ private:
         PyObject* pcObjShape;
         PyObject* pcObjDir = nullptr;
 
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "O!|O!",
-                              &(TopoShapePy::Type),
-                              &pcObjShape,
-                              &(Base::VectorPy::Type),
-                              &pcObjDir)) {
+        if (!PyArg_ParseTuple(
+                args.ptr(),
+                "O!|O!",
+                &(TopoShapePy::Type),
+                &pcObjShape,
+                &(Base::VectorPy::Type),
+                &pcObjDir
+            )) {
             throw Py::Exception();
         }
 
@@ -212,17 +224,19 @@ private:
 
     Py::Object projectToSVG(const Py::Tuple& args, const Py::Dict& keys)
     {
-        static const std::array<const char*, 11> argNames {"topoShape",
-                                                           "direction",
-                                                           "type",
-                                                           "tolerance",
-                                                           "vStyle",
-                                                           "v0Style",
-                                                           "v1Style",
-                                                           "hStyle",
-                                                           "h0Style",
-                                                           "h1Style",
-                                                           nullptr};
+        static const std::array<const char*, 11> argNames {
+            "topoShape",
+            "direction",
+            "type",
+            "tolerance",
+            "vStyle",
+            "v0Style",
+            "v1Style",
+            "hStyle",
+            "h0Style",
+            "h1Style",
+            nullptr
+        };
         PyObject* pcObjShape = nullptr;
         PyObject* pcObjDir = nullptr;
         const char* extractionTypePy = nullptr;
@@ -243,22 +257,24 @@ private:
 
         // Get the arguments
 
-        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
-                                                 keys.ptr(),
-                                                 "O!|O!sfOOOOOO",
-                                                 argNames,
-                                                 &(TopoShapePy::Type),
-                                                 &pcObjShape,
-                                                 &(Base::VectorPy::Type),
-                                                 &pcObjDir,
-                                                 &extractionTypePy,
-                                                 &tol,
-                                                 &vStylePy,
-                                                 &v0StylePy,
-                                                 &v1StylePy,
-                                                 &hStylePy,
-                                                 &h0StylePy,
-                                                 &h1StylePy)) {
+        if (!Base::Wrapped_ParseTupleAndKeywords(
+                args.ptr(),
+                keys.ptr(),
+                "O!|O!sfOOOOOO",
+                argNames,
+                &(TopoShapePy::Type),
+                &pcObjShape,
+                &(Base::VectorPy::Type),
+                &pcObjDir,
+                &extractionTypePy,
+                &tol,
+                &vStylePy,
+                &v0StylePy,
+                &v1StylePy,
+                &hStylePy,
+                &h0StylePy,
+                &h1StylePy
+            )) {
 
             throw Py::Exception();
         }
@@ -299,7 +315,8 @@ private:
 
         ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(), directionVector);
         Py::String result(
-            Alg.getSVG(extractionType, tol, vStyle, v0Style, v1Style, hStyle, h0Style, h1Style));
+            Alg.getSVG(extractionType, tol, vStyle, v0Style, v1Style, hStyle, h0Style, h1Style)
+        );
         return result;
     }
 
@@ -311,15 +328,17 @@ private:
         float scale = 1.0f;
         float tol = 0.1f;
 
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "O!|O!sff",
-                              &(TopoShapePy::Type),
-                              &pcObjShape,
-                              &(Base::VectorPy::Type),
-                              &pcObjDir,
-                              &type,
-                              &scale,
-                              &tol)) {
+        if (!PyArg_ParseTuple(
+                args.ptr(),
+                "O!|O!sff",
+                &(TopoShapePy::Type),
+                &pcObjShape,
+                &(Base::VectorPy::Type),
+                &pcObjDir,
+                &type,
+                &scale,
+                &tol
+            )) {
             throw Py::Exception();
         }
 
@@ -336,7 +355,8 @@ private:
         }
 
         Py::String result(
-            Alg.getDXF(hidden ? ProjectionAlgos::WithHidden : ProjectionAlgos::Plain, scale, tol));
+            Alg.getDXF(hidden ? ProjectionAlgos::WithHidden : ProjectionAlgos::Plain, scale, tol)
+        );
         return result;
     }
     Py::Object removeSvgTags(const Py::Tuple& args)

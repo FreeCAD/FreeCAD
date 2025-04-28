@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <cassert>
+# include <cassert>
 #endif
 
 #include <zipios++/zipinputstream.h>

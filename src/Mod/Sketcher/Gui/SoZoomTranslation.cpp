@@ -22,14 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/nodes/SoCamera.h>
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoGetMatrixAction.h>
+# include <Inventor/elements/SoModelMatrixElement.h>
+# include <Inventor/elements/SoViewVolumeElement.h>
+# include <Inventor/elements/SoViewportRegionElement.h>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include "SoZoomTranslation.h"

@@ -23,10 +23,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <vtkDataSet.h>
-#include <vtkXMLDataSetWriter.h>
-#include <vtkXMLMultiBlockDataWriter.h>
-#include <vtkTransform.h>
+# include <vtkDataSet.h>
+# include <vtkXMLDataSetWriter.h>
+# include <vtkXMLMultiBlockDataWriter.h>
+# include <vtkTransform.h>
 #endif
 
 #include <Base/Exception.h>

@@ -31,9 +31,9 @@
 // #define _GCS_EXTRACT_SOLVER_SUBSYSTEM_
 
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-#define _PROTECTED_UNLESS_EXTRACT_MODE_ public
+# define _PROTECTED_UNLESS_EXTRACT_MODE_ public
 #else
-#define _PROTECTED_UNLESS_EXTRACT_MODE_ protected
+# define _PROTECTED_UNLESS_EXTRACT_MODE_ protected
 #endif
 
 
@@ -219,8 +219,10 @@ public:
     /// Let `pvec = [q, p_1, p_2,...]`, and
     /// `givenweights = [f_1, f_2,...]`, then this constraint ensures
     /// `q = sum(p_i*f_i)`.
-    ConstraintCenterOfGravity(const std::vector<double*>& givenpvec,
-                              const std::vector<double>& givenweights);
+    ConstraintCenterOfGravity(
+        const std::vector<double*>& givenpvec,
+        const std::vector<double>& givenweights
+    );
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
     double error() override;
@@ -260,9 +262,11 @@ public:
     /// In that case, `q` is the x (or y) coordinate of the knot, `p_i` are
     /// the x (or y) coordinates of the poles, and `w_i` are their weights.
     /// Finally, `f_i` are obtained using `BSpline::getLinCombFactor()`.
-    ConstraintWeightedLinearCombination(size_t givennumpoints,
-                                        const std::vector<double*>& givenpvec,
-                                        const std::vector<double>& givenfactors);
+    ConstraintWeightedLinearCombination(
+        size_t givennumpoints,
+        const std::vector<double*>& givenpvec,
+        const std::vector<double>& givenfactors
+    );
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
     double error() override;
@@ -826,11 +830,7 @@ private:
     bool internal;
 
 public:
-    ConstraintTangentCircumf(Point& p1,
-                             Point& p2,
-                             double* rd1,
-                             double* rd2,
-                             bool internal_ = false);
+    ConstraintTangentCircumf(Point& p1, Point& p2, double* rd1, double* rd2, bool internal_ = false);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     inline ConstraintTangentCircumf(bool internal_)
     {
@@ -913,9 +913,7 @@ public:
 class ConstraintInternalAlignmentPoint2Ellipse: public Constraint
 {
 public:
-    ConstraintInternalAlignmentPoint2Ellipse(Ellipse& e,
-                                             Point& p1,
-                                             InternalAlignmentType alignmentType);
+    ConstraintInternalAlignmentPoint2Ellipse(Ellipse& e, Point& p1, InternalAlignmentType alignmentType);
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
     double error() override;
@@ -934,9 +932,11 @@ private:
 class ConstraintInternalAlignmentPoint2Hyperbola: public Constraint
 {
 public:
-    ConstraintInternalAlignmentPoint2Hyperbola(Hyperbola& e,
-                                               Point& p1,
-                                               InternalAlignmentType alignmentType);
+    ConstraintInternalAlignmentPoint2Hyperbola(
+        Hyperbola& e,
+        Point& p1,
+        InternalAlignmentType alignmentType
+    );
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
     double error() override;
@@ -1197,14 +1197,16 @@ private:
 
 public:
     // n1dn2 = n1 divided by n2. from n1 to n2. flipn1 = true instructs to flip ray1's tangent
-    ConstraintSnell(Curve& ray1,
-                    Curve& ray2,
-                    Curve& boundary,
-                    Point p,
-                    double* n1,
-                    double* n2,
-                    bool flipn1,
-                    bool flipn2);
+    ConstraintSnell(
+        Curve& ray1,
+        Curve& ray2,
+        Curve& boundary,
+        Point p,
+        double* n1,
+        double* n2,
+        bool flipn1,
+        bool flipn2
+    );
     ~ConstraintSnell() override;
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
@@ -1236,15 +1238,10 @@ private:
     Point poa;  // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted.
                 // The point is easily shallow-copied by C++, so no pointer type here and no delete
                 // is necessary.
-    void
-    ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
+    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
 public:
     // We assume first curve needs param1
-    ConstraintAngleViaPointAndParam(Curve& acrv1,
-                                    Curve& acrv2,
-                                    Point p,
-                                    double* param1,
-                                    double* angle);
+    ConstraintAngleViaPointAndParam(Curve& acrv1, Curve& acrv2, Point p, double* param1, double* angle);
     ~ConstraintAngleViaPointAndParam() override;
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
@@ -1281,15 +1278,16 @@ private:
     Point poa;  // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted.
                 // The point is easily shallow-copied by C++, so no pointer type here and no delete
                 // is necessary.
-    void
-    ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
+    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
 public:
-    ConstraintAngleViaPointAndTwoParams(Curve& acrv1,
-                                        Curve& acrv2,
-                                        Point p,
-                                        double* param1,
-                                        double* param2,
-                                        double* angle);
+    ConstraintAngleViaPointAndTwoParams(
+        Curve& acrv1,
+        Curve& acrv2,
+        Point p,
+        double* param1,
+        double* param2,
+        double* angle
+    );
     ~ConstraintAngleViaPointAndTwoParams() override;
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
@@ -1374,10 +1372,11 @@ private:
         return pvec[0];
     }
     void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of c
-    void
-    errorgrad(double* err,
-              double* grad,
-              double* param);  // error and gradient combined. Values are returned through pointers.
+    void errorgrad(
+        double* err,
+        double* grad,
+        double* param
+    );  // error and gradient combined. Values are returned through pointers.
 public:
     ConstraintP2CDistance(Point& p, Circle& c, double* d);
     ConstraintType getTypeId() override;
@@ -1397,10 +1396,11 @@ private:
         return pvec[0];
     }
     void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of a
-    void
-    errorgrad(double* err,
-              double* grad,
-              double* param);  // error and gradient combined. Values are returned through pointers.
+    void errorgrad(
+        double* err,
+        double* grad,
+        double* param
+    );  // error and gradient combined. Values are returned through pointers.
 public:
     ConstraintArcLength(Arc& a, double* d);
     ConstraintType getTypeId() override;

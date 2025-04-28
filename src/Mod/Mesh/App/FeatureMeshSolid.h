@@ -49,9 +49,11 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     //@}
 };
 
@@ -73,9 +75,11 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     //@}
 };
 
@@ -99,9 +103,11 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     //@}
 };
 
@@ -126,9 +132,11 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     //@}
 };
 
@@ -150,9 +158,11 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     //@}
 };
 
@@ -174,9 +184,11 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     //@}
 };
 

@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QAction>
-#include <QKeyEvent>
-#include <QListWidget>
-#include <QMessageBox>
-#include <sstream>
+# include <QAction>
+# include <QKeyEvent>
+# include <QListWidget>
+# include <QMessageBox>
+# include <sstream>
 #endif
 
 #include <App/Document.h>
@@ -49,13 +49,12 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraint */
 
-TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
-                                     QWidget* parent,
-                                     const char* pixmapname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),
-              tr("Analysis feature parameters"),
-              true,
-              parent)
+TaskFemConstraint::TaskFemConstraint(
+    ViewProviderFemConstraint* ConstraintView,
+    QWidget* parent,
+    const char* pixmapname
+)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname), tr("Analysis feature parameters"), true, parent)
     , proxy(nullptr)
     , deleteAction(nullptr)
     , ConstraintView(ConstraintView)
@@ -151,14 +150,15 @@ void TaskFemConstraint::onButtonReference(const bool pressed)
     Gui::Selection().clearSelection();
 }
 
-const QString TaskFemConstraint::makeRefText(const std::string& objName,
-                                             const std::string& subName) const
+const QString TaskFemConstraint::makeRefText(const std::string& objName, const std::string& subName) const
 {
     return QString::fromUtf8((objName + ":" + subName).c_str());
 }
 
-const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj,
-                                             const std::string& subName) const
+const QString TaskFemConstraint::makeRefText(
+    const App::DocumentObject* obj,
+    const std::string& subName
+) const
 {
     return QString::fromUtf8((std::string(obj->getNameInDocument()) + ":" + subName).c_str());
 }
@@ -205,23 +205,29 @@ bool TaskDlgFemConstraint::accept()
         std::string refs = parameter->getReferences();
 
         if (!refs.empty()) {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.References = [%s]",
-                                    name.c_str(),
-                                    refs.c_str());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "App.ActiveDocument.%s.References = [%s]",
+                name.c_str(),
+                refs.c_str()
+            );
         }
         else {
-            QMessageBox::warning(parameter,
-                                 tr("Input error"),
-                                 tr("You must specify at least one reference"));
+            QMessageBox::warning(
+                parameter,
+                tr("Input error"),
+                tr("You must specify at least one reference")
+            );
             return false;
         }
 
         std::string scale = parameter->getScale();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.Scale = %s",
+            name.c_str(),
+            scale.c_str()
+        );
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid()) {
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());

@@ -284,8 +284,8 @@ TEST_F(StringIDTest, fromStringWithEOFAndLengthGood)  // NOLINT
     const std::string testString {"#1:fcad"};
 
     // Act
-    auto result =
-        App::StringID::fromString(testString.c_str(), true, static_cast<int>(testString.length()));
+    auto result
+        = App::StringID::fromString(testString.c_str(), true, static_cast<int>(testString.length()));
 
     // Assert
     EXPECT_EQ(result.id, 1);
@@ -298,10 +298,10 @@ TEST_F(StringIDTest, fromStringExtraData)  // NOLINT
     const std::string testString {"#1:fcad#2:bad"};
 
     // Act
-    auto trueResult =
-        App::StringID::fromString(testString.c_str(), true, static_cast<int>(testString.length()));
-    auto falseResult =
-        App::StringID::fromString(testString.c_str(), false, static_cast<int>(testString.length()));
+    auto trueResult
+        = App::StringID::fromString(testString.c_str(), true, static_cast<int>(testString.length()));
+    auto falseResult
+        = App::StringID::fromString(testString.c_str(), false, static_cast<int>(testString.length()));
 
     // Assert
     EXPECT_EQ(trueResult.id, -1);
@@ -748,8 +748,8 @@ TEST_F(StringIDRefTest, swap)  // NOLINT
 }
 
 #if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wself-assign-overloaded"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wself-assign-overloaded"
 #endif
 
 TEST_F(StringIDRefTest, assignmentFromSelf)  // NOLINT
@@ -765,7 +765,7 @@ TEST_F(StringIDRefTest, assignmentFromSelf)  // NOLINT
 }
 
 #if defined(__clang__)
-#pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #endif
 
 TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)  // NOLINT

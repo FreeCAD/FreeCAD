@@ -23,8 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <algorithm>
-#include <array>
+# include <algorithm>
+# include <array>
 #endif
 
 #include "Quantity.h"
@@ -33,9 +33,11 @@
 
 using namespace Base;
 
-std::string UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant,
-                                                    double& factor,
-                                                    std::string& unitString)
+std::string UnitsSchemaCentimeters::schemaTranslate(
+    const Base::Quantity& quant,
+    double& factor,
+    std::string& unitString
+)
 {
     static std::array<std::pair<Unit, std::pair<std::string, double>>, 7> unitSpecs {{
         {Unit::Length, {"cm", 10.0}},

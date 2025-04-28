@@ -24,9 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QMenu>
-#include <QString>
-#include <sstream>
+# include <QMenu>
+# include <QString>
+# include <sstream>
 #endif
 
 #include <Gui/Application.h>
@@ -105,11 +105,13 @@ void ViewProviderSheet::exportAsFile()
     auto* sheet = getObject<Spreadsheet::Sheet>();
     QString selectedFilter;
     QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
-    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                        QObject::tr("Export file"),
-                                                        QString(),
-                                                        formatList,
-                                                        &selectedFilter);
+    QString fileName = Gui::FileDialog::getSaveFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Export file"),
+        QString(),
+        formatList,
+        &selectedFilter
+    );
     if (!fileName.isEmpty()) {
         if (sheet) {
             char delim = '\0';

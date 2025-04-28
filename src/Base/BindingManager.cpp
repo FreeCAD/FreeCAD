@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <unordered_map>
+# include <unordered_map>
 #endif
 
 #include "BindingManager.h"

@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QElapsedTimer>
-#include <QMessageBox>
-#include <QPointer>
-#include <QTextCursor>
+# include <QElapsedTimer>
+# include <QMessageBox>
+# include <QPointer>
+# include <QTextCursor>
 #endif
 
 #include <App/Application.h>
@@ -54,8 +54,9 @@ public:
 
     void appendText(const QString& text, bool error)
     {
-        syntax->setParagraphType(error ? Gui::DockWnd::ReportHighlighter::Error
-                                       : Gui::DockWnd::ReportHighlighter::Message);
+        syntax->setParagraphType(
+            error ? Gui::DockWnd::ReportHighlighter::Error : Gui::DockWnd::ReportHighlighter::Message
+        );
         QTextCursor cursor(ui.outputWindow->document());
         cursor.beginEditBlock();
         cursor.movePosition(QTextCursor::End);

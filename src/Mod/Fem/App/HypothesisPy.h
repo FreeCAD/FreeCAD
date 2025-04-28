@@ -158,8 +158,7 @@ public:
     Py::Object getMaxArea(const Py::Tuple& args);
 };
 
-class StdMeshers_QuadranglePreferencePy
-    : public SMESH_HypothesisPy<StdMeshers_QuadranglePreferencePy>
+class StdMeshers_QuadranglePreferencePy: public SMESH_HypothesisPy<StdMeshers_QuadranglePreferencePy>
 {
 public:
     static void init_type(PyObject*);
@@ -347,7 +346,7 @@ public:
     Py::Object getNumLayers(const Py::Tuple& args);
 };
 
-#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
+# if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 class StdMeshers_MEFISTO_2DPy: public SMESH_HypothesisPy<StdMeshers_MEFISTO_2DPy>
 {
 public:
@@ -355,7 +354,7 @@ public:
     StdMeshers_MEFISTO_2DPy(int hypId, SMESH_Gen* gen);
     ~StdMeshers_MEFISTO_2DPy();
 };
-#endif
+# endif
 
 class StdMeshers_MaxElementVolumePy: public SMESH_HypothesisPy<StdMeshers_MaxElementVolumePy>
 {
@@ -458,8 +457,7 @@ public:
     Py::Object getMaxArea(const Py::Tuple& args);
 };
 
-class StdMeshers_QuadranglePreferencePy
-    : public SMESH_HypothesisPy<StdMeshers_QuadranglePreferencePy>
+class StdMeshers_QuadranglePreferencePy: public SMESH_HypothesisPy<StdMeshers_QuadranglePreferencePy>
 {
 public:
     static void init_type(PyObject*);
@@ -524,7 +522,7 @@ public:
     StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_Hexa_3DPy() override;
 };
-#if SMESH_VERSION_MAJOR < 7  // -----------------------------------------------
+# if SMESH_VERSION_MAJOR < 7  // -----------------------------------------------
 class StdMeshers_TrianglePreferencePy: public SMESH_HypothesisPy<StdMeshers_TrianglePreferencePy>
 {
 public:
@@ -532,7 +530,7 @@ public:
     StdMeshers_TrianglePreferencePy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_TrianglePreferencePy();
 };
-#endif                       // --------------------------------------------------------------------
+# endif  // --------------------------------------------------------------------
 
 class StdMeshers_StartEndLengthPy: public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
 {
@@ -688,7 +686,7 @@ public:
     Py::Object getNumLayers(const Py::Tuple& args);
 };
 
-#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
+# if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 class StdMeshers_MEFISTO_2DPy: public SMESH_HypothesisPy<StdMeshers_MEFISTO_2DPy>
 {
 public:
@@ -696,7 +694,7 @@ public:
     StdMeshers_MEFISTO_2DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_MEFISTO_2DPy() override;
 };
-#endif
+# endif
 
 class StdMeshers_MaxElementVolumePy: public SMESH_HypothesisPy<StdMeshers_MaxElementVolumePy>
 {

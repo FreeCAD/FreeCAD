@@ -50,9 +50,11 @@ const char* ConstraintInitialTemperature::getViewProviderName() const
     return "FemGui::ViewProviderFemConstraintInitialTemperature";
 }
 
-void ConstraintInitialTemperature::handleChangedPropertyType(Base::XMLReader& reader,
-                                                             const char* TypeName,
-                                                             App::Property* prop)
+void ConstraintInitialTemperature::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     // property initialTemperature had App::PropertyFloat, was changed to App::PropertyTemperature
     if (prop == &initialTemperature && strcmp(TypeName, "App::PropertyFloat") == 0) {

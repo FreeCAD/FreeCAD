@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <memory>
+# include <memory>
 #endif
 
 #include <CXX/Objects.hxx>
@@ -106,8 +106,7 @@ PyObject* UnitsApi::sListSchemas(PyObject* /*self*/, PyObject* args)
         int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         Py::Tuple tuple(num);
         for (int i = 0; i < num; i++) {
-            const auto description {
-                UnitsApi::getDescription(static_cast<UnitSystem>(i)).toStdString()};
+            const auto description {UnitsApi::getDescription(static_cast<UnitSystem>(i)).toStdString()};
             tuple.setItem(i, Py::String(description.c_str()));
         }
 
@@ -123,8 +122,7 @@ PyObject* UnitsApi::sListSchemas(PyObject* /*self*/, PyObject* args)
             return nullptr;
         }
 
-        const auto description {
-            UnitsApi::getDescription(static_cast<UnitSystem>(index)).toStdString()};
+        const auto description {UnitsApi::getDescription(static_cast<UnitSystem>(index)).toStdString()};
         return Py_BuildValue("s", description.c_str());
     }
 

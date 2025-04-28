@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <fstream>
-#include <iostream>
-#include <iterator>
-#include <sstream>
+# include <fstream>
+# include <iostream>
+# include <iterator>
+# include <sstream>
 
-#include <boost/regex.hpp>
+# include <boost/regex.hpp>
 #endif
 
 #include <App/Application.h>
@@ -53,17 +53,15 @@ FeaturePage::FeaturePage(void)
 {
     static const char* group = "Drawing view";
 
-    ADD_PROPERTY_TYPE(PageResult,
-                      (nullptr),
-                      group,
-                      App::Prop_Output,
-                      "Resulting SVG document of that page");
+    ADD_PROPERTY_TYPE(PageResult, (nullptr), group, App::Prop_Output, "Resulting SVG document of that page");
     ADD_PROPERTY_TYPE(Template, (""), group, App::Prop_None, "Template for the page");
-    ADD_PROPERTY_TYPE(EditableTexts,
-                      (""),
-                      group,
-                      App::Prop_None,
-                      "Substitution values for the editable strings in the template");
+    ADD_PROPERTY_TYPE(
+        EditableTexts,
+        (""),
+        group,
+        App::Prop_None,
+        "Substitution values for the editable strings in the template"
+    );
 }
 
 FeaturePage::~FeaturePage()
@@ -123,8 +121,8 @@ void FeaturePage::onDocumentRestored()
         if (fi.fileName().empty()) {
             fi.setFile(PageResult.getValue());
         }
-        std::string path =
-            App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName();
+        std::string path = App::Application::getResourceDir() + "Mod/Drawing/Templates/"
+            + fi.fileName();
         // try to find the template in user dir/Templates first
         Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
         if (tempfi.exists()) {
@@ -149,8 +147,7 @@ App::DocumentObjectExecReturn* FeaturePage::execute(void)
         fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
         // try the redirect
         if (!fi.isReadable()) {
-            Base::Console().Log("FeaturePage::execute() not able to open %s!\n",
-                                Template.getValue());
+            Base::Console().Log("FeaturePage::execute() not able to open %s!\n", Template.getValue());
             std::string error = std::string("Cannot open file ") + Template.getValue();
             return new App::DocumentObjectExecReturn(error);
         }
@@ -178,8 +175,7 @@ App::DocumentObjectExecReturn* FeaturePage::execute(void)
         else {
             // get through the children and collect all the views
             const std::vector<App::DocumentObject*>& Grp = Group.getValues();
-            for (std::vector<App::DocumentObject*>::const_iterator It = Grp.begin();
-                 It != Grp.end();
+            for (std::vector<App::DocumentObject*>::const_iterator It = Grp.begin(); It != Grp.end();
                  ++It) {
                 if ((*It)->isDerivedFrom<Drawing::FeatureView>()) {
                     Drawing::FeatureView* View = static_cast<Drawing::FeatureView*>(*It);
@@ -197,8 +193,7 @@ App::DocumentObjectExecReturn* FeaturePage::execute(void)
                 }
                 else if ((*It)->isDerivedFrom<App::DocumentObjectGroup>()) {
                     // getting children inside subgroups too
-                    App::DocumentObjectGroup* SubGroup =
-                        static_cast<App::DocumentObjectGroup*>(*It);
+                    App::DocumentObjectGroup* SubGroup = static_cast<App::DocumentObjectGroup*>(*It);
                     const std::vector<App::DocumentObject*>& SubGrp = SubGroup->Group.getValues();
                     for (std::vector<App::DocumentObject*>::const_iterator Grit = SubGrp.begin();
                          Grit != SubGrp.end();
@@ -234,14 +229,11 @@ App::DocumentObjectExecReturn* FeaturePage::execute(void)
         while (boost::regex_search(begin, end, what, e1)) {
             if (count < editText.size()) {
                 // change values of editable texts
-                boost::regex e2("(<text.*?freecad:editable=\"" + what[1].str()
-                                + "\".*?<tspan.*?)>(.*?)(</tspan>)");
+                boost::regex e2(
+                    "(<text.*?freecad:editable=\"" + what[1].str() + "\".*?<tspan.*?)>(.*?)(</tspan>)"
+                );
                 std::back_insert_iterator<std::string> out(newfragment);
-                boost::regex_replace(out,
-                                     begin,
-                                     what[0].second,
-                                     e2,
-                                     "$1>" + editText[count] + "$3");
+                boost::regex_replace(out, begin, what[0].second, e2, "$1>" + editText[count] + "$3");
             }
             count++;
             begin = what[0].second;
@@ -276,8 +268,7 @@ std::vector<std::string> FeaturePage::getEditableTextsFromTemplate(void) const
         Base::FileInfo tfi(temp);
         if (!tfi.isReadable()) {
             // if there is a old absolute template file set use a redirect
-            tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/"
-                        + tfi.fileName());
+            tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
             // try the redirect
             if (!tfi.isReadable()) {
                 return eds;

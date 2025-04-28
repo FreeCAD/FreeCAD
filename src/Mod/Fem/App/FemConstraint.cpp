@@ -24,37 +24,37 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <limits>
-#include <Adaptor3d_IsoCurve.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepClass_FaceClassifier.hxx>
-#include <BRepGProp.hxx>
-#include <BRepGProp_Face.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GProp_GProps.hxx>
-#include <GeomAPI_IntCS.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_Plane.hxx>
-#include <Precision.hxx>
-#include <Standard_Version.hxx>
-#include <ShapeAnalysis_Surface.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <cmath>  //OvG: Required for log10
-#include <gp_Cylinder.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <Adaptor3d_HSurface.hxx>
-#include <BRepAdaptor_HSurface.hxx>
-#endif
+# include <limits>
+# include <Adaptor3d_IsoCurve.hxx>
+# include <BRepAdaptor_CompCurve.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepClass_FaceClassifier.hxx>
+# include <BRepGProp.hxx>
+# include <BRepGProp_Face.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepTools.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <GProp_GProps.hxx>
+# include <GeomAPI_IntCS.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <Geom_Line.hxx>
+# include <Geom_Plane.hxx>
+# include <Precision.hxx>
+# include <Standard_Version.hxx>
+# include <ShapeAnalysis_Surface.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <cmath>  //OvG: Required for log10
+# include <gp_Cylinder.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
+# if OCC_VERSION_HEX < 0x070600
+#  include <Adaptor3d_HSurface.hxx>
+#  include <BRepAdaptor_HSurface.hxx>
+# endif
 #endif
 
 #include <App/Document.h>
@@ -76,41 +76,49 @@ using Adaptor3d_HSurface = Adaptor3d_Surface;
 using BRepAdaptor_HSurface = BRepAdaptor_Surface;
 #endif
 
-static const App::PropertyFloatConstraint::Constraints scaleConstraint = {
-    0.0,
-    std::numeric_limits<double>::max(),
-    0.1};
+static const App::PropertyFloatConstraint::Constraints scaleConstraint
+    = {0.0, std::numeric_limits<double>::max(), 0.1};
 
 PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 
 Constraint::Constraint()
     : sizeFactor {1}
 {
-    ADD_PROPERTY_TYPE(References,
-                      (nullptr, nullptr),
-                      "Constraint",
-                      (App::PropertyType)(App::Prop_None),
-                      "Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(NormalDirection,
-                      (Base::Vector3d(0, 0, 1)),
-                      "Constraint",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Normal direction pointing outside of solid");
-    ADD_PROPERTY_TYPE(Scale,
-                      (1),
-                      "Constraint",
-                      App::PropertyType(App::Prop_None),
-                      "Scale used for drawing constraints");
-    ADD_PROPERTY_TYPE(Points,
-                      (Base::Vector3d()),
-                      "Constraint",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
-                      "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,
-                      (Base::Vector3d()),
-                      "Constraint",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
-                      "Normals where symbols are drawn");
+    ADD_PROPERTY_TYPE(
+        References,
+        (nullptr, nullptr),
+        "Constraint",
+        (App::PropertyType)(App::Prop_None),
+        "Elements where the constraint is applied"
+    );
+    ADD_PROPERTY_TYPE(
+        NormalDirection,
+        (Base::Vector3d(0, 0, 1)),
+        "Constraint",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Normal direction pointing outside of solid"
+    );
+    ADD_PROPERTY_TYPE(
+        Scale,
+        (1),
+        "Constraint",
+        App::PropertyType(App::Prop_None),
+        "Scale used for drawing constraints"
+    );
+    ADD_PROPERTY_TYPE(
+        Points,
+        (Base::Vector3d()),
+        "Constraint",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
+        "Points where symbols are drawn"
+    );
+    ADD_PROPERTY_TYPE(
+        Normals,
+        (Base::Vector3d()),
+        "Constraint",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
+        "Normals where symbols are drawn"
+    );
 
     Scale.setConstraints(&scaleConstraint);
 
@@ -220,7 +228,8 @@ void Constraint::onSettingDocument()
     App::Document* doc = getDocument();
     if (doc) {
         connDocChangedObject = doc->signalChangedObject.connect(
-            std::bind(&Constraint::slotChangedObject, this, sp::_1, sp::_2));
+            std::bind(&Constraint::slotChangedObject, this, sp::_1, sp::_2)
+        );
     }
 
     App::DocumentObject::onSettingDocument();
@@ -238,9 +247,11 @@ void Constraint::onDocumentRestored()
     App::DocumentObject::onDocumentRestored();
 }
 
-void Constraint::handleChangedPropertyType(Base::XMLReader& reader,
-                                           const char* TypeName,
-                                           App::Property* prop)
+void Constraint::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     // Old integer Scale is equal to sizeFactor, now  Scale*sizeFactor is used to scale the symbol
     if (prop == &Scale && strcmp(TypeName, "App::PropertyInteger") == 0) {
@@ -251,9 +262,11 @@ void Constraint::handleChangedPropertyType(Base::XMLReader& reader,
     }
 }
 
-bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
-                           std::vector<Base::Vector3d>& normals,
-                           double* scale) const
+bool Constraint::getPoints(
+    std::vector<Base::Vector3d>& points,
+    std::vector<Base::Vector3d>& normals,
+    double* scale
+) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
@@ -441,8 +454,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
                 int stepWire = stepsu + stepsv;
                 // apply subshape transformation to the geometry
                 gp_Trsf faceTrans = face.Location().Transformation();
-                Handle(Geom_Geometry) transGeo =
-                    surface.Surface().Surface()->Transformed(faceTrans);
+                Handle(Geom_Geometry) transGeo = surface.Surface().Surface()->Transformed(faceTrans);
                 ShapeAnalysis_Surface surfAnalysis(Handle(Geom_Surface)::DownCast(transGeo));
                 for (int i = 0; i < stepWire; ++i) {
                     gp_Pnt p = compCurve.Value(outWireLength * i / stepWire);
@@ -456,10 +468,12 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
     return true;
 }
 
-Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base,
-                                        const Base::Vector3d& axis,
-                                        const App::PropertyLinkSub& location,
-                                        const double& dist)
+Base::Vector3d Constraint::getBasePoint(
+    const Base::Vector3d& base,
+    const Base::Vector3d& axis,
+    const App::PropertyLinkSub& location,
+    const double& dist
+)
 {
     // Get the point specified by Location and Distance
     App::DocumentObject* objLoc = location.getValue();

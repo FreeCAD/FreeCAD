@@ -54,10 +54,7 @@ struct MovingObject
     std::string sub;               // sub name given by the selection.
 
     // Constructor
-    MovingObject(App::DocumentObject* o,
-                 const Base::Placement& p,
-                 App::DocumentObject* ro,
-                 std::string& s)
+    MovingObject(App::DocumentObject* o, const Base::Placement& p, App::DocumentObject* ro, std::string& s)
         : obj(o)
         , plc(p)
         , ref(nullptr)
@@ -121,8 +118,7 @@ public:
     }
 
     bool canDragObject(App::DocumentObject*) const override;
-    bool canDragObjectToTarget(App::DocumentObject* obj,
-                               App::DocumentObject* target) const override;
+    bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
 
     App::DocumentObject* getActivePart() const;
 
@@ -132,10 +128,12 @@ public:
     /// is called when the provider is in edit and the mouse is moved
     bool mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    bool mouseButtonPressed(int Button,
-                            bool pressed,
-                            const SbVec2s& cursorPos,
-                            const Gui::View3DInventorViewer* viewer) override;
+    bool mouseButtonPressed(
+        int Button,
+        bool pressed,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) override;
     // Function to handle double click event
     void doubleClickedIn3dView();
 

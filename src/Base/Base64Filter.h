@@ -58,9 +58,7 @@ struct base64_encoder
 {
 
     using char_type = char;
-    struct category: bio::multichar_output_filter_tag,
-                     bio::closable_tag,
-                     bio::optimally_buffered_tag
+    struct category: bio::multichar_output_filter_tag, bio::closable_tag, bio::optimally_buffered_tag
     {
     };
 
@@ -76,7 +74,8 @@ struct base64_encoder
     {
         static constexpr int defaultBufferSize {1024};
         return static_cast<std::streamsize>(
-            base64_encode_size(line_size != 0U ? line_size : defaultBufferSize));
+            base64_encode_size(line_size != 0U ? line_size : defaultBufferSize)
+        );
     }
 
     template<typename Device>
@@ -173,7 +172,8 @@ struct base64_decoder
     {
         static constexpr int defaultBufferSize {1024};
         return static_cast<std::streamsize>(
-            base64_encode_size(line_size != 0U ? line_size : defaultBufferSize));
+            base64_encode_size(line_size != 0U ? line_size : defaultBufferSize)
+        );
     }
 
     template<typename Device>
@@ -225,12 +225,15 @@ struct base64_decoder
                 }
                 if (pending_in == 4) {
                     pending_out = pending_in = 0;
-                    char_array_3[0] =
-                        static_cast<char>((char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4));
-                    char_array_3[1] = static_cast<char>(((char_array_4[1] & 0xf) << 4)
-                                                        + ((char_array_4[2] & 0x3c) >> 2));
-                    char_array_3[2] =
-                        static_cast<char>(((char_array_4[2] & 0x3) << 6) + char_array_4[3]);
+                    char_array_3[0] = static_cast<char>(
+                        (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4)
+                    );
+                    char_array_3[1] = static_cast<char>(
+                        ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2)
+                    );
+                    char_array_3[2] = static_cast<char>(
+                        ((char_array_4[2] & 0x3) << 6) + char_array_4[3]
+                    );
                     break;
                 }
             }
@@ -255,8 +258,10 @@ struct base64_decoder
  * @return A unique pointer to an output stream that can transforms the
  * input binary data to base64 strings.
  */
-inline std::unique_ptr<std::ostream>
-create_base64_encoder(std::ostream& out, std::size_t line_size = base64DefaultBufferSize)
+inline std::unique_ptr<std::ostream> create_base64_encoder(
+    std::ostream& out,
+    std::size_t line_size = base64DefaultBufferSize
+)
 {
     std::unique_ptr<std::ostream> res(new bio::filtering_ostream);
     auto* filteringStream = dynamic_cast<bio::filtering_ostream*>(res.get());
@@ -273,8 +278,10 @@ create_base64_encoder(std::ostream& out, std::size_t line_size = base64DefaultBu
  * @return A unique pointer to an output stream that can transforms the
  * input binary data to base64 strings.
  */
-inline std::unique_ptr<std::ostream>
-create_base64_encoder(const std::string& filepath, std::size_t line_size = base64DefaultBufferSize)
+inline std::unique_ptr<std::ostream> create_base64_encoder(
+    const std::string& filepath,
+    std::size_t line_size = base64DefaultBufferSize
+)
 {
     std::unique_ptr<std::ostream> res(new bio::filtering_ostream);
     auto* filteringStream = dynamic_cast<bio::filtering_ostream*>(res.get());
@@ -293,10 +300,11 @@ create_base64_encoder(const std::string& filepath, std::size_t line_size = base6
  * @return A unique pointer to an input stream that read from the given
  * upstream and transform the read base64 strings into binary data.
  */
-inline std::unique_ptr<std::istream>
-create_base64_decoder(std::istream& in,
-                      std::size_t line_size = base64DefaultBufferSize,
-                      Base64ErrorHandling errHandling = Base64ErrorHandling::silent)
+inline std::unique_ptr<std::istream> create_base64_decoder(
+    std::istream& in,
+    std::size_t line_size = base64DefaultBufferSize,
+    Base64ErrorHandling errHandling = Base64ErrorHandling::silent
+)
 {
     std::unique_ptr<std::istream> res(new bio::filtering_istream);
     auto* filteringStream = dynamic_cast<bio::filtering_istream*>(res.get());
@@ -319,10 +327,11 @@ create_base64_decoder(std::istream& in,
  * @return A unique pointer to an input stream that read from the given
  * file and transform the read base64 strings into binary data.
  */
-inline std::unique_ptr<std::istream>
-create_base64_decoder(const std::string& filepath,
-                      std::size_t line_size = base64DefaultBufferSize,
-                      Base64ErrorHandling errHandling = Base64ErrorHandling::silent)
+inline std::unique_ptr<std::istream> create_base64_decoder(
+    const std::string& filepath,
+    std::size_t line_size = base64DefaultBufferSize,
+    Base64ErrorHandling errHandling = Base64ErrorHandling::silent
+)
 {
     std::unique_ptr<std::istream> res(new bio::filtering_istream);
     auto* filteringStream = dynamic_cast<bio::filtering_istream*>(res.get());

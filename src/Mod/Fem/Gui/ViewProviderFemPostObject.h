@@ -130,9 +130,11 @@ public:
     //     //@}
 
 protected:
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* typeName,
-                                   const char* propName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
 
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();

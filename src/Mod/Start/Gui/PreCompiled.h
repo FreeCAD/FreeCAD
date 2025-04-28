@@ -27,53 +27,53 @@
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-#pragma warning(disable : 5208)
+# pragma warning(disable : 5208)
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <cinttypes>
-#include <cmath>
-#include <iomanip>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <unordered_map>
+# include <cinttypes>
+# include <cmath>
+# include <iomanip>
+# include <map>
+# include <sstream>
+# include <string>
+# include <vector>
+# include <unordered_map>
 
 // Qt
-#include <QApplication>
-#include <QBoxLayout>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QCoreApplication>
-#include <QFile>
-#include <QFileIconProvider>
-#include <QFrame>
-#include <QGridLayout>
-#include <QGuiApplication>
-#include <QHBoxLayout>
-#include <QImageReader>
-#include <QLabel>
-#include <QListView>
-#include <QMessageBox>
-#include <QModelIndex>
-#include <QPainter>
-#include <QPushButton>
-#include <QResizeEvent>
-#include <QScrollArea>
-#include <QSpacerItem>
-#include <QStackedWidget>
-#include <QString>
-#include <QStringList>
-#include <QStyleHints>
-#include <QStyleOptionViewItem>
-#include <QTimer>
-#include <QToolButton>
-#include <QUrl>
-#include <QVBoxLayout>
-#include <QWidget>
+# include <QApplication>
+# include <QBoxLayout>
+# include <QCheckBox>
+# include <QComboBox>
+# include <QCoreApplication>
+# include <QFile>
+# include <QFileIconProvider>
+# include <QFrame>
+# include <QGridLayout>
+# include <QGuiApplication>
+# include <QHBoxLayout>
+# include <QImageReader>
+# include <QLabel>
+# include <QListView>
+# include <QMessageBox>
+# include <QModelIndex>
+# include <QPainter>
+# include <QPushButton>
+# include <QResizeEvent>
+# include <QScrollArea>
+# include <QSpacerItem>
+# include <QStackedWidget>
+# include <QString>
+# include <QStringList>
+# include <QStyleHints>
+# include <QStyleOptionViewItem>
+# include <QTimer>
+# include <QToolButton>
+# include <QUrl>
+# include <QVBoxLayout>
+# include <QWidget>
 
 #endif  // _PreComp_
 #endif  // STARTGUI_PRECOMPILED_H

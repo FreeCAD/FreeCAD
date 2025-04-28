@@ -22,18 +22,18 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QContextMenuEvent>
-#include <QMenu>
-#include <QPainter>
-#include <QPixmapCache>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
-#include <QString>
-#include <QStyledItemDelegate>
-#include <QWidgetAction>
-#include <boost/core/ignore_unused.hpp>
-#include <cmath>
-#include <limits>
+# include <QContextMenuEvent>
+# include <QMenu>
+# include <QPainter>
+# include <QPixmapCache>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
+# include <QString>
+# include <QStyledItemDelegate>
+# include <QWidgetAction>
+# include <boost/core/ignore_unused.hpp>
+# include <cmath>
+# include <limits>
 #endif
 
 #include <App/Application.h>

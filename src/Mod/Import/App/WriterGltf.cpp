@@ -24,11 +24,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost/core/ignore_unused.hpp>
-#include <Standard_Version.hxx>
-#include <TColStd_IndexedDataMapOfStringString.hxx>
-#include <Message_ProgressRange.hxx>
-#include <RWGltf_CafWriter.hxx>
+# include <boost/core/ignore_unused.hpp>
+# include <Standard_Version.hxx>
+# include <TColStd_IndexedDataMapOfStringString.hxx>
+# include <Message_ProgressRange.hxx>
+# include <RWGltf_CafWriter.hxx>
 #endif
 
 #include "WriterGltf.h"

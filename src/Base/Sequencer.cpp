@@ -24,10 +24,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <mutex>
-#include <vector>
-#include <algorithm>
-#include <cstdio>
+# include <mutex>
+# include <vector>
+# include <algorithm>
+# include <cstdio>
 #endif
 
 #include "Sequencer.h"

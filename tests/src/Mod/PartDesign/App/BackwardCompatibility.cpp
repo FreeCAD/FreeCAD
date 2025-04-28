@@ -56,7 +56,8 @@ TEST_F(BackwardCompatibilityTest, TestOpenV021Model)
     // arrange
 
     auto doc = App::GetApplication().openDocument(
-        std::string(getTestPath() + "ModelFromV021.FCStd").c_str());
+        std::string(getTestPath() + "ModelFromV021.FCStd").c_str()
+    );
     setDocument(doc);
 
     auto chamfer = dynamic_cast<PartDesign::Chamfer*>(doc->getObject("Chamfer"));
@@ -65,7 +66,8 @@ TEST_F(BackwardCompatibilityTest, TestOpenV021Model)
     std::vector<TopoDS_Shape> chamferOriginalEdges {};
     for (const auto& chamferEdgesName : chamferEdgesNames) {
         chamferOriginalEdges.push_back(
-            chamfer->getBaseTopoShape().getSubTopoShape(chamferEdgesName.c_str()).getShape());
+            chamfer->getBaseTopoShape().getSubTopoShape(chamferEdgesName.c_str()).getShape()
+        );
     }
 
     // act
@@ -108,16 +110,20 @@ TEST_F(BackwardCompatibilityTest, TestOpenV021Model)
 
     EXPECT_TRUE(checkSameVertexes(
         chamfer->getBaseTopoShape().getSubTopoShape(chamferEdgesNames[0].c_str()).getShape(),
-        chamferOriginalEdges[0]));
+        chamferOriginalEdges[0]
+    ));
     EXPECT_TRUE(checkSameVertexes(
         chamfer->getBaseTopoShape().getSubTopoShape(chamferEdgesNames[1].c_str()).getShape(),
-        chamferOriginalEdges[1]));
+        chamferOriginalEdges[1]
+    ));
     EXPECT_TRUE(checkSameVertexes(
         chamfer->getBaseTopoShape().getSubTopoShape(chamferEdgesNames[2].c_str()).getShape(),
-        chamferOriginalEdges[2]));
+        chamferOriginalEdges[2]
+    ));
     EXPECT_TRUE(checkSameVertexes(
         chamfer->getBaseTopoShape().getSubTopoShape(chamferEdgesNames[3].c_str()).getShape(),
-        chamferOriginalEdges[3]));
+        chamferOriginalEdges[3]
+    ));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

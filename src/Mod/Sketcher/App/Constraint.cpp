@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QDateTime>
-#include <boost/random.hpp>
-#include <cmath>
+# include <QDateTime>
+# include <boost/random.hpp>
+# include <cmath>
 #endif
 
 #include <Base/Reader.h>
@@ -188,7 +188,8 @@ void Constraint::Restore(XMLReader& reader)
 
     if (this->Type == InternalAlignment) {
         AlignmentType = static_cast<InternalAlignmentType>(
-            reader.getAttributeAsInteger("InternalAlignmentType"));
+            reader.getAttributeAsInteger("InternalAlignmentType")
+        );
 
         if (reader.hasAttribute("InternalAlignmentIndex")) {
             InternalAlignmentIndex = reader.getAttributeAsInteger("InternalAlignmentIndex");
@@ -239,10 +240,7 @@ void Constraint::substituteIndex(int fromGeoId, int toGeoId)
     }
 }
 
-void Constraint::substituteIndexAndPos(int fromGeoId,
-                                       PointPos fromPosId,
-                                       int toGeoId,
-                                       PointPos toPosId)
+void Constraint::substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId)
 {
     if (this->First == fromGeoId && this->FirstPos == fromPosId) {
         this->First = toGeoId;

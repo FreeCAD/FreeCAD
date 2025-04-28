@@ -22,11 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <sstream>
+# include <sstream>
 
-#include <BRep_Builder.hxx>
-#include <Standard_Failure.hxx>
-#include <TopoDS_Compound.hxx>
+# include <BRep_Builder.hxx>
+# include <Standard_Failure.hxx>
+# include <TopoDS_Compound.hxx>
 #endif
 
 #include "FeatureProjection.h"
@@ -41,11 +41,7 @@ FeatureProjection::FeatureProjection()
 {
     static const char* group = "Projection";
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to project");
-    ADD_PROPERTY_TYPE(Direction,
-                      (Base::Vector3d(0, 0, 1)),
-                      group,
-                      App::Prop_None,
-                      "Projection direction");
+    ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(0, 0, 1)), group, App::Prop_None, "Projection direction");
     ADD_PROPERTY_TYPE(VCompound, (true), group, App::Prop_None, "Projection parameter");
     ADD_PROPERTY_TYPE(Rg1LineVCompound, (true), group, App::Prop_None, "Projection parameter");
     ADD_PROPERTY_TYPE(RgNLineVCompound, (true), group, App::Prop_None, "Projection parameter");

@@ -55,8 +55,10 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::MagneticFieldStrength), "MagneticFieldStrength");
     EXPECT_EQ(toString(Base::Unit::MagneticFlux), "MagneticFlux");
     EXPECT_EQ(toString(Base::Unit::MagneticFluxDensity), "MagneticFluxDensity");
-    EXPECT_EQ(toString(Base::Unit::Magnetization),
-              "MagneticFieldStrength");  // same as MagneticFieldStrength
+    EXPECT_EQ(
+        toString(Base::Unit::Magnetization),
+        "MagneticFieldStrength"
+    );  // same as MagneticFieldStrength
     EXPECT_EQ(toString(Base::Unit::Mass), "Mass");
     EXPECT_EQ(toString(Base::Unit::Pressure), "Pressure");
     EXPECT_EQ(toString(Base::Unit::Power), "Power");
@@ -75,8 +77,7 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::Velocity), "Velocity");
     EXPECT_EQ(toString(Base::Unit::Volume), "Volume");
     EXPECT_EQ(toString(Base::Unit::VolumeFlowRate), "VolumeFlowRate");
-    EXPECT_EQ(toString(Base::Unit::VolumetricThermalExpansionCoefficient),
-              "ThermalExpansionCoefficient");
+    EXPECT_EQ(toString(Base::Unit::VolumetricThermalExpansionCoefficient), "ThermalExpansionCoefficient");
     EXPECT_EQ(toString(Base::Unit::Work), "Work");
     EXPECT_EQ(toString(Base::Unit::YieldStrength), "Pressure");  // same as Pressure
     EXPECT_EQ(toString(Base::Unit::YoungsModulus), "Pressure");  // same unit as Pressure
@@ -169,7 +170,8 @@ TEST(Unit, TestOverflow)
                 throw;
             }
         },
-        Base::OverflowError);
+        Base::OverflowError
+    );
 }
 
 TEST(Unit, TestUnderflow)
@@ -187,7 +189,8 @@ TEST(Unit, TestUnderflow)
                 throw;
             }
         },
-        Base::UnderflowError);
+        Base::UnderflowError
+    );
 }
 
 // NOLINTEND

@@ -24,8 +24,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <algorithm>
-#include <array>
+# include <algorithm>
+# include <array>
 #endif
 
 #include "Quantity.h"
@@ -34,9 +34,11 @@
 
 using namespace Base;
 
-std::string UnitsSchemaFemMilliMeterNewton::schemaTranslate(const Quantity& quant,
-                                                            double& factor,
-                                                            std::string& unitString)
+std::string UnitsSchemaFemMilliMeterNewton::schemaTranslate(
+    const Quantity& quant,
+    double& factor,
+    std::string& unitString
+)
 {
     static std::array<std::pair<Unit, std::pair<std::string, double>>, 2> unitSpecs {{
         {Unit::Length, {"mm", 1.0}},

@@ -23,8 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <vector>
+# include <cmath>
+# include <vector>
 #endif
 
 #include <App/Application.h>
@@ -61,18 +61,22 @@ PROPERTY_SOURCE(Assembly::AssemblyLink, App::Part)
 
 AssemblyLink::AssemblyLink()
 {
-    ADD_PROPERTY_TYPE(Rigid,
-                      (true),
-                      "General",
-                      (App::PropertyType)(App::Prop_None),
-                      "If the sub-assembly is set to Rigid, it will act "
-                      "as a rigid body. Else its joints will be taken into account.");
+    ADD_PROPERTY_TYPE(
+        Rigid,
+        (true),
+        "General",
+        (App::PropertyType)(App::Prop_None),
+        "If the sub-assembly is set to Rigid, it will act "
+        "as a rigid body. Else its joints will be taken into account."
+    );
 
-    ADD_PROPERTY_TYPE(LinkedObject,
-                      (nullptr),
-                      "General",
-                      (App::PropertyType)(App::Prop_None),
-                      "The linked assembly.");
+    ADD_PROPERTY_TYPE(
+        LinkedObject,
+        (nullptr),
+        "General",
+        (App::PropertyType)(App::Prop_None),
+        "The linked assembly."
+    );
 }
 
 AssemblyLink::~AssemblyLink() = default;
@@ -110,10 +114,11 @@ void AssemblyLink::onChanged(const App::Property* prop)
 
                 App::DocumentObject* obj = firstElement.first;
                 App::DocumentObject* link = firstElement.second;
-                auto* prop =
-                    dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-                auto* prop2 =
-                    dynamic_cast<App::PropertyPlacement*>(link->getPropertyByName("Placement"));
+                auto* prop = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement")
+                );
+                auto* prop2 = dynamic_cast<App::PropertyPlacement*>(
+                    link->getPropertyByName("Placement")
+                );
                 if (prop && prop2) {
                     movePlc = prop2->getValue() * prop->getValue().inverse();
                 }
@@ -143,8 +148,9 @@ void AssemblyLink::onChanged(const App::Property* prop)
                         continue;
                     }
 
-                    auto* prop =
-                        dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+                    auto* prop = dynamic_cast<App::PropertyPlacement*>(
+                        obj->getPropertyByName("Placement")
+                    );
                     if (prop) {
                         prop->setValue(plc * prop->getValue());
                     }
@@ -249,10 +255,10 @@ void AssemblyLink::synchronizeComponents()
         objLinkMap[obj] = link;
         // If the assemblyLink is rigid, then we keep the placement synchronized.
         if (isRigid()) {
-            auto* plcProp =
-                dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-            auto* plcProp2 =
-                dynamic_cast<App::PropertyPlacement*>(link->getPropertyByName("Placement"));
+            auto* plcProp = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            auto* plcProp2 = dynamic_cast<App::PropertyPlacement*>(
+                link->getPropertyByName("Placement")
+            );
             if (plcProp && plcProp2) {
                 if (!plcProp->getValue().isSame(plcProp2->getValue())) {
                     plcProp2->setValue(plcProp->getValue());
@@ -275,9 +281,11 @@ void AssemblyLink::synchronizeComponents()
 namespace
 {
 template<typename T>
-void copyPropertyIfDifferent(App::DocumentObject* source,
-                             App::DocumentObject* target,
-                             const char* propertyName)
+void copyPropertyIfDifferent(
+    App::DocumentObject* source,
+    App::DocumentObject* target,
+    const char* propertyName
+)
 {
     auto sourceProp = freecad_cast<T*>(source->getPropertyByName(propertyName));
     auto targetProp = freecad_cast<T*>(target->getPropertyByName(propertyName));
@@ -300,8 +308,11 @@ std::string removeUpToName(const std::string& sub, const std::string& name)
     return sub;
 }
 
-std::string
-replaceLastOccurrence(const std::string& str, const std::string& oldStr, const std::string& newStr)
+std::string replaceLastOccurrence(
+    const std::string& str,
+    const std::string& oldStr,
+    const std::string& newStr
+)
 {
     size_t pos = str.rfind(oldStr);
     if (pos != std::string::npos) {
@@ -323,8 +334,8 @@ void AssemblyLink::synchronizeJoints()
 
     JointGroup* jGroup = ensureJointGroup();
 
-    std::vector<App::DocumentObject*> assemblyJoints =
-        assembly->getJoints(assembly->isTouched(), false, false);
+    std::vector<App::DocumentObject*> assemblyJoints
+        = assembly->getJoints(assembly->isTouched(), false, false);
     std::vector<App::DocumentObject*> assemblyLinkJoints = getJoints();
 
     // We delete the excess of joints if any
@@ -383,9 +394,11 @@ void AssemblyLink::synchronizeJoints()
 }
 
 
-void AssemblyLink::handleJointReference(App::DocumentObject* joint,
-                                        App::DocumentObject* lJoint,
-                                        const char* refName)
+void AssemblyLink::handleJointReference(
+    App::DocumentObject* joint,
+    App::DocumentObject* lJoint,
+    const char* refName
+)
 {
     AssemblyObject* assembly = getLinkedAssembly();
 

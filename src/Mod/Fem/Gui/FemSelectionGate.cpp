@@ -30,9 +30,7 @@
 using namespace FemGui;
 using namespace Gui;
 
-bool FemSelectionGate::allow(App::Document* /*pDoc*/,
-                             App::DocumentObject* /*pObj*/,
-                             const char* sSubName)
+bool FemSelectionGate::allow(App::Document* /*pDoc*/, App::DocumentObject* /*pObj*/, const char* sSubName)
 {
     if (Base::Tools::isNullOrEmpty(sSubName)) {
         return false;

@@ -24,8 +24,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QMessageBox>
-#include <QThread>
+# include <QMessageBox>
+# include <QThread>
 #endif
 
 #include <App/Application.h>
@@ -41,10 +41,12 @@ DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_gmsh_binary_path,
-            &Gui::PrefFileChooser::fileNameChanged,
-            this,
-            &DlgSettingsFemGmshImp::onfileNameChanged);
+    connect(
+        ui->fc_gmsh_binary_path,
+        &Gui::PrefFileChooser::fileNameChanged,
+        this,
+        &DlgSettingsFemGmshImp::onfileNameChanged
+    );
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp() = default;
@@ -63,7 +65,8 @@ void DlgSettingsFemGmshImp::loadSettings()
     ui->fc_gmsh_binary_path->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+    );
     // determine number of CPU threads
     ui->sb_threads->setValue(hGrp->GetInt("NumOfThreads", QThread::idealThreadCount()));
 
@@ -87,31 +90,35 @@ void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
 void DlgSettingsFemGmshImp::onfileNameChanged(QString FileName)
 {
     if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this,
-                              tr("File does not exist"),
-                              tr("The specified executable\n'%1'\n does not exist!\n"
-                                 "Specify another file please.")
-                                  .arg(FileName));
+        QMessageBox::critical(
+            this,
+            tr("File does not exist"),
+            tr("The specified executable\n'%1'\n does not exist!\n"
+               "Specify another file please.")
+                .arg(FileName)
+        );
     }
 }
 
 void DlgSettingsFemGmshImp::populateLogVerbosity()
 {
-    std::list<std::pair<std::string, int>> mapValues = {{"Silent", 0},
-                                                        {"Errors", 1},
-                                                        {"Warnings", 2},
-                                                        {"Direct", 3},
-                                                        {"Information", 4},
-                                                        {"Status", 5},
-                                                        {"Debug", 99}};
+    std::list<std::pair<std::string, int>> mapValues = {
+        {"Silent", 0},
+        {"Errors", 1},
+        {"Warnings", 2},
+        {"Direct", 3},
+        {"Information", 4},
+        {"Status", 5},
+        {"Debug", 99}
+    };
 
     for (const auto& val : mapValues) {
-        ui->cb_log_verbosity->addItem(QString::fromStdString(val.first),
-                                      QString::number(val.second));
+        ui->cb_log_verbosity->addItem(QString::fromStdString(val.first), QString::number(val.second));
     }
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+    );
     std::string current = hGrp->GetASCII("LogVerbosity", "3");
     int index = ui->cb_log_verbosity->findData(QString::fromStdString(current));
     ui->cb_log_verbosity->setCurrentIndex(index);

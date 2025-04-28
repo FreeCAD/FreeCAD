@@ -29,34 +29,34 @@
 
 /// point at which warnings of overly long specifiers disabled (needet for VC6)
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4275)
+# pragma warning(disable : 4503)
+# pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 
 #ifdef _PreComp_
 
 // standard
-#include <cassert>
-#include <cstdio>
-#include <fcntl.h>
-#include <io.h>
-#include <iostream>
-#include <list>
-#include <map>
-#include <sstream>
-#include <vector>
+# include <cassert>
+# include <cstdio>
+# include <fcntl.h>
+# include <io.h>
+# include <iostream>
+# include <list>
+# include <map>
+# include <sstream>
+# include <vector>
 
 // boost
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/core/ignore_unused.hpp>
-#include <boost/range/adaptor/indexed.hpp>
+# include <boost/algorithm/string/predicate.hpp>
+# include <boost/core/ignore_unused.hpp>
+# include <boost/range/adaptor/indexed.hpp>
 
 // OpenCasCade =====================================================================================
 // Base
-#include <Mod/Part/App/OpenCascadeAll.h>
+# include <Mod/Part/App/OpenCascadeAll.h>
 
 #endif  //_PreComp_
 

@@ -23,13 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QCryptographicHash>
-#include <QDateTime>
-#include <QFileInfo>
-#include <QString>
-#include <QTimeZone>
-#include <QUrl>
-#include <fmt/format.h>
+# include <QCryptographicHash>
+# include <QDateTime>
+# include <QFileInfo>
+# include <QString>
+# include <QTimeZone>
+# include <QUrl>
+# include <fmt/format.h>
 #endif
 
 #include "FileUtilities.h"

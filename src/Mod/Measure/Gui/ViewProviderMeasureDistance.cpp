@@ -24,29 +24,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <sstream>
-#include <QApplication>
-#include <Inventor/engines/SoCalculator.h>
-#include <Inventor/engines/SoConcatenate.h>
-#include <Inventor/engines/SoComposeRotation.h>
-#include <Inventor/engines/SoComposeRotationFromTo.h>
-#include <Inventor/engines/SoComposeVec3f.h>
-#include <Inventor/engines/SoDecomposeVec3f.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoFontStyle.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoMarkerSet.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoResetTransform.h>
-#include <Inventor/nodes/SoNodes.h>
+# include <sstream>
+# include <QApplication>
+# include <Inventor/engines/SoCalculator.h>
+# include <Inventor/engines/SoConcatenate.h>
+# include <Inventor/engines/SoComposeRotation.h>
+# include <Inventor/engines/SoComposeRotationFromTo.h>
+# include <Inventor/engines/SoComposeVec3f.h>
+# include <Inventor/engines/SoDecomposeVec3f.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoFontStyle.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoMarkerSet.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoCone.h>
+# include <Inventor/nodes/SoResetTransform.h>
+# include <Inventor/nodes/SoNodes.h>
 #endif
 
 #include <Gui/Inventor/MarkerBitmaps.h>
@@ -256,23 +256,25 @@ SbMatrix ViewProviderMeasureDistance::getMatrix()
     assert(fabs(localYAxis.Dot(localXAxis)) < tolerance);
     Base::Vector3d localZAxis = localYAxis.Cross(localXAxis).Normalize();
 
-    SbMatrix matrix = SbMatrix(localXAxis.x,
-                               localXAxis.y,
-                               localXAxis.z,
-                               0,
-                               localYAxis.x,
-                               localYAxis.y,
-                               localYAxis.z,
-                               0,
-                               localZAxis.x,
-                               localZAxis.y,
-                               localZAxis.z,
-                               0,
-                               // 0,0,0,1
-                               origin[0],
-                               origin[1],
-                               origin[2],
-                               1);
+    SbMatrix matrix = SbMatrix(
+        localXAxis.x,
+        localXAxis.y,
+        localXAxis.z,
+        0,
+        localYAxis.x,
+        localYAxis.y,
+        localYAxis.z,
+        0,
+        localZAxis.x,
+        localZAxis.y,
+        localZAxis.z,
+        0,
+        // 0,0,0,1
+        origin[0],
+        origin[1],
+        origin[2],
+        1
+    );
 
     return matrix;
 }
@@ -282,8 +284,10 @@ SbMatrix ViewProviderMeasureDistance::getMatrix()
 //! layout of the elements and its relationship with the cardinal axes and the view direction.
 //! elementDirection is expected to be a normalized vector. an example of an elementDirection would
 //! be the vector from the start of a line to the end.
-Base::Vector3d ViewProviderMeasureDistance::getTextDirection(Base::Vector3d elementDirection,
-                                                             double tolerance)
+Base::Vector3d ViewProviderMeasureDistance::getTextDirection(
+    Base::Vector3d elementDirection,
+    double tolerance
+)
 {
     const Base::Vector3d stdX(1.0, 0.0, 0.0);
     const Base::Vector3d stdY(0.0, 1.0, 0.0);
@@ -309,11 +313,13 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
 {
     sPixmap = "Measurement-Distance";
 
-    ADD_PROPERTY_TYPE(ShowDelta,
-                      (false),
-                      "Appearance",
-                      App::Prop_None,
-                      "Display the X, Y and Z components of the distance");
+    ADD_PROPERTY_TYPE(
+        ShowDelta,
+        (false),
+        "Appearance",
+        App::Prop_None,
+        "Display the X, Y and Z components of the distance"
+    );
 
     // vert indexes used to create the annotation lines
     const size_t lineCount(3);
@@ -346,8 +352,10 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     auto engineCoords = new SoCalculator();
     engineCoords->a.connectFrom(&fieldDistance);
     engineCoords->A.connectFrom(&pLabelTranslation->translation);
-    engineCoords->expression.setValue("ta=a/2; tb=A[1]; oA=vec3f(ta, 0, 0); oB=vec3f(-ta, 0, 0); "
-                                      "oC=vec3f(ta, tb, 0); oD=vec3f(-ta, tb, 0)");
+    engineCoords->expression.setValue(
+        "ta=a/2; tb=A[1]; oA=vec3f(ta, 0, 0); oB=vec3f(-ta, 0, 0); "
+        "oC=vec3f(ta, tb, 0); oD=vec3f(-ta, tb, 0)"
+    );
 
     auto engineCat = new SoConcatenate(SoMFVec3f::getClassTypeId());
     engineCat->input[0]->connectFrom(&engineCoords->oA);
@@ -377,9 +385,10 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     pLineSeparatorSecondary->addChild(lineSetSecondary);
 
     auto points = new SoMarkerSet();
-    points->markerIndex =
-        Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
-                                                     ViewParams::instance()->getMarkerSize());
+    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
+        "CROSS",
+        ViewParams::instance()->getMarkerSize()
+    );
     points->numPoints = 2;
     pLineSeparator->addChild(points);
 
@@ -472,23 +481,25 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     // Set the distance
     fieldDistance = (vec2 - vec1).Length();
 
-    auto propDistance =
-        dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
+    auto propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
     setLabelValue(QString::fromStdString(propDistance->getQuantityValue().getUserString()));
 
     // Set delta distance
-    auto propDistanceX =
-        static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceX"));
+    auto propDistanceX = static_cast<App::PropertyDistance*>(
+        getMeasureObject()->getPropertyByName("DistanceX")
+    );
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
         ->text.setValue(("Δx: " + propDistanceX->getQuantityValue().getUserString()).c_str());
 
-    auto propDistanceY =
-        static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceY"));
+    auto propDistanceY = static_cast<App::PropertyDistance*>(
+        getMeasureObject()->getPropertyByName("DistanceY")
+    );
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
         ->text.setValue(("Δy: " + propDistanceY->getQuantityValue().getUserString()).c_str());
 
-    auto propDistanceZ =
-        static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceZ"));
+    auto propDistanceZ = static_cast<App::PropertyDistance*>(
+        getMeasureObject()->getPropertyByName("DistanceZ")
+    );
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
         ->text.setValue(("Δz: " + propDistanceZ->getQuantityValue().getUserString()).c_str());
 
@@ -504,8 +515,9 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
 {
 
     if (prop == &ShowDelta) {
-        pDeltaDimensionSwitch->whichChild.setValue(ShowDelta.getValue() ? SO_SWITCH_ALL
-                                                                        : SO_SWITCH_NONE);
+        pDeltaDimensionSwitch->whichChild.setValue(
+            ShowDelta.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE
+        );
     }
     else if (prop == &FontSize) {
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))

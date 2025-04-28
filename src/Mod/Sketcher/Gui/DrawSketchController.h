@@ -87,15 +87,19 @@ namespace sp = std::placeholders;
  * DrawSketchDefaultWidgetController. For custom widgets, an appropriate class, preferably deriving
  * from this controller needs to be provided.
  */
-template<typename HandlerT,           // The name of the actual handler of the tool
-         typename SelectModeT,        // The state machine defining the working of the tool
-         int PAutoConstraintSize,     // The initial size of the AutoConstraint vector
-         typename OnViewParametersT,  // The number of parameter spinboxes in the 3D view (one
-                                      // value per construction mode)
-         typename ConstructionMethodT =
-             ConstructionMethods::DefaultConstructionMethod>  // The enum comprising all the
-                                                              // supported construction methods
-class DrawSketchController
+template<
+    typename HandlerT,           // The name of the actual handler of the tool
+    typename SelectModeT,        // The state machine defining the working of the tool
+    int PAutoConstraintSize,     // The initial size of the AutoConstraint vector
+    typename OnViewParametersT,  // The number of parameter spinboxes in the 3D view (one
+                                 // value per construction mode)
+    typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod>  // The enum
+                                                                                    // comprising
+                                                                                    // all the
+                                                                                    // supported
+                                                                                    // construction
+                                                                                    // methods
+                                                                                    class DrawSketchController
 {
 public:
     /** @name Meta-programming definitions and members */
@@ -110,8 +114,8 @@ public:
 
     /** @name Convenience definitions */
     //@{
-    using DSDefaultHandler =
-        DrawSketchDefaultHandler<HandlerT, SelectModeT, PAutoConstraintSize, ConstructionMethodT>;
+    using DSDefaultHandler
+        = DrawSketchDefaultHandler<HandlerT, SelectModeT, PAutoConstraintSize, ConstructionMethodT>;
     using ConstructionMachine = ConstructionMethodMachine<ConstructionMethodT>;
 
     using ConstructionMethod = ConstructionMethodT;
@@ -166,7 +170,8 @@ private:
         void init()
         {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View");
+                "User parameter:BaseApp/Preferences/View"
+            );
 
             dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
             dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
@@ -214,8 +219,8 @@ private:
                 case OnViewParameterVisibility::Hidden:
                     return dynamicOverride;
                 case OnViewParameterVisibility::OnlyDimensional: {
-                    auto isDimensional =
-                        (ovp->getFunction() == Gui::EditableDatumLabel::Function::Dimensioning);
+                    auto isDimensional
+                        = (ovp->getFunction() == Gui::EditableDatumLabel::Function::Dimensioning);
 
                     return isDimensional != dynamicOverride;
                 }
@@ -241,10 +246,12 @@ private:
         void init()
         {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools"
+            );
 
             onViewParameterVisibility = static_cast<OnViewParameterVisibility>(
-                hGrp->GetInt("OnViewParameterVisibility", 1));
+                hGrp->GetInt("OnViewParameterVisibility", 1)
+            );
         }
 
         OnViewParameterVisibility onViewParameterVisibility;
@@ -388,8 +395,10 @@ public:
             handler->setState(getState(onviewparameterindex));
         }*/
 
-        adaptDrawingToOnViewParameterChange(onviewparameterindex,
-                                            value);  // specialisation interface
+        adaptDrawingToOnViewParameterChange(
+            onviewparameterindex,
+            value
+        );  // specialisation interface
 
         finishControlsChanged();
     }
@@ -504,17 +513,18 @@ public:
         }
     }
 
-    void
-    drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2)
+    void drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2)
     {
         if (shouldDrawDimensionsAtCursor()) {
             handler->drawWidthHeightAtCursor(position, val1, val2);
         }
     }
 
-    void drawDoubleAtCursor(const Base::Vector2d& position,
-                            const double radius,
-                            Base::Unit unit = Base::Unit::Length)
+    void drawDoubleAtCursor(
+        const Base::Vector2d& position,
+        const double radius,
+        Base::Unit unit = Base::Unit::Length
+    )
     {
         if (shouldDrawDimensionsAtCursor()) {
             handler->drawDoubleAtCursor(position, radius, unit);
@@ -609,20 +619,25 @@ protected:
 
             // the returned is a naked pointer
             auto parameter = onViewParameters
-                                 .emplace_back(std::make_unique<Gui::EditableDatumLabel>(
-                                     viewer,
-                                     placement,
-                                     colorManager.dimConstrDeactivatedColor,
-                                     /*autoDistance = */ true,
-                                     /*avoidMouseCursor = */ true))
+                                 .emplace_back(
+                                     std::make_unique<Gui::EditableDatumLabel>(
+                                         viewer,
+                                         placement,
+                                         colorManager.dimConstrDeactivatedColor,
+                                         /*autoDistance = */ true,
+                                         /*avoidMouseCursor = */ true
+                                     )
+                                 )
                                  .get();
 
-            QObject::connect(parameter,
-                             &Gui::EditableDatumLabel::valueChanged,
-                             [this, parameter, i](double value) {
-                                 parameter->setColor(colorManager.dimConstrColor);
-                                 onViewValueChanged(i, value);
-                             });
+            QObject::connect(
+                parameter,
+                &Gui::EditableDatumLabel::valueChanged,
+                [this, parameter, i](double value) {
+                    parameter->setColor(colorManager.dimConstrColor);
+                    onViewValueChanged(i, value);
+                }
+            );
         }
     }
 
@@ -633,9 +648,11 @@ protected:
         onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
     }
 
-    void setOnViewParameterValue(OnViewParameter index,
-                                 double val,
-                                 const Base::Unit& unit = Base::Unit::Length)
+    void setOnViewParameterValue(
+        OnViewParameter index,
+        double val,
+        const Base::Unit& unit = Base::Unit::Length
+    )
     {
         bool visible = isOnViewParameterVisible(index);
 
@@ -776,13 +793,15 @@ private:
     bool shouldDrawPositionAtCursor() const
     {
         return !(ovpVisibilityManager.isVisibility(
-            OnViewParameterVisibilityManager::OnViewParameterVisibility::ShowAll));
+            OnViewParameterVisibilityManager::OnViewParameterVisibility::ShowAll
+        ));
     }
 
     bool shouldDrawDimensionsAtCursor() const
     {
         return (ovpVisibilityManager.isVisibility(
-            OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden));
+            OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden
+        ));
     }
     //@}
 

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <sstream>
+# include <sstream>
 #endif
 
 #include <Base/QuantityPy.h>
@@ -167,8 +167,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strcmp("Angle", ConstraintType) == 0) {
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
-                    Base::Quantity q =
-                        *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
+                    Base::Quantity q = *(
+                        static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr()
+                    );
                     if (q.getUnit() == Base::Unit::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
@@ -227,13 +228,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siOOO",
-                         &ConstraintType,
-                         &FirstIndex,
-                         &index_or_value,
-                         &activated,
-                         &driving)) {
+    if (PyArg_ParseTuple(args, "siOOO", &ConstraintType, &FirstIndex, &index_or_value, &activated, &driving)) {
         if (PyBool_Check(activated) && PyBool_Check(driving)) {
             if (handleSiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -302,8 +297,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Value = PyFloat_AsDouble(index_or_value);
             if (strcmp("Angle", ConstraintType) == 0) {
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
-                    Base::Quantity q =
-                        *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
+                    Base::Quantity q = *(
+                        static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr()
+                    );
                     if (q.getUnit() == Base::Unit::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
@@ -346,13 +342,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siiOO",
-                         &ConstraintType,
-                         &FirstIndex,
-                         &any_index,
-                         &index_or_value,
-                         &activated)) {
+    if (PyArg_ParseTuple(args, "siiOO", &ConstraintType, &FirstIndex, &any_index, &index_or_value, &activated)) {
         if (PyBool_Check(activated)) {
             if (handleSiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -362,14 +352,16 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siiOOO",
-                         &ConstraintType,
-                         &FirstIndex,
-                         &any_index,
-                         &index_or_value,
-                         &activated,
-                         &driving)) {
+    if (PyArg_ParseTuple(
+            args,
+            "siiOOO",
+            &ConstraintType,
+            &FirstIndex,
+            &any_index,
+            &index_or_value,
+            &activated,
+            &driving
+        )) {
         if (PyBool_Check(activated) && PyBool_Check(driving)) {
             if (handleSiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -430,9 +422,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
                 return true;
             }
-            else if (strstr(ConstraintType,
-                            "InternalAlignment")) {  // InteralAlignment with
-                                                     // InternalElementIndex argument
+            else if (strstr(
+                         ConstraintType,
+                         "InternalAlignment"
+                     )) {  // InteralAlignment with
+                           // InternalElementIndex argument
                 constraint->Type = InternalAlignment;
 
                 valid = true;
@@ -486,14 +480,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siiiOO",
-                         &ConstraintType,
-                         &intArg1,
-                         &intArg2,
-                         &intArg3,
-                         &oNumArg4,
-                         &activated)) {
+    if (PyArg_ParseTuple(args, "siiiOO", &ConstraintType, &intArg1, &intArg2, &intArg3, &oNumArg4, &activated)) {
         if (PyBool_Check(activated)) {
             if (handleSiiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -503,15 +490,17 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siiiOOO",
-                         &ConstraintType,
-                         &intArg1,
-                         &intArg2,
-                         &intArg3,
-                         &oNumArg4,
-                         &activated,
-                         &driving)) {
+    if (PyArg_ParseTuple(
+            args,
+            "siiiOOO",
+            &ConstraintType,
+            &intArg1,
+            &intArg2,
+            &intArg3,
+            &oNumArg4,
+            &activated,
+            &driving
+        )) {
         if (PyBool_Check(activated) && PyBool_Check(driving)) {
             if (handleSiiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -553,8 +542,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strcmp("Angle", ConstraintType) == 0) {
                 if (PyObject_TypeCheck(oNumArg5, &(Base::QuantityPy::Type))) {
-                    Base::Quantity q =
-                        *(static_cast<Base::QuantityPy*>(oNumArg5)->getQuantityPtr());
+                    Base::Quantity q = *(static_cast<Base::QuantityPy*>(oNumArg5)->getQuantityPtr());
                     if (q.getUnit() == Base::Unit::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
@@ -563,8 +551,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strcmp("AngleViaPoint", ConstraintType) == 0) {
                 if (PyObject_TypeCheck(oNumArg5, &(Base::QuantityPy::Type))) {
-                    Base::Quantity q =
-                        *(static_cast<Base::QuantityPy*>(oNumArg5)->getQuantityPtr());
+                    Base::Quantity q = *(static_cast<Base::QuantityPy*>(oNumArg5)->getQuantityPtr());
                     if (q.getUnit() == Base::Unit::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
@@ -594,29 +581,24 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return false;
     };
 
-    if (PyArg_ParseTuple(args,
-                         "siiiiO",
-                         &ConstraintType,
-                         &intArg1,
-                         &intArg2,
-                         &intArg3,
-                         &intArg4,
-                         &oNumArg5)) {
+    if (PyArg_ParseTuple(args, "siiiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &intArg4, &oNumArg5)) {
         if (handleSiiiiO()) {
             return 0;
         }
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siiiiOO",
-                         &ConstraintType,
-                         &intArg1,
-                         &intArg2,
-                         &intArg3,
-                         &intArg4,
-                         &oNumArg5,
-                         &activated)) {
+    if (PyArg_ParseTuple(
+            args,
+            "siiiiOO",
+            &ConstraintType,
+            &intArg1,
+            &intArg2,
+            &intArg3,
+            &intArg4,
+            &oNumArg5,
+            &activated
+        )) {
         if (PyBool_Check(activated)) {
             if (handleSiiiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -626,16 +608,18 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siiiiOOO",
-                         &ConstraintType,
-                         &intArg1,
-                         &intArg2,
-                         &intArg3,
-                         &intArg4,
-                         &oNumArg5,
-                         &activated,
-                         &driving)) {
+    if (PyArg_ParseTuple(
+            args,
+            "siiiiOOO",
+            &ConstraintType,
+            &intArg1,
+            &intArg2,
+            &intArg3,
+            &intArg4,
+            &oNumArg5,
+            &activated,
+            &driving
+        )) {
         if (PyBool_Check(activated) && PyBool_Check(driving)) {
             if (handleSiiiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -680,31 +664,35 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return false;
     };
 
-    if (PyArg_ParseTuple(args,
-                         "siiiiiO",
-                         &ConstraintType,
-                         &FirstIndex,
-                         &FirstPos,
-                         &SecondIndex,
-                         &SecondPos,
-                         &ThirdIndex,
-                         &index_or_value)) {
+    if (PyArg_ParseTuple(
+            args,
+            "siiiiiO",
+            &ConstraintType,
+            &FirstIndex,
+            &FirstPos,
+            &SecondIndex,
+            &SecondPos,
+            &ThirdIndex,
+            &index_or_value
+        )) {
         if (handleSiiiiiO()) {
             return 0;
         }
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siiiiiOO",
-                         &ConstraintType,
-                         &FirstIndex,
-                         &FirstPos,
-                         &SecondIndex,
-                         &SecondPos,
-                         &ThirdIndex,
-                         &index_or_value,
-                         &activated)) {
+    if (PyArg_ParseTuple(
+            args,
+            "siiiiiOO",
+            &ConstraintType,
+            &FirstIndex,
+            &FirstPos,
+            &SecondIndex,
+            &SecondPos,
+            &ThirdIndex,
+            &index_or_value,
+            &activated
+        )) {
         if (PyBool_Check(activated)) {
             if (handleSiiiiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -714,17 +702,19 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args,
-                         "siiiiiOOO",
-                         &ConstraintType,
-                         &FirstIndex,
-                         &FirstPos,
-                         &SecondIndex,
-                         &SecondPos,
-                         &ThirdIndex,
-                         &index_or_value,
-                         &activated,
-                         &driving)) {
+    if (PyArg_ParseTuple(
+            args,
+            "siiiiiOOO",
+            &ConstraintType,
+            &FirstIndex,
+            &FirstPos,
+            &SecondIndex,
+            &SecondPos,
+            &ThirdIndex,
+            &index_or_value,
+            &activated,
+            &driving
+        )) {
         if (PyBool_Check(activated) && PyBool_Check(driving)) {
             if (handleSiiiiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);

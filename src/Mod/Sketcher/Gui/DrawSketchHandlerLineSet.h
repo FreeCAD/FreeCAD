@@ -230,9 +230,7 @@ public:
                 }
 
                 if (TransitionMode == TRANSITION_MODE_Free) {
-                    seekAndRenderAutoConstraint(sugConstr2,
-                                                onSketchPos,
-                                                onSketchPos - EditCurve[0]);
+                    seekAndRenderAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0]);
                 }
             }
             else if (SegmentMode == SEGMENT_MODE_Arc) {
@@ -276,8 +274,8 @@ public:
                     arcRadius = 0.f;
                 }
 
-                CenterPoint =
-                    EditCurve[0] + Base::Vector2d(arcRadius * Tangent.y, -arcRadius * Tangent.x);
+                CenterPoint = EditCurve[0]
+                    + Base::Vector2d(arcRadius * Tangent.y, -arcRadius * Tangent.x);
 
                 double rx = EditCurve[0].x - CenterPoint.x;
                 double ry = EditCurve[0].y - CenterPoint.y;
@@ -341,21 +339,24 @@ public:
             // (peviousCurve, previousPosId, dirVec, TransitionMode)
             for (unsigned int i = 0; i < sugConstr1.size(); i++) {
                 if (sugConstr1[i].Type == Sketcher::Coincident) {
-                    const Part::Geometry* geom =
-                        sketchgui->getSketchObject()->getGeometry(sugConstr1[i].GeoId);
+                    const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(
+                        sugConstr1[i].GeoId
+                    );
                     if ((geom->is<Part::GeomLineSegment>() || geom->is<Part::GeomArcOfCircle>())
                         && (sugConstr1[i].PosId == Sketcher::PointPos::start
                             || sugConstr1[i].PosId == Sketcher::PointPos::end)) {
                         previousCurve = sugConstr1[i].GeoId;
                         previousPosId = sugConstr1[i].PosId;
-                        updateTransitionData(previousCurve,
-                                             previousPosId);  // -> dirVec, EditCurve[0]
+                        updateTransitionData(
+                            previousCurve,
+                            previousPosId
+                        );  // -> dirVec, EditCurve[0]
                         if (geom->is<Part::GeomArcOfCircle>()) {
                             TransitionMode = TRANSITION_MODE_Tangent;
                             SnapMode = SNAP_MODE_Free;
                         }
-                        sugConstr1.erase(sugConstr1.begin()
-                                         + i);  // actually we should clear the vector completely
+                        sugConstr1.erase(sugConstr1.begin() + i);  // actually we should clear the
+                                                                   // vector completely
                         break;
                     }
                 }
@@ -382,7 +383,8 @@ public:
                 drawEdit(EditCurve);
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher"
+                );
                 bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
                 if (continuousMode) {
@@ -419,19 +421,15 @@ public:
                 int GeoId;
                 Sketcher::PointPos PosId;
                 sketchgui->getSketchObject()->getGeoVertexIndex(getPreselectPoint(), GeoId, PosId);
-                if (sketchgui->getSketchObject()->arePointsCoincident(GeoId,
-                                                                      PosId,
-                                                                      firstCurve,
-                                                                      firstPosId)) {
+                if (sketchgui->getSketchObject()
+                        ->arePointsCoincident(GeoId, PosId, firstCurve, firstPosId)) {
                     Mode = STATUS_Close;
                 }
             }
             else if (getPreselectCross() == 0 && firstPosId != Sketcher::PointPos::none) {
                 // close line started at root point
-                if (sketchgui->getSketchObject()->arePointsCoincident(-1,
-                                                                      Sketcher::PointPos::start,
-                                                                      firstCurve,
-                                                                      firstPosId)) {
+                if (sketchgui->getSketchObject()
+                        ->arePointsCoincident(-1, Sketcher::PointPos::start, firstCurve, firstPosId)) {
                     Mode = STATUS_Close;
                 }
             }
@@ -448,7 +446,8 @@ public:
                 try {
                     // open the transaction
                     Gui::Command::openCommand(
-                        QT_TRANSLATE_NOOP("Command", "Add line to sketch polyline"));
+                        QT_TRANSLATE_NOOP("Command", "Add line to sketch polyline")
+                    );
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
@@ -456,13 +455,16 @@ public:
                         EditCurve[0].y,
                         EditCurve[1].x,
                         EditCurve[1].y,
-                        constructionModeAsBooleanText());
+                        constructionModeAsBooleanText()
+                    );
                 }
                 catch (const Base::Exception&) {
                     addedGeometry = false;
-                    Gui::NotifyError(sketchgui,
-                                     QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                     QT_TRANSLATE_NOOP("Notifications", "Failed to add line"));
+                    Gui::NotifyError(
+                        sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add line")
+                    );
                     Gui::Command::abortCommand();
                 }
 
@@ -476,7 +478,8 @@ public:
 
                 try {
                     Gui::Command::openCommand(
-                        QT_TRANSLATE_NOOP("Command", "Add arc to sketch polyline"));
+                        QT_TRANSLATE_NOOP("Command", "Add arc to sketch polyline")
+                    );
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addGeometry(Part.ArcOfCircle"
@@ -486,13 +489,16 @@ public:
                         std::abs(arcRadius),
                         std::min(startAngle, endAngle),
                         std::max(startAngle, endAngle),
-                        constructionModeAsBooleanText());
+                        constructionModeAsBooleanText()
+                    );
                 }
                 catch (const Base::Exception&) {
                     addedGeometry = false;
-                    Gui::NotifyError(sketchgui,
-                                     QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                     QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));
+                    Gui::NotifyError(
+                        sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add arc")
+                    );
 
                     Gui::Command::abortCommand();
                 }
@@ -503,12 +509,12 @@ public:
             int lastCurve = getHighestCurveIndex();
             // issue the constraint
             if (addedGeometry && (previousPosId != Sketcher::PointPos::none)) {
-                Sketcher::PointPos lastStartPosId =
-                    (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle)
+                Sketcher::PointPos lastStartPosId = (SegmentMode == SEGMENT_MODE_Arc
+                                                     && startAngle > endAngle)
                     ? Sketcher::PointPos::end
                     : Sketcher::PointPos::start;
-                Sketcher::PointPos lastEndPosId =
-                    (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle)
+                Sketcher::PointPos lastEndPosId = (SegmentMode == SEGMENT_MODE_Arc
+                                                   && startAngle > endAngle)
                     ? Sketcher::PointPos::start
                     : Sketcher::PointPos::end;
                 // in case of a tangency constraint, the coincident constraint is redundant
@@ -522,13 +528,15 @@ public:
                         constrType = "Perpendicular";
                     }
                 }
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
-                                      constrType.c_str(),
-                                      previousCurve,
-                                      static_cast<int>(previousPosId),
-                                      lastCurve,
-                                      static_cast<int>(lastStartPosId));
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
+                    constrType.c_str(),
+                    previousCurve,
+                    static_cast<int>(previousPosId),
+                    lastCurve,
+                    static_cast<int>(lastStartPosId)
+                );
 
                 if (SnapMode == SNAP_MODE_45Degree && Mode != STATUS_Close) {
                     // -360, -315, -270, -225, -180, -135, -90, -45,  0, 45,  90, 135, 180, 225,
@@ -538,14 +546,17 @@ public:
 
                     // #3974: if in radians, the printf %f defaults to six decimals, which leads to
                     // loss of precision
-                    double arcAngle = abs(round((endAngle - startAngle) / (std::numbers::pi / 4))
-                                          * 45);  // in degrees
+                    double arcAngle = abs(
+                        round((endAngle - startAngle) / (std::numbers::pi / 4)) * 45
+                    );  // in degrees
 
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addConstraint(Sketcher.Constraint('Angle',%i,App.Units."
-                                          "Quantity('%f deg'))) ",
-                                          lastCurve,
-                                          arcAngle);
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Angle',%i,App.Units."
+                        "Quantity('%f deg'))) ",
+                        lastCurve,
+                        arcAngle
+                    );
                 }
                 if (Mode == STATUS_Close) {
                     // close the loop by constrain to the first curve point
@@ -555,7 +566,8 @@ public:
                         lastCurve,
                         static_cast<int>(lastEndPosId),
                         firstCurve,
-                        static_cast<int>(firstPosId));
+                        static_cast<int>(firstPosId)
+                    );
                     firstsegment = true;
                 }
                 Gui::Command::commitCommand();
@@ -564,9 +576,10 @@ public:
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool avoidredundant =
-                sketchgui->AvoidRedundant.getValue() && sketchgui->Autoconstraints.getValue();
+                "User parameter:BaseApp/Preferences/Mod/Sketcher"
+            );
+            bool avoidredundant = sketchgui->AvoidRedundant.getValue()
+                && sketchgui->Autoconstraints.getValue();
 
             if (Mode == STATUS_Close) {
 
@@ -576,13 +589,15 @@ public:
                             removeRedundantHorizontalVertical(
                                 sketchgui->getObject<Sketcher::SketchObject>(),
                                 sugConstr1,
-                                sugConstr2);
+                                sugConstr2
+                            );
                         }
                         else {
                             removeRedundantHorizontalVertical(
                                 sketchgui->getObject<Sketcher::SketchObject>(),
                                 virtualsugConstr1,
-                                sugConstr2);
+                                sugConstr2
+                            );
                         }
                     }
                 }
@@ -595,9 +610,7 @@ public:
                             sugConstr.push_back(sugConstr2[i]);
                         }
                     }
-                    createAutoConstraints(sugConstr,
-                                          getHighestCurveIndex(),
-                                          Sketcher::PointPos::end);
+                    createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
 
@@ -610,7 +623,8 @@ public:
                 drawEdit(EditCurve);
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher"
+                );
                 bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
                 if (continuousMode) {
@@ -643,9 +657,7 @@ public:
 
                 // Add auto constraints
                 if (!sugConstr1.empty()) {  // this is relevant only to the very first point
-                    createAutoConstraints(sugConstr1,
-                                          getHighestCurveIndex(),
-                                          Sketcher::PointPos::start);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
@@ -656,26 +668,30 @@ public:
                             removeRedundantHorizontalVertical(
                                 sketchgui->getObject<Sketcher::SketchObject>(),
                                 sugConstr1,
-                                sugConstr2);
+                                sugConstr2
+                            );
                         }
                         else {
                             removeRedundantHorizontalVertical(
                                 sketchgui->getObject<Sketcher::SketchObject>(),
                                 virtualsugConstr1,
-                                sugConstr2);
+                                sugConstr2
+                            );
                         }
                     }
                 }
 
-                virtualsugConstr1 =
-                    sugConstr2;  // these are the initial constraints for the next iteration.
+                virtualsugConstr1 = sugConstr2;  // these are the initial constraints for the next
+                                                 // iteration.
 
                 if (!sugConstr2.empty()) {
-                    createAutoConstraints(sugConstr2,
-                                          getHighestCurveIndex(),
-                                          (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle)
-                                              ? Sketcher::PointPos::start
-                                              : Sketcher::PointPos::end);
+                    createAutoConstraints(
+                        sugConstr2,
+                        getHighestCurveIndex(),
+                        (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle)
+                            ? Sketcher::PointPos::start
+                            : Sketcher::PointPos::end
+                    );
                     sugConstr2.clear();
                 }
 
@@ -717,7 +733,8 @@ public:
         // and now just like any other Handler,
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher");
+            "User parameter:BaseApp/Preferences/Mod/Sketcher"
+        );
 
         bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
@@ -785,13 +802,14 @@ protected:
         const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(GeoId);
         if (geom->is<Part::GeomLineSegment>()) {
             const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
-            dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
-                       lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
-                       0.f);
+            dirVec.Set(
+                lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
+                lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
+                0.f
+            );
             if (PosId == Sketcher::PointPos::start) {
                 dirVec *= -1;
-                EditCurve[0] =
-                    Base::Vector2d(lineSeg->getStartPoint().x, lineSeg->getStartPoint().y);
+                EditCurve[0] = Base::Vector2d(lineSeg->getStartPoint().x, lineSeg->getStartPoint().y);
             }
             else {
                 EditCurve[0] = Base::Vector2d(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
@@ -800,14 +818,18 @@ protected:
         else if (geom->is<Part::GeomArcOfCircle>()) {
             const Part::GeomArcOfCircle* arcSeg = static_cast<const Part::GeomArcOfCircle*>(geom);
             if (PosId == Sketcher::PointPos::start) {
-                EditCurve[0] = Base::Vector2d(arcSeg->getStartPoint(/*emulateCCW=*/true).x,
-                                              arcSeg->getStartPoint(/*emulateCCW=*/true).y);
+                EditCurve[0] = Base::Vector2d(
+                    arcSeg->getStartPoint(/*emulateCCW=*/true).x,
+                    arcSeg->getStartPoint(/*emulateCCW=*/true).y
+                );
                 dirVec = Base::Vector3d(0.f, 0.f, -1.0)
                     % (arcSeg->getStartPoint(/*emulateCCW=*/true) - arcSeg->getCenter());
             }
             else {
-                EditCurve[0] = Base::Vector2d(arcSeg->getEndPoint(/*emulateCCW=*/true).x,
-                                              arcSeg->getEndPoint(/*emulateCCW=*/true).y);
+                EditCurve[0] = Base::Vector2d(
+                    arcSeg->getEndPoint(/*emulateCCW=*/true).x,
+                    arcSeg->getEndPoint(/*emulateCCW=*/true).y
+                );
                 dirVec = Base::Vector3d(0.f, 0.f, 1.0)
                     % (arcSeg->getEndPoint(/*emulateCCW=*/true) - arcSeg->getCenter());
             }

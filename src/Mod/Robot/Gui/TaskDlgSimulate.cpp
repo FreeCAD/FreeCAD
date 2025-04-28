@@ -32,8 +32,10 @@ using namespace RobotGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgSimulate::TaskDlgSimulate(Robot::RobotObject* pcRobotObject,
-                                 Robot::TrajectoryObject* pcTrajectoryObject)
+TaskDlgSimulate::TaskDlgSimulate(
+    Robot::RobotObject* pcRobotObject,
+    Robot::TrajectoryObject* pcTrajectoryObject
+)
     : TaskDialog()
 {
     rob = new TaskRobot6Axis(pcRobotObject);

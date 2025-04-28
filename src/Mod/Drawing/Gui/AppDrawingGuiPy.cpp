@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <sstream>
+# include <sstream>
 
-#include <QFileInfo>
+# include <QFileInfo>
 #endif
 
 #include <App/DocumentObjectPy.h>
@@ -144,8 +144,8 @@ private:
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                App::DocumentObject* obj =
-                    static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                App::DocumentObject* obj
+                    = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->isDerivedFrom<Drawing::FeaturePage>()) {
                     Base::FileInfo fi_out(EncodedName.c_str());
                     Base::ofstream str_out(fi_out, std::ios::out | std::ios::binary);
@@ -155,8 +155,8 @@ private:
                         throw Py::Exception(PyExc_IOError, str.str().c_str());
                     }
                     if (fi_out.hasExtension("svg")) {
-                        std::string fn =
-                            static_cast<Drawing::FeaturePage*>(obj)->PageResult.getValue();
+                        std::string fn = static_cast<Drawing::FeaturePage*>(obj)->PageResult.getValue(
+                        );
                         Base::FileInfo fi_in(fn);
                         Base::ifstream str_in(fi_in, std::ios::in | std::ios::binary);
                         if (!str_in) {
@@ -171,14 +171,14 @@ private:
                         break;
                     }
                     else if (fi_out.hasExtension("dxf")) {
-                        const std::vector<App::DocumentObject*>& views =
-                            static_cast<Drawing::FeaturePage*>(obj)->Group.getValues();
+                        const std::vector<App::DocumentObject*>& views
+                            = static_cast<Drawing::FeaturePage*>(obj)->Group.getValues();
                         for (std::vector<App::DocumentObject*>::const_iterator it = views.begin();
                              it != views.end();
                              ++it) {
                             if ((*it)->isDerivedFrom<Drawing::FeatureViewPart>()) {
-                                Drawing::FeatureViewPart* view =
-                                    static_cast<Drawing::FeatureViewPart*>(*it);
+                                Drawing::FeatureViewPart* view
+                                    = static_cast<Drawing::FeatureViewPart*>(*it);
                                 App::DocumentObject* link = view->Source.getValue();
                                 if (!link) {
                                     throw Py::ValueError("No object linked");
@@ -186,25 +186,23 @@ private:
                                 if (!link->isDerivedFrom<Part::Feature>()) {
                                     throw Py::TypeError("Linked object is not a Part object");
                                 }
-                                TopoDS_Shape shape =
-                                    static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
+                                TopoDS_Shape shape
+                                    = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
                                 if (!shape.IsNull()) {
                                     Base::Vector3d dir = view->Direction.getValue();
                                     bool hidden = view->ShowHiddenLines.getValue();
                                     bool smooth = view->ShowSmoothLines.getValue();
-                                    Drawing::ProjectionAlgos::ExtractionType type =
-                                        Drawing::ProjectionAlgos::Plain;
+                                    Drawing::ProjectionAlgos::ExtractionType type
+                                        = Drawing::ProjectionAlgos::Plain;
                                     if (hidden) {
                                         type = (Drawing::ProjectionAlgos::
-                                                    ExtractionType)(type
-                                                                    | Drawing::ProjectionAlgos::
-                                                                        WithHidden);
+                                                    ExtractionType)(type | Drawing::ProjectionAlgos::WithHidden
+                                        );
                                     }
                                     if (smooth) {
                                         type = (Drawing::ProjectionAlgos::
-                                                    ExtractionType)(type
-                                                                    | Drawing::ProjectionAlgos::
-                                                                        WithSmooth);
+                                                    ExtractionType)(type | Drawing::ProjectionAlgos::WithSmooth
+                                        );
                                     }
                                     float scale = view->Scale.getValue();
                                     float tol = view->Tolerance.getValue();
@@ -219,13 +217,16 @@ private:
                         break;
                     }
                     else {
-                        throw Py::TypeError("Export of page object as this file format is not "
-                                            "supported by Drawing module");
+                        throw Py::TypeError(
+                            "Export of page object as this file format is not "
+                            "supported by Drawing module"
+                        );
                     }
                 }
                 else {
                     throw Py::TypeError(
-                        "Export of this object type is not supported by Drawing module");
+                        "Export of this object type is not supported by Drawing module"
+                    );
                 }
             }
         }

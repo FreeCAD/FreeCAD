@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <limits>
+# include <limits>
 #endif
 
 #include "Decimation.h"

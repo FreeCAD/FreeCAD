@@ -122,8 +122,7 @@ void ViewProviderDrawingView::updateData(const App::Property*)
 namespace Gui
 {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(DrawingGui::ViewProviderDrawingViewPython,
-                         DrawingGui::ViewProviderDrawingView)
+PROPERTY_SOURCE_TEMPLATE(DrawingGui::ViewProviderDrawingViewPython, DrawingGui::ViewProviderDrawingView)
 /// @endcond
 
 // explicit template instantiation

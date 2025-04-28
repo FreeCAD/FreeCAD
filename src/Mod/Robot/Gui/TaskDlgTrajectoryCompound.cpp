@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
+# include <QApplication>
 #endif
 
 #include <Gui/Application.h>
@@ -43,8 +43,10 @@ TaskDlgTrajectoryCompound::TaskDlgTrajectoryCompound(Robot::TrajectoryCompound* 
     : TaskDialog()
     , TrajectoryCompound(obj)
 {
-    select = new Gui::TaskView::TaskSelectLinkProperty("SELECT Robot::TrajectoryObject COUNT 1..",
-                                                       &(obj->Source));
+    select = new Gui::TaskView::TaskSelectLinkProperty(
+        "SELECT Robot::TrajectoryObject COUNT 1..",
+        &(obj->Source)
+    );
 
     Content.push_back(select);
 }

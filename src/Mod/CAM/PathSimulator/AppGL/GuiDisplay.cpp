@@ -47,20 +47,22 @@ GuiItem guiItems[] = {
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
 #define TEX_SIZE 256
 
-std::vector<std::string> guiFileNames = {"Slider.png",
-                                         "Thumb.png",
-                                         "Pause.png",
-                                         "Play.png",
-                                         "SingleStep.png",
-                                         "Faster.png",
-                                         "Rotate.png",
-                                         "X.png",
-                                         "0.png",
-                                         "1.png",
-                                         "4.png",
-                                         "Path.png",
-                                         "AmbientOclusion.png",
-                                         "View.png"};
+std::vector<std::string> guiFileNames = {
+    "Slider.png",
+    "Thumb.png",
+    "Pause.png",
+    "Play.png",
+    "SingleStep.png",
+    "Faster.png",
+    "Rotate.png",
+    "X.png",
+    "0.png",
+    "1.png",
+    "4.png",
+    "Path.png",
+    "AmbientOclusion.png",
+    "View.png"
+};
 
 void GuiDisplay::UpdateProjection()
 {
@@ -96,12 +98,7 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,
-                          2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(Vertex2D),
-                          (void*)offsetof(Vertex2D, tx));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, tx));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
     glBindVertexArray(0);
 

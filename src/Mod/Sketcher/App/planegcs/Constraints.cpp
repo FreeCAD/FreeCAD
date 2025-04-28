@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
+# pragma warning(disable : 4251)
 #endif
 
 #include <cmath>
@@ -30,7 +30,7 @@
 #include <algorithm>
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS
-#include <cassert>
+# include <cassert>
 #endif
 
 #include <boost/graph/graph_concepts.hpp>
@@ -155,7 +155,8 @@ double ConstraintEqual::grad(double* param)
 ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(
     size_t givennumpoles,
     const std::vector<double*>& givenpvec,
-    const std::vector<double>& givenfactors)
+    const std::vector<double>& givenfactors
+)
     : factors(givenfactors)
     , numpoles(givennumpoles)
 {
@@ -229,8 +230,10 @@ double ConstraintWeightedLinearCombination::grad(double* param)
 
 // --------------------------------------------------------
 // Center of Gravity
-ConstraintCenterOfGravity::ConstraintCenterOfGravity(const std::vector<double*>& givenpvec,
-                                                     const std::vector<double>& givenweights)
+ConstraintCenterOfGravity::ConstraintCenterOfGravity(
+    const std::vector<double*>& givenpvec,
+    const std::vector<double>& givenweights
+)
     : weights(givenweights)
 {
     pvec = givenpvec;
@@ -320,10 +323,12 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     factors.resize(numpoles);
     slopefactors.resize(numpoles);
     for (size_t i = 0; i < numpoles + 1; ++i) {
-        tempfactors[i] = b.getLinCombFactor(*(b.knots[knotindex]),
-                                            startpole + b.degree,
-                                            startpole + i,
-                                            b.degree - 1)
+        tempfactors[i] = b.getLinCombFactor(
+                             *(b.knots[knotindex]),
+                             startpole + b.degree,
+                             startpole + i,
+                             b.degree - 1
+                         )
             / (b.flattenedknots[startpole + b.degree + i] - b.flattenedknots[startpole + i]);
     }
     for (size_t i = 0; i < numpoles; ++i) {
@@ -501,10 +506,12 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
 
 // --------------------------------------------------------
 // Point On BSpline
-ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point,
-                                                   double* initparam,
-                                                   int coordidx,
-                                                   BSpline& b)
+ConstraintPointOnBSpline::ConstraintPointOnBSpline(
+    double* point,
+    double* initparam,
+    int coordidx,
+    BSpline& b
+)
     : bsp(b)
 {
     // This is always going to be true
@@ -575,19 +582,11 @@ double ConstraintPointOnBSpline::error()
     for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *poleat(i) * *weightat(i);
     }
-    sum = BSpline::splineValue(*theparam(),
-                               startpole + bsp.degree,
-                               bsp.degree,
-                               d,
-                               bsp.flattenedknots);
+    sum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
     for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *weightat(i);
     }
-    wsum = BSpline::splineValue(*theparam(),
-                                startpole + bsp.degree,
-                                bsp.degree,
-                                d,
-                                bsp.flattenedknots);
+    wsum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
 
     // TODO: Change the poles as the point moves between pieces
 
@@ -602,11 +601,13 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
         for (size_t i = 0; i < numpoints; ++i) {
             d[i] = *weightat(i);
         }
-        double wsum = BSpline::splineValue(*theparam(),
-                                           startpole + bsp.degree,
-                                           bsp.degree,
-                                           d,
-                                           bsp.flattenedknots);
+        double wsum = BSpline::splineValue(
+            *theparam(),
+            startpole + bsp.degree,
+            bsp.degree,
+            d,
+            bsp.flattenedknots
+        );
         deriv += wsum;
     }
 
@@ -614,36 +615,36 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
         VEC_D d(numpoints - 1);
         for (size_t i = 1; i < numpoints; ++i) {
             d[i - 1] = (*poleat(i) * *weightat(i) - *poleat(i - 1) * *weightat(i - 1))
-                / (bsp.flattenedknots[startpole + i + bsp.degree]
-                   - bsp.flattenedknots[startpole + i]);
+                / (bsp.flattenedknots[startpole + i + bsp.degree] - bsp.flattenedknots[startpole + i]);
         }
-        double slopevalue = BSpline::splineValue(*theparam(),
-                                                 startpole + bsp.degree,
-                                                 bsp.degree - 1,
-                                                 d,
-                                                 bsp.flattenedknots);
+        double slopevalue = BSpline::splineValue(
+            *theparam(),
+            startpole + bsp.degree,
+            bsp.degree - 1,
+            d,
+            bsp.flattenedknots
+        );
         for (size_t i = 1; i < numpoints; ++i) {
             d[i - 1] = (*weightat(i) - *weightat(i - 1))
-                / (bsp.flattenedknots[startpole + i + bsp.degree]
-                   - bsp.flattenedknots[startpole + i]);
+                / (bsp.flattenedknots[startpole + i + bsp.degree] - bsp.flattenedknots[startpole + i]);
         }
-        double wslopevalue = BSpline::splineValue(*theparam(),
-                                                  startpole + bsp.degree,
-                                                  bsp.degree - 1,
-                                                  d,
-                                                  bsp.flattenedknots);
+        double wslopevalue = BSpline::splineValue(
+            *theparam(),
+            startpole + bsp.degree,
+            bsp.degree - 1,
+            d,
+            bsp.flattenedknots
+        );
         deriv += (*thepoint() * wslopevalue - slopevalue) * bsp.degree;
     }
 
     for (size_t i = 0; i < numpoints; ++i) {
         if (gcsparam == poleat(i)) {
-            auto factorsI =
-                bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
             deriv += -(*weightat(i) * factorsI);
         }
         if (gcsparam == weightat(i)) {
-            auto factorsI =
-                bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
             deriv += (*thepoint() - *poleat(i)) * factorsI;
         }
     }
@@ -1348,11 +1349,7 @@ ConstraintL2LAngle::ConstraintL2LAngle(Line& l1, Line& l2, double* a)
     rescale();
 }
 
-ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1,
-                                       Point& l1p2,
-                                       Point& l2p1,
-                                       Point& l2p2,
-                                       double* a)
+ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2, double* a)
 {
     pvec.push_back(l1p1.x);
     pvec.push_back(l1p1.y);
@@ -1475,10 +1472,7 @@ ConstraintMidpointOnLine::ConstraintMidpointOnLine(Line& l1, Line& l2)
     rescale();
 }
 
-ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1,
-                                                   Point& l1p2,
-                                                   Point& l2p1,
-                                                   Point& l2p2)
+ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
 {
     pvec.push_back(l1p1.x);
     pvec.push_back(l1p1.y);
@@ -1560,11 +1554,13 @@ double ConstraintMidpointOnLine::grad(double* param)
 
 // --------------------------------------------------------
 // TangentCircumf
-ConstraintTangentCircumf::ConstraintTangentCircumf(Point& p1,
-                                                   Point& p2,
-                                                   double* rad1,
-                                                   double* rad2,
-                                                   bool internal_)
+ConstraintTangentCircumf::ConstraintTangentCircumf(
+    Point& p1,
+    Point& p2,
+    double* rad1,
+    double* rad2,
+    bool internal_
+)
 {
     internal = internal_;
     pvec.push_back(p1.x);
@@ -1829,7 +1825,8 @@ double ConstraintEllipseTangentLine::grad(double* param)
 ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellipse(
     Ellipse& e,
     Point& p1,
-    InternalAlignmentType alignmentType)
+    InternalAlignmentType alignmentType
+)
 {
     this->p = p1;
     pvec.push_back(p.x);
@@ -1883,9 +1880,9 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
     double a, da;
     a = e.getRadMaj(c, f1, b, db, da);
 
-    DeriVector2 poa;  // point to align to
-    bool by_y_not_by_x =
-        false;  // a flag to indicate if the alignment error function is for y (false - x, true - y)
+    DeriVector2 poa;             // point to align to
+    bool by_y_not_by_x = false;  // a flag to indicate if the alignment error function is for y
+                                 // (false - x, true - y)
 
     switch (AlignmentType) {
         case EllipsePositiveMajorX:
@@ -1951,7 +1948,8 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double* param)
 ConstraintInternalAlignmentPoint2Hyperbola::ConstraintInternalAlignmentPoint2Hyperbola(
     Hyperbola& e,
     Point& p1,
-    InternalAlignmentType alignmentType)
+    InternalAlignmentType alignmentType
+)
 {
     this->p = p1;
     pvec.push_back(p.x);
@@ -2006,9 +2004,9 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
     double a, da;
     a = e.getRadMaj(c, f1, b, db, da);
 
-    DeriVector2 poa;  // point to align to
-    bool by_y_not_by_x =
-        false;  // a flag to indicate if the alignment error function is for y (false - x, true - y)
+    DeriVector2 poa;             // point to align to
+    bool by_y_not_by_x = false;  // a flag to indicate if the alignment error function is for y
+                                 // (false - x, true - y)
 
     switch (AlignmentType) {
         case HyperbolaPositiveMajorX:
@@ -2075,8 +2073,7 @@ double ConstraintInternalAlignmentPoint2Hyperbola::grad(double* param)
 
 // --------------------------------------------------------
 //  ConstraintEqualMajorAxesEllipse
-ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1,
-                                                             MajorRadiusConic* a2)
+ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1, MajorRadiusConic* a2)
 {
     this->e1 = a1;
     this->e1->PushOwnParams(pvec);
@@ -2657,11 +2654,13 @@ double ConstraintAngleViaPoint::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaTwoPoints
-ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(Curve& acrv1,
-                                                         Curve& acrv2,
-                                                         Point p1,
-                                                         Point p2,
-                                                         double* angle)
+ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p1,
+    Point p2,
+    double* angle
+)
 {
     pvec.push_back(angle);
     pvec.push_back(p1.x);
@@ -2759,11 +2758,13 @@ double ConstraintAngleViaTwoPoints::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndParam
-ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(Curve& acrv1,
-                                                                 Curve& acrv2,
-                                                                 Point p,
-                                                                 double* cparam,
-                                                                 double* angle)
+ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p,
+    double* cparam,
+    double* angle
+)
 {
     pvec.push_back(angle);
     pvec.push_back(p.x);
@@ -2857,12 +2858,14 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndTwoParams
-ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(Curve& acrv1,
-                                                                         Curve& acrv2,
-                                                                         Point p,
-                                                                         double* cparam1,
-                                                                         double* cparam2,
-                                                                         double* angle)
+ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p,
+    double* cparam1,
+    double* cparam2,
+    double* angle
+)
 {
     pvec.push_back(angle);
     pvec.push_back(p.x);
@@ -2959,14 +2962,16 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintSnell
-ConstraintSnell::ConstraintSnell(Curve& ray1,
-                                 Curve& ray2,
-                                 Curve& boundary,
-                                 Point p,
-                                 double* n1,
-                                 double* n2,
-                                 bool flipn1,
-                                 bool flipn2)
+ConstraintSnell::ConstraintSnell(
+    Curve& ray1,
+    Curve& ray2,
+    Curve& boundary,
+    Point p,
+    double* n1,
+    double* n2,
+    bool flipn1,
+    bool flipn2
+)
 {
     pvec.push_back(n1);
     pvec.push_back(n2);

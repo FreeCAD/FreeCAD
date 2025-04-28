@@ -24,11 +24,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <IGESControl_Controller.hxx>
-#include <IGESCAFControl_Writer.hxx>
-#include <IGESData_GlobalSection.hxx>
-#include <IGESData_IGESModel.hxx>
-#include <IGESToBRep_Actor.hxx>
+# include <IGESControl_Controller.hxx>
+# include <IGESCAFControl_Writer.hxx>
+# include <IGESData_GlobalSection.hxx>
+# include <IGESData_IGESModel.hxx>
+# include <IGESToBRep_Actor.hxx>
 #endif
 
 #include "WriterIges.h"

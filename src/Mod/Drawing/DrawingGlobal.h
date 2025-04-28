@@ -23,25 +23,25 @@
 #include <FCGlobal.h>
 
 #ifndef DRAWING_GLOBAL_H
-#define DRAWING_GLOBAL_H
+# define DRAWING_GLOBAL_H
 
 
 // Drawing
-#ifndef DrawingExport
-#ifdef Drawing_EXPORTS
-#define DrawingExport FREECAD_DECL_EXPORT
-#else
-#define DrawingExport FREECAD_DECL_IMPORT
-#endif
-#endif
+# ifndef DrawingExport
+#  ifdef Drawing_EXPORTS
+#   define DrawingExport FREECAD_DECL_EXPORT
+#  else
+#   define DrawingExport FREECAD_DECL_IMPORT
+#  endif
+# endif
 
 // DrawingGui
-#ifndef DrawingGuiExport
-#ifdef DrawingGui_EXPORTS
-#define DrawingGuiExport FREECAD_DECL_EXPORT
-#else
-#define DrawingGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+# ifndef DrawingGuiExport
+#  ifdef DrawingGui_EXPORTS
+#   define DrawingGuiExport FREECAD_DECL_EXPORT
+#  else
+#   define DrawingGuiExport FREECAD_DECL_IMPORT
+#  endif
+# endif
 
 #endif  // DRAWING_GLOBAL_H

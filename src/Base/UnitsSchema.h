@@ -71,11 +71,13 @@ public:
     {}
 
     /// This method translates the quantity in a string as the user may expect it.
-    virtual std::string
-    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) = 0;
+    virtual std::string schemaTranslate(
+        const Base::Quantity& quant,
+        double& factor,
+        std::string& unitString
+    ) = 0;
 
-    std::string
-    toLocale(const Base::Quantity& quant, double factor, const std::string& unitString) const;
+    std::string toLocale(const Base::Quantity& quant, double factor, const std::string& unitString) const;
 
     // return true if this schema uses multiple units for length (ex. Ft/In)
     virtual bool isMultiUnitLength() const

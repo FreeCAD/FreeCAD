@@ -23,17 +23,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoMarkerSet.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoMarkerSet.h>
 
-#include <sstream>
-#include <limits>
-#include <QApplication>
-#include <QMessageBox>
-#include <QMetaMethod>
-#include <QToolTip>
+# include <sstream>
+# include <limits>
+# include <QApplication>
+# include <QMessageBox>
+# include <QMetaMethod>
+# include <QToolTip>
 #endif
 
 #include <App/Document.h>
@@ -154,7 +154,8 @@ ViewProviderPointMarker::ViewProviderPointMarker()
         "CIRCLE_FILLED",
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-            ->GetInt("MarkerSize", 9));
+            ->GetInt("MarkerSize", 9)
+    );
     pMarker->numPoints = 0;
     pMarker->ref();
 
@@ -174,8 +175,10 @@ ViewProviderPointMarker::~ViewProviderPointMarker()
 
 // ***************************************************************************
 // DataAlongLine marker
-DataAlongLineMarker::DataAlongLineMarker(Gui::View3DInventorViewer* iv,
-                                         Fem::FemPostDataAlongLineFilter* obj)
+DataAlongLineMarker::DataAlongLineMarker(
+    Gui::View3DInventorViewer* iv,
+    Fem::FemPostDataAlongLineFilter* obj
+)
     : PointMarker(iv, obj)
 {}
 
@@ -185,28 +188,34 @@ void DataAlongLineMarker::customEvent(QEvent*)
     const SbVec3f& pt2 = getPoint(1);
 
     Q_EMIT PointsChanged(pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2]);
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)",
-                            getObject()->getNameInDocument(),
-                            pt1[0],
-                            pt1[1],
-                            pt1[2]);
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)",
-                            getObject()->getNameInDocument(),
-                            pt2[0],
-                            pt2[1],
-                            pt2[2]);
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)",
+        getObject()->getNameInDocument(),
+        pt1[0],
+        pt1[1],
+        pt1[2]
+    );
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)",
+        getObject()->getNameInDocument(),
+        pt2[0],
+        pt2[1],
+        pt2[2]
+    );
     Gui::Command::doCommand(Gui::Command::Doc, ObjectInvisible().c_str());
 }
 
 
 // ***************************************************************************
 // main task dialog
-TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view,
-                         const QPixmap& icon,
-                         const QString& title,
-                         QWidget* parent)
+TaskPostBox::TaskPostBox(
+    Gui::ViewProviderDocumentObject* view,
+    const QPixmap& icon,
+    const QString& title,
+    QWidget* parent
+)
     : TaskBox(icon, title, true, parent)
     , m_object(view->getObject())
     , m_view(view)
@@ -287,7 +296,8 @@ void TaskDlgPost::connectSlots()
     int indexSignal = 0;
     for (const auto dlg : m_boxes) {
         indexSignal = dlg->metaObject()->indexOfSignal(
-            QMetaObject::normalizedSignature("emitAddedFunction()"));
+            QMetaObject::normalizedSignature("emitAddedFunction()")
+        );
         if (indexSignal >= 0) {
             sender = dlg;
             break;
@@ -297,12 +307,15 @@ void TaskDlgPost::connectSlots()
     if (sender) {
         for (const auto dlg : m_boxes) {
             int indexSlot = dlg->metaObject()->indexOfSlot(
-                QMetaObject::normalizedSignature("slotAddedFunction()"));
+                QMetaObject::normalizedSignature("slotAddedFunction()")
+            );
             if (indexSlot >= 0) {
-                connect(sender,
-                        sender->metaObject()->method(indexSignal),
-                        dlg,
-                        dlg->metaObject()->method(indexSlot));
+                connect(
+                    sender,
+                    sender->metaObject()->method(indexSignal),
+                    dlg,
+                    dlg->metaObject()->method(indexSlot)
+                );
             }
         }
     }
@@ -375,10 +388,7 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box)
 // ***************************************************************************
 // box to set the coloring
 TaskPostDisplay::TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_ResultShow"),
-                  tr("Result display options"),
-                  parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_ResultShow"), tr("Result display options"), parent)
     , ui(new Ui_TaskPostDisplay)
 {
     // we need a separate container widget to add all controls to
@@ -389,8 +399,7 @@ TaskPostDisplay::TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* paren
     this->groupLayout()->addWidget(proxy);
 
     // update all fields
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
-                          ui->Representation);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode, ui->Representation);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 
@@ -405,22 +414,20 @@ TaskPostDisplay::~TaskPostDisplay() = default;
 
 void TaskPostDisplay::setupConnections()
 {
-    connect(ui->Representation,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostDisplay::onRepresentationActivated);
-    connect(ui->Field,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostDisplay::onFieldActivated);
-    connect(ui->VectorMode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostDisplay::onVectorModeActivated);
-    connect(ui->Transparency,
-            &QSlider::valueChanged,
-            this,
-            &TaskPostDisplay::onTransparencyValueChanged);
+    connect(
+        ui->Representation,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskPostDisplay::onRepresentationActivated
+    );
+    connect(ui->Field, qOverload<int>(&QComboBox::activated), this, &TaskPostDisplay::onFieldActivated);
+    connect(
+        ui->VectorMode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskPostDisplay::onVectorModeActivated
+    );
+    connect(ui->Transparency, &QSlider::valueChanged, this, &TaskPostDisplay::onTransparencyValueChanged);
 }
 
 void TaskPostDisplay::slotAddedFunction()
@@ -461,10 +468,7 @@ void TaskPostDisplay::applyPythonCode()
 // ***************************************************************************
 // functions
 TaskPostFunction::TaskPostFunction(ViewProviderFemPostFunction* view, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("fem-post-geo-plane"),
-                  tr("Implicit function"),
-                  parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent)
 {
     // we load the views widget
     FunctionWidget* w = getTypedView<ViewProviderFemPostFunction>()->createControlWidget();
@@ -502,7 +506,8 @@ TaskPostFrames::TaskPostFrames(ViewProviderFemPostObject* view, QWidget* parent)
     for (unsigned long i = 0; i < steps.size(); i++) {
         QTableWidgetItem* idx = new QTableWidgetItem(QString::number(i));
         QTableWidgetItem* value = new QTableWidgetItem(
-            QString::fromStdString(Base::Quantity(steps[i], unit).getUserString()));
+            QString::fromStdString(Base::Quantity(steps[i], unit).getUserString())
+        );
 
         int rowIdx = ui->FrameTable->rowCount();
         ui->FrameTable->insertRow(rowIdx);
@@ -516,10 +521,12 @@ TaskPostFrames::~TaskPostFrames() = default;
 
 void TaskPostFrames::setupConnections()
 {
-    connect(ui->FrameTable,
-            qOverload<>(&QTableWidget::itemSelectionChanged),
-            this,
-            &TaskPostFrames::onSelectionChanged);
+    connect(
+        ui->FrameTable,
+        qOverload<>(&QTableWidget::itemSelectionChanged),
+        this,
+        &TaskPostFrames::onSelectionChanged
+    );
 }
 
 void TaskPostFrames::onSelectionChanged()
@@ -546,10 +553,7 @@ void TaskPostFrames::applyPythonCode()
 // ***************************************************************************
 // Branch
 TaskPostBranch::TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostBranchFilter"),
-                  tr("Branch behaviour"),
-                  parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostBranchFilter"), tr("Branch behaviour"), parent)
     , ui(new Ui_TaskPostBranch)
 {
     // we load the views widget
@@ -569,15 +573,19 @@ TaskPostBranch::~TaskPostBranch() = default;
 
 void TaskPostBranch::setupConnections()
 {
-    connect(ui->ModeBox,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPostBranch::onModeIndexChanged);
+    connect(
+        ui->ModeBox,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPostBranch::onModeIndexChanged
+    );
 
-    connect(ui->OutputBox,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPostBranch::onOutputIndexChanged);
+    connect(
+        ui->OutputBox,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPostBranch::onOutputIndexChanged
+    );
 }
 
 void TaskPostBranch::onModeIndexChanged(int idx)
@@ -599,12 +607,13 @@ void TaskPostBranch::applyPythonCode()
 
 // ***************************************************************************
 // data along line filter
-TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* view,
-                                             QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterDataAlongLine"),
-                  tr("Data along a line options"),
-                  parent)
+TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* view, QWidget* parent)
+    : TaskPostBox(
+          view,
+          Gui::BitmapFactory().pixmap("FEM_PostFilterDataAlongLine"),
+          tr("Data along a line options"),
+          parent
+      )
     , ui(new Ui_TaskPostDataAlongLine)
     , marker(nullptr)
 {
@@ -657,8 +666,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* v
     setupConnectionsStep2();
 
     // update all fields
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode,
-                          ui->Representation);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode, ui->Representation);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Component, ui->VectorMode);
 }
@@ -667,92 +675,107 @@ TaskPostDataAlongLine::~TaskPostDataAlongLine()
 {
     if (marker && marker->getView()) {
         marker->getView()->setEditing(false);
-        marker->getView()->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                               pointCallback,
-                                               marker);
+        marker->getView()
+            ->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pointCallback, marker);
     }
 }
 
 void TaskPostDataAlongLine::setupConnectionsStep1()
 {
-    connect(ui->SelectPoints,
-            &QPushButton::clicked,
-            this,
-            &TaskPostDataAlongLine::onSelectPointsClicked);
-    connect(ui->CreatePlot,
-            &QPushButton::clicked,
-            this,
-            &TaskPostDataAlongLine::onCreatePlotClicked);
-    connect(ui->Representation,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostDataAlongLine::onRepresentationActivated);
-    connect(ui->Field,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostDataAlongLine::onFieldActivated);
-    connect(ui->VectorMode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostDataAlongLine::onVectorModeActivated);
+    connect(ui->SelectPoints, &QPushButton::clicked, this, &TaskPostDataAlongLine::onSelectPointsClicked);
+    connect(ui->CreatePlot, &QPushButton::clicked, this, &TaskPostDataAlongLine::onCreatePlotClicked);
+    connect(
+        ui->Representation,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskPostDataAlongLine::onRepresentationActivated
+    );
+    connect(
+        ui->Field,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskPostDataAlongLine::onFieldActivated
+    );
+    connect(
+        ui->VectorMode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskPostDataAlongLine::onVectorModeActivated
+    );
 }
 
 void TaskPostDataAlongLine::setupConnectionsStep2()
 {
-    connect(ui->point1X,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAlongLine::point1Changed);
-    connect(ui->point1Y,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAlongLine::point1Changed);
-    connect(ui->point1Z,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAlongLine::point1Changed);
-    connect(ui->point2X,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAlongLine::point2Changed);
-    connect(ui->point2Y,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAlongLine::point2Changed);
-    connect(ui->point2Z,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAlongLine::point2Changed);
-    connect(ui->resolution,
-            qOverload<int>(&QSpinBox::valueChanged),
-            this,
-            &TaskPostDataAlongLine::resolutionChanged);
+    connect(
+        ui->point1X,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAlongLine::point1Changed
+    );
+    connect(
+        ui->point1Y,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAlongLine::point1Changed
+    );
+    connect(
+        ui->point1Z,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAlongLine::point1Changed
+    );
+    connect(
+        ui->point2X,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAlongLine::point2Changed
+    );
+    connect(
+        ui->point2Y,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAlongLine::point2Changed
+    );
+    connect(
+        ui->point2Z,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAlongLine::point2Changed
+    );
+    connect(
+        ui->resolution,
+        qOverload<int>(&QSpinBox::valueChanged),
+        this,
+        &TaskPostDataAlongLine::resolutionChanged
+    );
 }
 
 void TaskPostDataAlongLine::applyPythonCode()
 {}
 
-static const char* cursor_triangle[] = {"32 17 3 1",
-                                        "       c None",
-                                        ".      c #FFFFFF",
-                                        "+      c #FF0000",
-                                        "      .                         ",
-                                        "      .                         ",
-                                        "      .                         ",
-                                        "      .                         ",
-                                        "      .                         ",
-                                        "                                ",
-                                        ".....   .....                   ",
-                                        "                                ",
-                                        "      .                         ",
-                                        "      .                         ",
-                                        "      .        ++               ",
-                                        "      .       +  +              ",
-                                        "      .      + ++ +             ",
-                                        "            + ++++ +            ",
-                                        "           +  ++ ++ +           ",
-                                        "          + ++++++++ +          ",
-                                        "         ++  ++  ++  ++         "};
+static const char* cursor_triangle[] = {
+    "32 17 3 1",
+    "       c None",
+    ".      c #FFFFFF",
+    "+      c #FF0000",
+    "      .                         ",
+    "      .                         ",
+    "      .                         ",
+    "      .                         ",
+    "      .                         ",
+    "                                ",
+    ".....   .....                   ",
+    "                                ",
+    "      .                         ",
+    "      .                         ",
+    "      .        ++               ",
+    "      .       +  +              ",
+    "      .      + ++ +             ",
+    "            + ++++ +            ",
+    "           +  ++ ++ +           ",
+    "          + ++++++++ +          ",
+    "         ++  ++  ++  ++         "
+};
 
 void TaskPostDataAlongLine::onSelectPointsClicked()
 {
@@ -775,13 +798,17 @@ void TaskPostDataAlongLine::onSelectPointsClicked()
         }
 
         if (!marker->connSelectPoint) {
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                     TaskPostDataAlongLine::pointCallback,
-                                     marker);
-            marker->connSelectPoint = connect(marker,
-                                              &DataAlongLineMarker::PointsChanged,
-                                              this,
-                                              &TaskPostDataAlongLine::onChange);
+            viewer->addEventCallback(
+                SoMouseButtonEvent::getClassTypeId(),
+                TaskPostDataAlongLine::pointCallback,
+                marker
+            );
+            marker->connSelectPoint = connect(
+                marker,
+                &DataAlongLineMarker::PointsChanged,
+                this,
+                &TaskPostDataAlongLine::onChange
+            );
         }
     }
 }
@@ -807,12 +834,7 @@ void TaskPostDataAlongLine::onCreatePlotClicked()
     recompute();
 }
 
-void TaskPostDataAlongLine::onChange(double x1,
-                                     double y1,
-                                     double z1,
-                                     double x2,
-                                     double y2,
-                                     double z2)
+void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2, double y2, double z2)
 {
     // call point1Changed only once
     ui->point1X->blockSignals(true);
@@ -841,9 +863,11 @@ void TaskPostDataAlongLine::onChange(double x1,
     if (marker && marker->getView()) {
         // leave mode
         marker->getView()->setEditing(false);
-        marker->getView()->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                               TaskPostDataAlongLine::pointCallback,
-                                               marker);
+        marker->getView()->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            TaskPostDataAlongLine::pointCallback,
+            marker
+        );
         disconnect(marker->connSelectPoint);
     }
 }
@@ -851,16 +875,20 @@ void TaskPostDataAlongLine::onChange(double x1,
 void TaskPostDataAlongLine::point1Changed(double)
 {
     try {
-        SbVec3f vec(ui->point1X->value().getValue(),
-                    ui->point1Y->value().getValue(),
-                    ui->point1Z->value().getValue());
+        SbVec3f vec(
+            ui->point1X->value().getValue(),
+            ui->point1Y->value().getValue(),
+            ui->point1Z->value().getValue()
+        );
         std::string ObjName = getObject()->getNameInDocument();
-        Gui::cmdAppDocumentArgs(getDocument(),
-                                "%s.Point1 = App.Vector(%f, %f, %f)",
-                                ObjName,
-                                vec[0],
-                                vec[1],
-                                vec[2]);
+        Gui::cmdAppDocumentArgs(
+            getDocument(),
+            "%s.Point1 = App.Vector(%f, %f, %f)",
+            ObjName,
+            vec[0],
+            vec[1],
+            vec[2]
+        );
 
         if (marker && marker->countPoints() > 0) {
             marker->setPoint(0, vec);
@@ -882,16 +910,20 @@ void TaskPostDataAlongLine::point1Changed(double)
 void TaskPostDataAlongLine::point2Changed(double)
 {
     try {
-        SbVec3f vec(ui->point2X->value().getValue(),
-                    ui->point2Y->value().getValue(),
-                    ui->point2Z->value().getValue());
+        SbVec3f vec(
+            ui->point2X->value().getValue(),
+            ui->point2Y->value().getValue(),
+            ui->point2Z->value().getValue()
+        );
         std::string ObjName = getObject()->getNameInDocument();
-        Gui::cmdAppDocumentArgs(getDocument(),
-                                "%s.Point2 = App.Vector(%f, %f, %f)",
-                                ObjName,
-                                vec[0],
-                                vec[1],
-                                vec[2]);
+        Gui::cmdAppDocumentArgs(
+            getDocument(),
+            "%s.Point2 = App.Vector(%f, %f, %f)",
+            ObjName,
+            vec[0],
+            vec[1],
+            vec[2]
+        );
 
         if (marker && marker->countPoints() > 1) {
             marker->setPoint(1, vec);
@@ -948,13 +980,14 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
             QApplication::postEvent(pm, e);
         }
     }
-    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-             && mbe->getState() == SoButtonEvent::UP) {
+    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
         n->setHandled();
         view->setEditing(false);
-        view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                  TaskPostDataAlongLine::pointCallback,
-                                  ud);
+        view->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            TaskPostDataAlongLine::pointCallback,
+            ud
+        );
         disconnect(pm->connSelectPoint);
     }
 }
@@ -1023,10 +1056,12 @@ plt.show()\n";
 // ***************************************************************************
 // data at point filter
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderFemPostDataAtPoint* view, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"),
-                  tr("Data at point options"),
-                  parent)
+    : TaskPostBox(
+          view,
+          Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"),
+          tr("Data at point options"),
+          parent
+      )
     , viewer(nullptr)
     , connSelectPoint(QMetaObject::Connection())
     , ui(new Ui_TaskPostDataAtPoint)
@@ -1066,18 +1101,24 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderFemPostDataAtPoint* view, Q
     auto pointValue = getObject<Fem::FemPostDataAtPointFilter>()->PointData[0];
     showValue(pointValue, getObject<Fem::FemPostDataAtPointFilter>()->Unit.getValue());
 
-    connect(ui->centerX,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAtPoint::centerChanged);
-    connect(ui->centerY,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAtPoint::centerChanged);
-    connect(ui->centerZ,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskPostDataAtPoint::centerChanged);
+    connect(
+        ui->centerX,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAtPoint::centerChanged
+    );
+    connect(
+        ui->centerY,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAtPoint::centerChanged
+    );
+    connect(
+        ui->centerZ,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskPostDataAtPoint::centerChanged
+    );
 
     // the point filter object needs to be recomputed
     // to fill all fields with data at the current point
@@ -1098,14 +1139,8 @@ TaskPostDataAtPoint::~TaskPostDataAtPoint()
 
 void TaskPostDataAtPoint::setupConnections()
 {
-    connect(ui->SelectPoint,
-            &QPushButton::clicked,
-            this,
-            &TaskPostDataAtPoint::onSelectPointClicked);
-    connect(ui->Field,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostDataAtPoint::onFieldActivated);
+    connect(ui->SelectPoint, &QPushButton::clicked, this, &TaskPostDataAtPoint::onSelectPointClicked);
+    connect(ui->Field, qOverload<int>(&QComboBox::activated), this, &TaskPostDataAtPoint::onFieldActivated);
 }
 
 void TaskPostDataAtPoint::applyPythonCode()
@@ -1121,13 +1156,17 @@ void TaskPostDataAtPoint::onSelectPointClicked()
         viewer->setEditingCursor(QCursor(QPixmap(cursor_triangle), 7, 7));
 
         if (!connSelectPoint) {
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                     TaskPostDataAtPoint::pointCallback,
-                                     this);
-            connSelectPoint = connect(this,
-                                      &TaskPostDataAtPoint::PointsChanged,
-                                      this,
-                                      &TaskPostDataAtPoint::onChange);
+            viewer->addEventCallback(
+                SoMouseButtonEvent::getClassTypeId(),
+                TaskPostDataAtPoint::pointCallback,
+                this
+            );
+            connSelectPoint = connect(
+                this,
+                &TaskPostDataAtPoint::PointsChanged,
+                this,
+                &TaskPostDataAtPoint::onChange
+            );
         }
     }
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(1);
@@ -1167,9 +1206,11 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z)
     if (viewer) {
         // leave mode
         viewer->setEditing(false);
-        viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                    TaskPostDataAtPoint::pointCallback,
-                                    this);
+        viewer->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            TaskPostDataAtPoint::pointCallback,
+            this
+        );
         disconnect(connSelectPoint);
     }
 }
@@ -1178,12 +1219,14 @@ void TaskPostDataAtPoint::centerChanged(double)
 {
     try {
         std::string ObjName = getObject()->getNameInDocument();
-        Gui::cmdAppDocumentArgs(getDocument(),
-                                "%s.Center = App.Vector(%f, %f, %f)",
-                                ObjName,
-                                ui->centerX->value().getValue(),
-                                ui->centerY->value().getValue(),
-                                ui->centerZ->value().getValue());
+        Gui::cmdAppDocumentArgs(
+            getDocument(),
+            "%s.Center = App.Vector(%f, %f, %f)",
+            ObjName,
+            ui->centerX->value().getValue(),
+            ui->centerY->value().getValue(),
+            ui->centerZ->value().getValue()
+        );
 
         // recompute the feature to fill all fields with data at this point
         getObject()->recomputeFeature();
@@ -1217,13 +1260,14 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
         const SbVec3f& pt = point->getPoint();
         Q_EMIT taskPost->PointsChanged(pt[0], pt[1], pt[2]);
     }
-    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-             && mbe->getState() == SoButtonEvent::UP) {
+    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
         n->setHandled();
         view->setEditing(false);
-        view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                  TaskPostDataAtPoint::pointCallback,
-                                  ud);
+        view->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            TaskPostDataAtPoint::pointCallback,
+            ud
+        );
         disconnect(taskPost->connSelectPoint);
     }
 }
@@ -1256,8 +1300,7 @@ void TaskPostDataAtPoint::onFieldActivated(int i)
     // The Elmer names are different. If there are EigenModes, the names are unique for
     // every mode. Therefore we only check for the beginning of the name.
     else if ((FieldName.find("tresca", 0) == 0) || (FieldName.find("vonmises", 0) == 0)
-             || (FieldName.find("stress_", 0) == 0)
-             || (FieldName.find("principal stress", 0) == 0)) {
+             || (FieldName.find("stress_", 0) == 0) || (FieldName.find("principal stress", 0) == 0)) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("Pa");
     }
     else if ((FieldName == "current density") || (FieldName == "current density re")
@@ -1312,9 +1355,8 @@ void TaskPostDataAtPoint::onFieldActivated(int i)
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("N");
     }
     else if ((FieldName == "potential") || (FieldName == "potential re")
-             || (FieldName == "potential im") || (FieldName == "potential abs")
-             || (FieldName == "av") || (FieldName == "av re") || (FieldName == "av im")
-             || (FieldName == "av abs")) {
+             || (FieldName == "potential im") || (FieldName == "potential abs") || (FieldName == "av")
+             || (FieldName == "av re") || (FieldName == "av im") || (FieldName == "av abs")) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("V");
     }
     else if (FieldName == "potential flux") {
@@ -1377,13 +1419,13 @@ std::string TaskPostDataAtPoint::toString(double val) const
 
 // ***************************************************************************
 // clip filter
-TaskPostClip::TaskPostClip(ViewProviderFemPostClip* view,
-                           App::PropertyLink* function,
-                           QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"),
-                  tr("Clip region, choose implicit function"),
-                  parent)
+TaskPostClip::TaskPostClip(ViewProviderFemPostClip* view, App::PropertyLink* function, QWidget* parent)
+    : TaskPostBox(
+          view,
+          Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"),
+          tr("Clip region, choose implicit function"),
+          parent
+      )
     , ui(new Ui_TaskPostClip)
 {
     assert(function);
@@ -1421,14 +1463,13 @@ TaskPostClip::~TaskPostClip() = default;
 
 void TaskPostClip::setupConnections()
 {
-    connect(ui->CreateButton,
-            &QToolButton::triggered,
-            this,
-            &TaskPostClip::onCreateButtonTriggered);
-    connect(ui->FunctionBox,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPostClip::onFunctionBoxCurrentIndexChanged);
+    connect(ui->CreateButton, &QToolButton::triggered, this, &TaskPostClip::onCreateButtonTriggered);
+    connect(
+        ui->FunctionBox,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPostClip::onFunctionBoxCurrentIndexChanged
+    );
     connect(ui->InsideOut, &QCheckBox::toggled, this, &TaskPostClip::onInsideOutToggled);
     connect(ui->CutCells, &QCheckBox::toggled, this, &TaskPostClip::onCutCellsToggled);
 }
@@ -1448,8 +1489,8 @@ void TaskPostClip::collectImplicitFunctions()
             ui->FunctionBox->clear();
             QStringList items;
             std::size_t currentItem = 0;
-            App::DocumentObject* currentFunction =
-                getObject<Fem::FemPostClipFilter>()->Function.getValue();
+            App::DocumentObject* currentFunction
+                = getObject<Fem::FemPostClipFilter>()->Function.getValue();
             const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
                 items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
@@ -1505,7 +1546,8 @@ void TaskPostClip::onFunctionBoxCurrentIndexChanged(int idx)
 
     // load the correct view
     Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
-        getObject<Fem::FemPostClipFilter>()->Function.getValue());
+        getObject<Fem::FemPostClipFilter>()->Function.getValue()
+    );
     Gui::ViewProvider* view = nullptr;
     if (fobj) {
         view = Gui::Application::Instance->getViewProvider(fobj);
@@ -1540,10 +1582,12 @@ void TaskPostClip::onInsideOutToggled(bool val)
 // ***************************************************************************
 // contours filter
 TaskPostContours::TaskPostContours(ViewProviderFemPostContours* view, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterContours"),
-                  tr("Contours filter options"),
-                  parent)
+    : TaskPostBox(
+          view,
+          Gui::BitmapFactory().pixmap("FEM_PostFilterContours"),
+          tr("Contours filter options"),
+          parent
+      )
     , ui(new Ui_TaskPostContours)
 {
     // load the views widget
@@ -1572,24 +1616,32 @@ TaskPostContours::TaskPostContours(ViewProviderFemPostContours* view, QWidget* p
     ui->dsb_relaxation->setEnabled(ext->EnableSmoothing.getValue());
 
     // connect
-    connect(ui->fieldsCB,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPostContours::onFieldsChanged);
-    connect(ui->vectorsCB,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPostContours::onVectorModeChanged);
-    connect(ui->numberContoursSB,
-            qOverload<int>(&QSpinBox::valueChanged),
-            this,
-            &TaskPostContours::onNumberOfContoursChanged);
+    connect(
+        ui->fieldsCB,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPostContours::onFieldsChanged
+    );
+    connect(
+        ui->vectorsCB,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPostContours::onVectorModeChanged
+    );
+    connect(
+        ui->numberContoursSB,
+        qOverload<int>(&QSpinBox::valueChanged),
+        this,
+        &TaskPostContours::onNumberOfContoursChanged
+    );
     connect(ui->noColorCB, &QCheckBox::toggled, this, &TaskPostContours::onNoColorChanged);
     connect(ui->ckb_smoothing, &QCheckBox::toggled, this, &TaskPostContours::onSmoothingChanged);
-    connect(ui->dsb_relaxation,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &TaskPostContours::onRelaxationChanged);
+    connect(
+        ui->dsb_relaxation,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &TaskPostContours::onRelaxationChanged
+    );
 }
 
 TaskPostContours::~TaskPostContours() = default;
@@ -1602,8 +1654,8 @@ void TaskPostContours::updateFields()
     // update the ViewProvider Field
     // since the ViewProvider can have another field sorting, we cannot use the same index
     if (!getObject<Fem::FemPostContoursFilter>()->NoColor.getValue()) {
-        std::string objectField =
-            getTypedObject<Fem::FemPostContoursFilter>()->Field.getValueAsString();
+        std::string objectField = getTypedObject<Fem::FemPostContoursFilter>()->Field.getValueAsString(
+        );
         getTypedView<ViewProviderFemPostObject>()->Field.setValue(objectField.c_str());
     }
     else {
@@ -1695,10 +1747,12 @@ void TaskPostContours::onRelaxationChanged(double value)
 // ***************************************************************************
 // cut filter
 TaskPostCut::TaskPostCut(ViewProviderFemPostCut* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterCutFunction"),
-                  tr("Function cut, choose implicit function"),
-                  parent)
+    : TaskPostBox(
+          view,
+          Gui::BitmapFactory().pixmap("FEM_PostFilterCutFunction"),
+          tr("Function cut, choose implicit function"),
+          parent
+      )
     , ui(new Ui_TaskPostCut)
 {
     assert(function);
@@ -1733,10 +1787,12 @@ TaskPostCut::~TaskPostCut() = default;
 void TaskPostCut::setupConnections()
 {
     connect(ui->CreateButton, &QToolButton::triggered, this, &TaskPostCut::onCreateButtonTriggered);
-    connect(ui->FunctionBox,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPostCut::onFunctionBoxCurrentIndexChanged);
+    connect(
+        ui->FunctionBox,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPostCut::onFunctionBoxCurrentIndexChanged
+    );
 }
 
 void TaskPostCut::applyPythonCode()
@@ -1754,8 +1810,8 @@ void TaskPostCut::collectImplicitFunctions()
             ui->FunctionBox->clear();
             QStringList items;
             std::size_t currentItem = 0;
-            App::DocumentObject* currentFunction =
-                getObject<Fem::FemPostCutFilter>()->Function.getValue();
+            App::DocumentObject* currentFunction
+                = getObject<Fem::FemPostCutFilter>()->Function.getValue();
             const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
                 items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
@@ -1810,8 +1866,9 @@ void TaskPostCut::onFunctionBoxCurrentIndexChanged(int idx)
     }
 
     // load the correct view
-    Fem::FemPostFunction* fobj =
-        static_cast<Fem::FemPostFunction*>(getObject<Fem::FemPostCutFilter>()->Function.getValue());
+    Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
+        getObject<Fem::FemPostCutFilter>()->Function.getValue()
+    );
     Gui::ViewProvider* view = nullptr;
     if (fobj) {
         view = Gui::Application::Instance->getViewProvider(fobj);
@@ -1834,10 +1891,12 @@ void TaskPostCut::onFunctionBoxCurrentIndexChanged(int idx)
 // ***************************************************************************
 // scalar clip filter
 TaskPostScalarClip::TaskPostScalarClip(ViewProviderFemPostScalarClip* view, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterClipScalar"),
-                  tr("Scalar clip options"),
-                  parent)
+    : TaskPostBox(
+          view,
+          Gui::BitmapFactory().pixmap("FEM_PostFilterClipScalar"),
+          tr("Scalar clip options"),
+          parent
+      )
     , ui(new Ui_TaskPostScalarClip)
 {
     // we load the views widget
@@ -1869,9 +1928,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderFemPostScalarClip* view, QWid
     ui->Slider->blockSignals(true);
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
-    Base::Console().Log("init: scalar_factor, slider_value: %f, %i: \n",
-                        scalar_factor,
-                        slider_value);
+    Base::Console().Log("init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
 }
 
 TaskPostScalarClip::~TaskPostScalarClip() = default;
@@ -1879,14 +1936,18 @@ TaskPostScalarClip::~TaskPostScalarClip() = default;
 void TaskPostScalarClip::setupConnections()
 {
     connect(ui->Slider, &QSlider::valueChanged, this, &TaskPostScalarClip::onSliderValueChanged);
-    connect(ui->Value,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &TaskPostScalarClip::onValueValueChanged);
-    connect(ui->Scalar,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPostScalarClip::onScalarCurrentIndexChanged);
+    connect(
+        ui->Value,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &TaskPostScalarClip::onValueValueChanged
+    );
+    connect(
+        ui->Scalar,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPostScalarClip::onScalarCurrentIndexChanged
+    );
     connect(ui->InsideOut, &QCheckBox::toggled, this, &TaskPostScalarClip::onInsideOutToggled);
 }
 
@@ -1945,7 +2006,8 @@ void TaskPostScalarClip::onValueValueChanged(double v)
     ui->Slider->setValue(
         int(((v - value.getConstraints()->LowerBound)
              / (value.getConstraints()->UpperBound - value.getConstraints()->LowerBound))
-            * 100.));
+            * 100.)
+    );
     ui->Slider->blockSignals(false);
 }
 
@@ -1959,10 +2021,7 @@ void TaskPostScalarClip::onInsideOutToggled(bool val)
 // ***************************************************************************
 // warp vector filter
 TaskPostWarpVector::TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterWarp"),
-                  tr("Warp options"),
-                  parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterWarp"), tr("Warp options"), parent)
     , ui(new Ui_TaskPostWarpVector)
 {
     // we load the views widget
@@ -1973,8 +2032,8 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWid
 
     // load the default values for warp display
     updateEnumerationList(getTypedObject<Fem::FemPostWarpVectorFilter>()->Vector, ui->Vector);
-    double warp_factor = getObject<Fem::FemPostWarpVectorFilter>()
-                             ->Factor.getValue();  // get the standard warp factor
+    double warp_factor = getObject<Fem::FemPostWarpVectorFilter>()->Factor.getValue(
+    );  // get the standard warp factor
 
     // set spinbox warp_factor, don't forget to sync the slider
     ui->Value->blockSignals(true);
@@ -1999,8 +2058,8 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWid
     // slider_value = ----------------------- x 100
     //                     ( max - min )
     //
-    int slider_value =
-        (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+    int slider_value = (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value())
+        * 100.;
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
     Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
@@ -2011,22 +2070,30 @@ TaskPostWarpVector::~TaskPostWarpVector() = default;
 void TaskPostWarpVector::setupConnections()
 {
     connect(ui->Slider, &QSlider::valueChanged, this, &TaskPostWarpVector::onSliderValueChanged);
-    connect(ui->Value,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &TaskPostWarpVector::onValueValueChanged);
-    connect(ui->Max,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &TaskPostWarpVector::onMaxValueChanged);
-    connect(ui->Min,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &TaskPostWarpVector::onMinValueChanged);
-    connect(ui->Vector,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPostWarpVector::onVectorCurrentIndexChanged);
+    connect(
+        ui->Value,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &TaskPostWarpVector::onValueValueChanged
+    );
+    connect(
+        ui->Max,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &TaskPostWarpVector::onMaxValueChanged
+    );
+    connect(
+        ui->Min,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &TaskPostWarpVector::onMinValueChanged
+    );
+    connect(
+        ui->Vector,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPostWarpVector::onVectorCurrentIndexChanged
+    );
 }
 
 void TaskPostWarpVector::applyPythonCode()
@@ -2048,8 +2115,8 @@ void TaskPostWarpVector::onSliderValueChanged(int slider_value)
     // warp_factor = min + ( slider_value x --------------- )
     //                                            100
     //
-    double warp_factor =
-        ui->Min->value() + ((ui->Max->value() - ui->Min->value()) / 100.) * slider_value;
+    double warp_factor = ui->Min->value()
+        + ((ui->Max->value() - ui->Min->value()) / 100.) * slider_value;
     getObject<Fem::FemPostWarpVectorFilter>()->Factor.setValue(warp_factor);
     recompute();
 
@@ -2071,8 +2138,8 @@ void TaskPostWarpVector::onValueValueChanged(double warp_factor)
 
     // sync the slider, see above for formula
     ui->Slider->blockSignals(true);
-    int slider_value =
-        (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+    int slider_value = (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value())
+        * 100.;
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
     Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
@@ -2082,8 +2149,9 @@ void TaskPostWarpVector::onMaxValueChanged(double)
 {
     // TODO max should be greater than min, see a few lines later on problem on input characters
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue((ui->Value->value() - ui->Min->value())
-                         / (ui->Max->value() - ui->Min->value()) * 100.);
+    ui->Slider->setValue(
+        (ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.
+    );
     ui->Slider->blockSignals(false);
 
     /*
@@ -2121,8 +2189,9 @@ void TaskPostWarpVector::onMinValueChanged(double)
     // TODO min should be smaller than max
     // TODO if warp factor is smaller than min, warp factor should be min, don't forget to sync
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue((ui->Value->value() - ui->Min->value())
-                         / (ui->Max->value() - ui->Min->value()) * 100.);
+    ui->Slider->setValue(
+        (ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.
+    );
     ui->Slider->blockSignals(false);
 }
 
@@ -2131,13 +2200,16 @@ void TaskPostWarpVector::onMinValueChanged(double)
 // calculator filter
 static const std::vector<std::string> calculatorOperators = {
     "+",   "-",   "*",    "/",    "-",    "^",    "abs",   "cos", "sin", "tan", "exp",
-    "log", "pow", "sqrt", "iHat", "jHat", "kHat", "cross", "dot", "mag", "norm"};
+    "log", "pow", "sqrt", "iHat", "jHat", "kHat", "cross", "dot", "mag", "norm"
+};
 
 TaskPostCalculator::TaskPostCalculator(ViewProviderFemPostCalculator* view, QWidget* parent)
-    : TaskPostBox(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterCalculator"),
-                  tr("Calculator options"),
-                  parent)
+    : TaskPostBox(
+          view,
+          Gui::BitmapFactory().pixmap("FEM_PostFilterCalculator"),
+          tr("Calculator options"),
+          parent
+      )
     , ui(new Ui_TaskPostCalculator)
 {
     // we load the views widget
@@ -2185,26 +2257,36 @@ TaskPostCalculator::~TaskPostCalculator() = default;
 
 void TaskPostCalculator::setupConnections()
 {
-    connect(ui->dsb_replacement_value,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &TaskPostCalculator::onReplacementValueChanged);
-    connect(ui->ckb_replace_invalid,
-            &QCheckBox::toggled,
-            this,
-            &TaskPostCalculator::onReplaceInvalidChanged);
-    connect(ui->cb_scalars,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostCalculator::onScalarsActivated);
-    connect(ui->cb_vectors,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostCalculator::onVectorsActivated);
-    connect(ui->cb_operators,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskPostCalculator::onOperatorsActivated);
+    connect(
+        ui->dsb_replacement_value,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &TaskPostCalculator::onReplacementValueChanged
+    );
+    connect(
+        ui->ckb_replace_invalid,
+        &QCheckBox::toggled,
+        this,
+        &TaskPostCalculator::onReplaceInvalidChanged
+    );
+    connect(
+        ui->cb_scalars,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskPostCalculator::onScalarsActivated
+    );
+    connect(
+        ui->cb_vectors,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskPostCalculator::onVectorsActivated
+    );
+    connect(
+        ui->cb_operators,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskPostCalculator::onOperatorsActivated
+    );
 }
 
 void TaskPostCalculator::onReplaceInvalidChanged(bool state)

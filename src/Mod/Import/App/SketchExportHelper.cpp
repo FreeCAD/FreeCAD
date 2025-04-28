@@ -26,11 +26,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <HLRBRep_Algo.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
+# include <HLRBRep_Algo.hxx>
+# include <HLRAlgo_Projector.hxx>
+# include <HLRBRep_HLRToShape.hxx>
+# include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
 #endif
 
 #include <App/DocumentObject.h>
@@ -47,8 +47,7 @@ using namespace Import;
 //! information is lost in this process, so it should only be used for flat objects like sketches.
 //! Note: this only returns hard and outline edges.  Seam, smooth, isoparametric and hidden lines
 //! are not returned.
-TopoDS_Shape SketchExportHelper::projectShape(const TopoDS_Shape& inShape,
-                                              const gp_Ax2& projectionCS)
+TopoDS_Shape SketchExportHelper::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& projectionCS)
 {
     Handle(HLRBRep_Algo) brep_hlr = new HLRBRep_Algo();
     brep_hlr->Add(inShape);
@@ -102,9 +101,11 @@ TopoDS_Shape SketchExportHelper::getFlatSketchXY(App::DocumentObject* obj)
 
     // get the sketch origin
     Base::Vector3d position = plm.getPosition();
-    gp_Ax2 projectionCS(gp_Pnt(position.x, position.y, position.z),
-                        gp_Dir(sketchNormal.x, sketchNormal.y, sketchNormal.z),
-                        gp_Dir(sketchX.x, sketchX.y, sketchX.z));
+    gp_Ax2 projectionCS(
+        gp_Pnt(position.x, position.y, position.z),
+        gp_Dir(sketchNormal.x, sketchNormal.y, sketchNormal.z),
+        gp_Dir(sketchX.x, sketchX.y, sketchX.z)
+    );
     const TopoDS_Shape& shape = sketch->Shape.getValue();
     return projectShape(shape, projectionCS);
 }

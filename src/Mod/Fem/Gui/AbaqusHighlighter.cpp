@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QTextCharFormat>
+# include <QTextCharFormat>
 #endif
 
 #include "AbaqusHighlighter.h"

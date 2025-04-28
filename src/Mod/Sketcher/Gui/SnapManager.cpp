@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
+# include <QApplication>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Tools.h>
@@ -84,8 +84,7 @@ void SnapManager::ParameterObserver::initParameters()
          [this](const std::string& param) {
              updateSnapToGridParameter(param);
          }},
-        {"SnapAngle",
-         [this](const std::string& param) {
+        {"SnapAngle", [this](const std::string& param) {
              updateSnapAngleParameter(param);
          }},
     };
@@ -123,8 +122,8 @@ void SnapManager::ParameterObserver::updateSnapAngleParameter(const std::string&
 {
     ParameterGrp::handle hGrp = getParameterGrpHandle();
 
-    client.snapAngle =
-        fmod(Base::toRadians(hGrp->GetFloat(parametername.c_str(), 5.)), 2 * std::numbers::pi);
+    client.snapAngle
+        = fmod(Base::toRadians(hGrp->GetFloat(parametername.c_str(), 5.)), 2 * std::numbers::pi);
 }
 
 void SnapManager::ParameterObserver::subscribeToParameters()
@@ -145,15 +144,14 @@ void SnapManager::ParameterObserver::unsubscribeToParameters()
         ParameterGrp::handle hGrp = getParameterGrpHandle();
         hGrp->Detach(this);
     }
-    catch (const Base::ValueError&
-               e) {  // ensure that if parameter strings are not well-formed, the program is not
-                     // terminated when calling the noexcept destructor.
+    catch (const Base::ValueError& e
+    ) {  // ensure that if parameter strings are not well-formed, the program is not
+         // terminated when calling the noexcept destructor.
         Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
 
-void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCaller,
-                                              const char* sReason)
+void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCaller, const char* sReason)
 {
     (void)rCaller;
 
@@ -169,7 +167,8 @@ void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCalle
 ParameterGrp::handle SnapManager::ParameterObserver::getParameterGrpHandle()
 {
     return App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap"
+    );
 }
 
 //**************************** SnapManager class ******************************
@@ -332,8 +331,7 @@ bool SnapManager::snapToGrid(double& x, double& y)
     return snapped;
 }
 
-bool SnapManager::snapToLineMiddle(Base::Vector3d& pointToOverride,
-                                   const Part::GeomLineSegment* line)
+bool SnapManager::snapToLineMiddle(Base::Vector3d& pointToOverride, const Part::GeomLineSegment* line)
 {
     Base::Vector3d startPoint = line->getStartPoint();
     Base::Vector3d endPoint = line->getEndPoint();

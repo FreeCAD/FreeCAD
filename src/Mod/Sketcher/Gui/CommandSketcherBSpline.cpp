@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <Inventor/SbString.h>
-#include <QApplication>
+# include <Inventor/SbString.h>
+# include <QApplication>
 #endif
 
 #include <App/Application.h>
@@ -52,10 +52,10 @@ void ActivateBSplineHandler(Gui::Document* doc, DrawSketchHandler* handler)
 {
     std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
-            SketcherGui::ViewProviderSketch* vp =
-                static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
+            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(
+                doc->getInEdit()
+            );
             vp->purgeHandler();
             vp->activateHandler(std::move(ptr));
         }
@@ -66,11 +66,13 @@ void ActivateBSplineHandler(Gui::Document* doc, DrawSketchHandler* handler)
 /// index within it (by OCC numbering).
 /// Returns true if the entities are found, false otherwise.
 /// If returns false, `splineGeoId` and `knotIndexOCC` have garbage values.
-bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
-                             int knotGeoId,
-                             Sketcher::PointPos knotPosId,
-                             int& splineGeoId,
-                             int& knotIndexOCC)
+bool findBSplineAndKnotIndex(
+    Sketcher::SketchObject* Obj,
+    int knotGeoId,
+    Sketcher::PointPos knotPosId,
+    int& splineGeoId,
+    int& knotIndexOCC
+)
 {
     for (auto const constraint : Obj->Constraints.getValues()) {
         if (constraint->Type == Sketcher::InternalAlignment && constraint->First == knotGeoId
@@ -164,9 +166,11 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     if (GeoIdList.empty()) {
         abortCommand();
 
-        Gui::TranslatedUserWarning(Obj,
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("None of the selected elements is an edge."));
+        Gui::TranslatedUserWarning(
+            Obj,
+            QObject::tr("Wrong selection"),
+            QObject::tr("None of the selected elements is an edge.")
+        );
     }
     else {
         commitCommand();
@@ -224,13 +228,9 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
             if (geo->is<Part::GeomBSplineCurve>()) {
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                      "increaseBSplineDegree(%d) ",
-                                      GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "increaseBSplineDegree(%d) ", GeoId);
                 // add new control points
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                      "exposeInternalGeometry(%d)",
-                                      GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
             }
             else {
                 ignored = true;
@@ -239,10 +239,14 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     }
 
     if (ignored) {
-        Gui::TranslatedUserWarning(Obj,
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("At least one of the selected "
-                                               "objects was not a B-spline and was ignored."));
+        Gui::TranslatedUserWarning(
+            Obj,
+            QObject::tr("Wrong selection"),
+            QObject::tr(
+                "At least one of the selected "
+                "objects was not a B-spline and was ignored."
+            )
+        );
     }
 
     commitCommand();
@@ -303,9 +307,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
             if (geo->is<Part::GeomBSplineCurve>()) {
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                      "decreaseBSplineDegree(%d) ",
-                                      GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "decreaseBSplineDegree(%d) ", GeoId);
                 // add new control points
                 // Currently exposeInternalGeometry is called from within decreaseBSplineDegree
                 // because the old spline is deleted and a new one is added so that the GeoId is
@@ -322,10 +324,14 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
     }
 
     if (ignored) {
-        Gui::TranslatedUserWarning(Obj,
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("At least one of the selected "
-                                               "objects was not a B-spline and was ignored."));
+        Gui::TranslatedUserWarning(
+            Obj,
+            QObject::tr("Wrong selection"),
+            QObject::tr(
+                "At least one of the selected "
+                "objects was not a B-spline and was ignored."
+            )
+        );
     }
 
     commitCommand();
@@ -377,8 +383,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         Gui::TranslatedUserWarning(
             getActiveGuiDocument()->getDocument(),
             QObject::tr("Wrong selection"),
-            QObject::tr(
-                "The selection comprises more than one item. Please select just one knot."));
+            QObject::tr("The selection comprises more than one item. Please select just one knot.")
+        );
         return;
     }
 
@@ -394,19 +400,23 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     int knotIndexOCC;
 
     bool applied = false;
-    bool notaknot = !(isBsplineKnotOrEndPoint(Obj, GeoId, PosId)
-                      && findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC));
+    bool notaknot = !(
+        isBsplineKnotOrEndPoint(Obj, GeoId, PosId)
+        && findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC)
+    );
     boost::uuids::uuid bsplinetag;
 
     if (!notaknot) {
         bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
 
         try {
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
-                                  splineGeoId,
-                                  knotIndexOCC,
-                                  1);
+            Gui::cmdAppObjectArgs(
+                selection[0].getObject(),
+                "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                splineGeoId,
+                knotIndexOCC,
+                1
+            );
             applied = true;
 
             // Warning: GeoId list might have changed
@@ -416,18 +426,22 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         catch (const Base::CADKernelError& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                Gui::TranslatedUserError(Obj,
-                                         QObject::tr("CAD Kernel Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(
+                    Obj,
+                    QObject::tr("CAD Kernel Error"),
+                    QObject::tr(e.getMessage().c_str())
+                );
             }
             getSelection().clearSelection();
         }
         catch (const Base::Exception& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                Gui::TranslatedUserError(Obj,
-                                         QObject::tr("Input Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(
+                    Obj,
+                    QObject::tr("Input Error"),
+                    QObject::tr(e.getMessage().c_str())
+                );
             }
             getSelection().clearSelection();
         }
@@ -437,7 +451,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("None of the selected elements is a knot of a B-spline"));
+            QObject::tr("None of the selected elements is a knot of a B-spline")
+        );
     }
 
     if (applied) {
@@ -458,14 +473,14 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         if (ngfound) {
             try {
                 // add internalalignment for new pole
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                      "exposeInternalGeometry(%d)",
-                                      ngeoid);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
             }
             catch (const Base::Exception& e) {
-                Gui::NotifyUserError(Obj,
-                                     QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
-                                     e.what());
+                Gui::NotifyUserError(
+                    Obj,
+                    QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                    e.what()
+                );
                 getSelection().clearSelection();
             }
         }
@@ -525,8 +540,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         Gui::TranslatedUserWarning(
             getActiveGuiDocument()->getDocument(),
             QObject::tr("Wrong selection"),
-            QObject::tr(
-                "The selection comprises more than one item. Please select just one knot."));
+            QObject::tr("The selection comprises more than one item. Please select just one knot.")
+        );
         return;
     }
 
@@ -542,28 +557,34 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     int knotIndexOCC;
 
     bool applied = false;
-    bool notaknot = !(isBsplineKnotOrEndPoint(Obj, GeoId, PosId)
-                      && findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC));
+    bool notaknot = !(
+        isBsplineKnotOrEndPoint(Obj, GeoId, PosId)
+        && findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC)
+    );
     boost::uuids::uuid bsplinetag;
 
     if (!notaknot) {
         bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
 
         try {
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
-                                  splineGeoId,
-                                  knotIndexOCC,
-                                  -1);
+            Gui::cmdAppObjectArgs(
+                selection[0].getObject(),
+                "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                splineGeoId,
+                knotIndexOCC,
+                -1
+            );
             applied = true;
 
             // Warning: GeoId list might have changed as the consequence of deleting pole circles
             // and particularly B-spline GeoID might have changed.
         }
         catch (const Base::Exception& e) {
-            Gui::TranslatedUserError(Obj,
-                                     QObject::tr("Error"),
-                                     QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+            Gui::TranslatedUserError(
+                Obj,
+                QObject::tr("Error"),
+                QObject::tr(getStrippedPythonExceptionString(e).c_str())
+            );
 
             getSelection().clearSelection();
         }
@@ -573,7 +594,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("None of the selected elements is a knot of a B-spline"));
+            QObject::tr("None of the selected elements is a knot of a B-spline")
+        );
     }
 
     if (applied) {
@@ -594,14 +616,14 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         if (ngfound) {
             try {
                 // add internalalignment for new pole
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                      "exposeInternalGeometry(%d)",
-                                      ngeoid);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
             }
             catch (const Base::Exception& e) {
-                Gui::NotifyUserError(Obj,
-                                     QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
-                                     e.what());
+                Gui::NotifyUserError(
+                    Obj,
+                    QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                    e.what()
+                );
                 getSelection().clearSelection();
             }
         }
@@ -698,23 +720,37 @@ void CmdSketcherCompModifyKnotMultiplicity::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* c1 = a[0];
-    c1->setText(QApplication::translate("CmdSketcherCompModifyKnotMultiplicity",
-                                        "Increase knot multiplicity"));
+    c1->setText(
+        QApplication::translate("CmdSketcherCompModifyKnotMultiplicity", "Increase knot multiplicity")
+    );
     c1->setToolTip(
-        QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity",
-                                "Increases the multiplicity of the selected knot of a B-spline"));
+        QApplication::translate(
+            "Sketcher_BSplineIncreaseKnotMultiplicity",
+            "Increases the multiplicity of the selected knot of a B-spline"
+        )
+    );
     c1->setStatusTip(
-        QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity",
-                                "Increases the multiplicity of the selected knot of a B-spline"));
+        QApplication::translate(
+            "Sketcher_BSplineIncreaseKnotMultiplicity",
+            "Increases the multiplicity of the selected knot of a B-spline"
+        )
+    );
     QAction* c2 = a[1];
-    c2->setText(QApplication::translate("CmdSketcherCompModifyKnotMultiplicity",
-                                        "Decrease knot multiplicity"));
+    c2->setText(
+        QApplication::translate("CmdSketcherCompModifyKnotMultiplicity", "Decrease knot multiplicity")
+    );
     c2->setToolTip(
-        QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity",
-                                "Decreases the multiplicity of the selected knot of a B-spline"));
+        QApplication::translate(
+            "Sketcher_BSplineDecreaseKnotMultiplicity",
+            "Decreases the multiplicity of the selected knot of a B-spline"
+        )
+    );
     c2->setStatusTip(
-        QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity",
-                                "Decreases the multiplicity of the selected knot of a B-spline"));
+        QApplication::translate(
+            "Sketcher_BSplineDecreaseKnotMultiplicity",
+            "Decreases the multiplicity of the selected knot of a B-spline"
+        )
+    );
 }
 
 void CmdSketcherCompModifyKnotMultiplicity::updateAction(int /*mode*/)
@@ -791,17 +827,21 @@ public:
         catch (const Base::CADKernelError& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                Gui::TranslatedUserError(Obj,
-                                         QObject::tr("CAD Kernel Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(
+                    Obj,
+                    QObject::tr("CAD Kernel Error"),
+                    QObject::tr(e.getMessage().c_str())
+                );
             }
         }
         catch (const Base::Exception& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                Gui::TranslatedUserError(Obj,
-                                         QObject::tr("Input Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(
+                    Obj,
+                    QObject::tr("Input Error"),
+                    QObject::tr(e.getMessage().c_str())
+                );
             }
         }
 
@@ -812,8 +852,7 @@ public:
             // find new geoid for B-spline as GeoId might have changed
             const std::vector<Part::Geometry*>& gvals = Obj->getInternalGeometry();
 
-            for (std::vector<Part::Geometry*>::const_iterator geo = gvals.begin();
-                 geo != gvals.end();
+            for (std::vector<Part::Geometry*>::const_iterator geo = gvals.begin(); geo != gvals.end();
                  geo++, newGeoId++) {
                 if ((*geo) && (*geo)->getTag() == bsplinetag) {
                     newGeoIdFound = true;
@@ -827,9 +866,11 @@ public:
                     Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", newGeoId);
                 }
                 catch (const Base::Exception& e) {
-                    Gui::NotifyUserError(Obj,
-                                         QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
-                                         e.what());
+                    Gui::NotifyUserError(
+                        Obj,
+                        QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                        e.what()
+                    );
                 }
             }
         }
@@ -844,7 +885,8 @@ public:
         tryAutoRecomputeIfNotSolve(Obj);
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher");
+            "User parameter:BaseApp/Preferences/Mod/Sketcher"
+        );
         bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
         if (continuousMode && newGeoIdFound) {
             // This code enables the continuous creation mode.
@@ -859,8 +901,7 @@ public:
              * right button of the mouse */
         }
         else {
-            sketchgui
-                ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
+            sketchgui->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
         }
 
         return true;
@@ -887,8 +928,10 @@ CmdSketcherInsertKnot::CmdSketcherInsertKnot()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Insert knot");
-    sToolTipText = QT_TR_NOOP("Inserts knot at given parameter. If a knot already exists at that "
-                              "parameter, it's multiplicity is increased by one.");
+    sToolTipText = QT_TR_NOOP(
+        "Inserts knot at given parameter. If a knot already exists at that "
+        "parameter, it's multiplicity is increased by one."
+    );
     sWhatsThis = "Sketcher_BSplineInsertKnot";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_BSplineInsertKnot";
@@ -915,9 +958,11 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     if (SubNames.empty()) {
         // Check that only one object is selected,
         // as we need only one object to get the new GeoId after multiplicity change
-        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
-                                   QObject::tr("Selection is empty"),
-                                   QObject::tr("Nothing is selected. Please select a B-spline."));
+        Gui::TranslatedUserWarning(
+            getActiveGuiDocument()->getDocument(),
+            QObject::tr("Selection is empty"),
+            QObject::tr("Nothing is selected. Please select a B-spline.")
+        );
 
         return;
     }
@@ -928,15 +973,20 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
     if (geo->is<Part::GeomBSplineCurve>()) {
-        ActivateBSplineHandler(getActiveGuiDocument(),
-                               new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
+        ActivateBSplineHandler(
+            getActiveGuiDocument(),
+            new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId)
+        );
     }
     else {
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("Please select a B-spline to insert a knot (not a knot on it). "
-                        "If the curve is not a B-spline, please convert it into one first."));
+            QObject::tr(
+                "Please select a B-spline to insert a knot (not a knot on it). "
+                "If the curve is not a B-spline, please convert it into one first."
+            )
+        );
     }
 
     getSelection().clearSelection();
@@ -990,7 +1040,8 @@ void CmdSketcherJoinCurves::activated(int iMsg)
             Gui::TranslatedUserWarning(
                 Obj,
                 QObject::tr("Selection is empty"),
-                QObject::tr("Nothing is selected. Please select end points of curves."));
+                QObject::tr("Nothing is selected. Please select end points of curves.")
+            );
             return;
         }
         case 1: {
@@ -1018,18 +1069,25 @@ void CmdSketcherJoinCurves::activated(int iMsg)
                         Gui::TranslatedUserWarning(
                             Obj,
                             QObject::tr("Too many curves on point"),
-                            QObject::tr("Exactly two curves should end at the selected point to be "
-                                        "able to join them."));
+                            QObject::tr(
+                                "Exactly two curves should end at the selected point to be "
+                                "able to join them."
+                            )
+                        );
 
                         return;
                     }
                 }
             }
             if (j < 2) {
-                Gui::TranslatedUserWarning(Obj,
-                                           QObject::tr("Too few curves on point"),
-                                           QObject::tr("Exactly two curves should end at the "
-                                                       "selected point to be able to join them."));
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Too few curves on point"),
+                    QObject::tr(
+                        "Exactly two curves should end at the "
+                        "selected point to be able to join them."
+                    )
+                );
 
                 return;
             }
@@ -1045,7 +1103,8 @@ void CmdSketcherJoinCurves::activated(int iMsg)
             Gui::TranslatedUserWarning(
                 Obj,
                 QObject::tr("Wrong selection"),
-                QObject::tr("Two end points, or coincident point should be selected."));
+                QObject::tr("Two end points, or coincident point should be selected.")
+            );
 
             return;
         }
@@ -1068,21 +1127,25 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     bool applied = false;
 
     try {
-        Gui::cmdAppObjectArgs(selection[0].getObject(),
-                              "join(%d, %d, %d, %d, %d) ",
-                              GeoIds[0],
-                              static_cast<int>(PosIds[0]),
-                              GeoIds[1],
-                              static_cast<int>(PosIds[1]),
-                              tangentConstraintExists ? 1 : 0);
+        Gui::cmdAppObjectArgs(
+            selection[0].getObject(),
+            "join(%d, %d, %d, %d, %d) ",
+            GeoIds[0],
+            static_cast<int>(PosIds[0]),
+            GeoIds[1],
+            static_cast<int>(PosIds[1]),
+            tangentConstraintExists ? 1 : 0
+        );
         applied = true;
 
         // Warning: GeoId list will have changed
     }
     catch (const Base::Exception& e) {
-        Gui::TranslatedUserError(Obj,
-                                 QObject::tr("Error"),
-                                 QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+        Gui::TranslatedUserError(
+            Obj,
+            QObject::tr("Error"),
+            QObject::tr(getStrippedPythonExceptionString(e).c_str())
+        );
 
         getSelection().clearSelection();
     }

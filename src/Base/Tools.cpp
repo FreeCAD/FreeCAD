@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <vector>
-#include <string>
-#include <sstream>
-#include <QDateTime>
+# include <vector>
+# include <string>
+# include <sstream>
+# include <QDateTime>
 #endif
 
 #include "PyExport.h"
@@ -100,8 +100,8 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     Base::PyGILStateLocker lock;
     std::string string;
 
-    PyObject* unicode =
-        PyUnicode_DecodeUnicodeEscape(s.c_str(), static_cast<Py_ssize_t>(s.size()), "strict");
+    PyObject* unicode
+        = PyUnicode_DecodeUnicodeEscape(s.c_str(), static_cast<Py_ssize_t>(s.size()), "strict");
     if (!unicode) {
         return string;
     }
@@ -243,10 +243,7 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
 
 std::string Base::Tools::currentDateTimeString()
 {
-    return QDateTime::currentDateTime()
-        .toTimeSpec(Qt::OffsetFromUTC)
-        .toString(Qt::ISODate)
-        .toStdString();
+    return QDateTime::currentDateTime().toTimeSpec(Qt::OffsetFromUTC).toString(Qt::ISODate).toStdString();
 }
 
 std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)

@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QCoreApplication>
-#include <QTcpSocket>
-#include <memory>
-#include <stdexcept>
+# include <QCoreApplication>
+# include <QTcpSocket>
+# include <memory>
+# include <stdexcept>
 #endif
 
 #include <Base/Exception.h>

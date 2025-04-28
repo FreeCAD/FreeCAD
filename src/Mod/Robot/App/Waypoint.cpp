@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include "kdl_cp/chain.hpp"
+# include "kdl_cp/chain.hpp"
 #endif
 
 #include <Base/Reader.h>
@@ -38,14 +38,16 @@ using namespace KDL;
 
 TYPESYSTEM_SOURCE(Robot::Waypoint, Base::Persistence)
 
-Waypoint::Waypoint(const char* name,
-                   const Base::Placement& endPos,
-                   WaypointType type,
-                   float velocity,
-                   float acceleration,
-                   bool cont,
-                   unsigned int tool,
-                   unsigned int base)
+Waypoint::Waypoint(
+    const char* name,
+    const Base::Placement& endPos,
+    WaypointType type,
+    float velocity,
+    float acceleration,
+    bool cont,
+    unsigned int tool,
+    unsigned int base
+)
 
     : Name(name)
     , Type(type)
@@ -113,13 +115,19 @@ void Waypoint::Restore(XMLReader& reader)
     reader.readElement("Waypoint");
     Name = reader.getAttribute("name");
     // get the value of the placement
-    EndPos = Base::Placement(Base::Vector3d(reader.getAttributeAsFloat("Px"),
-                                            reader.getAttributeAsFloat("Py"),
-                                            reader.getAttributeAsFloat("Pz")),
-                             Base::Rotation(reader.getAttributeAsFloat("Q0"),
-                                            reader.getAttributeAsFloat("Q1"),
-                                            reader.getAttributeAsFloat("Q2"),
-                                            reader.getAttributeAsFloat("Q3")));
+    EndPos = Base::Placement(
+        Base::Vector3d(
+            reader.getAttributeAsFloat("Px"),
+            reader.getAttributeAsFloat("Py"),
+            reader.getAttributeAsFloat("Pz")
+        ),
+        Base::Rotation(
+            reader.getAttributeAsFloat("Q0"),
+            reader.getAttributeAsFloat("Q1"),
+            reader.getAttributeAsFloat("Q2"),
+            reader.getAttributeAsFloat("Q3")
+        )
+    );
 
     Velocity = (float)reader.getAttributeAsFloat("vel");
     Acceleration = (float)reader.getAttributeAsFloat("acc");

@@ -27,47 +27,47 @@
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-#define PartExport __declspec(dllimport)
-#define PathExport __declspec(dllimport)
-#define PartGuiExport __declspec(dllexport)
-#define PathGuiExport __declspec(dllexport)
+# define PartExport __declspec(dllimport)
+# define PathExport __declspec(dllimport)
+# define PartGuiExport __declspec(dllexport)
+# define PathGuiExport __declspec(dllexport)
 #else  // for Linux
-#define PartExport
-#define PathExport
-#define PartGuiExport
-#define PathGuiExport
+# define PartExport
+# define PathExport
+# define PartGuiExport
+# define PathGuiExport
 #endif
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4273)
+# pragma warning(disable : 4273)
 #endif
 
 #ifdef _PreComp_
 
 // boost
-#include <boost/algorithm/string/replace.hpp>
+# include <boost/algorithm/string/replace.hpp>
 
 // OCC
-#include <TopExp_Explorer.hxx>
+# include <TopExp_Explorer.hxx>
 
 // Qt Toolkit
-#include <QDialog>
-#include <QDir>
-#include <QFileInfo>
-#include <QRegularExpression>
+# include <QDialog>
+# include <QDir>
+# include <QFileInfo>
+# include <QRegularExpression>
 
 // all of Inventor
-#include <Inventor/SbVec3f.h>
-#include <Inventor/details/SoLineDetail.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTransform.h>
+# include <Inventor/SbVec3f.h>
+# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoPointSet.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoTransform.h>
 
 #endif  //_PreComp_
 

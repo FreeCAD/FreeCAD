@@ -28,10 +28,10 @@
 #ifdef _PreComp_
 
 // STL
-#include <string>
+# include <string>
 
 // opencascade
-#include <Mod/Part/App/OpenCascadeAll.h>
+# include <Mod/Part/App/OpenCascadeAll.h>
 
 #endif  //_PreComp_
 

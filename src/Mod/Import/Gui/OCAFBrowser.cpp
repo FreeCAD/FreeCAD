@@ -24,38 +24,38 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QPointer>
-#include <QStyle>
-#include <QTextStream>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <TDataStd.hxx>
-#include <TDataStd_Integer.hxx>
-#include <TDataStd_Name.hxx>
-#include <TDataStd_Real.hxx>
-#include <TDF_AttributeIterator.hxx>
-#include <TDF_ChildIterator.hxx>
-#include <TDF_ChildIDIterator.hxx>
-#include <TDF_IDList.hxx>
-#include <TDF_Label.hxx>
-#include <TDF_ListIteratorOfIDList.hxx>
-#include <TDF_TagSource.hxx>
-#include <TDF_Tool.hxx>
-#include <TDocStd_Document.hxx>
-#include <TDocStd_Owner.hxx>
-#include <TNaming_UsedShapes.hxx>
-#include <XCAFDoc.hxx>
-#include <XCAFDoc_Color.hxx>
-#include <XCAFDoc_ColorTool.hxx>
-#include <XCAFDoc_LayerTool.hxx>
-#include <XCAFDoc_Location.hxx>
-#include <XCAFDoc_ShapeTool.hxx>
-#include <XCAFDoc_ShapeMapTool.hxx>
+# include <QApplication>
+# include <QDialog>
+# include <QDialogButtonBox>
+# include <QPointer>
+# include <QStyle>
+# include <QTextStream>
+# include <QTreeWidget>
+# include <QTreeWidgetItem>
+# include <QHBoxLayout>
+# include <QVBoxLayout>
+# include <TDataStd.hxx>
+# include <TDataStd_Integer.hxx>
+# include <TDataStd_Name.hxx>
+# include <TDataStd_Real.hxx>
+# include <TDF_AttributeIterator.hxx>
+# include <TDF_ChildIterator.hxx>
+# include <TDF_ChildIDIterator.hxx>
+# include <TDF_IDList.hxx>
+# include <TDF_Label.hxx>
+# include <TDF_ListIteratorOfIDList.hxx>
+# include <TDF_TagSource.hxx>
+# include <TDF_Tool.hxx>
+# include <TDocStd_Document.hxx>
+# include <TDocStd_Owner.hxx>
+# include <TNaming_UsedShapes.hxx>
+# include <XCAFDoc.hxx>
+# include <XCAFDoc_Color.hxx>
+# include <XCAFDoc_ColorTool.hxx>
+# include <XCAFDoc_LayerTool.hxx>
+# include <XCAFDoc_Location.hxx>
+# include <XCAFDoc_ShapeTool.hxx>
+# include <XCAFDoc_ShapeMapTool.hxx>
 #endif
 
 #include "OCAFBrowser.h"
@@ -111,8 +111,8 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
 
     Handle(TDataStd_Name) name;
     if (label.FindAttribute(TDataStd_Name::GetID(), name)) {
-        QString text =
-            QStringLiteral("%1 %2").arg(str, QString::fromUtf8(toString(name->Get()).c_str()));
+        QString text
+            = QStringLiteral("%1 %2").arg(str, QString::fromUtf8(toString(name->Get()).c_str()));
         item->setText(0, text);
     }
 

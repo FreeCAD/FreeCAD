@@ -35,7 +35,8 @@ RecentFilesModel::RecentFilesModel(QObject* parent)
     : DisplayedFilesModel(parent)
 {
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/RecentFiles");
+        "User parameter:BaseApp/Preferences/RecentFiles"
+    );
 }
 
 void RecentFilesModel::loadRecentFiles()

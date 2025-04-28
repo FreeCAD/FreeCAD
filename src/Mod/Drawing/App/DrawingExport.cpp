@@ -22,34 +22,34 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <sstream>
+# include <cmath>
+# include <sstream>
 
-#include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomConvert_BSplineCurveKnotSplitting.hxx>
-#include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <Standard_Failure.hxx>
-#include <Standard_Version.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Elips.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
+# include <Approx_Curve3d.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepLProp_CLProps.hxx>
+# include <BRep_Tool.hxx>
+# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+# include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <Geom_BezierCurve.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
+# if OCC_VERSION_HEX < 0x070600
+#  include <BRepAdaptor_HCurve.hxx>
+# endif
 #endif
 
 #include <Base/Tools.h>
@@ -592,9 +592,11 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
     out << end_angle << endl;  // End angle
 }
 
-void DXFOutput::printBSpline(const BRepAdaptor_Curve& c,
-                             int id,
-                             std::ostream& out)  // Not even close yet- DF
+void DXFOutput::printBSpline(
+    const BRepAdaptor_Curve& c,
+    int id,
+    std::ostream& out
+)  // Not even close yet- DF
 {
     try {
         std::stringstream str;

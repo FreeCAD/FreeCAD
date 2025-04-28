@@ -26,44 +26,44 @@
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4005)
+# pragma warning(disable : 4005)
 #endif
 
 #ifdef _PreComp_
 
 // STL
-#include <cmath>
-#include <sstream>
-#include <vector>
+# include <cmath>
+# include <sstream>
+# include <vector>
 
 // Qt
-#include <QAction>
-#include <QApplication>
-#include <QCheckBox>
-#include <QContextMenuEvent>
-#include <QCoreApplication>
-#include <QDir>
-#include <QFile>
-#include <QFileDialog>
-#include <QFileInfo>
-#include <QGraphicsRectItem>
-#include <QGraphicsSvgItem>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QLineEdit>
-#include <QListWidget>
-#include <QMenu>
-#include <QMessageBox>
-#include <QOpenGLWidget>
-#include <QPaintEvent>
-#include <QPainter>
-#include <QPaintEngine>
-#include <QPrintDialog>
-#include <QPrintPreviewDialog>
-#include <QPrinter>
-#include <QRegExp>
-#include <QTimer>
-#include <QWheelEvent>
+# include <QAction>
+# include <QApplication>
+# include <QCheckBox>
+# include <QContextMenuEvent>
+# include <QCoreApplication>
+# include <QDir>
+# include <QFile>
+# include <QFileDialog>
+# include <QFileInfo>
+# include <QGraphicsRectItem>
+# include <QGraphicsSvgItem>
+# include <QGridLayout>
+# include <QGroupBox>
+# include <QLineEdit>
+# include <QListWidget>
+# include <QMenu>
+# include <QMessageBox>
+# include <QOpenGLWidget>
+# include <QPaintEvent>
+# include <QPainter>
+# include <QPaintEngine>
+# include <QPrintDialog>
+# include <QPrintPreviewDialog>
+# include <QPrinter>
+# include <QRegExp>
+# include <QTimer>
+# include <QWheelEvent>
 
 #endif  //_PreComp_
 

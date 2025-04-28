@@ -28,32 +28,32 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-#define CloudAppExport __declspec(dllexport)
+# define CloudAppExport __declspec(dllexport)
 #else  // for Linux
-#define CloudAppExport
+# define CloudAppExport
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <cassert>
-#include <cstdio>
-#include <iostream>
+# include <cassert>
+# include <cstdio>
+# include <iostream>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <iostream>
+# include <list>
+# include <map>
+# include <queue>
+# include <set>
+# include <sstream>
+# include <stack>
+# include <string>
+# include <vector>
 
 // Xerces
-#include <xercesc/util/XercesDefs.hpp>
+# include <xercesc/util/XercesDefs.hpp>
 
 #endif  //_PreComp_
 

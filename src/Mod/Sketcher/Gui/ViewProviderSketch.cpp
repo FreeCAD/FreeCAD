@@ -22,24 +22,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost/core/ignore_unused.hpp>
-#include <Inventor/SbBox3f.h>
-#include <Inventor/SbLine.h>
-#include <Inventor/SbTime.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/details/SoPointDetail.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/nodes/SoCamera.h>
+# include <boost/core/ignore_unused.hpp>
+# include <Inventor/SbBox3f.h>
+# include <Inventor/SbLine.h>
+# include <Inventor/SbTime.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/details/SoPointDetail.h>
+# include <Inventor/events/SoKeyboardEvent.h>
+# include <Inventor/nodes/SoCamera.h>
 
-#include <QApplication>
-#include <QFontMetricsF>
-#include <QMenu>
-#include <QMessageBox>
-#include <QScreen>
-#include <QTextStream>
+# include <QApplication>
+# include <QFontMetricsF>
+# include <QMenu>
+# include <QMessageBox>
+# include <QScreen>
+# include <QTextStream>
 
-#include <limits>
+# include <limits>
 #endif
 
 #include <Base/Console.h>

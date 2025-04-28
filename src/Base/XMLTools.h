@@ -30,7 +30,7 @@
 #include <xercesc/util/TransService.hpp>
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
+# define XERCES_CPP_NAMESPACE_QUALIFIER
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
@@ -174,10 +174,10 @@ inline XStr::~XStr()
 // Uses the compiler to create a cache of transcoded string literals so that each subsequent call
 // can re-use the data from the lambda's initial creation. Permits the same usage as
 // XStr("literal").unicodeForm()
-#define XStrLiteral(literal)                                                                       \
-    ([]() -> const XStr& {                                                                         \
-        static const XStr str {literal};                                                           \
-        return str;                                                                                \
+#define XStrLiteral(literal) \
+    ([]() -> const XStr& { \
+        static const XStr str {literal}; \
+        return str; \
     }())
 
 
@@ -219,10 +219,10 @@ inline XUTF8Str::~XUTF8Str() = default;
 // Uses the compiler to create a cache of transcoded string literals so that each subsequent call
 // can re-use the data from the lambda's initial creation. Permits the same usage as
 // XStr("literal").unicodeForm()
-#define XUTF8StrLiteral(literal)                                                                   \
-    ([]() -> const XUTF8Str& {                                                                     \
-        static const XUTF8Str str {literal};                                                       \
-        return str;                                                                                \
+#define XUTF8StrLiteral(literal) \
+    ([]() -> const XUTF8Str& { \
+        static const XUTF8Str str {literal}; \
+        return str; \
     }())
 
 // -----------------------------------------------------------------------

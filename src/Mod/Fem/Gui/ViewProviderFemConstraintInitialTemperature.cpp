@@ -34,8 +34,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintInitialTemperature,
-                FemGui::ViewProviderFemConstraint)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintInitialTemperature, FemGui::ViewProviderFemConstraint)
 
 ViewProviderFemConstraintInitialTemperature::ViewProviderFemConstraintInitialTemperature()
 {
@@ -43,8 +42,7 @@ ViewProviderFemConstraintInitialTemperature::ViewProviderFemConstraintInitialTem
     ShapeAppearance.setDiffuseColor(0.2f, 0.3f, 0.2f);
 }
 
-ViewProviderFemConstraintInitialTemperature::~ViewProviderFemConstraintInitialTemperature() =
-    default;
+ViewProviderFemConstraintInitialTemperature::~ViewProviderFemConstraintInitialTemperature() = default;
 
 bool ViewProviderFemConstraintInitialTemperature::setEdit(int ModNum)
 {

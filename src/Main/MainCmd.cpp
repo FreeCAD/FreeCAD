@@ -24,15 +24,15 @@
 #include "../FCConfig.h"
 
 #ifdef _PreComp_
-#undef _PreComp_
+# undef _PreComp_
 #endif
 
 #ifdef FC_OS_LINUX
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #if HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif  // HAVE_CONFIG_H
 
 #include <cstdio>
@@ -52,9 +52,9 @@
 using App::Application;
 using Base::Console;
 
-const char sBanner[] =
-    "(C) 2001-2025 FreeCAD contributors\n"
-    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
+const char sBanner[]
+    = "(C) 2001-2025 FreeCAD contributors\n"
+      "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
 
 int main(int argc, char** argv)
 {

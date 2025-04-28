@@ -28,37 +28,37 @@
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-#define CloudAppExport __declspec(dllimport)
-#define CloudGuiExport __declspec(dllexport)
+# define CloudAppExport __declspec(dllimport)
+# define CloudGuiExport __declspec(dllexport)
 #else  // for Linux
-#define CloudAppExport
-#define CloudGuiExport
+# define CloudAppExport
+# define CloudGuiExport
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <cassert>
-#include <cstdio>
+# include <cassert>
+# include <cstdio>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <iostream>
+# include <list>
+# include <map>
+# include <queue>
+# include <set>
+# include <sstream>
+# include <stack>
+# include <string>
+# include <vector>
 
-#ifdef FC_OS_WIN32
-#include <windows.h>
-#endif
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
 
 // Qt Toolkit
-#include <Gui/QtAll.h>
+# include <Gui/QtAll.h>
 
 #endif  //_PreComp_
 

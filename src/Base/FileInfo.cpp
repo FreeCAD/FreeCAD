@@ -25,19 +25,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <algorithm>
-#include <codecvt>
-#include <cstring>
-#include <iostream>
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-#include <dirent.h>
-#include <unistd.h>
-#elif defined(FC_OS_WIN32)
-#include <io.h>
-#include <Windows.h>
-#endif
-#include <sys/stat.h>
-#include <sys/types.h>
+# include <algorithm>
+# include <codecvt>
+# include <cstring>
+# include <iostream>
+# if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+#  include <dirent.h>
+#  include <unistd.h>
+# elif defined(FC_OS_WIN32)
+#  include <io.h>
+#  include <Windows.h>
+# endif
+# include <sys/stat.h>
+# include <sys/types.h>
 #endif
 
 #include "FileInfo.h"
@@ -50,16 +50,16 @@
 using namespace Base;
 
 #ifndef R_OK
-#define R_OK 4 /* Test for read permission    */
+# define R_OK 4 /* Test for read permission    */
 #endif
 #ifndef W_OK
-#define W_OK 2 /* Test for write permission   */
+# define W_OK 2 /* Test for write permission   */
 #endif
 #ifndef X_OK
-#define X_OK 1 /* Test for execute permission */
+# define X_OK 1 /* Test for execute permission */
 #endif
 #ifndef F_OK
-#define F_OK 0 /* Test for existence          */
+# define F_OK 0 /* Test for existence          */
 #endif
 
 //**********************************************************************************
@@ -332,9 +332,7 @@ bool FileInfo::hasExtension(const char* Ext) const
 
 bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 {
-    return std::ranges::any_of(Exts, [this](const char* ext) {
-        return hasExtension(ext);
-    });
+    return std::ranges::any_of(Exts, [this](const char* ext) { return hasExtension(ext); });
 }
 
 bool FileInfo::exists() const
@@ -522,7 +520,7 @@ bool FileInfo::deleteFile() const
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     return (::remove(FileName.c_str()) == 0);
 #else
-#error "FileInfo::deleteFile() not implemented for this platform!"
+# error "FileInfo::deleteFile() not implemented for this platform!"
 #endif
 }
 
@@ -536,7 +534,7 @@ bool FileInfo::renameFile(const char* NewName)
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     res = ::rename(FileName.c_str(), NewName) == 0;
 #else
-#error "FileInfo::renameFile() not implemented for this platform!"
+# error "FileInfo::renameFile() not implemented for this platform!"
 #endif
     if (!res) {
         int code = errno;
@@ -564,7 +562,7 @@ bool FileInfo::copyTo(const char* NewName) const
     file >> copy.rdbuf();
     return file.is_open() && copy.is_open();
 #else
-#error "FileInfo::copyTo() not implemented for this platform!"
+# error "FileInfo::copyTo() not implemented for this platform!"
 #endif
 }
 
@@ -576,7 +574,7 @@ bool FileInfo::createDirectory() const
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     return mkdir(FileName.c_str(), 0777) == 0;
 #else
-#error "FileInfo::createDirectory() not implemented for this platform!"
+# error "FileInfo::createDirectory() not implemented for this platform!"
 #endif
 }
 
@@ -606,7 +604,7 @@ bool FileInfo::deleteDirectory() const
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     return rmdir(FileName.c_str()) == 0;
 #else
-#error "FileInfo::rmdir() not implemented for this platform!"
+# error "FileInfo::rmdir() not implemented for this platform!"
 #endif
 }
 
@@ -633,7 +631,8 @@ bool FileInfo::deleteDirectoryRecursive() const
         }
         else {
             throw Base::FileException(
-                "FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");
+                "FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!"
+            );
         }
     }
     return deleteDirectory();
@@ -657,8 +656,8 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent() const
 
     while (_wfindnext(hFile, &dentry) == 0) {
         if (wcscmp(dentry.name, L"..") != 0) {
-            List.push_back(
-                FileInfo(FileName + "/" + ConvertFromWideString(std::wstring(dentry.name))));
+            List.push_back(FileInfo(FileName + "/" + ConvertFromWideString(std::wstring(dentry.name)))
+            );
         }
     }
 
@@ -679,7 +678,7 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent() const
     }
     closedir(dp);
 #else
-#error "FileInfo::getDirectoryContent() not implemented for this platform!"
+# error "FileInfo::getDirectoryContent() not implemented for this platform!"
 #endif
     return List;
 }

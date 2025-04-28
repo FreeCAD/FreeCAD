@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)
+# pragma warning(disable : 4996)
 #endif
 
 #include "Base/Exception.h"
@@ -39,8 +39,7 @@ public:
     ReaderXML()
     {
         _tempDir = fs::temp_directory_path();
-        fs::path filename =
-            std::string("unit_test_Reader-") + random_string(4) + std::string(".xml");
+        fs::path filename = std::string("unit_test_Reader-") + random_string(4) + std::string(".xml");
         _tempFile = _tempDir / filename;
     }
     ~ReaderXML()
@@ -60,8 +59,8 @@ public:
 
     void givenDataAsXMLStream(const std::string& data)
     {
-        auto stringData =
-            R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data + "</document>";
+        auto stringData = R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data
+            + "</document>";
         std::istringstream stream(stringData);
         std::ofstream fileStream(_tempFile.string());
         fileStream.write(stringData.data(), static_cast<std::streamsize>(stringData.length()));
@@ -379,11 +378,14 @@ TEST_F(ReaderTest, invalidDefaults)
     // Act / Assert
     EXPECT_THROW(
         { xml.Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
-        std::invalid_argument);
+        std::invalid_argument
+    );
     EXPECT_THROW(
         { xml.Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
-        std::invalid_argument);
+        std::invalid_argument
+    );
     EXPECT_THROW(
         { xml.Reader()->getAttributeAsInteger("missing", "Not a Float"); },
-        std::invalid_argument);
+        std::invalid_argument
+    );
 }

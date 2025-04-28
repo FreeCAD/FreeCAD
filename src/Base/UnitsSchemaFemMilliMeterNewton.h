@@ -38,8 +38,11 @@ namespace Base
 class UnitsSchemaFemMilliMeterNewton: public UnitsSchema
 {
 public:
-    std::string
-    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
+    std::string schemaTranslate(
+        const Base::Quantity& quant,
+        double& factor,
+        std::string& unitString
+    ) override;
 };
 
 }  // namespace Base

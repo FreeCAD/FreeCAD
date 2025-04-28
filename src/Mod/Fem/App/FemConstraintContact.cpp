@@ -33,31 +33,41 @@ PROPERTY_SOURCE(Fem::ConstraintContact, Fem::Constraint)
 ConstraintContact::ConstraintContact()
 {
     /*Note: Initialise parameters here*/
-    ADD_PROPERTY_TYPE(Slope,
-                      (0.0),
-                      "ConstraintContact",
-                      App::PropertyType(App::Prop_None),
-                      "Contact stiffness");
-    ADD_PROPERTY_TYPE(Adjust,
-                      (0.0),
-                      "ConstraintContact",
-                      App::PropertyType(App::Prop_None),
-                      "Node clearance adjustment limit");
-    ADD_PROPERTY_TYPE(Friction,
-                      (false),
-                      "ConstraintContact",
-                      App::PropertyType(App::Prop_None),
-                      "Enable friction interaction");
-    ADD_PROPERTY_TYPE(FrictionCoefficient,
-                      (0.0),
-                      "ConstraintContact",
-                      App::PropertyType(App::Prop_None),
-                      "Friction coefficient");
-    ADD_PROPERTY_TYPE(StickSlope,
-                      (0.0),
-                      "ConstraintContact",
-                      App::PropertyType(App::Prop_None),
-                      "Stick slope");
+    ADD_PROPERTY_TYPE(
+        Slope,
+        (0.0),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Contact stiffness"
+    );
+    ADD_PROPERTY_TYPE(
+        Adjust,
+        (0.0),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Node clearance adjustment limit"
+    );
+    ADD_PROPERTY_TYPE(
+        Friction,
+        (false),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Enable friction interaction"
+    );
+    ADD_PROPERTY_TYPE(
+        FrictionCoefficient,
+        (0.0),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Friction coefficient"
+    );
+    ADD_PROPERTY_TYPE(
+        StickSlope,
+        (0.0),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Stick slope"
+    );
 }
 
 App::DocumentObjectExecReturn* ConstraintContact::execute()
@@ -75,9 +85,11 @@ void ConstraintContact::onChanged(const App::Property* prop)
     Constraint::onChanged(prop);
 }
 
-void ConstraintContact::handleChangedPropertyType(Base::XMLReader& reader,
-                                                  const char* typeName,
-                                                  App::Property* prop)
+void ConstraintContact::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* typeName,
+    App::Property* prop
+)
 {
     if (prop == &Slope && strcmp(typeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat oldSlope;

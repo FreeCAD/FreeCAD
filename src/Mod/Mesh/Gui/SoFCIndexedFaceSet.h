@@ -29,7 +29,7 @@
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <vector>
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
 
 
@@ -49,10 +49,12 @@ class MeshRenderer
 public:
     MeshRenderer();
     ~MeshRenderer();
-    void generateGLArrays(SoGLRenderAction*,
-                          SoMaterialBindingElement::Binding binding,
-                          std::vector<float>& vertex,
-                          std::vector<int32_t>& index);
+    void generateGLArrays(
+        SoGLRenderAction*,
+        SoMaterialBindingElement::Binding binding,
+        std::vector<float>& vertex,
+        std::vector<int32_t>& index
+    );
     void renderFacesGLArray(SoGLRenderAction* action);
     void renderCoordsGLArray(SoGLRenderAction* action);
     bool canRenderGLArray(SoGLRenderAction* action) const;
@@ -117,16 +119,18 @@ protected:
     ~SoFCIndexedFaceSet() override = default;
     void GLRender(SoGLRenderAction* action) override;
     void drawFaces(SoGLRenderAction* action);
-    void drawCoords(const SoGLCoordinateElement* const vertexlist,
-                    const int32_t* vertexindices,
-                    int numindices,
-                    const SbVec3f* normals,
-                    const int32_t* normalindices,
-                    SoMaterialBundle* materials,
-                    const int32_t* matindices,
-                    const int32_t binding,
-                    const SoTextureCoordinateBundle* const texcoords,
-                    const int32_t* texindices);
+    void drawCoords(
+        const SoGLCoordinateElement* const vertexlist,
+        const int32_t* vertexindices,
+        int numindices,
+        const SbVec3f* normals,
+        const int32_t* normalindices,
+        SoMaterialBundle* materials,
+        const int32_t* matindices,
+        const int32_t binding,
+        const SoTextureCoordinateBundle* const texcoords,
+        const int32_t* texindices
+    );
 
     void doAction(SoAction* action) override;
 

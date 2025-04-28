@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <ostream>
-#include <sstream>
+# include <ostream>
+# include <sstream>
 #endif
 
 #include "Core/Evaluation.h"

@@ -44,15 +44,15 @@ PyObject* FeaturePathCompoundPy::addObject(PyObject* args)
     }
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    if (!docObj->getDocumentObjectPtr()
-        || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
+    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an invalid object");
         return nullptr;
     }
-    if (docObj->getDocumentObjectPtr()->getDocument()
-        != getFeaturePathCompoundPtr()->getDocument()) {
-        PyErr_SetString(Base::PyExc_FC_GeneralError,
-                        "Cannot add an object from another document to this group");
+    if (docObj->getDocumentObjectPtr()->getDocument() != getFeaturePathCompoundPtr()->getDocument()) {
+        PyErr_SetString(
+            Base::PyExc_FC_GeneralError,
+            "Cannot add an object from another document to this group"
+        );
         return nullptr;
     }
     if (docObj->getDocumentObjectPtr() == this->getFeaturePathCompoundPtr()) {
@@ -93,15 +93,15 @@ PyObject* FeaturePathCompoundPy::removeObject(PyObject* args)
     }
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    if (!docObj->getDocumentObjectPtr()
-        || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
+    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an invalid object");
         return nullptr;
     }
-    if (docObj->getDocumentObjectPtr()->getDocument()
-        != getFeaturePathCompoundPtr()->getDocument()) {
-        PyErr_SetString(Base::PyExc_FC_GeneralError,
-                        "Cannot remove an object from another document from this group");
+    if (docObj->getDocumentObjectPtr()->getDocument() != getFeaturePathCompoundPtr()->getDocument()) {
+        PyErr_SetString(
+            Base::PyExc_FC_GeneralError,
+            "Cannot remove an object from another document from this group"
+        );
         return nullptr;
     }
 

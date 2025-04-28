@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <iomanip>
-#include <sstream>
+# include <iomanip>
+# include <sstream>
 #endif
 
 #include <App/PropertyUnits.h>
@@ -47,22 +47,22 @@ FeatureViewSpreadsheet::FeatureViewSpreadsheet(void)
 {
     static const char* vgroup = "Drawing view";
 
-    ADD_PROPERTY_TYPE(CellStart,
-                      ("A1"),
-                      vgroup,
-                      App::Prop_None,
-                      "The top left cell of the range to display");
-    ADD_PROPERTY_TYPE(CellEnd,
-                      ("B2"),
-                      vgroup,
-                      App::Prop_None,
-                      "The bottom right cell of the range to display");
+    ADD_PROPERTY_TYPE(CellStart, ("A1"), vgroup, App::Prop_None, "The top left cell of the range to display");
+    ADD_PROPERTY_TYPE(
+        CellEnd,
+        ("B2"),
+        vgroup,
+        App::Prop_None,
+        "The bottom right cell of the range to display"
+    );
     ADD_PROPERTY_TYPE(Font, ("Sans"), vgroup, App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Color,
-                      (0.0f, 0.0f, 0.0f),
-                      vgroup,
-                      App::Prop_None,
-                      "The default color of the text and lines");
+    ADD_PROPERTY_TYPE(
+        Color,
+        (0.0f, 0.0f, 0.0f),
+        vgroup,
+        App::Prop_None,
+        "The default color of the text and lines"
+    );
     ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, App::Prop_None, "Spreadsheet to view");
     ADD_PROPERTY_TYPE(LineWidth, (0.35), vgroup, App::Prop_None, "The thickness of the cell lines");
     ADD_PROPERTY_TYPE(FontSize, (12.0), vgroup, App::Prop_None, "The size of the text");
@@ -170,8 +170,7 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
     std::string celltext;
     Spreadsheet::Sheet* sheet = static_cast<Spreadsheet::Sheet*>(link);
     std::vector<std::string> skiplist;
-    for (std::vector<std::string>::const_iterator col = columns.begin(); col != columns.end();
-         ++col) {
+    for (std::vector<std::string>::const_iterator col = columns.begin(); col != columns.end(); ++col) {
         // create a group for each column
         result << "  <g id=\"" << ViewName << "_col" << (*col) << "\">" << std::endl;
         for (std::vector<int>::const_iterator row = rows.begin(); row != rows.end(); ++row) {

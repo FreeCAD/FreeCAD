@@ -22,11 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <iomanip>
-#include <iterator>
-#include <sstream>
+# include <iomanip>
+# include <iterator>
+# include <sstream>
 
-#include <boost/regex.hpp>
+# include <boost/regex.hpp>
 #endif
 
 #include "FeatureViewSymbol.h"
@@ -47,11 +47,13 @@ FeatureViewSymbol::FeatureViewSymbol(void)
     static const char* vgroup = "Drawing view";
 
     ADD_PROPERTY_TYPE(Symbol, (""), vgroup, App::Prop_Hidden, "The SVG code defining this symbol");
-    ADD_PROPERTY_TYPE(EditableTexts,
-                      (""),
-                      vgroup,
-                      App::Prop_None,
-                      "Substitution values for the editable strings in this symbol");
+    ADD_PROPERTY_TYPE(
+        EditableTexts,
+        (""),
+        vgroup,
+        App::Prop_None,
+        "Substitution values for the editable strings in this symbol"
+    );
 }
 
 FeatureViewSymbol::~FeatureViewSymbol()
@@ -100,14 +102,11 @@ App::DocumentObjectExecReturn* FeatureViewSymbol::execute(void)
             if (count < editText.size()) {
                 // change values of editable texts. Also strip the "freecad:editable"
                 // attribute so it isn't detected by the page
-                boost::regex e2("(<text.*?)(freecad:editable=\"" + what[1].str()
-                                + "\")(.*?<tspan.*?)>(.*?)(</tspan>)");
+                boost::regex e2(
+                    "(<text.*?)(freecad:editable=\"" + what[1].str() + "\")(.*?<tspan.*?)>(.*?)(</tspan>)"
+                );
                 std::back_insert_iterator<std::string> out(newsvg);
-                boost::regex_replace(out,
-                                     begin,
-                                     what[0].second,
-                                     e2,
-                                     "$1$3>" + editText[count] + "$5");
+                boost::regex_replace(out, begin, what[0].second, e2, "$1$3>" + editText[count] + "$5");
             }
             count++;
             begin = what[0].second;

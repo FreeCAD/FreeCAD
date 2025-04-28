@@ -23,23 +23,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Python.h>
-#include <vtkCompositeDataSet.h>
-#include <vtkMultiBlockDataSet.h>
-#include <vtkMultiPieceDataSet.h>
-#include <vtkPolyData.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkStructuredGrid.h>
-#include <vtkUniformGrid.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkXMLDataSetWriter.h>
-#include <vtkXMLMultiBlockDataWriter.h>
-#include <vtkXMLMultiBlockDataReader.h>
-#include <vtkXMLImageDataReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkXMLRectilinearGridReader.h>
-#include <vtkXMLStructuredGridReader.h>
-#include <vtkXMLUnstructuredGridReader.h>
+# include <Python.h>
+# include <vtkCompositeDataSet.h>
+# include <vtkMultiBlockDataSet.h>
+# include <vtkMultiPieceDataSet.h>
+# include <vtkPolyData.h>
+# include <vtkRectilinearGrid.h>
+# include <vtkStructuredGrid.h>
+# include <vtkUniformGrid.h>
+# include <vtkUnstructuredGrid.h>
+# include <vtkXMLDataSetWriter.h>
+# include <vtkXMLMultiBlockDataWriter.h>
+# include <vtkXMLMultiBlockDataReader.h>
+# include <vtkXMLImageDataReader.h>
+# include <vtkXMLPolyDataReader.h>
+# include <vtkXMLRectilinearGridReader.h>
+# include <vtkXMLStructuredGridReader.h>
+# include <vtkXMLUnstructuredGridReader.h>
 #endif
 
 #include <App/Application.h>
@@ -53,7 +53,7 @@
 
 
 #ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
+# include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipoutputstream.h>
 #include <zipios++/zipinputstream.h>
@@ -375,9 +375,11 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-            Base::Console().Error("Dataset of '%s' cannot be written to vtk file '%s'\n",
-                                  obj->Label.getValue(),
-                                  fi.filePath().c_str());
+            Base::Console().Error(
+                "Dataset of '%s' cannot be written to vtk file '%s'\n",
+                obj->Label.getValue(),
+                fi.filePath().c_str()
+            );
         }
         else {
             Base::Console().Error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
@@ -500,13 +502,17 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
             App::PropertyContainer* father = this->getContainer();
             if (father && father->isDerivedFrom<App::DocumentObject>()) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
-                                      fi.filePath().c_str(),
-                                      obj->Label.getValue());
+                Base::Console().Error(
+                    "Dataset file '%s' with data of '%s' seems to be empty\n",
+                    fi.filePath().c_str(),
+                    obj->Label.getValue()
+                );
             }
             else {
-                Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n",
-                                        fi.filePath().c_str());
+                Base::Console().Warning(
+                    "Loaded Dataset file '%s' seems to be empty\n",
+                    fi.filePath().c_str()
+                );
             }
         }
         else {

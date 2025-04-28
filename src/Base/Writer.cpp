@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <memory>
-#include <set>
-#include <vector>
-#include <string>
+# include <memory>
+# include <set>
+# include <vector>
+# include <string>
 #endif
 
 #include <limits>

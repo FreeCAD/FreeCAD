@@ -22,29 +22,29 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 
-#include <QAction>
-#include <QActionGroup>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QFileDialog>
-#include <QFileInfo>
-#include <QGraphicsRectItem>
-#include <QGraphicsSvgItem>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QListWidget>
-#include <QMenu>
-#include <QMessageBox>
-#include <QOpenGLWidget>
-#include <QPaintEngine>
-#include <QPaintEvent>
-#include <QPainter>
-#include <QPrintDialog>
-#include <QPrintPreviewDialog>
-#include <QPrinter>
-#include <QWheelEvent>
+# include <QAction>
+# include <QActionGroup>
+# include <QApplication>
+# include <QContextMenuEvent>
+# include <QFileDialog>
+# include <QFileInfo>
+# include <QGraphicsRectItem>
+# include <QGraphicsSvgItem>
+# include <QGridLayout>
+# include <QGroupBox>
+# include <QListWidget>
+# include <QMenu>
+# include <QMessageBox>
+# include <QOpenGLWidget>
+# include <QPaintEngine>
+# include <QPaintEvent>
+# include <QPainter>
+# include <QPrintDialog>
+# include <QPrintPreviewDialog>
+# include <QPrinter>
+# include <QWheelEvent>
 
 #endif
 
@@ -241,10 +241,12 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
     m_highQualityAntialiasingAction->setEnabled(false);
     m_highQualityAntialiasingAction->setCheckable(true);
     m_highQualityAntialiasingAction->setChecked(false);
-    connect(m_highQualityAntialiasingAction,
-            SIGNAL(toggled(bool)),
-            m_view,
-            SLOT(setHighQualityAntialiasing(bool)));
+    connect(
+        m_highQualityAntialiasingAction,
+        SIGNAL(toggled(bool)),
+        m_view,
+        SLOT(setHighQualityAntialiasing(bool))
+    );
 #endif
 
     QActionGroup* rendererGroup = new QActionGroup(this);
@@ -260,8 +262,9 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
     m_orientation = QPageLayout::Landscape;
     m_pageSize = QPageSize::A4;
 
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     bool on = hGrp->GetBool("InvertZoom", true);
     m_view->setZoomInverted(on);
 }
@@ -274,9 +277,11 @@ void DrawingView::load(const QString& fileName)
     if (!fileName.isEmpty()) {
         QFile file(fileName);
         if (!file.exists()) {
-            QMessageBox::critical(this,
-                                  tr("Open SVG File"),
-                                  tr("Could not open file '%1'.").arg(fileName));
+            QMessageBox::critical(
+                this,
+                tr("Open SVG File"),
+                tr("Could not open file '%1'.").arg(fileName)
+            );
 
             m_outlineAction->setEnabled(false);
             m_backgroundAction->setEnabled(false);
@@ -327,8 +332,7 @@ void DrawingView::findPrinterSettings(const QString& fileName)
     pageSizes[QPageSize::B7] = QString::fromLatin1("B7");
     pageSizes[QPageSize::B8] = QString::fromLatin1("B8");
     pageSizes[QPageSize::B9] = QString::fromLatin1("B9");
-    for (QMap<QPageSize::PageSizeId, QString>::iterator it = pageSizes.begin();
-         it != pageSizes.end();
+    for (QMap<QPageSize::PageSizeId, QString>::iterator it = pageSizes.begin(); it != pageSizes.end();
          ++it) {
         if (fileName.startsWith(it.value(), Qt::CaseInsensitive)) {
             m_pageSize = it.key();
@@ -470,9 +474,8 @@ bool DrawingView::onHasMsg(const char* pMsg) const
 void DrawingView::onRelabel(Gui::Document* pDoc)
 {
     if (!bIsPassive && pDoc) {
-        QString cap =
-            QString::fromLatin1("%1 : %2[*]")
-                .arg(QString::fromUtf8(pDoc->getDocument()->Label.getValue()), objectName());
+        QString cap = QString::fromLatin1("%1 : %2[*]")
+                          .arg(QString::fromUtf8(pDoc->getDocument()->Label.getValue()), objectName());
         setWindowTitle(cap);
     }
 }
@@ -598,7 +601,8 @@ void DrawingView::print(QPrinter* printer)
                 tr("Different orientation"),
                 tr("The printer uses a different orientation than the drawing.\n"
                    "Do you want to continue?"),
-                QMessageBox::Yes | QMessageBox::No);
+                QMessageBox::Yes | QMessageBox::No
+            );
             if (ret != QMessageBox::Yes) {
                 return;
             }
@@ -609,7 +613,8 @@ void DrawingView::print(QPrinter* printer)
                 tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
-                QMessageBox::Yes | QMessageBox::No);
+                QMessageBox::Yes | QMessageBox::No
+            );
             if (ret != QMessageBox::Yes) {
                 return;
             }
@@ -620,7 +625,8 @@ void DrawingView::print(QPrinter* printer)
                 tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
-                QMessageBox::Yes | QMessageBox::No);
+                QMessageBox::Yes | QMessageBox::No
+            );
             if (ret != QMessageBox::Yes) {
                 return;
             }
@@ -633,7 +639,8 @@ void DrawingView::print(QPrinter* printer)
         QMessageBox::critical(
             this,
             tr("Opening file failed"),
-            tr("Can't open file '%1' for writing.").arg(printer->outputFileName()));
+            tr("Can't open file '%1' for writing.").arg(printer->outputFileName())
+        );
         qApp->restoreOverrideCursor();
         return;
     }

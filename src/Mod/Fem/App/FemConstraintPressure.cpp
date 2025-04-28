@@ -46,9 +46,11 @@ const char* ConstraintPressure::getViewProviderName() const
     return "FemGui::ViewProviderFemConstraintPressure";
 }
 
-void ConstraintPressure::handleChangedPropertyType(Base::XMLReader& reader,
-                                                   const char* TypeName,
-                                                   App::Property* prop)
+void ConstraintPressure::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     // property Pressure had App::PropertyFloat and was changed to App::PropertyPressure
     if (prop == &Pressure && strcmp(TypeName, "App::PropertyFloat") == 0) {

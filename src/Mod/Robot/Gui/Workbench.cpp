@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QDir>
-#include <QFileInfo>
-#include <QMessageBox>
-#include <qobject.h>
+# include <QDir>
+# include <QFileInfo>
+# include <QMessageBox>
+# include <qobject.h>
 #endif
 
 #include <App/Application.h>
@@ -73,9 +73,14 @@ void Workbench::activated()
             Gui::getMainWindow(),
             QObject::tr("No robot files installed"),
             QObject::tr("Please visit %1 and copy the files to %2")
-                .arg(QStringLiteral("https://github.com/FreeCAD/FreeCAD/tree/master"
-                                    "/src/Mod/Robot/Lib/Kuka"),
-                     dir));
+                .arg(
+                    QStringLiteral(
+                        "https://github.com/FreeCAD/FreeCAD/tree/master"
+                        "/src/Mod/Robot/Lib/Kuka"
+                    ),
+                    dir
+                )
+        );
         wc.setWaitCursor();
     }
 
@@ -83,16 +88,15 @@ void Workbench::activated()
 
     const char* RobotAndTrac[] = {"Robot_InsertWaypoint", "Robot_InsertWaypointPreselect", nullptr};
 
-    const char* Robot[] = {"Robot_AddToolShape",
-                           "Robot_SetHomePos",
-                           "Robot_RestoreHomePos",
-                           nullptr};
+    const char* Robot[] = {"Robot_AddToolShape", "Robot_SetHomePos", "Robot_RestoreHomePos", nullptr};
 
-    const char* Empty[] = {"Robot_InsertKukaIR500",
-                           "Robot_InsertKukaIR16",
-                           "Robot_InsertKukaIR210",
-                           "Robot_InsertKukaIR125",
-                           nullptr};
+    const char* Empty[] = {
+        "Robot_InsertKukaIR500",
+        "Robot_InsertKukaIR16",
+        "Robot_InsertKukaIR210",
+        "Robot_InsertKukaIR125",
+        nullptr
+    };
 
     const char* TracSingle[] = {"Robot_TrajectoryDressUp", nullptr};
 
@@ -100,34 +104,40 @@ void Workbench::activated()
 
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 1"
-                                               "SELECT Robot::RobotObject COUNT 1",
-                                               RobotAndTrac,
-                                               "Trajectory tools",
-                                               "Robot_InsertWaypoint"));
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Robot::TrajectoryObject COUNT 1"
+        "SELECT Robot::RobotObject COUNT 1",
+        RobotAndTrac,
+        "Trajectory tools",
+        "Robot_InsertWaypoint"
+    ));
 
     Watcher.push_back(new TaskWatcherRobot);
 
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands("SELECT Robot::RobotObject COUNT 1",
-                                                             Robot,
-                                                             "Robot tools",
-                                                             "Robot_CreateRobot"));
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Robot::RobotObject COUNT 1",
+        Robot,
+        "Robot tools",
+        "Robot_CreateRobot"
+    ));
+
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Robot::TrajectoryObject COUNT 1",
+        TracSingle,
+        "Trajectory tools",
+        "Robot_CreateRobot"
+    ));
+
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Robot::TrajectoryObject COUNT 2..",
+        TracMore,
+        "Trajectory tools",
+        "Robot_CreateRobot"
+    ));
 
     Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 1",
-                                               TracSingle,
-                                               "Trajectory tools",
-                                               "Robot_CreateRobot"));
-
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 2..",
-                                               TracMore,
-                                               "Trajectory tools",
-                                               "Robot_CreateRobot"));
-
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommandsEmptyDoc(Empty, "Insert Robot", "Robot_CreateRobot"));
+        new Gui::TaskView::TaskWatcherCommandsEmptyDoc(Empty, "Insert Robot", "Robot_CreateRobot")
+    );
 
 
     addTaskWatcher(Watcher);

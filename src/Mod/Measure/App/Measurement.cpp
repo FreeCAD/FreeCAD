@@ -22,21 +22,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepGProp.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Torus.hxx>
-#include <gp_Cylinder.hxx>
-#include <gp_Sphere.hxx>
-#include <gp_Lin.hxx>
-#include <GProp_GProps.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepGProp.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Torus.hxx>
+# include <gp_Cylinder.hxx>
+# include <gp_Sphere.hxx>
+# include <gp_Lin.hxx>
+# include <GProp_GProps.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
 
@@ -302,8 +302,7 @@ double Measurement::length() const
         const std::vector<std::string>& subElements = References3D.getSubValues();
 
         if (measureType == MeasureType::Points || measureType == MeasureType::PointToPoint
-            || measureType == MeasureType::PointToEdge
-            || measureType == MeasureType::PointToSurface) {
+            || measureType == MeasureType::PointToEdge || measureType == MeasureType::PointToSurface) {
 
             Base::Vector3d diff = this->delta();
             result = diff.Length();
@@ -351,7 +350,8 @@ double Measurement::length() const
                     }
                     default: {
                         throw Base::RuntimeError(
-                            "Measurement - length - Curve type not currently handled");
+                            "Measurement - length - Curve type not currently handled"
+                        );
                     }
                 }  // end switch
             }  // end for

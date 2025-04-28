@@ -2,8 +2,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <SMESHDS_Mesh.hxx>
-#include <SMESH_Mesh.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMESH_Mesh.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>

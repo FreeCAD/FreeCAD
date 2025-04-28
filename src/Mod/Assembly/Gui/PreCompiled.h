@@ -29,24 +29,24 @@
 #ifdef _PreComp_
 
 // STL
-#include <algorithm>
-#include <cmath>
-#include <limits>
-#include <memory>
+# include <algorithm>
+# include <cmath>
+# include <limits>
+# include <memory>
 
-#include <vector>
-#include <sstream>
-#include <iostream>
+# include <vector>
+# include <sstream>
+# include <iostream>
 
-#include <boost/core/ignore_unused.hpp>
+# include <boost/core/ignore_unused.hpp>
 
 // Qt
-#include <Gui/QtAll.h>
+# include <Gui/QtAll.h>
 
-#include <QWidgetAction>
+# include <QWidgetAction>
 
 // all of Inventor
-#include <Gui/InventorAll.h>
+# include <Gui/InventorAll.h>
 
 #endif  //_PreComp_
 

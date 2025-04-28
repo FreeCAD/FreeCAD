@@ -38,14 +38,16 @@ class BaseExport Unit
 {
 public:
     /// default constructor
-    explicit Unit(int8_t Length,
-                  int8_t Mass = 0,
-                  int8_t Time = 0,
-                  int8_t ElectricCurrent = 0,
-                  int8_t ThermodynamicTemperature = 0,
-                  int8_t AmountOfSubstance = 0,
-                  int8_t LuminousIntensity = 0,
-                  int8_t Angle = 0);
+    explicit Unit(
+        int8_t Length,
+        int8_t Mass = 0,
+        int8_t Time = 0,
+        int8_t ElectricCurrent = 0,
+        int8_t ThermodynamicTemperature = 0,
+        int8_t AmountOfSubstance = 0,
+        int8_t LuminousIntensity = 0,
+        int8_t Angle = 0
+    );
     Unit();
     Unit(const Unit&) = default;
     Unit(Unit&&) = default;

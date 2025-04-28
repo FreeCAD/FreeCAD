@@ -27,79 +27,79 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-#define PathExport __declspec(dllexport)
+# define PathExport __declspec(dllexport)
 // # define RobotExport __declspec(dllexport) uncomment this to use KDL
-#define PartExport __declspec(dllimport)
+# define PartExport __declspec(dllimport)
 #else  // for Linux
-#define PathExport
+# define PathExport
 // # define RobotExport uncomment this to use KDL
-#define PartExport
+# define PartExport
 #endif
 
 #ifdef _MSC_VER
-#pragma warning(disable : 5208)
+# pragma warning(disable : 5208)
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <cinttypes>
-#include <iomanip>
-#include <limits>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
+# include <cinttypes>
+# include <iomanip>
+# include <limits>
+# include <map>
+# include <sstream>
+# include <string>
+# include <vector>
 
 // Boost
-#include <boost/geometry.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/geometry/geometries/register/point.hpp>
-#include <boost/geometry/index/rtree.hpp>
-#include <boost/range/adaptor/transformed.hpp>
+# include <boost/geometry.hpp>
+# include <boost/algorithm/string.hpp>
+# include <boost/geometry/geometries/register/point.hpp>
+# include <boost/geometry/index/rtree.hpp>
+# include <boost/range/adaptor/transformed.hpp>
 
 // OCC
-#include <Bnd_Box.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepLib.hxx>
-#include <BRepLib_FindSurface.hxx>
-#include <BRepLib_MakeFace.hxx>
-#include <BRepTools_WireExplorer.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <Geom_Ellipse.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <Standard_Failure.hxx>
-#include <Standard_Version.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
+# include <Bnd_Box.hxx>
+# include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepLib.hxx>
+# include <BRepLib_FindSurface.hxx>
+# include <BRepLib_MakeFace.hxx>
+# include <BRepTools_WireExplorer.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
+# include <GCPnts_UniformDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <Geom_Ellipse.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pnt.hxx>
+# include <HLRAlgo_Projector.hxx>
+# include <HLRBRep_Algo.hxx>
+# include <HLRBRep_HLRToShape.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <ShapeExtend_WireData.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 
 #endif  // _PreComp_
 #endif

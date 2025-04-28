@@ -22,22 +22,22 @@
 
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
-#define WNT  // avoid conflict with GUID
+# define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-#include <Quantity_Color.hxx>
-#include <Standard_Version.hxx>
-#include <TDF_ChildIterator.hxx>
-#include <TDF_Label.hxx>
-#include <TDataStd_Name.hxx>
-#include <TDocStd_Document.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <XCAFDoc_ColorTool.hxx>
-#include <XCAFDoc_DocumentTool.hxx>
-#include <XCAFDoc_Location.hxx>
-#include <XCAFDoc_ShapeTool.hxx>
-#include <sstream>
+# include <Quantity_Color.hxx>
+# include <Standard_Version.hxx>
+# include <TDF_ChildIterator.hxx>
+# include <TDF_Label.hxx>
+# include <TDataStd_Name.hxx>
+# include <TDocStd_Document.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <XCAFDoc_ColorTool.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_Location.hxx>
+# include <XCAFDoc_ShapeTool.hxx>
+# include <sstream>
 #endif
 
 #include <App/Application.h>
@@ -52,10 +52,12 @@
 using namespace Import;
 
 
-ImportOCAFAssembly::ImportOCAFAssembly(Handle(TDocStd_Document) h,
-                                       App::Document* d,
-                                       const std::string& name,
-                                       App::DocumentObject* target)
+ImportOCAFAssembly::ImportOCAFAssembly(
+    Handle(TDocStd_Document) h,
+    App::Document* d,
+    const std::string& name,
+    App::DocumentObject* target
+)
     : pDoc(h)
     , doc(d)
     , default_name(name)
@@ -99,12 +101,14 @@ std::string ImportOCAFAssembly::getName(const TDF_Label& label)
 }
 
 
-void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
-                                    const TopLoc_Location& loc,
-                                    const std::string& defaultname,
-                                    const std::string& assembly,
-                                    bool isRef,
-                                    int dep)
+void ImportOCAFAssembly::loadShapes(
+    const TDF_Label& label,
+    const TopLoc_Location& loc,
+    const std::string& defaultname,
+    const std::string& assembly,
+    bool isRef,
+    int dep
+)
 {
     int hash = 0;
     TopoDS_Shape aShape;
@@ -159,21 +163,23 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
 
     std::stringstream str;
 
-    Base::Console().Log("H:%-9d \tN:%-30s \tTop:%d, Asm:%d, Shape:%d, Compound:%d, Simple:%d, "
-                        "Free:%d, Ref:%d, Component:%d, SubShape:%d\tTrf:%s-- Dep:%d  \n",
-                        hash,
-                        part_name.c_str(),
-                        aShapeTool->IsTopLevel(label),
-                        aShapeTool->IsAssembly(label),
-                        aShapeTool->IsShape(label),
-                        aShapeTool->IsCompound(label),
-                        aShapeTool->IsSimpleShape(label),
-                        aShapeTool->IsFree(label),
-                        aShapeTool->IsReference(label),
-                        aShapeTool->IsComponent(label),
-                        aShapeTool->IsSubShape(label),
-                        s,
-                        dep);
+    Base::Console().Log(
+        "H:%-9d \tN:%-30s \tTop:%d, Asm:%d, Shape:%d, Compound:%d, Simple:%d, "
+        "Free:%d, Ref:%d, Component:%d, SubShape:%d\tTrf:%s-- Dep:%d  \n",
+        hash,
+        part_name.c_str(),
+        aShapeTool->IsTopLevel(label),
+        aShapeTool->IsAssembly(label),
+        aShapeTool->IsShape(label),
+        aShapeTool->IsCompound(label),
+        aShapeTool->IsSimpleShape(label),
+        aShapeTool->IsFree(label),
+        aShapeTool->IsReference(label),
+        aShapeTool->IsComponent(label),
+        aShapeTool->IsSubShape(label),
+        s,
+        dep
+    );
 
     label.Dump(str);
     Base::Console().Message(str.str().c_str());
@@ -214,9 +220,11 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
     }
 }
 
-void ImportOCAFAssembly::createShape(const TDF_Label& label,
-                                     const TopLoc_Location& loc,
-                                     const std::string& name)
+void ImportOCAFAssembly::createShape(
+    const TDF_Label& label,
+    const TopLoc_Location& loc,
+    const std::string& name
+)
 {
     Base::Console().Log("-create Shape\n");
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
@@ -236,9 +244,11 @@ void ImportOCAFAssembly::createShape(const TDF_Label& label,
     createShape(aShape, loc, name);
 }
 
-void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape,
-                                     const TopLoc_Location& loc,
-                                     const std::string& name)
+void ImportOCAFAssembly::createShape(
+    const TopoDS_Shape& aShape,
+    const TopLoc_Location& loc,
+    const std::string& name
+)
 {
     Part::Feature* part = doc->addObject<Part::Feature>();
     if (!loc.IsIdentity()) {

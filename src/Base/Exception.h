@@ -50,141 +50,141 @@ using PyObject = struct _object;
 // NOLINTBEGIN
 #ifdef _MSC_VER
 
-#define THROW(exception)                                                                           \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        throw myexcp;                                                                              \
-    }
-#define THROWM(exception, message)                                                                 \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        throw myexcp;                                                                              \
-    }
-#define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        throw myexcp;                                                                              \
-    }
+# define THROW(exception) \
+     { \
+         exception myexcp; \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__); \
+         throw myexcp; \
+     }
+# define THROWM(exception, message) \
+     { \
+         exception myexcp(message); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__); \
+         throw myexcp; \
+     }
+# define THROWMF_FILEEXCEPTION(message, filenameorfileinfo) \
+     { \
+         FileException myexcp(message, filenameorfileinfo); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__); \
+         throw myexcp; \
+     }
 
-#define THROWT(exception)                                                                          \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMT(exception, message)                                                                \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
+# define THROWT(exception) \
+     { \
+         exception myexcp; \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
+# define THROWMT(exception, message) \
+     { \
+         exception myexcp(message); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
+# define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo) \
+     { \
+         FileException myexcp(message, filenameorfileinfo); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
 
 #elif defined(__GNUC__)
 
-#define THROW(exception)                                                                           \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        throw myexcp;                                                                              \
-    }
-#define THROWM(exception, message)                                                                 \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        throw myexcp;                                                                              \
-    }
-#define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        throw myexcp;                                                                              \
-    }
+# define THROW(exception) \
+     { \
+         exception myexcp; \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__); \
+         throw myexcp; \
+     }
+# define THROWM(exception, message) \
+     { \
+         exception myexcp(message); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__); \
+         throw myexcp; \
+     }
+# define THROWMF_FILEEXCEPTION(message, filenameorfileinfo) \
+     { \
+         FileException myexcp(message, filenameorfileinfo); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__); \
+         throw myexcp; \
+     }
 
-#define THROWT(exception)                                                                          \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMT(exception, message)                                                                \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
+# define THROWT(exception) \
+     { \
+         exception myexcp; \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
+# define THROWMT(exception, message) \
+     { \
+         exception myexcp(message); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
+# define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo) \
+     { \
+         FileException myexcp(message, filenameorfileinfo); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
 
 #else
 
-#define THROW(exception)                                                                           \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        throw myexcp;                                                                              \
-    }
-#define THROWM(exception, message)                                                                 \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        throw myexcp;                                                                              \
-    }
-#define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        throw myexcp;                                                                              \
-    }
+# define THROW(exception) \
+     { \
+         exception myexcp; \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __func__); \
+         throw myexcp; \
+     }
+# define THROWM(exception, message) \
+     { \
+         exception myexcp(message); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __func__); \
+         throw myexcp; \
+     }
+# define THROWMF_FILEEXCEPTION(message, filenameorfileinfo) \
+     { \
+         FileException myexcp(message, filenameorfileinfo); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __func__); \
+         throw myexcp; \
+     }
 
-#define THROWT(exception)                                                                          \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMT(exception, message)                                                                \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
+# define THROWT(exception) \
+     { \
+         exception myexcp; \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __func__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
+# define THROWMT(exception, message) \
+     { \
+         exception myexcp(message); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __func__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
+# define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo) \
+     { \
+         FileException myexcp(message, filenameorfileinfo); \
+         myexcp.setDebugInformation(__FILE__, __LINE__, __func__); \
+         myexcp.setTranslatable(true); \
+         throw myexcp; \
+     }
 
 
 #endif
 
-#define FC_THROWM(_exception, _msg)                                                                \
-    do {                                                                                           \
-        std::stringstream ss;                                                                      \
-        ss << _msg;                                                                                \
-        THROWM(_exception, ss.str().c_str());                                                      \
+#define FC_THROWM(_exception, _msg) \
+    do { \
+        std::stringstream ss; \
+        ss << _msg; \
+        THROWM(_exception, ss.str().c_str()); \
     } while (0)
 // NOLINTEND
 
@@ -991,8 +991,7 @@ inline bool Exception::getTranslatable() const
     return _isTranslatable;
 }
 
-inline void
-Exception::setDebugInformation(const std::string& file, int line, const std::string& function)
+inline void Exception::setDebugInformation(const std::string& file, int line, const std::string& function)
 {
     _file = file;
     _line = line;

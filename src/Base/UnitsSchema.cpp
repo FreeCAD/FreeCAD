@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifdef __GNUC__
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #include <QLocale>
@@ -33,9 +33,11 @@
 
 using namespace Base;
 
-std::string UnitsSchema::toLocale(const Base::Quantity& quant,
-                                  double factor,
-                                  const std::string& unitString) const
+std::string UnitsSchema::toLocale(
+    const Base::Quantity& quant,
+    double factor,
+    const std::string& unitString
+) const
 {
     QLocale Lc;
     const QuantityFormat& format = quant.getFormat();
