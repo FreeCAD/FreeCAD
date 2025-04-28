@@ -39,9 +39,8 @@ using namespace Path;
 // returns a string which represents the object e.g. when printed in python
 std::string CommandPy::representation() const
 {
-    const uint five_sf = 5;
     std::stringstream str;
-    str.precision(five_sf);
+    str.precision(5);
     str << "Command ( ";
     str << getCommandPtr()->Name;
     str << ", {";
