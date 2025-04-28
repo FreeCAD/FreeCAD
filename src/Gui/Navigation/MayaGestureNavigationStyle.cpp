@@ -113,6 +113,19 @@ bool MayaGestureNavigationStyle::testMoveThreshold(const SbVec2s currentPos) con
     return SbVec2f(movedBy).length() >= this->mouseMoveThreshold;
 }
 
+void MayaGestureNavigationStyle::zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos)
+{
+    const float dx = thispos[0] - prevpos[0];
+    const float dy = thispos[1] - prevpos[1];
+
+    // Compute zoom based on diagonal difference.
+    float value = (dx - dy) * 10.0f;
+
+    if (this->invertZoom)
+        value = -value;
+    zoom(viewer->getSoRenderManager()->getCamera(), value);
+}
+
 SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
@@ -279,11 +292,14 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
         case SoKeyboardEvent::H:
-            processed = true;
-            if (!press) {
-                setupPanningPlane(viewer->getCamera());
-                lookAtPoint(event->getPosition());
-            }
+                // Disable H key in editing mode because of conflict with sketcher
+                if (!viewer->isEditing()) {
+                    processed = true;
+                    if (!press) {
+                        setupPanningPlane(viewer->getCamera());
+                        lookAtPoint(event->getPosition());
+                    }
+                }
             break;
         default:
             break;
@@ -514,7 +530,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         processed = true;
                     } else { //all buttons are released
                         //end of dragging/panning/whatever
-                        setViewingMode(NavigationStyle::SELECTION);
+                        setViewingMode(NavigationStyle::IDLE);
                         processed = true;
                     } //end of else (some buttons down)
                 break;
