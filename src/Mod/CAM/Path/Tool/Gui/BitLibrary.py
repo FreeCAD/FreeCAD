@@ -40,6 +40,7 @@ import os
 import shutil
 import uuid as UUID
 from functools import partial
+from ..shape.ui.shapeselector import ShapeSelector
 from ..toolbit.util import get_toolbit_filepath_from_name
 from ..shape.registry import SHAPE_REGISTRY
 
@@ -492,9 +493,11 @@ class ToolBitLibrary(object):
         Path.Log.track()
 
         # select the shape file
-        shapefile = PathToolBitGui.GetToolShapeFile()
-        if shapefile is None:  # user canceled
+        selector = ShapeSelector()
+        shape = selector.show()
+        if shape is None:  # user canceled
             return
+        shapefile = shape.filepath.name
 
         # select the bit file location and filename
         filename = PathToolBitGui.GetNewToolFile()

@@ -151,6 +151,7 @@ SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/__init__.py
     Path/Tool/shape/ballend.py
     Path/Tool/shape/base.py
+    Path/Tool/shape/bullnose.py
     Path/Tool/shape/chamfer.py
     Path/Tool/shape/doc.py
     Path/Tool/shape/dovetail.py
@@ -162,7 +163,7 @@ SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/slittingsaw.py
     Path/Tool/shape/tap.py
     Path/Tool/shape/threadmill.py
-    Path/Tool/shape/bullnose.py
+    Path/Tool/shape/util.py
     Path/Tool/shape/vbit.py
 )
 

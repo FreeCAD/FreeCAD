@@ -115,6 +115,18 @@ class ShapeRegistry:
 
         return ToolBitShape.from_file(filepath, **params)
 
+    def get_shapes(self):
+        """Returns a list of all shapes"""
+        shapes = []
+        for filepath in self.shape_dir.glob("*.fcstd"):
+            try:
+                shape = ToolBitShape.from_file(filepath)
+                shapes.append(shape)
+            except Exception as e:
+                Path.Log.error(
+                    f"Failed to load ToolBitShape '{filepath}': {e}"
+                )
+        return shapes
 
 def on_tool_path_changed(group, key, value):
     Path.Log.track("signal received:", group, key, value)
