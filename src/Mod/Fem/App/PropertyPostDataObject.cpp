@@ -502,8 +502,8 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                 if (father && father->isDerivedFrom<App::DocumentObject>()) {
                     App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
                     Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
-                                        fi.filePath().c_str(),
-                                        obj->Label.getValue());
+                                          fi.filePath().c_str(),
+                                          obj->Label.getValue());
                 }
                 else {
                     Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n",
@@ -518,9 +518,10 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
             }
         }
         else {
-            Base::Console().Error("Dataset file '%s' is of unsupportet type: %s. Data not loaded.\n",
-                                  fi.filePath().c_str(),
-                                  extension);
+            Base::Console().Error(
+                "Dataset file '%s' is of unsupported type: %s. Data not loaded.\n",
+                fi.filePath().c_str(),
+                extension);
         }
     }
 
