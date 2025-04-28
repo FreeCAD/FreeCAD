@@ -22,6 +22,13 @@ include_directories(
     SYSTEM
     ${YAML_CPP_INCLUDE_DIR}
 )
+
+if (BUILD_MATERIAL_EXTERNAL)
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/lru-cache/include
+)
+endif(BUILD_MATERIAL_EXTERNAL)
+
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
 if(BUILD_MATERIAL_EXTERNAL)
@@ -64,6 +71,11 @@ generate_from_py(ModelProperty)
 generate_from_py(MaterialProperty)
 generate_from_py(Model)
 generate_from_py(UUIDs)
+
+SET(MaterialsAPI_Files
+    MaterialAPI/__init__.py
+    MaterialAPI/MaterialManagerExternal.py
+)
 
 SET(MaterialsAPI_Files
     MaterialAPI/__init__.py
@@ -145,6 +157,8 @@ if(BUILD_MATERIAL_EXTERNAL)
     list(APPEND Materials_SRCS
         ExternalManager.cpp
         ExternalManager.h
+        MaterialManagerExternal.cpp
+        MaterialManagerExternal.h
         ModelManagerExternal.cpp
         ModelManagerExternal.h
     )
