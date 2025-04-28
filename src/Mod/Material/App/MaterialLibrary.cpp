@@ -56,6 +56,11 @@ MaterialLibrary::MaterialLibrary(const QString& libraryName,
     , _local(false)
 {}
 
+MaterialLibrary::MaterialLibrary(const Library& library)
+    : Library(library)
+    , _local(false)
+{}
+
 bool MaterialLibrary::isLocal() const
 {
     return _local;

@@ -112,7 +112,7 @@ public:
 
     // The precision is based on the value from the original materials editor
     static const int PRECISION = 6;
-    
+
     void validate(const MaterialValue& other) const;
 
 protected:
