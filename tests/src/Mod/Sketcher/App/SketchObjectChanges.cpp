@@ -10,7 +10,6 @@
 #include <App/ObjectIdentifier.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <src/App/InitApplication.h>
 #include "SketcherTestHelpers.h"
 
 using namespace SketcherTestHelpers;
