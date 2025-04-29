@@ -442,7 +442,7 @@ std::string ObjectIdentifier::toEscapedString() const
     return Base::Tools::escapedUnicodeFromUtf8(toString().c_str());
 }
 
-bool ObjectIdentifier::updateLabelReference(App::DocumentObject* obj,
+bool ObjectIdentifier::updateLabelReference(const App::DocumentObject* obj,
                                             const std::string& ref,
                                             const char* newLabel)
 {
@@ -573,7 +573,6 @@ ObjectIdentifier::Component::Component(String&& _name,
     , end(_end)
     , step(_step)
 {}
-
 
 size_t ObjectIdentifier::Component::getIndex(size_t count) const
 {
@@ -1412,7 +1411,7 @@ std::string ObjectIdentifier::String::toString(bool toPython) const
 
 void ObjectIdentifier::String::checkImport(const App::DocumentObject* owner,
                                            const App::DocumentObject* obj,
-                                           String* objName)
+                                           const String* objName)
 {
     if (owner && owner->getDocument() && !str.empty()
         && ExpressionParser::ExpressionImporter::reader()) {
@@ -1454,7 +1453,7 @@ void ObjectIdentifier::String::checkImport(const App::DocumentObject* owner,
 }
 
 Py::Object
-ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Dependencies* deps) const
+ObjectIdentifier::access(const ResolveResults& result, const Py::Object* value, Dependencies* deps) const
 {
     if (!result.resolvedDocumentObject || !result.resolvedProperty
         || (!subObjectName.getString().empty() && !result.resolvedSubObject)) {
@@ -1886,7 +1885,7 @@ void ObjectIdentifier::resolveAmbiguity()
     resolveAmbiguity(result);
 }
 
-void ObjectIdentifier::resolveAmbiguity(ResolveResults& result)
+void ObjectIdentifier::resolveAmbiguity(const ResolveResults& result)
 {
 
     if (!result.resolvedDocumentObject) {
