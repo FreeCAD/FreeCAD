@@ -28,13 +28,8 @@
 #include <dbghelp.h>
 #endif
 
-
 #ifdef _PreComp_
 #undef _PreComp_
-#endif
-
-#ifdef FC_OS_LINUX
-#include <unistd.h>
 #endif
 
 #if HAVE_CONFIG_H
@@ -95,33 +90,43 @@ private:
     FILE* file;
 };
 
-static void DisplayInfo(const QString& msg, bool preformatted = true)
+static bool inGuiMode()
 {
+    // if console option is set then run in cmd mode
     if (App::Application::Config()["Console"] == "1") {
-        std::cout << msg.toStdString();
-        return;
+        return false;
     }
-
-    QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
-    QMessageBox msgBox;
-    msgBox.setIcon(QMessageBox::Information);
-    msgBox.setWindowTitle(appName);
-    msgBox.setDetailedText(msg);
-    msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg);
-    msgBox.exec();
+    return App::Application::Config()["RunMode"] == "Gui"
+        || App::Application::Config()["RunMode"] == "Internal";
 }
 
-static void DisplayCritical(const QString& msg, bool preformatted = true)
+static void displayInfo(const QString& msg, bool preformatted = true)
 {
-    if (App::Application::Config()["Console"] == "1") {
-        std::cerr << msg.toStdString();
-        return;
+    if (inGuiMode()) {
+        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setWindowTitle(appName);
+        msgBox.setDetailedText(msg);
+        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg);
+        msgBox.exec();
     }
+    else {
+        std::cout << msg.toStdString();
+    }
+}
 
-    QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
-    QString title = QObject::tr("Initialization of %1 failed").arg(appName);
-    QString text = preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg;
-    QMessageBox::critical(nullptr, title, text);
+static void displayCritical(const QString& msg, bool preformatted = true)
+{
+    if (inGuiMode()) {
+        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString title = QObject::tr("Initialization of %1 failed").arg(appName);
+        QString text = preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg;
+        QMessageBox::critical(nullptr, title, text);
+    }
+    else {
+        std::cerr << msg.toStdString();
+    }
 }
 
 int main(int argc, char** argv)
@@ -216,7 +221,7 @@ int main(int argc, char** argv)
 #endif
         // to set window icon on wayland, the desktop file has to be available to the compositor
         QGuiApplication::setDesktopFileName(
-            QString::fromLatin1(App::Application::Config()["DesktopFileName"].c_str()));
+            QString::fromStdString(App::Application::Config()["DesktopFileName"]));
 
 #if defined(_MSC_VER)
         // create a dump file when the application crashes
@@ -244,7 +249,7 @@ int main(int argc, char** argv)
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc, argv);
         QString msg = QString::fromLatin1(e.what());
-        DisplayCritical(msg);
+        displayCritical(msg);
         exit(1);
     }
     catch (const Base::ProgramInformation& e) {
@@ -261,13 +266,13 @@ int main(int argc, char** argv)
 
             msg = data;
         }
-        DisplayInfo(msg);
+        displayInfo(msg);
         exit(0);
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
         QString msg;
         msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n"
                           "Python is searching for its files in the following directories:\n%3\n\n"
@@ -288,18 +293,18 @@ int main(int argc, char** argv)
                 "\nPlease contact the application's support team for more information.\n\n");
         }
 
-        DisplayCritical(msg, false);
+        displayCritical(msg, false);
         exit(100);
     }
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
         QString msg =
             QObject::tr("Unknown runtime error occurred while initializing %1.\n\n"
                         "Please contact the application's support team for more information.\n\n")
                 .arg(appName);
-        DisplayCritical(msg, false);
+        displayCritical(msg, false);
         exit(101);
     }
 
@@ -312,12 +317,7 @@ int main(int argc, char** argv)
     std::streambuf* oldcerr = std::cerr.rdbuf(&stdcerr);
 
     try {
-        // if console option is set then run in cmd mode
-        if (App::Application::Config()["Console"] == "1") {
-            App::Application::runApplication();
-        }
-        if (App::Application::Config()["RunMode"] == "Gui"
-            || App::Application::Config()["RunMode"] == "Internal") {
+        if (inGuiMode()) {
             Gui::Application::runApplication();
         }
         else {
