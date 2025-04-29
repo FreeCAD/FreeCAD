@@ -71,7 +71,7 @@ public:
     TopoDS_Shape getShapeToPrepare() const override;
     TopoDS_Shape getShapeToIntersect() override;
     gp_Pln getSectionPlane() const override;
-    TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections) override;
+    TopoDS_Compound alignSectionFaces(const TopoDS_Shape& faceIntersections) override;
     std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds() override;
 
     void makeSectionCut(const TopoDS_Shape& baseShape) override;

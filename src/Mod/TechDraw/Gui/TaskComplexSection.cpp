@@ -166,7 +166,7 @@ void TaskComplexSection::setUiPrimary()
         std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
         m_saveNormal = dirs.first;
         m_saveXDir = dirs.second;
-        m_viewDirectionWidget->setValue(m_saveNormal * -1.0);//this will propagate to m_compass
+        m_viewDirectionWidget->setValue(m_saveNormal * -1);//this will propagate to m_compass
     }
 
     //don't allow updates until a direction is picked
@@ -195,7 +195,7 @@ void TaskComplexSection::setUiEdit()
         Base::Vector3d projectedViewDirection = m_baseView->projectPoint(sectionNormalVec, false);
         double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
         m_compass->setDialAngle(Base::toDegrees(viewAngle));
-        m_viewDirectionWidget->setValueNoNotify(projectedViewDirection * -1.0);
+        m_viewDirectionWidget->setValueNoNotify(projectedViewDirection * -1);
     }
     else {
         //no local angle makes sense if there is no baseView?
