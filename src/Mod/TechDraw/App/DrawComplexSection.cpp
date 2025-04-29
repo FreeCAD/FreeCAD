@@ -555,7 +555,7 @@ TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape&
     return result;
 }
 
-TopoDS_Compound DrawComplexSection::alignSectionFaces(TopoDS_Shape faceIntersections)
+TopoDS_Compound DrawComplexSection::alignSectionFaces(const TopoDS_Shape& faceIntersections)
 {
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
@@ -624,7 +624,6 @@ gp_Vec DrawComplexSection::makeProfileVector(const TopoDS_Wire& profileWire)
 //make drawable td geometry for section line
 BaseGeomPtrVector DrawComplexSection::makeSectionLineGeometry()
 {
-    //    Base::Console().Message("DCS::makeSectionLineGeometry()\n");
     BaseGeomPtrVector result;
     auto* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
@@ -643,7 +642,6 @@ BaseGeomPtrVector DrawComplexSection::makeSectionLineGeometry()
 //get the end points of the section wire
 std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionLineEnds()
 {
-    //    Base::Console().Message("DCS::sectionLineEnds()\n");
     std::pair<Base::Vector3d, Base::Vector3d> result;
     TopoDS_Wire lineWire = makeSectionLineWire();
     if (lineWire.IsNull()) {
@@ -744,7 +742,6 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
 //of the profile before and after the point
 ChangePointVector DrawComplexSection::getChangePointsFromSectionLine()
 {
-    //    Base::Console().Message("DCS::getChangePointsFromSectionLine()\n");
     ChangePointVector result;
     std::vector<gp_Pnt> allPoints;
     DrawViewPart* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
@@ -796,7 +793,6 @@ ChangePointVector DrawComplexSection::getChangePointsFromSectionLine()
 
 gp_Ax2 DrawComplexSection::getCSFromBase(const std::string& sectionName) const
 {
-    //    Base::Console().Message("DCS::getCSFromBase()\n");
     App::DocumentObject* base = BaseView.getValue();
     if (!base
         || !base->isDerivedFrom<TechDraw::DrawViewPart>()) {//is second clause necessary?
@@ -1052,7 +1048,6 @@ TopoDS_Shape DrawComplexSection::shapeShapeIntersect(const TopoDS_Shape& shape0,
 std::vector<TopoDS_Face> DrawComplexSection::faceShapeIntersect(const TopoDS_Face& face,
                                                                 const TopoDS_Shape& shape)
 {
-    //    Base::Console().Message("DCS::faceShapeIntersect()\n");
     TopoDS_Shape intersect = shapeShapeIntersect(face, shape);
     if (intersect.IsNull()) {
         return {};

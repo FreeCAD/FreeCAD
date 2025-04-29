@@ -110,7 +110,7 @@ public:
     App::PropertyFloatConstraint SectionLineStretch;  // new v022
 //NOLINTEND
 
-    bool isReallyInBox(const Base::Vector3d vec, const Base::BoundBox3d bb) const;
+    bool isReallyInBox(const Base::Vector3d& vec, const Base::BoundBox3d& bb) const;
     bool isReallyInBox(const gp_Pnt& point, const Bnd_Box& bb) const;
 
     App::DocumentObjectExecReturn* execute() override;
@@ -151,9 +151,9 @@ public:
     //section face related methods
     std::vector<TechDraw::FacePtr> getTDFaceGeometry() { return m_tdSectionFaces; }
     TopoDS_Face getSectionTopoDSFace(int i);
-    virtual TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections);
-    TopoDS_Compound mapToPage(TopoDS_Shape& shapeToAlign);
-    virtual std::vector<TechDraw::FacePtr> makeTDSectionFaces(TopoDS_Compound topoDSFaces);
+    virtual TopoDS_Compound alignSectionFaces(const TopoDS_Shape& faceIntersections);
+    TopoDS_Compound mapToPage(const TopoDS_Shape& shapeToAlign);
+    virtual std::vector<TechDraw::FacePtr> makeTDSectionFaces(const TopoDS_Compound& topoDSFaces);
     virtual TopoDS_Shape getShapeToIntersect() { return m_cutPieces; }
 
     void makeLineSets();
@@ -200,8 +200,8 @@ protected:
 
     void onDocumentRestored() override;
     void setupObject() override;
-    void replaceSvgIncluded(std::string newSvgFile);
-    void replacePatIncluded(std::string newPatFile);
+    void replaceSvgIncluded(const std::string& newSvgFile);
+    void replacePatIncluded(const std::string& newPatFile);
 
     TopoDS_Shape m_cutPieces;//the shape after cutting, but before centering & scaling
     gp_Ax2 m_projectionCS;
