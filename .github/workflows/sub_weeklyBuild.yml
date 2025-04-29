@@ -46,7 +46,7 @@ jobs:
              rm \$sha1.tar"
           gzip freecad_source_${BUILD_TAG}.tar
           sha256sum freecad_source_${BUILD_TAG}.tar.gz > freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt
-          gh release create ${BUILD_TAG} --title "Weekly Build ${BUILD_TAG}" --notes "Weekly Build ${BUILD_TAG}" --prerelease || true
+          gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" --notes "Development Build ${BUILD_TAG}" --prerelease || true
           gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz" "freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt"
 
   build:
