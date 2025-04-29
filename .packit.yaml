@@ -9,7 +9,6 @@ actions:
     - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
   create-archive:
     - git submodule update --init
-    # Create an archive file with the ‹pkg› directory prefix
     - bash -c 'git ls-files --recurse-submodules | tar  -caf freecad-sources.tar.gz -T-'
     - echo -n 'freecad-sources.tar.gz'
 downstream_package_name: freecad
@@ -22,14 +21,22 @@ jobs:
   targets:
   - fedora-41
   - fedora-42
+
 - job: copr_build
   identifier: main
   trigger: commit
   #replace branch with main before merging
   branch: packit
-  #replace branch with @freecad and the desired project before merging
+  #replace owner with @freecad and the desired project before merging
   owner: filippor
   project: packit
+
+- job: copr_build
+  identifier: release
+  trigger: release
+  #replace owner with @freecad and the desired project before merging
+  owner: filippor
+  project: release
 
 
 
