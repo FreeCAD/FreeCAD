@@ -1,0 +1,38 @@
+specfile_path: freecad.spec
+additional_packages:
+  - python3
+actions:
+  post-upstream-clone:
+    - bash -c '/usr/bin/python3 package/fedora/make_version_file.py freecad_version.txt'
+    - package/fedora/generate_spec_from_version.sh 1.1.0~pre
+  create-archive:
+    - git submodule update --init
+    # Create an archive file with the ‹pkg› directory prefix
+    - bash -c 'git ls-files --recurse-submodules | tar  -caf freecad-sources.tar.gz -T-'
+    - echo -n 'freecad-sources.tar.gz'
+downstream_package_name: freecad
+jobs:
+- job: copr_build
+  identifier: pull_request
+  trigger: pull_request
+  #replace branch with main before merging
+  branch: packit
+  targets:
+  - fedora-41
+  - fedora-42
+- job: copr_build
+  identifier: main
+  trigger: commit
+  #replace branch with main before merging
+  branch: packit
+  #replace branch with @freecad and the desired project before merging
+  owner: filippor
+  project: packit
+
+
+
+
+
+
+
+
