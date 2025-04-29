@@ -635,38 +635,6 @@ used for linear dimensions.</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_6">
-     <property name="title">
-      <string>ShapeStrings</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_1">
-      <item>
-       <widget class="QLabel" name="label_FontFile">
-        <property name="text">
-         <string>Default ShapeString font file</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefFileChooser" name="fileChooser_FontFile">
-        <property name="filter">
-         <string>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</string>
-        </property>
-        <property name="toolTip">
-         <string>Select a font file</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>FontFile</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer_1">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
