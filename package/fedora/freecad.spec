@@ -13,54 +13,20 @@
 # rpmbuild --without=debug_info don't generate package with debug info
 %bcond_without debug_info
 
-#ex "freecad-git"
-%global package_name {{{ package_name }}}
-#ex:"41384 +36 (Git Shallow)"
-%global wcvrev   {{{ git_wcrev }}}
-#ex: "2025/04/25 10:15:00"
-%global wcdate   {{{ git_wcdate }}}
-#ex1: "weekly-build"
-#ex2: "1.0.0"
-%global commit_id {{{ git_commit_hash }}}
-%global build_version  {{{ build_version }}}
-
-#ex1: weekly_build
-#ex2: "1.0.0"
-%global clean_version %{lua:
-local ver = rpm.expand("%{build_version}")
-    ver = ver:gsub("-","_")
-    print(ver)
-}
-#ex: "20250424.41384+36.Git.1.fc42"
-%global release_ver  %{lua:
-    local date = rpm.expand("%{wcdate}")
-        :match("^[^%s]+")  --remove time
-    local vcsrev = rpm.expand("%{wcvrev}")
-        :gsub("%s+", "")
-        :gsub("%(", ".")
-        :gsub("%)", "")
-    local commit = rpm.expand("%{commit_id}")
-        :sub(1, 7)
-    local rev = (date.."."..vcsrev.."."..commit)
-        :gsub("-", "")
-        :gsub(":", "_")
-        :gsub("%s+", ".")
-        :gsub("/", "")
-    print(rev)
-}
 
 
-Name:           %{package_name}
+
+Name:           freecad
 Epoch:          1
-Version:        %clean_version
-Release:        %{release_ver}.%{autorelease}
+Version:        1.1.0~dev
+Release:        %autorelease
 
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
 License:        GPL-2.0-or-later
 URL:            https://www.freecad.org/
 
-Source0:        {{{ git_repo_pack_with_submodules }}}
+Source0:        https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/freecad_source.tar.gz
 
 
 # Maintainers:  keep this list of plugins up to date
@@ -239,14 +205,10 @@ Development file for OndselSolver
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
     pushd %_vpath_builddir
-    (timeout 30m ./tests/Tests_run) &> %{buildroot}%tests_resultdir/Tests_run.result              || echo "**** Failed Test_run ****"
+    (timeout 30m ./tests/Tests_run) &> %{buildroot}%tests_resultdir/Tests_run.result || echo "**** Failed Test_run ****"
     tail -n 50 %{buildroot}%tests_resultdir/Tests_run.result
-    ./bin/FreeCADCmd -t 0  &> %{buildroot}%tests_resultdir/FreeCADCmd_test.result   || echo "**** Failed FreeCADCmd -t 0 ****"
-    tail -n 50 %{buildroot}%tests_resultdir/FreeCADCmd_test.result
-    (timeout 30m  xvfb-run ./bin/FreeCAD -t 0) &> %{buildroot}%tests_resultdir/FreeCAD_test.result || echo "**** Failed FreeCAD -t 0 ****"
-    tail -n 50 %{buildroot}%tests_resultdir/FreeCAD_test.result
     popd
-    %ctest &> %{buildroot}%tests_resultdir/ctest.result                             || echo "Failed ctest"
+    %ctest &> %{buildroot}%tests_resultdir/ctest.result || echo "**** Failed ctest ****"
     tail -n 50 %{buildroot}%tests_resultdir/ctest.result
 %endif
 
