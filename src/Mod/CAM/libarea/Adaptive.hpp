@@ -32,10 +32,6 @@
 #define __DBL_MAX__ 1.7976931348623158e+308
 #endif
 
-#ifndef __LONG_MAX__
-#define __LONG_MAX__ 2147483647
-#endif
-
 // #define DEV_MODE
 
 #define NTOL 1.0e-7  // numeric tolerance
