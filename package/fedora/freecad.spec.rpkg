@@ -10,8 +10,6 @@
 # rpmbuild --without=bundled_gtest:  don't use bundled version of gtest and gmock
 %bcond_without bundled_gtest
 
-#ex: "FreeCAD"
-%global git_name {{{ git_name }}}
 #ex "freecad-git"
 %global package_name {{{ package_name }}}
 #ex:"41384 +36 (Git Shallow)"
@@ -169,8 +167,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 #path that contain main FreeCAD sources for cmake
 %global tests_resultdir %{_datadir}/%{name}/tests_result/%{_arch}
 %prep
-    rm -rf %{git_name}
-    %setup -T -a 0 -q -c -D -n %{git_name}
+    %setup -T -a 0 -q -c -n FreeCAD
 
 %build
      # Deal with cmake projects that tend to link excessively.
@@ -338,4 +335,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %{_includedir}/OndselSolver/*
 
 %changelog
+
+* Mon Apr 28 2025 filippor <filippo.rossoni@gmail.com> - 1:1.0.0-20250428.20250428212145631925.test_pr.7803.g8c14661333
 

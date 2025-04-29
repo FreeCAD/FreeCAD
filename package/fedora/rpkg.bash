@@ -1,10 +1,22 @@
-function git_wcrev() {
+function write_version(){
     cd "$GIT_ROOT" || exit 1
-    output "`python package/fedora/getVersion.py`"
+    if [ ! -f "freecad_version.txt" ]; then
+        python ./package/fedora/make_version_file.py freecad_version.txt >/dev/null
+        log_info "git info updated on src/Build/Version.h.cmake"
+    fi
 }
 
+function git_wcrev() {
+    write_version
+    REVISION_NUMBER=`grep rev_number:  freecad_version.txt | sed 's/^rev_number: //g'`
+    output "$REVISION_NUMBER"
+}
+
+
 function git_wcdate() {
-    output "`git log -1 --format="%at" | xargs -I{} date -d @{} +"%Y/%m/%d %T"`"
+    write_version
+    COMMIT_DATE=`grep commit_date: freecad_version.txt | sed 's/commit_date: //g'`
+    output "$COMMIT_DATE"
 }
 
 function package_name() (
@@ -16,7 +28,9 @@ function build_version() (
 )
 
 function git_commit_hash() {
-    output "`git rev-parse HEAD`"
+    write_version
+    COMMIT_HASH=`grep commit_hash: freecad_version.txt | sed 's/^commit_hash: //g'`
+    output "$COMMIT_HASH"
 }
 
 function git_repo_pack_with_submodules() {
@@ -57,10 +71,7 @@ function git_repo_pack_with_submodules() {
 
     (
       cd "$GIT_ROOT" || exit 1
-      python package/fedora/writeVersion.py
-      log_info "git info updated on src/Build/Version.h.cmake"
-
-
+      write_version
       git ls-files --recurse-submodules \
        | tar caf "$OUTDIR/$source_name" \
          --verbatim-files-from -T -
