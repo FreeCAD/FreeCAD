@@ -200,7 +200,6 @@ class ShapeStringTaskPanel:
         self.set_point_coord("z", val)
 
     def set_text(self, val):
-        """Assign the selected font file."""
         self.text = val
         params.set_param("ShapeStringText", self.text)
 
