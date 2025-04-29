@@ -111,7 +111,7 @@ Uncheck to use working plane coordinate system</string>
            <string/>
           </property>
           <property name="text">
-           <string>Reset Point</string>
+           <string>Reset point</string>
           </property>
          </widget>
         </item>
@@ -143,14 +143,14 @@ Uncheck to use working plane coordinate system</string>
       <item row="1" column="0">
        <layout class="QGridLayout" name="gridLayout_6">
         <item row="0" column="0">
-         <widget class="QLabel" name="labelString">
+         <widget class="QLabel" name="labelText">
           <property name="text">
-           <string>String</string>
+           <string>Text</string>
           </property>
          </widget>
         </item>
        <item row="0" column="1">
-         <widget class="QLineEdit" name="leString">
+         <widget class="QLineEdit" name="leText">
           <property name="toolTip">
            <string>Text to be made into ShapeString</string>
           </property>
