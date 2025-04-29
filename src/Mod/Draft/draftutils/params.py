@@ -357,6 +357,7 @@ def _param_from_PrefLineEdit(widget):
 
 
 def _param_from_PrefFileChooser(widget):
+    # Does not occur in Draft preferences anymore.
     for elem in list(widget):
         if "name" in elem.keys():
             att_name = elem.attrib["name"]
@@ -404,8 +405,8 @@ def _get_param_dictionary():
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
-        "ChainedMode":                 ("bool",      False),
         "CenterPlaneOnView":           ("bool",      False),
+        "ChainedMode":                 ("bool",      False),
         "CopyMode":                    ("bool",      False),
         "DefaultAnnoDisplayMode":      ("int",       0),
         "DefaultDisplayMode":          ("int",       0),
@@ -414,9 +415,9 @@ def _get_param_dictionary():
         "DimAutoFlipText":             ("bool",      True),
         "Draft_array_fuse":            ("bool",      False),
         "Draft_array_Link":            ("bool",      True),
-        "FilletRadius":                ("float",     100.0),
         "FilletChamferMode":           ("bool",      False),
         "FilletDeleteMode":            ("bool",      False),
+        "FilletRadius":                ("float",     100.0),
         "GlobalMode":                  ("bool",      False),
         "GridHideInOtherWorkbenches":  ("bool",      True),
         "HatchPatternFile":            ("string",    hatch_pattern_file),
@@ -436,6 +437,9 @@ def _get_param_dictionary():
         "ScaleCopy":                   ("bool",      False),
         "ScaleRelative":               ("bool",      False),
         "ScaleUniform":                ("bool",      False),
+        "ShapeStringFontFile":         ("string",    ""),
+        "ShapeStringHeight":           ("float",     10.0),
+        "ShapeStringText":             ("string",    translate("draft", "Default")),
         "snapModes":                   ("string",    "100000000000000"),
         "snapRange":                   ("int",       8),
         "SubelementMode":              ("bool",      False),
@@ -445,31 +449,31 @@ def _get_param_dictionary():
 
     param_dict["Mod/Draft/ContinueMode"] = {
         # Draft
-        "Line": ("bool", False),
-        "Polyline": ("bool", False),
-        "Arc": ("bool", False),
-        "Arc_3Points": ("bool", False),
-        "Circle": ("bool", False),
-        "Ellipse": ("bool", False),
-        "Rectangle": ("bool", False),
-        "Polygon": ("bool", False),
-        "Bspline": ("bool", False),
-        "CubicBezCurve": ("bool", False),
-        "BezCurve": ("bool", False),
-        "Point": ("bool", False),
-        "Text": ("bool", False),
-        "Dimension": ("bool", False),
+        "Arc":                         ("bool",      False),
+        "Arc_3Points":                 ("bool",      False),
+        "BezCurve":                    ("bool",      False),
+        "Bspline":                     ("bool",      False),
+        "Circle":                      ("bool",      False),
+        "CubicBezCurve":               ("bool",      False),
+        "Dimension":                   ("bool",      False),
+        "Ellipse":                     ("bool",      False),
+        "Line":                        ("bool",      False),
+        "Point":                       ("bool",      False),
+        "Polygon":                     ("bool",      False),
+        "Polyline":                    ("bool",      False),
+        "Rectangle":                   ("bool",      False),
+        "Text":                        ("bool",      False),
 
         # Standard operations (Draft)
-        "Move": ("bool", False),
-        "Copy": ("bool", False),
-        "Rotate": ("bool", False),
-        
+        "Copy":                        ("bool",      False),
+        "Move":                        ("bool",      False),
+        "Rotate":                      ("bool",      False),
+
         # Arch/BIM
-        "Wall": ("bool", False),
-        "Column": ("bool", False),
-        "Beam": ("bool", False),
-        "Panel": ("bool", False),
+        "Beam":                        ("bool",      False),
+        "Column":                      ("bool",      False),
+        "Panel":                       ("bool",      False),
+        "Wall":                        ("bool",      False),
     }
 
     # Arch parameters that are not in the preferences:

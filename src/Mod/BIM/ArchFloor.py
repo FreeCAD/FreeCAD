@@ -210,12 +210,12 @@ class _Floor(ArchIFC.IfcProduct):
         ArchIFC.IfcProduct.setProperties(self, obj)
         pl = obj.PropertiesList
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","Floor",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+            obj.addProperty("App::PropertyLength","Height","Floor",QT_TRANSLATE_NOOP("App::Property","The height of this object"), locked=True)
         if not "Area" in pl:
-            obj.addProperty("App::PropertyArea","Area", "Floor",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
+            obj.addProperty("App::PropertyArea","Area", "Floor",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"), locked=True)
         if not hasattr(obj,"Placement"):
             # obj can be a Part Feature and already has a placement
-            obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
+            obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"), locked=True)
         self.Type = "Floor"
 
     def onDocumentRestored(self,obj):

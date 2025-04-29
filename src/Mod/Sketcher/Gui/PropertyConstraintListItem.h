@@ -31,6 +31,8 @@
 namespace SketcherGui
 {
 
+using FrameOption = Gui::PropertyEditor::FrameOption;
+
 class PropertyConstraintListItem: public Gui::PropertyEditor::PropertyItem
 {
     Q_OBJECT
@@ -38,7 +40,9 @@ class PropertyConstraintListItem: public Gui::PropertyEditor::PropertyItem
 
     ~PropertyConstraintListItem() override;
     void assignProperty(const App::Property* prop) override;
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 

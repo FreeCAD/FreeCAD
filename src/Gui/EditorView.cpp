@@ -57,6 +57,8 @@
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
+
 
 using namespace Gui;
 namespace Gui
@@ -511,9 +513,10 @@ void EditorView::printPdf()
                                     QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
-        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under:
+        // setPdfVersion sets the printed PDF Version to what is chosen in
+        // Preferences/Import-Export/PDF more details under:
         // https://www.kdab.com/creating-pdfa-documents-qt/
-        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+        printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));

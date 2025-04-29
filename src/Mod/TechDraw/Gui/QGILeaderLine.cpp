@@ -155,7 +155,7 @@ void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 //! start editor on double click
 void QGILeaderLine::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
-    auto ViewProvider = dynamic_cast<ViewProviderLeader*>(getViewProvider(getLeaderFeature()));
+    auto ViewProvider = freecad_cast<ViewProviderLeader*>(getViewProvider(getLeaderFeature()));
     if (!ViewProvider) {
         qWarning() << "QGILeaderLine::mouseDoubleClickEvent: No valid view provider";
         return;
@@ -632,7 +632,7 @@ QColor QGILeaderLine::prefNormalColor()
     //    Base::Console().Message("QGILL::getNormalColor()\n");
     setNormalColor(PreferencesGui::leaderQColor());
 
-    auto vp = dynamic_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
+    auto vp = freecad_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if (vp) {
         QColor normal = vp->Color.getValue().asValue<QColor>();
         setNormalColor(PreferencesGui::getAccessibleQColor(normal));
@@ -659,7 +659,7 @@ void QGILeaderLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 
 bool QGILeaderLine::useOldCoords() const
 {
-    auto vp = dynamic_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
+    auto vp = freecad_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if (vp) {
         return vp->UseOldCoords.getValue();
     }

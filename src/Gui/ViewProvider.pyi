@@ -20,16 +20,18 @@ class ViewProvider(ExtensionContainer):
 
     def addProperty(
         self,
+        *,
         type: str,
         name: str,
         group: str,
         doc: str,
         attr: int = 0,
-        ro: bool = False,
-        hd: bool = False,
+        read_only: bool = False,
+        hidden: bool = False,
+        locked: bool = False,
     ) -> "ViewProvider":
         """
-        addProperty(type, name, group, doc, attr=0, ro=False, hd=False) -> ViewProvider
+        addProperty(type, name, group, doc, attr=0, read_only=False, hidden=False, locked=False) -> ViewProvider
 
         Add a generic property.
 
@@ -41,10 +43,12 @@ class ViewProvider(ExtensionContainer):
             Property group. Optional.
         attr : int
             Property attributes.
-        ro : bool
+        read_only : bool
             Read only property.
-        hd : bool
+        hidden : bool
             Hidden property.
+        locked : bool
+            Locked property.
         """
         ...
 

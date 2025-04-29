@@ -98,24 +98,24 @@ def create(ifcentity):
             if hasattr(obj, attr):
                 continue
             elif isinstance(value, int):
-                obj.addProperty("App::PropertyInteger", attr, "IFC")
+                obj.addProperty("App::PropertyInteger", attr, "IFC", locked=True)
                 setattr(obj, attr, value)
             elif isinstance(value, float):
-                obj.addProperty("App::PropertyFloat", attr, "IFC")
+                obj.addProperty("App::PropertyFloat", attr, "IFC", locked=True)
                 setattr(obj, attr, value)
             elif isinstance(value, ifcopenshell.entity_instance):
                 value = create(value)
-                obj.addProperty("App::PropertyLink", attr, "IFC")
+                obj.addProperty("App::PropertyLink", attr, "IFC", locked=True)
                 setattr(obj, attr, value)
             elif isinstance(value, (list, tuple)) and value:
                 if isinstance(value[0], ifcopenshell.entity_instance):
                     nvalue = []
                     for elt in value:
                         nvalue.append(create(elt))
-                    obj.addProperty("App::PropertyLinkList", attr, "IFC")
+                    obj.addProperty("App::PropertyLinkList", attr, "IFC", locked=True)
                     setattr(obj, attr, nvalue)
             else:
-                obj.addProperty("App::PropertyString", attr, "IFC")
+                obj.addProperty("App::PropertyString", attr, "IFC", locked=True)
                 if value is not None:
                     setattr(obj, attr, str(value))
     for parent in ifcfile.get_inverse(ifcentity):

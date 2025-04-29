@@ -605,7 +605,7 @@ class BIM_Classification:
                                     obj.StandardCode = code
                             elif hasattr(obj, "IfcClass"):
                                 if not "Classification" in obj.PropertiesList:
-                                    obj.addProperty("App::PropertyString", "Classification", "IFC")
+                                    obj.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
                                 if code != obj.Classification:
                                     if not changed:
                                         FreeCAD.ActiveDocument.openTransaction(
@@ -634,7 +634,7 @@ class BIM_Classification:
                     self.isEditing.StandardCode = code
                 else:
                     if not "Classification" in self.isEditing.PropertiesList:
-                        self.isEditing.addProperty("App::PropertyString", "Classification", "IFC")
+                        self.isEditing.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
                     self.isEditing.Classification = code
                 if hasattr(self.isEditing.ViewObject, "Proxy") and hasattr(
                     self.isEditing.ViewObject.Proxy, "setTaskValue"

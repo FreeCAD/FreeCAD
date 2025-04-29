@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 #  \brief FreeCAD Calculix FRD Reader for FEM workbench
 
 import os
+import math
 
 import FreeCAD
 from FreeCAD import Console
@@ -133,6 +134,8 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 else:
                     eigenmode_number = 0
                 step_time = result_set["time"]
+                if not math.isfinite(step_time):
+                    step_time = 0
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = "{}EigenMode_{}_Results".format(
@@ -252,6 +255,7 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
         elif result_analysis_type == "check":
             results_name = f"{result_name_prefix}Check"
             res_obj = make_result_mesh(results_name)
+            setupPipeline(doc, analysis, results_name, [res_obj])
             if analysis:
                 analysis.addObject(res_obj)
 
@@ -276,6 +280,7 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 results_name = "Results"
             res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
             res_obj.Mesh = result_mesh_object
+            setupPipeline(doc, analysis, results_name, [res_obj])
             # TODO, node numbers in result obj could be set
             if analysis:
                 analysis.addObject(res_obj)

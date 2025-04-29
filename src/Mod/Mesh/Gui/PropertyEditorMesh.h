@@ -32,6 +32,8 @@
 namespace MeshGui
 {
 
+using FrameOption = Gui::PropertyEditor::FrameOption;
+
 /**
  * Display data of a mesh kernel.
  * \author Werner Mayer
@@ -45,7 +47,9 @@ class MeshGuiExport PropertyMeshKernelItem: public Gui::PropertyEditor::Property
     PROPERTYITEM_HEADER
 
     // clang-format off
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption) const override;
     // clang-format on
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;

@@ -32,7 +32,7 @@
 namespace Part
 {
 
-class RuledSurface : public Part::Feature
+class PartExport RuledSurface : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::RuledSurface);
 
@@ -64,7 +64,7 @@ private:
     static const char* OrientationEnums[];
 };
 
-class Loft : public Part::Feature
+class PartExport Loft : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Loft);
 
@@ -96,7 +96,7 @@ private:
     static App::PropertyIntegerConstraint::Constraints Degrees;
 };
 
-class Sweep : public Part::Feature
+class PartExport Sweep : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Sweep);
 

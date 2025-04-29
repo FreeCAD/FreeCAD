@@ -70,60 +70,60 @@ class Truss(ArchComponent.Component):
         pl = obj.PropertiesList
         if not "TrussAngle" in pl:
             obj.addProperty("App::PropertyAngle","TrussAngle","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The angle of the truss"))
+                            QT_TRANSLATE_NOOP("App::Property","The angle of the truss"), locked=True)
             obj.setEditorMode("TrussAngle",1)
         if not "SlantType" in pl:
             obj.addProperty("App::PropertyEnumeration","SlantType","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The slant type of this truss"))
+                            QT_TRANSLATE_NOOP("App::Property","The slant type of this truss"), locked=True)
             obj.SlantType = ["Simple","Double"]
         if not "Normal" in pl:
             obj.addProperty("App::PropertyVector","Normal","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The normal direction of this truss"))
+                            QT_TRANSLATE_NOOP("App::Property","The normal direction of this truss"), locked=True)
             obj.Normal = FreeCAD.Vector(0,0,1)
         if not "HeightStart" in pl:
             obj.addProperty("App::PropertyLength","HeightStart","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The height of the truss at the start position"))
+                            QT_TRANSLATE_NOOP("App::Property","The height of the truss at the start position"), locked=True)
             obj.HeightStart = 100
         if not "HeightEnd" in pl:
             obj.addProperty("App::PropertyLength","HeightEnd","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The height of the truss at the end position"))
+                            QT_TRANSLATE_NOOP("App::Property","The height of the truss at the end position"), locked=True)
             obj.HeightEnd = 200
         if not "StrutStartOffset" in pl:
             obj.addProperty("App::PropertyDistance","StrutStartOffset","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","An optional start offset for the top strut"))
+                            QT_TRANSLATE_NOOP("App::Property","An optional start offset for the top strut"), locked=True)
         if not "StrutEndOffset" in pl:
             obj.addProperty("App::PropertyDistance","StrutEndOffset","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","An optional end offset for the top strut"))
+                            QT_TRANSLATE_NOOP("App::Property","An optional end offset for the top strut"), locked=True)
         if not "StrutHeight" in pl:
             obj.addProperty("App::PropertyLength","StrutHeight","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The height of the main top and bottom elements of the truss"))
+                            QT_TRANSLATE_NOOP("App::Property","The height of the main top and bottom elements of the truss"), locked=True)
             obj.StrutHeight = 10
         if not "StrutWidth" in pl:
             obj.addProperty("App::PropertyLength","StrutWidth","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The width of the main top and bottom elements of the truss"))
+                            QT_TRANSLATE_NOOP("App::Property","The width of the main top and bottom elements of the truss"), locked=True)
             obj.StrutWidth = 5
         if not "RodType" in pl:
             obj.addProperty("App::PropertyEnumeration","RodType","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The type of the middle element of the truss"))
+                            QT_TRANSLATE_NOOP("App::Property","The type of the middle element of the truss"), locked=True)
             obj.RodType = ["Round","Square"]
         if not "RodDirection" in pl:
             obj.addProperty("App::PropertyEnumeration","RodDirection","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The direction of the rods"))
+                            QT_TRANSLATE_NOOP("App::Property","The direction of the rods"), locked=True)
             obj.RodDirection = ["Forward","Backward"]
         if not "RodSize" in pl:
             obj.addProperty("App::PropertyLength","RodSize","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The diameter or side of the rods"))
+                            QT_TRANSLATE_NOOP("App::Property","The diameter or side of the rods"), locked=True)
             obj.RodSize = 2
         if not "RodSections" in pl:
             obj.addProperty("App::PropertyInteger","RodSections","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","The number of rod sections"))
+                            QT_TRANSLATE_NOOP("App::Property","The number of rod sections"), locked=True)
             obj.RodSections = 3
         if not "RodEnd" in pl:
             obj.addProperty("App::PropertyBool","RodEnd","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","If the truss has a rod at its endpoint or not"))
+                            QT_TRANSLATE_NOOP("App::Property","If the truss has a rod at its endpoint or not"), locked=True)
         if not "RodMode" in pl:
             obj.addProperty("App::PropertyEnumeration","RodMode","Truss",
-                            QT_TRANSLATE_NOOP("App::Property","How to draw the rods"))
+                            QT_TRANSLATE_NOOP("App::Property","How to draw the rods"), locked=True)
             obj.RodMode = rodmodes
         self.Type = "Truss"
 

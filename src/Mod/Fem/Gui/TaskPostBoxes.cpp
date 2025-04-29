@@ -316,9 +316,11 @@ void TaskDlgPost::appendBox(TaskPostBox* box)
 
 void TaskDlgPost::open()
 {
-    // a transaction is already open at creation time of the pad
-    QString msg = QObject::tr("Edit post processing object");
-    Gui::Command::openCommand(msg.toUtf8().constData());
+    // only open a new command if none is pending (e.g. if the object was newly created)
+    if (!Gui::Command::hasPendingCommand()) {
+        auto text = std::string("Edit ") + m_view->getObject()->Label.getValue();
+        Gui::Command::openCommand(text.c_str());
+    }
 }
 
 void TaskDlgPost::clicked(int button)

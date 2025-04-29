@@ -277,9 +277,9 @@ class Box(DocumentObject):
 
     #-----------------------------INIT----------------------------------------
     def init(self):
-        self.addProperty("App::PropertyLength","Length","Box","Length of the box").Length=1.0
-        self.addProperty("App::PropertyLength","Width","Box","Width of the box").Width=1.0
-        self.addProperty("App::PropertyLength","Height","Box", "Height of the box").Height=1.0
+        self.addProperty("App::PropertyLength","Length","Box","Length of the box", locked=True).Length=1.0
+        self.addProperty("App::PropertyLength","Width","Box","Width of the box", locked=True).Width=1.0
+        self.addProperty("App::PropertyLength","Height","Box", "Height of the box", locked=True).Height=1.0
 
     #-----------------------------BEHAVIOR------------------------------------
     def propertyChanged(self,prop):

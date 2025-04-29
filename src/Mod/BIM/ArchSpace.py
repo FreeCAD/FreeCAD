@@ -198,38 +198,38 @@ class _Space(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Boundaries" in pl:
-            obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Space",QT_TRANSLATE_NOOP("App::Property","The objects that make the boundaries of this space object"))
+            obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Space",QT_TRANSLATE_NOOP("App::Property","The objects that make the boundaries of this space object"), locked=True)
         if not "Area" in pl:
-            obj.addProperty("App::PropertyArea",       "Area",          "Space",QT_TRANSLATE_NOOP("App::Property","Identical to Horizontal Area"))
+            obj.addProperty("App::PropertyArea",       "Area",          "Space",QT_TRANSLATE_NOOP("App::Property","Identical to Horizontal Area"), locked=True)
         if not "FinishFloor" in pl:
-            obj.addProperty("App::PropertyString",     "FinishFloor",   "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the floor of this space"))
+            obj.addProperty("App::PropertyString",     "FinishFloor",   "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the floor of this space"), locked=True)
         if not "FinishWalls" in pl:
-            obj.addProperty("App::PropertyString",     "FinishWalls",   "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the walls of this space"))
+            obj.addProperty("App::PropertyString",     "FinishWalls",   "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the walls of this space"), locked=True)
         if not "FinishCeiling" in pl:
-            obj.addProperty("App::PropertyString",     "FinishCeiling", "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the ceiling of this space"))
+            obj.addProperty("App::PropertyString",     "FinishCeiling", "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the ceiling of this space"), locked=True)
         if not "Group" in pl:
-            obj.addProperty("App::PropertyLinkList",   "Group",         "Space",QT_TRANSLATE_NOOP("App::Property","Objects that are included inside this space, such as furniture"))
+            obj.addProperty("App::PropertyLinkList",   "Group",         "Space",QT_TRANSLATE_NOOP("App::Property","Objects that are included inside this space, such as furniture"), locked=True)
         if not "SpaceType" in pl:
-            obj.addProperty("App::PropertyEnumeration","SpaceType",     "Space",QT_TRANSLATE_NOOP("App::Property","The type of this space"))
+            obj.addProperty("App::PropertyEnumeration","SpaceType",     "Space",QT_TRANSLATE_NOOP("App::Property","The type of this space"), locked=True)
             obj.SpaceType = SpaceTypes
         if not "FloorThickness" in pl:
-            obj.addProperty("App::PropertyLength",     "FloorThickness","Space",QT_TRANSLATE_NOOP("App::Property","The thickness of the floor finish"))
+            obj.addProperty("App::PropertyLength",     "FloorThickness","Space",QT_TRANSLATE_NOOP("App::Property","The thickness of the floor finish"), locked=True)
         if not "NumberOfPeople" in pl:
-            obj.addProperty("App::PropertyInteger",    "NumberOfPeople","Space",QT_TRANSLATE_NOOP("App::Property","The number of people who typically occupy this space"))
+            obj.addProperty("App::PropertyInteger",    "NumberOfPeople","Space",QT_TRANSLATE_NOOP("App::Property","The number of people who typically occupy this space"), locked=True)
         if not "LightingPower" in pl:
-            obj.addProperty("App::PropertyFloat",      "LightingPower", "Space",QT_TRANSLATE_NOOP("App::Property","The electric power needed to light this space in Watts"))
+            obj.addProperty("App::PropertyFloat",      "LightingPower", "Space",QT_TRANSLATE_NOOP("App::Property","The electric power needed to light this space in Watts"), locked=True)
         if not "EquipmentPower" in pl:
-            obj.addProperty("App::PropertyFloat",      "EquipmentPower","Space",QT_TRANSLATE_NOOP("App::Property","The electric power needed by the equipment of this space in Watts"))
+            obj.addProperty("App::PropertyFloat",      "EquipmentPower","Space",QT_TRANSLATE_NOOP("App::Property","The electric power needed by the equipment of this space in Watts"), locked=True)
         if not "AutoPower" in pl:
-            obj.addProperty("App::PropertyBool",       "AutoPower",     "Space",QT_TRANSLATE_NOOP("App::Property","If True, Equipment Power will be automatically filled by the equipment included in this space"))
+            obj.addProperty("App::PropertyBool",       "AutoPower",     "Space",QT_TRANSLATE_NOOP("App::Property","If True, Equipment Power will be automatically filled by the equipment included in this space"), locked=True)
         if not "Conditioning" in pl:
-            obj.addProperty("App::PropertyEnumeration","Conditioning",  "Space",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"))
+            obj.addProperty("App::PropertyEnumeration","Conditioning",  "Space",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"), locked=True)
             obj.Conditioning = ConditioningTypes
         if not "Internal" in pl:
-            obj.addProperty("App::PropertyBool",       "Internal",      "Space",QT_TRANSLATE_NOOP("App::Property","Specifies if this space is internal or external"))
+            obj.addProperty("App::PropertyBool",       "Internal",      "Space",QT_TRANSLATE_NOOP("App::Property","Specifies if this space is internal or external"), locked=True)
             obj.Internal = True
         if not "AreaCalculationType" in pl:
-            obj.addProperty("App::PropertyEnumeration", "AreaCalculationType",  "Space",QT_TRANSLATE_NOOP("App::Property","Defines the calculation type for the horizontal area and its perimeter length"))
+            obj.addProperty("App::PropertyEnumeration", "AreaCalculationType",  "Space",QT_TRANSLATE_NOOP("App::Property","Defines the calculation type for the horizontal area and its perimeter length"), locked=True)
             obj.AreaCalculationType = AreaCalculationType
         self.Type = "Space"
 
@@ -445,34 +445,34 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         pl = vobj.PropertiesList
         if not "Text" in pl:
-            vobj.addProperty("App::PropertyStringList",    "Text",        "Space",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data"))
+            vobj.addProperty("App::PropertyStringList",    "Text",        "Space",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data"), locked=True)
             vobj.Text = ["$label","$area"]
         if not "FontName" in pl:
-            vobj.addProperty("App::PropertyFont",          "FontName",    "Space",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
+            vobj.addProperty("App::PropertyFont",          "FontName",    "Space",QT_TRANSLATE_NOOP("App::Property","The name of the font"), locked=True)
             vobj.FontName = params.get_param("textfont")
         if not "TextColor" in pl:
-            vobj.addProperty("App::PropertyColor",         "TextColor",   "Space",QT_TRANSLATE_NOOP("App::Property","The color of the area text"))
+            vobj.addProperty("App::PropertyColor",         "TextColor",   "Space",QT_TRANSLATE_NOOP("App::Property","The color of the area text"), locked=True)
             vobj.TextColor = (0.0,0.0,0.0,1.0)
         if not "FontSize" in pl:
-            vobj.addProperty("App::PropertyLength",        "FontSize",    "Space",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
+            vobj.addProperty("App::PropertyLength",        "FontSize",    "Space",QT_TRANSLATE_NOOP("App::Property","The size of the text font"), locked=True)
             vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "FirstLine" in pl:
-            vobj.addProperty("App::PropertyLength",        "FirstLine",   "Space",QT_TRANSLATE_NOOP("App::Property","The size of the first line of text"))
+            vobj.addProperty("App::PropertyLength",        "FirstLine",   "Space",QT_TRANSLATE_NOOP("App::Property","The size of the first line of text"), locked=True)
             vobj.FirstLine = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "LineSpacing" in pl:
-            vobj.addProperty("App::PropertyFloat",         "LineSpacing", "Space",QT_TRANSLATE_NOOP("App::Property","The space between the lines of text"))
+            vobj.addProperty("App::PropertyFloat",         "LineSpacing", "Space",QT_TRANSLATE_NOOP("App::Property","The space between the lines of text"), locked=True)
             vobj.LineSpacing = 1.0
         if not "TextPosition" in pl:
-            vobj.addProperty("App::PropertyVectorDistance","TextPosition","Space",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
+            vobj.addProperty("App::PropertyVectorDistance","TextPosition","Space",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"), locked=True)
         if not "TextAlign" in pl:
-            vobj.addProperty("App::PropertyEnumeration",   "TextAlign",   "Space",QT_TRANSLATE_NOOP("App::Property","The justification of the text"))
+            vobj.addProperty("App::PropertyEnumeration",   "TextAlign",   "Space",QT_TRANSLATE_NOOP("App::Property","The justification of the text"), locked=True)
             vobj.TextAlign = ["Left","Center","Right"]
             vobj.TextAlign = "Center"
         if not "Decimals" in pl:
-            vobj.addProperty("App::PropertyInteger",       "Decimals",    "Space",QT_TRANSLATE_NOOP("App::Property","The number of decimals to use for calculated texts"))
+            vobj.addProperty("App::PropertyInteger",       "Decimals",    "Space",QT_TRANSLATE_NOOP("App::Property","The number of decimals to use for calculated texts"), locked=True)
             vobj.Decimals = params.get_param("dimPrecision")
         if not "ShowUnit" in pl:
-            vobj.addProperty("App::PropertyBool",          "ShowUnit",    "Space",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
+            vobj.addProperty("App::PropertyBool",          "ShowUnit",    "Space",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"), locked=True)
             vobj.ShowUnit = params.get_param("showUnit")
 
     def onDocumentRestored(self,vobj):

@@ -211,7 +211,7 @@ void PropertyPostDataObject::createDataObjectByExternalType(vtkSmartPointer<vtkD
             m_dataObject = vtkSmartPointer<vtkMultiPieceDataSet>::New();
             break;
         default:
-            break;
+            throw Base::TypeError("Unsupported VTK data type");
     };
 }
 
@@ -432,7 +432,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
 
         // TODO: read in of composite data structures need to be coded,
         // including replace of "GetOutputAsDataSet()"
-        vtkSmartPointer<vtkXMLReader> xmlReader;
+        vtkSmartPointer<vtkXMLReader> xmlReader = nullptr;
         if (extension == "vtp") {
             xmlReader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
         }
@@ -489,31 +489,39 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
             xmlReader = vtkSmartPointer<vtkXMLMultiBlockDataReader>::New();
         }
 
-        xmlReader->SetFileName(fi.filePath().c_str());
-        xmlReader->Update();
+        if (xmlReader) {
+            xmlReader->SetFileName(fi.filePath().c_str());
+            xmlReader->Update();
 
-        if (!xmlReader->GetOutputDataObject(0)) {
-            // Note: Do NOT throw an exception here because if the tmp. created file could
-            // not be read it's NOT an indication for an invalid input stream 'reader'.
-            // We only print an error message but continue reading the next files from the
-            // stream...
-            App::PropertyContainer* father = this->getContainer();
-            if (father && father->isDerivedFrom<App::DocumentObject>()) {
-                App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
-                                      fi.filePath().c_str(),
-                                      obj->Label.getValue());
+            if (!xmlReader->GetOutputDataObject(0)) {
+                // Note: Do NOT throw an exception here because if the tmp. created file could
+                // not be read it's NOT an indication for an invalid input stream 'reader'.
+                // We only print an error message but continue reading the next files from the
+                // stream...
+                App::PropertyContainer* father = this->getContainer();
+                if (father && father->isDerivedFrom<App::DocumentObject>()) {
+                    App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
+                    Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
+                                          fi.filePath().c_str(),
+                                          obj->Label.getValue());
+                }
+                else {
+                    Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n",
+                                            fi.filePath().c_str());
+                }
             }
             else {
-                Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n",
-                                        fi.filePath().c_str());
+                aboutToSetValue();
+                createDataObjectByExternalType(xmlReader->GetOutputDataObject(0));
+                m_dataObject->DeepCopy(xmlReader->GetOutputDataObject(0));
+                hasSetValue();
             }
         }
         else {
-            aboutToSetValue();
-            createDataObjectByExternalType(xmlReader->GetOutputDataObject(0));
-            m_dataObject->DeepCopy(xmlReader->GetOutputDataObject(0));
-            hasSetValue();
+            Base::Console().Error(
+                "Dataset file '%s' is of unsupported type: %s. Data not loaded.\n",
+                fi.filePath().c_str(),
+                extension);
         }
     }
 
