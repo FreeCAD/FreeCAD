@@ -1,10 +1,11 @@
-specfile_path: freecad.spec
-additional_packages:
-  - python3
+specfile_path: package/fedora/freecad.spec
+files_to_sync:
+    - package/fedora/freecad.spec
+    - .packit.yaml
 actions:
   post-upstream-clone:
-    - bash -c '/usr/bin/python3 package/fedora/make_version_file.py freecad_version.txt'
-    - package/fedora/generate_spec_from_version.sh 1.1.0~pre
+    - curl -O --location --retry 3 https://raw.githubusercontent.com/FreeCAD/FreeCAD-Bundle/refs/heads/main/make_version_file.py
+    - bash -c '/usr/bin/python3 make_version_file.py freecad_version.txt'
   changelog-entry:
     - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
   create-archive:
@@ -12,21 +13,28 @@ actions:
     - bash -c 'git ls-files --recurse-submodules | tar  -caf freecad-sources.tar.gz -T-'
     - echo -n 'freecad-sources.tar.gz'
 downstream_package_name: freecad
+additional_packages:
+    - python3
+
 jobs:
 - job: copr_build
   identifier: pull_request
   trigger: pull_request
+  manual_trigger: true
+  notifications:
+    pull_request:
+      successful_build: True
   #replace branch with main before merging
-  branch: packit
+  branch: only-packit
   targets:
   - fedora-41
-  - fedora-42
+  - fedora-42FreeCAD/FreeCAD/pulls
 
 - job: copr_build
   identifier: main
   trigger: commit
   #replace branch with main before merging
-  branch: packit
+  branch: only-packit
   #replace owner with @freecad and the desired project before merging
   owner: filippor
   project: packit
@@ -36,7 +44,7 @@ jobs:
   trigger: release
   #replace owner with @freecad and the desired project before merging
   owner: filippor
-  project: release
+  project: freecad
 
 
 
