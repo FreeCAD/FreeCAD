@@ -5,6 +5,8 @@ actions:
   post-upstream-clone:
     - bash -c '/usr/bin/python3 package/fedora/make_version_file.py freecad_version.txt'
     - package/fedora/generate_spec_from_version.sh 1.1.0~pre
+  changelog-entry:
+    - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
   create-archive:
     - git submodule update --init
     # Create an archive file with the ‹pkg› directory prefix
