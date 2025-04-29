@@ -76,7 +76,7 @@ Py::Object DocumentObjectPy::getDocument() const
     }
 }
 
-PyObject* DocumentObjectPy::isAttachedToDocument(PyObject* args)
+PyObject* DocumentObjectPy::isAttachedToDocument(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -91,21 +91,21 @@ PyObject* DocumentObjectPy::addProperty(PyObject* args, PyObject* kwd)
 {
     char *sType, *sName = nullptr, *sGroup = nullptr, *sDoc = nullptr;
     short attr = 0;
-    std::string sDocStr;
-    PyObject *ro = Py_False, *hd = Py_False;
+    PyObject *ro = Py_False, *hd = Py_False, *lk = Py_False;
     PyObject* enumVals = nullptr;
-    const std::array<const char*, 9> kwlist {"type",
+    const std::array<const char*, 10> kwlist {"type",
                                              "name",
                                              "group",
                                              "doc",
                                              "attr",
                                              "read_only",
                                              "hidden",
+                                             "locked",
                                              "enum_vals",
                                              nullptr};
     if (!Base::Wrapped_ParseTupleAndKeywords(args,
                                              kwd,
-                                             "ss|sethO!O!O",
+                                             "ss|sethO!O!O!O",
                                              kwlist,
                                              &sType,
                                              &sName,
@@ -117,22 +117,21 @@ PyObject* DocumentObjectPy::addProperty(PyObject* args, PyObject* kwd)
                                              &ro,
                                              &PyBool_Type,
                                              &hd,
+                                             &PyBool_Type,
+                                             &lk,
                                              &enumVals)) {
         return nullptr;
-    }
-
-    if (sDoc) {
-        sDocStr = sDoc;
-        PyMem_Free(sDoc);
     }
 
     Property* prop = getDocumentObjectPtr()->addDynamicProperty(sType,
                                                                 sName,
                                                                 sGroup,
-                                                                sDocStr.c_str(),
+                                                                sDoc,
                                                                 attr,
                                                                 Base::asBoolean(ro),
                                                                 Base::asBoolean(hd));
+
+    prop->setStatus(Property::LockDynamic, Base::asBoolean(lk));
 
     // enum support
     auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
@@ -452,7 +451,7 @@ PyObject* DocumentObjectPy::recompute(PyObject* args)
     }
 }
 
-PyObject* DocumentObjectPy::isValid(PyObject* args)
+PyObject* DocumentObjectPy::isValid(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -467,7 +466,7 @@ PyObject* DocumentObjectPy::isValid(PyObject* args)
     }
 }
 
-PyObject* DocumentObjectPy::getStatusString(PyObject* args)
+PyObject* DocumentObjectPy::getStatusString(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -872,7 +871,7 @@ PyObject* DocumentObjectPy::getPathsByOutList(PyObject* args)
     }
 }
 
-PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args)
+PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args) const
 {
     const char* name;
     PyObject* restored = Py_False;
@@ -908,7 +907,7 @@ Py::Boolean DocumentObjectPy::getRemoving() const
     return {getDocumentObjectPtr()->testStatus(ObjectStatus::Remove)};
 }
 
-PyObject* DocumentObjectPy::resolve(PyObject* args)
+PyObject* DocumentObjectPy::resolve(PyObject* args) const
 {
     const char* subname;
     if (!PyArg_ParseTuple(args, "s", &subname)) {
@@ -934,7 +933,7 @@ PyObject* DocumentObjectPy::resolve(PyObject* args)
     Py_Return;
 }
 
-PyObject* DocumentObjectPy::resolveSubElement(PyObject* args)
+PyObject* DocumentObjectPy::resolveSubElement(PyObject* args) const
 {
     const char* subname;
     PyObject* append = Py_False;

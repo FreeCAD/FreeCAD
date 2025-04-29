@@ -44,7 +44,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
           <property name="toolTip">
-           <string>Method chosen for importing SVG object color to FreeCAD</string>
+           <string>Method for importing SVG object colors into FreeCAD</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
@@ -56,18 +56,13 @@
            <cstring>Mod/Draft</cstring>
           </property>
           <item>
-           <property name="text">
-            <string>None (fastest)</string>
-           </property>
+          <property name="text">
+            <string>Use default style from Part/PartDesign</string>
+          </property>
           </item>
           <item>
            <property name="text">
-            <string>Use default color and linewidth</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Original color and linewidth</string>
+            <string>Use original SVG style</string>
            </property>
           </item>
          </widget>
@@ -79,11 +74,11 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter.</string>
+           <string>If checked, no unit conversion will occur.
+One unit in the SVG file will be interpreted as one millimeter.</string>
           </property>
           <property name="text">
-           <string>Disable units scaling</string>
+           <string>Disable unit scaling</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -95,6 +90,95 @@ One unit in the SVG file will translate as one millimeter.</string>
            <cstring>Mod/Draft</cstring>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox">
+          <property name="toolTip">
+           <string>If face generation results in a degenerated face,
+a raw Wire from the original Shape is added.</string>
+          </property>
+          <property name="text">
+           <string>Add wires for invalid faces</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svgAddWireForInvalidFace</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox">
+          <property name="toolTip">
+           <string>Check to cut shapes according to the even/odd SVG fill rule.</string>
+          </property>
+          <property name="text">
+           <string>Apply Cuts</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svgMakeCuts</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Coordinate precision (crucial for detecting closed paths)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+	       <widget class="Gui::PrefSpinBox" name="spinBox_precisionSVG">
+	        <property name="minimumSize">
+	         <size>
+	          <width>140</width>
+	          <height>0</height>
+	         </size>
+	        </property>
+	        <property name="toolTip">
+	         <string>The number of decimal places used in internal coordinate operations (for example 3 = 0.001).
+	The optimal value depends on the absolute size of the import. Typical values are between 1 and 5.</string>
+	        </property>
+	        <property name="maximum">
+	         <number>10</number>
+	        </property>
+	        <property name="value">
+	         <number>3</number>
+	        </property>
+	        <property name="prefEntry" stdset="0">
+	         <cstring>svgPrecision</cstring>
+	        </property>
+	        <property name="prefPath" stdset="0">
+	         <cstring>Mod/Draft</cstring>
+	        </property>
+	       </widget>
         </item>
        </layout>
       </item>

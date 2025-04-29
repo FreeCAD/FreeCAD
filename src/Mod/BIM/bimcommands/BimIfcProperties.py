@@ -1,24 +1,24 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -26,11 +26,13 @@
 
 import os
 import sys
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -53,7 +55,7 @@ class BIM_IfcProperties:
         return v
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         try:
             import ArchIFC
@@ -244,7 +246,7 @@ class BIM_IfcProperties:
         return result
 
     def updateByType(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         groups = {}
         for name, role in self.objectslist.items():
@@ -278,7 +280,7 @@ class BIM_IfcProperties:
         self.spanTopLevels()
 
     def updateByTree(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # order by hierarchy
         def istop(obj):
@@ -336,7 +338,7 @@ class BIM_IfcProperties:
         self.form.tree.expandAll()
 
     def updateDefault(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         for name, role in self.objectslist.items():
             role = role[0]
@@ -413,6 +415,7 @@ class BIM_IfcProperties:
                             QT_TRANSLATE_NOOP(
                                 "App::Property", "IFC properties of this object"
                             ),
+                            locked=True,
                         )
                     if hasattr(obj, "IfcProperties"):
                         obj.IfcProperties = values[1]
@@ -432,7 +435,7 @@ class BIM_IfcProperties:
         return props
 
     def getSearchResults(self, obj):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         text = self.form.searchField.currentText()
         if not text:
@@ -465,7 +468,7 @@ class BIM_IfcProperties:
                 return QtGui.QStandardItem()
 
     def updateProperties(self, sel1=None, sel2=None):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.propmodel.clear()
         self.propmodel.setHorizontalHeaderLabels(
@@ -628,7 +631,7 @@ class BIM_IfcProperties:
                                 del self.objectslist[name][1][prop]
 
     def addProperty(self, idx=0, pset=None, prop=None, ptype=None):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         if not self.form.tree.selectedIndexes():
             return
@@ -685,7 +688,7 @@ class BIM_IfcProperties:
             self.form.comboProperty.setCurrentIndex(0)
 
     def addPset(self, idx):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         if not self.form.tree.selectedIndexes():
             return
@@ -732,7 +735,7 @@ class BIM_IfcProperties:
             self.form.comboPset.setCurrentIndex(0)
 
     def removeProperty(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         sel = self.form.treeProperties.selectedIndexes()
         remove = []
@@ -764,7 +767,7 @@ class BIM_IfcProperties:
 
 
 if FreeCAD.GuiUp:
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
 
     class propertiesDelegate(QtGui.QStyledItemDelegate):
         def __init__(self, parent=None, container=None, ptypes=[], plabels=[], *args):

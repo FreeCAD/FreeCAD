@@ -1,39 +1,30 @@
-#***************************************************************************
-#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import FreeCAD
-import ArchComponent
-import Draft
-import DraftVecUtils
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+__title__  = "FreeCAD Arch Frame"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchFrame
 #  \ingroup ARCH
@@ -43,10 +34,22 @@ else:
 #  Frames are objects made of a profile and an object with
 #  edges along which the profile gets extruded
 
-__title__  = "FreeCAD Arch Frame"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
 
+if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class _Frame(ArchComponent.Component):
@@ -62,23 +65,23 @@ class _Frame(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Profile" in pl:
-            obj.addProperty("App::PropertyLink","Profile","Frame",QT_TRANSLATE_NOOP("App::Property","The profile used to build this frame"))
+            obj.addProperty("App::PropertyLink","Profile","Frame",QT_TRANSLATE_NOOP("App::Property","The profile used to build this frame"), locked=True)
         if not "Align" in pl:
-            obj.addProperty("App::PropertyBool","Align","Frame",QT_TRANSLATE_NOOP("App::Property","Specifies if the profile must be aligned with the extrusion wires"))
+            obj.addProperty("App::PropertyBool","Align","Frame",QT_TRANSLATE_NOOP("App::Property","Specifies if the profile must be aligned with the extrusion wires"), locked=True)
             obj.Align = True
         if not "Offset" in pl:
-            obj.addProperty("App::PropertyVectorDistance","Offset","Frame",QT_TRANSLATE_NOOP("App::Property","An offset vector between the base sketch and the frame"))
+            obj.addProperty("App::PropertyVectorDistance","Offset","Frame",QT_TRANSLATE_NOOP("App::Property","An offset vector between the base sketch and the frame"), locked=True)
         if not "BasePoint" in pl:
-            obj.addProperty("App::PropertyInteger","BasePoint","Frame",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."))
+            obj.addProperty("App::PropertyInteger","BasePoint","Frame",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."), locked=True)
         if not "ProfilePlacement" in pl:
-            obj.addProperty("App::PropertyPlacement","ProfilePlacement","Frame",QT_TRANSLATE_NOOP("App::Property","An optional additional placement to add to the profile before extruding it"))
+            obj.addProperty("App::PropertyPlacement","ProfilePlacement","Frame",QT_TRANSLATE_NOOP("App::Property","An optional additional placement to add to the profile before extruding it"), locked=True)
         if not "Rotation" in pl:
-            obj.addProperty("App::PropertyAngle","Rotation","Frame",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"))
+            obj.addProperty("App::PropertyAngle","Rotation","Frame",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"), locked=True)
         if not "Edges" in pl:
-            obj.addProperty("App::PropertyEnumeration","Edges","Frame",QT_TRANSLATE_NOOP("App::Property","The type of edges to consider"))
+            obj.addProperty("App::PropertyEnumeration","Edges","Frame",QT_TRANSLATE_NOOP("App::Property","The type of edges to consider"), locked=True)
             obj.Edges = ["All edges","Vertical edges","Horizontal edges","Bottom horizontal edges","Top horizontal edges"]
         if not "Fuse" in pl:
-            obj.addProperty("App::PropertyBool","Fuse","Frame",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"))
+            obj.addProperty("App::PropertyBool","Fuse","Frame",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"), locked=True)
         self.Type = "Frame"
 
     def onDocumentRestored(self,obj):
@@ -228,4 +231,3 @@ class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
             if self.Object.Profile:
                 p = [self.Object.Profile]
         return ArchComponent.ViewProviderComponent.claimChildren(self)+p
-

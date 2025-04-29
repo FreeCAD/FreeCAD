@@ -101,7 +101,10 @@ public:
 };
 
 
-/** Base class of all Classes handled in the Document
+/**
+ * @brief %Base class of all objects handled in the @ref App::Document "Document".
+ * @ingroup DocObject
+ * @details For a more high-level overview see topic @ref DocObject "Document Object".
  */
 class AppExport DocumentObject: public App::TransactionalObject
 {

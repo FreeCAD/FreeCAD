@@ -112,7 +112,7 @@ void QGIViewSymbol::drawSvg()
     }
 
     auto vp = getViewProvider(viewSymbol);
-    auto vps = dynamic_cast<ViewProviderSymbol*>(vp);
+    auto vps = freecad_cast<ViewProviderSymbol*>(vp);
     if (!vp || !vps) {
         return;
     }

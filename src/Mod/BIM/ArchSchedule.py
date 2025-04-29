@@ -1,40 +1,30 @@
-# -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import FreeCAD
-from draftutils import params
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__ = "Arch Schedule"
+__author__ = "Yorik van Havre"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchSchedule
 #  \ingroup ARCH
@@ -44,14 +34,26 @@ else:
 #  Schedules are objects that can count and gather information
 #  about objects in the document, and fill a spreadsheet with the result
 
-__title__ = "Arch Schedule"
-__author__ = "Yorik van Havre"
-__url__ = "https://www.freecad.org"
+import FreeCAD
+
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 VERBOSE = True # change this for silent recomputes
-
 
 
 class _ArchScheduleDocObserver:
@@ -113,21 +115,21 @@ class _ArchSchedule:
     def setProperties(self,obj):
 
         if not "Operation" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Operation",         "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"))
+            obj.addProperty("App::PropertyStringList","Operation",         "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"), locked=True)
         if not "Value" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Value",             "Schedule",QT_TRANSLATE_NOOP("App::Property","The values column"))
+            obj.addProperty("App::PropertyStringList","Value",             "Schedule",QT_TRANSLATE_NOOP("App::Property","The values column"), locked=True)
         if not "Unit" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Unit",              "Schedule",QT_TRANSLATE_NOOP("App::Property","The units column"))
+            obj.addProperty("App::PropertyStringList","Unit",              "Schedule",QT_TRANSLATE_NOOP("App::Property","The units column"), locked=True)
         if not "Objects" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Objects",           "Schedule",QT_TRANSLATE_NOOP("App::Property","The objects column"))
+            obj.addProperty("App::PropertyStringList","Objects",           "Schedule",QT_TRANSLATE_NOOP("App::Property","The objects column"), locked=True)
         if not "Filter" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Filter",            "Schedule",QT_TRANSLATE_NOOP("App::Property","The filter column"))
+            obj.addProperty("App::PropertyStringList","Filter",            "Schedule",QT_TRANSLATE_NOOP("App::Property","The filter column"), locked=True)
         if not "CreateSpreadsheet" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "CreateSpreadsheet", "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"))
+            obj.addProperty("App::PropertyBool",      "CreateSpreadsheet", "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"), locked=True)
         if not "DetailedResults" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "DetailedResults",   "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
+            obj.addProperty("App::PropertyBool",      "DetailedResults",   "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"), locked=True)
         if not "AutoUpdate" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "AutoUpdate",        "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed"))
+            obj.addProperty("App::PropertyBool",      "AutoUpdate",        "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed"), locked=True)
             obj.AutoUpdate = True
 
         # To add the doc observer:
@@ -139,7 +141,8 @@ class _ArchSchedule:
                 "App::PropertyLink",
                 "Schedule",
                 "Arch",
-                QT_TRANSLATE_NOOP("App::Property", "The BIM Schedule that uses this spreadsheet"))
+                QT_TRANSLATE_NOOP("App::Property", "The BIM Schedule that uses this spreadsheet"),
+                locked=True)
         sp.Schedule = obj
 
     def getSpreadSheet(self, obj, force=False):
@@ -199,14 +202,16 @@ class _ArchSchedule:
         if not (obj.CreateSpreadsheet or force):
             return
         sp = self.getSpreadSheet(obj, force=True)
+        widths = [sp.getColumnWidth(col) for col in ("A", "B", "C")]
         sp.clearAll()
-        # clearAll removes the custom property, we need to re-add it:
-        self.setSchedulePropertySpreadsheet(sp, obj)
+        # clearAll resets the column widths:
+        for col, width in zip(("A", "B", "C"), widths):
+            sp.setColumnWidth(col, width)
         # set headers
-        sp.set("A1","Operation")
-        sp.set("B1","Value")
-        sp.set("C1","Unit")
-        sp.setStyle('A1:C1', 'bold', 'add')
+        sp.set("A1", "Operation")
+        sp.set("B1", "Value")
+        sp.set("C1", "Unit")
+        sp.setStyle("A1:C1", "bold", "add")
         # write contents
         for k,v in self.data.items():
             sp.set(k,v)
@@ -254,7 +259,8 @@ class _ArchSchedule:
             ifcfile = None
             elts = None
             if val:
-                import Draft,Arch
+                import Draft
+                import Arch
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
@@ -1000,5 +1006,3 @@ class ArchScheduleTaskPanel:
         self.obj.AutoUpdate = self.form.checkAutoUpdate.isChecked()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-
-

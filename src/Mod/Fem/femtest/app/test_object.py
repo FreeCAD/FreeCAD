@@ -159,6 +159,10 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintElectrostaticPotential",
             type_of_obj(ObjectsFem.makeConstraintElectrostaticPotential(doc)),
         )
+        self.assertEqual(
+            "Fem::ConstraintElectricChargeDensity",
+            type_of_obj(ObjectsFem.makeConstraintElectricChargeDensity(doc)),
+        )
         self.assertEqual("Fem::ConstraintFixed", type_of_obj(ObjectsFem.makeConstraintFixed(doc)))
         self.assertEqual(
             "Fem::ConstraintRigidBody", type_of_obj(ObjectsFem.makeConstraintRigidBody(doc))
@@ -250,7 +254,7 @@ class TestObjectType(unittest.TestCase):
         self.assertEqual(
             "Fem::SolverCcxTools", type_of_obj(ObjectsFem.makeSolverCalculiXCcxTools(doc))
         )
-        self.assertEqual("Fem::SolverCalculix", type_of_obj(ObjectsFem.makeSolverCalculix(doc)))
+        self.assertEqual("Fem::SolverCalculiX", type_of_obj(ObjectsFem.makeSolverCalculiX(doc)))
         self.assertEqual("Fem::SolverElmer", type_of_obj(solverelmer))
         self.assertEqual("Fem::SolverMystran", type_of_obj(ObjectsFem.makeSolverMystran(doc)))
         self.assertEqual("Fem::SolverZ88", type_of_obj(ObjectsFem.makeSolverZ88(doc)))
@@ -332,6 +336,12 @@ class TestObjectType(unittest.TestCase):
             is_of_type(
                 ObjectsFem.makeConstraintElectrostaticPotential(doc),
                 "Fem::ConstraintElectrostaticPotential",
+            )
+        )
+        self.assertTrue(
+            is_of_type(
+                ObjectsFem.makeConstraintElectricChargeDensity(doc),
+                "Fem::ConstraintElectricChargeDensity",
             )
         )
         self.assertTrue(is_of_type(ObjectsFem.makeConstraintFixed(doc), "Fem::ConstraintFixed"))
@@ -424,7 +434,7 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(
             is_of_type(ObjectsFem.makeSolverCalculiXCcxTools(doc), "Fem::SolverCcxTools")
         )
-        self.assertTrue(is_of_type(ObjectsFem.makeSolverCalculix(doc), "Fem::SolverCalculix"))
+        self.assertTrue(is_of_type(ObjectsFem.makeSolverCalculiX(doc), "Fem::SolverCalculiX"))
         self.assertTrue(is_of_type(solverelmer, "Fem::SolverElmer"))
         self.assertTrue(is_of_type(ObjectsFem.makeSolverMystran(doc), "Fem::SolverMystran"))
         self.assertTrue(is_of_type(ObjectsFem.makeSolverZ88(doc), "Fem::SolverZ88"))
@@ -549,6 +559,18 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(
             is_derived_from(
                 constraint_electorstatic_potential, "Fem::ConstraintElectrostaticPotential"
+            )
+        )
+
+        # ConstraintElectricChargeDensity
+        constraint_electric_charge_density = ObjectsFem.makeConstraintElectricChargeDensity(doc)
+        self.assertTrue(is_derived_from(constraint_electric_charge_density, "App::DocumentObject"))
+        self.assertTrue(
+            is_derived_from(constraint_electric_charge_density, "Fem::ConstraintPython")
+        )
+        self.assertTrue(
+            is_derived_from(
+                constraint_electric_charge_density, "Fem::ConstraintElectricChargeDensity"
             )
         )
 
@@ -783,12 +805,12 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(solver_ccxtools, "Fem::FemSolverObjectPython"))
         self.assertTrue(is_derived_from(solver_ccxtools, "Fem::SolverCcxTools"))
 
-        # SolverCalculix
-        solver_calculix = ObjectsFem.makeSolverCalculix(doc)
+        # SolverCalculiX
+        solver_calculix = ObjectsFem.makeSolverCalculiX(doc)
         self.assertTrue(is_derived_from(solver_calculix, "App::DocumentObject"))
         self.assertTrue(is_derived_from(solver_calculix, "Fem::FemSolverObject"))
         self.assertTrue(is_derived_from(solver_calculix, "Fem::FemSolverObjectPython"))
-        self.assertTrue(is_derived_from(solver_calculix, "Fem::SolverCalculix"))
+        self.assertTrue(is_derived_from(solver_calculix, "Fem::SolverCalculiX"))
 
         # SolverElmer
         solver_elmer = ObjectsFem.makeSolverElmer(doc)
@@ -913,6 +935,11 @@ class TestObjectType(unittest.TestCase):
                 "Fem::ConstraintPython"
             )
         )
+        self.assertTrue(
+            ObjectsFem.makeConstraintElectricChargeDensity(doc).isDerivedFrom(
+                "Fem::ConstraintPython"
+            )
+        )
         self.assertTrue(ObjectsFem.makeConstraintFixed(doc).isDerivedFrom("Fem::ConstraintFixed"))
         self.assertTrue(
             ObjectsFem.makeConstraintRigidBody(doc).isDerivedFrom("Fem::ConstraintRigidBody")
@@ -1009,7 +1036,7 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeSolverCalculiXCcxTools(doc).isDerivedFrom("Fem::FemSolverObjectPython")
         )
         self.assertTrue(
-            ObjectsFem.makeSolverCalculix(doc).isDerivedFrom("Fem::FemSolverObjectPython")
+            ObjectsFem.makeSolverCalculiX(doc).isDerivedFrom("Fem::FemSolverObjectPython")
         )
         self.assertTrue(solverelmer.isDerivedFrom("Fem::FemSolverObjectPython"))
         self.assertTrue(
@@ -1077,6 +1104,7 @@ def create_all_fem_objects_doc(doc):
     analysis.addObject(ObjectsFem.makeConstraintCurrentDensity(doc))
     analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
     analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
+    analysis.addObject(ObjectsFem.makeConstraintElectricChargeDensity(doc))
     analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
     analysis.addObject(ObjectsFem.makeConstraintRigidBody(doc))
     analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
@@ -1128,7 +1156,7 @@ def create_all_fem_objects_doc(doc):
         ObjectsFem.makePostVtkFilterContours(doc, vres)
 
     analysis.addObject(ObjectsFem.makeSolverCalculiXCcxTools(doc))
-    analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
+    analysis.addObject(ObjectsFem.makeSolverCalculiX(doc))
     sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
     analysis.addObject(ObjectsFem.makeSolverMystran(doc))
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))

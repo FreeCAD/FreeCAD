@@ -315,7 +315,8 @@ public:
             bool press = (kbev->getState() == SoKeyboardEvent::DOWN);
             switch (kbev->getKey()) {
                 case SoKeyboardEvent::H:
-                    if (!press) {
+                    // Disable H key in editing mode because of conflict with sketcher
+                    if (!ns.viewer->isEditing() && !press) {
                         ns.setupPanningPlane(ns.viewer->getCamera());
                         ns.lookAtPoint(kbev->getPosition());
                     }

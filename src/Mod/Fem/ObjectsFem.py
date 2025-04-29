@@ -132,6 +132,20 @@ def makeConstraintDisplacement(doc, name="ConstraintDisplacement"):
     return obj
 
 
+def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
+    """makeConstraintElectricChargeDensity(document, [name]):
+    makes a Fem ElectricChargeDensity object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_electricchargedensity
+
+    constraint_electricchargedensity.ConstraintElectricChargeDensity(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_electricchargedensity
+
+        view_constraint_electricchargedensity.VPConstraintElectricChargeDensity(obj.ViewObject)
+    return obj
+
+
 def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
     """makeConstraintElectrostaticPotential(document, [name]):
     makes a Fem ElectrostaticPotential object"""
@@ -781,12 +795,17 @@ def makeSolverCalculiXCcxTools(doc, name="SolverCcxTools"):
     return obj
 
 
-def makeSolverCalculix(doc, name="SolverCalculix"):
-    """makeSolverCalculix(document, [name]):
+def makeSolverCalculiX(doc, name="SolverCalculiX"):
+    """makeSolverCalculiX(document, [name]):
     makes a Calculix solver object"""
-    import femsolver.calculix.solver
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_calculix
 
-    obj = femsolver.calculix.solver.create(doc, name)
+    solver_calculix.SolverCalculiX(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_calculix
+
+        view_solver_calculix.VPSolverCalculiX(obj.ViewObject)
     return obj
 
 

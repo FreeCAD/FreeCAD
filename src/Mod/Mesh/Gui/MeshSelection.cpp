@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <algorithm>
-#include <climits>
 #include <QBitmap>
 
 #include <Inventor/SbBox2s.h>

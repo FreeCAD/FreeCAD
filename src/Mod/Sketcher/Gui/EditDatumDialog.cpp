@@ -50,6 +50,23 @@ using namespace SketcherGui;
 
 /* TRANSLATOR SketcherGui::EditDatumDialog */
 
+bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch,
+                                      std::string constraintName)
+{
+    if (constraintName != Base::Tools::getIdentifier(constraintName)) {
+        Gui::NotifyUserError(
+            sketch,
+            QT_TRANSLATE_NOOP("Notifications", "Value Error"),
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Invalid constraint name (must only contain alphanumericals and "
+                              "underscores, and must not start with digit)"));
+        return false;
+    }
+
+    return true;
+}
+
+
 EditDatumDialog::EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr)
     : ConstrNbr(ConstrNbr)
     , success(false)
@@ -213,15 +230,18 @@ void EditDatumDialog::accepted()
                 }
             }
 
-            QString constraintName = ui_ins_datum->name->text().trimmed();
-            if (constraintName.toStdString() != sketch->Constraints[ConstrNbr]->Name) {
-                std::string escapedstr =
-                    Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                escapedstr = Base::Tools::escapeQuotesFromString(escapedstr);
+            std::string constraintName = ui_ins_datum->name->text().trimmed().toStdString();
+            std::string currConstraintName = sketch->Constraints[ConstrNbr]->Name;
+
+            if (constraintName != currConstraintName) {
+                if (!SketcherGui::checkConstraintName(sketch, constraintName)) {
+                    constraintName = currConstraintName;
+                }
+
                 Gui::cmdAppObjectArgs(sketch,
                                       "renameConstraint(%d, u'%s')",
                                       ConstrNbr,
-                                      escapedstr.c_str());
+                                      constraintName.c_str());
             }
 
             Gui::Command::commitCommand();

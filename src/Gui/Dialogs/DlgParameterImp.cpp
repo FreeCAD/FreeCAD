@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <sstream>
 #include <QByteArray>
 #include <QContextMenuEvent>
@@ -905,7 +906,7 @@ void ParameterValue::onCreateUIntItem()
                           DlgInputDialogImp::UIntBox);
     dlg.setWindowTitle(QObject::tr("New unsigned item"));
     UIntSpinBox* edit = dlg.getUIntBox();
-    edit->setRange(0, UINT_MAX);
+    edit->setRange(0, std::numeric_limits<unsigned>::max());
     if (dlg.exec() == QDialog::Accepted) {
         QString value = edit->text();
         unsigned long val = value.toULong(&ok);
@@ -1249,7 +1250,7 @@ void ParameterUInt::changeValue()
                           DlgInputDialogImp::UIntBox);
     dlg.setWindowTitle(QObject::tr("Change value"));
     UIntSpinBox* edit = dlg.getUIntBox();
-    edit->setRange(0, UINT_MAX);
+    edit->setRange(0, std::numeric_limits<unsigned>::max());
     edit->setValue(text(2).toULong());
     if (dlg.exec() == QDialog::Accepted) {
         QString value = edit->text();

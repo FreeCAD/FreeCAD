@@ -43,103 +43,19 @@
    <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="25" column="0">
-       <widget class="QCheckBox" name="useOutline">
-        <property name="text">
-         <string>Use Outline</string>
-        </property>
-       </widget>
-      </item>
-      <item row="18" column="0">
-       <widget class="QLabel" name="label_11">
-        <property name="text">
-         <string>Keep Tool Down Ratio</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="0">
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>Helix Max Diameter</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="OperationType">
-        <property name="toolTip">
-         <string>Type of adaptive operation</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Cut Region</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Step Over Percent</string>
-        </property>
-       </widget>
-      </item>
-      <item row="23" column="0">
-       <widget class="QCheckBox" name="ForceInsideOut">
-        <property name="text">
-         <string>Force Clearing Inside-out</string>
-        </property>
-       </widget>
-      </item>
-      <item row="16" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Lift Distance</string>
-        </property>
-       </widget>
-      </item>
-      <item row="20" column="0">
-       <widget class="QLabel" name="label_12">
-        <property name="text">
-         <string>Stock to Leave</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Operation Type</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Helix Ramp Angle</string>
-        </property>
-       </widget>
-      </item>
-      <item row="24" column="0">
-       <widget class="QCheckBox" name="FinishingProfile">
-        <property name="text">
-         <string>Finishing Profile</string>
-        </property>
-       </widget>
-      </item>
       <item row="9" column="0" colspan="2">
        <widget class="QFrame" name="frame_3">
         <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+         <enum>QFrame::Shape::StyledPanel</enum>
         </property>
         <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+         <enum>QFrame::Shadow::Raised</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
@@ -152,7 +68,9 @@
          <item>
           <widget class="QSlider" name="Tolerance">
            <property name="toolTip">
-            <string>Influences calculation performance vs stability and accuracy</string>
+            <string>Influences calculation performance vs stability and accuracy.
+
+Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</string>
            </property>
            <property name="minimum">
             <number>5</number>
@@ -167,7 +85,7 @@
             <number>10</number>
            </property>
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="tickInterval">
             <number>1</number>
@@ -177,6 +95,13 @@
         </layout>
        </widget>
       </item>
+      <item row="23" column="0">
+       <widget class="QCheckBox" name="ForceInsideOut">
+        <property name="text">
+         <string>Force Clearing Inside-out</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="Side">
         <property name="toolTip">
@@ -184,50 +109,34 @@
         </property>
        </widget>
       </item>
-      <item row="12" column="0">
-       <widget class="QLabel" name="label_8">
+      <item row="2" column="1">
+       <widget class="QComboBox" name="OperationType">
+        <property name="toolTip">
+         <string>Type of adaptive operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="24" column="0">
+       <widget class="QCheckBox" name="FinishingProfile">
         <property name="text">
-         <string>Helix Cone Angle</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="1">
-       <widget class="Gui::QuantitySpinBox" name="HelixDiameterLimit">
-        <property name="toolTip">
-         <string>If greater than zero it limits the helix ramp diameter, otherwise 75 percent of tool diameter is used</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="16" column="1">
-       <widget class="Gui::QuantitySpinBox" name="LiftDistance">
-        <property name="toolTip">
-         <string>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="18" column="1">
-       <widget class="Gui::QuantitySpinBox" name="KeepToolDownRatio">
-        <property name="toolTip">
-         <string>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
+         <string>Finishing Profile</string>
         </property>
        </widget>
       </item>
       <item row="20" column="1">
-       <widget class="Gui::QuantitySpinBox" name="StockToLeave">
+       <widget class="Gui::QuantitySpinBox" name="StockToLeave" native="true">
         <property name="toolTip">
-         <string>How much material to leave (i.e. for finishing operation)</string>
+         <string>How much material to leave in the XY plane (i.e. for finishing operation)</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="20" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>XY Stock to Leave</string>
         </property>
        </widget>
       </item>
@@ -250,13 +159,10 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
-       <widget class="Gui::InputField" name="HelixAngle">
-        <property name="toolTip">
-         <string>Angle of the helix ramp entry</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Step Over Percent</string>
         </property>
        </widget>
       </item>
@@ -267,6 +173,128 @@
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Helix Ramp Angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="25" column="0">
+       <widget class="QCheckBox" name="useOutline">
+        <property name="text">
+         <string>Use Outline</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Operation Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="1">
+       <widget class="Gui::QuantitySpinBox" name="LiftDistance" native="true">
+        <property name="toolTip">
+         <string>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Keep Tool Down Ratio</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="Gui::QuantitySpinBox" name="HelixDiameterLimit" native="true">
+        <property name="toolTip">
+         <string>If greater than zero it limits the helix ramp diameter, otherwise 75 percent of tool diameter is used</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Helix Cone Angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="Gui::InputField" name="HelixAngle">
+        <property name="toolTip">
+         <string>Angle of the helix ramp entry</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Lift Distance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Cut Region</string>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="1">
+       <widget class="Gui::QuantitySpinBox" name="KeepToolDownRatio" native="true">
+        <property name="toolTip">
+         <string>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Helix Max Diameter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="26" column="0">
+       <widget class="QCheckBox" name="orderCutsByRegion">
+        <property name="toolTip">
+         <string>After calculating toolpaths, the default cut order is by depth- all regions at a given stepdown are cleared before moving to the next stepdown.
+
+This option changes that behavior to cut each discrete area to its full depth before moving on to the next.</string>
+        </property>
+        <property name="text">
+         <string>Order cuts by region</string>
+        </property>
+       </widget>
+      </item>
+      <item row="21" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Z Stock to Leave</string>
+        </property>
+       </widget>
+      </item>
+      <item row="21" column="1">
+       <widget class="Gui::QuantitySpinBox" name="ZStockToLeave" native="true">
+        <property name="toolTip">
+         <string>How much material to leave along the Z axis (i.e. for finishing operation)</string>
         </property>
        </widget>
       </item>
@@ -283,7 +311,7 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>

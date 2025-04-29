@@ -114,9 +114,9 @@ void SurfaceTriangulation::perform(int ksearch)
     gp3.setSearchRadius(searchRadius);
     gp3.setMu(mu);
     gp3.setMaximumNearestNeighbors(100);
-    gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees
-    gp3.setMinimumAngle(M_PI / 18);        // 10 degrees
-    gp3.setMaximumAngle(2 * M_PI / 3);     // 120 degrees
+    gp3.setMaximumSurfaceAngle(std::numbers::pi / 4);  // 45 degrees
+    gp3.setMinimumAngle(std::numbers::pi / 18);        // 10 degrees
+    gp3.setMaximumAngle(2 * std::numbers::pi / 3);     // 120 degrees
     gp3.setNormalConsistency(false);
     gp3.setConsistentVertexOrdering(true);
 
@@ -171,9 +171,9 @@ void SurfaceTriangulation::perform(const std::vector<Base::Vector3f>& normals)
     gp3.setSearchRadius(searchRadius);
     gp3.setMu(mu);
     gp3.setMaximumNearestNeighbors(100);
-    gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees
-    gp3.setMinimumAngle(M_PI / 18);        // 10 degrees
-    gp3.setMaximumAngle(2 * M_PI / 3);     // 120 degrees
+    gp3.setMaximumSurfaceAngle(std::numbers::pi / 4);  // 45 degrees
+    gp3.setMinimumAngle(std::numbers::pi / 18);        // 10 degrees
+    gp3.setMaximumAngle(2 * std::numbers::pi / 3);     // 120 degrees
     gp3.setNormalConsistency(true);
     gp3.setConsistentVertexOrdering(true);
 
@@ -182,10 +182,6 @@ void SurfaceTriangulation::perform(const std::vector<Base::Vector3f>& normals)
     gp3.reconstruct(mesh);
 
     MeshConversion::convert(mesh, myMesh);
-
-    // Additional vertex information
-    // std::vector<int> parts = gp3.getPartIDs();
-    // std::vector<int> states = gp3.getPointStates();
 }
 
 // ----------------------------------------------------------------------------
@@ -645,7 +641,6 @@ void Reen::MarchingCubesHoppe::perform(int ksearch)
     NormalEstimation<PointXYZ, Normal> n;
     PointCloud<Normal>::Ptr normals(new PointCloud<Normal>());
     n.setInputCloud(cloud);
-    // n.setIndices (indices[B);
     n.setSearchMethod(tree);
     n.setKSearch(ksearch);
     n.compute(*normals);
@@ -747,16 +742,9 @@ void MeshConversion::convert(const pcl::PolygonMesh& pclMesh, Mesh::MeshObject& 
         for (size_t d = 0; d < pclMesh.cloud.fields.size(); ++d) {
             int c = 0;
             // adding vertex
-            if ((pclMesh.cloud.fields[d].datatype ==
-#if PCL_VERSION_COMPARE(>, 1, 6, 0)
-                 pcl::PCLPointField::FLOAT32)
-                &&
-#else
-                 sensor_msgs::PointField::FLOAT32)
-                &&
-#endif
-                (pclMesh.cloud.fields[d].name == "x" || pclMesh.cloud.fields[d].name == "y"
-                 || pclMesh.cloud.fields[d].name == "z")) {
+            if ((pclMesh.cloud.fields[d].datatype == pcl::PCLPointField::FLOAT32)
+                && (pclMesh.cloud.fields[d].name == "x" || pclMesh.cloud.fields[d].name == "y"
+                    || pclMesh.cloud.fields[d].name == "z")) {
                 float value;
                 memcpy(&value,
                        &pclMesh.cloud.data[i * point_size + pclMesh.cloud.fields[d].offset

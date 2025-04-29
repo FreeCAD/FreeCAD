@@ -71,6 +71,11 @@ jobs:
       changedCppFiles: ${{ steps.Output.outputs.changedCppFiles }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        with:
+          egress-policy: audit
+
       - name: Make needed directories, files and initializations
         id: Init
         run: |
@@ -148,14 +153,14 @@ jobs:
           echo "" >> $GITHUB_OUTPUT
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ env.reportfilename }}
           path: |

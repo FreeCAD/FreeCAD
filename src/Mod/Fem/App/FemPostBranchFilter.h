@@ -64,7 +64,6 @@ protected:
 private:
     static const char* OutputEnums[];
 
-    bool m_transform_used = false;
     void setupPipeline();
 
     vtkSmartPointer<vtkAppendFilter> m_append;

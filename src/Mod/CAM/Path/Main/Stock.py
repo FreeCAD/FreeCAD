@@ -341,6 +341,7 @@ def SetupStockObject(obj, stockType):
 
         PathIconViewProvider.ViewProvider(obj.ViewObject, "Stock")
         obj.ViewObject.Transparency = 90
+        obj.ViewObject.PointSize = 5
         obj.ViewObject.DisplayMode = "Wireframe"
 
 

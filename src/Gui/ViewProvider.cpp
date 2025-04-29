@@ -93,6 +93,7 @@ PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
     : overrideMode("As Is")
+    , toggleVisibilityMode(ToggleVisibilityMode::CanToggleVisibility)
 {
     setStatus(UpdateData, true);
 
@@ -1010,13 +1011,13 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
 
     if(!view)
         view  = Application::Instance->activeView();
-    auto iview = dynamic_cast<View3DInventor*>(view);
+    auto iview = qobject_cast<View3DInventor*>(view);
     if(!iview) {
         auto doc = Application::Instance->activeDocument();
         if(doc) {
             auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
             if(!views.empty())
-                iview = dynamic_cast<View3DInventor*>(views.front());
+                iview = qobject_cast<View3DInventor*>(views.front());
         }
         if(!iview) {
             FC_ERR("no view");

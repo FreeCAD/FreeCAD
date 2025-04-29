@@ -180,7 +180,7 @@ public:
     /// find a property by its name, dynamic cased to specified type
     template<typename T>
     T* getPropertyByName(const char* name) const {
-        return dynamic_cast<T*>(this->getPropertyByName(name));
+        return freecad_cast<T*>(this->getPropertyByName(name));
     }
     /// get the name of a property
     const char* getPropertyName(const Property* prop) const override;

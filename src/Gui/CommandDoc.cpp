@@ -1346,7 +1346,7 @@ void StdCmdDelete::activated(int iMsg)
         auto editDoc = Application::Instance->editDocument();
         ViewProviderDocumentObject *vpedit = nullptr;
         if(editDoc)
-            vpedit = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+            vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
         if(vpedit && !vpedit->acceptDeletionsInEdit()) {
             for(auto &sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
                 if(sel.getObject() == vpedit->getObject()) {

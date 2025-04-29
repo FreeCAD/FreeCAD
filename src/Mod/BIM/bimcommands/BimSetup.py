@@ -1,22 +1,24 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -24,6 +26,7 @@
 
 import os
 import sys
+
 import FreeCAD
 import FreeCADGui
 
@@ -49,9 +52,10 @@ class BIM_Setup:
             0.16  # How many times TechDraw dim arrows are smaller than Draft
         )
 
-        # load dialog
         from PySide import QtGui
+        import WorkingPlane
 
+        # load dialog
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogSetup.ui")
 
         # center the dialog over FreeCAD window
@@ -312,26 +316,15 @@ class BIM_Setup:
         )
 
         # set the working plane
-        if hasattr(FreeCAD, "DraftWorkingPlane") and hasattr(
-            FreeCADGui, "draftToolBar"
-        ):
-            if wp == 1:
-                FreeCAD.DraftWorkingPlane.alignToPointAndAxis(
-                    FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), 0
-                )
-                FreeCADGui.draftToolBar.wplabel.setText("Top(XY)")
-            elif wp == 2:
-                FreeCAD.DraftWorkingPlane.alignToPointAndAxis(
-                    FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 1, 0), 0
-                )
-                FreeCADGui.draftToolBar.wplabel.setText("Front(XZ)")
-            elif wp == 3:
-                FreeCAD.DraftWorkingPlane.alignToPointAndAxis(
-                    FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1, 0, 0), 0
-                )
-                FreeCADGui.draftToolBar.wplabel.setText("Side(YZ)")
-            else:
-                FreeCADGui.draftToolBar.wplabel.setText("Auto")
+        wplane = WorkingPlane.get_working_plane()
+        if wp == 1:
+            wplane.set_to_top()
+        elif wp == 2:
+            wplane.set_to_front()
+        elif wp == 3:
+            wplane.set_to_side()
+        else:
+            wplane.set_to_auto()
 
         # set Draft toolbar
         if hasattr(FreeCADGui, "draftToolBar"):
@@ -396,7 +389,7 @@ class BIM_Setup:
         )
 
     def setPreset(self, preset=None):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         unit = None
         decimals = None
@@ -650,11 +643,11 @@ class BIM_Setup:
                         ifcok = True
         if not ifcok:
             # ifcopenshell not installed
-            import re
             import json
-            from PySide import QtGui
-            import zipfile
+            import re
             from urllib import request
+            import zipfile
+            from PySide import QtGui
 
             if not FreeCAD.GuiUp:
                 reply = QtGui.QMessageBox.Yes

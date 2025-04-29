@@ -38,6 +38,8 @@
 #include <cstdio>
 #include <sstream>
 
+#include <QString>
+
 // FreeCAD Base header
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -91,6 +93,17 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const Base::ProgramInformation& e) {
+        if (std::strcmp(e.what(), App::Application::verboseVersionEmitMessage) == 0) {
+            QString data;
+            QTextStream str(&data);
+            const std::map<std::string, std::string> config = App::Application::Config();
+
+            App::Application::getVerboseCommonInfo(str, config);
+            App::Application::getVerboseAddOnsInfo(str, config);
+
+            std::cout << data.toStdString();
+            exit(0);
+        }
         std::cout << e.what();
         exit(0);
     }
@@ -100,7 +113,7 @@ int main(int argc, char** argv)
         msg << "While initializing " << appName << " the following exception occurred: '"
             << e.what() << "'\n\n";
         msg << "Python is searching for its runtime files in the following directories:\n"
-            << Py_EncodeLocale(Py_GetPath(), nullptr) << "\n\n";
+            << Base::Interpreter().getPythonPath() << "\n\n";
         msg << "Python version information:\n" << Py_GetVersion() << "\n";
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {

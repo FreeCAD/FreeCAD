@@ -58,7 +58,7 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
-    ViewProviderViewSection* sectionVp = dynamic_cast<ViewProviderViewSection*>(QGIView::getViewProvider(section));
+    ViewProviderViewSection* sectionVp = freecad_cast<ViewProviderViewSection*>(QGIView::getViewProvider(section));
     if (!sectionVp) {
         return;
     }

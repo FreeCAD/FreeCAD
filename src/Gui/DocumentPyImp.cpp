@@ -36,7 +36,7 @@
 #include "MDIView.h"
 #include "ViewProviderExtern.h"
 
-// inclusion of the generated files (generated out of DocumentPy.xml)
+// inclusion of the generated files (generated out of DocumentPy.pyi)
 #include "DocumentPy.h"
 #include "DocumentPy.cpp"
 #include <App/DocumentObjectPy.h>
@@ -277,7 +277,7 @@ PyObject* DocumentPy::createView(PyObject *args)
     PY_CATCH;
 }
 
-PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
+PyObject* DocumentPy::mdiViewsOfType(PyObject *args) const
 {
     char* sType;
     if (!PyArg_ParseTuple(args, "s", &sType))

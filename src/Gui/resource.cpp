@@ -46,6 +46,7 @@
 #include "PreferencePages/DlgSettingsViewColor.h"
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "PreferencePages/DlgSettingsAdvanced.h"
+#include "PreferencePages/DlgSettingsPDF.h"
 
 #include "Dialogs/DlgToolbarsImp.h"
 #include "Dialogs/DlgActionsImp.h"
@@ -88,6 +89,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsAdvanced>         ( QT_TRANSLATE_NOOP("QObject","Display") );
     DlgSettingsUI::attachObserver();
     new PrefPageProducer<DlgSettingsWorkbenchesImp>   ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
+    new PrefPageProducer<DlgSettingsPDF>              ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
     new PrefPageProducer<DlgSettingsMacroImp>         ( QT_TRANSLATE_NOOP("QObject", "Python"));
     new PrefPageProducer<DlgSettingsPythonConsole>    ( QT_TRANSLATE_NOOP("QObject", "Python"));
     new PrefPageProducer<DlgSettingsEditor>           ( QT_TRANSLATE_NOOP("QObject", "Python"));

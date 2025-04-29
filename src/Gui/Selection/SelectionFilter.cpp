@@ -131,14 +131,16 @@ bool SelectionFilterGatePython::allow(App::Document*, App::DocumentObject* obj, 
 
 // ----------------------------------------------------------------------------
 
-SelectionFilter::SelectionFilter(const char* filter)
-  : Ast(nullptr)
+SelectionFilter::SelectionFilter(const char* filter, App::DocumentObject* container)
+    : Ast(nullptr)
+    , container(container)
 {
     setFilter(filter);
 }
 
-SelectionFilter::SelectionFilter(const std::string& filter)
-  : Ast(nullptr)
+SelectionFilter::SelectionFilter(const std::string& filter, App::DocumentObject* container)
+    : Ast(nullptr)
+    , container(container)
 {
     setFilter(filter.c_str());
 }
@@ -172,8 +174,7 @@ bool SelectionFilter::match()
             min = it->Slice->Min;
             max = it->Slice->Max;
         }
-
-        std::vector<Gui::SelectionObject> temp = Gui::Selection().getSelectionEx(nullptr, it->ObjectType);
+        std::vector<Gui::SelectionObject> temp = container ? Gui::Selection().getSelectionIn(container, it->ObjectType) : Gui::Selection().getSelectionEx(nullptr, it->ObjectType);
 
         // test if subnames present
         if (it->SubName.empty()) {
@@ -290,7 +291,7 @@ int SelectionFilterlex();
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
-#include "lex.SelectionFilter.c"
+#include "SelectionFilter.lex.cpp"
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)

@@ -49,7 +49,7 @@ void LineEdit::setDocumentObject(const App::DocumentObject* currentDocObj, bool 
 
     /* The code below is supposed to fix the input of an expression and to make the popup
      * functional. The input seems to be broken because of installed event filters. My solution is
-     * to readd the widget into the scene. Only a parentless widget can be added to the scene.
+     * to re-add the widget into the scene. Only a parentless widget can be added to the scene.
      * Making a widget parentless makes it lose its windowFlags, even if it is added to the scene.
      * So, the algorithm is to obtain globalPos, then to make the widget parentless,
      * to add it to the scene, setting the globalPos after. */

@@ -155,6 +155,7 @@
 // VTK
 #include <vtkAlgorithmOutput.h>
 #include <vtkAppendFilter.h>
+#include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
 #include <vtkCompositeDataSet.h>
 #include <vtkDataArray.h>

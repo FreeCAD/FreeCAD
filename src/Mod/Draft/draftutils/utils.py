@@ -183,84 +183,6 @@ def type_check(args_and_types, name="?"):
 typecheck = type_check
 
 
-def get_param(param, default=None):
-    """Return a parameter value from the current parameter database.
-
-    The parameter database is located in the tree
-    ::
-        'User parameter:BaseApp/Preferences/Mod/Draft'
-
-    In the case that `param` is `'linewidth'` or `'color'` it will get
-    the values from the View parameters
-    ::
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    default : optional
-        It indicates the default value of the given parameter.
-        It defaults to `None`, in which case it will use a specific
-        value depending on the type of parameter determined
-        with `get_param_type`.
-
-    Returns
-    -------
-    int, or str, or float, or bool
-        Depending on `param` and its type.
-    """
-    if param == "linewidth":
-        return params.get_param("DefaultShapeLineWidth", path="View")
-    elif param == "color":
-        return params.get_param("DefaultShapeLineColor", path="View")
-    else:
-        return params.get_param(param)
-
-
-getParam = get_param
-
-
-def set_param(param, value):
-    """Set a Draft parameter with the given value.
-
-    The parameter database is located in the tree
-    ::
-        'User parameter:BaseApp/Preferences/Mod/Draft'
-
-    In the case that `param` is `'linewidth'` or `'color'` it will set
-    the View parameters
-    ::
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    value : int, or str, or float, or bool
-        The appropriate value of the parameter.
-        Depending on `param` and its type, determined with `get_param_type`,
-        it sets the appropriate value by calling `ParameterGrp.SetInt`,
-        `ParameterGrp.SetString`, `ParameterGrp.SetFloat`,
-        `ParameterGrp.SetBool`, or `ParameterGrp.SetUnsinged`.
-    """
-    if param == "linewidth":
-        return params.set_param("DefaultShapeLineWidth", value, path="View")
-    elif param == "color":
-        return params.set_param("DefaultShapeLineColor", value, path="View")
-    else:
-        return params.set_param(param, value)
-
-
-
-
-setParam = set_param
-
-
 def precision():
     """Return the precision value from the parameter database.
 
@@ -282,6 +204,29 @@ def precision():
         params.get_param("precision")
     """
     return params.get_param("precision")
+
+
+def svg_precision():
+    """Return the precision value for SVG import from the parameter database.
+
+    It is the number of decimal places that a float will have.
+    Example
+    ::
+        precision=5, 0.12345
+        precision=4, 0.1234
+        precision=3, 0.123
+
+    Due to floating point operations there may be rounding errors.
+    Therefore, this precision number is used to round up values
+    so that all operations are consistent.
+    By default the precision is 3 decimal places.
+
+    Returns
+    -------
+    int
+        params.get_param("svgPrecision")
+    """
+    return params.get_param("svgPrecision")
 
 
 def tolerance():

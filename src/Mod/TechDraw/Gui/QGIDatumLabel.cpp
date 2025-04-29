@@ -214,7 +214,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                     continue;
                 }
 
-                auto* vp = dynamic_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
+                auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
                 if (!vp) { continue; }
                 auto* qgivDi(dynamic_cast<QGIViewDimension*>(vp->getQView()));
                 if (!qgivDi) { continue; }
@@ -277,7 +277,7 @@ void QGIDatumLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
         return;
     }
 
-    auto ViewProvider = dynamic_cast<ViewProviderDimension*>(
+    auto ViewProvider = freecad_cast<ViewProviderDimension*>(
         qgivDimension->getViewProvider(qgivDimension->getViewObject()));
     if (!ViewProvider) {
         qWarning() << "QGIDatumLabel::mouseDoubleClickEvent: No valid view provider";

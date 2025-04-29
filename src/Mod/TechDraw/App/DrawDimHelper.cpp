@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <cstdlib>
+# include <limits>
 # include <sstream>
 
 # include <Bnd_Box.hxx>
@@ -111,7 +112,7 @@ DrawViewDimension* DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<s
     Base::Interpreter().runStringArg(
         "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
 
-    auto* dimExt = dynamic_cast<DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
+    auto* dimExt = freecad_cast<DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
     if (!dimExt) {
         throw Base::TypeError("Dim extent not found");
     }
@@ -173,7 +174,7 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector reference
     Base::Interpreter().runStringArg(
         "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
 
-    auto* dimExt = dynamic_cast<DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
+    auto* dimExt = freecad_cast<DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
     if (!dimExt) {
         throw Base::TypeError("Dim extent not found");
     }

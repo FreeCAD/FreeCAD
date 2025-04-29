@@ -199,7 +199,7 @@ ViewProviderDocumentObject* ViewProviderT::getViewProvider() const
     ViewProviderDocumentObject* obj = nullptr;
     Document* doc = getDocument();
     if (doc) {
-        obj = dynamic_cast<ViewProviderDocumentObject*>(doc->getViewProviderByName(object.c_str()));
+        obj = freecad_cast<ViewProviderDocumentObject*>(doc->getViewProviderByName(object.c_str()));
     }
     return obj;
 }

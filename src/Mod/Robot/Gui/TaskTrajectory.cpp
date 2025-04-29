@@ -114,7 +114,7 @@ TaskTrajectory::TaskTrajectory(Robot::RobotObject* pcRobotObject,
     // clang-format on
 
     // get the view provider
-    ViewProv = dynamic_cast<ViewProviderRobotObject*>(
+    ViewProv = freecad_cast<ViewProviderRobotObject*>(
         Gui::Application::Instance->activeDocument()->getViewProvider(pcRobotObject));
 
     setTo();

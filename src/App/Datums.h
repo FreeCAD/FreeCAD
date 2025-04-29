@@ -55,7 +55,7 @@ public:
     Base::Vector3d getDirection() const;
     Base::Vector3d getBaseDirection() const;
 
-    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
+    bool getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const override;
 
     /// Returns true if this DatumElement is part of a App::Origin.
     bool isOriginFeature() const;
@@ -102,10 +102,9 @@ public:
     }
 };
 
-
-class AppExport LocalCoordinateSystem: public App::GeoFeature
+class AppExport LocalCoordinateSystem: public App::GeoFeature, public App::GeoFeatureGroupExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::LocalCoordinateSystem);
+    PROPERTY_HEADER_WITH_EXTENSIONS(App::LocalCoordinateSystem);
     Q_DECLARE_TR_FUNCTIONS(App::LocalCoordinateSystem)
 
 public:
@@ -119,7 +118,7 @@ public:
         return "Gui::ViewProviderCoordinateSystem";
     }
 
-    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
+    bool getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const override;
 
     /** @name Axis and plane access
      * This functions returns casted axis and planes objects and asserts they are set correctly
@@ -195,9 +194,6 @@ public:
     App::Point* getPoint(const char* role) const;
     ///@}
 
-    /// Returns true if the given object is part of the origin
-    bool hasObject(const DocumentObject* obj) const;
-
     /// Returns true on changing DatumElement set
     short mustExecute() const override;
 
@@ -216,6 +212,17 @@ public:
     // Axis links
     PropertyLinkList OriginFeatures;
 
+    // GeoFeatureGroupExtension overrides:
+    bool extensionGetSubObject(DocumentObject*& ret,
+        const char* subname,
+        PyObject**,
+        Base::Matrix4D*,
+        bool,
+        int) const override;
+
+    // Reimplement the hasObject because LCS doesn't use Group but stores objects in OriginFeatures for whatever reason.
+    bool hasObject(const DocumentObject* obj, bool recursive = false) const override;
+
 protected:
     /// Checks integrity of the LCS
     App::DocumentObjectExecReturn* execute() override;
@@ -228,22 +235,6 @@ protected:
 private:
     struct SetupData;
     void setupDatumElement(App::PropertyLink& featProp, const SetupData& data);
-
-    class LCSExtension: public GeoFeatureGroupExtension
-    {
-        LocalCoordinateSystem* obj;
-
-    public:
-        explicit LCSExtension(LocalCoordinateSystem* obj);
-        void initExtension(ExtensionContainer* obj) override;
-        bool extensionGetSubObject(DocumentObject*& ret,
-                                   const char* subname,
-                                   PyObject**,
-                                   Base::Matrix4D*,
-                                   bool,
-                                   int) const override;
-    };
-    LCSExtension extension;
 
     struct SetupData
     {

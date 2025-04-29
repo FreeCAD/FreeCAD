@@ -313,9 +313,8 @@ void TaskCenterLine::onColorChanged()
         return;
     }
 
-    Base::Color ac;
-    ac.setValue<QColor>(ui->cpLineColor->color());
-    m_cl->m_format.getColor().setValue<QColor>(ui->cpLineColor->color());
+    Base::Color color = Base::Color::fromValue<QColor>(ui->cpLineColor->color());
+    m_cl->m_format.setColor(color);
     m_partFeat->recomputeFeature();
 }
 
@@ -508,7 +507,7 @@ void TaskCenterLine::enableTaskButtons(bool isEnabled)
 double TaskCenterLine::getCenterWidth()
 {
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
-    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+    auto partVP = freecad_cast<ViewProviderViewPart*>(vp);
     if (!partVP) {
         return TechDraw::LineGroup::getDefaultWidth("Graphic");
     }

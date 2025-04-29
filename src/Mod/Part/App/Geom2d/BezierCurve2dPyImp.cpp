@@ -320,7 +320,7 @@ PyObject* BezierCurve2dPy::getWeights(PyObject * args)
     }
 }
 
-PyObject* BezierCurve2dPy::getResolution(PyObject* args)
+PyObject* BezierCurve2dPy::getResolution(PyObject* args) const
 {
     double tol;
     if (!PyArg_ParseTuple(args, "d", &tol))

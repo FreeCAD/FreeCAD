@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
@@ -126,7 +127,8 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     PyObject *pcObj, *pcObj2;
-    double first=DBL_MAX, last=DBL_MAX;
+    double first = std::numeric_limits<double>::max();
+    double last = std::numeric_limits<double>::max();
     if (PyArg_ParseTuple(args, "O!|dd", &(Part::GeometryPy::Type), &pcObj, &first, &last)) {
         Geometry* geom = static_cast<GeometryPy*>(pcObj)->getGeometryPtr();
         Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(geom->handle());
@@ -135,9 +137,9 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return -1;
         }
 
-        if (first==DBL_MAX)
+        if (first == std::numeric_limits<double>::max())
             first = curve->FirstParameter();
-        if (last==DBL_MAX)
+        if (last == std::numeric_limits<double>::max())
             last = curve->LastParameter();
 
         try {
@@ -191,7 +193,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 // ====== Methods  ======================================================================
 
-PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
+PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args) const
 {
     double u;
     double t=Precision::Confusion();
@@ -221,7 +223,7 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
     return PyFloat_FromDouble(u);
 }
 
-PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
+PyObject* TopoShapeEdgePy::valueAt(PyObject *args) const
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -237,7 +239,7 @@ PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
     return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
 }
 
-PyObject* TopoShapeEdgePy::parameters(PyObject *args)
+PyObject* TopoShapeEdgePy::parameters(PyObject *args) const
 {
     PyObject* pyface = nullptr;
     if (!PyArg_ParseTuple(args, "|O!", &(TopoShapeFacePy::Type), &pyface))
@@ -296,7 +298,7 @@ PyObject* TopoShapeEdgePy::parameters(PyObject *args)
     return nullptr;
 }
 
-PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
+PyObject* TopoShapeEdgePy::parameterAt(PyObject *args) const
 {
     PyObject* pnt;
     PyObject* face=nullptr;
@@ -325,7 +327,7 @@ PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
+PyObject* TopoShapeEdgePy::tangentAt(PyObject *args) const
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -346,7 +348,7 @@ PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
+PyObject* TopoShapeEdgePy::normalAt(PyObject *args) const
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -368,7 +370,7 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
+PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args) const
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -389,7 +391,7 @@ PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
+PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args) const
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -411,7 +413,7 @@ PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
+PyObject* TopoShapeEdgePy::derivative1At(PyObject *args) const
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -432,7 +434,7 @@ PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
+PyObject* TopoShapeEdgePy::derivative2At(PyObject *args) const
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -453,7 +455,7 @@ PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
+PyObject* TopoShapeEdgePy::derivative3At(PyObject *args) const
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -474,7 +476,7 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
+PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds) const
 {
     try {
         BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->getShape()));
@@ -644,7 +646,7 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
     return nullptr;
 }
 
-PyObject* TopoShapeEdgePy::countNodes(PyObject *args)
+PyObject* TopoShapeEdgePy::countNodes(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -661,7 +663,7 @@ PyObject* TopoShapeEdgePy::countNodes(PyObject *args)
     return Py::new_reference_to(Py::Long(count));
 }
 
-PyObject* TopoShapeEdgePy::split(PyObject *args)
+PyObject* TopoShapeEdgePy::split(PyObject *args) const
 {
     PyObject* float_or_list;
     if (!PyArg_ParseTuple(args, "O", &float_or_list))
@@ -732,7 +734,7 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
+PyObject* TopoShapeEdgePy::isSeam(PyObject *args) const
 {
     PyObject* face;
     if (!PyArg_ParseTuple(args, "O!", &TopoShapeFacePy::Type, &face))
@@ -753,7 +755,7 @@ PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::firstVertex(PyObject *args)
+PyObject* TopoShapeEdgePy::firstVertex(PyObject *args) const
 {
     PyObject* orient = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
@@ -763,7 +765,7 @@ PyObject* TopoShapeEdgePy::firstVertex(PyObject *args)
     return new TopoShapeVertexPy(new TopoShape(v));
 }
 
-PyObject* TopoShapeEdgePy::lastVertex(PyObject *args)
+PyObject* TopoShapeEdgePy::lastVertex(PyObject *args) const
 {
     PyObject* orient = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
@@ -1040,7 +1042,7 @@ Py::Boolean TopoShapeEdgePy::getDegenerated() const
     return Py::Boolean(ok ? true : false);
 }
 
-PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
+PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args) const
 {
     int idx;
     if (!PyArg_ParseTuple(args, "i", &idx))

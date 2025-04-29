@@ -81,7 +81,7 @@
           </property>
          </widget>
         </item>
-       <item row="2" column="1">
+        <item row="2" column="1">
          <widget class="Gui::QuantitySpinBox" name="sbZ">
           <property name="toolTip">
            <string>Enter coordinates or select point with mouse.</string>
@@ -91,24 +91,18 @@
           </property>
          </widget>
         </item>
-        </layout>
-      </item>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="cbGlobalMode">
+          <property name="toolTip">
+           <string>Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
+          <property name="text">
+           <string>Global</string>
           </property>
-         </spacer>
+         </widget>
         </item>
-        <item>
+        <item row="3" column="1">
          <widget class="QPushButton" name="pbReset">
           <property name="toolTip">
            <string>Reset 3D point selection</string>
@@ -121,36 +115,14 @@
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-     <item row="2" column="0">
-       <layout class="QGridLayout" name="gridLayout_6">
-        <item row="0" column="0">
-         <widget class="QLabel" name="labelString">
-          <property name="text">
-           <string>String</string>
-          </property>
-         </widget>
-        </item>
-       <item row="0" column="1">
-         <widget class="QLineEdit" name="leString">
-          <property name="toolTip">
-           <string>Text to be made into ShapeString</string>
-          </property>
-         </widget>
-        </item>
-        </layout>
-      </item>
-      <item row="8" column="0">
-       <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,1">
-        <item row="0" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="labelHeight">
           <property name="text">
            <string>Height</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="4" column="1">
          <widget class="Gui::QuantitySpinBox" name="sbHeight">
           <property name="toolTip">
            <string>Height of the result</string>
@@ -168,8 +140,22 @@
         </item>
        </layout>
       </item>
-      <item row="9" column="0">
-       <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelString">
+          <property name="text">
+           <string>String</string>
+          </property>
+         </widget>
+        </item>
+       <item row="0" column="1">
+         <widget class="QLineEdit" name="leString">
+          <property name="toolTip">
+           <string>Text to be made into ShapeString</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="labelFontFile">
           <property name="text">
@@ -186,20 +172,7 @@
         </item>
        </layout>
       </item>
-      <item row="10" column="0">
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      </layout>
+     </layout>
     </widget>
    </item>
   </layout>

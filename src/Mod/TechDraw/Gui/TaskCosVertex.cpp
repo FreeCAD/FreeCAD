@@ -217,7 +217,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     double y = Rez::guiX(m_baseFeat->Y.getValue());
 
     DrawViewPart* dvp = m_baseFeat;
-    DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
+    DrawProjGroupItem* dpgi = freecad_cast<DrawProjGroupItem*>(dvp);
     if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
         if (dpg) {

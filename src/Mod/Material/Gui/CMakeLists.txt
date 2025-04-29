@@ -30,10 +30,10 @@ qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
 qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
 qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
 
-generate_from_xml(MaterialTreeWidgetPy)
+generate_from_py(MaterialTreeWidget)
 
 SET(Python_SRCS
-    MaterialTreeWidgetPy.xml
+    MaterialTreeWidget.pyi
     MaterialTreeWidgetPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

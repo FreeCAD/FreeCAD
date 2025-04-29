@@ -28,7 +28,7 @@
 
 #include <Base/PlacementPy.h>
 
-// inclusion of the generated files (generated out of ViewProviderLinkPy.xml)
+// inclusion of the generated files (generated out of ViewProviderLinkPy.pyi)
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderLinkPy.cpp"
 

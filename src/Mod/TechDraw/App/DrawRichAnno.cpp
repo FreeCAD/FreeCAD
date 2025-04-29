@@ -89,7 +89,7 @@ App::DocumentObjectExecReturn *DrawRichAnno::execute()
 DrawView* DrawRichAnno::getBaseView() const
 {
 //    Base::Console().Message("DRA::getBaseView() - %s\n", getNameInDocument());
-    return dynamic_cast<DrawView*>(AnnoParent.getValue());
+    return freecad_cast<DrawView*>(AnnoParent.getValue());
 }
 
 //finds the first DrawPage in this Document that claims to own this DrawRichAnno
@@ -102,7 +102,7 @@ DrawPage* DrawRichAnno::findParentPage() const
         return DrawView::findParentPage();
     }
 
-    DrawView* parent = dynamic_cast<DrawView*>(AnnoParent.getValue());
+    DrawView* parent = freecad_cast<DrawView*>(AnnoParent.getValue());
     if (parent) {
         return parent->findParentPage();
     }

@@ -23,6 +23,7 @@
 #ifndef POINTS_GRID_H
 #define POINTS_GRID_H
 
+#include <limits>
 #include <set>
 
 #include <Base/BoundBox.h>
@@ -293,7 +294,7 @@ private:
     Base::Vector3d _clPt;       /**< Base point of search ray. */
     Base::Vector3d _clDir;      /**< Direction of search ray. */
     bool _bValidRay {false};    /**< Search ray ok? */
-    float _fMaxSearchArea {FLOAT_MAX};
+    float _fMaxSearchArea {std::numeric_limits<float>::max()};
     /** Checks if a grid position is already visited by NextOnRay(). */
     struct GridElement
     {

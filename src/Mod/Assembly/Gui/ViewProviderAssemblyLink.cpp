@@ -86,7 +86,7 @@ bool ViewProviderAssemblyLink::setEdit(int mode)
 
 bool ViewProviderAssemblyLink::doubleClicked()
 {
-    auto* link = dynamic_cast<AssemblyLink*>(getObject());
+    auto* link = freecad_cast<AssemblyLink*>(getObject());
 
     if (!link) {
         return true;
@@ -94,7 +94,7 @@ bool ViewProviderAssemblyLink::doubleClicked()
     auto* assembly = link->getLinkedAssembly();
 
     auto* vpa =
-        dynamic_cast<ViewProviderAssembly*>(Gui::Application::Instance->getViewProvider(assembly));
+        freecad_cast<ViewProviderAssembly*>(Gui::Application::Instance->getViewProvider(assembly));
     if (!vpa) {
         return true;
     }

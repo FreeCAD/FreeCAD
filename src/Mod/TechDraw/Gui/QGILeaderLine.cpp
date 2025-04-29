@@ -155,7 +155,7 @@ void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 //! start editor on double click
 void QGILeaderLine::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
-    auto ViewProvider = dynamic_cast<ViewProviderLeader*>(getViewProvider(getLeaderFeature()));
+    auto ViewProvider = freecad_cast<ViewProviderLeader*>(getViewProvider(getLeaderFeature()));
     if (!ViewProvider) {
         qWarning() << "QGILeaderLine::mouseDoubleClickEvent: No valid view provider";
         return;
@@ -461,7 +461,7 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
 
 //! returns the point (on the parent) to which the leader is attached.
 //! result is relative to the center of the unscaled, unrotated parent.
-//! result is is not inverted (Y grows upwards).
+//! result is not inverted (Y grows upwards).
 QPointF QGILeaderLine::getAttachFromFeature()
 {
     TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
@@ -589,7 +589,7 @@ Base::Vector3d  QGILeaderLine::getAttachPoint()
     double yPos = Rez::guiX(featLeader->Y.getValue());
     Base::Vector3d vAttachPoint{xPos, yPos};
     vAttachPoint = vAttachPoint * baseScale;
-    double rotationRad = parent->Rotation.getValue() * M_PI / DegreesHalfCircle;
+    double rotationRad = parent->Rotation.getValue() * std::numbers::pi / DegreesHalfCircle;
     if (rotationRad != 0.0) {
         vAttachPoint.RotateZ(rotationRad);
     }
@@ -632,7 +632,7 @@ QColor QGILeaderLine::prefNormalColor()
     //    Base::Console().Message("QGILL::getNormalColor()\n");
     setNormalColor(PreferencesGui::leaderQColor());
 
-    auto vp = dynamic_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
+    auto vp = freecad_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if (vp) {
         QColor normal = vp->Color.getValue().asValue<QColor>();
         setNormalColor(PreferencesGui::getAccessibleQColor(normal));
@@ -659,7 +659,7 @@ void QGILeaderLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 
 bool QGILeaderLine::useOldCoords() const
 {
-    auto vp = dynamic_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
+    auto vp = freecad_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if (vp) {
         return vp->UseOldCoords.getValue();
     }

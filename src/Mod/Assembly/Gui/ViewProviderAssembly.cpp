@@ -54,9 +54,9 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
+#include <Gui/Inventor/Draggers/SoTransformDragger.h>
 #include <Gui/MDIView.h>
 #include <Gui/MainWindow.h>
-#include <Gui/SoFCCSysDragger.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewParams.h>
@@ -267,7 +267,7 @@ void ViewProviderAssembly::setDragger()
 {
     // Create the dragger coin object
     assert(!asmDragger);
-    asmDragger = new Gui::SoFCCSysDragger();
+    asmDragger = new Gui::SoTransformDragger();
     asmDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
                               Gui::ViewParams::instance()->getAxisYColor(),
                               Gui::ViewParams::instance()->getAxisZColor());
@@ -1064,7 +1064,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
         addSubComponents = [&](AssemblyLink* asmLink, std::vector<App::DocumentObject*>& objs) {
             std::vector<App::DocumentObject*> assemblyLinkGroup = asmLink->Group.getValues();
             for (auto* obj : assemblyLinkGroup) {
-                auto* subAsmLink = dynamic_cast<AssemblyLink*>(obj);
+                auto* subAsmLink = freecad_cast<AssemblyLink*>(obj);
                 auto* link = dynamic_cast<App::Link*>(obj);
                 if (subAsmLink || link) {
                     if (std::ranges::find(objs, obj) == objs.end()) {
@@ -1144,7 +1144,7 @@ Base::Placement ViewProviderAssembly::getDraggerPlacement()
             Base::convertTo<Base::Rotation>(asmDragger->rotation.getValue())};
 }
 
-Gui::SoFCCSysDragger* ViewProviderAssembly::getDragger()
+Gui::SoTransformDragger* ViewProviderAssembly::getDragger()
 {
     return asmDragger;
 }

@@ -44,6 +44,8 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <CXX/Objects.hxx>
 
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
+
 #include "Application.h"
 #include "ApplicationPy.h"
 #include "BitmapFactory.h"
@@ -773,8 +775,10 @@ PyObject* ApplicationPy::sExport(PyObject * /*self*/, PyObject *args)
                         view3d->viewAll();
                     }
                     QPrinter printer(QPrinter::ScreenResolution);
-                    // setPdfVersion sets the printed PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-                    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+                    // setPdfVersion sets the printed PDF Version to what is chosen in
+                    // Preferences/Import-Export/PDF more details under:
+                    // https://www.kdab.com/creating-pdfa-documents-qt/
+                    printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
                     printer.setOutputFormat(QPrinter::PdfFormat);
                     printer.setOutputFileName(fileName);
                     printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));

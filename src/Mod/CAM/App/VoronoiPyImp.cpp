@@ -120,7 +120,7 @@ PyObject* VoronoiPy::construct(PyObject* args)
     return Py_None;
 }
 
-PyObject* VoronoiPy::numCells(PyObject* args)
+PyObject* VoronoiPy::numCells(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         throw Py::RuntimeError("no arguments accepted");
@@ -128,7 +128,7 @@ PyObject* VoronoiPy::numCells(PyObject* args)
     return PyLong_FromLong(getVoronoiPtr()->numCells());
 }
 
-PyObject* VoronoiPy::numEdges(PyObject* args)
+PyObject* VoronoiPy::numEdges(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         throw Py::RuntimeError("no arguments accepted");
@@ -136,7 +136,7 @@ PyObject* VoronoiPy::numEdges(PyObject* args)
     return PyLong_FromLong(getVoronoiPtr()->numEdges());
 }
 
-PyObject* VoronoiPy::numVertices(PyObject* args)
+PyObject* VoronoiPy::numVertices(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         throw Py::RuntimeError("no arguments accepted");
@@ -297,7 +297,7 @@ PyObject* VoronoiPy::resetColor(PyObject* args)
     return Py_None;
 }
 
-PyObject* VoronoiPy::getPoints(PyObject* args)
+PyObject* VoronoiPy::getPoints(PyObject* args) const
 {
     double z = 0;
     if (!PyArg_ParseTuple(args, "|d", &z)) {
@@ -312,7 +312,7 @@ PyObject* VoronoiPy::getPoints(PyObject* args)
     return Py::new_reference_to(list);
 }
 
-PyObject* VoronoiPy::getSegments(PyObject* args)
+PyObject* VoronoiPy::getSegments(PyObject* args) const
 {
     double z = 0;
     if (!PyArg_ParseTuple(args, "|d", &z)) {
@@ -331,7 +331,7 @@ PyObject* VoronoiPy::getSegments(PyObject* args)
     return Py::new_reference_to(list);
 }
 
-PyObject* VoronoiPy::numPoints(PyObject* args)
+PyObject* VoronoiPy::numPoints(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         throw Py::RuntimeError("no arguments accepted");
@@ -339,7 +339,7 @@ PyObject* VoronoiPy::numPoints(PyObject* args)
     return PyLong_FromLong(getVoronoiPtr()->vd->points.size());
 }
 
-PyObject* VoronoiPy::numSegments(PyObject* args)
+PyObject* VoronoiPy::numSegments(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         throw Py::RuntimeError("no arguments accepted");
@@ -347,9 +347,7 @@ PyObject* VoronoiPy::numSegments(PyObject* args)
     return PyLong_FromLong(getVoronoiPtr()->vd->segments.size());
 }
 
-
 // custom attributes get/set
-
 PyObject* VoronoiPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;

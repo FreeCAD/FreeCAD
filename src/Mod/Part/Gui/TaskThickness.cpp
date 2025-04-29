@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QMessageBox>
 #endif
 
@@ -91,7 +92,8 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
     d->ui.fillOffset->hide();
 
     QSignalBlocker blockOffset(d->ui.spinOffset);
-    d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
+    d->ui.spinOffset->setRange(-std::numeric_limits<int>::max(),
+                                std::numeric_limits<int>::max());
     d->ui.spinOffset->setSingleStep(0.1);
     d->ui.spinOffset->setValue(d->thickness->Value.getValue());
 

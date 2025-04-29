@@ -1,34 +1,35 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """BIM Truss command"""
 
-
-import os
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -59,8 +60,10 @@ class Arch_Truss:
             self.createTruss(basename)
         else:
             # interactive line drawing
-            self.points = []
             import WorkingPlane
+
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+            self.points = []
             WorkingPlane.get_working_plane()
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.getPoint(callback=self.getPoint)
@@ -71,11 +74,15 @@ class Arch_Truss:
 
         if point is None:
             # cancelled
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         self.points.append(point)
         if len(self.points) == 1:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint)
         elif len(self.points) == 2:
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             self.createTruss()
 
     def createTruss(self, basename=""):

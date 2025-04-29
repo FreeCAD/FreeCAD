@@ -50,7 +50,8 @@ class Fillet(DraftObject):
             obj.addProperty("App::PropertyVectorDistance",
                             "Start",
                             "Draft",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Start = App.Vector(0, 0, 0)
 
         if not hasattr(obj, "End"):
@@ -58,7 +59,8 @@ class Fillet(DraftObject):
             obj.addProperty("App::PropertyVectorDistance",
                             "End",
                             "Draft",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.End = App.Vector(0, 0, 0)
 
         if not hasattr(obj, "Length"):
@@ -66,7 +68,8 @@ class Fillet(DraftObject):
             obj.addProperty("App::PropertyLength",
                             "Length",
                             "Draft",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Length = 0
 
         if not hasattr(obj, "FilletRadius"):
@@ -74,7 +77,8 @@ class Fillet(DraftObject):
             obj.addProperty("App::PropertyLength",
                             "FilletRadius",
                             "Draft",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.FilletRadius = 0
 
         # TODO: these two properties should link two straight lines

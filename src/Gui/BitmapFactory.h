@@ -87,14 +87,6 @@ public:
      */
     QPixmap pixmapFromSvg(const char* name, const QSizeF& size,
                           const ColorMap& colorMapping = ColorMap()) const;
-    /** Retrieves a pixmap by name and size created by an
-     * scalable vector graphics (SVG) and a device pixel ratio
-     *
-     * @param colorMapping - a dictionary of substitute colors.
-     * Can be used to customize icon color scheme, e.g. crosshair color
-     */
-    QPixmap pixmapFromSvg(const char* name, const QSizeF& size, qreal dpr,
-                          const ColorMap& colorMapping = ColorMap()) const;
     /** This method is provided for convenience and does the same
      * as the method above except that it creates the pixmap from
      * a byte array.
@@ -148,6 +140,8 @@ public:
 
     /// Helper method to merge a pixmap into one corner of a QIcon
     static QIcon mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position);
+
+    static qreal getMaximumDPR();
 
 private:
     bool loadPixmap(const QString& path, QPixmap&) const;

@@ -323,8 +323,7 @@ class AddSCADWidget(QtGui.QWidget):
         # Main text area
         self.textEdit=QtGui.QTextEdit()
         self.textEdit.setAcceptRichText(False)
-        #print(self.textEdit.maximumHeight())
-        #print(self.textEdit.maximumViewportSize())
+
         # Message Area
         self.textMsg=QtGui.QPlainTextEdit()
         self.textMsg.setReadOnly(True)

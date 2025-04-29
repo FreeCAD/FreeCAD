@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <sstream>
 
 #include <QLocale>
@@ -105,11 +106,11 @@ const char* DrawViewDimension::TypeEnums[] = {"Distance",
 const char* DrawViewDimension::MeasureTypeEnums[] = {"True", "Projected", nullptr};
 
 // constraint to set the step size to 0.1
-static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = {-DBL_MAX,
-                                                                                 DBL_MAX,
-                                                                                 0.1};
+static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = {
+    -std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), 0.1};
 // constraint to force positive values
-static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = {0.0, DBL_MAX, 0.1};
+static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = {
+    0.0, std::numeric_limits<double>::max(), 0.1};
 
 DrawViewDimension::DrawViewDimension()
 {
@@ -728,7 +729,7 @@ double DrawViewDimension::getProjectedDimValue() const
 
     if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
         pointPair pts = getLinearPoints();
-        auto dbv = dynamic_cast<DrawBrokenView*>(getViewPart());
+        auto dbv = freecad_cast<DrawBrokenView*>(getViewPart());
         if (dbv)  {
             // raw pts from view are inverted Y, so we need to un-invert them before mapping
             // raw pts are scaled, so we need to unscale them for mapPoint2dFromView

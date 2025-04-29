@@ -74,7 +74,7 @@ class MeshSetsGetter:
                 # TODO somehow this is not smart, pur mesh objects might be used often
                 if self.member.geos_beamsection and (
                     type_of_obj(self.solver_obj) == "Fem::SolverCcxTools"
-                    or type_of_obj(self.solver_obj) == "Fem::SolverCalculix"
+                    or type_of_obj(self.solver_obj) == "Fem::SolverCalculiX"
                 ):
                     FreeCAD.Console.PrintError(
                         "The mesh does not know the geometry it is made from. "

@@ -154,6 +154,24 @@ protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
+
+// ***************************************************************************
+// calculator filter
+class FemGuiExport ViewProviderFemPostCalculator: public ViewProviderFemPostObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostCalculator);
+
+public:
+    /// constructor.
+    ViewProviderFemPostCalculator();
+    ~ViewProviderFemPostCalculator() override;
+
+    void updateData(const App::Property* prop) override;
+
+protected:
+    void setupTaskDialog(TaskDlgPost* dlg) override;
+};
+
 }  // namespace FemGui
 
 

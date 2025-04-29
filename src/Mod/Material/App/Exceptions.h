@@ -34,7 +34,7 @@ class Uninitialized: public Base::Exception
 {
 public:
     Uninitialized()
-        : Base::Exception("Uninitalized")
+        : Base::Exception("Uninitialized")
     {}
     explicit Uninitialized(const char* msg)
         : Base::Exception(msg)
@@ -244,7 +244,7 @@ class UnknownValueType: public Base::Exception
 {
 public:
     UnknownValueType()
-        : Base::Exception("Unkown value type")
+        : Base::Exception("Unknown value type")
     {}
     explicit UnknownValueType(const char* msg)
         : Base::Exception(msg)

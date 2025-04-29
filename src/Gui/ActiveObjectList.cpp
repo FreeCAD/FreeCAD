@@ -62,7 +62,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
     auto obj = getObject(info, false);
     if (!obj)
         return;
-    auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+    auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
     if (!vp)
         return;
 

@@ -127,7 +127,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         }
 
         if (obj->isDerivedFrom<App::Link>()) {
-            App::Link* xLink = dynamic_cast<App::Link*>(obj);
+            App::Link* xLink = static_cast<App::Link*>(obj);
             std::vector<TopoDS_Shape> xShapes = getXShapes(xLink);
             if (!xShapes.empty()) {
                 sourceShapes.insert(sourceShapes.end(), xShapes.begin(), xShapes.end());
@@ -445,7 +445,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
 //    if (isDraftPoint(obj) {
-//        //Draft Points are not necc. Part::PartFeature??
+//        //Draft Points are not necc. Part::Feature??
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
 
     const Part::Feature* pf = dynamic_cast<const Part::Feature*>(obj);

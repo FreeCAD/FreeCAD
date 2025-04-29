@@ -1,36 +1,53 @@
-#***************************************************************************
-#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
 # Modified Amritpal Singh <amrit3701@gmail.com> on 07-07-2017
 
+__title__  = "FreeCAD Rebar"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchRebar
+#  \ingroup ARCH
+#  \brief The Rebar object and tools
+#
+#  This module provides tools to build Rebar objects.
+#  Rebars (or Reinforcing Bars) are metallic bars placed
+#  inside concrete structures to reinforce them.
+
 import FreeCAD
-import Draft
-import ArchComponent
-import DraftVecUtils
 import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
     def translate(ctxt,txt):
@@ -42,18 +59,6 @@ else:
 # for Rebar addon compatibility
 from bimcommands import BimRebar
 _CommandRebar = BimRebar.Arch_Rebar
-
-## @package ArchRebar
-#  \ingroup ARCH
-#  \brief The Rebar object and tools
-#
-#  This module provides tools to build Rebar objects.
-#  Rebars (or Reinforcing Bars) are metallic bars placed
-#  inside concrete structures to reinforce them.
-
-__title__  = "FreeCAD Rebar"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
 
 
 class _Rebar(ArchComponent.Component):
@@ -70,33 +75,33 @@ class _Rebar(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Diameter" in pl:
-            obj.addProperty("App::PropertyLength","Diameter","Rebar",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"))
+            obj.addProperty("App::PropertyLength","Diameter","Rebar",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"), locked=True)
         if not "OffsetStart" in pl:
-            obj.addProperty("App::PropertyDistance","OffsetStart","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the first bar (concrete cover)."))
+            obj.addProperty("App::PropertyDistance","OffsetStart","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the first bar (concrete cover)."), locked=True)
         if not "OffsetEnd" in pl:
-            obj.addProperty("App::PropertyDistance","OffsetEnd","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
+            obj.addProperty("App::PropertyDistance","OffsetEnd","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."), locked=True)
         if not "Amount" in pl:
-            obj.addProperty("App::PropertyInteger","Amount","Rebar",QT_TRANSLATE_NOOP("App::Property","The amount of bars"))
+            obj.addProperty("App::PropertyInteger","Amount","Rebar",QT_TRANSLATE_NOOP("App::Property","The amount of bars"), locked=True)
         if not "Spacing" in pl:
-            obj.addProperty("App::PropertyLength","Spacing","Rebar",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"))
+            obj.addProperty("App::PropertyLength","Spacing","Rebar",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"), locked=True)
             obj.setEditorMode("Spacing", 1)
         if not "Distance" in pl:
-            obj.addProperty("App::PropertyLength","Distance","Rebar",QT_TRANSLATE_NOOP("App::Property","The total distance to span the rebars over. Keep 0 to automatically use the host shape size."))
+            obj.addProperty("App::PropertyLength","Distance","Rebar",QT_TRANSLATE_NOOP("App::Property","The total distance to span the rebars over. Keep 0 to automatically use the host shape size."), locked=True)
         if not "Direction" in pl:
-            obj.addProperty("App::PropertyVector","Direction","Rebar",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."))
+            obj.addProperty("App::PropertyVector","Direction","Rebar",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."), locked=True)
         if not "Rounding" in pl:
-            obj.addProperty("App::PropertyFloat","Rounding","Rebar",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."))
+            obj.addProperty("App::PropertyFloat","Rounding","Rebar",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."), locked=True)
         if not "PlacementList" in pl:
-            obj.addProperty("App::PropertyPlacementList","PlacementList","Rebar",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"))
+            obj.addProperty("App::PropertyPlacementList","PlacementList","Rebar",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"), locked=True)
         if not "Host" in pl:
-            obj.addProperty("App::PropertyLink","Host","Rebar",QT_TRANSLATE_NOOP("App::Property","The structure object that hosts this rebar"))
+            obj.addProperty("App::PropertyLink","Host","Rebar",QT_TRANSLATE_NOOP("App::Property","The structure object that hosts this rebar"), locked=True)
         if not "CustomSpacing" in pl:
-            obj.addProperty("App::PropertyString", "CustomSpacing", "Rebar", QT_TRANSLATE_NOOP("App::Property","The custom spacing of rebar"))
+            obj.addProperty("App::PropertyString", "CustomSpacing", "Rebar", QT_TRANSLATE_NOOP("App::Property","The custom spacing of rebar"), locked=True)
         if not "Length" in pl:
-            obj.addProperty("App::PropertyDistance", "Length", "Rebar", QT_TRANSLATE_NOOP("App::Property","Length of a single rebar"))
+            obj.addProperty("App::PropertyDistance", "Length", "Rebar", QT_TRANSLATE_NOOP("App::Property","Length of a single rebar"), locked=True)
             obj.setEditorMode("Length", 1)
         if not "TotalLength" in pl:
-            obj.addProperty("App::PropertyDistance", "TotalLength", "Rebar", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"))
+            obj.addProperty("App::PropertyDistance", "TotalLength", "Rebar", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"), locked=True)
             obj.setEditorMode("TotalLength", 1)
         if not "Mark" in pl:
             obj.addProperty(
@@ -104,6 +109,7 @@ class _Rebar(ArchComponent.Component):
                 "Mark",
                 "Rebar",
                 QT_TRANSLATE_NOOP("App::Property", "The rebar mark"),
+                locked=True,
             )
         self.Type = "Rebar"
 
@@ -399,7 +405,7 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
 
         pl = vobj.PropertiesList
         if not "RebarShape" in pl:
-            vobj.addProperty("App::PropertyString","RebarShape","Rebar",QT_TRANSLATE_NOOP("App::Property","Shape of rebar")).RebarShape
+            vobj.addProperty("App::PropertyString","RebarShape","Rebar",QT_TRANSLATE_NOOP("App::Property","Shape of rebar"), locked=True).RebarShape
             vobj.setEditorMode("RebarShape",2)
 
     def onDocumentRestored(self,vobj):
@@ -447,9 +453,9 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
                     self.centerlinegroup.removeChild(self.centerline)
             if hasattr(obj.Proxy,"wires"):
                 if obj.Proxy.wires:
+                    import re
                     from pivy import coin
                     import Part
-                    import re
                     self.centerline = coin.SoSeparator()
                     comp = Part.makeCompound(obj.Proxy.wires)
                     buf = re.findall(r"point \[(.*?)\]",comp.writeInventor().replace("\n",""))
@@ -570,4 +576,3 @@ def getLengthOfRebar(rebar):
     else:
         FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
         return None
-

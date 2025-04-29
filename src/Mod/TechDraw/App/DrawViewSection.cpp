@@ -71,6 +71,7 @@
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
+#include <limits>
 #include <sstream>
 #endif
 
@@ -971,7 +972,7 @@ ChangePointVector DrawViewSection::getChangePointsFromSectionLine()
     //    Base::Console().Message("Dvs::getChangePointsFromSectionLine()\n");
     ChangePointVector result;
     std::vector<gp_Pnt> allPoints;
-    DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
+    DrawViewPart* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
         std::pair<Base::Vector3d, Base::Vector3d> lineEnds = sectionLineEnds();
         // make start and end marks

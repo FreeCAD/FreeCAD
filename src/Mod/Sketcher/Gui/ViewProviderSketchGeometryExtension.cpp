@@ -57,11 +57,7 @@ std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::co
 
     copyAttributes(cpy.get());
 
-#if defined(__GNUC__) && (__GNUC__ <= 4)
-    return std::move(cpy);
-#else
     return cpy;
-#endif
 }
 
 void ViewProviderSketchGeometryExtension::restoreAttributes(Base::XMLReader& reader)

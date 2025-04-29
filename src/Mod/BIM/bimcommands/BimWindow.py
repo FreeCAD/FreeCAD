@@ -1,34 +1,37 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """BIM window command"""
 
-
 import os
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 ALLOWEDHOSTS = ["Wall","Structure","Roof"]
 
@@ -124,8 +127,9 @@ class Arch_Window:
                     return
 
         # interactive mode
-        self.wp = WorkingPlane.get_working_plane()
 
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        self.wp = WorkingPlane.get_working_plane()
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.length(self.Width)
         self.tracker.width(self.W1)
@@ -157,6 +161,9 @@ class Arch_Window:
         from draftutils import gui_utils
         from draftutils.messages import _wrn
         from ArchWindowPresets import WindowPresets
+
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
         self.tracker.off()
         if point is None:
             return
@@ -166,7 +173,7 @@ class Arch_Window:
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
 
-        FreeCADGui.doCommand("import math, FreeCAD, Arch, DraftGeomUtils, WorkingPlane")
+        FreeCADGui.doCommand("import FreeCAD, Arch, DraftGeomUtils, WorkingPlane")
         FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
 
         if self.baseFace is not None:
@@ -179,6 +186,7 @@ class Arch_Window:
         FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + ", " + str(point.y) + ", " + str(point.z) + ")")
 
         if self.Preset >= len(WindowPresets):
+            preset = False
             # library object
             col = FreeCAD.ActiveDocument.Objects
             path = self.librarypresets[self.Preset - len(WindowPresets)][1]
@@ -206,10 +214,22 @@ class Arch_Window:
 
         else:
             # preset
+            preset = True
             wp = ""
             for p in self.wparams:
-                wp += p.lower() + "=" + str(getattr(self,p)) + ", "
-            FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "', " + wp + "placement=pl)")
+                wp += ", " + p.lower() + "=" + str(getattr(self,p))
+            import ArchSketchObject
+            if hasattr(ArchSketchObject, 'attachToHost'):
+                # Window sketch's stay at orgin is good if addon exists
+                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")
+                FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(win)")
+                w = FreeCADGui.Selection.getSelection()[0]
+                FreeCADGui.doCommand("FreeCAD.SketchArchPl = pl")
+                wPl = FreeCAD.SketchArchPl
+                SketchArch = True
+            else:
+                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", placement=pl)")
+                SketchArch = False
 
         if self.Include:
             host = None
@@ -222,6 +242,9 @@ class Arch_Window:
                 siblings = host.Proxy.getSiblings(host)
                 for sibling in siblings:
                     FreeCADGui.doCommand("win.Hosts = win.Hosts + [FreeCAD.ActiveDocument." + sibling.Name + "]")
+                if preset == True and Draft.getType(host.Base) == "ArchSketch":
+                    if SketchArch:
+                        ArchSketchObject.attachToHost(w, target=host, pl=wPl)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

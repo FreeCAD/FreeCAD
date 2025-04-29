@@ -37,7 +37,7 @@
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
 
-// inclusion of the generated files (generated out of ViewProviderPy.xml)
+// inclusion of the generated files (generated out of ViewProviderPy.pyi)
 #include <Gui/ViewProviderPy.h>
 #include <Gui/ViewProviderPy.cpp>
 #include <Gui/View3DPy.h>
@@ -60,33 +60,56 @@ std::string ViewProviderPy::representation() const
     return "<View provider object>";
 }
 
-PyObject*  ViewProviderPy::addProperty(PyObject *args)
+PyObject* ViewProviderPy::addProperty(PyObject* args, PyObject* kwd)
 {
-    char *sType,*sName=nullptr,*sGroup=nullptr,*sDoc=nullptr;
-    short attr=0;
-    std::string sDocStr;
-    PyObject *ro = Py_False, *hd = Py_False;
-    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
-        &PyBool_Type, &ro, &PyBool_Type, &hd))
+    char *sType, *sName = nullptr, *sGroup = nullptr, *sDoc = nullptr;
+    short attr = 0;
+    PyObject *ro = Py_False, *hd = Py_False, *lk = Py_False;
+    PyObject* enumVals = nullptr;
+    const std::array<const char*, 10> kwlist {"type",
+                                              "name",
+                                              "group",
+                                              "doc",
+                                              "attr",
+                                              "read_only",
+                                              "hidden",
+                                              "locked",
+                                              "enum_vals",
+                                              nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwd,
+                                             "ss|sethO!O!O!O",
+                                             kwlist,
+                                             &sType,
+                                             &sName,
+                                             &sGroup,
+                                             "utf-8",
+                                             &sDoc,
+                                             &attr,
+                                             &PyBool_Type,
+                                             &ro,
+                                             &PyBool_Type,
+                                             &hd,
+                                             &PyBool_Type,
+                                             &lk,
+                                             &enumVals)) {
         return nullptr;
-
-    if (sDoc) {
-        sDocStr = sDoc;
-        PyMem_Free(sDoc);
     }
 
-    App::Property* prop=nullptr;
-    try {
-        prop = getViewProviderPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
-            Base::asBoolean(ro), Base::asBoolean(hd));
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    if (!prop) {
-        std::stringstream str;
-        str << "No property found of type '" << sType << "'" << std::ends;
-        throw Py::TypeError(str.str());
+    App::Property* prop = getViewProviderPtr()->addDynamicProperty(sType,
+                                                                sName,
+                                                                sGroup,
+                                                                sDoc,
+                                                                attr,
+                                                                Base::asBoolean(ro),
+                                                                Base::asBoolean(hd));
+
+    prop->setStatus(App::Property::LockDynamic, Base::asBoolean(lk));
+
+            // enum support
+    auto* propEnum = freecad_cast<App::PropertyEnumeration*>(prop);
+    if (propEnum && enumVals) {
+        propEnum->setPyObject(enumVals);
     }
 
     return Py::new_reference_to(this);
@@ -390,7 +413,7 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
     return nullptr;
 }
 
-PyObject* ViewProviderPy::claimChildren(PyObject* args)
+PyObject* ViewProviderPy::claimChildren(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -406,7 +429,7 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
-PyObject* ViewProviderPy::claimChildrenRecursive(PyObject* args)
+PyObject* ViewProviderPy::claimChildrenRecursive(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -499,7 +522,7 @@ PyObject* ViewProviderPy::setElementColors(PyObject* args)
     Py_Return;
 }
 
-PyObject* ViewProviderPy::getElementPicked(PyObject* args)
+PyObject* ViewProviderPy::getElementPicked(PyObject* args) const
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O",&obj))
@@ -518,7 +541,7 @@ PyObject* ViewProviderPy::getElementPicked(PyObject* args)
     return Py::new_reference_to(Py::String(name));
 }
 
-PyObject* ViewProviderPy::getDetailPath(PyObject* args)
+PyObject* ViewProviderPy::getDetailPath(PyObject* args) const
 {
     const char *sub;
     PyObject *path;
@@ -541,7 +564,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", static_cast<void*>(det), 0);
 }
 
-PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)
+PyObject *ViewProviderPy::signalChangeIcon(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -705,4 +728,35 @@ void ViewProviderPy::setLinkVisibility(Py::Boolean arg)
 Py::String ViewProviderPy::getDropPrefix() const
 {
     return {getViewProviderPtr()->getDropPrefix()};
+}
+
+void ViewProviderPy::setToggleVisibility(Py::Object arg)
+{
+    std::string val;
+
+    if (PyObject_HasAttrString(arg.ptr(), "value")) {
+        // we are dealing with the enum
+        val = Py::String(arg.getAttr("value"));
+    }
+    else {
+        // we are dealing with a string
+        val = Py::String(arg);
+    }
+
+    if (val == "CanToggleVisibility") {
+        getViewProviderPtr()->setToggleVisibility(ViewProvider::ToggleVisibilityMode::CanToggleVisibility);
+    }
+    else if (val == "NoToggleVisibility") {
+        getViewProviderPtr()->setToggleVisibility(ViewProvider::ToggleVisibilityMode::NoToggleVisibility);
+    }
+    else {
+        throw Py::ValueError("Invalid ToggleVisibility mode. Use 'CanToggleVisibility' or 'NoToggleVisibility'.");
+    }
+}
+
+Py::Object ViewProviderPy::getToggleVisibility() const
+{
+    bool canToggleVisibility = getViewProviderPtr()->canToggleVisibility();
+
+    return Py::String(canToggleVisibility ? "CanToggleVisibility" : "NoToggleVisibility");
 }

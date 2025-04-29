@@ -77,7 +77,7 @@ public:
 private:
     static void initLibraries();
 
-    static std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
+    static std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> _libraryList;
     static std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> _modelMap;
     static QMutex _mutex;
 };

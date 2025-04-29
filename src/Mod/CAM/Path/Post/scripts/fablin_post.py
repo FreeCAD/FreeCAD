@@ -160,8 +160,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     for obj in objectslist:
 
@@ -183,8 +183,8 @@ def export(objectslist, filename, argstring):
 
     if OUTPUT_COMMENTS:
         gcode += "(begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     if SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()

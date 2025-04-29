@@ -146,7 +146,7 @@ DrawView* DrawLeaderLine::getBaseView() const
         return nullptr;
     }
 
-    auto cast = dynamic_cast<DrawView*>(baseObj);
+    auto cast = freecad_cast<DrawView*>(baseObj);
     return cast;
 }
 
@@ -375,7 +375,7 @@ std::vector<Base::Vector3d>  DrawLeaderLine::getScaledAndRotatedPoints(bool doSc
 
     double rotationRad{0.0};
     if (doRotate) {
-        rotationRad = dvp->Rotation.getValue() * M_PI / DegreesHalfCircle;
+        rotationRad = dvp->Rotation.getValue() * std::numbers::pi / DegreesHalfCircle;
     }
 
     std::vector<Base::Vector3d> pointsAll = WayPoints.getValues();
@@ -409,7 +409,7 @@ DrawLeaderLine::makeCanonicalPoints(const std::vector<Base::Vector3d>& inPoints,
 
     double rotationRad{0.0};
     if (doRotate) {
-        rotationRad = - dvp->Rotation.getValue() * M_PI / DegreesHalfCircle;
+        rotationRad = - dvp->Rotation.getValue() * std::numbers::pi / DegreesHalfCircle;
     }
 
     std::vector<Base::Vector3d> result;

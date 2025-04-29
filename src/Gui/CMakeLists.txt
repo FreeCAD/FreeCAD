@@ -418,6 +418,7 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
+    PreferencePages/DlgSettingsPDF.ui
     Dialogs/DlgCheckableMessageBox.ui
     Dialogs/DlgToolbars.ui
     Dialogs/DlgTreeWidget.ui
@@ -431,7 +432,7 @@ SET(Gui_UIC_SRCS
     SceneInspector.ui
     InputVector.ui
     Placement.ui
-    TaskCSysDragger.ui
+    TaskTransform.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
@@ -517,7 +518,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
-    TaskCSysDragger.cpp
+    TaskTransform.cpp
     Dialogs/DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
@@ -558,7 +559,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgCheckableMessageBox.h
     Dialogs/DlgExpressionInput.h
     TaskDlgRelocation.h
-    TaskCSysDragger.h
+    TaskTransform.h
     Dialogs/DlgUndoRedo.h
     InputVector.h
     Placement.h
@@ -659,6 +660,7 @@ SET(Dialog_Settings_CPP_SRCS
     Dialogs/DlgOnlineHelpImp.cpp
     Dialogs/DlgPreferencesImp.cpp
     PreferencePages/DlgSettings3DViewImp.cpp
+    PreferencePages/DlgSettingsPDF.cpp
     PreferencePages/DlgSettingsCacheDirectory.cpp
     Dialogs/DlgSettingsColorGradientImp.cpp
     PreferencePages/DlgSettingsDocumentImp.cpp
@@ -681,6 +683,7 @@ SET(Dialog_Settings_HPP_SRCS
     Dialogs/DlgOnlineHelpImp.h
     Dialogs/DlgPreferencesImp.h
     PreferencePages/DlgSettings3DViewImp.h
+    PreferencePages/DlgSettingsPDF.h
     PreferencePages/DlgSettingsCacheDirectory.h
     Dialogs/DlgSettingsColorGradientImp.h
     PreferencePages/DlgSettingsDocumentImp.h
@@ -721,6 +724,7 @@ SET(Dialog_Settings_SRCS
     PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
+    PreferencePages/DlgSettingsPDF.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 
@@ -1071,6 +1075,10 @@ SET(Inventor_CPP_SRCS
     Inventor/SoFCBoundingBox.cpp
     Inventor/SoMouseWheelEvent.cpp
     Inventor/SoFCTransform.cpp
+    Inventor/Draggers/SoTransformDragger.cpp
+    Inventor/Draggers/SoLinearDragger.cpp
+    Inventor/Draggers/SoPlanarDragger.cpp
+    Inventor/Draggers/SoRotationDragger.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1089,7 +1097,6 @@ SET(Inventor_CPP_SRCS
     SoTextLabel.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
-    SoFCCSysDragger.cpp
     ArcEngine.cpp
 )
 SET(Inventor_SRCS
@@ -1104,6 +1111,10 @@ SET(Inventor_SRCS
     Inventor/SoFCBoundingBox.h
     Inventor/SoMouseWheelEvent.h
     Inventor/SoFCTransform.h
+    Inventor/Draggers/SoTransformDragger.h
+    Inventor/Draggers/SoLinearDragger.h
+    Inventor/Draggers/SoPlanarDragger.h
+    Inventor/Draggers/SoRotationDragger.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1122,7 +1133,6 @@ SET(Inventor_SRCS
     SoTextLabel.h
     SoDatumLabel.h
     SoTouchEvents.h
-    SoFCCSysDragger.h
     ArcEngine.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
@@ -1355,7 +1365,7 @@ SET(FreeCADGui_SRCS
     ${FreeCADGui_connexion_SRCS}
     ${FreeCADGui_connexion_HDRS}
     ${FreeCADGui_CPP_SRCS}
-    ${FreeCADGui_XML_SRCS}
+    ${FreeCADGui_Pyi_SRCS}
     ${qsint_MOC_SRCS}
     ${Gui_QRC_SRCS}
     ${Gui_UIC_HDRS}
@@ -1428,9 +1438,12 @@ if (EIGEN3_NO_DEPRECATED_COPY)
     set_source_files_properties(
         NaviCube.cpp
         Inventor/SoAutoZoomTranslation.cpp
+        Inventor/Draggers/SoTransformDragger.cpp
+        Inventor/Draggers/SoLinearDragger.cpp
+        Inventor/Draggers/SoPlanarDragger.cpp
+        Inventor/Draggers/SoRotationDragger.cpp
         SoFCOffscreenRenderer.cpp
         Selection/SoFCSelectionAction.cpp
-        SoFCCSysDragger.cpp
         Quarter/QuarterWidget.cpp
         View3DInventorViewer.cpp
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})

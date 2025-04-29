@@ -36,7 +36,6 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_Location.hxx>
-#include <climits>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>  // for Precision::Confusion()

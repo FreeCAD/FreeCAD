@@ -317,7 +317,7 @@ void TaskRichAnno::createAnnoFeature()
 
     if (m_annoFeat) {
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_annoFeat);
-        auto annoVP = dynamic_cast<ViewProviderRichAnno*>(vp);
+        auto annoVP = freecad_cast<ViewProviderRichAnno*>(vp);
         if (annoVP) {
             Base::Color ac;
             ac.setValue<QColor>(ui->cpFrameColor->color());

@@ -26,7 +26,6 @@ SET(Arch_SRCS
     ArchStairs.py
     ArchSpace.py
     ArchRebar.py
-    TestArch.py
     ArchFrame.py
     ArchPanel.py
     ArchEquipment.py
@@ -46,6 +45,8 @@ SET(Arch_SRCS
     ArchSketchObject.py
     BimSelect.py
     BimStatus.py
+    TestArch.py
+    TestArchGui.py
 )
 
 SET(importers_SRCS
@@ -196,6 +197,13 @@ SET(nativeifc_SRCS
     nativeifc/ifc_classification.py
 )
 
+SET(bimtests_SRCS
+    bimtests/TestArchBase.py
+    bimtests/TestArchRoof.py
+    bimtests/TestArchSpace.py
+    bimtests/TestArchWall.py
+)
+
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
 SET(BIMGuiIcon_SVG
@@ -214,6 +222,7 @@ ADD_CUSTOM_TARGET(BIM ALL
             ${ArchGuiIcon_SVG}
             ${importers_SRCS}
             ${bimcommands_SRCS}
+            ${bimtests_SRCS}
             ${nativeifc_SRCS}
             ${BIMGuiIcon_SVG}
 )
@@ -226,6 +235,7 @@ fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Arch_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Dice3DS_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${importers_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimcommands_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimtests_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${nativeifc_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${BIMGuiIcon_SVG})
 
@@ -271,6 +281,12 @@ INSTALL(
     FILES
         ${bimcommands_SRCS}
     DESTINATION Mod/BIM/bimcommands
+)
+
+INSTALL(
+    FILES
+        ${bimtests_SRCS}
+    DESTINATION Mod/BIM/bimtests
 )
 
 INSTALL(

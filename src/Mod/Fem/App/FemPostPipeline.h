@@ -98,6 +98,7 @@ public:
               Base::Unit unit,
               std::string& frame_type);
     void scale(double s);
+    void renameArrays(const std::map<std::string, std::string>& names);
 
     // load from results
     void load(FemResultObject* res);
@@ -133,7 +134,6 @@ private:
 
     bool m_block_property = false;
     bool m_data_updated = false;
-    bool m_use_transform = false;
     void updateData();
 
 

@@ -369,7 +369,7 @@ MDIViewPage* ViewProviderPage::getMDIViewPage() const
 
 DrawTemplate* ViewProviderPage::getTemplate() const
 {
-    return dynamic_cast<DrawTemplate*>(getDrawPage()->Template.getValue());
+    return freecad_cast<DrawTemplate*>(getDrawPage()->Template.getValue());
 }
 
 
@@ -378,7 +378,7 @@ QGITemplate* ViewProviderPage::getQTemplate() const
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getDrawPage()->getDocument());
     if (guiDoc) {
         Gui::ViewProvider* vp = guiDoc->getViewProvider(getTemplate());
-        auto vpTemplate = dynamic_cast<ViewProviderTemplate*>(vp);
+        auto vpTemplate = freecad_cast<ViewProviderTemplate*>(vp);
         if (vpTemplate) {
             return vpTemplate->getQTemplate();
         }
@@ -455,7 +455,7 @@ void ViewProviderPage::setTemplateMarkers(bool state) const
     templateFeat = getDrawPage()->Template.getValue();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());
     Gui::ViewProvider* vp = guiDoc->getViewProvider(templateFeat);
-    auto* vpt = dynamic_cast<ViewProviderTemplate*>(vp);
+    auto* vpt = freecad_cast<ViewProviderTemplate*>(vp);
     if (vpt) {
         vpt->setMarkers(state);
         QGITemplate* t = vpt->getQTemplate();

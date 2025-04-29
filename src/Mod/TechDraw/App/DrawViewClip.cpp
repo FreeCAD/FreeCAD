@@ -69,25 +69,15 @@ void DrawViewClip::onChanged(const App::Property* prop)
 
 void DrawViewClip::addView(App::DocumentObject* docObj)
 {
-    if (!docObj->isDerivedFrom<DrawView>() && !docObj->isDerivedFrom<App::Link>()) {
+    if(docObj->isDerivedFrom<App::Link>()) {
+        auto* link = static_cast<App::Link*>(docObj);
+        docObj = link->getLinkedObject();
+    }
+
+    if (!docObj->isDerivedFrom<DrawView>()) {
         return;
     }
-
-    auto* view = dynamic_cast<DrawView*>(docObj);
-
-    if (!view) {
-        auto* link = dynamic_cast<App::Link*>(docObj);
-        if (!link) {
-            return;
-        }
-
-        if (link) {
-            view = dynamic_cast<DrawView*>(link->getLinkedObject());
-            if (!view) {
-                return;
-            }
-        }
-    }
+    auto* view = static_cast<DrawView*>(docObj);
 
     std::vector<App::DocumentObject*> newViews(Views.getValues());
     newViews.push_back(docObj);

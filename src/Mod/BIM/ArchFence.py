@@ -1,23 +1,26 @@
-#*****************************************************************************
-#*   Copyright (c) 2019 furti <daniel.furtlehner@gmx.net>                    *
-#*                                                                           *
-#*   This program is free software; you can redistribute it and/or modify    *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)      *
-#*   as published by the Free Software Foundation; either version 2 of       *
-#*   the License, or (at your option) any later version.                     *
-#*   for detail see the LICENCE text file.                                   *
-#*                                                                           *
-#*   This program is distributed in the hope that it will be useful,         *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of          *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
-#*   GNU Library General Public License for more details.                    *
-#*                                                                           *
-#*   You should have received a copy of the GNU Library General Public       *
-#*   License along with this program; if not, write to the Free Software     *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307    *
-#*   USA                                                                     *
-#*                                                                           *
-#*****************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# *****************************************************************************
+# *                                                                           *
+# *   Copyright (c) 2019 furti <daniel.furtlehner@gmx.net>                    *
+# *                                                                           *
+# *   This file is part of FreeCAD.                                           *
+# *                                                                           *
+# *   FreeCAD is free software: you can redistribute it and/or modify it      *
+# *   under the terms of the GNU Lesser General Public License as             *
+# *   published by the Free Software Foundation, either version 2.1 of the    *
+# *   License, or (at your option) any later version.                         *
+# *                                                                           *
+# *   FreeCAD is distributed in the hope that it will be useful, but          *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of              *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU        *
+# *   Lesser General Public License for more details.                         *
+# *                                                                           *
+# *   You should have received a copy of the GNU Lesser General Public        *
+# *   License along with FreeCAD. If not, see                                 *
+# *   <https://www.gnu.org/licenses/>.                                        *
+# *                                                                           *
+# *****************************************************************************
 
 # Fence functionality for the Arch Workbench
 
@@ -28,9 +31,9 @@ import ArchComponent
 import draftobjects.patharray as patharray
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import PySide.QtGui as QtGui
+    import FreeCADGui
 else:
     # \cond
     def translate(ctxt, txt):
@@ -59,24 +62,24 @@ class _Fence(ArchComponent.Component):
 
         if not "Section" in pl:
             obj.addProperty("App::PropertyLink", "Section", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "A single section of the fence"))
+                "App::Property", "A single section of the fence"), locked=True)
 
         if not "Post" in pl:
             obj.addProperty("App::PropertyLink", "Post", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "A single fence post"))
+                "App::Property", "A single fence post"), locked=True)
 
         if not "Path" in pl:
             obj.addProperty("App::PropertyLink", "Path", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The Path the fence should follow"))
+                "App::Property", "The Path the fence should follow"), locked=True)
 
         if not "NumberOfSections" in pl:
             obj.addProperty("App::PropertyInteger", "NumberOfSections", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The number of sections the fence is built of"))
+                "App::Property", "The number of sections the fence is built of"), locked=True)
             obj.setEditorMode("NumberOfSections", 1)
 
         if not "NumberOfPosts" in pl:
             obj.addProperty("App::PropertyInteger", "NumberOfPosts", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The number of posts used to build the fence"))
+                "App::Property", "The number of posts used to build the fence"), locked=True)
             obj.setEditorMode("NumberOfPosts", 1)
 
         self.Type = "Fence"
@@ -260,7 +263,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
 
         if not "UseOriginalColors" in pl:
             vobj.addProperty("App::PropertyBool", "UseOriginalColors", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "When true, the fence will be colored like the original post and section."))
+                "App::Property", "When true, the fence will be colored like the original post and section."), locked=True)
 
     def attach(self, vobj):
         self.setProperties(vobj)

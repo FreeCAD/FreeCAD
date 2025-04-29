@@ -55,10 +55,6 @@ FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
-/** \defgroup DocObject Document Object
-    \ingroup APP
-    \brief Base class of all objects handled in the Document
-*/
 
 PROPERTY_SOURCE(App::DocumentObject, App::TransactionalObject)
 
@@ -432,7 +428,7 @@ void DocumentObject::getOutList(int options, std::vector<DocumentObject*>& res) 
     bool noHidden = !!(options & OutListNoHidden);
     std::size_t size = res.size();
     for (auto prop : props) {
-        auto link = dynamic_cast<PropertyLinkBase*>(prop);
+        auto link = freecad_cast<PropertyLinkBase*>(prop);
         if (link) {
             link->getLinks(res, noHidden);
         }
@@ -461,7 +457,7 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
         return ret;
     }
 
-    auto link = dynamic_cast<PropertyLinkBase*>(prop);
+    auto link = freecad_cast<PropertyLinkBase*>(prop);
     if (link) {
         link->getLinks(ret);
     }
@@ -633,7 +629,7 @@ DocumentObject::getPathsByOutList(App::DocumentObject* to) const
 
 DocumentObjectGroup* DocumentObject::getGroup() const
 {
-    return dynamic_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
+    return freecad_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(DocumentObject* linkTo) const
@@ -953,7 +949,7 @@ DocumentObject* DocumentObject::getSubObject(const char* subname,
     // objects (think of the claimed children of a Fusion). But I do think we
     // should change that.
     if (transform && mat) {
-        auto pla = Base::freecad_dynamic_cast<PropertyPlacement>(getPropertyByName("Placement"));
+        auto pla = freecad_cast<PropertyPlacement*>(getPropertyByName("Placement"));
         if (pla) {
             *mat *= pla->getValue().toMatrix();
         }
@@ -1134,7 +1130,7 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
         }
     }
     if (transform && mat) {
-        auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
+        auto pla = freecad_cast<PropertyPlacement*>(getPropertyByName("Placement"));
         if (pla) {
             *mat *= pla->getValue().toMatrix();
         }
@@ -1480,7 +1476,7 @@ bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& i
     std::vector<Property*> props;
     getPropertyList(props);
     for (auto prop : props) {
-        auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+        auto linkProp = freecad_cast<PropertyLinkBase*>(prop);
         if (linkProp && linkProp->adjustLink(inList)) {
             touched = true;
         }
@@ -1499,7 +1495,7 @@ bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& i
 
 std::string DocumentObject::getElementMapVersion(const App::Property* _prop, bool restored) const
 {
-    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
     if (!prop) {
         return std::string();
     }
@@ -1508,7 +1504,7 @@ std::string DocumentObject::getElementMapVersion(const App::Property* _prop, boo
 
 bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const char* ver) const
 {
-    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
     if (!prop) {
         return false;
     }

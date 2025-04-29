@@ -454,11 +454,7 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
         QFile file(QString::fromLatin1(filenametmp));
         if (file.open(QIODevice::ReadOnly)) {
             QByteArray fileContents = file.readAll();
-#if COIN_MAJOR_VERSION >= 4
             stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
-#else
-            stateMachine = ScXML::readBuffer(fileContents.constData());
-#endif
             file.close();
         }
     }

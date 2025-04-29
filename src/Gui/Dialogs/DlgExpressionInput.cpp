@@ -286,7 +286,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
             //set default palette as we may have read text right now
             ui->msg->setPalette(ui->okBtn->palette());
 
-            auto * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
+            auto * n = freecad_cast<NumberExpression*>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
                 if (!value.isValid()) {
@@ -487,8 +487,8 @@ void DlgExpressionInput::acceptWithVarSet()
     // The value of the property is going to be the value that was originally
     // meant to be the value for the property that this dialog is targeting.
     Expression* exprSimplfied = expression->simplify();
-    auto ne = dynamic_cast<NumberExpression*>(exprSimplfied);
-    auto se = dynamic_cast<StringExpression*>(exprSimplfied);
+    auto ne = freecad_cast<NumberExpression*>(exprSimplfied);
+    auto se = freecad_cast<StringExpression*>(exprSimplfied);
     if (ne) {
         // the value is a number: directly assign it to the property instead of
         // making it an expression in the variable set
@@ -554,7 +554,7 @@ static void addGroupsVarSetComboBox(App::VarSet* varSet, QTreeWidgetItem* varSet
 static void addVarSetsVarSetComboBox(std::vector<App::VarSet*>& varSets, QTreeWidgetItem* docItem)
 {
     for (auto varSet : varSets) {
-        auto vp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
+        auto vp = freecad_cast<Gui::ViewProviderDocumentObject*>(
                 Gui::Application::Instance->getViewProvider(varSet));
         // the item will be automatically destroyed when the docItem will be destroyed
         auto item = new QTreeWidgetItem(docItem);

@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <limits>
 #include <boost/algorithm/string/replace.hpp>
 
 #include <Inventor/SbVec3f.h>
@@ -110,8 +111,7 @@ public:
         }
         Base::Matrix4D linkMat;
         auto linked = sobj->getLinkedObject(true, &linkMat, false);
-        auto vp = Base::freecad_dynamic_cast<ViewProviderPath>(
-            Application::Instance->getViewProvider(linked));
+        auto vp = freecad_cast<ViewProviderPath*>(Application::Instance->getViewProvider(linked));
         if (!vp) {
             setArrow();
             return;
@@ -183,11 +183,11 @@ ViewProviderPath::ViewProviderPath()
 
 
     ShowCountConstraints.LowerBound = 0;
-    ShowCountConstraints.UpperBound = INT_MAX;
+    ShowCountConstraints.UpperBound = std::numeric_limits<int>::max();
     ShowCountConstraints.StepSize = 1;
     ShowCount.setConstraints(&ShowCountConstraints);
     StartIndexConstraints.LowerBound = 0;
-    StartIndexConstraints.UpperBound = INT_MAX;
+    StartIndexConstraints.UpperBound = std::numeric_limits<int>::max();
     StartIndexConstraints.StepSize = 1;
     StartIndex.setConstraints(&StartIndexConstraints);
     ADD_PROPERTY_TYPE(StartPosition,

@@ -124,8 +124,8 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
             make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues()));
     }
     // the auxiliary spine
-    if (pipe->AuxillerySpine.getValue()) {
-        auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+    if (pipe->AuxiliarySpine.getValue()) {
+        auto* svp = doc->getViewProvider(pipe->AuxiliarySpine.getValue());
         auxSpineShow = svp->isShow();
         svp->show();
     }
@@ -432,8 +432,8 @@ void TaskPipeParameters::setVisibilityOfSpineAndProfile()
             profileVP->setVisible(profileShow);
             profileShow = false;
         }
-        if (pipe->AuxillerySpine.getValue()) {
-            auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+        if (pipe->AuxiliarySpine.getValue()) {
+            auto* svp = doc->getViewProvider(pipe->AuxiliarySpine.getValue());
             svp->setVisible(auxSpineShow);
             auxSpineShow = false;
         }
@@ -456,7 +456,7 @@ bool TaskPipeParameters::accept()
 
     bool extReference = false;
     App::DocumentObject* spine = pipe->Spine.getValue();
-    App::DocumentObject* auxSpine = pipe->AuxillerySpine.getValue();
+    App::DocumentObject* auxSpine = pipe->AuxiliarySpine.getValue();
 
     // If a spine isn't set but user entered a label then search for the appropriate document object
     QString label = ui->spineBaseEdit->text();
@@ -509,12 +509,12 @@ bool TaskPipeParameters::accept()
             }
             else if (!pcActiveBody->hasObject(auxSpine)
                      && !pcActiveBody->getOrigin()->hasObject(auxSpine)) {
-                pipe->AuxillerySpine.setValue(
+                pipe->AuxiliarySpine.setValue(
                     PartDesignGui::TaskFeaturePick::makeCopy(auxSpine,
                                                              "",
                                                              dlg.radioIndependent->isChecked()),
-                    pipe->AuxillerySpine.getSubValues());
-                copies.push_back(pipe->AuxillerySpine.getValue());
+                    pipe->AuxiliarySpine.getSubValues());
+                copies.push_back(pipe->AuxiliarySpine.getValue());
             }
 
             std::vector<App::PropertyLinkSubList::SubSet> subSets;
@@ -597,8 +597,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
             this, &TaskPipeOrientation::onClearButton);
     connect(ui->stackedWidget, &QStackedWidget::currentChanged,
             this, &TaskPipeOrientation::updateUI);
-    connect(ui->curvelinear, &QCheckBox::toggled,
-            this, &TaskPipeOrientation::onCurvelinearChanged);
+    connect(ui->curvilinear, &QCheckBox::toggled,
+            this, &TaskPipeOrientation::onCurvilinearChanged);
     connect(ui->doubleSpinBoxX, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &TaskPipeOrientation::onBinormalChanged);
     connect(ui->doubleSpinBoxY, qOverload<double>(&QDoubleSpinBox::valueChanged),
@@ -628,12 +628,12 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
     PartDesign::Pipe* pipe = PipeView->getObject<PartDesign::Pipe>();
 
     // add initial values
-    if (pipe->AuxillerySpine.getValue()) {
+    if (pipe->AuxiliarySpine.getValue()) {
         ui->profileBaseEdit->setText(
-            QString::fromUtf8(pipe->AuxillerySpine.getValue()->Label.getValue()));
+            QString::fromUtf8(pipe->AuxiliarySpine.getValue()->Label.getValue()));
     }
 
-    std::vector<std::string> strings = pipe->AuxillerySpine.getSubValues();
+    std::vector<std::string> strings = pipe->AuxiliarySpine.getSubValues();
     for (const auto& string : strings) {
         QString label = QString::fromStdString(string);
         QListWidgetItem* item = new QListWidgetItem();
@@ -643,7 +643,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
     }
 
     ui->comboBoxMode->setCurrentIndex(pipe->Mode.getValue());
-    ui->curvelinear->setChecked(pipe->AuxilleryCurvelinear.getValue());
+    ui->curvilinear->setChecked(pipe->AuxiliaryCurvilinear.getValue());
 
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this,
@@ -690,14 +690,14 @@ void TaskPipeOrientation::onClearButton()
     ui->profileBaseEdit->clear();
     if (auto view = getViewObject<ViewProviderPipe>()) {
         view->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
-        getObject<PartDesign::Pipe>()->AuxillerySpine.setValue(nullptr);
+        getObject<PartDesign::Pipe>()->AuxiliarySpine.setValue(nullptr);
     }
 }
 
-void TaskPipeOrientation::onCurvelinearChanged(bool checked)
+void TaskPipeOrientation::onCurvilinearChanged(bool checked)
 {
     if (auto pipe = getObject<PartDesign::Pipe>()) {
-        pipe->AuxilleryCurvelinear.setValue(checked);
+        pipe->AuxiliaryCurvilinear.setValue(checked);
         recomputeFeature();
     }
 }
@@ -795,7 +795,7 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const
         if (const auto pipe = getObject<PartDesign::Pipe>()) {
             // change the references
             const std::string subName(msg.pSubName);
-            std::vector<std::string> refs = pipe->AuxillerySpine.getSubValues();
+            std::vector<std::string> refs = pipe->AuxiliarySpine.getSubValues();
             const auto f = std::ranges::find(refs, subName);
 
             if (selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpine) {
@@ -817,7 +817,7 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const
             }
 
             App::Document* doc = pipe->getDocument();
-            pipe->AuxillerySpine.setValue(doc->getObject(msg.pObjectName), refs);
+            pipe->AuxiliarySpine.setValue(doc->getObject(msg.pObjectName), refs);
             return true;
         }
     }
@@ -847,13 +847,13 @@ void TaskPipeOrientation::onDeleteItem()
 
         // search inside the list of spines
         if (const auto pipe = getObject<PartDesign::Pipe>()) {
-            std::vector<std::string> refs = pipe->AuxillerySpine.getSubValues();
+            std::vector<std::string> refs = pipe->AuxiliarySpine.getSubValues();
             const std::string obj = data.constData();
 
             // if something was found, delete it and update the spine list
             if (const auto f = std::ranges::find(refs, obj); f != refs.end()) {
                 refs.erase(f);
-                pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), refs);
+                pipe->AuxiliarySpine.setValue(pipe->AuxiliarySpine.getValue(), refs);
                 clearButtons();
                 recomputeFeature();
             }

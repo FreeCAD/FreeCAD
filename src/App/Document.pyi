@@ -215,9 +215,10 @@ class Document(PropertyContainer):
         attr: int = 0,
         read_only: bool = False,
         hidden: bool = False,
+        locked: bool = False,
     ) -> "Document":
         """
-        addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False) -- Add a generic property.
+        addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False, locked=False) -- Add a generic property.
         """
         ...
 
@@ -310,6 +311,18 @@ class Document(PropertyContainer):
     def isClosable(self) -> bool:
         """
         Check if the document can be closed. The default value is True
+        """
+        ...
+
+    def setAutoCreated(self, autoCreated: bool) -> None:
+        """
+        Set a flag that indicates if a document is autoCreated
+        """
+        ...
+
+    def isAutoCreated(self) -> bool:
+        """
+        Check if the document is autoCreated. The default value is False
         """
         ...
 

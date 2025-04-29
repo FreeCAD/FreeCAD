@@ -88,7 +88,7 @@ void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
 DrawView* DrawTile::getParent() const
 {
 //    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
-    return dynamic_cast<DrawView*>(TileParent.getValue());
+    return freecad_cast<DrawView*>(TileParent.getValue());
 }
 
 PyObject *DrawTile::getPyObject()

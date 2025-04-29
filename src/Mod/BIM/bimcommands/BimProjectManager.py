@@ -1,31 +1,32 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-
-import os
-import sys
 import math
+import os
+
 import FreeCAD
 import FreeCADGui
 
@@ -49,7 +50,7 @@ class BIM_ProjectManager:
 
         import FreeCADGui
         import ArchBuildingPart
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogProjectManager.ui")
         self.project = None
@@ -125,6 +126,7 @@ class BIM_ProjectManager:
             if not buildings:
                 buildings = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building"]
             if buildings:
+                from nativeifc import ifc_tools
                 self.building = buildings[0]
                 self.form.buildingName.setText(self.building.Label)
                 levels = ifc_tools.get_children(self.building, ifctype="IfcBuildingStorey")
@@ -145,6 +147,7 @@ class BIM_ProjectManager:
         import Draft
         import FreeCADGui
         import Part
+        from draftutils import params
 
         vaxes = []
         haxes = []
@@ -307,8 +310,8 @@ class BIM_ProjectManager:
                 outtext = Draft.make_text(
                     [buildingname],
                     FreeCAD.Vector(
-                        Draft.getParam("textheight", 0.20) * 0.3,
-                        -Draft.getParam("textheight", 0.20) * 1.43,
+                        params.get_param("textheight") * 0.3,
+                        -params.get_param("textheight") * 1.43,
                         0,
                     ),
                 )
@@ -325,8 +328,8 @@ class BIM_ProjectManager:
                 axisV.Label = translate("BIM", "Vertical Axes")
                 axisV.ViewObject.BubblePosition = "Both"
                 axisV.ViewObject.LineWidth = self.form.lineWidth.value()
-                axisV.ViewObject.FontSize = Draft.getParam("textheight", 0.20)
-                axisV.ViewObject.BubbleSize = Draft.getParam("textheight", 0.20) * 1.43
+                axisV.ViewObject.FontSize = params.get_param("textheight")
+                axisV.ViewObject.BubbleSize = params.get_param("textheight") * 1.43
                 axisV.ViewObject.LineColor = color
             axisH = None
             if self.form.countHAxes.value() and distHAxes:
@@ -337,8 +340,8 @@ class BIM_ProjectManager:
                 axisH.ViewObject.BubblePosition = "Both"
                 axisH.ViewObject.NumberingStyle = "A,B,C"
                 axisH.ViewObject.LineWidth = self.form.lineWidth.value()
-                axisH.ViewObject.FontSize = Draft.getParam("textheight", 0.20)
-                axisH.ViewObject.BubbleSize = Draft.getParam("textheight", 0.20) * 1.43
+                axisH.ViewObject.FontSize = params.get_param("textheight")
+                axisH.ViewObject.BubbleSize = params.get_param("textheight") * 1.43
                 axisH.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 90)
                 axisH.ViewObject.LineColor = color
             if axisV and axisH:
@@ -413,7 +416,7 @@ class BIM_ProjectManager:
 
     def savePreset(self):
         import Arch
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         res = QtGui.QInputDialog.getText(
             None,
@@ -570,17 +573,19 @@ class BIM_ProjectManager:
     def saveTemplate(self):
         """saves the contents of the current file as a template"""
 
+        import WorkingPlane
+
         d = FreeCAD.ActiveDocument
         if not d:
             d = FreeCAD.newDocument()
 
         # build list of useful settings to store
+        wp = WorkingPlane.get_working_plane()
         values = {}
-        if hasattr(FreeCAD, "DraftWorkingPlane"):
-            values["wpposition"] = str(FreeCAD.DraftWorkingPlane.position)
-            values["wpu"] = str(FreeCAD.DraftWorkingPlane.u)
-            values["wpv"] = str(FreeCAD.DraftWorkingPlane.v)
-            values["wpaxis"] = str(FreeCAD.DraftWorkingPlane.axis)
+        values["wpposition"] = str(wp.position)
+        values["wpu"] = str(wp.u)
+        values["wpv"] = str(wp.v)
+        values["wpaxis"] = str(wp.axis)
         values["unit"] = str(
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
                 "UserSchema", 0
@@ -648,7 +653,7 @@ class BIM_ProjectManager:
         )
 
         d.Meta = values
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
@@ -669,8 +674,10 @@ class BIM_ProjectManager:
     def loadTemplate(self):
         """loads the contents of a template into the current file"""
 
+        from PySide import QtGui
         import FreeCADGui
-        from PySide import QtCore, QtGui
+        import WorkingPlane
+        from FreeCAD import Vector  # required for following eval calls
 
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
@@ -695,17 +702,16 @@ class BIM_ProjectManager:
                 FreeCAD.ActiveDocument = d
                 values = d.Meta
             bimunit = 0
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                from FreeCAD import Vector
-
-                if "wppos" in values:
-                    FreeCAD.DraftWorkingPlane.position = eval(values["wpposition"])
-                if "wpu" in values:
-                    FreeCAD.DraftWorkingPlane.u = eval(values["wpu"])
-                if "wpv" in values:
-                    FreeCAD.DraftWorkingPlane.v = eval(values["wpv"])
-                if "wpaxis" in values:
-                    FreeCAD.DraftWorkingPlane.axis = eval(values["wpaxis"])
+            wp = WorkingPlane.get_working_plane()
+            if "wpposition" in values:
+                wp.position = eval(values["wpposition"])
+            if "wpu" in values:
+                wp.u = eval(values["wpu"])
+            if "wpv" in values:
+                wp.v = eval(values["wpv"])
+            if "wpaxis" in values:
+                wp.axis = eval(values["wpaxis"])
+            wp._handle_custom(_hist_add=True)  # update the widget
             if "unit" in values:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").SetInt(
                     "UserSchema", int(values["unit"])

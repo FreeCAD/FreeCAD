@@ -32,6 +32,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -299,7 +300,7 @@ void QGIViewPart::drawAllFaces(void)
             newFace->setHatchOffset(fGeom->PatternOffset.getValue());
             newFace->setHatchFile(fGeom->PatIncluded.getValue());
             Gui::ViewProvider* gvp = QGIView::getViewProvider(fGeom);
-            ViewProviderGeomHatch* geomVp = dynamic_cast<ViewProviderGeomHatch*>(gvp);
+            ViewProviderGeomHatch* geomVp = freecad_cast<ViewProviderGeomHatch*>(gvp);
             if (geomVp) {
                 newFace->setHatchColor(geomVp->ColorPattern.getValue());
                 newFace->setLineWeight(geomVp->WeightPattern.getValue());
@@ -320,7 +321,7 @@ void QGIViewPart::drawAllFaces(void)
 
             // get the properties from the hatch viewprovider
             Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
-            ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+            ViewProviderHatch* hatchVp = freecad_cast<ViewProviderHatch*>(gvp);
             if (hatchVp) {
                 if (hatchVp->HatchScale.getValue() > 0.0) {
                     newFace->setHatchScale(hatchVp->HatchScale.getValue());
@@ -964,7 +965,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         highlight->setPos(0.0, 0.0);//sb setPos(center.x, center.y)?
 
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
-        double rotationRad = viewPart->Rotation.getValue() * M_PI / 180.0;
+        double rotationRad = Base::toRadians(viewPart->Rotation.getValue());
         center.RotateZ(rotationRad);
 
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
@@ -992,7 +993,7 @@ void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
     std::string highlightName = highlight->getFeatureName();
     App::Document* doc = getViewObject()->getDocument();
     App::DocumentObject* docObj = doc->getObject(highlightName.c_str());
-    auto detail = dynamic_cast<DrawViewDetail*>(docObj);
+    auto detail = freecad_cast<DrawViewDetail*>(docObj);
     if (detail) {
         auto oldAnchor = detail->AnchorPoint.getValue();
         Base::Vector3d delta = Rez::appX(DrawUtil::toVector3d(newPos)) / getViewObject()->getScale();
