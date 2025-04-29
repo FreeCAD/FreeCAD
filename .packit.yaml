@@ -1,0 +1,48 @@
+specfile_path: package/fedora/freecad.spec
+files_to_sync:
+    - package/fedora/freecad.spec
+    - .packit.yaml
+actions:
+  post-upstream-clone:
+    bash -c 'BUILD_TAG=dev /usr/bin/python3 package/rattler-build/scripts/make_version_file.py freecad_version.txt'
+  changelog-entry:
+    - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
+  create-archive:
+    - git submodule update --init
+    - bash -c 'git ls-files --recurse-submodules | tar  -caf freecad-sources.tar.gz -T-'
+    - echo -n 'freecad-sources.tar.gz'
+downstream_package_name: freecad
+additional_packages:
+    - python3
+
+jobs:
+- job: copr_build
+  identifier: pull_request
+  trigger: pull_request
+  manual_trigger: true
+  notifications:
+    pull_request:
+      successful_build: True
+  branch: main
+  targets:
+    fedora-stable:
+      without_opts:
+      - debug_info
+
+
+- job: copr_build
+  identifier: main
+  trigger: commit
+  branch: main
+  owner: freecad
+  project: nightly
+
+- job: copr_build
+  identifier: release
+  trigger: release
+  owner: freecad
+  project: freecad
+  targets:
+    fedora-all:
+      without_opts:
+      - tests
