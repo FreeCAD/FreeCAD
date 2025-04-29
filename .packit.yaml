@@ -1,9 +1,10 @@
 specfile_path: package/fedora/freecad.spec
 files_to_sync:
+    - package/fedora/freecad.spec
     - .packit.yaml
 actions:
   post-upstream-clone:
-    - bash -c 'BUILD_TAG=dev /usr/bin/python3 package/rattler-build/scripts/make_version_file.py freecad_version.txt'
+    bash -c 'BUILD_TAG=dev /usr/bin/python3 package/rattler-build/scripts/make_version_file.py freecad_version.txt'
   changelog-entry:
     - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
   create-archive:
@@ -28,21 +29,10 @@ jobs:
       without_opts:
       - debug_info
 
-- job: tests
-  identifier: pull_request
-  trigger: pull_request
-  manual_trigger: true
-  branch: main
-  targets:
-    fedora-latest-stable:
-      without_opts:
-      - debug_info
-  fmf_path: package/fedora/tests
 
 - job: copr_build
   identifier: main
   trigger: commit
-  manual_trigger: true
   branch: main
   owner: freecad
   project: nightly
