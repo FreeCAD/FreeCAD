@@ -357,6 +357,7 @@ def _param_from_PrefLineEdit(widget):
 
 
 def _param_from_PrefFileChooser(widget):
+    # Does not occur in Draft preferences anymore.
     for elem in list(widget):
         if "name" in elem.keys():
             att_name = elem.attrib["name"]
@@ -436,6 +437,9 @@ def _get_param_dictionary():
         "ScaleCopy":                   ("bool",      False),
         "ScaleRelative":               ("bool",      False),
         "ScaleUniform":                ("bool",      False),
+        "ShapeStringFontFile":         ("string",    ""),
+        "ShapeStringHeight":           ("float",     10.0),
+        "ShapeStringText":             ("string",    translate("draft", "Default")),
         "snapModes":                   ("string",    "100000000000000"),
         "snapRange":                   ("int",       8),
         "SubelementMode":              ("bool",      False),
