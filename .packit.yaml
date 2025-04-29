@@ -1,6 +1,5 @@
 specfile_path: package/fedora/freecad.spec
 files_to_sync:
-    - package/fedora/freecad.spec
     - .packit.yaml
 actions:
   post-upstream-clone:
@@ -29,6 +28,18 @@ jobs:
       without_opts:
       - debug_info
 
+- job: tests
+  identifier: pull_request
+  trigger: pull_request
+  manual_trigger: true
+  #replace branc/packit testh with main before merging
+  branch: only-packit
+  targets:
+  - fedora-42
+  fmf_path: package/fedora/tests
+  notifications:
+    failure_comment:
+      message: "One of the tests failed for {commit_sha}. @admin check logs {logs_url}, packit dashboard {packit_dashboard_url} and external service dashboard {external_dashboard_url}"
 
 - job: copr_build
   identifier: main

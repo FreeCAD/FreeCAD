@@ -14,8 +14,6 @@
 %bcond_without debug_info
 
 
-
-
 Name:           freecad
 Epoch:          1
 Version:        1.1.0~dev
@@ -23,7 +21,7 @@ Release:        %autorelease
 
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
-License:        GPL-2.0-or-later
+License:        LGPL-2.0-or-later
 URL:            https://www.freecad.org/
 
 Source0:        https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/freecad_source.tar.gz
@@ -34,6 +32,10 @@ Source0:        https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/week
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
 %global exported_libs libOndselSolver
+
+%if %{with bundled_gtest}
+ %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
+%endif
 
 
 # See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
@@ -137,12 +139,19 @@ Development file for OndselSolver
 
 %prep
     %setup -T -a 0 -q -c -n FreeCAD
+    
+%if %{without bundled_gtest}
+    rm -rf tests/lib/googletest
+    rm -rf tests/lib/googlemock
+%endif
 
 %build
      # Deal with cmake projects that tend to link excessively.
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
     %cmake \
+     %if %{with debug_info}
+     %endif
         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
         -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
@@ -205,11 +214,22 @@ Development file for OndselSolver
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
     pushd %_vpath_builddir
-    (timeout 30m ./tests/Tests_run) &> %{buildroot}%tests_resultdir/Tests_run.result || echo "**** Failed Test_run ****"
-    tail -n 50 %{buildroot}%tests_resultdir/Tests_run.result
+    if (timeout 30m ./tests/Tests_run) &> %{buildroot}%tests_resultdir/Tests_run.result ;then
+        echo "Test_run OK"
+    else
+        echo "**** Failed Test_run ****"
+        touch %{buildroot}%tests_resultdir/Tests_run.failed
+        cat %{buildroot}%tests_resultdir/Tests_run.result
+    fi
     popd
-    %ctest &> %{buildroot}%tests_resultdir/ctest.result || echo "**** Failed ctest ****"
-    tail -n 50 %{buildroot}%tests_resultdir/ctest.result
+    if %ctest &> %{buildroot}%tests_resultdir/ctest.result ; then
+        echo "ctest OK"
+    else
+        echo "**** Failed ctest ****"
+        touch %{buildroot}%tests_resultdir/ctest.failed
+        cat %{buildroot}%tests_resultdir/ctest.result
+    fi
+
 %endif
 
     # Bug maintainers to keep %%{plugins} macro up to date.
