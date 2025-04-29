@@ -73,13 +73,30 @@ enum PropertyType
 
 struct AppExport PropertyData
 {
+
+  /// @brief Struct to hold the property specification.
   struct PropertySpec
   {
+    /// The name of the property.
     const char * Name;
+    /// The group name of the property.
     const char * Group;
+    /// The documentation string of the property.
     const char * Docu;
-    short Offset, Type;
+    /// The offset of the property in the container.
+    short Offset;
+    /// The type of the property.
+    short Type;
 
+    /**
+     * @brief Construct a PropertySpec.
+     *
+     * @param[in] name The name of the property.
+     * @param[in] group The group name of the property.
+     * @param[in] doc The documentation string of the property.
+     * @param[in] offset The offset of the property in the container.
+     * @param[in] type The type of the property.
+     */
     inline PropertySpec(const char *name, const char *group, const char *doc, short offset, short type)
         :Name(name),Group(group),Docu(doc),Offset(offset),Type(type)
     {}
@@ -89,15 +106,37 @@ struct AppExport PropertyData
   //be able to return the offset to a property from the accepted containers. This allows you to use
   //one function implementation for multiple container types without losing all type safety by
   //accepting void*
+  /**
+   * @brief Struct that represents the base for offset calculation.
+   *
+   * This struct is used to calculate the offset of a property in a container.
+   * It can be constructed from either a PropertyContainer or an Extension.
+   */
   struct OffsetBase
   {
+      /**
+       * @brief Construct an OffsetBase from a PropertyContainer.
+       *
+       * @param[in] container The PropertyContainer to construct from.
+       */
       // Lint wants these marked explicit, but they are currently used implicitly in enough
       // places that I don't wnt to fix it. Instead we disable the Lint message.
       // NOLINTNEXTLINE(runtime/explicit)
       OffsetBase(const App::PropertyContainer* container) : m_container(container) {}
+      /**
+       * @brief Construct an OffsetBase from an Extension.
+       *
+       * @param[in] container The Extension to construct from.
+       */
       // NOLINTNEXTLINE(runtime/explicit)
       OffsetBase(const App::Extension* container) : m_container(container) {}
 
+      /**
+       * @brief Get the offset to a property.
+       *
+       * @param[in] prop The property to get the offset to.
+       * @return The offset to the property relative to the base offset.
+       */
       short int getOffsetTo(const App::Property* prop) const {
             auto *pt = (const char*)prop;
             auto *base = (const char *)m_container;
@@ -105,6 +144,11 @@ struct AppExport PropertyData
                 return -1;
             return (short) (pt-base);
       }
+      /**
+       * @brief Get the base offset in bytes.
+       *
+       * @return The base offset in bytes.
+       */
       char* getOffset() const {return (char*) m_container;}
 
   private:
@@ -112,11 +156,15 @@ struct AppExport PropertyData
   };
 
     // clang-format off
-    // A multi index container for holding the property spec, with the following
-    // index,
-    // * a sequence, to preserve creation order
-    // * hash index on property name
-    // * hash index on property pointer offset
+
+    /**
+     * @brief A multi index container for holding the property spec.
+     *
+     * The multi index has the following index:
+     * - a sequence, to preserve creation order
+     * - hash index on property name
+     * - hash index on property pointer offset
+     */
     mutable bmi::multi_index_container<
         PropertySpec,
         bmi::indexed_by<
@@ -133,15 +181,52 @@ struct AppExport PropertyData
     > propertyData;
     // clang-format on
 
+  /// Whether the property data is merged with the parent.
   mutable bool parentMerged = false;
 
+  /// The parent property data.
   const PropertyData*     parentPropertyData;
 
-  void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= nullptr, PropertyType = Prop_None, const char* PropertyDocu= nullptr );
+  /**
+   * @brief Add a property to the property data.
+   *
+   * @param[in] offsetBase The base offset to offset the property.
+   * @param[in] PropName The name of the property.
+   * @param[in] Prop The property to add.
+   * @param[in] PropertyGroup The group name of the property.
+   * @param[in] Type The type of the property.
+   * @param[in] PropertyDocu The documentation string of the property.
+   */
+  void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= nullptr, PropertyType Type=Prop_None, const char* PropertyDocu=nullptr );
 
+  /**
+   * @brief Find a property by its name.
+   *
+   * @param[in] offsetBase The base offset for the property.
+   * @param[in] PropName The name of the property to find.
+   * @return The property specification if found; `nullptr` otherwise.
+   */
   const PropertySpec *findProperty(OffsetBase offsetBase,const char* PropName) const;
+
+  /**
+   * @brief Find a property by its pointer.
+   *
+   * @param[in] offsetBase The base offset for the property.
+   * @param[in] prop The property to find.
+   * @return The property specification if found; `nullptr` otherwise.
+   */
   const PropertySpec *findProperty(OffsetBase offsetBase,const Property* prop) const;
 
+  /**
+   * @name PropertyData accessors
+   *
+   * @details These methods are used to access the property data based on:
+   * - the offset base,
+   * - either:
+   *   - a property pointer, or
+   *   - a property name.
+   * @{
+   */
   const char* getName         (OffsetBase offsetBase,const Property* prop) const;
   short       getType         (OffsetBase offsetBase,const Property* prop) const;
   short       getType         (OffsetBase offsetBase,const char* name)     const;
@@ -149,15 +234,70 @@ struct AppExport PropertyData
   const char* getGroup        (OffsetBase offsetBase,const Property* prop) const;
   const char* getDocumentation(OffsetBase offsetBase,const char* name)     const;
   const char* getDocumentation(OffsetBase offsetBase,const Property* prop) const;
+  /// @}
 
+  /**
+   * @brief Get a property by its name.
+   *
+   * @param[in] offsetBase The base offset for the property.
+   * @param[in] name The name of the property to find.
+   * @return The property if found; `nullptr` otherwise.
+   */
   Property *getPropertyByName(OffsetBase offsetBase,const char* name) const;
+
+  /**
+   * @brief Get a map of properties.
+   *
+   * @param[in] offsetBase The base offset for the property.
+   * @param[out] Map A map of property names to properties.
+   */
   void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
+
+  /**
+   * @brief Get a list of properties.
+   *
+   * @param[in] offsetBase The base offset for the property.
+   * @param[out] List A vector of properties.
+   */
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
+
+  /**
+   * @brief Get a list of properties with their names.
+   *
+   * @param[in] offsetBase The base offset for the property.
+   * @param[out] List A vector of pairs, where each pair contains the name and
+   * the property.
+   */
   void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
-  /// See PropertyContainer::visitProperties for semantics
+
+  /**
+   * @brief Visit each property in the PropertyData struct.
+   *
+   * @param[in] offsetBase The base offset for the property.
+   * @param[in] visitor The function to apply to each property.
+   *
+   * @see PropertyContainer::visitProperties()
+   */
   void visitProperties(OffsetBase offsetBase, const std::function<void(Property*)>& visitor) const;
 
+  /**
+   * @brief Merge the PropertyData structs.
+   *
+   * Merge two PropertyData structs.  If `other` is `nullptr`, merge with the
+   * parent PropertyData.
+   *
+   * @param[in] other (Optional) The other PropertyData to merge with;
+   */
   void merge(PropertyData *other=nullptr) const;
+
+  /**
+   * @brief Split the PropertyData structs.
+   *
+   * This method splits the PropertyData structs.  It is used to
+   * restore the parent PropertyData after a merge.
+   *
+   * @param[in] other The other PropertyData to split with; this can be the parent PropertyData.
+   */
   void split(PropertyData *other);
 };
 
@@ -251,7 +391,7 @@ public:
    *
    * The list may contain duplicates and aliases.
    *
-   * @param[out] List A vector of pairs, where each pair contains the name and
+   * @param[out] list A vector of pairs, where each pair contains the name and
    * the property.
    */
   virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &list) const;

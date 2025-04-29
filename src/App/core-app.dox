@@ -62,16 +62,27 @@
  *
  * @section propframe_intro Introduction
  *
- * The property framework introduces the ability to access attributes (member
- * variables) of a class by name without knowing the class type. It's like the
- * reflection mechanism of Java or C#.  This ability is introduced by the @ref
- * App::PropertyContainer "PropertyContainer" class and can be used by all
- * derived classes.  In particular, there are two classes that inherit from
- * @ref App::PropertyContainer "PropertyContainer" which are @ref App::Document
+ * The property framework introduces an intricate system to access properties
+ * of objects.  It provides the ability to:
+ * 1. define properties in a class and access them by name,
+ * 2. add properties to a class at runtime and access them by name, and
+ * 3. access properties of a class by name without knowing the class type.
+ *
+ * The first two points are similar to what the dynamic reflection framework of
+ * C# or Java offer.  The third point allows FreeCAD to have App::Property as a
+ * generic interface to access properties.  This is similar to the way that
+ * Python allows to access properties of a class by name.
+ *
+ * This ability is introduced by the @ref App::PropertyContainer
+ * "PropertyContainer" class and can be used by all derived classes.  In
+ * particular, there are two classes that inherit from @ref
+ * App::PropertyContainer "PropertyContainer" which are @ref App::Document
  * "Document" and @ref App::DocumentObject "DocumentObject".  These two classes
  * serve different purposes but are both able to hold properties.  @ref
  * App::PropertyContainer "PropertyContainer" contains the shared logic to do
  * so.
+ *
+ * @section propframe_static_dynamic_props Static/Dynamic Properties
  *
  * In C++, it is possible to define properties as part of the class.  These can
  * be considered "static" properties but this term is typically not used within
@@ -81,13 +92,65 @@
  * However, it is also possible to add properties to a @ref
  * App::PropertyContainer "PropertyContainer" at runtime.  These properties are
  * called "dynamic properties" and these properties can be freely added and
- * removed by users.
+ * removed by users.  In Python, all properties are dynamic properties.
  *
- * In Python, all properties are dynamic properties.  This makes it difficult
- * to understand whether properties are part of a Python class and are
- * necessary for the functioning of the class, or whether a user has added
- * these properties.  Therefore, it is possible to indicate that a property is
- *  "locked":
+ * @section propframe_mechanisms Mechanisms
+ *
+ * The macros `PROPERTY_HEADER` and `PROPERTY_SOURCE` (and variants) are used
+ * to define a private static PropertyData member in the class.  This data
+ * structure contains a multi index that maps 1) the property name to the
+ * property specifications @ref App::PropertyData::PropertySpec "PropertySpec",
+ * allowing access of properties by name, and 2) maps the offset of a property
+ * with respect to its container, allowing access to property specifications.
+ *
+ * The static function @ref App::PropertyContainer::getPropertyDataPtr()
+ * "PropertyContainer::getPropertyDataPtr()" is used to access the class-wide
+ * static @ref App::PropertyData "PropertyData" structure shared by all
+ * instances of the class.  The virtual function @ref
+ * App::PropertyContainer::getPropertyData()
+ * "PropertyContainer::getPropertyData()" allows access to the class-level
+ * static PropertyData based on the dynamic type of the object, even when
+ * downcasted.  This allows for example a @ref App::PropertyInteger
+ * "PropertyInteger*" downcasted to @ref App::Property "Property*" to access
+ * all its properties.
+ *
+ * Since the @ref App::PropertyData "PropertyData" structure is static in the
+ * class and maintains static information of properties, such as the group and
+ * documentation, we need to be able to access a specific instance given a
+ * property name.  This is achieved by looking up the @ref
+ * App::PropertyData::PropertySpec "PropertySpec" in the index based on the
+ * property name.  The property specification stores an offset to the property
+ * address given an @ref App::PropertyData::OffsetBase "OffsetBase" which wraps
+ * the address of a @ref App::PropertyContainer "PropertyContainer".  See @ref
+ * App::PropertyData::findProperty() "PropertyData::findProperty()" and @ref
+ * App::PropertyData::OffsetBase::getOffsetTo() "OffsetBase::getOffsetTo()".
+ * The offset of the property relative to the offset base gives us the address
+ * of the property in the instance.  Note that different values for properties
+ * across property containers are stored in the @ref App::Property "Property" instances.
+ *
+ * The reverse is also needed: Given a property in a property container, it is
+ * possible to compute the offset relative to the base of the property
+ * container.  The index in @ref App::PropertyData "PropertyData" allows us to
+ * acquire the property spec and provides us with the static data associated
+ * with the property.
+ *
+ * Dynamic properties are stored in their own @ref App::DynamicProperty
+ * "DynamicProperty" container.  It can be added with the function @ref
+ * App::PropertyContainer::addDynamicProperty()
+ * "PropertyContainer::addDynamicProperty()" and removed with @ref
+ * App::PropertyContainer::removeDynamicProperty()
+ * "PropertyContainer::removeDynamicProperty()".  The rest of the interface of
+ * dynamic properties is virtually the same.  In general, in FreeCAD, it is
+ * difficult for users to know whether a property is dynamic or static and they
+ * typically do not need to be concerned with this distinction.
+ *
+ * @section Locking Dynamic Properties
+ *
+ * Since in Python all properties are dynamic properties, it is difficult to
+ * understand whether properties are part of a Python class and are necessary
+ * for the functioning of the class, or whether a user has added these
+ * properties.  Therefore, it is possible to indicate that a property is
+ * "locked":
  *
  * @code
  * prop->setStatus(Property::LockDynamic, true);
@@ -107,13 +170,12 @@
  *
  * @section Examples
  *
- * Here some little examples how to use it:
+ * Here some little examples how to use the property framework:
  *
  * @code
- * // search in PropertyList
- * Property *prop = _pcFeature->getPropertyByName(attr);
- * if(prop)
- * {
+ * // Acquire a property by name and return the value as a Python object.
+ * Property *prop = feature->getPropertyByName(nameProperty);
+ * if (prop) {
  *   return prop->getPyObject();
  * }
  * @endcode
@@ -121,18 +183,19 @@
  * or:
  *
  * @code
+ * // Restore properties from a reader.
  * void PropertyContainer::Restore(Base::Reader &reader)
  * {
  *   reader.readElement("Properties");
  *   int Cnt = reader.getAttributeAsInteger("Count");
  *
- *   for(int i=0 ;i<Cnt ;i++)
- *   {
+ *   for(int i=0 ;i<Cnt ;i++) {
  *     reader.readElement("Property");
  *     string PropName = reader.getAttribute("name");
  *     Property* prop = getPropertyByName(PropName.c_str());
- *     if(prop)
+ *     if(prop) {
  *       prop->Restore(reader);
+ *     }
  *
  *     reader.readEndElement("Property");
  *   }
