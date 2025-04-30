@@ -23,19 +23,13 @@ include_directories(
     ${YAML_CPP_INCLUDE_DIR}
 )
 
-if (BUILD_MATERIAL_EXTERNAL)
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/lru-cache/include
-)
-endif(BUILD_MATERIAL_EXTERNAL)
-
-link_directories(${YAML_CPP_LIBRARY_DIR})
-
 if(BUILD_MATERIAL_EXTERNAL)
     include_directories(
         ${CMAKE_SOURCE_DIR}/src/3rdParty/lru-cache/include
     )
 endif(BUILD_MATERIAL_EXTERNAL)
+
+link_directories(${YAML_CPP_LIBRARY_DIR})
 
 set(Materials_LIBS
     FreeCADApp
@@ -153,6 +147,7 @@ SET(Materials_SRCS
     PyVariants.h
     trim.h
 )
+
 if(BUILD_MATERIAL_EXTERNAL)
     list(APPEND Materials_SRCS
         ExternalManager.cpp
@@ -172,7 +167,8 @@ endif(FREECAD_USE_PCH)
 
 add_library(Materials SHARED ${Materials_SRCS})
 target_link_libraries(Materials ${Materials_LIBS})
-if (FREECAD_WARN_ERROR)
+
+if(FREECAD_WARN_ERROR)
     target_compile_warn_error(Materials)
 endif()
 
