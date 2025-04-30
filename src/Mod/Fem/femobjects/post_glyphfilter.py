@@ -29,6 +29,12 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief Post processing filter creating glyphs for vector fields
 
+import FreeCAD
+
+# check vtk version to potentially find missmatchs
+from femguiutils.vtk_module_handling import vtk_module_handling
+vtk_module_handling()
+
 # IMPORTANT: Never import vtk directly. Often vtk is compiled with different QT
 # version than FreeCAD, and "import vtk" crashes by importing qt components.
 # Always import the filter and data modules only.

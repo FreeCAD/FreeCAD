@@ -639,6 +639,7 @@ SET(FemGuiUtils_SRCS
     femguiutils/disambiguate_solid_selection.py
     femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
+    femguiutils/vtk_module_handling.py
 )
 
 SET(FemGuiViewProvider_SRCS
