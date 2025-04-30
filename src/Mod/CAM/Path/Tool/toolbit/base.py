@@ -67,9 +67,7 @@ class ChiploadMixin:
             "App::PropertyLength",
             "Chipload",
             "Base",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Chipload per tooth"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Chipload per tooth"),
         )
         obj.Chipload = "0.0"
 
@@ -101,7 +99,6 @@ class ToolBit(ABC):
         # Initialize properties and visual representation
         self._update_tool_properties(obj)
         self._update_visual_representation(obj)
-
 
     def _create_base_properties(self, obj):
         # Create the properties in the Base group.

@@ -6,6 +6,7 @@ import Path
 from .base import ToolBit, ChiploadMixin
 from ..shape.bullnose import ToolBitShapeBullnose
 
+
 class ToolBitBullnose(ToolBit, ChiploadMixin):
     SHAPE_CLASS = ToolBitShapeBullnose
 
