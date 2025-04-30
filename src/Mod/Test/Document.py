@@ -670,6 +670,7 @@ class DocumentBasicCases(unittest.TestCase):
         # closing doc
         FreeCAD.closeDocument("CreateTest")
 
+
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroup:
     def __init__(self, obj):

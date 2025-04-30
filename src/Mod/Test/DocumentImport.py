@@ -27,6 +27,7 @@ import FreeCAD, unittest
 # define the functions to test the FreeCAD Document import code
 # ---------------------------------------------------------------------------
 
+
 class DocumentImportCases(unittest.TestCase):
     def testDXFImportCPPIssue20195(self):
         import importDXF
