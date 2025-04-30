@@ -23,9 +23,7 @@ class ToolBitTap(ToolBit):
     @classmethod
     def schema(
         cls,
-    ) -> Mapping[
-        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
-    ]:
+    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
         """
         This schema defines any properties that the tool supports and
         that are not part of the shape file.

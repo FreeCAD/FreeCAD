@@ -37,9 +37,7 @@ TestToolBitDir = TestToolDir / "Bit"
 class TestPathToolBit(PathTestUtils.PathTestBase):
     def testGetToolBit(self):
         """Find a tool bit from file name"""
-        path = get_toolbit_filepath_from_name(
-            "5mm_Endmill.fctb", TestToolBitDir
-        )
+        path = get_toolbit_filepath_from_name("5mm_Endmill.fctb", TestToolBitDir)
         self.assertIsNot(path, None)
         self.assertNotEqual(path, "5mm_Endmill.fctb")
 
@@ -53,20 +51,14 @@ class TestPathToolBit(PathTestUtils.PathTestBase):
         """Test ToolBitBullnose basic parameters"""
         # Create a new document and a dummy FreeCAD object
         FreeCAD.newDocument("TestBullnoseDoc")
-        obj = FreeCAD.ActiveDocument.addObject(
-            "Part::Feature", "TestBullnoseObj"
-        )
+        obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "TestBullnoseObj")
         bullnose_shape = ToolBitBullnose.SHAPE_CLASS.from_file(
             TestToolDir / "Shape" / "bullnose.fcstd"
         )
         bullnose_bit = ToolBitBullnose(obj, bullnose_shape)
         self.assertEqual(bullnose_bit.obj.ShapeName, "Bullnose")
-        self.assertEqual(
-            bullnose_bit.obj.Diameter, FreeCAD.Units.Quantity("5.0 mm")
-        )
-        self.assertEqual(
-            bullnose_bit.obj.FlatRadius, FreeCAD.Units.Quantity("1.5 mm")
-        )
+        self.assertEqual(bullnose_bit.obj.Diameter, FreeCAD.Units.Quantity("5.0 mm"))
+        self.assertEqual(bullnose_bit.obj.FlatRadius, FreeCAD.Units.Quantity("1.5 mm"))
         # Clean up the dummy object and close the document
         FreeCAD.ActiveDocument.removeObject("TestBullnoseObj")
         FreeCAD.closeDocument("TestBullnoseDoc")

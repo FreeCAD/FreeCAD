@@ -2,7 +2,7 @@ from PySide import QtCore, QtGui, QtSvg
 
 
 def qpixmap_from_png(byte_array, icon_size, ratio=1.0):
-    render_size = QtCore.QSize(icon_size.width()*ratio, icon_size.height()*ratio)
+    render_size = QtCore.QSize(icon_size.width() * ratio, icon_size.height() * ratio)
     pixmap = QtGui.QPixmap(render_size)
     pixmap.fill(QtGui.Qt.transparent)
     pixmap.loadFromData(byte_array)
@@ -10,7 +10,7 @@ def qpixmap_from_png(byte_array, icon_size, ratio=1.0):
 
 
 def qpixmap_from_svg(byte_array, icon_size, ratio=1.0):
-    render_size = QtCore.QSize(icon_size.width()*ratio, icon_size.height()*ratio)
+    render_size = QtCore.QSize(icon_size.width() * ratio, icon_size.height() * ratio)
 
     image = QtGui.QImage(render_size, QtGui.QImage.Format_ARGB32)
     image.fill(QtGui.Qt.transparent)
@@ -33,9 +33,9 @@ def get_pixmap_from_shape(shape, size, ratio):
         return None
     icon_ba = QtCore.QByteArray(icon_bytes)
 
-    if icon_type == 'svg':
+    if icon_type == "svg":
         return qpixmap_from_svg(icon_ba, size, ratio)
-    elif icon_type == 'png':
+    elif icon_type == "png":
         return qpixmap_from_png(icon_ba, size, ratio)
 
     return None

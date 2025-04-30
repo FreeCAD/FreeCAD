@@ -33,7 +33,9 @@ class ShapeRegistry:
 
     def ensure_initialized(self):
         if self.is_empty():
-            Path.Log.info(f"ToolBitShape directory '{self.shape_dir}' empty; copying built-in shapes")
+            Path.Log.info(
+                f"ToolBitShape directory '{self.shape_dir}' empty; copying built-in shapes"
+            )
             self.add_builtin_shapes()
             Path.Log.info(f"ToolBitShapes successfully copied to '{self.shape_dir}'")
 
@@ -51,7 +53,7 @@ class ShapeRegistry:
     def get_shape_filename_from_alias(self, alias: str) -> Optional[pathlib.Path]:
         for cls in ToolBitShape.__subclasses__():
             if cls.name == alias or alias in cls.aliases:
-                return self.shape_dir / (cls.name.lower() + '.fcstd')
+                return self.shape_dir / (cls.name.lower() + ".fcstd")
         return None
 
     def get_shape_name_from_filename(self, filename: str) -> str:
@@ -61,8 +63,8 @@ class ShapeRegistry:
         # use this hundreds of time, we read from the XML directly instead.
         filepath = self.shape_dir / filename
         if filepath.exists():
-            with zipfile.ZipFile(filepath, 'r') as z:
-                with z.open('Document.xml') as doc_xml:
+            with zipfile.ZipFile(filepath, "r") as z:
+                with z.open("Document.xml") as doc_xml:
                     tree = ET.parse(doc_xml)
                     root = tree.getroot()
 
@@ -73,7 +75,7 @@ class ShapeRegistry:
                     xpath = './/Object[@name="Body"]//Property[@name="Label"]/String'
                     body_label_elem = root.find(xpath)
                     if body_label_elem is not None:
-                        label = body_label_elem.get('value')
+                        label = body_label_elem.get("value")
 
                     known = [c.name for c in ToolBitShape.__subclasses__()]
                     if label in known:
@@ -89,7 +91,9 @@ class ShapeRegistry:
         # 3rd: Default to Endmill if all of the methods failed
         return "Endmill"
 
-    def get_shape_from_filename(self, filename: str, params: Optional[Mapping]=None) -> ToolBitShape:
+    def get_shape_from_filename(
+        self, filename: str, params: Optional[Mapping] = None
+    ) -> ToolBitShape:
         """Retrieves a shape class by filename."""
         params = params or {}
 
@@ -123,15 +127,15 @@ class ShapeRegistry:
                 shape = ToolBitShape.from_file(filepath)
                 shapes.append(shape)
             except Exception as e:
-                Path.Log.error(
-                    f"Failed to load ToolBitShape '{filepath}': {e}"
-                )
+                Path.Log.error(f"Failed to load ToolBitShape '{filepath}': {e}")
         return shapes
+
 
 def on_tool_path_changed(group, key, value):
     Path.Log.track("signal received:", group, key, value)
     SHAPE_REGISTRY.set_dir(Path.Preferences.getShapePath())
     SHAPE_REGISTRY.ensure_initialized()
+
 
 # Global instance of the ShapeRegistry
 SHAPE_REGISTRY = ShapeRegistry(Path.Preferences.getShapePath())

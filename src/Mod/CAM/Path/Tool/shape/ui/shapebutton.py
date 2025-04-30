@@ -1,8 +1,9 @@
 from PySide import QtGui, QtCore
 from .util import qpixmap_from_svg, qpixmap_from_png
 
+
 class ShapeButton(QtGui.QToolButton):
-    def __init__ (self, shape, parent=None):
+    def __init__(self, shape, parent=None):
         super(ShapeButton, self).__init__(parent)
         self.shape = shape
 
@@ -25,11 +26,11 @@ class ShapeButton(QtGui.QToolButton):
             return
         icon_ba = QtCore.QByteArray(icon_bytes)
 
-        if icon_type == 'svg':
+        if icon_type == "svg":
             icon = qpixmap_from_svg(icon_ba, self.icon_size)
-        elif icon_type == 'png':
+        elif icon_type == "png":
             icon = qpixmap_from_png(icon_ba, self.icon_size)
         else:
-            raise NotImplementedError(f'icon type {icon_type} not supported')
+            raise NotImplementedError(f"icon type {icon_type} not supported")
 
         self.setIcon(icon)

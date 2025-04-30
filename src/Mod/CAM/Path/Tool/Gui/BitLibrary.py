@@ -352,7 +352,7 @@ class ToolBitSelector(object):
         if self.libraryModel.rowCount() == 0:
             return
         currentIndex = self.form.cboLibraries.findText(current_lib)
-        currentIndex = max(0, currentIndex)   # select first item by default
+        currentIndex = max(0, currentIndex)  # select first item by default
         self.form.cboLibraries.setCurrentIndex(currentIndex)
 
     def setupUI(self):
@@ -725,9 +725,9 @@ class ToolBitLibrary(object):
             self.factory.library_open(self.toolModel, library)
 
         self.path = Path.Preferences.getLibraryPath() / library
-        self.form.setWindowTitle("{}".format(
-            Path.Preferences.getLastToolLibrary() or "Tool Library Editor"
-        ))
+        self.form.setWindowTitle(
+            "{}".format(Path.Preferences.getLastToolLibrary() or "Tool Library Editor")
+        )
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
         self.listModel.setHorizontalHeaderLabels(["Library"])
 

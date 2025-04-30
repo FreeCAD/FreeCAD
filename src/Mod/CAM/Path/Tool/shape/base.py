@@ -14,11 +14,7 @@ from .doc import (
     update_shape_object_properties,
     ShapeDocFromBytes,
 )
-from .util import (
-    get_abbreviations_from_svg,
-    create_thumbnail,
-    file_is_newer
-)
+from .util import get_abbreviations_from_svg, create_thumbnail, file_is_newer
 
 
 class ToolBitShape(abc.ABC):
@@ -60,9 +56,9 @@ class ToolBitShape(abc.ABC):
 
         self.is_builtin: bool = True
 
-        self.icon: Optional[bytes] = None # Shape SVG or PNG as a binary string
+        self.icon: Optional[bytes] = None  # Shape SVG or PNG as a binary string
 
-        self.icon_type: Optional[str] = None # 'png' or 'svg'
+        self.icon_type: Optional[str] = None  # 'png' or 'svg'
 
         # Assign parameters
         for param, value in kwargs.items():
@@ -172,7 +168,7 @@ class ToolBitShape(abc.ABC):
             # Instantiate the specific subclass
             instance = shape_class(**kwargs)
             instance.filepath = filepath
-            instance._cache = filepath.read_bytes() # Cache the file content
+            instance._cache = filepath.read_bytes()  # Cache the file content
             instance._defaults = loaded_params
 
             # Update instance parameters, prioritizing loaded defaults but not
@@ -365,21 +361,21 @@ class ToolBitShape(abc.ABC):
         return len(self.icon) if self.icon else 0
 
     def add_icon_from_file(self, filename: pathlib.Path):
-        with open(filename, 'rb') as fp:
+        with open(filename, "rb") as fp:
             self.icon = fp.read()
-            if filename.suffix == '.svg':
+            if filename.suffix == ".svg":
                 self.abbr = get_abbreviations_from_svg(self.icon)
-        self.icon_type = filename.suffix.lstrip('.')
+        self.icon_type = filename.suffix.lstrip(".")
 
     def get_abbr(self, param):
-        normalized = param.label.lower().replace(' ', '_')
+        normalized = param.label.lower().replace(" ", "_")
         return self.abbr.get(normalized)
 
     def create_icon(self):
         if not self.filepath:
             return
         filename = create_thumbnail(self.filepath)
-        if filename: # success?
+        if filename:  # success?
             self.add_icon_from_file(filename)
         return filename
 
@@ -387,12 +383,12 @@ class ToolBitShape(abc.ABC):
         assert self.filepath is not None, "Need shape file to create icon for it"
 
         # Try SVG first.
-        icon_file = self.filepath.with_suffix('.svg')
+        icon_file = self.filepath.with_suffix(".svg")
         if icon_file.is_file():
             return self.add_icon_from_file(icon_file)
 
         # Try PNG next. But make sure it's not out of date.
-        icon_file = self.filepath.with_suffix('.png')
+        icon_file = self.filepath.with_suffix(".png")
         if icon_file.is_file() and file_is_newer(self.filepath, icon_file):
             return self.add_icon_from_file(icon_file)
 
@@ -404,12 +400,12 @@ class ToolBitShape(abc.ABC):
         if icon_file.is_file():
             return self.add_icon_from_file(icon_file)
 
-    def write_icon_to_file(self, filepath: Optional[pathlib.Path]=None):
+    def write_icon_to_file(self, filepath: Optional[pathlib.Path] = None):
         if self.icon is None:
             return
         assert self.icon_type is not None, "Bug: Shape has icon, but no icon type?"
         assert self.filepath is not None, "Bug: Shape has icon, but no file?"
         if filepath is None:
-            filepath = self.filepath.with_suffix('.'+self.icon_type)
-        with open(filepath, 'wb') as fp:
+            filepath = self.filepath.with_suffix("." + self.icon_type)
+        with open(filepath, "wb") as fp:
             fp.write(self.icon)

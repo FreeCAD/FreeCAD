@@ -164,7 +164,7 @@ class TaskPanel:
 
 
 class ToolBitGuiFactory(Path.Tool.toolbit.base.ToolBitFactory):
-    def create_bit_from_dict(self, attrs: Mapping, filepath: Optional[pathlib.Path]=None):
+    def create_bit_from_dict(self, attrs: Mapping, filepath: Optional[pathlib.Path] = None):
         """
         Creates a new tool bit from attributes.
         This method is overridden to attach the ViewProvider.
@@ -230,9 +230,7 @@ def GetToolFile(parent=None):
         parent = QtGui.QApplication.activeWindow()
 
     bitdir = Path.Preferences.getToolBitPath()
-    bitfile = QtGui.QFileDialog.getOpenFileName(
-        parent, "Tool", str(bitdir), "*.fctb"
-    )
+    bitfile = QtGui.QFileDialog.getOpenFileName(parent, "Tool", str(bitdir), "*.fctb")
     if bitfile and bitfile[0]:
         return bitfile[0]
     return None
@@ -242,9 +240,7 @@ def GetToolFiles(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
     bitdir = Path.Preferences.getToolBitPath()
-    foo = QtGui.QFileDialog.getOpenFileNames(
-        parent, "Tool", str(bitdir), "*.fctb"
-    )
+    foo = QtGui.QFileDialog.getOpenFileNames(parent, "Tool", str(bitdir), "*.fctb")
     if foo and foo[0]:
         return foo[0]
     return []

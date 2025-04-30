@@ -48,6 +48,7 @@ def unit(param):
 
 class TestPathToolShapeBase(PathTestUtils.PathTestBase):
     """Tests for the ToolBitShape abstract base class."""
+
     def setUp(self):
         SHAPE_REGISTRY.set_dir(TestToolDir / "Shape")
 
@@ -138,7 +139,7 @@ class TestPathToolShapeBase(PathTestUtils.PathTestBase):
         # Use a real built-in shape file for validation
         filepath = SHAPE_REGISTRY.shape_dir / "ballend.fcstd"
         result = DummyShape.validate(filepath)
-        self.assertIsNone(result) # validate returns None on success
+        self.assertIsNone(result)  # validate returns None on success
 
     def test_base_validate_file_not_found(self):
         """Test ToolBitShape.validate file not found."""

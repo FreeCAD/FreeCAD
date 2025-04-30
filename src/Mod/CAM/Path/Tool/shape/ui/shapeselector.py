@@ -7,7 +7,8 @@ from .. import ToolBitShape
 from .flowlayout import FlowLayout
 from .shapebutton import ShapeButton
 
-class ShapeSelector():
+
+class ShapeSelector:
     def __init__(self):
         self.shape = None
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ShapeSelector.ui")
