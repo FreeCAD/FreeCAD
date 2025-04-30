@@ -8120,17 +8120,20 @@ int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) c
     else
         return (completeGeometryIndex - completeGeometryCount);
 }
-int SketchObject::getNumDimensionalConstraints() const
+bool SketchObject::hasSingleScaleDefiningConstraint() const
 {
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
-
-    int n_dimensionals = 0;
+    
+    bool foundOne = false;
     for (auto val : vals) {
         if (val->isDimensional() && val->Type != Angle) {
-            n_dimensionals++;
+            if (foundOne) {
+                return false;
+            }
+            foundOne = true;
         }
     }
-    return n_dimensionals;
+    return foundOne;
 }
 
 std::unique_ptr<const GeometryFacade> SketchObject::getGeometryFacade(int GeoId) const
