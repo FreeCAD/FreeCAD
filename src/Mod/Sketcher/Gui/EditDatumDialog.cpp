@@ -215,7 +215,11 @@ void EditDatumDialog::accepted()
                     if(sketch->getNumDimensionalConstraints() == 1) {
                         double oldDatum = sketch->getDatum(ConstrNbr);
                         double scale_factor = newDatum / oldDatum;
+                        float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
+                        float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
                         centerScale(sketch, scale_factor);
+                        sketch->setLabelDistance(ConstrNbr, initLabelDistance * scale_factor);
+                        sketch->setLabelPosition(ConstrNbr, initLabelPosition * scale_factor);
                     }
 
                     Gui::cmdAppObjectArgs(sketch,
