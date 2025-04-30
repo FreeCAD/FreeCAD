@@ -164,7 +164,7 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %endif
     %if %{with tests}
         -DENABLE_DEVELOPER_TESTS=TRUE \
-        -DINSTAL_GTEST=FALSE \
+        -DINSTAL_GTEST=TRUE \
     %else
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif
@@ -197,11 +197,22 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
     pushd %_vpath_builddir
-    (timeout 30m ./tests/Tests_run) &> %{buildroot}%tests_resultdir/Tests_run.result || echo "**** Failed Test_run ****"
-    tail -n 50 %{buildroot}%tests_resultdir/Tests_run.result
+    if (timeout 30m ./tests/Tests_run) &> %{buildroot}%tests_resultdir/Tests_run.result ;then
+        echo "Test_run OK"
+    else
+        echo "**** Failed Test_run ****"
+        touch %{buildroot}%tests_resultdir/Tests_run.failed
+        cat %{buildroot}%tests_resultdir/Tests_run.result
+    fi
     popd
-    %ctest &> %{buildroot}%tests_resultdir/ctest.result || echo "**** Failed ctest ****"
-    tail -n 50 %{buildroot}%tests_resultdir/ctest.result
+    if %ctest &> %{buildroot}%tests_resultdir/ctest.result ; then
+        echo "ctest OK"
+    else
+        echo "**** Failed ctest ****"
+        touch %{buildroot}%tests_resultdir/ctest.failed
+        cat %{buildroot}%tests_resultdir/ctest.result
+    fi
+
 %endif
 
     # Bug maintainers to keep %%{plugins} macro up to date.
