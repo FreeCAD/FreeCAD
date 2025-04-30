@@ -51,6 +51,7 @@ class Arch_Truss:
 
     def Activated(self):
 
+        self.doc = FreeCAD.ActiveDocument
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) > 1:
             FreeCAD.Console.PrintError(translate("Arch","Please select only one base object or none")+"\n")
@@ -90,7 +91,7 @@ class Arch_Truss:
         """Creates the truss"""
 
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Truss"))
+        self.doc.openTransaction(translate("Arch","Create Truss"))
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("Arch")
         if not basename:
@@ -101,8 +102,8 @@ class Arch_Truss:
                 basename = "base"
         FreeCADGui.doCommand("obj = Arch.makeTruss("+basename+")")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
 
 
 FreeCADGui.addCommand('Arch_Truss', Arch_Truss())
