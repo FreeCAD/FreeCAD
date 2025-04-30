@@ -33,3 +33,7 @@ FreeCAD.__unit_test__ += [
     "UnicodeTests",
     "TestPythonSyntax",
 ]
+if "BUILD_IMPORT" in FreeCAD.__cmake__:
+    FreeCAD.__unit_test__ += [
+        "DocumentImport",
+    ]
