@@ -27,7 +27,7 @@ import json
 import os
 import pathlib
 import zipfile
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import List, Optional, Tuple, Type, Union, Mapping, Any
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
@@ -53,6 +53,25 @@ if False:
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+class ChiploadMixin:
+    """
+    This is a interface class to indicate that the ToolBit can chip, i.e.
+    it has a Chipload property.
+    It is used to determine if the tool bit can be used for chip removal.
+    """
+
+    def __init__(self, obj, *args, **kwargs):
+        obj.addProperty(
+            "App::PropertyLength",
+            "Chipload",
+            "Base",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Chipload per tooth"
+            ),
+        )
+        obj.Chipload = "0.0"
 
 
 class ToolBit(ABC):
@@ -83,7 +102,7 @@ class ToolBit(ABC):
         self._update_tool_properties(obj)
         self._update_visual_representation(obj)
 
-        self.onDocumentRestored(obj)
+        #self.onDocumentRestored(obj)
 
     def _create_base_properties(self, obj):
         # Create the properties in the Base group.
@@ -123,30 +142,25 @@ class ToolBit(ABC):
                 QT_TRANSLATE_NOOP("App::Property", "The toolbit file (.fctb)"),
             )
 
-    @classmethod
-    def schema(
-        cls,
-    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
-        """
-        This schema defines any properties that the tool supports and
-        that are not part of the shape file.
-
-        Subclasses must implement this method to define their specific features.
-        """
-        return {
-            "SpindleDirection": (
-                FreeCAD.Qt.translate("ToolBit", "Direction of spindle rotation"),
+        # Create the ToolBit properties that are shared by all tool bits
+        if not hasattr(obj, "SpindleDirection"):
+            obj.addProperty(
                 "App::PropertyEnumeration",
-                "Forward",  # Default value
-                ("Forward", "Reverse", "None"),
-            ),
-            "Material": (
-                FreeCAD.Qt.translate("ToolBit", "Tool material"),
+                "SpindleDirection",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
+            )
+            obj.SpindleDirection = ["Forward", "Reverse", "None"]
+            obj.SpindleDirection = "Forward"  # Default value
+        if not hasattr(obj, "Material"):
+            obj.addProperty(
                 "App::PropertyEnumeration",
-                "HSS",  # Default value
-                ("HSS", "Carbide"),
-            ),
-        }
+                "Material",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Tool material"),
+            )
+            obj.Material = ["HSS", "Carbide"]
+            obj.Material = "HSS"  # Default value
 
     def dumps(self):
         return None
@@ -509,37 +523,6 @@ class ToolBit(ABC):
         new_shape_param_names = self._tool_bit_shape.schema().keys()
         obsolete = current_shape_prop_names - new_shape_param_names
         self._remove_properties(obj, "Shape", obsolete)
-
-        # 3. Add/Update properties for tool bit specific features
-        for name, item in self.schema().items():
-            docstring = item[0]
-            prop_type = item[1]
-            value = item[2]
-
-            # Add new property
-            if not hasattr(obj, name):
-                obj.addProperty(prop_type, name, "Attributes", docstring)
-                if prop_type == "App::PropertyEnumeration" and len(item) == 4:
-                    setattr(obj, name, item[3])
-                PathUtil.setProperty(obj, name, value)  # Set to default value
-                Path.Log.debug(f"Added new feature property: {name}")
-
-            # Ensure editor mode is correct
-            obj.setEditorMode(name, 0)
-
-            # Set editor mode for SpindleDirection based on can_rotate()
-            if hasattr(obj, "SpindleDirection"):
-                if not self.can_rotate():
-                    obj.SpindleDirection = "None"
-                    obj.setEditorMode("SpindleDirection", 2)  # Read-only
-
-        # 4. Remove obsolete feature properties
-        # These are properties currently listed AND in the Attributes group,
-        # but not required by the current tool bit's schema.
-        current_feature_names = set(self._get_props(obj, "Attributes"))
-        new_feature_names = self.schema().keys()
-        obsolete = current_feature_names - new_feature_names
-        self._remove_properties(obj, "Attributes", obsolete)
 
     def _update_visual_representation(self, obj):
         """
