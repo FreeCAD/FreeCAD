@@ -208,11 +208,11 @@ void EditDatumDialog::accepted()
                 else {
                     auto unitString = newQuant.getUnit().getString();
                     unitString = Base::Tools::escapeQuotesFromString(unitString);
-                    
-                    
+
+
                     // There is a single constraint in the sketch so it can
                     // be used as a reference to scale the geometries around the origin
-                    if(sketch->hasSingleScaleDefiningConstraint()) {
+                    if (sketch->hasSingleScaleDefiningConstraint()) {
                         double oldDatum = sketch->getDatum(ConstrNbr);
                         double scale_factor = newDatum / oldDatum;
                         float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
@@ -227,7 +227,6 @@ void EditDatumDialog::accepted()
                                           ConstrNbr,
                                           newDatum,
                                           unitString);
-                    
                 }
             }
 

@@ -212,7 +212,7 @@ public:
 
     /** deletes all external geometry */
     int delAllExternal();
-      
+
     const Part::Geometry* _getGeometry(int GeoId) const;
     int setGeometry(int GeoId, const Part::Geometry*);
     /// returns GeoId of all geometries projected from the same external geometry reference

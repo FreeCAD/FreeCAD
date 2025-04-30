@@ -855,7 +855,7 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     newVals[ConstrId]->setValue(Datum);
 
     this->Constraints.setValues(std::move(newVals));
-        
+
     int err = solve();
 
     if (err)
@@ -8123,7 +8123,7 @@ int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) c
 bool SketchObject::hasSingleScaleDefiningConstraint() const
 {
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
-    
+
     bool foundOne = false;
     for (auto val : vals) {
         if (val->isDimensional() && val->Type != Angle) {

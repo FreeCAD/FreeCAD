@@ -75,7 +75,9 @@ public:
         , length(0.0)
         , scaleFactor(0.0)
     {}
-    explicit DrawSketchHandlerScale(std::vector<int> listOfGeoIds, double scaleFactor, Base::Vector2d referencePoint)
+    explicit DrawSketchHandlerScale(std::vector<int> listOfGeoIds,
+                                    double scaleFactor,
+                                    Base::Vector2d referencePoint)
         : listOfGeoIds(listOfGeoIds)
         , referencePoint(referencePoint)
         , deleteOriginal(true)
@@ -92,7 +94,6 @@ public:
     ~DrawSketchHandlerScale() override = default;
 
 public:
-
     void executeCommands() override
     {
         try {
@@ -111,14 +112,14 @@ public:
         catch (const Base::Exception& e) {
             e.ReportException();
             Gui::NotifyError(sketchgui,
-                            QT_TRANSLATE_NOOP("Notifications", "Error"),
-                            QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
+                             QT_TRANSLATE_NOOP("Notifications", "Error"),
+                             QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
 
             Gui::Command::abortCommand();
             THROWM(Base::RuntimeError,
-                QT_TRANSLATE_NOOP(
-                    "Notifications",
-                    "Tool execution aborted") "\n")  // This prevents constraints from being
+                   QT_TRANSLATE_NOOP(
+                       "Notifications",
+                       "Tool execution aborted") "\n")  // This prevents constraints from being
                                                         // applied on non existing geometry
         }
     }

@@ -2529,16 +2529,16 @@ void CreateSketcherCommandsConstraintAccel()
 void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
 {
     std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
-                        std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
- 
+    std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
+
     auto doc = Gui::Application::Instance->activeDocument();
     SketcherGui::ViewProviderSketch* vp =
-    static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     DrawSketchHandlerScale scaler(allGeoIds, scale_factor, Base::Vector2d(0.0, 0.0));
     scaler.setSketchGui(vp);
     scaler.executeCommands();
 
-    auto view3d = dynamic_cast<Gui::View3DInventor *>(doc->getActiveView());
+    auto view3d = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
     if (view3d) {
         view3d->getViewer()->scale(scale_factor);
     }
