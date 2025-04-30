@@ -117,20 +117,18 @@ public:
             // drop the sphere intersection onto the tolerance plane
 
             SbLine projectLine(sphereIntersection, sphereIntersection + planeDir);
-            if (!tolPlane.intersect(projectLine, planeIntersection))
-#ifdef DEBUG
+            if (!tolPlane.intersect(projectLine, planeIntersection)) {
+#ifdef FC_DEBUG
                 SoDebugError::post("SbSphereSheetProjector::project",
                                    "Couldn't intersect working line with plane");
-#else
-                /* Do nothing */;
+#endif
+            }
+        }
+        else if (!tolPlane.intersect(workingLine, planeIntersection)) {
+#ifdef FC_DEBUG
+            SoDebugError::post("SbSphereSheetProjector::project", "Couldn't intersect with plane");
 #endif
         }
-        else if (!tolPlane.intersect(workingLine, planeIntersection))
-#ifdef DEBUG
-            SoDebugError::post("SbSphereSheetProjector::project", "Couldn't intersect with plane");
-#else
-            /* Do nothing */;
-#endif
 
         // Three possibilities:
         // (1) Intersection is on the sphere inside where the fillet
@@ -813,13 +811,16 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
         // frustum (similar to glFrustum())
         if (!t.isDerivedFrom(SoPerspectiveCamera::getClassTypeId()) &&
             tname != "FrustumCamera") {
-            /*         static SbBool first = true;
-                       if (first) {
-                           SoDebugError::postWarning("SoGuiFullViewerP::zoom",
-                                                     "Unknown camera type, "
-                                          "will zoom by moving position, but this might not be correct.");
-                first = false;
-                       }*/
+#ifdef FC_DEBUG
+                static SbBool first = true;
+                if (first) {
+                    SoDebugError::postWarning("NavigationStyle::zoom",
+                                              "Unknown camera type, "
+                                              "will zoom by moving position, "
+                                              "but this might not be correct.");
+                    first = false;
+                }
+#endif
         }
 
         const float oldfocaldist = cam->focalDistance.getValue();
@@ -1719,8 +1720,9 @@ void NavigationStyle::syncWithEvent(const SoEvent * const ev)
         auto const event = static_cast<const SoMouseButtonEvent *>(ev);
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-
-        // SoDebugError::postInfo("processSoEvent", "button = %d", button);
+#ifdef FC_DEBUG
+        SoDebugError::postInfo("processSoEvent", "button = %d", button);
+#endif
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
                 this->button1down = press;
