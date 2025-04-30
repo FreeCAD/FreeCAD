@@ -64,9 +64,7 @@ class ToolBit(ABC):
         tool_bit_shape: ToolBitShape = None,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(
-            f"ToolBit __init__ called for {obj.Label}", tool_bit_shape, path
-        )
+        Path.Log.track(f"ToolBit __init__ called for {obj.Label}", tool_bit_shape, path)
         self.obj = obj
         self._tool_bit_shape = tool_bit_shape
         self._update_timer = None
@@ -94,9 +92,7 @@ class ToolBit(ABC):
                 "App::PropertyEnumeration",
                 "ShapeName",
                 "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Shape type for the tool bit"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Shape type for the tool bit"),
             )
             obj.ShapeName = TOOL_BIT_SHAPE_NAMES
         if not hasattr(obj, "ShapeFile"):
@@ -130,9 +126,7 @@ class ToolBit(ABC):
     @classmethod
     def schema(
         cls,
-    ) -> Mapping[
-        str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]
-    ]:
+    ) -> Mapping[str, Union[Tuple[str, str, Any], Tuple[str, str, Any, Tuple[str, ...]]]]:
         """
         This schema defines any properties that the tool supports and
         that are not part of the shape file.
@@ -141,9 +135,7 @@ class ToolBit(ABC):
         """
         return {
             "SpindleDirection": (
-                FreeCAD.Qt.translate(
-                    "ToolBit", "Direction of spindle rotation"
-                ),
+                FreeCAD.Qt.translate("ToolBit", "Direction of spindle rotation"),
                 "App::PropertyEnumeration",
                 "Forward",  # Default value
                 ("Forward", "Reverse", "None"),
@@ -183,9 +175,7 @@ class ToolBit(ABC):
         obj.ShapeFile = filepath.name  # Remove the path
 
         # Find the shape name from the file or from the file name.
-        inferred_shape_name = SHAPE_REGISTRY.get_shape_name_from_filename(
-            obj.ShapeFile
-        )
+        inferred_shape_name = SHAPE_REGISTRY.get_shape_name_from_filename(obj.ShapeFile)
         shape_name = obj.ShapeName if hasattr(obj, "ShapeName") else ""
         if not shape_name:
             if inferred_shape_name:
@@ -193,9 +183,7 @@ class ToolBit(ABC):
                     f"legacy tool bit has no ShapeName: {obj.Label}. Inferring {inferred_shape_name}"
                 )
             else:
-                Path.Log.warning(
-                    f"legacy tool bit has no ShapeName: {obj.Label}. Assuming Endmill"
-                )
+                Path.Log.warning(f"legacy tool bit has no ShapeName: {obj.Label}. Assuming Endmill")
                 shape_name = "Endmill"
         obj.ShapeName = shape_name
 
@@ -207,9 +195,7 @@ class ToolBit(ABC):
         and ShapeName.
         """
         Path.Log.track(obj.Label)
-        Path.Log.info(
-            f"Promoting tool bit {obj.Label} ({obj.ShapeName}) from v1 to v2"
-        )
+        Path.Log.info(f"Promoting tool bit {obj.Label} ({obj.ShapeName}) from v1 to v2")
 
         # Update SpindleDirection:
         # Old tools may still have "CCW", "CW", "Off", "None".
@@ -243,9 +229,7 @@ class ToolBit(ABC):
         # Get the schema properties from the current shape
         shape_cls = SHAPE_REGISTRY.get_shape_class_from_name(obj.ShapeName)
         if not shape_cls:
-            raise ValueError(
-                f"Failed to find shape class named '{obj.ShapeName}'"
-            )
+            raise ValueError(f"Failed to find shape class named '{obj.ShapeName}'")
         shape_schema_props = shape_cls.schema().keys()
 
         # Move properties that are part of the shape schema to the "Shape" group
@@ -256,9 +240,7 @@ class ToolBit(ABC):
             ):
                 continue
             try:
-                Path.Log.debug(
-                    f"Moving property '{prop_name}' to group '{PropertyGroupShape}'"
-                )
+                Path.Log.debug(f"Moving property '{prop_name}' to group '{PropertyGroupShape}'")
 
                 # Get property details before removing
                 prop_type = obj.getTypeIdOfProperty(prop_name)
@@ -269,14 +251,10 @@ class ToolBit(ABC):
                 obj.removeProperty(prop_name)
 
                 # Add the property back to the Shape group
-                obj.addProperty(
-                    prop_type, prop_name, PropertyGroupShape, prop_doc
-                )
+                obj.addProperty(prop_type, prop_name, PropertyGroupShape, prop_doc)
                 self._in_update = True  # Prevent onChanged from running
                 PathUtil.setProperty(obj, prop_name, prop_value)
-                Path.Log.info(
-                    f"Moved property '{prop_name}' to group '{PropertyGroupShape}'"
-                )
+                Path.Log.info(f"Moved property '{prop_name}' to group '{PropertyGroupShape}'")
             except Exception as e:
                 Path.Log.error(
                     f"Failed to move property '{prop_name}' to group '{PropertyGroupShape}': {e}"
@@ -304,9 +282,7 @@ class ToolBit(ABC):
 
         # Get the shape instance based on the potentially updated
         # ShapeName and ShapeFile.
-        self._tool_bit_shape = SHAPE_REGISTRY.get_shape_from_filename(
-            obj.ShapeFile
-        )
+        self._tool_bit_shape = SHAPE_REGISTRY.get_shape_from_filename(obj.ShapeFile)
 
         # If BitBody exists and is in a different document after document restore,
         # it means a shallow copy occurred. We need to re-initialize the visual
@@ -323,11 +299,10 @@ class ToolBit(ABC):
         # because some legacy fcstd files may still have references to old view
         # providers.
         if hasattr(obj, "ViewObject") and obj.ViewObject:
-            if hasattr(obj.ViewObject, "Proxy") and \
-                 not isinstance(obj.ViewObject.Proxy, GuiBit.ViewProvider):
-                Path.Log.debug(
-                    f"onDocumentRestored: Attaching ViewProvider for {obj.Label}"
-                )
+            if hasattr(obj.ViewObject, "Proxy") and not isinstance(
+                obj.ViewObject.Proxy, GuiBit.ViewProvider
+            ):
+                Path.Log.debug(f"onDocumentRestored: Attaching ViewProvider for {obj.Label}")
                 GuiBit.ViewProvider(obj.ViewObject, "ToolBit")
 
         # Ensure property state is correct after restore.
@@ -346,9 +321,7 @@ class ToolBit(ABC):
             return
 
         if hasattr(self, "_in_update") and self._in_update:
-            Path.Log.debug(
-                f"Skipping onChanged for {obj.Label} due to active update."
-            )
+            Path.Log.debug(f"Skipping onChanged for {obj.Label} due to active update.")
             return
 
         # We only care about updates that affect the Shape
@@ -422,9 +395,7 @@ class ToolBit(ABC):
         obj.setEditorMode(prop, 1)
         PathUtil.setProperty(obj, prop, val)
 
-    def _get_props(
-        self, obj, group: Optional[Union[str, Tuple[str, ...]]] = None
-    ) -> List[str]:
+    def _get_props(self, obj, group: Optional[Union[str, Tuple[str, ...]]] = None) -> List[str]:
         """
         Returns a list of property names from the given group(s) for the object.
         Returns all groups if the group argument is None.
@@ -483,9 +454,7 @@ class ToolBit(ABC):
                 obj.File = str(path)
             return True
         except (OSError, IOError) as e:
-            Path.Log.error(
-                "Could not save tool {} to {} ({})".format(obj.Label, path, e)
-            )
+            Path.Log.error("Could not save tool {} to {} ({})".format(obj.Label, path, e))
             raise
 
     def _remove_properties(self, obj, group, prop_names):
@@ -496,13 +465,9 @@ class ToolBit(ABC):
                         obj.removeProperty(name)
                         Path.Log.debug(f"Removed property: {group}.{name}")
                     except Exception as e:
-                        Path.Log.error(
-                            f"Failed removing property '{group}.{name}': {e}"
-                        )
+                        Path.Log.error(f"Failed removing property '{group}.{name}': {e}")
             else:
-                Path.Log.warning(
-                    f"'{group}.{name}' failed to remove property, not found"
-                )
+                Path.Log.warning(f"'{group}.{name}' failed to remove property, not found")
 
     def _update_tool_properties(self, obj):
         """
@@ -646,10 +611,7 @@ class ToolBit(ABC):
             return toolchange.SpindleDirection.OFF
 
         # Otherwise use power from defined attribute.
-        if (
-            hasattr(obj, "SpindleDirection")
-            and obj.SpindleDirection is not None
-        ):
+        if hasattr(obj, "SpindleDirection") and obj.SpindleDirection is not None:
             if obj.SpindleDirection.lower() in ("cw", "forward"):
                 return toolchange.SpindleDirection.CW
             else:
@@ -673,9 +635,7 @@ def Declaration(path):
 
 
 class ToolBitFactory(object):
-    def create_bit_from_dict(
-        self, attrs: Mapping, filepath: Optional[pathlib.Path] = None
-    ) -> Any:
+    def create_bit_from_dict(self, attrs: Mapping, filepath: Optional[pathlib.Path] = None) -> Any:
         """
         Given a dictionary as read from json.loads('file.fctb'), this method creates
         a new ToolBit and returns a FeaturePython object for it.
@@ -687,9 +647,7 @@ class ToolBitFactory(object):
 
         # Create the tool bit shape.
         try:
-            tool_bit_shape = SHAPE_REGISTRY.get_shape_from_filename(
-                shape_file, params_dict
-            )
+            tool_bit_shape = SHAPE_REGISTRY.get_shape_from_filename(shape_file, params_dict)
         except Exception as e:
             Path.Log.error(
                 f"Failed to create shape from attributes for '{shape_file}': {e}."
@@ -701,15 +659,11 @@ class ToolBitFactory(object):
         )
 
         # Find the correct ToolBit subclass based on the shape name
-        tool_bit_classes = {
-            b.SHAPE_CLASS.name: b for b in ToolBit.__subclasses__()
-        }
+        tool_bit_classes = {b.SHAPE_CLASS.name: b for b in ToolBit.__subclasses__()}
         tool_bit_class = tool_bit_classes[tool_bit_shape.name]
 
         # Create the ToolBit proxy
-        Path.Log.track(
-            f"ToolBitFactory.create_bit_from_dict: Creating {tool_bit_class.__name__}"
-        )
+        Path.Log.track(f"ToolBitFactory.create_bit_from_dict: Creating {tool_bit_class.__name__}")
         name = attrs.get("name", tool_bit_shape.name)
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
         obj.Proxy = tool_bit_class(obj, tool_bit_shape, filepath)

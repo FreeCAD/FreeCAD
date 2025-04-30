@@ -18,7 +18,7 @@ from .bullnose import ToolBitBullnose
 from .vbit import ToolBitVBit
 
 # A list of the name of each ToolBit
-#TOOL_BIT_NAMES = sorted([cls.name for cls in ToolBit.__subclasses__()])
+# TOOL_BIT_NAMES = sorted([cls.name for cls in ToolBit.__subclasses__()])
 
 # Define __all__ for explicit public interface
 __all__ = [

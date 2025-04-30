@@ -1,6 +1,7 @@
 from PySide.QtCore import *
 from PySide.QtGui import *
 
+
 class FlowLayout(QLayout):
     widthChanged = Signal(int)
 
@@ -44,16 +45,16 @@ class FlowLayout(QLayout):
         return True
 
     def heightForWidth(self, width):
-        if (self.orientation == Qt.Horizontal):
+        if self.orientation == Qt.Horizontal:
             return self.doLayoutHorizontal(QRect(0, 0, width, 0), True)
-        elif (self.orientation == Qt.Vertical):
+        elif self.orientation == Qt.Vertical:
             return self.doLayoutVertical(QRect(0, 0, width, 0), True)
 
     def setGeometry(self, rect):
         super(FlowLayout, self).setGeometry(rect)
-        if (self.orientation == Qt.Horizontal):
+        if self.orientation == Qt.Horizontal:
             self.doLayoutHorizontal(rect, False)
-        elif (self.orientation == Qt.Vertical):
+        elif self.orientation == Qt.Vertical:
             self.doLayoutVertical(rect, False)
 
     def sizeHint(self):
@@ -79,22 +80,28 @@ class FlowLayout(QLayout):
         for item in self.itemList:
             wid = item.widget()
             # Space X and Y is item spacing horizontally and vertically
-            spaceX = self.spacing() + wid.style().layoutSpacing(QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Horizontal)
-            spaceY = self.spacing() + wid.style().layoutSpacing(QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Vertical)
+            spaceX = self.spacing() + wid.style().layoutSpacing(
+                QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Horizontal
+            )
+            spaceY = self.spacing() + wid.style().layoutSpacing(
+                QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Vertical
+            )
             # Determine the coordinate we want to place the item at
             # It should be placed at : initial coordinate of the rect + width of the item + spacing
             nextX = x + item.sizeHint().width() + spaceX
             # If the calculated nextX is greater than the outer bound...
             if nextX - spaceX > rect.right() and lineHeight > 0:
-                x = rect.x() # Reset X coordinate to origin of drawing region
-                y = y + lineHeight + spaceY # Move Y coordinate to the next line
-                nextX = x + item.sizeHint().width() + spaceX # Recalculate nextX based on the new X coordinate
+                x = rect.x()  # Reset X coordinate to origin of drawing region
+                y = y + lineHeight + spaceY  # Move Y coordinate to the next line
+                nextX = (
+                    x + item.sizeHint().width() + spaceX
+                )  # Recalculate nextX based on the new X coordinate
                 lineHeight = 0
 
             if not testOnly:
                 item.setGeometry(QRect(QPoint(x, y), item.sizeHint()))
 
-            x = nextX # Store the next starting X coordinate for next item
+            x = nextX  # Store the next starting X coordinate for next item
             lineHeight = max(lineHeight, item.sizeHint().height())
             i = i + 1
 
@@ -118,16 +125,22 @@ class FlowLayout(QLayout):
         for item in self.itemList:
             wid = item.widget()
             # Space X and Y is item spacing horizontally and vertically
-            spaceX = self.spacing() + wid.style().layoutSpacing(QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Horizontal)
-            spaceY = self.spacing() + wid.style().layoutSpacing(QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Vertical)
+            spaceX = self.spacing() + wid.style().layoutSpacing(
+                QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Horizontal
+            )
+            spaceY = self.spacing() + wid.style().layoutSpacing(
+                QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Vertical
+            )
             # Determine the coordinate we want to place the item at
             # It should be placed at : initial coordinate of the rect + width of the item + spacing
             nextY = y + item.sizeHint().height() + spaceY
             # If the calculated nextY is greater than the outer bound, move to the next column
             if nextY - spaceY > rect.bottom() and columnWidth > 0:
-                y = rect.y() # Reset y coordinate to origin of drawing region
-                x = x + columnWidth + spaceX # Move X coordinate to the next column
-                nextY = y + item.sizeHint().height() + spaceY # Recalculate nextX based on the new X coordinate
+                y = rect.y()  # Reset y coordinate to origin of drawing region
+                x = x + columnWidth + spaceX  # Move X coordinate to the next column
+                nextY = (
+                    y + item.sizeHint().height() + spaceY
+                )  # Recalculate nextX based on the new X coordinate
                 # Reset the column width
                 columnWidth = 0
 
@@ -144,11 +157,13 @@ class FlowLayout(QLayout):
             if not testOnly:
                 item.setGeometry(QRect(QPoint(x, y), item.sizeHint()))
 
-            y = nextY # Store the next starting Y coordinate for next item
-            columnWidth = max(columnWidth, item.sizeHint().width()) # Update the width of the column
-            lineHeight = max(lineHeight, item.sizeHint().height()) # Update the height of the line
+            y = nextY  # Store the next starting Y coordinate for next item
+            columnWidth = max(
+                columnWidth, item.sizeHint().width()
+            )  # Update the width of the column
+            lineHeight = max(lineHeight, item.sizeHint().height())  # Update the height of the line
 
-            i += 1 # Increment i
+            i += 1  # Increment i
 
         # Only call setGeometry (which place the actual widget using coordinates) if testOnly is false
         # For some reason, Qt framework calls the doLayout methods with testOnly set to true (WTF ??)
@@ -172,9 +187,9 @@ class FlowLayout(QLayout):
             itemsOnWidestRow = 0
             for item in self.itemList:
                 # Only compare items from the same row
-                if (item.x_index == i):
+                if item.x_index == i:
                     rowWidth += item.sizeHint().width()
                     itemsOnWidestRow += 1
-                if (rowWidth > self.totalMaxWidth):
+                if rowWidth > self.totalMaxWidth:
                     self.totalMaxWidth = rowWidth
                     self.itemsOnWidestRow = itemsOnWidestRow

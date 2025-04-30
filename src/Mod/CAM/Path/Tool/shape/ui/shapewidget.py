@@ -1,8 +1,9 @@
 from PySide import QtGui, QtCore
 from .util import get_pixmap_from_shape
 
+
 class ShapeWidget(QtGui.QWidget):
-    def __init__ (self, shape, parent=None):
+    def __init__(self, shape, parent=None):
         super(ShapeWidget, self).__init__(parent)
         self.layout = QtGui.QVBoxLayout(self)
         self.layout.setAlignment(QtCore.Qt.AlignHCenter)

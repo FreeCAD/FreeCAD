@@ -68,7 +68,7 @@ EnableExperimentalFeatures = "EnableExperimentalFeatures"
 EnableAdvancedOCLFeatures = "EnableAdvancedOCLFeatures"
 
 
-_observers = defaultdict(list)   # maps group name to callback functions
+_observers = defaultdict(list)  # maps group name to callback functions
 
 
 def _add_group_observer(group, callback):

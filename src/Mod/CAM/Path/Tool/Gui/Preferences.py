@@ -35,7 +35,7 @@ def _is_writable_dir(path: pathlib.Path) -> bool:
     Returns True if writable, False otherwise.
     """
     if not path.is_dir():
-         return False
+        return False
     try:
         with tempfile.NamedTemporaryFile(dir=str(path), delete=True):
             return True
@@ -52,16 +52,19 @@ class ToolsPreferencesPage:
         tool_path_widget = QtGui.QWidget()
         main_layout = QtGui.QHBoxLayout(tool_path_widget)
 
-        #main_layout.addWidget(self.tool_path_label, 0, QtCore.Qt.AlignTop)
+        # main_layout.addWidget(self.tool_path_label, 0, QtCore.Qt.AlignTop)
 
         # Create widgets
         self.tool_path_label = QtGui.QLabel(translate("CAM_PreferencesTools", "Tool Directory:"))
         self.tool_path_edit = QtGui.QLineEdit()
         self.tool_path_note_label = QtGui.QLabel(
-            translate("CAM_PreferencesTools",
-                      "Note: Select the directory that will contain the "
-                      "Bit/, Shape/, and Library/ subfolders for your "
-                      "tool library."))
+            translate(
+                "CAM_PreferencesTools",
+                "Note: Select the directory that will contain the "
+                "Bit/, Shape/, and Library/ subfolders for your "
+                "tool library.",
+            )
+        )
         self.tool_path_note_label.setWordWrap(True)
         self.select_path_button = QtGui.QToolButton()
         self.select_path_button.setIcon(QtGui.QIcon.fromTheme("folder-open"))
@@ -81,7 +84,13 @@ class ToolsPreferencesPage:
         edit_button_layout.addWidget(self.select_path_button, 0, 2, QtCore.Qt.AlignVCenter)
         edit_button_layout.addWidget(self.reset_path_button, 0, 3, QtCore.Qt.AlignVCenter)
         edit_button_layout.addWidget(self.tool_path_note_label, 1, 1, 1, 1, QtCore.Qt.AlignTop)
-        edit_button_layout.addItem(QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding), 2, 0, 1, 4)
+        edit_button_layout.addItem(
+            QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding),
+            2,
+            0,
+            1,
+            4,
+        )
 
         main_layout.addLayout(edit_button_layout, QtCore.Qt.AlignTop)
 
@@ -92,7 +101,7 @@ class ToolsPreferencesPage:
         path = QtGui.QFileDialog.getExistingDirectory(
             self.form,
             translate("CAM_PreferencesTools", "Select Tool Library Directory"),
-            self.tool_path_edit.text()
+            self.tool_path_edit.text(),
         )
         if path:
             self.tool_path_edit.setText(str(path))
@@ -105,12 +114,16 @@ class ToolsPreferencesPage:
     def saveSettings(self):
         # Check path is writable, then call Path.Preferences.setToolPath()
         tool_path = pathlib.Path(self.tool_path_edit.text())
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Path").GetBool("CheckToolPathWritable", True):
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Path").GetBool(
+            "CheckToolPathWritable", True
+        ):
             if not _is_writable_dir(tool_path):
                 QtGui.QMessageBox.warning(
                     self.form,
                     translate("CAM_PreferencesTools", "Warning"),
-                    translate("CAM_PreferencesTools", "The selected tool library path is not writable.")
+                    translate(
+                        "CAM_PreferencesTools", "The selected tool library path is not writable."
+                    ),
                 )
                 return False
         Path.Preferences.setToolPath(tool_path)

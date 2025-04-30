@@ -28,7 +28,9 @@ class TestPathToolShapeRegistry(PathTestUtils.PathTestBase):
         self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("v-bit"), ToolBitShapeVBit)
         self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("VBit"), ToolBitShapeVBit)
         self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("torus"), ToolBitShapeBullnose)
-        self.assertEqual(SHAPE_REGISTRY.get_shape_class_from_name("slitting-saw"), ToolBitShapeSlittingSaw)
+        self.assertEqual(
+            SHAPE_REGISTRY.get_shape_class_from_name("slitting-saw"), ToolBitShapeSlittingSaw
+        )
         self.assertIsNone(SHAPE_REGISTRY.get_shape_class_from_name("nonexistent"))
 
     def test_get_shape_name_from_filename_from_filename(self):
@@ -36,7 +38,7 @@ class TestPathToolShapeRegistry(PathTestUtils.PathTestBase):
         # Use a filename that matches a shape class but might not have a body
         # or the XML extraction fails. We'll simulate this by using a non-existent
         # file with a valid shape name in the filename.
-        filename = "drill.fcstd" # Assuming 'drill' is a valid shape alias
+        filename = "drill.fcstd"  # Assuming 'drill' is a valid shape alias
         # This test relies on the file not existing or XML extraction failing,
         # which is hard to guarantee without mocks.
         # A more robust test would involve creating a dummy file.
