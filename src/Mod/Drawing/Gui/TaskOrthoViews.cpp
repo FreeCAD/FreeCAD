@@ -28,6 +28,7 @@
 
 #include <fmt/printf.h>
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
