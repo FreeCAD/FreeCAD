@@ -102,7 +102,6 @@ class ToolBit(ABC):
         self._update_tool_properties(obj)
         self._update_visual_representation(obj)
 
-        #self.onDocumentRestored(obj)
 
     def _create_base_properties(self, obj):
         # Create the properties in the Base group.
