@@ -34,6 +34,7 @@ import FreeCAD
 
 from femtools.femutils import expandParentObject
 from femtools.femutils import is_of_type
+from femguiutils.vtk_module_handling import vtk_compatibility_abort
 
 if FreeCAD.GuiUp:
     from PySide import QtCore
@@ -380,6 +381,10 @@ class CommandManager:
     def add_filter_set_edit(self, filtertype):
         # like add_obj_on_gui_selobj_noset_edit but the selection is kept
         # and the selobj is expanded in the tree to see the added obj
+
+        # check if we should use python fitler
+        if vtk_compatibility_abort(True):
+            return
 
         # Note: we know selobj is a FemPostObject as otherwise the command should not have been active
         # We also assume the all filters are in PostGroups and not astray
