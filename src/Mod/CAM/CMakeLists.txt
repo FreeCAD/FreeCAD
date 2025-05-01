@@ -621,9 +621,30 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathPythonToolsShapeUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/shape/ui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsShapeModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/shape/models
+)
+
+INSTALL(
+    FILES
         ${PathPythonToolsToolBit_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/toolbit
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBitModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit/models
 )
 
 INSTALL(
