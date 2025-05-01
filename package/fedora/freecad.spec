@@ -8,9 +8,9 @@
 # rpmbuild --without=tests:  esclude tests in %%check
 %bcond_without tests
 # rpmbuild --without=bundled_gtest:  don't use bundled version of gtest and gmock
-%bcond_without bundled_gtest
-
-
+%bcond_with bundled_gtest
+# rpmbuild --without=bundled_gtest:  don't build debug information
+%bcond_without debug_info
 
 
 Name:           freecad
@@ -139,7 +139,9 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %define MEDFILE_INCLUDE_DIRS %{_includedir}/med/
 
      %cmake \
+     %if %{with debug_info}
         -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+     %endif
         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
         -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
@@ -164,7 +166,6 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
     %endif
     %if %{with tests}
         -DENABLE_DEVELOPER_TESTS=TRUE \
-        -DINSTAL_GTEST=TRUE \
     %else
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif

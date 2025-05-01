@@ -1,6 +1,5 @@
 specfile_path: package/fedora/freecad.spec
 files_to_sync:
-    - package/fedora/freecad.spec
     - .packit.yaml
 actions:
   post-upstream-clone:
@@ -27,8 +26,12 @@ jobs:
   #replace branch with main before merging
   branch: only-packit
   targets:
-  - fedora-41
-  - fedora-42FreeCAD/FreeCAD/pulls
+    fedora-41:
+      without_opts:
+      - debug_info
+    fedora-42:
+      without_opts:
+      - debug_info
 
 - job: tests
   identifier: pull_request
@@ -58,7 +61,10 @@ jobs:
   #replace owner with @freecad and the desired project before merging
   owner: filippor
   project: freecad
-
+  targets:
+    fedora-all:
+      without_opts:
+      - tests
 
 
 
