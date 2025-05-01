@@ -390,19 +390,20 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     Client.drawingParameters.coinFontSize =
         std::lround(sketcherfontSize * devicePixelRatio);  // this is in pixels
-    Client.drawingParameters.labelFontSize = std::lround(
-        sketcherfontSize * devicePixelRatio * 72.0f / dpi);  // this is in points, as SoDatumLabel uses points
+    Client.drawingParameters.labelFontSize =
+        std::lround(sketcherfontSize * devicePixelRatio * 72.0f
+                    / dpi);  // this is in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize =
         std::lround(0.8 * sketcherfontSize * devicePixelRatio);
 
 
-    
     auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
     auto scaledMarkerSize = std::lround(markerSize * devicePixelRatio);
     auto const it =
         std::lower_bound(supportedsizes.begin(), supportedsizes.end(), scaledMarkerSize);
-    if (it != supportedsizes.end()) 
+    if (it != supportedsizes.end()) {
         scaledMarkerSize = *it;
+    }
     Client.drawingParameters.markerSize = scaledMarkerSize;
 
     Client.updateInventorNodeSizes();
