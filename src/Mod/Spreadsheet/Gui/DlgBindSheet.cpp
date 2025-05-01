@@ -267,7 +267,7 @@ void DlgBindSheet::accept()
         QDialog::accept();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this,
                               tr("Bind Spreadsheet Cells"),
                               tr("Error:\n") + QString::fromUtf8(e.what()));
@@ -296,7 +296,7 @@ void DlgBindSheet::onDiscard()
         reject();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this, tr("Unbind cells"), QString::fromUtf8(e.what()));
         Gui::Command::abortCommand();
     }

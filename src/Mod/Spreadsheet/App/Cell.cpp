@@ -201,7 +201,7 @@ void Cell::setExpression(App::ExpressionPtr&& expr)
                 restore(reader, true);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("Failed to restore style of cell " << owner->sheet()->getFullName() << '.'
                                                           << address.toString() << ": "
                                                           << e.what());

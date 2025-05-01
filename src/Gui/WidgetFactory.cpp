@@ -314,7 +314,7 @@ void PreferencePagePython::loadSettings()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -330,7 +330,7 @@ void PreferencePagePython::saveSettings()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 

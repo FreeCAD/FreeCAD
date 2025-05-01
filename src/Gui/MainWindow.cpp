@@ -851,7 +851,7 @@ bool MainWindow::closeAllDocuments (bool close)
         docs = App::Document::getDependentDocuments(docs, true);
     }
     catch(Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
     }
 
     bool checkModify = true;
@@ -958,7 +958,7 @@ void MainWindow::showDocumentation(const QString& help)
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -1536,7 +1536,7 @@ void MainWindow::delayedStartup()
                 throw;
             }
             catch (const Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
             }
         });
         return;

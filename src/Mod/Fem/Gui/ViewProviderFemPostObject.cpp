@@ -673,7 +673,7 @@ void ViewProviderFemPostObject::setRangeOfColorBar(float min, float max)
         m_colorBar->setRange(min, max);
     }
     catch (const Base::ValueError& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

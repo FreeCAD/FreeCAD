@@ -443,7 +443,7 @@ bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -474,7 +474,7 @@ bool DrawGuiUtil::isArchObject(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -505,7 +505,7 @@ bool DrawGuiUtil::isArchSection(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }

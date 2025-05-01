@@ -345,7 +345,7 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Base exception thrown for '%s'\n", pageName.c_str());
-        e.ReportException();
+        e.reportException();
     }
     catch (const std::exception& e) {
         Base::Console().Error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());

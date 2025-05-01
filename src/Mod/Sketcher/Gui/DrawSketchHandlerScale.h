@@ -125,7 +125,7 @@ private:
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));

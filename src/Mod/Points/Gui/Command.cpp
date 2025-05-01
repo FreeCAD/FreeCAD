@@ -309,7 +309,7 @@ void CmdPointsConvert::activated(int iMsg)
     catch (const Py::Exception&) {
         abortCommand();
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 }
 

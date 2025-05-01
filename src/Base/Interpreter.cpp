@@ -89,10 +89,10 @@ PyException::PyException()
 
 PyException::~PyException() noexcept = default;
 
-void PyException::ThrowException()
+void PyException::throwException()
 {
     PyException myexcp;
-    myexcp.ReportException();
+    myexcp.reportException();
     myexcp.raiseException();
 }
 
@@ -123,7 +123,7 @@ void PyException::raiseException()
     throw *this;
 }
 
-void PyException::ReportException() const
+void PyException::reportException() const
 {
     if (!getReported()) {
         setReported(true);
@@ -252,7 +252,7 @@ std::string InterpreterSingleton::runString(const char* sCmd)
             throw SystemExitException();
         }
 
-        PyException::ThrowException();
+        PyException::throwException();
         return {};  // just to quieten code analyzers
     }
 
@@ -296,7 +296,7 @@ std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
             throw SystemExitException();
         }
 
-        PyException::ThrowException();
+        PyException::throwException();
         return {};  // just to quieten code analyzers
     }
     Py_DECREF(presult);
@@ -657,7 +657,7 @@ std::string InterpreterSingleton::init(int argc, char* argv[])
         return getPythonPath();
     }
     catch (const Exception& e) {
-        e.ReportException();
+        e.reportException();
         throw;
     }
 }

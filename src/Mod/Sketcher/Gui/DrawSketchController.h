@@ -358,7 +358,7 @@ public:
             tryViewValueChanged(onviewparameterindex, value);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (const std::exception& e) {
             Base::Console().Error("C++ exception in onViewValueChanged: %s\n", e.what());

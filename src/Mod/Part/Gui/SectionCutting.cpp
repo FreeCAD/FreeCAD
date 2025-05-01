@@ -625,7 +625,7 @@ Part::Box* SectionCut::tryCreateXBox(const Base::Vector3f& pos, const Base::Vect
         return createXBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -699,7 +699,7 @@ Part::Box* SectionCut::tryCreateYBox(const Base::Vector3f& pos, const Base::Vect
         return createYBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -743,7 +743,7 @@ Part::Box* SectionCut::tryCreateZBox(const Base::Vector3f& pos, const Base::Vect
         return createZBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -798,7 +798,7 @@ Part::Cut* SectionCut::tryCreateCut(const char* name)
         return createCut(name);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -829,7 +829,7 @@ void SectionCut::startCutting(bool isInitial)
         startObjectCutting(isInitial);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

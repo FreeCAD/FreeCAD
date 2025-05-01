@@ -460,7 +460,7 @@ bool DlgAddPropertyVarSet::createProperty()
                                           group.c_str(), doc.c_str());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         critical(QObject::tr("Add property"),
                  QObject::tr("Failed to add property to '%1': %2").arg(
                          QString::fromLatin1(varSet->getFullName().c_str()),

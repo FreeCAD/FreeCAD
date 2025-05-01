@@ -2089,7 +2089,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                     std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());

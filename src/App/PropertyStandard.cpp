@@ -518,7 +518,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
         }
         catch (Py::Exception&) {
             Base::PyException e;
-            e.ReportException();
+            e.reportException();
         }
     }
 

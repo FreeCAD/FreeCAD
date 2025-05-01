@@ -1557,19 +1557,19 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             // Try to continue only for certain exception types if not handled
             // by the feature type. For all other exception types abort the process.
             catch (const Base::UnicodeError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::ValueError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::IndexError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::RuntimeError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::XMLAttributeError& e) {
-                e.ReportException();
+                e.reportException();
             }
 
             pObj->setStatus(ObjectStatus::Restore, false);
@@ -3077,7 +3077,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
     FC_TIME_LOG(t2, "Recompute");
@@ -3117,7 +3117,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                 }
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("error when removing object " << o.getDocumentName() << '#'
                                                      << o.getObjectName());
             }
@@ -3326,7 +3326,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         }
     }
     catch (Base::AbortException& e) {
-        e.ReportException();
+        e.reportException();
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog("User abort", Feat);
         return -1;
@@ -3337,7 +3337,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         return 1;
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog(e.what(), Feat);
         return 1;

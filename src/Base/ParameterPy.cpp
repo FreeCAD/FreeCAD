@@ -82,7 +82,7 @@ public:
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
         }
     }
     bool isEqual(const Py::Object& obj) const
@@ -777,7 +777,7 @@ void ParameterGrpPy::tryCall(ParameterGrpObserver* obs,
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 }
 

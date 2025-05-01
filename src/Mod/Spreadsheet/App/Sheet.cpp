@@ -943,7 +943,7 @@ void Sheet::recomputeCell(CellAddress p)
             cell->setException(e.what());
         }
         else {
-            e.ReportException();
+            e.reportException();
         }
 
         // Mark as erroneous

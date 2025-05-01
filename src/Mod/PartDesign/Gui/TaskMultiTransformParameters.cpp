@@ -542,7 +542,7 @@ TaskMultiTransformParameters::~TaskMultiTransformParameters()
     }
     catch (const Py::Exception&) {
         Base::PyException exc;  // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 

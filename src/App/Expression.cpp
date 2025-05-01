@@ -619,7 +619,7 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
         return false;
     int res = PyObject_RichCompareBool(o1.ptr(),o2.ptr(),Py_EQ);
     if(res<0)
-        PyException::ThrowException();
+        PyException::throwException();
     return !!res;
 }
 

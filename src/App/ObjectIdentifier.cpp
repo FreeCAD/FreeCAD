@@ -711,12 +711,12 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object& pyobj) const
                          true);
         PyObject* r = PyObject_GetItem(pyobj.ptr(), slice.ptr());
         if (!r) {
-            Base::PyException::ThrowException();
+            Base::PyException::throwException();
         }
         res = Py::asObject(r);
     }
     if (!res.ptr()) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
     if (PyModule_Check(res.ptr()) && !ExpressionParser::isModuleImported(res.ptr())) {
         FC_THROWM(Base::RuntimeError, "Module '" << getName() << "' access denied.");
@@ -728,7 +728,7 @@ void ObjectIdentifier::Component::set(Py::Object& pyobj, const Py::Object& value
 {
     if (isSimple()) {
         if (PyObject_SetAttrString(*pyobj, getName().c_str(), *value) == -1) {
-            Base::PyException::ThrowException();
+            Base::PyException::throwException();
         }
     }
     else if (isArray()) {
@@ -750,7 +750,7 @@ void ObjectIdentifier::Component::set(Py::Object& pyobj, const Py::Object& value
                                      step != 1 ? Py::Long(step).ptr() : nullptr),
                          true);
         if (PyObject_SetItem(pyobj.ptr(), slice.ptr(), value.ptr()) < 0) {
-            Base::PyException::ThrowException();
+            Base::PyException::throwException();
         }
     }
 }
@@ -779,7 +779,7 @@ void ObjectIdentifier::Component::del(Py::Object& pyobj) const
                                      step != 1 ? Py::Long(step).ptr() : nullptr),
                          true);
         if (PyObject_DelItem(pyobj.ptr(), slice.ptr()) < 0) {
-            Base::PyException::ThrowException();
+            Base::PyException::throwException();
         }
     }
 }
@@ -1714,7 +1714,7 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
         if (!pymod) {                                                                              \
             pymod = PyImport_ImportModule(#_name);                                                 \
             if (!pymod)                                                                            \
-                Base::PyException::ThrowException();                                               \
+                Base::PyException::throwException();                                               \
             else                                                                                   \
                 Py_DECREF(pymod);                                                                  \
         }                                                                                          \
@@ -1959,7 +1959,7 @@ App::any ObjectIdentifier::getValue(bool pathValue, bool* isPseudoProperty) cons
         return pyObjectToAny(access(rs));
     }
     catch (Py::Exception&) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
     return {};
 }
@@ -1988,7 +1988,7 @@ Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool* isPseudoProperty) 
         return access(rs);
     }
     catch (Py::Exception&) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
     return Py::Object();
 }
@@ -2017,7 +2017,7 @@ void ObjectIdentifier::setValue(const App::any& value) const
         access(rs, &pyvalue);
     }
     catch (Py::Exception&) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
 }
 

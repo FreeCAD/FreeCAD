@@ -268,7 +268,7 @@ TaskDraftParameters::~TaskDraftParameters()
     }
     catch (const Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 

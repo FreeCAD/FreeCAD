@@ -377,7 +377,7 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
     }
     // do not re-throw
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const std::exception& e) {
         Base::Console().Error(
@@ -919,7 +919,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                     prop->getContainer()->removeDynamicProperty(prop->getName());
                 }
                 catch (Base::Exception& e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             }
             break;

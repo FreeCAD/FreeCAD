@@ -125,7 +125,7 @@ std::string PropertyPythonObject::toString() const
         Base::Console().Error("PropertyPythonObject::toString(): failed for %s\n",
                               typestr.as_string().c_str());
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return repr;
@@ -175,7 +175,7 @@ void PropertyPythonObject::fromString(const std::string& repr)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -201,7 +201,7 @@ void PropertyPythonObject::loadPickle(const std::string& str)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -324,7 +324,7 @@ void PropertyPythonObject::Save(Base::Writer& writer) const
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     saveObject(writer);
@@ -394,7 +394,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             this->object = Py::None();
             load_failed = true;
         }

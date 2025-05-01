@@ -157,7 +157,7 @@ public:
     Exception& operator=(Exception&& inst) noexcept;
 
     virtual const char* what() const noexcept;
-    virtual void ReportException() const;  // once only
+    virtual void reportException() const;  // once only
 
     inline void setMessage(const std::string& message);
     // what may differ from the message given by the user in
@@ -242,7 +242,7 @@ public:
     FileException(const std::string& message, const FileInfo& File);
 
     const char* what() const noexcept override;
-    void ReportException() const override;
+    void reportException() const override;
     std::string getFileName() const;
     PyObject* getPyObject() override;
 
