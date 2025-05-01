@@ -371,7 +371,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.0);
     viewScalingFactor = Base::clamp<double>(viewScalingFactor, 0.5, 5.0);
 
-    int markersize = hGrp->GetInt("MarkerSize", 7);
+    int markerSize = hGrp->GetInt("MarkerSize", 7);
 
     int defaultFontSizePixels =
         Client.defaultApplicationFontSizePixels();  // returns height in pixels, not points
@@ -394,7 +394,16 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
         sketcherfontSize * devicePixelRatio * 72.0f / dpi);  // this is in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize =
         std::lround(0.8 * sketcherfontSize * devicePixelRatio);
-    Client.drawingParameters.markerSize = std::lround(markersize * devicePixelRatio);
+
+
+    
+    auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
+    auto scaledMarkerSize = std::lround(markerSize * devicePixelRatio);
+    auto const it =
+        std::lower_bound(supportedsizes.begin(), supportedsizes.end(), scaledMarkerSize);
+    if (it != supportedsizes.end()) 
+        scaledMarkerSize = *it;
+    Client.drawingParameters.markerSize = scaledMarkerSize;
 
     Client.updateInventorNodeSizes();
 }
