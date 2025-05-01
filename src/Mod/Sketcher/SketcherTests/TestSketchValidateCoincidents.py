@@ -143,7 +143,8 @@ class TestSketchValidateCoincidents(unittest.TestCase):
             geoList = []
             geoList.append(
                 Part.LineSegment(
-                    App.Vector(7.548310, 5.193216, 0.000000), App.Vector(31.461353, 5.193216, 0.000000)
+                    App.Vector(7.548310, 5.193216, 0.000000),
+                    App.Vector(31.461353, 5.193216, 0.000000),
                 )
             )
             geoList.append(
@@ -160,7 +161,8 @@ class TestSketchValidateCoincidents(unittest.TestCase):
             )
             geoList.append(
                 Part.LineSegment(
-                    App.Vector(7.548310, 20.652151, 0.000000), App.Vector(7.548310, 5.193216, 0.000000)
+                    App.Vector(7.548310, 20.652151, 0.000000),
+                    App.Vector(7.548310, 5.193216, 0.000000),
                 )
             )
             doc.Sketch.addGeometry(geoList, False)
