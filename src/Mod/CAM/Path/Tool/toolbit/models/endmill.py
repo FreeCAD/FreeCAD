@@ -12,9 +12,8 @@ class ToolBitEndmill(ToolBit, ChiploadMixin):
 
     def __init__(
         self,
-        obj,
         shape: ToolBitShapeEndmill,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(f"ToolBitEndmill __init__ called for {obj.Label}")
-        super().__init__(obj, shape, path)
+        Path.Log.track(f"ToolBitEndmill __init__ called with shape: {shape}")
+        super().__init__(shape, path)

@@ -11,9 +11,9 @@ class ToolBitBullnose(ToolBit, ChiploadMixin):
 
     def __init__(
         self,
-        obj,
-        shape: ToolBitShapeBullnose,
+        tool_bit_shape: ToolBitShapeBullnose,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(f"ToolBitBullnose __init__ called for {obj.Label}")
-        super().__init__(obj, shape, path)
+        Path.Log.track("ToolBitBullnose __init__ called")
+        super().__init__(tool_bit_shape, path=path)
+

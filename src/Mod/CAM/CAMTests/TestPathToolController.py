@@ -71,7 +71,7 @@ class TestPathToolController(PathTestBase):
         self.assertEqual(attrs["hrapid"], "28.0 mm/s")
         self.assertEqual(attrs["dir"], "Reverse")
         self.assertEqual(attrs["speed"], 12000)
-        self.assertEqual(attrs["tool"], t.Proxy.to_dict(t))
+        self.assertEqual(attrs["tool"], t.Proxy.to_dict())
 
         return tc
 

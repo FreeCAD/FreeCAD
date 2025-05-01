@@ -511,9 +511,9 @@ class ToolBitLibrary(object):
 
         Path.Log.debug(f"Attempting to create tool bit with name: {fullpath}")
         self.temptool = ToolBitFactory.create_bit(filepath=fullpath, shapefile=shapefile)
-        self.temptool.Proxy.unloadBitBody(self.temptool)
+        self.temptool.Proxy.unloadBitBody()
         self.temptool.Label = fname
-        self.temptool.Proxy.saveToFile(self.temptool, fullpath)
+        self.temptool.Proxy.saveToFile(fullpath)
         self.temptool.Document.removeObject(self.temptool.Name)
         self.temptool = None
 
@@ -580,7 +580,7 @@ class ToolBitLibrary(object):
         # This feels like a hack.  Remove the toolbit object
         # remove the editor from the dialog
         # re-enable all the controls
-        self.temptool.Proxy.unloadBitBody(self.temptool)
+        self.temptool.Proxy.unloadBitBody()
         self.temptool.Document.removeObject(self.temptool.Name)
         self.temptool = None
         widget = self.form.toolTableGroup.children()[-1]
@@ -591,7 +591,7 @@ class ToolBitLibrary(object):
     def accept(self):
         """Handle accept signal"""
         self.editor.accept()
-        self.temptool.Proxy.saveToFile(self.temptool, self.temptool.File)
+        self.temptool.Proxy.saveToFile(self.temptool.File)
         self.librarySave()
         self.loadData()
         self.cleanupDocument()

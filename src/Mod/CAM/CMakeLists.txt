@@ -130,6 +130,7 @@ SET(PathPythonToolsGui_SRCS
 
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
+    Path/Tool/toolbit/docobject.py
     Path/Tool/toolbit/util.py
 )
 
@@ -474,9 +475,9 @@ SET(all_files
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsShape_SRCS}
     ${PathPythonToolsShapeModels_SRCS}
+    ${PathPythonToolsShapeUi_SRCS}
     ${PathPythonToolsToolBit_SRCS}
     ${PathPythonToolsToolBitModels_SRCS}
-    ${PathPythonToolsToolBitUi_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}

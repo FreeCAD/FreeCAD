@@ -12,9 +12,8 @@ class ToolBitSlittingSaw(ToolBit, ChiploadMixin):
 
     def __init__(
         self,
-        obj,
         shape: ToolBitShapeSlittingSaw,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(f"ToolBitSlittingSaw __init__ called for {obj.Label}")
-        super().__init__(obj, shape, path)
+        Path.Log.track(f"ToolBitSlittingSaw __init__ called with shape: {shape}")
+        super().__init__(shape, path)

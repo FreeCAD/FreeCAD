@@ -119,7 +119,7 @@ class CommandToolBitSave:
             if path:
                 if not path.endswith(".fctb"):
                     path += ".fctb"
-                tool.Proxy.saveToFile(tool, path)
+                tool.Proxy.saveToFile(path)
 
 
 class CommandToolBitLoad:

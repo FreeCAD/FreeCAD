@@ -147,7 +147,7 @@ class ToolBitEditor(object):
             editor.attachTo(None)
             Path.Log.debug("  hide row: {}".format(i))
 
-        img = tool.Proxy.getBitThumbnail(tool)
+        img = tool.Proxy.getBitThumbnail()
         if img:
             self.form.image.setPixmap(QtGui.QPixmap(QtGui.QImage.fromData(img)))
         else:
@@ -165,7 +165,7 @@ class ToolBitEditor(object):
             self.model.removeRows(0, self.model.rowCount())
             setup = False
 
-        attributes = tool.Proxy.toolGroupsAndProperties(tool, False)
+        attributes = tool.Proxy.toolGroupsAndProperties(False)
         for name in attributes:
             group = QtGui.QStandardItem()
             group.setData(name, QtCore.Qt.EditRole)
@@ -194,11 +194,11 @@ class ToolBitEditor(object):
     def accept(self):
         Path.Log.track()
         self.refresh()
-        self.tool.Proxy.unloadBitBody(self.tool)
+        self.tool.Proxy.unloadBitBody()
 
     def reject(self):
         Path.Log.track()
-        self.tool.Proxy.unloadBitBody(self.tool)
+        self.tool.Proxy.unloadBitBody()
 
     def updateUI(self):
         Path.Log.track()
@@ -246,7 +246,7 @@ class ToolBitEditor(object):
         for lbl, qsb, editor in self.widgets:
             editor.updateProperty()
 
-        self.tool.Proxy._updateShapeFile(self.tool)
+        self.tool.Proxy._updateShapeFile()
 
     def refresh(self):
         Path.Log.track()

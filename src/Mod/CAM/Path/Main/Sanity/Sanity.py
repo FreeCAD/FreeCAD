@@ -390,7 +390,7 @@ class CAMSanity:
             tooldata["partNumber"] = ""
 
             if os.path.isfile(TC.Tool.ShapeFile):
-                imagedata = TC.Tool.Proxy.getBitThumbnail(TC.Tool)
+                imagedata = TC.Tool.Proxy.getBitThumbnail()
             else:
                 imagedata = None
                 data["squawkData"].append(

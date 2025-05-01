@@ -66,7 +66,7 @@ class ViewProvider(object):
         self.obj = vobj.Object
 
     def getIcon(self):
-        png = self.obj.Proxy.getBitThumbnail(self.obj)
+        png = self.obj.Proxy.getBitThumbnail()
         if png:
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(png, "PNG")

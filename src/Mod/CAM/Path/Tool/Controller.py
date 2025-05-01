@@ -230,7 +230,7 @@ class ToolController:
         attrs[ToolControllerTemplate.HorizRapid] = "%s" % (obj.HorizRapid)
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
         attrs[ToolControllerTemplate.SpindleDir] = obj.SpindleDir
-        attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.to_dict(obj.Tool)
+        attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.to_dict()
         expressions = []
         for expr in obj.ExpressionEngine:
             Path.Log.debug("%s: %s" % (expr[0], expr[1]))
@@ -251,7 +251,7 @@ class ToolController:
             "toolnumber": obj.ToolNumber,
             "toollabel": obj.Label,
             "spindlespeed": obj.SpindleSpeed,
-            "spindledirection": obj.Tool.Proxy.get_spindle_direction(obj),
+            "spindledirection": obj.Tool.Proxy.get_spindle_direction(),
         }
 
         commands = toolchange.generate(**args)
