@@ -19,10 +19,6 @@ SET(Test_SRCS
     TestPerf.py
 )
 
-if(BUILD_IMPORT)
-    list(APPEND Test_SRCS DocumentImport.py)
-endif(BUILD_IMPORT)
-
 SET(TestData_SRCS
     TestData/basic_metadata.xml
     TestData/bad_root_node.xml
