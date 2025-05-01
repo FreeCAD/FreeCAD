@@ -36,15 +36,9 @@ from ...shape import ToolBitShape, SHAPE_REGISTRY, TOOL_BIT_SHAPE_NAMES
 from lazy_loader.lazy_loader import LazyLoader
 from ..docobject import DetachedDocumentObject
 
-
 Part = LazyLoader("Part", globals(), "Part")
 GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
 
-
-__title__ = "Tool bits."
-__author__ = "sliptonic (Brad Collette), Samuel Abels"
-__url__ = "https://www.freecad.org"
-__doc__ = "Class to deal with and represent a tool bit."
 
 PropertyGroupShape = "Shape"
 
@@ -374,42 +368,11 @@ class ToolBit(ABC):
         self._create_base_properties()
 
         # Transfer property values from the detached object to the real object
-        for prop_name in temp_obj.PropertiesList:
-            if hasattr(temp_obj, prop_name):
-                prop_value = temp_obj.getPropertyByName(prop_name)
-
-                # Get stored property details from the detached object
-                prop_type = temp_obj._property_types.get(prop_name)
-                prop_group = temp_obj._property_groups.get(prop_name)
-                prop_doc = temp_obj._property_docs.get(prop_name, "") # Provide default empty string for doc
-
-                if not hasattr(self.obj, prop_name):
-                    # If property doesn't exist on the real object, add it
-                    if prop_type and prop_group is not None: # Ensure we have type and group to add property
-                         self.obj.addProperty(prop_type, prop_name, prop_group, prop_doc)
-                         Path.Log.debug(f"Added missing property '{prop_name}' to real object with type {prop_type}")
-                    else:
-                         Path.Log.warning(
-                             f"Cannot add missing property '{prop_name}' to real object: "
-                             f"missing type ({prop_type}) or group ({prop_group})"
-                         )
-                         continue
-
-                # Set the property value on the real object
-                Path.Log.debug(f"Attempting to set property '{prop_name}' with value {prop_value} (type: {type(prop_value)})")
-                PathUtil.setProperty(self.obj, prop_name, prop_value)
-                Path.Log.debug(f"Set property '{prop_name}' on real object with value {prop_value}")
+        temp_obj.copy_to(self.obj)
 
         # Update the visual representation now that it's attached
         self._update_tool_properties()
         self._update_visual_representation()
-
-        # Apply stored editor modes from the detached object
-        for prop_name, mode in temp_obj._editor_modes.items():
-            if hasattr(self.obj, prop_name):
-                self.obj.setEditorMode(prop_name, mode)
-
-        #self.obj.Document.recompute()
 
     def onChanged(self, obj, prop):
         Path.Log.track(obj.Label, prop)

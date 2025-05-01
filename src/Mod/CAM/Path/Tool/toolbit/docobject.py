@@ -1,4 +1,5 @@
 import Path
+import Path.Base.Util as PathUtil
 
 
 class DetachedDocumentObject:
@@ -76,3 +77,26 @@ class DetachedDocumentObject:
     def getGroupOfProperty(self, name):
         """Returns the stored group for a property in detached state."""
         return self._property_groups.get(name)
+
+    def copy_to(self, obj):
+        """
+        Copies properties from this detached object to a real DocumentObject.
+        """
+        for prop_name in self.PropertiesList:
+            if not hasattr(self, prop_name):
+                continue
+
+            prop_value = self.getPropertyByName(prop_name)
+            prop_type = self._property_types.get(prop_name)
+            prop_group = self._property_groups.get(prop_name)
+            prop_doc = self._property_docs.get(prop_name, "")
+            prop_editor_mode = self._editor_modes.get(prop_name)
+
+            # If the property doesn't exist in the target object, add it
+            if not hasattr(obj, prop_name):
+                obj.addProperty(prop_type, prop_name, prop_group, prop_doc)
+
+            # Set the property value and editor mode
+            PathUtil.setProperty(obj, prop_name, prop_value)
+            if prop_editor_mode is not None:
+                obj.setEditorMode(prop_name, prop_editor_mode)
