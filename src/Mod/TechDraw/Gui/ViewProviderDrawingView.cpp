@@ -39,6 +39,8 @@
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "ViewProviderDrawingView.h"
@@ -477,3 +479,55 @@ TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawView*>(pcObject);
 }
+
+
+//! it can happen that child graphic items can lose their parent item if the
+//! the parent is deleted, then undo is invoked.  The linkages on the App side are
+//! handled by the undo mechanism, but the QGraphicsScene parentage is not reset.
+void ViewProviderDrawingView::fixSceneDependencies()
+{
+    Base::Console().Message("VPDV::fixSceneDependencies()\n");
+    auto page = getViewProviderPage();
+    if (!page) {
+        return;
+    }
+
+    auto scene = page->getQGSPage();
+    auto ourQView = getQView();
+
+    // this is the logic for items other than Dimensions and Balloons
+    auto children = getViewObject()->getUniqueChildren();
+    for (auto& child : children) {
+        if (child->isDerivedFrom<TechDraw::DrawViewDimension>() ||
+            child->isDerivedFrom<TechDraw::DrawViewBalloon>() ) {
+            // these are handled by ViewProviderViewPart
+            continue;
+        }
+        auto* childQView = scene->findQViewForDocObj(child);
+        auto* childGraphicParent = scene->findParent(childQView);
+        if (childGraphicParent != ourQView) {
+            scene->addItemToParent(childQView, ourQView);
+        }
+    }
+}
+
+
+std::vector<App::DocumentObject*> ViewProviderDrawingView::claimChildren() const
+{
+    std::vector<App::DocumentObject*> temp;
+    const std::vector<App::DocumentObject *> &potentialChildren = getViewObject()->getInList();
+    try {
+      for(auto& child : potentialChildren) {
+          auto view = dynamic_cast<TechDraw::DrawView *>(child);
+          if (view && view->claimParent() == getViewObject()) {
+              temp.push_back(view);
+              continue;
+          }
+      }
+    }
+    catch (...) {
+        return {};
+    }
+    return temp;
+}
+

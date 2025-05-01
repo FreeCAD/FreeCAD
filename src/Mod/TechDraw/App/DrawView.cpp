@@ -439,6 +439,28 @@ DrawView *DrawView::claimParent() const
     return getCollection();
 }
 
+//! return *unique* list of DrawView derived items which consider this DVP to be their 'owner'
+//! if a dimension has two references to this dvp, it will appear twice in the inlist, so we need to
+//! pick out duplicates.
+std::vector<TechDraw::DrawView*> DrawView::getUniqueChildren() const
+{
+    std::vector<TechDraw::DrawView*> result;
+    auto children = getInList();
+    std::sort(children.begin(), children.end(), std::less<>());
+    auto newEnd = std::unique(children.begin(), children.end());
+    children.erase(newEnd, children.end());
+    for (auto& child : children) {
+        if (child->isDerivedFrom<DrawView>()) {
+            auto* childDV = static_cast<TechDraw::DrawView*>(child);
+            if (childDV->claimParent() == this) {
+                result.push_back(childDV);
+            }
+        }
+    }
+    return result;
+}
+
+
 DrawViewClip* DrawView::getClipGroup()
 {
     for (auto* obj : getInList()) {
