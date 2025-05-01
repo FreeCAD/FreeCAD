@@ -31,9 +31,7 @@ from abc import ABC
 from typing import List, Optional, Tuple, Type, Union, Mapping, Any
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
-from ..shape.base import ToolBitShape
-from ..shape.registry import SHAPE_REGISTRY
-from ..shape import TOOL_BIT_SHAPE_NAMES
+from ...shape import ToolBitShape, SHAPE_REGISTRY, TOOL_BIT_SHAPE_NAMES
 from lazy_loader.lazy_loader import LazyLoader
 
 

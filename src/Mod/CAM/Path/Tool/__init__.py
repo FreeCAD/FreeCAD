@@ -14,6 +14,6 @@ __all__ = [
 # This makes the Path.Tool.toolbit.base module available as Path.Tool.Bit.
 # Since C++ does not use the standard Python import mechanism and instead
 # looks for Path.Tool.Bit in sys.modules, we need to update sys.modules here.
-from .toolbit import base as Bit
+from .toolbit.models import base as Bit
 
 sys.modules[__name__ + ".Bit"] = Bit

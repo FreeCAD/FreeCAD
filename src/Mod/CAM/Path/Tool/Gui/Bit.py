@@ -163,7 +163,7 @@ class TaskPanel:
         self.editor.setupUI()
 
 
-class ToolBitGuiFactory(Path.Tool.toolbit.base.ToolBitFactory):
+class ToolBitGuiFactory(Path.Tool.toolbit.models.base.ToolBitFactory):
     def create_bit_from_dict(self, attrs: Mapping, filepath: Optional[pathlib.Path] = None):
         """
         Creates a new tool bit from attributes.
@@ -262,6 +262,6 @@ def LoadTools(parent=None):
 
 
 # Set the factory so all tools are created with UI
-Path.Tool.toolbit.base.Factory = ToolBitGuiFactory()
+Path.Tool.toolbit.models.base.Factory = ToolBitGuiFactory()
 
 PathIconViewProvider.RegisterViewProvider("ToolBit", ViewProvider)

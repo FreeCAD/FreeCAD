@@ -3,8 +3,8 @@
 import pathlib
 from typing import Optional
 import Path
+from ...shape import ToolBitShapeProbe
 from .base import ToolBit
-from ..shape.probe import ToolBitShapeProbe
 
 
 class ToolBitProbe(ToolBit):

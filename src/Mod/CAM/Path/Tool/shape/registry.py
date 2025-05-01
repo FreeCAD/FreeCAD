@@ -8,7 +8,7 @@ from typing import Optional, Mapping, Type
 import Path
 import xml.etree.ElementTree as ET
 from Path.Preferences import addToolPreferenceObserver
-from .base import ToolBitShape
+from .models.base import ToolBitShape
 
 
 class ShapeRegistry:

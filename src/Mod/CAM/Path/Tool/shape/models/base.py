@@ -6,7 +6,7 @@ import pathlib
 import FreeCAD
 import Path
 from typing import Dict, List, Any, Mapping, Optional, Tuple, Type
-from .doc import (
+from ..doc import (
     find_shape_object,
     get_doc_state,
     get_object_properties,
@@ -14,7 +14,7 @@ from .doc import (
     update_shape_object_properties,
     ShapeDocFromBytes,
 )
-from .util import get_abbreviations_from_svg, create_thumbnail, file_is_newer
+from ..util import get_abbreviations_from_svg, create_thumbnail, file_is_newer
 
 
 class ToolBitShape(abc.ABC):

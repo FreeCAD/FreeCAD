@@ -3,18 +3,18 @@
 import pathlib
 from typing import Optional
 import Path
+from ...shape import ToolBitShapeDovetail
 from .base import ToolBit, ChiploadMixin
-from ..shape.drill import ToolBitShapeDrill
 
 
-class ToolBitDrill(ToolBit, ChiploadMixin):
-    SHAPE_CLASS = ToolBitShapeDrill
+class ToolBitDovetail(ToolBit, ChiploadMixin):
+    SHAPE_CLASS = ToolBitShapeDovetail
 
     def __init__(
         self,
         obj,
-        shape: ToolBitShapeDrill,
+        shape: ToolBitShapeDovetail,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(f"ToolBitDrill __init__ called for {obj.Label}")
+        Path.Log.track(f"ToolBitDovetail __init__ called for {obj.Label}")
         super().__init__(obj, shape, path)

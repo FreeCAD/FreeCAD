@@ -2,19 +2,20 @@
 # This package aggregates tool bit shape classes.
 
 # Import the base class and all concrete shape classes
-from .base import ToolBitShape
-from .ballend import ToolBitShapeBallend
-from .chamfer import ToolBitShapeChamfer
-from .dovetail import ToolBitShapeDovetail
-from .drill import ToolBitShapeDrill
-from .endmill import ToolBitShapeEndmill
-from .probe import ToolBitShapeProbe
-from .reamer import ToolBitShapeReamer
-from .slittingsaw import ToolBitShapeSlittingSaw
-from .tap import ToolBitShapeTap
-from .threadmill import ToolBitShapeThreadMill
-from .bullnose import ToolBitShapeBullnose
-from .vbit import ToolBitShapeVBit
+from .registry import SHAPE_REGISTRY
+from .models.base import ToolBitShape
+from .models.ballend import ToolBitShapeBallend
+from .models.chamfer import ToolBitShapeChamfer
+from .models.dovetail import ToolBitShapeDovetail
+from .models.drill import ToolBitShapeDrill
+from .models.endmill import ToolBitShapeEndmill
+from .models.probe import ToolBitShapeProbe
+from .models.reamer import ToolBitShapeReamer
+from .models.slittingsaw import ToolBitShapeSlittingSaw
+from .models.tap import ToolBitShapeTap
+from .models.threadmill import ToolBitShapeThreadMill
+from .models.bullnose import ToolBitShapeBullnose
+from .models.vbit import ToolBitShapeVBit
 
 # A list of the name of each ToolBitShape
 TOOL_BIT_SHAPE_NAMES = sorted([cls.name for cls in ToolBitShape.__subclasses__()])
@@ -34,4 +35,6 @@ __all__ = [
     "ToolBitShapeThreadMill",
     "ToolBitShapeBullnose",
     "ToolBitShapeVBit",
+    "SHAPE_REGISTRY",
+    "TOOL_BIT_SHAPE_NAMES",
 ]

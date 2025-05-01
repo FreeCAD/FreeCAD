@@ -3,18 +3,18 @@
 import pathlib
 from typing import Optional
 import Path
+from ...shape import ToolBitShapeReamer
 from .base import ToolBit, ChiploadMixin
-from ..shape.chamfer import ToolBitShapeChamfer
 
 
-class ToolBitChamfer(ToolBit, ChiploadMixin):
-    SHAPE_CLASS = ToolBitShapeChamfer
+class ToolBitReamer(ToolBit, ChiploadMixin):
+    SHAPE_CLASS = ToolBitShapeReamer
 
     def __init__(
         self,
         obj,
-        shape: ToolBitShapeChamfer,
+        shape: ToolBitShapeReamer,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(f"ToolBitChamfer __init__ called for {obj.Label}")
+        Path.Log.track(f"ToolBitReamer __init__ called for {obj.Label}")
         super().__init__(obj, shape, path)

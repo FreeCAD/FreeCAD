@@ -27,7 +27,6 @@ import FreeCAD
 import FreeCADGui
 import Path
 from Path.Tool import ToolBitFactory
-from Path.Tool.toolbit.base import Declaration
 import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
 import Path.Tool.Gui.Controller as PathToolControllerGui
@@ -41,6 +40,7 @@ import shutil
 import uuid as UUID
 from functools import partial
 from ..shape.ui.shapeselector import ShapeSelector
+from ..toolbit.models.base import Declaration
 from ..toolbit.util import get_toolbit_filepath_from_name
 from ..shape.registry import SHAPE_REGISTRY
 

@@ -3,18 +3,18 @@
 import pathlib
 from typing import Optional
 import Path
+from ...shape import ToolBitShapeChamfer
 from .base import ToolBit, ChiploadMixin
-from ..shape.ballend import ToolBitShapeBallend
 
 
-class ToolBitBallend(ToolBit, ChiploadMixin):
-    SHAPE_CLASS = ToolBitShapeBallend
+class ToolBitChamfer(ToolBit, ChiploadMixin):
+    SHAPE_CLASS = ToolBitShapeChamfer
 
     def __init__(
         self,
         obj,
-        shape: ToolBitShapeBallend,
+        shape: ToolBitShapeChamfer,
         path: Optional[pathlib.Path] = None,
     ):
-        Path.Log.track(f"ToolBitBallend __init__ called for {obj.Label}")
+        Path.Log.track(f"ToolBitChamfer __init__ called for {obj.Label}")
         super().__init__(obj, shape, path)

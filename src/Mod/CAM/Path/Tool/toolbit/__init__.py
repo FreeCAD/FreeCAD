@@ -2,20 +2,20 @@
 # This package aggregates tool bit classes.
 
 # Import the base class and all concrete shape classes
-from .base import ToolBit, Factory as ToolBitFactory
+from .models.base import ToolBit, Factory as ToolBitFactory
 
-from .ballend import ToolBitBallend
-from .chamfer import ToolBitChamfer
-from .dovetail import ToolBitDovetail
-from .drill import ToolBitDrill
-from .endmill import ToolBitEndmill
-from .probe import ToolBitProbe
-from .reamer import ToolBitReamer
-from .slittingsaw import ToolBitSlittingSaw
-from .tap import ToolBitTap
-from .threadmill import ToolBitThreadMill
-from .bullnose import ToolBitBullnose
-from .vbit import ToolBitVBit
+from .models.ballend import ToolBitBallend
+from .models.chamfer import ToolBitChamfer
+from .models.dovetail import ToolBitDovetail
+from .models.drill import ToolBitDrill
+from .models.endmill import ToolBitEndmill
+from .models.probe import ToolBitProbe
+from .models.reamer import ToolBitReamer
+from .models.slittingsaw import ToolBitSlittingSaw
+from .models.tap import ToolBitTap
+from .models.threadmill import ToolBitThreadMill
+from .models.bullnose import ToolBitBullnose
+from .models.vbit import ToolBitVBit
 
 # A list of the name of each ToolBit
 # TOOL_BIT_NAMES = sorted([cls.name for cls in ToolBit.__subclasses__()])
