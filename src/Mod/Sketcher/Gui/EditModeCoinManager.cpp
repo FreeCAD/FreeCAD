@@ -378,6 +378,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
+    double dpi = Client.getApplicationLogicalDPIX();
     double devicePixelRatio = Client.getDevicePixelRatio();
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
@@ -389,9 +390,8 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     Client.drawingParameters.coinFontSize =
         std::lround(sketcherfontSize * devicePixelRatio);  // this is in pixels
-    Client.drawingParameters.labelFontSize =
-        std::lround(sketcherfontSize * devicePixelRatio * 96
-                    / 72);  // this is in points, as SoDatumLabel uses points
+    Client.drawingParameters.labelFontSize = std::lround(
+        sketcherfontSize * devicePixelRatio * 72.0f / dpi);  // this is in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize =
         std::lround(0.8 * sketcherfontSize * devicePixelRatio);
     Client.drawingParameters.markerSize = std::lround(markersize * devicePixelRatio);
