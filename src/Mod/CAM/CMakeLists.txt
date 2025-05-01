@@ -117,9 +117,23 @@ SET(PathPythonTools_SRCS
     Path/Tool/Controller.py
 )
 
+SET(PathPythonToolsGui_SRCS
+    Path/Tool/Gui/__init__.py
+    Path/Tool/Gui/Bit.py
+    Path/Tool/Gui/BitCmd.py
+    Path/Tool/Gui/BitEdit.py
+    Path/Tool/Gui/BitLibraryCmd.py
+    Path/Tool/Gui/BitLibrary.py
+    Path/Tool/Gui/Controller.py
+    Path/Tool/Gui/Preferences.py
+)
+
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
     Path/Tool/toolbit/util.py
+)
+
+SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/__init__.py
     Path/Tool/toolbit/models/ballend.py
     Path/Tool/toolbit/models/base.py
@@ -136,22 +150,14 @@ SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/models/vbit.py
 )
 
-SET(PathPythonToolsGui_SRCS
-    Path/Tool/Gui/__init__.py
-    Path/Tool/Gui/Bit.py
-    Path/Tool/Gui/BitCmd.py
-    Path/Tool/Gui/BitEdit.py
-    Path/Tool/Gui/BitLibraryCmd.py
-    Path/Tool/Gui/BitLibrary.py
-    Path/Tool/Gui/Controller.py
-    Path/Tool/Gui/Preferences.py
-)
-
 SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/__init__.py
     Path/Tool/shape/registry.py
     Path/Tool/shape/util.py
     Path/Tool/shape/doc.py
+)
+
+SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/__init__.py
     Path/Tool/shape/models/ballend.py
     Path/Tool/shape/models/base.py
@@ -166,6 +172,15 @@ SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/models/tap.py
     Path/Tool/shape/models/threadmill.py
     Path/Tool/shape/models/vbit.py
+)
+
+SET(PathPythonToolsShapeUi_SRCS
+    Path/Tool/shape/ui/__init__.py
+    Path/Tool/shape/ui/flowlayout.py
+    Path/Tool/shape/ui/shapebutton.py
+    Path/Tool/shape/ui/shapeselector.py
+    Path/Tool/shape/ui/shapewidget.py
+    Path/Tool/shape/ui/util.py
 )
 
 SET(PathPythonPost_SRCS
@@ -458,7 +473,10 @@ SET(all_files
     ${PathPythonTools_SRCS}
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsShape_SRCS}
+    ${PathPythonToolsShapeModels_SRCS}
     ${PathPythonToolsToolBit_SRCS}
+    ${PathPythonToolsToolBitModels_SRCS}
+    ${PathPythonToolsToolBitUi_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
