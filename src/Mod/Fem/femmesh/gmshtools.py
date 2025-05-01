@@ -70,6 +70,10 @@ class GmshTools:
         self.load_properties()
         self.error = False
 
+    def _next_field_number(self):
+        self._field_counter += 1
+        return self._field_counter
+
     def load_properties(self):
         # part to mesh
         self.part_obj = self.mesh_obj.Shape
@@ -187,8 +191,7 @@ class GmshTools:
         self.group_elements = {}
 
         # mesh regions
-        self.ele_length_map = {}  # { "ElementString" : element length }
-        self.ele_node_map = {}  # { "ElementString" : [element nodes] }
+        self.ele_length_list = []  # [ (element length, {element names}) ]
 
         # mesh boundary layer
         self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
@@ -200,6 +203,7 @@ class GmshTools:
         self.temp_file_geo = ""
         self.mesh_name = ""
         self.gmsh_bin = ""
+        self._field_counter = 0
 
     def update_mesh_data(self):
         self.start_logs()
@@ -482,6 +486,7 @@ class GmshTools:
                 # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
                 if mr_obj.CharacteristicLength:
                     if mr_obj.References:
+                        elements = set()
                         for sub in mr_obj.References:
                             # print(sub[0])  # Part the elements belongs to
                             # check if the shape of the mesh refinements
@@ -496,7 +501,7 @@ class GmshTools:
                                     "the Shape to mesh :-)\n".format(mr_obj.Name)
                                 )
                                 search_ele_in_shape_to_mesh = True
-                            for elems in sub[1]:
+                            for element in sub[1]:
                                 # print(elems)  # elems --> element
                                 if search_ele_in_shape_to_mesh:
                                     # we're going to try to find the element in the
@@ -508,7 +513,7 @@ class GmshTools:
                                         self.part_obj.Shape, ele_shape
                                     )
                                     if found_element:
-                                        elems = found_element
+                                        element = found_element
                                     else:
                                         Console.PrintError(
                                             "One element of the meshregion {} could not be found "
@@ -517,17 +522,18 @@ class GmshTools:
                                             )
                                         )
                                 # print(elems)  # element
-                                if elems not in self.ele_length_map:
-                                    self.ele_length_map[elems] = Units.Quantity(
-                                        mr_obj.CharacteristicLength
-                                    ).Value
+                                if all(element not in entry[1] for entry in self.ele_length_list):
+                                    elements.add(element)
                                 else:
                                     Console.PrintError(
                                         "The element {} of the mesh refinement {} has "
                                         "been added to another mesh region.\n".format(
-                                            elems, mr_obj.Name
+                                            elemement, mr_obj.Name
                                         )
                                     )
+                        value = Units.Quantity(mr_obj.CharacteristicLength).Value
+                        self.ele_length_list.append((value, elements))
+
                     else:
                         Console.PrintError(
                             "The mesh refinement: {} is not used to create the mesh "
@@ -538,13 +544,8 @@ class GmshTools:
                         "The mesh refinement: {} is not used to create the "
                         "mesh because the CharacteristicLength is 0.0 mm.\n".format(mr_obj.Name)
                     )
-            for eleml in self.ele_length_map:
-                # the method getElement(element) does not return Solid elements
-                ele_shape = geomtools.get_element(self.part_obj, eleml)
-                ele_vertexes = geomtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
-                self.ele_node_map[eleml] = ele_vertexes
-            # Console.PrintMessage("  {}\n".format(self.ele_length_map))
-            # Console.PrintMessage("  {}\n".format(self.ele_node_map))
+
+            # Console.PrintMessage("  {}\n".format(self.ele_length_list))
 
     def get_boundary_layer_data(self):
         # mesh boundary layer
@@ -691,13 +692,56 @@ class GmshTools:
 
             geo.write("\n")
 
+    def _element_list_to_shape_idx_dict(self, element_list):
+        # takes element list and builds a dict from it mapping from
+        # shapes types to all indices
+
+        reg_exp = re.compile(r"(?:.*\.)?(?P<shape>Solid|Face|Edge|Vertex)(?P<index>\d+)$")
+        result = {"Solid": [], "Face": [], "Edge": [], "Vertex": []}
+        for element in element_list:
+            m = reg_exp.match(element)
+            if m:
+                result[m.group("shape")].append(m.group("index"))
+
+        return result
+
+    def write_regions(self, geo):
+        geo.write("// Constant size regions\n")
+        if self.ele_length_list:
+            # we use the index FreeCAD which starts with 0
+            # we need to add 1 for the index in Gmsh
+            geo.write("// Constant size field according to  Element length map\n")
+            for entry in self.ele_length_list:
+                field_id = self._next_field_number()
+                element_dict = self._element_list_to_shape_idx_dict(entry[1])
+
+                geo.write(f"Field[{field_id}] = Constant;\n")
+                geo.write(f"Field[{field_id}].VIn = {entry[0]};\n")
+                if element_dict["Vertex"]:
+                    id_list = ", ".join(str(i) for i in element_dict["Vertex"])
+                    geo.write(f"Field[{field_id}].PointsList = {{ {id_list} }};\n")
+                if element_dict["Edge"]:
+                    id_list = ", ".join(str(i) for i in element_dict["Edge"])
+                    geo.write(f"Field[{field_id}].CurvesList = {{ {id_list} }};\n")
+                if element_dict["Face"]:
+                    id_list = ", ".join(str(i) for i in element_dict["Face"])
+                    geo.write(f"Field[{field_id}].SurfacesList = {{ {id_list} }};\n")
+                if element_dict["Solid"]:
+                    id_list = ", ".join(str(i) for i in element_dict["Solid"])
+                    geo.write(f"Field[{field_id}].VolumesList = {{ {id_list} }};\n")
+
+            geo.write("\n")
+
+        geo.write("// End of constant size regions\n")
+        geo.write("\n")
+
     def write_boundary_layer(self, geo):
         # currently single body is supported
         if len(self.bl_setting_list):
             geo.write("// boundary layer setting\n")
             Console.PrintMessage("  Start to write boundary layer setup\n")
-            field_number = 1
             for item in self.bl_setting_list:
+                field_number = self._next_field_number()
                 prefix = "Field[" + str(field_number) + "]"
                 geo.write(prefix + " = BoundaryLayer;\n")
                 for k in item:
@@ -715,7 +759,7 @@ class GmshTools:
                     Console.PrintMessage(f"{line}\n")
                 geo.write("BoundaryLayer Field = " + str(field_number) + ";\n")
                 geo.write("// end of this boundary layer setup \n")
-                field_number += 1
+
             geo.write("\n")
             geo.flush()
             Console.PrintMessage("  finished in boundary layer setup\n")
@@ -753,28 +797,20 @@ class GmshTools:
         self.write_groups(geo)
 
         # Characteristic Length of the elements
-        geo.write("// Characteristic Length\n")
-        if self.ele_length_map:
-            # we use the index FreeCAD which starts with 0
-            # we need to add 1 for the index in Gmsh
-            geo.write("// Characteristic Length according CharacteristicLengthMap\n")
-            for e in self.ele_length_map:
-                ele_nodes = ("".join((str(n + 1) + ", ") for n in self.ele_node_map[e])).rstrip(
-                    ", "
-                )
-                geo.write("// " + e + "\n")
-                elestr1 = "{"
-                elestr2 = "}"
-                geo.write(
-                    "Characteristic Length {} {} {} = {};\n".format(
-                        elestr1, ele_nodes, elestr2, self.ele_length_map[e]
-                    )
-                )
-            geo.write("\n")
+        self.write_regions(geo)
 
         # boundary layer generation may need special setup
         # of Gmsh properties, set them in Gmsh TaskPanel
         self.write_boundary_layer(geo)
+
+        # write the background size field, if fields have been added
+        field_id = self._next_field_number()
+        if field_id > 1:
+            geo.write(f"\nField[{field_id}] = Min;\n")
+            id_list = ", ".join(str(i) for i in range(1,field_id))
+            geo.write(f"Field[{field_id}].FieldsList = {{ {id_list} }};\n")
+            geo.write(f"Background Field = {field_id};\n\n")
+
 
         # mesh parameter
         geo.write("// min, max Characteristic Length\n")
