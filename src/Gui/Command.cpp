@@ -473,17 +473,17 @@ void Command::_invoke(int id, bool disablelog)
         throw;
     }
     catch (Base::PyException &e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
     catch (Base::AbortException&) {
     }
     catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
     }
@@ -721,7 +721,7 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const ch
         Base::Interpreter().runString(sCmd);
     }
     catch(Py::Exception &) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
 }
 

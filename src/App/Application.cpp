@@ -793,7 +793,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 _objCount = -1;
             }
             catch (const Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
                 if (!errs && isMainDoc)
                     throw;
                 if (errs && isMainDoc)
@@ -857,7 +857,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         try {
             docs = Document::getDependentDocuments(docs, true);
         } catch (Base::Exception &e) {
-            e.ReportException();
+            e.reportException();
         }
         for(auto it=docs.begin(); it!=docs.end();) {
             auto doc = *it;
@@ -2811,7 +2811,7 @@ void Application::initApplication()
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
     // seed randomizer

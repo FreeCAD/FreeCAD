@@ -186,7 +186,7 @@ std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelec
             }
             catch (const Py::Exception&) {
                 Base::PyException e;
-                e.ReportException();
+                e.reportException();
                 isValid = Py::False();
             }
 
@@ -199,7 +199,7 @@ std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelec
                 }
                 catch (const Py::Exception&) {
                     Base::PyException e;
-                    e.ReportException();
+                    e.reportException();
                     isPriority = Py::False();
                 }
 

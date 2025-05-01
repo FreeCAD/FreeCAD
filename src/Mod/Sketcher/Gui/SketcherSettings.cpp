@@ -492,7 +492,7 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
     }
     catch (Base::PyException& e) {
         Base::Console().DeveloperError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
-        e.ReportException();
+        e.reportException();
         errMsg = QString::fromLatin1(e.what());
     }
     catch (...) {

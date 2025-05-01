@@ -70,7 +70,7 @@ const char* Exception::what() const noexcept
     return errorMessage.c_str();
 }
 
-void Exception::ReportException() const
+void Exception::reportException() const
 {
     if (hasBeenReported) {
         return;
@@ -247,7 +247,7 @@ const char* FileException::what() const noexcept
     return _sErrMsgAndFileName.c_str();
 }
 
-void FileException::ReportException() const
+void FileException::reportException() const
 {
     if (getReported()) {
         return;

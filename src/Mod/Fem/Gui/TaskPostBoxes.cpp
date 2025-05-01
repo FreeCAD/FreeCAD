@@ -889,7 +889,7 @@ void TaskPostDataAlongLine::point1Changed(double)
         getObject<Fem::FemPostDataAlongLineFilter>()->GetAxisData();
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -1204,7 +1204,7 @@ void TaskPostDataAtPoint::centerChanged(double)
         onFieldActivated(currentField);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

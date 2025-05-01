@@ -280,7 +280,7 @@ bool SnapManager::snapToObject(double& x, double& y)
                 pointToOverride = curve->pointAtParameter(pointParam);
             }
             catch (Base::CADKernelError& e) {
-                e.ReportException();
+                e.reportException();
                 return false;
             }
 

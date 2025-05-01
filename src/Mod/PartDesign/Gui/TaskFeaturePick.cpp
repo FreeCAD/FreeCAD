@@ -325,7 +325,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception& e) {
         // reported by code analyzers

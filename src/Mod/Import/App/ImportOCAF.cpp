@@ -101,7 +101,7 @@ void ImportOCAF::tryPlacementFromMatrix(App::GeoFeature* part, const Base::Matri
         part->Placement.setValue(pl);
     }
     catch (const Base::ValueError& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

@@ -3078,7 +3078,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         catch (Base::PyException& e) {
             Base::Console().DeveloperError(
                 "ViewProviderSketch", "setEdit: visibility automation failed with an error: \n");
-            e.ReportException();
+            e.reportException();
         }
     }
     catch (Base::PyException&) {

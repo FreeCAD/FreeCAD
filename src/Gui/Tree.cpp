@@ -1182,7 +1182,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
             contextMenu.exec(QCursor::pos());
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (std::exception& e) {
             FC_ERR("C++ exception: " << e.what());
@@ -1808,7 +1808,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (std::exception& e) {
         FC_ERR("C++ exception: " << e.what());
@@ -2071,7 +2071,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
             }
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             event->ignore();
         }
         catch (std::exception& e) {
@@ -2320,7 +2320,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -2682,7 +2682,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -2874,7 +2874,7 @@ void TreeWidget::onCloseDoc()
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (std::exception& e) {
         FC_ERR("C++ exception: " << e.what());

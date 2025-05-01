@@ -99,7 +99,7 @@ bool FeaturePythonImp::execute()
             PyErr_Clear();
             return false;
         }
-        Base::PyException::ThrowException();  // extract the Python error text
+        Base::PyException::throwException();  // extract the Python error text
     }
 
     return false;
@@ -123,7 +123,7 @@ bool FeaturePythonImp::mustExecute() const
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return false;
 }
@@ -156,7 +156,7 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -183,7 +183,7 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string& newLabel)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return false;
 }
@@ -214,7 +214,7 @@ void FeaturePythonImp::onChanged(const Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -236,7 +236,7 @@ void FeaturePythonImp::onDocumentRestored()
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -258,7 +258,7 @@ void FeaturePythonImp::unsetupObject()
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -330,7 +330,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject*& ret,
             return false;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         ret = nullptr;
         return true;
     }
@@ -367,7 +367,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string>& ret, int reason) 
             return false;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return true;
     }
 }
@@ -424,7 +424,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject*& ret,
             return false;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         ret = nullptr;
         return true;
     }
@@ -453,7 +453,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::hasChildElement() const
         }
 
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -474,7 +474,7 @@ int FeaturePythonImp::isElementVisible(const char* element) const
             return -2;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return -1;
     }
 }
@@ -496,7 +496,7 @@ int FeaturePythonImp::setElementVisible(const char* element, bool visible)
             return -2;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return -1;
     }
 }
@@ -512,7 +512,7 @@ std::string FeaturePythonImp::getViewProviderName()
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return {};
@@ -534,7 +534,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::canLinkProperties() const
             return NotImplemented;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -556,7 +556,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::allowDuplicateLabel() const
         }
 
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -577,7 +577,7 @@ int FeaturePythonImp::canLoadPartial() const
             return -1;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return 0;
     }
 }
@@ -609,7 +609,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::redirectSubName(std::ostringstream& s
         }
 
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -631,7 +631,7 @@ bool FeaturePythonImp::editProperty(const char* name)
         }
 
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return false;
 }

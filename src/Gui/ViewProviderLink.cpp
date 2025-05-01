@@ -2521,7 +2521,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     }
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
         }
@@ -2539,7 +2539,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     ext->getLinkCopyOnChangeProperty()->setValue(1);
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
             act = submenu->addAction(QObject::tr("Tracking"));
@@ -2553,7 +2553,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     ext->getLinkCopyOnChangeProperty()->setValue(3);
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
         }
@@ -2571,7 +2571,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 ext->getLinkCopyOnChangeProperty()->setValue((long)0);
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
     }
@@ -2590,7 +2590,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 ext->syncCopyOnChange();
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
     }
@@ -2616,7 +2616,7 @@ void ViewProviderLink::_setupContextMenu(
                 ext->getShowElementProperty()->setValue(!ext->getShowElementValue());
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
         action->setToolTip(QObject::tr(
@@ -2692,7 +2692,7 @@ bool ViewProviderLink::initDraggingPlacement() {
         }
     } catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return false;
     }
 
@@ -2897,7 +2897,7 @@ bool ViewProviderLink::callDraggerProxy(const char* fname) {
         }
     } catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return true;
     }
 
@@ -2936,10 +2936,10 @@ void ViewProviderLink::updateLinks(ViewProvider *vp) {
             ext->linkInfo->update();
     }
     catch (const Base::TypeError &e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const Base::ValueError &e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

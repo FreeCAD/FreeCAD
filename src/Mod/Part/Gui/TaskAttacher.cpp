@@ -1200,11 +1200,11 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             visAutoFunc(opening_not_closing, ObjectName, ViewProvider, editObj, editSubName);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (const Py::Exception&) {
             Base::PyException e;
-            e.ReportException();
+            e.reportException();
         }
     }
     else {
@@ -1214,7 +1214,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             visAutoFunc(opening_not_closing, objName, nullptr, nullptr, std::string());
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
 }

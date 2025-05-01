@@ -440,7 +440,7 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
             applyProfile(dlg.getProfile(), dlg.numberOfDecimals());
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     });
 

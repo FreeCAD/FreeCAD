@@ -2912,7 +2912,7 @@ bool CDxfRead::ReadEntitiesSection()
                 }
             }
             catch (const Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (...) {
                 ImportError("CDxfRead::ReadEntity raised unknown exception\n");

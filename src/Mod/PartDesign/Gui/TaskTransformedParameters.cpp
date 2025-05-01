@@ -531,7 +531,7 @@ void TaskTransformedParameters::hideObject()
         FCMD_OBJ_HIDE(getTopTransformedObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -541,7 +541,7 @@ void TaskTransformedParameters::showObject()
         FCMD_OBJ_SHOW(getTopTransformedObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -551,7 +551,7 @@ void TaskTransformedParameters::hideBase()
         FCMD_OBJ_HIDE(getBaseObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -561,7 +561,7 @@ void TaskTransformedParameters::showBase()
         FCMD_OBJ_SHOW(getBaseObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -574,7 +574,7 @@ void TaskTransformedParameters::exitSelectionMode()
         showObject();
     }
     catch (Base::Exception& exc) {
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
