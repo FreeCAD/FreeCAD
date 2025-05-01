@@ -28,6 +28,7 @@ import os
 import pathlib
 import zipfile
 from abc import ABC
+import uuid
 from typing import List, Optional, Tuple, Type, Union, Mapping, Any
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
@@ -82,6 +83,7 @@ class ToolBit(ABC):
         path: Optional[pathlib.Path] = None,
     ):
         Path.Log.track("ToolBit __init__ called", tool_bit_shape, path)
+        self.id = str(uuid.uuid4())
         self.obj = DetachedDocumentObject()
         self.obj.Proxy = self
         self._tool_bit_shape = tool_bit_shape
