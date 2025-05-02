@@ -676,7 +676,7 @@ INSTALL(
     FILES
         ${PathPythonToolsToolBitMixins_SRCS}
     DESTINATION
-        Mod/CAM/Path/Tool/toolbit
+        Mod/CAM/Path/Tool/toolbit/mixins
 )
 
 INSTALL(
