@@ -615,35 +615,35 @@ class GmshTools:
                                         )
                                     )
                         setting = {}
-                        setting["hwall_n"] = Units.Quantity(mr_obj.MinimumThickness).Value
-                        setting["ratio"] = mr_obj.GrowthRate
-                        setting["thickness"] = sum(
+                        setting["Size"] = Units.Quantity(mr_obj.MinimumThickness).Value
+                        setting["Ratio"] = mr_obj.GrowthRate
+                        setting["Thickness"] = sum(
                             [
-                                setting["hwall_n"] * setting["ratio"] ** i
+                                setting["Size"] * setting["Ratio"] ** i
                                 for i in range(mr_obj.NumberOfLayers)
                             ]
                         )
 
-                        # hfar: cell dimension outside boundary
+                        # SizeFar: cell dimension outside boundary
                         # should be set later if some character length is set
                         if (
-                            self.clmax > setting["thickness"] * 0.8
-                            and self.clmax < setting["thickness"] * 1.6
+                            self.clmax > setting["Thickness"] * 0.8
+                            and self.clmax < setting["Thickness"] * 1.6
                         ):
-                            setting["hfar"] = self.clmax
+                            setting["SizeFar"] = self.clmax
                         else:
                             # set a value for safety, it may works as background mesh cell size
-                            setting["hfar"] = setting["thickness"]
+                            setting["SizeFar"] = setting["Thickness"]
                         # from face name -> face id is done in geo file write up
                         # TODO: fan angle setup is not implemented yet
-                        if self.dimension == "2":
-                            setting["EdgesList"] = belem_list
-                        elif self.dimension == "3":
-                            setting["FacesList"] = belem_list
-                        else:
-                            Console.PrintError(
-                                "boundary layer is only supported for 2D and 3D mesh.\n"
-                            )
+                        #if self.dimension == "2":
+                        setting["CurvesList"] = belem_list
+                        #elif self.dimension == "3":
+                        #    setting["FacesList"] = belem_list
+                        #else:
+                        #    Console.PrintError(
+                        #        "boundary layer is only supported for 2D mesh.\n"
+                        #    )
                         self.bl_setting_list.append(setting)
                     else:
                         Console.PrintError(
@@ -746,7 +746,7 @@ class GmshTools:
                 geo.write(prefix + " = BoundaryLayer;\n")
                 for k in item:
                     v = item[k]
-                    if k in {"EdgesList", "FacesList"}:
+                    if k == "CurvesList":
                         # the element name of FreeCAD which starts
                         # with 1 (example: "Face1"), same as Gmsh
                         # el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
