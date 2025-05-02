@@ -73,6 +73,5 @@ mv ${copy_dir} ${version_name}
 sha256sum ${version_name}.7z > ${version_name}.7z-SHA256.txt
 
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
-    gh release create ${BUILD_TAG} --title "Weekly Build ${BUILD_TAG}" --notes "Weekly Build ${BUILD_TAG}" --prerelease || true
     gh release upload --clobber ${BUILD_TAG} "${version_name}.7z" "${version_name}.7z-SHA256.txt"
 fi
