@@ -82,6 +82,7 @@ class FemWorkbench(Workbench):
 
         # check vtk version to potentially find missmatchs
         from femguiutils.vtk_module_handling import vtk_module_handling
+
         vtk_module_handling()
 
     def GetClassName(self):

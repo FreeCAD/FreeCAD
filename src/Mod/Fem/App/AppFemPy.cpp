@@ -84,9 +84,10 @@ public:
                            &Module::getVtkVersion,
                            "Returns the VTK version FreeCAD is linked against");
 #ifdef FC_USE_VTK_PYTHON
-        add_varargs_method("isVtkCompatible",
-                           &Module::isVtkCompatible,
-                           "Checks if the passed vtkObject is compatible with the c++ VTK version FreeCAD uses");
+        add_varargs_method(
+            "isVtkCompatible",
+            &Module::isVtkCompatible,
+            "Checks if the passed vtkObject is compatible with the c++ VTK version FreeCAD uses");
 #endif
 #endif
         add_varargs_method("show",
@@ -334,7 +335,7 @@ private:
 
     Py::Object getVtkVersion(const Py::Tuple& args)
     {
-        if (!PyArg_ParseTuple(args.ptr(),"")) {
+        if (!PyArg_ParseTuple(args.ptr(), "")) {
             throw Py::Exception();
         }
 
@@ -345,13 +346,13 @@ private:
     Py::Object isVtkCompatible(const Py::Tuple& args)
     {
         PyObject* pcObj = nullptr;
-        if (!PyArg_ParseTuple(args.ptr(),"O", &pcObj)) {
+        if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj)) {
             throw Py::Exception();
         }
 
         // if non is returned the VTK object was created by annother VTK library, and the
         // python api used to create it cannot be used with FreeCAD
-        vtkObjectBase *obj = vtkPythonUtil::GetPointerFromObject(pcObj, "vtkObject");
+        vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(pcObj, "vtkObject");
         if (!obj) {
             PyErr_Clear();
             return Py::False();

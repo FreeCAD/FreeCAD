@@ -33,6 +33,7 @@ import FreeCAD
 
 # check vtk version to potentially find missmatchs
 from femguiutils.vtk_module_handling import vtk_module_handling
+
 vtk_module_handling()
 
 # IMPORTANT: Never import vtk directly. Often vtk is compiled with different QT
@@ -43,7 +44,9 @@ from vtkmodules.vtkFiltersCore import vtkGlyph3D
 import vtkmodules.vtkFiltersSources as vtkSources
 
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
+
 
 class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
     """
@@ -96,7 +99,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 name="ScaleFactor",
                 group="Scale",
                 doc="A constant multiplier the glyphs are scaled with",
-                value= (1, 0, 1e12, 1e-12),
+                value=(1, 0, 1e12, 1e-12),
             ),
             _PropHelper(
                 type="App::PropertyEnumeration",
@@ -109,15 +112,15 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyIntegerConstraint",
                 name="Stride",
                 group="Masking",
-                doc="Define the stride for \"Every Nth\" masking mode",
-                value= (2, 1, 999999999, 1),
+                doc='Define the stride for "Every Nth" masking mode',
+                value=(2, 1, 999999999, 1),
             ),
             _PropHelper(
                 type="App::PropertyIntegerConstraint",
                 name="MaxNumber",
                 group="Masking",
-                doc="Defines the maximal number of vertices used for \"Uniform Sampling\" masking mode",
-                value= (1000, 1, 999999999, 1),
+                doc='Defines the maximal number of vertices used for "Uniform Sampling" masking mode',
+                value=(1000, 1, 999999999, 1),
             ),
         ]
         return prop
@@ -155,14 +158,14 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 else:
                     glyph.SetScaleModeToScaleByVectorComponents()
 
-                glyph.SetInputArrayToProcess(2,0,0,0,obj.ScaleData)
+                glyph.SetInputArrayToProcess(2, 0, 0, 0, obj.ScaleData)
 
             else:
                 # scalar scaling mode
                 if obj.VectorScaleMode != "Not a vector":
                     obj.VectorScaleMode = ["Not a vector"]
 
-                glyph.SetInputArrayToProcess(2,0,0,0,obj.ScaleData)
+                glyph.SetInputArrayToProcess(2, 0, 0, 0, obj.ScaleData)
                 glyph.SetScaleModeToScaleByScalar()
         else:
             glyph.ScalingOff()
@@ -172,10 +175,9 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
         # Orientation
         if obj.OrientationData != "None":
             glyph.OrientOn()
-            glyph.SetInputArrayToProcess(1,0,0,0,obj.OrientationData)
+            glyph.SetInputArrayToProcess(1, 0, 0, 0, obj.OrientationData)
         else:
             glyph.OrientOff()
-
 
     def __setupFilterPipeline(self, obj):
 
@@ -184,8 +186,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
         self._algorithms = {}
 
         # create all vtkalgorithm combinations and set them as filter pipeline
-        sources = {"Arrow": vtkSources.vtkArrowSource,
-                   "Cube": vtkSources.vtkCubeSource}
+        sources = {"Arrow": vtkSources.vtkArrowSource, "Cube": vtkSources.vtkCubeSource}
 
         for source_name in sources:
 
@@ -204,7 +205,6 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
 
         obj.setActiveFilterPipeline(obj.Glyph)
 
-
     def onDocumentRestored(self, obj):
         # resetup the pipeline
         self.__setupFilterPipeline(obj)
@@ -213,7 +213,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
         # we check what new inputs
 
         vector_fields = obj.getInputVectorFields()
-        all_fields = (vector_fields + obj.getInputScalarFields())
+        all_fields = vector_fields + obj.getInputScalarFields()
 
         vector_fields.sort()
         all_fields.sort()
@@ -232,7 +232,6 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
 
         # make sure parent class execute is called!
         return False
-
 
     def onChanged(self, obj, prop):
 
@@ -270,4 +269,3 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
             for filter in self._algorithms:
                 glyph = self._algorithms[filter][2]
                 glyph.SetScaleFactor(obj.ScaleFactor)
-

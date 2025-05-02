@@ -204,9 +204,9 @@ void DataAlongLineMarker::customEvent(QEvent*)
 // ***************************************************************************
 // main task dialog
 TaskPostWidget::TaskPostWidget(Gui::ViewProviderDocumentObject* view,
-                         const QPixmap& icon,
-                         const QString& title,
-                         QWidget* parent)
+                               const QPixmap& icon,
+                               const QString& title,
+                               QWidget* parent)
     : QWidget(parent)
     , m_object(view->getObject())
     , m_view(view)
@@ -272,13 +272,14 @@ QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const
 {
     bool guionly = true;
     for (auto& widget : Content) {
-        if(auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
+        if (auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
 
             // get the task widget and check if it is a post widget
             auto widget = task_box->groupLayout()->itemAt(0)->widget();
-            if(auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
+            if (auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
                 guionly = guionly && post_widget->isGuiTaskOnly();
-            } else {
+            }
+            else {
                 // unknown panel, we can only assume
                 guionly = false;
             }
@@ -334,10 +335,10 @@ void TaskDlgPost::clicked(int button)
 {
     if (button == QDialogButtonBox::Apply) {
         for (auto& widget : Content) {
-            if(auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
+            if (auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
                 // get the task widget and check if it is a post widget
                 auto widget = task_box->groupLayout()->itemAt(0)->widget();
-                if(auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
+                if (auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
                     post_widget->apply();
                 }
             }
@@ -350,10 +351,10 @@ bool TaskDlgPost::accept()
 {
     try {
         for (auto& widget : Content) {
-            if(auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
+            if (auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
                 // get the task widget and check if it is a post widget
                 auto widget = task_box->groupLayout()->itemAt(0)->widget();
-                if(auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
+                if (auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
                     post_widget->applyPythonCode();
                 }
             }
@@ -396,14 +397,13 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box)
 // ***************************************************************************
 // box to set the coloring
 TaskPostDisplay::TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* parent)
-    : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_ResultShow"), QString(),
-                  parent)
+    : TaskPostWidget(view, Gui::BitmapFactory().pixmap("FEM_ResultShow"), QString(), parent)
     , ui(new Ui_TaskPostDisplay)
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Result display options")); // set title here as setupUi overrides the constructor title
+    setWindowTitle(
+        tr("Result display options"));  // set title here as setupUi overrides the constructor title
     setupConnections();
 
     // update all fields
@@ -480,16 +480,16 @@ void TaskPostDisplay::applyPythonCode()
 // functions
 TaskPostFunction::TaskPostFunction(ViewProviderFemPostFunction* view, QWidget* parent)
     : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("fem-post-geo-plane"),
-                  tr("Implicit function"),
-                  parent)
+                     Gui::BitmapFactory().pixmap("fem-post-geo-plane"),
+                     tr("Implicit function"),
+                     parent)
 {
     // we load the views widget
     FunctionWidget* w = getTypedView<ViewProviderFemPostFunction>()->createControlWidget();
     w->setParent(this);
     w->setViewProvider(getTypedView<ViewProviderFemPostFunction>());
 
-    QVBoxLayout *layout = new QVBoxLayout;
+    QVBoxLayout* layout = new QVBoxLayout;
     layout->addWidget(w);
     setLayout(layout);
 }
@@ -566,10 +566,7 @@ void TaskPostFrames::applyPythonCode()
 // ***************************************************************************
 // Branch
 TaskPostBranch::TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* parent)
-    : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostBranchFilter"),
-                  QString(),
-                  parent)
+    : TaskPostWidget(view, Gui::BitmapFactory().pixmap("FEM_PostBranchFilter"), QString(), parent)
     , ui(new Ui_TaskPostBranch)
 {
     // setup the ui
@@ -621,9 +618,9 @@ void TaskPostBranch::applyPythonCode()
 TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* view,
                                              QWidget* parent)
     : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterDataAlongLine"),
-                  QString(),
-                  parent)
+                     Gui::BitmapFactory().pixmap("FEM_PostFilterDataAlongLine"),
+                     QString(),
+                     parent)
     , ui(new Ui_TaskPostDataAlongLine)
     , marker(nullptr)
 {
@@ -1041,9 +1038,9 @@ plt.show()\n";
 // data at point filter
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderFemPostDataAtPoint* view, QWidget* parent)
     : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"),
-                  QString(),
-                  parent)
+                     Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"),
+                     QString(),
+                     parent)
     , viewer(nullptr)
     , connSelectPoint(QMetaObject::Connection())
     , ui(new Ui_TaskPostDataAtPoint)
@@ -1396,9 +1393,9 @@ TaskPostClip::TaskPostClip(ViewProviderFemPostClip* view,
                            App::PropertyLink* function,
                            QWidget* parent)
     : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"),
-                  QString(),
-                  parent)
+                     Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"),
+                     QString(),
+                     parent)
     , ui(new Ui_TaskPostClip)
 {
     assert(function);
@@ -1554,10 +1551,7 @@ void TaskPostClip::onInsideOutToggled(bool val)
 // ***************************************************************************
 // contours filter
 TaskPostContours::TaskPostContours(ViewProviderFemPostContours* view, QWidget* parent)
-    : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterContours"),
-                  QString(),
-                  parent)
+    : TaskPostWidget(view, Gui::BitmapFactory().pixmap("FEM_PostFilterContours"), QString(), parent)
     , ui(new Ui_TaskPostContours)
 {
     // setup the ui
@@ -1709,9 +1703,9 @@ void TaskPostContours::onRelaxationChanged(double value)
 // cut filter
 TaskPostCut::TaskPostCut(ViewProviderFemPostCut* view, App::PropertyLink* function, QWidget* parent)
     : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterCutFunction"),
-                  QString(),
-                  parent)
+                     Gui::BitmapFactory().pixmap("FEM_PostFilterCutFunction"),
+                     QString(),
+                     parent)
     , ui(new Ui_TaskPostCut)
 {
     assert(function);
@@ -1847,9 +1841,9 @@ void TaskPostCut::onFunctionBoxCurrentIndexChanged(int idx)
 // scalar clip filter
 TaskPostScalarClip::TaskPostScalarClip(ViewProviderFemPostScalarClip* view, QWidget* parent)
     : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterClipScalar"),
-                  QString(),
-                  parent)
+                     Gui::BitmapFactory().pixmap("FEM_PostFilterClipScalar"),
+                     QString(),
+                     parent)
     , ui(new Ui_TaskPostScalarClip)
 {
     // setup the ui
@@ -1970,10 +1964,7 @@ void TaskPostScalarClip::onInsideOutToggled(bool val)
 // ***************************************************************************
 // warp vector filter
 TaskPostWarpVector::TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWidget* parent)
-    : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterWarp"),
-                  QString(),
-                  parent)
+    : TaskPostWidget(view, Gui::BitmapFactory().pixmap("FEM_PostFilterWarp"), QString(), parent)
     , ui(new Ui_TaskPostWarpVector)
 {
     // setup the ui
@@ -2145,9 +2136,9 @@ static const std::vector<std::string> calculatorOperators = {
 
 TaskPostCalculator::TaskPostCalculator(ViewProviderFemPostCalculator* view, QWidget* parent)
     : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostFilterCalculator"),
-                  tr("Calculator options"),
-                  parent)
+                     Gui::BitmapFactory().pixmap("FEM_PostFilterCalculator"),
+                     tr("Calculator options"),
+                     parent)
     , ui(new Ui_TaskPostCalculator)
 {
     // we load the views widget

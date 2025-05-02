@@ -37,7 +37,8 @@ using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostFilterPythonBase, FemGui::ViewProviderFemPostObject)
 
-ViewProviderFemPostFilterPythonBase::ViewProviderFemPostFilterPythonBase() {}
+ViewProviderFemPostFilterPythonBase::ViewProviderFemPostFilterPythonBase()
+{}
 
 ViewProviderFemPostFilterPythonBase::~ViewProviderFemPostFilterPythonBase() = default;
 
@@ -46,10 +47,13 @@ std::vector<std::string> ViewProviderFemPostFilterPythonBase::getDisplayModes() 
     return std::vector<std::string>();
 }
 
-namespace Gui {
-PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderPostFilterPython, FemGui::ViewProviderFemPostFilterPythonBase)
+namespace Gui
+{
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderPostFilterPython,
+                         FemGui::ViewProviderFemPostFilterPythonBase)
 
-template<> PyObject* FemGui::ViewProviderPostFilterPython::getPyObject()
+template<>
+PyObject* FemGui::ViewProviderPostFilterPython::getPyObject()
 {
     if (!pyViewObject) {
         pyViewObject = new ViewProviderFemPostFilterPy(this);
@@ -61,7 +65,7 @@ template<> PyObject* FemGui::ViewProviderPostFilterPython::getPyObject()
 // explicit template instantiation
 template class FemGuiExport ViewProviderFeaturePythonT<FemGui::ViewProviderFemPostFilterPythonBase>;
 
-}
+}  // namespace Gui
 
 // ***************************************************************************
 // in the following, the different filters sorted alphabetically
@@ -154,7 +158,8 @@ void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg)
 
     // add the function box
     assert(dlg->getView() == this);
-    auto panel = new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function);
+    auto panel =
+        new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function);
     dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options
@@ -197,7 +202,8 @@ void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    auto panel = new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function);
+    auto panel =
+        new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function);
     dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options

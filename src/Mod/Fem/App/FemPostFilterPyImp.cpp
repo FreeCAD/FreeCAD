@@ -36,9 +36,9 @@
 // clang-format on
 
 #ifdef FC_USE_VTK_PYTHON
-    #include <vtkUnstructuredGrid.h>
-    #include <vtkPythonUtil.h>
-#endif //BUILD_FEM_VTK
+#include <vtkUnstructuredGrid.h>
+#include <vtkPythonUtil.h>
+#endif  // BUILD_FEM_VTK
 
 using namespace Fem;
 
@@ -56,20 +56,20 @@ PyObject* FemPostFilterPy::addFilterPipeline(PyObject* args)
 {
 #ifdef FC_USE_VTK_PYTHON
     const char* name;
-    PyObject *source = nullptr;
-    PyObject *target = nullptr;
+    PyObject* source = nullptr;
+    PyObject* target = nullptr;
 
     if (PyArg_ParseTuple(args, "sOO", &name, &source, &target)) {
 
         // extract the algorithms
-        vtkObjectBase *obj = vtkPythonUtil::GetPointerFromObject(source, "vtkAlgorithm");
+        vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(source, "vtkAlgorithm");
         if (!obj) {
             // error marker is set by PythonUtil
             return nullptr;
         }
         auto source_algo = static_cast<vtkAlgorithm*>(obj);
 
-        obj = vtkPythonUtil::GetPointerFromObject(target,"vtkAlgorithm");
+        obj = vtkPythonUtil::GetPointerFromObject(target, "vtkAlgorithm");
         if (!obj) {
             // error marker is set by PythonUtil
             return nullptr;
@@ -130,7 +130,8 @@ PyObject* FemPostFilterPy::getInputData(PyObject* args)
             copy = vtkUnstructuredGrid::New();
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "cannot return datatype object; not unstructured grid");
+            PyErr_SetString(PyExc_TypeError,
+                            "cannot return datatype object; not unstructured grid");
             Py_Return;
     }
 
@@ -138,7 +139,7 @@ PyObject* FemPostFilterPy::getInputData(PyObject* args)
     copy->DeepCopy(dataset);
     PyObject* py_dataset = vtkPythonUtil::GetObjectFromPointer(copy);
 
-    return  Py::new_reference_to(py_dataset);
+    return Py::new_reference_to(py_dataset);
 #else
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
     Py_Return;
@@ -160,7 +161,7 @@ PyObject* FemPostFilterPy::getInputVectorFields(PyObject* args)
         list.append(Py::String(field));
     }
 
-    return  Py::new_reference_to(list);
+    return Py::new_reference_to(list);
 }
 
 
@@ -179,7 +180,7 @@ PyObject* FemPostFilterPy::getInputScalarFields(PyObject* args)
         list.append(Py::String(field));
     }
 
-    return  Py::new_reference_to(list);
+    return Py::new_reference_to(list);
 }
 
 PyObject* FemPostFilterPy::getCustomAttributes(const char* /*attr*/) const
