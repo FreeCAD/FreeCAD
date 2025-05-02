@@ -213,9 +213,10 @@ void EditDatumDialog::accepted()
                     // There is a single constraint in the sketch so it can
                     // be used as a reference to scale the geometries around the origin
                     // if there are external geometries, it is safe to assume that the sketch
-                    // was drawn with these geometries as scale references (use <= 2 because 
+                    // was drawn with these geometries as scale references (use <= 2 because
                     // the sketch axis are considered as external geometries)
-                    if (sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
+                    if (sketch->getExternalGeometryCount() <= 2
+                        && sketch->hasSingleScaleDefiningConstraint()) {
                         double oldDatum = sketch->getDatum(ConstrNbr);
                         double scale_factor = newDatum / oldDatum;
                         float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
