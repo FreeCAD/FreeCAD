@@ -79,6 +79,5 @@ echo -e "\nCreate hash"
 sha256sum ${version_name}.AppImage > ${version_name}.AppImage-SHA256.txt
 
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
-    gh release create ${BUILD_TAG} --title "Weekly Build ${BUILD_TAG}" --notes "Weekly Build ${BUILD_TAG}" --prerelease || true
     gh release upload --clobber ${BUILD_TAG} "${version_name}.AppImage" "${version_name}.AppImage-SHA256.txt"
 fi
