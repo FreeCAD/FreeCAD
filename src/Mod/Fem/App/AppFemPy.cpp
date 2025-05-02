@@ -82,11 +82,11 @@ public:
                            "detected from file suffix)");
         add_varargs_method("getVtkVersion",
                            &Module::getVtkVersion,
-                           "Returns the VTK version freeCAD is linked against");
+                           "Returns the VTK version FreeCAD is linked against");
 #ifdef FC_USE_VTK_PYTHON
         add_varargs_method("isVtkCompatible",
                            &Module::isVtkCompatible,
-                           "Checks if the passed vtkObject is compatible with the c++ VTK version freecad uses");
+                           "Checks if the passed vtkObject is compatible with the c++ VTK version FreeCAD uses");
 #endif
 #endif
         add_varargs_method("show",
@@ -349,7 +349,7 @@ private:
             throw Py::Exception();
         }
 
-        // if non is returned the vtk object was created by annother vtk library, and the
+        // if non is returned the VTK object was created by annother VTK library, and the
         // python api used to create it cannot be used with FreeCAD
         vtkObjectBase *obj = vtkPythonUtil::GetPointerFromObject(pcObj, "vtkObject");
         if (!obj) {
