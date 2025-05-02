@@ -4,10 +4,11 @@ import pathlib
 from typing import Optional
 import Path
 from ...shape import ToolBitShapeEndmill
-from .base import ToolBit, ChiploadMixin
+from ..mixins import RotaryToolBitMixin, ChiploadMixin
+from .base import ToolBit
 
 
-class ToolBitEndmill(ToolBit, ChiploadMixin):
+class ToolBitEndmill(ToolBit, ChiploadMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeEndmill
 
     def __init__(

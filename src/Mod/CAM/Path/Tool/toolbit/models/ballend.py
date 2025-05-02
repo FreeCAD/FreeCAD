@@ -4,10 +4,11 @@ import pathlib
 from typing import Optional
 import Path
 from ...shape import ToolBitShapeBallend
-from .base import ToolBit, ChiploadMixin
+from ..mixins import RotaryToolBitMixin, ChiploadMixin
+from .base import ToolBit
 
 
-class ToolBitBallend(ToolBit, ChiploadMixin):
+class ToolBitBallend(ToolBit, ChiploadMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeBallend
 
     def __init__(

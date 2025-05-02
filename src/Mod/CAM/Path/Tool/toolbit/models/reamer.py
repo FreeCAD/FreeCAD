@@ -4,10 +4,11 @@ import pathlib
 from typing import Optional
 import Path
 from ...shape import ToolBitShapeReamer
-from .base import ToolBit, ChiploadMixin
+from ..mixins import RotaryToolBitMixin, ChiploadMixin
+from .base import ToolBit
 
 
-class ToolBitReamer(ToolBit, ChiploadMixin):
+class ToolBitReamer(ToolBit, ChiploadMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeReamer
 
     def __init__(

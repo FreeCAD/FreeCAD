@@ -49,25 +49,6 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-class ChiploadMixin:
-    """
-    This is a interface class to indicate that the ToolBit can chip, i.e.
-    it has a Chipload property.
-    It is used to determine if the tool bit can be used for chip removal.
-    """
-
-    def __init__(self, obj, *args, **kwargs):
-        obj.addProperty(
-            "App::PropertyLength",
-            "Chipload",
-            "Base",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Chipload per tooth"
-            ),
-        )
-        obj.Chipload = "0.0"
-
-
 class ToolBit(ABC):
     SHAPE_CLASS: Type[ToolBitShape]  # Abstract class attribute
 
@@ -117,6 +98,30 @@ class ToolBit(ABC):
         tool_bit.attach(obj)
 
         return tool_bit
+
+    def get_label(self) -> str:
+        """
+        Returns the label of the tool bit.
+        """
+        return self.obj.Label
+
+    def set_label(self, label: str):
+        """
+        Sets the label of the tool bit.
+        """
+        self.obj.Label = label
+
+    def get_shape_name(self) -> str:
+        """
+        Returns the shape name of the tool bit.
+        """
+        return self._tool_bit_shape.name
+
+    def set_shape_name(self, name: str):
+        """
+        Sets the shape name of the tool bit.
+        """
+        self._tool_bit_shape.name = name
 
     def _create_base_properties(self):
         # Create the properties in the Base group.

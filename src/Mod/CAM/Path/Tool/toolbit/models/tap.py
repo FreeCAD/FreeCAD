@@ -4,10 +4,11 @@ import pathlib
 from typing import Optional
 import Path
 from ...shape import ToolBitShapeTap
-from .base import ToolBit, ChiploadMixin
+from ..mixins import RotaryToolBitMixin, ChiploadMixin
+from .base import ToolBit
 
 
-class ToolBitTap(ToolBit, ChiploadMixin):
+class ToolBitTap(ToolBit, ChiploadMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeTap
 
     def __init__(

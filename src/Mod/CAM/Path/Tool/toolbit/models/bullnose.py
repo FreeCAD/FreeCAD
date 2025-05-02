@@ -4,9 +4,10 @@ import pathlib
 from typing import Optional
 import Path
 from ...shape import ToolBitShapeBullnose
-from .base import ToolBit, ChiploadMixin
+from ..mixins import RotaryToolBitMixin, ChiploadMixin
+from .base import ToolBit
 
-class ToolBitBullnose(ToolBit, ChiploadMixin):
+class ToolBitBullnose(ToolBit, ChiploadMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeBullnose
 
     def __init__(
