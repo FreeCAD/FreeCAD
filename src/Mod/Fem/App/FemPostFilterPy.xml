@@ -31,7 +31,7 @@
                 <Methode Name="getInputData">
             <Documentation>
                 <UserDocu>
-Returns the dataset available at the filters input.
+Returns the dataset available at the filter's input.
 Note: Can lead to a full recompute of the whole pipeline, hence best to call this only in "execute", where the user expects long calculation cycles.
 </UserDocu>
             </Documentation>
@@ -39,7 +39,7 @@ Note: Can lead to a full recompute of the whole pipeline, hence best to call thi
         <Methode Name="getInputVectorFields">
             <Documentation>
                 <UserDocu>
-Returns the names of all vector fields available on this filters input.
+Returns the names of all vector fields available on this filter's input.
 Note: Can lead to a full recompute of the whole pipeline, hence best to call this only in "execute", where the user expects long calculation cycles.
 </UserDocu>
             </Documentation>
@@ -47,7 +47,7 @@ Note: Can lead to a full recompute of the whole pipeline, hence best to call thi
         <Methode Name="getInputScalarFields">
             <Documentation>
                 <UserDocu>
-Returns the names of all scalar fields available on this filters input.
+Returns the names of all scalar fields available on this filter's input.
 Note: Can lead to a full recompute of the whole pipeline, hence best to call this only in "execute", where the user expects long calculation cycles.
 </UserDocu>
             </Documentation>
