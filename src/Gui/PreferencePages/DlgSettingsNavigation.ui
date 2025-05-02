@@ -473,14 +473,15 @@ Select a set and then press the button to view said configurations.</string>
         </property>
         <property name="toolTip">
          <string>Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis.
+Trackball Classic: moving the mouse will rotate the part allowing precession.
 Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.
-Trackball Classic: moving the mouse will rotate the part allowing precession
-Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.</string>
+         </string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>4</number>
         </property>
         <item>
          <property name="text">
@@ -534,7 +535,7 @@ Rounded Arcball: moving the mouse in the corners of the screen will only roll th
          <string>Rotations in 3D will use current cursor position as center for rotation</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <item>
          <property name="text">

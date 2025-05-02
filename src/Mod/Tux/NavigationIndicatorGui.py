@@ -657,11 +657,11 @@ aRoundedArcball = QtGui.QAction(gOrbit)
 aRoundedArcball.setObjectName("NavigationIndicator_RoundedArcball")
 aRoundedArcball.setCheckable(True)
 
-menuOrbit.addAction(aTurntable)
-menuOrbit.addAction(aTrackball)
-menuOrbit.addAction(aFreeTurntable)
-menuOrbit.addAction(aTrackballClassic)
 menuOrbit.addAction(aRoundedArcball)
+menuOrbit.addAction(aTrackball)
+menuOrbit.addAction(aTrackballClassic)
+menuOrbit.addAction(aTurntable)
+menuOrbit.addAction(aFreeTurntable)
 
 menuSettings.addMenu(menuOrbit)
 menuSettings.addSeparator()
@@ -814,7 +814,7 @@ def onOrbit():
 def onOrbitShow():
     """Set turntable or trackball orbit style."""
 
-    OrbitStyle = pView.GetInt("OrbitStyle", 1)
+    OrbitStyle = pView.GetInt("OrbitStyle", 4)
     gOrbit.blockSignals(True)
     if OrbitStyle == 0:
         aTurntable.setChecked(True)

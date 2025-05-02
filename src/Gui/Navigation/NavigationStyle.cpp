@@ -292,7 +292,7 @@ private:
 
 private:
     SbMatrix worldToScreen;
-    OrbitStyle orbit{Trackball};
+    OrbitStyle orbit{RoundedArcball};
 };
 
 NavigationStyleEvent::NavigationStyleEvent(const Base::Type& s)
@@ -385,7 +385,7 @@ void NavigationStyle::initialize()
     this->zoomStep = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomStep",0.2f);
     long mode = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetInt("RotationMode", 1);
+        ("User parameter:BaseApp/Preferences/View")->GetInt("RotationMode", 0);
     if (mode == 0) {
         setRotationCenterMode(NavigationStyle::RotationCenterMode::WindowCenter);
     }
