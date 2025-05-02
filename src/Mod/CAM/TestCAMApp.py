@@ -68,6 +68,7 @@ from CAMTests.TestPathToolShapeRegistry import TestPathToolShapeRegistry
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
+from CAMTests.TestPathToolMachine import TestPathToolMachine
 from CAMTests.TestPathUtil import TestPathUtil
 from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
@@ -127,6 +128,7 @@ False if TestPathToolShapeRegistry.__name__ else True
 False if TestPathToolLibrary.__name__ else True
 False if TestPathToolChangeGenerator.__name__ else True
 False if TestPathToolController.__name__ else True
+False if TestPathToolMachine.__name__ else True
 False if TestPathUtil.__name__ else True
 False if TestPathVcarve.__name__ else True
 False if TestPathVoronoi.__name__ else True
