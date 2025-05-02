@@ -169,12 +169,12 @@ int PropertyPostDataObject::getDataType()
 PyObject* PropertyPostDataObject::getPyObject()
 {
 #ifdef FC_USE_VTK_PYTHON
-    //create a copy first
+    // create a copy first
     auto copy = static_cast<PropertyPostDataObject*>(Copy());
 
     // get the data python wrapper
     PyObject* py_dataset = vtkPythonUtil::GetObjectFromPointer(copy->getValue());
-    auto result =  Py::new_reference_to(py_dataset);
+    auto result = Py::new_reference_to(py_dataset);
     delete copy;
 
     return result;
@@ -187,7 +187,7 @@ PyObject* PropertyPostDataObject::getPyObject()
 void PropertyPostDataObject::setPyObject(PyObject* value)
 {
 #ifdef FC_USE_VTK_PYTHON
-    vtkObjectBase *obj = vtkPythonUtil::GetPointerFromObject(value, "vtkDataObject");
+    vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(value, "vtkDataObject");
     if (!obj) {
         throw Base::TypeError("Can only set vtkDataObject");
     }

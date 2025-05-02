@@ -72,7 +72,7 @@ protected:
         std::vector<vtkSmartPointer<vtkAlgorithm>> algorithmStorage;
     };
 
-    //pipeline handling
+    // pipeline handling
     void addFilterPipeline(const FilterPipeline& p, std::string name);
     FilterPipeline& getFilterPipeline(std::string name);
     void setActiveFilterPipeline(std::string name);
@@ -81,6 +81,7 @@ protected:
     void setTransformLocation(TransformLocation loc);
 
     friend class FemPostFilterPy;
+
 public:
     /// Constructor
     FemPostFilter();

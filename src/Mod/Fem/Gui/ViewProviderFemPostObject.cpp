@@ -932,7 +932,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
     }
 
     if (prop == &Field && setupPipeline()) {
-        if(!isRestoring()) {
+        if (!isRestoring()) {
             updateProperties();
         }
         WriteColorData(ResetColorBarRange);

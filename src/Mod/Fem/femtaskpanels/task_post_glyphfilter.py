@@ -63,7 +63,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     # ##########################
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+        return (
+            QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+        )
 
     def clicked(self, button):
         # apply button hit?
@@ -71,15 +73,14 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.obj.Document.recompute()
 
     def accept(self):
-        #self.obj.CharacteristicLength = self.elelen
-        #self.obj.References = self.selection_widget.references
-        #self.selection_widget.finish_selection()
+        # self.obj.CharacteristicLength = self.elelen
+        # self.obj.References = self.selection_widget.references
+        # self.selection_widget.finish_selection()
         return super().accept()
 
     def reject(self):
-        #self.selection_widget.finish_selection()
+        # self.selection_widget.finish_selection()
         return super().reject()
-
 
     # Helper functions
     # ##################
@@ -99,7 +100,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         cbox.setCurrentText(getattr(obj, prop))
         cbox.blockSignals(False)
 
-
     # Setup functions
     # ###############
 
@@ -113,8 +113,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self._enumPropertyToCombobox(self.obj, "MaskMode", self.widget.MaskModeComboBox)
 
         self.widget.ScaleFactorBox.setValue(self.obj.ScaleFactor)
-        self.__slide_min = self.obj.ScaleFactor*0.5
-        self.__slide_max = self.obj.ScaleFactor*1.5
+        self.__slide_min = self.obj.ScaleFactor * 0.5
+        self.__slide_max = self.obj.ScaleFactor * 1.5
         self.widget.ScaleSlider.setValue(50)
         self.widget.StrideBox.setValue(self.obj.Stride)
         self.widget.MaxBox.setValue(self.obj.MaxNumber)
@@ -132,7 +132,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.widget.StrideBox.valueChanged.connect(self._stride_changed)
         self.widget.MaxBox.valueChanged.connect(self._max_number_changed)
 
-
     def __update_scaling_ui(self):
         enabled = self.widget.ScaleComboBox.currentIndex() != 0
         self.widget.VectorModeComboBox.setEnabled(enabled)
@@ -143,7 +142,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         enabled = self.widget.MaskModeComboBox.currentIndex() != 0
         self.widget.StrideBox.setEnabled(enabled)
         self.widget.MaxBox.setEnabled(enabled)
-
 
     # callbacks and logic
     # ###################
@@ -169,9 +167,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def _scale_factor_changed(self, value):
 
         # set slider
-        self.__slide_min = value*0.5
-        self.__slide_max = value*1.5
-        slider_value = (value - self.__slide_min) / (self.__slide_max - self.__slide_min) * 100.
+        self.__slide_min = value * 0.5
+        self.__slide_max = value * 1.5
+        slider_value = (value - self.__slide_min) / (self.__slide_max - self.__slide_min) * 100.0
         self.widget.ScaleSlider.blockSignals(True)
         self.widget.ScaleSlider.setValue(slider_value)
         self.widget.ScaleSlider.blockSignals(False)
@@ -186,7 +184,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         # factor = min + ( slider_value x ------------- )
         #                                     100
         #
-        f = self.__slide_min + (value * (self.__slide_max - self.__slide_min)/100)
+        f = self.__slide_min + (value * (self.__slide_max - self.__slide_min) / 100)
 
         # sync factor spin box
         self.widget.ScaleFactorBox.blockSignals(True)
@@ -196,7 +194,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         # set value
         self.obj.ScaleFactor = f
         self._recompute()
-
 
     def _mask_mode_changed(self, value):
         self.obj.MaskMode = value
@@ -210,4 +207,3 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def _max_number_changed(self, value):
         self.obj.MaxNumber = value
         self._recompute()
-

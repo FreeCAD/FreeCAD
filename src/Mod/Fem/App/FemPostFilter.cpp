@@ -226,14 +226,14 @@ vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData()
     }
 
     vtkAlgorithmOutput* output = active.source->GetInputConnection(0, 0);
-    if(!output) {
+    if (!output) {
         return nullptr;
     }
     vtkAlgorithm* algo = output->GetProducer();
-    if(!algo) {
+    if (!algo) {
         return nullptr;
     }
-    if (Frame.getValue()>0) {
+    if (Frame.getValue() > 0) {
         algo->UpdateTimeStep(Frame.getValue());
     }
     else {
@@ -302,11 +302,13 @@ namespace App
 {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::PostFilterPython, Fem::FemPostFilter)
-template<> const char* Fem::PostFilterPython::getViewProviderName(void) const
+template<>
+const char* Fem::PostFilterPython::getViewProviderName(void) const
 {
     return "FemGui::ViewProviderPostFilterPython";
 }
-template<> PyObject* Fem::PostFilterPython::getPyObject()
+template<>
+PyObject* Fem::PostFilterPython::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -319,8 +321,7 @@ template<> PyObject* Fem::PostFilterPython::getPyObject()
 
 // explicit template instantiation
 template class FemExport FeaturePythonT<Fem::FemPostFilter>;
-}// namespace App
-
+}  // namespace App
 
 
 // ***************************************************************************

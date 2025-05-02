@@ -49,6 +49,7 @@ __url__ = "https://www.freecad.org"
 
 __user_input_received = False
 
+
 def vtk_module_compatible():
     # checks if the VTK library FreeCAD is build against is the one used by
     # the python module
@@ -76,6 +77,7 @@ def vtk_module_compatible():
 
 def _vtk_is_loaded():
     import sys
+
     return any("vtkmodules" in module for module in sys.modules)
 
 
@@ -84,6 +86,7 @@ def _unload_vtk_modules():
     # NOTE: does not remove any stored references in objects
 
     import sys
+
     for module in sys.modules.copy():
         if "vtkmodules" in module:
             del sys.modules[module]
@@ -157,7 +160,9 @@ def vtk_module_handling():
     if not vtk_module_compatible():
 
         if not FreeCAD.GuiUp:
-            FreeCAD.Console.PrintError("FEM: vtk python module is not compatible with internal vtk library")
+            FreeCAD.Console.PrintError(
+                "FEM: vtk python module is not compatible with internal vtk library"
+            )
             return
 
         import FreeCAD, Fem
@@ -168,11 +173,16 @@ def vtk_module_handling():
         translate = FreeCAD.Qt.translate
 
         path = inspect.getfile(vtkVersion)
-        path = path[:path.find("vtkmodules")]
+        path = path[: path.find("vtkmodules")]
 
-        message = translate("FEM", ("FreeCAD is linked to a different VTK library then the imported "
-                                    "VTK python module. This is incompatible and will lead to errors."
-                                    "\n\nWrong python module is imported from: \n{}")).format(path)
+        message = translate(
+            "FEM",
+            (
+                "FreeCAD is linked to a different VTK library then the imported "
+                "VTK python module. This is incompatible and will lead to errors."
+                "\n\nWrong python module is imported from: \n{}"
+            ),
+        ).format(path)
 
         buttons = QtGui.QMessageBox.Discard
 
@@ -181,7 +191,9 @@ def vtk_module_handling():
 
         if compatible_module:
             # there is a compatible module of VTK available.
-            message += translate("FEM", "\n\nCorrect module found in: \n{}").format(compatible_module)
+            message += translate("FEM", "\n\nCorrect module found in: \n{}").format(
+                compatible_module
+            )
 
             if not loaded:
                 # vtk was not loaded beforehand, therefore we can realistically reload
@@ -190,15 +202,22 @@ def vtk_module_handling():
                 buttons = QtGui.QMessageBox.Yes | QtGui.QMessageBox.No
 
             else:
-                message += translate("FEM", ("\n\nAs the wrong module was already loaded, a reload is not possible. "
-                                             "Restart FreeCAD to get the option for loading this module."))
+                message += translate(
+                    "FEM",
+                    (
+                        "\n\nAs the wrong module was already loaded, a reload is not possible. "
+                        "Restart FreeCAD to get the option for loading this module."
+                    ),
+                )
 
         else:
-            message += translate("FEM", "\n\nNo matching module was found in the current python path.")
-
+            message += translate(
+                "FEM", "\n\nNo matching module was found in the current python path."
+            )
 
         # raise a dialog to the user
         import FreeCADGui
+
         button = QtGui.QMessageBox.critical(
             FreeCADGui.getMainWindow(),
             translate("FEM", "VTK module conflict"),
@@ -222,12 +241,15 @@ def vtk_compatibility_abort(inform=True):
             import FreeCAD
             import FreeCADGui
             from PySide import QtGui
+
             translate = FreeCAD.Qt.translate
 
             button = QtGui.QMessageBox.critical(
                 FreeCADGui.getMainWindow(),
                 translate("FEM", "VTK module conflict"),
-                translate("FEM", "This functionality is not available due to VTK python module conflict"),
+                translate(
+                    "FEM", "This functionality is not available due to VTK python module conflict"
+                ),
                 buttons=QtGui.QMessageBox.Discard,
             )
 

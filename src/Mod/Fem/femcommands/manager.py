@@ -91,9 +91,7 @@ class CommandManager:
                 and self.result_selected()
             )
         elif self.is_active == "with_vtk_selresult":
-            active = (
-                self.vtk_result_selected()
-            )
+            active = self.vtk_result_selected()
         elif self.is_active == "with_part_feature":
             active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
         elif self.is_active == "with_femmesh":
@@ -401,8 +399,12 @@ class CommandManager:
             "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})".format(filtertype, group.Name)
         )
         # set display and selection style to assure the user sees the new object
-        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.ViewObject.DisplayMode = \"Surface\"");
-        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.ViewObject.SelectionStyle = \"BoundBox\"");
+        FreeCADGui.doCommand(
+            'FreeCAD.ActiveDocument.ActiveObject.ViewObject.DisplayMode = "Surface"'
+        )
+        FreeCADGui.doCommand(
+            'FreeCAD.ActiveDocument.ActiveObject.ViewObject.SelectionStyle = "BoundBox"'
+        )
 
         # hide selected filter
         FreeCADGui.doCommand(
@@ -411,9 +413,7 @@ class CommandManager:
 
         # recompute, expand selobj in tree view
         expandParentObject()
-        FreeCADGui.doCommand(
-            "FreeCAD.ActiveDocument.ActiveObject.recompute()"
-        )
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.recompute()")
 
         # set edit
         FreeCADGui.Selection.clearSelection()

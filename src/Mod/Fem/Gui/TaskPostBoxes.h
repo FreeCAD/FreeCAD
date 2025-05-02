@@ -317,8 +317,7 @@ class TaskPostBranch: public TaskPostWidget
     Q_OBJECT
 
 public:
-    explicit TaskPostBranch(ViewProviderFemPostBranchFilter* view,
-                            QWidget* parent = nullptr);
+    explicit TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* parent = nullptr);
     ~TaskPostBranch() override;
 
     void applyPythonCode() override;
