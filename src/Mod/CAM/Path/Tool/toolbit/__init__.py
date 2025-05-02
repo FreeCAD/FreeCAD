@@ -3,6 +3,7 @@
 
 # Import the base class and all concrete shape classes
 from .models.base import ToolBit, Factory as ToolBitFactory
+from .registry import TOOLBIT_REGISTRY
 
 from .models.ballend import ToolBitBallend
 from .models.chamfer import ToolBitChamfer
@@ -17,11 +18,9 @@ from .models.threadmill import ToolBitThreadMill
 from .models.bullnose import ToolBitBullnose
 from .models.vbit import ToolBitVBit
 
-# A list of the name of each ToolBit
-# TOOL_BIT_NAMES = sorted([cls.name for cls in ToolBit.__subclasses__()])
-
 # Define __all__ for explicit public interface
 __all__ = [
+    "TOOLBIT_REGISTRY",
     "ToolBit",
     "ToolBitFactory",
     "ToolBitBallend",

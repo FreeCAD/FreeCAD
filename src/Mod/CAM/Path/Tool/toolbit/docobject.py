@@ -1,5 +1,4 @@
 import Path
-import Path.Base.Util as PathUtil
 
 
 class DetachedDocumentObject:
@@ -97,6 +96,13 @@ class DetachedDocumentObject:
                 obj.addProperty(prop_type, prop_name, prop_group, prop_doc)
 
             # Set the property value and editor mode
-            PathUtil.setProperty(obj, prop_name, prop_value)
+            try:
+                setattr(obj, prop_name, prop_value)
+            except TypeError:
+                Path.Log.error(
+                    f"Error setting property {prop_name} to {prop_value} "
+                    f"(type: {type(prop_value)}, expected type: {prop_type})"
+                )
+                raise
             if prop_editor_mode is not None:
                 obj.setEditorMode(prop_name, prop_editor_mode)

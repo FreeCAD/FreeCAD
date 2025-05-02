@@ -1,7 +1,13 @@
 import pathlib
 from typing import Optional
+import FreeCAD
 import Path
 
+def to_json(value):
+    """Convert a value to JSON format."""
+    if isinstance(value, FreeCAD.Units.Quantity):
+        return str(value)
+    return value
 
 def get_toolbit_filepath_from_name(name, path: Optional[pathlib.Path] = None) -> pathlib.Path:
     """

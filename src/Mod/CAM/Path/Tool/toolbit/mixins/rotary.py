@@ -1,3 +1,6 @@
+import FreeCAD
+
+
 class RotaryToolBitMixin:
     """
     Mixin class for rotary tool bits.
@@ -7,40 +10,30 @@ class RotaryToolBitMixin:
     def can_rotate(self) -> bool:
         return True
 
-    def get_diameter(self) -> float:
+    def get_diameter(self) -> FreeCAD.Units.Quantity:
         """
         Get the diameter of the rotary tool bit from the shape.
         """
-        # Assuming the shape object has a get_parameter method
-        # and the parameter name for diameter is "Diameter"
-        if hasattr(self, "_tool_bit_shape") and self._tool_bit_shape:
-            return self._tool_bit_shape.get_parameter("Diameter")
-        return 0.0
+        return self.obj.Diameter
 
-    def set_diameter(self, diameter: float):
+    def set_diameter(self, diameter: FreeCAD.Units.Quantity):
         """
         Set the diameter of the rotary tool bit on the shape.
         """
-        # Assuming the shape object has a set_parameter method
-        # and the parameter name for diameter is "Diameter"
-        if hasattr(self, "_tool_bit_shape") and self._tool_bit_shape:
-            self._tool_bit_shape.set_parameter("Diameter", diameter)
+        if not isinstance(diameter, FreeCAD.Units.Quantity):
+            raise ValueError("Diameter must be a FreeCAD Units.Quantity")
+        self.obj.Diameter = diameter
 
-    def get_length(self) -> float:
+    def get_length(self) -> FreeCAD.Units.Quantity:
         """
         Get the length of the rotary tool bit from the shape.
         """
-        # Assuming the shape object has a get_parameter method
-        # and the parameter name for length is "Length"
-        if hasattr(self, "_tool_bit_shape") and self._tool_bit_shape:
-            return self._tool_bit_shape.get_parameter("Length")
-        return 0.0
+        return self.obj.Length
 
-    def set_length(self, length: float):
+    def set_length(self, length: FreeCAD.Units.Quantity):
         """
         Set the length of the rotary tool bit on the shape.
         """
-        # Assuming the shape object has a set_parameter method
-        # and the parameter name for length is "Length"
-        if hasattr(self, "_tool_bit_shape") and self._tool_bit_shape:
-            self._tool_bit_shape.set_parameter("Length", length)
+        if not isinstance(length, FreeCAD.Units.Quantity):
+            raise ValueError("Length must be a FreeCAD Units.Quantity")
+        self.obj.Length = length

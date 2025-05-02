@@ -1,3 +1,4 @@
+import FreeCAD
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 class ChiploadMixin:
@@ -16,12 +17,12 @@ class ChiploadMixin:
                 "App::Property", "Chipload per tooth"
             ),
         )
-        obj.Chipload = "0.0"
+        obj.Chipload = FreeCAD.Units.Quantity("0.0 mm")
 
-    def get_chipload(self):
+    def get_chipload(self) -> FreeCAD.Units.Quantity:
         return self.obj.Chipload
     
-    def set_chipload(self, value):
-        if isinstance(value, str):
-            value = float(value)
+    def set_chipload(self, value: FreeCAD.Units.Quantity):
+        if not isinstance(value, FreeCAD.Units.Quantity):
+            raise ValueError("Chipload must be a FreeCAD Units.Quantity")
         self.obj.Chipload = value

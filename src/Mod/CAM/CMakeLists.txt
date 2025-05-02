@@ -131,6 +131,7 @@ SET(PathPythonToolsGui_SRCS
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
     Path/Tool/toolbit/docobject.py
+    Path/Tool/toolbit/registry.py
     Path/Tool/toolbit/util.py
 )
 
@@ -155,6 +156,14 @@ SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/tap.py
     Path/Tool/toolbit/models/threadmill.py
     Path/Tool/toolbit/models/vbit.py
+)
+
+SET(PathPythonToolsToolBitSerializers_SRCS
+    Path/Tool/toolbit/serializers/__init__.py
+    Path/Tool/toolbit/serializers/base.py
+    Path/Tool/toolbit/serializers/camotics.py
+    Path/Tool/toolbit/serializers/fctb.py
+    Path/Tool/toolbit/serializers/linuxcnc.py
 )
 
 SET(PathPythonToolsLibrary_SRCS
@@ -426,6 +435,7 @@ SET(Tests_SRCS
     CAMTests/TestPathThreadMilling.py
     CAMTests/TestPathThreadMillingGenerator.py
     CAMTests/TestPathToolBit.py
+    CAMTests/TestPathToolBitSerializer.py
     CAMTests/TestPathToolShapeClasses.py
     CAMTests/TestPathToolShapeDoc.py
     CAMTests/TestPathToolShapeRegistry.py
@@ -505,6 +515,7 @@ SET(all_files
     ${PathPythonToolsToolBit_SRCS}
     ${PathPythonToolsToolBitMixins_SRCS}
     ${PathPythonToolsToolBitModels_SRCS}
+    ${PathPythonToolsToolBitSerializers_SRCS}
     ${PathPythonToolsLibrary_SRCS}
     ${PathPythonToolsLibraryModels_SRCS}
     ${PathPythonToolsMachine_SRCS}
@@ -684,6 +695,13 @@ INSTALL(
         ${PathPythonToolsToolBitModels_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/toolbit/models
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBitSerializers_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit/serializers
 )
 
 INSTALL(

@@ -119,6 +119,11 @@ class ShapeRegistry:
 
         return ToolBitShape.from_file(filepath, **params)
 
+    def get_shape_from_alias(self, name: str) -> ToolBitShape:
+        """Retrieves a shape class by name or alias."""
+        shape_filename = SHAPE_REGISTRY.get_shape_filename_from_alias(name)
+        return self.get_shape_from_filename(shape_filename)
+
     def get_shapes(self):
         """Returns a list of all shapes"""
         shapes = []

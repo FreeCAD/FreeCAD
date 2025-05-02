@@ -35,6 +35,7 @@ from Path.Base.Generator import toolchange
 from ...shape import ToolBitShape, SHAPE_REGISTRY, TOOL_BIT_SHAPE_NAMES
 from lazy_loader.lazy_loader import LazyLoader
 from ..docobject import DetachedDocumentObject
+from ..util import to_json
 
 Part = LazyLoader("Part", globals(), "Part")
 GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
@@ -561,7 +562,7 @@ class ToolBit(ABC):
             # Add new property
             if not hasattr(self.obj, name):
                 self.obj.addProperty(prop_type, name, "Shape", docstring)
-                PathUtil.setProperty(self.obj, name, value)  # Set to default value
+                setattr(self.obj, name, value)
                 Path.Log.debug(f"Added new shape property: {name}")
 
             # Ensure editor mode is correct
@@ -627,7 +628,7 @@ class ToolBit(ABC):
         if self._tool_bit_shape:
             attrs["shape"] = self._tool_bit_shape.filepath.name
             attrs["parameter"] = {
-                name: PathUtil.getPropertyValueString(self.obj, name)
+                name: to_json(getattr(self.obj, name))
                 for name in self._tool_bit_shape.get_parameters()
             }
         else:
@@ -636,7 +637,7 @@ class ToolBit(ABC):
 
         attrs["parameter"].update(
             {
-                name: PathUtil.getPropertyValueString(self.obj, name)
+                name: to_json(getattr(self.obj, name))
                 for name in self._get_props("Attributes")
             }
         )
