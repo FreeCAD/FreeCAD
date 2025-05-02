@@ -8,7 +8,7 @@
 # rpmbuild --without=tests:  esclude tests in %%check
 %bcond_without tests
 # rpmbuild --without=bundled_gtest:  don't use bundled version of gtest and gmock
-%bcond_with bundled_gtest
+%bcond_without bundled_gtest
 # rpmbuild --without=bundled_gtest:  don't build debug information
 %bcond_without debug_info
 
@@ -32,7 +32,7 @@ Source0:        https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/week
 
 %global exported_libs libOndselSolver
 
-%if %{with tests}
+%if %{with bundled_gtest}
  %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
 %endif
 
@@ -131,6 +131,11 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 %global tests_resultdir %{_datadir}/%{name}/tests_result/%{_arch}
 %prep
     %setup -T -a 0 -q -c -n FreeCAD
+    
+%if %{without bundled_gtest}
+    rm -rf tests/lib/googletest
+    rm -rf tests/lib/googlemock
+%endif
 
 %build
      # Deal with cmake projects that tend to link excessively.
