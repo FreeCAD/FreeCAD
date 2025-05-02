@@ -59,8 +59,6 @@ echo -e "################"
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 
-export tag="weekly-builds" # should retrieve from git tag
-
 curl -LO https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$(uname -m).AppImage
 chmod a+x appimagetool-$(uname -m).AppImage
 
@@ -71,7 +69,7 @@ chmod a+x ./AppDir/AppRun
   --comp zstd \
   --mksquashfs-opt -Xcompression-level \
   --mksquashfs-opt 22 \
-  -u "gh-releases-zsync|FreeCAD|FreeCAD-Bundle|$tag|FreeCAD*$(uname -m)*.AppImage.zsync" \
+  -u "gh-releases-zsync|FreeCAD|FreeCAD|${BUILD_TAG}|FreeCAD*$(uname -m)*.AppImage.zsync" \
   AppDir ${version_name}.AppImage
   # -s --sign-key ${GPG_KEY_ID} \
 
