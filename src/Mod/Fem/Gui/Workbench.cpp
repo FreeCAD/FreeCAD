@@ -155,9 +155,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *mesh << "FEM_MeshNetgenFromShape"
           << "FEM_MeshGmshFromShape"
           << "Separator"
-          << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
+          << "FEM_MeshGMSHRefinement"
           << "Separator"
           << "FEM_FEMMesh2Mesh";
 
@@ -320,9 +320,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *mesh << "FEM_MeshNetgenFromShape"
           << "FEM_MeshGmshFromShape"
           << "Separator"
-          << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
+          << "FEM_MeshGMSHRefinement"
           << "Separator"
           // << "FEM_CreateNodesSet"
           << "FEM_CreateElementsSet"
