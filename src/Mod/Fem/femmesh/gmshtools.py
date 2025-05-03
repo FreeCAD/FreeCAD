@@ -562,11 +562,22 @@ class GmshTools:
                 # see https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
                 # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 self.outputCompoundWarning
+
+            boundary_layer_set = False
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.Suppressed:
                     continue
+                if boundary_layer_set:
+                    Console.PrintLog("Boundary layer already set, ignoring {}".format(mr_obj.Name))
+                    # continue to get one waring for each ignored object
+                    continue
+
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
                     if mr_obj.References:
+
+                        # ensure to not have a second valid boundary layer object
+                        boundary_layer_set = True
+
                         belem_list = []
                         for sub in mr_obj.References:
                             # print(sub[0])  # Part the elements belongs to
@@ -615,9 +626,10 @@ class GmshTools:
                                         )
                                     )
 
-                        # Note: With gmsh version 4.7 new names for settings have been introduced.
-                        #       Due to deprication of old command names we switched to the new ones,
-                        #       dropping support for gmsh <4.7 (released Nov. 2020)
+                        # Notes:
+                        # 1. With gmsh version 4.7 new names for settings have been introduced.
+                        #    Due to deprication of old command names we switched to the new ones,
+                        #    dropping support for gmsh <4.7 (released Nov. 2020)
                         setting = {}
                         setting["Size"] = Units.Quantity(mr_obj.MinimumThickness).Value
                         setting["Ratio"] = mr_obj.GrowthRate
@@ -640,14 +652,8 @@ class GmshTools:
                             setting["SizeFar"] = setting["Thickness"]
                         # from face name -> face id is done in geo file write up
                         # TODO: fan angle setup is not implemented yet
-                        #if self.dimension == "2":
+
                         setting["CurvesList"] = belem_list
-                        #elif self.dimension == "3":
-                        #    setting["FacesList"] = belem_list
-                        #else:
-                        #    Console.PrintError(
-                        #        "boundary layer is only supported for 2D mesh.\n"
-                        #    )
                         self.bl_setting_list.append(setting)
                     else:
                         Console.PrintError(
