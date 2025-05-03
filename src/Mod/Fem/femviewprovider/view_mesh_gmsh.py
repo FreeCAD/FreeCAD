@@ -35,8 +35,9 @@ import FreeCADGui
 import FemGui
 from PySide import QtGui
 from femtaskpanels import task_mesh_gmsh
-from femtools.femutils import is_of_type
+from femtools.femutils import is_of_type, type_of_obj
 
+_supported_definitions = ["Fem::MeshRegion", "Fem::MeshBoundaryLayer"]
 
 # TODO use VPBaseFemObject from view_base_femobject
 # class VPMeshGmsh(view_base_femobject.VPBaseFemObject):
@@ -197,10 +198,9 @@ class VPMeshGmsh:
         return None
 
     def claimChildren(self):
-        reg_childs = self.Object.MeshRegionList
+        def_childs = self.Object.MeshDefinitionList
         gro_childs = self.Object.MeshGroupList
-        bou_childs = self.Object.MeshBoundaryLayerList
-        return reg_childs + gro_childs + bou_childs
+        return def_childs + gro_childs
 
     def onDelete(self, feature, subelements):
         children = self.claimChildren()
@@ -233,43 +233,38 @@ class VPMeshGmsh:
         return True
 
     def canDragObject(self, dragged_object):
-        if (
-            is_of_type(dragged_object, "Fem::MeshBoundaryLayer")
-            or is_of_type(dragged_object, "Fem::MeshGroup")
-            or is_of_type(dragged_object, "Fem::MeshRegion")
-        ):
-            return True
-        else:
-            return False
-
-    def canDropObject(self, incoming_object):
+        # allow to remove all objects
         return True
 
+    def canDropObject(self, incoming_object):
+
+        # only accept allowed objects
+        if is_of_type(incoming_object, "Fem::MeshGroup") or \
+           type_of_obj(incoming_object) in _supported_definitions:
+
+            return True
+
+        return False
+
     def dragObject(self, selfvp, dragged_object):
-        if is_of_type(dragged_object, "Fem::MeshBoundaryLayer"):
-            objs = self.Object.MeshBoundaryLayerList
-            objs.remove(dragged_object)
-            self.Object.MeshBoundaryLayerList = objs
-        elif is_of_type(dragged_object, "Fem::MeshGroup"):
+        if is_of_type(dragged_object, "Fem::MeshGroup"):
             objs = self.Object.MeshGroupList
             objs.remove(dragged_object)
             self.Object.MeshGroupList = objs
-        elif is_of_type(dragged_object, "Fem::MeshRegion"):
-            objs = self.Object.MeshRegionList
+        else:
+            # canDrag already selected the types for us
+            objs = self.Object.MeshDefinitionList
             objs.remove(dragged_object)
-            self.Object.MeshRegionList = objs
+            self.Object.MeshDefinitionList = objs
 
     def dropObject(self, selfvp, incoming_object):
-        if is_of_type(incoming_object, "Fem::MeshBoundaryLayer"):
-            objs = self.Object.MeshBoundaryLayerList
-            objs.append(incoming_object)
-            self.Object.MeshBoundaryLayerList = objs
-        elif is_of_type(incoming_object, "Fem::MeshGroup"):
+        if is_of_type(incoming_object, "Fem::MeshGroup"):
             objs = self.Object.MeshGroupList
             objs.append(incoming_object)
             self.Object.MeshGroupList = objs
-        elif is_of_type(incoming_object, "Fem::MeshRegion"):
-            objs = self.Object.MeshRegionList
+        else:
+            # canDrag already selected the types for us
+            objs = self.Object.MeshDefinitionList
             objs.append(incoming_object)
-            self.Object.MeshRegionList = objs
+            self.Object.MeshDefinitionList = objs
         incoming_object.Document.recompute()
