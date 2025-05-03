@@ -218,8 +218,7 @@ void EditDatumDialog::accepted()
                     // if there are external geometries, it is safe to assume that the sketch
                     // was drawn with these geometries as scale references (use <= 2 because
                     // the sketch axis are considered as external geometries)
-                    if (autoScaleMode == 0 
-                        && sketch->getExternalGeometryCount() <= 2 
+                    if (autoScaleMode == 0 && sketch->getExternalGeometryCount() <= 2
                         && sketch->hasSingleScaleDefiningConstraint()) {
                         double oldDatum = sketch->getDatum(ConstrNbr);
                         double scale_factor = newDatum / oldDatum;
