@@ -518,7 +518,7 @@ std::vector<App::DocumentObject*> ViewProviderDrawingView::claimChildren() const
     const std::vector<App::DocumentObject *> &potentialChildren = getViewObject()->getInList();
     try {
       for(auto& child : potentialChildren) {
-          auto view = dynamic_cast<TechDraw::DrawView *>(child);
+          auto* view = freecad_cast<DrawView *>(child);
           if (view && view->claimParent() == getViewObject()) {
               temp.push_back(view);
               continue;
