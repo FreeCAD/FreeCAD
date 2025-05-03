@@ -278,55 +278,56 @@ class polygonTracker(Tracker):
             super().__init__(dotted, scolor, swidth,
                              [self.coords, self.line],
                              name="polygonTracker")
-        wp = self._get_wp()
-        self.u = wp.u
-        self.v = wp.v
     
     def setNumVertices(self, num):
         self.line.numVertices.setValue(num + 1)
         self.sides = num
 
     def setOrigin(self, point, radius=1.0):
+        """Set the origin of the polygon and initialize the shape."""
         self.origin = point
+        wp = self._get_wp()
+
+        # Convert the origin to working plane local space
+        local_origin = wp.get_local_coords(point)
 
         for i in range(self.sides):
             angle = 2 * math.pi * i / self.sides
-            x = point.x + radius * math.cos(angle)
-            y = point.y + radius * math.sin(angle)
-            z = point.z
+            px = local_origin.x + radius * math.cos(angle)
+            py = local_origin.y + radius * math.sin(angle)
 
-            self.coords.point.set1Value(i, x, y, z)
+            # Convert back to global coordinates
+            global_point = wp.get_global_coords(Vector(px, py, 0))
+            self.coords.point.set1Value(i, global_point.x, global_point.y, global_point.z)
 
-        self.coords.point.set1Value(self.sides, 
-                                    point.x + radius * math.cos(0), 
-                                    point.y + radius * math.sin(0), 
-                                    point.z)
+        # Close the polygon loop
+        first = self.coords.point[0].getValue()
+        self.coords.point.set1Value(self.sides, *first)
 
     def update(self, point):
-        """Set the opposite point and scale the polygon accordingly."""
-        diagonal = point.sub(self.origin)
+        """Update polygon size based on current mouse point."""
+        wp = self._get_wp()
         
-        center = self.origin
-        
-        radius = diagonal.Length
-        
-        # For a regular polygon with n sides
-        n_sides = self.sides
-        
-        for i in range(n_sides):
-            # For a regular polygon, points are evenly distributed around a circle
-            angle = (2 * math.pi * i / n_sides)
-            
-            new_x = center.x + radius * math.cos(angle)
-            new_y = center.y + radius * math.sin(angle)
-            new_z = center.z
-            
-            # Update the point
-            self.coords.point.set1Value(i, new_x, new_y, new_z)
+        # Convert current point and origin to local working plane coordinates
+        local = wp.get_local_coords(point)
+        local_origin = wp.get_local_coords(self.origin)
 
-        pt = self.coords.point[0]
-        self.coords.point.set1Value(n_sides, pt[0], pt[1], pt[2])
+        dx = local.x - local_origin.x
+        dy = local.y - local_origin.y
+        radius = math.hypot(dx, dy)
 
+        for i in range(self.sides):
+            angle = 2 * math.pi * i / self.sides
+            px = local_origin.x + radius * math.cos(angle)
+            py = local_origin.y + radius * math.sin(angle)
+
+            # Back to global space
+            global_point = wp.get_global_coords(Vector(px, py, 0))
+            self.coords.point.set1Value(i, global_point.x, global_point.y, global_point.z)
+
+        # Close the polygon by repeating the first point
+        first = self.coords.point[0].getValue()
+        self.coords.point.set1Value(self.sides, *first)
 
 class rectangleTracker(Tracker):
     """A Rectangle tracker, used by the rectangle tool."""
