@@ -614,6 +614,10 @@ class GmshTools:
                                             elems, mr_obj.Name
                                         )
                                     )
+
+                        # Note: With gmsh version 4.7 new names for settings have been introduced.
+                        #       Due to deprication of old command names we switched to the new ones,
+                        #       dropping support for gmsh <4.7 (released Nov. 2020)
                         setting = {}
                         setting["Size"] = Units.Quantity(mr_obj.MinimumThickness).Value
                         setting["Ratio"] = mr_obj.GrowthRate
