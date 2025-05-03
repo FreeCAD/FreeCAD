@@ -70,8 +70,12 @@ class GmshTools:
         self.load_properties()
         self.error = False
 
-    def _next_field_number(self):
+    def _next_field_number(self, background=True):
+        # returns the next unique field number. If cakcground = True,
+        # the field is used as background field
         self._field_counter += 1
+        if background:
+            self._background_fields.append(self._field_counter)
         return self._field_counter
 
     def load_properties(self):
@@ -191,11 +195,16 @@ class GmshTools:
         self.group_elements = {}
 
         # mesh regions
-        self.ele_length_list = []  # [ (element length, {element names}) ]
+        self.ele_length_list = []       # [ (element length, {element names}) ]
+        self.region_element_set = set() # set to remove duplicated element edge or faces
 
         # mesh boundary layer
         self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
         self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
+
+        # mesh distance
+        self.dist_setting_list = []     # list of dict, each item map to MeshBoundaryLayer object
+        self.dist_element_set = set()   # set to remove duplicated element edge or faces
 
         # other initializations
         self.temp_file_geometry = ""
@@ -204,6 +213,7 @@ class GmshTools:
         self.mesh_name = ""
         self.gmsh_bin = ""
         self._field_counter = 0
+        self._background_fields = []
 
     def update_mesh_data(self):
         self.start_logs()
@@ -211,6 +221,7 @@ class GmshTools:
         self.get_group_data()
         self.get_region_data()
         self.get_boundary_layer_data()
+        self.get_distance_data()
 
     def write_gmsh_input_files(self):
         self.write_part_file()
@@ -464,6 +475,77 @@ class GmshTools:
 
         return result
 
+    def _get_reference_elements(self, mr_obj, duplicates_set = None):
+
+        elements = set()
+        for sub in mr_obj.References:
+            # print(sub[0])  # Part the elements belongs to
+            # check if the shape of the mesh refinements
+            # is an element of the Part to mesh
+            # if not try to find the element in the shape to mesh
+            search_ele_in_shape_to_mesh = False
+            if not self.part_obj.Shape.isSame(sub[0].Shape):
+                Console.PrintLog(
+                    "  One element of the mesh refinement {} is "
+                    "not an element of the Part to mesh.\n"
+                    "But we are going to try to find it in "
+                    "the Shape to mesh :-)\n".format(mr_obj.Name)
+                )
+                search_ele_in_shape_to_mesh = True
+
+            for element in sub[1]:
+                # print(elems)  # elems --> element
+                if search_ele_in_shape_to_mesh:
+                    # we're going to try to find the element in the
+                    # Shape to mesh and use the found element as elems
+                    # the method getElement(element)
+                    # does not return Solid elements
+                    ele_shape = geomtools.get_element(sub[0], elems)
+                    found_element = geomtools.find_element_in_shape(
+                        self.part_obj.Shape, ele_shape
+                    )
+                    if found_element:
+                        element = found_element
+                    else:
+                        Console.PrintError(
+                            "One element of the mesh refinement {} could not be found "
+                            "in the Part to mesh. It will be ignored.\n".format(
+                                mr_obj.Name
+                            )
+                        )
+                # print(elems)  # element
+                elements.add(element)
+
+        if duplicates_set:
+            duplicates = duplicates_set.intersection(elements)
+            if duplicates:
+                Console.PrintError(
+                                "The elements {} of the mesh distance {} have been added "
+                                "to another mesh distance already.\n".format(
+                                    duplicates, mr_obj.Name
+                                )
+                            )
+                elements = elements - duplicates
+
+            duplicates_set.update(elements)
+
+        return elements
+
+
+    def _element_list_to_shape_idx_dict(self, element_list):
+        # takes element list and builds a dict from it mapping from
+        # shapes types to all indices
+
+        reg_exp = re.compile(r"(?:.*\.)?(?P<shape>Solid|Face|Edge|Vertex)(?P<index>\d+)$")
+        result = {"Solid": [], "Face": [], "Edge": [], "Vertex": []}
+        for element in element_list:
+            m = reg_exp.match(element)
+            if m:
+                result[m.group("shape")].append(m.group("index"))
+
+        return result
+
+
     def get_region_data(self):
         # mesh regions
         mesh_region_list = self._get_definitions_of_type("Fem::MeshRegion")
@@ -490,56 +572,16 @@ class GmshTools:
             for mr_obj in mesh_region_list:
                 if mr_obj.Suppressed:
                     continue
-                # print(mr_obj.Name)
-                # print(mr_obj.CharacteristicLength)
-                # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
+
                 if mr_obj.CharacteristicLength:
                     if mr_obj.References:
-                        elements = set()
-                        for sub in mr_obj.References:
-                            # print(sub[0])  # Part the elements belongs to
-                            # check if the shape of the mesh refinements
-                            # is an element of the Part to mesh
-                            # if not try to find the element in the shape to mesh
-                            search_ele_in_shape_to_mesh = False
-                            if not self.part_obj.Shape.isSame(sub[0].Shape):
-                                Console.PrintLog(
-                                    "  One element of the mesh refinement {} is "
-                                    "not an element of the Part to mesh.\n"
-                                    "But we are going to try to find it in "
-                                    "the Shape to mesh :-)\n".format(mr_obj.Name)
-                                )
-                                search_ele_in_shape_to_mesh = True
-                            for element in sub[1]:
-                                # print(elems)  # elems --> element
-                                if search_ele_in_shape_to_mesh:
-                                    # we're going to try to find the element in the
-                                    # Shape to mesh and use the found element as elems
-                                    # the method getElement(element)
-                                    # does not return Solid elements
-                                    ele_shape = geomtools.get_element(sub[0], elems)
-                                    found_element = geomtools.find_element_in_shape(
-                                        self.part_obj.Shape, ele_shape
-                                    )
-                                    if found_element:
-                                        element = found_element
-                                    else:
-                                        Console.PrintError(
-                                            "One element of the meshregion {} could not be found "
-                                            "in the Part to mesh. It will be ignored.\n".format(
-                                                mr_obj.Name
-                                            )
-                                        )
-                                # print(elems)  # element
-                                if all(element not in entry[1] for entry in self.ele_length_list):
-                                    elements.add(element)
-                                else:
-                                    Console.PrintError(
-                                        "The element {} of the mesh refinement {} has "
-                                        "been added to another mesh region.\n".format(
-                                            elemement, mr_obj.Name
-                                        )
-                                    )
+
+                        elements = self._get_reference_elements(mr_obj, self.region_element_set)
+                        if not elements:
+                            Console.PrintError( ("The mesh distance {} is not used because no unique"
+                                                "elements are selected.\n").format(mr_obj.Name))
+                            continue
+
                         value = Units.Quantity(mr_obj.CharacteristicLength).Value
                         self.ele_length_list.append((value, elements))
 
@@ -678,6 +720,77 @@ class GmshTools:
                     )
             Console.PrintMessage(f"  {self.bl_setting_list}\n")
 
+
+    def get_distance_data(self):
+        # mesh distance
+        mesh_distance_list = self._get_definitions_of_type("Fem::MeshDistance")
+        if not mesh_distance_list:
+            # print("  No mesh refinements.")
+            pass
+        else:
+            # Console.PrintMessage("  Mesh distances, we need to get the elements.\n")
+            # by the use of MeshRegion object and a BooleanSplitCompound
+            # there could be problems with node numbers see
+            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
+            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+            part = self.part_obj
+            if (
+                mesh_distance_list
+                and part.Shape.ShapeType == "Compound"
+                and (
+                    femutils.is_of_type(part, "FeatureBooleanFragments")
+                    or femutils.is_of_type(part, "FeatureSlice")
+                    or femutils.is_of_type(part, "FeatureXOR")
+                )
+            ):
+                self.outputCompoundWarning
+            for mr_obj in mesh_distance_list:
+                if mr_obj.Suppressed:
+                    continue
+                # print(mr_obj.Name)
+                # print(mr_obj.CharacteristicLength)
+                # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
+                #if mr_obj.CharacteristicLength:
+                if mr_obj.References:
+
+                    # collect all elements!
+                    elements = self._get_reference_elements(mr_obj, self.dist_element_set)
+                    if not elements:
+                        Console.PrintError( ("The mesh distance {} is not used because no unique"
+                                             "elements are selected.\n").format(mr_obj.Name))
+                        continue
+
+                    idx_dict = self._element_list_to_shape_idx_dict(elements)
+
+                    # get the settings!
+                    settings = {"Distance":{}, "Threshold":{}}
+                    settings["Threshold"]["DistMin"] = Units.Quantity(mr_obj.DistanceMinimum).Value
+                    settings["Threshold"]["DistMax"] = Units.Quantity(mr_obj.DistanceMaximum).Value
+                    settings["Threshold"]["SizeMin"] = Units.Quantity(mr_obj.SizeMinimum).Value
+                    settings["Threshold"]["SizeMax"] = Units.Quantity(mr_obj.SizeMaximum).Value
+                    settings["Threshold"]["Sigmoid"] = int(not mr_obj.LinearInterpolation)
+                    settings["Threshold"]["StopAtDistMax"] = 1
+                    settings["Distance"]["Sampling"] = mr_obj.Sampling
+                    if idx_dict["Vertex"]:
+                        ids = ", ".join(str(i) for i in idx_dict["Vertex"])
+                        settings["Distance"]["PointsList"] = f"{{ {ids} }}"
+                    if idx_dict["Edge"]:
+                        ids = ", ".join(str(i) for i in idx_dict["Edge"])
+                        settings["Distance"]["CurvesList"] = f"{{ {ids} }}"
+                    if idx_dict["Face"]:
+                        ids = ", ".join(str(i) for i in idx_dict["Face"])
+                        settings["Distance"]["SurfacesList"] = f"{{ {ids} }}"
+
+                    # save everything for later processing
+                    self.dist_setting_list.append(settings)
+
+                else:
+                    Console.PrintError(
+                        "The mesh refinement: {} is not used to create the mesh "
+                        "because the reference list is empty.\n".format(mr_obj.Name)
+                    )
+
+
     def write_groups(self, geo):
         # find shape type and index from group elements and isolate them from possible prefix
         # for example: "PartObject.Solid2" -> shape: Solid, index: 2
@@ -712,19 +825,6 @@ class GmshTools:
                         geo.write('Physical {}("{}") = {};\n'.format(phys, group, items))
 
             geo.write("\n")
-
-    def _element_list_to_shape_idx_dict(self, element_list):
-        # takes element list and builds a dict from it mapping from
-        # shapes types to all indices
-
-        reg_exp = re.compile(r"(?:.*\.)?(?P<shape>Solid|Face|Edge|Vertex)(?P<index>\d+)$")
-        result = {"Solid": [], "Face": [], "Edge": [], "Vertex": []}
-        for element in element_list:
-            m = reg_exp.match(element)
-            if m:
-                result[m.group("shape")].append(m.group("index"))
-
-        return result
 
     def write_regions(self, geo):
         geo.write("// Constant size regions\n")
@@ -788,6 +888,43 @@ class GmshTools:
             # print("  no boundary layer setup is found for this mesh")
             geo.write("// no boundary layer settings for this mesh\n")
 
+    def write_distances(self, geo):
+        # currently single body is supported
+        if len(self.dist_setting_list):
+            geo.write("// distance settings\n")
+            Console.PrintMessage("  Start to write distance setup\n")
+            for item in self.dist_setting_list:
+                # distance is not a background field
+                distance_field_number = self._next_field_number(False)
+                prefix = "Field[" + str(distance_field_number) + "]"
+                geo.write(prefix + " = Distance;\n")
+                for k in item["Distance"]:
+                    line = prefix + "." + str(k) + " = " + str(item["Distance"][k]) + ";\n"
+                    geo.write(line)
+                    Console.PrintMessage(f"{line}\n")
+
+                # threshold is a background field
+                threshold_field_number = self._next_field_number()
+                prefix = "Field[" + str(threshold_field_number) + "]"
+                geo.write(prefix + " = Threshold;\n")
+                for k in item["Threshold"]:
+                    line = prefix + "." + str(k) + " = " + str(item["Threshold"][k]) + ";\n"
+                    geo.write(line)
+                    Console.PrintMessage(f"{line}\n")
+
+                line = prefix + ".InField = " + str(distance_field_number) + ";\n"
+                geo.write(line)
+                Console.PrintMessage(f"{line}\n")
+
+            geo.write("// end of distance setup \n")
+
+            geo.write("\n")
+            geo.flush()
+            Console.PrintMessage("  finished in distance setup\n")
+        else:
+            # print("  no boundary layer setup is found for this mesh")
+            geo.write("// no distance settings for this mesh\n")
+
     def write_part_file(self):
         global_pla = self.part_obj.getGlobalPlacement()
         geom = self.part_obj.getPropertyOfGeometry()
@@ -817,18 +954,21 @@ class GmshTools:
         # groups
         self.write_groups(geo)
 
-        # Characteristic Length of the elements
+        # Constant size fields
         self.write_regions(geo)
+
+        # Distance size fields
+        self.write_distances(geo)
 
         # boundary layer generation may need special setup
         # of Gmsh properties, set them in Gmsh TaskPanel
         self.write_boundary_layer(geo)
 
         # write the background size field, if fields have been added
-        field_id = self._next_field_number()
-        if field_id > 1:
+        if self._background_fields:
+            field_id = self._next_field_number()
             geo.write(f"\nField[{field_id}] = Min;\n")
-            id_list = ", ".join(str(i) for i in range(1,field_id))
+            id_list = ", ".join(str(i) for i in self._background_fields)
             geo.write(f"Field[{field_id}].FieldsList = {{ {id_list} }};\n")
             geo.write(f"Background Field = {field_id};\n\n")
 

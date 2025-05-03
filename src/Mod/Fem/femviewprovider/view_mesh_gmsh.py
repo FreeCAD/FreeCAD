@@ -37,7 +37,7 @@ from PySide import QtGui
 from femtaskpanels import task_mesh_gmsh
 from femtools.femutils import is_of_type, type_of_obj
 
-_supported_definitions = ["Fem::MeshRegion", "Fem::MeshBoundaryLayer"]
+_supported_definitions = ["Fem::MeshRegion", "Fem::MeshBoundaryLayer", "Fem::MeshDistance"]
 
 # TODO use VPBaseFemObject from view_base_femobject
 # class VPMeshGmsh(view_base_femobject.VPBaseFemObject):
