@@ -139,14 +139,12 @@ class Polygon(gui_base_original.Creator):
                                                            self.point)
                     _c = DraftGeomUtils.findClosestCircle(self.point, cir)
                     self.center = _c.Center
-                    #self.polygonTrack.setOrigin(self.center)
                 elif self.tangents and self.tanpoints:
                     cir = DraftGeomUtils.circleFrom1tan2pt(self.tangents[0],
                                                            self.tanpoints[0],
                                                            self.point)
                     _c = DraftGeomUtils.findClosestCircle(self.point, cir)
                     self.center = _c.Center
-                    #self.polygonTrack.setOrigin(self.center)
                 if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     if not self.altdown:
                         self.altdown = True
@@ -163,7 +161,6 @@ class Polygon(gui_base_original.Creator):
                             cl = DraftGeomUtils.findClosestCircle(self.point, cir)
                             self.center = cl.Center
                             self.rad = cl.Radius
-                            #self.polygonTrack.setOrigin(self.center)
                         else:
                             self.rad = self.center.add(DraftGeomUtils.findDistance(self.center,ed).sub(self.center)).Length
                     else:
@@ -173,7 +170,6 @@ class Polygon(gui_base_original.Creator):
                         self.altdown = False
                     self.rad = DraftVecUtils.dist(self.point, self.center)
                 self.ui.setRadiusValue(self.rad, 'Length')
-                #self.polygonTrack.setOrigin(self.rad)
 
             gui_tool_utils.redraw3DView()
 
@@ -206,7 +202,6 @@ class Polygon(gui_base_original.Creator):
                             self.center = self.point
                             self.node = [self.point]
                             self.polygonTrack.setOrigin(self.center)
-                            #self.polygonTrack.setCenter(self.center)
                         self.polygonTrack.on()
                         self.ui.radiusUi()
                         self.step = 1
@@ -266,7 +261,6 @@ class Polygon(gui_base_original.Creator):
         """
         self.center = App.Vector(numx, numy, numz)
         self.node = [self.center]
-        #self.polygonTrack.setOrigin(self.center)
         self.polygonTrack.on()
         self.ui.radiusUi()
         self.step = 1
