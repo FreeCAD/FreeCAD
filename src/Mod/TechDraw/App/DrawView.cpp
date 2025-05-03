@@ -450,11 +450,9 @@ std::vector<TechDraw::DrawView*> DrawView::getUniqueChildren() const
     auto newEnd = std::unique(children.begin(), children.end());
     children.erase(newEnd, children.end());
     for (auto& child : children) {
-        if (child->isDerivedFrom<DrawView>()) {
-            auto* childDV = static_cast<TechDraw::DrawView*>(child);
-            if (childDV->claimParent() == this) {
-                result.push_back(childDV);
-            }
+        auto* childDV = freecad_cast<DrawView*>(child);
+        if (childDV && childDV->claimParent() == this) {
+            result.push_back(childDV);
         }
     }
     return result;
