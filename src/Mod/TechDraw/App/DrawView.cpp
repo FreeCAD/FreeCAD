@@ -442,9 +442,9 @@ DrawView *DrawView::claimParent() const
 //! return *unique* list of DrawView derived items which consider this DVP to be their 'owner'
 //! if a dimension has two references to this dvp, it will appear twice in the inlist, so we need to
 //! pick out duplicates.
-std::vector<TechDraw::DrawView*> DrawView::getUniqueChildren() const
+std::vector<DrawView*> DrawView::getUniqueChildren() const
 {
-    std::vector<TechDraw::DrawView*> result;
+    std::vector<DrawView*> result;
     auto children = getInList();
     std::sort(children.begin(), children.end(), std::less<>());
     auto newEnd = std::unique(children.begin(), children.end());
