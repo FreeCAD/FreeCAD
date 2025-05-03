@@ -54,18 +54,9 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyLinkList",
-                name="MeshBoundaryLayerList",
+                name="MeshDefinitionList",
                 group="Base",
-                doc="Mesh boundaries need inflation layers",
-                value=[],
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLinkList",
-                name="MeshRegionList",
-                group="Base",
-                doc="Mesh refinments of the mesh",
+                doc="Mesh definitions for manipulating the mesh, like regions or boundary layers",
                 value=[],
             )
         )
@@ -290,6 +281,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 prop.handle_change_type(
                     obj, "App::PropertyBool", lambda x: "Optimization" if x else "None"
                 )
+
             # Migrate group of properties for old projects
             if obj.getGroupOfProperty(prop.name) == "FEM Gmsh Mesh Params":
                 obj.setGroupOfProperty(prop.name, "Mesh Parameters")
@@ -308,5 +300,16 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 value=value_part,
             )
             prop.add_to_object(obj)
+
         except Base.PropertyError:
             pass
+
+        # migrate old properties to definition list
+        for prop in ["MeshBoundaryLayerList", "MeshRegionList"]:
+            try:
+                value = obj.getPropertyByName(prop)
+                obj.setPropertyStatus(prop, "-LockDynamic")
+                obj.removeProperty(prop)
+                obj.MeshDefinitionList =  obj.MeshDefinitionList + value
+            except Base.PropertyError:
+                pass
