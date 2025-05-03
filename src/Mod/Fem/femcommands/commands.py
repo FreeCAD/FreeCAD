@@ -913,6 +913,39 @@ class _MeshRegion(CommandManager):
         self.is_active = "with_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
+class _MeshDistance(CommandManager):
+    "The FEM_MeshRefinement command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshDistance", "FEM mesh distance refinement")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshDistance", "Creates a FEM mesh distance refinement")
+        self.is_active = "with_femmesh"
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
+
+class _GMSHRefineCommand():
+    # Group command for all gmsh special refinements
+
+    def GetCommands(self):
+        return ["FEM_MeshDistance", "FEM_MeshBoundaryLayer"]
+
+    def GetDefaultCommand(self):
+        return 0
+
+    def GetResources(self):
+        return { 'MenuText': 'GMSH refinements', 'ToolTip': 'Special refinements for the GMSH mesh generation'}
+
+    def IsActive(self):
+        if not FreeCADGui.ActiveDocument:
+            return False
+
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+            # must be GMSH mesh
+            return is_of_type(sel[0], "Fem::FemMeshGmsh")
+
+        return False
+
 
 class _ResultShow(CommandManager):
     "The FEM_ResultShow command definition"
@@ -1303,6 +1336,8 @@ FreeCADGui.addCommand("FEM_MeshGmshFromShape", _MeshGmshFromShape())
 FreeCADGui.addCommand("FEM_MeshGroup", _MeshGroup())
 FreeCADGui.addCommand("FEM_MeshNetgenFromShape", _MeshNetgenFromShape())
 FreeCADGui.addCommand("FEM_MeshRegion", _MeshRegion())
+FreeCADGui.addCommand("FEM_MeshDistance", _MeshDistance())
+FreeCADGui.addCommand("FEM_MeshGMSHRefinement", _GMSHRefineCommand())
 FreeCADGui.addCommand("FEM_ResultShow", _ResultShow())
 FreeCADGui.addCommand("FEM_ResultsPurge", _ResultsPurge())
 FreeCADGui.addCommand("FEM_SolverCalculiXCcxTools", _SolverCcxTools())

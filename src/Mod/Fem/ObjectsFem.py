@@ -584,6 +584,27 @@ def makeMeshRegion(doc, base_mesh, element_length=0.0, name="MeshRegion"):
         view_mesh_region.VPMeshRegion(obj.ViewObject)
     return obj
 
+def makeMeshDistance(doc, base_mesh, name="MeshDistance"):
+    """makeMeshDistance(document, base_mesh, [element_length], [name]):
+    creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_distance
+
+    mesh_distance.MeshDistance(obj)
+
+    # obj.BaseMesh = base_mesh
+    # App::PropertyLinkList does not support append
+    # we will use a temporary list to append the mesh distance obj. to the list
+    tmplist = base_mesh.MeshDefinitionList
+    tmplist.append(obj)
+    base_mesh.MeshDefinitionList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_distance
+
+        view_mesh_distance.VPMeshDistance(obj.ViewObject)
+    return obj
+
 
 def makeMeshResult(doc, name="MeshResult"):
     """makeMeshResult(document, name): makes a Fem MeshResult object"""
