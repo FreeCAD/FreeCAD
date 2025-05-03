@@ -498,8 +498,8 @@ void ViewProviderDrawingView::fixSceneDependencies()
     // this is the logic for items other than Dimensions and Balloons
     auto children = getViewObject()->getUniqueChildren();
     for (auto& child : children) {
-        if (child->isDerivedFrom<TechDraw::DrawViewDimension>() ||
-            child->isDerivedFrom<TechDraw::DrawViewBalloon>() ) {
+        if (child->isDerivedFrom<DrawViewDimension>() ||
+            child->isDerivedFrom<DrawViewBalloon>() ) {
             // these are handled by ViewProviderViewPart
             continue;
         }
