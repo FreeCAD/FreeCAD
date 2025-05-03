@@ -65,6 +65,7 @@
         <file>icons/FEM_MeshGroup.svg</file>
         <file>icons/FEM_MeshNetgenFromShape.svg</file>
         <file>icons/FEM_MeshRegion.svg</file>
+        <file>icons/FEM_MeshDistance.svg</file>
 
         <!-- gui command icons: materials -->
         <file>icons/FEM_MaterialFluid.svg</file>
