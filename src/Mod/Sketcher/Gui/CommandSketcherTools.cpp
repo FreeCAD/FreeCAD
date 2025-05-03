@@ -49,6 +49,8 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 #include <Gui/Application.h>
+#include <Base/ServiceProvider.h>
+#include <App/Services.h>
 
 #include "CommandSketcherTools.h"
 #include "DrawSketchHandler.h"
@@ -2540,6 +2542,11 @@ void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
 
     auto view3d = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
     if (view3d) {
-        view3d->getViewer()->scale(scale_factor);
+        auto viewer = view3d->getViewer();
+        bool isAnimating = viewer->isAnimationEnabled();
+        viewer->setAnimationEnabled(false);
+        viewer->scale(scale_factor);
+        viewer->viewAll();
+        viewer->setAnimationEnabled(isAnimating);
     }
 }
