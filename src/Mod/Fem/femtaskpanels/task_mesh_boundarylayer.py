@@ -69,9 +69,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.init_parameter_widget()
 
         # geometry selection widget
-        # start with Solid in list!
+        # Only curves are valid entries!
         self.selection_widget = selection_widgets.GeometryElementsSelection(
-            obj.References, ["Solid", "Face", "Edge", "Vertex"], True, False
+            obj.References, ["Edge"], True, False
         )
 
         # form made from param and selection widget
