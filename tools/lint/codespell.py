@@ -81,7 +81,7 @@ def main():
     )
     parser.add_argument(
         "--verbose",
-        default=False,
+        action='store_true',
         help="Use verbose output."
     )
     args = parser.parse_args()
