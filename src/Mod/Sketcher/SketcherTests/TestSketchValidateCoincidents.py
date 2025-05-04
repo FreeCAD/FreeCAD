@@ -131,81 +131,84 @@ class TestSketchValidateCoincidents(unittest.TestCase):
     def testExternalGeoDeletion(self):
         """Make sure that we don't remove External Geometry references to deleted geometry.
         See https://github.com/FreeCAD/FreeCAD/issues/16361"""
-        doc = App.ActiveDocument
-        doc.addObject("PartDesign::Body", "Body")
-        doc.Body.Label = "Body"
-        doc.recompute()
-        doc.Body.newObject("Sketcher::SketchObject", "Sketch")
-        doc.Sketch.AttachmentSupport = (doc.XY_Plane, [""])
-        doc.Sketch.MapMode = "FlatFace"
-        doc.recompute()
-        geoList = []
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(7.548310, 5.193216, 0.000000), App.Vector(31.461353, 5.193216, 0.000000)
+        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+            doc = App.ActiveDocument
+            doc.addObject("PartDesign::Body", "Body")
+            doc.Body.Label = "Body"
+            doc.recompute()
+            doc.Body.newObject("Sketcher::SketchObject", "Sketch")
+            doc.Sketch.AttachmentSupport = (doc.XY_Plane, [""])
+            doc.Sketch.MapMode = "FlatFace"
+            doc.recompute()
+            geoList = []
+            geoList.append(
+                Part.LineSegment(
+                    App.Vector(7.548310, 5.193216, 0.000000),
+                    App.Vector(31.461353, 5.193216, 0.000000),
+                )
             )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(31.461353, 5.193216, 0.000000),
-                App.Vector(31.461353, 20.652151, 0.000000),
+            geoList.append(
+                Part.LineSegment(
+                    App.Vector(31.461353, 5.193216, 0.000000),
+                    App.Vector(31.461353, 20.652151, 0.000000),
+                )
             )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(31.461353, 20.652151, 0.000000),
-                App.Vector(7.548310, 20.652151, 0.000000),
+            geoList.append(
+                Part.LineSegment(
+                    App.Vector(31.461353, 20.652151, 0.000000),
+                    App.Vector(7.548310, 20.652151, 0.000000),
+                )
             )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(7.548310, 20.652151, 0.000000), App.Vector(7.548310, 5.193216, 0.000000)
+            geoList.append(
+                Part.LineSegment(
+                    App.Vector(7.548310, 20.652151, 0.000000),
+                    App.Vector(7.548310, 5.193216, 0.000000),
+                )
             )
-        )
-        doc.Sketch.addGeometry(geoList, False)
-        del geoList
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 0))
-        constraintList.append(Sketcher.Constraint("Horizontal", 2))
-        constraintList.append(Sketcher.Constraint("Vertical", 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 3))
-        doc.Sketch.addConstraint(constraintList)
-        del constraintList
-        constraintList = []
-        doc.recompute()
-        doc.Body.newObject("Sketcher::SketchObject", "Sketch001")
-        doc.Sketch001.AttachmentSupport = (doc.XY_Plane, [""])
-        doc.Sketch001.MapMode = "FlatFace"
-        doc.recompute()
-        doc.Sketch001.addExternal("Sketch", "Edge3")
-        geoList = []
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(33.192780, 22.530144, 0.000000),
-                App.Vector(38.493977, 32.289181, 0.000000),
+            doc.Sketch.addGeometry(geoList, False)
+            del geoList
+            constraintList = []
+            constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+            constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+            constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+            constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
+            constraintList.append(Sketcher.Constraint("Horizontal", 0))
+            constraintList.append(Sketcher.Constraint("Horizontal", 2))
+            constraintList.append(Sketcher.Constraint("Vertical", 1))
+            constraintList.append(Sketcher.Constraint("Vertical", 3))
+            doc.Sketch.addConstraint(constraintList)
+            del constraintList
+            constraintList = []
+            doc.recompute()
+            doc.Body.newObject("Sketcher::SketchObject", "Sketch001")
+            doc.Sketch001.AttachmentSupport = (doc.XY_Plane, [""])
+            doc.Sketch001.MapMode = "FlatFace"
+            doc.recompute()
+            doc.Sketch001.addExternal("Sketch", "Edge3")
+            geoList = []
+            geoList.append(
+                Part.LineSegment(
+                    App.Vector(33.192780, 22.530144, 0.000000),
+                    App.Vector(38.493977, 32.289181, 0.000000),
+                )
             )
-        )
-        doc.Sketch001.addGeometry(geoList, False)
-        del geoList
-        constraintList = []
-        doc.Sketch001.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -3, 1))
-        doc.recompute()
-        doc.Sketch.delGeometries([1])
-        doc.Sketch.delGeometries([1])
-        doc.recompute()
-        doc.Sketch001.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -3, 1))
-        doc.recompute()
-        # Assert
-        self.assertEqual(len(doc.Sketch001.Constraints), 2)  # Still have the constraints
-        self.assertEqual(len(doc.Sketch001.ExternalGeometry), 0)
-        self.assertEqual(len(doc.Sketch001.Geometry), 1)
-        self.assertEqual(
-            len(doc.Sketch001.ExternalGeo), 3
-        )  # Two axis, plus one the reference to deleted geometry
+            doc.Sketch001.addGeometry(geoList, False)
+            del geoList
+            constraintList = []
+            doc.Sketch001.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -3, 1))
+            doc.recompute()
+            doc.Sketch.delGeometries([1])
+            doc.Sketch.delGeometries([1])
+            doc.recompute()
+            doc.Sketch001.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -3, 1))
+            doc.recompute()
+            # Assert
+            self.assertEqual(len(doc.Sketch001.Constraints), 2)  # Still have the constraints
+            self.assertEqual(len(doc.Sketch001.ExternalGeometry), 0)
+            self.assertEqual(len(doc.Sketch001.Geometry), 1)
+            self.assertEqual(
+                len(doc.Sketch001.ExternalGeo), 3
+            )  # Two axis, plus one the reference to deleted geometry
 
     def tearDown(self):
         # closing doc
