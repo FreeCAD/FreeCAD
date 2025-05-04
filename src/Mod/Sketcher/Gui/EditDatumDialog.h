@@ -63,6 +63,9 @@ private Q_SLOTS:
     void drivingToggled(bool);
     void datumChanged();
     void formEditorOpened(bool);
+
+private:
+    void performAutoScale(double newDatum);
 };
 
 }  // namespace SketcherGui

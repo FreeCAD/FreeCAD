@@ -2544,6 +2544,7 @@ void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
     if (view3d) {
         auto viewer = view3d->getViewer();
         bool isAnimating = viewer->isAnimationEnabled();
+        
         viewer->setAnimationEnabled(false);
         viewer->scale(scale_factor);
         viewer->viewAll();

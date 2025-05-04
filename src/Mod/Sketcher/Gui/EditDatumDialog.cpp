@@ -209,25 +209,7 @@ void EditDatumDialog::accepted()
                     auto unitString = newQuant.getUnit().getString();
                     unitString = Base::Tools::escapeQuotesFromString(unitString);
 
-                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
-                    long autoScaleMode = hGrp->GetInt("AutoScaleMode", 0);
-
-                    // There is a single constraint in the sketch so it can
-                    // be used as a reference to scale the geometries around the origin
-                    // if there are external geometries, it is safe to assume that the sketch
-                    // was drawn with these geometries as scale references (use <= 2 because
-                    // the sketch axis are considered as external geometries)
-                    if (autoScaleMode == 0 && sketch->getExternalGeometryCount() <= 2
-                        && sketch->hasSingleScaleDefiningConstraint()) {
-                        double oldDatum = sketch->getDatum(ConstrNbr);
-                        double scale_factor = newDatum / oldDatum;
-                        float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
-                        float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
-                        centerScale(sketch, scale_factor);
-                        sketch->setLabelDistance(ConstrNbr, initLabelDistance * scale_factor);
-                        sketch->setLabelPosition(ConstrNbr, initLabelPosition * scale_factor);
-                    }
+                    performAutoScale(newDatum);
 
                     Gui::cmdAppObjectArgs(sketch,
                                           "setDatum(%i,App.Units.Quantity('%f %s'))",
@@ -319,6 +301,50 @@ void EditDatumDialog::formEditorOpened(bool state)
 {
     if (state) {
         ui_ins_datum->cbDriving->setChecked(false);
+    }
+}
+
+bool visualScaleFeaturePresent(App::DocumentObject* obj)
+{
+    if (!obj) {
+        return false;
+    }
+
+    App::DocumentObject* parent = obj;
+    auto doc = Gui::Application::Instance->activeDocument();
+
+    while(parent) {
+        auto parentviewprovider = doc->getViewProvider(parent);
+
+        if (!parentviewprovider->isVisible()) {
+            return false;
+        }
+        parent = parent->getFirstParent();
+    }
+    auto parentviewprovider = doc->getViewProvider(obj);
+    return parentviewprovider->getBoundingBox().IsValid();
+}
+void EditDatumDialog::performAutoScale(double newDatum)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    long autoScaleMode = hGrp->GetInt("AutoScaleMode", 0);
+
+    // There is a single constraint in the sketch so it can
+    // be used as a reference to scale the geometries around the origin
+    // if there are external geometries, it is safe to assume that the sketch
+    // was drawn with these geometries as scale references (use <= 2 because
+    // the sketch axis are considered as external geometries)
+    if ((autoScaleMode == 0 || (autoScaleMode == 2 && !visualScaleFeaturePresent(sketch->getFirstParent()))) 
+        && sketch->getExternalGeometryCount() <= 2 
+        && sketch->hasSingleScaleDefiningConstraint()) {
+        double oldDatum = sketch->getDatum(ConstrNbr);
+        double scale_factor = newDatum / oldDatum;
+        float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
+        float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
+        centerScale(sketch, scale_factor);
+        sketch->setLabelDistance(ConstrNbr, initLabelDistance * scale_factor);
+        sketch->setLabelPosition(ConstrNbr, initLabelPosition * scale_factor);
     }
 }
 
