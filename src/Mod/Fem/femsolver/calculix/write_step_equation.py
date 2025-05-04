@@ -128,10 +128,10 @@ def write_step_equation(f, ccxwriter):
             or ccxwriter.solver_obj.IterationsUserDefinedTimeStepLength is True
         ):
             analysis_parameter = "{},{},{},{}".format(
-                ccxwriter.solver_obj.TimeInitialStep,
-                ccxwriter.solver_obj.TimeEnd,
-                ccxwriter.solver_obj.TimeMinimumStep,
-                ccxwriter.solver_obj.TimeMaximumStep,
+                ccxwriter.solver_obj.TimeInitialStep.getValueAs("s").Value,
+                ccxwriter.solver_obj.TimeEnd.getValueAs("s").Value,
+                ccxwriter.solver_obj.TimeMinimumStep.getValueAs("s").Value,
+                ccxwriter.solver_obj.TimeMaximumStep.getValueAs("s").Value,
             )
     elif ccxwriter.analysis_type == "frequency":
         if (
@@ -142,16 +142,16 @@ def write_step_equation(f, ccxwriter):
         else:
             analysis_parameter = "{},{},{}\n".format(
                 ccxwriter.solver_obj.EigenmodesCount,
-                ccxwriter.solver_obj.EigenmodeLowLimit,
-                ccxwriter.solver_obj.EigenmodeHighLimit,
+                ccxwriter.solver_obj.EigenmodeLowLimit.getValueAs("Hz").Value,
+                ccxwriter.solver_obj.EigenmodeHighLimit.getValueAs("Hz").Value,
             )
     elif ccxwriter.analysis_type == "thermomech":
         # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
         analysis_parameter = "{},{},{},{}".format(
-            ccxwriter.solver_obj.TimeInitialStep,
-            ccxwriter.solver_obj.TimeEnd,
-            ccxwriter.solver_obj.TimeMinimumStep,
-            ccxwriter.solver_obj.TimeMaximumStep,
+            ccxwriter.solver_obj.TimeInitialStep.getValueAs("s").Value,
+            ccxwriter.solver_obj.TimeEnd.getValueAs("s").Value,
+            ccxwriter.solver_obj.TimeMinimumStep.getValueAs("s").Value,
+            ccxwriter.solver_obj.TimeMaximumStep.getValueAs("s").Value,
         )
     elif ccxwriter.analysis_type == "buckling":
         analysis_parameter = "{},{}".format(
