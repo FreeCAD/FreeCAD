@@ -198,7 +198,7 @@ class VPMeshGmsh:
         return None
 
     def claimChildren(self):
-        def_childs = self.Object.MeshDefinitionList
+        def_childs = self.Object.MeshRefinementList
         gro_childs = self.Object.MeshGroupList
         return def_childs + gro_childs
 
@@ -253,9 +253,9 @@ class VPMeshGmsh:
             self.Object.MeshGroupList = objs
         else:
             # canDrag already selected the types for us
-            objs = self.Object.MeshDefinitionList
+            objs = self.Object.MeshRefinementList
             objs.remove(dragged_object)
-            self.Object.MeshDefinitionList = objs
+            self.Object.MeshRefinementList = objs
 
     def dropObject(self, selfvp, incoming_object):
         if is_of_type(incoming_object, "Fem::MeshGroup"):
@@ -264,7 +264,7 @@ class VPMeshGmsh:
             self.Object.MeshGroupList = objs
         else:
             # canDrag already selected the types for us
-            objs = self.Object.MeshDefinitionList
+            objs = self.Object.MeshRefinementList
             objs.append(incoming_object)
-            self.Object.MeshDefinitionList = objs
+            self.Object.MeshRefinementList = objs
         incoming_object.Document.recompute()
