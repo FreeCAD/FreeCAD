@@ -313,7 +313,7 @@ bool visualScaleFeaturePresent(App::DocumentObject* obj)
     App::DocumentObject* parent = obj;
     auto doc = Gui::Application::Instance->activeDocument();
 
-    while(parent) {
+    while (parent) {
         auto parentviewprovider = doc->getViewProvider(parent);
 
         if (!parentviewprovider->isVisible()) {
@@ -335,9 +335,9 @@ void EditDatumDialog::performAutoScale(double newDatum)
     // if there are external geometries, it is safe to assume that the sketch
     // was drawn with these geometries as scale references (use <= 2 because
     // the sketch axis are considered as external geometries)
-    if ((autoScaleMode == 0 || (autoScaleMode == 2 && !visualScaleFeaturePresent(sketch->getFirstParent()))) 
-        && sketch->getExternalGeometryCount() <= 2 
-        && sketch->hasSingleScaleDefiningConstraint()) {
+    if ((autoScaleMode == 0
+         || (autoScaleMode == 2 && !visualScaleFeaturePresent(sketch->getFirstParent())))
+        && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
         double oldDatum = sketch->getDatum(ConstrNbr);
         double scale_factor = newDatum / oldDatum;
         float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
