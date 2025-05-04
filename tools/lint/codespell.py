@@ -107,7 +107,7 @@ def main():
         args.skip,
         "-D",
         dictionary_file,
-    ] + args.files.split()
+    ] + args.files
     stdout, stderr, _ = run_command(cmd)
     output = stdout + "\n" + stderr + "\n"
 

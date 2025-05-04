@@ -305,7 +305,7 @@ jobs:
         continue-on-error: ${{ inputs.codespellFailSilent }}
         run: |
           python3 tools/lint/codespell.py \
-            --files "${{ inputs.changedFiles }}" \
+            --files ${{ inputs.changedFiles }} \
             --ignore-words "${{ inputs.listIgnoredMisspelling }}" \
             --skip "${{ inputs.spellingIgnore }}" \
             --log-dir "${{ env.logdir }}" \
