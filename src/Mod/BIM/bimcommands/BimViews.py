@@ -52,6 +52,7 @@ class BIM_Views:
         from PySide import QtCore, QtGui
 
         vm = findWidget()
+        self.allItemsInTree = []
         bimviewsbutton = None
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
@@ -193,6 +194,7 @@ class BIM_Views:
         if vm and FreeCAD.ActiveDocument:
             if vm.isVisible() and (vm.tree.state() != vm.tree.State.EditingState):
                 vm.tree.clear()
+                self.allItemsInTree.clear()
                 treeViewItems = []  # QTreeWidgetItem to Display in tree
                 lvHold = []
                 soloProxyHold = []
@@ -310,8 +312,12 @@ class BIM_Views:
                     objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
                 tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
                 activeColor = tparam.GetUnsigned("TreeActiveColor",0)
-                allItemsInTree = getAllItemsInTree(vm.tree) + getAllItemsInTree(vm.viewtree)
-                for item in allItemsInTree:
+
+                # We reuse the variable later on in "Isolate", to not traverse the tree once
+                # again
+                self.allItemsInTree = getAllItemsInTree(vm.tree) + getAllItemsInTree(vm.viewtree)
+
+                for item in self.allItemsInTree:
                     if item.text(0) in objNameSelected:
                         item.setSelected(True)
                     if objActive and item.toolTip(0) == objActive.Name:
@@ -449,44 +455,32 @@ class BIM_Views:
 
     def isolate(self):
         """
-        Traverse the tree and hide all items (and their ancestors) that are not the currently
-        selected item or a descendant of the currently selected item.
+        Isolate the currently selected items in the tree view.
 
-        This ensures that only the selected item and its ancestors remain visible, while
-        all other items are hidden.
+        This function first makes all items in the tree visible to ensure a clean slate.
+        Then, it hides all items that are not currently selected by the user in the GUI tree view.
+        As a result, only the selected items remain visible in the 3D view, effectively isolating them.
+
+        Assumes that `self.allItemsInTree` is a list of all QTreeWidgetItems in the tree.
         """
+
+        # Iterate through all of the items and show them beforehand if they were hidden
+        # so we can "reset" the tree state before the real processing
+        for item in self.allItemsInTree:
+            toolTip = item.toolTip(0)
+            obj = FreeCAD.ActiveDocument.getObject(toolTip)
+            obj.ViewObject.Visibility = True
 
         vm = findWidget()
         if vm:
-            onnames = vm.tree.selectedItems()
-            selectedItsTooltips = [item.toolTip(0) for item in vm.tree.selectedItems()]
-            def is_ancestor_of_any(potential_parent, selected_items):
-                """Check if potential_parent is an ancestor of ANY selected item."""
-                for item in selected_items:
-                    current = item.parent()
-                    while current:
-                        if current.toolTip(0) == potential_parent:
-                            return True
-                        current = current.parent()
-                return False
-
-            def traverse_and_hide(item):
-                """Recursively traverse the tree and hide/show parents accordingly."""
+            selectedItems = vm.tree.selectedItems()
+            for item in self.allItemsInTree:
                 toolTip = item.toolTip(0)
                 obj = FreeCAD.ActiveDocument.getObject(toolTip)
-                if toolTip not in selectedItsTooltips and not is_ancestor_of_any(toolTip, onnames):
-                    if obj:
-                        obj.ViewObject.Visibility = False
-                
-                # Traverse on lower levels of this tree only if we didn't hide current level
-                if obj and obj.ViewObject.Visibility != False:
-                    for i in range(item.childCount()):
-                        traverse_and_hide(item.child(i))
-        
-            # Start from top-level items
-            for i in range(vm.tree.topLevelItemCount()):
-                top_item = vm.tree.topLevelItem(i)
-                traverse_and_hide(top_item)
+                if item not in selectedItems:
+                    obj.ViewObject.Visibility = False
+                else:
+                    obj.ViewObject.Visibility = True
 
             FreeCAD.ActiveDocument.recompute()
 
