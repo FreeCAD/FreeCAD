@@ -3969,6 +3969,16 @@ int ViewProviderSketch::defaultFontSizePixels() const
     return static_cast<int>(metrics.height());
 }
 
+qreal ViewProviderSketch::getDevicePixelRatio() const
+{
+    if (auto activeView = qobject_cast<Gui::View3DInventor*>(this->getActiveView())) {
+        auto glWidget = activeView->getViewer()->getGLWidget();
+        return glWidget->devicePixelRatio();
+    }
+
+    return QApplication::primaryScreen()->devicePixelRatio();
+}
+
 int ViewProviderSketch::getApplicationLogicalDPIX() const
 {
     return int(QApplication::primaryScreen()->logicalDotsPerInchX());
