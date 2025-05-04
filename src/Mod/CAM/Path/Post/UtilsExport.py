@@ -32,6 +32,7 @@ import os
 from typing import Any, Dict, List
 
 import FreeCAD
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import Path.Post.UtilsParse as PostUtilsParse
 import Path.Tool.Controller as PathToolController
@@ -48,15 +49,6 @@ def check_canned_cycles(values: Values) -> None:
             values["SUPPRESS_COMMANDS"] = ["G99", "G98", "G80"]
         else:
             values["SUPPRESS_COMMANDS"] += ["G99", "G98", "G80"]
-
-
-def determine_coolant_mode(obj) -> str:
-    """Determine the coolant mode."""
-    if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-        if hasattr(obj, "CoolantMode"):
-            return obj.CoolantMode
-        return obj.Base.CoolantMode
-    return "None"
 
 
 def output_coolant_off(values: Values, gcode: Gcode, coolant_mode: str) -> None:
@@ -314,11 +306,9 @@ def export_common(values: Values, objectslist, filename: str) -> str:
 
     for obj in objectslist:
         # Skip inactive operations
-        if hasattr(obj, "Active") and not obj.Active:
+        if not PathUtil.activeForOp(obj):
             continue
-        if hasattr(obj, "Base") and hasattr(obj.Base, "Active") and not obj.Base.Active:
-            continue
-        coolant_mode = determine_coolant_mode(obj)
+        coolant_mode = PathUtil.coolantModeForOp(obj)
         output_start_bcnc(values, gcode, obj)
         output_preop(values, gcode, obj)
         output_coolant_on(values, gcode, coolant_mode)
