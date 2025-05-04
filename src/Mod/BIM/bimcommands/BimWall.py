@@ -373,6 +373,7 @@ class Arch_Wall:
         inputWidth.returnPressed.connect(inputHeight.setFocus)
         inputWidth.returnPressed.connect(inputHeight.selectAll)
         inputHeight.returnPressed.connect(self.createFromGUI)
+        inputOffset.returnPressed.connect(self.createFromGUI)
 
         return w
 
