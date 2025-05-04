@@ -919,7 +919,7 @@ class _MeshDistance(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshDistance", "FEM mesh distance refinement")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshDistance", "Creates a FEM mesh distance refinement")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshDistance", "Refines the mesh based on the distance to vertices, edges and faces")
         self.is_active = "with_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
@@ -933,7 +933,7 @@ class _GMSHRefineCommand():
         return 0
 
     def GetResources(self):
-        return { 'MenuText': 'GMSH refinements', 'ToolTip': 'Special refinements for the GMSH mesh generation'}
+        return { 'MenuText': 'GMSH refinements', 'ToolTip': 'Mesh refinements for the GMSH mesh generation'}
 
     def IsActive(self):
         if not FreeCADGui.ActiveDocument:

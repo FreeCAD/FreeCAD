@@ -54,7 +54,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyLinkList",
-                name="MeshDefinitionList",
+                name="MeshRefinementList",
                 group="Base",
                 doc="Mesh definitions for manipulating the mesh, like regions or boundary layers",
                 value=[],
@@ -310,6 +310,6 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 value = obj.getPropertyByName(prop)
                 obj.setPropertyStatus(prop, "-LockDynamic")
                 obj.removeProperty(prop)
-                obj.MeshDefinitionList =  obj.MeshDefinitionList + value
+                obj.MeshRefinementList =  obj.MeshRefinementList + value
             except Base.PropertyError:
                 pass
