@@ -673,7 +673,7 @@ class DocumentBasicCases(unittest.TestCase):
 
 class DocumentImportCases(unittest.TestCase):
     def testDXFImportCPPIssue20195(self):
-        if "BUILD_IMPORT" in FreeCAD.__cmake__:
+        if "BUILD_DRAFT" in FreeCAD.__cmake__:
             import importDXF
             from draftutils import params
 

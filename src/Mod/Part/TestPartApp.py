@@ -542,8 +542,8 @@ class PartTestRuledSurface(unittest.TestCase):
             ruled.Curve2 = (sketch,['Edge2'])
             self.Doc.recompute()
 
-        same = getCoincidentVertexes(sketch.Shape.Vertexes, ruled.Shape.Vertexes)
-        self.assertEqual(len(same), 4)
+            same = getCoincidentVertexes(sketch.Shape.Vertexes, ruled.Shape.Vertexes)
+            self.assertEqual(len(same), 4)
 
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
