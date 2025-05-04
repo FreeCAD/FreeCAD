@@ -496,9 +496,9 @@ def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
     # we will use a temporary list to append the mesh BoundaryLayer obj. to the list
-    tmplist = base_mesh.MeshDefinitionList
+    tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
-    base_mesh.MeshDefinitionList = tmplist
+    base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_boundarylayer
 
@@ -575,9 +575,9 @@ def makeMeshRegion(doc, base_mesh, element_length=0.0, name="MeshRegion"):
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
     # we will use a temporary list to append the mesh region obj. to the list
-    tmplist = base_mesh.MeshDefinitionList
+    tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
-    base_mesh.MeshDefinitionList = tmplist
+    base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_region
 
@@ -596,9 +596,9 @@ def makeMeshDistance(doc, base_mesh, name="MeshDistance"):
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
     # we will use a temporary list to append the mesh distance obj. to the list
-    tmplist = base_mesh.MeshDefinitionList
+    tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
-    base_mesh.MeshDefinitionList = tmplist
+    base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_distance
 
