@@ -153,11 +153,17 @@
         <file>ui/MeshGroup.ui</file>
         <file>ui/MeshGroupXDMFExport.ui</file>
         <file>ui/MeshRegion.ui</file>
+        <file>ui/MeshDistance.ui</file>
         <file>ui/ResultHints.ui</file>
         <file>ui/ResultShow.ui</file>
         <file>ui/SolverCalculiX.ui</file>
         <file>ui/SolverCcxTools.ui</file>
         <file>ui/SolverElmer.ui</file>
         <file>ui/TaskPostGlyph.ui</file>
+
+        <!-- images -->
+        <file>images/FEM_MeshDistanceThresholdDark.svg</file>
+        <file>images/FEM_MeshDistanceThresholdLight.svg</file>
+
     </qresource>
 </RCC>

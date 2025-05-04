@@ -82,7 +82,7 @@ class MeshDistance(base_femmeshelement.BaseFemMeshElement):
                 type="App::PropertyIntegerConstraint",
                 name="Sampling",
                 group="DistanceSizeField",
-                doc="Sampling points used to discretize curves and surfaces (for serface it the sampling size per direction)",
+                doc="Sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.",
                 value=(20, 0, 1000, 1),
             ),
         ]
