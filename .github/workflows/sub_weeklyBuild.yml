@@ -2,6 +2,7 @@ name: Weekly Build
 on:
   schedule:
    - cron: "42 18 * * 1"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -25,6 +26,8 @@ jobs:
       - name: Tag Build
         id: tag_build
         shell: bash -l {0}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
@@ -32,6 +35,7 @@ jobs:
           gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" -F .github/workflows/weekly-build-notes.md --prerelease || true
 
       - name: Upload Source
+        shell: bash -l {0}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
