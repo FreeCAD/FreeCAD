@@ -252,6 +252,8 @@ def xy(point):
 
 
 def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
+    """speedBetweenPoints(p0, p1, hSpeed, vSpeed)
+    TODO: Needs docstring description here."""
     if isRoughly(hSpeed, vSpeed):
         return hSpeed
 
