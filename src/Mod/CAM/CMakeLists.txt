@@ -614,7 +614,7 @@ INSTALL(
     FILES
         ${PathPythonToolsShapeUi_SRCS}
     DESTINATION
-        Mod/CAM/Path/Tool/shape
+        Mod/CAM/Path/Tool/shape/ui
 )
 
 INSTALL(
