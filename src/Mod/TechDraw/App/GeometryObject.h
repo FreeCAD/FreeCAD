@@ -72,10 +72,11 @@ public:
     //! Returns 2D bounding box
     Base::BoundBox3d calcBoundingBox() const;
 
-    const std::vector<VertexPtr>& getVertexGeometry() const { return vertexGeom; }
-    const BaseGeomPtrVector& getEdgeGeometry() const { return edgeGeom; }
+    // We put = delete, so the template cannot be implicity instantiated
+    template <typename geomtype>
+    const std::vector<std::shared_ptr<geomtype>>& getAll() const = delete;
+    
     const BaseGeomPtrVector getVisibleFaceEdges(bool smooth, bool seam) const;
-    const std::vector<FacePtr>& getFaceGeometry() const { return faceGeom; }
 
     void setVertexGeometry(std::vector<VertexPtr> newVerts) { vertexGeom = newVerts; }
     void setEdgeGeometry(BaseGeomPtrVector newGeoms) { edgeGeom = newGeoms; }
@@ -156,8 +157,6 @@ protected:
     std::vector<VertexPtr> vertexGeom;
     std::vector<FacePtr> faceGeom;
 
-    bool findVertex(Base::Vector3d v);
-
     std::string m_parentName;
     TechDraw::DrawView* m_parent;
     int m_isoCount;
@@ -168,6 +167,11 @@ protected:
 };
 
 using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
+
+// Template specialization
+template<> inline const std::vector<VertexPtr>& GeometryObject::getAll<Vertex>() const { return vertexGeom; }
+template<> inline const std::vector<BaseGeomPtr>& GeometryObject::getAll<BaseGeom>() const { return edgeGeom; }
+template<> inline const std::vector<FacePtr>& GeometryObject::getAll<Face>() const { return faceGeom; }
 
 }//namespace TechDraw
 

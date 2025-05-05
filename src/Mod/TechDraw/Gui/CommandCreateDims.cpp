@@ -670,9 +670,7 @@ protected:
             return selFaces;
         }
         else if (geomName == "Edge") {
-
-            int GeoId(TechDraw::DrawUtil::getIndexFromName(subName));
-            TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(GeoId);
+            TechDraw::BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(subName);
             if (!geom) {
                 return emptyVector;
             }
@@ -1076,8 +1074,7 @@ protected:
     }
 
     void createRadiusDiameterDimension(ReferenceEntry ref, bool firstCstr) {
-        int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
-        TechDraw::BaseGeomPtr geom = partFeat->getGeomByIndex(GeoId);
+        TechDraw::BaseGeomPtr geom = partFeat->getGeometry<BaseGeom>(ref.getSubName());
         bool isCircleGeom = (geom->getGeomType() == GeomType::CIRCLE) || (geom->getGeomType() == GeomType::ELLIPSE);
 
         // Use same preference as in sketcher?

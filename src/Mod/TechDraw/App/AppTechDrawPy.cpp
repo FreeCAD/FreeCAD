@@ -632,7 +632,7 @@ private:
             writer.exportShape(shape);
         }
         //add the cosmetic edges also
-        std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
+        std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getAllGeometry<BaseGeom>();
         std::vector<TopoDS_Edge> cosmeticEdges;
         for (auto& g : geoms) {
             if (g->getHlrVisible() && g->getCosmetic()) {

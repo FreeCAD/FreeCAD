@@ -821,31 +821,14 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
 
 void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 {
-    const std::vector<VertexPtr>& oldVerts = getVertexGeometry();
+    const std::vector<VertexPtr>& oldVerts = getAll<Vertex>();
     std::vector<VertexPtr> newVerts;
     for (auto& v : oldVerts) {
         Base::Vector3d v3 = v->point();
         double length = (v3 - center).Length();
-        if (length < Precision::Confusion()) {
-            continue;
-        }
-        else if (length < radius) {
+        if (length > Precision::Confusion() && length < radius) {
             newVerts.push_back(v);
         }
     }
     vertexGeom = newVerts;
 }
-
-//! does this GeometryObject already have this vertex
-bool GeometryObject::findVertex(Base::Vector3d v)
-{
-    std::vector<VertexPtr>::iterator it = vertexGeom.begin();
-    for (; it != vertexGeom.end(); it++) {
-        double dist = (v - (*it)->point()).Length();
-        if (dist < Precision::Confusion()) {
-            return true;
-        }
-    }
-    return false;
-}
-

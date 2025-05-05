@@ -1242,18 +1242,16 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& 
 
     std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(subNames[0]);
     if (geoType == "Vertex") {
-        int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
         TechDraw::VertexPtr vertex =
-            static_cast<DrawViewPart*>(viewPart->getViewObject())->getProjVertexByIndex(index);
+            static_cast<DrawViewPart*>(viewPart->getViewObject())->getGeometry<TechDraw::Vertex>(subNames[0]);
         if (vertex) {
             placement = viewPart->mapToScene(Rez::guiX(vertex->x()), Rez::guiX(vertex->y()));
             return true;
         }
     }
     else if (geoType == "Edge") {
-        int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
         TechDraw::BaseGeomPtr geo =
-            static_cast<DrawViewPart*>(viewPart->getViewObject())->getGeomByIndex(index);
+            static_cast<DrawViewPart*>(viewPart->getViewObject())->getGeometry<TechDraw::BaseGeom>(subNames[0]);
         if (geo) {
             Base::Vector3d midPoint(Rez::guiX(geo->getMidPoint()));
             placement = viewPart->mapToScene(midPoint.x, midPoint.y);

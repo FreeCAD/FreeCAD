@@ -541,7 +541,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int iFace)
 //! TODO: DVP can serve these up ready to use
 TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
 {
-    std::vector<TopoDS_Wire> faceWires = source->getWireForFace(iface);
+    std::vector<TopoDS_Wire> faceWires = source->getGeometry<Face>(iface)->getCleanWires();
 
     //build face(s) from geometry
     gp_Pnt gOrg(0.0, 0.0, 0.0);

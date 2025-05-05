@@ -481,9 +481,8 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(const DrawVi
         if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
             continue;
         }
-        int idx = TechDraw::DrawUtil::getIndexFromName(fn);
         std::vector<TechDraw::BaseGeomPtr> faceGeoms =
-                                                partFeat->getFaceEdgesByIndex(idx);
+            partFeat->getGeometry<Face>(fn)->getConnectedGeometry();
         if (!faceGeoms.empty()) {
             for (auto& fe: faceGeoms) {
                 if (!fe->getCosmetic()) {
@@ -601,16 +600,15 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(const 
     double scale = partFeat->getScale();
 
     std::vector<TechDraw::BaseGeomPtr> edges;
-    for (auto& en: edgeNames) {
+    for (auto& en : edgeNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(en) != "Edge") {
             continue;
         }
-        int idx = TechDraw::DrawUtil::getIndexFromName(en);
-        TechDraw::BaseGeomPtr bg = partFeat->getGeomByIndex(idx);
+        TechDraw::BaseGeomPtr bg = partFeat->getGeometry<BaseGeom>(en);
         if (bg) {
             edges.push_back(bg);
         } else {
-            Base::Console().Message("CL::calcEndPoints2Lines - no geom for index: %d\n", idx);
+            Base::Console().Message("CL::calcEndPoints2Lines - no geom: %s\n", en);
         }
     }
     if (edges.size() != 2) {
@@ -722,8 +720,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(const
         if (TechDraw::DrawUtil::getGeomTypeFromName(vn) != "Vertex") {
             continue;
         }
-        int idx = TechDraw::DrawUtil::getIndexFromName(vn);
-        TechDraw::VertexPtr v = partFeat->getProjVertexByIndex(idx);
+        TechDraw::VertexPtr v = partFeat->getGeometry<Vertex>(vn);
         if (v) {
             points.push_back(v);
         }

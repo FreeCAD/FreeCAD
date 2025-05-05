@@ -128,21 +128,21 @@ TopoDS_Shape ReferenceEntry::getGeometry2d() const
         if (gType == "Vertex") {
             // getVertex throws on not found, but we want to return null
             // shape
-            auto vgeom = dvp->getVertex(getSubName());
+            auto vgeom = dvp->getGeometry<Vertex>(getSubName());
             if (!vgeom) {
                 return {};
             }
             return vgeom->getOCCVertex();
         }
         if (gType == "Edge") {
-            auto egeom = dvp->getEdge(getSubName());
+            auto egeom = dvp->getGeometry<BaseGeom>(getSubName());
             if (!egeom) {
                 return {};
             }
             return egeom->getOCCEdge();
         }
         if (gType == "Face") {
-            auto fgeom = dvp->getFace(getSubName());
+            auto fgeom = dvp->getGeometry<Face>(getSubName());
             if (!fgeom) {
                 return {};
             }
@@ -257,9 +257,8 @@ std::string ReferenceEntry::geomType() const
 
 GeomType ReferenceEntry::geomEdgeType() const
 {
-    int geoId = TechDraw::DrawUtil::getIndexFromName(getSubName());
     auto dvp = getObject<TechDraw::DrawViewPart>();
-    BaseGeomPtr geom = dvp->getGeomByIndex(geoId);
+    BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(getSubName());
 
     if (geomType() == "Edge" && geom) {
         return geom->getGeomType();
@@ -323,22 +322,21 @@ bool ReferenceEntry::hasGeometry2d() const
     if (getSubName().empty()) {
         return false;
     }
-    int geomNumber = DU::getIndexFromName(getSubName());
     std::string gType = geomType();
     if (gType == "Vertex") {
-        auto vert = dvp->getProjVertexByIndex(geomNumber);
+        auto vert = dvp->getGeometry<Vertex>(getSubName());
         if (vert) {
             return true;
         }
     }
     else if (gType == "Edge") {
-        auto edge = dvp->getGeomByIndex(geomNumber);
+        auto edge = dvp->getGeometry<BaseGeom>(getSubName());
         if (edge) {
             return true;
         }
     }
     else if (gType == "Face") {
-        auto face = dvp->getFace(getSubName());
+        auto face = dvp->getGeometry<Face>(getSubName());
         if (face) {
             return true;
         }

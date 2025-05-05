@@ -219,8 +219,7 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
         for (auto& n : edgeNames) {
             std::string geomType = DrawUtil::getGeomTypeFromName(n);
             if (geomType == "Edge") {
-                int i = DrawUtil::getIndexFromName(n);
-                BaseGeomPtr bg = dvp->getGeomByIndex(i);
+                BaseGeomPtr bg = dvp->getGeometry<BaseGeom>(n);
                 if (bg) {
                     edgeGeomList.push_back(bg);
                 }
@@ -228,7 +227,7 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
         }
     }
     else {
-        for (auto& edge : dvp->getEdgeGeometry()) {
+        for (auto& edge : dvp->getAllGeometry<BaseGeom>()) {
             if (!edge->getCosmetic()) {
                 // skip cosmetic edges
                 edgeGeomList.push_back(edge);
@@ -354,7 +353,7 @@ DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direc
     go->isPerspective(false);
     go->usePolygonHLR(false);
     go->projectShape(comp, dvp->getProjectionCS());
-    auto edges = go->getEdgeGeometry();
+    auto edges = go->getAll<BaseGeom>();
 
     if (edges.empty()) {
         return result;
@@ -433,7 +432,7 @@ DrawDimHelper::makeDistDim(DrawViewPart* dvp, std::string dimType,
         dimName = doc->getUniqueObjectName("DimExtent");
     }
 
-    std::vector<TechDraw::VertexPtr> gVerts = dvp->getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = dvp->getAllGeometry<Vertex>();
 
     // invert the point so the math works correctly
     Base::Vector3d cleanMin = DrawUtil::invertY(inMin);
@@ -446,7 +445,7 @@ DrawDimHelper::makeDistDim(DrawViewPart* dvp, std::string dimType,
     std::string tag2 = dvp->addCosmeticVertex(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);
 
-    gVerts = dvp->getVertexGeometry();
+    gVerts = dvp->getAllGeometry<Vertex>();
     std::vector<App::DocumentObject*> objs;
     std::vector<std::string> subs;
 

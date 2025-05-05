@@ -417,7 +417,7 @@ void ViewProviderViewPart::fixSceneDependencies()
     auto scene = page->getQGSPage();
     auto partQView = getQView();
 
-    auto dimensions =  getViewPart()->getDimensions();
+    auto dimensions =  getViewPart()->getAll<DrawViewDimension>();
     for (auto& dim : dimensions) {
         auto dimQView = dynamic_cast<QGIViewDimension *>(scene->findQViewForDocObj(dim));
         if (dimQView && dimQView->parentItem() != partQView) {
@@ -426,7 +426,7 @@ void ViewProviderViewPart::fixSceneDependencies()
         }
     }
 
-    auto balloons = getViewPart()->getBalloons();
+    auto balloons = getViewPart()->getAll<DrawViewBalloon>();
     for (auto& bal : balloons) {
         auto balQView = dynamic_cast<QGIViewBalloon*>(scene->findQViewForDocObj(bal));
         if (balQView && balQView->parentItem() != partQView) {

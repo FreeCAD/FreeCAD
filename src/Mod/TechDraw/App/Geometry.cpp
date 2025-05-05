@@ -84,6 +84,7 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include "DrawViewPart.h"
+#include "EdgeWalker.h"
 #include "Geometry.h"
 #include "ShapeUtils.h"
 #include "DrawUtil.h"
@@ -140,6 +141,16 @@ void Wire::dump(std::string s)
     BRepTools::Write(toOccWire(), s.c_str());            //debug
 }
 
+TopoDS_Wire Wire::getCleanWire() const
+{
+    std::vector<TopoDS_Edge> edges;
+    for (auto& geom : geoms) {
+        edges.push_back(geom->getOCCEdge());
+    }
+    TopoDS_Wire occWire = EdgeWalker::makeCleanWire(edges);
+    return occWire;
+}
+
 // note that the face returned is inverted in Y
 TopoDS_Face Face::toOccFace() const
 {
@@ -186,6 +197,32 @@ Face::~Face()
     }
     wires.clear();
 }
+
+std::vector<TechDraw::BaseGeomPtr> Face::getConnectedGeometry()
+{
+    std::vector<TechDraw::BaseGeomPtr> result;
+    for(const Wire* wire : wires) {
+        const std::vector<BaseGeomPtr>& geoms = wire->geoms;
+        // Push back all non-cosmetic
+        std::copy_if(
+            geoms.begin(),
+            geoms.end(),
+            std::back_inserter(result),
+            [](BaseGeomPtr geom){ return !geom->getCosmetic(); }
+        );
+    }
+    return result;
+}
+
+std::vector<TopoDS_Wire> Face::getCleanWires()
+{
+    std::vector<TopoDS_Wire> result;
+    for (const Wire* wire : wires) {
+        result.push_back(wire->getCleanWire());
+    }
+    return result;
+}
+
 
 BaseGeom::BaseGeom() :
     geomType(GeomType::NOTDEF),
@@ -1785,7 +1822,7 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
     auto bigCheeseIndex = DU::getIndexFromName(bigCheeseSubRef);
 
     // v0.0 brute force
-    auto facesAll = dvp->getFaceGeometry();
+    auto facesAll = dvp->getAllGeometry<Face>();
     if (facesAll.empty()) {
         // tarfu
         throw Base::RuntimeError("GU::findHolesInFace - no holes to find!!");
