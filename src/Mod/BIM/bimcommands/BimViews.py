@@ -311,9 +311,10 @@ class BIM_Views:
 
                 # We reuse the variable later on in "Isolate", to not traverse the tree once
                 # again
-                self.allItemsInTree = getAllItemsInTree(vm.tree) + getAllItemsInTree(vm.viewtree)
+                self.allItemsInTree = getAllItemsInTree(vm.tree)
+                allItemsInTrees = self.allItemsInTree + getAllItemsInTree(vm.viewtree)
 
-                for item in self.allItemsInTree:
+                for item in allItemsInTrees:
                     if item.text(0) in objNameSelected:
                         item.setSelected(True)
                     if objActive and item.toolTip(0) == objActive.Name:
@@ -455,7 +456,8 @@ class BIM_Views:
         for item in self.allItemsInTree:
             toolTip = item.toolTip(0)
             obj = FreeCAD.ActiveDocument.getObject(toolTip)
-            obj.ViewObject.Visibility = True
+            if obj:
+                obj.ViewObject.Visibility = True
 
         vm = findWidget()
         if vm:
@@ -463,10 +465,11 @@ class BIM_Views:
             for item in self.allItemsInTree:
                 toolTip = item.toolTip(0)
                 obj = FreeCAD.ActiveDocument.getObject(toolTip)
-                if item not in selectedItems:
-                    obj.ViewObject.Visibility = False
-                else:
-                    obj.ViewObject.Visibility = True
+                if obj:
+                    if item not in selectedItems:
+                        obj.ViewObject.Visibility = False
+                    else:
+                        obj.ViewObject.Visibility = True
 
             FreeCAD.ActiveDocument.recompute()
 
