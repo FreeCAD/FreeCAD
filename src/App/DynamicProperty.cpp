@@ -256,9 +256,15 @@ bool DynamicProperty::addProperty(Property* prop)
         return false;
     }
     auto& index = props.get<0>();
+#if BOOST_VERSION < 107500
     if (index.count(prop->getName())) {
         return false;
     }
+#else
+    if (index.contains(prop->getName())) {
+        return false;
+    }
+#endif
     index.emplace(prop,
                   std::string(),
                   prop->getName(),

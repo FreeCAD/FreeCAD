@@ -860,7 +860,7 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
     for (auto type : types) {
         auto& shapeMap = _cache->getAncestry(type);
         auto& otherMap = other._cache->getAncestry(type);
-        if ((shapeMap.count() == 0) || (otherMap.count() == 0)) {
+        if ((shapeMap.empty()) || (otherMap.empty())) {
             continue;
         }
 
@@ -1450,7 +1450,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 continue;
             }
             auto& otherMap = incomingShape._cache->getAncestry(info.type);
-            if (otherMap.count() == 0) {
+            if (otherMap.empty()) {
                 continue;
             }
             for (int i = 1; i <= otherMap.count(); i++) {

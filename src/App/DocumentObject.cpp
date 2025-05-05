@@ -581,7 +581,7 @@ bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* check
 
 bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 {
-    return this == linkTo || getInListEx(true).count(linkTo);
+    return this == linkTo || getInListEx(true).contains(linkTo);
 }
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
@@ -644,7 +644,7 @@ bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject*>&
     auto inLists = getInListEx(true);
     inLists.emplace(const_cast<DocumentObject*>(this));
     for (auto obj : linksTo) {
-        if (inLists.count(obj)) {
+        if (inLists.contains(obj)) {
             return false;
         }
     }

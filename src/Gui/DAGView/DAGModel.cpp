@@ -1096,7 +1096,7 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
         contextMenu.addAction(editingFinishedAction);
     }
 
-    if (contextMenu.actions().count() > 0)
+    if (!contextMenu.actions().isEmpty())
         contextMenu.exec(event->screenPos());
   }
 

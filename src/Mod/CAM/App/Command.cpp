@@ -91,7 +91,7 @@ bool Command::has(const std::string& attr) const
 {
     std::string a(attr);
     boost::to_upper(a);
-    return Parameters.count(a) > 0;
+    return Parameters.contains(a);
 }
 
 std::string Command::toGCode(int precision, bool padzero) const
