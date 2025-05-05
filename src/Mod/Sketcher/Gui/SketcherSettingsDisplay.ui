@@ -418,6 +418,25 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxTVAlignView">
+        <property name="toolTip">
+         <string>When entering edit mode, align the camera to the sketch.</string>
+        </property>
+        <property name="text">
+         <string>Align camera when entering edit</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AlignView</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVSectionView">
         <property name="toolTip">
          <string>Open a sketch in Section View mode by default.
@@ -527,6 +546,7 @@ Then objects are only visible behind the sketch plane.</string>
   <tabstop>checkBoxTVShowSupport</tabstop>
   <tabstop>checkBoxTVRestoreCamera</tabstop>
   <tabstop>checkBoxTVForceOrtho</tabstop>
+  <tabstop>checkBoxTVAlignView</tabstop>
   <tabstop>checkBoxTVSectionView</tabstop>
   <tabstop>btnTVApply</tabstop>
  </tabstops>
@@ -536,6 +556,8 @@ Then objects are only visible behind the sketch plane.</string>
    <sender>checkBoxTVRestoreCamera</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBoxTVForceOrtho</receiver>
+   <slot>setEnabled(bool)</slot>
+   <receiver>checkBoxTVAlignView</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
