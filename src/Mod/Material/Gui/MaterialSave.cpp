@@ -291,12 +291,10 @@ void MaterialSave::setLibraries()
     auto libraries = Materials::MaterialManager::getManager().getLibraries();
     for (auto& library : *libraries) {
         if (library->isLocal()) {
-            auto materialLibrary =
-                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-            if (!materialLibrary->isReadOnly()) {
+            if (!library->isReadOnly()) {
                 QVariant libraryVariant;
-                libraryVariant.setValue(materialLibrary);
-                ui->comboLibrary->addItem(materialLibrary->getName(), libraryVariant);
+                libraryVariant.setValue(library);
+                ui->comboLibrary->addItem(library->getName(), libraryVariant);
             }
         }
     }
@@ -333,8 +331,7 @@ void MaterialSave::addMaterials(
     for (auto& mat : *modelTree) {
         std::shared_ptr<Materials::MaterialTreeNode> nodePtr = mat.second;
         if (nodePtr->getType() == Materials::MaterialTreeNode::NodeType::DataNode) {
-            std::shared_ptr<Materials::Material> material = nodePtr->getData();
-            QString uuid = material->getUUID();
+            QString uuid = nodePtr->getUUID();
 
             auto card = new QStandardItem(icon, mat.first);
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled

@@ -246,8 +246,24 @@ void MaterialYamlEntry::addToTree(
                                 propertyValue = propertyValue.remove(
                                     QRegularExpression(QStringLiteral("[\r\n]")));
                             }
-                            finalModel->setPhysicalValue(QString::fromStdString(propertyName),
-                                                         propertyValue);
+                            try {
+                                finalModel->setPhysicalValue(QString::fromStdString(propertyName),
+                                                            propertyValue);
+                            }
+                            catch (const Base::ValueError& e) {
+                                // Units mismatch
+                                Base::Console().Log("Units mismatch in material '%s':'%s' = '%s', "
+                                                    "setting to default property units '%s'\n",
+                                                    name.toStdString().c_str(),
+                                                    propertyName,
+                                                    propertyValue.toStdString().c_str(),
+                                                    prop->getUnits().toStdString().c_str());
+                                auto quantity = Base::Quantity::parse(propertyValue.toStdString());
+                                finalModel->setPhysicalValue(
+                                    QString::fromStdString(propertyName),
+                                    Base::Quantity(quantity.getValue(),
+                                                   prop->getUnits().toStdString()));
+                            }
                         }
                     }
                     catch (const YAML::BadConversion& e) {
