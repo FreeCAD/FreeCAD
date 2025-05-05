@@ -1072,12 +1072,12 @@ void Application::slotActiveDocument(const App::Document& Doc)
             "User parameter:BaseApp/Preferences/Units");
         if (!hGrp->GetBool("IgnoreProjectSchema")) {
             int userSchema = Doc.UnitSystem.getValue();
-            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+            Base::UnitsApi::setSchema(userSchema);
             getMainWindow()->setUserSchema(userSchema);
             Application::Instance->onUpdate();
         }
         else {  // set up Unit system default
-            Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema", 0));
+            Base::UnitsApi::setSchema(hGrp->GetInt("UserSchema", 0));
             Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
         }
         signalActiveDocument(*doc->second);
