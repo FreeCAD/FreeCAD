@@ -1151,19 +1151,35 @@ class AreaCalculator:
 
         A face is considered vertical if:
         - Its normal vector forms an angle close to 90 degrees with the Z-axis.
-        - The face is planar.
+        - The projected face has an area of zero.
 
         Notes
         -----
-        The check whether the face is planar means that roof-like (sloped) and domed
-        faces alike will not be counted as vertical faces. It also means though, that
-        vertically-extruded curved edges (for instance from a slab) will also be
-        ignored. See also https://github.com/FreeCAD/FreeCAD/issues/14687.
+        The check whether the projected face has an area of zero means that roof-like
+        (sloped) and domed faces alike will not be counted as vertical faces.
+        Vertically-extruded curved edges (for instance from a slab) will be classified
+        as vertical and be counted. This is an improvement over the fix for
+        https://github.com/FreeCAD/FreeCAD/issues/14687.
         """
-        from Part import OCCError
+        from Part import OCCError, Face
+        from DraftGeomUtils import findWires
+        from TechDraw import project
+
+        try:
+            projectedFace = Face(
+                findWires(project(face, FreeCAD.Vector(0 ,0 ,1))[0].Edges))
+        except OCCError:
+            FreeCAD.Console.PrintWarning(
+                translate("Arch",
+                          f"Could not project face from {self.obj.Label}\n")
+            )
+            return False
+
+        isProjectedAreaZero = projectedFace.Area < 0.0001
+
         try:
             angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
-            return 1.57 < angle < 1.571 and face.Surface.isPlanar()
+            return self.isRightAngle(angle) and isProjectedAreaZero
         except OCCError:
             FreeCAD.Console.PrintWarning(
                 translate("Arch",
@@ -1180,7 +1196,7 @@ class AreaCalculator:
         from Part import OCCError
         try:
             angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
-            return angle <= 1.57 or angle >= 1.571
+            return not self.isRightAngle(angle)
         except OCCError:
             FreeCAD.Console.PrintWarning(
                 translate("Arch",
@@ -1188,6 +1204,10 @@ class AreaCalculator:
                           " is horizontal: normalAt() failed\n")
             )
             return False
+
+    def isRightAngle(self, angle):
+        """Check if the angle is close to 90 degrees."""
+        return 1.57 < angle < 1.571
 
     def compute(self):
         """Compute the vertical area, horizontal area, and perimeter length.
