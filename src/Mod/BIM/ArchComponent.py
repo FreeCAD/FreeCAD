@@ -1012,10 +1012,11 @@ class Component(ArchIFC.IfcProduct):
                 obj.PerimeterLength = 0
                 return
             else:
-                if  ((ang > 1.57) and
-                    (ang < 1.571) and
-                    f.Surface.isPlanar()):
-                    a += f.Area
+                if  ((ang > 1.57) and (ang < 1.571)):
+                    # Ignore non-planar vertical surfaces for area calculation
+                    # See https://github.com/FreeCAD/FreeCAD/issues/14687
+                    if f.Surface.isPlanar():
+                        a += f.Area
                 else:
                     fset.append(f)
 
