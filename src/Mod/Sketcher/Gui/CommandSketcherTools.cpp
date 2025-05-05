@@ -2533,6 +2533,8 @@ void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
     std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
     std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
 
+
+
     auto doc = Gui::Application::Instance->activeDocument();
     SketcherGui::ViewProviderSketch* vp =
         static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
@@ -2547,7 +2549,6 @@ void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
 
         viewer->setAnimationEnabled(false);
         viewer->scale(scale_factor);
-        viewer->viewAll();
         viewer->setAnimationEnabled(isAnimating);
     }
 }

@@ -161,6 +161,7 @@ public:
     void reorientCamera(SoCamera* camera, const SbRotation& rotation, const SbVec3f& rotationCenter);
 
     void boxZoom(const SbBox2s& box);
+    // Scale the camera inplace
     void scale(float factor);
     virtual void viewAll();
 

@@ -489,9 +489,23 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
 void NavigationStyle::scale(float factor)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (!cam) // no camera
+    if (!cam) { // no camera
         return;
+    }
+
+    // Find the current center of the screen
+    SbVec3f direction;
+    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+    SbVec3f initCenter = cam->position.getValue() + cam->focalDistance.getValue() * direction;
+
+    // Move the camera to the origin for scaling
+    cam->position = cam->position.getValue() - initCenter;
+
+    // Scale the view
     doScale(cam, factor);
+    
+    // Move the camera back to it's initial position scaled
+    cam->position = cam->position.getValue() + initCenter * factor;
 }
 
 void NavigationStyle::viewAll()
