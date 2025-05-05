@@ -2534,7 +2534,6 @@ void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
     std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
 
 
-
     auto doc = Gui::Application::Instance->activeDocument();
     SketcherGui::ViewProviderSketch* vp =
         static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
