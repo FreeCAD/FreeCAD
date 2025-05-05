@@ -69,15 +69,22 @@ ActionPanelScheme::ActionPanelScheme()
 
     int iconSize = fm.height();
     headerButtonSize = QSize(iconSize, iconSize);
-    headerButtonFold = drawFoldIcon(p, true, false);
-    headerButtonFoldOver = drawFoldIcon(p, true, true);
-    headerButtonUnfold = drawFoldIcon(p, false, false);
-    headerButtonUnfoldOver = drawFoldIcon(p, false, true);
+    builtinFold = drawFoldIcon(p, true, false);
+    builtinFoldOver = drawFoldIcon(p, true, true);
+    builtinUnfold = drawFoldIcon(p, false, false);
+    builtinUnfoldOver = drawFoldIcon(p, false, true);
 
-    builtinFold = headerButtonFold;
-    builtinFoldOver = headerButtonFoldOver;
-    builtinUnfold = headerButtonUnfold;
-    builtinUnfoldOver = headerButtonUnfoldOver;
+    if (qApp->styleSheet().isEmpty()) {
+        headerButtonFold = builtinFold;
+        headerButtonFoldOver = builtinFoldOver;
+        headerButtonUnfold = builtinUnfold;
+        headerButtonUnfoldOver = builtinUnfoldOver;
+    } else {
+        headerButtonFold = QPixmap();
+        headerButtonFoldOver = QPixmap();
+        headerButtonUnfold = QPixmap();
+        headerButtonUnfoldOver = QPixmap();
+    }
 
     groupFoldSteps = 20;
     groupFoldDelay = 15;

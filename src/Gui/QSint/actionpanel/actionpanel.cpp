@@ -33,6 +33,14 @@ void ActionPanel::setScheme(ActionPanelScheme *scheme)
         return;
     }
     myScheme = scheme;
+    // set scheme for children
+    QObjectList list(children());
+    Q_FOREACH(QObject *obj, list) {
+      if (dynamic_cast<ActionGroup*>(obj)) {
+        ((ActionGroup*)obj)->setScheme(scheme);
+        continue;
+      }
+    }
     update();
 }
 
