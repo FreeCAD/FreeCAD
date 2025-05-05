@@ -34,6 +34,14 @@ void ActionPanel::setScheme(ActionPanelScheme *scheme)
     }
     myScheme = scheme;
     setAutoFillBackground(false);
+    // set scheme for children
+    QObjectList list(children());
+    Q_FOREACH(QObject *obj, list) {
+      if (dynamic_cast<ActionGroup*>(obj)) {
+        ((ActionGroup*)obj)->setScheme(scheme);
+        continue;
+      }
+    }
     update();
 }
 

@@ -866,11 +866,13 @@ void TaskView::clicked (QAbstractButton * button)
 void TaskView::clearActionStyle()
 {
     static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::restoreActionStyle()
 {
     static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->restoreActionStyle();
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 

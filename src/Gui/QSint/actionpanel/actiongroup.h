@@ -103,6 +103,11 @@ public:
     QBoxLayout* groupLayout();
 
     /**
+     * @brief Set the style of the widgets
+     */
+    void setScheme(ActionPanelScheme *pointer);
+
+    /**
      * @brief Checks if the group is expandable.
      * @return `true` if the group is expandable, `false` otherwise.
      */
