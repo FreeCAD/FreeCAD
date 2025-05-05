@@ -167,6 +167,15 @@ SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/vbit.py
 )
 
+SET(PathPythonToolsShapeUi_SRCS
+    Path/Tool/shape/ui/__init__.py
+    Path/Tool/shape/ui/flowlayout.py
+    Path/Tool/shape/ui/shapebutton.py
+    Path/Tool/shape/ui/shapeselector.py
+    Path/Tool/shape/ui/shapewidget.py
+    Path/Tool/shape/ui/util.py
+)
+
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
@@ -457,6 +466,7 @@ SET(all_files
     ${PathPythonTools_SRCS}
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsShape_SRCS}
+    ${PathPythonToolsShapeUi_SRCS}
     ${PathPythonToolsToolBit_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
@@ -596,6 +606,13 @@ INSTALL(
 INSTALL(
     FILES
         ${PathPythonToolsShape_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/shape
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsShapeUi_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/shape
 )
