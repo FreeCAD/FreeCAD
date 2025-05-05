@@ -102,7 +102,7 @@ private:                                                                        
     Base::Type _class_::classTypeId = Base::Type::BadType;                                         \
     void* _class_::create(void)                                                                    \
     {                                                                                              \
-        return 0;                                                                                  \
+        return nullptr;                                                                            \
     }
 
 
