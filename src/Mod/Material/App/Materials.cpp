@@ -283,7 +283,20 @@ QVariant MaterialProperty::getColumnNull(int column) const
 
 void MaterialProperty::setValue(const QVariant& value)
 {
-    _valuePtr->setValue(value);
+    if (_valuePtr->getType() == MaterialValue::Quantity && value.canConvert<Base::Quantity>()) {
+        // Ensure the units are set correctly
+        auto quantity = value.value<Base::Quantity>();
+        if (quantity.isValid()) {
+            setQuantity(quantity);
+        }
+        else {
+            // Set a default value with default units
+            setValue(QStringLiteral("0"));
+        }
+    }
+    else {
+        _valuePtr->setValue(value);
+    }
 }
 
 void MaterialProperty::setValue(const QString& value)
@@ -386,6 +399,20 @@ void MaterialProperty::setFloat(const QString& value)
 void MaterialProperty::setQuantity(const Base::Quantity& value)
 {
     auto quantity = value;
+    if (quantity.isDimensionless()) {
+        // Assign the default units when none are provided.
+        //
+        // This needs to be parsed rather than just setting units. Otherwise we get mm->m conversion
+        // errors, etc
+        quantity = Base::Quantity::parse(quantity.getUserString() + getUnits().toStdString());
+    }
+    else {
+        auto propertyUnit = Base::Quantity::parse(getUnits().toStdString()).getUnit();
+        auto units = quantity.getUnit();
+        if (propertyUnit != units) {
+            throw Base::ValueError("Incompatible material units");
+        }
+    }
     quantity.setFormat(MaterialValue::getQuantityFormat());
     _valuePtr->setValue(QVariant(QVariant::fromValue(quantity)));
 }

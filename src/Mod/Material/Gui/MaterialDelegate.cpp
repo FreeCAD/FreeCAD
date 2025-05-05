@@ -25,6 +25,7 @@
 #include <QDesktopServices>
 #include <QIODevice>
 #include <QItemSelectionModel>
+#include <QMessageBox>
 #include <QPainter>
 #include <QString>
 #include <QStringList>
@@ -143,7 +144,32 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
         auto propertyName = group->child(row, 0)->data().toString();
         std::string _name = propertyName.toStdString();
         auto property = material->getProperty(propertyName);
-        property->setValue(value);
+
+        try {
+            property->setValue(value);
+        }
+        catch (const Base::ValueError& e) {
+            // Units mismatch
+            auto quantity = value.value<Base::Quantity>();
+            Base::Console().Log("Units mismatch '%s' = '%s', "
+                                "setting to default property units '%s'\n",
+                                propertyName.toStdString().c_str(),
+                                quantity.getUserString().c_str(),
+                                property->getUnits().toStdString().c_str());
+
+            QMessageBox msgBox;
+            msgBox.setWindowTitle(QStringLiteral("Property units mismatch"));
+            msgBox.setText(QStringLiteral("Units mismatch '%1' = '%2', "
+                           "setting to default property units '%3'\n")
+                           .arg(propertyName)
+                           .arg(QString::fromStdString(quantity.getUserString()))
+                           .arg(property->getUnits()));
+            msgBox.exec();
+
+            property->setQuantity(
+                Base::Quantity(quantity.getValue(), property->getUnits().toStdString()));
+        }
+
         group->child(row, 1)->setText(property->getString());
     }
 
