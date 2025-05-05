@@ -60,7 +60,6 @@ QGIEdge::QGIEdge(int index) :
 // not FreeCAD cosmetic lines
 void QGIEdge::setCosmetic(bool state)
 {
-//    Base::Console().Message("QGIE::setCosmetic(%d)\n", state);
     isCosmetic = state;
     if (state) {
         setWidth(0.0);
@@ -69,15 +68,9 @@ void QGIEdge::setCosmetic(bool state)
 
 void QGIEdge::setHiddenEdge(bool b) {
     isHiddenEdge = b;
-    if (b) {
-        m_pen.setStyle(getHiddenStyle());
-    } else {
-        m_pen.setStyle(Qt::SolidLine);
-    }
 }
 
 void QGIEdge::setPrettyNormal() {
-//    Base::Console().Message("QGIE::setPrettyNormal()\n");
     if (isHiddenEdge) {
         m_pen.setColor(getHiddenColor());
         return;
@@ -91,14 +84,6 @@ QColor QGIEdge::getHiddenColor()
     return PreferencesGui::getAccessibleQColor(fcColor.asValue<QColor>());
 }
 
-Qt::PenStyle QGIEdge::getHiddenStyle()
-{
-    //Qt::PenStyle - NoPen, Solid, Dashed, ...
-    //Preferences::General - Solid, Dashed
-    // Dashed lines should use ISO Line #2 instead of Qt::DashedLine
-    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("General")->GetInt("HiddenLine", 0) + 1);
-    return hidStyle;
-}
 
  double QGIEdge::getEdgeFuzz() const
 {
@@ -123,16 +108,17 @@ QPainterPath QGIEdge::shape() const
 void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
-    QGIView *parent = dynamic_cast<QGIView *>(parentItem());
+    auto* parent = dynamic_cast<QGIView *>(parentItem());
     if (parent && parent->getViewObject() && parent->getViewObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
-        TechDraw::DrawViewPart *baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());
+        auto* baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());
         std::vector<std::string> edgeName(1, DrawUtil::makeGeomName("Edge", getProjIndex()));
 
         Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat, edgeName));
     }
 }
 
-void QGIEdge::setLinePen(QPen linePen)
+void QGIEdge::setLinePen(const QPen& linePen)
 {
     m_pen = linePen;
 }
+
