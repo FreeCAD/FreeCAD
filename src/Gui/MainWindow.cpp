@@ -782,17 +782,18 @@ void MainWindow::closeActiveWindow ()
     d->mdiArea->closeActiveSubWindow();
 }
 
-int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckbox) {
+int MainWindow::confirmSave(App::Document *doc, QWidget *parent, bool addCheckbox) {
     QMessageBox box(parent?parent:this);
     box.setObjectName(QStringLiteral("confirmSave"));
     box.setIcon(QMessageBox::Question);
     box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved document"));
-    if(docName)
-        box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
-                    .arg(QString::fromUtf8(docName)));
-    else
-        box.setText(QObject::tr("Do you want to save your changes to document before closing?"));
+    const QString doc_name = QString::fromStdString(doc->Label.getStrValue());
+    const QString text = (!doc_name.isEmpty()
+                          ? QObject::tr("Do you want to save your changes to document '%1' before closing?").arg(doc_name)
+                          : QObject::tr("Do you want to save your changes to document before closing?"));
+    box.setText(text);
+
 
     box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
     box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
@@ -826,6 +827,19 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
 
     int res = ConfirmSaveResult::Cancel;
     box.adjustSize(); // Silence warnings from Qt on Windows
+
+    // activates the last used MDI view of the closing document
+    MDIView *active_view = this->activeWindow();
+    App::Document *active_doc = (active_view ? active_view->getAppDocument() : nullptr);
+    if (active_doc != doc){
+        const QList <QWidget *> list_of_MDIs = this->windows();
+        for (QWidget *widget : list_of_MDIs){
+            auto mdi_view = qobject_cast <MDIView *> (widget);
+            if (mdi_view != nullptr && mdi_view->getAppDocument() == doc)
+                this->setActiveWindow(mdi_view);
+        }
+    }
+
     switch (box.exec())
     {
     case QMessageBox::Save:
@@ -854,6 +868,16 @@ bool MainWindow::closeAllDocuments (bool close)
     bool saveAll = false;
     int failedSaves = 0;
 
+    // moves the active document to the front
+    MDIView *active_view = this->activeWindow();
+    App::Document *active_doc = (active_view ? active_view->getAppDocument() : nullptr);
+    if (active_doc != nullptr)
+        for (auto it = ++docs.begin(); it != docs.end(); it++)
+            if (*it == active_doc){
+                docs.erase(it);
+                docs.insert(docs.begin(), active_doc);
+            }
+
     for (auto doc : docs) {
         auto gdoc = Application::Instance->getDocument(doc);
         if (!gdoc)
@@ -866,7 +890,7 @@ bool MainWindow::closeAllDocuments (bool close)
             continue;
         bool save = saveAll;
         if (!save && checkModify) {
-            int res = confirmSave(doc->Label.getStrValue().c_str(), this, docs.size()>1);
+            int res = confirmSave(doc, this, docs.size() > 1);
             switch (res)
             {
             case ConfirmSaveResult::Cancel:

@@ -2257,7 +2257,7 @@ bool Document::canClose (bool checkModify, bool checkLink)
     bool ok = true;
     if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
         const char *docName = getDocument()->Label.getValue();
-        int res = getMainWindow()->confirmSave(docName, getActiveView());
+        int res = getMainWindow()->confirmSave(getDocument(), getActiveView());
         switch (res)
         {
         case MainWindow::ConfirmSaveResult::Cancel:

@@ -238,7 +238,7 @@ public Q_SLOTS:
     bool closeAllDocuments (bool close=true);
     /** Pop up a message box asking for saving document
      */
-    int confirmSave(const char *docName, QWidget *parent=nullptr, bool addCheckBox=false);
+    int confirmSave(App::Document *doc, QWidget *parent = nullptr, bool addCheckBox = false);
     /**
      * Activates the next window in the child window chain.
      */
