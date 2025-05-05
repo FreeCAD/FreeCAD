@@ -471,7 +471,6 @@ class BIM_Views:
                     else:
                         obj.ViewObject.Visibility = True
 
-            FreeCAD.ActiveDocument.recompute()
 
     def saveView(self):
         "save the current camera angle to the selected item"
