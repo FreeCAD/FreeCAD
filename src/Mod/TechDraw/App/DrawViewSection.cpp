@@ -526,12 +526,22 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     TopExp_Explorer expl(myShape, TopAbs_SOLID);
     for (; expl.More(); expl.Next()) {
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-        FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
-        if (!mkCut.IsDone()) {
+        bool fail = false;
+        try {
+            FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
+            if (mkCut.IsDone()) {
+                builder.Add(cutPieces, mkCut.Shape());
+            } else {
+                fail = true;
+            }
+        }
+        catch (...) {
+            fail = true;
+        }
+        if (fail) {
             Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
         }
-        builder.Add(cutPieces, mkCut.Shape());
     }
 
     // cutPieces contains result of cutting each subshape in baseShape with tool
