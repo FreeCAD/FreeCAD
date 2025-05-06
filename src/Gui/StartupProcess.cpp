@@ -279,7 +279,7 @@ void StartupPostProcess::setLocale()
             hGrp->GetASCII("Language", Translator::instance()->activeLanguage().c_str()));
     }
     else if (localeFormat == 2) {
-        Translator::instance()->setLocale("C");
+        Translator::instance()->setLocale("C.UTF-8");
     }
 }
 
