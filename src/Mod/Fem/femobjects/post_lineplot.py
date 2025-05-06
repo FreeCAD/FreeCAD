@@ -29,6 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief Post processing plot displaying lines
 
+# check vtk version to potentially find missmatchs
+from femguiutils.vtk_module_handling import vtk_module_handling
+vtk_module_handling()
+
 from . import base_fempostextractors
 from . import base_fempostvisualizations
 from . import post_extract2D

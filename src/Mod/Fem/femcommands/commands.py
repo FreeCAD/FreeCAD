@@ -40,7 +40,6 @@ from .manager import CommandManager
 from femtools.femutils import expandParentObject
 from femtools.femutils import is_of_type
 from femsolver.settings import get_default_solver
-from femguiutils import post_visualization
 
 # Python command definitions:
 # for C++ command definitions see src/Mod/Fem/Command.cpp
@@ -1294,4 +1293,6 @@ if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
     import femobjects.post_lineplot
     import femobjects.post_histogram
     import femobjects.post_table
+
+    from femguiutils import post_visualization
     post_visualization.setup_commands("FEM_PostVisualization")

@@ -34,7 +34,7 @@
 #include "FemPostPipelinePy.cpp"
 // clang-format on
 
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
     #include <vtkPythonUtil.h>
 #endif //BUILD_FEM_VTK
 
@@ -319,7 +319,7 @@ PyObject* FemPostPipelinePy::renameArrays(PyObject* args)
 
 PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
 {
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
     // we take no arguments
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;

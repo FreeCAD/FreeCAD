@@ -215,7 +215,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "FEM_PostFilterCalculator"
              << "Separator"
              << "FEM_PostCreateFunctions"
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
              << "FEM_PostVisualization"
 #endif
              ;
@@ -371,7 +371,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostFilterCalculator"
              << "Separator"
              << "FEM_PostCreateFunctions"
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
              << "FEM_PostVisualization"
 #endif
              ;
