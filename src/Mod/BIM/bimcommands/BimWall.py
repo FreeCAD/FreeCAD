@@ -80,6 +80,7 @@ class Arch_Wall:
         self.featureName = "Wall"
         self.Width = params.get_param_arch("WallWidth")
         self.Height = params.get_param_arch("WallHeight")
+        self.Offset = params.get_param_arch("WallOffset")
         self.JOIN_WALLS_SKETCHES = params.get_param_arch("joinWallSketches")
         self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -274,68 +275,102 @@ class Arch_Wall:
         w.setWindowTitle(translate("Arch","Wall options"))
         grid = QtGui.QGridLayout(w)
 
-        matCombo = QtGui.QComboBox()
-        matCombo.addItem(translate("Arch","Wall Presets..."))
-        matCombo.setToolTip(translate("Arch","This list shows all the MultiMaterials objects of this document. Create some to define wall types."))
+        # Wall presets input
+        comboWallPresets = QtGui.QComboBox()
+        comboWallPresets.addItem(translate("Arch","Wall Presets..."))
+        comboWallPresets.setToolTip(translate("Arch","This list shows all the MultiMaterials objects of this document. Create some to define wall types."))
         self.multimats = []
         self.MultiMat = None
         for o in self.doc.Objects:
             if Draft.getType(o) == "MultiMaterial":
                 self.multimats.append(o)
-                matCombo.addItem(o.Label)
+                comboWallPresets.addItem(o.Label)
         if hasattr(FreeCAD,"LastArchMultiMaterial"):
             for i,o in enumerate(self.multimats):
                 if o.Name == FreeCAD.LastArchMultiMaterial:
-                    matCombo.setCurrentIndex(i+1)
+                    comboWallPresets.setCurrentIndex(i+1)
                     self.MultiMat = o
-        grid.addWidget(matCombo,0,0,1,2)
+        grid.addWidget(comboWallPresets,0,0,1,2)
 
-        label5 = QtGui.QLabel(translate("Arch","Length"))
+        # Wall length input
+        labelLength = QtGui.QLabel(translate("Arch","Length"))
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
-        grid.addWidget(label5,1,0,1,1)
+        grid.addWidget(labelLength,1,0,1,1)
         grid.addWidget(self.Length,1,1,1,1)
 
-        label1 = QtGui.QLabel(translate("Arch","Width"))
-        value1 = ui.createWidget("Gui::InputField")
-        value1.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
-        grid.addWidget(label1,2,0,1,1)
-        grid.addWidget(value1,2,1,1,1)
+        # Wall width input
+        labelWidth = QtGui.QLabel(translate("Arch","Width"))
+        inputWidth = ui.createWidget("Gui::InputField")
+        inputWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
+        grid.addWidget(labelWidth,2,0,1,1)
+        grid.addWidget(inputWidth,2,1,1,1)
 
-        label2 = QtGui.QLabel(translate("Arch","Height"))
-        value2 = ui.createWidget("Gui::InputField")
-        value2.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
-        grid.addWidget(label2,3,0,1,1)
-        grid.addWidget(value2,3,1,1,1)
+        # Wall height input
+        labelHeight = QtGui.QLabel(translate("Arch","Height"))
+        inputHeight = ui.createWidget("Gui::InputField")
+        inputHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+        grid.addWidget(labelHeight,3,0,1,1)
+        grid.addWidget(inputHeight,3,1,1,1)
 
-        label3 = QtGui.QLabel(translate("Arch","Alignment"))
-        value3 = QtGui.QComboBox()
+        # Wall alignment input
+        labelAlignment = QtGui.QLabel(translate("Arch","Alignment"))
+        comboAlignment = QtGui.QComboBox()
         items = [translate("Arch","Center"),translate("Arch","Left"),translate("Arch","Right")]
-        value3.addItems(items)
-        value3.setCurrentIndex(["Center","Left","Right"].index(self.Align))
-        grid.addWidget(label3,4,0,1,1)
-        grid.addWidget(value3,4,1,1,1)
+        comboAlignment.addItems(items)
+        comboAlignment.setCurrentIndex(["Center","Left","Right"].index(self.Align))
+        grid.addWidget(labelAlignment,4,0,1,1)
+        grid.addWidget(comboAlignment,4,1,1,1)
 
-        label4 = QtGui.QLabel(translate("Arch","Use sketches"))
-        value4 = QtGui.QCheckBox()
-        value4.setObjectName("UseSketches")
-        value4.setLayoutDirection(QtCore.Qt.RightToLeft)
-        label4.setBuddy(value4)
-        value4.setChecked(params.get_param_arch("WallSketches"))
-        grid.addWidget(label4,5,0,1,1)
-        grid.addWidget(value4,5,1,1,1)
+        # Wall offset input
+        labelOffset = QtGui.QLabel(translate("Arch", "Offset"))
+        inputOffset = ui.createWidget("Gui::InputField")
+        inputOffset.setText(FreeCAD.Units.Quantity(
+            self.Offset,
+            FreeCAD.Units.Length).UserString)
+        grid.addWidget(labelOffset, 5, 0, 1, 1)
+        grid.addWidget(inputOffset, 5, 1, 1, 1)
 
+        # Wall "use sketches" checkbox
+        labelUseSketches = QtGui.QLabel(translate("Arch","Use sketches"))
+        checkboxUseSketches = QtGui.QCheckBox()
+        checkboxUseSketches.setObjectName("UseSketches")
+        checkboxUseSketches.setLayoutDirection(QtCore.Qt.RightToLeft)
+        labelUseSketches.setBuddy(checkboxUseSketches)
+        checkboxUseSketches.setChecked(params.get_param_arch("WallSketches"))
+        grid.addWidget(labelUseSketches,6,0,1,1)
+        grid.addWidget(checkboxUseSketches,6,1,1,1)
+
+        # Enable/disable inputOffset based on inputAlignment
+        def updateOffsetState(index):
+            alignment = ["Center", "Left", "Right"][index]
+            inputOffset.setEnabled(alignment in ["Left", "Right"])
+
+        # Connect the signal
+        comboAlignment.currentIndexChanged.connect(updateOffsetState)
+
+        # Initialize the state of inputOffset
+        updateOffsetState(comboAlignment.currentIndex())
+
+        # Connect the signals to the slots for value changes
         self.Length.valueChanged.connect(self.setLength)
-        value1.valueChanged.connect(self.setWidth)
-        value2.valueChanged.connect(self.setHeight)
-        value3.currentIndexChanged.connect(self.setAlign)
-        value4.stateChanged.connect(self.setUseSketch)
-        self.Length.returnPressed.connect(value1.setFocus)
-        self.Length.returnPressed.connect(value1.selectAll)
-        value1.returnPressed.connect(value2.setFocus)
-        value1.returnPressed.connect(value2.selectAll)
-        value2.returnPressed.connect(self.createFromGUI)
-        matCombo.currentIndexChanged.connect(self.setMat)
+        inputWidth.valueChanged.connect(self.setWidth)
+        inputHeight.valueChanged.connect(self.setHeight)
+        comboAlignment.currentIndexChanged.connect(self.setAlign)
+        inputOffset.valueChanged.connect(self.setOffset)
+        checkboxUseSketches.stateChanged.connect(self.setUseSketch)
+        comboWallPresets.currentIndexChanged.connect(self.setMat)
+
+        # Define the workflow of the input fields:
+        # Pressing Enter will cycle through Length, Width, and
+        # finally on Height the wall will be created
+        self.Length.returnPressed.connect(inputWidth.setFocus)
+        self.Length.returnPressed.connect(inputWidth.selectAll)
+        inputWidth.returnPressed.connect(inputHeight.setFocus)
+        inputWidth.returnPressed.connect(inputHeight.selectAll)
+        inputHeight.returnPressed.connect(self.createFromGUI)
+        inputOffset.returnPressed.connect(self.createFromGUI)
+
         return w
 
     def setMat(self,d):
@@ -382,6 +417,15 @@ class Arch_Wall:
         from draftutils import params
         self.Align = ["Center","Left","Right"][i]
         params.set_param_arch("WallAlignment",i)
+
+    def setOffset(self, d):
+        """Simple callback for the interactive mode GUI widget to set offset."""
+
+        from draftutils import params
+        if isinstance(d, FreeCAD.Units.Quantity):
+            d = d.Value
+        self.Offset = d
+        params.set_param_arch("WallOffset", d)
 
     def setUseSketch(self,i):
         """Simple callback to set if walls should based on sketches."""
