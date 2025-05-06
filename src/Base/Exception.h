@@ -155,6 +155,9 @@ class BaseExport Exception: public BaseClass
 
 public:
     explicit Exception(std::string message = "FreeCAD Exception");
+    Exception(const Exception& inst);
+    Exception(Exception&& inst) noexcept;
+
     ~Exception() noexcept override = default;
 
     Exception& operator=(const Exception& inst);
@@ -187,10 +190,6 @@ public:
 
     virtual PyObject* getPyExceptionType() const;
     virtual void setPyException() const;
-
-protected:
-    Exception(const Exception& inst);
-    Exception(Exception&& inst) noexcept;
 
 private:
     std::string errorMessage;
