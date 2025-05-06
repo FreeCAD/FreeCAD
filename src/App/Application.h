@@ -33,8 +33,16 @@
 #include <list>
 #include <set>
 #include <map>
+#include <memory>
 #include <string>
 
+#include <functional>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
+
+#include <Base/Exception.h>
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
 #include <Base/ProgressIndicator.h>
@@ -79,6 +87,21 @@ enum class MessageOption {
 struct DocumentInitFlags {
     bool createView {true};
     bool temporary {false};
+};
+
+struct RecomputeResult {
+    bool success;
+    std::unique_ptr<Base::Exception> exc;
+};
+
+struct RecomputeRequest {
+    // Document associated with the request
+    Document* document {nullptr};
+    // Document object associated with the request
+    DocumentObject* documentObject {nullptr};
+    bool recursive {false};
+    // Callback to be invoked when recompute is complete.
+    std::function<void(RecomputeRequest&, RecomputeResult&)> callback {};
 };
 
 /** The Application
@@ -180,9 +203,14 @@ public:
     bool isRestoring() const;
     /// Indicate the application is closing all document
     bool isClosingAll() const;
+
+    /// Returns if document and object recomputes should be done async.
+    bool isAsyncRecomputeEnabled();
+    /// Adds a recompute request to the processing queue.
+    void queueRecomputeRequest(RecomputeRequest req);
     //@}
 
-    /** @name Application-wide trandaction setting */
+    /** @name Application-wide transaction setting */
     //@{
     /** Setup a pending application-wide active transaction
      *
@@ -653,6 +681,21 @@ private:
     // To prevent infinite recursion of reloading a partial document due a truly
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
+
+    /// Worker thread for processing of pending recompute requests
+    std::thread _recomputeThread;
+    std::mutex _recomputeMutex;
+    std::condition_variable _recomputeCV;
+    std::atomic<bool> _stopRecomputeThread{false};
+
+    /// Worker thread function that processes _recomputeRequests.
+    void recomputeWorker();
+
+    /// Helper to notify the worker thread when new requests are available.
+    void notifyRecomputeWorker();
+
+    /// Queue for pending recompute requests
+    std::vector<RecomputeRequest> _recomputeRequests;
 
     bool _isRestoring{false};
     bool _allowPartial{false};
