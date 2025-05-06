@@ -440,7 +440,16 @@ class BIM_Views:
                     obj.ViewObject.Visibility = not (obj.ViewObject.Visibility)
             FreeCAD.ActiveDocument.recompute()
 
+    def _isAncestor(self, ancestor_item, child_item):
+        current = child_item.parent()
+        while current is not None:
+            if current == ancestor_item:
+                return True
+            current = current.parent()
+        return False
+
     def isolate(self):
+        import Draft
         """
         Isolate the currently selected items in the tree view.
 
@@ -462,11 +471,22 @@ class BIM_Views:
         vm = findWidget()
         if vm:
             selectedItems = vm.tree.selectedItems()
+            checkAncestors = False
+            # We can get a scenario where user has just selected only Building
+            # so we don't want to hide any of it's children, so just check if that's
+            # the case so we will know whether we should process items further or not
+            if len(selectedItems) == 1:
+                toolTip = selectedItems[0].toolTip(0)
+                obj = FreeCAD.ActiveDocument.getObject(toolTip)
+                t = Draft.getType(obj)
+                if obj and getattr(obj, "IfcType", "") == "Building":
+                    checkAncestors = True
+
             for item in self.allItemsInTree:
                 toolTip = item.toolTip(0)
                 obj = FreeCAD.ActiveDocument.getObject(toolTip)
                 if obj:
-                    if item not in selectedItems:
+                    if item not in selectedItems and not (checkAncestors and self._isAncestor(selectedItems[0], item)):
                         obj.ViewObject.Visibility = False
                     else:
                         obj.ViewObject.Visibility = True
