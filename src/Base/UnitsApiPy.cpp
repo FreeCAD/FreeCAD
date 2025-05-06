@@ -135,7 +135,7 @@ PyObject* UnitsApi::sGetSchema(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    return Py_BuildValue("i", count());
+    return Py_BuildValue("i", schemas->currentSchema()->getNum());
 }
 
 PyObject* UnitsApi::sSetSchema(PyObject* /*self*/, PyObject* args)
@@ -164,7 +164,7 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
 
     if (index < 0 || index >= static_cast<int>(count())) {
         PyErr_SetString(PyExc_ValueError,
-                        std::string {"invalid schema index:" + std::to_string(index)}.c_str());
+                        std::string {"invalid schema index: " + std::to_string(index)}.c_str());
         return nullptr;
     }
 
@@ -172,7 +172,8 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
 
     double factor {};
     std::string unitStr;
-    const std::string unitStrLocalised = schemaTranslate(quant, factor, unitStr);
+    auto schema = std::make_unique<UnitsSchema>(schemas->spec(index));
+    const std::string unitStrLocalised = schema->translate(quant, factor, unitStr);
 
     Py::Tuple res {3};
     res[0] = Py::String {unitStrLocalised, "utf-8"};

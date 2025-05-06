@@ -140,7 +140,7 @@ class UnitBasicCases(unittest.TestCase):
                 delta=self.delta,
             )
 
-    def testSchemeTranslation(self):
+    def testSchemaTranslation(self):
         quantities = []
         for i in dir(FreeCAD.Units):
             if issubclass(type(getattr(FreeCAD.Units, i)), FreeCAD.Units.Quantity):
@@ -163,6 +163,15 @@ class UnitBasicCases(unittest.TestCase):
                         )
                 except Exception as e:
                     print("{} : {} : {} : {}".format(q1, i, val, e).encode("utf-8").strip())
+
+    def testSchemaSetGet(self):
+        origSchema = FreeCAD.Units.getSchema()
+        schemas = FreeCAD.Units.listSchemas()
+        for idx, val in enumerate(schemas):
+            FreeCAD.Units.setSchema(idx)
+            self.assertEqual(FreeCAD.Units.getSchema(), idx)
+        # restore previously used schema, some later tests may depend on it
+        FreeCAD.Units.setSchema(origSchema)
 
     def testVoltage(self):
         q1 = FreeCAD.Units.Quantity("1e20 V")
