@@ -1,21 +1,15 @@
-# Weekly Development Build
+> [!IMPORTANT]
+> Bleeding edge FreeCAD development builds for testing bugfixes, regressions, and recently implemented features. Do not use in a production environment.
 
-## How-to use
 
-Download the appropriate asset for your OS below
+### How-to use
 
-Unpack the bundle to any folder on your system
-
-Launch the application
-
-* **Windows**
-
+1. Download the appropriate asset for your OS below
+2. Unpack the bundle to any folder on your system
+3. Launch the application
+    - **Windows**
     Run `\bin\FreeCAD.exe` in the extracted directory
-
-* **macOS**
-
+    - **macOS**
     Launch `/FreeCAD.app` in the extracted directory
-
-* **Linux**
-
-    Open the *.AppImage
+    - **Linux**
+    Open the `*.AppImage`
