@@ -211,6 +211,9 @@ SET(FemObjects_SRCS
     femobjects/mesh_netgen.py
     femobjects/mesh_region.py
     femobjects/mesh_distance.py
+    femobjects/mesh_tfcurve.py
+    femobjects/mesh_tfsurface.py
+    femobjects/mesh_tfvolume.py
     femobjects/mesh_result.py
     femobjects/result_mechanical.py
     femobjects/solver_calculix.py
@@ -632,6 +635,9 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_group.py
     femtaskpanels/task_mesh_region.py
     femtaskpanels/task_mesh_distance.py
+    femtaskpanels/task_mesh_tfcurve.py
+    femtaskpanels/task_mesh_tfsurface.py
+    femtaskpanels/task_mesh_tfvolume.py
     femtaskpanels/task_mesh_netgen.py
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_calculix.py
@@ -704,6 +710,9 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_mesh_netgen.py
     femviewprovider/view_mesh_region.py
     femviewprovider/view_mesh_distance.py
+    femviewprovider/view_mesh_tfcurve.py
+    femviewprovider/view_mesh_tfsurface.py
+    femviewprovider/view_mesh_tfvolume.py
     femviewprovider/view_mesh_result.py
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_calculix.py
