@@ -385,7 +385,7 @@ TaskCheckGeometryResults::~TaskCheckGeometryResults()
     }
     catch (const Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -677,7 +677,7 @@ void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, c
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         stream << baseName.toLatin1().data() << std::endl;
         BRepTools_ShapeSet set;
         set.Add(shape);

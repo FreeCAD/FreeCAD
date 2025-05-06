@@ -236,7 +236,7 @@ PyMOD_INIT_FUNC(PartGui)
         Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"), ae);
     }
     catch (Base::PyException& err) {
-        err.ReportException();
+        err.reportException();
     }
 
     // register preferences pages

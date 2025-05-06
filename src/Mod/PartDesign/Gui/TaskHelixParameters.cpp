@@ -177,7 +177,7 @@ void TaskHelixParameters::showCoordinateAxes()
             vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
         catch (const Base::Exception& ex) {
-            ex.ReportException();
+            ex.reportException();
         }
     }
 }
@@ -239,7 +239,7 @@ void TaskHelixParameters::addPartAxes()
             addAxisToCombo(orig->getZ(), "", tr("Base Z axis"));
         }
         catch (const Base::Exception& ex) {
-            ex.ReportException();
+            ex.reportException();
         }
     }
 }
@@ -528,7 +528,7 @@ void TaskHelixParameters::onAxisChanged(int num)
         updateStatus();
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -589,7 +589,7 @@ TaskHelixParameters::~TaskHelixParameters()
         }
     }
     catch (const Base::Exception& ex) {
-        ex.ReportException();
+        ex.reportException();
     }
 }
 

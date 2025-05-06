@@ -563,7 +563,7 @@ void SheetModel::setCellData(QModelIndex index, QString str)
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         Gui::Command::abortCommand();
     }
 }

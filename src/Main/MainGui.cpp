@@ -328,7 +328,7 @@ int main(int argc, char** argv)
         exit(e.getExitCode());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         exit(1);
     }
     catch (const std::exception& e) {

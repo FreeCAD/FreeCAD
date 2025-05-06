@@ -154,7 +154,7 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
             return;
         onSelectionChanged(msg);
     } catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         FC_ERR("Unhandled Base::Exception caught in selection observer: ");
     } catch (std::exception &e) {
         FC_ERR("Unhandled std::exception caught in selection observer: " << e.what());

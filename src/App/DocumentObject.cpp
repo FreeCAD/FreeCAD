@@ -148,7 +148,7 @@ void DocumentObject::printInvalidLinks() const
                                 scopenames.c_str());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

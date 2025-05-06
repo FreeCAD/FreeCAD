@@ -429,11 +429,11 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
             }
             catch (Py::Exception&) {
                 Base::PyException e;
-                e.ReportException();
+                e.reportException();
                 return new App::DocumentObjectExecReturn(errMsg);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 return new App::DocumentObjectExecReturn(errMsg);
             }
         }
@@ -451,7 +451,7 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
                         parent->removeDynamicProperty(prop->getName());
                     }
                     catch (Base::Exception& e) {
-                        e.ReportException();
+                        e.reportException();
                     }
                     catch (...) {
                     }
@@ -538,7 +538,7 @@ void LinkBaseExtension::setOnChangeCopyObject(App::DocumentObject* obj, OnChange
                 obj->addDynamicProperty("App::PropertyMap", "_CopyOnChangeControl"));
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         if (!prop) {
             FC_ERR("Failed to setup copy on change object " << obj->getFullName());

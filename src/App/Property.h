@@ -460,7 +460,7 @@ public:
                     mProp.hasSetValue();
                 }
                 catch (Base::Exception& e) {
-                    e.ReportException();
+                    e.reportException();
                 }
                 catch (...) {
                 }

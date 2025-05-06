@@ -666,7 +666,7 @@ private:
             str += "FreeCAD exception thrown (";
             str += e.what();
             str += ")";
-            e.ReportException();
+            e.reportException();
             throw Py::RuntimeError(str);
         }
         catch (const std::exception &e) {
@@ -699,7 +699,7 @@ private:
             str += "FreeCAD exception thrown (";
             str += e.what();
             str += ")";
-            e.ReportException();
+            e.reportException();
             throw Py::RuntimeError(str);
         }
         catch (const std::exception &e) {

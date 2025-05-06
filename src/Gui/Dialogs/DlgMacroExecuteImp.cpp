@@ -396,7 +396,7 @@ void DlgMacroExecuteImp::accept()
         // handle SystemExit exceptions
         Base::PyGILStateLocker locker;
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         getMainWindow()->unsetCursor();
     }
 }

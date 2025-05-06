@@ -405,7 +405,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         updateActive();
         commitCommand();
     } catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
                 QObject::tr("Sub-Shape Binder"), QApplication::translate("Exception", e.what()));
         abortCommand();
@@ -1288,7 +1288,7 @@ void CmdPartDesignGroove::activated(int iMsg)
                 FCMD_OBJ_CMD(Feat,"Reversed = 1");
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
 
         finishProfileBased(cmd, sketch, Feat);

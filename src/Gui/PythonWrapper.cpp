@@ -601,7 +601,7 @@ qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return 0;
     }
 }

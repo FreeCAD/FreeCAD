@@ -3047,7 +3047,7 @@ bool getIntersectionParameter(const Part::Geometry* geo,
         curve->closestParameter(point, pointParam);
     }
     catch (Base::CADKernelError& e) {
-        e.ReportException();
+        e.reportException();
         return false;
     }
 
@@ -10116,7 +10116,7 @@ void SketchObject::onChanged(const App::Property* prop)
                     delete res;
                 }
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
                                               << e.what());  // NOLINT
             }
@@ -10426,7 +10426,7 @@ void SketchObject::restoreFinished()
             }
         }
     } catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         FC_ERR("Error while restoring " << getFullName());
     } catch (...) {
     }
@@ -11086,7 +11086,7 @@ void SketchObject::setExpression(const App::ObjectIdentifier& path,
             }
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << e.what());
         }
         solve();

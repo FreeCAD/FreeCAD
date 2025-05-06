@@ -112,7 +112,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
             expr.reset(App::Expression::parse(sheet, exprTxt));
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             FC_THROWM(Base::RuntimeError, "Failed to parse expression for property");
         }
         if (expr->hasComponent() || !expr->isDerivedFrom<App::VariableExpression>()) {
@@ -276,7 +276,7 @@ void DlgSheetConf::accept()
         QDialog::accept();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this, tr("Setup configuration table"), QString::fromUtf8(e.what()));
         if (commandActive) {
             Gui::Command::abortCommand();
@@ -334,7 +334,7 @@ void DlgSheetConf::onDiscard()
         QDialog::accept();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this, tr("Unsetup configuration table"), QString::fromUtf8(e.what()));
         if (commandActive) {
             Gui::Command::abortCommand();

@@ -196,7 +196,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 
     commitCommand();

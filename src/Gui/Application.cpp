@@ -681,7 +681,7 @@ void Application::open(const char* FileName, const char* Module)
         }
         catch (const Base::PyException& e) {
             // Usually thrown if the file is invalid somehow
-            e.ReportException();
+            e.reportException();
         }
     }
     else {
@@ -780,7 +780,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
         }
         catch (const Base::PyException& e) {
             // Usually thrown if the file is invalid somehow
-            e.ReportException();
+            e.reportException();
         }
     }
     else {
@@ -852,7 +852,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
         }
         catch (const Base::PyException& e) {
             // Usually thrown if the file is invalid somehow
-            e.ReportException();
+            e.reportException();
             wc.restoreCursor();
             QMessageBox::critical(getMainWindow(),
                                   QObject::tr("Export failed"),
@@ -1007,7 +1007,7 @@ void Application::checkForRecomputes() {
         try {
             doc->recompute({}, false, &hasError);
         } catch (Base::Exception &e) {
-            e.ReportException();
+            e.reportException();
             hasError = true;
         }
     }
@@ -1159,11 +1159,11 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
     catch (const std::exception& e) {
         Base::Console().Error(

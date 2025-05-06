@@ -182,7 +182,7 @@ MDIViewPyWrap::MDIViewPyWrap(const Py::Object& py, Gui::Document* pcDocument,QWi
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -210,7 +210,7 @@ bool MDIViewPyWrap::onMsg(const char* pMsg,const char** ppReturn)
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
         return false;
     }
 }
@@ -229,7 +229,7 @@ bool MDIViewPyWrap::onHasMsg(const char* pMsg) const
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
         return false;
     }
 }
@@ -245,7 +245,7 @@ bool MDIViewPyWrap::canClose()
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
         return false;
     }
 }
@@ -261,7 +261,7 @@ void MDIViewPyWrap::print(QPrinter* printer)
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -276,7 +276,7 @@ void MDIViewPyWrap::print()
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -291,7 +291,7 @@ void MDIViewPyWrap::printPdf()
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -306,7 +306,7 @@ void MDIViewPyWrap::printPreview()
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -321,7 +321,7 @@ QStringList MDIViewPyWrap::undoActions() const
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
         return MDIView::undoActions();
     }
 }
@@ -337,7 +337,7 @@ QStringList MDIViewPyWrap::redoActions() const
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException exc;
-        exc.ReportException();
+        exc.reportException();
         return MDIView::redoActions();
     }
 }

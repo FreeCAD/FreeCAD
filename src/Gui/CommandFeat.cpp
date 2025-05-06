@@ -293,7 +293,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
 }

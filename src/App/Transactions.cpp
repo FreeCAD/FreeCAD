@@ -187,7 +187,7 @@ void Transaction::apply(Document& Doc, bool forward)
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -368,7 +368,7 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
                 prop->Paste(*data.property);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
             }
             catch (std::exception& e) {

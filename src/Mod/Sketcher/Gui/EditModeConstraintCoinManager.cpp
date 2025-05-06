@@ -1620,7 +1620,7 @@ Restart:
             Base::Console().DeveloperError("EditModeConstraintCoinManager",
                                            "Exception during draw: %s\n",
                                            e.what());
-            e.ReportException();
+            e.reportException();
         }
         catch (...) {
             Base::Console().DeveloperError("EditModeConstraintCoinManager",

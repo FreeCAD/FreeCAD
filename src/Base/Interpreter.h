@@ -104,7 +104,7 @@ public:
     /// this method determines if the original exception
     /// can be reconstructed or not, if yes throws the reconstructed version
     /// if not, throws a generic PyException.
-    static void ThrowException();
+    static void throwException();
 
     ///  this function returns the stack trace
     const std::string& getStackTrace() const
@@ -119,7 +119,7 @@ public:
     {
         return _exceptionType;
     }
-    void ReportException() const override;
+    void reportException() const override;
     /// Sets the Python error indicator and an error message
     void setPyException() const override;
 
