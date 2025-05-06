@@ -9,6 +9,9 @@ export PATH_TO_FREECAD_LIBDIR=${HERE}/usr/lib
 export FONTCONFIG_FILE=/etc/fonts/fonts.conf
 export FONTCONFIG_PATH=/etc/fonts
 
+# Fix: Use X to run on Wayland
+export QT_QPA_PLATFORM=xcb
+
 # Show packages info if DEBUG env variable is set
 if [ "$DEBUG" = 1 ]; then
     cat ${HERE}/packages.txt
