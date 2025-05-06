@@ -481,6 +481,7 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"), locked=True)
         if not "DoubleClickActivates" in pl:
             vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree activates it"), locked=True)
+            vobj.DoubleClickActivates = True
 
         # inventor saving
         if not "SaveInventor" in pl:
