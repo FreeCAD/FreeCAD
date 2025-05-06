@@ -42,7 +42,7 @@ macro(SetupSalomeSMESH)
                     endif()
                 endforeach()
             else()
-                set(VTK_COMPONENTS "CommonCore;CommonDataModel;FiltersVerdict;IOXML;FiltersCore;FiltersGeneral;IOLegacy;FiltersExtraction;FiltersSources;FiltersGeometry")
+                set(VTK_COMPONENTS "CommonCore;CommonDataModel;FiltersVerdict;IOXML;FiltersCore;FiltersGeneral;IOLegacy;FiltersExtraction;FiltersSources;FiltersGeometry;WrappingPythonCore")
                 list(APPEND VTK_COMPONENTS "IOMPIParallel;ParallelMPI;hdf5;FiltersParallelDIY2;RenderingCore;InteractionStyle;RenderingFreeType;RenderingOpenGL2")
                 foreach(_module ${VTK_COMPONENTS})
                     list (FIND VTK_AVAILABLE_COMPONENTS ${_module} _index)
@@ -63,6 +63,17 @@ macro(SetupSalomeSMESH)
         endif()
 
         set(BUILD_FEM_VTK ON)
+
+        # Check if PythonWrapperCore was found
+        # Note: VTK 9 only, as the implementations use the VTK modules introduced in 8.1
+        #       VTK_WrappingPythonCore_FOUND is named differently for versions <9.0
+        if (${VTK_WrappingPythonCore_FOUND})
+            set(BUILD_FEM_VTK_PYTHON 1)
+            message(STATUS "VTK python wrapper: available")
+        else()
+            message(STATUS "VTK python wrapper: NOT available")
+        endif()
+
         if(${VTK_MAJOR_VERSION} LESS 6)
             message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
         endif()

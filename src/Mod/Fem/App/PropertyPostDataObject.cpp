@@ -42,6 +42,12 @@
 #include <vtkXMLUnstructuredGridReader.h>
 #endif
 
+#ifdef FC_USE_VTK_PYTHON
+#include <vtkPythonUtil.h>
+#else
+#include <Base/PyObjectBase.h>
+#endif
+
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -162,12 +168,39 @@ int PropertyPostDataObject::getDataType()
 
 PyObject* PropertyPostDataObject::getPyObject()
 {
-    // TODO: fetch the vtk python object from the data set and return it
-    return Py::new_reference_to(Py::None());
+#ifdef FC_USE_VTK_PYTHON
+    // create a copy first
+    auto copy = static_cast<PropertyPostDataObject*>(Copy());
+
+    // get the data python wrapper
+    PyObject* py_dataset = vtkPythonUtil::GetObjectFromPointer(copy->getValue());
+    auto result = Py::new_reference_to(py_dataset);
+    delete copy;
+
+    return result;
+#else
+    PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
+    Py_Return;
+#endif
 }
 
-void PropertyPostDataObject::setPyObject(PyObject* /*value*/)
-{}
+void PropertyPostDataObject::setPyObject(PyObject* value)
+{
+#ifdef FC_USE_VTK_PYTHON
+    vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(value, "vtkDataObject");
+    if (!obj) {
+        throw Base::TypeError("Can only set vtkDataObject");
+    }
+    auto dobj = static_cast<vtkDataObject*>(obj);
+    createDataObjectByExternalType(dobj);
+
+    aboutToSetValue();
+    m_dataObject->DeepCopy(dobj);
+    hasSetValue();
+#else
+    throw Base::NotImplementedError();
+#endif
+}
 
 App::Property* PropertyPostDataObject::Copy() const
 {

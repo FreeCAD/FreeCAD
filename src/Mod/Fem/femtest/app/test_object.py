@@ -81,9 +81,13 @@ class TestObjectCreate(unittest.TestCase):
         # result children: mesh result --> 1
         # post pipeline children: region, scalar, cut, wrap --> 5
         # analysis itself is not in analysis group --> 1
-        # thus: -20
+        # vtk python post objects: glyph --> 1
 
-        self.assertEqual(len(doc.Analysis.Group), count_defmake - 20)
+        subtraction = 20
+        if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
+            subtraction += 1
+
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - subtraction)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print(
@@ -1154,6 +1158,8 @@ def create_all_fem_objects_doc(doc):
         ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
         ObjectsFem.makePostVtkFilterWarp(doc, vres)
         ObjectsFem.makePostVtkFilterContours(doc, vres)
+        if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
+            ObjectsFem.makePostFilterGlyph(doc, vres)
 
     analysis.addObject(ObjectsFem.makeSolverCalculiXCcxTools(doc))
     analysis.addObject(ObjectsFem.makeSolverCalculiX(doc))
