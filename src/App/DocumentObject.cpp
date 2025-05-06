@@ -1215,6 +1215,20 @@ void DocumentObject::onDocumentRestored()
     }
 }
 
+void DocumentObject::restoreFinished()
+{
+    // some link type property cannot restore link information until other
+    // objects has been restored. For example, PropertyExpressionEngine and
+    // PropertySheet with expression containing label reference.
+    // So on document load they are handled in Document::afterRestore, but if the user
+    // use dumpContent and restoreContent then they need to be handled here.
+    std::vector<App::Property*> props;
+    getPropertyList(props);
+    for (auto prop : props) {
+        prop->afterRestore();
+    }
+}
+
 void DocumentObject::onUndoRedoFinished()
 {}
 
