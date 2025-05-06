@@ -182,8 +182,6 @@ SET(FemObjects_SRCS
     femobjects/base_femelement.py
     femobjects/base_femmeshelement.py
     femobjects/base_fempythonobject.py
-    femobjects/base_fempostextractors.py
-    femobjects/base_fempostvisualizations.py
     femobjects/constant_vacuumpermittivity.py
     femobjects/constraint_bodyheatsource.py
     femobjects/constraint_centrif.py
@@ -216,8 +214,9 @@ SET(FemObjects_SRCS
 )
 
 if(BUILD_FEM_VTK_PYTHON)
-    SET(FemObjects_SRCS
-        ${FemObjects_SRCS}
+    list(APPEND FemObjects_SRCS
+        femobjects/base_fempostextractors.py
+        femobjects/base_fempostvisualizations.py
         femobjects/post_glyphfilter.py
         femobjects/post_extract1D.py
         femobjects/post_extract2D.py
@@ -633,8 +632,7 @@ SET(FemGuiTaskPanels_SRCS
 )
 
 if(BUILD_FEM_VTK_PYTHON)
-    SET(FemGuiTaskPanels_SRCS
-        ${FemGuiTaskPanels_SRCS}
+    list(APPEND FemGuiTaskPanels_SRCS
         femtaskpanels/task_post_glyphfilter.py
         femtaskpanels/task_post_histogram.py
         femtaskpanels/task_post_lineplot.py
@@ -653,12 +651,17 @@ SET(FemGuiUtils_SRCS
     femguiutils/disambiguate_solid_selection.py
     femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
-    femguiutils/vtk_module_handling.py
-    femguiutils/vtk_table_view.py
-    femguiutils/data_extraction.py
-    femguiutils/extract_link_view.py
-    femguiutils/post_visualization.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    list(APPEND FemGuiUtils_SRCS
+        femguiutils/vtk_module_handling.py
+        femguiutils/vtk_table_view.py
+        femguiutils/data_extraction.py
+        femguiutils/extract_link_view.py
+        femguiutils/post_visualization.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemGuiViewProvider_SRCS
     femviewprovider/__init__.py
@@ -667,8 +670,6 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_base_femmaterial.py
     femviewprovider/view_base_femmeshelement.py
     femviewprovider/view_base_femobject.py
-    femviewprovider/view_base_fempostvisualization.py
-    femviewprovider/view_base_fempostextractors.py
     femviewprovider/view_constant_vacuumpermittivity.py
     femviewprovider/view_constraint_bodyheatsource.py
     femviewprovider/view_constraint_centrif.py
@@ -701,10 +702,10 @@ SET(FemGuiViewProvider_SRCS
 )
 
 if(BUILD_FEM_VTK_PYTHON)
-    SET(FemGuiViewProvider_SRCS
-        ${FemGuiViewProvider_SRCS}
+    list(APPEND FemGuiViewProvider_SRCS
+        femviewprovider/view_base_fempostextractors.py
+        femviewprovider/view_base_fempostvisualization.py
         femviewprovider/view_post_glyphfilter.py
-        femviewprovider/view_post_extract.py
         femviewprovider/view_post_histogram.py
         femviewprovider/view_post_lineplot.py
         femviewprovider/view_post_table.py
