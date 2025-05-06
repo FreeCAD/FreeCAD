@@ -917,6 +917,7 @@ protected:
 
     void onDocumentRestored() override;
     void restoreFinished() override;
+    void onSketchRestore();
 
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr);
