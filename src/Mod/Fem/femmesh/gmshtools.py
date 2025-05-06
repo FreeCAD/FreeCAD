@@ -206,6 +206,10 @@ class GmshTools:
         self.dist_setting_list = []     # list of dict, each item map to MeshBoundaryLayer object
         self.dist_element_set = set()   # set to remove duplicated element edge or faces
 
+        # transfinite meshes
+        self.transfinite_curve_settings = []      # list of dict, one entry per curve
+        self.transfinite_curve_elements = set()   # set to remove duplicated element edge or faces
+
         # other initializations
         self.temp_file_geometry = ""
         self.temp_file_mesh = ""
@@ -222,6 +226,7 @@ class GmshTools:
         self.get_region_data()
         self.get_boundary_layer_data()
         self.get_distance_data()
+        self.get_transfinite_data()
 
     def write_gmsh_input_files(self):
         self.write_part_file()
@@ -259,8 +264,8 @@ class GmshTools:
                 self.part_obj.Name, self.part_obj.Label, self.part_obj.Shape.ShapeType
             )
         )
-        Console.PrintLog(f"  CharacteristicLengthMax: {self.clmax}\n")
-        Console.PrintLog(f"  CharacteristicLengthMin: {self.clmin}\n")
+        Console.PrintLog(f"  MeshSizeMax: {self.clmax}\n")
+        Console.PrintLog(f"  MeshSizeMin: {self.clmin}\n")
         Console.PrintLog(f"  ElementOrder: {self.order}\n")
 
     def get_dimension(self):
@@ -791,6 +796,68 @@ class GmshTools:
                     )
 
 
+    def get_transfinite_data(self):
+
+        # transfinite curves
+        transfinite_curve_list = self._get_definitions_of_type("Fem::MeshTransfiniteCurve")
+        if not transfinite_curve_list:
+            pass
+        else:
+            part = self.part_obj
+            if (
+                transfinite_curve_list
+                and part.Shape.ShapeType == "Compound"
+                and (
+                    femutils.is_of_type(part, "FeatureBooleanFragments")
+                    or femutils.is_of_type(part, "FeatureSlice")
+                    or femutils.is_of_type(part, "FeatureXOR")
+                )
+            ):
+                self.outputCompoundWarning
+
+            for mr_obj in transfinite_curve_list:
+                if mr_obj.Suppressed:
+                    continue
+
+                if mr_obj.References:
+
+                    # collect all elements!
+                    elements = self._get_reference_elements(mr_obj, self.transfinite_curve_elements)
+                    if not elements:
+                        Console.PrintError( ("The transfinite curve {} is not used because no unique"
+                                             "elements are selected.\n").format(mr_obj.Name))
+                        continue
+
+                    idx_dict = self._element_list_to_shape_idx_dict(elements)
+                    #if mr_obj.in
+
+                    #if mr_obj.Invert
+                    if idx_dict["Edge"]:
+                        settings = {}
+                        prefix = ""
+                        coef = mr_obj.Coefficient
+
+                        if mr_obj.Invert:
+                            if mr_obj.Distribution == "Progression":
+                                prefix = "-"
+                            else:
+                                coef = 1.0/coef
+
+                        settings["tag"] = ",".join(str(prefix+i) for i in idx_dict["Edge"])
+                        settings["numNodes"] = mr_obj.Number
+                        if mr_obj.Distribution != "Constant":
+                            settings["meshType"] = mr_obj.Distribution
+                            settings["coef"] = coef
+
+                        self.transfinite_curve_settings.append(settings)
+
+                else:
+                    Console.PrintError(
+                        "The transfinite curve {} is not used to create the mesh "
+                        "because the reference list is empty.\n".format(mr_obj.Name)
+                    )
+
+
     def write_groups(self, geo):
         # find shape type and index from group elements and isolate them from possible prefix
         # for example: "PartObject.Solid2" -> shape: Solid, index: 2
@@ -925,6 +992,22 @@ class GmshTools:
             # print("  no boundary layer setup is found for this mesh")
             geo.write("// no distance settings for this mesh\n")
 
+
+    def write_transfinite(self, geo):
+
+        geo.write("\n")
+        geo.write("// Transfinite elements\n")
+        for setting in self.transfinite_curve_settings:
+            geo.write("Transfinite Curve {")
+            geo.write(f"{setting["tag"]} }} = {setting["numNodes"]}")
+
+            if "meshType" in setting:
+                geo.write(f" Using {setting["meshType"]} {setting["coef"]}")
+            geo.write(";\n")
+
+        geo.write("\n")
+
+
     def write_part_file(self):
         global_pla = self.part_obj.getGlobalPlacement()
         geom = self.part_obj.getPropertyOfGeometry()
@@ -964,6 +1047,9 @@ class GmshTools:
         # of Gmsh properties, set them in Gmsh TaskPanel
         self.write_boundary_layer(geo)
 
+        # transfinite elements
+        self.write_transfinite(geo)
+
         # write the background size field, if fields have been added
         if self._background_fields:
 
@@ -974,26 +1060,29 @@ class GmshTools:
             geo.write(f"Field[{field_id}].FieldsList = {{ {id_list} }};\n")
             geo.write(f"Background Field = {field_id};\n\n")
 
+            geo.write("Mesh.MeshSizeExtendFromBoundary = 0;\n")
             geo.write("\n")
 
+
+        # mesh parameter
+        geo.write("// min, max Characteristic Length\n")
+        geo.write("Mesh.MeshSizeMax = " + str(self.clmax) + ";\n")
+        if len(self.bl_setting_list):
+            # if minLength must smaller than first layer of boundary_layer
+            # it is safer to set it as zero (default value) to avoid error
+            geo.write("Mesh.MeshSizeMin = " + str(0) + ";\n")
         else:
-            # mesh parameter
-            geo.write("// min, max Characteristic Length\n")
-            geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
-            if len(self.bl_setting_list):
-                # if minLength must smaller than first layer of boundary_layer
-                # it is safer to set it as zero (default value) to avoid error
-                geo.write("Mesh.CharacteristicLengthMin = " + str(0) + ";\n")
-            else:
-                geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
-            if hasattr(self.mesh_obj, "MeshSizeFromCurvature"):
-                geo.write(
-                    "Mesh.MeshSizeFromCurvature = {}"
-                    "; // number of elements per 2*pi radians, 0 to deactivate\n".format(
-                        self.mesh_obj.MeshSizeFromCurvature
-                    )
+            geo.write("Mesh.MeshSizeMin = " + str(self.clmin) + ";\n")
+        if hasattr(self.mesh_obj, "MeshSizeFromCurvature"):
+            geo.write(
+                "Mesh.MeshSizeFromCurvature = {}"
+                "; // number of elements per 2*pi radians, 0 to deactivate\n".format(
+                    self.mesh_obj.MeshSizeFromCurvature
                 )
-            geo.write("\n")
+            )
+        geo.write("Mesh.MeshSizeFromPoints = 0;\n")
+        geo.write("\n")
+
 
         if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
             geo.write("// recombination for surfaces\n")
