@@ -52,8 +52,6 @@ namespace TechDrawGui {
 QGIDatumLabel::QGIDatumLabel() : m_dragState(DragState::NoDrag)
 {
     verticalSep = false;
-    posX = 0;
-    posY = 0;
 
     parent = nullptr;
 
@@ -121,7 +119,6 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
             snapPosition(newPos);
         }
 
-        setLabelCenter();
         m_dragState = DragState::Dragging;
         Q_EMIT dragging(m_ctrl);
     }
@@ -343,6 +340,11 @@ void QGIDatumLabel::updateFrameRect() {
     m_frame->setRect(tightBoundingRect());
 }
 
+void QGIDatumLabel::boundingRectChanged()
+{
+    setTransformOriginPoint(tightBoundingRect().center());
+}
+
 void QGIDatumLabel::setLineWidth(double lineWidth)
 {
     QPen pen = m_frame->pen();
@@ -371,20 +373,17 @@ void QGIDatumLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 
 void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCenter)
 {
-    prepareGeometryChange();
-    auto* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
-    if (!qgivd) {
-        return;
-    }
-    const auto dim(dynamic_cast<TechDraw::DrawViewDimension*>(qgivd->getViewObject()));
-    if (!dim) {
-        return;
-    }
-
     //set label's Qt position(top, left) given boundingRect center point
-    Base::Vector2d vec = getPosToCenterVec();
-    setPos(xCenter - vec.x, yCenter - vec.y);
+    Base::Vector2d centerOffset = getPosToCenterVec();
+    double xTopLeft = xCenter - centerOffset.x;
+    double yTopLeft = yCenter - centerOffset.y;
+    setPos(xTopLeft, yTopLeft);
+    updateChildren();
+}
 
+void QGIDatumLabel::updateChildren()
+{
+    prepareGeometryChange();
     QString uText = m_unitText->toPlainText();
     if ((uText.size() > 0) && (uText.at(0) != QChar::fromLatin1(' '))) {
         QString vText = m_dimText->toPlainText();
@@ -415,18 +414,9 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
     m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() + tol_adj.y()/2.0, false);
 }
 
-void QGIDatumLabel::setLabelCenter()
-{
-    //save label's bRect center (posX, posY) given Qt position (top, left)
-    Base::Vector2d vec = getPosToCenterVec();
-    posX = x() + vec.x;
-    posY = y() + vec.y;
-}
-
-Base::Vector2d QGIDatumLabel::getPosToCenterVec()
+Base::Vector2d QGIDatumLabel::getPosToCenterVec() const
 {
     QPointF center = tightBoundingRect().center();
-
     return Base::Vector2d(center.x(), center.y());
 }
 
@@ -442,6 +432,7 @@ void QGIDatumLabel::setFont(QFont font)
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
     updateFrameRect();
+    boundingRectChanged();
 }
 
 void QGIDatumLabel::setDimString(QString text, qreal maxWidth)
@@ -450,6 +441,7 @@ void QGIDatumLabel::setDimString(QString text, qreal maxWidth)
     m_dimText->setPlainText(text);
     m_dimText->setTextWidth(maxWidth);
     updateFrameRect();
+    boundingRectChanged();
 }
 
 void QGIDatumLabel::setToleranceString()
@@ -473,6 +465,7 @@ void QGIDatumLabel::setToleranceString()
         m_tolTextOver->setPlainText(QString());
         m_tolTextUnder->setPlainText(QString());
         updateFrameRect();
+        boundingRectChanged();
         return;
     }
 
@@ -511,6 +504,7 @@ void QGIDatumLabel::setToleranceString()
     }
 
     updateFrameRect();
+    boundingRectChanged();
 }
 
 
