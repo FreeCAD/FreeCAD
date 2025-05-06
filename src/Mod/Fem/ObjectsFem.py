@@ -593,9 +593,6 @@ def makeMeshDistance(doc, base_mesh, name="MeshDistance"):
 
     mesh_distance.MeshDistance(obj)
 
-    # obj.BaseMesh = base_mesh
-    # App::PropertyLinkList does not support append
-    # we will use a temporary list to append the mesh distance obj. to the list
     tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
     base_mesh.MeshRefinementList = tmplist
@@ -603,6 +600,60 @@ def makeMeshDistance(doc, base_mesh, name="MeshDistance"):
         from femviewprovider import view_mesh_distance
 
         view_mesh_distance.VPMeshDistance(obj.ViewObject)
+    return obj
+
+def makeMeshTransfiniteCurve(doc, base_mesh, name="TransfiniteCurve"):
+    """makeMeshTransfiniteCurve(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite curves
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfcurve
+
+    mesh_tfcurve.MeshTransfiniteCurve(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfcurve
+        view_mesh_tfcurve.VPMeshTransfiniteCurve(obj.ViewObject)
+
+    return obj
+
+def makeMeshTransfiniteSurface(doc, base_mesh, name="TransfiniteSurface"):
+    """makeMeshTransfiniteSurface(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite surfaces
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfsurface
+
+    mesh_tfsurface.MeshTransfiniteSurface(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfsurface
+        view_mesh_tfsurface.VPMeshTransfiniteSurface(obj.ViewObject)
+
+    return obj
+
+def makeMeshTransfiniteVolume(doc, base_mesh, name="TransfiniteVolume"):
+    """makeMeshTransfiniteVolume(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite volumes
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfvolume
+
+    mesh_tfvolume.MeshTransfiniteVolume(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfvolume
+        view_mesh_tfvolume.VPMeshTransfiniteVolume(obj.ViewObject)
+
     return obj
 
 
