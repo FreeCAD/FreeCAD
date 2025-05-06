@@ -124,9 +124,8 @@ class TestFemCommon(unittest.TestCase):
                 im = __import__(f"{mod}")
             except ImportError as e:
                 # check if it is a VTK module that is missing, because maybe we should not need it
-                if "vtkmodules" in e.name and \
-                   not "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
-                       im = True
+                if "vtkmodules" in e.name and not "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
+                    im = True
                 else:
                     im = False
             if not im:
