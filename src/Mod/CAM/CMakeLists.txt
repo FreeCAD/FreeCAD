@@ -117,6 +117,21 @@ SET(PathPythonTools_SRCS
     Path/Tool/Controller.py
 )
 
+SET(PathPythonToolsAssets_SRCS
+    Path/Tool/assets/__init__.py
+    Path/Tool/assets/adapter.py
+    Path/Tool/assets/manager.py
+    Path/Tool/assets/uri.py
+)
+
+SET(PathPythonToolsAssetsStore_SRCS
+    Path/Tool/assets/store/__init__.py
+    Path/Tool/assets/store/base.py
+    Path/Tool/assets/store/flat.py
+    Path/Tool/assets/store/unversioned.py
+    Path/Tool/assets/store/versioned.py
+)
+
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Bit.py
@@ -434,6 +449,10 @@ SET(Tests_SRCS
     CAMTests/TestPathToolChangeGenerator.py
     CAMTests/TestPathThreadMilling.py
     CAMTests/TestPathThreadMillingGenerator.py
+    CAMTests/TestPathToolAssetUri.py
+    CAMTests/TestPathToolAssetStore.py
+    CAMTests/TestPathToolAssetAdapter.py
+    CAMTests/TestPathToolAssetManager.py
     CAMTests/TestPathToolBit.py
     CAMTests/TestPathToolBitSerializer.py
     CAMTests/TestPathToolShapeClasses.py
@@ -508,6 +527,8 @@ SET(all_files
     ${PathPythonPost_SRCS}
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
+    ${PathPythonToolsAssets_SRCS}
+    ${PathPythonToolsAssetsStore_SRCS}
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsShape_SRCS}
     ${PathPythonToolsShapeModels_SRCS}
@@ -646,6 +667,20 @@ INSTALL(
         ${PathPythonTools_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsAssets_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/assets
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsAssetsStore_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/assets/store
 )
 
 INSTALL(
