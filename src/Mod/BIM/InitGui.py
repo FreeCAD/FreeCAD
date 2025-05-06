@@ -255,6 +255,7 @@ class BIMWorkbench(Workbench):
             "BIM_SetWPTop",
             "BIM_SetWPFront",
             "BIM_SetWPSide",
+            "Draft_SelectPlane",
         ]
 
         # create generic tools command
