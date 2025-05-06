@@ -76,7 +76,7 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     if (m_panel.hasAttr(std::string("widget"))) {
@@ -129,7 +129,7 @@ void TaskPostExtraction::onPostDataChanged(Fem::FemPostObject* obj)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 };
 
@@ -145,7 +145,7 @@ bool TaskPostExtraction::isGuiTaskOnly()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return false;
@@ -162,7 +162,7 @@ void TaskPostExtraction::apply()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -178,7 +178,7 @@ bool TaskPostExtraction::initiallyCollapsed()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return false;

@@ -29,7 +29,7 @@
 #include "FemPostObjectPy.h"
 #include "FemPostObjectPy.cpp"
 
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
     #include <vtkDataSet.h>
     #include <vtkPythonUtil.h>
 #endif //BUILD_FEM_VTK
@@ -61,7 +61,7 @@ PyObject* FemPostObjectPy::writeVTK(PyObject* args)
 
 PyObject* FemPostObjectPy::getDataSet(PyObject* args)
 {
-#ifdef BUILD_FEM_VTK_WRAPPER
+#ifdef FC_USE_VTK_PYTHON
     // we take no arguments
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
