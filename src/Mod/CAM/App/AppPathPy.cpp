@@ -72,7 +72,7 @@
         str += "FreeCAD exception thrown (";                                                       \
         str += e.what();                                                                           \
         str += ")";                                                                                \
-        e.ReportException();                                                                       \
+        e.reportException();                                                                       \
         PyErr_SetString(Base::PyExc_FC_GeneralError, str.c_str());                                 \
     }                                                                                              \
     catch (std::exception & e)                                                                     \

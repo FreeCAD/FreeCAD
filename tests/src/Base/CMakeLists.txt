@@ -4,6 +4,7 @@ target_sources(Tests_run PRIVATE
         Bitmask.cpp
         BoundBox.cpp
         Builder3D.cpp
+        Color.cpp
         CoordinateSystem.cpp
         DualNumber.cpp
         DualQuaternion.cpp
@@ -14,12 +15,14 @@ target_sources(Tests_run PRIVATE
         Quantity.cpp
         Reader.cpp
         Rotation.cpp
+        SchemaTests.cpp
         ServiceProvider.cpp
         Stream.cpp
         TimeInfo.cpp
         Tools.cpp
         Tools2D.cpp
         Tools3D.cpp
+        UnlimitedUnsigned.cpp
         UniqueNameManager.cpp
         Unit.cpp
         Vector3D.cpp

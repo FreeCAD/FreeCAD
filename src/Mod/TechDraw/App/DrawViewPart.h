@@ -212,7 +212,7 @@ public:
     bool newFaceFinder();
     bool isUnsetting() { return nowUnsetting; }
 
-    virtual TopoDS_Shape getSourceShape(bool fuse = false) const;
+    virtual TopoDS_Shape getSourceShape(bool fuse = false, bool allow2d = true) const;
     virtual TopoDS_Shape getShapeForDetail() const;
     std::vector<App::DocumentObject*> getAllSources() const;
 
@@ -238,6 +238,10 @@ public:
     void waitingForHlr(bool s) { m_waitingForHlr = s; }
     virtual bool waitingForResult() const;
     void progressValueChanged(int v);
+
+    bool isCosmeticVertex(const std::string& element);
+    bool isCosmeticEdge(const std::string& element);
+    bool isCenterLine(const std::string& element);
 
 public Q_SLOTS:
     void onHlrFinished(void);

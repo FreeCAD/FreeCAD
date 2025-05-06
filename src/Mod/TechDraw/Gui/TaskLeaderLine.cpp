@@ -296,7 +296,7 @@ void TaskLeaderLine::recomputeFeature()
 {
     App::DocumentObject* objVP = m_lineVP->getObject();
     assert(objVP);
-    objVP->getDocument()->recomputeFeature(objVP);
+    objVP->recomputeFeature();
 }
 
 void TaskLeaderLine::onStartSymbolChanged()
@@ -393,7 +393,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 
     if (m_lineFeat) {
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_lineFeat);
-        auto leadVP = dynamic_cast<ViewProviderLeader*>(vp);
+        auto leadVP = freecad_cast<ViewProviderLeader*>(vp);
         if (leadVP) {
             Base::Color ac;
             ac.setValue<QColor>(ui->cpLineColor->color());
@@ -700,7 +700,7 @@ QGIView* TaskLeaderLine::findParentQGIV()
     }
 
     Gui::ViewProvider* gvp = QGIView::getViewProvider(m_baseFeat);
-    ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(gvp);
+    ViewProviderDrawingView* vpdv = freecad_cast<ViewProviderDrawingView*>(gvp);
     if (!vpdv) {
         return nullptr;
     }

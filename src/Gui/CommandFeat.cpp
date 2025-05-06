@@ -29,6 +29,7 @@
 #include <App/GroupExtension.h>
 #include <App/Part.h>
 #include "Application.h"
+#include "cet_lut.hpp"
 #include "CommandT.h"
 #include "DockWindowManager.h"
 #include "Document.h"
@@ -90,14 +91,14 @@ void StdCmdRandomColor::activated(int iMsg)
 
     auto setRandomColor = [](ViewProvider* view) {
         // NOLINTBEGIN
-        auto fMax = (float)RAND_MAX;
-        auto fRed = (float)rand()/fMax;
-        auto fGrn = (float)rand()/fMax;
-        auto fBlu = (float)rand()/fMax;
+        int colIndex = rand() % (CET::R1.size() / 3) * 3;
+        float fRed = CET::R1[colIndex] / 255.0F;
+        float fGrn = CET::R1[colIndex + 1] / 255.0F;
+        float fBlu = CET::R1[colIndex + 2] / 255.0F;
         // NOLINTEND
         auto objColor = Base::Color(fRed, fGrn, fBlu);
 
-        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
+        auto vpLink = freecad_cast<ViewProviderLink*>(view);
         if (vpLink) {
             if (!vpLink->OverrideMaterial.getValue()) {
                 vpLink->OverrideMaterial.setValue(true);
@@ -184,6 +185,8 @@ void StdCmdToggleFreeze::activated(int iMsg)
         if (obj->isFreezed()){
             obj->unfreeze();
             for (auto child : obj->getInListRecursive())
+                child->unfreeze();
+            for (auto child : obj->getOutListRecursive())
                 child->unfreeze();
         } else {
             obj->freeze();
@@ -290,7 +293,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
 }

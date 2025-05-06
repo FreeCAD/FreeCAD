@@ -51,12 +51,12 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->comboBoxScheme->addItem(QStringLiteral("Preference system"), static_cast<int>(-1));
-    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-    for (int i = 0; i < num; i++) {
-        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
-        ui->comboBoxScheme->addItem(item, i);
-    }
+    ui->comboBoxScheme->addItem(QStringLiteral("Preference system"), -1);
+    auto addItem = [&, index {0}](const auto& item) mutable {
+        ui->comboBoxScheme->addItem(QString::fromStdString(item), index++);
+    };
+    auto descriptions = Base::UnitsApi::getDescriptions();
+    std::for_each(descriptions.begin(), descriptions.end(), addItem);
 
     // clang-format off
     connect(ui->unitsBox, qOverload<int>(&QComboBox::activated),
@@ -214,7 +214,7 @@ void DlgUnitsCalculator::onComboBoxSchemeActivated(int index)
 {
     int item = ui->comboBoxScheme->itemData(index).toInt();
     if (item > 0) {
-        ui->quantitySpinBox->setSchema(static_cast<Base::UnitSystem>(item));
+        ui->quantitySpinBox->setSchema(item);
     }
     else {
         ui->quantitySpinBox->clearSchema();

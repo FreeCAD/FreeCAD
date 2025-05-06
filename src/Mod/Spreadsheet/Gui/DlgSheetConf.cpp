@@ -112,7 +112,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
             expr.reset(App::Expression::parse(sheet, exprTxt));
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             FC_THROWM(Base::RuntimeError, "Failed to parse expression for property");
         }
         if (expr->hasComponent() || !expr->isDerivedFrom<App::VariableExpression>()) {
@@ -140,7 +140,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
     if (cell && cell->getExpression()) {
         auto expr = cell->getExpression();
         if (expr->isDerivedFrom<FunctionExpression>()) {
-            auto fexpr = Base::freecad_dynamic_cast<FunctionExpression>(cell->getExpression());
+            auto fexpr = freecad_cast<FunctionExpression*>(cell->getExpression());
             if (fexpr
                 && (fexpr->getFunction() == FunctionExpression::HREF
                     || fexpr->getFunction() == FunctionExpression::HIDDENREF)
@@ -148,12 +148,11 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
                 expr = fexpr->getArgs().front();
             }
         }
-        auto vexpr = Base::freecad_dynamic_cast<VariableExpression>(expr);
+        auto vexpr = freecad_cast<VariableExpression*>(expr);
         if (vexpr) {
-            auto prop =
-                Base::freecad_dynamic_cast<PropertyEnumeration>(vexpr->getPath().getProperty());
+            auto prop = freecad_cast<PropertyEnumeration*>(vexpr->getPath().getProperty());
             if (prop) {
-                auto obj = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+                auto obj = freecad_cast<DocumentObject*>(prop->getContainer());
                 if (obj && prop->hasName()) {
                     path = ObjectIdentifier(sheet);
                     path.setDocumentObjectName(obj, true);
@@ -277,7 +276,7 @@ void DlgSheetConf::accept()
         QDialog::accept();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this, tr("Setup configuration table"), QString::fromUtf8(e.what()));
         if (commandActive) {
             Gui::Command::abortCommand();
@@ -335,7 +334,7 @@ void DlgSheetConf::onDiscard()
         QDialog::accept();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this, tr("Unsetup configuration table"), QString::fromUtf8(e.what()));
         if (commandActive) {
             Gui::Command::abortCommand();

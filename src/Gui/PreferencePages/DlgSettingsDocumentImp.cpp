@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <limits>
+#endif
+
 #include <zlib.h>
 #include <App/License.h>
 #include <Gui/AutoSaver.h>
@@ -60,7 +64,7 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
     ui->prefSaveBackupDateFormat->setToolTip(tip);
     ui->FormatTimeDocsLabel->setText(link);
 
-    ui->prefCountBackupFiles->setMaximum(INT_MAX);
+    ui->prefCountBackupFiles->setMaximum(std::numeric_limits<int>::max());
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
     ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
     connect(ui->prefLicenseType, qOverload<int>(&QComboBox::currentIndexChanged),

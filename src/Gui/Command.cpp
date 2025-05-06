@@ -473,17 +473,17 @@ void Command::_invoke(int id, bool disablelog)
         throw;
     }
     catch (Base::PyException &e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
     catch (Base::AbortException&) {
     }
     catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
     }
@@ -721,7 +721,7 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const ch
         Base::Interpreter().runString(sCmd);
     }
     catch(Py::Exception &) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
 }
 
@@ -851,18 +851,6 @@ bool Command::isActiveObjectValid()
     App::DocumentObject* object = document->getActiveObject();
     assert(object);
     return object->isValid();
-}
-
-/// Updates the (all or listed) documents (propagate changes)
-void Command::updateAll(std::list<Gui::Document*> cList)
-{
-    if (!cList.empty()) {
-        for (auto & it : cList)
-            it->onUpdate();
-    }
-    else {
-        Gui::Application::Instance->onUpdate();
-    }
 }
 
 //--------------------------------------------------------------------------
@@ -1989,7 +1977,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
     if (newCombo.isEmpty())
         return nullptr;
     auto newSequence = QKeySequence::fromString(newCombo);
-    if (newSequence.count() == 0)
+    if (newSequence.isEmpty())
         return nullptr;
 
     // Does this command shortcut conflict with other commands already defined?
@@ -2010,7 +1998,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
         if (existingCombo.isEmpty())
             continue;
         auto existingSequence = QKeySequence::fromString(existingCombo);
-        if (existingSequence.count() == 0)
+        if (existingSequence.isEmpty())
             continue;
 
         // Exact match

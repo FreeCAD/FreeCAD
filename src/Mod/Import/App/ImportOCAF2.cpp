@@ -57,13 +57,9 @@
 
 #include "ImportOCAF2.h"
 
-
-#if OCC_VERSION_HEX >= 0x070500
 // See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
 #define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
+
 
 FC_LOG_LEVEL_INIT("Import", true, true)
 
@@ -482,8 +478,7 @@ bool ImportOCAF2::createGroup(App::Document* doc,
             auto link = doc->addObject<App::Link>("Link");
             link->Label.setValue(child->Label.getValue());
             link->setLink(-1, child);
-            auto pla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
-                child->getPropertyByName("Placement"));
+            auto pla = freecad_cast<App::PropertyPlacement*>(child->getPropertyByName("Placement"));
             if (pla) {
                 link->Placement.setValue(pla->getValue());
             }

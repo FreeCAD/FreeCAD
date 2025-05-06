@@ -121,18 +121,16 @@ if (OCC_FOUND)
             TKMeshVS
             TKService
             TKV3d
+            TKRWMesh
     )
 
-    if (NOT OCC_VERSION_STRING VERSION_LESS 7.5.0)
-        list(APPEND OCC_OCAF_LIBRARIES TKRWMesh)
-    endif ()
     if (OCC_VERSION_STRING VERSION_LESS 7.8.0)
         list(APPEND OCC_LIBRARIES TKIGES TKSTL TKSTEPBase TKSTEPAttr TKSTEP209 TKSTEP)
         list(APPEND OCC_OCAF_LIBRARIES TKXDESTEP TKXDEIGES)
     else ()
         list(APPEND OCC_LIBRARIES TKDESTEP TKDEIGES TKDEGLTF TKDESTL)
     endif ()
-    message(STATUS "-- Found OpenCASCADE version: ${OCC_VERSION_STRING}")
-    message(STATUS "-- OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")
-    message(STATUS "-- OpenCASCADE shared libraries directory: ${OCC_LIBRARY_DIR}")
+    message(STATUS "Found OpenCASCADE version: ${OCC_VERSION_STRING}")
+    message(STATUS "  OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")
+    message(STATUS "  OpenCASCADE shared libraries directory: ${OCC_LIBRARY_DIR}")
 endif ()

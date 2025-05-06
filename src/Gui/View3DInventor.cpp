@@ -58,6 +58,8 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
+
 #include "View3DInventor.h"
 #include "View3DSettings.h"
 #include "Application.h"
@@ -254,8 +256,9 @@ void View3DInventor::printPdf()
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
         QPrinter printer(QPrinter::ScreenResolution);
-        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+        // setPdfVersion sets the printed PDF Version to what is chosen in Preferences/Import-Export/PDF
+        // more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
@@ -791,7 +794,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
     vdy = dirvec->y;
     vdz = dirvec->z;
     // near plane clipping is required to avoid false intersections
-    float nearClippingPlane = 0.1;
+    float nearClippingPlane = 0.1F;
 
     RayPickInfo ret = {false,
                        Base::Vector3d(),

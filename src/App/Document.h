@@ -57,7 +57,11 @@ class Transaction;
 class StringHasher;
 using StringHasherRef = Base::Reference<StringHasher>;
 
-/// The document class
+/**
+ * @brief The document class
+ * @ingroup DocumentGroup
+ * @details For a more high-level discussion see the topic @ref DocumentGroup "Document".
+ */
 class AppExport Document: public App::PropertyContainer
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::Document);
@@ -353,6 +357,7 @@ public:
     /// Returns a list of all Objects
     const std::vector<DocumentObject*>& getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
+    std::vector<DocumentObject*> getObjectsOfType(const std::vector<Base::Type>& types) const;
     /// Returns all object with given extensions. If derived=true also all objects with extensions
     /// derived from the given one
     std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId,
@@ -384,6 +389,10 @@ public:
     void setClosable(bool);
     /// check whether the document can be closed
     bool isClosable() const;
+    /// set the document to autoCreated, this is off by default.
+    void setAutoCreated(bool);
+    /// check whether the document is autoCreated.
+    bool isAutoCreated() const;
     /** Recompute touched features and return the number of recalculated features
      *
      * @param objs: specify a sub set of objects to recompute. If empty, then
@@ -669,6 +678,7 @@ private:
 
     std::string oldLabel;
     std::string myName;
+    bool autoCreated;    // Flag to know if the document was automatically created at startup
 };
 
 template<typename T>

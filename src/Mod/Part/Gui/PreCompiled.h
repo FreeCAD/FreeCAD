@@ -45,11 +45,11 @@
 #ifdef _PreComp_
 
 // standard
-#include <cfloat>
 #include <cmath>
 
 // STL
 #include <algorithm>
+#include <limits>
 #include <map>
 #include <sstream>
 #include <string>

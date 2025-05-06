@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <cassert>
+#include <limits>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -118,7 +119,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer* _owner,
     , _hash(0)
 {
     if (_owner) {
-        const DocumentObject* docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
+        const DocumentObject* docObj = freecad_cast<const DocumentObject*>(_owner);
         if (!docObj) {
             FC_THROWM(Base::RuntimeError, "Property must be owned by a document object.");
         }
@@ -130,7 +131,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer* _owner,
     }
     if (!property.empty()) {
         addComponent(SimpleComponent(property));
-        if (index != INT_MAX) {
+        if (index != std::numeric_limits<int>::max()) {
             addComponent(ArrayComponent(index));
         }
     }
@@ -144,7 +145,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer* _owner, bool lo
     , _hash(0)
 {
     if (_owner) {
-        const DocumentObject* docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
+        const DocumentObject* docObj = freecad_cast<const DocumentObject*>(_owner);
         if (!docObj) {
             FC_THROWM(Base::RuntimeError, "Property must be owned by a document object.");
         }
@@ -165,7 +166,7 @@ ObjectIdentifier::ObjectIdentifier(const Property& prop, int index)
     , localProperty(false)
     , _hash(0)
 {
-    DocumentObject* docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
+    DocumentObject* docObj = freecad_cast<DocumentObject*>(prop.getContainer());
 
     if (!docObj) {
         FC_THROWM(Base::TypeError, "Property must be owned by a document object.");
@@ -179,7 +180,7 @@ ObjectIdentifier::ObjectIdentifier(const Property& prop, int index)
     setDocumentObjectName(docObj);
 
     addComponent(SimpleComponent(String(prop.getName())));
-    if (index != INT_MAX) {
+    if (index != std::numeric_limits<int>::max()) {
         addComponent(ArrayComponent(index));
     }
 }
@@ -703,18 +704,19 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object& pyobj) const
     }
     else {
         assert(isRange());
+        constexpr int max = std::numeric_limits<int>::max();
         Py::Object slice(PySlice_New(Py::Long(begin).ptr(),
-                                     end != INT_MAX ? Py::Long(end).ptr() : nullptr,
+                                     end != max ? Py::Long(end).ptr() : nullptr,
                                      step != 1 ? Py::Long(step).ptr() : nullptr),
                          true);
         PyObject* r = PyObject_GetItem(pyobj.ptr(), slice.ptr());
         if (!r) {
-            Base::PyException::ThrowException();
+            Base::PyException::throwException();
         }
         res = Py::asObject(r);
     }
     if (!res.ptr()) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
     if (PyModule_Check(res.ptr()) && !ExpressionParser::isModuleImported(res.ptr())) {
         FC_THROWM(Base::RuntimeError, "Module '" << getName() << "' access denied.");
@@ -726,7 +728,7 @@ void ObjectIdentifier::Component::set(Py::Object& pyobj, const Py::Object& value
 {
     if (isSimple()) {
         if (PyObject_SetAttrString(*pyobj, getName().c_str(), *value) == -1) {
-            Base::PyException::ThrowException();
+            Base::PyException::throwException();
         }
     }
     else if (isArray()) {
@@ -742,12 +744,13 @@ void ObjectIdentifier::Component::set(Py::Object& pyobj, const Py::Object& value
     }
     else {
         assert(isRange());
+        constexpr int max = std::numeric_limits<int>::max();
         Py::Object slice(PySlice_New(Py::Long(begin).ptr(),
-                                     end != INT_MAX ? Py::Long(end).ptr() : nullptr,
+                                     end != max ? Py::Long(end).ptr() : nullptr,
                                      step != 1 ? Py::Long(step).ptr() : nullptr),
                          true);
         if (PyObject_SetItem(pyobj.ptr(), slice.ptr(), value.ptr()) < 0) {
-            Base::PyException::ThrowException();
+            Base::PyException::throwException();
         }
     }
 }
@@ -770,12 +773,13 @@ void ObjectIdentifier::Component::del(Py::Object& pyobj) const
     }
     else {
         assert(isRange());
+        constexpr int max = std::numeric_limits<int>::max();
         Py::Object slice(PySlice_New(Py::Long(begin).ptr(),
-                                     end != INT_MAX ? Py::Long(end).ptr() : nullptr,
+                                     end != max ? Py::Long(end).ptr() : nullptr,
                                      step != 1 ? Py::Long(step).ptr() : nullptr),
                          true);
         if (PyObject_DelItem(pyobj.ptr(), slice.ptr()) < 0) {
-            Base::PyException::ThrowException();
+            Base::PyException::throwException();
         }
     }
 }
@@ -897,11 +901,11 @@ void ObjectIdentifier::Component::toString(std::ostream& ss, bool toPython) cons
             break;
         case Component::RANGE:
             ss << '[';
-            if (begin != INT_MAX) {
+            if (begin != std::numeric_limits<int>::max()) {
                 ss << begin;
             }
             ss << ':';
-            if (end != INT_MAX) {
+            if (end != std::numeric_limits<int>::max()) {
                 ss << end;
             }
             if (step != 1) {
@@ -1360,7 +1364,7 @@ ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier& other) con
 ObjectIdentifier ObjectIdentifier::parse(const DocumentObject* docObj, const std::string& str)
 {
     std::unique_ptr<Expression> expr(ExpressionParser::parse(docObj, str.c_str()));
-    VariableExpression* v = freecad_dynamic_cast<VariableExpression>(expr.get());
+    VariableExpression* v = freecad_cast<VariableExpression*>(expr.get());
 
     if (v) {
         return v->getPath();
@@ -1710,7 +1714,7 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
         if (!pymod) {                                                                              \
             pymod = PyImport_ImportModule(#_name);                                                 \
             if (!pymod)                                                                            \
-                Base::PyException::ThrowException();                                               \
+                Base::PyException::throwException();                                               \
             else                                                                                   \
                 Py_DECREF(pymod);                                                                  \
         }                                                                                          \
@@ -1849,12 +1853,12 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
         }
         if (prop && prop->getContainer() != obj) {
             auto linkTouched =
-                Base::freecad_dynamic_cast<PropertyBool>(obj->getPropertyByName("_LinkTouched"));
+                freecad_cast<PropertyBool*>(obj->getPropertyByName("_LinkTouched"));
             if (linkTouched) {
                 propName = linkTouched->getName();
             }
             else {
-                auto propOwner = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+                auto propOwner = freecad_cast<DocumentObject*>(prop->getContainer());
                 if (propOwner) {
                     obj = propOwner;
                 }
@@ -1955,7 +1959,7 @@ App::any ObjectIdentifier::getValue(bool pathValue, bool* isPseudoProperty) cons
         return pyObjectToAny(access(rs));
     }
     catch (Py::Exception&) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
     return {};
 }
@@ -1984,7 +1988,7 @@ Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool* isPseudoProperty) 
         return access(rs);
     }
     catch (Py::Exception&) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
     return Py::Object();
 }
@@ -2013,7 +2017,7 @@ void ObjectIdentifier::setValue(const App::any& value) const
         access(rs, &pyvalue);
     }
     catch (Py::Exception&) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
 }
 

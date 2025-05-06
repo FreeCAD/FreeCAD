@@ -124,7 +124,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyLength",
                              "TextSpacing",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.TextSpacing = params.get_param("dimspacing")
 
         if "FlipText" not in properties:
@@ -133,7 +134,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "FlipText",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.FlipText = False
 
         if "TextPosition" not in properties:
@@ -143,7 +145,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyVectorDistance",
                              "TextPosition",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.TextPosition = App.Vector(0, 0, 0)
 
         if "Override" not in properties:
@@ -154,7 +157,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyString",
                              "Override",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Override = ''
 
     def set_units_properties(self, vobj, properties):
@@ -167,7 +171,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyInteger",
                              "Decimals",
                              "Units",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Decimals = params.get_param("dimPrecision")
 
         if "ShowUnit" not in properties:
@@ -176,7 +181,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "ShowUnit",
                              "Units",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ShowUnit = params.get_param("showUnit")
 
         if "UnitOverride" not in properties:
@@ -187,7 +193,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyString",
                              "UnitOverride",
                              "Units",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.UnitOverride = params.get_param("overrideUnit")
 
     def set_graphics_properties(self, vobj, properties):
@@ -200,7 +207,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyLength",
                              "ArrowSize",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ArrowSize = params.get_param("arrowsize")
 
         if "ArrowType" not in properties:
@@ -209,7 +217,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyEnumeration",
                              "ArrowType",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ArrowType = utils.ARROW_TYPES
             vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
 
@@ -219,7 +228,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "FlipArrows",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.FlipArrows = False
 
         if "DimOvershoot" not in properties:
@@ -230,7 +240,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyDistance",
                              "DimOvershoot",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.DimOvershoot = params.get_param("dimovershoot")
 
         if "ExtLines" not in properties:
@@ -239,7 +250,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyDistance",
                              "ExtLines",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ExtLines = params.get_param("extlines")
 
         if "ExtOvershoot" not in properties:
@@ -249,7 +261,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyDistance",
                              "ExtOvershoot",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ExtOvershoot = params.get_param("extovershoot")
 
         if "ShowLine" not in properties:
@@ -258,7 +271,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "ShowLine",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ShowLine = params.get_param("DimShowLine")
 
     def getIcon(self):
@@ -582,7 +596,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             unit = vobj.UnitOverride
 
         # Special representation if we use 'Building US' scheme
-        if (params.get_param("UserSchema", path="Units") == 5) or (unit == "arch"):
+        if (not unit and params.get_param("UserSchema", path="Units") == 5) or (unit == "arch"):
             self.string = App.Units.Quantity(length, App.Units.Length).UserString
             if self.string.count('"') > 1:
                 # multiple inch tokens
@@ -723,11 +737,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         if not hasattr(vobj, "ArrowType"):
             return
 
-        if self.p3.x < self.p2.x:
-            inv = False
-        else:
-            inv = True
-
         # Set scale
         symbol = utils.ARROW_TYPES.index(vobj.ArrowType)
         s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
@@ -745,7 +754,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             else:
                 s1.addChild(self.trans1)
 
-            s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
+            s1.addChild(gui_utils.dim_symbol(symbol, invert=False))
             self.marks.addChild(s1)
 
         s2 = coin.SoSeparator()
@@ -754,7 +763,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             s2.addChild(self.trans2)
 
-        s2.addChild(gui_utils.dim_symbol(symbol, invert=inv))
+        s2.addChild(gui_utils.dim_symbol(symbol, invert=True))
         self.marks.addChild(s2)
 
         self.node_wld.insertChild(self.marks, 2)

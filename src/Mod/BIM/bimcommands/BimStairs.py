@@ -1,34 +1,35 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """BIM Schedule command"""
 
-
-import os
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -68,12 +69,33 @@ class Arch_Stairs:
             FreeCADGui.doCommand("stairs = Arch.makeStairs(baseobj=["+nStr+"],steps="+str(params.get_param_arch("StairsSteps"))+")")
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(stairs)")
+
+            #ArchSketch Support
+            if len(sel)==1 and Draft.getType(obj)=="ArchSketch":
+                # Get ArchSketch.FloorHeight as default and assign to Stairs
+                try:
+                    height = str(obj.FloorHeight.Value)  # vs obj.FloorHeight
+                    # Can only use Value to assign to PropertyLength
+                    FreeCADGui.doCommand("stairs.Height = " + height)
+                except:
+                    pass
+                #If base is ArchSketch, ArchSketchObject is already loaded, no
+                #need to load again : FreeCADGui.addModule("ArchSketchObject")
+                try:
+                    FreeCADGui.runCommand("EditStairs")
+                except:
+                    pass
+
         else:
             FreeCADGui.doCommand("stairs = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
         FreeCADGui.addModule("Draft")
+
+        #FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCADGui.doCommand("Draft.autogroup(stairs)")
+
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        print(" ActiveDocument.recompute, done ")
 
 
 FreeCADGui.addCommand('Arch_Stairs', Arch_Stairs())

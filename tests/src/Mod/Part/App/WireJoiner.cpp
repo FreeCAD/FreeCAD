@@ -92,19 +92,19 @@ TEST_F(WireJoinerTest, addShape)
 
     wjTS.addShape(wireTS);
     wjTS.Build();
-    // The wire in wjTS is open, therefor to see the effect of wjTS.addShape() we must call
+    // The wire in wjTS is open, therefore to see the effect of wjTS.addShape() we must call
     // wjTS.getOpenWires() and put the result in wireTS
     wjTS.getOpenWires(wireTS, nullptr, false);
 
     wjvTS.addShape({edge1TS, edge2TS});
     wjvTS.Build();
-    // The wire in wjvTS is open, therefor to see the effect of wjvTS.addShape() we must call
+    // The wire in wjvTS is open, therefore to see the effect of wjvTS.addShape() we must call
     // wjvTS.getOpenWires() and put the result in wirevTS
     wjvTS.getOpenWires(wirevTS, nullptr, false);
 
     wjvTDS.addShape(edges);
     wjvTDS.Build();
-    // The wire in wjvTDS is closed, therefor to see the effect of wjvTDS.addShape() we can smply
+    // The wire in wjvTDS is closed, therefore to see the effect of wjvTDS.addShape() we can simply
     // call wjvTDS.Shape() to replace the shape in wirevTDS
     wirevTDS.setShape(wjvTDS.Shape());
 
@@ -452,12 +452,12 @@ TEST_F(WireJoinerTest, setMergeEdges)
     EXPECT_FALSE(wjNoBuild.IsDone());
 
     // In this case the number of edges is equal to 9 because all the 3 edges intersect the other 2
-    // and are therefor split in 3 edges each.
+    // and are therefore split in 3 edges each.
     EXPECT_EQ(wireNoMergeEdges.getSubTopoShapes(TopAbs_EDGE).size(), 9);
 
     // In this case the number of edges is equal to 6 because, among the 9 produced by
     // WireJoiner::WireJoinerP::splitEdges(), 3 of them are connected to more than one other edge
-    // and therefor aren't added by WireJoiner::WireJoinerP::findSuperEdges()
+    // and therefore aren't added by WireJoiner::WireJoinerP::findSuperEdges()
     EXPECT_EQ(wireMergeEdges.getSubTopoShapes(TopAbs_EDGE).size(), 6);
 }
 
@@ -524,7 +524,7 @@ TEST_F(WireJoinerTest, setTolerance)
     // WireJoiner::getOpenWires() to get the edges, if any, that aren't used to create a closed wire
 
     wjNegtol.addShape(edgesNegtol);
-    // Setting tol to a negative value won't have effect and therefor wjNegtol.pimpl->myTol will
+    // Setting tol to a negative value won't have effect and therefore wjNegtol.pimpl->myTol will
     // keep the default value.
     // It's better also to give a negative value for the argument atol otherwise setTolerance()
     // will set it to 0.0
@@ -541,17 +541,17 @@ TEST_F(WireJoinerTest, setTolerance)
     wjtol.getOpenWires(wiretol, nullptr, false);
 
     wjNegatol.addShape(edgesNegatol);
-    // Setting atol to a negative value won't have effect and therefor wjNegatol.pimpl->myAngularTol
-    // will keep the default value.
-    // The tol value must be given in any case.
+    // Setting atol to a negative value won't have effect and therefore
+    // wjNegatol.pimpl->myAngularTol will keep the default value. The tol value must be given in any
+    // case.
     wjNegatol.setTolerance(-0.1, -pi);
     wjNegatol.Build();
     wjNegatol.getOpenWires(wireNegatol, nullptr, false);
 
     wjatol.addShape(edgesatol);
-    // Setting atol to a negative value won't have effect and therefor wjNegatol.pimpl->myAngularTol
-    // will keep the default value.
-    // We give also the tol value so that a closed wire can be created.
+    // Setting atol to a negative value won't have effect and therefore
+    // wjNegatol.pimpl->myAngularTol will keep the default value. We give also the tol value so that
+    // a closed wire can be created.
     wjatol.setTolerance(0.2, pi / 9);
     wjatol.Build();
     wjatol.getOpenWires(wireatol, nullptr, false);
@@ -570,7 +570,7 @@ TEST_F(WireJoinerTest, setTolerance)
     // In this case, as the gap between edge1 and edge3 is smaller than tol, a closed wire can be
     // created and it contains all the edges added with wjtol.addShape().
     EXPECT_EQ(TopoShape(wjtol.Shape()).getSubTopoShapes(TopAbs_EDGE).size(), 3);
-    // There are no open wires and therefor no edges that create them
+    // There are no open wires and therefore no edges that create them
     EXPECT_EQ(wiretol.getSubTopoShapes(TopAbs_EDGE).size(), 0);
 
     // In this case, as there's a gap between edge2, edge4 and edge5, no closed wires are created.
@@ -580,12 +580,12 @@ TEST_F(WireJoinerTest, setTolerance)
 
     // In this case, as the gap between edge2, edge4 and edge5 is smaller than tol, a closed wire
     // can be created.
-    // Because of atol, edge4 and edge5 are considerated as duplicates and therefor one of them is
+    // Because of atol, edge4 and edge5 are considerated as duplicates and therefore one of them is
     // removed by WireJoiner::WireJoinerP::add().
     // The closed wire is then created using all the edges added with wjatol.addShape() except the
     // removed one
     EXPECT_EQ(TopoShape(wjatol.Shape()).getSubTopoShapes(TopAbs_EDGE).size(), 3);
-    // There are no open wires and therefor no edges that create them
+    // There are no open wires and therefore no edges that create them
     EXPECT_EQ(wireatol.getSubTopoShapes(TopAbs_EDGE).size(), 0);
 }
 
@@ -665,7 +665,7 @@ TEST_F(WireJoinerTest, getOpenWires)
 
     // Assert
 
-    // All the edges added with wjNoOpenWires.addShape() are used to create a closed wire, therefor
+    // All the edges added with wjNoOpenWires.addShape() are used to create a closed wire, therefore
     // wireNoOpenWires should be null
     EXPECT_TRUE(wireNoOpenWires.isNull());
 
@@ -673,7 +673,7 @@ TEST_F(WireJoinerTest, getOpenWires)
     // except those ones that are split, and all the edges generated by splitting an edge with
     // another one.
     // edge1 and edge2 are left untouched, while edge4 is split in two at the intersection point
-    // (1.0, 1.0, 0.0), therefor 4 edges.
+    // (1.0, 1.0, 0.0), therefore 4 edges.
     EXPECT_EQ(wireOriginal.getSubTopoShapes(TopAbs_EDGE).size(), 4);
 
     // In this case wireNoOriginal should contain only the edges generated by splitting one of them
@@ -753,7 +753,7 @@ TEST_F(WireJoinerTest, getResultWires)
 
     // Assert
 
-    // All the edges added with wjNoResultWires.addShape() can't create a closed wire, therefor
+    // All the edges added with wjNoResultWires.addShape() can't create a closed wire, therefore
     // wireNoResultWires shouldn't have any edges
     // It's not possible to get an useful result from wireNoResultWires.isNull() because
     // WireJoiner::WireJoinerP::compound is always created by
@@ -801,7 +801,7 @@ TEST_F(WireJoinerTest, Build)
 
     // Assert
 
-    // theRange isn't used in WireJoiner::Build() and therefor not attached to any indicator.
+    // theRange isn't used in WireJoiner::Build() and therefore not attached to any indicator.
     // For more reference see
     // https://dev.opencascade.org/doc/occt-7.6.0/refman/html/class_message___progress_range.html
     // and
@@ -878,7 +878,7 @@ TEST_F(WireJoinerTest, Generated)
     // Assert
 
     // There aren't calls to WireJoiner::WireJoinerP::aHistory->AddGenerated() or similar methods in
-    // WireJoiner::WireJoinerP, therefor nothing is returned by calling
+    // WireJoiner::WireJoinerP, therefore nothing is returned by calling
     // WireJoiner::WireJoinerP::aHistory->Generated().
     // There's a call to WireJoiner::WireJoinerP::aHistory->Merge() that uses the history produced
     // by a ShapeFix_Wire object in WireJoiner::WireJoinerP::makeCleanWire() that however looks
@@ -921,11 +921,11 @@ TEST_F(WireJoinerTest, IsDeleted)
     EXPECT_FALSE(wjIsDeleted.IsDeleted(edge2));
     EXPECT_FALSE(wjIsDeleted.IsDeleted(edge3));
 
-    // edge4 is a duplicate of edge3 and therefor deleted
+    // edge4 is a duplicate of edge3 and therefore deleted
     EXPECT_TRUE(wjIsDeleted.IsDeleted(edge4));
 
     // edge5 is smaller that the smallest shape that can be considered with the given value of
-    // tolerance and therefor deleted
+    // tolerance and therefore deleted
     EXPECT_TRUE(wjIsDeleted.IsDeleted(edge5));
 }
 

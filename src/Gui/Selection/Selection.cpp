@@ -154,7 +154,7 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
             return;
         onSelectionChanged(msg);
     } catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         FC_ERR("Unhandled Base::Exception caught in selection observer: ");
     } catch (std::exception &e) {
         FC_ERR("Unhandled std::exception caught in selection observer: " << e.what());
@@ -311,6 +311,101 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getPickedList(const 
     return temp;
 }
 
+std::vector<Gui::SelectionObject> SelectionSingleton::getSelectionIn(App::DocumentObject* container,
+    Base::Type typeId, bool single) const
+{
+    if (!container) {
+        return getSelectionEx(nullptr, typeId, ResolveMode::NoResolve, single);
+    }
+
+    std::vector<SelectionObject> sels = getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve, single);
+
+    std::vector<SelectionObject> ret;
+    std::map<App::DocumentObject*, size_t> SortMap;
+
+    for (auto& sel : sels) {
+        auto* rootObj = sel.getObject();
+        App::Document* doc = rootObj->getDocument();
+        std::vector<std::string> subs = sel.getSubNames();
+        bool objPassed = false;
+
+        for (size_t i = 0; i < subs.size(); ++i) {
+            auto& sub = subs[i];
+            App::DocumentObject* newRootObj = nullptr;
+            std::string newSub = "";
+
+            std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+            if (container == rootObj) {
+                objPassed = true;
+            }
+
+            if (rootObj->isLink()) {
+                // Update doc in case its an external link.
+                doc = rootObj->getLinkedObject()->getDocument();
+            }
+
+            for (auto& name : names) {
+                App::DocumentObject* obj = doc->getObject(name.c_str());
+                if (!obj) { // We reached the element name (for example 'edge1')
+                    newSub += name;
+                    break;
+                }
+
+                if (objPassed) {
+                    if (!newRootObj) {
+                        // We are the first object after the container is passed.
+                        newRootObj = obj;
+                    }
+                    else {
+                        newSub += name + ".";
+                    }
+                }
+
+                if (obj == container) {
+                    objPassed = true;
+                }
+                if (obj->isLink()) {
+                    // Update doc in case its an external link.
+                    doc = obj->getLinkedObject()->getDocument();
+                }
+            }
+
+            if (newRootObj) {
+                // Make sure selected object is of correct type
+                auto* lastObj = newRootObj->resolve(newSub.c_str());
+                if (!lastObj || !lastObj->isDerivedFrom(typeId)) {
+                    continue;
+                }
+
+                auto it = SortMap.find(newRootObj);
+                if (it != SortMap.end()) {
+                    // only add sub-element
+                    if (newSub != "") {
+                        ret[it->second].SubNames.emplace_back(newSub);
+                        ret[it->second].SelPoses.emplace_back(sel.SelPoses[i]);
+                    }
+                }
+                else {
+                    if (single && !ret.empty()) {
+                        ret.clear();
+                        break;
+                    }
+                    // create a new entry
+                    ret.emplace_back(newRootObj);
+                    if (newSub != "") {
+                        ret.back().SubNames.emplace_back(newSub);
+                        ret.back().SelPoses.emplace_back(sel.SelPoses[i]);
+                    }
+                    SortMap.insert(std::make_pair(newRootObj, ret.size() - 1));
+                }
+            }
+        }
+    }
+
+    return ret;
+}
+
 std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDocName, Base::Type typeId,
                                                                 ResolveMode resolve, bool single) const
 {
@@ -332,7 +427,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
     std::map<App::DocumentObject*,size_t> SortMap;
 
     // check the type
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return temp;
 
     App::Document *pcDoc = nullptr;
@@ -543,7 +638,7 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Ty
 std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const char* typeName, const char* pDocName, ResolveMode resolve) const
 {
     Base::Type typeId = Base::Type::fromName(typeName);
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return {};
     return getObjectsOfType(typeId, pDocName, resolve);
 }
@@ -565,7 +660,7 @@ unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, co
 unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const char* pDocName, ResolveMode resolve) const
 {
     Base::Type typeId = Base::Type::fromName(typeName);
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return 0;
     return countObjectsOfType(typeId, pDocName, resolve);
 }
@@ -746,7 +841,7 @@ QString getPreselectionInfo(const char* documentName,
 {
     auto pts = schemaTranslatePoint(x, y, z, precision);
 
-    int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
+    int numberDecimals = std::min(6, static_cast<int>(Base::UnitsApi::getDecimals()));
 
     QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
         .arg(QString::fromUtf8(documentName))

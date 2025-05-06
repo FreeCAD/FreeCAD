@@ -38,7 +38,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Preferences
 
-# translate = App.Qt.translate
 
 __title__ = "Assembly Command Create Exploded View"
 __author__ = "Ondsel"
@@ -253,6 +252,7 @@ class ExplodedViewStep:
                 "References",
                 "Exploded Move",
                 QT_TRANSLATE_NOOP("App::Property", "The objects moved by the move"),
+                locked=True,
             )
 
         if not hasattr(evStep, "MovementTransform"):
@@ -264,6 +264,7 @@ class ExplodedViewStep:
                     "App::Property",
                     "This is the movement of the move. The end placement is the result of the start placement * this placement.",
                 ),
+                locked=True,
             )
 
         if not hasattr(evStep, "MoveType"):
@@ -272,6 +273,7 @@ class ExplodedViewStep:
                 "MoveType",
                 "Exploded Move",
                 QT_TRANSLATE_NOOP("App::Property", "The type of the move"),
+                locked=True,
             )
 
     def migrationScript(self, evStep):
@@ -287,6 +289,7 @@ class ExplodedViewStep:
                 "References",
                 "Exploded Move",
                 QT_TRANSLATE_NOOP("App::Property", "The objects moved by the move"),
+                locked=True,
             )
 
             rootObj = None

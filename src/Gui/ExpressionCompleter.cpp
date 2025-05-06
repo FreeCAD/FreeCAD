@@ -341,7 +341,7 @@ public:
             if (idx >= 0 && idx < objSize) {
                 obj = objs[idx / 2];
                 // if they are in the ignore list skip
-                if (inList.count(obj)) {
+                if (inList.contains(obj)) {
                     return;
                 }
             }
@@ -430,7 +430,7 @@ public:
             const auto& objs = doc->getObjects();
             objSize = (int)objs.size() * 2;
             // if invalid index, or in the ignore list bail out
-            if (idx < 0 || idx >= objSize || inList.count(obj)) {
+            if (idx < 0 || idx >= objSize || inList.contains(obj)) {
                 return;
             }
             obj = objs[idx / 2];
@@ -954,6 +954,11 @@ void ExpressionLineEdit::setExactMatch(bool enabled)
     if (completer) {
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
     }
+}
+
+ExpressionCompleter *ExpressionLineEdit::getCompleter(void)
+{
+    return this->completer;
 }
 
 bool ExpressionLineEdit::completerActive() const

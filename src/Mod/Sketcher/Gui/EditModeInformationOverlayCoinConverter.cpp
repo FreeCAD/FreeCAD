@@ -214,7 +214,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                         // it is "just" a visualisation matter OCC could not calculate the curvature
                         // terminating here would mean that the other shapes would not be drawn.
                         // Solution: Report the issue and set dummy curvature to 0
-                        e.ReportException();
+                        e.reportException();
                         Base::Console().DeveloperError(
                             "EditModeInformationOverlayCoinConverter",
                             "Curvature graph for B-spline with GeoId=%d could not be calculated.\n",

@@ -354,7 +354,7 @@ public:
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
-    int moveGeometries(std::vector<GeoElementId> geoEltIds,
+    int moveGeometries(const std::vector<GeoElementId>& geoEltIds,
                        const Base::Vector3d& toPoint,
                        bool relative = false,
                        bool updateGeoBeforeMoving = false);
@@ -841,13 +841,13 @@ public:
 public:
     // Analyser functions
     int autoConstraint(double precision = Precision::Confusion() * 1000,
-                       double angleprecision = M_PI / 20,
+                       double angleprecision = std::numbers::pi / 20,
                        bool includeconstruction = true);
 
     int detectMissingPointOnPointConstraints(double precision = Precision::Confusion() * 1000,
                                              bool includeconstruction = true);
-    void analyseMissingPointOnPointCoincident(double angleprecision = M_PI / 8);
-    int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI / 8);
+    void analyseMissingPointOnPointCoincident(double angleprecision = std::numbers::pi / 8);
+    int detectMissingVerticalHorizontalConstraints(double angleprecision = std::numbers::pi / 8);
     int detectMissingEqualityConstraints(double precision);
 
     std::vector<ConstraintIds>& getMissingPointOnPointConstraints();

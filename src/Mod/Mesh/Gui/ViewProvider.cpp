@@ -386,12 +386,12 @@ void ViewProviderMesh::setOpenEdgeColorFrom(const Base::Color& c)
 
 const Mesh::PropertyMeshKernel& ViewProviderMesh::getMeshProperty() const
 {
-    return Base::freecad_dynamic_cast<Mesh::Feature>(getObject())->Mesh;
+    return freecad_cast<Mesh::Feature*>(getObject())->Mesh;
 }
 
 Mesh::PropertyMeshKernel& ViewProviderMesh::getMeshProperty()
 {
-    return Base::freecad_dynamic_cast<Mesh::Feature>(getObject())->Mesh;
+    return freecad_cast<Mesh::Feature*>(getObject())->Mesh;
 }
 
 const Mesh::MeshObject& ViewProviderMesh::getMeshObject() const
@@ -1793,7 +1793,7 @@ void ViewProviderMesh::fillHoleCallback(void* ud, SoEventCallback* cb)
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
         Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-        if (auto that = dynamic_cast<ViewProviderMesh*>(vp)) {
+        if (auto that = freecad_cast<ViewProviderMesh*>(vp)) {
             const SoDetail* detail = point->getDetail(that->getShapeNode());
             if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                 // get the boundary to the picked facet
@@ -1868,7 +1868,7 @@ void ViewProviderMesh::markPartCallback(void* ud, SoEventCallback* cb)
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (auto that = dynamic_cast<ViewProviderMesh*>(vp)) {
+            if (auto that = freecad_cast<ViewProviderMesh*>(vp)) {
                 const SoDetail* detail = point->getDetail(that->getShapeNode());
                 if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                     // get the boundary to the picked facet
@@ -2420,15 +2420,15 @@ void ViewProviderMesh::highlightColors()
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     {
-        auto prop = Base::freecad_dynamic_cast<App::PropertyColorList>(
-            pcObject->getPropertyByName("FaceColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
         if (prop && prop->getSize() == int(rMesh.countFacets())) {
             setColorPerFace(prop);
         }
     }
     {
-        auto prop = Base::freecad_dynamic_cast<App::PropertyColorList>(
-            pcObject->getPropertyByName("VertexColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
         if (prop && prop->getSize() == int(rMesh.countPoints())) {
             setColorPerVertex(prop);
         }
@@ -2439,15 +2439,15 @@ bool ViewProviderMesh::canHighlightColors() const
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     {
-        auto prop = Base::freecad_dynamic_cast<App::PropertyColorList>(
-            pcObject->getPropertyByName("FaceColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
         if (prop && prop->getSize() == int(rMesh.countFacets())) {
             return true;
         }
     }
     {
-        auto prop = Base::freecad_dynamic_cast<App::PropertyColorList>(
-            pcObject->getPropertyByName("VertexColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
         if (prop && prop->getSize() == int(rMesh.countPoints())) {
             return true;
         }

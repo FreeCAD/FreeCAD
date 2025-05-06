@@ -391,7 +391,7 @@ void TaskDetail::onHighlightMoved(QPointF dragEnd)
     double y = Rez::guiX(getBaseFeat()->Y.getValue());
 
     DrawViewPart* dvp = getBaseFeat();
-    DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
+    DrawProjGroupItem* dpgi = freecad_cast<DrawProjGroupItem*>(dvp);
     if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
         if (!dpg) {
@@ -504,7 +504,7 @@ void TaskDetail::updateDetail()
 QPointF TaskDetail::getAnchorScene()
 {
     DrawViewPart* dvp = getBaseFeat();
-    DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
+    DrawProjGroupItem* dpgi = freecad_cast<DrawProjGroupItem*>(dvp);
     DrawViewDetail* dvd = getDetailFeat();
     Base::Vector3d anchorPos = dvd->AnchorPoint.getValue();
     anchorPos.y = -anchorPos.y;

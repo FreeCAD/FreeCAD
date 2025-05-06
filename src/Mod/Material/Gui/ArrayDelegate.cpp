@@ -42,7 +42,6 @@
 #include <Gui/PrefWidgets.h>
 #include <Gui/SpinBox.h>
 #include <Gui/WaitCursor.h>
-// #include <Gui/FileDialog.h>
 
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/ModelManager.h>
@@ -67,7 +66,6 @@ void ArrayDelegate::paint(QPainter* painter,
                           const QStyleOptionViewItem& option,
                           const QModelIndex& index) const
 {
-
     if (_type == Materials::MaterialValue::Quantity) {
         auto* tableModel = dynamic_cast<const AbstractArrayModel*>(index.model());
         painter->save();
@@ -125,7 +123,7 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant& item) cons
     else if (_type == Materials::MaterialValue::Integer) {
         Gui::UIntSpinBox* spinner = new Gui::UIntSpinBox(parent);
         spinner->setMinimum(0);
-        spinner->setMaximum(UINT_MAX);
+        spinner->setMaximum(std::numeric_limits<unsigned>::max());
         spinner->setValue(item.toUInt());
         widget = spinner;
     }

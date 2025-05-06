@@ -45,22 +45,27 @@ using namespace Gui;
 View3DSettings::View3DSettings(ParameterGrp::handle hGrp,
                                View3DInventorViewer* view)
     : hGrp(hGrp)
+    , hLightSourcesGrp(hGrp->GetGroup("LightSources"))
     , _viewers{view}
 {
     hGrp->Attach(this);
+    hLightSourcesGrp->Attach(this);
 }
 
 View3DSettings::View3DSettings(ParameterGrp::handle hGrp,
                                const std::vector<View3DInventorViewer *>& view)
     : hGrp(hGrp)
+    , hLightSourcesGrp(hGrp->GetGroup("LightSources"))
     , _viewers(view)
 {
     hGrp->Attach(this);
+    hLightSourcesGrp->Attach(this);
 }
 
 View3DSettings::~View3DSettings()
 {
     hGrp->Detach(this);
+    hLightSourcesGrp->Detach(this);
 }
 
 int View3DSettings::stopAnimatingIfDeactivated() const
@@ -315,7 +320,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"OrbitStyle") == 0) {
-        int style = rGrp.GetInt("OrbitStyle",1);
+        int style = rGrp.GetInt("OrbitStyle",4);
         for (auto _viewer : _viewers) {
             _viewer->navigationStyle()->setOrbitStyle(NavigationStyle::OrbitStyle(style));
         }

@@ -44,6 +44,7 @@ using namespace TechDraw;
 
 PATPathMaker::PATPathMaker(QGraphicsItem* parent, double lineWidth, double fillScale) :
     m_parent(parent),
+    m_pen(),
     m_fillScale(fillScale),
     m_lineWidth(lineWidth)
 {
@@ -110,37 +111,6 @@ QGraphicsPathItem*  PATPathMaker::simpleLine(TechDraw::BaseGeomPtr base)
     fillItem->setPath(dashedPPath(std::vector<double>(),
                                   Rez::guiX(start),
                                   Rez::guiX(end)));
-    return fillItem;
-}
-
-
-//! make a fragment (length = remain) of a dashed line, with pattern starting at +offset
-QGraphicsPathItem*  PATPathMaker::geomToStubbyLine(TechDraw::BaseGeomPtr base, double remain, LineSet& ls)
-{
-    QGraphicsPathItem* fillItem = new QGraphicsPathItem(m_parent);
-    Base::Vector3d start(base->getStartPoint().x,
-                         base->getStartPoint().y,
-                         0.0);
-    Base::Vector3d end(base->getEndPoint().x,
-                       base->getEndPoint().y,
-                       0.0);
-    double origLen = (end - start).Length();
-
-    double appRemain = Rez::appX(remain);
-    Base::Vector3d newEnd = start + (ls.getUnitDir() * appRemain);
-
-    double newLen = (newEnd - start).Length();
-
-    if (newLen > origLen) {
-        newEnd = end;
-    }
-
-    double offset = Rez::guiX(m_fillScale * ls.getDashSpec().length()) - remain;
-
-    fillItem->setPath(dashedPPath(offsetDash(decodeDashSpec(ls.getDashSpec()), offset),
-                                  Rez::guiX(start),
-                                  Rez::guiX(newEnd)));
-    m_fillItems.push_back(fillItem);
     return fillItem;
 }
 
@@ -212,6 +182,11 @@ QPainterPath PATPathMaker::dashedPPath(const std::vector<double> dashPattern, co
       return result;
 }
 
+void PATPathMaker::setLineWidth(double width)
+{
+    m_lineWidth = width;
+    m_pen.setWidthF(width);
+}
 
 //! convert a dash pattern to an offset dash pattern  (ie offset -> end)
 // dashPattern & offset are already scaled.
@@ -250,19 +225,4 @@ std::vector<double> PATPathMaker::offsetDash(const std::vector<double> dashPatte
 
     return result;
 }
-
-
-//! find remaining length of a dash pattern after offset
-double PATPathMaker::dashRemain(const std::vector<double> dashPattern, const double offset)
-{
-    double length = 0.0;
-    for (auto& d: dashPattern) {
-        length += fabs(d);
-    }
-    if (offset > length) {
-        return 0.0;
-    }
-    return length - offset;
-}
-
 

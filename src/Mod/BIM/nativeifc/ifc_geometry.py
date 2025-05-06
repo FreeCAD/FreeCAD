@@ -1,31 +1,33 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """This module contains geometry editing and geometry properties-related tools"""
 
-import FreeCAD
-
 import ifcopenshell
 import ifcopenshell.util.unit
+
+import FreeCAD
 
 from . import ifc_tools
 
@@ -47,12 +49,12 @@ def add_geom_properties(obj):
                     ext = rep.Items[0]
                     if "ExtrusionDepth" not in obj.PropertiesList:
                         obj.addProperty(
-                            "App::PropertyLength", "ExtrusionDepth", "Geometry"
+                            "App::PropertyLength", "ExtrusionDepth", "Geometry", locked=True
                         )
                     obj.ExtrusionDepth = ext.Depth * scaling
                     if "ExtrusionDirection" not in obj.PropertiesList:
                         obj.addProperty(
-                            "App::PropertyVector", "ExtrusionDirection", "Geometry"
+                            "App::PropertyVector", "ExtrusionDirection", "Geometry", locked=True
                         )
                     obj.ExtrusionDirection = FreeCAD.Vector(
                         ext.ExtrudedDirection.DirectionRatios
@@ -62,12 +64,12 @@ def add_geom_properties(obj):
                     if ext.SweptArea.is_a("IfcRectangleProfileDef"):
                         if "RectangleLength" not in obj.PropertiesList:
                             obj.addProperty(
-                                "App::PropertyLength", "RectangleLength", "Geometry"
+                                "App::PropertyLength", "RectangleLength", "Geometry", locked=True
                             )
                         obj.RectangleLength = ext.SweptArea.XDim * scaling
                         if "RectangleWidth" not in obj.PropertiesList:
                             obj.addProperty(
-                                "App::PropertyLength", "RectangleWidth", "Geometry"
+                                "App::PropertyLength", "RectangleWidth", "Geometry", locked=True
                             )
                         obj.RectangleWidth = ext.SweptArea.YDim * scaling
 
@@ -79,6 +81,7 @@ def add_geom_properties(obj):
                                     "App::PropertyVectorList",
                                     "PolylinePoints",
                                     "Geometry",
+                                    locked=True,
                                 )
                             points = [
                                 p.Coordinates for p in ext.SweptArea.OuterCurve.Points
@@ -101,14 +104,14 @@ def add_geom_properties(obj):
                             "WebThickness",
                         ]:
                             if hasattr(ext.SweptArea, p):
-                                obj.addProperty("App::PropertyLength", p, "Geometry")
+                                obj.addProperty("App::PropertyLength", p, "Geometry", locked=True)
                                 value = getattr(ext.SweptArea, p)
                                 if not value:
                                     value = 0
                                 value = value * scaling
                                 setattr(obj, p, value)
                             obj.addProperty(
-                                "App::PropertyString", "ProfileName", "Geometry"
+                                "App::PropertyString", "ProfileName", "Geometry", locked=True
                             )
                             obj.ProfileName = ext.SweptArea.ProfileName
 
@@ -127,6 +130,7 @@ def add_geom_properties(obj):
                                             "App::PropertyPosition",
                                             "AxisStart",
                                             "Geometry",
+                                            locked=True,
                                         )
                                     obj.AxisStart = FreeCAD.Vector(
                                         pol.Points[0].Coordinates
@@ -136,6 +140,7 @@ def add_geom_properties(obj):
                                             "App::PropertyPosition",
                                             "AxisEnd",
                                             "Geometry",
+                                            locked=True,
                                         )
                                     obj.AxisEnd = FreeCAD.Vector(
                                         pol.Points[1].Coordinates

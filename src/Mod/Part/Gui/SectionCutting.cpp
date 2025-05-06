@@ -23,11 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-
-// to avoid compiler warnings of redefining contents of basic.h
-// later by #include <Gui/ViewProviderGeometryObject.h>
-# define _USE_MATH_DEFINES  // NOLINT
 # include <cmath>
+# include <limits>
 
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoCamera.h>
@@ -136,9 +133,10 @@ SectionCut::SectionCut(QWidget* parent)
 
 void SectionCut::initSpinBoxes()
 {
-    ui->cutX->setRange(-INT_MAX, INT_MAX);
-    ui->cutY->setRange(-INT_MAX, INT_MAX);
-    ui->cutZ->setRange(-INT_MAX, INT_MAX);
+    constexpr int max = std::numeric_limits<int>::max();
+    ui->cutX->setRange(-max, max);
+    ui->cutY->setRange(-max, max);
+    ui->cutZ->setRange(-max, max);
 }
 
 void SectionCut::initControls(const Base::BoundBox3d& BoundCompound)
@@ -627,7 +625,7 @@ Part::Box* SectionCut::tryCreateXBox(const Base::Vector3f& pos, const Base::Vect
         return createXBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -701,7 +699,7 @@ Part::Box* SectionCut::tryCreateYBox(const Base::Vector3f& pos, const Base::Vect
         return createYBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -745,7 +743,7 @@ Part::Box* SectionCut::tryCreateZBox(const Base::Vector3f& pos, const Base::Vect
         return createZBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -800,7 +798,7 @@ Part::Cut* SectionCut::tryCreateCut(const char* name)
         return createCut(name);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -831,7 +829,7 @@ void SectionCut::startCutting(bool isInitial)
         startObjectCutting(isInitial);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

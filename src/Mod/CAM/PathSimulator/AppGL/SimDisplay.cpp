@@ -507,18 +507,18 @@ void SimDisplay::RotateEye(float rotStep)
 void SimDisplay::MoveEye(float x, float z)
 {
     mEyeX += x;
-    if (mEyeX > 100) {
-        mEyeX = 100;
+    if (mEyeX > 300) {
+        mEyeX = 300;
     }
-    else if (mEyeX < -100) {
-        mEyeX = -100;
+    else if (mEyeX < -300) {
+        mEyeX = -300;
     }
     mEyeZ += z;
-    if (mEyeZ > 100) {
-        mEyeZ = 100;
+    if (mEyeZ > 300) {
+        mEyeZ = 300;
     }
-    else if (mEyeZ < -100) {
-        mEyeZ = -100;
+    else if (mEyeZ < -300) {
+        mEyeZ = -300;
     }
     updateDisplay = true;
 }

@@ -31,6 +31,7 @@
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/Preferences.h>
 
@@ -402,9 +403,9 @@ double QGISectionLine::getArrowRotation(Base::Vector3d arrowDir)
     arrowDir.Normalize();
     double angle = atan2f(arrowDir.y, arrowDir.x);
     if (angle < 0.0) {
-        angle = 2 * M_PI + angle;
+        angle = 2 * std::numbers::pi + angle;
     }
-    double arrowRotation = 360.0 - angle * (180.0/M_PI);   //convert to Qt rotation (clockwise degrees)
+    double arrowRotation = 360.0 - Base::toDegrees(angle);   //convert to Qt rotation (clockwise degrees)
     return arrowRotation;
 }
 
@@ -483,22 +484,18 @@ void QGISectionLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem 
 
 void QGISectionLine::setTools()
 {
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-    m_brush.setStyle(m_brushCurrent);
-    m_brush.setColor(m_colCurrent);
-
     m_line->setPen(m_pen);
+    QColor currentColor = m_pen.color();
 
-    m_arrow1->setNormalColor(m_colCurrent);
-    m_arrow1->setFillColor(m_colCurrent);
+    m_arrow1->setNormalColor(currentColor);
+    m_arrow1->setFillColor(currentColor);
     m_arrow1->setPrettyNormal();
-    m_arrow2->setNormalColor(m_colCurrent);
-    m_arrow2->setFillColor(m_colCurrent);
+    m_arrow2->setNormalColor(currentColor);
+    m_arrow2->setFillColor(currentColor);
     m_arrow2->setPrettyNormal();
 
-    m_symbol1->setDefaultTextColor(m_colCurrent);
-    m_symbol2->setDefaultTextColor(m_colCurrent);
+    m_symbol1->setDefaultTextColor(currentColor);
+    m_symbol2->setDefaultTextColor(currentColor);
 }
 
 

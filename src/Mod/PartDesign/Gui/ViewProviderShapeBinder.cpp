@@ -38,6 +38,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ViewParams.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
@@ -91,7 +92,7 @@ bool ViewProviderShapeBinder::setEdit(int ModNum) {
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         TaskDlgShapeBinder* sbDlg = qobject_cast<TaskDlgShapeBinder*>(dlg);
         if (dlg && !sbDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -383,7 +384,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
             self->update(PartDesign::SubShapeBinder::UpdateForced);
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         return;
     }
@@ -397,7 +398,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         return;
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Standard_Failure& e) {
         std::ostringstream str;
@@ -412,7 +413,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
 
 std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() const {
     std::vector<App::DocumentObject*> ret;
-    auto self = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
+    auto self = freecad_cast<PartDesign::SubShapeBinder*>(getObject());
     if (self && self->ClaimChildren.getValue() && self->Support.getValue()) {
         std::set<App::DocumentObject*> objSet;
         for (auto& l : self->Support.getSubListValues()) {

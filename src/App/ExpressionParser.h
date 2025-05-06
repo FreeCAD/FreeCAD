@@ -594,6 +594,12 @@ protected:
     std::string end;
 };
 
+/**
+ * @brief Namespace for parsing expressions.
+ *
+ * Contains functionality for parsing expressions, the units of
+ * expressions, whether a token is an identifier, unit, or constant.
+ */
 namespace ExpressionParser
 {
 AppExport Expression* parse(const App::DocumentObject* owner, const char* buffer);
@@ -649,7 +655,7 @@ public:
 };
 
 #define YYSTYPE semantic_type
-#include "ExpressionParser.tab.h"
+#include "Expression.tab.h"
 #undef YYTOKENTYPE
 #undef YYSTYPE
 #undef YYSTYPE_ISDECLARED

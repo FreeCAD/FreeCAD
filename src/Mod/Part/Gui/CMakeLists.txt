@@ -5,24 +5,15 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-include_directories(
-    SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZIPIOS_INCLUDES}
-    ${ZLIB_INCLUDE_DIR}
-)
-link_directories(${OCC_LIBRARY_DIR})
-
 set(PartGui_LIBS
     Part
     FreeCADGui
     MatGui
 )
+
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND PartGui_LIBS TracyClient)
+endif()
 
 if(MSVC)
     include_directories(
@@ -38,7 +29,7 @@ list(APPEND PartGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-generate_from_xml(ViewProviderPartExtPy)
+generate_from_py(ViewProviderPartExt)
 
 set (Part_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Part_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
@@ -79,7 +70,7 @@ set(PartGui_UIC_SRCS
 )
 
 SET(Python_SRCS
-    ViewProviderPartExtPy.xml
+    ViewProviderPartExt.pyi
     ViewProviderPartExtPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

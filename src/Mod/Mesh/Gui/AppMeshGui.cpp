@@ -149,7 +149,7 @@ PyMOD_INIT_FUNC(MeshGui)
         Base::Interpreter().runString("import MeshFlatteningCommand");
     }
     catch (Base::PyException& err) {
-        err.ReportException();
+        err.reportException();
     }
 
     // register preferences pages

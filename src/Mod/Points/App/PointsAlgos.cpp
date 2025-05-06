@@ -578,30 +578,30 @@ void PlyReader::read(const std::string& filename)
 
     // x field
     Eigen::Index x = max_size;
-    it = std::find(fields.begin(), fields.end(), "x");
+    it = std::ranges::find(fields, "x");
     if (it != fields.end()) {
         x = std::distance(fields.begin(), it);
     }
 
     // y field
     Eigen::Index y = max_size;
-    it = std::find(fields.begin(), fields.end(), "y");
+    it = std::ranges::find(fields, "y");
     if (it != fields.end()) {
         y = std::distance(fields.begin(), it);
     }
 
     // z field
     Eigen::Index z = max_size;
-    it = std::find(fields.begin(), fields.end(), "z");
+    it = std::ranges::find(fields, "z");
     if (it != fields.end()) {
         z = std::distance(fields.begin(), it);
     }
 
     // normal x field
     Eigen::Index normal_x = max_size;
-    it = std::find(fields.begin(), fields.end(), "normal_x");
+    it = std::ranges::find(fields, "normal_x");
     if (it == fields.end()) {
-        it = std::find(fields.begin(), fields.end(), "nx");
+        it = std::ranges::find(fields, "nx");
     }
     if (it != fields.end()) {
         normal_x = std::distance(fields.begin(), it);
@@ -609,9 +609,9 @@ void PlyReader::read(const std::string& filename)
 
     // normal y field
     Eigen::Index normal_y = max_size;
-    it = std::find(fields.begin(), fields.end(), "normal_y");
+    it = std::ranges::find(fields, "normal_y");
     if (it == fields.end()) {
-        it = std::find(fields.begin(), fields.end(), "ny");
+        it = std::ranges::find(fields, "ny");
     }
     if (it != fields.end()) {
         normal_y = std::distance(fields.begin(), it);
@@ -619,9 +619,9 @@ void PlyReader::read(const std::string& filename)
 
     // normal z field
     Eigen::Index normal_z = max_size;
-    it = std::find(fields.begin(), fields.end(), "normal_z");
+    it = std::ranges::find(fields, "normal_z");
     if (it == fields.end()) {
-        it = std::find(fields.begin(), fields.end(), "nz");
+        it = std::ranges::find(fields, "nz");
     }
     if (it != fields.end()) {
         normal_z = std::distance(fields.begin(), it);
@@ -629,7 +629,7 @@ void PlyReader::read(const std::string& filename)
 
     // intensity field
     Eigen::Index greyvalue = max_size;
-    it = std::find(fields.begin(), fields.end(), "intensity");
+    it = std::ranges::find(fields, "intensity");
     if (it != fields.end()) {
         greyvalue = std::distance(fields.begin(), it);
     }
@@ -639,22 +639,22 @@ void PlyReader::read(const std::string& filename)
     Eigen::Index green = max_size;
     Eigen::Index blue = max_size;
     Eigen::Index alpha = max_size;
-    it = std::find(fields.begin(), fields.end(), "red");
+    it = std::ranges::find(fields, "red");
     if (it != fields.end()) {
         red = std::distance(fields.begin(), it);
     }
 
-    it = std::find(fields.begin(), fields.end(), "green");
+    it = std::ranges::find(fields, "green");
     if (it != fields.end()) {
         green = std::distance(fields.begin(), it);
     }
 
-    it = std::find(fields.begin(), fields.end(), "blue");
+    it = std::ranges::find(fields, "blue");
     if (it != fields.end()) {
         blue = std::distance(fields.begin(), it);
     }
 
-    it = std::find(fields.begin(), fields.end(), "alpha");
+    it = std::ranges::find(fields, "alpha");
     if (it != fields.end()) {
         alpha = std::distance(fields.begin(), it);
     }
@@ -1068,30 +1068,30 @@ void PcdReader::read(const std::string& filename)
 
     // x field
     Eigen::Index x = max_size;
-    it = std::find(fields.begin(), fields.end(), "x");
+    it = std::ranges::find(fields, "x");
     if (it != fields.end()) {
         x = std::distance(fields.begin(), it);
     }
 
     // y field
     Eigen::Index y = max_size;
-    it = std::find(fields.begin(), fields.end(), "y");
+    it = std::ranges::find(fields, "y");
     if (it != fields.end()) {
         y = std::distance(fields.begin(), it);
     }
 
     // z field
     Eigen::Index z = max_size;
-    it = std::find(fields.begin(), fields.end(), "z");
+    it = std::ranges::find(fields, "z");
     if (it != fields.end()) {
         z = std::distance(fields.begin(), it);
     }
 
     // normal x field
     Eigen::Index normal_x = max_size;
-    it = std::find(fields.begin(), fields.end(), "normal_x");
+    it = std::ranges::find(fields, "normal_x");
     if (it == fields.end()) {
-        it = std::find(fields.begin(), fields.end(), "nx");
+        it = std::ranges::find(fields, "nx");
     }
     if (it != fields.end()) {
         normal_x = std::distance(fields.begin(), it);
@@ -1099,9 +1099,9 @@ void PcdReader::read(const std::string& filename)
 
     // normal y field
     Eigen::Index normal_y = max_size;
-    it = std::find(fields.begin(), fields.end(), "normal_y");
+    it = std::ranges::find(fields, "normal_y");
     if (it == fields.end()) {
-        it = std::find(fields.begin(), fields.end(), "ny");
+        it = std::ranges::find(fields, "ny");
     }
     if (it != fields.end()) {
         normal_y = std::distance(fields.begin(), it);
@@ -1109,9 +1109,9 @@ void PcdReader::read(const std::string& filename)
 
     // normal z field
     Eigen::Index normal_z = max_size;
-    it = std::find(fields.begin(), fields.end(), "normal_z");
+    it = std::ranges::find(fields, "normal_z");
     if (it == fields.end()) {
-        it = std::find(fields.begin(), fields.end(), "nz");
+        it = std::ranges::find(fields, "nz");
     }
     if (it != fields.end()) {
         normal_z = std::distance(fields.begin(), it);
@@ -1119,16 +1119,16 @@ void PcdReader::read(const std::string& filename)
 
     // intensity field
     Eigen::Index greyvalue = max_size;
-    it = std::find(fields.begin(), fields.end(), "intensity");
+    it = std::ranges::find(fields, "intensity");
     if (it != fields.end()) {
         greyvalue = std::distance(fields.begin(), it);
     }
 
     // rgb(a) field
     Eigen::Index rgba = max_size;
-    it = std::find(fields.begin(), fields.end(), "rgb");
+    it = std::ranges::find(fields, "rgb");
     if (it == fields.end()) {
-        it = std::find(fields.begin(), fields.end(), "rgba");
+        it = std::ranges::find(fields, "rgba");
     }
     if (it != fields.end()) {
         rgba = std::distance(fields.begin(), it);

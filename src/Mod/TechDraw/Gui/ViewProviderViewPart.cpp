@@ -172,7 +172,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
     if (auto part = getViewPart(); part && part->isDerivedFrom<TechDraw::DrawViewDetail>() &&
         prop == &(HighlightAdjust)) {
         auto detail = static_cast<DrawViewDetail*>(getViewPart());
-        auto baseDvp = dynamic_cast<DrawViewPart*>(detail->BaseView.getValue());
+        auto baseDvp = freecad_cast<DrawViewPart*>(detail->BaseView.getValue());
         if (baseDvp) {
             baseDvp->requestPaint();
         }

@@ -302,13 +302,11 @@ void ExpressionWidget::makeLabel(QLineEdit* le)
 
     /* Icon for f(x) */
     QFontMetrics fm(le->font());
-    int frameWidth = le->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
+    iconHeight = fm.height();
     iconLabel = new ExpressionLabel(le);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QStringLiteral("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
     iconLabel->setExpressionText(QString());
 }

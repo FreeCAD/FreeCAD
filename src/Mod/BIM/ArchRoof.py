@@ -1,46 +1,30 @@
-#***************************************************************************
-#*   Copyright (c) 2012 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import math
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2012 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
-import ArchComponent
-import DraftGeomUtils
-import DraftVecUtils
-import FreeCAD
-import Part
-
-from FreeCAD import Vector
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt, txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
-    # \endcond
+__title__  = "FreeCAD Roof"
+__author__ = "Yorik van Havre", "Jonathan Wiedemann"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchRoof
 #  \ingroup ARCH
@@ -50,9 +34,28 @@ else:
 #  Roofs are built from a closed contour and a series of
 #  slopes.
 
-__title__  = "FreeCAD Roof"
-__author__ = "Yorik van Havre", "Jonathan Wiedemann"
-__url__    = "https://www.freecad.org"
+import math
+
+import FreeCAD
+import ArchComponent
+import DraftGeomUtils
+import DraftVecUtils
+import Part
+
+from FreeCAD import Vector
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt, txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt, txt):
+        return txt
+    # \endcond
 
 
 def adjust_list_len (lst, newLn, val):
@@ -159,59 +162,70 @@ class _Roof(ArchComponent.Component):
             obj.addProperty("App::PropertyFloatList",
                             "Angles",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of angles of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of angles of the roof segments"),
+                            locked=True)
         if not "Runs" in pl:
             obj.addProperty("App::PropertyFloatList",
                             "Runs",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of horizontal length projections of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of horizontal length projections of the roof segments"),
+                            locked=True)
         if not "IdRel" in pl:
             obj.addProperty("App::PropertyIntegerList",
                             "IdRel",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of IDs of the relative profiles of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of IDs of the relative profiles of the roof segments"),
+                            locked=True)
         if not "Thickness" in pl:
             obj.addProperty("App::PropertyFloatList",
                             "Thickness",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of thicknesses of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of thicknesses of the roof segments"),
+                            locked=True)
         if not "Overhang" in pl:
             obj.addProperty("App::PropertyFloatList",
                             "Overhang",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of overhangs of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of overhangs of the roof segments"),
+                            locked=True)
         if not "Heights" in pl:
             obj.addProperty("App::PropertyFloatList",
                             "Heights",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The list of calculated heights of the roof segments"))
+                            QT_TRANSLATE_NOOP("App::Property", "The list of calculated heights of the roof segments"),
+                            locked=True)
         if not "Face" in pl:
             obj.addProperty("App::PropertyInteger",
                             "Face",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The face number of the base object used to build the roof"))
+                            QT_TRANSLATE_NOOP("App::Property", "The face number of the base object used to build the roof"),
+                            locked=True)
         if not "RidgeLength" in pl:
             obj.addProperty("App::PropertyLength",
                             "RidgeLength",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The total length of the ridges and hips of the roof"))
+                            QT_TRANSLATE_NOOP("App::Property", "The total length of the ridges and hips of the roof"),
+                            locked=True)
             obj.setEditorMode("RidgeLength",1)
         if not "BorderLength" in pl:
             obj.addProperty("App::PropertyLength",
                             "BorderLength",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "The total length of the borders of the roof"))
+                            QT_TRANSLATE_NOOP("App::Property", "The total length of the borders of the roof"),
+                            locked=True)
             obj.setEditorMode("BorderLength",1)
         if not "Flip" in pl:
             obj.addProperty("App::PropertyBool",
                             "Flip",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "Specifies if the direction of the roof should be flipped"))
+                            QT_TRANSLATE_NOOP("App::Property", "Specifies if the direction of the roof should be flipped"),
+                            locked=True)
         if not "Subvolume" in pl:
             obj.addProperty("App::PropertyLink",
                             "Subvolume",
                             "Roof",
-                            QT_TRANSLATE_NOOP("App::Property", "An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume"))
+                            QT_TRANSLATE_NOOP("App::Property", "An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume"),
+                            locked=True)
         self.Type = "Roof"
 
     def onDocumentRestored(self, obj):
@@ -955,4 +969,3 @@ class _RoofTaskPanel:
                                    QtGui.QApplication.translate("Arch", "Thickness (mm)", None),
                                    QtGui.QApplication.translate("Arch", "Overhang (mm)", None),
                                    QtGui.QApplication.translate("Arch", "Height (mm)", None)])
-

@@ -1,50 +1,30 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import os
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
-import FreeCAD
-import ArchCommands
-import ArchComponent
-import Draft
-import DraftVecUtils
-import ArchWindowPresets
-from FreeCAD import Units
-from FreeCAD import Vector
-from draftutils import params
-from draftutils.messages import _wrn
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    import draftguitools.gui_trackers as DraftTrackers
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__  = "FreeCAD Window"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchWindow
 #  \ingroup ARCH
@@ -55,17 +35,39 @@ else:
 #  of wires, and that can be inserted into other Arch objects,
 #  by defining a volume that gets subtracted from them.
 
-__title__  = "FreeCAD Window"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+import os
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import ArchWindowPresets
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Units
+from FreeCAD import Vector
+from draftutils import params
+from draftutils.messages import _wrn
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import draftguitools.gui_trackers as DraftTrackers
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 # presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180",
                       "Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
 WindowPresets = ArchWindowPresets.WindowPresets
-
-
 
 
 def recolorize(attr): # names is [docname,objname]
@@ -123,41 +125,41 @@ class _Window(ArchComponent.Component):
 
         lp = obj.PropertiesList
         if not "Hosts" in lp:
-            obj.addProperty("App::PropertyLinkList","Hosts","Window",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"))
+            obj.addProperty("App::PropertyLinkList","Hosts","Window",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"), locked=True)
         if not "WindowParts" in lp:
-            obj.addProperty("App::PropertyStringList","WindowParts","Window",QT_TRANSLATE_NOOP("App::Property","The components of this window"))
+            obj.addProperty("App::PropertyStringList","WindowParts","Window",QT_TRANSLATE_NOOP("App::Property","The components of this window"), locked=True)
             obj.setEditorMode("WindowParts",2)
         if not "HoleDepth" in lp:
-            obj.addProperty("App::PropertyLength","HoleDepth","Window",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically."))
+            obj.addProperty("App::PropertyLength","HoleDepth","Window",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically."), locked=True)
         if not "Subvolume" in lp:
-            obj.addProperty("App::PropertyLink","Subvolume","Window",QT_TRANSLATE_NOOP("App::Property","An optional object that defines a volume to be subtracted from hosts of this window"))
+            obj.addProperty("App::PropertyLink","Subvolume","Window",QT_TRANSLATE_NOOP("App::Property","An optional object that defines a volume to be subtracted from hosts of this window"), locked=True)
         if not "Width" in lp:
-            obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window"))
+            obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window"), locked=True)
         if not "Height" in lp:
-            obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window"))
+            obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window"), locked=True)
         if not "Normal" in lp:
-            obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
+            obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"), locked=True)
         if not "Preset" in lp:
-            obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"))
+            obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"), locked=True)
             obj.setEditorMode("Preset",2)
         if not "Frame" in lp:
-            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property","The frame size of this window"))
+            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property","The frame size of this window"), locked=True)
         if not "Offset" in lp:
-            obj.addProperty("App::PropertyLength","Offset","Window",QT_TRANSLATE_NOOP("App::Property","The offset size of this window"))
+            obj.addProperty("App::PropertyLength","Offset","Window",QT_TRANSLATE_NOOP("App::Property","The offset size of this window"), locked=True)
         if not "Area" in lp:
-            obj.addProperty("App::PropertyArea","Area","Window",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
+            obj.addProperty("App::PropertyArea","Area","Window",QT_TRANSLATE_NOOP("App::Property","The area of this window"), locked=True)
         if not "LouvreWidth" in lp:
-            obj.addProperty("App::PropertyLength","LouvreWidth","Window",QT_TRANSLATE_NOOP("App::Property","The width of louvre elements"))
+            obj.addProperty("App::PropertyLength","LouvreWidth","Window",QT_TRANSLATE_NOOP("App::Property","The width of louvre elements"), locked=True)
         if not "LouvreSpacing" in lp:
-            obj.addProperty("App::PropertyLength","LouvreSpacing","Window",QT_TRANSLATE_NOOP("App::Property","The space between louvre elements"))
+            obj.addProperty("App::PropertyLength","LouvreSpacing","Window",QT_TRANSLATE_NOOP("App::Property","The space between louvre elements"), locked=True)
         if not "Opening" in lp:
-            obj.addProperty("App::PropertyPercent","Opening","Window",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
+            obj.addProperty("App::PropertyPercent","Opening","Window",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"), locked=True)
         if not "HoleWire" in lp:
-            obj.addProperty("App::PropertyInteger","HoleWire","Window",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. If 0, the value will be calculated automatically"))
+            obj.addProperty("App::PropertyInteger","HoleWire","Window",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. If 0, the value will be calculated automatically"), locked=True)
         if not "SymbolPlan" in lp:
-            obj.addProperty("App::PropertyBool","SymbolPlan","Window",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"))
+            obj.addProperty("App::PropertyBool","SymbolPlan","Window",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"), locked=True)
         if not "SymbolElevation" in lp:
-            obj.addProperty("App::PropertyBool","SymbolElevation","Window",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"))
+            obj.addProperty("App::PropertyBool","SymbolElevation","Window",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"), locked=True)
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
@@ -1128,7 +1130,7 @@ class _ArchWindowTaskPanel:
             val = int(val)
             if self.obj:
                 if not hasattr(self.obj,"HoleWire"):
-                    self.obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"))
+                    self.obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"), locked=True)
                 self.obj.HoleWire = val
 
     def getIcon(self,obj):
@@ -1417,6 +1419,3 @@ class _ArchWindowTaskPanel:
 
         if self.obj:
             self.obj.ViewObject.Proxy.invertHinge()
-
-
-

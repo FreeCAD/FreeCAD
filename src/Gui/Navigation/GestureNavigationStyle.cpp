@@ -315,7 +315,8 @@ public:
             bool press = (kbev->getState() == SoKeyboardEvent::DOWN);
             switch (kbev->getKey()) {
                 case SoKeyboardEvent::H:
-                    if (!press) {
+                    // Disable H key in editing mode because of conflict with sketcher
+                    if (!ns.viewer->isEditing() && !press) {
                         ns.setupPanningPlane(ns.viewer->getCamera());
                         ns.lookAtPoint(kbev->getPosition());
                     }
@@ -1003,7 +1004,7 @@ void GestureNavigationStyle::onRollGesture(int direction)
     try {
         Base::Interpreter().runString(code.str().c_str());
     } catch (Base::PyException& exc) {
-        exc.ReportException();
+        exc.reportException();
     } catch (...) {
         Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
    }

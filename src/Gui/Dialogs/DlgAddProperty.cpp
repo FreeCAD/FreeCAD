@@ -82,13 +82,13 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
 DlgAddProperty::~DlgAddProperty() = default;
 
 static std::string containerName(const App::PropertyContainer *c) {
-    auto doc = Base::freecad_dynamic_cast<App::Document>(c);
+    auto doc = freecad_cast<App::Document*>(c);
     if(doc)
         return doc->getName();
-    auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(c);
+    auto obj = freecad_cast<App::DocumentObject*>(c);
     if(obj)
         return obj->getFullName();
-    auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(c);
+    auto vpd = freecad_cast<ViewProviderDocumentObject*>(c);
     if(vpd)
         return vpd->getObject()->getFullName();
     return "?";
@@ -138,12 +138,12 @@ void DlgAddProperty::accept()
             (*it)->addDynamicProperty(type.c_str(),name.c_str(),
                     group.c_str(),ui->edtDoc->toPlainText().toUtf8().constData());
         } catch(Base::Exception &e) {
-            e.ReportException();
+            e.reportException();
             for(auto it2=containers.begin();it2!=it;++it2) {
                 try {
                     (*it2)->removeDynamicProperty(name.c_str());
                 } catch(Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             }
             QMessageBox::critical(getMainWindow(),

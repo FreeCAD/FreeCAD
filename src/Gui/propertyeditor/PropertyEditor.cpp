@@ -319,9 +319,9 @@ void PropertyEditor::openEditor(const QModelIndex& index)
     }
     auto prop = items[0];
     auto parent = prop->getContainer();
-    auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(parent);
+    auto obj = freecad_cast<App::DocumentObject*>(parent);
     if (!obj) {
-        auto view = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(parent);
+        auto view = freecad_cast<ViewProviderDocumentObject*>(parent);
         if (view) {
             obj = view->getObject();
         }
@@ -377,7 +377,7 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
     }
     // do not re-throw
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const std::exception& e) {
         Base::Console().Error(
@@ -680,7 +680,7 @@ void PropertyEditor::removeProperty(const App::Property& prop)
     for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
         // find the given property in the list and remove it if it's there
         std::vector<App::Property*>::iterator pos =
-            std::find(it->second.begin(), it->second.end(), &prop);
+            std::ranges::find(it->second, &prop);
         if (pos != it->second.end()) {
             it->second.erase(pos);
             // if the last property of this name is removed then also remove the whole group
@@ -919,7 +919,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                     prop->getContainer()->removeDynamicProperty(prop->getName());
                 }
                 catch (Base::Exception& e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             }
             break;

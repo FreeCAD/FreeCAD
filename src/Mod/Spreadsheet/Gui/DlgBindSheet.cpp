@@ -168,10 +168,10 @@ void DlgBindSheet::accept()
                 if (!doc) {
                     FC_THROWM(Base::RuntimeError, "Cannot find document " << docname);
                 }
-                obj = Base::freecad_dynamic_cast<Sheet>(doc->getObject(sep + 1));
+                obj = freecad_cast<Sheet*>(doc->getObject(sep + 1));
             }
             else {
-                obj = Base::freecad_dynamic_cast<Sheet>(sheet->getDocument()->getObject(ref));
+                obj = freecad_cast<Sheet*>(sheet->getDocument()->getObject(ref));
             }
             if (!obj) {
                 FC_THROWM(Base::RuntimeError, "Cannot find Spreadsheet '" << ref << "'");
@@ -267,7 +267,7 @@ void DlgBindSheet::accept()
         QDialog::accept();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this,
                               tr("Bind Spreadsheet Cells"),
                               tr("Error:\n") + QString::fromUtf8(e.what()));
@@ -296,7 +296,7 @@ void DlgBindSheet::onDiscard()
         reject();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this, tr("Unbind cells"), QString::fromUtf8(e.what()));
         Gui::Command::abortCommand();
     }

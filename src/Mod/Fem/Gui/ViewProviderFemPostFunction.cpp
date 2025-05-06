@@ -92,16 +92,6 @@ ViewProviderFemPostFunctionProvider::ViewProviderFemPostFunctionProvider() = def
 
 ViewProviderFemPostFunctionProvider::~ViewProviderFemPostFunctionProvider() = default;
 
-std::vector<App::DocumentObject*> ViewProviderFemPostFunctionProvider::claimChildren() const
-{
-    return getObject<Fem::FemPostFunctionProvider>()->Functions.getValues();
-}
-
-std::vector<App::DocumentObject*> ViewProviderFemPostFunctionProvider::claimChildren3D() const
-{
-    return claimChildren();
-}
-
 void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::onChanged(prop);
@@ -113,7 +103,7 @@ void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
     Fem::FemPostFunctionProvider* obj = getObject<Fem::FemPostFunctionProvider>();
-    if (prop == &obj->Functions) {
+    if (prop == &obj->Group) {
         updateSize();
     }
 }
@@ -333,7 +323,7 @@ bool ViewProviderFemPostFunction::setEdit(int ModNum)
             postDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !postDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -353,7 +343,8 @@ bool ViewProviderFemPostFunction::setEdit(int ModNum)
         }
         else {
             postDlg = new TaskDlgPost(this);
-            postDlg->appendBox(new TaskPostFunction(this));
+            auto panel = new TaskPostFunction(this);
+            postDlg->addTaskBox(panel->windowIcon().pixmap(32), panel);
             Gui::Control().showDialog(postDlg);
         }
 
@@ -766,7 +757,10 @@ void CylinderWidget::radiusChanged(double)
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFemPostFunction)
 // NOTE: The technical lower limit is at 1e-4 that the Coin3D manipulator can handle
-static const App::PropertyFloatConstraint::Constraints scaleConstraint = {1e-4, DBL_MAX, 1.0};
+static const App::PropertyFloatConstraint::Constraints scaleConstraint = {
+    1e-4,
+    std::numeric_limits<double>::max(),
+    1.0};
 
 ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
     : m_detectscale(false)
@@ -1188,6 +1182,8 @@ SoGroup* postBox()
 
 SoGroup* postCylinder()
 {
+    using std::numbers::pi;
+
     SoCoordinate3* points = new SoCoordinate3();
     int nCirc = 20;
     const int nSide = 8;
@@ -1199,8 +1195,8 @@ SoGroup* postCylinder()
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < nCirc + 1; ++j) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::cos(2 * M_PI / nCirc * j),
-                                            std::sin(2 * M_PI / nCirc * j),
+                                    SbVec3f(std::cos(2 * pi / nCirc * j),
+                                            std::sin(2 * pi / nCirc * j),
                                             -h / 2. + h * i));
             ++idx;
         }
@@ -1209,8 +1205,8 @@ SoGroup* postCylinder()
     for (int i = 0; i < nSide; ++i) {
         for (int j = 0; j < 2; ++j) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::cos(2 * M_PI / nSide * i),
-                                            std::sin(2 * M_PI / nSide * i),
+                                    SbVec3f(std::cos(2 * pi / nSide * i),
+                                            std::sin(2 * pi / nSide * i),
                                             -h / 2. + h * j));
             ++idx;
         }
@@ -1253,24 +1249,26 @@ SoGroup* postPlane()
 
 SoGroup* postSphere()
 {
+    using std::numbers::pi;
+
     SoCoordinate3* points = new SoCoordinate3();
     points->point.setNum(2 * 84);
     int idx = 0;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 21; j++) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::sin(2 * M_PI / 20 * j) * std::cos(M_PI / 4 * i),
-                                            std::sin(2 * M_PI / 20 * j) * std::sin(M_PI / 4 * i),
-                                            std::cos(2 * M_PI / 20 * j)));
+                                    SbVec3f(std::sin(2 * pi / 20 * j) * std::cos(pi / 4 * i),
+                                            std::sin(2 * pi / 20 * j) * std::sin(pi / 4 * i),
+                                            std::cos(2 * pi / 20 * j)));
             ++idx;
         }
     }
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 21; j++) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::sin(M_PI / 4 * i) * std::cos(2 * M_PI / 20 * j),
-                                            std::sin(M_PI / 4 * i) * std::sin(2 * M_PI / 20 * j),
-                                            std::cos(M_PI / 4 * i)));
+                                    SbVec3f(std::sin(pi / 4 * i) * std::cos(2 * pi / 20 * j),
+                                            std::sin(pi / 4 * i) * std::sin(2 * pi / 20 * j),
+                                            std::cos(pi / 4 * i)));
             ++idx;
         }
     }

@@ -108,7 +108,7 @@ public:
             vpParent->OnTopWhenSelected.setValue(onTopMode);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
 

@@ -96,7 +96,7 @@ int ExternalGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* ExternalGeometryExtensionPy::testFlag(PyObject* args)
+PyObject* ExternalGeometryExtensionPy::testFlag(PyObject* args) const
 {
     char* flag;
     if (PyArg_ParseTuple(args, "s", &flag)) {

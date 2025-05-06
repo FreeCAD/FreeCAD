@@ -32,6 +32,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -299,7 +300,7 @@ void QGIViewPart::drawAllFaces(void)
             newFace->setHatchOffset(fGeom->PatternOffset.getValue());
             newFace->setHatchFile(fGeom->PatIncluded.getValue());
             Gui::ViewProvider* gvp = QGIView::getViewProvider(fGeom);
-            ViewProviderGeomHatch* geomVp = dynamic_cast<ViewProviderGeomHatch*>(gvp);
+            ViewProviderGeomHatch* geomVp = freecad_cast<ViewProviderGeomHatch*>(gvp);
             if (geomVp) {
                 newFace->setHatchColor(geomVp->ColorPattern.getValue());
                 newFace->setLineWeight(geomVp->WeightPattern.getValue());
@@ -320,7 +321,7 @@ void QGIViewPart::drawAllFaces(void)
 
             // get the properties from the hatch viewprovider
             Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
-            ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+            ViewProviderHatch* hatchVp = freecad_cast<ViewProviderHatch*>(gvp);
             if (hatchVp) {
                 if (hatchVp->HatchScale.getValue() > 0.0) {
                     newFace->setHatchScale(hatchVp->HatchScale.getValue());
@@ -433,8 +434,6 @@ void QGIViewPart::drawAllVertexes()
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
 
-    float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;     //thick
-    double vertexScaleFactor = Preferences::getPreferenceGroup("General")->GetFloat("VertexScale", 3.0);
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
 
     const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
@@ -445,8 +444,8 @@ void QGIViewPart::drawAllVertexes()
                 QGICMark* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
                 cmItem->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
-                cmItem->setThick(0.5 * lineWidth);//need minimum?
-                cmItem->setSize(lineWidth * vertexScaleFactor * vp->CenterScale.getValue());
+                cmItem->setThick(0.5F * getLineWidth());//need minimum?
+                cmItem->setSize(getVertexSize() * vp->CenterScale.getValue());
                 cmItem->setPrettyNormal();
                 cmItem->setZValue(ZVALUE::VERTEX);
             }
@@ -458,7 +457,7 @@ void QGIViewPart::drawAllVertexes()
                 item->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
                 item->setNormalColor(vertexColor);
                 item->setFillColor(vertexColor);
-                item->setRadius(lineWidth * vertexScaleFactor);
+                item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
             }
@@ -837,8 +836,6 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     }
     else {
         std::pair<Base::Vector3d, Base::Vector3d> dirsAligned = dcs->sectionArrowDirs();
-        dirsAligned.first = DrawUtil::invertY(dirsAligned.first);
-        dirsAligned.second = DrawUtil::invertY(dirsAligned.second);
         sectionLine->setArrowDirections(dirsAligned.first, dirsAligned.second);
     }
 
@@ -966,7 +963,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         highlight->setPos(0.0, 0.0);//sb setPos(center.x, center.y)?
 
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
-        double rotationRad = viewPart->Rotation.getValue() * M_PI / 180.0;
+        double rotationRad = Base::toRadians(viewPart->Rotation.getValue());
         center.RotateZ(rotationRad);
 
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
@@ -994,7 +991,7 @@ void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
     std::string highlightName = highlight->getFeatureName();
     App::Document* doc = getViewObject()->getDocument();
     App::DocumentObject* docObj = doc->getObject(highlightName.c_str());
-    auto detail = dynamic_cast<DrawViewDetail*>(docObj);
+    auto detail = freecad_cast<DrawViewDetail*>(docObj);
     if (detail) {
         auto oldAnchor = detail->AnchorPoint.getValue();
         Base::Vector3d delta = Rez::appX(DrawUtil::toVector3d(newPos)) / getViewObject()->getScale();
@@ -1291,4 +1288,14 @@ void QGIViewPart::setGroupSelection(bool isSelected, const std::vector<std::stri
             subItem->setSelected(isSelected);
         }
     }
+}
+
+double QGIViewPart::getLineWidth() {
+    auto vp{static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()))};
+
+    return vp->LineWidth.getValue() * lineScaleFactor; // Thick
+}
+
+double QGIViewPart::getVertexSize() {
+    return getLineWidth() * Preferences::vertexScale();
 }

@@ -8,16 +8,8 @@ include_directories(
 
 include_directories(
   SYSTEM
-  ${Boost_INCLUDE_DIRS}
-  ${OCC_INCLUDE_DIR}
-  ${PYCXX_INCLUDE_DIR}
-  ${Python3_INCLUDE_DIRS}
-  ${ZLIB_INCLUDE_DIR}
-  ${XercesC_INCLUDE_DIRS}
   ${FREETYPE_INCLUDE_DIRS}
 )
-
-link_directories(${OCC_LIBRARY_DIR})
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Blending)
 

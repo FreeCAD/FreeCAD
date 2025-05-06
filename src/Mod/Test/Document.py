@@ -671,6 +671,50 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
 
 
+class DocumentImportCases(unittest.TestCase):
+    def testDXFImportCPPIssue20195(self):
+        if "BUILD_DRAFT" in FreeCAD.__cmake__:
+            import importDXF
+            from draftutils import params
+
+            # Set options, doing our best to restore them:
+            wasShowDialog = params.get_param("dxfShowDialog")
+            wasUseLayers = params.get_param("dxfUseDraftVisGroups")
+            wasUseLegacyImporter = params.get_param("dxfUseLegacyImporter")
+            wasCreatePart = params.get_param("dxfCreatePart")
+            wasCreateDraft = params.get_param("dxfCreateDraft")
+            wasCreateSketch = params.get_param("dxfCreateSketch")
+
+            try:
+                # disable Preferences dialog in gui mode (avoids popup prompt to user)
+                params.set_param("dxfShowDialog", False)
+                # Preserve the DXF layers (makes the checking of document contents easier)
+                params.set_param("dxfUseDraftVisGroups", True)
+                # Use the new C++ importer -- that's where the bug was
+                params.set_param("dxfUseLegacyImporter", False)
+                # create simple part shapes (3 params)
+                # This is required to display the bug because creation of Draft objects clears out the
+                # pending exception this test is looking for, whereas creation of the simple shape object
+                # actually throws on the pending exception so the entity is absent from the document.
+                params.set_param("dxfCreatePart", True)
+                params.set_param("dxfCreateDraft", False)
+                params.set_param("dxfCreateSketch", False)
+                importDXF.insert(
+                    FreeCAD.getHomePath() + "Mod/Test/TestData/DXFSample.dxf", "ImportedDocName"
+                )
+            finally:
+                params.set_param("dxfShowDialog", wasShowDialog)
+                params.set_param("dxfUseDraftVisGroups", wasUseLayers)
+                params.set_param("dxfUseLegacyImporter", wasUseLegacyImporter)
+                params.set_param("dxfCreatePart", wasCreatePart)
+                params.set_param("dxfCreateDraft", wasCreateDraft)
+                params.set_param("dxfCreateSketch", wasCreateSketch)
+            doc = FreeCAD.getDocument("ImportedDocName")
+            # This doc should have 3 objects: The Layers container, the DXF layer called 0, and one Line
+            self.assertEqual(len(doc.Objects), 3)
+            FreeCAD.closeDocument("ImportedDocName")
+
+
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroup:
     def __init__(self, obj):
@@ -2620,3 +2664,46 @@ class FeatureTestAttribute(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument("TestAttribute")
+
+
+class DocumentAutoCreatedCases(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestDoc")
+
+    def tearDown(self):
+        for doc_name in FreeCAD.listDocuments().keys():
+            FreeCAD.closeDocument(doc_name)
+
+    def test_set_get_auto_created(self):
+        self.doc.setAutoCreated(True)
+        self.assertTrue(self.doc.isAutoCreated(), "autoCreated flag should be True")
+
+        self.doc.setAutoCreated(False)
+        self.assertFalse(self.doc.isAutoCreated(), "autoCreated flag should be False")
+
+    def test_auto_created_document_closes_on_opening_existing_document(self):
+        self.doc.setAutoCreated(True)
+        self.assertEqual(len(self.doc.Objects), 0)
+        saved_doc = FreeCAD.newDocument("SavedDoc")
+        file_path = tempfile.gettempdir() + os.sep + "SavedDoc.FCStd"
+        saved_doc.saveAs(file_path)
+        FreeCAD.closeDocument("SavedDoc")
+        FreeCAD.setActiveDocument("TestDoc")
+        FreeCAD.open(file_path)
+        if self.doc.isAutoCreated() and len(self.doc.Objects) == 0:
+            FreeCAD.closeDocument("TestDoc")
+        self.assertNotIn("TestDoc", FreeCAD.listDocuments())
+
+    def test_manual_document_does_not_close_on_opening_existing_document(self):
+        self.assertFalse(self.doc.isAutoCreated())
+        self.assertEqual(len(self.doc.Objects), 0)
+        saved_doc = FreeCAD.newDocument("SavedDoc")
+        file_path = tempfile.gettempdir() + os.sep + "SavedDoc.FCStd"
+        saved_doc.saveAs(file_path)
+        FreeCAD.closeDocument("SavedDoc")
+        FreeCAD.setActiveDocument("TestDoc")
+        FreeCAD.open(file_path)
+        if self.doc.isAutoCreated() and len(self.doc.Objects) == 0:
+            FreeCAD.closeDocument("TestDoc")
+        self.assertIn("TestDoc", FreeCAD.listDocuments())
+        self.assertIn("SavedDoc", FreeCAD.listDocuments())

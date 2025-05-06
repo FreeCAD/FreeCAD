@@ -24,10 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef _MSC_VER
-#  define _USE_MATH_DEFINES
-#  include <cmath>
-# endif //_MSC_VER
+# include <cmath>
 #endif // _PreComp_
 
 #include <Gui/Application.h>
@@ -43,7 +40,8 @@ PROPERTYITEM_SOURCE(PartGui::PropertyEnumAttacherItem)
 PropertyEnumAttacherItem::PropertyEnumAttacherItem() = default;
 
 QWidget* PropertyEnumAttacherItem::createEditor(QWidget* parent,
-                                                const std::function<void()>& method) const
+                                                const std::function<void()>& method,
+                                                FrameOption /*frameOption*/) const
 {
     Gui::LabelButton* modeEditor = new Gui::LabelButton(parent);
     QObject::connect(modeEditor, &Gui::LabelButton::valueChanged, method);

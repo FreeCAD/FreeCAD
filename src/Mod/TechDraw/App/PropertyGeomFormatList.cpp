@@ -104,7 +104,7 @@ PyObject *PropertyGeomFormatList::getPyObject()
 void PropertyGeomFormatList::setPyObject(PyObject *value)
 {
     // check container of this property to notify about changes
-//    Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
+//    Part2DObject* part2d = freecad_cast<Part2DObject*>(this->getContainer());
 
     if (PySequence_Check(value)) {
         Py::Sequence sequence(value);

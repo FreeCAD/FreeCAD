@@ -37,6 +37,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 
@@ -101,7 +102,7 @@ bool ViewProvider::setEdit(int ModNum)
             featureDlg = nullptr; // another feature left open its task panel
         }
         if (dlg && !featureDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -191,7 +192,7 @@ void ViewProvider::onChanged(const App::Property* prop) {
             for(App::DocumentObject* obj : body->Group.getValues()) {
 
                 if(obj->isDerivedFrom<PartDesign::Feature>() && obj != getObject()) {
-                   auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
+                   auto vpd = freecad_cast<Gui::ViewProviderDocumentObject*>(
                            Gui::Application::Instance->getViewProvider(obj));
                    if(vpd && vpd->Visibility.getValue())
                        vpd->Visibility.setValue(false);
@@ -237,7 +238,7 @@ QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
     return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }
 
-bool ViewProvider::onDelete(const std::vector<std::string> &)
+bool ViewProvider::onDelete(const std::vector<std::string>&)
 {
     PartDesign::Feature* feature = getObject<PartDesign::Feature>();
 

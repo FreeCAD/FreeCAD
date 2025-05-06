@@ -22,13 +22,12 @@
 
 #include "PreCompiled.h"
 
+// generated out of Precision.pyi
 #include "PrecisionPy.h"
 #include "PrecisionPy.cpp"
 
-
 using Base::Precision;
 using Base::PrecisionPy;
-
 
 // returns a string which represents the object e.g. when printed in python
 std::string PrecisionPy::representation() const

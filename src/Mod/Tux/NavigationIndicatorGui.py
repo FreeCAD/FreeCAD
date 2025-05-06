@@ -612,6 +612,8 @@ def retranslateUi():
     aTurntable.setText(translate("NavigationIndicator", "Turntable"))
     aFreeTurntable.setText(translate("NavigationIndicator", "Free Turntable"))
     aTrackball.setText(translate("NavigationIndicator", "Trackball"))
+    aTrackballClassic.setText(translate("NavigationIndicator", "Trackball Classic"))
+    aRoundedArcball.setText(translate("NavigationIndicator", "Rounded Arcball"))
     a0.setText(translate("NavigationIndicator", "Undefined"))
 
 
@@ -619,6 +621,12 @@ indicator = IndicatorButton(statusBar)
 indicator.setFlat(True)
 indicator.adjustSize()
 indicator.setObjectName("NavigationIndicator")
+text = QtGui.QApplication.translate(
+    "NavigationIndicator",
+    "Navigation indicator",
+    "A context menu action used to show or hide the 'Navigation indicator' toolbar widget",
+)
+indicator.setWindowTitle(text)
 
 menu = QtGui.QMenu(indicator)
 indicator.setMenu(menu)
@@ -642,9 +650,17 @@ aTrackball.setCheckable(True)
 aFreeTurntable = QtGui.QAction(gOrbit)
 aFreeTurntable.setObjectName("NavigationIndicator_FreeTurntable")
 aFreeTurntable.setCheckable(True)
+aTrackballClassic = QtGui.QAction(gOrbit)
+aTrackballClassic.setObjectName("NavigationIndicator_TrackballClassic")
+aTrackballClassic.setCheckable(True)
+aRoundedArcball = QtGui.QAction(gOrbit)
+aRoundedArcball.setObjectName("NavigationIndicator_RoundedArcball")
+aRoundedArcball.setCheckable(True)
 
-menuOrbit.addAction(aTurntable)
+menuOrbit.addAction(aRoundedArcball)
 menuOrbit.addAction(aTrackball)
+menuOrbit.addAction(aTrackballClassic)
+menuOrbit.addAction(aTurntable)
 menuOrbit.addAction(aFreeTurntable)
 
 menuSettings.addMenu(menuOrbit)
@@ -789,12 +805,16 @@ def onOrbit():
         pView.SetInt("OrbitStyle", 1)
     elif aFreeTurntable.isChecked():
         pView.SetInt("OrbitStyle", 2)
+    elif aTrackballClassic.isChecked():
+        pView.SetInt("OrbitStyle", 3)
+    elif aRoundedArcball.isChecked():
+        pView.SetInt("OrbitStyle", 4)
 
 
 def onOrbitShow():
     """Set turntable or trackball orbit style."""
 
-    OrbitStyle = pView.GetInt("OrbitStyle", 1)
+    OrbitStyle = pView.GetInt("OrbitStyle", 4)
     gOrbit.blockSignals(True)
     if OrbitStyle == 0:
         aTurntable.setChecked(True)
@@ -802,6 +822,10 @@ def onOrbitShow():
         aTrackball.setChecked(True)
     elif OrbitStyle == 2:
         aFreeTurntable.setChecked(True)
+    elif OrbitStyle == 3:
+        aTrackballClassic.setChecked(True)
+    elif OrbitStyle == 4:
+        aRoundedArcball.setChecked(True)
     gOrbit.blockSignals(False)
 
 

@@ -27,15 +27,6 @@
 #include "Unit.h"
 #include <string>
 
-// NOLINTBEGIN
-#ifndef DOUBLE_MAX
-#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
-#endif
-#ifndef DOUBLE_MIN
-#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
-#endif
-// NOLINTEND
-
 namespace Base
 {
 class UnitsSchema;
@@ -165,14 +156,10 @@ public:
     {
         myFormat = fmt;
     }
+
+    std::string getUserString() const;
     /// transfer to user preferred unit/potence
     std::string getUserString(double& factor, std::string& unitString) const;
-    std::string getUserString() const
-    {  // to satisfy GCC
-        double dummy1 {};
-        std::string dummy2 {};
-        return getUserString(dummy1, dummy2);
-    }
     std::string getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const;
     std::string getSafeUserString() const;
 

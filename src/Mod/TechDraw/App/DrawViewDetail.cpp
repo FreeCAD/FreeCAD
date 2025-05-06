@@ -188,6 +188,12 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawView
         return;
     }
 
+    if (!DU::isGuiUp()) {
+        makeDetailShape(shape, dvp, dvs);
+        onMakeDetailFinished();
+        waitingForDetail(false);
+    }
+
     //note that &m_detailWatcher in the third parameter is not strictly required, but using the
     //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
     //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
@@ -403,8 +409,10 @@ void DrawViewDetail::onMakeDetailFinished(void)
     waitingForDetail(false);
     QObject::disconnect(connectDetailWatcher);
 
-    //ancestor's buildGeometryObject will run HLR and face finding in a separate thread
     m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
+    if (!DU::isGuiUp()) {
+        onHlrFinished();
+    }
 }
 
 bool DrawViewDetail::waitingForResult() const
@@ -440,7 +448,7 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape& edgeShape, TopoD
 Base::Vector3d DrawViewDetail::mapPoint3dToDetail(const Base::Vector3d& inPoint) const
 {
     auto baseObj = BaseView.getValue();
-    auto baseDvp = dynamic_cast<DrawViewPart*>(baseObj);
+    auto baseDvp = freecad_cast<DrawViewPart*>(baseObj);
     if (!baseDvp) {
         throw Base::RuntimeError("Detail has no BaseView");
     }
@@ -494,7 +502,7 @@ void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const ch
 void DrawViewDetail::unsetupObject()
 {
     App::DocumentObject* baseObj = BaseView.getValue();
-    DrawView* base = dynamic_cast<DrawView*>(baseObj);
+    DrawView* base = freecad_cast<DrawView*>(baseObj);
     if (base) {
         base->requestPaint();
     }

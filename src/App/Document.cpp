@@ -20,41 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-/*!
-\defgroup Document Document
-\ingroup APP
-\brief The Base class of the FreeCAD Document
-
-This (besides the App::Application class) is the most important class in FreeCAD.
-It contains all the data of the opened, saved, or newly created FreeCAD Document.
-The App::Document manages the Undo and Redo mechanism and the linking of documents.
-
-\namespace App \class App::Document
-This is besides the Application class the most important class in FreeCAD
-It contains all the data of the opened, saved or newly created FreeCAD Document.
-The Document manage the Undo and Redo mechanism and the linking of documents.
-
-Note: the documents are not free objects. They are completely handled by the
-App::Application. Only the Application can Open or destroy a document.
-
-\section Exception Exception handling
-As the document is the main data structure of FreeCAD we have to take a close
-look at how Exceptions affect the integrity of the App::Document.
-
-\section UndoRedo Undo Redo an Transactions
-Undo Redo handling is one of the major mechanism of a document in terms of
-user friendliness and speed (no one will wait for Undo too long).
-
-\section Dependency Graph and dependency handling
-The FreeCAD document handles the dependencies of its DocumentObjects with
-an adjacence list. This gives the opportunity to calculate the shortest
-recompute path. Also, it enables more complicated dependencies beyond trees.
-
-@see App::Application
-@see App::DocumentObject
-*/
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -94,6 +59,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/TimeInfo.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Profiler.h>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 #include <Base/Sequencer.h>
@@ -831,7 +797,7 @@ void Document::onChanged(const Property* prop)
     }
     else if (prop == &UseHasher) {
         for (auto obj : d->objectArray) {
-            auto geofeature = dynamic_cast<GeoFeature*>(obj);
+            auto geofeature = freecad_cast<GeoFeature*>(obj);
             if (geofeature && geofeature->getPropertyOfGeometry()) {
                 geofeature->enforceRecompute();
             }
@@ -874,6 +840,7 @@ Document::Document(const char* documentName)
     // So, we must increment only if the interpreter gets a reference.
     // Remark: We force the document Python object to own the DocumentPy instance, thus we don't
     // have to care about ref counting any more.
+    setAutoCreated(false);
     d = new DocumentP;
     Base::PyGILStateLocker lock;
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
@@ -910,13 +877,8 @@ Document::Document(const char* documentName)
                       "Additional tag to save the name of the company");
     ADD_PROPERTY_TYPE(UnitSystem, (""), 0, Prop_None, "Unit system to use in this project");
     // Set up the possible enum values for the unit system
-    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-    std::vector<std::string> enumValsAsVector;
-    for (int i = 0; i < num; i++) {
-        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
-        enumValsAsVector.emplace_back(item.toStdString());
-    }
-    UnitSystem.setEnums(enumValsAsVector);
+
+    UnitSystem.setEnums(Base::UnitsApi::getDescriptions());
     // Get the preferences/General unit system as the default for a new document
     ParameterGrp::handle hGrpu =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
@@ -1595,19 +1557,19 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             // Try to continue only for certain exception types if not handled
             // by the feature type. For all other exception types abort the process.
             catch (const Base::UnicodeError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::ValueError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::IndexError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::RuntimeError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::XMLAttributeError& e) {
-                e.ReportException();
+                e.reportException();
             }
 
             pObj->setStatus(ObjectStatus::Restore, false);
@@ -1664,9 +1626,9 @@ std::vector<App::DocumentObject*> Document::importObjects(Base::XMLReader& reade
             o->setStatus(App::ObjImporting, true);
             FC_LOG("importing " << o->getFullName());
             if (auto propUUID =
-                    Base::freecad_dynamic_cast<PropertyUUID>(o->getPropertyByName("_ObjectUUID"))) {
+                    freecad_cast<PropertyUUID*>(o->getPropertyByName("_ObjectUUID"))) {
                 auto propSource =
-                    Base::freecad_dynamic_cast<PropertyUUID>(o->getPropertyByName("_SourceUUID"));
+                    freecad_cast<PropertyUUID*>(o->getPropertyByName("_SourceUUID"));
                 if (!propSource) {
                     propSource = static_cast<PropertyUUID*>(
                         o->addDynamicProperty("App::PropertyUUID",
@@ -2185,6 +2147,7 @@ bool Document::saveToFile(const char* filename) const
     // open extra scope to close ZipWriter properly
     {
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
+
         Base::ZipWriter writer(file);
         if (!file.is_open()) {
             throw Base::FileException("Failed to open file", tmp);
@@ -2210,9 +2173,12 @@ bool Document::saveToFile(const char* filename) const
 
         // write additional files
         writer.writeFiles();
-
         if (writer.hasErrors()) {
-            throw Base::FileException("Failed to write all data to file", tmp);
+            // retrieve Writer error strings
+            std::stringstream message;
+            message << "Failed to write all data to file ";
+            message << writer.getErrors().front();
+            throw Base::FileException(message.str().c_str(), tmp);
         }
 
         GetApplication().signalSaveDocument(*this);
@@ -2469,7 +2435,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             // refresh properties in case the object changes its property list
             obj->getPropertyList(props);
             for (auto prop : props) {
-                auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+                auto link = freecad_cast<PropertyLinkBase*>(prop);
                 int res;
                 std::string errMsg;
                 if (link && (res = link->checkRestore(&errMsg))) {
@@ -2494,7 +2460,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             // partial document touched, signal full reload
             return false;
         }
-        else if (!d->touchedObjs.count(obj)) {
+        else if (!d->touchedObjs.contains(obj)) {
             obj->purgeTouched();
         }
 
@@ -2533,6 +2499,14 @@ const char* Document::getName() const
 std::string Document::getFullName() const
 {
     return myName;
+}
+
+void Document::setAutoCreated(bool value) {
+    autoCreated = value;
+}
+
+bool Document::isAutoCreated() const {
+    return autoCreated;
 }
 
 const char* Document::getProgramVersion() const
@@ -2963,6 +2937,8 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                         bool* hasError,
                         int options)
 {
+    ZoneScoped;
+
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Ignore document recompute on undo/redo");
@@ -3084,7 +3060,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
             for (size_t i = 0; i < topoSortedObjects.size(); ++i) {
                 auto obj = topoSortedObjects[i];
                 obj->setStatus(ObjectStatus::Recompute2, false);
-                if (!filter.count(obj) && obj->isTouched()) {
+                if (!filter.contains(obj) && obj->isTouched()) {
                     if (passes > 0) {
                         FC_ERR(obj->getFullName() << " still touched after recompute");
                     }
@@ -3101,7 +3077,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
     FC_TIME_LOG(t2, "Recompute");
@@ -3141,7 +3117,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                 }
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("error when removing object " << o.getDocumentName() << '#'
                                                      << o.getObjectName());
             }
@@ -3350,7 +3326,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         }
     }
     catch (Base::AbortException& e) {
-        e.ReportException();
+        e.reportException();
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog("User abort", Feat);
         return -1;
@@ -3361,13 +3337,13 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         return 1;
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog(e.what(), Feat);
         return 1;
     }
     catch (std::exception& e) {
-        FC_ERR("exception in " << Feat->getFullName() << " thrown: " << e.what());
+        FC_ERR("Exception in " << Feat->getFullName() << " thrown: " << e.what());
         d->addRecomputeLog(e.what(), Feat);
         return 1;
     }
@@ -3391,26 +3367,25 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     return 0;
 }
 
-bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
+bool Document::recomputeFeature(DocumentObject* feature, bool recursive)
 {
     // delete recompute log
-    d->clearRecomputeLog(Feat);
+    d->clearRecomputeLog(feature);
 
     // verify that the feature is (active) part of the document
-    if (Feat->isAttachedToDocument()) {
-        if (recursive) {
-            bool hasError = false;
-            recompute({Feat}, true, &hasError);
-            return !hasError;
-        }
-        else {
-            _recomputeFeature(Feat);
-            signalRecomputedObject(*Feat);
-            return Feat->isValid();
-        }
+    if (!feature->isAttachedToDocument()) {
+        return false;
+    }
+
+    if (recursive) {
+        bool hasError = false;
+        recompute({feature}, true, &hasError);
+        return !hasError;
     }
     else {
-        return false;
+        _recomputeFeature(feature);
+        signalRecomputedObject(*feature);
+        return feature->isValid();
     }
 }
 
@@ -3807,6 +3782,9 @@ void Document::_removeObject(DocumentObject* pcObject)
     _checkTransaction(pcObject, nullptr, __LINE__);
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
+    if (pos == d->objectMap.end()) {
+        FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
+    }
 
     if (!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
         // Preserve link group children global visibility. See comments in
@@ -4013,7 +3991,7 @@ Document::importLinks(const std::vector<App::DocumentObject*>& objArray)
         propList.clear();
         obj->getPropertyList(propList);
         for (auto prop : propList) {
-            auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+            auto linkProp = freecad_cast<PropertyLinkBase*>(prop);
             if (linkProp && !prop->testStatus(Property::Immutable) && !obj->isReadOnly(prop)) {
                 auto copy = linkProp->CopyOnImportExternal(nameMap);
                 if (copy) {
@@ -4180,13 +4158,26 @@ const std::vector<DocumentObject*>& Document::getObjects() const
     return d->objectArray;
 }
 
-
 std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
 {
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
         if (it->isDerivedFrom(typeId)) {
             Objects.push_back(it);
+        }
+    }
+    return Objects;
+}
+
+std::vector<DocumentObject*> Document::getObjectsOfType(const std::vector<Base::Type>& types) const
+{
+    std::vector<DocumentObject*> Objects;
+    for (auto it : d->objectArray) {
+        for (auto& typeId : types) {
+            if (it->isDerivedFrom(typeId)) {
+                Objects.push_back(it);
+                break; // Prevent adding several times the same object.
+            }
         }
     }
     return Objects;
@@ -4277,15 +4268,15 @@ std::vector<App::DocumentObject*> Document::getRootObjectsIgnoreLinks() const
 {
     std::vector<App::DocumentObject*> ret;
 
-    for (auto objectIt : d->objectArray) {
+    for (const auto &objectIt : d->objectArray) {
         auto list = objectIt->getInList();
         bool noParents = list.empty();
 
         if (!noParents) {
             // App::Document getRootObjects returns the root objects of the dependency graph.
-            // So if an object is referenced by a App::Link, it will not be returned by that
+            // So if an object is referenced by an App::Link, it will not be returned by that
             // function. So here, as we want the tree-root level objects, we check if all the
-            // parents are links. In which case its still a root object.
+            // parents are links. In which case it's still a root object.
             noParents = std::all_of(list.cbegin(), list.cend(), [](App::DocumentObject* obj) {
                 return obj->isDerivedFrom<App::Link>();
             });
@@ -4304,22 +4295,20 @@ void DocumentP::findAllPathsAt(const std::vector<Node>& all_nodes,
                                std::vector<Path>& all_paths,
                                Path tmp)
 {
-    if (std::find(tmp.begin(), tmp.end(), id) != tmp.end()) {
-        Path tmp2(tmp);
-        tmp2.push_back(id);
-        all_paths.push_back(tmp2);
+    if (std::ranges::find(tmp, id) != tmp.end()) {
+        tmp.push_back(id);
+        all_paths.push_back(std::move(tmp));
         return;  // a cycle
     }
 
     tmp.push_back(id);
     if (all_nodes[id].empty()) {
-        all_paths.push_back(tmp);
+        all_paths.push_back(std::move(tmp));
         return;
     }
 
     for (size_t i = 0; i < all_nodes[id].size(); i++) {
-        Path tmp2(tmp);
-        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
+        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp);
     }
 }
 
@@ -4347,20 +4336,19 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
 
     size_t index_from = indexMap[from];
     size_t index_to = indexMap[to];
-    Path tmp;
     std::vector<Path> all_paths;
-    DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
+    DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, Path());
 
     for (const Path& it : all_paths) {
-        Path::const_iterator jt = std::find(it.begin(), it.end(), index_to);
+        auto jt = std::ranges::find(it, index_to);
         if (jt != it.end()) {
-            std::list<App::DocumentObject*> path;
-            for (Path::const_iterator kt = it.begin(); kt != jt; ++kt) {
+            array.push_back({});
+            auto& path = array.back();
+            for (auto kt = it.begin(); kt != jt; ++kt) {
                 path.push_back(d->objectArray[*kt]);
             }
 
             path.push_back(d->objectArray[*jt]);
-            array.push_back(path);
         }
     }
 

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QApplication>
 # include <QDebug>
 # include <QFocusEvent>
@@ -44,6 +45,7 @@
 #include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
+#include <Base/UnitsSchema.h>
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
@@ -66,8 +68,8 @@ public:
       pendingEmit(false),
       checkRangeInExpression(false),
       unitValue(0),
-      maximum(DOUBLE_MAX),
-      minimum(-DOUBLE_MAX),
+      maximum(std::numeric_limits<double>::max()),
+      minimum(-std::numeric_limits<double>::max()),
       singleStep(1.0),
       q_ptr(q)
     {
@@ -138,7 +140,7 @@ public:
             if (expr) {
 
                 std::unique_ptr<Expression> res(expr->eval());
-                NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(res.get());
+                NumberExpression * n = freecad_cast<NumberExpression*>(res.get());
                 if (n){
                     result = n->getQuantity();
                     value = result.getValue();
@@ -282,14 +284,6 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
             this, [&]{
         this->handlePendingEmit(true);
     });
-
-    // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
-#ifndef Q_OS_MAC
-    lineEdit()->setTextMargins(0, 2, 0, 2);
-#else
-    // https://forum.freecad.org/viewtopic.php?f=8&t=50615
-    lineEdit()->setTextMargins(0, 2, 0, 0);
-#endif
 }
 
 QuantitySpinBox::~QuantitySpinBox() = default;
@@ -721,7 +715,7 @@ void QuantitySpinBox::setDecimals(int v)
     updateText(d->quantity);
 }
 
-void QuantitySpinBox::setSchema(const Base::UnitSystem& s)
+void QuantitySpinBox::setSchema(const int s)
 {
     Q_D(QuantitySpinBox);
     d->scheme = Base::UnitsApi::createSchema(s);
@@ -739,7 +733,7 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor
 {
     Q_D(const QuantitySpinBox);
     std::string unitStr;
-    std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
+    const std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
                                 : val.getUserString(factor, unitStr);
     unitString = QString::fromStdString(unitStr);
     return QString::fromStdString(str);

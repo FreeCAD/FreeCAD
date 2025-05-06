@@ -676,7 +676,7 @@ void TaskAttacher::onCheckFlip(bool on)
 
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapReversed.setValue(on);
-    ViewProvider->getObject()->getDocument()->recomputeFeature(ViewProvider->getObject());
+    ViewProvider->getObject()->recomputeFeature();
 }
 
 void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
@@ -952,7 +952,7 @@ void TaskAttacher::updateListOfModes()
     //first up, remember currently selected mode.
     eMapMode curMode = mmDeactivated;
     auto sel = ui->listOfModes->selectedItems();
-    if (sel.count() > 0)
+    if (!sel.isEmpty())
         curMode = modesInList[ui->listOfModes->row(sel[0])];
 
     //obtain list of available modes:
@@ -1054,7 +1054,7 @@ void TaskAttacher::selectMapMode(eMapMode mmode) {
 Attacher::eMapMode TaskAttacher::getActiveMapMode()
 {
     auto sel = ui->listOfModes->selectedItems();
-    if (sel.count() > 0)
+    if (!sel.isEmpty())
         return modesInList[ui->listOfModes->row(sel[0])];
     else {
         if (this->lastSuggestResult.message == SuggestResult::srOK)
@@ -1200,11 +1200,11 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             visAutoFunc(opening_not_closing, ObjectName, ViewProvider, editObj, editSubName);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (const Py::Exception&) {
             Base::PyException e;
-            e.ReportException();
+            e.reportException();
         }
     }
     else {
@@ -1214,7 +1214,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             visAutoFunc(opening_not_closing, objName, nullptr, nullptr, std::string());
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
 }

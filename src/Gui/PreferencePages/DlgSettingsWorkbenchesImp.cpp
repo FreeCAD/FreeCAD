@@ -270,7 +270,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     };
 
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (!wbItem)
             continue;
         std::string wbName = wbItem->objectName().toStdString();
@@ -400,12 +400,12 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 
 void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled)
 {
-    bool isStartupWb = wbName.toStdString() == _startupModule;
-    bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
-        wbName.toStdString()) != _backgroundAutoloadedModules.end();
-    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
+    const bool isStartupWb = wbName.toStdString() == _startupModule;
+    const bool autoLoad = std::ranges::find(_backgroundAutoloadedModules, wbName.toStdString())
+        != _backgroundAutoloadedModules.end();
+    const auto widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
     connect(widget, &wbListItem::wbToggled, this, &DlgSettingsWorkbenchesImp::wbToggled);
-    auto wItem = new QListWidgetItem();
+    const auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
     ui->wbList->addItem(wItem);
     ui->wbList->setItemWidget(wItem, widget);
@@ -546,7 +546,7 @@ void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
     //reorder the list of items.
     int wbIndex = 0;
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem && wbItem->objectName() == wbName) {
             wbIndex = i;
         }
@@ -555,7 +555,7 @@ void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
     int destinationIndex = ui->wbList->count();
 
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem && !wbItem->isEnabled() && (enabled || ((wbItem->objectName()).toStdString() > wbName.toStdString()))) {
             //If the wb was enabled, then it was in the disabled wbs. So it moves to the row of the currently first disabled wb
             //If the wb was disabled. Then it goes to the disabled wb where it belongs alphabetically.
@@ -574,7 +574,7 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
     // fills the combo box with activated workbenches.
     QStringList enabledWbs;
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem && wbItem->isEnabled()) {
             enabledWbs << wbItem->objectName();
         }
@@ -614,7 +614,7 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
 void DlgSettingsWorkbenchesImp::wbItemMoved()
 {
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {
             wbItem->setShortcutLabel(i);
         }
@@ -630,7 +630,7 @@ void DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
 
     //Change wb that user can't deactivate.
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {
             wbItem->setStartupWb(wbItem->objectName() == wbName);
         }

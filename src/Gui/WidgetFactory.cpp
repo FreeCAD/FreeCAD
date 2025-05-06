@@ -86,7 +86,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
 
     try {
 #ifdef FC_DEBUG
-        const char* cName = dynamic_cast<QWidget*>(w)->metaObject()->className();
+        const char* cName = qobject_cast<QWidget*>(w)->metaObject()->className();
         Base::Console().Log("Widget of type '%s' created.\n", cName);
 #endif
     }
@@ -314,7 +314,7 @@ void PreferencePagePython::loadSettings()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -330,7 +330,7 @@ void PreferencePagePython::saveSettings()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 

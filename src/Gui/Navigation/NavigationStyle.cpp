@@ -39,6 +39,9 @@
 # include <QMenu>
 #endif
 
+#include <cmath>
+#include <limits>
+
 #include <Base/Interpreter.h>
 #include <App/Application.h>
 
@@ -61,7 +64,9 @@ public:
     enum OrbitStyle {
         Turntable,
         Trackball,
-        FreeTurntable
+        FreeTurntable,
+        TrackballClassic,
+        RoundedArcball
     };
 
     static constexpr float defaultSphereRadius = 0.8F;
@@ -84,7 +89,110 @@ public:
 
     SbVec3f project(const SbVec2f &point) override
     {
-        return inherited::project(point);
+        if (orbit != RoundedArcball) {
+            return inherited::project(point);
+        }
+
+        // Rounded Arcball implementation
+        // based on SbSphereSheetProjector in Open Inventor
+        SbVec3f result;
+        SbLine workingLine = getWorkingLine(point);
+
+        if (needSetup) {
+            setupPlane();
+        }
+
+        SbVec3f planeIntersection;
+
+        SbVec3f sphereIntersection, dontCare;
+        SbBool hitSphere;
+        if (intersectFront == TRUE) {
+            hitSphere = sphere.intersect(workingLine, sphereIntersection, dontCare);
+        }
+        else {
+            hitSphere = sphere.intersect(workingLine, dontCare, sphereIntersection);
+        }
+
+        if (hitSphere) {
+            // drop the sphere intersection onto the tolerance plane
+
+            SbLine projectLine(sphereIntersection, sphereIntersection + planeDir);
+            if (!tolPlane.intersect(projectLine, planeIntersection)) {
+#ifdef FC_DEBUG
+                SoDebugError::post("SbSphereSheetProjector::project",
+                                   "Couldn't intersect working line with plane");
+#endif
+            }
+        }
+        else if (!tolPlane.intersect(workingLine, planeIntersection)) {
+#ifdef FC_DEBUG
+            SoDebugError::post("SbSphereSheetProjector::project", "Couldn't intersect with plane");
+#endif
+        }
+
+        // Three possibilities:
+        // (1) Intersection is on the sphere inside where the fillet
+        //	    hits it
+        // (2) Intersection is on the fillet
+        // (3) Intersection is on the plane
+        float distance = (planeIntersection - planePoint).length();
+
+        // Amount of filleting
+        // 0 = no fillet (just sphere and plane)
+        // infinity = only fillet
+        float border = 0.5;
+
+        // Radius where the fillet meets the plane in "squished space"
+        float r_a = 1.0F + border;
+        // Radius where the sphere meets the fillet in "squished space"
+        float r_i = 2.0 / (r_a + 1.0 / r_a);
+
+        // Distance squared in "squished space"
+        float d_2 = (distance * distance) * r_a * r_a;
+        // Distance in "squished space"
+        float d = std::sqrt(d_2);
+
+        // Compute how far off the plane we are
+        float offsetDist = 0.0;
+
+        if (d > r_a) {
+            // On the plane
+            offsetDist = 0.0;
+        }
+        else if (d < r_i) {
+            // On the sphere inside the fillet
+            offsetDist = std::sqrt(1.0 - d_2);
+        }
+        else {
+            // On the fillet
+            float d_r = r_a - d;
+            float a = border * (1.0 + border / 2.0);
+            offsetDist = a - std::sqrt((a + d_r) * (a - d_r));
+        }
+
+        SbVec3f offset;
+        if (orientToEye) {
+            if (viewVol.getProjectionType() == SbViewVolume::PERSPECTIVE) {
+                offset = workingProjPoint - planeIntersection;
+            }
+            else {
+                worldToWorking.multDirMatrix(viewVol.zVector(), offset);
+            }
+
+            offset.normalize();
+        }
+        else {
+            offset.setValue(0, 0, 1);
+        }
+        if (intersectFront == FALSE) {
+            offset *= -1.0;
+        }
+
+        offset *= offsetDist;
+        result = planeIntersection + offset;
+
+        lastPoint = result;
+        return result;
     }
 
     SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2) override
@@ -95,6 +203,9 @@ public:
         }
         if (orbit == FreeTurntable) {
             return getFreeTurntable(point1, point2);
+        }
+        if (orbit == TrackballClassic) {
+            return getTrackballClassic(point1, point2);
         }
 
         return rot;
@@ -161,9 +272,25 @@ private:
         return zrot * xrot;
     }
 
+    SbRotation getTrackballClassic(const SbVec3f &point1, const SbVec3f &point2) const
+    {
+        // Classic trackball
+        SbRotation zrot;
+        SbRotation yrot;
+        SbVec3f dif = point1 - point2;
+
+        SbVec3f zaxis(1,0,0);
+        zrot.setValue(zaxis, dif[1]);
+
+        SbVec3f yaxis(0,1,0);
+        yrot.setValue(yaxis, -dif[0]);
+
+        return zrot * yrot;
+    }
+
 private:
     SbMatrix worldToScreen;
-    OrbitStyle orbit{Trackball};
+    OrbitStyle orbit{RoundedArcball};
 };
 
 NavigationStyleEvent::NavigationStyleEvent(const Base::Type& s)
@@ -256,7 +383,7 @@ void NavigationStyle::initialize()
     this->zoomStep = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomStep",0.2f);
     long mode = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetInt("RotationMode", 1);
+        ("User parameter:BaseApp/Preferences/View")->GetInt("RotationMode", 0);
     if (mode == 0) {
         setRotationCenterMode(NavigationStyle::RotationCenterMode::WindowCenter);
     }
@@ -412,7 +539,7 @@ std::shared_ptr<NavigationAnimation> NavigationStyle::setCameraOrientation(const
     }
 
     // or set the pose directly
-    
+
     // Distance from rotation center to camera position in camera coordinate system
     const SbVec3f rotationCenterDistanceCam = camera->focalDistance.getValue() * SbVec3f(0, 0, 1);
 
@@ -444,7 +571,7 @@ std::shared_ptr<NavigationAnimation> NavigationStyle::translateCamera(const SbVe
     }
 
     // or set the pose directly
-    
+
     camera->position = camera->position.getValue() + translation;
 
     return {};
@@ -577,21 +704,21 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
     // Fix issue with near clipping in orthogonal view
     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
 
-         // The center of the bounding sphere in camera coordinate system
-         SbVec3f center;
+        // The center of the bounding sphere in camera coordinate system
+        SbVec3f center;
          camera->orientation.getValue().inverse().multVec(boundingSphere.getCenter() - camera->position.getValue(), center);
 
-         SbVec3f dir;
-         camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
+        SbVec3f dir;
+        camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
 
-         // Reposition the camera but keep the focal point the same
-         // nearDistance is 0 and farDistance is the diameter of the bounding sphere
-         float repositionDistance = -center.getValue()[2] - boundingSphere.getRadius();
-         camera->position = camera->position.getValue() + repositionDistance * dir;
-         camera->nearDistance = 0;
-         camera->farDistance = 2 * boundingSphere.getRadius() + 1;
-         camera->focalDistance = camera->focalDistance.getValue() - repositionDistance;
-     }
+        // Reposition the camera but keep the focal point the same
+        // nearDistance is 0 and farDistance is the diameter of the bounding sphere
+        float repositionDistance = -center.getValue()[2] - boundingSphere.getRadius();
+        camera->position = camera->position.getValue() + repositionDistance * dir;
+        camera->nearDistance = 0;
+        camera->farDistance = 2 * boundingSphere.getRadius() + 1;
+        camera->focalDistance = camera->focalDistance.getValue() - repositionDistance;
+    }
 #endif
 }
 
@@ -684,13 +811,16 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
         // frustum (similar to glFrustum())
         if (!t.isDerivedFrom(SoPerspectiveCamera::getClassTypeId()) &&
             tname != "FrustumCamera") {
- /*         static SbBool first = true;
-            if (first) {
-                SoDebugError::postWarning("SoGuiFullViewerP::zoom",
-                                          "Unknown camera type, "
-                                          "will zoom by moving position, but this might not be correct.");
-                first = false;
-            }*/
+#ifdef FC_DEBUG
+                static SbBool first = true;
+                if (first) {
+                    SoDebugError::postWarning("NavigationStyle::zoom",
+                                              "Unknown camera type, "
+                                              "will zoom by moving position, "
+                                              "but this might not be correct.");
+                    first = false;
+                }
+#endif
         }
 
         const float oldfocaldist = cam->focalDistance.getValue();
@@ -719,7 +849,8 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
         const float distorigo = newpos.length();
         // sqrt(FLT_MAX) == ~ 1e+19, which should be both safe for further
         // calculations and ok for the end-user and app-programmer.
-        if (distorigo > float(sqrt(FLT_MAX))) {
+        float maxDistance = std::sqrt(std::numeric_limits<float>::max());
+        if (distorigo > maxDistance) {
             // do nothing here
         }
         else {
@@ -884,7 +1015,9 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     float sensitivity = getSensitivity();
 
     // Adjust the spin projector sphere to the screen position of the rotation center when the mouse intersects an object
-    if (getOrbitStyle() == Trackball && rotationCenterMode & RotationCenterMode::ScenePointAtCursor && rotationCenterFound && rotationCenterIsScenePointAtCursor) {
+    if ((getOrbitStyle() == Trackball || getOrbitStyle() == TrackballClassic || getOrbitStyle() == RoundedArcball)
+        && rotationCenterMode & RotationCenterMode::ScenePointAtCursor && rotationCenterFound
+        && rotationCenterIsScenePointAtCursor) {
         const auto pointOnScreen = viewer->getPointOnViewport(rotationCenter);
         const auto sphereCenter = 2 * normalizePixelPos(pointOnScreen) - SbVec2f {1, 1};
 
@@ -1289,23 +1422,23 @@ void NavigationStyle::startSelection(NavigationStyle::SelectionMode mode)
 
     switch (mode)
     {
-    case Lasso:
-        mouseSelection = new PolyPickerSelection();
-        break;
-    case Rectangle:
-        mouseSelection = new RectangleSelection();
-        break;
-    case Rubberband:
-        mouseSelection = new RubberbandSelection();
-        break;
-    case BoxZoom:
-        mouseSelection = new BoxZoomSelection();
-        break;
-    case Clip:
-        mouseSelection = new PolyClipSelection();
-        break;
-    default:
-        break;
+        case Lasso:
+            mouseSelection = new PolyPickerSelection();
+            break;
+        case Rectangle:
+            mouseSelection = new RectangleSelection();
+            break;
+        case Rubberband:
+            mouseSelection = new RubberbandSelection();
+            break;
+        case BoxZoom:
+            mouseSelection = new BoxZoomSelection();
+            break;
+        case Clip:
+            mouseSelection = new PolyClipSelection();
+            break;
+        default:
+            break;
     }
 
     if (mouseSelection)
@@ -1340,7 +1473,7 @@ SbBool NavigationStyle::isSelecting() const
 const std::vector<SbVec2s>& NavigationStyle::getPolygon(SelectionRole* role) const
 {
     if (role)
-       *role = this->selectedRole;
+        *role = this->selectedRole;
     return pcPolygon;
 }
 
@@ -1416,59 +1549,59 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     }
 
     switch (newmode) {
-    case DRAGGING:
-        // Set up initial projection point for the projector object when
-        // first starting a drag operation.
-        animator->stop();
-        viewer->showRotationCenter(true);
+        case DRAGGING:
+            // Set up initial projection point for the projector object when
+            // first starting a drag operation.
+            animator->stop();
+            viewer->showRotationCenter(true);
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
-        findBoundingSphere();
+            findBoundingSphere();
 #endif
 
-        this->spinprojector->project(this->lastmouseposition);
-        this->interactiveCountInc();
-        this->clearLog();
-        break;
+            this->spinprojector->project(this->lastmouseposition);
+            this->interactiveCountInc();
+            this->clearLog();
+            break;
 
-    case SPINNING:
-        this->interactiveCountInc();
-        viewer->getSoRenderManager()->scheduleRedraw();
-        break;
+        case SPINNING:
+            this->interactiveCountInc();
+            viewer->getSoRenderManager()->scheduleRedraw();
+            break;
 
-    case PANNING:
-        animator->stop();
-        setupPanningPlane(viewer->getSoRenderManager()->getCamera());
-        this->interactiveCountInc();
-        break;
+        case PANNING:
+            animator->stop();
+            setupPanningPlane(viewer->getSoRenderManager()->getCamera());
+            this->interactiveCountInc();
+            break;
 
-    case ZOOMING:
-        animator->stop();
-        this->interactiveCountInc();
-        break;
+        case ZOOMING:
+            animator->stop();
+            this->interactiveCountInc();
+            break;
 
-    case BOXZOOM:
-        animator->stop();
-        this->interactiveCountInc();
-        break;
+        case BOXZOOM:
+            animator->stop();
+            this->interactiveCountInc();
+            break;
 
     default: // include default to avoid compiler warnings.
-        break;
+            break;
     }
 
     switch (oldmode) {
-    case SPINNING:
-    case DRAGGING:
-        viewer->showRotationCenter(false);
-        [[fallthrough]];
-    case PANNING:
-    case ZOOMING:
-    case BOXZOOM:
-        this->interactiveCountDec();
-        break;
+        case SPINNING:
+        case DRAGGING:
+            viewer->showRotationCenter(false);
+            [[fallthrough]];
+        case PANNING:
+        case ZOOMING:
+        case BOXZOOM:
+            this->interactiveCountDec();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     viewer->setCursorRepresentation(newmode);
@@ -1565,20 +1698,20 @@ void NavigationStyle::syncWithEvent(const SoEvent * const ev)
         auto const event = static_cast<const SoKeyboardEvent *>(ev);
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
-        case SoKeyboardEvent::LEFT_CONTROL:
-        case SoKeyboardEvent::RIGHT_CONTROL:
-            this->ctrldown = press;
-            break;
-        case SoKeyboardEvent::LEFT_SHIFT:
-        case SoKeyboardEvent::RIGHT_SHIFT:
-            this->shiftdown = press;
-            break;
-        case SoKeyboardEvent::LEFT_ALT:
-        case SoKeyboardEvent::RIGHT_ALT:
-            this->altdown = press;
-            break;
-        default:
-            break;
+            case SoKeyboardEvent::LEFT_CONTROL:
+            case SoKeyboardEvent::RIGHT_CONTROL:
+                this->ctrldown = press;
+                break;
+            case SoKeyboardEvent::LEFT_SHIFT:
+            case SoKeyboardEvent::RIGHT_SHIFT:
+                this->shiftdown = press;
+                break;
+            case SoKeyboardEvent::LEFT_ALT:
+            case SoKeyboardEvent::RIGHT_ALT:
+                this->altdown = press;
+                break;
+            default:
+                break;
         }
     }
 
@@ -1587,20 +1720,21 @@ void NavigationStyle::syncWithEvent(const SoEvent * const ev)
         auto const event = static_cast<const SoMouseButtonEvent *>(ev);
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-
-        // SoDebugError::postInfo("processSoEvent", "button = %d", button);
+#ifdef FC_DEBUG
+        SoDebugError::postInfo("processSoEvent", "button = %d", button);
+#endif
         switch (button) {
-        case SoMouseButtonEvent::BUTTON1:
-            this->button1down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON2:
-            this->button2down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON3:
-            this->button3down = press;
-            break;
-        default:
-            break;
+            case SoMouseButtonEvent::BUTTON1:
+                this->button1down = press;
+                break;
+            case SoMouseButtonEvent::BUTTON2:
+                this->button2down = press;
+                break;
+            case SoMouseButtonEvent::BUTTON3:
+                this->button3down = press;
+                break;
+            default:
+                break;
         }
     }
 }
@@ -1641,43 +1775,43 @@ SbBool NavigationStyle::processKeyboardEvent(const SoKeyboardEvent * const event
     SbBool processed = false;
     const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
     switch (event->getKey()) {
-    case SoKeyboardEvent::LEFT_CONTROL:
-    case SoKeyboardEvent::RIGHT_CONTROL:
-        this->ctrldown = press;
-        break;
-    case SoKeyboardEvent::LEFT_SHIFT:
-    case SoKeyboardEvent::RIGHT_SHIFT:
-        this->shiftdown = press;
-        break;
-    case SoKeyboardEvent::LEFT_ALT:
-    case SoKeyboardEvent::RIGHT_ALT:
-        this->altdown = press;
-        break;
-    case SoKeyboardEvent::S:
-    case SoKeyboardEvent::HOME:
-    case SoKeyboardEvent::LEFT_ARROW:
-    case SoKeyboardEvent::UP_ARROW:
-    case SoKeyboardEvent::RIGHT_ARROW:
-    case SoKeyboardEvent::DOWN_ARROW:
+        case SoKeyboardEvent::LEFT_CONTROL:
+        case SoKeyboardEvent::RIGHT_CONTROL:
+            this->ctrldown = press;
+            break;
+        case SoKeyboardEvent::LEFT_SHIFT:
+        case SoKeyboardEvent::RIGHT_SHIFT:
+            this->shiftdown = press;
+            break;
+        case SoKeyboardEvent::LEFT_ALT:
+        case SoKeyboardEvent::RIGHT_ALT:
+            this->altdown = press;
+            break;
+        case SoKeyboardEvent::S:
+        case SoKeyboardEvent::HOME:
+        case SoKeyboardEvent::LEFT_ARROW:
+        case SoKeyboardEvent::UP_ARROW:
+        case SoKeyboardEvent::RIGHT_ARROW:
+        case SoKeyboardEvent::DOWN_ARROW:
         if (!this->isViewing())
-            this->setViewing(true);
-        break;
+                this->setViewing(true);
+            break;
     case SoKeyboardEvent::PAGE_UP:
     {
-        processed = true;
-        const SbVec2f posn = normalizePixelPos(event->getPosition());
-        doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
-        break;
-    }
+            processed = true;
+            const SbVec2f posn = normalizePixelPos(event->getPosition());
+            doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
+            break;
+        }
     case SoKeyboardEvent::PAGE_DOWN:
     {
-        processed = true;
-        const SbVec2f posn = normalizePixelPos(event->getPosition());
-        doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
-        break;
-    }
-    default:
-        break;
+            processed = true;
+            const SbVec2f posn = normalizePixelPos(event->getPosition());
+            doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
+            break;
+        }
+        default:
+            break;
     }
 
     return processed;

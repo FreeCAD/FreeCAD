@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <QCursor>
 #include <QTimer>
 #include <Inventor/nodes/SoCamera.h>
@@ -144,7 +145,7 @@ void DemoMode::hideEvent(QHideEvent*)
 Gui::View3DInventor* DemoMode::activeView() const
 {
     if (Document* doc = Application::Instance->activeDocument()) {
-        return Base::freecad_dynamic_cast<Gui::View3DInventor>(doc->getActiveView());
+        return freecad_cast<Gui::View3DInventor*>(doc->getActiveView());
     }
 
     return nullptr;
@@ -166,7 +167,7 @@ SbVec3f DemoMode::getDirection(Gui::View3DInventor* view) const
     SbRotation inv = rot.inverse();
     SbVec3f vec(this->viewAxis);
     inv.multVec(vec, vec);
-    if (vec.length() < FLT_EPSILON) {
+    if (vec.length() < std::numeric_limits<float>::epsilon()) {
         vec = this->viewAxis;
     }
     vec.normalize();

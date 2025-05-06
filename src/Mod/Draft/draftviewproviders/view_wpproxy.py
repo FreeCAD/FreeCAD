@@ -44,27 +44,29 @@ class ViewProviderWorkingPlaneProxy:
         # ViewData: 0,1,2: position; 3,4,5,6: rotation; 7: near dist; 8: far dist, 9:aspect ratio;
         # 10: focal dist; 11: height (ortho) or height angle (persp); 12: ortho (0) or persp (1)
 
-        _tip = "The display length of this section plane"
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The display length of this section plane")
         vobj.addProperty("App::PropertyLength", "DisplaySize",
-                         "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                         "Draft", _tip,
+                         locked=True)
 
-        _tip = "The size of the arrows of this section plane"
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The size of the arrows of this section plane")
         vobj.addProperty("App::PropertyLength", "ArrowSize",
-                         "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                         "Draft", _tip,
+                         locked=True)
 
-        vobj.addProperty("App::PropertyPercent","Transparency","Base","")
+        vobj.addProperty("App::PropertyPercent","Transparency","Base","",locked=True)
 
-        vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
+        vobj.addProperty("App::PropertyFloat","LineWidth","Base","",locked=True)
 
-        vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.addProperty("App::PropertyColor","LineColor","Base","",locked=True)
 
-        vobj.addProperty("App::PropertyFloatList","ViewData","Base","")
+        vobj.addProperty("App::PropertyFloatList","ViewData","Base","",locked=True)
 
-        vobj.addProperty("App::PropertyBool","RestoreView","Base","")
+        vobj.addProperty("App::PropertyBool","RestoreView","Base","",locked=True)
 
-        vobj.addProperty("App::PropertyMap","VisibilityMap","Base","")
+        vobj.addProperty("App::PropertyMap","VisibilityMap","Base","",locked=True)
 
-        vobj.addProperty("App::PropertyBool","RestoreState","Base","")
+        vobj.addProperty("App::PropertyBool","RestoreState","Base","",locked=True)
 
         vobj.DisplaySize = 100
         vobj.ArrowSize = 5

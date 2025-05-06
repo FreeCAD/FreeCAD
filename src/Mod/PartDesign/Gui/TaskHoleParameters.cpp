@@ -66,10 +66,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadType->addItem(tr("UTS coarse"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS fine"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS extra fine"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("ANSI pipes"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("ISO/BSP pipes"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("ANSI pipes"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("ISO/BSP pipes"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("Other"));
+    ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("Other"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
@@ -128,7 +128,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         || pcHole->HoleCutCustomValues.isReadOnly()
     );
     // HoleCutDiameter must not be smaller or equal than the Diameter
-    ui->HoleCutDiameter->setMinimum(pcHole->Diameter.getValue() + 0.1);
+    updateHoleCutLimits(pcHole);
     ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
     ui->HoleCutDiameter->setDisabled(pcHole->HoleCutDiameter.isReadOnly());
     ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
@@ -182,6 +182,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
+
+    ui->BaseProfileType->setCurrentIndex(PartDesign::Hole::baseProfileOption_bitmaskToIdx(pcHole->BaseProfileType.getValue()));
 
     setCutDiagram();
 
@@ -240,6 +242,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::threadDepthTypeChanged);
     connect(ui->ThreadDepth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskHoleParameters::threadDepthChanged);
+    connect(ui->BaseProfileType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::baseProfileTypeChanged);
     // clang-format on
 
     getViewObject()->show();
@@ -321,7 +325,6 @@ void TaskHoleParameters::threadDepthTypeChanged(int index)
         recomputeFeature();
     }
 }
-
 void TaskHoleParameters::threadDepthChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
@@ -409,6 +412,13 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
         );
     }
     setCutDiagram();
+}
+void TaskHoleParameters::baseProfileTypeChanged(int index)
+{
+    if (auto hole = getObject<PartDesign::Hole>()) {
+        hole->BaseProfileType.setValue(PartDesign::Hole::baseProfileOption_idxToBitmask(index));
+        recomputeFeature();
+    }
 }
 
 void TaskHoleParameters::setCutDiagram()
@@ -655,29 +665,26 @@ void TaskHoleParameters::threadTypeChanged(int index)
     ui->labelSize->setHidden(isNone);
     ui->ClearanceWidget->setHidden(isNone || isThreaded);
 
-    if (TypeClass == QByteArray("ISO")) {
-        // the names of the clearance types are different in ISO and UTS
-        ui->ThreadFit->setItemText(
-            0,
-            QCoreApplication::translate("TaskHoleParameters", "Standard", nullptr));
-        ui->ThreadFit->setItemText(
-            1,
-            QCoreApplication::translate("TaskHoleParameters", "Close", nullptr));
-        ui->ThreadFit->setItemText(
-            2,
-            QCoreApplication::translate("TaskHoleParameters", "Wide", nullptr));
+    if (TypeClass == QByteArray("None")) {
+        QString noneText = QStringLiteral("-");
+        ui->ThreadFit->setItemText(0, noneText);
+        ui->ThreadFit->setItemText(1, noneText);
+        ui->ThreadFit->setItemText(2, noneText);
+    }
+    else if (TypeClass == QByteArray("ISO")) {
+        ui->ThreadFit->setItemText(0, tr("Medium", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(1, tr("Fine", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(2, tr("Coarse", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible"));
     }
     else if (TypeClass == QByteArray("UTS")) {
-        // the names of the clearance types are different in ISO and UTS
-        ui->ThreadFit->setItemText(
-            0,
-            QCoreApplication::translate("TaskHoleParameters", "Normal", nullptr));
-        ui->ThreadFit->setItemText(
-            1,
-            QCoreApplication::translate("TaskHoleParameters", "Close", nullptr));
-        ui->ThreadFit->setItemText(
-            2,
-            QCoreApplication::translate("TaskHoleParameters", "Loose", nullptr));
+        ui->ThreadFit->setItemText(0, tr("Normal", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(1, tr("Close", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
+        ui->ThreadFit->setItemText(2, tr("Loose", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible"));
+    }
+    else {
+        ui->ThreadFit->setItemText(0, tr("Normal", "Distance between thread crest and hole wall"));
+        ui->ThreadFit->setItemText(1, tr("Close", "Distance between thread crest and hole wall"));
+        ui->ThreadFit->setItemText(2, tr("Wide", "Distance between thread crest and hole wall"));
     }
 
     // Class and cut type
@@ -731,8 +738,7 @@ void TaskHoleParameters::threadDiameterChanged(double value)
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->Diameter.setValue(value);
 
-        // HoleCutDiameter must not be smaller or equal than the Diameter
-        ui->HoleCutDiameter->setMinimum(value + 0.1);
+        updateHoleCutLimits(hole);
 
         recomputeFeature();
     }
@@ -838,6 +844,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     else if (&Prop == &hole->Diameter) {
         ui->Diameter->setEnabled(true);
         updateSpinBox(ui->Diameter, hole->Diameter.getValue());
+        updateHoleCutLimits(hole);
     }
     else if (&Prop == &hole->ThreadDirection) {
         ui->directionRightHand->setEnabled(true);
@@ -910,6 +917,9 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     else if (&Prop == &hole->ThreadDepth) {
         ui->ThreadDepth->setEnabled(true);
         updateSpinBox(ui->ThreadDepth, hole->ThreadDepth.getValue());
+    } else if (&Prop == &hole->BaseProfileType) {
+        ui->BaseProfileType->setEnabled(true);
+        updateComboBox(ui->BaseProfileType, PartDesign::Hole::baseProfileOption_bitmaskToIdx(hole->BaseProfileType.getValue()));
     }
 }
 
@@ -1059,7 +1069,10 @@ double TaskHoleParameters::getThreadDepth() const
 {
     return ui->ThreadDepth->value().getValue();
 }
-
+int TaskHoleParameters::getBaseProfileType() const
+{
+    return PartDesign::Hole::baseProfileOption_idxToBitmask(ui->BaseProfileType->currentIndex());
+}
 void TaskHoleParameters::apply()
 {
     auto hole = getObject<PartDesign::Hole>();
@@ -1126,9 +1139,20 @@ void TaskHoleParameters::apply()
     if (!hole->Tapered.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "Tapered = " << getTapered());
     }
+    if (!hole->BaseProfileType.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "BaseProfileType = " << getBaseProfileType());
+    }
 
     isApplying = false;
 }
+
+void TaskHoleParameters::updateHoleCutLimits(PartDesign::Hole* hole)
+{
+    constexpr double minHoleCutDifference = 0.1;
+    // HoleCutDiameter must not be smaller or equal than the Diameter
+    ui->HoleCutDiameter->setMinimum(hole->Diameter.getValue() + minHoleCutDifference);
+}
+
 
 //**************************************************************************
 //**************************************************************************

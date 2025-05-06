@@ -455,7 +455,7 @@ TaskCreateElementSet::TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObje
     // check if the Link to the FemMesh is defined
     assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
     MeshViewProvider =
-        dynamic_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider(
+        freecad_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider(
             pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
     assert(MeshViewProvider);
 

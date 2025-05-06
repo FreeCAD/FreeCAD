@@ -1278,9 +1278,9 @@ readNodes(std::ifstream& ifstr, const std::string& lines, vtkSmartPointer<vtkPoi
 {
     std::string keyCode = "    2C";
     std::string keyCodeCoord = " -1";
-    long numNodes;
-    int indicator;
-    int node;
+    long numNodes {0};
+    int indicator {0};
+    int node {0};
     long nodeID = 0;
 
     // frd file might have nodes that are not numbered starting from zero.
@@ -1479,13 +1479,13 @@ void readResults(std::ifstream& ifstr,
     // enter in node values block
     std::string code1 = " -1";
     std::string code2 = " -2";
-    int node;
-    double value;
+    int node {-1};
+    double value {0.0};
     std::vector<double> vecValues;
     std::vector<double> scaValues;
     std::vector<int> nodes;
     int countNodes = 0;
-    int countScaPos;
+    size_t countScaPos {0};
     // result block could have both vector/matrix and scalar components
     // save each scalars entity in his own array
     auto scalarPos = identifyScalarEntities(entityTypes);
@@ -1533,7 +1533,7 @@ void readResults(std::ifstream& ifstr,
                 for (auto it = sub.begin(); it != sub.end(); it += 12, ++countScaPos) {
                     valueFromLine(it, 12, value);
                     // search if value is scalar or vector/matrix component
-                    auto pos = std::find(scalarPos.begin(), scalarPos.end(), countScaPos);
+                    auto pos = std::ranges::find(scalarPos, countScaPos);
                     if (pos == scalarPos.end()) {
                         vecValues.emplace_back(value);
                     }
@@ -1542,7 +1542,7 @@ void readResults(std::ifstream& ifstr,
                     }
                 }
             }
-            catch (const std::out_of_range& ex) {
+            catch (const std::out_of_range&) {
                 Base::Console().Warning("Invalid node: %d\n", node);
             }
             ++countNodes;
@@ -1552,7 +1552,7 @@ void readResults(std::ifstream& ifstr,
             for (auto it = sub.begin(); it != sub.end(); it += 12) {
                 valueFromLine(it, 12, value);
                 // search if value is scalar or vector/matrix component
-                auto pos = std::find(scalarPos.begin(), scalarPos.end(), countScaPos);
+                auto pos = std::ranges::find(scalarPos, countScaPos);
                 if (pos == scalarPos.end()) {
                     vecValues.emplace_back(value);
                 }
@@ -1563,9 +1563,15 @@ void readResults(std::ifstream& ifstr,
         }
         if ((vecValues.size() + scaValues.size()) == numComps) {
             if (!vecValues.empty()) {
+                if (node == -1) {
+                    throw Base::FileException("File to load not readable");
+                }
                 vecArray->SetTuple(mapNodes.at(node), vecValues.data());
             }
             if (!scaValues.empty()) {
+                if (node == -1) {
+                    throw Base::FileException("File to load not readable");
+                }
                 std::vector<vtkSmartPointer<vtkDoubleArray>>::iterator it1;
                 std::vector<double>::iterator it2;
                 for (it1 = scaArrays.begin(), it2 = scaValues.begin();
@@ -1705,7 +1711,7 @@ vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
 
 }  // namespace FRDReader
 
-void FemVTKTools::frdToVTK(const char* filename)
+void FemVTKTools::frdToVTK(const char* filename, bool binary)
 {
     Base::FileInfo fi(filename);
 
@@ -1727,6 +1733,8 @@ void FemVTKTools::frdToVTK(const char* filename)
         std::string type = info->GetValue(0).c_str();
 
         auto writer = vtkSmartPointer<vtkXMLMultiBlockDataWriter>::New();
+        writer->SetDataMode(binary ? vtkXMLMultiBlockDataWriter::Binary
+                                   : vtkXMLMultiBlockDataWriter::Ascii);
 
         std::string blockFile =
             dir + "/" + fi.fileNamePure() + type + "." + writer->GetDefaultFileExtension();

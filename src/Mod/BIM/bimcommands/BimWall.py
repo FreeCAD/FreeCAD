@@ -1,34 +1,35 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """BIM wall command"""
 
-
-import os
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -70,53 +71,50 @@ class Arch_Wall:
         import WorkingPlane
         from draftutils import params
         import draftguitools.gui_trackers as DraftTrackers
+
+        self.doc = FreeCAD.ActiveDocument
         self.Align = ["Center","Left","Right"][params.get_param_arch("WallAlignment")]
         self.MultiMat = None
         self.Length = None
         self.lengthValue = 0
-        self.continueCmd = False
+        self.featureName = "Wall"
         self.Width = params.get_param_arch("WallWidth")
         self.Height = params.get_param_arch("WallHeight")
         self.JOIN_WALLS_SKETCHES = params.get_param_arch("joinWallSketches")
         self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
-        done = False
         self.existing = []
         self.wp = None
 
         if sel:
             # automatic mode
             if Draft.getType(sel[0].Object) != "Wall":
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+                self.doc.openTransaction(translate("Arch","Create Wall"))
                 FreeCADGui.addModule("Arch")
                 for selobj in sel:
-                    if Draft.getType(selobj.Object) == "Space":
-                        spacedone = False
-                        if selobj.HasSubObjects:
-                            if "Face" in selobj.SubElementNames[0]:
-                                idx = int(selobj.SubElementNames[0][4:])
-                                FreeCADGui.doCommand("obj = Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+",face="+str(idx)+")")
-                                spacedone = True
-                        if not spacedone:
-                            FreeCADGui.doCommand('obj = Arch.makeWall(FreeCAD.ActiveDocument.'+selobj.Object.Name+')')
+                    if Draft.getType(selobj.Object) == "Space" \
+                            and selobj.HasSubObjects \
+                            and "Face" in selobj.SubElementNames[0]:
+                        idx = int(selobj.SubElementNames[0][4:])
+                        FreeCADGui.doCommand("obj = Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+",face="+str(idx)+")")
                     else:
-                        FreeCADGui.doCommand('obj = Arch.makeWall(FreeCAD.ActiveDocument.'+selobj.Object.Name+')')
+                        FreeCADGui.doCommand("obj = Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+")")
                 FreeCADGui.addModule("Draft")
                 FreeCADGui.doCommand("Draft.autogroup(obj)")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
-                done = True
+                self.doc.commitTransaction()
+                self.doc.recompute()
+                return
 
-        if not done:
-            # interactive mode
+        # interactive mode
 
-            self.points = []
-            self.wp = WorkingPlane.get_working_plane()
-            self.tracker = DraftTrackers.boxTracker()
-            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,
-                                        extradlg=self.taskbox(),
-                                        title=translate("Arch","First point of wall")+":")
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        self.points = []
+        self.wp = WorkingPlane.get_working_plane()
+        self.tracker = DraftTrackers.boxTracker()
+        FreeCADGui.Snapper.getPoint(callback=self.getPoint,
+                                    extradlg=self.taskbox(),
+                                    title=translate("Arch","First point of wall")+":")
+        FreeCADGui.draftToolBar.continueCmd.show()
 
     def getPoint(self,point=None,obj=None):
         """Callback for clicks during interactive mode.
@@ -128,7 +126,7 @@ class Arch_Wall:
         ----------
         point: <class 'Base.Vector'>
             The point the user has selected.
-        obj: <Part::PartFeature>, optional
+        obj: <Part::Feature>, optional
             The object the user's cursor snapped to, if any.
         """
 
@@ -142,9 +140,9 @@ class Arch_Wall:
                 if not obj in self.existing:
                     self.existing.append(obj)
         if point is None:
-            self.tracker.finalize()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
+            self.tracker.finalize()
             return
         self.points.append(point)
         if len(self.points) == 1:
@@ -158,12 +156,12 @@ class Arch_Wall:
                                         title=translate("Arch","Next point")+":",mode="line")
 
         elif len(self.points) == 2:
-            l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
-                                 self.wp.get_local_coords(self.points[1]))
-            self.tracker.off()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+            self.tracker.off()
+            l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
+                                 self.wp.get_local_coords(self.points[1]))
+            self.doc.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand('import Part')
             FreeCADGui.doCommand('trace=Part.LineSegment(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
@@ -181,19 +179,19 @@ class Arch_Wall:
                             # if not possible, add new wall as addition to the existing one
                             self.addDefault()
                             if self.AUTOJOIN:
-                                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
+                                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+self.doc.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
                     else:
                         self.addDefault()
                 else:
                     # add new wall as addition to the first existing one
                     self.addDefault()
                     if self.AUTOJOIN:
-                        FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+                        FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+self.doc.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
+            self.doc.commitTransaction()
+            self.doc.recompute()
             # gui_utils.end_all_events()  # Causes a crash on Linux.
             self.tracker.finalize()
-            if self.continueCmd:
+            if FreeCADGui.draftToolBar.continueCmd.isChecked():
                 self.Activated()
 
     def addDefault(self):
@@ -281,7 +279,7 @@ class Arch_Wall:
         matCombo.setToolTip(translate("Arch","This list shows all the MultiMaterials objects of this document. Create some to define wall types."))
         self.multimats = []
         self.MultiMat = None
-        for o in FreeCAD.ActiveDocument.Objects:
+        for o in self.doc.Objects:
             if Draft.getType(o) == "MultiMaterial":
                 self.multimats.append(o)
                 matCombo.addItem(o.Label)
@@ -318,31 +316,20 @@ class Arch_Wall:
         grid.addWidget(label3,4,0,1,1)
         grid.addWidget(value3,4,1,1,1)
 
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
+        label4 = QtGui.QLabel(translate("Arch","Use sketches"))
         value4 = QtGui.QCheckBox()
-        value4.setObjectName("ContinueCmd")
+        value4.setObjectName("UseSketches")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
         label4.setBuddy(value4)
-        self.continueCmd = params.get_param("ContinueMode")
-        value4.setChecked(self.continueCmd)
+        value4.setChecked(params.get_param_arch("WallSketches"))
         grid.addWidget(label4,5,0,1,1)
         grid.addWidget(value4,5,1,1,1)
-
-        label5 = QtGui.QLabel(translate("Arch","Use sketches"))
-        value5 = QtGui.QCheckBox()
-        value5.setObjectName("UseSketches")
-        value5.setLayoutDirection(QtCore.Qt.RightToLeft)
-        label5.setBuddy(value5)
-        value5.setChecked(params.get_param_arch("WallSketches"))
-        grid.addWidget(label5,6,0,1,1)
-        grid.addWidget(value5,6,1,1,1)
 
         self.Length.valueChanged.connect(self.setLength)
         value1.valueChanged.connect(self.setWidth)
         value2.valueChanged.connect(self.setHeight)
         value3.currentIndexChanged.connect(self.setAlign)
-        value4.stateChanged.connect(self.setContinue)
-        value5.stateChanged.connect(self.setUseSketch)
+        value4.stateChanged.connect(self.setUseSketch)
         self.Length.returnPressed.connect(value1.setFocus)
         self.Length.returnPressed.connect(value1.selectAll)
         value1.returnPressed.connect(value2.setFocus)
@@ -396,16 +383,6 @@ class Arch_Wall:
         self.Align = ["Center","Left","Right"][i]
         params.set_param_arch("WallAlignment",i)
 
-    def setContinue(self,i):
-        """Simple callback to set if the interactive mode will restart when finished.
-
-        This allows for several walls to be placed one after another.
-        """
-
-        from draftutils import params
-        self.continueCmd = bool(i)
-        params.set_param("ContinueMode", bool(i))
-
     def setUseSketch(self,i):
         """Simple callback to set if walls should based on sketches."""
 
@@ -415,13 +392,13 @@ class Arch_Wall:
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+        self.doc.openTransaction(translate("Arch","Create Wall"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand('wall = Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         if self.MultiMat:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.escape()
 

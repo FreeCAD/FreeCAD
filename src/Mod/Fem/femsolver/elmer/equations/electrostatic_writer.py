@@ -30,6 +30,8 @@ __url__ = "https://www.freecad.org"
 ## \addtogroup FEM
 #  @{
 
+from FreeCAD import Units
+
 from .. import sifio
 
 
@@ -79,6 +81,7 @@ class ESwriter:
                     "File where capacitance matrix is being saved\n"
                     "Only used if 'CalculateCapacitanceMatrix' is true"
                 ),
+                locked=True,
             )
             equation.CapacitanceMatrixFilename = "cmatrix.dat"
         if not hasattr(equation, "ConstantWeights"):
@@ -87,6 +90,7 @@ class ESwriter:
                 "ConstantWeights",
                 "Electrostatic",
                 "Use constant weighting for results",
+                locked=True,
             )
         if not hasattr(equation, "PotentialDifference"):
             equation.addProperty(
@@ -97,14 +101,14 @@ class ESwriter:
                     "Potential difference in Volt for which capacitance is\n"
                     "calculated if 'CalculateCapacitanceMatrix' is false"
                 ),
+                locked=True,
             )
             equation.PotentialDifference = 0.0
 
     def handleElectrostaticConstants(self):
-        permittivity = self.write.convert(
-            self.write.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)"
+        permittivity = Units.Quantity(self.write.constsdef["PermittivityOfVacuum"]).getValueAs(
+            "F/m"
         )
-        permittivity = round(permittivity, 20)  # to get rid of numerical artifacts
         self.write.constant("Permittivity Of Vacuum", permittivity)
 
     def handleElectrostaticMaterial(self, bodies):
@@ -127,15 +131,11 @@ class ESwriter:
                         self.write.boundary(name, "! FreeCAD Name", obj.Label)
                     if obj.BoundaryCondition == "Dirichlet":
                         if obj.PotentialEnabled:
-                            self.write.boundary(
-                                name, "Potential", obj.Potential.getValueAs("V").Value
-                            )
+                            potential = obj.Potential.getValueAs("V")
+                            self.write.boundary(name, "Potential", potential)
                     elif obj.BoundaryCondition == "Neumann":
-                        self.write.boundary(
-                            name,
-                            "Surface Charge Density",
-                            obj.SurfaceChargeDensity.getValueAs("C/m^2").Value,
-                        )
+                        flux_density = obj.ElectricFluxDensity.getValueAs("C/m^2")
+                        self.write.boundary(name, "Electric Flux", flux_density)
                     if obj.PotentialConstant:
                         self.write.boundary(name, "Potential Constant", True)
                     if obj.ElectricInfinity:
@@ -145,6 +145,41 @@ class ESwriter:
                     if obj.CapacitanceBodyEnabled:
                         self.write.boundary(name, "Capacitance Body", obj.CapacitanceBody)
                 self.write.handled(obj)
+
+        for obj in self.write.getMember("Fem::ConstraintElectricChargeDensity"):
+            match obj.Mode:
+                case "Interface":
+                    density = obj.InterfaceChargeDensity
+                case "Total Interface":
+                    density = obj.Proxy.get_total_interface_density(obj)
+                case _:
+                    continue
+
+            for feat, sub_elem in obj.References:
+                for name in sub_elem:
+                    self.write.boundary(name, "! FreeCAD Name", obj.Label)
+                    self.write.boundary(
+                        name,
+                        "Surface Charge Density",
+                        density.getValueAs("C/m^2"),
+                    )
+                    self.write.handled(obj)
+
+    def handleElectrostaticBodyForces(self):
+        for obj in self.write.getMember("Fem::ConstraintElectricChargeDensity"):
+            match obj.Mode:
+                case "Source":
+                    density = obj.SourceChargeDensity
+                case "Total Source":
+                    density = obj.Proxy.get_total_source_density(obj)
+                case _:
+                    continue
+
+            for feat, sub_elem in obj.References:
+                for name in sub_elem:
+                    self.write.bodyForce(name, "! FreeCAD Name", obj.Label)
+                    self.write.bodyForce(name, "Charge Density", density.getValueAs("C/m^3"))
+                    self.write.handled(obj)
 
 
 ##  @}

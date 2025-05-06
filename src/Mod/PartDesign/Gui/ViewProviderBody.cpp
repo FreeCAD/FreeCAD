@@ -282,6 +282,7 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
         prop == &Selectable ||
         prop == &DisplayModeBody ||
         prop == &PointColorArray ||
+        prop == &ShowPlacement ||
         prop == &LineColorArray) {
         return;
     }
@@ -402,7 +403,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
             body->addObjects(move);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
     else if (!body->BaseFeature.getValue()) {

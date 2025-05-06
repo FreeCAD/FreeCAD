@@ -38,6 +38,7 @@
 #endif
 
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
 #include "FeatureExtrusion.h"
 #include "ExtrusionHelper.h"
@@ -200,6 +201,8 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
 
 ExtrusionParameters Extrusion::computeFinalParameters()
 {
+    using std::numbers::pi;
+
     ExtrusionParameters result;
     Base::Vector3d dir;
     switch (this->DirMode.getValue()) {
@@ -244,11 +247,11 @@ ExtrusionParameters Extrusion::computeFinalParameters()
 
     result.solid = this->Solid.getValue();
 
-    result.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngleFwd) > M_PI * 0.5 - Precision::Angular())
+    result.taperAngleFwd = Base::toRadians(this->TaperAngle.getValue());
+    if (fabs(result.taperAngleFwd) > pi * 0.5 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
-    result.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngleRev) > M_PI * 0.5 - Precision::Angular())
+    result.taperAngleRev = Base::toRadians(this->TaperAngleRev.getValue());
+    if (fabs(result.taperAngleRev) > pi * 0.5 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
 
     result.faceMakerClass = this->FaceMakerClass.getValue();

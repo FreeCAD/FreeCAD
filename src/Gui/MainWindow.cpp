@@ -65,6 +65,7 @@
     #endif
 #endif
 
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
@@ -179,13 +180,16 @@ public:
         //create the action buttons
         auto* menu = new QMenu(this);
         auto* actionGrp = new QActionGroup(menu);
-        int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-        for (int i = 0; i < num; i++) {
-            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(i));
+
+        auto setAction = [&, index {0}](const std::string&) mutable {
+            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(index));
             actionGrp->addAction(action);
             action->setCheckable(true);
-            action->setData(i);
-        }
+            action->setData(index++);
+        };
+        auto descriptions = Base::UnitsApi::getDescriptions();
+        std::for_each(descriptions.begin(), descriptions.end(), setAction);
+
         QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
             int userSchema = action->data().toInt();
             setUserSchema(userSchema);
@@ -236,7 +240,7 @@ public:
             getWindowParameter()->SetInt("UserSchema", userSchema);
 
         unitChanged();
-        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+        Base::UnitsApi::setSchema(userSchema);
         // Update the main window to show the unit change
         Gui::Application::Instance->onUpdate();
     }
@@ -261,12 +265,12 @@ private:
 
     void retranslateUi() {
         auto actions = menu()->actions();
-        int maxSchema = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-        assert(actions.size() <= maxSchema);
-        for(int i = 0; i < maxSchema ; i++)
-        {
-            actions[i]->setText(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
-        }
+        auto addAction = [&, index {0}](const std::string& action)mutable {
+            actions[index++]->setText(QString::fromStdString(action));
+        };
+        auto descriptions = Base::UnitsApi::getDescriptions();
+        assert(actions.size() <= static_cast<qsizetype>(descriptions.size()));
+        std::for_each(descriptions.begin(), descriptions.end(), addAction);
     }
 };
 
@@ -403,6 +407,8 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
         notificationArea->setObjectName(QStringLiteral("notificationArea"));
+        //: A context menu action used to show or hide the 'notificationArea' toolbar widget
+        notificationArea->setWindowTitle(tr("Notification area"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
@@ -845,7 +851,7 @@ bool MainWindow::closeAllDocuments (bool close)
         docs = App::Document::getDependentDocuments(docs, true);
     }
     catch(Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
     }
 
     bool checkModify = true;
@@ -952,7 +958,7 @@ void MainWindow::showDocumentation(const QString& help)
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -1040,7 +1046,7 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
         if (e->type() == QEvent::WindowStateChange) {
             // notify all mdi views when the active view receives a show normal, show minimized
             // or show maximized event
-            auto view = qobject_cast<MDIView*>(o);
+            auto view = dynamic_cast<MDIView*>(o);
             if (view) { // emit this signal
                 Qt::WindowStates oldstate = static_cast<QWindowStateChangeEvent*>(e)->oldState();
                 Qt::WindowStates newstate = view->windowState();
@@ -1530,7 +1536,7 @@ void MainWindow::delayedStartup()
                 throw;
             }
             catch (const Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
             }
         });
         return;
@@ -1562,6 +1568,9 @@ void MainWindow::delayedStartup()
     if (hGrp->GetBool("CreateNewDoc", false)) {
         if (App::GetApplication().getDocuments().empty()){
             Application::Instance->commandManager().runCommandByName("Std_New");
+            // This document is autoCreated
+            App::Document* newDoc = App::GetApplication().getActiveDocument();
+            newDoc->setAutoCreated(true);
         }
     }
 
@@ -1689,7 +1698,7 @@ void MainWindow::switchToDockedMode()
     // Search for all top-level MDI views
     QWidgetList toplevel = QApplication::topLevelWidgets();
     for (const auto & it : toplevel) {
-        auto view = qobject_cast<MDIView*>(it);
+        auto view = dynamic_cast<MDIView*>(it);
         if (view)
             view->setCurrentViewMode(MDIView::Child);
     }

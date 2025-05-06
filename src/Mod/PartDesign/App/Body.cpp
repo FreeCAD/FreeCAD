@@ -194,7 +194,7 @@ bool Body::isSolidFeature(const App::DocumentObject *obj)
             // Datum objects are not solid
             return false;
         }
-        if (auto transFeature = Base::freecad_dynamic_cast<PartDesign::Transformed>(obj)) {
+        if (auto transFeature = freecad_cast<PartDesign::Transformed*>(obj)) {
             // Transformed Features inside a MultiTransform are not solid features
             return !transFeature->isMultiTransformChild();
         }
@@ -353,7 +353,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
     }
 
     std::vector<App::DocumentObject*> model = Group.getValues();
-    std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), feature);
+    const auto it = std::ranges::find(model, feature);
 
     // Adjust Tip feature if it is pointing to the deleted object
     if (Tip.getValue()== feature) {

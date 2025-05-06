@@ -1143,7 +1143,7 @@ void RecentMacrosAction::activateFile(int id)
                 // handle SystemExit exceptions
                 Base::PyGILStateLocker locker;
                 Base::PyException exc;
-                exc.ReportException();
+                exc.reportException();
             }
         }
     }

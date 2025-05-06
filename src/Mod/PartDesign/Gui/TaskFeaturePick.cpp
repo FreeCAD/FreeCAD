@@ -29,6 +29,8 @@
 #include <QTimer>
 #endif
 
+#include <ranges>
+
 #include <fmt/format.h>
 
 #include <App/Document.h>
@@ -136,8 +138,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
         // check if we need to set any origin in temporary visibility mode
         auto* datum = dynamic_cast<App::DatumElement*>(*objIt);
-        if (*statusIt != invalidShape && datum) {
-            App::Origin* origin = dynamic_cast<App::Origin*>(datum->getLCS());
+        if ((*statusIt == validFeature || *statusIt == basePlane) && datum) {
+            auto* origin = dynamic_cast<App::Origin*>(datum->getLCS());
             if (origin) {
                 if ((*objIt)->isDerivedFrom<App::Plane>()) {
                     originVisStatus[origin].setFlag(Gui::DatumElement::Planes, true);
@@ -153,7 +155,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     for (const auto& originPair : originVisStatus) {
         const auto& origin = originPair.first;
 
-        Gui::ViewProviderCoordinateSystem* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
+        auto* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(originVisStatus[origin]);
@@ -323,7 +325,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception& e) {
         // reported by code analyzers
@@ -389,7 +391,7 @@ TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool indepe
 
             // we are a independent copy, therefore no external geometry was copied. WE therefore
             // can delete all constraints
-            if (auto* sketchObj = Base::freecad_dynamic_cast<Sketcher::SketchObject>(obj)) {
+            if (auto* sketchObj = freecad_cast<Sketcher::SketchObject*>(obj)) {
                 sketchObj->delConstraintsToExternal();
             }
         }
@@ -555,9 +557,7 @@ void TaskFeaturePick::onDoubleClick(QListWidgetItem* item)
 
 void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
-    std::vector<Gui::ViewProviderCoordinateSystem*>::iterator it;
-    it = std::find(origins.begin(), origins.end(), &Obj);
-    if (it != origins.end()) {
+    if (const auto it = std::ranges::find(origins, &Obj); it != origins.end()) {
         origins.erase(it);
     }
 }

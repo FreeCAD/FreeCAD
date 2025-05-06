@@ -94,15 +94,14 @@ App::DocumentObjectExecReturn* Feature::recompute()
     }
     catch (Base::Exception& e) {
         failed = true;
-        e.ReportException();
+        e.reportException();
         FC_ERR("Failed to recompute suppressed feature " << getFullName());
     }
 
+    Shape.setValue(getBaseTopoShape(true));
+
     if (!failed) {
         updateSuppressedShape();
-    }
-    else {
-        Shape.setValue(getBaseTopoShape(true));
     }
     return App::DocumentObject::StdReturn;
 }
@@ -121,7 +120,6 @@ void Feature::setMaterialToBodyMaterial()
 
 void Feature::updateSuppressedShape()
 {
-    auto baseShape = getBaseTopoShape(true);
     TopoShape res(getID());
     TopoShape shape = Shape.getShape();
     shape.setPlacement(Base::Placement());
@@ -139,7 +137,6 @@ void Feature::updateSuppressedShape()
         res.makeElementCompound(generated);
         res.setPlacement(Placement.getValue());
     }
-    Shape.setValue(baseShape);
     SuppressedShape.setValue(res);
 }
 
@@ -195,6 +192,13 @@ void Feature::onChanged(const App::Property *prop)
                     != ShapeMaterial.getValue().getUUID()) {
                     body->ShapeMaterial.setValue(ShapeMaterial.getValue());
                 }
+            }
+        } else if (prop == &Suppressed){
+            if (Suppressed.getValue()) {
+                SuppressedPlacement = Placement.getValue();
+            } else {
+                Placement.setValue(SuppressedPlacement);
+                SuppressedPlacement = Base::Placement();
             }
         }
     }
@@ -389,7 +393,7 @@ TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
 
 Body* Feature::getFeatureBody() const {
 
-    auto body = Base::freecad_dynamic_cast<Body>(_Body.getValue());
+    auto body = freecad_cast<Body*>(_Body.getValue());
     if(body)
         return body;
 

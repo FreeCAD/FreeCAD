@@ -353,7 +353,7 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
             // multiple pages in document, use active page if there is one
             auto* w = Gui::getMainWindow();
             auto* mv = w->activeWindow();
-            auto* mvp = dynamic_cast<MDIViewPage*>(mv);
+            auto* mvp = qobject_cast<MDIViewPage*>(mv);
             if (mvp) {
                 QGSPage* qp = mvp->getViewProviderPage()->getQGSPage();
                 return qp->getDrawPage();
@@ -443,7 +443,7 @@ bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -474,7 +474,7 @@ bool DrawGuiUtil::isArchObject(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -505,7 +505,7 @@ bool DrawGuiUtil::isArchSection(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -832,7 +832,7 @@ void DrawGuiUtil::rotateToAlign(DrawViewPart* view, const Base::Vector2d& oldDir
 
     double toRotate = newDirection.GetAngle(oldDirection);
     // Radians to degrees
-    toRotate = toRotate * 180 / M_PI;
+    toRotate = Base::toDegrees(toRotate);
 
     // Rotate least amount possible
     if(toRotate > 90) {

@@ -1,23 +1,26 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
 __title__  = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
@@ -34,9 +37,11 @@ __url__    = "https://www.freecad.org"
 '''The Arch module provides tools specialized in BIM modeling.'''
 
 import FreeCAD
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     FreeCADGui.updateLocale()
+
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -50,7 +55,7 @@ from ArchWindowPresets import *
 # TODO: migrate this one
 
 from ArchStructure import *
-from ArchSpace import *
+
 
 # make functions
 
@@ -142,7 +147,7 @@ def makeBuilding(objectslist=None,baseobj=None,name=None):
     obj.IfcType = "Building"
     obj.CompositionType = "ELEMENT"
     t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
-    obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
+    obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t, locked=True)
     obj.BuildingType = ArchBuildingPart.BuildingTypes
     if FreeCAD.GuiUp:
         obj.ViewObject.ShowLevel = False
@@ -191,7 +196,7 @@ def convertFloors(floor=None):
                 nobj.IfcType = "Building"
                 nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
-                nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
+                nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t, locked=True)
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
             label = obj.Label
             for parent in obj.InList:
@@ -768,34 +773,151 @@ def makeSite(objectslist=None,baseobj=None,name=None):
 
 
 def makeSpace(objects=None,baseobj=None,name=None):
+    """Creates a space object from the given objects.
 
-    """makeSpace([objects],[baseobj],[name]): Creates a space object from the given objects.
-    Objects can be one document object, in which case it becomes the base shape of the space
-    object, or a list of selection objects as got from getSelectionEx(), or a list of tuples
-    (object, subobjectname)"""
+    Parameters
+    ----------
+    objects : object or List(<SelectionObject>) or App::PropertyLinkSubList, optional
+        The object or selection set that defines the space. If a single object is given,
+        it becomes the base shape for the object. If the object or selection set contains
+        subelements, these will be used as the boundaries to create the space. By default None.
+    baseobj : object or List(<SelectionObject>) or App::PropertyLinkSubList, optional
+        Currently unimplemented, it replaces and behaves in the same way as the objects parameter
+        if defined. By default None.
+    name : str, optional
+        The user-facing name to assign to the space object's label. By default None, in
+        which case the label is set to "Space".
 
+    Notes
+    -----
+    The objects parameter can be passed using either of these different formats:
+    1. Single object (e.g. a Part::Feature document object). Will be used as the space's base
+       shape.
+       ::
+            objects = <Part::Feature>
+    2. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the space's boundaries. If the list contains a single selection object without
+       subobjects, or with only one subobject, the object in its ``Object`` property is used as
+       the base shape.
+       ::
+            objects = [<SelectionObject>, ...]
+    3. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define boundaries. If
+       the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
+       with only one subobject, the object in the tuple is used as the base shape.
+       ::
+            objects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            objects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
     import ArchSpace
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    obj.Label = name if name else translate("Arch","Space")
-    ArchSpace._Space(obj)
+    space = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
+    space.Label = name if name else translate("Arch","Space")
+    ArchSpace._Space(space)
     if FreeCAD.GuiUp:
-        ArchSpace._ViewProviderSpace(obj.ViewObject)
+        ArchSpace._ViewProviderSpace(space.ViewObject)
     if baseobj:
         objects = baseobj
     if objects:
         if not isinstance(objects,list):
             objects = [objects]
-        if len(objects) == 1:
-            obj.Base = objects[0]
-            if FreeCAD.GuiUp:
-                objects[0].ViewObject.hide()
-        else:
-            obj.Proxy.addSubobjects(obj,objects)
-    return obj
 
+        isSingleObject = lambda objs: len(objs) == 1
+
+        # We assume that the objects list is not a mixed set. The type of the first
+        # object will determine the type of the set.
+        # Input to this function can come into three different formats. First convert it
+        # to a common format: [ (<Part::Feature>, ["Face1", ...]), ... ]
+        if (hasattr(objects[0], "isDerivedFrom") and
+                objects[0].isDerivedFrom("Gui::SelectionObject")):
+            # Selection set: convert to common format
+            # [<SelectionObject>, ...]
+            objects = [(obj.Object, obj.SubElementNames) for obj in objects]
+        elif (isinstance(objects[0], tuple) or isinstance(objects[0], list)):
+            # Tuple or list of object with subobjects: pass unmodified
+            # [ (<Part::Feature>, ["Face1", ...]), ... ]
+            pass
+        else:
+            # Single object: assume anything else passed is a single object with no
+            # boundaries.
+            # [ <Part::Feature> ]
+            objects = [(objects[0], [])]
+
+        if isSingleObject(objects):
+            # For a single object, having boundaries is determined by them being defined
+            # as more than one subelement (e.g. two faces)
+            boundaries = [obj for obj in objects if len(obj[1]) > 1]
+        else:
+            boundaries = [obj for obj in objects if obj[1]]
+
+        if isSingleObject(objects) and not boundaries:
+            space.Base = objects[0][0]
+            if FreeCAD.GuiUp:
+                objects[0][0].ViewObject.hide()
+        else:
+            space.Proxy.addSubobjects(space, boundaries)
+    return space
+
+def addSpaceBoundaries(space,subobjects):
+    """Adds the given subobjects as defining boundaries of the given space.
+
+    Parameters
+    ----------
+    space : ArchSpace._Space
+        Arch space object to add the boundaries to.
+    subobjects : List(<SelectionObject>) or App::PropertyLinkSubList
+        List of boundaries to add to the space.
+
+    Notes
+    -----
+    The subobjects parameter can be passed using either of these different formats:
+    1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the boundaries to add to the space.
+       ::
+            subobjects = [<SelectionObject>, ...]
+    2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries
+       to add.
+       ::
+            subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
+    import Draft
+    if Draft.getType(space) == "Space":
+        space.Proxy.addSubobjects(space,subobjects)
+
+def removeSpaceBoundaries(space,subobjects):
+    """Remove the given subobjects as defining boundaries of the given space.
+
+    Parameters
+    ----------
+    space : ArchSpace._Space
+        Arch space object to remove the boundaries from.
+    subobjects : List(<SelectionObject>) or App::PropertyLinkSubList
+        List of boundaries to remove from the space.
+
+    Notes
+    -----
+    The subobjects parameter can be passed using either of these different formats:
+    1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the boundaries to remove from the space.
+       ::
+            subobjects = [<SelectionObject>, ...]
+    2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries
+       to remove.
+       ::
+            subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
+    import Draft
+    if Draft.getType(space) == "Space":
+        space.Proxy.removeSubobjects(space,subobjects)
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
 
@@ -969,7 +1091,7 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=Non
 
     Parameters
     ----------
-    baseobj: <Part::PartFeature>, optional
+    baseobj: <Part::Feature>, optional
         The base object with which to build the wall. This can be a sketch, a
         draft object, a face, or a solid. It can also be left as None.
     height: float, optional
