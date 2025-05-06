@@ -283,6 +283,21 @@ class polygonTracker(Tracker):
         self.line.numVertices.setValue(num + 1)
         self.sides = num
 
+    def _drawPolygon(self, local_origin, radius):
+        wp = self._get_wp()
+        for i in range(self.sides):
+            angle = 2 * math.pi * i / self.sides
+            px = local_origin.x + radius * math.cos(angle)
+            py = local_origin.y + radius * math.sin(angle)
+
+            # Back to global space
+            global_point = wp.get_global_coords(Vector(px, py, 0))
+            self.coords.point.set1Value(i, *global_point)
+
+        # Close the polygon by repeating the first point
+        first = self.coords.point[0].getValue()
+        self.coords.point.set1Value(self.sides, *first)
+
     def setOrigin(self, point, radius=1.0):
         """Set the origin of the polygon and initialize the shape."""
         self.origin = point
@@ -291,18 +306,7 @@ class polygonTracker(Tracker):
         # Convert the origin to working plane local space
         local_origin = wp.get_local_coords(point)
 
-        for i in range(self.sides):
-            angle = 2 * math.pi * i / self.sides
-            px = local_origin.x + radius * math.cos(angle)
-            py = local_origin.y + radius * math.sin(angle)
-
-            # Convert back to global coordinates
-            global_point = wp.get_global_coords(Vector(px, py, 0))
-            self.coords.point.set1Value(i, global_point.x, global_point.y, global_point.z)
-
-        # Close the polygon loop
-        first = self.coords.point[0].getValue()
-        self.coords.point.set1Value(self.sides, *first)
+        self._drawPolygon(local_origin, radius)
 
     def update(self, point):
         """Update polygon size based on current mouse point."""
@@ -316,18 +320,7 @@ class polygonTracker(Tracker):
         dy = local.y - local_origin.y
         radius = math.hypot(dx, dy)
 
-        for i in range(self.sides):
-            angle = 2 * math.pi * i / self.sides
-            px = local_origin.x + radius * math.cos(angle)
-            py = local_origin.y + radius * math.sin(angle)
-
-            # Back to global space
-            global_point = wp.get_global_coords(Vector(px, py, 0))
-            self.coords.point.set1Value(i, global_point.x, global_point.y, global_point.z)
-
-        # Close the polygon by repeating the first point
-        first = self.coords.point[0].getValue()
-        self.coords.point.set1Value(self.sides, *first)
+        self._drawPolygon(local_origin, radius)
 
 class rectangleTracker(Tracker):
     """A Rectangle tracker, used by the rectangle tool."""
