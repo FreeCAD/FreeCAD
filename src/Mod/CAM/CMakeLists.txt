@@ -301,6 +301,7 @@ SET(Tests_SRCS
     CAMTests/__init__.py
     CAMTests/boxtest.fcstd
     CAMTests/boxtest1.fcstd
+    CAMTests/dressuptest.FCStd
     CAMTests/Drilling_1.FCStd
     CAMTests/drill_test1.FCStd
     CAMTests/FilePathTestUtils.py
@@ -355,6 +356,7 @@ SET(Tests_SRCS
     CAMTests/TestRefactoredLinuxCNCPost.py
     CAMTests/TestRefactoredMach3Mach4Post.py
     CAMTests/TestRefactoredMassoG3Post.py
+    CAMTests/TestRefactoredTestDressupPost.py
     CAMTests/TestRefactoredTestPost.py
     CAMTests/TestRefactoredTestPostGCodes.py
     CAMTests/TestRefactoredTestPostMCodes.py
