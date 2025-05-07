@@ -140,7 +140,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
     length = 2 * math.pi * helixRadius
 
-    obj.HelixAngle = min(89, max(obj.HelixAngle.Value, 1))
+    obj.HelixAngle = min(89.99, max(obj.HelixAngle.Value, 0.01))
     obj.HelixConeAngle = max(obj.HelixConeAngle, 0)
 
     helixAngleRad = math.radians(obj.HelixAngle)
