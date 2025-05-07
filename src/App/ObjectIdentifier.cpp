@@ -51,16 +51,6 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
 using namespace App;
 using namespace Base;
 
-// Path class
-
-/**
- * @brief Quote input string according to quoting rules for an expression: because " and ' are
- * used to designate inch and foot units, strings are quoted as <<string>>.
- *
- * @param input
- * @return
- */
-
 std::string App::quote(const std::string& input, bool toPython)
 {
     std::stringstream output;
@@ -102,12 +92,6 @@ std::string App::quote(const std::string& input, bool toPython)
     return output.str();
 }
 
-
-/**
- * @brief Construct an ObjectIdentifier object, given an owner and a single-value property.
- * @param _owner Owner of property.
- * @param property Name of property.
- */
 
 ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer* _owner,
                                    const std::string& property,
@@ -153,12 +137,6 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer* _owner, bool lo
     }
 }
 
-/**
- * @brief Construct an ObjectIdentifier object given a property. The property is assumed to be
- * single-valued.
- * @param prop Property to construct object identifier for.
- */
-
 ObjectIdentifier::ObjectIdentifier(const Property& prop, int index)
     : owner(nullptr)
     , documentNameSet(false)
@@ -185,11 +163,6 @@ ObjectIdentifier::ObjectIdentifier(const Property& prop, int index)
     }
 }
 
-/**
- * @brief Get the name of the property.
- * @return Name
- */
-
 std::string App::ObjectIdentifier::getPropertyName() const
 {
     ResolveResults result(*this);
@@ -199,13 +172,6 @@ std::string App::ObjectIdentifier::getPropertyName() const
 
     return components[result.propertyIndex].getName();
 }
-
-/**
- * @brief Get Component at given index \a i.
- * @param i: Index to get
- * @param idx: optional return of adjusted component index
- * @return A component.
- */
 
 const App::ObjectIdentifier::Component& App::ObjectIdentifier::getPropertyComponent(int i,
                                                                                     int* idx) const
@@ -252,33 +218,15 @@ std::vector<ObjectIdentifier::Component> ObjectIdentifier::getPropertyComponents
     return res;
 }
 
-/**
- * @brief Compare object identifier with \a other.
- * @param other Other object identifier.
- * @return true if they are equal.
- */
-
 bool ObjectIdentifier::operator==(const ObjectIdentifier& other) const
 {
     return owner == other.owner && toString() == other.toString();
 }
 
-/**
- * @brief Compare object identifier with \a other.
- * @param other Other object identifier
- * @return true if they differ from each other.
- */
-
 bool ObjectIdentifier::operator!=(const ObjectIdentifier& other) const
 {
     return !(operator==)(other);
 }
-
-/**
- * @brief Compare object identifier with other.
- * @param other Other object identifier.
- * @return true if this object is less than the other.
- */
 
 bool ObjectIdentifier::operator<(const ObjectIdentifier& other) const
 {
@@ -291,20 +239,10 @@ bool ObjectIdentifier::operator<(const ObjectIdentifier& other) const
     return toString() < other.toString();
 }
 
-/**
- * @brief Return number of components.
- * @return Number of components in this identifier.
- */
-
 int ObjectIdentifier::numComponents() const
 {
     return components.size();
 }
-
-/**
- * @brief Compute number of sub components, i.e excluding the property.
- * @return Number of components.
- */
 
 int ObjectIdentifier::numSubComponents() const
 {
@@ -340,17 +278,6 @@ bool ObjectIdentifier::verify(const App::Property& prop, bool silent) const
     }
     return true;
 }
-
-/**
- * @brief Create a string representation of this object identifier.
- *
- * An identifier is written as document#documentobject.property.subproperty1...subpropertyN
- * document# may be dropped; it is assumed to be within owner's document. If documentobject is
- * dropped, the property is assumed to be owned by the owner specified in the object identifiers
- * constructor.
- *
- * @return A string
- */
 
 const std::string& ObjectIdentifier::toString() const
 {
@@ -510,17 +437,12 @@ bool ObjectIdentifier::replaceObject(ObjectIdentifier& res,
     return true;
 }
 
-/**
- * @brief Escape toString representation so it is suitable for being embedded in a python command.
- * @return Escaped string.
- */
-
 std::string ObjectIdentifier::toEscapedString() const
 {
     return Base::Tools::escapedUnicodeFromUtf8(toString().c_str());
 }
 
-bool ObjectIdentifier::updateLabelReference(App::DocumentObject* obj,
+bool ObjectIdentifier::updateLabelReference(const App::DocumentObject* obj,
                                             const std::string& ref,
                                             const char* newLabel)
 {
@@ -606,11 +528,6 @@ bool ObjectIdentifier::relabeledDocument(ExpressionVisitor& v,
     return false;
 }
 
-/**
- * @brief Get sub field part of a property as a string.
- * @return String representation of path.
- */
-
 void ObjectIdentifier::getSubPathStr(std::ostream& s,
                                      const ResolveResults& result,
                                      bool toPython) const
@@ -632,14 +549,6 @@ std::string ObjectIdentifier::getSubPathStr(bool toPython) const
     return ss.str();
 }
 
-
-/**
- * @brief Construct a Component part
- * @param _name Name of component
- * @param _type Type; simple, array, range or map
- * @param _begin Array index or beginning of a Range, or INT_MAX for other type.
- * @param _end ending of a Range, or INT_MAX for other type.
- */
 
 ObjectIdentifier::Component::Component(const String& _name,
                                        ObjectIdentifier::Component::typeEnum _type,
@@ -664,7 +573,6 @@ ObjectIdentifier::Component::Component(String&& _name,
     , end(_end)
     , step(_step)
 {}
-
 
 size_t ObjectIdentifier::Component::getIndex(size_t count) const
 {
@@ -784,22 +692,10 @@ void ObjectIdentifier::Component::del(Py::Object& pyobj) const
     }
 }
 
-/**
- * @brief Create a simple component part with the given name
- * @param _component Name of component.
- * @return A new Component object.
- */
-
 ObjectIdentifier::Component ObjectIdentifier::Component::SimpleComponent(const char* _component)
 {
     return Component(String(_component));
 }
-
-/**
- * @brief Create a simple component part with the given name
- * @param _component Name of component.
- * @return A new Component object.
- */
 
 ObjectIdentifier::Component
 ObjectIdentifier::Component::SimpleComponent(const ObjectIdentifier::String& _component)
@@ -813,24 +709,10 @@ ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String&& _compone
     return Component(std::move(_component));
 }
 
-/**
- * @brief Create an array component with given name and index.
- * @param _component Name of component
- * @param _index Index of component
- * @return A new Component object.
- */
-
 ObjectIdentifier::Component ObjectIdentifier::Component::ArrayComponent(int _index)
 {
     return Component(String(), Component::ARRAY, _index);
 }
-
-/**
- * @brief Create a map component with given name and key.
- * @param _component Name of component
- * @param _key Key of component
- * @return A new Component object.
- */
 
 ObjectIdentifier::Component ObjectIdentifier::Component::MapComponent(const String& _key)
 {
@@ -842,25 +724,11 @@ ObjectIdentifier::Component ObjectIdentifier::Component::MapComponent(String&& _
     return Component(std::move(_key), Component::MAP);
 }
 
-
-/**
- * @brief Create a range component with given begin and end.
- * @param _begin beginning index of the range
- * @param _end ending index of the range
- * @return A new Component object.
- */
-
 ObjectIdentifier::Component
 ObjectIdentifier::Component::RangeComponent(int _begin, int _end, int _step)
 {
     return Component(String(), Component::RANGE, _begin, _end, _step);
 }
-
-/**
- * @brief Comparison operator for Component objects.
- * @param other The object we want to compare to.
- * @return true if they are equal, false if not.
- */
 
 bool ObjectIdentifier::Component::operator==(const ObjectIdentifier::Component& other) const
 {
@@ -881,11 +749,6 @@ bool ObjectIdentifier::Component::operator==(const ObjectIdentifier::Component& 
             return false;
     }
 }
-
-/**
- * @brief Create a string representation of a component.
- * @return A string representing the component.
- */
 
 void ObjectIdentifier::Component::toString(std::ostream& ss, bool toPython) const
 {
@@ -924,17 +787,6 @@ enum ResolveFlags
     ResolveByLabel,
     ResolveAmbiguous,
 };
-
-/**
- * @brief Search for the document object given by name in doc.
- *
- * Name might be the internal name or a label. In any case, it must uniquely define
- * the document object.
- *
- * @param doc Document to search
- * @param name Name to search for.
- * @return Pointer to document object if a unique pointer is found, 0 otherwise.
- */
 
 App::DocumentObject* ObjectIdentifier::getDocumentObject(const App::Document* doc,
                                                          const String& name,
@@ -990,13 +842,6 @@ App::DocumentObject* ObjectIdentifier::getDocumentObject(const App::Document* do
         return nullptr;  // Found by both name and label, two different objects
     }
 }
-
-/**
- * @brief Resolve the object identifier to a concrete document, documentobject, and property.
- *
- * This method is a helper method that fills out data in the given ResolveResults object.
- *
- */
 
 void ObjectIdentifier::resolve(ResolveResults& results) const
 {
@@ -1128,12 +973,6 @@ void ObjectIdentifier::resolve(ResolveResults& results) const
     }
 }
 
-/**
- * @brief Find a document with the given name.
- * @param name Name of document
- * @return Pointer to document, or 0 if it is not found or not uniquely defined by name.
- */
-
 Document* ObjectIdentifier::getDocument(String name, bool* ambiguous) const
 {
     if (name.getString().empty()) {
@@ -1185,11 +1024,6 @@ Document* ObjectIdentifier::getDocument(String name, bool* ambiguous) const
         return nullptr;
     }
 }
-
-/**
- * @brief Get the document object for the object identifier.
- * @return Pointer to document object, or 0 if not found or uniquely defined.
- */
 
 DocumentObject* ObjectIdentifier::getDocumentObject() const
 {
@@ -1290,11 +1124,6 @@ void ObjectIdentifier::getDep(Dependencies& deps,
     }
 }
 
-/**
- * @brief Get components as a string list.
- * @return List of strings.
- */
-
 std::vector<std::string> ObjectIdentifier::getStringList() const
 {
     std::vector<std::string> l;
@@ -1323,12 +1152,6 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
     return l;
 }
 
-/**
- * @brief Construct the simplest possible object identifier relative to another.
- * @param other The other object identifier.
- * @return A new simplified object identifier.
- */
-
 ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier& other) const
 {
     ObjectIdentifier result(other.getOwner());
@@ -1351,16 +1174,6 @@ ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier& other) con
     return result;
 }
 
-/**
- * @brief Parse a string to create an object identifier.
- *
- * This method throws an exception if the string is invalid.
- *
- * @param docObj Document object that will own this object identifier.
- * @param str String to parse
- * @return A new object identifier.
- */
-
 ObjectIdentifier ObjectIdentifier::parse(const DocumentObject* docObj, const std::string& str)
 {
     std::unique_ptr<Expression> expr(ExpressionParser::parse(docObj, str.c_str()));
@@ -1381,12 +1194,6 @@ std::string ObjectIdentifier::resolveErrorString() const
     return result.resolveErrorString();
 }
 
-/**
- * @brief << operator, used to add a component to the object identifier.
- * @param value Component object
- * @return Reference to itself.
- */
-
 ObjectIdentifier& ObjectIdentifier::operator<<(const ObjectIdentifier::Component& value)
 {
     components.push_back(value);
@@ -1401,11 +1208,6 @@ ObjectIdentifier& ObjectIdentifier::operator<<(ObjectIdentifier::Component&& val
     return *this;
 }
 
-
-/**
- * @brief Get pointer to property pointed to by this object identifier.
- * @return Point to property if it is uniquely defined, or 0 otherwise.
- */
 
 Property* ObjectIdentifier::getProperty(int* ptype) const
 {
@@ -1462,15 +1264,6 @@ Property* ObjectIdentifier::resolveProperty(const App::DocumentObject* obj,
 }
 
 
-/**
- * @brief Create a canonical representation of an object identifier.
- *
- * The main work is actually done by the property's virtual canonicalPath(...) method,
- * which is invoked by this call.
- *
- * @return A new object identifier.
- */
-
 ObjectIdentifier ObjectIdentifier::canonicalPath() const
 {
     ObjectIdentifier res(*this);
@@ -1498,15 +1291,6 @@ ObjectIdentifier::DocumentMapper::~DocumentMapper()
     _DocumentMap = nullptr;
 }
 
-/**
- * @brief Set the document name for this object identifier.
- *
- * If force is true, the document name will always be included in the string representation.
- *
- * @param name Name of document object.
- * @param force Force name to be set
- */
-
 void ObjectIdentifier::setDocumentName(ObjectIdentifier::String&& name, bool force)
 {
     if (name.getString().empty()) {
@@ -1533,28 +1317,12 @@ void ObjectIdentifier::setDocumentName(ObjectIdentifier::String&& name, bool for
     documentName = std::move(name);
 }
 
-/**
- * @brief Get the document name from this object identifier
- *
- * @return Document name as a String object.
- */
-
 ObjectIdentifier::String ObjectIdentifier::getDocumentName() const
 {
     ResolveResults result(*this);
 
     return result.resolvedDocumentName;
 }
-
-/**
- * @brief Set the document object name of this object identifier.
- *
- * If force is true, the document object will not be resolved dynamically from the
- * object identifier's components, but used as given by this method.
- *
- * @param name Name of document object.
- * @param force Force name to be set.
- */
 
 void ObjectIdentifier::setDocumentObjectName(ObjectIdentifier::String&& name,
                                              bool force,
@@ -1619,11 +1387,6 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject* obj,
 }
 
 
-/**
- * @brief Get the document object name
- * @return String with name of document object as resolved by object identifier.
- */
-
 ObjectIdentifier::String ObjectIdentifier::getDocumentObjectName() const
 {
     ResolveResults result(*this);
@@ -1635,11 +1398,6 @@ bool ObjectIdentifier::hasDocumentObjectName(bool forced) const
 {
     return !documentObjectName.getString().empty() && (!forced || documentObjectNameSet);
 }
-
-/**
- * @brief Get a string representation of this object identifier.
- * @return String representation.
- */
 
 std::string ObjectIdentifier::String::toString(bool toPython) const
 {
@@ -1653,7 +1411,7 @@ std::string ObjectIdentifier::String::toString(bool toPython) const
 
 void ObjectIdentifier::String::checkImport(const App::DocumentObject* owner,
                                            const App::DocumentObject* obj,
-                                           String* objName)
+                                           const String* objName)
 {
     if (owner && owner->getDocument() && !str.empty()
         && ExpressionParser::ExpressionImporter::reader()) {
@@ -1695,7 +1453,7 @@ void ObjectIdentifier::String::checkImport(const App::DocumentObject* owner,
 }
 
 Py::Object
-ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Dependencies* deps) const
+ObjectIdentifier::access(const ResolveResults& result, const Py::Object* value, Dependencies* deps) const
 {
     if (!result.resolvedDocumentObject || !result.resolvedProperty
         || (!subObjectName.getString().empty() && !result.resolvedSubObject)) {
@@ -1924,19 +1682,6 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
     return pyobj;
 }
 
-/**
- * @brief Get the value of the property or field pointed to by this object identifier.
- *
- * All type of objects are supported. Some types are casted to FC native
- * type, including: Int, Float, String, Unicode String, and Quantities. Others
- * are just kept as Python object wrapped by App::any.
- *
- * @param pathValue: if true, calls the property's getPathValue(), which is
- * necessary for Qunatities to work.
- *
- * @return The value of the property or field.
- */
-
 App::any ObjectIdentifier::getValue(bool pathValue, bool* isPseudoProperty) const
 {
     ResolveResults rs(*this);
@@ -1992,16 +1737,6 @@ Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool* isPseudoProperty) 
     }
     return Py::Object();
 }
-
-/**
- * @brief Set value of a property or field pointed to by this object identifier.
- *
- * This method uses Python to do the actual work. and a limited set of types that
- * can be in the App::any variable is supported: Base::Quantity, double,
- * char*, const char*, int, unsigned int, short, unsigned short, char, and unsigned char.
- *
- * @param value Value to set
- */
 
 void ObjectIdentifier::setValue(const App::any& value) const
 {
@@ -2150,7 +1885,7 @@ void ObjectIdentifier::resolveAmbiguity()
     resolveAmbiguity(result);
 }
 
-void ObjectIdentifier::resolveAmbiguity(ResolveResults& result)
+void ObjectIdentifier::resolveAmbiguity(const ResolveResults& result)
 {
 
     if (!result.resolvedDocumentObject) {
@@ -2179,12 +1914,6 @@ void ObjectIdentifier::resolveAmbiguity(ResolveResults& result)
         setDocumentName(String());
     }
 }
-
-/** Construct and initialize a ResolveResults object, given an ObjectIdentifier instance.
- *
- * The constructor will invoke the ObjectIdentifier's resolve() method to initialize the object's
- * data.
- */
 
 ObjectIdentifier::ResolveResults::ResolveResults(const ObjectIdentifier& oi)
     : propertyType(PseudoNone)

@@ -189,7 +189,7 @@ void PropertyLinkBase::checkLabelReferences(const std::vector<std::string>& subs
 
 std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject* parent,
                                                    const char* subname,
-                                                   App::DocumentObject* obj,
+                                                   const App::DocumentObject* obj,
                                                    const std::string& ref,
                                                    const char* newLabel)
 {

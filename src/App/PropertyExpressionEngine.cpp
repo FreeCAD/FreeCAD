@@ -406,7 +406,7 @@ void PropertyExpressionEngine::buildGraphStructures(
  * @return New ObjectIdentifier
  */
 
-ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier& p) const
+ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier& oid) const
 {
     DocumentObject* docObj = freecad_cast<DocumentObject*>(getContainer());
 
@@ -416,24 +416,24 @@ ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier&
     }
 
     int ptype;
-    Property* prop = p.getProperty(&ptype);
+    Property* prop = oid.getProperty(&ptype);
 
-    // p pointing to a property...?
+    // oid pointing to a property...?
     if (!prop) {
-        throw Base::RuntimeError(p.resolveErrorString().c_str());
+        throw Base::RuntimeError(oid.resolveErrorString().c_str());
     }
 
     if (ptype || prop->getContainer() != getContainer()) {
-        return p;
+        return oid;
     }
 
     // In case someone calls this with p pointing to a PropertyExpressionEngine for some reason
     if (prop->isDerivedFrom(PropertyExpressionEngine::classTypeId)) {
-        return p;
+        return oid;
     }
 
     // Dispatch call to actual canonicalPath implementation
-    return p.canonicalPath();
+    return oid.canonicalPath();
 }
 
 /**
