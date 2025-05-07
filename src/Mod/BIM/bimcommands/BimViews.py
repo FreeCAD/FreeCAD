@@ -466,6 +466,9 @@ class BIM_Views:
             toolTip = item.toolTip(0)
             obj = FreeCAD.ActiveDocument.getObject(toolTip)
             if obj:
+                # We switch visibility to be sure we will show childs of other childs
+                # beforehand, as the Visibility may not be propagated.
+                obj.ViewObject.Visibility = False
                 obj.ViewObject.Visibility = True
 
         vm = findWidget()
