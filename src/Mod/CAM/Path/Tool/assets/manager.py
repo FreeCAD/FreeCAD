@@ -1,7 +1,7 @@
 from typing import Dict, Any
 from .store.base import AssetStore
 from .adapter import AssetAdapter
-from .uri import Uri
+from .uri import AssetUri
 
 
 class AssetManager:
@@ -17,22 +17,20 @@ class AssetManager:
         """Registers an AssetAdapter with the manager."""
         self.adapters[adapter.asset_name] = adapter
 
-    async def get(self, uri: Uri | str) -> Any:
+    async def get(self, uri: AssetUri | str) -> Any:
         """Retrieves an asset by its URI."""
         if isinstance(uri, str):
-            parsed_uri = Uri(uri)
-        else:
-            parsed_uri = uri
+            uri = AssetUri(uri)
 
-        store = self.stores.get(parsed_uri.protocol)
+        store = self.stores.get(uri.protocol)
         if not store:
-            raise ValueError(f"No store registered for protocol: {parsed_uri.protocol}")
+            raise ValueError(f"No store registered for protocol: {uri.protocol}")
 
-        data = await store.get(parsed_uri)
+        data = await store.get(uri)
 
-        adapter = self.adapters.get(parsed_uri.asset_type)
+        adapter = self.adapters.get(uri.asset_type)
         if not adapter:
-            raise ValueError(f"No adapter registered for asset type: {parsed_uri.asset_type}")
+            raise ValueError(f"No adapter registered for asset type: {uri.asset_type}")
 
         dep_uris = adapter.dependencies(data)
         resolved_deps = {}
@@ -41,20 +39,18 @@ class AssetManager:
 
         return adapter.create(data, resolved_deps)
 
-    async def delete(self, uri: Uri | str):
+    async def delete(self, uri: AssetUri | str):
         """Deletes an asset by its URI."""
         if isinstance(uri, str):
-            parsed_uri = Uri(uri)
-        else:
-            parsed_uri = uri
+            uri = AssetUri(uri)
 
-        store = self.stores.get(parsed_uri.protocol)
+        store = self.stores.get(uri.protocol)
         if not store:
-            raise ValueError(f"No store registered for protocol: {parsed_uri.protocol}")
+            raise ValueError(f"No store registered for protocol: {uri.protocol}")
 
-        await store.delete(parsed_uri)
+        await store.delete(uri)
 
-    async def create(self, store_protocol: str, obj: Any) -> Uri:
+    async def create(self, store_protocol: str, obj: Any) -> AssetUri:
         """Creates a new asset from an object."""
         adapter = None
         for adpt in self.adapters.values():
@@ -78,12 +74,10 @@ class AssetManager:
 
         return await store.create(adapter.asset_name, asset_id, serialized_data)
 
-    async def update(self, uri: Uri | str, obj) -> Uri:
+    async def update(self, uri: AssetUri | str, obj) -> AssetUri:
         """Updates an existing asset."""
         if isinstance(uri, str):
-            parsed_uri = Uri(uri)
-        else:
-            parsed_uri = uri
+            uri = AssetUri(uri)
 
         adapter = None
         for adpt in self.adapters.values():
@@ -98,27 +92,27 @@ class AssetManager:
 
         serialized_data = adapter.serialize(obj)
 
-        store = self.stores.get(parsed_uri.protocol)
+        store = self.stores.get(uri.protocol)
         if not store:
-            raise ValueError(f"No store registered for protocol: {parsed_uri.protocol}")
+            raise ValueError(f"No store registered for protocol: {uri.protocol}")
 
-        return await store.update(parsed_uri, serialized_data)
+        return await store.update(uri, serialized_data)
 
     async def create_raw(self,
                          store_protocol: str,
                          asset_type: str,
                          asset_id: str,
-                         data: bytes) -> Uri:
+                         data: bytes) -> AssetUri:
         """Creates a new asset with raw data."""
         store = self.stores.get(store_protocol)
         if not store:
             raise ValueError(f"No store registered for protocol: {store_protocol}")
         return await store.create(asset_type, asset_id, data)
 
-    async def get_raw(self, uri: Uri | str) -> bytes:
+    async def get_raw(self, uri: AssetUri | str) -> bytes:
         """Retrieves raw asset data by its URI."""
         if isinstance(uri, str):
-            uri = Uri(uri)
+            uri = AssetUri(uri)
 
         store = self.stores.get(uri.protocol)
         if not store:

@@ -1,5 +1,5 @@
 from .base import AssetStore
-from ..uri import Uri
+from ..uri import AssetUri
 from typing import List, Optional
 import pathlib
 
@@ -25,7 +25,7 @@ class FlatLocalStore(AssetStore):
         self.base_dir = new_dir
 
 
-    def _uri_to_path(self, uri: Uri) -> pathlib.Path:
+    def _uri_to_path(self, uri: AssetUri) -> pathlib.Path:
         """
         Converts a URI to a file system path, ignoring asset type and version.
         The URI is expected to be in the format local://<domain>/<asset_type>/<asset>/<version>.
@@ -44,7 +44,7 @@ class FlatLocalStore(AssetStore):
         file_name = f"{asset_name}{self.file_extension}"
         return self.base_dir / file_name
 
-    async def create(self, asset_type: str, asset_id: str, data: bytes) -> Uri:
+    async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
         """
         Saves data to a file in the base directory.
         """
@@ -55,9 +55,9 @@ class FlatLocalStore(AssetStore):
         with open(file_path, 'wb') as f:
             f.write(data)
         # Return a URI with a fixed version as it's ignored by this store
-        return Uri.build(self.protocol, None, asset_type, asset_id, "1")
+        return AssetUri.build(self.protocol, None, asset_type, asset_id, "1")
 
-    async def update(self, uri: Uri, data: bytes) -> Uri:
+    async def update(self, uri: AssetUri, data: bytes) -> AssetUri:
         """
         Overwrites the file at the path derived from the URI.
         """
@@ -66,7 +66,7 @@ class FlatLocalStore(AssetStore):
             f.write(data)
         return uri
 
-    async def get(self, uri: Uri) -> bytes:
+    async def get(self, uri: AssetUri) -> bytes:
         """
         Reads data from the file at the path derived from the URI.
         """
@@ -74,7 +74,7 @@ class FlatLocalStore(AssetStore):
         with open(file_path, 'rb') as f:
             return f.read()
 
-    async def delete(self, uri: Uri) -> None:
+    async def delete(self, uri: AssetUri) -> None:
         """
         Deletes the file at the path derived from the URI.
         """
@@ -84,7 +84,7 @@ class FlatLocalStore(AssetStore):
     async def list_assets(self,
                           asset_type: Optional[str] = None,
                           limit: Optional[int] = None,
-                          offset: Optional[int] = None) -> List[Uri]:
+                          offset: Optional[int] = None) -> List[AssetUri]:
         """
         Lists all assets in the base directory, ignoring asset_type.
         Returns a list of URIs. Pagination is not implemented for this store.
@@ -97,7 +97,7 @@ class FlatLocalStore(AssetStore):
                     # The asset_type and version are not used for path construction
                     # but are included in the URI for consistency with AssetStore.
                     asset_name = entry.stem
-                    uri = Uri.build(
+                    uri = AssetUri.build(
                         self.protocol,
                         None,
                         self.asset_type,
@@ -116,7 +116,7 @@ class FlatLocalStore(AssetStore):
 
         return assets
 
-    async def list_versions(self, uri: Uri) -> List[str]:
+    async def list_versions(self, uri: AssetUri) -> List[str]:
         """
         Returns a list of versions for a given asset.
         Since this store is unversioned, it returns ['1'] if the asset exists,

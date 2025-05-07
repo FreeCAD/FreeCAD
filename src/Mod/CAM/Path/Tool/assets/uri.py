@@ -2,7 +2,7 @@ import urllib.parse
 from urllib.parse import uses_params
 from typing import Dict, Any, Mapping
 
-class Uri:
+class AssetUri:
     """
     Represents an asset URI with components.
 
@@ -47,10 +47,10 @@ class Uri:
         return uri_string
 
     def __repr__(self) -> str:
-        return f"Uri('{str(self)}')"
+        return f"AssetUri('{str(self)}')"
 
     def __eq__(self, other: Any) -> bool:
-        if not isinstance(other, Uri):
+        if not isinstance(other, AssetUri):
             return NotImplemented
         return (self.protocol == other.protocol and
                 self.domain == other.domain and
@@ -65,9 +65,9 @@ class Uri:
               asset_type: str,
               asset: str,
               version: str | None = "latest",
-              params: Mapping[str, str | list[str]] | None = None) -> 'Uri':
+              params: Mapping[str, str | list[str]] | None = None) -> 'AssetUri':
         """Builds a Uri object from components."""
-        uri = Uri.__new__(Uri) # Create a new instance without calling __init__
+        uri = AssetUri.__new__(AssetUri) # Create a new instance without calling __init__
         uri.protocol = protocol
         uri.domain = domain or ""
         uri.asset_type = asset_type
@@ -81,6 +81,3 @@ class Uri:
                 else:
                     uri.params[key] = [value]
         return uri
-
-# Alias for type hinting
-UriStr = str

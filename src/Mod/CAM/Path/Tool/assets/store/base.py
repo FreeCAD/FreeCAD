@@ -1,6 +1,6 @@
 import abc
 from typing import List
-from ..uri import Uri
+from ..uri import AssetUri
 
 class AssetStore(abc.ABC):
     """
@@ -15,7 +15,7 @@ class AssetStore(abc.ABC):
         self.protocol = protocol
 
     @abc.abstractmethod
-    async def get(self, uri: Uri) -> bytes:
+    async def get(self, uri: AssetUri) -> bytes:
         """
         Retrieve the raw byte data for the asset at the given URI.
 
@@ -32,7 +32,7 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def delete(self, uri: Uri) -> None:
+    async def delete(self, uri: AssetUri) -> None:
         """
         Delete the asset at the given URI.
 
@@ -46,7 +46,7 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def create(self, asset_type: str, asset_id: str, data: bytes) -> Uri:
+    async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
         """
         Create a new asset in the store with the given data.
 
@@ -69,7 +69,7 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def update(self, uri: Uri, data: bytes) -> Uri:
+    async def update(self, uri: AssetUri, data: bytes) -> AssetUri:
         """
         Update the asset at the given URI with new data, creating a new version.
 
@@ -87,7 +87,7 @@ class AssetStore(abc.ABC):
     async def list_assets(self,
                           asset_type: str | None = None,
                           limit: int | None = None,
-                          offset: int | None = None) -> List[Uri]:
+                          offset: int | None = None) -> List[AssetUri]:
         """
         List assets in the store, optionally filtered by asset type and
         with pagination. For versioned stores, this lists the latest
@@ -104,7 +104,7 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def list_versions(self, uri: Uri) -> List[str]:
+    async def list_versions(self, uri: AssetUri) -> List[str]:
         """
         Lists available version identifiers for a specific asset URI.
 

@@ -1,7 +1,7 @@
 import pathlib
 import aiofiles
 from typing import List
-from ..uri import Uri
+from ..uri import AssetUri
 from .base import AssetStore
 
 class UnversionedLocalStore(AssetStore):
@@ -22,7 +22,7 @@ class UnversionedLocalStore(AssetStore):
         """
         self._base_dir = new_dir
 
-    def _uri_to_path(self, uri: Uri) -> pathlib.Path:
+    def _uri_to_path(self, uri: AssetUri) -> pathlib.Path:
         """Converts a local URI to a filesystem path for unversioned store."""
         if uri.protocol != self.protocol:
             raise ValueError(f"Invalid protocol for UnversionedLocalStore: {uri.protocol}")
@@ -34,7 +34,7 @@ class UnversionedLocalStore(AssetStore):
 
         return self._base_dir / asset_type / f"{asset_name}{self._file_extension}"
 
-    async def get(self, uri: Uri) -> bytes:
+    async def get(self, uri: AssetUri) -> bytes:
         """Retrieve the raw byte data for the asset at the given URI."""
         path = self._uri_to_path(uri)
         try:
@@ -43,7 +43,7 @@ class UnversionedLocalStore(AssetStore):
         except FileNotFoundError:
             raise FileNotFoundError(f"Asset not found at {uri}")
 
-    async def delete(self, uri: Uri) -> None:
+    async def delete(self, uri: AssetUri) -> None:
         """Delete the asset at the given URI."""
         path = self._uri_to_path(uri)
         try:
@@ -52,7 +52,7 @@ class UnversionedLocalStore(AssetStore):
             # If the file doesn't exist, consider it already deleted.
             pass
 
-    async def create(self, asset_type: str, asset_id: str, data: bytes) -> Uri:
+    async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
         """Create a new asset with a specified ID in the unversioned store."""
         # Construct the directory path and ensure it exists
         asset_dir = self._base_dir / asset_type
@@ -66,7 +66,7 @@ class UnversionedLocalStore(AssetStore):
 
         # Return a dummy URI with version '1' as it's ignored by this store
         # Use Uri.build for consistent URI creation
-        return Uri.build(
+        return AssetUri.build(
             self.protocol,
             None, # Domain is ignored for local store
             asset_type,
@@ -74,7 +74,7 @@ class UnversionedLocalStore(AssetStore):
             "1" # Dummy version for unversioned store
         )
 
-    async def update(self, uri: Uri, data: bytes) -> Uri:
+    async def update(self, uri: AssetUri, data: bytes) -> AssetUri:
         """Update the asset at the given URI with new data."""
         path = self._uri_to_path(uri)
         if not path.exists():
@@ -88,7 +88,7 @@ class UnversionedLocalStore(AssetStore):
     async def list_assets(self,
                           asset_type: str | None = None,
                           limit: int | None = None,
-                          offset: int | None = None) -> List[Uri]:
+                          offset: int | None = None) -> List[AssetUri]:
         """
         List assets in the unversioned store, optionally filtered by asset type
         and with pagination.
@@ -109,7 +109,7 @@ class UnversionedLocalStore(AssetStore):
                     current_asset_type = relative_path.parent.name
                     asset_name = relative_path.stem # Get filename without extension
 
-                    uri = Uri.build(
+                    uri = AssetUri.build(
                         self.protocol,
                         None, # Domain is ignored for local store
                         current_asset_type,
@@ -123,7 +123,7 @@ class UnversionedLocalStore(AssetStore):
         end_index = start_index + limit if limit is not None else len(all_uris)
         return all_uris[start_index:end_index]
 
-    async def list_versions(self, uri: Uri) -> List[str]:
+    async def list_versions(self, uri: AssetUri) -> List[str]:
         """
         Lists available version identifiers for a specific asset URI.
         For unversioned store, this always returns ['1'] if the asset exists.

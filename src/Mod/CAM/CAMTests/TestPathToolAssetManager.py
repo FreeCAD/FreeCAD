@@ -4,7 +4,7 @@ import pathlib
 import tempfile
 import asyncio
 from Path.Tool.assets import AssetManager, VersionedLocalStore, AssetAdapter
-from Path.Tool.assets.uri import Uri
+from Path.Tool.assets.uri import AssetUri
 
 
 # Mock classes for testing registration
@@ -87,7 +87,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             self.assertEqual(retrieved_object, "mocked asset object")
 
             # Test error handling for non-existent URI
-            non_existent_uri = Uri.build(
+            non_existent_uri = AssetUri.build(
                 "local", "", "test_asset", "non_existent", "1"
             )
             with self.assertRaises(FileNotFoundError):
@@ -122,7 +122,7 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             # Test error handling for non-existent URI (should not raise error
             # as LocalStore.delete handles this)
-            non_existent_uri = Uri.build(
+            non_existent_uri = AssetUri.build(
                 "local", "", "temp_asset", "non_existent", "1"
             )
             asyncio.run(manager.delete(non_existent_uri))  # Should not raise
@@ -153,7 +153,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             expected_uri_str = (
                 "local:///test_creatable_asset/mocked_asset_id/1"
             )
-            expected_uri = Uri(expected_uri_str)
+            expected_uri = AssetUri(expected_uri_str)
             local_store.create = AsyncMock(return_value=expected_uri)
 
             # Call manager.create
@@ -211,9 +211,9 @@ class TestPathToolAssetManager(unittest.TestCase):
             test_uri_str = (
                 "local:///test_updatable_asset/some_asset_id/1"
             )
-            test_uri = Uri(test_uri_str)
+            test_uri = AssetUri(test_uri_str)
             local_store.update = AsyncMock(
-                return_value=Uri(
+                return_value=AssetUri(
                     "local:///test_updatable_asset/some_asset_id/2"
                 )
             )  # Simulate new version URI
@@ -239,7 +239,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             )
 
             # Test error handling (store not found)
-            non_existent_uri = Uri.build(
+            non_existent_uri = AssetUri.build(
                 "non_existent_store",
                 "",
                 "test_updatable_asset",
@@ -262,7 +262,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         asset_type = "raw_test_type"
         asset_id = "raw_test_id"
         data = b"raw test data"
-        expected_uri = Uri.build(
+        expected_uri = AssetUri.build(
             "mock_raw", "", asset_type, asset_id, "1"
         )
         mock_store.create.return_value = expected_uri
@@ -297,7 +297,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         manager.register_store(mock_store)
 
         test_uri_str = "mock_raw_get:///test_type/test_id/1"
-        test_uri = Uri(test_uri_str)
+        test_uri = AssetUri(test_uri_str)
         expected_data = b"retrieved raw data"
         mock_store.get.return_value = expected_data
 
@@ -311,7 +311,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(retrieved_data, expected_data)
 
         # Test error handling (store not found)
-        non_existent_uri = Uri("non_existent_store:///type/id/1")
+        non_existent_uri = AssetUri("non_existent_store:///type/id/1")
         with self.assertRaises(ValueError) as cm:
             asyncio.run(manager.get_raw(non_existent_uri))
         self.assertIn(

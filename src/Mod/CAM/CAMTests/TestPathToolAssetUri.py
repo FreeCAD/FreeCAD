@@ -1,16 +1,16 @@
 import unittest
-from Path.Tool.assets.uri import Uri
+from Path.Tool.assets.uri import AssetUri
 
 
 class TestPathToolAssetUri(unittest.TestCase):
     """
-    Test suite for the Uri utility class.
+    Test suite for the AssetUri utility class.
     """
 
     def test_uri_parsing_full(self):
         uri_string = ("remote://domain.com/asset_type/asset/version?"
                       "param1=value1&param2=value2")
-        uri = Uri(uri_string)
+        uri = AssetUri(uri_string)
         self.assertEqual(uri.protocol, "remote")
         self.assertEqual(uri.domain, "domain.com")
         self.assertEqual(uri.asset_type, "asset_type")
@@ -18,11 +18,11 @@ class TestPathToolAssetUri(unittest.TestCase):
         self.assertEqual(uri.version, "version")
         self.assertEqual(uri.params, {"param1": ["value1"], "param2": ["value2"]})
         self.assertEqual(str(uri), uri_string)
-        self.assertEqual(repr(uri), f"Uri('{uri_string}')")
+        self.assertEqual(repr(uri), f"AssetUri('{uri_string}')")
 
     def test_uri_parsing_local(self):
         uri_string = "local:/type/id/v2?param=value"
-        uri = Uri(uri_string)
+        uri = AssetUri(uri_string)
         self.assertEqual(uri.protocol, "local")
         self.assertEqual(uri.domain, "")
         self.assertEqual(uri.asset_type, "type")
@@ -30,10 +30,10 @@ class TestPathToolAssetUri(unittest.TestCase):
         self.assertEqual(uri.version, "v2")
         self.assertEqual(uri.params, {"param": ["value"]})
         self.assertEqual(str(uri), uri_string)
-        self.assertEqual(repr(uri), f"Uri('{uri_string}')")
+        self.assertEqual(repr(uri), f"AssetUri('{uri_string}')")
 
         uri_string2 = "local:///type/id/v2?param=value"
-        uri = Uri(uri_string2)
+        uri = AssetUri(uri_string2)
         self.assertEqual(uri.protocol, "local")
         self.assertEqual(uri.domain, "")
         self.assertEqual(uri.asset_type, "type")
@@ -41,11 +41,11 @@ class TestPathToolAssetUri(unittest.TestCase):
         self.assertEqual(uri.version, "v2")
         self.assertEqual(uri.params, {"param": ["value"]})
         self.assertEqual(str(uri), uri_string)
-        self.assertEqual(repr(uri), f"Uri('{uri_string}')")
+        self.assertEqual(repr(uri), f"AssetUri('{uri_string}')")
 
     def test_uri_parsing_no_params(self):
         uri_string = "file:///path/to/asset/v1.0"
-        uri = Uri(uri_string)
+        uri = AssetUri(uri_string)
         self.assertEqual(uri.protocol, "file")
         self.assertEqual(uri.domain, "")
         self.assertEqual(uri.asset_type, "path")
@@ -53,11 +53,11 @@ class TestPathToolAssetUri(unittest.TestCase):
         self.assertEqual(uri.version, "v1.0")
         self.assertEqual(uri.params, {})
         self.assertEqual(str(uri), uri_string)
-        self.assertEqual(repr(uri), f"Uri('{uri_string}')")
+        self.assertEqual(repr(uri), f"AssetUri('{uri_string}')")
 
     def test_uri_version_missing(self):
         uri_string = "local://domain/asset_type/asset"
-        uri = Uri(uri_string)
+        uri = AssetUri(uri_string)
         self.assertEqual(uri.protocol, "local")
         self.assertEqual(uri.domain, "domain")
         self.assertEqual(uri.asset_type, "asset_type")
@@ -67,7 +67,7 @@ class TestPathToolAssetUri(unittest.TestCase):
         self.assertEqual(str(uri), uri_string)
 
     def test_uri_build_full(self):
-        uri = Uri.build("local", "domain", "asset_type", "asset",
+        uri = AssetUri.build("local", "domain", "asset_type", "asset",
                         version="version", params={"param1": "value1"})
         expected_uri_string = "local://domain/asset_type/asset/version?param1=value1"
         self.assertEqual(str(uri), expected_uri_string)
@@ -79,7 +79,7 @@ class TestPathToolAssetUri(unittest.TestCase):
         self.assertEqual(uri.params, {"param1": ["value1"]}) # parse_qs always returns list
 
     def test_uri_build_latest_version_no_params(self):
-        uri = Uri.build("remote", "another.domain", "type", "id")
+        uri = AssetUri.build("remote", "another.domain", "type", "id")
         expected_uri_string = "remote://another.domain/type/id/latest"
         self.assertEqual(str(uri), expected_uri_string)
         self.assertEqual(uri.protocol, "remote")
@@ -91,7 +91,7 @@ class TestPathToolAssetUri(unittest.TestCase):
 
     def test_uri_build_empty_domain(self):
         """
-        Test that Uri.build with empty domain incorrectly populates attributes
+        Test that AssetUri.build with empty domain incorrectly populates attributes
         and generates a malformed string representation.
         """
         protocol = "test_protocol"
@@ -100,7 +100,7 @@ class TestPathToolAssetUri(unittest.TestCase):
         version = "1"
 
         # Build URI with empty domain (None)
-        uri = Uri.build(protocol, None, asset_type, asset, version)
+        uri = AssetUri.build(protocol, None, asset_type, asset, version)
 
         # Assert that attributes are incorrectly populated (based on observed behavior)
         self.assertEqual(uri.protocol, protocol)
@@ -117,9 +117,9 @@ class TestPathToolAssetUri(unittest.TestCase):
 
 
     def test_uri_equality(self):
-        uri1 = Uri("local://domain/type/asset/version")
-        uri2 = Uri("local://domain/type/asset/version")
-        uri3 = Uri("local://domain/type/asset/another_version")
+        uri1 = AssetUri("local://domain/type/asset/version")
+        uri2 = AssetUri("local://domain/type/asset/version")
+        uri3 = AssetUri("local://domain/type/asset/another_version")
         self.assertEqual(uri1, uri2)
         self.assertNotEqual(uri1, uri3)
         self.assertNotEqual(uri1, "not a uri")

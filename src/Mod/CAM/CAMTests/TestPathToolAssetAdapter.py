@@ -1,7 +1,7 @@
 import unittest
 from typing import Any, Dict, List, Type
 from Path.Tool.assets.adapter import AssetAdapter
-from Path.Tool.assets.uri import Uri
+from Path.Tool.assets.uri import AssetUri
 
 
 class DummyAdapter(AssetAdapter):
@@ -16,10 +16,10 @@ class DummyAdapter(AssetAdapter):
     def serialize(self, obj: Any) -> bytes:
         return b"dummy_serialized_data"
 
-    def dependencies(self, data: bytes) -> List[Uri]:
+    def dependencies(self, data: bytes) -> List[AssetUri]:
         return []
 
-    def create(self, data: bytes, dependencies: Dict[Uri, Any]) -> Any:
+    def create(self, data: bytes, dependencies: Dict[AssetUri, Any]) -> Any:
         return "dummy_object"
 
     def id_of(self, obj: Any) -> str:

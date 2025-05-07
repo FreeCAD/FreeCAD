@@ -9,7 +9,7 @@ updating, deleting, and reveiving assets. Assets are arbitrary data.
 import asyncio
 import pathlib
 from typing import Any, Dict, List, Type
-from Path.Tool.assets import AssetManager, AssetAdapter, VersionedLocalStore, Uri
+from Path.Tool.assets import AssetManager, AssetAdapter, VersionedLocalStore, AssetUri
 
 # Define a simple Material class for the example
 class Material:
@@ -24,10 +24,10 @@ class MaterialAdapter(AssetAdapter):
     def serialize(self, obj: Material) -> bytes:
         return obj.name.encode('utf-8')
 
-    def dependencies(self, data: bytes) -> List[Uri]:
+    def dependencies(self, data: bytes) -> List[AssetUri]:
         return []
 
-    def create(self, data: bytes, dependencies: Dict[Uri, Any]) -> Material:
+    def create(self, data: bytes, dependencies: Dict[AssetUri, Any]) -> Material:
         return Material(data.decode('utf-8'))
 
     def id_of(self, obj: Material) -> str:
@@ -57,7 +57,7 @@ classDiagram
     direction LR
 
     %% -------------- Asset Manager Module --------------
-    note for AssetManager "URI structure:
+    note for AssetManager "AssetUri structure:
         <protocol>://<domain>/<asset_type>/<asset>/<version>\?<params><br/>
         Examples:
         local://material/1234567/v1
@@ -70,24 +70,24 @@ classDiagram
         adapters: Mapping[str, AssetAdapter]   // maps asset type to adapter
         register_store(store: AssetStore)
         register_adapter(adapter: AssetAdapter) // Keyed by adapter.asset_name
-        async get(uri: Uri) Any
-        async delete(uri: Uri)
-        async create(store_protocol: str, obj: Any) Uri // Returns URI of created asset
-        async update(uri: Uri, obj: Any) Uri // Updates asset at URI
-        async create_raw(store_protocol: str, asset_type: str, asset_id: str, data: bytes) Uri
-        async get_raw(uri: Uri | str) bytes
+        async get(uri: AssetUri) Any
+        async delete(uri: AssetUri)
+        async create(store_protocol: str, obj: Any) AssetUri // Returns URI of created asset
+        async update(uri: AssetUri, obj: Any) AssetUri // Updates asset at URI
+        async create_raw(store_protocol: str, asset_type: str, asset_id: str, data: bytes) AssetUri
+        async get_raw(uri: AssetUri | str) bytes
         async is_empty(store_protocol: str, asset_type: str | None = None) bool
     }
 
     class AssetStore["AssetStore
     <small>Stores/Retrieves assets as raw bytes</small>"] {
         <<abstract>>
-        async get(uri: Uri) bytes
-        async delete(uri: Uri)
-        async create(asset_type: str, asset_id: str, data: bytes) Uri
-        async update(uri: Uri, data: bytes) Uri
-        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
-        async list_versions(uri: Uri | UriStr) List[str]
+        async get(uri: AssetUri) bytes
+        async delete(uri: AssetUri)
+        async create(asset_type: str, asset_id: str, data: bytes) AssetUri
+        async update(uri: AssetUri, data: bytes) AssetUri
+        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[AssetUri]
+        async list_versions(uri: AssetUri | AssetUriStr) List[str]
         async is_empty(asset_type: str | None = None) bool
     }
     AssetStore *-- AssetManager: has many
@@ -95,12 +95,12 @@ classDiagram
     class VersionedLocalStore["VersionedLocalStore
     <small>Stores/Retrieves versioned assets locally (local://)</small>"] {
         _base_dir: pathlib.Path
-        async get(uri: Uri) bytes
-        async delete(uri: Uri)
-        async create(asset_type: str, asset_id: str, data: bytes) Uri
-        async update(uri: Uri, data: bytes) Uri
-        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
-        async list_versions(uri: Uri | UriStr) List[str]
+        async get(uri: AssetUri) bytes
+        async delete(uri: AssetUri)
+        async create(asset_type: str, asset_id: str, data: bytes) AssetUri
+        async update(uri: AssetUri, data: bytes) AssetUri
+        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[AssetUri]
+        async list_versions(uri: AssetUri | AssetUriStr) List[str]
         async is_empty(asset_type: str | None = None) bool
     }
     VersionedLocalStore <|-- AssetStore: is
@@ -109,11 +109,11 @@ classDiagram
     <small>Stores/Retrieves unversioned assets locally</small>"] {
         _base_dir: pathlib.Path
         _file_extension: str
-        async get(uri: Uri) bytes
-        async delete(uri: Uri)
-        async create(asset_type: str, asset_id: str, data: bytes) Uri
-        async update(uri: Uri, data: bytes) Uri
-        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
+        async get(uri: AssetUri) bytes
+        async delete(uri: AssetUri)
+        async create(asset_type: str, asset_id: str, data: bytes) AssetUri
+        async update(uri: AssetUri, data: bytes) AssetUri
+        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[AssetUri]
         async is_empty(asset_type: str | None = None) bool
     }
     UnversionedLocalStore <|-- AssetStore: is
@@ -122,11 +122,11 @@ classDiagram
     <small>Stores/Retrieves assets in a flat local directory</small>"] {
         _base_dir: pathlib.Path
         _file_extension: str
-        async get(uri: Uri) bytes
-        async delete(uri: Uri)
-        async create(asset_type: str, asset_id: str, data: bytes) Uri
-        async update(uri: Uri, data: bytes) Uri
-        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
+        async get(uri: AssetUri) bytes
+        async delete(uri: AssetUri)
+        async create(asset_type: str, asset_id: str, data: bytes) AssetUri
+        async update(uri: AssetUri, data: bytes) AssetUri
+        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[AssetUri]
         async is_empty(asset_type: str | None = None) bool
     }
     FlatLocalStore <|-- AssetStore: is
@@ -134,12 +134,12 @@ classDiagram
     class HttpStore["HttpStore
     <small>Stores/Retrieves bytes for URIs starting with https://</small>"] {
         auth_data: Mapping
-        async get(uri: Uri) bytes
-        async delete(uri: Uri)
-        async create(asset_type: str, asset_id: str, data: bytes) Uri
-        async update(uri: Uri, data: bytes) Uri
-        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
-        async list_versions(uri: Uri | UriStr) List[str]
+        async get(uri: AssetUri) bytes
+        async delete(uri: AssetUri)
+        async create(asset_type: str, asset_id: str, data: bytes) AssetUri
+        async update(uri: AssetUri, data: bytes) AssetUri
+        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[AssetUri]
+        async list_versions(uri: AssetUri | AssetUriStr) List[str]
     }
     HttpStore <|-- AssetStore: is
 
@@ -149,8 +149,8 @@ classDiagram
         asset_class: Type[Any]  // class of the asset type, e.g., ToolBit
         
         serialize(obj: Any) bytes // Converts object to bytes
-        dependencies(data: bytes) List[Uri] // Finds dependency URIs in bytes
-        create(data: bytes, dependencies: Dict[Uri, Any]) Any // Creates object from bytes and resolved dependencies
+        dependencies(data: bytes) List[AssetUri] // Finds dependency URIs in bytes
+        create(data: bytes, dependencies: Dict[AssetUri, Any]) Any // Creates object from bytes and resolved dependencies
         id_of(obj: Any) str // Returns the unique ID of an asset object
     }
     AssetAdapter *-- AssetManager: has many
@@ -171,8 +171,8 @@ classDiagram
         asset_name: str = "toolbitshape"
         asset_class: Type = ToolBitShape
         serialize(obj: ToolBitShape) bytes
-        dependencies(data: bytes) List[Uri]
-        create(data: bytes, dependencies: Dict[Uri, Any]) ToolBitShape
+        dependencies(data: bytes) List[AssetUri]
+        create(data: bytes, dependencies: Dict[AssetUri, Any]) ToolBitShape
         id_of(obj: ToolBitShape) str
     }
     ToolBitShapeAdapter --|> ToolBitShape: creates
@@ -183,8 +183,8 @@ classDiagram
         asset_name: str = "toolbit"
         asset_class: Type = ToolBit
         serialize(obj: ToolBit) bytes
-        dependencies(data: bytes) List[Uri]
-        create(data: bytes, dependencies: Dict[Uri, Any]) ToolBit
+        dependencies(data: bytes) List[AssetUri]
+        create(data: bytes, dependencies: Dict[AssetUri, Any]) ToolBit
         id_of(obj: ToolBit) str
     }
     ToolBitAdapter --|> ToolBit: creates
@@ -204,8 +204,8 @@ classDiagram
         asset_name: str = "material"
         asset_class: Type = Material
         serialize(obj: Material) bytes
-        dependencies(data: bytes) List[Uri]
-        create(data: bytes, dependencies: Dict[Uri, Any]) Material
+        dependencies(data: bytes) List[AssetUri]
+        create(data: bytes, dependencies: Dict[AssetUri, Any]) Material
         id_of(obj: Material) str
     }
     MaterialAdapter --|> Material: creates

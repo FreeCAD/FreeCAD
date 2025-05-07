@@ -6,7 +6,7 @@ import aiofiles
 from Path.Tool.assets.store.unversioned import UnversionedLocalStore
 from Path.Tool.assets.store.versioned import VersionedLocalStore
 from Path.Tool.assets.store.flat import FlatLocalStore
-from Path.Tool.assets.uri import Uri
+from Path.Tool.assets.uri import AssetUri
 
 
 class TestPathToolUnversionedLocalStore(unittest.TestCase):
@@ -35,7 +35,7 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
             uri = await self.store.create(
                 asset_type, asset_name, data
             )
-            self.assertIsInstance(uri, Uri)
+            self.assertIsInstance(uri, AssetUri)
             self.assertEqual(uri.protocol, "test_unversioned")
             self.assertEqual(uri.asset_type, asset_type)
             self.assertEqual(uri.asset, asset_name)
@@ -132,7 +132,7 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
             self.assertEqual(versions, ["1"])
 
             # Non-existent asset
-            dummy_uri = Uri.build(
+            dummy_uri = AssetUri.build(
                 "test_unversioned", None, "non_existent_type", "non_existent_asset", "1"
             )
             versions = await self.store.list_versions(dummy_uri)
@@ -159,13 +159,13 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
             self.assertFalse(await self.store.is_empty("type2"))
 
             # Delete assets
-            uri1 = Uri.build("test_unversioned", None, "type1", "asset1", "1")
+            uri1 = AssetUri.build("test_unversioned", None, "type1", "asset1", "1")
             await self.store.delete(uri1)
             self.assertFalse(await self.store.is_empty())
             self.assertTrue(await self.store.is_empty("type1"))
             self.assertFalse(await self.store.is_empty("type2"))
 
-            uri2 = Uri.build("test_unversioned", None, "type2", "asset2", "1")
+            uri2 = AssetUri.build("test_unversioned", None, "type2", "asset2", "1")
             await self.store.delete(uri2)
             self.assertTrue(await self.store.is_empty())
             self.assertTrue(await self.store.is_empty("type1"))
@@ -201,7 +201,7 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
             self.assertTrue(asset_path.exists())
 
             # Delete all versions (should delete the single asset)
-            uri_without_version = Uri.build(
+            uri_without_version = AssetUri.build(
                 uri.protocol,
                 uri.domain,
                 uri.asset_type,
@@ -238,7 +238,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             asset_type = "test_type"
             uri = await self.store.create(asset_type, "dummy_id", data)
 
-            # Assert URI format (assuming Uri class handles parsing)
+            # Assert URI format (assuming AssetUri class handles parsing)
             self.assertTrue(str(uri).startswith(f"local:/{asset_type}/"))
             self.assertEqual(uri.asset_type, asset_type)
             self.assertIsNotNone(uri.asset)
@@ -263,7 +263,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             self.assertEqual(retrieved_data, data)
 
             # Test get with non-existent URI
-            non_existent_uri = Uri("local:///non_existent/asset/version")
+            non_existent_uri = AssetUri("local:///non_existent/asset/version")
             with self.assertRaises(FileNotFoundError):
                 await self.store.get(non_existent_uri)
 
@@ -287,7 +287,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             self.assertEqual(retrieved_data, updated_data)
 
             # Test update with non-existent URI
-            non_existent_uri = Uri("local:///non_existent/asset/version")
+            non_existent_uri = AssetUri("local:///non_existent/asset/version")
             with self.assertRaises(FileNotFoundError):
                 await self.store.update(non_existent_uri, b"some data")
 
@@ -308,7 +308,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             self.assertFalse(expected_path.exists())
 
             # Test delete with non-existent URI (should not raise error)
-            non_existent_uri = Uri("local:///non_existent/asset/version")
+            non_existent_uri = AssetUri("local:///non_existent/asset/version")
             await self.store.delete(non_existent_uri) # Should not raise
 
         asyncio.run(async_test())
@@ -340,13 +340,13 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
 
             # Get latest version
             latest_uri_str = f"local:///{asset_type}/{asset}/latest"
-            latest_uri = Uri(latest_uri_str)
+            latest_uri = AssetUri(latest_uri_str)
             retrieved_data = await self.store.get(latest_uri)
             self.assertEqual(retrieved_data, data3)
 
             # Get a specific version
             uri1_str = f"local:///{asset_type}/{asset}/1"
-            uri1 = Uri(uri1_str)
+            uri1 = AssetUri(uri1_str)
             retrieved_data_v1 = await self.store.get(uri1)
             self.assertEqual(retrieved_data_v1, data1)
 
@@ -410,7 +410,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
 
             # Delete all versions using "latest"
             uri_str = f"local:///{asset_type}/{asset}"
-            uri = Uri(uri_str)
+            uri = AssetUri(uri_str)
             await self.store.delete(uri)
 
             # Verify asset directory is removed
@@ -445,7 +445,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             self.assertTrue(path2.exists())
 
             # Delete version 1
-            uri1 = Uri(uri1_str)
+            uri1 = AssetUri(uri1_str)
             await self.store.delete(uri1)
 
             # Verify version 1 is removed and version 2 still exists
@@ -453,7 +453,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             self.assertTrue(path2.exists())
 
             # Delete version 2
-            uri2 = Uri(uri2_str)
+            uri2 = AssetUri(uri2_str)
             await self.store.delete(uri2)
 
             # Verify version 2 is removed and asset directory is empty
@@ -547,7 +547,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             self.assertEqual(sorted(versions_latest), ["1", "2"])
 
             # Non-existent asset
-            dummy_uri = Uri.build(
+            dummy_uri = AssetUri.build(
                 "local", None, "non_existent_type", "non_existent_asset", "1"
             )
             versions = await self.store.list_versions(dummy_uri)
@@ -597,7 +597,7 @@ class TestPathToolFlatLocalStore(unittest.TestCase):
             uri = await self.store.create(
                 asset_type, asset_name, data
             )
-            self.assertIsInstance(uri, Uri)
+            self.assertIsInstance(uri, AssetUri)
             self.assertEqual(uri.protocol, "test_flat")
             # FlatLocalStore ignores asset_type and version in URI path construction
             # but the URI object itself might still hold these values from creation
@@ -718,7 +718,7 @@ class TestPathToolFlatLocalStore(unittest.TestCase):
             self.assertEqual(versions, ["1"])
 
             # Non-existent asset
-            dummy_uri = Uri.build(
+            dummy_uri = AssetUri.build(
                 "test_flat", None, "non_existent_type", "non_existent_asset", "1"
             )
             versions = await self.store.list_versions(dummy_uri)
@@ -740,7 +740,7 @@ class TestPathToolFlatLocalStore(unittest.TestCase):
             self.assertTrue(asset_path.exists())
 
             # Delete all versions (should delete the single asset)
-            uri_without_version = Uri.build(
+            uri_without_version = AssetUri.build(
                 uri.protocol,
                 uri.domain,
                 uri.asset_type,

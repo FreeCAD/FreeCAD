@@ -2,7 +2,7 @@ import pathlib
 import aiofiles
 import shutil
 from typing import List
-from ..uri import Uri
+from ..uri import AssetUri
 from .base import AssetStore
 
 class VersionedLocalStore(AssetStore):
@@ -23,18 +23,18 @@ class VersionedLocalStore(AssetStore):
         """
         self._base_dir = new_dir
 
-    def _uri_to_path(self, uri: Uri) -> pathlib.Path:
+    def _uri_to_path(self, uri: AssetUri) -> pathlib.Path:
         """Converts a local URI to a filesystem path."""
         if uri.protocol != self.protocol:
             raise ValueError(f"Invalid protocol for VersionedLocalStore: {uri.protocol}")
         # Ignore domain for local paths
         return self._base_dir / uri.asset_type / uri.asset / uri.version
 
-    def _asset_path(self, uri: Uri) -> pathlib.Path:
+    def _asset_path(self, uri: AssetUri) -> pathlib.Path:
         """Gets the path to the asset directory (excluding version)."""
         return self._base_dir / uri.asset_type / uri.asset
 
-    async def get(self, uri: Uri) -> bytes:
+    async def get(self, uri: AssetUri) -> bytes:
         """Retrieve the raw byte data for the asset at the given URI."""
         if uri.version == "latest":
             versions = await self.list_versions(uri)
@@ -42,7 +42,7 @@ class VersionedLocalStore(AssetStore):
                 raise FileNotFoundError(f"No versions found for {uri}")
             latest_version = versions[-1]
             # Construct a new URI with the latest version
-            uri_with_version = Uri.build(
+            uri_with_version = AssetUri.build(
                 uri.protocol,
                 uri.domain,
                 uri.asset_type,
@@ -60,7 +60,7 @@ class VersionedLocalStore(AssetStore):
         except FileNotFoundError:
             raise FileNotFoundError(f"Asset not found at {uri}")
 
-    async def delete(self, uri: Uri) -> None:
+    async def delete(self, uri: AssetUri) -> None:
         """Delete the asset at the given URI."""
         if uri.version is None:
             # Delete the entire asset directory
@@ -87,7 +87,7 @@ class VersionedLocalStore(AssetStore):
             # If the file doesn't exist, consider it already deleted.
             pass
 
-    async def create(self, asset_type: str, asset_id: str, data: bytes) -> Uri:
+    async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
         """Create a new asset in the store with the given data."""
         version = "1"
 
@@ -98,7 +98,7 @@ class VersionedLocalStore(AssetStore):
         async with aiofiles.open(asset_path, mode='wb') as f:
             await f.write(data)
 
-        return Uri.build(
+        return AssetUri.build(
             self.protocol,
             None, # Domain is ignored for local store
             asset_type,
@@ -106,7 +106,7 @@ class VersionedLocalStore(AssetStore):
             version
         )
 
-    async def update(self, uri: Uri, data: bytes) -> Uri:
+    async def update(self, uri: AssetUri, data: bytes) -> AssetUri:
         """Update the asset at the given URI with new data, creating a new version."""
         versions = await self.list_versions(uri)
         if not versions:
@@ -126,18 +126,18 @@ class VersionedLocalStore(AssetStore):
             await f.write(data)
 
         uri_string = f"{self.protocol}:///{uri.asset_type}/{uri.asset}/{next_version}"
-        return Uri(uri_string)
+        return AssetUri(uri_string)
 
     async def list_assets(self,
                           asset_type: str | None = None,
                           limit: int | None = None,
-                          offset: int | None = None) -> List[Uri]:
+                          offset: int | None = None) -> List[AssetUri]:
         """
         List assets in the store, optionally filtered by asset type and
         with pagination. For versioned stores, this lists the latest
         version of each asset.
         """
-        all_assets: List[Uri] = []
+        all_assets: List[AssetUri] = []
         base_path = self._base_dir
 
         type_dirs = [d for d in base_path.iterdir() if d.is_dir()]
@@ -153,7 +153,7 @@ class VersionedLocalStore(AssetStore):
             for asset_dir in asset_dirs:
                 asset_name = asset_dir.name
                 # Use a dummy URI to find versions
-                dummy_uri = Uri.build(
+                dummy_uri = AssetUri.build(
                     self.protocol,
                     None, # Domain is ignored for local store
                     current_asset_type,
@@ -163,7 +163,7 @@ class VersionedLocalStore(AssetStore):
                 versions = await self.list_versions(dummy_uri)
                 if versions:
                     latest_version = versions[-1]
-                    asset_uri = Uri.build(
+                    asset_uri = AssetUri.build(
                         self.protocol,
                         None, # Domain is ignored for local store
                         current_asset_type,
@@ -177,7 +177,7 @@ class VersionedLocalStore(AssetStore):
         end = start + limit if limit is not None else len(all_assets)
         return all_assets[start:end]
 
-    async def list_versions(self, uri: Uri) -> List[str]:
+    async def list_versions(self, uri: AssetUri) -> List[str]:
         """
         Lists available version identifiers for a specific asset URI.
 
@@ -188,7 +188,7 @@ class VersionedLocalStore(AssetStore):
             A list of version identifiers as strings, sorted in ascending order.
         """
         if isinstance(uri, str):
-            parsed_uri = Uri(uri)
+            parsed_uri = AssetUri(uri)
         else:
             parsed_uri = uri
 

@@ -1,7 +1,7 @@
 import abc
 from abc import ABC
 from typing import Any, Dict, List, Type
-from .uri import Uri
+from .uri import AssetUri
 
 class AssetAdapter(ABC):
     asset_name: str  # name of the asset type handled by this adapter
@@ -19,12 +19,12 @@ class AssetAdapter(ABC):
         pass
 
     @abc.abstractmethod
-    def dependencies(self, data: bytes) -> List[Uri]:
+    def dependencies(self, data: bytes) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
         pass
 
     @abc.abstractmethod
-    def create(self, data: bytes, dependencies: Dict[Uri, Any]) -> Any:
+    def create(self, data: bytes, dependencies: Dict[AssetUri, Any]) -> Any:
         """Creates an object from serialized data and resolved dependencies."""
         pass
 
