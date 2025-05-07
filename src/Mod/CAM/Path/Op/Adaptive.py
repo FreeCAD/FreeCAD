@@ -117,14 +117,6 @@ def discretize(edge, flipDirection=False):
     return pts
 
 
-def CalcHelixConePoint(height, cur_z, radius, angle):
-    x = ((height - cur_z) / height) * radius * math.cos(math.radians(angle) * cur_z)
-    y = ((height - cur_z) / height) * radius * math.sin(math.radians(angle) * cur_z)
-    z = cur_z
-
-    return {"X": x, "Y": y, "Z": z}
-
-
 def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
     if not adaptiveResults or not adaptiveResults[0]["AdaptivePaths"]:
         return
@@ -238,117 +230,29 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                         )
                     )
 
-                    if obj.HelixConeAngle == 0:
-                        while fi < maxfi:
-                            x = region["HelixCenterPoint"][0] + r * math.cos(fi + offsetFi)
-                            y = region["HelixCenterPoint"][1] + r * math.sin(fi + offsetFi)
-                            z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
-                            op.commandlist.append(
-                                Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.vertFeed})
-                            )
-                            fi = fi + math.pi / 16
+                    r_bottom = r - (passStartDepth - passEndDepth) * math.tan(math.radians(obj.HelixConeAngle.Value))
+                    r_bottom = max(r_bottom, r * .75)  # put a limit on how small the cone tip can be
 
-                        # one more circle at target depth to make sure center is cleared
-                        maxfi = maxfi + 2 * math.pi
-                        while fi < maxfi:
-                            x = region["HelixCenterPoint"][0] + r * math.cos(fi + offsetFi)
-                            y = region["HelixCenterPoint"][1] + r * math.sin(fi + offsetFi)
-                            z = passEndDepth
-                            op.commandlist.append(
-                                Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.horizFeed})
-                            )
-                            fi = fi + math.pi / 16
-
-                    else:
-                        # Cone
-                        _HelixAngle = 360 - (obj.HelixAngle.Value * 4)
-
-                        if obj.HelixConeAngle > 6:
-                            obj.HelixConeAngle = 6
-
-                        helixRadius *= 0.9
-
-                        # Calculate everything
-                        helix_height = passStartDepth - passEndDepth
-                        r_extra = helix_height * math.tan(math.radians(obj.HelixConeAngle))
-                        HelixTopRadius = helixRadius + r_extra
-                        helix_full_height = HelixTopRadius * (
-                            math.cos(math.radians(obj.HelixConeAngle))
-                            / math.sin(math.radians(obj.HelixConeAngle))
-                        )
-
-                        # Start height
-                        z = passStartDepth
-                        i = 0
-
-                        # Default step down
-                        z_step = 0.05
-
-                        # Bigger angle, smaller step down
-                        if _HelixAngle > 120:
-                            z_step = 0.025
-                        if _HelixAngle > 240:
-                            z_step = 0.015
-
-                        p = None
-                        # Calculate conical helix
-                        while z >= passEndDepth:
-                            if z < passEndDepth:
-                                z = passEndDepth
-
-                            p = CalcHelixConePoint(
-                                helix_full_height, i, HelixTopRadius, _HelixAngle
-                            )
-                            op.commandlist.append(
-                                Path.Command(
-                                    "G1",
-                                    {
-                                        "X": p["X"] + region["HelixCenterPoint"][0],
-                                        "Y": p["Y"] + region["HelixCenterPoint"][1],
-                                        "Z": z,
-                                        "F": op.vertFeed,
-                                    },
-                                )
-                            )
-                            z = z - z_step
-                            i = i + z_step
-
-                        # Calculate some stuff for arcs at bottom
-                        p["X"] = p["X"] + region["HelixCenterPoint"][0]
-                        p["Y"] = p["Y"] + region["HelixCenterPoint"][1]
-                        x_m = region["HelixCenterPoint"][0] - p["X"] + region["HelixCenterPoint"][0]
-                        y_m = region["HelixCenterPoint"][1] - p["Y"] + region["HelixCenterPoint"][1]
-                        i_off = (x_m - p["X"]) / 2
-                        j_off = (y_m - p["Y"]) / 2
-
-                        # One more circle at target depth to make sure center is cleared
+                    while fi < maxfi:
+                        r_current = r * (1 - fi/maxfi) + r_bottom * (fi/maxfi)
+                        x = region["HelixCenterPoint"][0] + r_current * math.cos(fi + offsetFi)
+                        y = region["HelixCenterPoint"][1] + r_current * math.sin(fi + offsetFi)
+                        z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
                         op.commandlist.append(
-                            Path.Command(
-                                "G3",
-                                {
-                                    "X": x_m,
-                                    "Y": y_m,
-                                    "Z": passEndDepth,
-                                    "I": i_off,
-                                    "J": j_off,
-                                    "F": op.horizFeed,
-                                },
-                            )
+                            Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.vertFeed})
                         )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G3",
-                                {
-                                    "X": p["X"],
-                                    "Y": p["Y"],
-                                    "Z": passEndDepth,
-                                    "I": -i_off,
-                                    "J": -j_off,
-                                    "F": op.horizFeed,
-                                },
-                            )
-                        )
+                        fi = fi + math.pi / 16
 
+                    # one more circle at target depth to make sure center is cleared
+                    maxfi = maxfi + 2 * math.pi
+                    while fi < maxfi:
+                        x = region["HelixCenterPoint"][0] + r_bottom * math.cos(fi + offsetFi)
+                        y = region["HelixCenterPoint"][1] + r_bottom * math.sin(fi + offsetFi)
+                        z = passEndDepth
+                        op.commandlist.append(
+                            Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.horizFeed})
+                        )
+                        fi = fi + math.pi / 16
                 else:
                     # Use arcs for helix - no conical shape support
                     helixStart = [
