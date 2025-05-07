@@ -39,7 +39,7 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
             self.assertEqual(uri.protocol, "test_unversioned")
             self.assertEqual(uri.asset_type, asset_type)
             self.assertEqual(uri.asset, asset_name)
-            self.assertEqual(uri.version, "1") # Dummy version
+            self.assertEqual(uri.version, "1")  # Dummy version
 
             # Get
             retrieved_data = await self.store.get(uri)
@@ -66,7 +66,7 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
 
             # Update
             updated_uri = await self.store.update(uri, updated_data)
-            self.assertEqual(updated_uri, uri) # URI should not change
+            self.assertEqual(updated_uri, uri)  # URI should not change
 
             # Get updated data
             retrieved_data = await self.store.get(uri)
@@ -132,9 +132,11 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
             self.assertEqual(versions, ["1"])
 
             # Non-existent asset
-            dummy_uri = AssetUri.build(
-                "test_unversioned", None, "non_existent_type", "non_existent_asset", "1"
-            )
+            dummy_uri = AssetUri.build("test_unversioned",
+                                       None,
+                                       "non_existent_type",
+                                       "non_existent_asset",
+                                       "1")
             versions = await self.store.list_versions(dummy_uri)
             self.assertEqual(versions, [])
 
@@ -159,13 +161,21 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
             self.assertFalse(await self.store.is_empty("type2"))
 
             # Delete assets
-            uri1 = AssetUri.build("test_unversioned", None, "type1", "asset1", "1")
+            uri1 = AssetUri.build("test_unversioned",
+                                  None,
+                                  "type1",
+                                  "asset1",
+                                  "1")
             await self.store.delete(uri1)
             self.assertFalse(await self.store.is_empty())
             self.assertTrue(await self.store.is_empty("type1"))
             self.assertFalse(await self.store.is_empty("type2"))
 
-            uri2 = AssetUri.build("test_unversioned", None, "type2", "asset2", "1")
+            uri2 = AssetUri.build("test_unversioned",
+                                  None,
+                                  "type2",
+                                  "asset2",
+                                  "1")
             await self.store.delete(uri2)
             self.assertTrue(await self.store.is_empty())
             self.assertTrue(await self.store.is_empty("type1"))
@@ -176,7 +186,7 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
     def test_unversioned_set_dir(self):
         async def async_test():
             new_temp_dir = tempfile.TemporaryDirectory()
-            new_store_path = pathlib.Path(new_temp_dir.name) / "new_unversioned_store"
+            new_store_path = pathlib.Path(new_temp_dir.name) / "test_store"
             new_store_path.mkdir()
 
             self.store.set_dir(new_store_path)
@@ -197,7 +207,8 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
             uri = await self.store.create(
                 asset_type, asset_name, data
             )
-            asset_path = self.store_path / asset_type / f"{asset_name}{self.store._file_extension}"
+            asset_path = self.store_path / asset_type / \
+                f"{asset_name}{self.store._file_extension}"
             self.assertTrue(asset_path.exists())
 
             # Delete all versions (should delete the single asset)
@@ -206,7 +217,7 @@ class TestPathToolUnversionedLocalStore(unittest.TestCase):
                 uri.domain,
                 uri.asset_type,
                 uri.asset,
-                None # No version specified
+                None  # No version specified
             )
             await self.store.delete(uri_without_version)
 
@@ -247,7 +258,8 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             # Assert file created with correct content
             # This part assumes the URI maps to a path as per the plan's assumption
             # base_dir / type / asset / version
-            expected_path = self.tmp_path / uri.asset_type / uri.asset / uri.version
+            expected_path = self.tmp_path / uri.asset_type / uri.asset / \
+                uri.version
             self.assertTrue(expected_path.exists())
             self.assertEqual(expected_path.read_bytes(), data)
 
@@ -301,7 +313,8 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
 
             # This part assumes the URI maps to a path as per the plan's assumption
             # base_dir / type / asset / version
-            expected_path = self.tmp_path / uri.asset_type / uri.asset / uri.version
+            expected_path = self.tmp_path / uri.asset_type / uri.asset / \
+                uri.version
             self.assertTrue(expected_path.exists())
 
             await self.store.delete(uri)
@@ -309,7 +322,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
 
             # Test delete with non-existent URI (should not raise error)
             non_existent_uri = AssetUri("local:///non_existent/asset/version")
-            await self.store.delete(non_existent_uri) # Should not raise
+            await self.store.delete(non_existent_uri)  # Should not raise
 
         asyncio.run(async_test())
 
@@ -365,14 +378,16 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             uri2 = await self.store.update(uri1, updated_data)
 
             # Verify new version is created and contains updated data
-            expected_path2 = self.tmp_path / uri2.asset_type / uri2.asset / uri2.version
+            expected_path2 = self.tmp_path / uri2.asset_type / uri2.asset / \
+                uri2.version
             self.assertTrue(expected_path2.exists())
             async with aiofiles.open(expected_path2, mode='rb') as f:
                 content2 = await f.read()
                 self.assertEqual(content2, updated_data)
 
             # Verify old version still exists
-            expected_path1 = self.tmp_path / uri1.asset_type / uri1.asset / uri1.version
+            expected_path1 = self.tmp_path / uri1.asset_type / uri1.asset / \
+                uri1.version
             self.assertTrue(expected_path1.exists())
             async with aiofiles.open(expected_path1, mode='rb') as f:
                 content1_after_update = await f.read()
@@ -459,7 +474,7 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
             # Verify version 2 is removed and asset directory is empty
             self.assertFalse(path2.exists())
             asset_path = self.tmp_path / asset_type / asset
-            self.assertFalse(asset_path.exists()) # Directory should be removed
+            self.assertFalse(asset_path.exists())  # Directory should be removed
             # The asset type directory should also be removed if it becomes empty
             asset_type_path = self.tmp_path / asset_type
             self.assertFalse(asset_type_path.exists())
@@ -559,7 +574,8 @@ class TestPathToolVersionedLocalStore(unittest.TestCase):
     def test_versioned_set_dir(self):
         async def async_test():
             new_temp_dir = tempfile.TemporaryDirectory()
-            new_store_path = pathlib.Path(new_temp_dir.name) / "new_versioned_store"
+            new_store_path = pathlib.Path(new_temp_dir.name) / \
+                "new_versioned_store"
             new_store_path.mkdir()
 
             self.store.set_dir(new_store_path)
@@ -577,11 +593,15 @@ class TestPathToolFlatLocalStore(unittest.TestCase):
         self.store_path = pathlib.Path(self.temp_dir.name) / "flat_store"
         self.store_path.mkdir()
 
+        self.type_to_extension = {
+            "shape": ".fcs",
+            "icon": ".png",
+            "other": ".txt"
+        }
         self.store = FlatLocalStore(
             protocol="test_flat",
             base_dir=self.store_path,
-            file_extension=".dat",
-            asset_type="flat_asset_type"
+            type_to_extension=self.type_to_extension
         )
 
     def tearDown(self):
@@ -589,63 +609,69 @@ class TestPathToolFlatLocalStore(unittest.TestCase):
 
     def test_flat_create_get_delete(self):
         async def async_test():
-            asset_type = "flat_asset_type"
-            asset_name = "flat_asset"
-            data = b"flat test data"
+            for asset_type, file_extension in \
+                    self.type_to_extension.items():
+                asset_name = f"flat_asset_{asset_type}"
+                data = f"flat test data for {asset_type}".encode('utf-8')
 
-            # Create
-            uri = await self.store.create(
-                asset_type, asset_name, data
-            )
-            self.assertIsInstance(uri, AssetUri)
-            self.assertEqual(uri.protocol, "test_flat")
-            # FlatLocalStore ignores asset_type and version in URI path construction
-            # but the URI object itself might still hold these values from creation
-            # We primarily test the path mapping and file operations
-            self.assertEqual(uri.asset, asset_name)
-            # The version is fixed to '1' in FlatLocalStore create
-            self.assertEqual(uri.version, "1")
+                # Create
+                uri = await self.store.create(
+                    asset_type, asset_name, data
+                )
+                self.assertIsInstance(uri, AssetUri)
+                self.assertEqual(uri.protocol, "test_flat")
+                self.assertEqual(uri.asset_type, asset_type)
+                self.assertEqual(uri.asset, asset_name)
+                self.assertEqual(uri.version, "1")  # Fixed version
 
-            # Verify file path
-            expected_path = self.store_path / f"{asset_name}{self.store.file_extension}"
-            self.assertTrue(expected_path.exists())
-            self.assertEqual(expected_path.read_bytes(), data)
+                # Verify file path
+                expected_path = self.store_path / \
+                                f"{asset_name}{file_extension}"
+                self.assertTrue(expected_path.exists())
+                self.assertEqual(expected_path.read_bytes(), data)
 
-            # Get
-            retrieved_data = await self.store.get(uri)
-            self.assertEqual(retrieved_data, data)
+                # Get
+                retrieved_data = await self.store.get(uri)
+                self.assertEqual(retrieved_data, data)
 
-            # Delete
-            await self.store.delete(uri)
-            self.assertFalse(expected_path.exists())
-            with self.assertRaises(FileNotFoundError):
-                await self.store.get(uri)
+                # Delete
+                await self.store.delete(uri)
+                self.assertFalse(expected_path.exists())
+                with self.assertRaises(FileNotFoundError):
+                    await self.store.get(uri)
 
         asyncio.run(async_test())
 
     def test_flat_update(self):
         async def async_test():
-            asset_type = "flat_asset_type"
-            asset_name = "flat_asset_update"
-            initial_data = b"initial flat data"
-            updated_data = b"updated flat data"
+            for asset_type, file_extension in \
+                    self.type_to_extension.items():
+                asset_name = f"flat_asset_update_{asset_type}"
+                initial_data = f"initial flat data for {asset_type}".encode(
+                    'utf-8'
+                )
+                updated_data = f"updated flat data for {asset_type}".encode(
+                    'utf-8'
+                )
 
-            # Create
-            uri = await self.store.create(
-                asset_type, asset_name, initial_data
-            )
+                # Create
+                uri = await self.store.create(
+                    asset_type, asset_name, initial_data
+                )
 
-            # Update
-            updated_uri = await self.store.update(uri, updated_data)
-            self.assertEqual(updated_uri, uri) # URI should not change
+                # Update
+                updated_uri = await self.store.update(uri, updated_data)
+                self.assertEqual(updated_uri, uri)  # URI should not change
 
-            # Get updated data
-            retrieved_data = await self.store.get(uri)
-            self.assertEqual(retrieved_data, updated_data)
+                # Get updated data
+                retrieved_data = await self.store.get(uri)
+                self.assertEqual(retrieved_data, updated_data)
 
-            # Verify file content
-            expected_path = self.store_path / f"{asset_name}{self.store.file_extension}"
-            self.assertEqual(expected_path.read_bytes(), updated_data)
+                # Verify file content
+                expected_path = self.store_path / \
+                                f"{asset_name}{file_extension}"
+                self.assertTrue(expected_path.exists())
+                self.assertEqual(expected_path.read_bytes(), updated_data)
 
         asyncio.run(async_test())
 
@@ -653,104 +679,163 @@ class TestPathToolFlatLocalStore(unittest.TestCase):
         async def async_test():
             # Initially empty
             self.assertTrue(await self.store.is_empty())
-            self.assertTrue(await self.store.is_empty("flat_asset_type"))
+            for asset_type in self.type_to_extension.keys():
+                self.assertTrue(await self.store.is_empty(asset_type))
 
-            # Create an asset
-            uri1 = await self.store.create("flat_asset_type", "asset1", b"data")
+            created_uris = {}
+            # Create one asset of each type
+            for asset_type, file_extension in \
+                    self.type_to_extension.items():
+                asset_name = f"asset_is_empty_{asset_type}"
+                data = f"data for {asset_type}".encode('utf-8')
+                uri = await self.store.create(
+                    asset_type, asset_name, data
+                )
+                created_uris[asset_type] = uri
+
+            # Check if not empty overall and for each type
             self.assertFalse(await self.store.is_empty())
-            self.assertFalse(await self.store.is_empty("flat_asset_type"))
+            for asset_type in self.type_to_extension.keys():
+                self.assertFalse(await self.store.is_empty(asset_type))
 
-            # Create another asset
-            uri2 = await self.store.create("flat_asset_type", "asset2", b"data")
-            self.assertFalse(await self.store.is_empty())
+            # Delete assets one by one and check empty status
+            for asset_type, uri in created_uris.items():
+                await self.store.delete(uri)
+                self.assertTrue(await self.store.is_empty(asset_type))
 
-            # Delete assets
-            await self.store.delete(uri1)
-            self.assertFalse(await self.store.is_empty())
-
-            await self.store.delete(uri2)
+            # After deleting all, check if empty overall
             self.assertTrue(await self.store.is_empty())
 
         asyncio.run(async_test())
 
     def test_flat_list_assets(self):
         async def async_test():
-            asset_type = "flat_asset_type"
-            data = b"some data"
-
-            await self.store.create(asset_type, "asset1", data)
-            await self.store.create(asset_type, "asset2", data)
-            await self.store.create(asset_type, "asset3", data)
-            with self.assertRaises(ValueError):
-                await self.store.create("invalid", "asset4", data)
+            created_uris = {}
+            # Create one asset of each type
+            for asset_type, file_extension in \
+                    self.type_to_extension.items():
+                asset_name = f"asset_list_{asset_type}"
+                data = f"data for {asset_type}".encode('utf-8')
+                uri = await self.store.create(
+                    asset_type, asset_name, data
+                )
+                created_uris[asset_type] = uri
 
             # List all
             all_assets = await self.store.list_assets()
-            self.assertEqual(len(all_assets), 3)
-            self.assertTrue(any(uri.asset == "asset1" for uri in all_assets))
-            self.assertTrue(any(uri.asset == "asset2" for uri in all_assets))
-            self.assertTrue(any(uri.asset == "asset3" for uri in all_assets))
+            self.assertEqual(len(all_assets), len(self.type_to_extension))
+            for asset_type, uri in created_uris.items():
+                self.assertTrue(uri in all_assets)
 
-            # List by type (should still list all as type is ignored)
-            type1_assets = await self.store.list_assets(asset_type=asset_type)
-            self.assertEqual(len(type1_assets), 3)
+            # List by type
+            for asset_type, uri in created_uris.items():
+                type_assets = await self.store.list_assets(
+                    asset_type=asset_type
+                )
+                self.assertEqual(len(type_assets), 1)
+                self.assertEqual(type_assets[0], uri)
 
-            # List with limit and offset
-            paginated_assets = await self.store.list_assets(limit=1)
-            self.assertEqual(len(paginated_assets), 1)
+            # Test listing a non-existent type (should return empty list)
+            non_existent_assets = await self.store.list_assets(
+                asset_type="non_existent"
+            )
+            self.assertEqual(len(non_existent_assets), 0)
 
-            paginated_assets_offset = await self.store.list_assets(limit=1, offset=1)
-            self.assertEqual(len(paginated_assets_offset), 1)
-            self.assertNotEqual(paginated_assets[0], paginated_assets_offset[0])
+            # Test listing with limit and offset (on all assets)
+            if len(all_assets) > 1:
+                paginated_assets = await self.store.list_assets(limit=1)
+                self.assertEqual(len(paginated_assets), 1)
+
+                paginated_assets_offset = await self.store.list_assets(
+                    limit=1, offset=1
+                )
+                self.assertEqual(len(paginated_assets_offset), 1)
+                self.assertNotEqual(
+                    paginated_assets[0], paginated_assets_offset[0]
+                )
+
+            # Clean up
+            for uri in created_uris.values():
+                await self.store.delete(uri)
 
         asyncio.run(async_test())
 
     def test_flat_list_versions(self):
         async def async_test():
-            asset_type = "flat_asset_type"
-            asset_name = "version_test_asset"
-            data = b"some data"
+            asset_type = list(self.type_to_extension.keys())[0]
+            asset_name = "flat_asset_version_test"
+            data = b"flat version data"
 
-            uri = await self.store.create(asset_type, asset_name, data)
+            uri = await self.store.create(
+                asset_type, asset_name, data
+            )
 
-            # FlatLocalStore always returns ["1"] for list_versions
             versions = await self.store.list_versions(uri)
             self.assertEqual(versions, ["1"])
 
             # Non-existent asset
             dummy_uri = AssetUri.build(
-                "test_flat", None, "non_existent_type", "non_existent_asset", "1"
+                "test_flat", None, asset_type, "non_existent_asset", "1"
             )
             versions = await self.store.list_versions(dummy_uri)
             self.assertEqual(versions, [])
+
+            # Invalid asset type (should return empty list)
+            invalid_uri = AssetUri.build(
+                "test_flat", None, "invalid_type", "some_asset", "1"
+            )
+            versions = await self.store.list_versions(invalid_uri)
+            self.assertEqual(versions, [])
+
+            # Clean up
+            await self.store.delete(uri)
 
         asyncio.run(async_test())
 
     def test_flat_delete_all_versions(self):
         async def async_test():
-            asset_type = "flat_asset_type"
-            asset_name = "test_asset_delete_all"
-            data = b"test data"
+            created_uris = {}
+            # Create one asset of each type
+            for asset_type, file_extension in \
+                    self.type_to_extension.items():
+                asset_name = f"asset_delete_{asset_type}"
+                data = f"data for {asset_type}".encode('utf-8')
+                uri = await self.store.create(
+                    asset_type, asset_name, data
+                )
+                created_uris[asset_type] = uri
+                # Verify file exists
+                expected_path = self.store_path / \
+                                f"{asset_name}{file_extension}"
+                self.assertTrue(expected_path.exists())
 
-            # Create the asset
-            uri = await self.store.create(
-                asset_type, asset_name, data
-            )
-            asset_path = self.store.base_dir / f"{asset_name}{self.store.file_extension}"
-            self.assertTrue(asset_path.exists())
+            # Delete one asset type
+            delete_type = list(self.type_to_extension.keys())[0]
+            delete_uri = created_uris[delete_type]
+            await self.store.delete(delete_uri)
 
-            # Delete all versions (should delete the single asset)
-            uri_without_version = AssetUri.build(
-                uri.protocol,
-                uri.domain,
-                uri.asset_type,
-                uri.asset,
-                None # No version specified
-            )
-            await self.store.delete(uri_without_version)
+            # Verify the deleted asset is removed
+            delete_asset_name = f"asset_delete_{delete_type}"
+            delete_file_extension = self.type_to_extension[delete_type]
+            delete_path = self.store_path / \
+                          f"{delete_asset_name}{delete_file_extension}"
+            self.assertFalse(delete_path.exists())
+            with self.assertRaises(FileNotFoundError):
+                await self.store.get(delete_uri)
 
-            # Verify the asset is removed
-            self.assertFalse(asset_path.exists())
+            # Verify other asset types still exist
+            for asset_type, uri in created_uris.items():
+                if asset_type != delete_type:
+                    other_asset_name = f"asset_delete_{asset_type}"
+                    other_file_extension = self.type_to_extension[asset_type]
+                    other_path = self.store_path / \
+                                 f"{other_asset_name}{other_file_extension}"
+                    self.assertTrue(other_path.exists())
+                    # Clean up remaining assets
+                    await self.store.delete(uri)
+
+            # Verify store is empty after deleting all
+            self.assertTrue(await self.store.is_empty())
 
         asyncio.run(async_test())
 

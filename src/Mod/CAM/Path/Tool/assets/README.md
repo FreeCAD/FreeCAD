@@ -119,9 +119,10 @@ classDiagram
     UnversionedLocalStore <|-- AssetStore: is
 
     class FlatLocalStore["FlatLocalStore
-    <small>Stores/Retrieves assets in a flat local directory</small>"] {
-        _base_dir: pathlib.Path
-        _file_extension: str
+    <small>Stores/Retrieves assets in a flat local directory, using a mapping
+    of asset types to file extensions.</small>"] {
+        base_dir: pathlib.Path
+        type_to_extension: Mapping[str, str]
         async get(uri: AssetUri) bytes
         async delete(uri: AssetUri)
         async create(asset_type: str, asset_id: str, data: bytes) AssetUri

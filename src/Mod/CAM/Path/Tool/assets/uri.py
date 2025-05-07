@@ -1,3 +1,4 @@
+from __future__ import annotations
 import urllib.parse
 from urllib.parse import uses_params
 from typing import Dict, Any, Mapping
@@ -59,13 +60,25 @@ class AssetUri:
                 self.version == other.version and
                 self.params == other.params)
 
+    @classmethod
+    def is_uri(cls, uri: AssetUri | str) -> bool:
+        """Checks if the given string is a valid URI."""
+        if isinstance(uri, AssetUri):
+            return True
+
+        try:
+            AssetUri(uri)
+        except ValueError:
+            return False
+        return True
+
     @staticmethod
     def build(protocol: str,
               domain: str | None,
               asset_type: str,
               asset: str,
               version: str | None = "latest",
-              params: Mapping[str, str | list[str]] | None = None) -> 'AssetUri':
+              params: Mapping[str, str | list[str]] | None = None) -> AssetUri:
         """Builds a Uri object from components."""
         uri = AssetUri.__new__(AssetUri) # Create a new instance without calling __init__
         uri.protocol = protocol

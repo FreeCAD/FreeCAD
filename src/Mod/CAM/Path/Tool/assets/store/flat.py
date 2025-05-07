@@ -1,7 +1,8 @@
+import pathlib
+from typing import List, Optional, Mapping
 from .base import AssetStore
 from ..uri import AssetUri
-from typing import List, Optional
-import pathlib
+
 
 class FlatLocalStore(AssetStore):
     """
@@ -11,12 +12,10 @@ class FlatLocalStore(AssetStore):
     def __init__(self,
                  protocol: str,
                  base_dir: pathlib.Path,
-                 asset_type: str,
-                 file_extension: str):
+                 type_to_extension: Mapping[str, str]):
         super().__init__(protocol)
         self.base_dir = base_dir
-        self.asset_type = asset_type
-        self.file_extension = file_extension
+        self.type_to_extension = type_to_extension
 
     def set_dir(self, new_dir: pathlib.Path):
         """
@@ -32,25 +31,28 @@ class FlatLocalStore(AssetStore):
         Only the asset name is used to construct the path.
         """
         # Assuming uri.path is like /<asset_type>/<asset>/<version>
-        if uri.asset_type != self.asset_type:
-            raise ValueError(f"Invalid asset type in URI: {uri.asset_type} != {self.asset_type}")
+        if uri.asset_type not in self.type_to_extension:
+            raise ValueError(f"Unsupported asset type: {uri.asset_type}")
 
         # The asset name is stored in the asset attribute for this store type
         asset_name = uri.asset
         if not asset_name:
-             raise ValueError(f"Invalid URI format: missing asset name in {uri}")
+            raise ValueError(f"Invalid URI format: missing asset name in {uri}")
 
         # Construct the path in the base directory
-        file_name = f"{asset_name}{self.file_extension}"
+        file_extension = self.type_to_extension[uri.asset_type]
+        file_name = f"{asset_name}{file_extension}"
         return self.base_dir / file_name
 
     async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
         """
         Saves data to a file in the base directory.
         """
-        if asset_type != self.asset_type:
-            raise ValueError(f"Invalid asset type in URI: {asset_type} != {self.asset_type}")
-        file_path = self.base_dir / f"{asset_id}{self.file_extension}"
+        if asset_type not in self.type_to_extension:
+            raise ValueError(f"Unsupported asset type: {asset_type}")
+
+        file_extension = self.type_to_extension[asset_type]
+        file_path = self.base_dir / f"{asset_id}{file_extension}"
         file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(file_path, 'wb') as f:
             f.write(data)
@@ -86,27 +88,35 @@ class FlatLocalStore(AssetStore):
                           limit: Optional[int] = None,
                           offset: Optional[int] = None) -> List[AssetUri]:
         """
-        Lists all assets in the base directory, ignoring asset_type.
+        Lists all assets in the base directory, optionally filtered by
+        asset_type.
         Returns a list of URIs. Pagination is not implemented for this store.
         """
+        if asset_type is None:
+            # List all files matching any configured extension
+            types = self.type_to_extension.keys()
+        elif asset_type not in self.type_to_extension:
+            # Return empty list for unsupported asset type
+            return []
+        else:
+            types = [asset_type]
+
         assets = []
-        try:
-            for entry in self.base_dir.iterdir():
-                if entry.is_file() and entry.name.endswith(self.file_extension):
-                    # Construct a URI for the flat file.
-                    # The asset_type and version are not used for path construction
-                    # but are included in the URI for consistency with AssetStore.
-                    asset_name = entry.stem
-                    uri = AssetUri.build(
-                        self.protocol,
-                        None,
-                        self.asset_type,
-                        asset_name,
-                        "1"
-                    )
-                    assets.append(uri)
-        except FileNotFoundError:
-            pass  # Return empty list if base_dir doesn't exist
+        for asset_type in types:
+            extension = self.type_to_extension[asset_type]
+            pattern = f"*{extension}"
+            for file in self.base_dir.glob(pattern):
+                if not file.is_file():
+                    continue
+                asset_name = file.stem
+                uri = AssetUri.build(
+                    self.protocol,
+                    None,
+                    asset_type,
+                    asset_name,
+                    "1"
+                )
+                assets.append(uri)
 
         # Basic pagination (not efficient for large directories)
         if offset is not None:
@@ -134,18 +144,20 @@ class FlatLocalStore(AssetStore):
 
     async def is_empty(self, asset_type: str | None = None) -> bool:
         """
-        Checks if the store contains any assets.
+        Checks if the store contains any assets, optionally filtered by
+        asset_type.
         For FlatLocalStore, this checks if the base directory contains any
-        files with the configured file extension. The asset_type parameter
-        is ignored.
+        files with the configured file extension(s).
         """
-        if asset_type and asset_type != self.asset_type:
-            raise ValueError(f"Invalid asset type in URI: {asset_type} != {self.asset_type}")
-        try:
-            # Check if the base directory contains any files with the
-            # specified extension.
-            return not any(f.is_file() and f.name.endswith(self.file_extension)
-                           for f in self.base_dir.iterdir())
-        except FileNotFoundError:
-            # If the base directory doesn't exist, it's empty.
-            return True
+        if asset_type:
+            extensions = self.type_to_extension[asset_type]
+        else:
+            extensions = self.type_to_extension.values()
+
+        # Check if any file matches any configured extension
+        for ext in extensions:
+            pattern = f"*{ext}"
+            if next(self.base_dir.glob(pattern), None) is not None:
+                return False  # Found a matching file
+
+        return True  # No matching files found
