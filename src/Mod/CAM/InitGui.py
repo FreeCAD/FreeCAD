@@ -320,6 +320,8 @@ class CAMWorkbench(Workbench):
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
+                if hasattr(obj, "StartPoint"):
+                    self.appendContextMenu("", ["CAM_SetStartPoint"])
                 menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
                 if (
