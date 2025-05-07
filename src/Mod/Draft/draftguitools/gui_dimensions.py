@@ -74,7 +74,7 @@ class Dimension(gui_base_original.Creator):
     def __init__(self):
         super().__init__()
         self.max = 2
-        self.chain = None
+        self.chain = None # Last chain's leg in ChainMode
         self.contMode = None
         self.dir = None
         self.featureName = "Dimension"

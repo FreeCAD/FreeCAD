@@ -940,6 +940,10 @@ class DraftToolBar:
         params.set_param("ChainedMode", bool(val))
         self.chainedMode = bool(val)
         self.continueCmd.setEnabled(not val)
+        if val == False:
+            # If user has deselected the checkbox, reactive the command
+            # which will result in closing it
+            FreeCAD.activeDraftCommand.Activated()
 
     # val=-1 is used to temporarily switch to relativeMode and disable the checkbox.
     # val=-2 is used to switch back.
