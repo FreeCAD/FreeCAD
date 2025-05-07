@@ -540,8 +540,10 @@ DimensionGeometry TechDraw::isValidMultiEdge(const ReferenceVector& refs)
         line0.Normalize();
         Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
         line1.Normalize();
-        double dot = fabs(line0.Dot(line1));
-        if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+        auto lineDot{line0.Dot(line1)};
+        if (lineDot >= 1 ||
+            lineDot <= -1) {
+            // the edges are parallel
             return DimensionGeometry::isDiagonal;    //distance || line
         }
         return DimensionGeometry::isAngle;       //angle or distance
@@ -602,8 +604,9 @@ DimensionGeometry TechDraw::isValidMultiEdge3d(DrawViewPart* dvp, const Referenc
         Base::Vector3d line1 = last1 - first1;
         line0.Normalize();
         line1.Normalize();
-        auto dot = fabs(line0.Dot(line1));
-        if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+        auto lineDot{std::fabs(line0.Dot(line1))};
+        double localTolerance{std::numeric_limits<float>::epsilon()};  // this is as close as we can reliably measure
+        if (DU::fpCompare(lineDot, 1, localTolerance)) {
             //lines are parallel, must be distance dim
             return DimensionGeometry::isDiagonal;
         }
@@ -620,7 +623,7 @@ DimensionGeometry TechDraw::isValidVertexes(const ReferenceVector& refs)
     auto* dvp(dynamic_cast<TechDraw::DrawViewPart*>(refs.front().getObject()));
     if (!dvp) {
         //probably redundant
-        throw Base::RuntimeError("Logic error in isValidMultiEdge");
+        throw Base::RuntimeError("Logic error in isValidVertexes");
     }
 
     const std::string matchToken{"Vertex"};

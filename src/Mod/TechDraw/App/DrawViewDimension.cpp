@@ -1237,55 +1237,37 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
         TechDraw::GenericPtr generic0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
         TechDraw::GenericPtr generic1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
         Base::Vector3d apex = generic0->apparentInter(generic1);
-        Base::Vector3d farPoint0;
-        Base::Vector3d farPoint1;
-        // pick the end of generic0 farthest from the apex
+
+        Base::Vector3d farPoint0{generic0->getEndPoint()};
         if ((generic0->getStartPoint() - apex).Length()
             > (generic0->getEndPoint() - apex).Length()) {
             farPoint0 = generic0->getStartPoint();
         }
-        else {
-            farPoint0 = generic0->getEndPoint();
-        }
+
+
         // pick the end of generic1 farthest from the apex
+        Base::Vector3d farPoint1{generic1->getEndPoint()};
         if ((generic1->getStartPoint() - apex).Length()
             > (generic1->getEndPoint() - apex).Length()) {
-            farPoint1 = generic1->getStartPoint();
+            farPoint1 = (generic1->getStartPoint());
         }
-        else {
-            farPoint1 = generic1->getEndPoint();
-        }
-        Base::Vector3d leg0Dir = (generic0->getStartPoint() - generic0->getEndPoint()).Normalize();
-        Base::Vector3d leg1Dir = (generic1->getStartPoint() - generic1->getEndPoint()).Normalize();
-        if (DrawUtil::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 1.0)) {
-            // legs of the angle are parallel.
-            throw Base::RuntimeError("Can not make angle from parallel edges");
-        }
+
+        Base::Vector3d leg0Dir = (farPoint0 - apex).Normalize();
+        Base::Vector3d leg1Dir = (farPoint1 - apex).Normalize();
         Base::Vector3d extenPoint0 = farPoint0;  // extension line points
         Base::Vector3d extenPoint1 = farPoint1;
-        if (DrawUtil::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 0.0)) {
-            // legs of angle are perpendicular farPoints will do
-        }
-        else {
-            // legs of the angle are skew
-            // project farthest points onto opposite edge
-            Base::Vector3d projFar0OnLeg1 = farPoint0.Perpendicular(apex, leg1Dir);
-            Base::Vector3d projFar1OnLeg0 = farPoint1.Perpendicular(apex, leg0Dir);
-            if (DrawUtil::isBetween(projFar0OnLeg1,
-                                    generic1->getStartPoint(),
-                                    generic1->getEndPoint())) {
-                extenPoint1 = projFar0OnLeg1;
-            }
-            else if (DrawUtil::isBetween(projFar1OnLeg0,
-                                         generic0->getStartPoint(),
-                                         generic0->getEndPoint())) {
-                extenPoint0 = projFar1OnLeg0;
-            }
+
+
+        double extenRadius = std::min(extenPoint0.Length(),
+                                      extenPoint1.Length());
+        if (extenRadius == 0) {
+            // one of the legs has 0 length??
+            throw Base::RuntimeError("No extension point radius!!");
         }
 
         anglePoints pts;
-        pts.first(extenPoint0);
-        pts.second(extenPoint1);
+        pts.first(apex + leg0Dir * extenRadius);
+        pts.second(apex + leg1Dir * extenRadius);
         pts.vertex(apex);
         return pts;
     }

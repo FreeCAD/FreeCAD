@@ -124,13 +124,6 @@ std::string DimensionFormatter::formatValue(const qreal value,
         }
     }
 
-    if (isTooSmall(userVal, formatSpecifier)) {
-        Base::Console().warning("Dimension %s value %.6f is too small for format specifier: %s\n",
-                                m_dimension->getNameInDocument(),
-                                userVal,
-                                qPrintable(formatSpecifier));
-    }
-
     QString formattedValue = formatValueToSpec(userVal, formatSpecifier);
 
     // replace decimal sign if necessary
@@ -403,25 +396,3 @@ std::string DimensionFormatter::getDefaultFormatSpec(bool isToleranceFormat) con
     return formatSpec.toStdString();
 }
 
-//true if value is too small to display using formatSpec
-bool DimensionFormatter::isTooSmall(const double value, const QString& formatSpec) const
-{
-    if (TechDraw::DrawUtil::fpCompare(value, 0.0)) {
-        //zero values always fit, so it isn't too small
-        return false;
-    }
-
-    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*([0-9]*)[aefgrwAEFGRW]")); //printf double format spec
-    QRegularExpressionMatch rxMatch = rxFormat.match(formatSpec);
-    if (rxMatch.hasMatch()) {
-        QString decimalGroup = rxMatch.captured(1);
-        int factor = decimalGroup.toInt();
-        double minValue = pow(10.0, -factor);
-        if (std::fabs(value) < minValue) {
-            return true;
-        }
-    } else {
-        Base::Console().warning("Failed to parse dimension format spec\n");
-    }
-    return false;
-}
