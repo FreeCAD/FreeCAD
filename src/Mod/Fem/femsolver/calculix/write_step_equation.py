@@ -78,6 +78,8 @@ def write_step_equation(f, ccxwriter):
         analysis_type = "*NO ANALYSIS"
     elif ccxwriter.analysis_type == "buckling":
         analysis_type = "*BUCKLE"
+    elif ccxwriter.analysis_type == "electromagnetic":
+        analysis_type = "*HEAT TRANSFER, STEADY STATE"
     # analysis line --> solver type
     # https://forum.freecad.org/viewtopic.php?f=18&t=43178
     if ccxwriter.solver_obj.MatrixSolverType == "default":
@@ -95,9 +97,7 @@ def write_step_equation(f, ccxwriter):
     # analysis line --> user defined incrementations --> parameter DIRECT
     # --> completely switch off ccx automatic incrementation
     if ccxwriter.solver_obj.IterationsUserDefinedIncrementations:
-        if ccxwriter.analysis_type == "static":
-            analysis_type += ", DIRECT"
-        elif ccxwriter.analysis_type == "thermomech":
+        if ccxwriter.analysis_type in ["static", "thermomech", "electromagnetic"]:
             analysis_type += ", DIRECT"
         elif ccxwriter.analysis_type == "frequency":
             FreeCAD.Console.PrintMessage(
