@@ -128,6 +128,8 @@ class FemInputWriter:
         self.temperature_objects = member.cons_temperature
         self.tie_objects = member.cons_tie
         self.transform_objects = member.cons_transform
+        self.electrostatic_objects = member.cons_electrostatic
+        self.electricchargedensity_objects = member.cons_electricchargedensity
 
         # meshdatagetter, for compatibility, same with all getter methods
         self.meshdatagetter = meshsetsgetter.MeshSetsGetter(

@@ -248,6 +248,8 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_constraint_centrif.py
     femsolver/calculix/write_constraint_contact.py
     femsolver/calculix/write_constraint_displacement.py
+    femsolver/calculix/write_constraint_electricchargedensity.py
+    femsolver/calculix/write_constraint_electrostatic.py
     femsolver/calculix/write_constraint_fixed.py
     femsolver/calculix/write_constraint_fluidsection.py
     femsolver/calculix/write_constraint_force.py
