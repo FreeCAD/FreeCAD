@@ -60,9 +60,23 @@ from ArchStructure import *
 # make functions
 
 def makeAxis(num=1, size=1000, name=None):
-    """makeAxis([num], [size], [name]): makes an Axis set based on the given number of axes and 
-    interval distances"""
+    """
+    Creates an axis set in the active document.
 
+    Parameters
+    ----------
+    num : int, optional
+        The number of axes to create. Defaults to 1.
+    size : float, optional
+        The interval distance between axes. Defaults to 1000.
+    name : str, optional
+        The name to assign to the created axis object. Defaults to None.
+
+    Returns
+    -------
+    Part::FeaturePython
+        The created axis object.
+    """
     import ArchAxis
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -88,9 +102,21 @@ def makeAxis(num=1, size=1000, name=None):
 
 
 def makeAxisSystem(axes, name=None):
+    """
+    Creates an axis system from the given list of axes.
 
-    '''makeAxisSystem(axes,[name]): makes a system from the given list of axes'''
+    Parameters
+    ----------
+    axes : list of Part::FeaturePython
+        A list of axis objects to include in the axis system.
+    name : str, optional
+        The name to assign to the created axis system. Defaults to None.
 
+    Returns
+    -------
+    App::FeaturePython
+        The created axis system object.
+    """
     import ArchAxisSystem
     if not isinstance(axes, list):
         axes = [axes]
@@ -105,10 +131,23 @@ def makeAxisSystem(axes, name=None):
 
 
 def makeBuildingPart(objectslist=None, baseobj=None, name=None):
+    """
+    Creates a building part including the given objects in the list.
 
-    '''makeBuildingPart([objectslist],[name]): creates a buildingPart including the
-    objects from the given list.'''
+    Parameters
+    ----------
+    objectslist : list of Part::FeaturePython, optional
+        A list of objects to include in the building part. Defaults to None.
+    baseobj : Part::FeaturePython, optional
+        The base object for the building part. Defaults to None.
+    name : str, optional
+        The name to assign to the created building part. Defaults to None.
 
+    Returns
+    -------
+    App::GeometryPython
+        The created building part object.
+    """
     import ArchBuildingPart
     obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython", "BuildingPart")
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
@@ -126,9 +165,23 @@ def makeBuildingPart(objectslist=None, baseobj=None, name=None):
 
 
 def makeFloor(objectslist=None, baseobj=None, name=None):
+    """
+    Creates a floor/level in the active document.
 
-    """makes a BuildingPart and turns it into a Floor/Level"""
+    Parameters
+    ----------
+    objectslist : list of Part::FeaturePython, optional
+        A list of objects to include in the floor. Defaults to None.
+    baseobj : Part::FeaturePython, optional
+        The base object for the floor. Defaults to None.
+    name : str, optional
+        The name to assign to the created floor. Defaults to None.
 
+    Returns
+    -------
+    App::GeometryPython
+        The created floor object.
+    """
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch", "Level")
     obj.IfcType = "Building Storey"
@@ -137,9 +190,23 @@ def makeFloor(objectslist=None, baseobj=None, name=None):
 
 
 def makeBuilding(objectslist=None, baseobj=None, name=None):
+    """
+    Creates a building in the active document.
 
-    """makes a BuildingPart and turns it into a Building"""
+    Parameters
+    ----------
+    objectslist : list of Part::FeaturePython, optional
+        A list of objects to include in the building. Defaults to None.
+    baseobj : Part::FeaturePython, optional
+        The base object for the building. Defaults to None.
+    name : str, optional
+        The name to assign to the created building. Defaults to None.
 
+    Returns
+    -------
+    App::GeometryPython
+        The created building object.
+    """
     import ArchBuildingPart
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch", "Building")
@@ -155,9 +222,23 @@ def makeBuilding(objectslist=None, baseobj=None, name=None):
 
 
 def make2DDrawing(objectslist=None, baseobj=None, name=None):
+    """
+    Creates a 2D drawing view in the active document.
 
-    """makes a BuildingPart and turns it into a 2D drawing view"""
+    Parameters
+    ----------
+    objectslist : list of Part::FeaturePython, optional
+        A list of objects to include in the drawing. Defaults to None.
+    baseobj : Part::FeaturePython, optional
+        The base object for the drawing. Defaults to None.
+    name : str, optional
+        The name to assign to the created drawing. Defaults to None.
 
+    Returns
+    -------
+    App::GeometryPython
+        The created 2D drawing object.
+    """
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch", "Drawing")
     obj.IfcType = "Annotation"
@@ -174,10 +255,19 @@ def make2DDrawing(objectslist=None, baseobj=None, name=None):
 
 
 def convertFloors(floor=None):
+    """
+    Converts the given floor or building into building parts.
 
-    """convert the given Floor or Building (or all Arch Floors from the
-    active document if none is given) into BuildingParts"""
+    Parameters
+    ----------
+    floor : Part::FeaturePython, optional
+        The floor or building to convert. If None, all Arch floors in the active document
+        are converted. Defaults to None.
 
+    Returns
+    -------
+    None
+    """
     import Draft
     import ArchBuildingPart
     todel = []
@@ -218,9 +308,21 @@ def convertFloors(floor=None):
 
 
 def makeCurtainWall(baseobj=None, name=None):
+    """
+    Creates a curtain wall object in the active document.
 
-    """makeCurtainWall([baseobj],[name]): Creates a curtain wall in the active document"""
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base object for the curtain wall. Defaults to None.
+    name : str, optional
+        The name to assign to the created curtain wall. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created curtain wall object.
+    """
     import ArchCurtainWall
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -238,10 +340,23 @@ def makeCurtainWall(baseobj=None, name=None):
 
 
 def makeEquipment(baseobj=None, placement=None, name=None):
+    """
+    Creates an equipment object from the given base object in the active document.
 
-    """makeEquipment([baseobj],[placement],[name]): creates an equipment object
-    from the given base object."""
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython or Mesh::Feature, optional
+        The base object for the equipment. Defaults to None.
+    placement : Placement, optional
+        The placement of the equipment. Defaults to None.
+    name : str, optional
+        The name to assign to the created equipment. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created equipment object.
+    """
     import ArchEquipment
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -264,9 +379,23 @@ def makeEquipment(baseobj=None, placement=None, name=None):
 
 
 def makeFence(section, post, path):
+    """
+    Creates a fence object in the active document.
 
-    """Makes a Fence object"""
+    Parameters
+    ----------
+    section : Part::FeaturePython
+        The section profile of the fence.
+    post : Part::FeaturePython
+        The post profile of the fence.
+    path : Part::FeaturePython
+        The path along which the fence is created.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created fence object.
+    """
     import ArchFence
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Fence')
     ArchFence._Fence(obj)
@@ -282,10 +411,23 @@ def makeFence(section, post, path):
 
 
 def makeFrame(baseobj, profile, name=None):
+    """Creates a frame object from a base sketch (or any other object containing wires) and a
+    profile object (an extrudable 2D object containing faces or closed wires).
 
-    """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
-    containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython
+        The base object containing wires to define the frame.
+    profile : Part::FeaturePython
+        The profile object, an extrudable 2D object containing faces or closed wires.
+    name : str, optional
+        The name to assign to the created frame. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created frame object.
+    """
     import ArchFrame
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -305,9 +447,19 @@ def makeFrame(baseobj, profile, name=None):
 
 
 def makeGrid(name=None):
+    """
+    Creates a grid object in the active document.
 
-    '''makeGrid([name]): makes a grid object'''
+    Parameters
+    ----------
+    name : str, optional
+        The name to assign to the created grid. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created grid object.
+    """
     import ArchGrid
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Grid")
     obj.Label = name if name else translate("Arch", "Grid")
@@ -320,9 +472,23 @@ def makeGrid(name=None):
 
 
 def makeMaterial(name=None, color=None, transparency=None):
+    """
+    Creates a material object in the active document.
 
-    '''makeMaterial([name],[color],[transparency]): makes an Material object'''
+    Parameters
+    ----------
+    name : str, optional
+        The name to assign to the created material. Defaults to None.
+    color : tuple of float, optional
+        The RGB color of the material. Defaults to None.
+    transparency : float, optional
+        The transparency level of the material. Defaults to None.
 
+    Returns
+    -------
+    App::MaterialObjectPython
+        The created material object.
+    """
     import ArchMaterial
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -343,9 +509,19 @@ def makeMaterial(name=None, color=None, transparency=None):
 
 
 def makeMultiMaterial(name=None):
+    """
+    Creates a multi-material object in the active document.
 
-    '''makeMultiMaterial([name]): makes an MultiMaterial object'''
+    Parameters
+    ----------
+    name : str, optional
+        The name to assign to the created multi-material. Defaults to None.
 
+    Returns
+    -------
+    App::FeaturePython
+        The created multi-material object.
+    """
     import ArchMaterial
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "MultiMaterial")
     obj.Label = name if name else translate("Arch", "MultiMaterial")
@@ -357,9 +533,14 @@ def makeMultiMaterial(name=None):
 
 
 def getMaterialContainer():
+    """
+    Returns a group object to store materials in the active document.
 
-    '''getMaterialContainer(): returns a group object to put materials in'''
-
+    Returns
+    -------
+    App::DocumentObjectGroupPython
+        The material container object.
+    """
     import ArchMaterial
     for obj in FreeCAD.ActiveDocument.Objects:
         if obj.Name == "MaterialContainer":
@@ -373,9 +554,14 @@ def getMaterialContainer():
 
 
 def getDocumentMaterials():
+    """
+    Retrieves all material objects in the active document.
 
-    '''getDocumentMaterials(): returns all the arch materials of the document'''
-
+    Returns
+    -------
+    list of App::MaterialObjectPython
+        A list of all material objects in the document.
+    """
     for obj in FreeCAD.ActiveDocument.Objects:
         if obj.Name == "MaterialContainer":
             mats = []
@@ -387,12 +573,31 @@ def getDocumentMaterials():
 
 
 def makePanel(baseobj=None, length=0, width=0, thickness=0, placement=None, name=None):
-
-    '''makePanel([baseobj],[length],[width],[thickness],[placement],[name]): creates a
-    panel element based on the given profile object and the given
+    """
+    Creates a panel element based on the given profile object and the given
     extrusion thickness. If no base object is given, you can also specify
-    length and width for a simple cubic object.'''
+    length and width for a simple cubic object.
 
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base profile object for the panel. Defaults to None.
+    length : float, optional
+        The length of the panel. Defaults to 0.
+    width : float, optional
+        The width of the panel. Defaults to 0.
+    thickness : float, optional
+        The thickness of the panel. Defaults to 0.
+    placement : Placement, optional
+        The placement of the panel. Defaults to None.
+    name : str, optional
+        The name to assign to the created panel. Defaults to None.
+
+    Returns
+    -------
+    Part::FeaturePython
+        The created panel object.
+    """
     import ArchPanel
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -416,10 +621,21 @@ def makePanel(baseobj=None, length=0, width=0, thickness=0, placement=None, name
 
 
 def makePanelCut(panel, name=None):
+    """
+    Creates a 2D view of the given panel in the 3D space, positioned at the origin.
 
-    """makePanelCut(panel,[name]) : Creates a 2D view of the given panel
-    in the 3D space, positioned at the origin."""
+    Parameters
+    ----------
+    panel : Part::FeaturePython
+        The panel object to create a 2D view for.
+    name : str, optional
+        The name to assign to the created panel cut. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created panel cut object.
+    """
     import ArchPanel
     view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "PanelCut")
     view.Label = name if name else translate("Arch", "View of") + " " + panel.Label
@@ -431,10 +647,21 @@ def makePanelCut(panel, name=None):
 
 
 def makePanelSheet(panels=[], name=None):
+    """
+    Creates a sheet with the given panel cuts in the 3D space, positioned at the origin.
 
-    """makePanelSheet([panels],[name]) : Creates a sheet with the given panel cuts
-    in the 3D space, positioned at the origin."""
+    Parameters
+    ----------
+    panels : list of Part::FeaturePython, optional
+        A list of panel cuts to include in the sheet. Defaults to an empty list.
+    name : str, optional
+        The name to assign to the created panel sheet. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created panel sheet object.
+    """
     import ArchPanel
     sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "PanelSheet")
     sheet.Label = name if name else translate("Arch", "PanelSheet")
@@ -447,9 +674,27 @@ def makePanelSheet(panels=[], name=None):
 
 
 def makePipe(baseobj=None, diameter=0, length=0, placement=None, name=None):
+    """
+    Creates a pipe object from the given base object or specified dimensions.
 
-    "makePipe([baseobj],[diameter],[length],[placement],[name]): creates an pipe object from the given base object"
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base object for the pipe. Defaults to None.
+    diameter : float, optional
+        The diameter of the pipe. Defaults to 0.
+    length : float, optional
+        The length of the pipe. Defaults to 0.
+    placement : Placement, optional
+        The placement of the pipe. Defaults to None.
+    name : str, optional
+        The name to assign to the created pipe. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created pipe object.
+    """
     import ArchPipe
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -480,9 +725,23 @@ def makePipe(baseobj=None, diameter=0, length=0, placement=None, name=None):
 
 
 def makePipeConnector(pipes, radius=0, name=None):
+    """
+    Creates a connector between the given pipes.
 
-    "makePipeConnector(pipes,[radius],[name]): creates a connector between the given pipes"
+    Parameters
+    ----------
+    pipes : list of Part::FeaturePython
+        A list of pipe objects to connect.
+    radius : float, optional
+        The curvature radius of the connector. Defaults to 0, which uses the diameter of the first pipe.
+    name : str, optional
+        The name to assign to the created connector. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created pipe connector object.
+    """
     import ArchPipe
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -500,9 +759,19 @@ def makePipeConnector(pipes, radius=0, name=None):
 
 
 def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
+    """
+    Creates a profile object based on the given profile data.
 
-    '''makeProfile(profile): returns a shape  with the face defined by the profile data'''
+    Parameters
+    ----------
+    profile : list, optional
+        A list defining the profile data. Defaults to [0, 'REC', 'REC100x100', 'R', 100, 100].
 
+    Returns
+    -------
+    Part::Part2DObjectPython
+        The created profile object.
+    """
     import ArchProfile
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -531,7 +800,6 @@ def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
 
 
 def makeProject(sites=None, name=None):
-
     """Create an Arch project.
 
     If sites are provided, add them as children of the new project.
@@ -549,9 +817,11 @@ def makeProject(sites=None, name=None):
     <Part::FeaturePython>
         The created project.
 
-    WARNING: This object is obsoleted in favour of the NativeIFC project
+    Notes
+    -----
+    This function is deprecated and will be removed in a future version.
+    The NativeIFC project is the new way to create IFC projects.
     """
-
     import ArchProject
     import Part
     if not FreeCAD.ActiveDocument:
@@ -567,11 +837,29 @@ def makeProject(sites=None, name=None):
 
 
 def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, name=None):
+    """
+    Creates a reinforcement bar object.
 
-    """makeRebar([baseobj],[sketch],[diameter],[amount],[offset],[name]):
-    adds a Reinforcement Bar object to the given structural object,
-    using the given sketch as profile."""
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The structural object to host the rebar. Defaults to None.
+    sketch : Part::FeaturePython, optional
+        The sketch defining the rebar profile. Defaults to None.
+    diameter : float, optional
+        The diameter of the rebar. Defaults to None.
+    amount : int, optional
+        The number of rebars. Defaults to 1.
+    offset : float, optional
+        The offset distance for the rebar. Defaults to None.
+    name : str, optional
+        The name to assign to the created rebar. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created rebar object.
+    """
     import ArchRebar
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -618,9 +906,23 @@ def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, n
 
 
 def makeReference(filepath=None, partname=None, name=None):
+    """
+    Creates an Arch reference object.
 
-    """makeReference([filepath],[partname],[name]): Creates an Arch Reference object"""
+    Parameters
+    ----------
+    filepath : str, optional
+        The file path of the external reference. Defaults to None.
+    partname : str, optional
+        The name of the part in the external file. Defaults to None.
+    name : str, optional
+        The name to assign to the created reference. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created reference object.
+    """
     import ArchReference
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -647,18 +949,39 @@ def makeRoof(baseobj=None,
              thickness=[50.0],
              overhang=[100.0],
              name=None):
+    """
+    Creates a roof object based on a closed wire or an object.
 
-    '''makeRoof(baseobj, [facenr], [angle], [name]): Makes a roof based on
-    a closed wire or an object.
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base object for the roof. Defaults to None.
+    facenr : int, optional
+        The face number to use as the base. Defaults to 0.
+    angles : list of float, optional
+        The angles for each edge of the roof. Defaults to [45.0].
+    run : list of float, optional
+        The run distances for each edge. Defaults to [250.0].
+    idrel : list of int, optional
+        The relative IDs for each edge. Defaults to [-1].
+    thickness : list of float, optional
+        The thickness of the roof for each edge. Defaults to [50.0].
+    overhang : list of float, optional
+        The overhang distances for each edge. Defaults to [100.0].
+    name : str, optional
+        The name to assign to the created roof. Defaults to None.
 
-    You can provide a list of angles, run, idrel, thickness, overhang for
-    each edge in the wire to define the roof shape. The default for angle is
-    45 and the list is automatically completed to match the number of edges
-    in the wire.
+    Returns
+    -------
+    Part::FeaturePython
+        The created roof object.
 
-    If the base object is a solid the roof uses its shape.
-    '''
-
+    Notes
+    -----
+    1. If the base object is a solid the roof uses its shape.
+    2. The angles, run, idrel, thickness, and overhang lists are automatically
+       completed to match the number of edges in the wire.
+    """
     import ArchRoof
     import Part
     if not FreeCAD.ActiveDocument:
@@ -701,8 +1024,14 @@ def makeRoof(baseobj=None,
 
 
 def makeSchedule():
-    """makeSchedule(): Creates a schedule object in the active document"""
+    """
+    Creates a schedule object in the active document.
 
+    Returns
+    -------
+    App::FeaturePython
+        The created schedule object.
+    """
     import ArchSchedule
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Schedule")
     obj.Label = translate("Arch", "Schedule")
@@ -715,10 +1044,22 @@ def makeSchedule():
 
 
 def makeSectionPlane(objectslist=None, name=None):
+    """
+    Creates a section plane object including the given objects.
 
-    """makeSectionPlane([objectslist],[name]) : Creates a Section plane objects including the
-    given objects. If no object is given, the whole document will be considered."""
+    Parameters
+    ----------
+    objectslist : list of Part::FeaturePython, optional
+        A list of objects to include in the section plane. If no object is given, the whole
+        document will be considered. Defaults to None.
+    name : str, optional
+        The name to assign to the created section plane. Defaults to None.
 
+    Returns
+    -------
+    App::FeaturePython
+        The created section plane object.
+    """
     import ArchSectionPlane
     import Draft
     import WorkingPlane
@@ -746,10 +1087,23 @@ def makeSectionPlane(objectslist=None, name=None):
 
 
 def makeSite(objectslist=None, baseobj=None, name=None):
+    """
+    Creates a site object including the given objects.
 
-    '''makeBuilding([objectslist],[baseobj],[name]): creates a site including the
-    objects from the given list.'''
+    Parameters
+    ----------
+    objectslist : list of Part::FeaturePython, optional
+        A list of objects to include in the site. Defaults to None.
+    baseobj : Part::FeaturePython, optional
+        The base object for the site. Defaults to None.
+    name : str, optional
+        The name to assign to the created site. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created site object.
+    """
     import ArchSite
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -787,25 +1141,27 @@ def makeSpace(objects=None, baseobj=None, name=None):
         The user-facing name to assign to the space object's label. By default None, in
         which case the label is set to "Space".
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created space object.
+
     Notes
     -----
     The objects parameter can be passed using either of these different formats:
     1. Single object (e.g. a Part::Feature document object). Will be used as the space's base
-       shape.
-       ::
+       shape.::
             objects = <Part::Feature>
     2. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
        requires the GUI to be active. The `SubObjects` property of each selection object in the
        list defines the space's boundaries. If the list contains a single selection object without
        subobjects, or with only one subobject, the object in its ``Object`` property is used as
-       the base shape.
-       ::
+       the base shape.::
             objects = [<SelectionObject>, ...]
     3. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
-       tuple contains a document object and a nested tuple of subobjects that define boundaries. If
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries. If
        the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
-       with only one subobject, the object in the tuple is used as the base shape.
-       ::
+       with only one subobject, the object in the tuple is used as the base shape.::
             objects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
             objects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
     """
@@ -875,13 +1231,11 @@ def addSpaceBoundaries(space, subobjects):
     The subobjects parameter can be passed using either of these different formats:
     1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
        requires the GUI to be active. The `SubObjects` property of each selection object in the
-       list defines the boundaries to add to the space.
-       ::
+       list defines the boundaries to add to the space.::
             subobjects = [<SelectionObject>, ...]
     2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
        tuple contains a document object and a nested tuple of subobjects that define the boundaries
-       to add.
-       ::
+       to add.::
             subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
             subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
     """
@@ -904,13 +1258,11 @@ def removeSpaceBoundaries(space, subobjects):
     The subobjects parameter can be passed using either of these different formats:
     1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
        requires the GUI to be active. The `SubObjects` property of each selection object in the
-       list defines the boundaries to remove from the space.
-       ::
+       list defines the boundaries to remove from the space.::
             subobjects = [<SelectionObject>, ...]
     2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
        tuple contains a document object and a nested tuple of subobjects that define the boundaries
-       to remove.
-       ::
+       to remove.::
             subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
             subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
     """
@@ -919,10 +1271,29 @@ def removeSpaceBoundaries(space, subobjects):
         space.Proxy.removeSubobjects(space, subobjects)
 
 def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, name=None):
+    """
+    Creates a stairs object with the given attributes.
 
-    """makeStairs([baseobj],[length],[width],[height],[steps],[name]): creates a Stairs
-    objects with given attributes."""
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base object for the stairs. Defaults to None.
+    length : float, optional
+        The length of the stairs. Defaults to None.
+    width : float, optional
+        The width of the stairs. Defaults to None.
+    height : float, optional
+        The height of the stairs. Defaults to None.
+    steps : int, optional
+        The number of steps. Defaults to None.
+    name : str, optional
+        The name to assign to the created stairs. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created stairs object.
+    """
     import ArchStairs
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -1014,9 +1385,18 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
 
 
 def makeRailing(stairs):
+    """
+    Creates railings for the given stairs.
 
-    "simple make Railing function"
+    Parameters
+    ----------
+    stairs : list of Part::FeaturePython
+        The stairs objects to add railings to.
 
+    Returns
+    -------
+    None
+    """
     import ArchPipe
 
     def makeRailingLorR(stairs, side="L"):
@@ -1062,11 +1442,21 @@ def makeRailing(stairs):
 
 
 def makeTruss(baseobj=None, name=None):
-
     """
-    makeTruss([baseobj],[name]): Creates a space object from the given object (a line)
-    """
+    Creates a truss object from the given base object.
 
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base object for the truss. Defaults to None.
+    name : str, optional
+        The name to assign to the created truss. Defaults to None.
+
+    Returns
+    -------
+    Part::FeaturePython
+        The created truss object.
+    """
     import ArchTruss
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -1116,15 +1506,12 @@ def makeWall(baseobj=None, height=None, length=None, width=None, align=None, fac
 
     Notes
     -----
-    Creates a new <Part::FeaturePython> object, and turns it into a parametric wall
-    object. This <Part::FeaturePython> object does not yet have any shape.
-
-    The wall then uses the baseobj.Shape as the basis to extrude out a wall shape,
-    giving the new <Part::FeaturePython> object a shape.
-
-    It then hides the original baseobj.
+    1. Creates a new <Part::FeaturePython> object, and turns it into a parametric wall
+       object. This <Part::FeaturePython> object does not yet have any shape.
+    2. The wall then uses the baseobj.Shape as the basis to extrude out a wall shape,
+       giving the new <Part::FeaturePython> object a shape.
+    3. It then hides the original baseobj.
     """
-
     import ArchWall
     import Draft
     from draftutils import params
@@ -1177,17 +1564,17 @@ def joinWalls(walls, delete=False):
 
     Parameters
     ----------
-    walls: list of <Part::FeaturePython>
+    walls : list of <Part::FeaturePython>
         List containing the walls to add to the first wall in the list. Walls must
         be based off a base object.
-    delete: bool, optional
-        If True, deletes the other walls in the list.
+    delete : bool, optional
+        If True, deletes the other walls in the list. Defaults to False.
 
     Returns
     -------
-    <Part::FeaturePython>
+    Part::FeaturePython
+        The joined wall object.
     """
-
     import Part
     import Draft
     import ArchWall
@@ -1237,10 +1624,27 @@ def joinWalls(walls, delete=False):
 
 
 def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
+    """
+    Creates a window object based on the given base object.
 
-    '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
-    given base 2D object (sketch or draft).'''
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base object for the window. Defaults to None.
+    width : float, optional
+        The width of the window. Defaults to None.
+    height : float, optional
+        The height of the window. Defaults to None.
+    parts : list, optional
+        The parts of the window. Defaults to None.
+    name : str, optional
+        The name to assign to the created window. Defaults to None.
 
+    Returns
+    -------
+    Part::FeaturePython
+        The created window object.
+    """
     import ArchWindow
     import Draft
     from draftutils import todo
