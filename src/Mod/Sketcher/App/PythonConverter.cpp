@@ -214,9 +214,7 @@ std::string makeSplineInfoArrayString(const std::vector<T>& rInfoVec)
     // remove last comma and add brackets
     int index = res.rfind(',');
     res.resize(index);
-    res.insert(0, 1, '[');
-    res.append(1, ']');
-    return res;
+    return fmt::format("[{}]", res);;
 }
 
 PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* geo)
@@ -338,7 +336,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
 
                  SingleGeometry sg;
                  sg.creation =
-                     boost::str(boost::format("Part.BSplineCurve (%s, %s, %s, %s, %d, %s, False)")
+                     boost::str(boost::format("Part.BSplineCurve(%s, %s, %s, %s, %d, %s, False)")
                                 % controlpoints.c_str() % mults.c_str() % knots.c_str()
                                 % (bSpline->isPeriodic() ? "True" : "False") % bSpline->getDegree()
                                 % weights.c_str());
