@@ -154,9 +154,12 @@ def output_postop(values: Values, gcode: Gcode, obj) -> None:
     nl: str = "\n"
 
     if values["OUTPUT_COMMENTS"]:
-        comment = PostUtilsParse.create_comment(
-            values, f'{values["FINISH_LABEL"]} operation: {obj.Label}'
-        )
+        if values["SHOW_OPERATION_LABELS"]:
+            comment = PostUtilsParse.create_comment(
+                values, f'{values["FINISH_LABEL"]} operation: {obj.Label}'
+            )
+        else:
+            comment = PostUtilsParse.create_comment(values, f'{values["FINISH_LABEL"]} operation')
         gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
     for line in values["POST_OPERATION"].splitlines(False):
         gcode.append(f"{PostUtilsParse.linenumber(values)}{line}{nl}")
