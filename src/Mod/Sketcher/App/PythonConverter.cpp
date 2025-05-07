@@ -214,7 +214,8 @@ std::string makeSplineInfoArrayString(const std::vector<T>& rInfoVec)
     // remove last comma and add brackets
     int index = res.rfind(',');
     res.resize(index);
-    return fmt::format("[{}]", res);;
+    return fmt::format("[{}]", res);
+    ;
 }
 
 PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* geo)
