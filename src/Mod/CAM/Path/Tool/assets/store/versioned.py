@@ -28,7 +28,9 @@ class VersionedLocalStore(AssetStore):
         if uri.protocol != self.protocol:
             raise ValueError(f"Invalid protocol for VersionedLocalStore: {uri.protocol}")
         # Ignore domain for local paths
-        return self._base_dir / uri.asset_type / uri.asset / uri.version
+        if uri.version:
+            return self._base_dir / uri.asset_type / uri.asset / uri.version
+        return self._base_dir / uri.asset_type / uri.asset
 
     def _asset_path(self, uri: AssetUri) -> pathlib.Path:
         """Gets the path to the asset directory (excluding version)."""

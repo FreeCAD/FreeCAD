@@ -3,11 +3,38 @@ from unittest.mock import Mock, AsyncMock
 import pathlib
 import tempfile
 import asyncio
-from Path.Tool.assets import AssetManager, VersionedLocalStore, AssetAdapter
-from Path.Tool.assets.uri import AssetUri
+from typing import Any, Mapping, List
+from Path.Tool.assets import AssetManager, VersionedLocalStore, Asset, AssetUri
 
 
-# Mock classes for testing registration
+# Mock Asset class for testing
+class MockAsset(Asset):
+    asset_type: str = "mock_asset"
+
+    def __init__(self, data: Any = None):
+        self._data = data
+        self._id = "mock_id"
+
+    @classmethod
+    def dependencies(cls, data: bytes) -> List[AssetUri]:
+        return []
+
+    @classmethod
+    def from_bytes(cls, data: bytes, dependencies: Mapping[AssetUri, Any]) -> "MockAsset":
+        # Mock the classmethod creation
+        mock_instance = cls(data.decode('utf-8'))
+        # Attach mock methods to the instance for assertion
+        mock_instance.to_bytes = Mock(return_value=str(mock_instance._data).encode('utf-8'))
+        mock_instance.get_id = Mock(return_value=mock_instance._id)
+        return mock_instance
+
+    def to_bytes(self) -> bytes:
+        return str(self._data).encode('utf-8')
+
+    def get_id(self) -> str:
+        return self._id
+
+
 class TestPathToolAssetManager(unittest.TestCase):
     def test_register_store(self):
         manager = AssetManager()
@@ -28,70 +55,81 @@ class TestPathToolAssetManager(unittest.TestCase):
         manager.register_store(mock_store_local_new)
         self.assertEqual(manager.stores["local"], mock_store_local_new)
 
-    def test_register_adapter(self):
+    def test_register_asset(self):
         manager = AssetManager()
-        mock_adapter_tool = Mock()
-        mock_adapter_tool.asset_name = "tool"
-        mock_adapter_tool.asset_class = type("Tool", (), {})
-        mock_adapter_material = Mock()
-        mock_adapter_material.asset_name = "material"
-        mock_adapter_material.asset_class = type("Material", (), {})
+        # Register the actual MockAsset class
+        manager.register_asset(MockAsset)
+        self.assertEqual(manager._asset_classes[MockAsset.asset_type], MockAsset)
 
-        manager.register_adapter(mock_adapter_tool)
-        self.assertEqual(manager.adapters["tool"], mock_adapter_tool)
+        # Test registering a different actual Asset class
+        class AnotherMockAsset(Asset):
+            asset_type: str = "another_mock_asset"
+            @classmethod
+            def dependencies(cls, data: bytes) -> List[AssetUri]: return []
+            @classmethod
+            def from_bytes(cls, data: bytes, dependencies: Mapping[AssetUri, Any]) -> Any: pass
+            def to_bytes(self) -> bytes: pass
+            def get_id(self) -> str: pass
 
-        manager.register_adapter(mock_adapter_material)
-        self.assertEqual(manager.adapters["material"], mock_adapter_material)
+        manager.register_asset(AnotherMockAsset)
+        self.assertEqual(manager._asset_classes[AnotherMockAsset.asset_type], AnotherMockAsset)
+
 
         # Test overwriting
-        mock_adapter_tool_new = Mock()
-        mock_adapter_tool_new.asset_name = "tool"
-        mock_adapter_tool_new.asset_class = type("ToolNew", (), {})
-        manager.register_adapter(mock_adapter_tool_new)
-        self.assertEqual(manager.adapters["tool"], mock_adapter_tool_new)
+        manager.register_asset(MockAsset) # Registering again should overwrite
+        self.assertEqual(manager._asset_classes[MockAsset.asset_type], MockAsset)
+
+
+        # Test registering non-Asset class
+        with self.assertRaises(TypeError):
+            manager.register_asset(type("NotAnAsset", (), {}))
 
     def test_get(self):
-        # Setup AssetManager with a real LocalStore and a MockAssetAdapter
-        # Use a temporary directory for the LocalStore
+        # Setup AssetManager with a real LocalStore and the MockAsset class
         with tempfile.TemporaryDirectory() as tmpdir:
             base_dir = pathlib.Path(tmpdir)
             local_store = VersionedLocalStore("local", base_dir)
             manager = AssetManager()
             manager.register_store(local_store)
 
-            # Mock an adapter
-            mock_adapter = Mock(spec=AssetAdapter)
-            mock_adapter.asset_name = "test_asset"
-            mock_adapter.asset_class = type("TestResource", (), {})
-            manager.register_adapter(mock_adapter)
+            # Register the MockAsset class
+            manager.register_asset(MockAsset)
 
             # Create a test asset file via LocalStore
             test_data = b"test asset data"
             test_uri = asyncio.run(
-                local_store.create("test_asset", "dummy_id_get", test_data)
+                local_store.create(MockAsset.asset_type, "dummy_id_get", test_data)
             )
-
-            # Mock adapter methods
-            mock_adapter.dependencies.return_value = []
-            mock_adapter.create.return_value = "mocked asset object"
 
             # Call AssetManager.get
             retrieved_object = asyncio.run(manager.get(test_uri))
 
-            # Assert store/adapter methods called correctly
-            # LocalStore.get is called internally by manager.get
-            mock_adapter.dependencies.assert_called_once_with(test_data)
-            mock_adapter.create.assert_called_once_with(test_data, {})
+            # Assert the retrieved object is an instance of MockAsset
+            self.assertIsInstance(retrieved_object, MockAsset)
+            # Assert the data was passed to from_bytes (checked in MockAsset.from_bytes)
+            self.assertEqual(retrieved_object._data, test_data.decode('utf-8'))
 
-            # Assert final object matches adapter's create result
-            self.assertEqual(retrieved_object, "mocked asset object")
 
             # Test error handling for non-existent URI
             non_existent_uri = AssetUri.build(
-                "local", "", "test_asset", "non_existent", "1"
+                "local", "", MockAsset.asset_type, "non_existent", "1"
             )
             with self.assertRaises(FileNotFoundError):
                 asyncio.run(manager.get(non_existent_uri))
+
+            # Test error handling for no asset class registered
+            non_registered_uri = AssetUri.build(
+                 "local", "", "non_existent_type", "dummy_id", "1"
+            )
+            # Need to create a dummy file for the store to find, otherwise
+            # it will raise FileNotFoundError first.
+            dummy_data = b"dummy"
+            asyncio.run(local_store.create("non_existent_type", "dummy_id", dummy_data))
+
+            with self.assertRaises(ValueError) as cm:
+                 asyncio.run(manager.get(non_registered_uri))
+            self.assertIn("No asset class registered for asset type:", str(cm.exception))
+
 
     def test_delete(self):
         # Setup AssetManager with a real LocalStore
@@ -128,30 +166,26 @@ class TestPathToolAssetManager(unittest.TestCase):
             asyncio.run(manager.delete(non_existent_uri))  # Should not raise
 
     def test_create(self):
-        # Setup AssetManager with LocalStore and MockAssetAdapter
+        # Setup AssetManager with LocalStore and MockAsset class
         with tempfile.TemporaryDirectory() as tmpdir:
             base_dir = pathlib.Path(tmpdir)
             local_store = VersionedLocalStore("local", base_dir)
             manager = AssetManager()
             manager.register_store(local_store)
 
-            # Mock an adapter
-            mock_adapter = Mock(spec=AssetAdapter)
-            mock_adapter.asset_name = "test_creatable_asset"
-            mock_adapter.asset_class = type("TestCreatableResource", (), {})
-            # Add id_of to the mock adapter spec
-            mock_adapter.id_of = Mock(return_value="mocked_asset_id")
-            manager.register_adapter(mock_adapter)
+            # Register the MockAsset class
+            manager.register_asset(MockAsset)
 
-            # Mock adapter methods
-            TestCreatableResource = mock_adapter.asset_class
-            test_obj = TestCreatableResource()
-            serialized_data = b"serialized object data"
-            mock_adapter.serialize.return_value = serialized_data
+            # Create a MockAsset instance
+            test_obj = MockAsset("object data")
+            # Mock the instance methods that AssetManager will call
+            test_obj.to_bytes = Mock(return_value=b"serialized object data")
+            test_obj.get_id = Mock(return_value="mocked_asset_id")
+
 
             # Mock store create method to return a predictable URI
             expected_uri_str = (
-                "local:///test_creatable_asset/mocked_asset_id/1"
+                f"local:///{MockAsset.asset_type}/mocked_asset_id/1"
             )
             expected_uri = AssetUri(expected_uri_str)
             local_store.create = AsyncMock(return_value=expected_uri)
@@ -159,25 +193,25 @@ class TestPathToolAssetManager(unittest.TestCase):
             # Call manager.create
             created_uri = asyncio.run(manager.create("local", test_obj))
 
-            # Assert adapter methods called
-            mock_adapter.serialize.assert_called_once_with(test_obj)
-            mock_adapter.id_of.assert_called_once_with(test_obj)
+            # Assert instance methods called
+            test_obj.to_bytes.assert_called_once_with()
+            test_obj.get_id.assert_called_once_with()
 
             # Assert store create called with correct arguments
             local_store.create.assert_called_once_with(
-                mock_adapter.asset_name, "mocked_asset_id", serialized_data
+                MockAsset.asset_type, "mocked_asset_id", b"serialized object data"
             )
 
             # Assert returned URI matches store's result
             self.assertEqual(created_uri, expected_uri)
 
-            # Test error handling (adapter not found)
+            # Test error handling (asset class not found for object type)
             with self.assertRaises(ValueError) as cm:
                 asyncio.run(manager.create(
                     "local", Mock()
                 ))  # Use a different object type
             self.assertIn(
-                "No adapter registered for object type:", str(cm.exception)
+                "No asset class registered for object type:", str(cm.exception)
             )
 
             # Test error handling (store not found)
@@ -188,61 +222,57 @@ class TestPathToolAssetManager(unittest.TestCase):
             )
 
     def test_update(self):
-        # Setup AssetManager with LocalStore and MockAssetAdapter
+        # Setup AssetManager with LocalStore and MockAsset class
         with tempfile.TemporaryDirectory() as tmpdir:
             base_dir = pathlib.Path(tmpdir)
             local_store = VersionedLocalStore("local", base_dir)
             manager = AssetManager()
             manager.register_store(local_store)
 
-            # Mock an adapter
-            mock_adapter = Mock(spec=AssetAdapter)
-            mock_adapter.asset_name = "test_updatable_asset"
-            mock_adapter.asset_class = type("TestUpdatableResource", (), {})
-            manager.register_adapter(mock_adapter)
+            # Register the MockAsset class
+            manager.register_asset(MockAsset)
 
-            # Mock adapter methods
-            TestUpdatableResource = mock_adapter.asset_class
-            test_obj = TestUpdatableResource()
-            serialized_data = b"updated serialized object data"
-            mock_adapter.serialize.return_value = serialized_data
+            # Create a MockAsset instance
+            test_obj = MockAsset("updated object data")
+            # Mock the instance method that AssetManager will call
+            test_obj.to_bytes = Mock(return_value=b"updated serialized object data")
 
             # Mock store update method
             test_uri_str = (
-                "local:///test_updatable_asset/some_asset_id/1"
+                f"local:///{MockAsset.asset_type}/some_asset_id/1"
             )
             test_uri = AssetUri(test_uri_str)
             local_store.update = AsyncMock(
                 return_value=AssetUri(
-                    "local:///test_updatable_asset/some_asset_id/2"
+                    f"local:///{MockAsset.asset_type}/some_asset_id/2"
                 )
             )  # Simulate new version URI
 
             # Call manager.update
             asyncio.run(manager.update(test_uri, test_obj))
 
-            # Assert adapter serialize called
-            mock_adapter.serialize.assert_called_once_with(test_obj)
+            # Assert instance method called
+            test_obj.to_bytes.assert_called_once_with()
 
             # Assert store update called with correct URI and data
             local_store.update.assert_called_once_with(
-                test_uri, serialized_data
+                test_uri, b"updated serialized object data"
             )
 
-            # Test error handling (adapter not found)
+            # Test error handling (asset class not found for object type)
             with self.assertRaises(ValueError) as cm:
                 asyncio.run(manager.update(
                     test_uri, Mock()
                 ))  # Use a different object type
             self.assertIn(
-                "No adapter registered for object type:", str(cm.exception)
+                "No asset class registered for object type:", str(cm.exception)
             )
 
             # Test error handling (store not found)
             non_existent_uri = AssetUri.build(
                 "non_existent_store",
                 "",
-                "test_updatable_asset",
+                MockAsset.asset_type,
                 "some_asset_id",
                 "1",
             )

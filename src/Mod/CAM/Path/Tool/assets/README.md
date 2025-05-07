@@ -8,38 +8,37 @@ updating, deleting, and reveiving assets. Assets are arbitrary data.
 ```python
 import asyncio
 import pathlib
-from typing import Any, Dict, List, Type
-from Path.Tool.assets import AssetManager, AssetAdapter, VersionedLocalStore, AssetUri
+from typing import Any, Mapping, List, Type
+from Path.Tool.assets import AssetManager, VersionedLocalStore, AssetUri, Asset
 
-# Define a simple Material class for the example
-class Material:
+# Define a simple Material class implementing the Asset interface
+class Material(Asset):
+    asset_type: str = "material"
+
     def __init__(self, name: str):
         self.name = name
 
-# Define a simple MaterialAdapter for the example
-class MaterialAdapter(AssetAdapter):
-    asset_name: str = "material"
-    asset_class: Type[Material] = Material
-
-    def serialize(self, obj: Material) -> bytes:
-        return obj.name.encode('utf-8')
-
-    def dependencies(self, data: bytes) -> List[AssetUri]:
+    @classmethod
+    def dependencies(cls, data: bytes) -> List[AssetUri]:
         return []
 
-    def create(self, data: bytes, dependencies: Dict[AssetUri, Any]) -> Material:
-        return Material(data.decode('utf-8'))
+    @classmethod
+    def from_bytes(cls, data: bytes, dependencies: Mapping[AssetUri, Any]) -> Material:
+        return cls(data.decode('utf-8'))
 
-    def id_of(self, obj: Material) -> str:
-        return obj.name.lower().replace(" ", "-")
+    def to_bytes(self) -> bytes:
+        return self.name.encode('utf-8')
+
+    def get_id(self) -> str:
+        return self.name.lower().replace(" ", "-")
 
 
 async def main():
     manager = AssetManager()
 
-    # Register VersionedLocalStore and the simple adapter
+    # Register VersionedLocalStore and the simple asset class
     manager.register_store(VersionedLocalStore("local", pathlib.Path("/tmp/assets")))
-    manager.register_adapter(MaterialAdapter())
+    manager.register_asset(Material)
 
     # Create and get an asset
     asset_uri = await manager.create("local", Material("Copper"))
@@ -58,18 +57,18 @@ classDiagram
 
     %% -------------- Asset Manager Module --------------
     note for AssetManager "AssetUri structure:
-        <protocol>://<domain>/<asset_type>/<asset>/<version>\?<params><br/>
+        &lt;protocol&gt;:\//&lt;domain&gt;/&lt;asset_type&gt;/&lt;asset&gt;/&lt;version&gt;\?&lt;params&gt;<br/>
         Examples:
-        local://material/1234567/v1
-        local://toolbitshape/endmill/v1
-        https:\//assets.freecad.org/material/aluminium-6012/v2"
+        local:\//material/1234567/1
+        local:\//toolbitshape/endmill/1
+        https:\//assets.freecad.org/material/aluminium-6012/2"
 
     class AssetManager["AssetManager
     <small>Creates, assembles or deletes assets from URIs</small>"] {
         stores: Mapping[str, AssetStore]   // maps protocol to store
-        adapters: Mapping[str, AssetAdapter]   // maps asset type to adapter
+        adapters: Mapping[str, Asset]   // maps asset type to adapter
         register_store(store: AssetStore)
-        register_adapter(adapter: AssetAdapter) // Keyed by adapter.asset_name
+        register_adapter(adapter: Asset) // Keyed by adapter.asset_name
         async get(uri: AssetUri) Any
         async delete(uri: AssetUri)
         async create(store_protocol: str, obj: Any) AssetUri // Returns URI of created asset
@@ -105,19 +104,6 @@ classDiagram
     }
     VersionedLocalStore <|-- AssetStore: is
 
-    class UnversionedLocalStore["UnversionedLocalStore
-    <small>Stores/Retrieves unversioned assets locally</small>"] {
-        _base_dir: pathlib.Path
-        _file_extension: str
-        async get(uri: AssetUri) bytes
-        async delete(uri: AssetUri)
-        async create(asset_type: str, asset_id: str, data: bytes) AssetUri
-        async update(uri: AssetUri, data: bytes) AssetUri
-        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[AssetUri]
-        async is_empty(asset_type: str | None = None) bool
-    }
-    UnversionedLocalStore <|-- AssetStore: is
-
     class FlatLocalStore["FlatLocalStore
     <small>Stores/Retrieves assets in a flat local directory, using a mapping
     of asset types to file extensions.</small>"] {
@@ -144,76 +130,69 @@ classDiagram
     }
     HttpStore <|-- AssetStore: is
 
-    class AssetAdapter["AssetAdapter<br/><small>Handles serialization/deserialization for a asset type</small>"] {
+    class Asset["Asset<br/><small>Common interface for all asset types</small>"] {
         <<abstract>>
-        asset_name: str   // name of the asset type, e.g., toolbit
-        asset_class: Type[Any]  // class of the asset type, e.g., ToolBit
+        asset_type: str  // type of the asset type, e.g., toolbit
         
-        serialize(obj: Any) bytes // Converts object to bytes
-        dependencies(data: bytes) List[AssetUri] // Finds dependency URIs in bytes
-        create(data: bytes, dependencies: Dict[AssetUri, Any]) Any // Creates object from bytes and resolved dependencies
-        id_of(obj: Any) str // Returns the unique ID of an asset object
+        get_id() str  // Returns a unique ID of the asset
+        dependencies(data: bytes) List[AssetUri]  // Finds dependency URIs in bytes
+        from_bytes(data: bytes, dependencies: Dict[AssetUri, Any]) Any  // Creates object from bytes and resolved dependencies
+        to_bytes(obj: Any) bytes // Converts object to bytes
     }
-    AssetAdapter *-- AssetManager: has many
+    Asset *-- AssetManager: creates
 
     namespace AssetManagerModule {
         class AssetManager
         class AssetStore
         class VersionedLocalStore
-        class UnversionedLocalStore
         class FlatLocalStore
         class HttpStore
-        class AssetAdapter
+        class Asset
     }
 
     %% -------------- CAM Module (as an example) --------------
-    class ToolBitShapeAdapter["ToolBitShapeAdapter<br/><small>for assets with type toolbitshape</small>"] {
-        <<AssetAdapter>>
-        asset_name: str = "toolbitshape"
-        asset_class: Type = ToolBitShape
+    class ToolBitShape["ToolBitShape<br/><small>for assets with type toolbitshape</small>"] {
+        <<Asset>>
+        asset_type: str = "toolbitshape"
+
         serialize(obj: ToolBitShape) bytes
         dependencies(data: bytes) List[AssetUri]
         create(data: bytes, dependencies: Dict[AssetUri, Any]) ToolBitShape
         id_of(obj: ToolBitShape) str
     }
-    ToolBitShapeAdapter --|> ToolBitShape: creates
-    ToolBitShapeAdapter ..|> AssetAdapter: is
+    ToolBitShape ..|> Asset: is
 
-    class ToolBitAdapter["ToolBitAdapter<br/><small>for assets with type toolbit</small>"] {
-        <<AssetAdapter>>
-        asset_name: str = "toolbit"
-        asset_class: Type = ToolBit
+    class ToolBit["ToolBit<br/><small>for assets with type toolbit</small>"] {
+        <<Asset>>
+        asset_type: str = "toolbit"
+
         serialize(obj: ToolBit) bytes
         dependencies(data: bytes) List[AssetUri]
         create(data: bytes, dependencies: Dict[AssetUri, Any]) ToolBit
         id_of(obj: ToolBit) str
     }
-    ToolBitAdapter --|> ToolBit: creates
-    ToolBitAdapter ..|> AssetAdapter: is
+    ToolBit ..|> Asset: is
     ToolBit --> ToolBitShape: has
 
     namespace CAMModule {
-        class ToolBitShapeAdapter
-        class ToolBitAdapter
         class ToolBitShape
         class ToolBit
     }
 
     %% -------------- Materials Module (as an example) --------------
-    class MaterialAdapter["MaterialAdapter<br/><small>for assets with type material</small>"] {
-        <<AssetAdapter>>
-        asset_name: str = "material"
-        asset_class: Type = Material
+    class Material["Material<br/><small>for assets with type material</small>"] {
+        <<Asset>>
+        asset_type: str = "material"
+
         serialize(obj: Material) bytes
         dependencies(data: bytes) List[AssetUri]
         create(data: bytes, dependencies: Dict[AssetUri, Any]) Material
         id_of(obj: Material) str
     }
-    MaterialAdapter --|> Material: creates
-    MaterialAdapter ..|> AssetAdapter: is
+    Material ..|> Asset: is
 
     namespace MaterialModule {
-        class MaterialAdapter
+        class Material
         class Material
     }
 ```

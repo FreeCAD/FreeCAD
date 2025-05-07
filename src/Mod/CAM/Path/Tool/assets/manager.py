@@ -1,21 +1,23 @@
-from typing import Dict, Any
+from typing import Dict, Any, Type
 from .store.base import AssetStore
-from .adapter import AssetAdapter
+from .asset import Asset
 from .uri import AssetUri
 
 
 class AssetManager:
     def __init__(self):
         self.stores: Dict[str, AssetStore] = {}
-        self.adapters: Dict[str, AssetAdapter] = {}
+        self._asset_classes: Dict[str, Type[Asset]] = {}
 
     def register_store(self, store: AssetStore):
         """Registers an AssetStore with the manager."""
         self.stores[store.protocol] = store
 
-    def register_adapter(self, adapter: AssetAdapter):
-        """Registers an AssetAdapter with the manager."""
-        self.adapters[adapter.asset_name] = adapter
+    def register_asset(self, asset_class: Type[Asset]):
+        """Registers an Asset class with the manager."""
+        if not issubclass(asset_class, Asset):
+             raise TypeError(f"Registered item must be a subclass of Asset, not {asset_class.__name__}")
+        self._asset_classes[asset_class.asset_type] = asset_class
 
     async def get(self, uri: AssetUri | str) -> Any:
         """Retrieves an asset by its URI."""
@@ -28,16 +30,16 @@ class AssetManager:
 
         data = await store.get(uri)
 
-        adapter = self.adapters.get(uri.asset_type)
-        if not adapter:
-            raise ValueError(f"No adapter registered for asset type: {uri.asset_type}")
+        asset_class = self._asset_classes.get(uri.asset_type)
+        if not asset_class:
+            raise ValueError(f"No asset class registered for asset type: {uri.asset_type}")
 
-        dep_uris = adapter.dependencies(data)
+        dep_uris = asset_class.dependencies(data)
         resolved_deps = {}
         for dep_uri in dep_uris:
             resolved_deps[dep_uri] = await self.get(dep_uri) # Recursive get
 
-        return adapter.create(data, resolved_deps)
+        return asset_class.from_bytes(data, resolved_deps)
 
     async def delete(self, uri: AssetUri | str):
         """Deletes an asset by its URI."""
@@ -52,45 +54,34 @@ class AssetManager:
 
     async def create(self, store_protocol: str, obj: Any) -> AssetUri:
         """Creates a new asset from an object."""
-        adapter = None
-        for adpt in self.adapters.values():
-            if isinstance(obj, adpt.asset_class):
-                adapter = adpt
-                break
-
-        if not adapter:
+        asset_class = obj.__class__
+        if asset_class not in self._asset_classes.values():
             raise ValueError(
-                f"No adapter registered for object type: {type(obj)}"
+                f"No asset class registered for object type: {type(obj)}"
             )
 
-        serialized_data = adapter.serialize(obj)
+        serialized_data = obj.to_bytes() # Call instance method
 
         store = self.stores.get(store_protocol)
         if not store:
             raise ValueError(f"No store registered for protocol: {store_protocol}")
 
-        # Get the asset_id from the adapter
-        asset_id = adapter.id_of(obj)
+        asset_id = obj.get_id() # Call instance method
 
-        return await store.create(adapter.asset_name, asset_id, serialized_data)
+        return await store.create(asset_class.asset_type, asset_id, serialized_data)
 
     async def update(self, uri: AssetUri | str, obj) -> AssetUri:
         """Updates an existing asset."""
         if isinstance(uri, str):
             uri = AssetUri(uri)
 
-        adapter = None
-        for adpt in self.adapters.values():
-            if isinstance(obj, adpt.asset_class):
-                adapter = adpt
-                break
-
-        if not adapter:
+        asset_class = obj.__class__
+        if asset_class not in self._asset_classes.values():
             raise ValueError(
-                f"No adapter registered for object type: {type(obj)}"
+                f"No asset class registered for object type: {type(obj)}"
             )
 
-        serialized_data = adapter.serialize(obj)
+        serialized_data = obj.to_bytes() # Call instance method
 
         store = self.stores.get(uri.protocol)
         if not store:
