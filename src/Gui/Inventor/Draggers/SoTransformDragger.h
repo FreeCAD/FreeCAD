@@ -183,6 +183,8 @@ public:
     bool isHiddenRotationZ(); //!< is x rotation dragger hidden.
     //@}
 
+    void hideAxisLabels();
+
     void GLRender(SoGLRenderAction * action) override;
 
 protected:

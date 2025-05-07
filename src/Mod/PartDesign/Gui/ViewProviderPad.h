@@ -25,8 +25,16 @@
 #define PARTGUI_ViewProviderPad_H
 
 #include "ViewProviderExtrude.h"
+#include <Gui/ViewProviderPart.h>
+#include <Gui/EditableDatumLabel.h>
+
+namespace Gui {
+class SoTransformDragger;
+}
 
 namespace PartDesignGui {
+
+class TaskDlgPadParameters;
 
 class PartDesignGuiExport ViewProviderPad : public ViewProviderExtrude
 {
@@ -44,6 +52,32 @@ protected:
     /// Returns a newly created TaskDlgPadParameters
     TaskDlgFeatureParameters *getEditDialog() override;
 
+public:
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
+
+    void updatePosition(double padLength);
+    Base::Placement getDraggerPlacement();
+    double getPadLengthFromDragger();
+    void hideUnWantedAxes();
+    void setDraggerLabel();
+
+    void setDraggerPosFromUI(double value);
+
+    void createOVP(double padLength);
+    void updateOVPPosition();
+    Gui::View3DInventorViewer* getViewer();
+
+private:
+    Gui::CoinPtr<Gui::SoTransformDragger> dragger;
+    Gui::QuantitySpinBox *ovp = nullptr;
+    TaskDlgPadParameters *dialog = nullptr;
+    SoNodeSensor *cameraSensor;
+
+    static void dragStartCallback(void *data, SoDragger *d);
+    static void dragFinishCallback(void *data, SoDragger *d);
+    static void dragMotionCallback(void *data, SoDragger *d);
 };
 
 
