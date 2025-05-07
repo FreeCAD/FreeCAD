@@ -59,17 +59,16 @@ from ArchStructure import *
 
 # make functions
 
-def makeAxis(num=1,size=1000,name=None):
-
-    '''makeAxis([num],[size],[name]): makes an Axis set
-    based on the given number of axes and interval distances'''
+def makeAxis(num=1, size=1000, name=None):
+    """makeAxis([num], [size], [name]): makes an Axis set based on the given number of axes and 
+    interval distances"""
 
     import ArchAxis
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Axis")
-    obj.Label = name if name else translate("Arch","Axes")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Axis")
+    obj.Label = name if name else translate("Arch", "Axes")
     ArchAxis._Axis(obj)
     if FreeCAD.GuiUp:
         ArchAxis._ViewProviderAxis(obj.ViewObject)
@@ -88,15 +87,15 @@ def makeAxis(num=1,size=1000,name=None):
     return obj
 
 
-def makeAxisSystem(axes,name=None):
+def makeAxisSystem(axes, name=None):
 
     '''makeAxisSystem(axes,[name]): makes a system from the given list of axes'''
 
     import ArchAxisSystem
-    if not isinstance(axes,list):
+    if not isinstance(axes, list):
         axes = [axes]
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","AxisSystem")
-    obj.Label = name if name else translate("Arch","Axis System")
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "AxisSystem")
+    obj.Label = name if name else translate("Arch", "Axis System")
     ArchAxisSystem._AxisSystem(obj)
     obj.Axes = axes
     if FreeCAD.GuiUp:
@@ -105,49 +104,49 @@ def makeAxisSystem(axes,name=None):
     return obj
 
 
-def makeBuildingPart(objectslist=None,baseobj=None,name=None):
+def makeBuildingPart(objectslist=None, baseobj=None, name=None):
 
     '''makeBuildingPart([objectslist],[name]): creates a buildingPart including the
     objects from the given list.'''
 
     import ArchBuildingPart
-    obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython","BuildingPart")
+    obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython", "BuildingPart")
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
-    obj.Label = name if name else translate("Arch","BuildingPart")
+    obj.Label = name if name else translate("Arch", "BuildingPart")
     ArchBuildingPart.BuildingPart(obj)
     obj.IfcType = "Building Element Part"
     if FreeCAD.GuiUp:
         ArchBuildingPart.ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
-        if isinstance(objectslist,(list,tuple)):
+        if isinstance(objectslist, (list, tuple)):
             obj.addObjects(objectslist)
         else:
             obj.addObject(objectslist)
     return obj
 
 
-def makeFloor(objectslist=None,baseobj=None,name=None):
+def makeFloor(objectslist=None, baseobj=None, name=None):
 
     """makes a BuildingPart and turns it into a Floor/Level"""
 
     obj = makeBuildingPart(objectslist)
-    obj.Label = name if name else translate("Arch","Level")
+    obj.Label = name if name else translate("Arch", "Level")
     obj.IfcType = "Building Storey"
     obj.CompositionType = "ELEMENT"
     return obj
 
 
-def makeBuilding(objectslist=None,baseobj=None,name=None):
+def makeBuilding(objectslist=None, baseobj=None, name=None):
 
     """makes a BuildingPart and turns it into a Building"""
 
     import ArchBuildingPart
     obj = makeBuildingPart(objectslist)
-    obj.Label = name if name else translate("Arch","Building")
+    obj.Label = name if name else translate("Arch", "Building")
     obj.IfcType = "Building"
     obj.CompositionType = "ELEMENT"
-    t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
-    obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t, locked=True)
+    t = QT_TRANSLATE_NOOP("App::Property", "The type of this building")
+    obj.addProperty("App::PropertyEnumeration", "BuildingType", "Building", t, locked=True)
     obj.BuildingType = ArchBuildingPart.BuildingTypes
     if FreeCAD.GuiUp:
         obj.ViewObject.ShowLevel = False
@@ -155,19 +154,19 @@ def makeBuilding(objectslist=None,baseobj=None,name=None):
     return obj
 
 
-def make2DDrawing(objectslist=None,baseobj=None,name=None):
+def make2DDrawing(objectslist=None, baseobj=None, name=None):
 
     """makes a BuildingPart and turns it into a 2D drawing view"""
 
     obj = makeBuildingPart(objectslist)
-    obj.Label = name if name else translate("Arch","Drawing")
+    obj.Label = name if name else translate("Arch", "Drawing")
     obj.IfcType = "Annotation"
     obj.ObjectType = "DRAWING"
-    obj.setEditorMode("Area",2)
-    obj.setEditorMode("Height",2)
-    obj.setEditorMode("LevelOffset",2)
-    obj.setEditorMode("OnlySolids",2)
-    obj.setEditorMode("HeightPropagate",2)
+    obj.setEditorMode("Area", 2)
+    obj.setEditorMode("Height", 2)
+    obj.setEditorMode("LevelOffset", 2)
+    obj.setEditorMode("OnlySolids", 2)
+    obj.setEditorMode("HeightPropagate", 2)
     if FreeCAD.GuiUp:
         obj.ViewObject.DisplayOffset = FreeCAD.Placement()
         obj.ViewObject.ShowLevel = False
@@ -187,7 +186,7 @@ def convertFloors(floor=None):
     else:
         objset = FreeCAD.ActiveDocument.Objects
     for obj in objset:
-        if Draft.getType(obj) in ["Floor","Building"]:
+        if Draft.getType(obj) in ["Floor", "Building"]:
             nobj = makeBuildingPart(obj.Group)
             if Draft.getType(obj) == "Floor":
                 nobj.IfcType = "Building Storey"
@@ -195,12 +194,12 @@ def convertFloors(floor=None):
             else:
                 nobj.IfcType = "Building"
                 nobj.CompositionType = "ELEMENT"
-                t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
-                nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t, locked=True)
+                t = QT_TRANSLATE_NOOP("App::Property", "The type of this building")
+                nobj.addProperty("App::PropertyEnumeration", "BuildingType", "Building", t, locked=True)
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
             label = obj.Label
             for parent in obj.InList:
-                if hasattr(parent,"Group"):
+                if hasattr(parent, "Group"):
                     if obj in parent.Group:
                         parent.addObject(nobj)
                         #g = parent.Group
@@ -211,14 +210,14 @@ def convertFloors(floor=None):
                 # some bug makes this trigger even efter the object has been deleted...
                 obj.ViewObject.Proxy.Object = None
                 # in case FreeCAD doesn't allow 2 objs with same label
-            obj.Label = obj.Label+" to delete"
+            obj.Label = obj.Label + " to delete"
             nobj.Label = label
     for n in todel:
         from draftutils import todo
-        todo.ToDo.delay(FreeCAD.ActiveDocument.removeObject,n)
+        todo.ToDo.delay(FreeCAD.ActiveDocument.removeObject, n)
 
 
-def makeCurtainWall(baseobj=None,name=None):
+def makeCurtainWall(baseobj=None, name=None):
 
     """makeCurtainWall([baseobj],[name]): Creates a curtain wall in the active document"""
 
@@ -226,8 +225,8 @@ def makeCurtainWall(baseobj=None,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CurtainWall")
-    obj.Label = name if name else translate("Arch","Curtain Wall")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "CurtainWall")
+    obj.Label = name if name else translate("Arch", "Curtain Wall")
     ArchCurtainWall.CurtainWall(obj)
     if FreeCAD.GuiUp:
         ArchCurtainWall.ViewProviderCurtainWall(obj.ViewObject)
@@ -238,7 +237,7 @@ def makeCurtainWall(baseobj=None,name=None):
     return obj
 
 
-def makeEquipment(baseobj=None,placement=None,name=None):
+def makeEquipment(baseobj=None, placement=None, name=None):
 
     """makeEquipment([baseobj],[placement],[name]): creates an equipment object
     from the given base object."""
@@ -247,8 +246,8 @@ def makeEquipment(baseobj=None,placement=None,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Equipment")
-    obj.Label = name if name else translate("Arch","Equipment")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Equipment")
+    obj.Label = name if name else translate("Arch", "Equipment")
     ArchEquipment._Equipment(obj)
     if baseobj:
         if baseobj.isDerivedFrom("Mesh::Feature"):
@@ -282,7 +281,7 @@ def makeFence(section, post, path):
     return obj
 
 
-def makeFrame(baseobj,profile,name=None):
+def makeFrame(baseobj, profile, name=None):
 
     """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
     containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
@@ -291,8 +290,8 @@ def makeFrame(baseobj,profile,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Frame")
-    obj.Label = name if name else translate("Arch","Frame")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Frame")
+    obj.Label = name if name else translate("Arch", "Frame")
     ArchFrame._Frame(obj)
     if FreeCAD.GuiUp:
         ArchFrame._ViewProviderFrame(obj.ViewObject)
@@ -310,8 +309,8 @@ def makeGrid(name=None):
     '''makeGrid([name]): makes a grid object'''
 
     import ArchGrid
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Grid")
-    obj.Label = name if name else translate("Arch","Grid")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Grid")
+    obj.Label = name if name else translate("Arch", "Grid")
     ArchGrid.ArchGrid(obj)
     if FreeCAD.GuiUp:
         ArchGrid.ViewProviderArchGrid(obj.ViewObject)
@@ -320,7 +319,7 @@ def makeGrid(name=None):
     return obj
 
 
-def makeMaterial(name=None,color=None,transparency=None):
+def makeMaterial(name=None, color=None, transparency=None):
 
     '''makeMaterial([name],[color],[transparency]): makes an Material object'''
 
@@ -328,8 +327,8 @@ def makeMaterial(name=None,color=None,transparency=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython","Material")
-    obj.Label = name if name else translate("Arch","Material")
+    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", "Material")
+    obj.Label = name if name else translate("Arch", "Material")
     ArchMaterial._ArchMaterial(obj)
     if FreeCAD.GuiUp:
         ArchMaterial._ViewProviderArchMaterial(obj.ViewObject)
@@ -337,7 +336,7 @@ def makeMaterial(name=None,color=None,transparency=None):
     if color:
         obj.Color = color[:3]
         if len(color) > 3:
-            obj.Transparency = color[3]*100
+            obj.Transparency = color[3] * 100
     if transparency:
         obj.Transparency = transparency
     return obj
@@ -348,8 +347,8 @@ def makeMultiMaterial(name=None):
     '''makeMultiMaterial([name]): makes an MultiMaterial object'''
 
     import ArchMaterial
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","MultiMaterial")
-    obj.Label = name if name else translate("Arch","MultiMaterial")
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "MultiMaterial")
+    obj.Label = name if name else translate("Arch", "MultiMaterial")
     ArchMaterial._ArchMultiMaterial(obj)
     if FreeCAD.GuiUp:
         ArchMaterial._ViewProviderArchMultiMaterial(obj.ViewObject)
@@ -365,7 +364,7 @@ def getMaterialContainer():
     for obj in FreeCAD.ActiveDocument.Objects:
         if obj.Name == "MaterialContainer":
             return obj
-    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","MaterialContainer")
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython", "MaterialContainer")
     obj.Label = "Materials"
     ArchMaterial._ArchMaterialContainer(obj)
     if FreeCAD.GuiUp:
@@ -387,7 +386,7 @@ def getDocumentMaterials():
     return []
 
 
-def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=None):
+def makePanel(baseobj=None, length=0, width=0, thickness=0, placement=None, name=None):
 
     '''makePanel([baseobj],[length],[width],[thickness],[placement],[name]): creates a
     panel element based on the given profile object and the given
@@ -398,8 +397,8 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=None
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Panel")
-    obj.Label = name if name else translate("Arch","Panel")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Panel")
+    obj.Label = name if name else translate("Arch", "Panel")
     ArchPanel._Panel(obj)
     if FreeCAD.GuiUp:
         ArchPanel._ViewProviderPanel(obj.ViewObject)
@@ -416,14 +415,14 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=None
     return obj
 
 
-def makePanelCut(panel,name=None):
+def makePanelCut(panel, name=None):
 
     """makePanelCut(panel,[name]) : Creates a 2D view of the given panel
     in the 3D space, positioned at the origin."""
 
     import ArchPanel
-    view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PanelCut")
-    view.Label = name if name else translate("Arch","View of")+" "+panel.Label
+    view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "PanelCut")
+    view.Label = name if name else translate("Arch", "View of") + " " + panel.Label
     ArchPanel.PanelCut(view)
     view.Source = panel
     if FreeCAD.GuiUp:
@@ -431,14 +430,14 @@ def makePanelCut(panel,name=None):
     return view
 
 
-def makePanelSheet(panels=[],name=None):
+def makePanelSheet(panels=[], name=None):
 
     """makePanelSheet([panels],[name]) : Creates a sheet with the given panel cuts
     in the 3D space, positioned at the origin."""
 
     import ArchPanel
-    sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PanelSheet")
-    sheet.Label = name if name else translate("Arch","PanelSheet")
+    sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "PanelSheet")
+    sheet.Label = name if name else translate("Arch", "PanelSheet")
     ArchPanel.PanelSheet(sheet)
     if panels:
         sheet.Group = panels
@@ -447,7 +446,7 @@ def makePanelSheet(panels=[],name=None):
     return sheet
 
 
-def makePipe(baseobj=None,diameter=0,length=0,placement=None,name=None):
+def makePipe(baseobj=None, diameter=0, length=0, placement=None, name=None):
 
     "makePipe([baseobj],[diameter],[length],[placement],[name]): creates an pipe object from the given base object"
 
@@ -455,8 +454,8 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Pipe")
-    obj.Label = name if name else translate("Arch","Pipe")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Pipe")
+    obj.Label = name if name else translate("Arch", "Pipe")
     ArchPipe._ArchPipe(obj)
     if FreeCAD.GuiUp:
         ArchPipe._ViewProviderPipe(obj.ViewObject)
@@ -480,7 +479,7 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name=None):
     return obj
 
 
-def makePipeConnector(pipes,radius=0,name=None):
+def makePipeConnector(pipes, radius=0, name=None):
 
     "makePipeConnector(pipes,[radius],[name]): creates a connector between the given pipes"
 
@@ -488,8 +487,8 @@ def makePipeConnector(pipes,radius=0,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Connector")
-    obj.Label = name if name else translate("Arch","Connector")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Connector")
+    obj.Label = name if name else translate("Arch", "Connector")
     ArchPipe._ArchPipeConnector(obj)
     obj.Pipes = pipes
     if not radius:
@@ -500,7 +499,7 @@ def makePipeConnector(pipes,radius=0,name=None):
     return obj
 
 
-def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
+def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
 
     '''makeProfile(profile): returns a shape  with the face defined by the profile data'''
 
@@ -510,21 +509,21 @@ def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython", "Profile")
     obj.Label = profile[2] + "_"
-    if profile[3]=="C":
+    if profile[3] == "C":
         ArchProfile._ProfileC(obj, profile)
-    elif profile[3]=="H":
+    elif profile[3] == "H":
         ArchProfile._ProfileH(obj, profile)
-    elif profile[3]=="R":
+    elif profile[3] == "R":
         ArchProfile._ProfileR(obj, profile)
-    elif profile[3]=="RH":
+    elif profile[3] == "RH":
         ArchProfile._ProfileRH(obj, profile)
-    elif profile[3]=="U":
+    elif profile[3] == "U":
         ArchProfile._ProfileU(obj, profile)
-    elif profile[3]=="L":
+    elif profile[3] == "L":
         ArchProfile._ProfileL(obj, profile)
-    elif profile[3]=="T":
+    elif profile[3] == "T":
         ArchProfile._ProfileT(obj, profile)
-    else :
+    else:
         print("Profile not supported")
     if FreeCAD.GuiUp:
         ArchProfile.ViewProviderProfile(obj.ViewObject)
@@ -567,7 +566,7 @@ def makeProject(sites=None, name=None):
     return obj
 
 
-def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name=None):
+def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, name=None):
 
     """makeRebar([baseobj],[sketch],[diameter],[amount],[offset],[name]):
     adds a Reinforcement Bar object to the given structural object,
@@ -577,15 +576,15 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name=N
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Rebar")
-    obj.Label = name if name else translate("Arch","Rebar")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Rebar")
+    obj.Label = name if name else translate("Arch", "Rebar")
     ArchRebar._Rebar(obj)
     if FreeCAD.GuiUp:
         ArchRebar._ViewProviderRebar(obj.ViewObject)
     if baseobj and sketch:
-        if hasattr(sketch,"AttachmentSupport"):
+        if hasattr(sketch, "AttachmentSupport"):
             if sketch.AttachmentSupport:
-                if isinstance(sketch.AttachmentSupport,tuple):
+                if isinstance(sketch.AttachmentSupport, tuple):
                     if sketch.AttachmentSupport[0] == baseobj:
                         sketch.AttachmentSupport = None
                 elif sketch.AttachmentSupport == baseobj:
@@ -626,8 +625,8 @@ def makeReference(filepath=None, partname=None, name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ArchReference")
-    obj.Label = name if name else translate("Arch","External Reference")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "ArchReference")
+    obj.Label = name if name else translate("Arch", "External Reference")
     ArchReference.ArchReference(obj)
     if FreeCAD.GuiUp:
         ArchReference.ViewProviderArchReference(obj.ViewObject)
@@ -679,7 +678,7 @@ def makeRoof(baseobj=None,
                     obj.Base.ViewObject.hide()
             else:
                 if (obj.Base.Shape.Faces and obj.Face):
-                    baseWire = obj.Base.Shape.Faces[obj.Face-1].Wires[0]
+                    baseWire = obj.Base.Shape.Faces[obj.Face - 1].Wires[0]
                     if FreeCAD.GuiUp:
                         obj.Base.ViewObject.hide()
                 elif obj.Base.Shape.Wires:
@@ -705,17 +704,17 @@ def makeSchedule():
     """makeSchedule(): Creates a schedule object in the active document"""
 
     import ArchSchedule
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Schedule")
-    obj.Label = translate("Arch","Schedule")
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Schedule")
+    obj.Label = translate("Arch", "Schedule")
     ArchSchedule._ArchSchedule(obj)
     if FreeCAD.GuiUp:
         ArchSchedule._ViewProviderArchSchedule(obj.ViewObject)
-    if hasattr(obj,"CreateSpreadsheet") and obj.CreateSpreadsheet:
+    if hasattr(obj, "CreateSpreadsheet") and obj.CreateSpreadsheet:
         obj.Proxy.getSpreadSheet(obj, force=True)
     return obj
 
 
-def makeSectionPlane(objectslist=None,name=None):
+def makeSectionPlane(objectslist=None, name=None):
 
     """makeSectionPlane([objectslist],[name]) : Creates a Section plane objects including the
     given objects. If no object is given, the whole document will be considered."""
@@ -726,8 +725,8 @@ def makeSectionPlane(objectslist=None,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Section")
-    obj.Label = name if name else translate("Arch","Section")
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Section")
+    obj.Label = name if name else translate("Arch", "Section")
     ArchSectionPlane._SectionPlane(obj)
     if FreeCAD.GuiUp:
         ArchSectionPlane._ViewProviderSectionPlane(obj.ViewObject)
@@ -735,18 +734,18 @@ def makeSectionPlane(objectslist=None,name=None):
         obj.Objects = objectslist
         bb = FreeCAD.BoundBox()
         for o in Draft.get_group_contents(objectslist):
-            if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
+            if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
                 bb.add(o.Shape.BoundBox)
         obj.Placement = WorkingPlane.get_working_plane().get_placement()
         obj.Placement.Base = bb.Center
         if FreeCAD.GuiUp:
-            margin = bb.XLength*0.1
-            obj.ViewObject.DisplayLength = bb.XLength+margin
-            obj.ViewObject.DisplayHeight = bb.YLength+margin
+            margin = bb.XLength * 0.1
+            obj.ViewObject.DisplayLength = bb.XLength + margin
+            obj.ViewObject.DisplayHeight = bb.YLength + margin
     return obj
 
 
-def makeSite(objectslist=None,baseobj=None,name=None):
+def makeSite(objectslist=None, baseobj=None, name=None):
 
     '''makeBuilding([objectslist],[baseobj],[name]): creates a site including the
     objects from the given list.'''
@@ -756,8 +755,8 @@ def makeSite(objectslist=None,baseobj=None,name=None):
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     import Part
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Site")
-    obj.Label = name if name else translate("Arch","Site")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Site")
+    obj.Label = name if name else translate("Arch", "Site")
     ArchSite._Site(obj)
     if FreeCAD.GuiUp:
         ArchSite._ViewProviderSite(obj.ViewObject)
@@ -765,14 +764,14 @@ def makeSite(objectslist=None,baseobj=None,name=None):
         obj.Group = objectslist
     if baseobj:
         import Part
-        if isinstance(baseobj,Part.Shape):
+        if isinstance(baseobj, Part.Shape):
             obj.Shape = baseobj
         else:
             obj.Terrain = baseobj
     return obj
 
 
-def makeSpace(objects=None,baseobj=None,name=None):
+def makeSpace(objects=None, baseobj=None, name=None):
     """Creates a space object from the given objects.
 
     Parameters
@@ -814,15 +813,15 @@ def makeSpace(objects=None,baseobj=None,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    space = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    space.Label = name if name else translate("Arch","Space")
+    space = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Space")
+    space.Label = name if name else translate("Arch", "Space")
     ArchSpace._Space(space)
     if FreeCAD.GuiUp:
         ArchSpace._ViewProviderSpace(space.ViewObject)
     if baseobj:
         objects = baseobj
     if objects:
-        if not isinstance(objects,list):
+        if not isinstance(objects, list):
             objects = [objects]
 
         isSingleObject = lambda objs: len(objs) == 1
@@ -861,7 +860,7 @@ def makeSpace(objects=None,baseobj=None,name=None):
             space.Proxy.addSubobjects(space, boundaries)
     return space
 
-def addSpaceBoundaries(space,subobjects):
+def addSpaceBoundaries(space, subobjects):
     """Adds the given subobjects as defining boundaries of the given space.
 
     Parameters
@@ -888,9 +887,9 @@ def addSpaceBoundaries(space,subobjects):
     """
     import Draft
     if Draft.getType(space) == "Space":
-        space.Proxy.addSubobjects(space,subobjects)
+        space.Proxy.addSubobjects(space, subobjects)
 
-def removeSpaceBoundaries(space,subobjects):
+def removeSpaceBoundaries(space, subobjects):
     """Remove the given subobjects as defining boundaries of the given space.
 
     Parameters
@@ -917,9 +916,9 @@ def removeSpaceBoundaries(space,subobjects):
     """
     import Draft
     if Draft.getType(space) == "Space":
-        space.Proxy.removeSubobjects(space,subobjects)
+        space.Proxy.removeSubobjects(space, subobjects)
 
-def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
+def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, name=None):
 
     """makeStairs([baseobj],[length],[width],[height],[steps],[name]): creates a Stairs
     objects with given attributes."""
@@ -931,9 +930,9 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
 
     stairs = []
     additions = []
-    label = name if name else translate("Arch","Stairs")
+    label = name if name else translate("Arch", "Stairs")
 
-    def setProperty(obj,length,width,height,steps):
+    def setProperty(obj, length, width, height, steps):
         """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair"""
         if length:
             obj.Length = length
@@ -960,11 +959,11 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
         obj.RailingHeightRight = 900
 
     if baseobj:
-        if not isinstance(baseobj,list):
+        if not isinstance(baseobj, list):
             baseobj = [baseobj]
         lenSelection = len(baseobj)
         if lenSelection > 1:
-            stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
+            stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Stairs")
             stair.Label = label
             ArchStairs._Stairs(stair)
             stairs.append(stair)
@@ -972,7 +971,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
         else:
             i = 0
         for baseobjI in baseobj:
-            stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
+            stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Stairs")
             stair.Label = label
             ArchStairs._Stairs(stair)
             stairs.append(stair)
@@ -981,10 +980,10 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
                 stepsI = steps
             else:
                 stepsI = 20
-            setProperty(stairs[i],None,width,height,stepsI)
+            setProperty(stairs[i], None, width, height, stepsI)
             if i > 1:
                 additions.append(stairs[i])
-                stairs[i].LastSegment = stairs[i-1]
+                stairs[i].LastSegment = stairs[i - 1]
             else:
                 if len(stairs) > 1:                     # i.e. length >1, have a 'master' staircase created
                     stairs[0].Base = stairs[1]
@@ -992,10 +991,10 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
         if lenSelection > 1:
             stairs[0].Additions = additions
     else:
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Stairs")
         obj.Label = label
         ArchStairs._Stairs(obj)
-        setProperty(obj,length,width,height,steps)
+        setProperty(obj, length, width, height, steps)
         stairs.append(obj)
     if FreeCAD.GuiUp:
         if baseobj:
@@ -1020,7 +1019,7 @@ def makeRailing(stairs):
 
     import ArchPipe
 
-    def makeRailingLorR(stairs,side="L"):
+    def makeRailingLorR(stairs, side="L"):
         """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or R"""
         for stair in reversed(stairs):
             if side == "L":
@@ -1032,7 +1031,7 @@ def makeRailing(stairs):
                 outlineLRAll = stair.OutlineRightAll
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
-                lrRail = makePipe(baseobj=None,diameter=0,length=0,placement=None,name=translate("Arch","Railing"))
+                lrRail = makePipe(baseobj=None, diameter=0, length=0, placement=None, name=translate("Arch", "Railing"))
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break
@@ -1058,11 +1057,11 @@ def makeRailing(stairs):
             print("No Stairs object selected")
             return
 
-    makeRailingLorR(stairs,"L")
-    makeRailingLorR(stairs,"R")
+    makeRailingLorR(stairs, "L")
+    makeRailingLorR(stairs, "R")
 
 
-def makeTruss(baseobj=None,name=None):
+def makeTruss(baseobj=None, name=None):
 
     """
     makeTruss([baseobj],[name]): Creates a space object from the given object (a line)
@@ -1072,8 +1071,8 @@ def makeTruss(baseobj=None,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Truss")
-    obj.Label = name if name else translate("Arch","Truss")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Truss")
+    obj.Label = name if name else translate("Arch", "Truss")
     ArchTruss.Truss(obj)
     if FreeCAD.GuiUp:
         ArchTruss.ViewProviderTruss(obj.ViewObject)
@@ -1084,7 +1083,7 @@ def makeTruss(baseobj=None,name=None):
     return obj
 
 
-def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=None,name=None):
+def makeWall(baseobj=None, height=None, length=None, width=None, align=None, face=None, name=None):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -1132,19 +1131,19 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=Non
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Wall")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Wall")
     if name:
         obj.Label = name
     else:
-        obj.Label = translate("Arch","Wall")
+        obj.Label = translate("Arch", "Wall")
     ArchWall._Wall(obj)
     if FreeCAD.GuiUp:
         ArchWall._ViewProviderWall(obj.ViewObject)
     if baseobj:
-        if hasattr(baseobj,'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
+        if hasattr(baseobj, 'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
             obj.Base = baseobj
         else:
-            FreeCAD.Console.PrintWarning(str(translate("Arch","Walls can only be based on Part or Mesh objects")))
+            FreeCAD.Console.PrintWarning(str(translate("Arch", "Walls can only be based on Part or Mesh objects")))
     if face:
         obj.Face = face
     if length:
@@ -1160,14 +1159,14 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=Non
     if align:
         obj.Align = align
     else:
-        obj.Align = ["Center","Left","Right"][params.get_param_arch("WallAlignment")]
+        obj.Align = ["Center", "Left", "Right"][params.get_param_arch("WallAlignment")]
     if obj.Base and FreeCAD.GuiUp:
         if Draft.getType(obj.Base) != "Space":
             obj.Base.ViewObject.hide()
     return obj
 
 
-def joinWalls(walls,delete=False):
+def joinWalls(walls, delete=False):
     """Join the given list of walls into one sketch-based wall.
 
     Take the first wall in the list, and adds on the other walls in the list.
@@ -1194,7 +1193,7 @@ def joinWalls(walls,delete=False):
     import ArchWall
     if not walls:
         return None
-    if not isinstance(walls,list):
+    if not isinstance(walls, list):
         walls = [walls]
     if not ArchWall.areSameWallTypes(walls):
         return None
@@ -1209,14 +1208,14 @@ def joinWalls(walls,delete=False):
         else:
             try:
                 import ArchSketchObject
-                newSk=ArchSketchObject.makeArchSketch()
+                newSk = ArchSketchObject.makeArchSketch()
             except:
                 if Draft.getType(base.Base) != "Sketcher::SketchObject":
-                    newSk=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
+                    newSk = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", "WallTrace")
                 else:
-                    newSk=None
+                    newSk = None
             if newSk:
-                sk = Draft.makeSketch(base.Base,autoconstraints=True, addTo=newSk)
+                sk = Draft.makeSketch(base.Base, autoconstraints=True, addTo=newSk)
                 base.Base = sk
             else:
                 sk = base.Base
@@ -1225,8 +1224,8 @@ def joinWalls(walls,delete=False):
             if not w.Base.Shape.Faces:
                 for e in w.Base.Shape.Edges:
                     l = e.Curve
-                    if isinstance(l,Part.Line):
-                        l = Part.LineSegment(e.Vertexes[0].Point,e.Vertexes[-1].Point)
+                    if isinstance(l, Part.Line):
+                        l = Part.LineSegment(e.Vertexes[0].Point, e.Vertexes[-1].Point)
                     sk.addGeometry(l)
                     deleteList.append(w.Name)
     if delete:
@@ -1237,7 +1236,7 @@ def joinWalls(walls,delete=False):
     return base
 
 
-def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
+def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
 
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
@@ -1252,12 +1251,12 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
         if Draft.getType(baseobj) == "Window":
             obj = Draft.clone(baseobj)
             return obj
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Window")
     ArchWindow._Window(obj)
     if name:
         obj.Label = name
     else:
-        obj.Label = translate("Arch","Window")
+        obj.Label = translate("Arch", "Window")
     if FreeCAD.GuiUp:
         ArchWindow._ViewProviderWindow(obj.ViewObject)
     if width:
@@ -1265,7 +1264,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
     if height:
         obj.Height = height
     if baseobj:
-        obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
+        obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
         obj.Base = baseobj
     if parts is not None:
         obj.WindowParts = parts
@@ -1284,16 +1283,16 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
                             if ws: ws += ","
                             ws += "Wire" + str(i)
                             i += 1
-                    obj.WindowParts = ["Default",tp,ws,"1","0"]
+                    obj.WindowParts = ["Default", tp, ws, "1", "0"]
             else:
                 # bind properties from base obj if existing
-                for prop in ["Height","Width","Subvolume","Tag","Description","Material"]:
+                for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:
                     for p in baseobj.PropertiesList:
-                        if (p == prop) or p.endswith("_"+prop):
-                            obj.setExpression(prop, baseobj.Name+"."+p)
+                        if (p == prop) or p.endswith("_" + prop):
+                            obj.setExpression(prop, baseobj.Name + "." + p)
 
     if obj.Base and FreeCAD.GuiUp:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
-        todo.ToDo.delay(ArchWindow.recolorize,[obj.Document.Name,obj.Name])
+        todo.ToDo.delay(ArchWindow.recolorize, [obj.Document.Name, obj.Name])
     return obj
