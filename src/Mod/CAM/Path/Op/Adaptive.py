@@ -165,7 +165,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
         )
 
         for passEndDepth in depthParams.data:
-            startAngle = math.atan2(
+            pass_start_angle = math.atan2(
                 region["StartPoint"][1] - region["HelixCenterPoint"][1],
                 region["StartPoint"][0] - region["HelixCenterPoint"][0],
             )
@@ -184,17 +184,21 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                 if obj.UseHelixArcs is False:
                     helix_down_angle = passDepth / depthPerOneCircle * 2 * math.pi
 
-                    r_bottom = r - (passStartDepth - passEndDepth) * math.tan(math.radians(obj.HelixConeAngle.Value))
-                    r_bottom = max(r_bottom, r * .5)  # put a limit on how small the cone tip can be
+                    r_bottom = r - (passStartDepth - passEndDepth) * math.tan(
+                        math.radians(obj.HelixConeAngle.Value)
+                    )
+                    r_bottom = max(
+                        r_bottom, r * 0.5
+                    )  # put a limit on how small the cone tip can be
                     step_over = obj.StepOver * 0.01 * op.tool.Diameter.Value
                     spiral_out_angle = (r - r_bottom) / step_over * 2 * math.pi
 
-                    angle0 = startAngle - helix_down_angle - spiral_out_angle
-                    angle = 0
+                    helix_base_angle = pass_start_angle - helix_down_angle - spiral_out_angle
+                    helix_angular_progress = 0
 
                     helixStart = [
-                        region["HelixCenterPoint"][0] + r * math.cos(angle0),
-                        region["HelixCenterPoint"][1] + r * math.sin(angle0),
+                        region["HelixCenterPoint"][0] + r * math.cos(helix_base_angle),
+                        region["HelixCenterPoint"][1] + r * math.sin(helix_base_angle),
                     ]
 
                     # rapid move to start point
@@ -236,32 +240,46 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     )
 
                     # helix down
-                    while angle < helix_down_angle:
-                        progress = angle / helix_down_angle
+                    while helix_angular_progress < helix_down_angle:
+                        progress = helix_angular_progress / helix_down_angle
                         r_current = r * (1 - progress) + r_bottom * progress
-                        x = region["HelixCenterPoint"][0] + r_current * math.cos(angle + angle0)
-                        y = region["HelixCenterPoint"][1] + r_current * math.sin(angle + angle0)
+                        x = region["HelixCenterPoint"][0] + r_current * math.cos(
+                            helix_angular_progress + helix_base_angle
+                        )
+                        y = region["HelixCenterPoint"][1] + r_current * math.sin(
+                            helix_angular_progress + helix_base_angle
+                        )
                         z = passStartDepth - progress * (passStartDepth - passEndDepth)
                         op.commandlist.append(
                             Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.vertFeed})
                         )
-                        angle = min(angle + math.pi / 16, helix_down_angle)
+                        helix_angular_progress = min(
+                            helix_angular_progress + math.pi / 16, helix_down_angle
+                        )
 
                     # spiral out, plus a full extra circle
                     max_angle = helix_down_angle + spiral_out_angle + 2 * math.pi
-                    while angle < max_angle:
+                    while helix_angular_progress < max_angle:
                         if spiral_out_angle == 0:
                             progress = 1
                         else:
-                            progress = min(1, (angle - helix_down_angle) / spiral_out_angle)
+                            progress = min(
+                                1, (helix_angular_progress - helix_down_angle) / spiral_out_angle
+                            )
                         r_current = r_bottom * (1 - progress) + r * progress
-                        x = region["HelixCenterPoint"][0] + r_current * math.cos(angle + angle0)
-                        y = region["HelixCenterPoint"][1] + r_current * math.sin(angle + angle0)
+                        x = region["HelixCenterPoint"][0] + r_current * math.cos(
+                            helix_angular_progress + helix_base_angle
+                        )
+                        y = region["HelixCenterPoint"][1] + r_current * math.sin(
+                            helix_angular_progress + helix_base_angle
+                        )
                         z = passEndDepth
                         op.commandlist.append(
                             Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.horizFeed})
                         )
-                        angle = min(angle + math.pi / 16, max_angle)
+                        helix_angular_progress = min(
+                            helix_angular_progress + math.pi / 16, max_angle
+                        )
                 else:
                     # Use arcs for helix - no conical shape support
                     helixStart = [
