@@ -103,3 +103,32 @@ class AssetManager:
             raise ValueError(f"No store registered for protocol: {parsed_uri.protocol}")
 
         return await store.update(parsed_uri, serialized_data)
+
+    async def create_raw(self,
+                         store_protocol: str,
+                         asset_type: str,
+                         asset_id: str,
+                         data: bytes) -> Uri:
+        """Creates a new asset with raw data."""
+        store = self.stores.get(store_protocol)
+        if not store:
+            raise ValueError(f"No store registered for protocol: {store_protocol}")
+        return await store.create(asset_type, asset_id, data)
+
+    async def get_raw(self, uri: Uri | str) -> bytes:
+        """Retrieves raw asset data by its URI."""
+        if isinstance(uri, str):
+            uri = Uri(uri)
+
+        store = self.stores.get(uri.protocol)
+        if not store:
+            raise ValueError(f"No store registered for protocol: {uri.protocol}")
+
+        return await store.get(uri)
+
+    async def is_empty(self, store_protocol: str, asset_type: str | None = None) -> bool:
+        """Checks if the asset manager has any assets of a given type."""
+        store = self.stores.get(store_protocol)
+        if not store:
+            raise ValueError(f"No store registered for protocol: {store_protocol}")
+        return await store.is_empty(asset_type)

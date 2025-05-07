@@ -2,7 +2,7 @@ import pathlib
 import aiofiles
 import shutil
 from typing import List
-from ..uri import Uri, UriStr
+from ..uri import Uri
 from .base import AssetStore
 
 class VersionedLocalStore(AssetStore):
@@ -23,45 +23,36 @@ class VersionedLocalStore(AssetStore):
         """
         self._base_dir = new_dir
 
-    def _uri_to_path(self, uri: Uri | UriStr) -> pathlib.Path:
+    def _uri_to_path(self, uri: Uri) -> pathlib.Path:
         """Converts a local URI to a filesystem path."""
-        if isinstance(uri, str):
-            parsed_uri = Uri(uri)
-        else:
-            parsed_uri = uri
-        if parsed_uri.protocol != self.protocol:
-            raise ValueError(f"Invalid protocol for VersionedLocalStore: {parsed_uri.protocol}")
+        if uri.protocol != self.protocol:
+            raise ValueError(f"Invalid protocol for VersionedLocalStore: {uri.protocol}")
         # Ignore domain for local paths
-        return self._base_dir / parsed_uri.asset_type / parsed_uri.asset / parsed_uri.version
+        return self._base_dir / uri.asset_type / uri.asset / uri.version
 
     def _asset_path(self, uri: Uri) -> pathlib.Path:
         """Gets the path to the asset directory (excluding version)."""
         return self._base_dir / uri.asset_type / uri.asset
 
-    async def get(self, uri: Uri | UriStr) -> bytes:
+    async def get(self, uri: Uri) -> bytes:
         """Retrieve the raw byte data for the asset at the given URI."""
-        if isinstance(uri, str):
-            parsed_uri = Uri(uri)
-        else:
-            parsed_uri = uri
-
-        if parsed_uri.version == "latest":
-            versions = await self.list_versions(parsed_uri)
+        if uri.version == "latest":
+            versions = await self.list_versions(uri)
             if not versions:
                 raise FileNotFoundError(f"No versions found for {uri}")
             latest_version = versions[-1]
             # Construct a new URI with the latest version
             uri_with_version = Uri.build(
-                parsed_uri.protocol,
-                parsed_uri.domain,
-                parsed_uri.asset_type,
-                parsed_uri.asset,
+                uri.protocol,
+                uri.domain,
+                uri.asset_type,
+                uri.asset,
                 latest_version,
-                parsed_uri.params,
+                uri.params,
             )
             path = self._uri_to_path(uri_with_version)
         else:
-            path = self._uri_to_path(parsed_uri)
+            path = self._uri_to_path(uri)
 
         try:
             async with aiofiles.open(path, mode='rb') as f:
@@ -69,29 +60,32 @@ class VersionedLocalStore(AssetStore):
         except FileNotFoundError:
             raise FileNotFoundError(f"Asset not found at {uri}")
 
-    async def delete(self, uri: Uri | UriStr) -> None:
+    async def delete(self, uri: Uri) -> None:
         """Delete the asset at the given URI."""
-        if isinstance(uri, str):
-            parsed_uri = Uri(uri)
-        else:
-            parsed_uri = uri
-
-        if parsed_uri.version == "latest":
+        if uri.version is None:
             # Delete the entire asset directory
-            asset_path = self._asset_path(parsed_uri)
-            if asset_path.exists():
-                shutil.rmtree(asset_path)
-            else:
-                # If the asset directory doesn't exist, consider it deleted.
-                pass
-        else:
-            # Delete the specific version file
-            path = self._uri_to_path(parsed_uri)
+            asset_path = self._asset_path(uri)
             try:
-                path.unlink()
+                shutil.rmtree(asset_path)
             except FileNotFoundError:
-                # If the file doesn't exist, consider it already deleted.
                 pass
+            return
+
+        # Delete the specific version file
+        path = self._uri_to_path(uri)
+        try:
+            path.unlink()
+            # Check if the asset directory is empty and remove it
+            asset_dir = path.parent
+            if not any(asset_dir.iterdir()):
+                asset_dir.rmdir()
+                # Check if the asset type directory is empty and remove it
+                asset_type_dir = asset_dir.parent
+                if not any(asset_type_dir.iterdir()):
+                    asset_type_dir.rmdir()
+        except FileNotFoundError:
+            # If the file doesn't exist, consider it already deleted.
+            pass
 
     async def create(self, asset_type: str, asset_id: str, data: bytes) -> Uri:
         """Create a new asset in the store with the given data."""
@@ -112,14 +106,9 @@ class VersionedLocalStore(AssetStore):
             version
         )
 
-    async def update(self, uri: Uri | UriStr, data: bytes) -> Uri:
+    async def update(self, uri: Uri, data: bytes) -> Uri:
         """Update the asset at the given URI with new data, creating a new version."""
-        if isinstance(uri, str):
-            parsed_uri = Uri(uri)
-        else:
-            parsed_uri = uri
-
-        versions = await self.list_versions(parsed_uri)
+        versions = await self.list_versions(uri)
         if not versions:
             # If no versions exist, this is effectively a create operation
             # We can reuse the create logic or raise an error.
@@ -130,13 +119,13 @@ class VersionedLocalStore(AssetStore):
         next_version = str(latest_version + 1)
 
         # Construct the path for the new version
-        asset_path = self._base_dir / parsed_uri.asset_type / parsed_uri.asset / next_version
+        asset_path = self._base_dir / uri.asset_type / uri.asset / next_version
         asset_path.parent.mkdir(parents=True, exist_ok=True) # Ensure asset directory exists
 
         async with aiofiles.open(asset_path, mode='wb') as f:
             await f.write(data)
 
-        uri_string = f"{self.protocol}:///{parsed_uri.asset_type}/{parsed_uri.asset}/{next_version}"
+        uri_string = f"{self.protocol}:///{uri.asset_type}/{uri.asset}/{next_version}"
         return Uri(uri_string)
 
     async def list_assets(self,
@@ -188,7 +177,7 @@ class VersionedLocalStore(AssetStore):
         end = start + limit if limit is not None else len(all_assets)
         return all_assets[start:end]
 
-    async def list_versions(self, uri: Uri | UriStr) -> List[str]:
+    async def list_versions(self, uri: Uri) -> List[str]:
         """
         Lists available version identifiers for a specific asset URI.
 
@@ -213,3 +202,19 @@ class VersionedLocalStore(AssetStore):
             if f.is_file() and f.name.isdigit()
         ]
         return sorted(versions, key=int)
+
+    async def is_empty(self, asset_type: str | None = None) -> bool:
+        """
+        Checks if the store contains any assets, optionally filtered by asset
+        type.
+        """
+        path = self._base_dir
+        if asset_type:
+            path /= asset_type
+            if not path.exists() or not path.is_dir():
+                return True
+
+        # Check if there are any asset type directories or asset directories
+        # within the specified path (or base_dir if no asset_type)
+        has_content = any(d.is_dir() and any(d.iterdir()) for d in path.iterdir())
+        return not has_content

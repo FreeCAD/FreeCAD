@@ -57,7 +57,14 @@ class TestPathToolAssetUri(unittest.TestCase):
 
     def test_uri_version_missing(self):
         uri_string = "local://domain/asset_type/asset"
-        self.assertRaises(ValueError, Uri, uri_string)
+        uri = Uri(uri_string)
+        self.assertEqual(uri.protocol, "local")
+        self.assertEqual(uri.domain, "domain")
+        self.assertEqual(uri.asset_type, "asset_type")
+        self.assertEqual(uri.asset, "asset")
+        self.assertIsNone(uri.version)
+        self.assertEqual(uri.params, {})
+        self.assertEqual(str(uri), uri_string)
 
     def test_uri_build_full(self):
         uri = Uri.build("local", "domain", "asset_type", "asset",

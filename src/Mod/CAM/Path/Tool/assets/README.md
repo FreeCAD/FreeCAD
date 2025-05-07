@@ -8,20 +8,38 @@ updating, deleting, and reveiving assets. Assets are arbitrary data.
 ```python
 import asyncio
 import pathlib
-from Path.Tool.assets import AssetManager, AssetAdapter, LocalStore
+from typing import Any, Dict, List, Type
+from Path.Tool.assets import AssetManager, AssetAdapter, VersionedLocalStore, Uri
 
-class MyAssetAdapter(AssetAdapter):
-    asset_name = "myclass"
-    def serialize(self, obj: MyClass): return str(obj).encode()
-    def dependencies(self, data: bytes): return []  # no dependencies
-    def create(self, data: bytes, deps: List[str]): return MyClass(data.decode())
+# Define a simple Material class for the example
+class Material:
+    def __init__(self, name: str):
+        self.name = name
+
+# Define a simple MaterialAdapter for the example
+class MaterialAdapter(AssetAdapter):
+    asset_name: str = "material"
+    asset_class: Type[Material] = Material
+
+    def serialize(self, obj: Material) -> bytes:
+        return obj.name.encode('utf-8')
+
+    def dependencies(self, data: bytes) -> List[Uri]:
+        return []
+
+    def create(self, data: bytes, dependencies: Dict[Uri, Any]) -> Material:
+        return Material(data.decode('utf-8'))
+
+    def id_of(self, obj: Material) -> str:
+        return obj.name.lower().replace(" ", "-")
+
 
 async def main():
     manager = AssetManager()
 
-    # Register LocalStore and the simple adapter
-    manager.register_store("local", LocalStore(pathlib.Path("/tmp/assets")))
-    manager.register_adapter(SimpleMaterialAdapter())
+    # Register VersionedLocalStore and the simple adapter
+    manager.register_store(VersionedLocalStore("local", pathlib.Path("/tmp/assets")))
+    manager.register_adapter(MaterialAdapter())
 
     # Create and get an asset
     asset_uri = await manager.create("local", Material("Copper"))
@@ -55,7 +73,10 @@ classDiagram
         async get(uri: Uri) Any
         async delete(uri: Uri)
         async create(store_protocol: str, obj: Any) Uri // Returns URI of created asset
-        async update(uri: Uri, obj: Any) // Updates asset at URI
+        async update(uri: Uri, obj: Any) Uri // Updates asset at URI
+        async create_raw(store_protocol: str, asset_type: str, asset_id: str, data: bytes) Uri
+        async get_raw(uri: Uri | str) bytes
+        async is_empty(store_protocol: str, asset_type: str | None = None) bool
     }
 
     class AssetStore["AssetStore
@@ -64,23 +85,51 @@ classDiagram
         async get(uri: Uri) bytes
         async delete(uri: Uri)
         async create(asset_type: str, asset_id: str, data: bytes) Uri
-        async update(uri: Uri, data: bytes)
+        async update(uri: Uri, data: bytes) Uri
         async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
         async list_versions(uri: Uri | UriStr) List[str]
+        async is_empty(asset_type: str | None = None) bool
     }
     AssetStore *-- AssetManager: has many
 
-    class VersionedLocalStore["LocalStore
-    <small>Stores/Retrieves bytes for URIs starting with local://</small>"] {
+    class VersionedLocalStore["VersionedLocalStore
+    <small>Stores/Retrieves versioned assets locally (local://)</small>"] {
         _base_dir: pathlib.Path
         async get(uri: Uri) bytes
         async delete(uri: Uri)
         async create(asset_type: str, asset_id: str, data: bytes) Uri
-        async update(uri: Uri, data: bytes)
+        async update(uri: Uri, data: bytes) Uri
         async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
         async list_versions(uri: Uri | UriStr) List[str]
+        async is_empty(asset_type: str | None = None) bool
     }
     VersionedLocalStore <|-- AssetStore: is
+
+    class UnversionedLocalStore["UnversionedLocalStore
+    <small>Stores/Retrieves unversioned assets locally</small>"] {
+        _base_dir: pathlib.Path
+        _file_extension: str
+        async get(uri: Uri) bytes
+        async delete(uri: Uri)
+        async create(asset_type: str, asset_id: str, data: bytes) Uri
+        async update(uri: Uri, data: bytes) Uri
+        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
+        async is_empty(asset_type: str | None = None) bool
+    }
+    UnversionedLocalStore <|-- AssetStore: is
+
+    class FlatLocalStore["FlatLocalStore
+    <small>Stores/Retrieves assets in a flat local directory</small>"] {
+        _base_dir: pathlib.Path
+        _file_extension: str
+        async get(uri: Uri) bytes
+        async delete(uri: Uri)
+        async create(asset_type: str, asset_id: str, data: bytes) Uri
+        async update(uri: Uri, data: bytes) Uri
+        async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
+        async is_empty(asset_type: str | None = None) bool
+    }
+    FlatLocalStore <|-- AssetStore: is
 
     class HttpStore["HttpStore
     <small>Stores/Retrieves bytes for URIs starting with https://</small>"] {
@@ -88,7 +137,7 @@ classDiagram
         async get(uri: Uri) bytes
         async delete(uri: Uri)
         async create(asset_type: str, asset_id: str, data: bytes) Uri
-        async update(uri: Uri, data: bytes)
+        async update(uri: Uri, data: bytes) Uri
         async list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None) List[Uri]
         async list_versions(uri: Uri | UriStr) List[str]
     }
@@ -110,6 +159,8 @@ classDiagram
         class AssetManager
         class AssetStore
         class VersionedLocalStore
+        class UnversionedLocalStore
+        class FlatLocalStore
         class HttpStore
         class AssetAdapter
     }

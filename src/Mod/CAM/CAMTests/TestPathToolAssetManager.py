@@ -252,6 +252,103 @@ class TestPathToolAssetManager(unittest.TestCase):
                 "No store registered for protocol:", str(cm.exception)
             )
 
+    def test_create_raw(self):
+        # Setup AssetManager with a MockStore
+        mock_store = AsyncMock()
+        mock_store.protocol = "mock_raw"
+        manager = AssetManager()
+        manager.register_store(mock_store)
+
+        asset_type = "raw_test_type"
+        asset_id = "raw_test_id"
+        data = b"raw test data"
+        expected_uri = Uri.build(
+            "mock_raw", "", asset_type, asset_id, "1"
+        )
+        mock_store.create.return_value = expected_uri
+
+        # Call manager.create_raw
+        created_uri = asyncio.run(manager.create_raw(
+            "mock_raw", asset_type, asset_id, data
+        ))
+
+        # Assert store create called with correct arguments
+        mock_store.create.assert_called_once_with(
+            asset_type, asset_id, data
+        )
+
+        # Assert returned URI matches store's result
+        self.assertEqual(created_uri, expected_uri)
+
+        # Test error handling (store not found)
+        with self.assertRaises(ValueError) as cm:
+            asyncio.run(manager.create_raw(
+                "non_existent_store", asset_type, asset_id, data
+            ))
+        self.assertIn(
+            "No store registered for protocol:", str(cm.exception)
+        )
+
+    def test_get_raw(self):
+        # Setup AssetManager with a MockStore
+        mock_store = AsyncMock()
+        mock_store.protocol = "mock_raw_get"
+        manager = AssetManager()
+        manager.register_store(mock_store)
+
+        test_uri_str = "mock_raw_get:///test_type/test_id/1"
+        test_uri = Uri(test_uri_str)
+        expected_data = b"retrieved raw data"
+        mock_store.get.return_value = expected_data
+
+        # Call manager.get_raw
+        retrieved_data = asyncio.run(manager.get_raw(test_uri))
+
+        # Assert store get called with correct URI
+        mock_store.get.assert_called_once_with(test_uri)
+
+        # Assert returned data matches store's result
+        self.assertEqual(retrieved_data, expected_data)
+
+        # Test error handling (store not found)
+        non_existent_uri = Uri("non_existent_store:///type/id/1")
+        with self.assertRaises(ValueError) as cm:
+            asyncio.run(manager.get_raw(non_existent_uri))
+        self.assertIn(
+            "No store registered for protocol:", str(cm.exception)
+        )
+
+    def test_is_empty(self):
+        # Setup AssetManager with a MockStore
+        mock_store = AsyncMock()
+        mock_store.protocol = "mock_empty"
+        manager = AssetManager()
+        manager.register_store(mock_store)
+
+        # Test when store is empty
+        mock_store.is_empty.return_value = True
+        self.assertTrue(asyncio.run(manager.is_empty("mock_empty")))
+        mock_store.is_empty.assert_called_once_with(None)
+
+        # Test when store is not empty
+        mock_store.is_empty.reset_mock()
+        mock_store.is_empty.return_value = False
+        self.assertFalse(asyncio.run(manager.is_empty("mock_empty")))
+        mock_store.is_empty.assert_called_once_with(None)
+
+        # Test with asset type
+        mock_store.is_empty.reset_mock()
+        mock_store.is_empty.return_value = True
+        self.assertTrue(asyncio.run(manager.is_empty("mock_empty", "test_type")))
+        mock_store.is_empty.assert_called_once_with("test_type")
+
+        # Test error handling (store not found)
+        with self.assertRaises(ValueError) as cm:
+            asyncio.run(manager.is_empty("non_existent_store"))
+        self.assertIn(
+            "No store registered for protocol:", str(cm.exception)
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,6 @@
 import urllib.parse
-from typing import Dict, Any
+from urllib.parse import uses_params
+from typing import Dict, Any, Mapping
 
 class Uri:
     """
@@ -9,25 +10,33 @@ class Uri:
     """
 
     def __init__(self, uri_string: str):
-        parsed = urllib.parse.urlparse(uri_string)
+        scheme = uri_string.split(":", 1)[0]
+        if scheme not in uses_params:
+            uses_params.append(scheme)
 
-        self.protocol = parsed.scheme
+        parsed = urllib.parse.urlparse(uri_string)
+        scheme = parsed.scheme if parsed.scheme else scheme
+
+        self.protocol = scheme
         self.domain = parsed.netloc
         # Split path components, ignoring leading/trailing slashes
         path_components = [comp for comp in parsed.path.split('/') if comp]
 
-        if len(path_components) < 3:
+        if len(path_components) < 2:
             raise ValueError(f"Invalid URI path structure: {uri_string}")
-
-        thetype, *path, version = path_components
-        self.asset_type = thetype
+        elif len(path_components) == 2:
+            self.asset_type, *path = path_components
+            self.version = None
+        else:
+            self.asset_type, *path, self.version = path_components
         self.asset = '/'.join(path)
-        self.version = version
 
         self.params: Dict[str, list[str]] = urllib.parse.parse_qs(parsed.query)
 
     def __str__(self) -> str:
-        path_components = [self.asset_type, self.asset, self.version]
+        path_components = [self.asset_type, self.asset]
+        if self.version is not None:
+            path_components.append(self.version)
         path = '/' + '/'.join(path_components)
 
         query = urllib.parse.urlencode(self.params, doseq=True) if self.params else ""
@@ -55,15 +64,15 @@ class Uri:
               domain: str | None,
               asset_type: str,
               asset: str,
-              version: str | None = None,
-              params: Dict[str, str | list[str]] | None = None) -> 'Uri':
+              version: str | None = "latest",
+              params: Mapping[str, str | list[str]] | None = None) -> 'Uri':
         """Builds a Uri object from components."""
         uri = Uri.__new__(Uri) # Create a new instance without calling __init__
         uri.protocol = protocol
         uri.domain = domain or ""
         uri.asset_type = asset_type
         uri.asset = asset
-        uri.version = version or "latest"
+        uri.version = version
         uri.params = {}
         if params:
             for key, value in params.items():

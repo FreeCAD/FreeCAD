@@ -1,6 +1,6 @@
 import abc
 from typing import List
-from ..uri import Uri, UriStr
+from ..uri import Uri
 
 class AssetStore(abc.ABC):
     """
@@ -15,7 +15,7 @@ class AssetStore(abc.ABC):
         self.protocol = protocol
 
     @abc.abstractmethod
-    async def get(self, uri: Uri | UriStr) -> bytes:
+    async def get(self, uri: Uri) -> bytes:
         """
         Retrieve the raw byte data for the asset at the given URI.
 
@@ -32,7 +32,7 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def delete(self, uri: Uri | UriStr) -> None:
+    async def delete(self, uri: Uri) -> None:
         """
         Delete the asset at the given URI.
 
@@ -69,7 +69,7 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def update(self, uri: Uri | UriStr, data: bytes) -> Uri:
+    async def update(self, uri: Uri, data: bytes) -> Uri:
         """
         Update the asset at the given URI with new data, creating a new version.
 
@@ -104,7 +104,7 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def list_versions(self, uri: Uri | UriStr) -> List[str]:
+    async def list_versions(self, uri: Uri) -> List[str]:
         """
         Lists available version identifiers for a specific asset URI.
 
@@ -114,5 +114,20 @@ class AssetStore(abc.ABC):
         Returns:
             A list of version identifiers as strings, sorted in ascending
             order.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    async def is_empty(self, asset_type: str | None = None) -> bool:
+        """
+        Checks if the store contains any assets, optionally filtered by asset
+        type.
+
+        Args:
+            asset_type: Optional filter for asset type.
+
+        Returns:
+            True if the store is empty (or empty for the given asset type),
+            False otherwise.
         """
         raise NotImplementedError

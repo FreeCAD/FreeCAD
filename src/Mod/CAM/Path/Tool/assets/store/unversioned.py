@@ -1,8 +1,7 @@
-import os
 import pathlib
 import aiofiles
 from typing import List
-from ..uri import Uri, UriStr
+from ..uri import Uri
 from .base import AssetStore
 
 class UnversionedLocalStore(AssetStore):
@@ -23,24 +22,19 @@ class UnversionedLocalStore(AssetStore):
         """
         self._base_dir = new_dir
 
-    def _uri_to_path(self, uri: Uri | UriStr) -> pathlib.Path:
+    def _uri_to_path(self, uri: Uri) -> pathlib.Path:
         """Converts a local URI to a filesystem path for unversioned store."""
-        if isinstance(uri, str):
-            parsed_uri = Uri(uri)
-        else:
-            parsed_uri = uri
-
-        if parsed_uri.protocol != self.protocol:
-            raise ValueError(f"Invalid protocol for UnversionedLocalStore: {parsed_uri.protocol}")
+        if uri.protocol != self.protocol:
+            raise ValueError(f"Invalid protocol for UnversionedLocalStore: {uri.protocol}")
 
         # Reconstruct path components from Uri object attributes
         # Expected path format: <asset_type>/<asset>.<file_extension>
-        asset_type = parsed_uri.asset_type
-        asset_name = parsed_uri.asset
+        asset_type = uri.asset_type
+        asset_name = uri.asset
 
         return self._base_dir / asset_type / f"{asset_name}{self._file_extension}"
 
-    async def get(self, uri: Uri | UriStr) -> bytes:
+    async def get(self, uri: Uri) -> bytes:
         """Retrieve the raw byte data for the asset at the given URI."""
         path = self._uri_to_path(uri)
         try:
@@ -49,7 +43,7 @@ class UnversionedLocalStore(AssetStore):
         except FileNotFoundError:
             raise FileNotFoundError(f"Asset not found at {uri}")
 
-    async def delete(self, uri: Uri | UriStr) -> None:
+    async def delete(self, uri: Uri) -> None:
         """Delete the asset at the given URI."""
         path = self._uri_to_path(uri)
         try:
@@ -80,8 +74,7 @@ class UnversionedLocalStore(AssetStore):
             "1" # Dummy version for unversioned store
         )
 
-
-    async def update(self, uri: Uri | UriStr, data: bytes) -> Uri:
+    async def update(self, uri: Uri, data: bytes) -> Uri:
         """Update the asset at the given URI with new data."""
         path = self._uri_to_path(uri)
         if not path.exists():
@@ -106,16 +99,11 @@ class UnversionedLocalStore(AssetStore):
         if not search_dir.exists():
             return []
 
-        for root, _, files in os.walk(search_dir):
+        for root, _, files in search_dir.walk():
             for file in files:
                 if file.endswith(self._file_extension):
                     # Construct URI from path
-                    relative_path = pathlib.Path(root) / file
-                    try:
-                        relative_path = relative_path.relative_to(self._base_dir)
-                    except ValueError:
-                        # Should not happen if os.walk is within _base_dir
-                        continue
+                    relative_path = root / file
 
                     # Extract asset_type and asset_name
                     current_asset_type = relative_path.parent.name
@@ -135,7 +123,7 @@ class UnversionedLocalStore(AssetStore):
         end_index = start_index + limit if limit is not None else len(all_uris)
         return all_uris[start_index:end_index]
 
-    async def list_versions(self, uri: Uri | UriStr) -> List[str]:
+    async def list_versions(self, uri: Uri) -> List[str]:
         """
         Lists available version identifiers for a specific asset URI.
         For unversioned store, this always returns ['1'] if the asset exists.
@@ -144,3 +132,26 @@ class UnversionedLocalStore(AssetStore):
         if path.exists() and path.is_file():
             return ["1"]
         return []
+
+    async def is_empty(self, asset_type: str | None = None) -> bool:
+        """
+        Checks if the store contains any assets, optionally filtered by asset
+        type.
+        """
+        if not asset_type:
+            # Recursively check for files with the specified extension
+            for root, _, files in self._base_dir.walk():
+                for file in files:
+                    if file.endswith(self._file_extension):
+                        return False
+            return True
+
+        # Check if the specified asset_type directory exists
+        path = self._base_dir / asset_type
+        if not path.exists() or not path.is_dir():
+            return True
+
+        # Check if the directory contains any files with the specified extension
+        is_empty_result = not any(f.is_file() and f.name.endswith(self._file_extension)
+                       for f in path.iterdir())
+        return is_empty_result
