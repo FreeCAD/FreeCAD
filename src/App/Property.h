@@ -293,7 +293,8 @@ public:
      * @param[out] value The Python value of the property.
      * @return True if the value was successfully retrieved, false otherwise.
      */
-    virtual bool getPyPathValue(const App::ObjectIdentifier& path, Py::Object& value) const
+    virtual bool getPyPathValue([[maybe_unused]] const App::ObjectIdentifier& path,
+                                [[maybe_unused]] Py::Object& value) const
     {
         return false;
     }
@@ -482,7 +483,7 @@ public:
      *
      * @param[in] prop The child property that has changed value.
      */
-    virtual void hasSetChildValue(Property&) {}
+    virtual void hasSetChildValue([[maybe_unused]] Property& prop) {}
 
     /**
      * @brief Callback for when a child property is about to change value.
@@ -491,7 +492,7 @@ public:
      *
      *@param[in] prop The child property that is about to change value.
      */
-    virtual void aboutToSetChildValue(Property&) {}
+    virtual void aboutToSetChildValue([[maybe_unused]] Property& prop) {}
 
     /**
      * @brief Compare if this property has the same content as the given one.
