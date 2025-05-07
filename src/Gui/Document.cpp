@@ -2266,9 +2266,9 @@ bool Document::canClose (bool checkModify, bool checkLink)
         case MainWindow::ConfirmSaveResult::Save:
             ok = save();
             if (!ok) {
-                const QString doc_name = QString::fromStdString(getDocument()->Label.getStrValue());
-                const QString text = (!doc_name.isEmpty()
-                                      ? QObject::tr("Failed to save document '%1'. Would you like to cancel the closure?").arg(doc_name)
+                const QString docName = QString::fromStdString(getDocument()->Label.getStrValue());
+                const QString text = (!docName.isEmpty()
+                                      ? QObject::tr("Failed to save document '%1'. Would you like to cancel the closure?").arg(docName)
                                       : QObject::tr("Document saving failed. Would you like to cancel the closure?"));
                 int ret = QMessageBox::question(
                     getActiveView(),

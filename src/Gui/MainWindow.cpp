@@ -788,9 +788,9 @@ int MainWindow::confirmSave(App::Document *doc, QWidget *parent, bool addCheckbo
     box.setIcon(QMessageBox::Question);
     box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved document"));
-    const QString doc_name = QString::fromStdString(doc->Label.getStrValue());
-    const QString text = (!doc_name.isEmpty()
-                          ? QObject::tr("Do you want to save your changes to document '%1' before closing?").arg(doc_name)
+    const QString docName = QString::fromStdString(doc->Label.getStrValue());
+    const QString text = (!docName.isEmpty()
+                          ? QObject::tr("Do you want to save your changes to document '%1' before closing?").arg(docName)
                           : QObject::tr("Do you want to save your changes to document before closing?"));
     box.setText(text);
 
@@ -829,14 +829,14 @@ int MainWindow::confirmSave(App::Document *doc, QWidget *parent, bool addCheckbo
     box.adjustSize(); // Silence warnings from Qt on Windows
 
     // activates the last used MDI view of the closing document
-    MDIView *active_view = this->activeWindow();
-    App::Document *active_doc = (active_view ? active_view->getAppDocument() : nullptr);
-    if (active_doc != doc){
-        const QList <QWidget *> list_of_MDIs = this->windows();
-        for (QWidget *widget : list_of_MDIs){
-            auto mdi_view = qobject_cast <MDIView *> (widget);
-            if (mdi_view != nullptr && mdi_view->getAppDocument() == doc)
-                this->setActiveWindow(mdi_view);
+    MDIView *activeView = this->activeWindow();
+    App::Document *activeDoc = (activeView ? activeView->getAppDocument() : nullptr);
+    if (activeDoc != doc){
+        const QList <QWidget *> listOfMDIs = this->windows();
+        for (QWidget *widget : listOfMDIs){
+            auto mdiView = qobject_cast <MDIView *> (widget);
+            if (mdiView != nullptr && mdiView->getAppDocument() == doc)
+                this->setActiveWindow(mdiView);
         }
     }
 
@@ -869,13 +869,13 @@ bool MainWindow::closeAllDocuments (bool close)
     int failedSaves = 0;
 
     // moves the active document to the front
-    MDIView *active_view = this->activeWindow();
-    App::Document *active_doc = (active_view ? active_view->getAppDocument() : nullptr);
-    if (active_doc != nullptr)
+    MDIView *activeView = this->activeWindow();
+    App::Document *activeDoc = (activeView ? activeView->getAppDocument() : nullptr);
+    if (activeDoc != nullptr)
         for (auto it = ++docs.begin(); it != docs.end(); it++)
-            if (*it == active_doc){
+            if (*it == activeDoc){
                 docs.erase(it);
-                docs.insert(docs.begin(), active_doc);
+                docs.insert(docs.begin(), activeDoc);
             }
 
     for (auto doc : docs) {
