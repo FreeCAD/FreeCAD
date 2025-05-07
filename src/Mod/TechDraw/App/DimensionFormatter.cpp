@@ -414,10 +414,12 @@ bool DimensionFormatter::isTooSmall(const double value, const QString& formatSpe
     QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*([0-9]*)[aefgrwAEFGRW]")); //printf double format spec
     QRegularExpressionMatch rxMatch = rxFormat.match(formatSpec);
     if (rxMatch.hasMatch()) {
-        QString decimalGroup = rxMatch.captured(1);
+        QString decimalGroup = rxMatch.captured(1);	// after the '.' but before the letter
         int factor = decimalGroup.toInt();
-        double minValue = pow(10.0, -factor);
-        if (std::fabs(value) < minValue) {
+        double minValue = pow(10.0, -factor);   //NOLINT
+        double difference = std::fabs(minValue - value);
+        if (!DrawUtil::fpCompare(difference, 0, EWTOLERANCE)) {
+            // doing the comparision this way to avoid problems with garbage in low bits.
             return true;
         }
     } else {
