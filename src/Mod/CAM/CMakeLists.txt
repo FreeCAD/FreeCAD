@@ -128,6 +128,7 @@ SET(PathPythonToolsAssetsStore_SRCS
     Path/Tool/assets/store/__init__.py
     Path/Tool/assets/store/base.py
     Path/Tool/assets/store/flat.py
+    Path/Tool/assets/store/memory.py
     Path/Tool/assets/store/versioned.py
 )
 

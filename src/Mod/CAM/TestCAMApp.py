@@ -66,6 +66,7 @@ from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
 from CAMTests.TestPathToolAssetStore import (
     TestPathToolVersionedLocalStore,
     TestPathToolFlatLocalStore,
+    TestPathToolMemoryStore,
 )
 from CAMTests.TestPathToolAsset import TestPathToolAsset
 from CAMTests.TestPathToolAssetManager import TestPathToolAssetManager

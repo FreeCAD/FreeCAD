@@ -10,10 +10,10 @@ class FlatLocalStore(AssetStore):
     storing all assets directly in the base directory.
     """
     def __init__(self,
-                 protocol: str,
+                 name: str,
                  base_dir: pathlib.Path,
                  type_to_extension: Mapping[str, str]):
-        super().__init__(protocol)
+        super().__init__(name)
         self.base_dir = base_dir
         self.type_to_extension = type_to_extension
 
@@ -26,22 +26,20 @@ class FlatLocalStore(AssetStore):
 
     def _uri_to_path(self, uri: AssetUri) -> pathlib.Path:
         """
-        Converts a URI to a file system path, ignoring asset type and version.
-        The URI is expected to be in the format local://<domain>/<asset_type>/<asset>/<version>.
-        Only the asset name is used to construct the path.
+        Converts a URI to a file system path, ignoring version.
+        The URI is expected to be in the format <asset_type>://<asset_id>[/version].
+        The asset_type and asset_id are used to construct the path.
         """
-        # Assuming uri.path is like /<asset_type>/<asset>/<version>
         if uri.asset_type not in self.type_to_extension:
             raise ValueError(f"Unsupported asset type: {uri.asset_type}")
 
-        # The asset name is stored in the asset attribute for this store type
-        asset_name = uri.asset
-        if not asset_name:
-            raise ValueError(f"Invalid URI format: missing asset name in {uri}")
+        # The asset ID is stored in the asset_id attribute
+        if not uri.asset_id:
+            raise ValueError(f"Invalid URI format: missing asset ID in {uri}")
 
         # Construct the path in the base directory
         file_extension = self.type_to_extension[uri.asset_type]
-        file_name = f"{asset_name}{file_extension}"
+        file_name = f"{uri.asset_id}{file_extension}"
         return self.base_dir / file_name
 
     async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
@@ -57,7 +55,7 @@ class FlatLocalStore(AssetStore):
         with open(file_path, 'wb') as f:
             f.write(data)
         # Return a URI with a fixed version as it's ignored by this store
-        return AssetUri.build(self.protocol, None, asset_type, asset_id, "1")
+        return AssetUri.build(asset_type=asset_type, asset_id=asset_id, version="1")
 
     async def update(self, uri: AssetUri, data: bytes) -> AssetUri:
         """
@@ -80,6 +78,8 @@ class FlatLocalStore(AssetStore):
         """
         Deletes the file at the path derived from the URI.
         """
+        if uri.asset_type not in self.type_to_extension:
+            return
         file_path = self._uri_to_path(uri)
         file_path.unlink()
 
@@ -108,13 +108,10 @@ class FlatLocalStore(AssetStore):
             for file in self.base_dir.glob(pattern):
                 if not file.is_file():
                     continue
-                asset_name = file.stem
                 uri = AssetUri.build(
-                    self.protocol,
-                    None,
-                    asset_type,
-                    asset_name,
-                    "1"
+                    asset_type=asset_type,
+                    asset_id=file.stem,
+                    version="1"
                 )
                 assets.append(uri)
 
@@ -126,21 +123,27 @@ class FlatLocalStore(AssetStore):
 
         return assets
 
-    async def list_versions(self, uri: AssetUri) -> List[str]:
+    async def list_versions(self, uri: AssetUri) -> List[AssetUri]:
         """
         Returns a list of versions for a given asset.
-        Since this store is unversioned, it returns ['1'] if the asset exists,
-        otherwise an empty list.
+        Since this store is unversioned, it returns a list containing the URI
+        with version "1" if the asset exists, otherwise an empty list.
         """
-        try:
-            file_path = self._uri_to_path(uri)
-            if file_path.exists():
-                return ["1"]
-            else:
-                return []
-        except ValueError:
-            # Invalid URI format means the asset doesn't exist in this store
+        if uri.asset_type not in self.type_to_extension:
+            return []  # unable to find files without mapping to extension
+
+        file_path = self._uri_to_path(uri)
+        if not file_path.exists():
             return []
+
+        # Return a list containing the URI with version "1"
+        return [
+            AssetUri.build(
+                asset_type=uri.asset_type,
+                asset_id=uri.asset_id,
+                version="1",
+            )
+        ]
 
     async def is_empty(self, asset_type: str | None = None) -> bool:
         """

@@ -1,6 +1,6 @@
 import abc
 from abc import ABC
-from typing import Any, Mapping, List, Type
+from typing import Any, Mapping, List
 from .uri import AssetUri
 
 class Asset(ABC):
@@ -10,12 +10,14 @@ class Asset(ABC):
         if not hasattr(self, 'asset_type'):
             raise ValueError("Asset subclasses must define 'asset_type'.")
 
+    @classmethod
     def dependencies(cls, data: bytes) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
         return []
 
-    @abc.abstractclassmethod
-    def from_bytes(cls, data: bytes, dependencies: Mapping[AssetUri, Type]) -> Any:
+    @classmethod
+    @abc.abstractmethod
+    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]) -> Any:
         """Creates an object from serialized data and resolved dependencies."""
         pass
 

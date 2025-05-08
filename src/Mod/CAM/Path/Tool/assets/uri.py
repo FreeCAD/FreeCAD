@@ -1,49 +1,52 @@
 from __future__ import annotations
 import urllib.parse
-from urllib.parse import uses_params
+from urllib.parse import uses_params, uses_netloc
 from typing import Dict, Any, Mapping
 
 class AssetUri:
     """
     Represents an asset URI with components.
 
-    The URI structure is: <protocol>://<domain>/<asset_type>/<asset>/<version>?<params>
+    The URI structure is: <asset_type>://<asset_id>[/version]
     """
 
     def __init__(self, uri_string: str):
-        scheme = uri_string.split(":", 1)[0]
-        if scheme not in uses_params:
-            uses_params.append(scheme)
+        # Manually parse the URI string
+        parts = uri_string.split("://", 1)
+        if len(parts) != 2:
+            raise ValueError(f"Invalid URI structure: {uri_string}")
 
-        parsed = urllib.parse.urlparse(uri_string)
-        scheme = parsed.scheme if parsed.scheme else scheme
+        self.asset_type = parts[0]
+        rest = parts[1]
 
-        self.protocol = scheme
-        self.domain = parsed.netloc
-        # Split path components, ignoring leading/trailing slashes
-        path_components = [comp for comp in parsed.path.split('/') if comp]
+        # Split asset_id, version, and params
+        path_and_query = rest.split("?", 1)
+        path_parts = path_and_query[0].split("/")
 
-        if len(path_components) < 2:
-            raise ValueError(f"Invalid URI path structure: {uri_string}")
-        elif len(path_components) == 2:
-            self.asset_type, *path = path_components
-            self.version = None
-        else:
-            self.asset_type, *path, self.version = path_components
-        self.asset = '/'.join(path)
+        if not path_parts or not path_parts[0]:
+             raise ValueError(f"Invalid URI structure: {uri_string}")
 
-        self.params: Dict[str, list[str]] = urllib.parse.parse_qs(parsed.query)
+        self.asset_id = path_parts[0]
+        self.version = path_parts[1] if len(path_parts) > 1 else None
+
+        if len(path_parts) > 2:
+             raise ValueError(f"Invalid URI path structure: {uri_string}")
+
+        self.params: Dict[str, list[str]] = {}
+        if len(path_and_query) > 1:
+            self.params = urllib.parse.parse_qs(path_and_query[1])
+
+        if not self.asset_type or not self.asset_id:
+             raise ValueError(f"Invalid URI structure: {uri_string}")
+
 
     def __str__(self) -> str:
-        path_components = [self.asset_type, self.asset]
-        if self.version is not None:
-            path_components.append(self.version)
-        path = '/' + '/'.join(path_components)
+        path = f"/{self.version}" if self.version else ""
 
         query = urllib.parse.urlencode(self.params, doseq=True) if self.params else ""
 
         uri_string = urllib.parse.urlunparse(
-            (self.protocol, self.domain, path, "", query, "")
+            (self.asset_type, self.asset_id, path, "", query, "")
         )
         return uri_string
 
@@ -53,12 +56,15 @@ class AssetUri:
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, AssetUri):
             return NotImplemented
-        return (self.protocol == other.protocol and
-                self.domain == other.domain and
-                self.asset_type == other.asset_type and
-                self.asset == other.asset and
+        return (self.asset_type == other.asset_type and
+                self.asset_id == other.asset_id and
                 self.version == other.version and
                 self.params == other.params)
+
+    def __hash__(self) -> int:
+        """Returns a hash value for the AssetUri."""
+        return hash((self.asset_type, self.asset_id, self.version,
+                     frozenset(self.params.items())))
 
     @classmethod
     def is_uri(cls, uri: AssetUri | str) -> bool:
@@ -73,18 +79,14 @@ class AssetUri:
         return True
 
     @staticmethod
-    def build(protocol: str,
-              domain: str | None,
-              asset_type: str,
-              asset: str,
-              version: str | None = "latest",
-              params: Mapping[str, str | list[str]] | None = None) -> AssetUri:
+    def build(asset_type: str,
+               asset_id: str,
+               version: str | None = None,
+               params: Mapping[str, str | list[str]] | None = None) -> AssetUri:
         """Builds a Uri object from components."""
         uri = AssetUri.__new__(AssetUri) # Create a new instance without calling __init__
-        uri.protocol = protocol
-        uri.domain = domain or ""
         uri.asset_type = asset_type
-        uri.asset = asset
+        uri.asset_id = asset_id
         uri.version = version
         uri.params = {}
         if params:

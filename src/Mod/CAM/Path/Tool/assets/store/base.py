@@ -11,8 +11,8 @@ class AssetStore(abc.ABC):
     on the URI protocol.
     """
 
-    def __init__(self, protocol: str, *args, **kwargs):
-        self.protocol = protocol
+    def __init__(self, name: str, *args, **kwargs):
+        self.name = name
 
     @abc.abstractmethod
     async def get(self, uri: AssetUri) -> bytes:
@@ -104,7 +104,7 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def list_versions(self, uri: AssetUri) -> List[str]:
+    async def list_versions(self, uri: AssetUri) -> List[AssetUri]:
         """
         Lists available version identifiers for a specific asset URI.
 
@@ -112,8 +112,7 @@ class AssetStore(abc.ABC):
             uri: The URI of the asset (version component is ignored).
 
         Returns:
-            A list of version identifiers as strings, sorted in ascending
-            order.
+            A list of URIs pointing to the specific versions of the asset.
         """
         raise NotImplementedError
 
