@@ -133,7 +133,7 @@ class Extension;
  * For information on how to create extension see the documentation of
  * Extension.
  *
- * @section{sec_limitations_python_multiple_inheritance Limitations of Python}
+ * @section Limitations of Python
  *
  * Without this extension system, it would be challenging to use extending
  * functionality in FreeCAD.  Although C++ supports multiple inheritance, it is
@@ -217,7 +217,7 @@ public:
      * @throws Base::TypeError if no extension of the given type is found and
      * @p no_except is false.
      */
-    App::Extension* getExtension(Base::Type, bool derived = true, bool no_except = false) const;
+    App::Extension* getExtension(Base::Type type, bool derived = true, bool no_except = false) const;
 
     /**
      * @brief Get the extension with the given name.
