@@ -87,7 +87,7 @@ void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
 
 DrawView* DrawTile::getParent() const
 {
-//    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
+//    Base::Console().message("DT::getParent() - %s\n", getNameInDocument());
     return freecad_cast<DrawView*>(TileParent.getValue());
 }
 

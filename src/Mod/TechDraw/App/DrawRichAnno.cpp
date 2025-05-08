@@ -88,7 +88,7 @@ App::DocumentObjectExecReturn *DrawRichAnno::execute()
 
 DrawView* DrawRichAnno::getBaseView() const
 {
-//    Base::Console().Message("DRA::getBaseView() - %s\n", getNameInDocument());
+//    Base::Console().message("DRA::getBaseView() - %s\n", getNameInDocument());
     return freecad_cast<DrawView*>(AnnoParent.getValue());
 }
 
