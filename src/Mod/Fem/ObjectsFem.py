@@ -690,7 +690,7 @@ def makePostLineplot(doc, name="Lineplot"):
     """makePostLineplot(document, [name]):
     creates a FEM post processing line plot
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_lineplot
 
     post_lineplot.PostLineplot(obj)
@@ -704,7 +704,7 @@ def makePostLineplotFieldData(doc, name="FieldData2D"):
     """makePostLineplotFieldData(document, [name]):
     creates a FEM post processing data extractor for 2D Field data
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_lineplot
 
     post_lineplot.PostLineplotFieldData(obj)
@@ -718,7 +718,7 @@ def makePostLineplotIndexOverFrames(doc, name="IndexOverFrames2D"):
     """makePostLineplotIndexOverFrames(document, [name]):
     creates a FEM post processing data extractor for 2D index data
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_lineplot
 
     post_lineplot.PostLineplotIndexOverFrames(obj)
@@ -732,7 +732,7 @@ def makePostHistogram(doc, name="Histogram"):
     """makePostHistogram(document, [name]):
     creates a FEM post processing histogram plot
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_histogram
 
     post_histogram.PostHistogram(obj)
@@ -746,7 +746,7 @@ def makePostHistogramFieldData(doc, name="FieldData1D"):
     """makePostHistogramFieldData(document, [name]):
     creates a FEM post processing data extractor for 1D Field data
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_histogram
 
     post_histogram.PostHistogramFieldData(obj)
@@ -760,7 +760,7 @@ def makePostHistogramIndexOverFrames(doc, name="IndexOverFrames1D"):
     """makePostHistogramIndexOverFrames(document, [name]):
     creates a FEM post processing data extractor for 1D Field data
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_histogram
 
     post_histogram.PostHistogramIndexOverFrames(obj)
@@ -774,7 +774,7 @@ def makePostTable(doc, name="Table"):
     """makePostTable(document, [name]):
     creates a FEM post processing histogram plot
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_table
 
     post_table.PostTable(obj)
@@ -788,7 +788,7 @@ def makePostTableFieldData(doc, name="FieldData1D"):
     """makePostTableFieldData(document, [name]):
     creates a FEM post processing data extractor for 1D Field data
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_table
 
     post_table.PostTableFieldData(obj)
@@ -802,7 +802,7 @@ def makePostTableIndexOverFrames(doc, name="IndexOverFrames1D"):
     """makePostTableIndexOverFrames(document, [name]):
     creates a FEM post processing data extractor for 1D Field data
     """
-    obj = doc.addObject("App::FeaturePython", name)
+    obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import post_table
 
     post_table.PostTableIndexOverFrames(obj)
