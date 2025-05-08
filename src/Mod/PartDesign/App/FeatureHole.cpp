@@ -1827,8 +1827,8 @@ static gp_Pnt toPnt(gp_Vec dir)
 }
 
 App::DocumentObjectExecReturn* Hole::execute()
-{ 
-    TopoShape profileshape = getProfileShape(/*needSubElement*/ false);
+{
+    TopoShape profileshape = getProfileShape();
 
     // Find the base shape
     TopoShape base;
