@@ -53,7 +53,11 @@ size_t UnitsSchemas::count() const
 std::vector<std::string> UnitsSchemas::getVec(const std::function<std::string(UnitsSchemaSpec)>& fn)
 {
     std::vector<std::string> vec;
-    std::transform(pack.specs.begin(), pack.specs.end(), std::back_inserter(vec), fn);
+    auto specs = pack.specs;
+    std::sort(specs.begin(), specs.end(), [](const UnitsSchemaSpec& a, const UnitsSchemaSpec& b) {
+        return a.num < b.num;
+    });
+    std::transform(specs.begin(), specs.end(), std::back_inserter(vec), fn);
 
     return vec;
 }
