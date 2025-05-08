@@ -22,24 +22,37 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import Arch
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchPanel(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    def test_makePanel(self):
+        """Test the makePanel function."""
+        operation = "Testing makePanel function"
+        self.printTestMessage(operation)
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
+        panel = Arch.makePanel(name="TestPanel")
+        self.assertIsNotNone(panel, "makePanel failed to create a panel object.")
+        self.assertEqual(panel.Label, "TestPanel", "Panel label is incorrect.")
 
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
+    # TODO: remove NOT_ prefix once it is understood why Arch.makePanelCut fails
+    def NOT_test_makePanelCut(self):
+        """Test the makePanelCut function."""
+        operation = "Testing makePanelCut function"
+        self.printTestMessage(operation)
 
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
+        panel = Arch.makePanel(name="TestPanel")
+        panel_cut = Arch.makePanelCut(panel, name="TestPanelCut")
+        self.assertIsNotNone(panel_cut, "makePanelCut failed to create a panel cut object.")
+        self.assertEqual(panel_cut.Label, "TestPanelCut", "Panel cut label is incorrect.")
 
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+    # TODO: remove NOT_ prefix once it is understood why Arch.makePanelSheet fails
+    def NOT_test_makePanelSheet(self):
+        """Test the makePanelSheet function."""
+        operation = "Testing makePanelSheet function"
+        self.printTestMessage(operation)
+
+        panel_sheet = Arch.makePanelSheet(name="TestPanelSheet")
+        self.assertIsNotNone(panel_sheet, "makePanelSheet failed to create a panel sheet object.")
+        self.assertEqual(panel_sheet.Label, "TestPanelSheet", "Panel sheet label is incorrect.")

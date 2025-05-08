@@ -22,24 +22,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import FreeCAD as App
+import Arch
+import Draft
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchGrid(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    def test_makeGrid(self):
+        """Test the makeGrid function."""
+        operation = "Testing makeGrid..."
+        self.printTestMessage(operation)
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
-
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
-
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
-
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+        # Call makeGrid with only the name parameter
+        grid = Arch.makeGrid(name="TestGrid")
+        self.assertIsNotNone(grid, "makeGrid failed to create a grid object.")
+        self.assertEqual(grid.Label, "TestGrid", "Grid label is incorrect.")

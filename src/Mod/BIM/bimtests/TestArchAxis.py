@@ -22,24 +22,41 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import FreeCAD as App
+import Arch
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchAxis(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    def test_make_axis_default(self):
+        axis = Arch.makeAxis()
+        self.assertIsNotNone(axis, "Failed to create a default axis")
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
+    def test_make_axis_custom(self):
+        axis = Arch.makeAxis(num=3, size=2000)
+        self.assertEqual(len(axis.Distances), 3, "Incorrect number of axes created")
+        self.assertEqual(axis.Distances[1], 2000, "Axis size is incorrect")
 
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
+    def test_axis_properties(self):
+        axis = Arch.makeAxis()
+        self.assertEqual(axis.Label, "Axes", "Default label is incorrect")
 
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
+    def test_makeAxis(self):
+        """Test the makeAxis function."""
+        operation = "Testing makeAxis function"
+        self.printTestMessage(operation)
 
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+        axis = Arch.makeAxis(num=2, size=500)
+        self.assertIsNotNone(axis, "makeAxis failed to create an axis object.")
+        self.assertEqual(axis.Label, "Axes", "Axis label is incorrect.")
+
+    def test_makeAxisSystem(self):
+        """Test the makeAxisSystem function."""
+        operation = "Testing makeAxisSystem function"
+        self.printTestMessage(operation)
+
+        axis1 = Arch.makeAxis(num=1, size=1000)
+        axis2 = Arch.makeAxis(num=1, size=2000)
+        axis_system = Arch.makeAxisSystem([axis1, axis2], name="TestAxisSystem")
+        self.assertIsNotNone(axis_system, "makeAxisSystem failed to create an axis system.")
+        self.assertEqual(axis_system.Label, "TestAxisSystem", "Axis system label is incorrect.")

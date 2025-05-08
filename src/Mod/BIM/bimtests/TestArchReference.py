@@ -22,24 +22,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import Arch
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchReference(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    def test_makeReference(self):
+        """Test the makeReference function."""
+        operation = "Testing makeReference..."
+        self.printTestMessage(operation)
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
-
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
-
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
-
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+        obj = Arch.makeReference()
+        self.assertIsNotNone(obj, "makeReference failed to create an object")
+        self.assertEqual(obj.Label, "External Reference", "Incorrect default label for Reference")
