@@ -22,24 +22,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import FreeCAD as App
+import Arch
+import Draft
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchFence(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    def test_makeFence(self):
+        # Create section, post, and path objects
+        section = Draft.makeRectangle(100, 10)
+        post = Draft.makeRectangle(10, 10)
+        path = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
-
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
-
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
-
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+        # Create a fence
+        fence = Arch.makeFence(section, post, path)
+        self.assertIsNotNone(fence, "Failed to create fence")
+        self.assertEqual(fence.Section, section, "Fence section is incorrect")
+        self.assertEqual(fence.Post, post, "Fence post is incorrect")
+        self.assertEqual(fence.Path, path, "Fence path is incorrect")
