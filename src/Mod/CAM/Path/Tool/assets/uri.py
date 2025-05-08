@@ -1,6 +1,5 @@
 from __future__ import annotations
 import urllib.parse
-from urllib.parse import uses_params, uses_netloc
 from typing import Dict, Any, Mapping
 
 class AssetUri:

@@ -1,3 +1,4 @@
+import pprint
 from typing import Dict, List, Optional
 from ..uri import AssetUri
 from .base import AssetStore
@@ -127,3 +128,33 @@ class MemoryStore(AssetStore):
            self._versions[asset_type][asset_id]:
             return self._versions[asset_type][asset_id][-1]
         return None
+
+    def dump(
+        self, print: bool = False
+    ) -> Dict[str, Dict[str, Dict[str, bytes]]] | None:
+        """
+        Dumps the entire content of the memory store.
+
+        Args:
+            print (bool): If True, pretty-prints the data to the console,
+                          excluding the asset data itself.
+
+        Returns:
+            Dict[str, Dict[str, Dict[str, bytes]]] | None: The stored data as a
+            dictionary, or None if print is True.
+        """
+        if not print:
+            return self._data
+
+        printable_data = {}
+        for asset_type, assets in self._data.items():
+            printable_data[asset_type] = {}
+            for asset_id, versions in assets.items():
+                printable_data[asset_type][asset_id] = {}
+                for version, data_bytes in versions.items():
+                    printable_data[asset_type][asset_id][version] = (
+                        f"<data skipped, {len(data_bytes)} bytes>"
+                    )
+
+        pprint.pprint(printable_data, indent=4)
+        return self._data
