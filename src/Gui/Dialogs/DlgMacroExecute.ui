@@ -352,10 +352,10 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Open folder with macros.</string>
+         <string>Open folder with macros in system file manager.</string>
         </property>
         <property name="text">
-         <string>Folder</string>
+         <string>Open folder</string>
         </property>
        </widget>
       </item>
