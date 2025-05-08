@@ -63,25 +63,35 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Test registering a different actual Asset class
         class AnotherMockAsset(Asset):
             asset_type: str = "another_mock_asset"
+
             @classmethod
-            def dependencies(cls, data: bytes) -> List[AssetUri]: return []
+            def dependencies(cls, data: bytes) -> List[AssetUri]:
+                return []
+
             @classmethod
-            def from_bytes(cls, data: bytes, dependencies: Mapping[AssetUri, Any]) -> Any: pass
-            def to_bytes(self) -> bytes: pass
-            def get_id(self) -> str: pass
+            def from_bytes(
+                cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]
+            ) -> "AnotherMockAsset":
+                return cls()
+
+            def to_bytes(self) -> bytes:
+                return b""
+
+            def get_id(self) -> str:
+                return "another_mock_id"
 
         manager.register_asset(AnotherMockAsset)
         self.assertEqual(manager._asset_classes[AnotherMockAsset.asset_type], AnotherMockAsset)
-
 
         # Test overwriting
         manager.register_asset(MockAsset) # Registering again should overwrite
         self.assertEqual(manager._asset_classes[MockAsset.asset_type], MockAsset)
 
-
         # Test registering non-Asset class
         with self.assertRaises(TypeError):
-            manager.register_asset(type("NotAnAsset", (), {}))
+            class NotAnAsset(Asset): # Inherit from Asset
+                pass
+            manager.register_asset(NotAnAsset)
 
     def test_get(self):
         # Setup AssetManager with a real LocalStore and the MockAsset class
@@ -150,8 +160,8 @@ class TestPathToolAssetManager(unittest.TestCase):
             test_path = (
                 base_dir
                 / "temp_asset"
-                / test_uri.asset_id
-                / test_uri.version
+                / str(test_uri.asset_id)
+                / str(test_uri.version)
             )
             self.assertTrue(test_path.exists())
 
@@ -263,7 +273,7 @@ class TestPathToolAssetManager(unittest.TestCase):
                 return_value=AssetUri(
                     f"{MockAsset.asset_type}://some_asset_id/1"
                 )
-            )  # Simulate new version URI
+            )
 
             # Call manager.update
             manager.update(test_uri, test_obj, store="local")

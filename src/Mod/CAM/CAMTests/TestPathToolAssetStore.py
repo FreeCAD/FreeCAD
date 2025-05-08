@@ -140,6 +140,8 @@ class BaseTestPathToolAssetStore(unittest.TestCase):
 
             self.assertEqual(uri1.asset_type, uri2.asset_type)
             self.assertEqual(uri1.asset_id, uri2.asset_id)
+            self.assertEqual(uri1.version, "1")
+            self.assertEqual(uri2.version, "2")
             self.assertNotEqual(uri1.version, uri2.version)
 
             self.assertEqual(await self.store.get(uri1), initial_data)

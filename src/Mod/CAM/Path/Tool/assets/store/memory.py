@@ -59,11 +59,11 @@ class MemoryStore(AssetStore):
             # A real store might handle this differently or raise an error
             pass
 
-        version = str(uuid.uuid4()) # Simple versioning
         if asset_id not in self._data[asset_type]:
             self._data[asset_type][asset_id] = {}
             self._versions[asset_type][asset_id] = []
 
+        version = "1"
         self._data[asset_type][asset_id][version] = data
         self._versions[asset_type][asset_id].append(version)
 
@@ -77,7 +77,10 @@ class MemoryStore(AssetStore):
            asset_id not in self._data[asset_type]:
             raise FileNotFoundError(f"Asset not found for update: {uri}")
 
-        version = str(uuid.uuid4()) # Simple versioning
+        # Update should create a new version
+        latest_version = self._get_latest_version(asset_type, asset_id)
+        version = str(int(latest_version) + 1)
+
         self._data[asset_type][asset_id][version] = data
         self._versions[asset_type][asset_id].append(version)
 
