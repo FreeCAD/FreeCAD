@@ -65,7 +65,7 @@ TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
 //! remove cosmetic elements for a list of subelement names
 void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removables)
 {
-    // Base::Console().Message("CEx::deleteCosmeticElements(%d removables)\n", removables.size());
+    // Base::Console().message("CEx::deleteCosmeticElements(%d removables)\n", removables.size());
     DrawViewPart* viewPart = getOwner();
     for (auto& name : removables) {
         if (DU::getGeomTypeFromName(name) == "Vertex" &&
