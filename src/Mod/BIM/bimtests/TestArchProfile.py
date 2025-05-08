@@ -22,24 +22,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import Arch
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchProfile(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    def test_makeProfile(self):
+        """Test the makeProfile function."""
+        operation = "Testing makeProfile function"
+        self.printTestMessage(operation)
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
-
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
-
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
-
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+        profile = Arch.makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100])
+        self.assertIsNotNone(profile, "makeProfile failed to create a profile object.")
+        self.assertEqual(profile.Label, "REC100x100_", "Profile label is incorrect.")

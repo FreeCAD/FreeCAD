@@ -25,7 +25,6 @@
 # Unit tests for the Arch wall module
 
 import os
-import unittest
 import Arch
 import Draft
 import Part
@@ -83,3 +82,24 @@ class TestArchWall(TestArchBase.TestArchBase):
                 ptMax = App.Vector(box.XMax, box.YMax, 0)
                 self.assertTrue(ptMax.isEqual(checkLst[i][1], 1e-8),
                                 "Arch Wall with MultiMaterial and 3 alignments failed")
+
+    def test_makeWall(self):
+        """Test the makeWall function."""
+        operation = "Testing makeWall function"
+        self.printTestMessage(operation)
+
+        wall = Arch.makeWall(length=5000, width=200, height=3000)
+        self.assertIsNotNone(wall, "makeWall failed to create a wall object.")
+        self.assertEqual(wall.Label, "Wall", "Wall label is incorrect.")
+
+    def test_joinWalls(self):
+        """Test the joinWalls function."""
+        operation = "Testing joinWalls function"
+        self.printTestMessage(operation)
+
+        base_line1 = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(5000, 0, 0))
+        base_line2 = Draft.makeLine(App.Vector(5000, 0, 0), App.Vector(5000, 3000, 0))
+        wall1 = Arch.makeWall(base_line1, width=200, height=3000)
+        wall2 = Arch.makeWall(base_line2, width=200, height=3000)
+        joined_wall = Arch.joinWalls([wall1, wall2])
+        self.assertIsNotNone(joined_wall, "joinWalls failed to join walls.")

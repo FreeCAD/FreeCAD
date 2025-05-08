@@ -22,24 +22,27 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import Arch
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchPipe(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    def test_makePipe(self):
+        """Test the makePipe function."""
+        operation = "Testing makePipe function"
+        self.printTestMessage(operation)
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
+        pipe = Arch.makePipe(diameter=200, length=1000, name="TestPipe")
+        self.assertIsNotNone(pipe, "makePipe failed to create a pipe object.")
+        self.assertEqual(pipe.Label, "TestPipe", "Pipe label is incorrect.")
 
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
+    def test_makePipeConnector(self):
+        """Test the makePipeConnector function."""
+        operation = "Testing makePipeConnector function"
+        self.printTestMessage(operation)
 
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
-
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+        pipe1 = Arch.makePipe(diameter=200, length=1000, name="Pipe1")
+        pipe2 = Arch.makePipe(diameter=200, length=1000, name="Pipe2")
+        connector = Arch.makePipeConnector([pipe1, pipe2], radius=100, name="TestConnector")
+        self.assertIsNotNone(connector, "makePipeConnector failed to create a pipe connector object.")
+        self.assertEqual(connector.Label, "TestConnector", "Pipe connector label is incorrect.")
