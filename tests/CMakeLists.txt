@@ -5,7 +5,6 @@ else()
     if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
         include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googletest/include/ )
         include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googlemock/include/ )
-        add_subdirectory(lib)
     else()
         message( SEND_ERROR "The Google Test submodule is not available. Please run git submodule update --init" )
     endif()
@@ -125,6 +124,9 @@ foreach (exe ${TestExecutables})
     add_executable(${exe})
 endforeach()
 
+if ( NOT FREECAD_USE_EXTERNAL_GTEST )
+    add_subdirectory(lib)
+endif()
 add_subdirectory(src)
 
 target_link_libraries(Tests_run
