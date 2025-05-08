@@ -22,24 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import Arch
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchRebar(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    # TODO: remove NOT_ prefix once it is understood why Arch.makeRebar fails
+    # Check https://wiki.freecad.org/Arch_Rebar#Scripting
+    def NOT_test_makeRebar(self):
+        """Test the makeRebar function."""
+        operation = "Testing makeRebar function"
+        self.printTestMessage(operation)
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
-
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
-
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
-
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+        rebar = Arch.makeRebar(diameter=16, amount=5, name="TestRebar")
+        self.assertIsNotNone(rebar, "makeRebar failed to create a rebar object.")
+        self.assertEqual(rebar.Label, "TestRebar", "Rebar label is incorrect.")

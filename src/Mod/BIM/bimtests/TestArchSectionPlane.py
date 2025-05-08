@@ -22,24 +22,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
+import Arch
+from bimtests import TestArchBase
 
-import unittest
-import FreeCAD
+class TestArchSectionPlane(TestArchBase.TestArchBase):
 
-class TestArchBase(unittest.TestCase):
+    def test_makeSectionPlane(self):
+        """Test the makeSectionPlane function."""
+        operation = "Testing makeSectionPlane function"
+        self.printTestMessage(operation)
 
-    def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
-
-    def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
-
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
-
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
+        section_plane = Arch.makeSectionPlane(name="TestSectionPlane")
+        self.assertIsNotNone(section_plane, "makeSectionPlane failed to create a section plane object.")
+        self.assertEqual(section_plane.Label, "TestSectionPlane", "Section plane label is incorrect.")
