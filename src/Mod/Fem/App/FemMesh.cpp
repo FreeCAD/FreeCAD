@@ -1653,7 +1653,9 @@ void FemMesh::read(const char* FileName)
 
 void FemMesh::writeVTK(const std::string& fileName, bool highest) const
 {
+#ifdef FC_USE_VTK
     FemVTKTools::writeVTKMesh(fileName.c_str(), this, highest);
+#endif
 }
 
 void FemMesh::writeABAQUS(const std::string& Filename,

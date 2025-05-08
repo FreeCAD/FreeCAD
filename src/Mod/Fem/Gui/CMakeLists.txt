@@ -43,11 +43,17 @@ SET(Python_SRCS
     ViewProviderFemConstraintPyImp.cpp
     ViewProviderFemMeshPy.xml
     ViewProviderFemMeshPyImp.cpp
-    ViewProviderFemPostPipelinePy.xml
-    ViewProviderFemPostPipelinePyImp.cpp
-    ViewProviderFemPostFilterPy.xml
-    ViewProviderFemPostFilterPyImp.cpp
 )
+if(BUILD_FEM_VTK)
+    set(Python_SRCS
+        ${Python_SRCS}
+        ViewProviderFemPostPipelinePy.xml
+        ViewProviderFemPostPipelinePyImp.cpp
+        ViewProviderFemPostFilterPy.xml
+        ViewProviderFemPostFilterPyImp.cpp
+    )
+endif(BUILD_FEM_VTK)
+
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
