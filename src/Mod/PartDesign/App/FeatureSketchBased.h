@@ -131,7 +131,7 @@ public:
 
     virtual Base::Vector3d getProfileNormal() const;
 
-    TopoShape getProfileShape(bool simplifyCompound=true) const;
+    TopoShape getProfileShape() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount() const;

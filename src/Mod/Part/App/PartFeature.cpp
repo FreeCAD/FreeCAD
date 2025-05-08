@@ -1250,8 +1250,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                                 App::DocumentObject** powner,
                                 bool resolveLink,
                                 bool transform,
-                                bool noElementMap, 
-                                bool simplifyCompound)
+                                bool noElementMap)
 {
     if (!obj || !obj->getNameInDocument()) {
         return TopoShape();
@@ -1308,7 +1307,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                                noElementMap,
                                hiddens,
                                lastLink);
-    if (needSubElement && simplifyCompound && shape.shapeType(true) == TopAbs_COMPOUND) {
+    if (needSubElement && shape.shapeType(true) == TopAbs_COMPOUND) {
         if (shape.countSubShapes(TopAbs_SOLID) == 1)
             shape = shape.getSubTopoShape(TopAbs_SOLID, 1);
         else if (shape.countSubShapes(TopAbs_COMPSOLID) == 1)
