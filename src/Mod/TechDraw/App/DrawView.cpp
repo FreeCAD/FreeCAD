@@ -439,6 +439,26 @@ DrawView *DrawView::claimParent() const
     return getCollection();
 }
 
+//! return *unique* list of DrawView derived items which consider this DVP to be their 'owner'
+//! if a dimension has two references to this dvp, it will appear twice in the inlist, so we need to
+//! pick out duplicates.
+std::vector<DrawView*> DrawView::getUniqueChildren() const
+{
+    std::vector<DrawView*> result;
+    auto children = getInList();
+    std::sort(children.begin(), children.end(), std::less<>());
+    auto newEnd = std::unique(children.begin(), children.end());
+    children.erase(newEnd, children.end());
+    for (auto& child : children) {
+        auto* childDV = freecad_cast<DrawView*>(child);
+        if (childDV && childDV->claimParent() == this) {
+            result.push_back(childDV);
+        }
+    }
+    return result;
+}
+
+
 DrawViewClip* DrawView::getClipGroup()
 {
     for (auto* obj : getInList()) {
