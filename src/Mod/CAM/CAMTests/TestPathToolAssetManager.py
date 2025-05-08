@@ -1,9 +1,16 @@
 import unittest
+import asyncio
 from unittest.mock import Mock, AsyncMock
 import pathlib
 import tempfile
 from typing import Any, Mapping, List
-from Path.Tool.assets import AssetManager, VersionedLocalStore, Asset, AssetUri
+from Path.Tool.assets import (
+    AssetManager,
+    VersionedLocalStore,
+    Asset,
+    AssetUri,
+    MemoryStore,
+)
 
 
 # Mock Asset class for testing
@@ -240,6 +247,9 @@ class TestPathToolAssetManager(unittest.TestCase):
             manager.register_asset(MockAsset2)
             with self.assertRaises(ValueError) as cm:
                 manager.create(Mock(), store="local")  # different object type
+            self.assertIn(
+                "Object of type", str(cm.exception)
+            )
 
             # Test error handling (store not found)
             with self.assertRaises(ValueError) as cm:
@@ -306,32 +316,33 @@ class TestPathToolAssetManager(unittest.TestCase):
             )
 
     def test_create_raw(self):
-        # Setup AssetManager with a MockStore
-        mock_store = AsyncMock()
-        mock_store.name = "mock_raw"
+        # Setup AssetManager with a real MemoryStore
+        memory_store = MemoryStore("memory_raw")
         manager = AssetManager()
-        manager.register_store(mock_store)
+        manager.register_store(memory_store)
 
         asset_type = "raw_test_type"
         asset_id = "raw_test_id"
         data = b"raw test data"
-        expected_uri = AssetUri.build(
-            asset_type, asset_id, "1"
-        )
-        mock_store.create.return_value = expected_uri
+
+        # Expected URI with version 1 (assuming MemoryStore uses integer versions)
+        expected_uri = AssetUri.build(asset_type, asset_id, "1")
 
         # Call manager.create_raw
         created_uri = manager.create_raw(
-            asset_type=asset_type, asset_id=asset_id, data=data, store="mock_raw"
+            asset_type=asset_type, asset_id=asset_id, data=data, store="memory_raw"
         )
 
-        # Assert store create called with correct arguments
-        mock_store.create.assert_called_once_with(
-            asset_type, asset_id, data
-        )
-
-        # Assert returned URI matches store's result
+        # Assert returned URI is correct (check asset_type and asset_id)
+        self.assertEqual(created_uri.asset_type, asset_type)
+        self.assertEqual(created_uri.asset_id, asset_id)
         self.assertEqual(created_uri, expected_uri)
+
+        # Verify data was stored using the actual created_uri
+        # Await the async get method using asyncio.run
+        retrieved_data = asyncio.run(memory_store.get(created_uri))
+        self.assertEqual(retrieved_data, data)
+
 
         # Test error handling (store not found)
         with self.assertRaises(ValueError) as cm:
@@ -343,22 +354,21 @@ class TestPathToolAssetManager(unittest.TestCase):
         )
 
     def test_get_raw(self):
-        # Setup AssetManager with a MockStore
-        mock_store = AsyncMock()
-        mock_store.name = "mock_raw_get"
+        # Setup AssetManager with a real MemoryStore
+        memory_store = MemoryStore("memory_raw_get")
         manager = AssetManager()
-        manager.register_store(mock_store)
+        manager.register_store(memory_store)
 
         test_uri_str = "test_type://test_id/1"
         test_uri = AssetUri(test_uri_str)
         expected_data = b"retrieved raw data"
-        mock_store.get.return_value = expected_data
 
-        # Call manager.get_raw
-        retrieved_data = manager.get_raw(test_uri, store="mock_raw_get")
+        # Manually put data into the memory store
+        manager.create_raw("test_type", "test_id", expected_data, "memory_raw_get")
 
-        # Assert store get called with correct URI
-        mock_store.get.assert_called_once_with(test_uri)
+
+        # Call manager.get_raw using the URI returned by create_raw
+        retrieved_data = manager.get_raw(test_uri, store="memory_raw_get")
 
         # Assert returned data matches store's result
         self.assertEqual(retrieved_data, expected_data)
@@ -372,32 +382,134 @@ class TestPathToolAssetManager(unittest.TestCase):
         )
 
     def test_is_empty(self):
-        # Setup AssetManager with a MockStore
-        mock_store = AsyncMock()
-        mock_store.name = "mock_empty"
+        # Setup AssetManager with a real MemoryStore
+        memory_store = MemoryStore("memory_empty")
         manager = AssetManager()
-        manager.register_store(mock_store)
+        manager.register_store(memory_store)
 
         # Test when store is empty
-        mock_store.is_empty.return_value = True
-        self.assertTrue(manager.is_empty(store="mock_empty"))
-        mock_store.is_empty.assert_called_once_with(None)
+        self.assertTrue(manager.is_empty(store="memory_empty"))
 
-        # Test when store is not empty
-        mock_store.is_empty.reset_mock()
-        mock_store.is_empty.return_value = False
-        self.assertFalse(manager.is_empty(store="mock_empty"))
-        mock_store.is_empty.assert_called_once_with(None)
+        # Add an asset and test again
+        manager.create_raw("test_type", "test_id", b"data", "memory_empty")
+        self.assertFalse(manager.is_empty(store="memory_empty"))
 
         # Test with asset type
-        mock_store.is_empty.reset_mock()
-        mock_store.is_empty.return_value = True
-        self.assertTrue(manager.is_empty(store="mock_empty", asset_type="test_type"))
-        mock_store.is_empty.assert_called_once_with("test_type")
+        self.assertTrue(manager.is_empty(store="memory_empty", asset_type="another_type"))
+        self.assertFalse(manager.is_empty(store="memory_empty", asset_type="test_type"))
+
 
         # Test error handling (store not found)
         with self.assertRaises(ValueError) as cm:
             manager.is_empty(store="non_existent_store")
+        self.assertIn(
+            "No store registered for name:", str(cm.exception)
+        )
+
+
+    def test_get_bulk(self):
+        # Setup AssetManager with a real MemoryStore and MockAsset class
+        memory_store = MemoryStore("memory_bulk")
+        manager = AssetManager()
+        manager.register_store(memory_store)
+        manager.register_asset(MockAsset)
+
+        # Create some assets in the memory store
+        data1 = b"data for id1"
+        data2 = b"data for id2"
+        uri1 = manager.create_raw(MockAsset.asset_type, "id1", data1, "memory_bulk")
+        uri2 = manager.create_raw(MockAsset.asset_type, "id2", data2, "memory_bulk")
+        uri3 = AssetUri.build(MockAsset.asset_type, "non_existent", "1")
+        uris = [uri1, uri2, uri3]
+
+        # Call manager.get_bulk
+        retrieved_assets = manager.get_bulk(uris, store="memory_bulk")
+
+        # Assert the correct number of assets were returned
+        self.assertEqual(len(retrieved_assets), 3)
+
+        # Assert the retrieved assets are MockAsset instances with correct data
+        self.assertIsInstance(retrieved_assets[0], MockAsset)
+        self.assertEqual(
+            retrieved_assets[0].to_bytes().decode("utf-8"),
+            data1.decode("utf-8"),
+        )
+
+        self.assertIsInstance(retrieved_assets[1], MockAsset)
+        self.assertEqual(
+            retrieved_assets[1].to_bytes().decode("utf-8"),
+            data2.decode("utf-8"),
+        )
+
+        # Assert the non-existent asset is None
+        self.assertIsNone(retrieved_assets[2])
+
+        # Test error handling (store not found)
+        with self.assertRaises(ValueError) as cm:
+            manager.get_bulk(uris, store="non_existent_store")
+        self.assertIn(
+            "No store registered for name:", str(cm.exception)
+        )
+
+    def test_fetch(self):
+        # Setup AssetManager with a real MemoryStore and MockAsset class
+        memory_store = MemoryStore("memory_fetch")
+        manager = AssetManager()
+        manager.register_store(memory_store)
+        manager.register_asset(MockAsset)
+
+        # Create some assets in the memory store
+        data1 = b"data for id1"
+        data2 = b"data for id2"
+        manager.create_raw(MockAsset.asset_type, "id1", data1, "memory_fetch")
+        manager.create_raw(MockAsset.asset_type, "id2", data2, "memory_fetch")
+        # Create an asset of a different type
+        manager.create_raw("another_type", "id3", b"data for id3", "memory_fetch")
+        AssetUri.build(MockAsset.asset_type, "non_existent", "1")
+
+
+        # Call manager.fetch without filters
+        # This should raise ValueError because uri3 has an unregistered type
+        with self.assertRaises(ValueError) as cm:
+            manager.fetch(store="memory_fetch")
+        self.assertIn("No asset class registered for asset type:", str(cm.exception))
+
+
+        # Now test fetching with a registered asset type filter
+        # Setup a new manager and store to avoid state from previous test
+        memory_store_filtered = MemoryStore("memory_fetch_filtered")
+        manager_filtered = AssetManager()
+        manager_filtered.register_store(memory_store_filtered)
+        manager_filtered.register_asset(MockAsset)
+
+        # Create assets again
+        manager_filtered.create_raw(MockAsset.asset_type, "id1", data1, "memory_fetch_filtered")
+        manager_filtered.create_raw(MockAsset.asset_type, "id2", data2, "memory_fetch_filtered")
+        manager_filtered.create_raw("another_type", "id3", b"data for id3", "memory_fetch_filtered")
+
+        retrieved_assets_filtered = manager_filtered.fetch(
+            asset_type=MockAsset.asset_type, store="memory_fetch_filtered"
+        )
+
+        # Assert the correct number of assets were returned
+        self.assertEqual(len(retrieved_assets_filtered), 2)
+
+        # Assert the retrieved assets are MockAsset instances with correct data
+        self.assertIsInstance(retrieved_assets_filtered[0], MockAsset)
+        self.assertEqual(
+            retrieved_assets_filtered[0].to_bytes().decode("utf-8"),
+            data1.decode("utf-8"),
+        )
+
+        self.assertIsInstance(retrieved_assets_filtered[1], MockAsset)
+        self.assertEqual(
+            retrieved_assets_filtered[1].to_bytes().decode("utf-8"),
+            data2.decode("utf-8"),
+        )
+
+        # Test error handling (store not found)
+        with self.assertRaises(ValueError) as cm:
+            manager.fetch(store="non_existent_store")
         self.assertIn(
             "No store registered for name:", str(cm.exception)
         )

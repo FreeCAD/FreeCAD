@@ -1,5 +1,5 @@
 import asyncio
-from typing import Dict, Any, Type, Optional, List
+from typing import Dict, Any, Type, Optional, List, Sequence
 from .store.base import AssetStore
 from .asset import Asset
 from .uri import AssetUri
@@ -18,6 +18,11 @@ class AssetManager:
         """Registers an Asset class with the manager."""
         if not issubclass(asset_class, Asset):
              raise TypeError(f"Registered item must be a subclass of Asset, not {asset_class.__name__}")
+        if not hasattr(asset_class, "asset_type") \
+            or not isinstance(asset_class.asset_type, str):
+            raise TypeError(
+                f"Asset must have a class attribute 'asset_type: str', {asset_class.__name__} does not."
+            )
         self._asset_classes[asset_class.asset_type] = asset_class
 
     async def get_async(self, uri: AssetUri | str, store: str = 'local') -> Any:
@@ -51,6 +56,63 @@ class AssetManager:
     def get(self, uri: AssetUri | str, store: str = 'local') -> Any:
         """Retrieves an asset by its URI (synchronous wrapper)."""
         return asyncio.run(self.get_async(uri, store))
+
+    async def get_bulk_async(self, uris: Sequence[AssetUri | str], store: str = 'local') -> List[Any]:
+        """Retrieves multiple assets by their URIs."""
+        selected_store = self.stores.get(store)
+        if not selected_store:
+            raise ValueError(f"No store registered for name: {store}")
+
+        # Use asyncio.Semaphore to limit concurrency
+        limit = 3
+        semaphore = asyncio.Semaphore(limit)
+
+        async def get_with_semaphore(uri):
+            async with semaphore:
+                try:
+                    return await self.get_async(uri, store=store)
+                except FileNotFoundError:
+                    return None # Handle FileNotFoundError specifically
+
+        tasks = [get_with_semaphore(uri) for uri in uris]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+
+        # Handle potential exceptions other than FileNotFoundError
+        assets = []
+        for result in results:
+            if isinstance(result, Exception) and not isinstance(result, FileNotFoundError):
+                 # Re-raise other exceptions
+                 raise result
+            else:
+                assets.append(result)
+        return assets
+
+    def get_bulk(self, uris: Sequence[AssetUri | str], store: str = 'local') -> List[Any]:
+        """Retrieves multiple assets by their URIs (synchronous wrapper)."""
+        return asyncio.run(self.get_bulk_async(uris, store))
+
+    async def fetch_async(self,
+                          asset_type: Optional[str] = None,
+                          limit: Optional[int] = None,
+                          offset: Optional[int] = None,
+                          store: str = 'local') -> List[Asset]:
+        """Fetches asset instances based on type, limit, and offset."""
+        # First, list the asset URIs
+        uris = await self.list_assets_async(asset_type, limit, offset, store)
+
+        # Then, get the actual asset instances using get_bulk_async
+        assets = await self.get_bulk_async(uris, store)
+
+        # Filter out None values if any assets were not found
+        return [asset for asset in assets if asset is not None]
+
+    def fetch(self,
+              asset_type: Optional[str] = None,
+              limit: Optional[int] = None,
+              offset: Optional[int] = None,
+              store: str = 'local') -> List[Asset]:
+        """Fetches asset instances (synchronous wrapper)."""
+        return asyncio.run(self.fetch_async(asset_type, limit, offset, store))
 
     async def delete_async(self, uri: AssetUri | str, store: str = 'local'):
         """Deletes an asset by its URI."""
