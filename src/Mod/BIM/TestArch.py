@@ -38,6 +38,7 @@ import WorkingPlane
 from bimtests.TestArchRoof import TestArchRoof
 from bimtests.TestArchSpace import TestArchSpace
 from bimtests.TestArchWall import TestArchWall
+from bimtests.TestArchComponent import TestArchComponent
 
 from draftutils.messages import _msg
 
@@ -216,3 +217,4 @@ class ArchTest(unittest.TestCase):
 True if TestArchSpace else False
 True if TestArchRoof else False
 True if TestArchWall else False
+True if TestArchComponent else False
