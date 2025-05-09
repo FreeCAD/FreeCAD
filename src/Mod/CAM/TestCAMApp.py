@@ -64,8 +64,8 @@ from CAMTests.TestPathThreadMilling import TestPathThreadMilling
 from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
 from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
 from CAMTests.TestPathToolAssetStore import (
-    TestPathToolVersionedLocalStore,
-    TestPathToolFlatLocalStore,
+    TestPathToolFileStore,
+    TestPathToolFlatFileStore,
     TestPathToolMemoryStore,
 )
 from CAMTests.TestPathToolAsset import TestPathToolAsset

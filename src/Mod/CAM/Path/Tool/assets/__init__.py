@@ -2,9 +2,9 @@ from .asset import Asset
 from .manager import AssetManager
 from .uri import AssetUri
 from .store.base import AssetStore
-from .store.flat import FlatLocalStore
+from .store.flat import FlatFileStore
 from .store.memory import MemoryStore
-from .store.versioned import VersionedLocalStore
+from .store.filestore import FileStore
 
 asset_manager = AssetManager()
 memory_store = MemoryStore("test")
@@ -15,7 +15,7 @@ __all__ = [
     "AssetUri",
     "asset_manager",
     "AssetStore",
-    "FlatLocalStore",
+    "FlatFileStore",
     "MemoryStore",
-    "VersionedLocalStore",
+    "FileStore",
 ]

@@ -4,7 +4,7 @@ from .base import AssetStore
 from ..uri import AssetUri
 
 
-class FlatLocalStore(AssetStore):
+class FlatFileStore(AssetStore):
     """
     A local file system asset store that ignores asset type and version,
     storing all assets directly in the base directory.
@@ -14,15 +14,14 @@ class FlatLocalStore(AssetStore):
                  base_dir: pathlib.Path,
                  type_to_extension: Mapping[str, str]):
         super().__init__(name)
-        self.base_dir = base_dir
-        self.type_to_extension = type_to_extension
+        self._base_dir = base_dir
+        self._type_to_extension = type_to_extension
 
     def set_dir(self, new_dir: pathlib.Path):
         """
         Sets the base directory for the store.
         """
-        self.base_dir = new_dir
-
+        self._base_dir = new_dir
 
     def _uri_to_path(self, uri: AssetUri) -> pathlib.Path:
         """
@@ -30,7 +29,7 @@ class FlatLocalStore(AssetStore):
         The URI is expected to be in the format <asset_type>://<asset_id>[/version].
         The asset_type and asset_id are used to construct the path.
         """
-        if uri.asset_type not in self.type_to_extension:
+        if uri.asset_type not in self._type_to_extension:
             raise ValueError(f"Unsupported asset type: {uri.asset_type}")
 
         # The asset ID is stored in the asset_id attribute
@@ -38,19 +37,19 @@ class FlatLocalStore(AssetStore):
             raise ValueError(f"Invalid URI format: missing asset ID in {uri}")
 
         # Construct the path in the base directory
-        file_extension = self.type_to_extension[uri.asset_type]
+        file_extension = self._type_to_extension[uri.asset_type]
         file_name = f"{uri.asset_id}{file_extension}"
-        return self.base_dir / file_name
+        return self._base_dir / file_name
 
     async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
         """
         Saves data to a file in the base directory.
         """
-        if asset_type not in self.type_to_extension:
+        if asset_type not in self._type_to_extension:
             raise ValueError(f"Unsupported asset type: {asset_type}")
 
-        file_extension = self.type_to_extension[asset_type]
-        file_path = self.base_dir / f"{asset_id}{file_extension}"
+        file_extension = self._type_to_extension[asset_type]
+        file_path = self._base_dir / f"{asset_id}{file_extension}"
         file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(file_path, 'wb') as f:
             f.write(data)
@@ -78,7 +77,7 @@ class FlatLocalStore(AssetStore):
         """
         Deletes the file at the path derived from the URI.
         """
-        if uri.asset_type not in self.type_to_extension:
+        if uri.asset_type not in self._type_to_extension:
             return
         file_path = self._uri_to_path(uri)
         file_path.unlink()
@@ -94,8 +93,8 @@ class FlatLocalStore(AssetStore):
         """
         if asset_type is None:
             # List all files matching any configured extension
-            types = self.type_to_extension.keys()
-        elif asset_type not in self.type_to_extension:
+            types = self._type_to_extension.keys()
+        elif asset_type not in self._type_to_extension:
             # Return empty list for unsupported asset type
             return []
         else:
@@ -103,9 +102,9 @@ class FlatLocalStore(AssetStore):
 
         assets = []
         for asset_type in types:
-            extension = self.type_to_extension[asset_type]
+            extension = self._type_to_extension[asset_type]
             pattern = f"*{extension}"
-            for file in self.base_dir.glob(pattern):
+            for file in self._base_dir.glob(pattern):
                 if not file.is_file():
                     continue
                 uri = AssetUri.build(
@@ -129,7 +128,7 @@ class FlatLocalStore(AssetStore):
         Since this store is unversioned, it returns a list containing the URI
         with version "1" if the asset exists, otherwise an empty list.
         """
-        if uri.asset_type not in self.type_to_extension:
+        if uri.asset_type not in self._type_to_extension:
             return []  # unable to find files without mapping to extension
 
         file_path = self._uri_to_path(uri)
@@ -149,18 +148,18 @@ class FlatLocalStore(AssetStore):
         """
         Checks if the store contains any assets, optionally filtered by
         asset_type.
-        For FlatLocalStore, this checks if the base directory contains any
+        For FlatFileStore, this checks if the base directory contains any
         files with the configured file extension(s).
         """
         if asset_type:
-            extensions = self.type_to_extension[asset_type]
+            extensions = self._type_to_extension[asset_type]
         else:
-            extensions = self.type_to_extension.values()
+            extensions = self._type_to_extension.values()
 
         # Check if any file matches any configured extension
         for ext in extensions:
             pattern = f"*{ext}"
-            if next(self.base_dir.glob(pattern), None) is not None:
+            if next(self._base_dir.glob(pattern), None) is not None:
                 return False  # Found a matching file
 
         return True  # No matching files found

@@ -7,8 +7,8 @@ from Path.Tool.assets import (
     AssetUri,
     AssetStore,
     MemoryStore,
-    FlatLocalStore,
-    VersionedLocalStore,
+    FlatFileStore,
+    FileStore,
 )
 
 
@@ -182,12 +182,12 @@ class BaseTestPathToolAssetStore(unittest.TestCase):
         asyncio.run(async_test())
 
 
-class TestPathToolVersionedLocalStore(BaseTestPathToolAssetStore):
-    """Test suite for VersionedLocalStore with full versioning support."""
+class TestPathToolFileStore(BaseTestPathToolAssetStore):
+    """Test suite for FileStore with full versioning support."""
 
     def setUp(self):
         super().setUp()
-        self.store = VersionedLocalStore("versioned", self.tmp_path)
+        self.store = FileStore("versioned", self.tmp_path)
 
     def test_get_latest_version(self):
         async def async_test():
@@ -223,8 +223,8 @@ class TestPathToolVersionedLocalStore(BaseTestPathToolAssetStore):
         asyncio.run(async_test())
 
 
-class TestPathToolFlatLocalStore(BaseTestPathToolAssetStore):
-    """Test suite for FlatLocalStore with limited versioning support."""
+class TestPathToolFlatFileStore(BaseTestPathToolAssetStore):
+    """Test suite for FlatFileStore with limited versioning support."""
 
     def setUp(self):
         super().setUp()
@@ -236,7 +236,7 @@ class TestPathToolFlatLocalStore(BaseTestPathToolAssetStore):
             "type2": ".tp2",
             "type3": ".tp3"
         }
-        self.store = FlatLocalStore(
+        self.store = FlatFileStore(
             name=self.expected_store_name,
             base_dir=self.tmp_path,
             type_to_extension=self.type_to_extension

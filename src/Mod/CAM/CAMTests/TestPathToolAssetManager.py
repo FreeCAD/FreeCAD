@@ -6,7 +6,7 @@ import tempfile
 from typing import Any, Mapping, List
 from Path.Tool.assets import (
     AssetManager,
-    VersionedLocalStore,
+    FileStore,
     Asset,
     AssetUri,
     MemoryStore,
@@ -104,7 +104,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Setup AssetManager with a real LocalStore and the MockAsset class
         with tempfile.TemporaryDirectory() as tmpdir:
             base_dir = pathlib.Path(tmpdir)
-            local_store = VersionedLocalStore("local", base_dir)
+            local_store = FileStore("local", base_dir)
             manager = AssetManager()
             manager.register_store(local_store)
 
@@ -154,7 +154,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Setup AssetManager with a real LocalStore
         with tempfile.TemporaryDirectory() as tmpdir:
             base_dir = pathlib.Path(tmpdir)
-            local_store = VersionedLocalStore("local", base_dir)
+            local_store = FileStore("local", base_dir)
             manager = AssetManager()
             manager.register_store(local_store)
 
@@ -189,7 +189,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Setup AssetManager with LocalStore and MockAsset class
         with tempfile.TemporaryDirectory() as tmpdir:
             base_dir = pathlib.Path(tmpdir)
-            local_store = VersionedLocalStore("local", base_dir)
+            local_store = FileStore("local", base_dir)
             manager = AssetManager()
             manager.register_store(local_store)
 
@@ -262,7 +262,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Setup AssetManager with LocalStore and MockAsset class
         with tempfile.TemporaryDirectory() as tmpdir:
             base_dir = pathlib.Path(tmpdir)
-            local_store = VersionedLocalStore("local", base_dir)
+            local_store = FileStore("local", base_dir)
             manager = AssetManager()
             manager.register_store(local_store)
 

@@ -1,17 +1,16 @@
 import pathlib
-import asyncio
 import shutil
 from typing import List
 from ..uri import AssetUri
 from .base import AssetStore
 from copy import copy
 
-class VersionedLocalStore(AssetStore):
+class FileStore(AssetStore):
     """
     Asset store implementation for the local filesystem with versioning.
 
-    Maps URIs of the form local://<domain>/<asset_type>/<asset>/<version>
-    to paths within a base directory: <base_dir>/<asset_type>/<asset>/<version>.
+    Maps URIs of the form <asset_type>://<asset>[/<version>]
+    to paths within a base directory: <base_dir>/<asset_type>/<asset>/<version>
     """
 
     def __init__(self, name: str, base_dir: pathlib.Path):
@@ -55,7 +54,7 @@ class VersionedLocalStore(AssetStore):
 
         try:
             with open(path, mode='rb') as f:
-                return await asyncio.to_thread(f.read)
+                return f.read()
         except FileNotFoundError:
             raise FileNotFoundError(f"Asset not found at {uri}")
 
@@ -65,7 +64,7 @@ class VersionedLocalStore(AssetStore):
             # Delete the entire asset directory
             asset_path = self._asset_path(uri)
             try:
-                await asyncio.to_thread(shutil.rmtree, asset_path)
+                shutil.rmtree(asset_path)
             except FileNotFoundError:
                 pass
             return
@@ -73,15 +72,15 @@ class VersionedLocalStore(AssetStore):
         # Delete the specific version file
         path = self._uri_to_path(uri)
         try:
-            await asyncio.to_thread(path.unlink)
+            path.unlink()
             # Check if the asset directory is empty and remove it
             asset_dir = path.parent
-            if not any(await asyncio.to_thread(asset_dir.iterdir)):
-                await asyncio.to_thread(asset_dir.rmdir)
+            if not any(asset_dir.iterdir()):
+                asset_dir.rmdir()
                 # Check if the asset type directory is empty and remove it
                 asset_type_dir = asset_dir.parent
-                if not any(await asyncio.to_thread(asset_type_dir.iterdir)):
-                    await asyncio.to_thread(asset_type_dir.rmdir)
+                if not any(asset_type_dir.iterdir()):
+                    asset_type_dir.rmdir()
         except FileNotFoundError:
             # If the file doesn't exist, consider it already deleted.
             pass
@@ -92,10 +91,10 @@ class VersionedLocalStore(AssetStore):
 
         # Construct the path and ensure directories exist
         asset_path = self._base_dir / asset_type / asset_id / version
-        await asyncio.to_thread(asset_path.parent.mkdir, parents=True, exist_ok=True)
+        asset_path.parent.mkdir(parents=True, exist_ok=True)
 
         with open(asset_path, mode='wb') as f:
-            await asyncio.to_thread(f.write, data)
+            f.write(data)
 
         return AssetUri.build(
             asset_type=asset_type,
@@ -125,10 +124,10 @@ class VersionedLocalStore(AssetStore):
 
         # Construct the path for the new version
         asset_path = self._base_dir / uri.asset_type / uri.asset_id / next_version
-        await asyncio.to_thread(asset_path.parent.mkdir, parents=True, exist_ok=True) # Ensure asset directory exists
+        asset_path.parent.mkdir(parents=True, exist_ok=True) # Ensure asset directory exists
 
         with open(asset_path, mode='wb') as f:
-            await asyncio.to_thread(f.write, data)
+            f.write(data)
 
         # Return an AssetUri object for the newly created version
         # Following the <asset_type>://<asset_id>[/version] scheme
@@ -153,17 +152,17 @@ class VersionedLocalStore(AssetStore):
             type_dirs = [self._base_dir / asset_type]
         else:
             # Get top-level items in a thread and filter for directories
-            top_level_items = list(await asyncio.to_thread(self._base_dir.iterdir))
-            type_dirs = [d for d in top_level_items if await asyncio.to_thread(d.is_dir)]
+            top_level_items = list(self._base_dir.iterdir())
+            type_dirs = [d for d in top_level_items if d.is_dir()]
 
         for type_dir in type_dirs:
-            if not await asyncio.to_thread(type_dir.is_dir):
+            if not type_dir.is_dir():
                 continue
 
             # Iterate through asset ID directories within the asset type directory
             # Get items in type_dir in a thread and filter for directories
-            asset_dir_items = list(await asyncio.to_thread(type_dir.iterdir))
-            asset_dirs = [d for d in asset_dir_items if await asyncio.to_thread(d.is_dir)]
+            asset_dir_items = list(type_dir.iterdir())
+            asset_dirs = [d for d in asset_dir_items if d.is_dir()]
             for asset_dir in asset_dirs:
                 dummy_uri = AssetUri.build(
                     asset_type=type_dir.name,
@@ -195,17 +194,17 @@ class VersionedLocalStore(AssetStore):
 
         # Construct the path to the asset directory
         asset_path = self._base_dir / uri.asset_type / uri.asset_id
-        if not await asyncio.to_thread(asset_path.is_dir):
+        if not asset_path.is_dir():
             return []
 
         # List files that are valid version numbers (integers)
         # List files that are valid version numbers (integers)
         # Get items in asset_path in a thread and filter for files with digit names
-        asset_items = list(await asyncio.to_thread(asset_path.iterdir))
+        asset_items = list(asset_path.iterdir())
         version_strings = [
             f.name
             for f in asset_items
-            if await asyncio.to_thread(f.is_file) and f.name.isdigit()
+            if f.is_file() and f.name.isdigit()
         ]
         sorted_version_strings = sorted(version_strings, key=int)
 
@@ -229,18 +228,18 @@ class VersionedLocalStore(AssetStore):
         path = self._base_dir
         if asset_type:
             path /= asset_type
-            if not await asyncio.to_thread(path.is_dir):
+            if not path.is_dir():
                 return True
 
         # Check if there are any asset type directories or asset directories
         # within the specified path (or base_dir if no asset_type)
         try:
             # Get top-level items in a thread
-            top_level_items = list(await asyncio.to_thread(path.iterdir))
+            top_level_items = list(path.iterdir())
             for item in top_level_items:
-                if await asyncio.to_thread(item.is_dir):
+                if item.is_dir():
                     # If it's a directory, check if it has any content in a thread
-                    if any(list(await asyncio.to_thread(item.iterdir))):
+                    if any(list(item.iterdir())):
                         return False # Found a non-empty directory
             return True # No non-empty directories found
         except FileNotFoundError:
