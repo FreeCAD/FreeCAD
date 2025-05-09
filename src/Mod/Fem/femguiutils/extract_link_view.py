@@ -304,7 +304,7 @@ class _SummaryWidget(QtGui.QWidget):
         btn.setMinimumWidth(0)
         btn.setFlat(True)
         btn.setText(text)
-        btn.setStyleSheet("text-align:left;padding:6px");
+        btn.setStyleSheet("text-align:left;padding:6px;min-width:20px;");
         btn.setToolTip(text)
 
         return btn
@@ -339,10 +339,10 @@ class _SummaryWidget(QtGui.QWidget):
 
                     text = fm.elidedText(btn.full_text, btn_elide_mode[i], txt_size)
                     btn.setText(text)
-                    btn.setStyleSheet("text-align:left;padding:6px");
+                    btn.setStyleSheet("text-align:left;padding:6px;min-width:20px;");
                 else:
                     btn.setText("")
-                    btn.setStyleSheet("text-align:center;");
+                    btn.setStyleSheet("text-align:center;min-width:20px;");
 
                 rect = QtCore.QRect(pos, 0, btn_size, btn_height)
                 btn.setGeometry(rect)
