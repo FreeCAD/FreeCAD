@@ -29,14 +29,16 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief A registry to collect visualizations for use in menus
 
+# Note: This file is imported from FreeCAD App files. Do not import any FreeCADGui
+#       directly to support cmd line use.
+
 import copy
 from dataclasses import dataclass
 
-from PySide import QtGui, QtCore
+from PySide import QtCore
 
 import FreeCAD
-import FreeCADGui
-import FemGui
+
 
 # Registry to handle visulization commands
 # ########################################
@@ -102,6 +104,7 @@ class _VisualizationGroupCommand:
         if not FreeCAD.ActiveDocument:
             return False
 
+        import FemGui
         return bool(FemGui.getActiveAnalysis())
 
 
@@ -129,9 +132,11 @@ class _VisualizationCommand:
         if not FreeCAD.ActiveDocument:
             return False
 
+        import FemGui
         return bool(FemGui.getActiveAnalysis())
 
     def Activated(self):
+        import FreeCADGui
 
         vis = _registry[self._visualization_type]
         FreeCAD.ActiveDocument.openTransaction(f"Create {vis.name}")
@@ -154,6 +159,8 @@ class _VisualizationCommand:
 def setup_commands(toplevel_name):
     # creates all visualization commands and registers them. The
     # toplevel group command will have the name provided to this function.
+
+    import FreeCADGui
 
     # first all visualization and extraction commands
     for vis in _registry:
