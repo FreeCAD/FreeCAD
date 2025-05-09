@@ -154,7 +154,7 @@ void QGIFace::setPrettyNormal() {
         m_brush.setStyle(Qt::TexturePattern);
         m_brush.setTexture(m_texture);
     } else {
-        m_brush.setTexture(QPixmap());
+        m_brush.setStyle(Qt::SolidPattern);
     }
     QGIPrimPath::setPrettyNormal();
 }
