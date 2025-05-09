@@ -67,7 +67,9 @@
 #include <Mod/Fem/App/FemPostFilter.h>
 
 #include "TaskPostBoxes.h"
+#ifdef FC_USE_VTK_PYTHON
 #include "TaskPostExtraction.h"
+#endif
 #include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostObject.h"
 
@@ -1024,8 +1026,10 @@ void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
     auto disp_panel = new TaskPostDisplay(this);
     dlg->addTaskBox(disp_panel->windowIcon().pixmap(32), disp_panel);
 
+#ifdef FC_USE_VTK_PYTHON
     auto extr_panel = new TaskPostExtraction(this);
     dlg->addTaskBox(extr_panel->windowIcon().pixmap(32), extr_panel);
+#endif
 }
 
 void ViewProviderFemPostObject::unsetEdit(int ModNum)

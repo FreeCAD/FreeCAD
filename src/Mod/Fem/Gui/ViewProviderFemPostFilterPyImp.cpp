@@ -27,7 +27,9 @@
 #include <Gui/PythonWrapper.h>
 #include "ViewProviderFemPostFilter.h"
 #include "TaskPostBoxes.h"
+#ifdef FC_USE_VTK_PYTHON
 #include "TaskPostExtraction.h"
+#endif
 // inclusion of the generated files (generated out of ViewProviderFemPostFilterPy.xml)
 #include "ViewProviderFemPostFilterPy.h"
 #include "ViewProviderFemPostFilterPy.cpp"
@@ -63,6 +65,7 @@ PyObject* ViewProviderFemPostFilterPy::createDisplayTaskWidget(PyObject* args)
 
 PyObject* ViewProviderFemPostFilterPy::createExtractionTaskWidget(PyObject* args)
 {
+#ifdef FC_USE_VTK_PYTHON
     // we take no arguments
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -77,6 +80,10 @@ PyObject* ViewProviderFemPostFilterPy::createExtractionTaskWidget(PyObject* args
 
     PyErr_SetString(PyExc_TypeError, "creating the panel failed");
     return nullptr;
+#else
+    PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
+    Py_Return;
+#endif
 }
 
 PyObject* ViewProviderFemPostFilterPy::getCustomAttributes(const char* /*attr*/) const

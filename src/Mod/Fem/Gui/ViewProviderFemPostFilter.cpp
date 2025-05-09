@@ -31,8 +31,10 @@
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostFilter.h"
 #include "ViewProviderFemPostFilterPy.h"
-#include "TaskPostExtraction.h"
 
+#ifdef FC_USE_VTK_PYTHON
+#include "TaskPostExtraction.h"
+#endif
 
 using namespace FemGui;
 
@@ -91,9 +93,11 @@ void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
     auto panel = new TaskPostDataAlongLine(this);
     dlg->addTaskBox(panel->getIcon(), panel);
 
+#ifdef FC_USE_VTK_PYTHON
     // and the extraction
     auto extr_panel = new TaskPostExtraction(this);
     dlg->addTaskBox(extr_panel->windowIcon().pixmap(32), extr_panel);
+#endif
 }
 
 
@@ -144,9 +148,11 @@ void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg)
     auto panel = new TaskPostDataAtPoint(this);
     dlg->addTaskBox(panel->getIcon(), panel);
 
+#ifdef FC_USE_VTK_PYTHON
     // and the extraction
     auto extr_panel = new TaskPostExtraction(this);
     dlg->addTaskBox(extr_panel->windowIcon().pixmap(32), extr_panel);
+#endif
 }
 
 
