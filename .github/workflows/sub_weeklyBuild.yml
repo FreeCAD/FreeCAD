@@ -71,7 +71,7 @@ jobs:
       # prevent running out of disk space on Ubuntu runners.
       - name: Maximize build space
         if: runner.os == 'Linux'
-        uses: AdityaGarg8/remove-unwanted-software@v5
+        uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793 # v5
         with:
           verbose: 'true'
           remove-android: 'true'      # (frees ~9 GB)
