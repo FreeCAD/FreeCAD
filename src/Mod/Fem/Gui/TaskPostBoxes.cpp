@@ -71,10 +71,6 @@
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostBranchFilter.h"
 
-#include <vtkQtTableView.h>
-#include <vtkQtTableModelAdapter.h>
-#include <vtkAttributeDataToTableFilter.h>
-
 using namespace FemGui;
 using namespace Gui;
 
