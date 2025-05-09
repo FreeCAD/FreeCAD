@@ -382,12 +382,14 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
     m_line->SetPoint2(vec2.x, vec2.y, vec2.z);
     m_line->SetResolution(Resolution.getValue());
 
+    m_arclength = vtkSmartPointer<vtkAppendArcLength>::New();
+    m_arclength->SetInputConnection(m_line->GetOutputPort(0));
+
 
     auto passthrough = vtkSmartPointer<vtkPassThrough>::New();
     m_probe = vtkSmartPointer<vtkProbeFilter>::New();
     m_probe->SetSourceConnection(passthrough->GetOutputPort(0));
-    m_probe->SetInputConnection(m_line->GetOutputPort());
-    m_probe->SetValidPointMaskArrayName("ValidPointArray");
+    m_probe->SetInputConnection(m_arclength->GetOutputPort());
     m_probe->SetPassPointArrays(1);
     m_probe->SetPassCellArrays(1);
     // needs vtk > 6.1
@@ -397,6 +399,7 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
 #endif
 
     clip.source = passthrough;
+    clip.algorithmStorage.push_back(m_arclength);
     clip.target = m_probe;
 
     addFilterPipeline(clip, "DataAlongLine");
@@ -491,12 +494,7 @@ void FemPostDataAlongLineFilter::GetAxisData()
         return;
     }
 
-    vtkDataArray* tcoords = dset->GetPointData()->GetTCoords("Texture Coordinates");
-
-    const Base::Vector3d& vec1 = Point1.getValue();
-    const Base::Vector3d& vec2 = Point2.getValue();
-    const Base::Vector3d diff = vec1 - vec2;
-    double Len = diff.Length();
+    vtkDataArray* alength = dset->GetPointData()->GetArray("arc_length");
 
     for (vtkIdType i = 0; i < dset->GetNumberOfPoints(); ++i) {
         double value = 0;
@@ -520,8 +518,7 @@ void FemPostDataAlongLineFilter::GetAxisData()
         }
 
         values.push_back(value);
-        double tcoord = tcoords->GetComponent(i, 0);
-        coords.push_back(tcoord * Len);
+        coords.push_back(alength->GetTuple1(i));
     }
 
     YAxisData.setValues(values);
