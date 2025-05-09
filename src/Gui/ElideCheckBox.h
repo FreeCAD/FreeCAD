@@ -44,6 +44,10 @@ public:
     explicit ElideCheckBox(QWidget *parent = nullptr);
     ~ElideCheckBox() override = default;
 
+private:
+    int m_IndicatorWidth;
+    int m_CheckBoxLabelSpacing;
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     QSize sizeHint() const override;
