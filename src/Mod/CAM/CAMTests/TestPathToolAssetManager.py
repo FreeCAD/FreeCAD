@@ -248,7 +248,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             with self.assertRaises(ValueError) as cm:
                 manager.create(Mock(), store="local")  # different object type
             self.assertIn(
-                "Object of type", str(cm.exception)
+                "No asset class registered for object type", str(cm.exception)
             )
 
             # Test error handling (store not found)

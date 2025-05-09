@@ -2,7 +2,8 @@ import json
 from typing import Optional
 import FreeCAD
 import Path
-from ...shape import SHAPE_REGISTRY
+from ...assets import asset_manager
+from ...shape import ToolBitShape
 from ..mixins import RotaryToolBitMixin
 from ..models.base import ToolBit
 from .base import ToolBitSerializer
@@ -45,13 +46,13 @@ class CamoticsToolBitSerializer(ToolBitSerializer):
     def deserialize_toolbit(self, data: bytes) -> Optional[ToolBit]:
         # Create an instance of the ToolBitShape class
         data = json.loads(data.decode("ascii", "ignore"))
-        shape_name = SHAPEMAP_REVERSE.get(data["shape"], "endmill")
-        shape = SHAPE_REGISTRY.get_shape_from_alias(shape_name)
+        uri = ToolBitShape.resolve_name("endmill")
+        shape = asset_manager.get(uri, store='shapestore')
 
         # Create an instance of the ToolBit class
         registry = Path.Tool.toolbit.TOOLBIT_REGISTRY
-        bit_class = registry.get_bit_class_from_shape_name(shape_name)
-        
+        bit_class = registry.get_bit_class_from_shape_name(shape.get_id())
+
         bit = bit_class(shape)
         bit.set_label(data["description"])
         bit.set_diameter(FreeCAD.Units.Quantity(float(data["diameter"]), "mm"))

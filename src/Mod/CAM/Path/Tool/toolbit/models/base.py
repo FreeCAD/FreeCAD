@@ -25,15 +25,15 @@ import Path
 import Path.Base.Util as PathUtil
 import json
 import os
-import pathlib
-import zipfile
-from abc import ABC
 import uuid
+import pathlib
+from abc import ABC
+from lazy_loader.lazy_loader import LazyLoader
 from typing import List, Optional, Tuple, Type, Union, Mapping, Any
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
-from ...shape import ToolBitShape, SHAPE_REGISTRY, TOOL_BIT_SHAPE_NAMES
-from lazy_loader.lazy_loader import LazyLoader
+from ...assets import asset_manager
+from ...shape import ToolBitShape, ToolBitShapeIcon
 from ..docobject import DetachedDocumentObject
 from ..util import to_json
 
@@ -68,11 +68,7 @@ class ToolBit(ABC):
 
         self._create_base_properties()
         self.obj.File = str(path) if path else ""
-        assert self._tool_bit_shape.filepath is not None
-        self.obj.ShapeFile = self._tool_bit_shape.filepath.name
-
-        # Set the initial shape based on the provided instance
-        self.obj.ShapeName = self._tool_bit_shape.name
+        self.obj.ShapeFile = self._tool_bit_shape.get_id()   #TODO: use a Uri
 
         # Initialize properties
         self._update_tool_properties()
@@ -126,14 +122,6 @@ class ToolBit(ABC):
 
     def _create_base_properties(self):
         # Create the properties in the Base group.
-        if not hasattr(self.obj, "ShapeName"):
-            self.obj.addProperty(
-                "App::PropertyEnumeration",
-                "ShapeName",
-                "Base",
-                QT_TRANSLATE_NOOP("App::Property", "Shape type for the tool bit"),
-            )
-            self.obj.ShapeName = TOOL_BIT_SHAPE_NAMES
         if not hasattr(self.obj, "ShapeFile"):
             self.obj.addProperty(
                 "App::PropertyFile",
@@ -192,44 +180,35 @@ class ToolBit(ABC):
                 break
         return None
 
-    def _ensure_shape_name(self):
+    def _ensure_shape_file(self):
         """
-        Ensure obj.ShapeName is set even for legacy tools
+        Ensure obj.ShapeFile is set even for legacy tools
         """
         # Get file name. BitShape is legacy.
-        filepath = None
+        name = None
         if hasattr(self.obj, "BitShape") and self.obj.BitShape:
-            filepath = pathlib.Path(self.obj.BitShape)
+            name = pathlib.Path(self.obj.BitShape).name
         elif hasattr(self.obj, "ShapeFile") and self.obj.ShapeFile:
-            filepath = pathlib.Path(self.obj.ShapeFile)
+            name = pathlib.Path(self.obj.ShapeFile).name
         elif hasattr(self.obj, "ShapeName") and self.obj.ShapeName:
-            filepath = SHAPE_REGISTRY.get_shape_filename_from_alias(self.obj.ShapeName)
-        if filepath is None:
-            raise ValueError("ToolBit is missing a shape filename")
-        self.obj.ShapeFile = filepath.name  # Remove the path
+            name = pathlib.Path(self.obj.ShapeName).name
+        if name is None:
+            raise ValueError("ToolBit is missing a shape ID")
 
-        # Find the shape name from the file or from the file name.
-        inferred_shape_name = SHAPE_REGISTRY.get_shape_name_from_filename(self.obj.ShapeFile)
-        shape_name = self.obj.ShapeName if hasattr(self.obj, "ShapeName") else ""
-        if not shape_name:
-            if inferred_shape_name:
-                Path.Log.warning(
-                    f"legacy tool bit has no ShapeName: {self.obj.Label}. Inferring {inferred_shape_name}"
-                )
-            else:
-                Path.Log.warning(f"legacy tool bit has no ShapeName: {self.obj.Label}. Assuming Endmill")
-                shape_name = "Endmill"
-        self.obj.ShapeName = shape_name
+        uri = ToolBitShape.resolve_name(name)
+        if uri is None:
+            raise ValueError(f"Failed to identify shape of ToolBit from name '{name}'")
+        self.obj.ShapeFile = str(uri)  # Remove the path
+
 
     def _promote_bit_v1_to_v2(self):
         """
         Promotes a legacy tool bit (v1) to the new format (v2).
         Legacy tools have a filename in the BitShape attribute.
-        New tools use ShapeFile for the filename (empty for built-in)
-        and ShapeName.
+        New tools use ShapeFile for the filename.
         """
         Path.Log.track(self.obj.Label)
-        Path.Log.info(f"Promoting tool bit {self.obj.Label} ({self.obj.ShapeName}) from v1 to v2")
+        Path.Log.info(f"Promoting tool bit {self.obj.Label} ({self.obj.ShapeFile}) from v1 to v2")
 
         # Update SpindleDirection:
         # Old tools may still have "CCW", "CW", "Off", "None".
@@ -261,7 +240,7 @@ class ToolBit(ABC):
             Path.Log.error(f"Failed removing obsolete BitShape property: {e}")
 
         # Get the schema properties from the current shape
-        shape_cls = SHAPE_REGISTRY.get_shape_class_from_name(self.obj.ShapeName)
+        shape_cls = ToolBitShape.get_subclass_by_name(self.obj.ShapeName)
         if not shape_cls:
             raise ValueError(f"Failed to find shape class named '{self.obj.ShapeName}'")
         shape_schema_props = shape_cls.schema().keys()
@@ -309,17 +288,18 @@ class ToolBit(ABC):
         self._update_timer = None
 
         self._create_base_properties()
-        self._ensure_shape_name()
+        self._ensure_shape_file()
 
-        self.obj.setEditorMode("ShapeName", 1)
         self.obj.setEditorMode("ShapeFile", 1)
         self.obj.setEditorMode("BitBody", 2)
         self.obj.setEditorMode("File", 1)
         self.obj.setEditorMode("Shape", 2)
 
-        # Get the shape instance based on the potentially updated
-        # ShapeName and ShapeFile.
-        self._tool_bit_shape = SHAPE_REGISTRY.get_shape_from_filename(self.obj.ShapeFile)
+        # Get the shape instance based on the potentially updated ShapeFile.
+        uri = ToolBitShape.resolve_name(self.obj.ShapeFile)
+        if uri is None:
+            raise ValueError(f"Failed to identify shape of ToolBit from name '{self.obj.ShapeFile}'")
+        self._tool_bit_shape = asset_manager.get(uri, store='shapestore')
 
         # If BitBody exists and is in a different document after document restore,
         # it means a shallow copy occurred. We need to re-initialize the visual
@@ -489,26 +469,29 @@ class ToolBit(ABC):
                 category[group] = properties
         return category
 
-    def getBitThumbnail(self):
-        if not self.obj.ShapeFile:
-            return
+    def get_icon(self) -> Optional[ToolBitShapeIcon]:
+        """
+        Retrieves the thumbnail data for the tool bit shape, as
+        taken from the explicit SVG or PNG, if the shape has one.
+        """
+        if self._tool_bit_shape:
+            return self._tool_bit_shape.get_icon()
+        return None
 
-        # Find the path of the shape file.
-        filepath = SHAPE_REGISTRY.shape_dir / self.obj.ShapeFile
-        if not os.path.exists(filepath):
-            return
-
-        # Get the existing thumbnail.
-        with open(filepath, "rb") as fd:
-            try:
-                zf = zipfile.ZipFile(fd)
-                pf = zf.open("thumbnails/Thumbnail.png", "r")
-                data = pf.read()
-                pf.close()
-                return data
-            except KeyError:
-                pass
-
+    def get_thumbnail(self) -> Optional[bytes]:
+        """
+        Retrieves the thumbnail data for the tool bit shape in PNG format,
+        as embedded in the shape file.
+        Fallback to the icon from get_icon() (converted to PNG)
+        """
+        if not self._tool_bit_shape:
+            return None
+        png_data = self._tool_bit_shape.get_thumbnail()
+        if png_data:
+            return png_data
+        icon = self.get_icon()
+        if icon:
+            return icon.get_png()
         return None
 
     def saveToFile(self, path, setFile=True):
@@ -626,7 +609,7 @@ class ToolBit(ABC):
         attrs["name"] = self.obj.Label
 
         if self._tool_bit_shape:
-            attrs["shape"] = self._tool_bit_shape.filepath.name
+            attrs["shape"] = self._tool_bit_shape.get_id() + ".fcstd"
             attrs["parameter"] = {
                 name: to_json(getattr(self.obj, name))
                 for name in self._tool_bit_shape.get_parameters()
@@ -687,7 +670,9 @@ class ToolBitFactory(object):
 
         # Create the tool bit shape.
         try:
-            tool_bit_shape = SHAPE_REGISTRY.get_shape_from_filename(shape_file, params_dict)
+            uri = ToolBitShape.resolve_name(shape_file)
+            tool_bit_shape = asset_manager.get(uri, store='shapestore')
+            tool_bit_shape.set_parameters(**params_dict)
         except Exception as e:
             Path.Log.error(
                 f"Failed to create shape from attributes for '{shape_file}': {e}."
@@ -695,7 +680,7 @@ class ToolBitFactory(object):
             )
             raise
         Path.Log.debug(
-            f"Create shape from attributes for '{shape_file}' from {tool_bit_shape.filepath}."
+            f"Create shape from attributes for '{shape_file}' with ID {tool_bit_shape.get_id()}."
         )
 
         # Find the correct ToolBit subclass based on the shape name

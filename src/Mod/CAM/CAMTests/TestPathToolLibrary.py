@@ -1,6 +1,4 @@
 import unittest
-import pathlib
-
 from Path.Tool.library import Library
 from Path.Tool.toolbit import ToolBitEndmill, ToolBitDrill, ToolBitVBit
 from Path.Tool.shape import (
@@ -33,21 +31,21 @@ class TestPathToolLibrary(unittest.TestCase):
         library = Library("Test Library")
         # Create ToolBitShape instances with required parameters
         shape1 = ToolBitShapeEndmill(
+            id="dummy_endmill",
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,
             Length=50.0,
             ShankDiameter=10.0,
         )
-        shape1.filepath = pathlib.Path("dummy_endmill.fctb")
         shape2 = ToolBitShapeDrill(
+            id="dummy_drill",
             Diameter=5.0,
             Length=40.0,
             ShankDiameter=5.0,
             Flutes=2,
             TipAngle=118.0,
         )
-        shape2.filepath = pathlib.Path("dummy_drill.fctb")
         tool1 = ToolBitEndmill(shape1)
         tool2 = ToolBitDrill(shape2)
         library.add_tool(tool1)
@@ -62,27 +60,32 @@ class TestPathToolLibrary(unittest.TestCase):
         self.assertEqual(library.get_next_tool_no(), 1)
         # Using ToolBit instances in tool_nos with ToolBitShape
         shape_a = ToolBitShapeEndmill(
+            id="dummy_a",
             CuttingEdgeHeight=1.0,
             Diameter=1.0,
             Flutes=1,
             Length=10.0,
             ShankDiameter=1.0,
         )
-        shape_a.filepath = pathlib.Path("dummy_a.fctb")
         shape_b = ToolBitShapeDrill(
+            id="dummy_b",
             Diameter=2.0,
             Length=20.0,
             ShankDiameter=2.0,
             Flutes=2,
             TipAngle=118.0,
         )
-        shape_b.filepath = pathlib.Path("dummy_b.fctb")
         shape_c = ToolBitShapeVBit(
-            Diameter=3.0, Angle=90.0, Length=30.0, ShankDiameter=3.0,
-            CuttingEdgeAngle=30.0, CuttingEdgeHeight=10.0, Flutes=2,
-            TipDiameter=1.0
+            id="dummy_c",
+            Diameter=3.0,
+            Angle=90.0,
+            Length=30.0,
+            ShankDiameter=3.0,
+            CuttingEdgeAngle=30.0,
+            CuttingEdgeHeight=10.0,
+            Flutes=2,
+            TipDiameter=1.0,
         )
-        shape_c.filepath = pathlib.Path("dummy_c.fctb")
         library.tool_nos = {
             1: ToolBitEndmill(shape_a),
             5: ToolBitDrill(shape_b),
@@ -95,21 +98,21 @@ class TestPathToolLibrary(unittest.TestCase):
     def test_get_tool_no_from_tool(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
+            id="dummy_endmill_1",
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,
             Length=50.0,
             ShankDiameter=10.0,
         )
-        shape1.filepath = pathlib.Path("dummy_endmill.fctb")
         shape2 = ToolBitShapeDrill(
+            id="dummy_drill_1",
             Diameter=5.0,
             Length=40.0,
             ShankDiameter=5.0,
             Flutes=2,
             TipAngle=118.0,
         )
-        shape2.filepath = pathlib.Path("dummy_drill.fctb")
         tool1 = ToolBitEndmill(shape1)
         tool2 = ToolBitDrill(shape2)
         library.add_tool(tool1, 1)
@@ -117,11 +120,16 @@ class TestPathToolLibrary(unittest.TestCase):
         self.assertEqual(library.get_tool_no_from_tool(tool1), 1)
         self.assertEqual(library.get_tool_no_from_tool(tool2), 2)
         shape_cutter = ToolBitShapeVBit(
-            Diameter=3.0, Angle=90.0, Length=30.0, ShankDiameter=3.0,
-            CuttingEdgeAngle=30.0, CuttingEdgeHeight=10.0, Flutes=2,
-            TipDiameter=1.0
+            id="dummy_cutter_1",
+            Diameter=3.0,
+            Angle=90.0,
+            Length=30.0,
+            ShankDiameter=3.0,
+            CuttingEdgeAngle=30.0,
+            CuttingEdgeHeight=10.0,
+            Flutes=2,
+            TipDiameter=1.0,
         )
-        shape_cutter.filepath = pathlib.Path("dummy_cutter.fctb")
         self.assertIsNone(
             library.get_tool_no_from_tool(ToolBitVBit(shape_cutter))
         )
@@ -129,21 +137,21 @@ class TestPathToolLibrary(unittest.TestCase):
     def test_assign_new_tool_no(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
+            id="dummy_endmill_2",
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,
             Length=50.0,
             ShankDiameter=10.0,
         )
-        shape1.filepath = pathlib.Path("dummy_endmill.fctb")
         shape2 = ToolBitShapeDrill(
+            id="dummy_drill_2",
             Diameter=5.0,
             Length=40.0,
             ShankDiameter=5.0,
             Flutes=2,
             TipAngle=118.0,
         )
-        shape2.filepath = pathlib.Path("dummy_drill.fctb")
         tool1 = ToolBitEndmill(shape1)
         tool2 = ToolBitDrill(shape2)
 
@@ -187,21 +195,21 @@ class TestPathToolLibrary(unittest.TestCase):
     def test_add_tool(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
+            id="dummy_endmill_3",
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,
             Length=50.0,
             ShankDiameter=10.0,
         )
-        shape1.filepath = pathlib.Path("dummy_endmill.fctb")
         shape2 = ToolBitShapeDrill(
+            id="dummy_drill_3",
             Diameter=5.0,
             Length=40.0,
             ShankDiameter=5.0,
             Flutes=2,
             TipAngle=118.0,
         )
-        shape2.filepath = pathlib.Path("dummy_drill.fctb")
         tool1 = ToolBitEndmill(shape1)
         tool2 = ToolBitDrill(shape2)
 
@@ -237,21 +245,21 @@ class TestPathToolLibrary(unittest.TestCase):
     def test_get_tools(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
+            id="dummy_endmill_4",
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,
             Length=50.0,
             ShankDiameter=10.0,
         )
-        shape1.filepath = pathlib.Path("dummy_endmill.fctb")
         shape2 = ToolBitShapeDrill(
+            id="dummy_drill_4",
             Diameter=5.0,
             Length=40.0,
             ShankDiameter=5.0,
             Flutes=2,
             TipAngle=118.0,
         )
-        shape2.filepath = pathlib.Path("dummy_drill.fctb")
         tool1 = ToolBitEndmill(shape1)
         tool2 = ToolBitDrill(shape2)
         self.assertEqual(library.get_tools(), [])
@@ -265,21 +273,21 @@ class TestPathToolLibrary(unittest.TestCase):
     def test_has_tool(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
+            id="dummy_endmill_5",
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,
             Length=50.0,
             ShankDiameter=10.0,
         )
-        shape1.filepath = pathlib.Path("dummy_endmill.fctb")
         shape2 = ToolBitShapeDrill(
+            id="dummy_drill_5",
             Diameter=5.0,
             Length=40.0,
             ShankDiameter=5.0,
             Flutes=2,
             TipAngle=118.0,
         )
-        shape2.filepath = pathlib.Path("dummy_drill.fctb")
         tool1 = ToolBitEndmill(shape1)
         tool2 = ToolBitDrill(shape2)
         library.add_tool(tool1)
@@ -287,35 +295,36 @@ class TestPathToolLibrary(unittest.TestCase):
         self.assertFalse(library.has_tool(tool2))
         # Create a new ToolBit with the same properties but different instance
         shape1_copy = ToolBitShapeEndmill(
+            id="dummy_endmill_5_copy", # Use a different ID for the copy
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,
             Length=50.0,
             ShankDiameter=10.0,
         )
-        shape1_copy.filepath = pathlib.Path("dummy_endmill.fctb")
         tool1_copy = ToolBitEndmill(shape1_copy)
         self.assertFalse(library.has_tool(tool1_copy))
 
     def test_remove_tool(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
+            id="dummy_endmill_6",
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,
             Length=50.0,
             ShankDiameter=10.0,
         )
-        shape1.filepath = pathlib.Path("dummy_endmill.fctb")
         shape2 = ToolBitShapeDrill(
+            id="dummy_drill_6",
             Diameter=5.0,
             Length=40.0,
             ShankDiameter=5.0,
             Flutes=2,
             TipAngle=118.0,
         )
-        shape2.filepath = pathlib.Path("dummy_drill.fctb")
         shape3 = ToolBitShapeVBit(
+            id="dummy_cutter_6",
             Diameter=3.0,
             Angle=90.0,
             Length=30.0,
@@ -325,7 +334,6 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipDiameter=1.0,
         )
-        shape3.filepath = pathlib.Path("dummy_cutter.fctb")
         tool1 = ToolBitEndmill(shape1)
         tool2 = ToolBitDrill(shape2)
         tool3 = ToolBitVBit(shape3)
@@ -359,13 +367,13 @@ class TestPathToolLibrary(unittest.TestCase):
 
         # Removing a non-existent tool should not raise an error
         shape_nonexistent = ToolBitShapeEndmill(
+            id="dummy_nonexistent_6",
             CuttingEdgeHeight=99.0,
             Diameter=99.0,
             Flutes=1,
             Length=99.0,
             ShankDiameter=99.0,
         )
-        shape_nonexistent.filepath = pathlib.Path("dummy_nonexistent.fctb")
         library.remove_tool(ToolBitEndmill(shape_nonexistent))
         self.assertEqual(len(library.tools), 0)
         self.assertEqual(len(library.tool_nos), 0)

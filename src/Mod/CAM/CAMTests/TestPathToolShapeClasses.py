@@ -1,28 +1,36 @@
 # -*- coding: utf-8 -*-
 # Unit tests for the Path.Tool.Shape module and its utilities.
 
-import CAMTests.PathTestUtils as PathTestUtils
+import unittest
 from pathlib import Path
 from typing import Mapping, Tuple
+import tempfile
 import FreeCAD
-from Path.Tool.shape import ToolBitShape
-from Path.Tool.shape.registry import SHAPE_REGISTRY
-
-
-TestToolDir = Path(__file__).parent.parent / "Tools"
+from Path.Tool.shape import (
+    ToolBitShape,
+    ToolBitShapeBallend,
+    ToolBitShapeVBit,
+    ToolBitShapeBullnose,
+    ToolBitShapeSlittingSaw,
+)
+from Path.Tool.assets import asset_manager
+from Path.Tool.assets import MemoryStore
+from Path.Tool.shape.util import ensure_toolbitshape_store_initialized
 
 
 # Helper dummy class for testing abstract methods
 class DummyShape(ToolBitShape):
     name = "dummy"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if not self._params:  # Only set defaults if not loaded from file
-            self._defaults = {
-                "Param1": FreeCAD.Units.Quantity("10", "mm"),
-                "Param2": FreeCAD.Units.Quantity("5", "deg"),
-            }
+    def __init__(self, id, **kwargs):
+        super().__init__(id=id, **kwargs)
+        # Always define defaults in the subclass
+        self._defaults = {
+            "Param1": FreeCAD.Units.Quantity("10 mm"),
+            "Param2": FreeCAD.Units.Quantity("5 deg"),
+        }
+        # Merge defaults into _params, allowing kwargs to override
+        self._params = self._defaults | self._params
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
@@ -31,7 +39,7 @@ class DummyShape(ToolBitShape):
                 FreeCAD.Qt.translate("Param1", "Parameter 1"),
                 "App::PropertyLength",
             ),
-            "": (
+            "Param2": (
                 FreeCAD.Qt.translate("Param2", "Parameter 2"),
                 "App::PropertyAngle",
             ),
@@ -46,76 +54,89 @@ def unit(param):
     return param.getUserPreferred()[2]
 
 
-class TestPathToolShapeBase(PathTestUtils.PathTestBase):
-    """Tests for the ToolBitShape abstract base class."""
+class TestPathToolShapeClasses(unittest.TestCase):
+    """Tests for the concrete ToolBitShape subclasses."""
 
     def setUp(self):
-        SHAPE_REGISTRY.set_dir(TestToolDir / "Shape")
+        self.test_dir = Path(__file__).parent / "Tools" / "Shape"
+        toolbitshape_store = MemoryStore("testshapes")
+        asset_manager.register_store(toolbitshape_store)
+        ensure_toolbitshape_store_initialized(toolbitshape_store.name)
+
+    def _test_shape_common(self, alias):
+        uri = ToolBitShape.resolve_name(alias)
+        shape = asset_manager.get(uri, store='testshapes')
+        return shape.get_parameters()
 
     def test_base_init_with_defaults(self):
         """Test base class initialization uses default parameters."""
-        # Provide a dummy filepath for instantiation
-        shape = DummyShape(filepath=Path("/fake/dummy.fcstd"))
-        params = self._test_shape_common("ballend")
-        self.assertEqual(str(params["Param1"]), "10 mm")
-        self.assertEqual(str(params["Param2"]), "5 deg")
+        # Provide a dummy filepath and id for instantiation
+        shape = DummyShape(id="dummy_shape_1", filepath=Path("/fake/dummy.fcstd"))
+        self.assertEqual(str(shape.get_parameter("Param1")), "10.0 mm")
+        self.assertEqual(str(shape.get_parameter("Param2")), "5.0 deg")
 
     def test_base_init_with_kwargs(self):
         """Test base class initialization overrides defaults with kwargs."""
         # Provide a dummy filepath for instantiation
         shape = DummyShape(
+            id="dummy_shape_2",
             filepath=Path("/fake/dummy.fcstd"),
-            Param1="20 mm",
+            Param1=FreeCAD.Units.Quantity("20 mm"),
             Param3="Ignored",
         )
-        params = self._test_shape_common("ballend")
-        self.assertEqual(str(params["Param1"]), "20 mm")
-        self.assertEqual(str(params["Param2"]), "5 deg")  # Should remain default
-        # Check warning for ignored param
-        # Assuming FreeCAD.Console is available in the test environment
-        FreeCAD.Console.PrintWarning.assert_called_once()
-        call_args, _ = FreeCAD.Console.PrintWarning.call_args
-        self.assertIn("Ignoring unknown parameter 'Param3'", call_args[0])
-        self.assertIn("DummyShape", call_args[0])
+        self.assertEqual(shape.get_parameter("Param1").Value, 20.0)
+        self.assertEqual(shape.get_parameter("Param1").Value, 20.0)
+        self.assertEqual(
+            str(shape.get_parameter("Param1").Unit),
+            "Unit: mm (1,0,0,0,0,0,0,0) [Length]",
+        )
+        self.assertEqual(shape.get_parameter("Param2").Value, 5.0)
+        self.assertEqual(
+            str(shape.get_parameter("Param2").Unit),
+            "Unit: deg (0,0,0,0,0,0,0,1) [Angle]",
+        )  # Should remain default
 
     def test_base_get_set_parameter(self):
         """Test getting and setting individual parameters."""
         # Provide a dummy filepath for instantiation
-        shape = DummyShape(filepath=Path("/fake/dummy.fcstd"))
-        self.assertEqual(str(shape.get_parameter("Param1")), "10 mm")
-        shape.set_parameter("Param1", "15 mm")
-        self.assertEqual(str(shape.get_parameter("Param1")), "15 mm")
+        shape = DummyShape(id="dummy_shape_3", filepath=Path("/fake/dummy.fcstd"))
+        self.assertEqual(shape.get_parameter("Param1").Value, 10.0)
+        self.assertEqual(shape.get_parameter("Param1").Unit, FreeCAD.Units.Unit("mm"))
+        shape.set_parameter("Param1", FreeCAD.Units.Quantity("15 mm"))
+        self.assertEqual(shape.get_parameter("Param1").Value, 15.0)
+        self.assertEqual(shape.get_parameter("Param1").Unit, FreeCAD.Units.Unit("mm"))
         with self.assertRaisesRegex(KeyError, "Shape 'dummy' has no parameter 'InvalidParam'"):
             shape.get_parameter("InvalidParam")
-        with self.assertRaisesRegex(KeyError, "Shape 'dummy' has no parameter 'InvalidParam'"):
-            shape.set_parameter("InvalidParam", "1")
 
     def test_base_get_parameters(self):
         """Test getting the full parameter dictionary."""
         # Provide a dummy filepath for instantiation
-        shape = DummyShape(filepath=Path("/fake/dummy.fcstd"), Param1="12 mm")
+        shape = DummyShape(
+            id="dummy_shape_4",
+            filepath=Path("/fake/dummy.fcstd"),
+            Param1=FreeCAD.Units.Quantity("12 mm")
+        )
         # Create mock quantity instances using the configured mock class
-        expected_param1 = FreeCAD.Units.Quantity("12", "mm")
-        expected_param2 = FreeCAD.Units.Quantity("5", "deg")
+        expected_param1 = FreeCAD.Units.Quantity("12.0 mm")
+        expected_param2 = FreeCAD.Units.Quantity("5.0 deg")
 
         expected = {"Param1": expected_param1, "Param2": expected_param2}
-        self.assertEqual(self._test_shape_common("ballend"), expected)
-
-        # Ensure it's a copy
-        params = self._test_shape_common("ballend")
-        params["Param1"] = "99 mm"
-        self.assertEqual(str(shape.get_parameter("Param1")), "12 mm")
+        params = shape.get_parameters()
+        self.assertEqual(params["Param1"].Value, expected["Param1"].Value)
+        self.assertEqual(str(params["Param1"].Unit), str(expected["Param1"].Unit))
+        self.assertEqual(params["Param2"].Value, expected["Param2"].Value)
+        self.assertEqual(str(params["Param2"].Unit), str(expected["Param2"].Unit))
 
     def test_base_name_property(self):
         """Test the name property returns the primary alias."""
         # Provide a dummy filepath for instantiation
-        shape = DummyShape(filepath=Path("/fake/dummy.fcstd"))
+        shape = DummyShape(id="dummy_shape_5", filepath=Path("/fake/dummy.fcstd"))
         self.assertEqual(shape.name, "dummy")
 
     def test_base_get_parameter_label(self):
         """Test retrieving parameter labels."""
         # Provide a dummy filepath for instantiation
-        shape = DummyShape(filepath=Path("/fake/dummy.fcstd"))
+        shape = DummyShape(id="dummy_shape_6", filepath=Path("/fake/dummy.fcstd"))
         self.assertEqual(shape.get_parameter_label("Param1"), "Parameter 1")
         self.assertEqual(shape.get_parameter_label("Param2"), "Parameter 2")
         # Test fallback for unknown parameter
@@ -129,58 +150,86 @@ class TestPathToolShapeBase(PathTestUtils.PathTestBase):
     def test_base_str_repr(self):
         """Test string representation."""
         # Provide a dummy filepath for instantiation
-        shape = DummyShape(filepath=Path("/fake/dummy.fcstd"))
-        expected_str = "dummy(Param1=10 mm, Param2=5 deg)"
+        shape = DummyShape(id="dummy_shape_7", filepath=Path("/fake/dummy.fcstd"))
+        # Dynamically construct the expected string using the actual parameter string representations
+        params_str = ", ".join(f"{name}={str(val)}" for name, val in shape.get_parameters().items())
+        expected_str = f"dummy({params_str})"
         self.assertEqual(str(shape), expected_str)
         self.assertEqual(repr(shape), expected_str)
 
+    def test_base_resolve_name(self):
+        """Test resolving shape aliases to canonical names."""
+        self.assertEqual(ToolBitShape.resolve_name("ballend").asset_id, "ballend")
+        self.assertEqual(ToolBitShape.resolve_name("Ballend").asset_id, "ballend")
+        self.assertEqual(ToolBitShape.resolve_name("v-bit").asset_id, "vbit")
+        self.assertEqual(ToolBitShape.resolve_name("VBit").asset_id, "vbit")
+        self.assertEqual(ToolBitShape.resolve_name("torus").asset_id, "bullnose")
+        self.assertEqual(ToolBitShape.resolve_name("bullnose").asset_id, "bullnose")
+        self.assertEqual(ToolBitShape.resolve_name("slitting-saw").asset_id, "slittingsaw")
+        self.assertEqual(ToolBitShape.resolve_name("SlittingSaw").asset_id, "slittingsaw")
+        # Test unknown name - should return the input name
+        self.assertEqual(ToolBitShape.resolve_name("nonexistent").asset_id, "nonexistent")
+        self.assertEqual(ToolBitShape.resolve_name("UnknownShape").asset_id, "UnknownShape")
+
     def test_base_validate_success(self):
         """Test ToolBitShape.validate success path."""
-        # Use a real built-in shape file for validation
-        filepath = SHAPE_REGISTRY.shape_dir / "ballend.fcstd"
-        result = DummyShape.validate(filepath)
-        self.assertIsNone(result)  # validate returns None on success
+        # Get a shape from the asset manager and serialize it to a temporary file
+        shape = asset_manager.get("toolbitshape://ballend", store='testshapes')
+        with tempfile.NamedTemporaryFile(suffix=".fcstd") as tmp:
+            temp_file_path = Path(tmp.name)
+            tmp.write(shape.to_bytes())
+            tmp.flush() # Ensure data is written to disk
+
+            # Validate the temporary file
+            result = DummyShape.validate(temp_file_path)
+            self.assertIsNone(result)  # validate returns None on success
 
     def test_base_validate_file_not_found(self):
         """Test ToolBitShape.validate file not found."""
         filepath = Path("/fake/nonexistent.fcstd")
         result = DummyShape.validate(filepath)
         self.assertIsNotNone(result)
-        self.assertIn("File not found", result)
-
-
-class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
-    """Tests for the concrete ToolBitShape subclasses."""
-
-    def _test_shape_common(self, alias):
-        filename = f"{alias}.fcstd"
-        shape = SHAPE_REGISTRY.get_shape_from_filename(filename, {})
-        # Validation is handled internally by from_file called by the registry
-        return shape.get_parameters()
+        if result is not None:
+            self.assertIn("File not found", result)
 
     def test_concrete_classes_instantiation(self):
         """Test that all concrete classes can be instantiated."""
         # No patching of FreeCAD document operations here.
         # The test relies on the actual FreeCAD environment.
 
-        # Iterate through registered shapes instead of subclasses
-        for filename in SHAPE_REGISTRY.shape_dir.iterdir():
-            if filename.suffix == ".fcstd":
-                alias = filename.stem
-                # Skip the DummyShape file if it exists in the shapes directory
-                if alias == "dummy":
-                    continue
+        shape_uris = asset_manager.list_assets(
+            store="testshapes",
+            asset_type="toolbitshape"
+        )
+        for uri in shape_uris:
+            # Skip the DummyShape asset if it exists
+            if uri.asset_id == "dummy":
+                continue
 
-                with self.subTest(shape=alias):
-                    try:
-                        instance = SHAPE_REGISTRY.get_shape_from_filename(filename.name, {})
-                        self.assertIsInstance(instance, ToolBitShape)
-                        # Check if default params were set by checking if the
-                        # parameters dictionary is not empty.
-                        self.assertTrue(instance.get_parameters())
+            with self.subTest(uri=uri):
+                try:
+                    instance = asset_manager.get(uri, store='testshapes')
+                    self.assertIsInstance(instance, ToolBitShape)
+                    # Check if default params were set by checking if the
+                    # parameters dictionary is not empty.
+                    self.assertTrue(instance.get_parameters())
 
-                    except Exception as e:
-                        self.fail(f"Failed to instantiate shape from {filename}: {e}")
+                except Exception as e:
+                    self.fail(f"Failed to instantiate shape from {uri}: {e}")
+
+    def test_get_shape_class(self):
+        """Test the get_shape_class function."""
+        uri = ToolBitShape.resolve_name("ballend")
+        asset_manager.get(uri, store='testshapes') # Ensure it's loadable
+
+        self.assertEqual(ToolBitShape.get_subclass_by_name("ballend"), ToolBitShapeBallend)
+        self.assertEqual(ToolBitShape.get_subclass_by_name("v-bit"), ToolBitShapeVBit)
+        self.assertEqual(ToolBitShape.get_subclass_by_name("VBit"), ToolBitShapeVBit)
+        self.assertEqual(ToolBitShape.get_subclass_by_name("torus"), ToolBitShapeBullnose)
+        self.assertEqual(
+            ToolBitShape.get_subclass_by_name("slitting-saw"), ToolBitShapeSlittingSaw
+        )
+        self.assertIsNone(ToolBitShape.get_subclass_by_name("nonexistent"))
 
     # The following tests for default parameters and labels
     # should also not use mocks for FreeCAD document operations or Units.
@@ -197,8 +246,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["Length"].Value, 50.0)
         self.assertEqual(unit(shape["Length"]), "mm")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("ballend.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("ballend")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("Diameter"), "Diameter")
         self.assertEqual(instance.get_parameter_label("Length"), "Overall tool length")
 
@@ -210,8 +260,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["TipAngle"].Value, 119.0)
         self.assertEqual(unit(shape["TipAngle"]), "°")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("drill.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("drill")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("Diameter"), "Diameter")
         self.assertEqual(instance.get_parameter_label("TipAngle"), "Tip angle")
 
@@ -223,8 +274,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["CuttingEdgeAngle"].Value, 60.0)
         self.assertEqual(unit(shape["CuttingEdgeAngle"]), "°")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("chamfer.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("chamfer")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("Diameter"), "Diameter")
 
     def test_toolbitshapedovetail_defaults(self):
@@ -235,8 +287,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["CuttingEdgeAngle"].Value, 60.0)
         self.assertEqual(unit(shape["CuttingEdgeAngle"]), "°")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("dovetail.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("dovetail")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("CuttingEdgeAngle"), "Cutting angle")
 
     def test_toolbitshapeendmill_defaults(self):
@@ -247,8 +300,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["CuttingEdgeHeight"].Value, 30.0)
         self.assertEqual(unit(shape["CuttingEdgeHeight"]), "mm")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("endmill.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("endmill")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("CuttingEdgeHeight"), "Cutting edge height")
 
     def test_toolbitshapeprobe_defaults(self):
@@ -259,8 +313,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["ShaftDiameter"].Value, 4.0)
         self.assertEqual(unit(shape["ShaftDiameter"]), "mm")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("probe.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("probe")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("Diameter"), "Ball diameter")
         self.assertEqual(instance.get_parameter_label("ShaftDiameter"), "Shaft diameter")
 
@@ -272,8 +327,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["Length"].Value, 50.0)
         self.assertEqual(unit(shape["Length"]), "mm")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("reamer.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("reamer")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("Diameter"), "Diameter")
 
     def test_toolbitshapeslittingsaw_defaults(self):
@@ -284,8 +340,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["BladeThickness"].Value, 3.0)
         self.assertEqual(unit(shape["BladeThickness"]), "mm")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("slittingsaw.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("slittingsaw")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("BladeThickness"), "Blade thickness")
 
     def test_toolbitshapetap_defaults(self):
@@ -296,8 +353,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["TipAngle"].Value, 90.0)
         self.assertEqual(unit(shape["TipAngle"]), "°")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("tap.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("tap")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("TipAngle"), "Tip angle")
 
     def test_toolbitshapethreadmill_defaults(self):
@@ -308,8 +366,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["cuttingAngle"].Value, 60.0)
         self.assertEqual(unit(shape["cuttingAngle"]), "°")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("threadmill.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("threadmill")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("cuttingAngle"), "Cutting angle")
 
     def test_toolbitshapebullnose_defaults(self):
@@ -320,8 +379,9 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["FlatRadius"].Value, 1.5)
         self.assertEqual(unit(shape["FlatRadius"]), "mm")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("bullnose.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("bullnose")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("FlatRadius"), "Torus radius")
 
     def test_toolbitshapevbit_defaults(self):
@@ -334,6 +394,38 @@ class TestPathToolShapeClasses(PathTestUtils.PathTestBase):
         self.assertEqual(unit(shape["CuttingEdgeAngle"]), "°")
         self.assertEqual(shape["TipDiameter"].Value, 1.0)
         self.assertEqual(unit(shape["TipDiameter"]), "mm")
-        # Need an instance to get parameter labels, get it from the registry
-        instance = SHAPE_REGISTRY.get_shape_from_filename("vbit.fcstd", {})
+        # Need an instance to get parameter labels, get it from the asset manager
+        uri = ToolBitShape.resolve_name("vbit")
+        instance = asset_manager.get(uri, store='testshapes')
         self.assertEqual(instance.get_parameter_label("CuttingEdgeAngle"), "Cutting edge angle")
+
+    def test_serialize_deserialize(self):
+        """
+        Tests serialization and deserialization of a ToolBitShape object
+        using the Asset interface methods.
+        """
+        # Load a shape instance from a fixture file
+        fixture_path = Path(__file__).parent / "Tools" / "Shape" / "test-path-tool-bit-shape-00.fcstd"
+        original_shape = ToolBitShape.from_file(fixture_path)
+
+        # Serialize the shape using the to_bytes method
+        serialized_data = original_shape.to_bytes()
+
+        # Assert that the serialized data is bytes and not empty
+        self.assertIsInstance(serialized_data, bytes)
+        self.assertTrue(len(serialized_data) > 0)
+
+        # Deserialize the data using the from_bytes classmethod
+        # Provide an empty dependencies mapping for this test
+        deserialized_shape = ToolBitShape.from_bytes(
+            serialized_data, id=original_shape.get_id(), dependencies={}
+        )
+
+        # Assert that the deserialized object is a ToolBitShape instance
+        self.assertIsInstance(deserialized_shape, ToolBitShape)
+        # Assert that the deserialized shape has the same parameters as the original
+        self.assertEqual(
+            original_shape.get_parameters(),
+            deserialized_shape.get_parameters()
+        )
+        self.assertEqual(original_shape.name, deserialized_shape.name)

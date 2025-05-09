@@ -1,7 +1,11 @@
 import pathlib
-from typing import Mapping, Optional
-import xml.etree.ElementTree as ET
+from typing import Optional
 import FreeCAD
+from Path.Preferences import getBuiltinShapePath
+from ..assets import asset_manager
+import tempfile
+import os
+from .doc import ShapeDocFromBytes
 
 
 _svg_ns = {"s": "http://www.w3.org/2000/svg"}
@@ -36,35 +40,86 @@ def create_thumbnail(filepath: pathlib.Path, w: int = 200, h: int = 200) -> Opti
     return out_filepath
 
 
-def get_abbreviations_from_svg(svg: bytes) -> Mapping[str, str]:
+def create_thumbnail_from_data(shape_data: bytes, w: int = 200, h: int = 200) -> Optional[bytes]:
+    """
+    Create a thumbnail icon from shape data bytes using a temporary document.
+
+    Args:
+        shape_data (bytes): The raw bytes of the shape file (.FCStd).
+        w (int): Width of the thumbnail.
+        h (int): Height of the thumbnail.
+
+    Returns:
+        Optional[bytes]: PNG image bytes, or None if generation fails.
+    """
+    if not FreeCAD.GuiUp:
+        return None
+
     try:
-        tree = ET.fromstring(svg)
-    except ET.ParseError:
-        return {}
+        import FreeCADGui
+    except ImportError:
+        raise RuntimeError("Error: Could not load UI - is it up?")
 
-    result = {}
-    for text_elem in tree.findall(".//s:text", _svg_ns):
-        id = text_elem.attrib.get("id", _svg_ns)
-        if id is None or not isinstance(id, str):
-            continue
+    temp_png_path = None
+    try:
+        with ShapeDocFromBytes(shape_data) as doc:
+            view = FreeCADGui.activeDocument().ActiveView
 
-        abbr = text_elem.text
-        if abbr is not None:
-            result[id.lower()] = abbr
+            if not view:
+                print("No view active, cannot make thumbnail from data")
+                return None
 
-        span_elem = text_elem.find(".//s:tspan", _svg_ns)
-        if span_elem is None:
-            continue
-        abbr = span_elem.text
-        result[id.lower()] = abbr
+            view.viewFront()
+            view.fitAll()
+            view.setAxisCross(False)
 
-    return result
+            # Create a temporary file path for the output PNG
+            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
+                temp_png_path = pathlib.Path(temp_file.name)
+
+            view.saveImage(str(temp_png_path), w, h, "Transparent")
+
+            # Read the PNG bytes
+            with open(temp_png_path, "rb") as f:
+                png_bytes = f.read()
+
+            return png_bytes
+
+    except Exception as e:
+        print(f"Error creating thumbnail from data: {e}")
+        return None
+
+    finally:
+        # Clean up temporary PNG file
+        if temp_png_path and temp_png_path.exists():
+            os.remove(temp_png_path)
 
 
-if __name__ == "__main__":
-    import sys
+def _add_file_to_store(filepath: pathlib.Path, store_name: str, asset_type: str):
+    with open(filepath, "rb") as f:
+        raw_data = f.read()
+    asset_manager.create_raw(
+        store=store_name,
+        asset_type=asset_type,
+        asset_id=filepath.stem,
+        data=raw_data
+    )
 
-    filename = sys.argv[1]
-    with open(filename, "b") as fp:
-        svg = fp.read()
-    print(get_abbreviations_from_svg(svg))
+
+def ensure_toolbitshape_store_initialized(store_name: str = "shapestore"):
+    """
+    Ensures the toolbitshape store is initialized with built-in shapes
+    if it is currently empty.
+    """
+    builtin_shape_path = getBuiltinShapePath()
+
+    is_empty = asset_manager.is_empty(store=store_name)
+    if is_empty:
+        for shape_file in builtin_shape_path.glob("*.fcstd"):
+            _add_file_to_store(shape_file, store_name, "toolbitshape")
+
+        for shape_file in builtin_shape_path.glob("*.svg"):
+            _add_file_to_store(shape_file, store_name, "toolbitshapesvg")
+
+        for shape_file in builtin_shape_path.glob("*.png"):
+            _add_file_to_store(shape_file, store_name, "toolbitshapepng")

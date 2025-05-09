@@ -2,7 +2,7 @@ import unittest
 import json
 import pathlib
 import FreeCAD
-from Path.Tool.shape import SHAPE_REGISTRY
+from Path.Tool.shape.store import toolbitshape_store
 from Path.Tool.toolbit import ToolBit, TOOLBIT_REGISTRY
 from Path.Tool.toolbit.serializers import (
     ToolBitSerializer,
@@ -30,7 +30,7 @@ class BaseToolBitSerializerTestCase(unittest.TestCase):
 
         # Create a ToolBit instance that serializers can use
         tool_dir = pathlib.Path(__file__).parent.parent / "Tools"
-        SHAPE_REGISTRY.set_dir(tool_dir / "Shape")
+        toolbitshape_store.set_dir(tool_dir / "Shape")
         TOOLBIT_REGISTRY.set_dir(tool_dir / "Bit")
 
         self.test_tool_bit = TOOLBIT_REGISTRY.get_bit_from_filename("5mm_Endmill.fctb")

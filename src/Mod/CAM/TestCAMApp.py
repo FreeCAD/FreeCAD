@@ -73,7 +73,11 @@ from CAMTests.TestPathToolAssetManager import TestPathToolAssetManager
 from CAMTests.TestPathToolBit import TestPathToolBit
 from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
 from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
-from CAMTests.TestPathToolShapeRegistry import TestPathToolShapeRegistry
+from CAMTests.TestPathToolShapeIcon import (
+    TestToolBitShapeIconBase,
+    TestToolBitShapeSvgIcon,
+    TestToolBitShapePngIcon,
+)
 from CAMTests.TestPathToolBitSerializer import (
     TestCamoticsToolBitSerializer,
     TestFCTBSerializer,

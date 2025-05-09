@@ -117,7 +117,7 @@ class ToolBitEditor(object):
         # or create additional ones for them if not enough have already been
         # created.
         usedRows = 0
-        for nr, name in enumerate(tool.Proxy._get_props(tool, ("Shape", "Attributes"))):
+        for nr, name in enumerate(tool.Proxy._get_props(("Shape", "Attributes"))):
             if nr < len(self.widgets):
                 Path.Log.debug("reuse row: {} [{}]".format(nr, name))
                 label, qsb, editor = self.widgets[nr]
@@ -147,11 +147,10 @@ class ToolBitEditor(object):
             editor.attachTo(None)
             Path.Log.debug("  hide row: {}".format(i))
 
-        img = tool.Proxy.getBitThumbnail()
-        if img:
-            self.form.image.setPixmap(QtGui.QPixmap(QtGui.QImage.fromData(img)))
-        else:
-            self.form.image.setPixmap(QtGui.QPixmap())
+        icon = tool.Proxy.get_icon()
+        size = QtCore.QSize(150, 150)
+        pixmap = icon.get_qpixmap(size) if icon else QtGui.QPixmap()
+        self.form.image.setPixmap(pixmap)
 
     def setupAttributes(self, tool):
         Path.Log.track()

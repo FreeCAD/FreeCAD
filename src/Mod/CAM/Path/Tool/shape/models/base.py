@@ -1,25 +1,29 @@
 # -*- coding: utf-8 -*-
 # This file defines the abstract base class for representing CAM tool bit shapes.
 
-import abc
 import pathlib
 import FreeCAD
 import Path
+import os
 from typing import Dict, List, Any, Mapping, Optional, Tuple, Type
+import zipfile
+import xml.etree.ElementTree as ET
+import io
+import tempfile
+from ...assets import Asset, AssetUri, asset_manager
 from ..doc import (
     find_shape_object,
-    get_doc_state,
     get_object_properties,
-    restore_doc_state,
     update_shape_object_properties,
     ShapeDocFromBytes,
 )
-from ..util import get_abbreviations_from_svg, create_thumbnail, file_is_newer
+from .icon import ToolBitShapeIcon
 
 
-class ToolBitShape(abc.ABC):
+class ToolBitShape(Asset):
     """Abstract base class for tool bit shapes."""
 
+    asset_type: str = "toolbitshape"
     # The name is used...
     #   1. as a base for the default filename. E.g. if the name is
     #      "Endmill", then by default the file is "endmill.fcstd".
@@ -34,11 +38,12 @@ class ToolBitShape(abc.ABC):
     # "v-bit".
     aliases: Tuple[str, ...] = tuple()
 
-    def __init__(self, **kwargs: Any):
+    def __init__(self, id: str, **kwargs: Any):
         """
         Initialize the shape.
 
         Args:
+            id (str): The unique identifier for the shape.
             **kwargs: Keyword arguments for shape parameters (e.g., Diameter).
                       Values should be FreeCAD.Units.Quantity where applicable.
         """
@@ -48,17 +53,14 @@ class ToolBitShape(abc.ABC):
         # Stores default parameter values loaded from the FCStd file
         self._defaults: Dict[str, Any] = {}
 
-        # Cache for the loaded FreeCAD document content for this instance
-        self._cache: Optional[bytes] = None
+        # Keeps the loaded FreeCAD document content for this instance
+        self._data: Optional[bytes] = None
 
-        # Path to the file this shape was loaded from. Set by from_file()
-        self.filepath: Optional[pathlib.Path] = None
+        self.id: str = id
 
         self.is_builtin: bool = True
 
-        self.icon: Optional[bytes] = None  # Shape SVG or PNG as a binary string
-
-        self.icon_type: Optional[str] = None  # 'png' or 'svg'
+        self.icon: Optional[ToolBitShapeIcon] = None
 
         # Assign parameters
         for param, value in kwargs.items():
@@ -70,6 +72,15 @@ class ToolBitShape(abc.ABC):
 
     def __repr__(self):
         return self.__str__()
+
+    def get_id(self) -> str:
+        """
+        Get the ID of the shape.
+
+        Returns:
+            str: The ID of the shape.
+        """
+        return self.id
 
     @classmethod
     def _get_shape_class_from_doc(cls, doc: "FreeCAD.Document") -> Type["ToolBitShape"]:
@@ -86,6 +97,61 @@ class ToolBitShape(abc.ABC):
                 f"No ToolBitShape subclass found matching Body label '{body_obj.Label}' in {doc}"
             )
         return shape_class
+
+    @classmethod
+    def get_shape_class_from_bytes(cls, data: bytes) -> Type['ToolBitShape']:
+        """
+        Identifies the ToolBitShape subclass from the raw bytes of an FCStd file
+        by parsing the XML content to find the Body label.
+
+        Args:
+            data (bytes): The raw bytes of the .FCStd file.
+
+        Returns:
+            Type[ToolBitShape]: The appropriate ToolBitShape subclass.
+
+        Raises:
+            ValueError: If the data is not a valid FCStd file, Document.xml is
+                        missing, no Body object is found, or the Body label
+                        does not match a known shape name.
+        """
+        try:
+            # FCStd files are zip archives
+            with zipfile.ZipFile(io.BytesIO(data)) as zf:
+                # Read Document.xml from the archive
+                with zf.open("Document.xml") as doc_xml_file:
+                    tree = ET.parse(doc_xml_file)
+                    root = tree.getroot()
+
+            # Extract name of the main Body from XML tree using xpath.
+            # The body should be a PartDesign::Body, and its label is
+            # stored in an Property element with a matching name.
+            body_label = None
+            xpath = './/Object[@name="Body"]//Property[@name="Label"]/String'
+            body_label_elem = root.find(xpath)
+            if body_label_elem is not None:
+                body_label = body_label_elem.get("value")
+
+            if not body_label:
+                 raise ValueError("No 'Label' property found for 'PartDesign::Body' object using XPath")
+
+            # Find the correct subclass based on the body label
+            shape_class = cls.get_subclass_by_name(body_label)
+            if not shape_class:
+                raise ValueError(
+                    f"No ToolBitShape subclass found matching Body label '{body_label}'"
+                )
+            return shape_class
+
+        except zipfile.BadZipFile:
+            raise ValueError("Invalid FCStd file data (not a valid zip archive)")
+        except KeyError:
+            raise ValueError("Invalid FCStd file data (Document.xml not found)")
+        except ET.ParseError:
+            raise ValueError("Error parsing Document.xml")
+        except Exception as e:
+            # Catch any other unexpected errors during parsing
+            raise ValueError(f"Error processing FCStd data: {e}")
 
     @classmethod
     def _find_property_object(cls, doc: "FreeCAD.Document") -> Optional["FreeCAD.DocumentObject"]:
@@ -109,12 +175,159 @@ class ToolBitShape(abc.ABC):
         return None
 
     @classmethod
+    def dependencies(cls, data: bytes) -> List[AssetUri]:
+        """
+        Extracts URIs of dependencies from the raw bytes of an FCStd file.
+        For ToolBitShape, this is the associated ToolBitShapeIcon, identified
+        by the same ID as the shape asset.
+        """
+        # A ToolBitShape asset depends on a ToolBitShapeIcon asset with the same ID.
+        # We need to extract the shape ID from the FCStd data.
+        try:
+            # Open the shape data temporarily to get the Body label, which can
+            # be used to derive the ID if needed, or assume the ID is available
+            # in the data somehow (e.g., in a property).
+            # For now, let's assume the ID is implicitly the asset name derived
+            # from the Body label.
+            shape_class = cls.get_shape_class_from_bytes(data)
+            shape_id = shape_class.name.lower() # Assuming ID is lowercase name
+
+            # Construct the URI for the corresponding icon asset
+            svg_uri = AssetUri.build(
+                asset_type="toolbitshapesvg",
+                asset_id=shape_id,
+            )
+            png_uri = AssetUri.build(
+                asset_type="toolbitshapepng",
+                asset_id=shape_id,
+            )
+            return [svg_uri, png_uri]
+
+        except Exception as e:
+            # If we can't extract the shape ID or something goes wrong,
+            # assume no dependencies for now.
+            Path.Log.error(f"Failed to extract dependencies from shape data: {e}")
+            return []
+
+    @classmethod
+    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Type]) -> "ToolBitShape":
+        """
+        Create a ToolBitShape instance from the raw bytes of an FCStd file.
+
+        Identifies the correct subclass based on the Body label in the file,
+        loads parameters, and caches the document content.
+
+        Args:
+            data (bytes): The raw bytes of the .FCStd file.
+            id (str): The unique identifier for the shape.
+            dependencies (Mapping[AssetUri, Type]): A mapping of resolved dependencies.
+
+        Returns:
+            ToolBitShape: An instance of the appropriate ToolBitShape subclass.
+
+        Raises:
+            ValueError: If the data cannot be opened, no Body or PropertyBag
+                        is found, or the Body label does not match a known
+                        shape name.
+            Exception: For other potential FreeCAD errors during loading.
+        """
+        # Open the shape data temporarily to get the Body label and parameters
+        with ShapeDocFromBytes(data) as temp_doc:
+            if not temp_doc:
+                # This case might be covered by ShapeDocFromBytes exceptions,
+                # but keeping for clarity.
+                raise ValueError("Failed to open shape document from bytes")
+
+            # Determine the specific subclass of ToolBitShape using the new method
+            shape_class = ToolBitShape.get_shape_class_from_bytes(data)
+
+            # Load properties from the temporary document
+            props_obj = ToolBitShape._find_property_object(temp_doc)
+            if not props_obj:
+                raise ValueError("No 'Attributes' PropertyBag object found in document bytes")
+
+            # Get properties from the properties object
+            expected_params = shape_class.get_expected_shape_parameters()
+            loaded_params = get_object_properties(props_obj, expected_params)
+
+            missing_params = [
+                name
+                for name in expected_params
+                if name not in loaded_params or loaded_params[name] is None
+            ]
+
+            if missing_params:
+                raise ValueError(
+                    f"Validation error: Object '{props_obj.Label}' in document bytes "
+                    + f"is missing parameters for {shape_class.__name__}: {', '.join(missing_params)}"
+                )
+
+            # Instantiate the specific subclass with the provided ID
+            instance = shape_class(id=id)
+            instance._data = data  # Cache the byte content
+            instance._defaults = loaded_params
+
+            # Assign resolved dependencies (like the icon) to the instance
+            # The icon has the same ID as the shape
+            icon_uri = AssetUri.build(
+                asset_type="toolbitshapesvg",
+                asset_id=id,
+            )
+            instance.icon = dependencies.get(icon_uri)
+            if not instance.icon:
+                icon_uri = AssetUri.build(
+                    asset_type="toolbitshapepng",
+                    asset_id=id,
+                )
+                instance.icon = dependencies.get(icon_uri)
+
+            # Update instance parameters, prioritizing loaded defaults but not
+            # overwriting parameters that may already be set during __init__
+            instance._params = instance._defaults | instance._params
+
+            return instance
+
+    def to_bytes(self) -> bytes:
+        """
+        Serializes a ToolBitShape object to bytes (e.g., an fcstd file).
+        This is required by the Asset interface.
+        """
+        temp_file_path = None
+        doc = None
+        try:
+            # Create a new temporary document
+            doc = FreeCAD.newDocument("TemporaryShapeDoc", hidden=True)
+
+            # Add the shape's body to the temporary document
+            self.make_body(doc)
+
+            # Recompute the document to ensure the body is created
+            doc.recompute()
+
+            # Save the temporary document to a temporary file
+            with tempfile.NamedTemporaryFile(suffix=".FCStd", delete=False) as tmp_file:
+                temp_file_path = pathlib.Path(tmp_file.name)
+                doc.saveAs(str(temp_file_path))
+
+            # Read the bytes from the temporary file
+            with open(temp_file_path, 'rb') as f:
+                return f.read()
+
+        finally:
+            # Clean up the temporary document
+            if doc:
+                FreeCAD.closeDocument(doc.Name)
+
+            # Clean up the temporary file
+            if temp_file_path and temp_file_path.exists():
+                os.remove(temp_file_path)
+
+    @classmethod
     def from_file(cls, filepath: pathlib.Path, **kwargs: Any) -> "ToolBitShape":
         """
         Create a ToolBitShape instance from an FCStd file.
 
-        Identifies the correct subclass based on the Body label in the file,
-        loads parameters, and caches the document content.
+        Reads the file bytes and delegates to from_bytes().
 
         Args:
             filepath (pathlib.Path): Path to the .FCStd file.
@@ -133,61 +346,64 @@ class ToolBitShape(abc.ABC):
         if not filepath.exists():
             raise FileNotFoundError(f"Shape file not found: {filepath}")
 
-        temp_doc = None
-        original_doc_state = get_doc_state()  # Save the current document state
         try:
-            # Open the shape file temporarily to get the Body label and parameters
-            temp_doc = FreeCAD.openDocument(str(filepath), hidden=True)
-            if not temp_doc:
-                raise ValueError(f"Failed to open shape document: {filepath}")
-
-            # Load properties
-            props_obj = cls._find_property_object(temp_doc)
-            if not props_obj:
-                raise ValueError(f"No 'Attributes' PropertyBag object found in {filepath}")
-
-            # Determine the specific subclass of ToolBitShape
-            shape_class = cls._get_shape_class_from_doc(temp_doc)
-
-            # Get properties from the properties object
-            expected_params = shape_class.get_expected_shape_parameters()
-            loaded_params = get_object_properties(props_obj, expected_params)
-
-            missing_params = [
-                name
-                for name in expected_params
-                if name not in loaded_params or loaded_params[name] is None
-            ]
-
-            if missing_params:
-                raise ValueError(
-                    f"Validation error: Object '{props_obj.Label}' in {filepath} "
-                    + f"is missing parameters for {shape_class.__name__}: {', '.join(missing_params)}"
-                )
-
-            # Instantiate the specific subclass
-            instance = shape_class(**kwargs)
-            instance.filepath = filepath
-            instance._cache = filepath.read_bytes()  # Cache the file content
-            instance._defaults = loaded_params
-
-            # Update instance parameters, prioritizing loaded defaults but not
-            # overwriting parameters already set by kwargs during __init__
-            instance._params = instance._defaults | instance._params
-
-            instance.load_or_create_icon()
+            data = filepath.read_bytes()
+            # Extract the ID from the filename (without extension)
+            shape_id = filepath.stem
+            # Pass an empty dictionary for dependencies when loading from a single file
+            # TODO: pass ToolBitShapeIcon as a dependency
+            instance = cls.from_bytes(data, id=shape_id, dependencies={})
+            # Apply kwargs parameters after loading from bytes
+            if kwargs:
+                 instance.set_parameters(**kwargs)
             return instance
-
         except (FileNotFoundError, ValueError) as e:
             raise e
         except Exception as e:
             raise RuntimeError(f"Failed to create shape from {filepath}: {e}")
-        finally:
-            # Ensure the temporary document is closed if it was opened
-            if temp_doc:
-                FreeCAD.closeDocument(temp_doc.Name)
-            # Restore the original document state
-            restore_doc_state(original_doc_state)
+
+    @classmethod
+    def get_subclass_by_name(cls, name: str) -> Optional[Type['ToolBitShape']]:
+        """
+        Retrieves a ToolBitShape class by its name or alias.
+        """
+        name = name.lower()
+        for thecls in cls.__subclasses__():
+            if thecls.name.lower() == name \
+                or thecls.__name__.lower() == name \
+                or name in thecls.aliases:
+                return thecls
+        return None
+
+    @classmethod
+    def resolve_name(cls, identifier: str) -> AssetUri:
+        """
+        Resolves an identifier (alias, name, filename, or URI) to a Uri object.
+        """
+        # 1. If the input is a URL or url string, return the Uri object for it.
+        if AssetUri.is_uri(identifier):
+            return AssetUri(identifier)
+
+        # 2. If the input is a filename (with extension), assume the asset
+        #    name is the base name.
+        asset_name = identifier
+        if identifier.endswith(".fcstd"):
+            asset_name = os.path.splitext(os.path.basename(identifier))[0]
+
+        # 3. Use get_subclass_by_name to try to resolve alias to a class.
+        #    if one is found, use the class.name.
+        shape_class = cls.get_subclass_by_name(asset_name.lower())
+        if shape_class:
+            asset_name = shape_class.name.lower()
+
+        # 4. Construct the Uri using Uri.build() and return it
+        # The URI structure for toolbitshapes will be
+        #   toolbitshape://toolbitshape/<asset_name>/<version>
+        # For toolbitshapes, the domain is empty, and asset_type is "toolbitshape".
+        return AssetUri.build(
+            asset_type="toolbitshape",
+            asset_id=asset_name,
+        )
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
@@ -216,9 +432,8 @@ class ToolBitShape(abc.ABC):
         Get the user-facing label for a given parameter name.
         """
         str_param_name = str(param_name)
-        label = self.schema()[param_name][0]
-        # Return the found label or the param_name itself if not found
-        return label if label is not None else str_param_name
+        entry = self.schema().get(param_name)
+        return entry[0] if entry else str_param_name
 
     def get_parameter_property_type(self, param_name: str) -> str:
         """
@@ -268,6 +483,8 @@ class ToolBitShape(abc.ABC):
             Path.Log.debug(
                 f"Shape '{self.name}' was given an invalid parameter '{name}'. Has {self._params}\n"
             )
+            # Log to confirm this path is taken when an invalid parameter is given
+            Path.Log.info(f"DEBUG: Invalid parameter '{name}' for shape '{self.name}', returning without raising KeyError.")
             return
 
         self._params[name] = value
@@ -330,8 +547,8 @@ class ToolBitShape(abc.ABC):
         Generates the body of the ToolBitShape and copies it to the provided
         document.
         """
-        assert self._cache is not None
-        with ShapeDocFromBytes(self._cache) as tmp_doc:
+        assert self._data is not None
+        with ShapeDocFromBytes(self._data) as tmp_doc:
             shape = find_shape_object(tmp_doc)
             if not shape:
                 FreeCAD.Console.PrintWarning(
@@ -354,58 +571,33 @@ class ToolBitShape(abc.ABC):
             # Copy the body to the given document without immediate compute.
             return doc.copyObject(shape, True)
 
-    def get_icon(self):
-        return self.icon_type, self.icon
+        """
+        Retrieves the thumbnail data for the tool bit shape in PNG format.
+        """
 
-    def get_icon_len(self):
-        return len(self.icon) if self.icon else 0
+    def get_icon(self) -> Optional[ToolBitShapeIcon]:
+        """
+        Get the associated ToolBitShapeIcon instance.
 
-    def add_icon_from_file(self, filename: pathlib.Path):
-        with open(filename, "rb") as fp:
-            self.icon = fp.read()
-            if filename.suffix == ".svg":
-                self.abbr = get_abbreviations_from_svg(self.icon)
-        self.icon_type = filename.suffix.lstrip(".")
+        Returns:
+            Optional[ToolBitShapeIcon]: The icon instance, or None if not loaded.
+        """
+        return self.icon
 
-    def get_abbr(self, param):
-        normalized = param.label.lower().replace(" ", "_")
-        return self.abbr.get(normalized)
+    def get_thumbnail(self) -> Optional[bytes]:
+        """
+        Retrieves the thumbnail data for the tool bit shape in PNG format,
+        as embedded in the shape file.
+        """
+        if not self._data:
+            return None
+        with zipfile.ZipFile(io.BytesIO(self._data)) as zf:
+            try:
+                with zf.open("thumbnails/Thumbnail.png", "r") as tn:
+                    return tn.read()
+            except KeyError:
+                pass
+        return None
 
-    def create_icon(self):
-        if not self.filepath:
-            return
-        filename = create_thumbnail(self.filepath)
-        if filename:  # success?
-            self.add_icon_from_file(filename)
-        return filename
 
-    def load_or_create_icon(self):
-        assert self.filepath is not None, "Need shape file to create icon for it"
-
-        # Try SVG first.
-        icon_file = self.filepath.with_suffix(".svg")
-        if icon_file.is_file():
-            return self.add_icon_from_file(icon_file)
-
-        # Try PNG next. But make sure it's not out of date.
-        icon_file = self.filepath.with_suffix(".png")
-        if icon_file.is_file() and file_is_newer(self.filepath, icon_file):
-            return self.add_icon_from_file(icon_file)
-
-        # Next option: Try to re-generate the PNG.
-        if self.create_icon():
-            return
-
-        # Last option: return the out-of date PNG.
-        if icon_file.is_file():
-            return self.add_icon_from_file(icon_file)
-
-    def write_icon_to_file(self, filepath: Optional[pathlib.Path] = None):
-        if self.icon is None:
-            return
-        assert self.icon_type is not None, "Bug: Shape has icon, but no icon type?"
-        assert self.filepath is not None, "Bug: Shape has icon, but no file?"
-        if filepath is None:
-            filepath = self.filepath.with_suffix("." + self.icon_type)
-        with open(filepath, "wb") as fp:
-            fp.write(self.icon)
+asset_manager.register_asset(ToolBitShape)

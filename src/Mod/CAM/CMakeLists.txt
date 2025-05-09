@@ -201,7 +201,7 @@ SET(PathPythonToolsMachineModels_SRCS
 
 SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/__init__.py
-    Path/Tool/shape/registry.py
+    Path/Tool/shape/store.py
     Path/Tool/shape/util.py
     Path/Tool/shape/doc.py
 )
@@ -215,6 +215,7 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/dovetail.py
     Path/Tool/shape/models/drill.py
     Path/Tool/shape/models/endmill.py
+    Path/Tool/shape/models/icon.py
     Path/Tool/shape/models/probe.py
     Path/Tool/shape/models/reamer.py
     Path/Tool/shape/models/slittingsaw.py
@@ -229,7 +230,6 @@ SET(PathPythonToolsShapeUi_SRCS
     Path/Tool/shape/ui/shapebutton.py
     Path/Tool/shape/ui/shapeselector.py
     Path/Tool/shape/ui/shapewidget.py
-    Path/Tool/shape/ui/util.py
 )
 
 SET(PathPythonPost_SRCS
@@ -388,17 +388,29 @@ SET(Tools_Library_SRCS
 
 SET(Tools_Shape_SRCS
     Tools/Shape/ballend.fcstd
+    Tools/Shape/ballend.svg
     Tools/Shape/bullnose.fcstd
+    Tools/Shape/bullnose.svg
     Tools/Shape/chamfer.fcstd
+    Tools/Shape/chamfer.svg
     Tools/Shape/dovetail.fcstd
+    Tools/Shape/dovetail.svg
     Tools/Shape/drill.fcstd
+    Tools/Shape/drill.svg
     Tools/Shape/endmill.fcstd
+    Tools/Shape/endmill.svg
     Tools/Shape/probe.fcstd
+    Tools/Shape/probe.svg
     Tools/Shape/reamer.fcstd
+    Tools/Shape/reamer.svg
     Tools/Shape/slittingsaw.fcstd
+    Tools/Shape/slittingsaw.svg
     Tools/Shape/tap.fcstd
+    Tools/Shape/tap.svg
     Tools/Shape/threadmill.fcstd
+    Tools/Shape/threadmill.svg
     Tools/Shape/vbit.fcstd
+    Tools/Shape/vbit.svg
 )
 
 SET(Tests_SRCS
@@ -457,7 +469,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolBitSerializer.py
     CAMTests/TestPathToolShapeClasses.py
     CAMTests/TestPathToolShapeDoc.py
-    CAMTests/TestPathToolShapeRegistry.py
+    CAMTests/TestPathToolShapeIcon.py
     CAMTests/TestPathToolLibrary.py
     CAMTests/TestPathToolMachine.py
     CAMTests/TestPathToolController.py

@@ -42,7 +42,7 @@ from functools import partial
 from ..shape.ui.shapeselector import ShapeSelector
 from ..toolbit.models.base import Declaration
 from ..toolbit.util import get_toolbit_filepath_from_name
-from ..shape.registry import SHAPE_REGISTRY
+from ..shape.util import ensure_toolbitshape_store_initialized
 
 
 if False:
@@ -300,7 +300,7 @@ class ToolBitSelector(object):
     """Controller for displaying a library and creating ToolControllers"""
 
     def __init__(self):
-        SHAPE_REGISTRY.ensure_initialized()
+        ensure_toolbitshape_store_initialized()
         ensureLibrary()
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitSelector.ui")
         self.factory = ModelFactory()
@@ -475,7 +475,7 @@ class ToolBitLibrary(object):
 
     def __init__(self):
         Path.Log.track()
-        SHAPE_REGISTRY.ensure_initialized()
+        ensure_toolbitshape_store_initialized()
         ensureLibrary()
         self.factory = ModelFactory()
         self.temptool = None
@@ -497,7 +497,6 @@ class ToolBitLibrary(object):
         shape = selector.show()
         if shape is None:  # user canceled
             return
-        shapefile = shape.filepath.name
 
         # select the bit file location and filename
         filename = PathToolBitGui.GetNewToolFile()
@@ -510,7 +509,8 @@ class ToolBitLibrary(object):
         fullpath = pathlib.Path("{}{}{}.fctb".format(loc, os.path.sep, fname))
 
         Path.Log.debug(f"Attempting to create tool bit with name: {fullpath}")
-        self.temptool = ToolBitFactory.create_bit(filepath=fullpath, shapefile=shapefile)
+        self.temptool = ToolBitFactory.create_bit(filepath=fullpath,
+                                                  shapefile=shape.get_id())
         self.temptool.Proxy.unloadBitBody()
         self.temptool.Label = fname
         self.temptool.Proxy.saveToFile(fullpath)

@@ -28,7 +28,6 @@ import Path.Main.Job as PathJob
 import Path.Op.Vcarve as PathVcarve
 from Path.Tool import ToolBitFactory
 from Path.Tool.toolbit.util import get_toolbit_filepath_from_name
-from Path.Tool.shape.registry import SHAPE_REGISTRY
 import math
 from CAMTests.PathTestUtils import PathTestBase
 
@@ -51,9 +50,6 @@ TestToolBitDir = TestToolDir / "Bit"
 
 class TestPathVcarve(PathTestBase):
     """Test Vcarve milling basics."""
-
-    def setUp(self):
-        SHAPE_REGISTRY.set_dir(TestToolDir / "Shape")
 
     def tearDown(self):
         if hasattr(self, "doc"):

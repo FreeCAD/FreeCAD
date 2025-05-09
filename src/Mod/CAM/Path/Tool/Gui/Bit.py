@@ -66,10 +66,10 @@ class ViewProvider(object):
         self.obj = vobj.Object
 
     def getIcon(self):
-        png = self.obj.Proxy.getBitThumbnail()
-        if png:
+        png_data = self.obj.Proxy.get_thumbnail()
+        if png_data:
             pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(png, "PNG")
+            pixmap.loadFromData(png_data, "PNG")
             return QtGui.QIcon(pixmap)
         return ":/icons/CAM_ToolBit.svg"
 

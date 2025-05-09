@@ -1,7 +1,7 @@
 import json
 import Path
-import FreeCAD
-from ...shape import SHAPE_REGISTRY
+from ...assets import asset_manager
+from ...shape import ToolBitShape
 from ..models.base import ToolBit
 from .base import ToolBitSerializer
 
@@ -19,7 +19,8 @@ class FCTBSerializer(ToolBitSerializer):
         # from the shape file.
         attrs = json.loads(data.decode("utf-8", "ignore"))
         shape_filename = attrs.get('shape', 'endmill.fcstd')
-        shape = SHAPE_REGISTRY.get_shape_from_filename(shape_filename)
+        uri = ToolBitShape.resolve_name(shape_filename)
+        shape = asset_manager.get(uri, store='shapestore')
 
         # Update shape parameters from the JSON 'parameter' dictionary.
         shape.set_parameters(**attrs.get('parameter', {}))
