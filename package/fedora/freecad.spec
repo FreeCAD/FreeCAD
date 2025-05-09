@@ -5,7 +5,7 @@
 %bcond_with bundled_pycxx
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %bcond_without bundled_smesh
-# rpmbuild --without=tests:  esclude tests in %%check
+# rpmbuild --without=tests:  exclude tests in %%check
 %bcond_without tests
 # rpmbuild --without=bundled_gtest:  don't use bundled version of gtest and gmock
 %bcond_without bundled_gtest
