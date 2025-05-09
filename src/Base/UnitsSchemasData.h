@@ -82,7 +82,7 @@ inline const UnitsSchemaSpec s2
 };
 
 inline const UnitsSchemaSpec s3
-{ 0, "Internal", "m", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Internal (m, m², m³)"), true,
+{ 0, "Internal", "mm", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Standard (mm, kg, s, °)"), true,
     {
         { "Length", {
             { 1e-6            , "mm"         , 1.0             },
