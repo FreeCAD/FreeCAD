@@ -58,6 +58,7 @@ class CAMWorkbench(Workbench):
 
         # Add preferences pages - before loading PathGui to properly order pages of Path group
         import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
+        import Path.Tool.Gui.Preferences as PathPreferencesTools
         import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
 
         translate = FreeCAD.Qt.translate
@@ -85,6 +86,10 @@ class CAMWorkbench(Workbench):
 
         FreeCADGui.addPreferencePage(
             PathPreferencesPathJob.JobPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
+        )
+        FreeCADGui.addPreferencePage(
+            PathPreferencesTools.ToolsPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(
@@ -333,7 +338,7 @@ class CAMWorkbench(Workbench):
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
                     menuAppended = True
-            if isinstance(obj.Proxy, Path.Tool.Bit.ToolBit):
+            if isinstance(obj.Proxy, Path.Tool.ToolBit):
                 self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
                 menuAppended = True
         if menuAppended:

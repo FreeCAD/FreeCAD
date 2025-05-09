@@ -20,15 +20,18 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
+import pathlib
+from typing import Mapping, Optional
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.IconViewProvider as PathIconViewProvider
-import Path.Tool.Bit as PathToolBit
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
-import os
+from Path.Tool import ToolBitFactory
+
 
 __title__ = "Tool Bit UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -109,13 +112,12 @@ class ViewProvider(object):
         return []
 
     def doubleClicked(self, vobj):
-        if os.path.exists(vobj.Object.BitShape):
-            self.setEdit(vobj)
-        else:
-            msg = translate("CAM_Toolbit", "Toolbit cannot be edited: Shapefile not found")
-            diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
-            diag.setWindowModality(QtCore.Qt.ApplicationModal)
-            diag.exec_()
+        pass
+
+    def setupContextMenu(self, vobj, menu):
+        # Override the base class method to prevent adding the "Edit" action
+        # for ToolBit objects.
+        pass  # TODO: call setEdit here once we have a new editor panel
 
 
 class TaskPanel:
@@ -161,24 +163,44 @@ class TaskPanel:
         self.editor.setupUI()
 
 
-class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
-    def Create(self, name="ToolBit", shapeFile=None, path=None):
-        """Create(name = 'ToolBit') ... creates a new tool bit.
-        It is assumed the tool will be edited immediately so the internal bit body is still attached.
+class ToolBitGuiFactory(Path.Tool.toolbit.base.ToolBitFactory):
+    def create_bit_from_dict(self, attrs: Mapping, filepath: Optional[pathlib.Path] = None):
         """
+        Creates a new tool bit from attributes.
+        This method is overridden to attach the ViewProvider.
+        """
+        Path.Log.track(attrs)
 
-        Path.Log.track(name, shapeFile, path)
-        FreeCAD.ActiveDocument.openTransaction("Create ToolBit")
-        tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile, path)
-        PathIconViewProvider.Attach(tool.ViewObject, name)
-        FreeCAD.ActiveDocument.commitTransaction()
+        # Use the base class factory to create the tool bit object
+        tool = super().create_bit_from_dict(attrs, filepath)
+        if not tool:
+            raise Exception("failed to create tool from {attrs} ({filepath})")
+
+        # Attach the ViewProvider if the tool object has a ViewObject
+        if hasattr(tool, "ViewObject") and tool.ViewObject:
+            PathIconViewProvider.Attach(tool.ViewObject, tool.Label)
+        else:
+            FreeCAD.Console.PrintWarning(
+                f"WARNING: ViewObject not available for tool {tool.Label}. "
+                "ViewProvider not attached.\n"
+            )
+
         return tool
+
+    def create_bit(self, path: str, shape_path=None):
+        """
+        Creates a new tool bit.
+        It is assumed the tool will be edited immediately so the internal bit
+        body is still attached.
+        """
+        Path.Log.track(path, shape_path)
+        return super().create_bit(path, shape_path)
 
 
 def isValidFileName(filename):
     print(filename)
     try:
-        with open(filename, "w") as tempfile:
+        with open(filename, "w"):
             return True
     except Exception:
         return False
@@ -188,65 +210,40 @@ def GetNewToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
 
-    foo = QtGui.QFileDialog.getSaveFileName(
-        parent, translate("CAM_Toolbit", "Tool"), Path.Preferences.lastPathToolBit(), "*.fctb"
+    bitdir = Path.Preferences.getToolBitPath()
+    bitfile = QtGui.QFileDialog.getSaveFileName(
+        parent, translate("CAM_Toolbit", "Tool"), str(bitdir), "*.fctb"
     )
-    if foo and foo[0]:
-        if not isValidFileName(foo[0]):
+    if bitfile and bitfile[0]:
+        if not isValidFileName(bitfile[0]):
             msgBox = QtGui.QMessageBox()
-            msg = translate("CAM_Toolbit", "Invalid Filename")
+            msg = translate("CAM_Toolbit", "Failed to open file for writing")
             msgBox.setText(msg)
             msgBox.exec_()
         else:
-            Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0]))
-            return foo[0]
+            return bitfile[0]
     return None
 
 
 def GetToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
-    foo = QtGui.QFileDialog.getOpenFileName(
-        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
-    )
-    if foo and foo[0]:
-        Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0]))
-        return foo[0]
+
+    bitdir = Path.Preferences.getToolBitPath()
+    bitfile = QtGui.QFileDialog.getOpenFileName(parent, "Tool", str(bitdir), "*.fctb")
+    if bitfile and bitfile[0]:
+        return bitfile[0]
     return None
 
 
 def GetToolFiles(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
-    foo = QtGui.QFileDialog.getOpenFileNames(
-        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
-    )
+    bitdir = Path.Preferences.getToolBitPath()
+    foo = QtGui.QFileDialog.getOpenFileNames(parent, "Tool", str(bitdir), "*.fctb")
     if foo and foo[0]:
-        Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0][0]))
         return foo[0]
     return []
-
-
-def GetToolShapeFile(parent=None):
-    if parent is None:
-        parent = QtGui.QApplication.activeWindow()
-
-    location = Path.Preferences.lastPathToolShape()
-    if os.path.isfile(location):
-        location = os.path.split(location)[0]
-    elif not os.path.isdir(location):
-        location = Path.Preferences.filePath()
-
-    fname = QtGui.QFileDialog.getOpenFileName(
-        parent, translate("CAM_Toolbit", "Select Tool Shape"), location, "*.fcstd"
-    )
-    if fname and fname[0]:
-        if fname != location:
-            newloc = os.path.dirname(fname[0])
-            Path.Preferences.setLastPathToolShape(newloc)
-        return fname[0]
-    else:
-        return None
 
 
 def LoadTool(parent=None):
@@ -254,17 +251,17 @@ def LoadTool(parent=None):
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
     """
     foo = GetToolFile(parent)
-    return PathToolBit.Factory.CreateFrom(foo) if foo else foo
+    return ToolBitFactory.create_bit_from_file(foo) if foo else foo
 
 
 def LoadTools(parent=None):
     """
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
     """
-    return [PathToolBit.Factory.CreateFrom(foo) for foo in GetToolFiles(parent)]
+    return [ToolBitFactory.create_bit_from_file(foo) for foo in GetToolFiles(parent)]
 
 
 # Set the factory so all tools are created with UI
-PathToolBit.Factory = ToolBitGuiFactory()
+Path.Tool.toolbit.base.Factory = ToolBitGuiFactory()
 
 PathIconViewProvider.RegisterViewProvider("ToolBit", ViewProvider)

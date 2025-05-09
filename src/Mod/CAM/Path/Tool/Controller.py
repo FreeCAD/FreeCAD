@@ -25,7 +25,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import Path.Tool.Bit as PathToolBit
+from Path.Tool import ToolBitFactory
 import Path.Base.Generator.toolchange as toolchange
 
 
@@ -113,7 +113,7 @@ class ToolController:
             self.ensureToolBit(obj)
 
     @classmethod
-    def propertyEnumerations(self, dataType="data"):
+    def propertyEnumerations(cls, dataType="data"):
         """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
         Args:
             dataType = 'data', 'raw', 'translated'
@@ -186,7 +186,7 @@ class ToolController:
                         ToolControllerTemplate.Version
                     )
                     if toolVersion == 2:
-                        obj.Tool = PathToolBit.Factory.CreateFromAttrs(
+                        obj.Tool = ToolBitFactory.create_bit_from_dict(
                             template.get(ToolControllerTemplate.Tool)
                         )
                     else:
@@ -230,7 +230,7 @@ class ToolController:
         attrs[ToolControllerTemplate.HorizRapid] = "%s" % (obj.HorizRapid)
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
         attrs[ToolControllerTemplate.SpindleDir] = obj.SpindleDir
-        attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.templateAttrs(obj.Tool)
+        attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.to_dict(obj.Tool)
         expressions = []
         for expr in obj.ExpressionEngine:
             Path.Log.debug("%s: %s" % (expr[0], expr[1]))
@@ -251,25 +251,8 @@ class ToolController:
             "toolnumber": obj.ToolNumber,
             "toollabel": obj.Label,
             "spindlespeed": obj.SpindleSpeed,
-            "spindledirection": toolchange.SpindleDirection.OFF,
+            "spindledirection": obj.Tool.Proxy.get_spindle_direction(obj),
         }
-
-        if hasattr(obj.Tool, "SpindlePower"):
-            if not obj.Tool.SpindlePower:
-                args["spindledirection"] = toolchange.SpindleDirection.OFF
-            else:
-                if obj.SpindleDir == "Forward":
-                    args["spindledirection"] = toolchange.SpindleDirection.CW
-                else:
-                    args["spindledirection"] = toolchange.SpindleDirection.CCW
-
-        elif obj.SpindleDir == "None":
-            args["spindledirection"] = toolchange.SpindleDirection.OFF
-        else:
-            if obj.SpindleDir == "Forward":
-                args["spindledirection"] = toolchange.SpindleDirection.CW
-            else:
-                args["spindledirection"] = toolchange.SpindleDirection.CCW
 
         commands = toolchange.generate(**args)
 
@@ -314,7 +297,7 @@ def Create(
 
     if assignTool:
         if not tool:
-            tool = PathToolBit.Factory.Create()
+            tool = ToolBitFactory.create_bit()
             if tool.ViewObject:
                 tool.ViewObject.Visibility = False
         obj.Tool = tool

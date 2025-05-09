@@ -27,6 +27,7 @@ import Path.Tool
 import os
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from Path.Tool import ToolBitFactory
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -54,7 +55,7 @@ class CommandToolBitCreate:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        obj = Path.Tool.Bit.Factory.Create()
+        obj = ToolBitFactory.create_bit()
         obj.ViewObject.Proxy.setCreate(obj.ViewObject)
 
 
@@ -81,7 +82,7 @@ class CommandToolBitSave:
 
     def selectedTool(self):
         sel = FreeCADGui.Selection.getSelectionEx()
-        if 1 == len(sel) and isinstance(sel[0].Object.Proxy, Path.Tool.Bit.ToolBit):
+        if 1 == len(sel) and isinstance(sel[0].Object.Proxy, Path.Tool.ToolBit):
             return sel[0].Object
         return None
 
@@ -104,7 +105,7 @@ class CommandToolBitSave:
                     fname = tool.File
                 else:
                     fname = os.path.join(
-                        Path.Preferences.lastPathToolBit(),
+                        Path.Preferences.getToolBitPath(),
                         tool.Label + ".fctb",
                     )
                 foo = QtGui.QFileDialog.getSaveFileName(
@@ -119,7 +120,6 @@ class CommandToolBitSave:
                 if not path.endswith(".fctb"):
                     path += ".fctb"
                 tool.Proxy.saveToFile(tool, path)
-                Path.Preferences.setLastPathToolBit(os.path.dirname(path))
 
 
 class CommandToolBitLoad:
@@ -141,7 +141,7 @@ class CommandToolBitLoad:
 
     def selectedTool(self):
         sel = FreeCADGui.Selection.getSelectionEx()
-        if 1 == len(sel) and isinstance(sel[0].Object.Proxy, Path.Tool.Bit.ToolBit):
+        if 1 == len(sel) and isinstance(sel[0].Object.Proxy, Path.Tool.ToolBit):
             return sel[0].Object
         return None
 
@@ -149,7 +149,7 @@ class CommandToolBitLoad:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        if Path.Tool.Bit.Gui.LoadTools():
+        if Path.Tool.Gui.Bit.LoadTools():
             FreeCAD.ActiveDocument.recompute()
 
 
