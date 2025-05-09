@@ -2,6 +2,7 @@ from __future__ import annotations
 import urllib.parse
 from typing import Dict, Any, Mapping
 
+
 class AssetUri:
     """
     Represents an asset URI with components.

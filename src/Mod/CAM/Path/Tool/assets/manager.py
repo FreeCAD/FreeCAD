@@ -12,17 +12,7 @@ from .asset import Asset
 from .uri import AssetUri
 
 
-# Set up a specific logger for this module
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARNING)
-if not logger.hasHandlers():
-    console_handler = logging.StreamHandler()
-    formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(threadName)s - %(message)s"
-    )
-    console_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
-    logger.propagate = False
 
 
 @dataclass
