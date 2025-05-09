@@ -329,6 +329,7 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         mInstance->setModality(Qt::ApplicationModal);
         mInstance->setMinimumWidth(700);
         mInstance->setMinimumHeight(400);
+        mInstance->setTitle(tr("FreeCAD CAM Simulator"));
     }
     return mInstance;
 }
