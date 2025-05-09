@@ -90,7 +90,7 @@ Recommends:     python3-pysolar IfcOpenShell-python3
 # plugins and private shared libs in %%{_libdir}/freecad/lib are private;
 # prevent private capabilities being advertised in Provides/Requires
 %global plugin_exclude %( for i in %{plugins}; do  echo -n "\|$i\(Gui\)\?"; done )
-# prevent to declare Requires intenal FreeCAD libraries
+# prevent declaring Requires for internal FreeCAD libraries
 %global lib_exclude %( for i in %{exported_libs}; do echo -n "\|$i"; done )
 %global __requires_exclude_from ^%{_libdir}/%{name}/(lib|Mod)/.*
 %global __provides_exclude_from ^%{_libdir}/%{name}/Mod/.*
