@@ -332,17 +332,29 @@ SET(Tools_Library_SRCS
 
 SET(Tools_Shape_SRCS
     Tools/Shape/ballend.fcstd
+    Tools/Shape/ballend.svg
     Tools/Shape/bullnose.fcstd
+    Tools/Shape/bullnose.svg
     Tools/Shape/chamfer.fcstd
+    Tools/Shape/chamfer.svg
     Tools/Shape/dovetail.fcstd
+    Tools/Shape/dovetail.svg
     Tools/Shape/drill.fcstd
+    Tools/Shape/drill.svg
     Tools/Shape/endmill.fcstd
+    Tools/Shape/endmill.svg
     Tools/Shape/probe.fcstd
+    Tools/Shape/probe.svg
     Tools/Shape/reamer.fcstd
+    Tools/Shape/reamer.svg
     Tools/Shape/slittingsaw.fcstd
+    Tools/Shape/slittingsaw.svg
     Tools/Shape/tap.fcstd
+    Tools/Shape/tap.svg
     Tools/Shape/threadmill.fcstd
+    Tools/Shape/threadmill.svg
     Tools/Shape/vbit.fcstd
+    Tools/Shape/vbit.svg
 )
 
 SET(Tests_SRCS
