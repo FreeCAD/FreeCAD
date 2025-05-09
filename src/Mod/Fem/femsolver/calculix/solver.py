@@ -109,25 +109,43 @@ class _BaseSolverCalculix:
             )
             obj.EigenmodesCount = (10, 1, 100, 1)
 
+        low_limit = 0.0
+        if (
+            hasattr(obj, "EigenmodeLowLimit")
+            and obj.getTypeIdOfProperty("EigenmodeLowLimit") == "App::PropertyFloatConstraint"
+        ):
+            low_limit = obj.EigenmodeLowLimit
+            obj.setPropertyStatus("EigenmodeLowLimit", "-LockDynamic")
+            obj.removeProperty("EigenmodeLowLimit")
+
         if not hasattr(obj, "EigenmodeLowLimit"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
+                "App::PropertyFrequency",
                 "EigenmodeLowLimit",
                 "Fem",
                 "Low frequency limit for eigenmode calculations",
                 locked=True,
             )
-            obj.EigenmodeLowLimit = (0.0, 0.0, 1000000.0, 10000.0)
+            obj.EigenmodeLowLimit = low_limit
+
+        high_limit = 1000000.0
+        if (
+            hasattr(obj, "EigenmodeHighLimit")
+            and obj.getTypeIdOfProperty("EigenmodeHighLimit") == "App::PropertyFloatConstraint"
+        ):
+            high_limit = obj.EigenmodeHighLimit
+            obj.setPropertyStatus("EigenmodeHighLimit", "-LockDynamic")
+            obj.removeProperty("EigenmodeHighLimit")
 
         if not hasattr(obj, "EigenmodeHighLimit"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
+                "App::PropertyFrequency",
                 "EigenmodeHighLimit",
                 "Fem",
                 "High frequency limit for eigenmode calculations",
                 locked=True,
             )
-            obj.EigenmodeHighLimit = (1000000.0, 0.0, 1000000.0, 10000.0)
+            obj.EigenmodeHighLimit = high_limit
 
         if not hasattr(obj, "IterationsMaximum"):
             help_string_IterationsMaximum = (
@@ -156,41 +174,75 @@ class _BaseSolverCalculix:
             )
             obj.BucklingFactors = 1
 
+        time_initial_step = 0.01
+        if (
+            hasattr(obj, "TimeInitialStep")
+            and obj.getTypeIdOfProperty("TimeInitialStep") == "App::PropertyFloatConstraint"
+        ):
+            time_initial_step = obj.TimeInitialStep
+            obj.setPropertyStatus("TimeInitialStep", "-LockDynamic")
+            obj.removeProperty("TimeInitialStep")
+
         if not hasattr(obj, "TimeInitialStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
+                "App::PropertyTime",
                 "TimeInitialStep",
                 "Fem",
                 "Initial time steps",
                 locked=True,
             )
-            obj.TimeInitialStep = 0.01
+            obj.TimeInitialStep = time_initial_step
+
+        time_end = 1.0
+        if (
+            hasattr(obj, "TimeEnd")
+            and obj.getTypeIdOfProperty("TimeEnd") == "App::PropertyFloatConstraint"
+        ):
+            time_end = obj.TimeEnd
+            obj.setPropertyStatus("TimeEnd", "-LockDynamic")
+            obj.removeProperty("TimeEnd")
 
         if not hasattr(obj, "TimeEnd"):
-            obj.addProperty(
-                "App::PropertyFloatConstraint", "TimeEnd", "Fem", "End time analysis", locked=True
-            )
-            obj.TimeEnd = 1.0
+            obj.addProperty("App::PropertyTime", "TimeEnd", "Fem", "End time analysis", locked=True)
+            obj.TimeEnd = time_end
+
+        time_minimum_step = 0.00001
+        if (
+            hasattr(obj, "TimeMinimumStep")
+            and obj.getTypeIdOfProperty("TimeMinimumStep") == "App::PropertyFloatConstraint"
+        ):
+            time_minimum_step = obj.TimeMinimumStep
+            obj.setPropertyStatus("TimeMinimumStep", "-LockDynamic")
+            obj.removeProperty("TimeMinimumStep")
 
         if not hasattr(obj, "TimeMinimumStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
+                "App::PropertyTime",
                 "TimeMinimumStep",
                 "Fem",
                 "Minimum time step",
                 locked=True,
             )
-            obj.TimeMinimumStep = 0.00001
+            obj.TimeMinimumStep = time_minimum_step
+
+        time_maximum_step = 1.0
+        if (
+            hasattr(obj, "TimeMaximumStep")
+            and obj.getTypeIdOfProperty("TimeMaximumStep") == "App::PropertyFloatConstraint"
+        ):
+            time_maximum_step = obj.TimeMaximumStep
+            obj.setPropertyStatus("TimeMaximumStep", "-LockDynamic")
+            obj.removeProperty("TimeMaximumStep")
 
         if not hasattr(obj, "TimeMaximumStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
+                "App::PropertyTime",
                 "TimeMaximumStep",
                 "Fem",
                 "Maximum time step",
                 locked=True,
             )
-            obj.TimeMaximumStep = 1.0
+            obj.TimeMaximumStep = time_maximum_step
 
         if not hasattr(obj, "ThermoMechSteadyState"):
             obj.addProperty(
