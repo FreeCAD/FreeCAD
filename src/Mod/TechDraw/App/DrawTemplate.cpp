@@ -39,6 +39,7 @@
 #include "DrawPage.h"
 #include "DrawUtil.h"
 #include "Preferences.h"
+#include "TemplateTranslator.h"
 
 
 using namespace TechDraw;
@@ -56,6 +57,9 @@ DrawTemplate::DrawTemplate()
 
     Orientation.setEnums(OrientationEnums);
     ADD_PROPERTY(Orientation, (0l));
+
+    Language.setEnums(LanguageEnums);
+    ADD_PROPERTY(Language, (0l));
 
     // Physical Properties inherent to every template class
     ADD_PROPERTY_TYPE(Width,     (0),  group, App::PropertyType::Prop_None, "Width of page");
