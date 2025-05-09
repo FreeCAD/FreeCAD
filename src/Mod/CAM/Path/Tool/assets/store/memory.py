@@ -2,7 +2,7 @@ import pprint
 from typing import Dict, List, Optional
 from ..uri import AssetUri
 from .base import AssetStore
-import uuid
+
 
 class MemoryStore(AssetStore):
     """

@@ -3,15 +3,15 @@ from typing import Any, List, Mapping
 from Path.Tool.assets import Asset, AssetUri
 
 
-class DummyAsset(Asset):
-    asset_type: str = "dummy"
+class TestAsset(Asset):
+    asset_type: str = "test_asset"
 
     @classmethod
     def dependencies(cls, data: bytes) -> List[AssetUri]:
         return []
 
     @classmethod
-    def from_bytes(cls, data: bytes, dependencies: Mapping[AssetUri, Any]) -> Any:
+    def from_bytes(cls, data: bytes, id:str, dependencies: Mapping[AssetUri, Any]) -> Any:
         return "dummy_object"
 
     def to_bytes(self) -> bytes:
@@ -25,15 +25,15 @@ class DummyAsset(Asset):
 class TestPathToolAsset(unittest.TestCase):
     def test_asset_cannot_be_instantiated(self):
         with self.assertRaises(TypeError):
-            Asset()
+            Asset() # type: ignore
 
-    def test_dummy_asset_can_be_instantiated_and_has_members(self):
-        asset = DummyAsset()
+    def test_asset_can_be_instantiated_and_has_members(self):
+        asset = TestAsset()
         self.assertIsInstance(asset, Asset)
-        self.assertEqual(asset.asset_type, "dummy")
+        self.assertEqual(asset.asset_type, "test_asset")
         self.assertEqual(asset.to_bytes(), b"dummy_serialized_data")
-        self.assertEqual(DummyAsset.dependencies(b"some_data"), [])
-        self.assertEqual(DummyAsset.from_bytes(b"some_data", {}), "dummy_object")
+        self.assertEqual(TestAsset.dependencies(b"some_data"), [])
+        self.assertEqual(TestAsset.from_bytes(b"some_data", "some_id", {}), "dummy_object")
         self.assertEqual(asset.get_id(), "dummy_id")
 
 
