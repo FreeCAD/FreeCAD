@@ -1257,13 +1257,17 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
         }
         Base::Vector3d leg0Dir = (generic0->getStartPoint() - generic0->getEndPoint()).Normalize();
         Base::Vector3d leg1Dir = (generic1->getStartPoint() - generic1->getEndPoint()).Normalize();
-        if (DrawUtil::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 1.0)) {
+        Base::Vector3d extenPoint0 = farPoint0;  // extension line points
+        Base::Vector3d extenPoint1 = farPoint1;
+        double legAngle = leg0Dir.GetAngle(leg1Dir);
+        if (DrawUtil::fpCompare(legAngle, 0, EWTOLERANCE) ||
+            DrawUtil::fpCompare(legAngle, std::numbers::pi, EWTOLERANCE)) {
             // legs of the angle are parallel.
             throw Base::RuntimeError("Can not make angle from parallel edges");
         }
-        Base::Vector3d extenPoint0 = farPoint0;  // extension line points
-        Base::Vector3d extenPoint1 = farPoint1;
-        if (DrawUtil::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 0.0)) {
+
+        if (DrawUtil::fpCompare(std::fabs(legAngle), std::numbers::pi / 2, EWTOLERANCE)) {
+        // if (DrawUtil::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 0.0, EWTOLERANCE)) {
             // legs of angle are perpendicular farPoints will do
         }
         else {
