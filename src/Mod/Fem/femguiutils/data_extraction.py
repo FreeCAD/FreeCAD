@@ -33,9 +33,16 @@ from . import vtk_table_view
 
 from PySide import QtCore, QtGui
 
+from vtkmodules.vtkCommonCore import vtkVersion
 from vtkmodules.vtkCommonDataModel import vtkTable
-from vtkmodules.vtkFiltersCore import vtkAttributeDataToTableFilter
 from vtkmodules.vtkFiltersGeneral import vtkSplitColumnComponents
+
+if vtkVersion.GetVTKMajorVersion() > 9 and \
+   vtkVersion.GetVTKMinorVersion() > 3:
+    from vtkmodules.vtkFiltersCore import vtkAttributeDataToTableFilter
+else:
+    from vtkmodules.vtkInfovisCore import vtkDataObjectToTable
+
 
 import FreeCAD
 import FreeCADGui
@@ -117,7 +124,13 @@ class DataExtraction(_BasePostTaskPanel):
         if not algo:
             self.data_model.setTable(vtkTable())
 
-        filter = vtkAttributeDataToTableFilter()
+        if vtkVersion.GetVTKMajorVersion() > 9 and \
+            vtkVersion.GetVTKMinorVersion() > 3:
+            filter = vtkAttributeDataToTableFilter()
+        else:
+            filter = vtkDataObjectToTable()
+            filter.SetFieldType(vtkDataObjectToTable.POINT_DATA)
+
         filter.SetInputConnection(0, algo.GetOutputPort(0))
         filter.Update()
         table = filter.GetOutputDataObject(0)

@@ -37,11 +37,6 @@
 #include <QDialog>
 #include <QVBoxLayout>
 
-#include <vtkTable.h>
-#include <vtkAttributeDataToTableFilter.h>
-#include <vtkSplitColumnComponents.h>
-#include <vtkAbstractArray.h>
-
 #include "ViewProviderFemPostObject.h"
 #include "TaskPostExtraction.h"
 
