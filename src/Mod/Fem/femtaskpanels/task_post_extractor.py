@@ -56,6 +56,3 @@ class _ExtractorTaskPanel(base_fempostpanel._BasePostTaskPanel):
         view.setWindowIcon(obj.ViewObject.Icon)
 
         self.form = [app, view]
-
-
-

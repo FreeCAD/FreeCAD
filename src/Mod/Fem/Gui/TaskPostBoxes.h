@@ -157,7 +157,8 @@ public:
     virtual void apply() {};
 
     // returns if the widget shall be collapsed when opening the task dialog
-    virtual bool initiallyCollapsed() {
+    virtual bool initiallyCollapsed()
+    {
         return false;
     };
 

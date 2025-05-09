@@ -1231,6 +1231,7 @@ class _PostFilterGlyph(CommandManager):
         self.is_active = "with_vtk_selresult"
         self.do_activated = "add_filter_set_edit"
 
+
 # the string in add command will be the page name on FreeCAD wiki
 FreeCADGui.addCommand("FEM_Analysis", _Analysis())
 FreeCADGui.addCommand("FEM_ClippingPlaneAdd", _ClippingPlaneAdd())
@@ -1295,4 +1296,5 @@ if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
     import femobjects.post_table
 
     from femguiutils import post_visualization
+
     post_visualization.setup_commands("FEM_PostVisualization")
