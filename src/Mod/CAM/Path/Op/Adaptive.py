@@ -1319,11 +1319,18 @@ def _getWorkingEdges(op, obj):
                     rcut = stockProjectionDict[depths[0]]
                 else:
                     rcut = stockProjectionDict[depths[0]].cut(r["region"])
-            parentdepths = depths[0:1]
+
+            # If the region is already entirely within in the stock, there's no
+            # way the region can change at a lower depth. That rcut is not
+            # empty is an assumption for the check in the depth loop below
+            if not rcut.Wires:
+                continue
+
             # If the region cut with the stock at a new depth is different than
             # the original cut, we need to split this region
             # The new region gets all of the children, and becomes a child of
             # the existing region.
+            parentdepths = depths[0:1]
             for d in depths[1:]:
                 if (
                     areInsideRegions and r["region"].cut(stockProjectionDict[d]).cut(rcut).Wires
