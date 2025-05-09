@@ -854,14 +854,18 @@ def projectFacesToXY(faces, minEdgeLength=1e-10):
         # NOTE: Wires/edges get clipped if we have an "exact fit" bounding box
         projface = Path.Geom.makeBoundBoxFace(f.BoundBox, offset=1, zHeight=0)
 
-        # NOTE: Cylinders, cones, and spheres are messy:
+        # NOTE: Cylinders, cones, B-splines, and spheres are messy:
         # - Internal representation of non-truncted cones and spheres includes
         # the "tip" with a ~0-area closed edge. This is different than the
         # "isNull() note" at the top in magnitude
         # - Projecting edges doesn't naively work due to the way seams are handled
         # - There may be holes at either end that may or may not line up- any
         # overlap is a hole in the projection
-        if type(f.Surface) in [Part.Cone, Part.Cylinder, Part.Sphere]:
+        # FIXME: This needs to check if the surface is a spline, somehow - test sample "type(shp.Faces[0].Surface) is Part.SurfaceOfExtrusion" is True
+        if type(f.Surface) in [Part.Cone, Part.Cylinder, Part.Sphere] or (
+            type(f.Surface) is Part.SurfaceOfExtrusion
+            and sum([e.isSeam(f) for e in f.OuterWire.Edges])
+        ):
             # This gets most of the face outline, but since cylinder/cone faces
             # are hollow, if the ends overlap in the projection there may be a
             # hole we need to remove from the solid projection
@@ -878,8 +882,7 @@ def projectFacesToXY(faces, minEdgeLength=1e-10):
             # a wire from the list, else this could nicely be one line.
             projwires = []
             for w in endfacewires:
-                pp = projface.makeParallelProjection(w, projdir).Wires
-                if pp:
+                if pp := projface.makeParallelProjection(w, projdir).Wires:
                     projwires.append(pp[0])
 
             if len(projwires) > 1:
@@ -1010,7 +1013,22 @@ def _workingEdgeHelperRoughing(op, obj, depths):
             outsideface = stockface.cut(outsideRegions[-1]["region"].Faces)
             # NOTE: See "isNull() note" at top of file
             if outsideface.Wires:
+                """
                 belowFaces = [f.cut(outsideface) for f in modelOutlineFaces]
+                """
+                belowFaces = []
+                for f in modelOutlineFaces:
+                    try:
+                        fc = DraftGeomUtils.concatenate(f).removeSplitter()
+                        ofc = DraftGeomUtils.concatenate(outsideface).removeSplitter()
+                        belowFaces.append(fc.cut(ofc))
+                    except Exception as e:
+                        Part.show(outsideface, "outsideface")
+                        Part.show(f, "f")
+                        Part.show(stockface, "stockface")
+                        for k in outsideRegions[-1]["region"].Faces:
+                            Part.show(k, "outsideRegions")
+                        raise e
             else:
                 # NOTE: Doesn't matter here, but ensure we're making a new list so
                 # we don't clobber modelOutlineFaces
@@ -1319,11 +1337,19 @@ def _getWorkingEdges(op, obj):
                     rcut = stockProjectionDict[depths[0]]
                 else:
                     rcut = stockProjectionDict[depths[0]].cut(r["region"])
-            parentdepths = depths[0:1]
+
+            # If the region is already entirely within in the stock, there's no
+            # way the region can change at a lower depth. That rcut is not
+            # empty is an assumption for the check in the depth loop below
+            if not rcut.Wires:
+                continue
+
             # If the region cut with the stock at a new depth is different than
-            # the original cut, we need to split this region
+            # the original cut, we need to split this region. Only applies if
+            # the region cut with the stock is non-empty
             # The new region gets all of the children, and becomes a child of
             # the existing region.
+            parentdepths = depths[0:1]
             for d in depths[1:]:
                 if (
                     areInsideRegions and r["region"].cut(stockProjectionDict[d]).cut(rcut).Wires
@@ -1345,6 +1371,10 @@ def _getWorkingEdges(op, obj):
                     # recurse and handle splitting that new region if required
                     regions.append(newregion)
                     idnumber += 1
+                    if stockProjectionDict[d].cut(r["region"]).cut(rcut).Wires:
+                        Part.show(stockProjectionDict[d], "spd")
+                        Part.show(r["region"], "region")
+                        Part.show(rcut, "rcut")
                     continue
                 # If we didn't split at this depth, the parent will keep "control"
                 # of this depth
