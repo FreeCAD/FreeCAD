@@ -196,7 +196,7 @@ class _TreeChoiceButton(QtGui.QToolButton):
         # check if we should be disabled
         self.setEnabled(bool(model.rowCount()))
 
-class _SettingsPopup(QtGui.QGroupBox):
+class _SettingsPopup(QtGui.QDialog):
 
     close = QtCore.Signal()
 
@@ -211,9 +211,9 @@ class _SettingsPopup(QtGui.QGroupBox):
 
         buttonBox = QtGui.QDialogButtonBox()
         buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
+        buttonBox.accepted.connect(self.hide)
         vbox.addWidget(buttonBox)
 
-        buttonBox.accepted.connect(self.hide)
         self.setLayout(vbox)
 
     def showEvent(self, event):
@@ -301,7 +301,7 @@ class _SummaryWidget(QtGui.QWidget):
         btn = QtGui.QPushButton(self)
         btn.full_text = text
 
-        btn.setMinimumSize(btn.sizeHint())
+        btn.setMinimumWidth(0)
         btn.setFlat(True)
         btn.setText(text)
         btn.setStyleSheet("text-align:left;padding:6px");
@@ -311,7 +311,13 @@ class _SummaryWidget(QtGui.QWidget):
 
     def _redraw(self):
 
-        btn_total_size = ((self.size() - self.rmButton.size()).width() - 20) #20 is space to rmButton
+        btn_spacing = 3
+        btn_height = self.extrButton.sizeHint().height()
+
+        # total size notes:
+        #   - 5 spacing = 2x between buttons + 3 spacings to remove button
+        #   - remove btn_height as this is used as remove button square size
+        btn_total_size = self.size().width() - btn_height - 5*btn_spacing
         btn_margin = (self.rmButton.size() - self.rmButton.iconSize()).width()
         fm = self.fontMetrics()
 
@@ -338,23 +344,23 @@ class _SummaryWidget(QtGui.QWidget):
                     btn.setText("")
                     btn.setStyleSheet("text-align:center;");
 
-                rect = QtCore.QRect(pos,0, btn_size, btn.sizeHint().height())
+                rect = QtCore.QRect(pos, 0, btn_size, btn_height)
                 btn.setGeometry(rect)
-                pos+=btn_size
+                pos += btn_size + btn_spacing
 
         else:
             warning_txt = fm.elidedText(self.warning.full_text, QtGui.Qt.ElideRight, btn_total_size)
             self.warning.setText(warning_txt)
-            rect = QtCore.QRect(0,0, btn_total_size, self.extrButton.sizeHint().height())
+            rect = QtCore.QRect(0,0, btn_total_size, btn_height)
             self.warning.setGeometry(rect)
 
 
-        rmsize = self.extrButton.sizeHint().height()
+        rmsize = btn_height
         pos = self.size().width() - rmsize
         self.rmButton.setGeometry(pos, 0, rmsize, rmsize)
 
         frame_hint = self.frame.sizeHint()
-        rect = QtCore.QRect(0, self.extrButton.sizeHint().height()+frame_hint.height(), self.size().width(), frame_hint.height())
+        rect = QtCore.QRect(0, btn_height+frame_hint.height(), self.size().width(), frame_hint.height())
         self.frame.setGeometry(rect)
 
     def resizeEvent(self, event):
