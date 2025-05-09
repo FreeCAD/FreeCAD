@@ -1,7 +1,84 @@
 # Asset Management Module
 
 This module implements an asset manager that provides methods for storing,
-updating, deleting, and reveiving assets. Assets are arbitrary data.
+updating, deleting, and receiving assets for the FreeCAD CAM workbench.
+
+## Goals of the asset manager
+
+While currently the AssetManager has no UI yet, the plan is to add one.
+
+The ultimate vision for the asset manager is to provide a unified UI that
+can download assets from arbitrary sources, such as online databases,
+Git repositories, and also local storage. It should also allow for copying
+between these storages, effectively allowing for publishing assets.
+
+Essentially, something similar to what Blender has:
+
+![Blender Asset Manager](docs/blender-assets.jpg)
+
+### What are assets in CAM?
+
+Assets are arbitrary data, such as FreeCAD models, Tools, and many more.
+Specifically in the context of CAM, assets are:
+
+- Tool bit libraries
+- Tool bits
+- Tool bit shape files
+- Tool bit shape icons
+- Machines
+- Fixtures
+- Post processors
+- ...
+
+**Assets have dependencies:** For example, a ToolBitLibrary requires ToolBits,
+and a ToolBit requires a ToolBitShape (which is a FreeCAD model).
+
+
+## Development
+
+The biggest challenge was that all CAM objects are big monoliths that
+handle everything: in-memory data, serialization, storage. They are
+tightly coupled to files, and make assumptions about how other objects
+are stored.
+
+Examples:
+
+- Tool bits have "File" attributes that they use to collect dependencies
+  such as ToolBit files and shape files.
+- GuiToolBit has serialization code directly in UI functions
+
+### Progress
+
+The main effort went into two key areas:
+
+1. **The generic AssetManager:**
+    - **Manages dependencies** including detection of cyclic dependencies
+    - **Manages storage** while existing FreeCAD tool library file structures retained
+    - **Manages threading** for asynchronous storage, while FreeCAD objects are assembled in the main UI thread
+    - **Defining a generic asset interface** that classes can implement to become "storable"
+
+2. **Refactoring exiting CAM objects for clear separation of concerns:**
+    - **View**: Should handle user interface only. I removed existing file system access methods, but went minimally invasive here, so the UI code is largely unchanged. There is still legacy code left.
+    - **Object Model**: In-memory representation of an object, for example a ToolBit, Icon, or a ToolBitShape. I finished the work of for ToolBitShape and icons by giving them `from_bytes()` and `to_bytes()` methods; the objects do no longer need to know where they are stored.
+    - **Serialization** A serialization protocol needs to be defined. This will allow for better import/export mechanisms in the future
+    - **Storage**: Persisting an object to a file system or database
+
+FreeCAD is now fully usable with the changes in place, but only ToolBitShape and icons are managed by the AssetManager.
+
+### What's next
+
+- ToolBits need to be refactored for better separation of concerns.
+- Library objects need to adopt the Asset interface
+
+At that point, the storage of existing objects would be complete and unified.
+
+
+### Potential future extensions
+
+- Adding a generic AssetManager UI, to allow for browsing and searching stores for all kinds of assets (Machines, Fixtures, Libraries, Tools, Shapes, Post Processors, ...).
+- Adding a GitStore, to connect to things like the FreeCAD library.
+- Adding an HttpStore for connectivity to online databases.
+
 
 ## API usage example
 
@@ -200,9 +277,3 @@ classDiagram
         class Material
     }
 ```
-
-## Potential future extensions
-
-- Adding a generic AssetManager UI, to allow for browsing and searching stores for all kinds of assets (Machines, Fixtures, Libraries, Tools, Shapes, Post Processors, ...).
-- Adding an HttpStore for connectivity to online databases.
-- Adding a GitStore, to connect to things like the FreeCAD Asset library.
