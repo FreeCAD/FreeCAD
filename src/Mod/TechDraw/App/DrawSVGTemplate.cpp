@@ -40,6 +40,7 @@
 #include "DrawSVGTemplatePy.h"
 #include "DrawUtil.h"
 #include "XMLQuery.h"
+#include "TemplateTranslator.h"
 
 using namespace TechDraw;
 
@@ -90,6 +91,10 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
         }
     }
 
+    if (prop == &Language && !isRestoring()) {
+        processTemplate();
+    }
+
     TechDraw::DrawTemplate::onChanged(prop);
 }
 
@@ -135,6 +140,60 @@ QString DrawSVGTemplate::processTemplate()
         return QString();
     }
 
+    // 1 - Translate static fields.
+    TechDraw::TemplateTranslator translator;
+    QStringList placeholderKeys = translator.getAllKeys();
+
+    // Determine the language name directly from the Language property
+    int langEnumIndex = Language.getValue();
+    const std::vector<std::string> langEnumVec = Language.getEnumVector();
+    const char* langNameCStr = langEnumVec[langEnumIndex].c_str();
+    // Ensure langNameCStr is not null before using. Fallback to "English" if something is wrong.
+    QString effectiveLanguageName = QString::fromUtf8(langNameCStr ? langNameCStr : LanguageEnums[0]);
+
+    QDomNodeList allTextElements = templateDocument.elementsByTagName(QStringLiteral("text"));
+    for (int i = 0; i < allTextElements.count(); ++i) {
+        QDomElement textElement = allTextElements.item(i).toElement();
+        if (textElement.isNull()) {
+            continue;
+        }
+
+        if (textElement.hasAttribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE))) {
+            continue;
+        }
+
+        std::function<void(QDomNode&)> processNodeContentsForStaticTranslation =
+            [&](QDomNode& parentNode) {
+                QDomNode childNode = parentNode.firstChild();
+                while (!childNode.isNull()) {
+                    if (childNode.isText()) {
+                        QDomText textDomNode = childNode.toText();
+                        QString currentText = textDomNode.data().trimmed();
+                        if (placeholderKeys.contains(currentText)) {
+                            QString translatedText = translator.translate(currentText, effectiveLanguageName);
+                            if (textDomNode.data().trimmed() == currentText) {
+                                textDomNode.setData(translatedText);
+                            }
+                        }
+                    }
+                    else if (childNode.isElement()) {
+                        QDomElement childElement = childNode.toElement();
+                        if (childElement.tagName().toLower() == QLatin1String("tspan")) {
+                            if (!childElement.hasAttribute(
+                                    QString::fromUtf8(FREECAD_ATTR_EDITABLE))) {
+                                processNodeContentsForStaticTranslation(childElement);
+                            }
+                        }
+                    }
+                    childNode = childNode.nextSibling();
+                }
+            };
+
+        processNodeContentsForStaticTranslation(textElement);
+    }
+
+
+    // 2 - Handle editable fields
     XMLQuery query(templateDocument);
     std::map<std::string, std::string> substitutions = EditableTexts.getValues();
     // auto captureTextValues = m_initialTextValues;
