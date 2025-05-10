@@ -160,7 +160,10 @@ private:
     bool onModeChanged() override
     {
         DrawSketchHandler::resetPositionText();
+        DrawSketchHandler::updateHint();
+
         toolWidgetManager.onHandlerModeChanged();
+
         if (DSDefaultHandler::onModeChanged()) {
             // If onModeChanged returns false, then the handler has been purged.
             toolWidgetManager.afterHandlerModeChanged();

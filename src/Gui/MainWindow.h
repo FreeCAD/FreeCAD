@@ -29,6 +29,7 @@
 #include <QMdiArea>
 
 #include "Window.h"
+#include "InputHint.h"
 
 class QMimeData;
 class QUrl;
@@ -201,7 +202,10 @@ public:
     void updateActions(bool delay = false);
 
     enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp, Critical};
-    void showStatus(int type, const QString & message);
+    void showStatus(int type, const QString& message);
+
+    void showHints(const std::list<InputHint>& hints = {});
+    void hideHints();
 
     void initDockWindows(bool show);
 
