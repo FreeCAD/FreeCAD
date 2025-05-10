@@ -12,7 +12,6 @@ files: |
         src/Mod/Assembly|
         src/Mod/CAM|
         src/Mod/Cloud|
-        src/Mod/Drawing|
         src/Mod/Fem|
         src/Mod/Help|
         src/Mod/Import|
