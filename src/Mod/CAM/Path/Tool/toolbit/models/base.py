@@ -540,7 +540,11 @@ class ToolBit(ABC):
         for name, item in self._tool_bit_shape.schema().items():
             docstring = item[0]
             prop_type = item[1]
-            value = self._tool_bit_shape.get_parameter(name)
+
+            try:
+                value = self._tool_bit_shape.get_parameter(name)
+            except KeyError:
+                continue  # Retain existing property value.
 
             if not prop_type:
                 Path.Log.error(
