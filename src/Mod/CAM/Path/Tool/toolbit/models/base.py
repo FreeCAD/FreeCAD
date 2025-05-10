@@ -86,7 +86,6 @@ class ToolBit(ABC):
         try:
             obj = doc.addObject("Part::FeaturePython", tool_bit_shape.name)
         except Exception as e:
-            # Handle potential naming conflicts or other errors
             Path.Log.error(f"Failed to create DocumentObject '{tool_bit_shape.name}': {e}")
             raise
 
@@ -97,27 +96,19 @@ class ToolBit(ABC):
         return tool_bit
 
     def get_label(self) -> str:
-        """
-        Returns the label of the tool bit.
-        """
+        """Returns the label of the tool bit."""
         return self.obj.Label
 
     def set_label(self, label: str):
-        """
-        Sets the label of the tool bit.
-        """
+        """Sets the label of the tool bit."""
         self.obj.Label = label
 
     def get_shape_name(self) -> str:
-        """
-        Returns the shape name of the tool bit.
-        """
+        """Returns the shape name of the tool bit."""
         return self._tool_bit_shape.name
 
     def set_shape_name(self, name: str):
-        """
-        Sets the shape name of the tool bit.
-        """
+        """Sets the shape name of the tool bit."""
         self._tool_bit_shape.name = name
 
     def _create_base_properties(self):
@@ -198,14 +189,13 @@ class ToolBit(ABC):
         uri = ToolBitShape.resolve_name(name)
         if uri is None:
             raise ValueError(f"Failed to identify shape of ToolBit from name '{name}'")
-        self.obj.ShapeFile = str(uri)  # Remove the path
-
+        self.obj.ShapeFile = str(uri)
 
     def _promote_bit_v1_to_v2(self):
         """
         Promotes a legacy tool bit (v1) to the new format (v2).
         Legacy tools have a filename in the BitShape attribute.
-        New tools use ShapeFile for the filename.
+        New tools use ShapeFile for the shape ID.
         """
         Path.Log.track(self.obj.Label)
         Path.Log.info(f"Promoting tool bit {self.obj.Label} ({self.obj.ShapeFile}) from v1 to v2")
@@ -295,11 +285,30 @@ class ToolBit(ABC):
         self.obj.setEditorMode("File", 1)
         self.obj.setEditorMode("Shape", 2)
 
-        # Get the shape instance based on the potentially updated ShapeFile.
+        # Get the shape instance based on the potentially ShapeFile. For backward
+        # compatibility, we try two approaches to find the shape and shape
+        # class from the file.
+        # First, translate the filename to an asset ID, then:
+        #   1. try to find the shape file
+        #   2. otherwise create a new empty instance
         uri = ToolBitShape.resolve_name(self.obj.ShapeFile)
         if uri is None:
-            raise ValueError(f"Failed to identify shape of ToolBit from name '{self.obj.ShapeFile}'")
-        self._tool_bit_shape = asset_manager.get(uri, store='shapestore')
+            raise ValueError(
+                f"Failed to identify URI of ToolBitShape from name '{self.obj.ShapeFile}'"
+            )
+
+        try:
+            # Best case: we directly find the shape file in our assets.
+            self._tool_bit_shape = asset_manager.get(uri, store="shapestore")
+        except FileNotFoundError:
+            # Otherwise, try to at least identify the type of the shape.
+            shape_class = ToolBitShape.get_subclass_by_name(uri.asset_id)
+            if not shape_class:
+                raise ValueError(
+                    "Failed to identify class of ToolBitShape from name "
+                    f"'{self.obj.ShapeFile}' (asset id {uri.asset_id})"
+                )
+            self._tool_bit_shape = shape_class(uri.asset_id)
 
         # If BitBody exists and is in a different document after document restore,
         # it means a shallow copy occurred. We need to re-initialize the visual
@@ -738,8 +747,8 @@ class ToolBitFactory(object):
         # Construct the attributes dictionary for create_bit_from_dict
         attrs = {
             "shape": shapefile,
-            "parameter": {},  # Parameters will be loaded from the shape file
-            "attribute": {},  # Attributes will be loaded from the shape file
+            "parameter": {},
+            "attribute": {},
         }
 
         return self.create_bit_from_dict(attrs, filepath=filepath)

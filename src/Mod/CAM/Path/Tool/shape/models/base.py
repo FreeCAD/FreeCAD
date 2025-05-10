@@ -35,7 +35,7 @@ class ToolBitShape(Asset):
     # Aliases exist for backward compatibility. If an existing .fctb file
     # references a shape such as "v-bit.fctb", and that shape file cannot
     # be found, then we can attempt to find a shape class from the string
-    # "v-bit".
+    # "v-bit", "vbit", etc.
     aliases: Tuple[str, ...] = tuple()
 
     def __init__(self, id: str, **kwargs: Any):
@@ -380,7 +380,7 @@ class ToolBitShape(Asset):
         """
         Resolves an identifier (alias, name, filename, or URI) to a Uri object.
         """
-        # 1. If the input is a URL or url string, return the Uri object for it.
+        # 1. If the input is a url string, return the Uri object for it.
         if AssetUri.is_uri(identifier):
             return AssetUri(identifier)
 
