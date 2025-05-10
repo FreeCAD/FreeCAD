@@ -91,7 +91,8 @@ class BIM_Views:
                             ("Toggle", translate("BIM","Toggle on/off")),
                             ("Isolate", translate("BIM","Isolate")),
                             ("SaveView", translate("BIM","Save view position")),
-                            ("Rename", translate("BIM","Rename"))]:
+                            ("Rename", translate("BIM","Rename")),
+                            ("Activate", translate("BIM","Activate"))]:
                 action = QtGui.QAction(button[1])
                 self.dialog.menu.addAction(action)
                 setattr(self.dialog,"button"+button[0], action)
@@ -106,6 +107,7 @@ class BIM_Views:
             self.dialog.buttonRename.setIcon(
                 QtGui.QIcon(":/icons/accessories-text-editor.svg")
             )
+            self.dialog.buttonActivate.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
 
             # set tooltips
             self.dialog.buttonAddLevel.setToolTip(translate("BIM","Creates a new level"))
@@ -115,6 +117,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))
             self.dialog.buttonSaveView.setToolTip(translate("BIM","Saves the current camera position to the selected items"))
             self.dialog.buttonRename.setToolTip(translate("BIM","Renames the selected item"))
+            self.dialog.buttonActivate.setToolTip(translate("BIM","Activates"))
 
             # connect signals
             self.dialog.buttonAddLevel.triggered.connect(self.addLevel)
@@ -124,6 +127,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.triggered.connect(self.isolate)
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
             self.dialog.buttonRename.triggered.connect(self.rename)
+            self.dialog.buttonActivate.triggered.connect(self.activate)
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
             self.dialog.viewtree.itemDoubleClicked.connect(show)
@@ -412,6 +416,15 @@ class BIM_Views:
                 if vm.tree.selectedItems():
                     item = vm.tree.selectedItems()[-1]
                     vm.tree.editItem(item, 0)
+    
+    def activate(self, item):
+        vm = findWidget()
+        if vm:
+            if vm.tree.selectedItems():
+                if vm.tree.selectedItems():
+                    item = vm.tree.selectedItems()[-1]
+                    obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+                    obj.ViewObject.Proxy.setWorkingPlane()
 
     def editObject(self, item, column):
         "renames or edit height of the actual object"
