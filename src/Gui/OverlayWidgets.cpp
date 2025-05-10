@@ -1194,11 +1194,24 @@ void OverlayTabWidget::setRevealTime(const QTime &time)
 
 void OverlayTabWidget::_setOverlayMode(QWidget *widget, OverlayOption option)
 {
-    if(!widget)
+    if(!widget) {
         return;
+    }
+    auto parent = widget->parentWidget();
+    // the taskbox should not be set transparent
+    if (qobject_cast<TaskView::TaskBox*>(widget)) {
+        widget->setAutoFillBackground(option != OverlayOption::Disable);
+        return;
+    }
+    while (parent) {
+        if (qobject_cast<TaskView::TaskBox*>(parent)) {
+            return;
+        }
+        parent = parent->parentWidget();
+    }
 
     if (qobject_cast<QScrollBar*>(widget)) {
-        auto parent = widget->parentWidget();
+        parent = widget->parentWidget();
         if (parent) {
             parent = parent->parentWidget();
             if (qobject_cast<PropertyEditor::PropertyEditor*>(parent)) {
@@ -1261,6 +1274,7 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, OverlayOption option)
             widget->setWindowFlags(widget->windowFlags() | Qt::FramelessWindowHint);
         } else {
             widget->setWindowFlags(widget->windowFlags() & ~Qt::FramelessWindowHint);
+            widget->setAutoFillBackground(false);
         }
         widget->setAttribute(Qt::WA_NoSystemBackground, option != OverlayOption::Disable);
         widget->setAttribute(Qt::WA_TranslucentBackground, option != OverlayOption::Disable);
@@ -1269,11 +1283,11 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, OverlayOption option)
 
 void OverlayTabWidget::setOverlayMode(QWidget *widget, OverlayOption option)
 {
-    if(!widget || (qobject_cast<QDialog*>(widget)
-                        && !qobject_cast<Dialog::Clipping*>(widget))
-               || qobject_cast<TaskView::TaskBox*>(widget))
+    if (!widget
+        || (qobject_cast<QDialog*>(widget) && !qobject_cast<Dialog::Clipping*>(widget))
+    ) {
         return;
-
+    }
     if(widget != tabBar()) {
         if(OverlayParams::getDockOverlayAutoMouseThrough()
                 && option == OverlayOption::ShowTab) {

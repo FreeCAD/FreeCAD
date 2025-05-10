@@ -50,6 +50,12 @@ void ActionGroup::init(bool hasHeader)
 
     layout->addWidget(myHeader);
 
+    auto *separator = new QFrame(this);
+    separator->setFrameShape(QFrame::HLine);
+    separator->setFrameShadow(QFrame::Plain);
+    separator->setFixedHeight(separatorHeight);
+    layout->addWidget(separator);
+
     myGroup = new TaskGroup(this, hasHeader);
     layout->addWidget(myGroup);
 
@@ -58,6 +64,14 @@ void ActionGroup::init(bool hasHeader)
     myDummy->hide();
 
     connect(myHeader, &TaskHeader::activated, this, &ActionGroup::showHide);
+}
+
+void ActionGroup::setScheme(ActionPanelScheme *pointer)
+{
+  myScheme = pointer;
+  myHeader->setScheme(pointer);
+  myGroup->setScheme(pointer);
+  update();
 }
 
 QBoxLayout* ActionGroup::groupLayout()
@@ -122,14 +136,14 @@ void ActionGroup::processHide()
     {
         myDummy->hide();
         myHeader->setFold(false);
-        setFixedHeight(myHeader->height());
+        setFixedHeight(myHeader->height() + separatorHeight);
         setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         return;
     }
 
     m_tempHeight -= m_foldDelta;
     myDummy->setFixedHeight(m_tempHeight);
-    setFixedHeight(myDummy->height() + myHeader->height());
+    setFixedHeight(myDummy->height() + myHeader->height() + separatorHeight);
 
     QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processHide);
 }
@@ -142,7 +156,7 @@ void ActionGroup::processShow()
         m_foldPixmap = QPixmap();
         myGroup->show();
         myHeader->setFold(true);
-        setFixedHeight(m_fullHeight + myHeader->height());
+        setFixedHeight(m_fullHeight + myHeader->height() + separatorHeight);
         setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         setMaximumHeight(QWIDGETSIZE_MAX);
         return;
@@ -150,7 +164,7 @@ void ActionGroup::processShow()
 
     m_tempHeight += m_foldDelta;
     myDummy->setFixedHeight(m_tempHeight);
-    setFixedHeight(myDummy->height() + myHeader->height());
+    setFixedHeight(myDummy->height() + myHeader->height() + separatorHeight);
 
     QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processShow);
 }

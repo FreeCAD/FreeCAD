@@ -11,60 +11,6 @@
 namespace QSint
 {
 
-
-const QString ActionPanelScheme::minimumStyle = QStringLiteral(
-    "QSint--ActionGroup QFrame[class='header'] {"
-        "border: none;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='header'] {"
-        "border: none;"
-        "font-weight: bold;"
-        "text-align: center;"
-        "background: none;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action'] {"
-        "border: none;"
-        "background: none;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "text-decoration: underline;"
-    "}"
-
-    "QSint--ActionGroup QFrame[class='content'][header='true'] {"
-        "border: none;"
-    "}"
-
-);
-
-QString ActionPanelScheme::systemStyle(const QPalette& p)
-{
-    const QColor& highlightColor = p.color(QPalette::Highlight);
-    QColor headerBackground = highlightColor.darker(150);
-    const QColor& groupBackground = p.color(QPalette::Button);
-
-    QHash<QString, QString> replacements;
-    replacements["headerBackground"] = headerBackground.name();
-    replacements["groupBackground"] = groupBackground.name();;
-
-    QString style = QStringLiteral(
-        "QSint--ActionGroup QFrame[class='header'] {"
-            "background-color: {headerBackground};"
-        "}"
-        "QSint--ActionGroup QFrame[class='content'] {"
-            "background-color: {groupBackground};"
-        "}"
-    );
-
-    for (auto it = replacements.begin(); it != replacements.end(); ++it) {
-        style.replace("{" + it.key() + "}", it.value());
-    }
-
-    return style;
-}
-
 QPixmap ActionPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool hover) const
 {
     QSize bSize = headerButtonSize;
@@ -87,7 +33,7 @@ QPixmap ActionPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool
     }
 
     painter.setBrush(Qt::NoBrush);
-    painter.setPen(QPen(palette.color(QPalette::HighlightedText), penWidth));
+    painter.setPen(QPen(palette.color(QPalette::Text), penWidth));
 
     QPolygon chevron;
     if (fold) {
@@ -115,24 +61,29 @@ ActionPanelScheme::ActionPanelScheme()
 
     QPalette p = QApplication::palette();
 
-    headerButtonSize = QSize(16, 16);
-    headerButtonFold = drawFoldIcon(p, true, false);
-    headerButtonFoldOver = drawFoldIcon(p, true, true);
-    headerButtonUnfold = drawFoldIcon(p, false, false);
-    headerButtonUnfoldOver = drawFoldIcon(p, false, true);
+    int iconSize = fm.height();
+    headerButtonSize = QSize(iconSize, iconSize);
+    builtinFold = drawFoldIcon(p, true, false);
+    builtinFoldOver = drawFoldIcon(p, true, true);
+    builtinUnfold = drawFoldIcon(p, false, false);
+    builtinUnfoldOver = drawFoldIcon(p, false, true);
 
-    builtinFold = headerButtonFold;
-    builtinFoldOver = headerButtonFoldOver;
-    builtinUnfold = headerButtonUnfold;
-    builtinUnfoldOver = headerButtonUnfoldOver;
+    if (qApp->styleSheet().isEmpty()) {
+        headerButtonFold = builtinFold;
+        headerButtonFoldOver = builtinFoldOver;
+        headerButtonUnfold = builtinUnfold;
+        headerButtonUnfoldOver = builtinUnfoldOver;
+    } else {
+        headerButtonFold = QPixmap();
+        headerButtonFoldOver = QPixmap();
+        headerButtonUnfold = QPixmap();
+        headerButtonUnfoldOver = QPixmap();
+    }
 
     groupFoldSteps = 20;
     groupFoldDelay = 15;
     groupFoldEffect = NoFolding;
     groupFoldThaw = true;
-
-    actionStyle = minimumStyle + systemStyle(p);
-    builtinScheme = actionStyle;
 }
 
 ActionPanelScheme* ActionPanelScheme::defaultScheme()
@@ -147,8 +98,6 @@ void ActionPanelScheme::clearActionStyle()
     headerButtonFoldOver = QPixmap();
     headerButtonUnfold = QPixmap();
     headerButtonUnfoldOver = QPixmap();
-
-    actionStyle = minimumStyle;
 }
 
 void ActionPanelScheme::restoreActionStyle()
@@ -157,8 +106,6 @@ void ActionPanelScheme::restoreActionStyle()
     headerButtonFoldOver = builtinFoldOver;
     headerButtonUnfold = builtinUnfold;
     headerButtonUnfoldOver = builtinUnfoldOver;
-
-    actionStyle = builtinScheme;
 }
 
 } // namespace QSint
