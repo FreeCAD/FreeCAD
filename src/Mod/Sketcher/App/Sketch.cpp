@@ -101,18 +101,13 @@ void Sketch::clear()
     resolveAfterGeometryUpdated = false;
 
     // deleting the doubles allocated with new
-    for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it) {
-        if (*it) {
-            delete *it;
-        }
+    for (auto param : Parameters) {
+        delete param;
     }
     Parameters.clear();
     DrivenParameters.clear();
-    for (std::vector<double*>::iterator it = FixParameters.begin(); it != FixParameters.end();
-         ++it) {
-        if (*it) {
-            delete *it;
-        }
+    for (auto fixParam : FixParameters) {
+        delete fixParam;
     }
     FixParameters.clear();
 
@@ -123,17 +118,15 @@ void Sketch::clear()
     internalAlignmentGeometryMap.clear();
 
     // deleting the geometry copied into this sketch
-    for (std::vector<GeoDef>::iterator it = Geoms.begin(); it != Geoms.end(); ++it) {
-        if (it->geo) {
-            delete it->geo;
-        }
+    for (auto geom : Geoms) {
+        delete geom.geo;
     }
     Geoms.clear();
 
     // deleting the non-Driving constraints copied into this sketch
-    // for (std::vector<Constraint *>::iterator it = NonDrivingConstraints.begin(); it !=
-    // NonDrivingConstraints.end(); ++it)
-    //    if (*it) delete *it;
+    // for (auto* constr : NonDrivingConstraints) {
+    //     delete constr;
+    // }
     Constrs.clear();
 
     GCSsys.clear();
@@ -202,12 +195,8 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
     clear();
 
     std::vector<Part::Geometry*> intGeoList, extGeoList;
-    for (int i = 0; i < int(GeoList.size()) - extGeoCount; i++) {
-        intGeoList.push_back(GeoList[i]);
-    }
-    for (int i = int(GeoList.size()) - extGeoCount; i < int(GeoList.size()); i++) {
-        extGeoList.push_back(GeoList[i]);
-    }
+    std::copy(GeoList.begin(), GeoList.end() - extGeoCount, std::back_inserter(intGeoList));
+    std::copy(GeoList.end() - extGeoCount, GeoList.end(), std::back_inserter(extGeoList));
 
     // these geometries are blocked, frozen and sent as fixed parameters to the solver
     std::vector<bool> onlyBlockedGeometry(intGeoList.size(), false);
@@ -451,22 +440,21 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
 
     // 4. Check if groups are satisfied or are licitly unsatisfiable and thus deemed as satisfied
     bool unsatisfied_groups = false;
-    for (size_t i = 0; i < prop_groups.size(); i++) {
+    for (auto& prop_group : prop_groups) {
         // 4.1. unsatisfiable group
-        if (prop_groups[i].blockable_params_in_group.empty()) {
+        if (prop_group.blockable_params_in_group.empty()) {
             // this group does not contain any blockable parameter, so it is by definition satisfied
             // (or impossible to satisfy by block constraints)
             continue;
         }
         // 4.2. satisfiable and not satisfied
-        if (!prop_groups[i].blocking_param_in_group) {
+        if (!prop_group.blocking_param_in_group) {
             unsatisfied_groups = true;
         }
     }
 
     return unsatisfied_groups;
 }
-
 
 void Sketch::clearTemporaryConstraints()
 {
@@ -732,26 +720,26 @@ int Sketch::addGeometry(const Part::Geometry* geo, bool fixed)
     }
 }
 
-int Sketch::addGeometry(const std::vector<Part::Geometry*>& geo, bool fixed)
+int Sketch::addGeometry(const std::vector<Part::Geometry*>& geos, bool fixed)
 {
     int ret = -1;
-    for (std::vector<Part::Geometry*>::const_iterator it = geo.begin(); it != geo.end(); ++it) {
-        ret = addGeometry(*it, fixed);
+    for (const auto& geo : geos) {
+        ret = addGeometry(geo, fixed);
     }
     return ret;
 }
 
-int Sketch::addGeometry(const std::vector<Part::Geometry*>& geo,
+int Sketch::addGeometry(const std::vector<Part::Geometry*>& geos,
                         const std::vector<bool>& blockedGeometry)
 {
-    assert(geo.size() == blockedGeometry.size());
+    assert(geos.size() == blockedGeometry.size());
 
     int ret = -1;
     std::vector<Part::Geometry*>::const_iterator it;
     std::vector<bool>::const_iterator bit;
 
-    for (it = geo.begin(), bit = blockedGeometry.begin();
-         it != geo.end() && bit != blockedGeometry.end();
+    for (it = geos.begin(), bit = blockedGeometry.begin();
+         it != geos.end() && bit != blockedGeometry.end();
          ++it, ++bit) {
         ret = addGeometry(*it, *bit);
     }
@@ -1428,9 +1416,9 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
     std::vector<GCS::Point> spoles;
 
     int i = 0;
-    for (std::vector<Base::Vector3d>::const_iterator it = poles.begin(); it != poles.end(); ++it) {
-        params.push_back(new double((*it).x));
-        params.push_back(new double((*it).y));
+    for (const auto& pole : poles) {
+        params.push_back(new double(pole.x));
+        params.push_back(new double(pole.y));
 
         GCS::Point p;
         p.x = params[params.size() - 2];
@@ -1452,8 +1440,8 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
 
     std::vector<double*> sweights;
 
-    for (std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it) {
-        auto r = new double((*it));
+    for (const auto& weight : weights) {
+        auto r = new double(weight);
         params.push_back(r);
         sweights.push_back(params[params.size() - 1]);
 
@@ -1467,10 +1455,10 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
 
     std::vector<double*> sknots;
 
-    for (std::vector<double>::const_iterator it = knots.begin(); it != knots.end(); ++it) {
-        double* knot = new double((*it));
+    for (const auto& knot : knots) {
+        double* _knot = new double(knot);
         // params.push_back(knot);
-        sknots.push_back(knot);
+        sknots.push_back(_knot);
     }
 
     GCS::Point p1, p2;
@@ -1521,9 +1509,8 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
     // the solver
     bs.knotpointGeoids.resize(knots.size());
 
-    for (std::vector<int>::iterator it = bs.knotpointGeoids.begin(); it != bs.knotpointGeoids.end();
-         ++it) {
-        (*it) = GeoEnum::GeoUndef;
+    for (auto& kpGeoId : bs.knotpointGeoids) {
+        kpGeoId = GeoEnum::GeoUndef;
     }
 
     BSplines.push_back(bs);
@@ -1714,11 +1701,11 @@ std::vector<Part::Geometry*> Sketch::extractGeometry(bool withConstructionElemen
 {
     std::vector<Part::Geometry*> temp;
     temp.reserve(Geoms.size());
-    for (std::vector<GeoDef>::const_iterator it = Geoms.begin(); it != Geoms.end(); ++it) {
-        auto gf = GeometryFacade::getFacade(it->geo);
-        if ((!it->external || withExternalElements)
+    for (const auto& geom : Geoms) {
+        auto gf = GeometryFacade::getFacade(geom.geo);
+        if ((!geom.external || withExternalElements)
             && (!gf->getConstruction() || withConstructionElements)) {
-            temp.push_back(it->geo->clone());
+            temp.push_back(geom.geo->clone());
         }
     }
 
@@ -1730,10 +1717,10 @@ GeoListFacade Sketch::extractGeoListFacade() const
     std::vector<GeometryFacadeUniquePtr> temp;
     temp.reserve(Geoms.size());
     int internalGeometryCount = 0;
-    for (std::vector<GeoDef>::const_iterator it = Geoms.begin(); it != Geoms.end(); ++it) {
+    for (const auto& geom : Geoms) {
         // GeometryFacade is the owner of this allocation
-        auto gf = GeometryFacade::getFacade(it->geo->clone(), true);
-        if (!it->external) {
+        auto gf = GeometryFacade::getFacade(geom.geo->clone(), true);
+        if (!geom.external) {
             internalGeometryCount++;
         }
 
@@ -1754,45 +1741,58 @@ Py::Tuple Sketch::getPyGeometry() const
 {
     Py::Tuple tuple(Geoms.size());
     int i = 0;
-    for (std::vector<GeoDef>::const_iterator it = Geoms.begin(); it != Geoms.end(); ++it, i++) {
-        if (it->type == Point) {
-            Base::Vector3d temp(*(Points[it->startPointId].x), *(Points[it->startPointId].y), 0);
-            tuple[i] = Py::asObject(new VectorPy(temp));
-        }
-        else if (it->type == Line) {
-            GeomLineSegment* lineSeg = static_cast<GeomLineSegment*>(it->geo->clone());
-            tuple[i] = Py::asObject(new LineSegmentPy(lineSeg));
-        }
-        else if (it->type == Arc) {
-            GeomArcOfCircle* aoc = static_cast<GeomArcOfCircle*>(it->geo->clone());
-            tuple[i] = Py::asObject(new ArcOfCirclePy(aoc));
-        }
-        else if (it->type == Circle) {
-            GeomCircle* circle = static_cast<GeomCircle*>(it->geo->clone());
-            tuple[i] = Py::asObject(new CirclePy(circle));
-        }
-        else if (it->type == Ellipse) {
-            GeomEllipse* ellipse = static_cast<GeomEllipse*>(it->geo->clone());
-            tuple[i] = Py::asObject(new EllipsePy(ellipse));
-        }
-        else if (it->type == ArcOfEllipse) {
-            GeomArcOfEllipse* ellipse = static_cast<GeomArcOfEllipse*>(it->geo->clone());
-            tuple[i] = Py::asObject(new ArcOfEllipsePy(ellipse));
-        }
-        else if (it->type == ArcOfHyperbola) {
-            GeomArcOfHyperbola* aoh = static_cast<GeomArcOfHyperbola*>(it->geo->clone());
-            tuple[i] = Py::asObject(new ArcOfHyperbolaPy(aoh));
-        }
-        else if (it->type == ArcOfParabola) {
-            GeomArcOfParabola* aop = static_cast<GeomArcOfParabola*>(it->geo->clone());
-            tuple[i] = Py::asObject(new ArcOfParabolaPy(aop));
-        }
-        else if (it->type == BSpline) {
-            GeomBSplineCurve* bsp = static_cast<GeomBSplineCurve*>(it->geo->clone());
-            tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
-        }
-        else {
-            // not implemented type in the sketch!
+    for (auto it = Geoms.begin(); it != Geoms.end(); ++it, ++i) {
+        switch (it->type) {
+            case Point: {
+                Base::Vector3d temp(*(Points[it->startPointId].x),
+                                    *(Points[it->startPointId].y),
+                                    0);
+                tuple[i] = Py::asObject(new VectorPy(temp));
+                break;
+            }
+            case Line: {
+                auto* lineSeg = static_cast<GeomLineSegment*>(it->geo->clone());
+                tuple[i] = Py::asObject(new LineSegmentPy(lineSeg));
+                break;
+            }
+            case Arc: {
+                auto* aoc = static_cast<GeomArcOfCircle*>(it->geo->clone());
+                tuple[i] = Py::asObject(new ArcOfCirclePy(aoc));
+                break;
+            }
+            case Circle: {
+                auto* circle = static_cast<GeomCircle*>(it->geo->clone());
+                tuple[i] = Py::asObject(new CirclePy(circle));
+                break;
+            }
+            case Ellipse: {
+                auto* ellipse = static_cast<GeomEllipse*>(it->geo->clone());
+                tuple[i] = Py::asObject(new EllipsePy(ellipse));
+                break;
+            }
+            case ArcOfEllipse: {
+                auto* ellipse = static_cast<GeomArcOfEllipse*>(it->geo->clone());
+                tuple[i] = Py::asObject(new ArcOfEllipsePy(ellipse));
+                break;
+            }
+            case ArcOfHyperbola: {
+                auto* aoh = static_cast<GeomArcOfHyperbola*>(it->geo->clone());
+                tuple[i] = Py::asObject(new ArcOfHyperbolaPy(aoh));
+                break;
+            }
+            case ArcOfParabola: {
+                auto* aop = static_cast<GeomArcOfParabola*>(it->geo->clone());
+                tuple[i] = Py::asObject(new ArcOfParabolaPy(aop));
+                break;
+            }
+            case BSpline: {
+                auto* bsp = static_cast<GeomBSplineCurve*>(it->geo->clone());
+                tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
+                break;
+            }
+            default:
+                // not implemented type in the sketch!
+                break;
         }
     }
     return tuple;
@@ -2381,16 +2381,14 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList)
     int rtn = -1;
     int cid = 0;
 
-    for (std::vector<Constraint*>::const_iterator it = ConstraintList.begin();
-         it != ConstraintList.end();
-         ++it, ++cid) {
+    for (auto it = ConstraintList.cbegin(); it != ConstraintList.cend(); ++it, ++cid) {
         rtn = addConstraint(*it);
 
         if (rtn == -1) {
-            int humanconstraintid = cid + 1;
+            int humanConstraintId = cid + 1;
             Base::Console().error("Sketcher constraint number %d is malformed!\n",
-                                  humanconstraintid);
-            MalformedConstraints.push_back(humanconstraintid);
+                                  humanConstraintId);
+            MalformedConstraints.push_back(humanConstraintId);
         }
     }
 
@@ -2403,17 +2401,15 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList,
     int rtn = -1;
 
     int cid = 0;
-    for (std::vector<Constraint*>::const_iterator it = ConstraintList.begin();
-         it != ConstraintList.end();
-         ++it, ++cid) {
+    for (auto it = ConstraintList.cbegin(); it != ConstraintList.cend(); ++it, ++cid) {
         if (!unenforceableConstraints[cid] && (*it)->Type != Block && (*it)->isActive) {
             rtn = addConstraint(*it);
 
             if (rtn == -1) {
-                int humanconstraintid = cid + 1;
+                int humanConstraintId = cid + 1;
                 Base::Console().error("Sketcher constraint number %d is malformed!\n",
-                                      humanconstraintid);
-                MalformedConstraints.push_back(humanconstraintid);
+                                      humanConstraintId);
+                MalformedConstraints.push_back(humanConstraintId);
             }
         }
         else {
@@ -2435,9 +2431,7 @@ void Sketch::getBlockedGeometry(std::vector<bool>& blockedGeometry,
 
     // Detect Blocked and internal constraints
     int i = 0;
-    for (std::vector<Constraint*>::const_iterator it = ConstraintList.begin();
-         it != ConstraintList.end();
-         ++it, ++i) {
+    for (auto it = ConstraintList.cbegin(); it != ConstraintList.cend(); ++it, ++i) {
         switch ((*it)->Type) {
             case Block: {
                 int geoid = (*it)->First;
@@ -2457,30 +2451,24 @@ void Sketch::getBlockedGeometry(std::vector<bool>& blockedGeometry,
 
     // if a GeoId is blocked and it is linked to Internal Alignment, then GeoIds linked via Internal
     // Alignment are also to be blocked
-    for (std::vector<int>::iterator it = internalAlignmentConstraintIndex.begin();
-         it != internalAlignmentConstraintIndex.end();
-         it++) {
-        if (blockedGeometry[ConstraintList[(*it)]->Second]) {
-            blockedGeometry[ConstraintList[(*it)]->First] = true;
+    for (auto idx : internalAlignmentConstraintIndex) {
+        if (blockedGeometry[ConstraintList[idx]->Second]) {
+            blockedGeometry[ConstraintList[idx]->First] = true;
             // associated geometry gets the same blocking constraint index as the blocked element
-            geo2blockingconstraintindex[ConstraintList[(*it)]->First] =
-                geo2blockingconstraintindex[ConstraintList[(*it)]->Second];
-            internalAlignmentgeo.push_back(ConstraintList[(*it)]->First);
-            unenforceableConstraints[(*it)] = true;
+            geo2blockingconstraintindex[ConstraintList[idx]->First] =
+                geo2blockingconstraintindex[ConstraintList[idx]->Second];
+            internalAlignmentgeo.push_back(ConstraintList[idx]->First);
+            unenforceableConstraints[idx] = true;
         }
     }
 
     i = 0;
-    for (std::vector<Constraint*>::const_iterator it = ConstraintList.begin();
-         it != ConstraintList.end();
-         ++it, ++i) {
+    for (auto it = ConstraintList.begin(); it != ConstraintList.end(); ++it, ++i) {
         if ((*it)->isDriving) {
             // additionally any further constraint on auxiliary elements linked via Internal
             // Alignment are also unenforceable.
-            for (std::vector<int>::iterator itg = internalAlignmentgeo.begin();
-                 itg != internalAlignmentgeo.end();
-                 itg++) {
-                if ((*it)->First == *itg || (*it)->Second == *itg || (*it)->Third == *itg) {
+            for (auto& iag : internalAlignmentgeo) {
+                if ((*it)->First == iag || (*it)->Second == iag || (*it)->Third == iag) {
                     unenforceableConstraints[i] = true;
                 }
             }
@@ -4533,48 +4521,49 @@ void Sketch::updateBSpline(const GeoDef& def)
 
 bool Sketch::updateNonDrivingConstraints()
 {
-    for (std::vector<ConstrDef>::iterator it = Constrs.begin(); it != Constrs.end(); ++it) {
-        if (!(*it).driving) {
-            if ((*it).constr->Type == SnellsLaw) {
-                double n1 = *((*it).value);
-                double n2 = *((*it).secondvalue);
+    for (auto& constrDef : Constrs) {
+        if (constrDef.driving) {
+            continue;
+        }
+        if (constrDef.constr->Type == SnellsLaw) {
+            double n1 = *(constrDef.value);
+            double n2 = *(constrDef.secondvalue);
 
-                (*it).constr->setValue(n2 / n1);
+            constrDef.constr->setValue(n2 / n1);
+        }
+        else if (constrDef.constr->Type == Angle) {
+
+            constrDef.constr->setValue(std::fmod(*(constrDef.value), 2.0 * std::numbers::pi));
+        }
+        else if (constrDef.constr->Type == Diameter && constrDef.constr->First >= 0) {
+
+            // two cases, the geometry parameter is fixed or it is not
+            // NOTE: This is different from being blocked, as new block constraint may fix
+            // the parameter or not depending on whether other driving constraints are present
+            int geoId = constrDef.constr->First;
+
+            geoId = checkGeoId(geoId);
+
+            double* rad = nullptr;
+
+            if (Geoms[geoId].type == Circle) {
+                GCS::Circle& c = Circles[Geoms[geoId].index];
+                rad = c.rad;
             }
-            else if ((*it).constr->Type == Angle) {
-
-                (*it).constr->setValue(std::fmod(*((*it).value), 2.0 * std::numbers::pi));
+            else if (Geoms[geoId].type == Arc) {
+                GCS::Arc& a = Arcs[Geoms[geoId].index];
+                rad = a.rad;
             }
-            else if ((*it).constr->Type == Diameter && (*it).constr->First >= 0) {
 
-                // two cases, the geometry parameter is fixed or it is not
-                // NOTE: This is different from being blocked, as new block constraint may fix
-                // the parameter or not depending on whether other driving constraints are present
-                int geoId = (*it).constr->First;
-
-                geoId = checkGeoId(geoId);
-
-                double* rad = nullptr;
-
-                if (Geoms[geoId].type == Circle) {
-                    GCS::Circle& c = Circles[Geoms[geoId].index];
-                    rad = c.rad;
-                }
-                else if (Geoms[geoId].type == Arc) {
-                    GCS::Arc& a = Arcs[Geoms[geoId].index];
-                    rad = a.rad;
-                }
-
-                if (auto pos = std::ranges::find(FixParameters, rad); pos != FixParameters.end()) {
-                    (*it).constr->setValue(*((*it).value));
-                }
-                else {
-                    (*it).constr->setValue(2.0 * *((*it).value));
-                }
+            if (auto pos = std::ranges::find(FixParameters, rad); pos != FixParameters.end()) {
+                constrDef.constr->setValue(*(constrDef.value));
             }
             else {
-                (*it).constr->setValue(*((*it).value));
+                constrDef.constr->setValue(2.0 * *(constrDef.value));
             }
+        }
+        else {
+            constrDef.constr->setValue(*(constrDef.value));
         }
     }
 
@@ -4686,9 +4675,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
                     solvername = "SQP(augmented system)";
                     InitParameters.resize(Parameters.size());
                     int i = 0;
-                    for (std::vector<double*>::iterator it = Parameters.begin();
-                         it != Parameters.end();
-                         ++it, i++) {
+                    for (auto it = Parameters.begin(); it != Parameters.end(); ++it, ++i) {
                         InitParameters[i] = **it;
                         GCSsys.addConstraintEqual(*it,
                                                   &InitParameters[i],
@@ -4717,7 +4704,6 @@ int Sketch::internalSolve(std::string& solvername, int level)
             else {
                 valid_solution = false;
                 if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
-
                     Base::Console().log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
                                         solvername.c_str());
                 }
@@ -4758,7 +4744,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
     return ret;
 }
 
-int Sketch::initMove(std::vector<GeoElementId> geoEltIds, bool fine)
+int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
 {
     if (hasConflicts()) {
         // don't try to move sketches that contain conflicting constraints
@@ -4783,7 +4769,7 @@ int Sketch::initMove(std::vector<GeoElementId> geoEltIds, bool fine)
             reserveSize += bsp.poles.size() * 2;
         }
         else {
-            reserveSize += 6;  // 6 is the max case for all other cases.
+            reserveSize += 6;  // 6 is the max for all other cases.
         }
     }
     MoveParameters.reserve(reserveSize);
@@ -5086,7 +5072,7 @@ int Sketch::initBSplinePieceMove(int geoId,
     return 0;
 }
 
-int Sketch::moveGeometries(std::vector<GeoElementId> geoEltIds,
+int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds,
                            Base::Vector3d toPoint,
                            bool relative)
 {
@@ -5248,7 +5234,7 @@ TopoShape Sketch::toShape() const
 #if 0
 
     bool first = true;
-    for (;it!=Geoms.end();++it) {
+    for (; it!=Geoms.end(); ++it) {
         if (!it->geo->Construction) {
             TopoDS_Shape sh = it->geo->toShape();
             if (first) {
@@ -5299,8 +5285,7 @@ TopoShape Sketch::toShape() const
         bool found = false;
         do {
             found = false;
-            for (std::list<TopoDS_Edge>::iterator pE = edge_list.begin(); pE != edge_list.end();
-                 ++pE) {
+            for (auto pE = edge_list.begin(); pE != edge_list.end(); ++pE) {
                 mkWire.Add(*pE);
                 if (mkWire.Error() != BRepBuilderAPI_DisconnectedWire) {
                     // edge added ==> remove it from list
@@ -5338,12 +5323,11 @@ TopoShape Sketch::toShape() const
         BRep_Builder builder;
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
-        for (std::list<TopoDS_Wire>::iterator wt = wires.begin(); wt != wires.end(); ++wt) {
-            builder.Add(comp, *wt);
+        for (auto& wire : wires) {
+            builder.Add(comp, wire);
         }
-        for (std::list<TopoDS_Vertex>::iterator wt = vertex_list.begin(); wt != vertex_list.end();
-             ++wt) {
-            builder.Add(comp, *wt);
+        for (auto& vertex : vertex_list) {
+            builder.Add(comp, vertex);
         }
         result.setShape(comp);
     }
