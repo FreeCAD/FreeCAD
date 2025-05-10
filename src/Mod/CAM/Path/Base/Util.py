@@ -118,13 +118,13 @@ def isSolid(obj):
     return not shape.isNull() and shape.Volume and shape.isClosed()
 
 
-def opProperty(op, prop):
+def opProperty(op, prop, default=None):
     """opProperty(op, prop) ... return the value of property prop of the underlying operation (or None if prop does not exist)"""
     if hasattr(op, prop):
         return getattr(op, prop)
     if hasattr(op, "Base"):
-        return opProperty(op.Base, prop)
-    return None
+        return opProperty(op.Base, prop, default)
+    return default
 
 
 def toolControllerForOp(op):
@@ -132,6 +132,20 @@ def toolControllerForOp(op):
     If the op doesn't have its own tool controller but has a Base object, return its tool controller.
     Otherwise return None."""
     return opProperty(op, "ToolController")
+
+
+def coolantModeForOp(op):
+    """coolantModeForOp(op) ... return the coolant mode used by the op.
+    If the op doesn't have its own coolant mode but has a Base object, return its coolant mode.
+    Otherwise return "None"."""
+    return opProperty(op, "CoolantMode", "None")
+
+
+def activeForOp(op):
+    """activeForOp(op) ... return the active property used by the op.
+    If the op doesn't have its own active property but has a Base object, return its active property.
+    Otherwise return True."""
+    return opProperty(op, "Active", True)
 
 
 def getPublicObject(obj):

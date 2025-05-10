@@ -587,7 +587,8 @@ def init_shared_values(values: Values) -> None:
     #
     values["SHOW_MACHINE_UNITS"] = True
     #
-    # If True then the current operation label is output just before the PRE_OPERATION.
+    # If True then the current operation label is output just before the PRE_OPERATION
+    # and just before the POST_OPERATION.
     #
     values["SHOW_OPERATION_LABELS"] = True
     #
