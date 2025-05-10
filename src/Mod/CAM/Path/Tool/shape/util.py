@@ -98,7 +98,7 @@ def create_thumbnail_from_data(shape_data: bytes, w: int = 200, h: int = 200) ->
 def _add_file_to_store(filepath: pathlib.Path, store_name: str, asset_type: str):
     with open(filepath, "rb") as f:
         raw_data = f.read()
-    asset_manager.create_raw(
+    asset_manager.add_raw(
         store=store_name,
         asset_type=asset_type,
         asset_id=filepath.stem,

@@ -1,6 +1,6 @@
 import unittest
 import asyncio
-from unittest.mock import Mock, AsyncMock
+from unittest.mock import Mock
 import pathlib
 import tempfile
 from typing import Any, Mapping, List
@@ -17,9 +17,9 @@ from Path.Tool.assets import (
 class MockAsset(Asset):
     asset_type: str = "mock_asset"
 
-    def __init__(self, data: Any = None):
+    def __init__(self, data: Any = None, id: str = "mock_id"):
         self._data = data
-        self._id = "mock_id"
+        self._id = id
 
     @classmethod
     def dependencies(cls, data: bytes) -> List[AssetUri]:
@@ -27,15 +27,11 @@ class MockAsset(Asset):
 
     @classmethod
     def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]) -> "MockAsset":
-        # Mock the classmethod creation
-        mock_instance = cls(data.decode('utf-8'))
-        # Attach mock methods to the instance for assertion
-        mock_instance.to_bytes = Mock(return_value=str(mock_instance._data).encode('utf-8'))
-        mock_instance.get_id = Mock(return_value=mock_instance._id)
-        return mock_instance
+        # Create instance with provided id
+        return cls(data, id)
 
     def to_bytes(self) -> bytes:
-        return str(self._data).encode('utf-8')
+        return self._data
 
     def get_id(self) -> str:
         return self._id
@@ -113,18 +109,18 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             # Create a test asset file via AssetManager
             test_data = b"test asset data"
-            test_uri = manager.create_raw(asset_type=MockAsset.asset_type,
-                                          asset_id="dummy_id_get",
-                                          data=test_data,
-                                          store="local")
+            test_uri = manager.add_raw(asset_type=MockAsset.asset_type,
+                                       asset_id="dummy_id_get",
+                                       data=test_data,
+                                       store="local")
 
             # Call AssetManager.get
             retrieved_object = manager.get(test_uri)
 
             # Assert the retrieved object is an instance of MockAsset
             self.assertIsInstance(retrieved_object, MockAsset)
-            # Assert the data was passed to from_bytes (checked in MockAsset.from_bytes)
-            self.assertEqual(retrieved_object._data, test_data.decode('utf-8'))
+            # Assert the data was passed to from_bytes
+            self.assertEqual(retrieved_object._data, test_data)
 
             # Test error handling for non-existent URI
             non_existent_uri = AssetUri.build(
@@ -137,18 +133,16 @@ class TestPathToolAssetManager(unittest.TestCase):
             non_registered_uri = AssetUri.build(
                 "non_existent_type", "dummy_id", "1"
             )
-            # Need to create a dummy file for the store to find, otherwise
-            # it will raise FileNotFoundError first.
+            # Need to create a dummy file for the store to find
             dummy_data = b"dummy"
-            manager.create_raw(asset_type="non_existent_type",
-                               asset_id="dummy_id",
-                               data=dummy_data,
-                               store="local")
+            manager.add_raw(asset_type="non_existent_type",
+                            asset_id="dummy_id",
+                            data=dummy_data,
+                            store="local")
 
             with self.assertRaises(ValueError) as cm:
-                 manager.get(non_registered_uri)
+                manager.get(non_registered_uri)
             self.assertIn("No asset class registered for asset type:", str(cm.exception))
-
 
     def test_delete(self):
         # Setup AssetManager with a real LocalStore
@@ -160,10 +154,10 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             # Create a test asset file
             test_data = b"test asset data to delete"
-            test_uri = manager.create_raw(asset_type="temp_asset",
-                                          asset_id="dummy_id_delete",
-                                          data=test_data,
-                                          store="local")
+            test_uri = manager.add_raw(asset_type="temp_asset",
+                                       asset_id="dummy_id_delete",
+                                       data=test_data,
+                                       store="local")
             test_path = (
                 base_dir
                 / "temp_asset"
@@ -196,125 +190,64 @@ class TestPathToolAssetManager(unittest.TestCase):
             # Register the MockAsset class
             manager.register_asset(MockAsset)
 
-            # Create a MockAsset instance
-            test_obj = MockAsset("object data")
-            # Mock the instance methods that AssetManager will call
-            test_obj.to_bytes = Mock(return_value=b"serialized object data")
-            test_obj.get_id = Mock(return_value="mocked_asset_id")
+            # Create a MockAsset instance with a specific id
+            test_obj = MockAsset(b"object data", id="mocked_asset_id")
 
+            # Call manager.add to create
+            created_uri = manager.add(test_obj, store="local")
 
-            # Mock store create method to return a predictable URI
-            expected_uri_str = (
-                f"{MockAsset.asset_type}://mocked_asset_id/1"
-            )
-            expected_uri = AssetUri(expected_uri_str)
-            local_store.create = AsyncMock(return_value=expected_uri)
-
-            # Call manager.create
-            created_uri = manager.create(test_obj, store="local")
-
-            # Assert instance methods called
-            test_obj.to_bytes.assert_called_once_with()
-            test_obj.get_id.assert_called_once_with()
-
-            # Assert store create called with correct arguments
-            local_store.create.assert_called_once_with(
-                MockAsset.asset_type, "mocked_asset_id", b"serialized object data"
-            )
-
-            # Assert returned URI matches store's result
+            # Assert returned URI is as expected
+            expected_uri = AssetUri.build(MockAsset.asset_type, "mocked_asset_id", "1")
             self.assertEqual(created_uri, expected_uri)
 
-            # Test error handling (asset class not found for object type)
-            # Mock asset class for unittest.mock.Mock
-            class MockAsset2(Asset):
-                asset_type: str = "mock_asset2"
-
-                @classmethod
-                def dependencies(cls, data: bytes) -> List[AssetUri]:
-                    return []
-
-                @classmethod
-                def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]) -> Any:
-                    return Mock() # Return a Mock object
-
-                def to_bytes(self) -> bytes:
-                    return b"mocked bytes"
-
-                def get_id(self) -> str:
-                    return "mocked_id"
-
-            manager.register_asset(MockAsset2)
-            with self.assertRaises(ValueError) as cm:
-                manager.create(Mock(), store="local")  # different object type
-            self.assertIn(
-                "No asset class registered for object type", str(cm.exception)
-            )
+            # Verify the asset was created
+            retrieved_data = asyncio.run(local_store.get(created_uri))
+            self.assertEqual(retrieved_data, test_obj.to_bytes())
 
             # Test error handling (store not found)
             with self.assertRaises(ValueError) as cm:
-                manager.create(test_obj, store="non_existent_store")
+                manager.add(test_obj, store="non_existent_store")
             self.assertIn(
                 "No store registered for name:", str(cm.exception)
             )
 
-    def test_update(self):
-        # Setup AssetManager with LocalStore and MockAsset class
         with tempfile.TemporaryDirectory() as tmpdir:
-            base_dir = pathlib.Path(tmpdir)
-            local_store = FileStore("local", base_dir)
+            local_store = MemoryStore("local")
             manager = AssetManager()
             manager.register_store(local_store)
 
             # Register the MockAsset class
             manager.register_asset(MockAsset)
 
-            # Create a MockAsset instance
-            test_obj = MockAsset("updated object data")
-            # Mock the instance method that AssetManager will call
-            test_obj.to_bytes = Mock(return_value=b"updated serialized object data")
+            # First, create an asset
+            initial_data = b"initial data"
+            asset_id = "some_asset_id"
+            test_uri = manager.add_raw(MockAsset.asset_type, asset_id, initial_data, "local")
+            self.assertEqual(test_uri.version, "1")
 
-            # Mock store update method
-            test_uri_str = (
-                f"{MockAsset.asset_type}://some_asset_id/1"
-            )
-            test_uri = AssetUri(test_uri_str)
-            local_store.update = AsyncMock(
-                return_value=AssetUri(
-                    f"{MockAsset.asset_type}://some_asset_id/1"
-                )
-            )
+            # Create a MockAsset instance with the same id for update
+            updated_data = b"updated object data"
+            test_obj = MockAsset(updated_data, id=asset_id)
 
-            # Call manager.update
-            manager.update(test_uri, test_obj, store="local")
+            # Call manager.add to update
+            updated_uri = manager.add(test_obj, store="local")
 
-            # Assert instance method called
-            test_obj.to_bytes.assert_called_once_with()
+            # Assert returned URI matches the original except for version
+            self.assertEqual(updated_uri.asset_type, test_uri.asset_type)
+            self.assertEqual(updated_uri.asset_id, test_uri.asset_id)
+            self.assertEqual(updated_uri.version, "2")
 
-            # Assert store update called with correct URI and data
-            local_store.update.assert_called_once_with(
-                test_uri, b"updated serialized object data"
-            )
-
-            # Test error handling (asset class not found for object type)
-            with self.assertRaises(ValueError) as cm:
-                manager.update(test_uri, Mock(), store="local")  # different object type
-            self.assertIn(
-                "No asset class registered for object type:", str(cm.exception)
-            )
+            # Verify the asset was updated
+            obj = manager.get(updated_uri, store="local")
+            self.assertEqual(updated_data, test_obj.to_bytes())
+            self.assertEqual(updated_data, obj.to_bytes())
 
             # Test error handling (store not found)
-            non_existent_uri = AssetUri.build(
-                MockAsset.asset_type,
-                "some_asset_id",
-                "1",
-            )
             with self.assertRaises(ValueError) as cm:
-                manager.update(non_existent_uri, test_obj, store="non_existent_store")
+                manager.add(test_obj, store="non_existent_store")
             self.assertIn(
                 "No store registered for name:", str(cm.exception)
             )
-
     def test_create_raw(self):
         # Setup AssetManager with a real MemoryStore
         memory_store = MemoryStore("memory_raw")
@@ -328,8 +261,8 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Expected URI with version 1 (assuming MemoryStore uses integer versions)
         expected_uri = AssetUri.build(asset_type, asset_id, "1")
 
-        # Call manager.create_raw
-        created_uri = manager.create_raw(
+        # Call manager.add_raw
+        created_uri = manager.add_raw(
             asset_type=asset_type, asset_id=asset_id, data=data, store="memory_raw"
         )
 
@@ -343,10 +276,9 @@ class TestPathToolAssetManager(unittest.TestCase):
         retrieved_data = asyncio.run(memory_store.get(created_uri))
         self.assertEqual(retrieved_data, data)
 
-
         # Test error handling (store not found)
         with self.assertRaises(ValueError) as cm:
-            manager.create_raw(
+            manager.add_raw(
                 asset_type=asset_type, asset_id=asset_id, data=data, store="non_existent_store"
             )
         self.assertIn(
@@ -364,10 +296,9 @@ class TestPathToolAssetManager(unittest.TestCase):
         expected_data = b"retrieved raw data"
 
         # Manually put data into the memory store
-        manager.create_raw("test_type", "test_id", expected_data, "memory_raw_get")
+        manager.add_raw("test_type", "test_id", expected_data, "memory_raw_get")
 
-
-        # Call manager.get_raw using the URI returned by create_raw
+        # Call manager.get_raw using the URI returned by add_raw
         retrieved_data = manager.get_raw(test_uri, store="memory_raw_get")
 
         # Assert returned data matches store's result
@@ -391,13 +322,12 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertTrue(manager.is_empty(store="memory_empty"))
 
         # Add an asset and test again
-        manager.create_raw("test_type", "test_id", b"data", "memory_empty")
+        manager.add_raw("test_type", "test_id", b"data", "memory_empty")
         self.assertFalse(manager.is_empty(store="memory_empty"))
 
         # Test with asset type
         self.assertTrue(manager.is_empty(store="memory_empty", asset_type="another_type"))
         self.assertFalse(manager.is_empty(store="memory_empty", asset_type="test_type"))
-
 
         # Test error handling (store not found)
         with self.assertRaises(ValueError) as cm:
@@ -405,7 +335,6 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertIn(
             "No store registered for name:", str(cm.exception)
         )
-
 
     def test_get_bulk(self):
         # Setup AssetManager with a real MemoryStore and MockAsset class
@@ -417,8 +346,8 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Create some assets in the memory store
         data1 = b"data for id1"
         data2 = b"data for id2"
-        uri1 = manager.create_raw(MockAsset.asset_type, "id1", data1, "memory_bulk")
-        uri2 = manager.create_raw(MockAsset.asset_type, "id2", data2, "memory_bulk")
+        uri1 = manager.add_raw(MockAsset.asset_type, "id1", data1, "memory_bulk")
+        uri2 = manager.add_raw(MockAsset.asset_type, "id2", data2, "memory_bulk")
         uri3 = AssetUri.build(MockAsset.asset_type, "non_existent", "1")
         uris = [uri1, uri2, uri3]
 
@@ -431,14 +360,14 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Assert the retrieved assets are MockAsset instances with correct data
         self.assertIsInstance(retrieved_assets[0], MockAsset)
         self.assertEqual(
-            retrieved_assets[0].to_bytes().decode("utf-8"),
-            data1.decode("utf-8"),
+            retrieved_assets[0].to_bytes(),
+            data1,
         )
 
         self.assertIsInstance(retrieved_assets[1], MockAsset)
         self.assertEqual(
-            retrieved_assets[1].to_bytes().decode("utf-8"),
-            data2.decode("utf-8"),
+            retrieved_assets[1].to_bytes(),
+            data2,
         )
 
         # Assert the non-existent asset is None
@@ -461,19 +390,17 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Create some assets in the memory store
         data1 = b"data for id1"
         data2 = b"data for id2"
-        manager.create_raw(MockAsset.asset_type, "id1", data1, "memory_fetch")
-        manager.create_raw(MockAsset.asset_type, "id2", data2, "memory_fetch")
+        manager.add_raw(MockAsset.asset_type, "id1", data1, "memory_fetch")
+        manager.add_raw(MockAsset.asset_type, "id2", data2, "memory_fetch")
         # Create an asset of a different type
-        manager.create_raw("another_type", "id3", b"data for id3", "memory_fetch")
+        manager.add_raw("another_type", "id3", b"data for id3", "memory_fetch")
         AssetUri.build(MockAsset.asset_type, "non_existent", "1")
-
 
         # Call manager.fetch without filters
         # This should raise ValueError because uri3 has an unregistered type
         with self.assertRaises(ValueError) as cm:
             manager.fetch(store="memory_fetch")
         self.assertIn("No asset class registered for asset type:", str(cm.exception))
-
 
         # Now test fetching with a registered asset type filter
         # Setup a new manager and store to avoid state from previous test
@@ -483,9 +410,9 @@ class TestPathToolAssetManager(unittest.TestCase):
         manager_filtered.register_asset(MockAsset)
 
         # Create assets again
-        manager_filtered.create_raw(MockAsset.asset_type, "id1", data1, "memory_fetch_filtered")
-        manager_filtered.create_raw(MockAsset.asset_type, "id2", data2, "memory_fetch_filtered")
-        manager_filtered.create_raw("another_type", "id3", b"data for id3", "memory_fetch_filtered")
+        manager_filtered.add_raw(MockAsset.asset_type, "id1", data1, "memory_fetch_filtered")
+        manager_filtered.add_raw(MockAsset.asset_type, "id2", data2, "memory_fetch_filtered")
+        manager_filtered.add_raw("another_type", "id3", b"data for id3", "memory_fetch_filtered")
 
         retrieved_assets_filtered = manager_filtered.fetch(
             asset_type=MockAsset.asset_type, store="memory_fetch_filtered"

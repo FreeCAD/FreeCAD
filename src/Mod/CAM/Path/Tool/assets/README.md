@@ -115,7 +115,7 @@ manager.register_store(FileStore("local", pathlib.Path("/tmp/assets")))
 manager.register_asset(Material)
 
 # Create and get an asset
-asset_uri = manager.create(Material("Copper"))
+asset_uri = manager.add(Material("Copper"))
 print(f"Stored with URI: {asset_uri}")
 retrieved_asset = manager.get(asset_uri)
 print(f"Retrieved: {retrieved_asset}")
@@ -140,13 +140,12 @@ classDiagram
         stores: Mapping[str, AssetStore]   // maps protocol to store
         _asset_classes: Mapping[str, Asset]   // maps asset type to Asset
         register_store(store: AssetStore)
-        register_asset(asset: Asset) // Keyed by adapter.asset_name
-        get(uri: AssetUri, store: str) Any
+        register_asset(asset: Asset)
+        get(uri: AssetUri, store: str) Asset | None
+        get_raw(uri: AssetUri | str, store: str) bytes | None
+        add(obj: Any, store: str) AssetUri // Returns URI of created asset
+        add_raw(asset_type: str, asset_id: str, data: bytes, store: str) AssetUri
         delete(uri: AssetUri, store: str)
-        create(obj: Any, store: str) AssetUri // Returns URI of created asset
-        update(uri: AssetUri, obj: Any, store: str) AssetUri // Updates asset at URI
-        create_raw(asset_type: str, asset_id: str, data: bytes, store: str) AssetUri
-        get_raw(uri: AssetUri | str, store: str) bytes
         is_empty(store: str | None, asset_type: str | None) bool
         list_assets(asset_type: str | None, limit: int | None, offset: int | None, store: str) List[AssetUri]
         list_versions(uri: AssetUri | str, store: str) List[AssetUri]

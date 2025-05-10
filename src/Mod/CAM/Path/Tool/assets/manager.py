@@ -16,15 +16,14 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class AssetConstructionData:
+class _AssetConstructionData:
     """Holds raw data and type info needed to construct an asset instance."""
-
     uri: AssetUri
     raw_data: bytes
     asset_class_type: Type[Asset]
     asset_id: str
     # Stores AssetConstructionData for dependencies, keyed by their AssetUri
-    dependencies_data: Dict[AssetUri, Optional["AssetConstructionData"]] = (
+    dependencies_data: Dict[AssetUri, Optional["_AssetConstructionData"]] = (
         field(default_factory=dict)
     )
 
@@ -64,12 +63,12 @@ class AssetManager:
 
     async def _fetch_asset_construction_data_recursive_async(
         self, uri: AssetUri, store_name: str, visited_uris: Set[AssetUri]
-    ) -> Optional[AssetConstructionData]:
+    ) -> Optional[_AssetConstructionData]:
         """
         Asynchronously and recursively fetches all raw data and type information
         needed to construct an asset and its dependencies.
         Does NOT call Asset.from_bytes.
-        Returns AssetConstructionData or None if the primary asset is not found.
+        Returns _AssetConstructionData or None if the primary asset is not found.
         """
         if uri in visited_uris:
             logger.error(f"Cyclic dependency detected for URI: {uri}")
@@ -97,7 +96,7 @@ class AssetManager:
             dependency_uris = asset_class_type.dependencies(raw_data)
 
             deps_construction_data_map: Dict[
-                AssetUri, Optional[AssetConstructionData]
+                AssetUri, Optional[_AssetConstructionData]
             ] = {}
             if dependency_uris:
                 # Create a list of tasks to fetch data for all dependencies concurrently
@@ -140,8 +139,7 @@ class AssetManager:
                             )
                             raise result
                         deps_construction_data_map[original_dep_uri] = result
-
-            return AssetConstructionData(
+            return _AssetConstructionData(
                 uri=uri,
                 raw_data=raw_data,
                 asset_class_type=asset_class_type,
@@ -164,21 +162,20 @@ class AssetManager:
             # This is for the primary URI fetch. Dependencies are handled above.
             return None  # asset does not exist
         finally:
-            if uri in visited_uris:  # Clean up visited set for current path
+            if uri in visited_uris:
                 visited_uris.remove(uri)
 
     def _build_asset_tree_from_data_sync(
-        self, construction_data: Optional[AssetConstructionData]
-    ) -> Any:  # Returns Asset instance or None
+        self, construction_data: Optional[_AssetConstructionData]
+    ) -> Asset | None:
         """
         Synchronously and recursively builds an asset instance (and its dependencies)
-        from the provided AssetConstructionData.
+        from the provided _AssetConstructionData.
         This method calls Asset.from_bytes and is intended to run in the
         thread where UI operations are safe (typically the main UI thread).
         """
         if not construction_data:
             return None
-
         logger.debug(
             f"BuildAssetTreeSync: Instantiating '{construction_data.uri.asset_id}' "
             f"of type '{construction_data.asset_class_type.__name__}' "
@@ -268,7 +265,7 @@ class AssetManager:
 
     async def get_async(
         self, uri: Union[AssetUri, str], store: str = "local"
-    ) -> Any:
+    ) -> Asset:
         """
         Retrieves an asset by its URI (asynchronous).
         NOTE: If Asset.from_bytes does UI work, this method should ideally be awaited
@@ -382,7 +379,7 @@ class AssetManager:
                     exc_info=False,
                 )
                 raise data_or_exc
-            elif isinstance(data_or_exc, AssetConstructionData):
+            elif isinstance(data_or_exc, _AssetConstructionData):
                 # Build asset instance synchronously. Exceptions during build should propagate.
                 assets.append(
                     self._build_asset_tree_from_data_sync(data_or_exc)
@@ -421,7 +418,7 @@ class AssetManager:
 
         assets = []
         for i, data_or_exc in enumerate(all_construction_data_list):
-            if isinstance(data_or_exc, AssetConstructionData):
+            if isinstance(data_or_exc, _AssetConstructionData):
                 assets.append(
                     self._build_asset_tree_from_data_sync(data_or_exc)
                 )
@@ -497,117 +494,59 @@ class AssetManager:
             raise ValueError(f"No store registered for name: {store}")
         return await selected_store.list_assets(asset_type, limit, offset)
 
-    def _get_object_creation_details(
-        self, obj: Any
-    ) -> Tuple[str, str, bytes, Type[Asset]]:
+    def _is_registered_type(self, obj: Asset) -> bool:
         """Helper to extract asset_type, id, and data from an object instance."""
-        # Find the registered class to ensure we use the asset_type string it was registered with.
-        obj_actual_asset_class: Optional[Type[Asset]] = None
         for registered_class_type in self._asset_classes.values():
             if isinstance(obj, registered_class_type):
-                obj_actual_asset_class = registered_class_type
-                break
+                return True
+        return False
 
-        if not obj_actual_asset_class:
-            # Based on test expectations, raise specific ValueError
-            raise ValueError(
-                f"No asset class registered for object type: {type(obj).__name__}"
-            )
+    async def add_async(self, obj: Asset, store: str = "local") -> AssetUri:
+        """
+        Adds an asset to the store, either creating a new one or updating an existing one.
+        Uses obj.get_url() to determine if the asset exists.
+        """
+        logger.debug(f"AddAsync: Adding {type(obj).__name__} to store '{store}'")
+        uri = obj.get_uri()
+        if not self._is_registered_type(obj):
+            logger.warning(f"Asset has unregistered type '{uri.asset_type}' ({type(obj).__name__})")
 
-        # Use asset_type from the class definition it was registered under
-        asset_type_str = obj_actual_asset_class.asset_type
+        data = obj.to_bytes()
+        return await self.add_raw_async(uri.asset_type, uri.asset_id, data, store)
+    def add(self, obj: Asset, store: str = "local") -> AssetUri:
+        """Synchronous wrapper for adding an asset to the store."""
+        logger.debug(f"Add: Adding {type(obj).__name__} to store '{store}' from T:{threading.current_thread().name}")
+        return asyncio.run(self.add_async(obj, store))
 
-        # Ensure obj is an instance of Asset for get_id and to_bytes
-        if not isinstance(
-            obj, Asset
-        ):  # Should be caught by above, but good for clarity
-            raise TypeError(
-                f"Object must be an instance of Asset to call get_id() and to_bytes(). Got {type(obj)}."
-            )
+    async def add_raw_async(self, asset_type: str, asset_id: str, data: bytes, store: str = "local") -> AssetUri:
+        """
+        Adds raw asset data to the store, either creating a new asset or updating an existing one.
+        """
+        logger.debug(f"AddRawAsync: type='{asset_type}', id='{asset_id}', store='{store}'")
+        if not asset_type or not asset_id:
+            raise ValueError("asset_type and asset_id must be provided for add_raw.")
+        if not isinstance(data, bytes):
+            raise TypeError("Data for add_raw must be bytes.")
+        selected_store = self.stores.get(store)
+        if not selected_store:
+            raise ValueError(f"No store registered for name: {store}")
+        uri = AssetUri.build(asset_type=asset_type, asset_id=asset_id)
+        try:
+            uri = await selected_store.update(uri, data)
+            logger.debug(f"AddRawAsync: Updated existing asset at {uri}")
+        except FileNotFoundError:
+            logger.debug(f"AddRawAsync: Asset not found, creating new asset with {asset_type} and {asset_id}")
+            uri = await selected_store.create(asset_type, asset_id, data)
+        return uri
 
-        asset_id_str = obj.get_id()  # Instance method
-        serialized_data = obj.to_bytes()  # Instance method
-
-        return (
-            asset_type_str,
-            asset_id_str,
-            serialized_data,
-            obj_actual_asset_class,
-        )
-
-    def create(self, obj: Any, store: str = "local") -> AssetUri:
-        logger.debug(f"Create from {type(obj).__name__} in store '{store}'")
-        asset_type, asset_id, data, _ = self._get_object_creation_details(obj)
-
-        async def _do_create_async():
-            logger.debug(
-                f"CreateAsync (internal): Looking up store '{store}'. Available stores: {list(self.stores.keys())}"
-            )
-            try:
-                selected_store = self.stores[store]
-            except KeyError:
-                raise ValueError(f"No store registered for name: {store}")
-            return await selected_store.create(asset_type, asset_id, data)
-
-        return asyncio.run(_do_create_async())
-
-    async def create_async(self, obj: Any, store: str = "local") -> AssetUri:
-        logger.debug(
-            f"CreateAsync from {type(obj).__name__} in store '{store}'"
-        )
-        asset_type, asset_id, data, _ = self._get_object_creation_details(obj)
-        selected_store = self.stores[store]
-        return await selected_store.create(asset_type, asset_id, data)
-
-    def update(
-        self, uri: Union[AssetUri, str], obj: Any, store: str = "local"
-    ) -> AssetUri:
-        logger.debug(
-            f"Update URI '{uri}' with {type(obj).__name__} in store '{store}'"
-        )
-        asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
-        # For update, asset_type and asset_id come from the URI.
-        # We only need serialized_data from the object.
-        # The _get_object_creation_details can still be used if we ignore parts of its return.
-        _, _, data, obj_asset_class_type = self._get_object_creation_details(
-            obj
-        )
-
-        # Optional: Check if obj_asset_class_type.asset_type matches asset_uri_obj.asset_type
-        if obj_asset_class_type.asset_type != asset_uri_obj.asset_type:
-            logger.warning(
-                f"Updating asset of type '{asset_uri_obj.asset_type}' with object of type "
-                f"'{obj_asset_class_type.asset_type}'. This might be unintended."
-            )
-
-        async def _do_update_async():
-            logger.debug(
-                f"UpdateAsync (internal): Looking up store '{store}'. Available stores: {list(self.stores.keys())}"
-            )
-            try:
-                selected_store = self.stores[store]
-            except KeyError:
-                raise ValueError(f"No store registered for name: {store}")
-            return await selected_store.update(asset_uri_obj, data)
-
-        return asyncio.run(_do_update_async())
-
-    async def update_async(
-        self, uri: Union[AssetUri, str], obj: Any, store: str = "local"
-    ) -> AssetUri:
-        logger.debug(
-            f"UpdateAsync URI '{uri}' with {type(obj).__name__} in store '{store}'"
-        )
-        asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
-        _, _, data, obj_asset_class_type = self._get_object_creation_details(
-            obj
-        )
-        if obj_asset_class_type.asset_type != asset_uri_obj.asset_type:
-            logger.warning(
-                f"Async Update: asset type mismatch ('{asset_uri_obj.asset_type}' vs '{obj_asset_class_type.asset_type}')"
-            )
-        selected_store = self.stores[store]
-        return await selected_store.update(asset_uri_obj, data)
+    def add_raw(self, asset_type: str, asset_id: str, data: bytes, store: str = "local") -> AssetUri:
+        """Synchronous wrapper for adding raw asset data to the store."""
+        logger.debug(f"AddRaw: type='{asset_type}', id='{asset_id}', store='{store}' from T:{threading.current_thread().name}")
+        try:
+            return asyncio.run(self.add_raw_async(asset_type, asset_id, data, store))
+        except Exception as e:
+            logger.error(f"AddRaw: Error for type='{asset_type}', id='{asset_id}': {e}", exc_info=False)
+            raise
 
     def delete(self, uri: Union[AssetUri, str], store: str = "local") -> None:
         logger.debug(f"Delete URI '{uri}' from store '{store}'")
@@ -627,45 +566,6 @@ class AssetManager:
         selected_store = self.stores[store]
         await selected_store.delete(asset_uri_obj)
 
-    async def create_raw_async(
-        self, asset_type: str, asset_id: str, data: bytes, store: str = "local"
-    ) -> AssetUri:
-        """Creates a new asset with raw data (asynchronous)."""
-        logger.debug(
-            f"CreateRawAsync: type='{asset_type}', id='{asset_id}', store='{store}'"
-        )
-        if not asset_type or not asset_id:  # Basic validation
-            raise ValueError(
-                "asset_type and asset_id must be provided for create_raw."
-            )
-        if not isinstance(data, bytes):
-            raise TypeError("Data for create_raw must be bytes.")
-
-        logger.debug(
-            f"CreateRawAsync: Looking up store '{store}'. Available stores: {list(self.stores.keys())}"
-        )
-        selected_store = self.stores.get(store)
-        if not selected_store:
-            raise ValueError(f"No store registered for name: {store}")
-        return await selected_store.create(asset_type, asset_id, data)
-
-    def create_raw(
-        self, asset_type: str, asset_id: str, data: bytes, store: str = "local"
-    ) -> AssetUri:
-        """Creates a new asset with raw data (synchronous wrapper)."""
-        logger.debug(
-            f"CreateRaw: type='{asset_type}', id='{asset_id}', store='{store}' from T:{threading.current_thread().name}"
-        )
-        try:
-            return asyncio.run(
-                self.create_raw_async(asset_type, asset_id, data, store)
-            )
-        except Exception as e:
-            logger.error(
-                f"CreateRaw: Error for type='{asset_type}', id='{asset_id}': {e}",
-                exc_info=False,
-            )  # Changed exc_info to False
-            raise
 
     # --- Is Empty ---
     async def is_empty_async(
