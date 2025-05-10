@@ -126,11 +126,14 @@
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/TaskCAMSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>
-        <file>gl_simulator/0.png</file>
-        <file>gl_simulator/1.png</file>
-        <file>gl_simulator/4.png</file>
-        <file>gl_simulator/X.png</file>
+        <file>gl_simulator/Slower.png</file>
         <file>gl_simulator/Faster.png</file>
+        <file>gl_simulator/x.png</file>
+        <file>gl_simulator/1.png</file>
+        <file>gl_simulator/5.png</file>
+        <file>gl_simulator/10.png</file>
+        <file>gl_simulator/25.png</file>
+        <file>gl_simulator/50.png</file>
         <file>gl_simulator/Pause.png</file>
         <file>gl_simulator/Play.png</file>
         <file>gl_simulator/Rotate.png</file>
