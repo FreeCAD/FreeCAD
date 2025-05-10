@@ -24,7 +24,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathUtils as PathUtils
-from Path.Dressup.Base import DressupBase
+import Path.Dressup.Utils as PathDressup
 import random
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -33,10 +33,14 @@ __doc__ = """CAM Array dressup"""
 translate = FreeCAD.Qt.translate
 
 
-class DressupArray(DressupBase):
+class DressupArray:
     def __init__(self, obj, base, job):
-        super().__init__(obj, base)
-
+        obj.addProperty(
+            "App::PropertyLink",
+            "Base",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
+        )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Type",
@@ -119,7 +123,6 @@ class DressupArray(DressupBase):
         self.obj = obj
         obj.Base = base
 
-        obj.Active = True
         # assigning array tells the type of possible enum choices
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
         # assign value
@@ -178,14 +181,14 @@ class DressupArray(DressupBase):
             obj.Base = None
         return True
 
-    def dressupExecute(self, obj):
+    def execute(self, obj):
 
         if not obj.Base or not obj.Base.isDerivedFrom("Path::Feature") or not obj.Base.Path:
             Path.Log.error(translate("PathArray", "Base is empty or an invalid object."))
             return None
 
         # Do not generate paths and clear current Path data if operation not active
-        if not obj.Active:
+        if not PathDressup.baseOp(obj.Base).Active:
             if obj.Path:
                 obj.Path = Path.Path()
             return
