@@ -497,7 +497,7 @@ void DSHScaleController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Third]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }
