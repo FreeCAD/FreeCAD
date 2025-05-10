@@ -47,11 +47,16 @@ on:
 jobs:
 
   Build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:20.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
-      CCACHE_DIR: ${{ github.workspace }}/ccache
-      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
+      LC_ALL: en_US.utf8
+      DEBIAN_FRONTEND: noninteractive
+      # set in a step to workaround https://github.com/actions/runner/issues/2058
+      #CCACHE_DIR: ${{ github.workspace }}/ccache
+      #CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config 
       CCACHE_MAXSIZE: 1G
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
       CCACHE_COMPRESS: true
@@ -60,7 +65,8 @@ jobs:
       CXX: /usr/bin/g++
       #CC: /usr/bin/clang
       #CXX: /usr/bin/clang++
-      builddir: ${{ github.workspace }}/build/release/
+      # set in a step to workaround https://github.com/actions/runner/issues/2058
+      #builddir: ${{ github.workspace }}/build/release/
       logdir: /tmp/logs/
       reportdir: /tmp/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -71,6 +77,15 @@ jobs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
 
     steps:
+      - name: Install basic packages
+        run: |
+          apt-get update -qq
+          apt-get install -y --no-install-recommends --reinstall language-pack-en sudo git ca-certificates build-essential cmake
+      - name: set env variables
+        run: |
+          echo "CCACHE_DIR=$GITHUB_WORKSPACE/ccache" >> "$GITHUB_ENV"
+          echo "CCACHE_CONFIGPATH=$GITHUB_WORKSPACE/ccache/config" >> "$GITHUB_ENV"
+          echo "builddir=$GITHUB_WORKSPACE/build/release/" >> "$GITHUB_ENV"
       - name: Checking out source code
         uses: actions/checkout@v4
         with:
@@ -133,6 +148,7 @@ jobs:
                             python3-pyside2.qtnetwork                   \
                             python3-pyside2.qtsvg                       \
                             python3-pyside2.qtwidgets                   \
+                            python3-yaml                                \
                             qtbase5-dev                                 \
                             qttools5-dev                                \
                             shiboken2                                   \
@@ -170,7 +186,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
-          extraParameters: -G Ninja --preset release
+          extraParameters: -G Ninja -D CMAKE_BUILD_TYPE=Release
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
