@@ -135,7 +135,7 @@ void PropertyNormalList::Save(Base::Writer& writer) const
 void PropertyNormalList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("VectorList");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
@@ -326,7 +326,7 @@ void PropertyCurvatureList::Save(Base::Writer& writer) const
 void PropertyCurvatureList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("CurvatureList");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
@@ -598,7 +598,7 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Material");
     if (reader.hasAttribute("file")) {
-        std::string file(reader.getAttribute("file"));
+        std::string file(reader.getAttribute<const char*>("file"));
 
         if (!file.empty()) {
             // initiate a file read
@@ -896,7 +896,7 @@ void PropertyMeshKernel::Save(Base::Writer& writer) const
 void PropertyMeshKernel::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Mesh");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (file.empty()) {
         // read XML

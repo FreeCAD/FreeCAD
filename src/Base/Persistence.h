@@ -73,9 +73,9 @@ public:
      *   // read my Element
      *   reader.readElement("PropertyVector");
      *   // get the value of my Attribute
-     *   _cVec.x = reader.getAttributeAsFloat("valueX");
-     *   _cVec.y = reader.getAttributeAsFloat("valueY");
-     *   _cVec.z = reader.getAttributeAsFloat("valueZ");
+     *   _cVec.x = reader.getAttribute<double>("valueX");
+     *   _cVec.y = reader.getAttribute<double>("valueY");
+     *   _cVec.z = reader.getAttribute<double>("valueZ");
      * }
      * \endcode
      */
@@ -122,7 +122,7 @@ public:
      * void PropertyMeshKernel::Restore(Base::XMLReader &reader)
      * {
      *   reader.readElement("Mesh");
-     *   std::string file (reader.getAttribute("file") );
+     *   std::string file (reader.getAttribute<const char*>("file") );
      *
      *   if(file == "")
      *   {

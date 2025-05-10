@@ -123,7 +123,7 @@ void PropertyInteger::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Integer");
     // get the value of my Attribute
-    setValue(reader.getAttributeAsInteger("value"));
+    setValue(reader.getAttribute<long>("value"));
 }
 
 Property* PropertyInteger::Copy() const
@@ -250,7 +250,7 @@ void PropertyPath::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Path");
     // get the value of my Attribute
-    setValue(reader.getAttribute("value"));
+    setValue(reader.getAttribute<const char*>("value"));
 }
 
 Property* PropertyPath::Copy() const
@@ -420,18 +420,18 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Integer");
     // get the value of my Attribute
-    long val = reader.getAttributeAsInteger("value");
+    long val = reader.getAttribute<long>("value");
 
     aboutToSetValue();
 
     if (reader.hasAttribute("CustomEnum")) {
         reader.readElement("CustomEnumList");
-        int count = reader.getAttributeAsInteger("count");
+        int count = reader.getAttribute<long>("count");
         std::vector<std::string> values(count);
 
         for (int i = 0; i < count; i++) {
             reader.readElement("Enum");
-            values[i] = reader.getAttribute("value");
+            values[i] = reader.getAttribute<const char*>("value");
         }
 
         reader.readEndElement("CustomEnumList");
@@ -844,12 +844,12 @@ void PropertyIntegerList::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("IntegerList");
     // get the value of my Attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
 
     std::vector<long> values(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("I");
-        values[i] = reader.getAttributeAsInteger("v");
+        values[i] = reader.getAttribute<long>("v");
     }
 
     reader.readEndElement("IntegerList");
@@ -965,12 +965,12 @@ void PropertyIntegerSet::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("IntegerSet");
     // get the value of my Attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
 
     std::set<long> values;
     for (int i = 0; i < count; i++) {
         reader.readElement("I");
-        values.insert(reader.getAttributeAsInteger("v"));
+        values.insert(reader.getAttribute<long>("v"));
     }
 
     reader.readEndElement("IntegerSet");
@@ -1066,7 +1066,7 @@ void PropertyFloat::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Float");
     // get the value of my Attribute
-    setValue(reader.getAttributeAsFloat("value"));
+    setValue(reader.getAttribute<double>("value"));
 }
 
 Property* PropertyFloat::Copy() const
@@ -1355,7 +1355,7 @@ void PropertyFloatList::Save(Base::Writer& writer) const
 void PropertyFloatList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FloatList");
-    string file(reader.getAttribute("file"));
+    string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
@@ -1537,22 +1537,22 @@ void PropertyString::Restore(Base::XMLReader& reader)
     auto obj = freecad_cast<DocumentObject*>(getContainer());
     if (obj && &obj->Label == this) {
         if (reader.hasAttribute("restore")) {
-            int restore = reader.getAttributeAsInteger("restore");
+            int restore = reader.getAttribute<long>("restore");
             if (restore == 1) {
                 aboutToSetValue();
-                _cValue = reader.getAttribute("value");
+                _cValue = reader.getAttribute<const char*>("value");
                 hasSetValue();
             }
             else {
-                setValue(reader.getName(reader.getAttribute("value")));
+                setValue(reader.getName(reader.getAttribute<const char*>("value")));
             }
         }
         else {
-            setValue(reader.getAttribute("value"));
+            setValue(reader.getAttribute<const char*>("value"));
         }
     }
     else {
-        setValue(reader.getAttribute("value"));
+        setValue(reader.getAttribute<const char*>("value"));
     }
 }
 
@@ -1692,7 +1692,7 @@ void PropertyUUID::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Uuid");
     // get the value of my Attribute
-    setValue(reader.getAttribute("value"));
+    setValue(reader.getAttribute<const char*>("value"));
 }
 
 Property* PropertyUUID::Copy() const
@@ -1808,12 +1808,12 @@ void PropertyStringList::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("StringList");
     // get the value of my Attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
 
     std::vector<std::string> values(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("String");
-        values[i] = reader.getAttribute("value");
+        values[i] = reader.getAttribute<const char*>("value");
     }
 
     reader.readEndElement("StringList");
@@ -1969,12 +1969,12 @@ void PropertyMap::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Map");
     // get the value of my Attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
 
     std::map<std::string, std::string> values;
     for (int i = 0; i < count; i++) {
         reader.readElement("Item");
-        values[reader.getAttribute("key")] = reader.getAttribute("value");
+        values[reader.getAttribute<const char*>("key")] = reader.getAttribute<const char*>("value");
     }
 
     reader.readEndElement("Map");
@@ -2064,7 +2064,7 @@ void PropertyBool::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Bool");
     // get the value of my Attribute
-    string b = reader.getAttribute("value");
+    string b = reader.getAttribute<const char*>("value");
     (b == "true") ? setValue(true) : setValue(false);
 }
 
@@ -2193,7 +2193,7 @@ void PropertyBoolList::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("BoolList");
     // get the value of my Attribute
-    string str = reader.getAttribute("value");
+    string str = reader.getAttribute<const char*>("value");
     boost::dynamic_bitset<> bitset(str);
     setValues(bitset);
 }
@@ -2360,7 +2360,7 @@ void PropertyColor::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("PropertyColor");
     // get the value of my Attribute
-    unsigned long rgba = reader.getAttributeAsUnsigned("value");
+    unsigned long rgba = reader.getAttribute<unsigned long>("value");
     setValue(rgba);
 }
 
@@ -2436,7 +2436,7 @@ void PropertyColorList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("ColorList");
     if (reader.hasAttribute("file")) {
-        std::string file(reader.getAttribute("file"));
+        std::string file(reader.getAttribute<const char*>("file"));
 
         if (!file.empty()) {
             // initiate a file read
@@ -2690,20 +2690,20 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     reader.readElement("PropertyMaterial");
     // get the value of my Attribute
     aboutToSetValue();
-    _cMat.ambientColor.setPackedValue(reader.getAttributeAsUnsigned("ambientColor"));
-    _cMat.diffuseColor.setPackedValue(reader.getAttributeAsUnsigned("diffuseColor"));
-    _cMat.specularColor.setPackedValue(reader.getAttributeAsUnsigned("specularColor"));
-    _cMat.emissiveColor.setPackedValue(reader.getAttributeAsUnsigned("emissiveColor"));
-    _cMat.shininess = (float)reader.getAttributeAsFloat("shininess");
-    _cMat.transparency = (float)reader.getAttributeAsFloat("transparency");
+    _cMat.ambientColor.setPackedValue(reader.getAttribute<unsigned long>("ambientColor"));
+    _cMat.diffuseColor.setPackedValue(reader.getAttribute<unsigned long>("diffuseColor"));
+    _cMat.specularColor.setPackedValue(reader.getAttribute<unsigned long>("specularColor"));
+    _cMat.emissiveColor.setPackedValue(reader.getAttribute<unsigned long>("emissiveColor"));
+    _cMat.shininess = (float)reader.getAttribute<double>("shininess");
+    _cMat.transparency = (float)reader.getAttribute<double>("transparency");
     if (reader.hasAttribute("image")) {
-        _cMat.image = reader.getAttribute("image");
+        _cMat.image = reader.getAttribute<const char*>("image");
     }
     if (reader.hasAttribute("imagePath")) {
-        _cMat.imagePath = reader.getAttribute("imagePath");
+        _cMat.imagePath = reader.getAttribute<const char*>("imagePath");
     }
     if (reader.hasAttribute("uuid")) {
-        _cMat.uuid = reader.getAttribute("uuid");
+        _cMat.uuid = reader.getAttribute<const char*>("uuid");
     }
     hasSetValue();
 }
@@ -3232,9 +3232,9 @@ void PropertyMaterialList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("MaterialList");
     if (reader.hasAttribute("file")) {
-        std::string file(reader.getAttribute("file"));
+        std::string file(reader.getAttribute<const char*>("file"));
         if (reader.hasAttribute("version")) {
-            formatVersion = static_cast<Format>(reader.getAttributeAsInteger("version"));
+            formatVersion = static_cast<Format>(reader.getAttribute<long>("version"));
         }
 
         if (!file.empty()) {

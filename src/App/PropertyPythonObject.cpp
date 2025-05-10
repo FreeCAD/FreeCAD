@@ -277,13 +277,13 @@ void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
     try {
         PropertyContainer* parent = this->getContainer();
         if (reader.hasAttribute("object")) {
-            if (strcmp(reader.getAttribute("object"), "yes") == 0) {
+            if (strcmp(reader.getAttribute<const char*>("object"), "yes") == 0) {
                 Py::Object obj = Py::asObject(parent->getPyObject());
                 this->object.setAttr("__object__", obj);
             }
         }
         if (reader.hasAttribute("vobject")) {
-            if (strcmp(reader.getAttribute("vobject"), "yes") == 0) {
+            if (strcmp(reader.getAttribute<const char*>("vobject"), "yes") == 0) {
                 Py::Object obj = Py::asObject(parent->getPyObject());
                 this->object.setAttr("__vobject__", obj);
             }
@@ -335,15 +335,15 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Python");
     if (reader.hasAttribute("file")) {
-        std::string file(reader.getAttribute("file"));
+        std::string file(reader.getAttribute<const char*>("file"));
         reader.addFile(file.c_str(), this);
     }
     else {
         bool load_json = false;
         bool load_pickle = false;
         bool load_failed = false;
-        std::string buffer = reader.getAttribute("value");
-        if (reader.hasAttribute("encoded") && strcmp(reader.getAttribute("encoded"), "yes") == 0) {
+        std::string buffer = reader.getAttribute<const char*>("value");
+        if (reader.hasAttribute("encoded") && strcmp(reader.getAttribute<const char*>("encoded"), "yes") == 0) {
             buffer = Base::base64_decode(buffer);
         }
         else {
@@ -358,15 +358,15 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
             start = buffer.begin();
             end = buffer.end();
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
-                Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")), true);
+                Py::Module mod(PyImport_ImportModule(reader.getAttribute<const char*>("module")), true);
                 if (mod.isNull()) {
                     throw Py::Exception();
                 }
-                PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
+                PyObject* cls = mod.getAttr(reader.getAttribute<const char*>("class")).ptr();
                 if (!cls) {
                     std::stringstream s;
-                    s << "Module " << reader.getAttribute("module") << " has no class "
-                      << reader.getAttribute("class");
+                    s << "Module " << reader.getAttribute<const char*>("module") << " has no class "
+                      << reader.getAttribute<const char*>("class");
                     throw Py::AttributeError(s.str());
                 }
                 if (PyType_Check(cls)) {

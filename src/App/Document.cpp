@@ -1038,16 +1038,16 @@ void Document::Restore(Base::XMLReader& reader)
     setStatus(Document::PartialDoc, false);
 
     reader.readElement("Document");
-    long scheme = reader.getAttributeAsInteger("SchemaVersion");
+    long scheme = reader.getAttribute<long>("SchemaVersion");
     reader.DocumentSchema = scheme;
     if (reader.hasAttribute("ProgramVersion")) {
-        reader.ProgramVersion = reader.getAttribute("ProgramVersion");
+        reader.ProgramVersion = reader.getAttribute<const char*>("ProgramVersion");
     }
     else {
         reader.ProgramVersion = "pre-0.14";
     }
     if (reader.hasAttribute("FileVersion")) {
-        reader.FileVersion = reader.getAttributeAsUnsigned("FileVersion");
+        reader.FileVersion = reader.getAttribute<unsigned long>("FileVersion");
     }
     else {
         reader.FileVersion = 0;
@@ -1083,11 +1083,11 @@ void Document::Restore(Base::XMLReader& reader)
     if (scheme == 2) {
         // read the feature types
         reader.readElement("Features");
-        Cnt = reader.getAttributeAsInteger("Count");
+        Cnt = reader.getAttribute<long>("Count");
         for (i = 0; i < Cnt; i++) {
             reader.readElement("Feature");
-            string type = reader.getAttribute("type");
-            string name = reader.getAttribute("name");
+            string type = reader.getAttribute<const char*>("type");
+            string name = reader.getAttribute<const char*>("name");
             try {
                 addObject(type.c_str(), name.c_str(), /*isNew=*/false);
             }
@@ -1099,10 +1099,10 @@ void Document::Restore(Base::XMLReader& reader)
 
         // read the features itself
         reader.readElement("FeatureData");
-        Cnt = reader.getAttributeAsInteger("Count");
+        Cnt = reader.getAttribute<long>("Count");
         for (i = 0; i < Cnt; i++) {
             reader.readElement("Feature");
-            string name = reader.getAttribute("name");
+            string name = reader.getAttribute<const char*>("name");
             DocumentObject* pObj = getObject(name.c_str());
             if (pObj) {  // check if this feature has been registered
                 pObj->setStatus(ObjectStatus::Restore, true);
@@ -1405,7 +1405,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
 
     // read the object types
     reader.readElement("Objects");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    int Cnt = reader.getAttribute<long>("Count");
 
     if (!reader.hasAttribute(FC_ATTR_DEPENDENCIES)) {
         d->partialLoadObjects.clear();
@@ -1414,17 +1414,17 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
         std::unordered_map<std::string, DepInfo> deps;
         for (int i = 0; i < Cnt; i++) {
             reader.readElement(FC_ELEMENT_OBJECT_DEPS);
-            int dcount = reader.getAttributeAsInteger(FC_ATTR_DEP_COUNT);
+            int dcount = reader.getAttribute<long>(FC_ATTR_DEP_COUNT);
             if (!dcount) {
                 continue;
             }
-            auto& info = deps[reader.getAttribute(FC_ATTR_DEP_OBJ_NAME)];
+            auto& info = deps[reader.getAttribute<const char*>(FC_ATTR_DEP_OBJ_NAME)];
             if (reader.hasAttribute(FC_ATTR_DEP_ALLOW_PARTIAL)) {
-                info.canLoadPartial = reader.getAttributeAsInteger(FC_ATTR_DEP_ALLOW_PARTIAL);
+                info.canLoadPartial = reader.getAttribute<long>(FC_ATTR_DEP_ALLOW_PARTIAL);
             }
             for (int j = 0; j < dcount; ++j) {
                 reader.readElement(FC_ELEMENT_OBJECT_DEP);
-                const char* name = reader.getAttribute(FC_ATTR_DEP_OBJ_NAME);
+                const char* name = reader.getAttribute<const char*>(FC_ATTR_DEP_OBJ_NAME);
                 if (!Base::Tools::isNullOrEmpty(name)) {
                     info.deps.insert(name);
                 }
@@ -1458,10 +1458,10 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
     long lastId = 0;
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Object");
-        std::string type = reader.getAttribute("type");
-        std::string name = reader.getAttribute("name");
+        std::string type = reader.getAttribute<const char*>("type");
+        std::string name = reader.getAttribute<const char*>("name");
         std::string viewType =
-            reader.hasAttribute("ViewType") ? reader.getAttribute("ViewType") : "";
+            reader.hasAttribute("ViewType") ? reader.getAttribute<const char*>("ViewType") : "";
 
         bool partial = false;
         if (!d->partialLoadObjects.empty()) {
@@ -1475,7 +1475,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
         if (!testStatus(Status::Importing) && reader.hasAttribute("id")) {
             // if not importing, then temporary reset lastObjectId and make the
             // following addObject() generate the correct id for this object.
-            d->lastObjectId = reader.getAttributeAsInteger("id") - 1;
+            d->lastObjectId = reader.getAttribute<long>("id") - 1;
         }
 
         // To prevent duplicate name when export/import of objects from
@@ -1514,15 +1514,15 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
 
                 // restore touch/error status flags
                 if (reader.hasAttribute("Touched")) {
-                    if (reader.getAttributeAsInteger("Touched") != 0) {
+                    if (reader.getAttribute<long>("Touched") != 0) {
                         d->touchedObjs.insert(obj);
                     }
                 }
                 if (reader.hasAttribute("Invalid")) {
                     obj->setStatus(ObjectStatus::Error,
-                                   reader.getAttributeAsInteger("Invalid") != 0);
+                                   reader.getAttribute<bool>("Invalid"));
                     if (obj->isError() && reader.hasAttribute("Error")) {
-                        d->addRecomputeLog(reader.getAttribute("Error"), obj);
+                        d->addRecomputeLog(reader.getAttribute<const char*>("Error"), obj);
                     }
                 }
             }
@@ -1541,10 +1541,10 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
     // read the features itself
     reader.clearPartialRestoreDocumentObject();
     reader.readElement("ObjectData");
-    Cnt = reader.getAttributeAsInteger("Count");
+    Cnt = reader.getAttribute<long>("Count");
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Object");
-        std::string name = reader.getName(reader.getAttribute("name"));
+        std::string name = reader.getName(reader.getAttribute<const char*>("name"));
         DocumentObject* pObj = getObject(name.c_str());
         if (pObj
             && !pObj->testStatus(
@@ -1605,16 +1605,16 @@ std::vector<App::DocumentObject*> Document::importObjects(Base::XMLReader& reade
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
     ExpressionParser::ExpressionImporter expImporter(reader);
     reader.readElement("Document");
-    long scheme = reader.getAttributeAsInteger("SchemaVersion");
+    long scheme = reader.getAttribute<long>("SchemaVersion");
     reader.DocumentSchema = scheme;
     if (reader.hasAttribute("ProgramVersion")) {
-        reader.ProgramVersion = reader.getAttribute("ProgramVersion");
+        reader.ProgramVersion = reader.getAttribute<const char*>("ProgramVersion");
     }
     else {
         reader.ProgramVersion = "pre-0.14";
     }
     if (reader.hasAttribute("FileVersion")) {
-        reader.FileVersion = reader.getAttributeAsUnsigned("FileVersion");
+        reader.FileVersion = reader.getAttribute<unsigned long>("FileVersion");
     }
     else {
         reader.FileVersion = 0;

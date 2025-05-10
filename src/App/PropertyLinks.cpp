@@ -776,7 +776,7 @@ void PropertyLink::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("Link");
     // get the value of my attribute
-    std::string name = reader.getName(reader.getAttribute("value"));
+    std::string name = reader.getName(reader.getAttribute<const char*>("value"));
 
     // Property not in a DocumentObject!
     assert(getContainer()->isDerivedFrom<App::DocumentObject>());
@@ -1060,7 +1060,7 @@ void PropertyLinkList::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("LinkList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
     App::PropertyContainer* container = getContainer();
     if (!container) {
         throw Base::RuntimeError("Property is not part of a container");
@@ -1075,7 +1075,7 @@ void PropertyLinkList::Restore(Base::XMLReader& reader)
     values.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("Link");
-        std::string name = reader.getName(reader.getAttribute("value"));
+        std::string name = reader.getName(reader.getAttribute<const char*>("value"));
         // In order to do copy/paste it must be allowed to have defined some
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
@@ -1888,8 +1888,8 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("LinkSub");
     // get the values of my attributes
-    std::string name = reader.getName(reader.getAttribute("value"));
-    int count = reader.getAttributeAsInteger("count");
+    std::string name = reader.getName(reader.getAttribute<const char*>("value"));
+    int count = reader.getAttribute<long>("count");
 
     // Property not in a DocumentObject!
     assert(getContainer()->isDerivedFrom<App::DocumentObject>());
@@ -1913,16 +1913,16 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
     // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
-        shadows[i].oldName = importSubName(reader, reader.getAttribute("value"), restoreLabel);
+        shadows[i].oldName = importSubName(reader, reader.getAttribute<const char*>("value"), restoreLabel);
         if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
             values[i] = shadows[i].newName =
-                importSubName(reader, reader.getAttribute(ATTR_SHADOWED), restoreLabel);
+                importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOWED), restoreLabel);
         }
         else {
             values[i] = shadows[i].oldName;
             if (reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW) {
                 shadows[i].newName =
-                    importSubName(reader, reader.getAttribute(ATTR_SHADOW), restoreLabel);
+                    importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
             }
         }
         if (reader.hasAttribute(ATTR_MAPPED)) {
@@ -2836,7 +2836,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("LinkSubList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
 
     std::vector<DocumentObject*> values;
     values.reserve(count);
@@ -2850,7 +2850,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
     bool restoreLabel = false;
     for (int i = 0; i < count; i++) {
         reader.readElement("Link");
-        std::string name = reader.getName(reader.getAttribute("obj"));
+        std::string name = reader.getName(reader.getAttribute<const char*>("obj"));
         // In order to do copy/paste it must be allowed to have defined some
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
@@ -2860,17 +2860,17 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
             values.push_back(child);
             shadows.emplace_back();
             auto& shadow = shadows.back();
-            shadow.oldName = importSubName(reader, reader.getAttribute("sub"), restoreLabel);
+            shadow.oldName = importSubName(reader, reader.getAttribute<const char*>("sub"), restoreLabel);
             if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
                 shadow.newName =
-                    importSubName(reader, reader.getAttribute(ATTR_SHADOWED), restoreLabel);
+                    importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOWED), restoreLabel);
                 SubNames.push_back(shadow.newName);
             }
             else {
                 SubNames.push_back(shadow.oldName);
                 if (reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW) {
                     shadow.newName =
-                        importSubName(reader, reader.getAttribute(ATTR_SHADOW), restoreLabel);
+                        importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
                 }
             }
             if (reader.hasAttribute(ATTR_MAPPED)) {
@@ -4232,20 +4232,20 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
     reader.readElement("XLink");
     std::string stampAttr, file;
     if (reader.hasAttribute("stamp")) {
-        stampAttr = reader.getAttribute("stamp");
+        stampAttr = reader.getAttribute<const char*>("stamp");
     }
     if (reader.hasAttribute("file")) {
-        file = reader.getAttribute("file");
+        file = reader.getAttribute<const char*>("file");
     }
 
     setFlag(LinkAllowPartial,
-            reader.hasAttribute("partial") && reader.getAttributeAsInteger("partial"));
+            reader.hasAttribute("partial") && reader.getAttribute<bool>("partial"));
     std::string name;
     if (file.empty()) {
-        name = reader.getName(reader.getAttribute("name"));
+        name = reader.getName(reader.getAttribute<const char*>("name"));
     }
     else {
-        name = reader.getAttribute("name");
+        name = reader.getAttribute<const char*>("name");
     }
 
     assert(getContainer()->isDerivedFrom<App::DocumentObject>());
@@ -4275,35 +4275,35 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
         auto& subname = subs.back();
         shadows.emplace_back();
         auto& shadow = shadows.back();
-        shadow.oldName = importSubName(reader, reader.getAttribute("sub"), restoreLabel);
+        shadow.oldName = importSubName(reader, reader.getAttribute<const char*>("sub"), restoreLabel);
         if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
             subname = shadow.newName =
-                importSubName(reader, reader.getAttribute(ATTR_SHADOWED), restoreLabel);
+                importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOWED), restoreLabel);
         }
         else {
             subname = shadow.oldName;
             if (reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW) {
                 shadow.newName =
-                    importSubName(reader, reader.getAttribute(ATTR_SHADOW), restoreLabel);
+                    importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
             }
         }
     }
     else if (reader.hasAttribute("count")) {
-        int count = reader.getAttributeAsInteger("count");
+        int count = reader.getAttribute<long>("count");
         subs.resize(count);
         shadows.resize(count);
         for (int i = 0; i < count; i++) {
             reader.readElement("Sub");
-            shadows[i].oldName = importSubName(reader, reader.getAttribute("value"), restoreLabel);
+            shadows[i].oldName = importSubName(reader, reader.getAttribute<const char*>("value"), restoreLabel);
             if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
                 subs[i] = shadows[i].newName =
-                    importSubName(reader, reader.getAttribute(ATTR_SHADOWED), restoreLabel);
+                    importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOWED), restoreLabel);
             }
             else {
                 subs[i] = shadows[i].oldName;
                 if (reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW) {
                     shadows[i].newName =
-                        importSubName(reader, reader.getAttribute(ATTR_SHADOW), restoreLabel);
+                        importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
                 }
             }
             if (reader.hasAttribute(ATTR_MAPPED)) {
@@ -5128,8 +5128,8 @@ void PropertyXLinkSubList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("XLinkSubList");
     setFlag(LinkAllowPartial,
-            reader.hasAttribute("partial") && reader.getAttributeAsInteger("partial"));
-    int count = reader.getAttributeAsInteger("count");
+            reader.hasAttribute("partial") && reader.getAttribute<bool>("partial"));
+    int count = reader.getAttribute<long>("count");
     atomic_change guard(*this, false);
     _Links.clear();
     for (int i = 0; i < count; ++i) {
@@ -5789,11 +5789,11 @@ void PropertyXLinkContainer::Save(Base::Writer& writer) const
 void PropertyXLinkContainer::Restore(Base::XMLReader& reader)
 {
     reader.readElement("XLinks");
-    auto count = reader.getAttributeAsUnsigned("count");
+    auto count = reader.getAttribute<unsigned long>("count");
     _XLinkRestores = std::make_unique<std::vector<RestoreInfo>>(count);
 
     if (reader.hasAttribute("hidden")) {
-        std::istringstream iss(reader.getAttribute("hidden"));
+        std::istringstream iss(reader.getAttribute<const char*>("hidden"));
         int index;
         while (iss >> index) {
             if (index >= 0 && index < static_cast<int>(count)) {
@@ -5803,18 +5803,18 @@ void PropertyXLinkContainer::Restore(Base::XMLReader& reader)
     }
 
     if (reader.hasAttribute("docs")) {
-        auto docCount = reader.getAttributeAsUnsigned("docs");
+        auto docCount = reader.getAttribute<unsigned long>("docs");
         _DocMap.clear();
         for (unsigned i = 0; i < docCount; ++i) {
             reader.readElement("DocMap");
-            auto index = reader.getAttributeAsUnsigned("index");
+            auto index = reader.getAttribute<unsigned long>("index");
             if (index >= count) {
                 FC_ERR(propertyName(this) << " invalid document map entry");
                 continue;
             }
             auto& info = _XLinkRestores->at(index);
-            info.docName = reader.getAttribute("name");
-            info.docLabel = reader.getAttribute("label");
+            info.docName = reader.getAttribute<const char*>("name");
+            info.docLabel = reader.getAttribute<const char*>("label");
         }
     }
 

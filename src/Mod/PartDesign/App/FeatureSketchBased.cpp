@@ -1498,7 +1498,7 @@ void ProfileBased::handleChangedPropertyName(Base::XMLReader & reader, const cha
         // read my element
         reader.readElement("Link");
         // get the value of my attribute
-        std::string name = reader.getAttribute("value");
+        std::string name = reader.getAttribute<const char*>("value");
 
         if (!name.empty()) {
             App::Document* document = getDocument();

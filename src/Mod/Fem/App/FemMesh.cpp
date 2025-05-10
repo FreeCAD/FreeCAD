@@ -2343,32 +2343,32 @@ void FemMesh::Save(Base::Writer& writer) const
 void FemMesh::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FemMesh");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
         reader.addFile(file.c_str(), this);
     }
     if (reader.hasAttribute("a11")) {
-        _Mtrx[0][0] = reader.getAttributeAsFloat("a11");
-        _Mtrx[0][1] = reader.getAttributeAsFloat("a12");
-        _Mtrx[0][2] = reader.getAttributeAsFloat("a13");
-        _Mtrx[0][3] = reader.getAttributeAsFloat("a14");
+        _Mtrx[0][0] = reader.getAttribute<double>("a11");
+        _Mtrx[0][1] = reader.getAttribute<double>("a12");
+        _Mtrx[0][2] = reader.getAttribute<double>("a13");
+        _Mtrx[0][3] = reader.getAttribute<double>("a14");
 
-        _Mtrx[1][0] = reader.getAttributeAsFloat("a21");
-        _Mtrx[1][1] = reader.getAttributeAsFloat("a22");
-        _Mtrx[1][2] = reader.getAttributeAsFloat("a23");
-        _Mtrx[1][3] = reader.getAttributeAsFloat("a24");
+        _Mtrx[1][0] = reader.getAttribute<double>("a21");
+        _Mtrx[1][1] = reader.getAttribute<double>("a22");
+        _Mtrx[1][2] = reader.getAttribute<double>("a23");
+        _Mtrx[1][3] = reader.getAttribute<double>("a24");
 
-        _Mtrx[2][0] = reader.getAttributeAsFloat("a31");
-        _Mtrx[2][1] = reader.getAttributeAsFloat("a32");
-        _Mtrx[2][2] = reader.getAttributeAsFloat("a33");
-        _Mtrx[2][3] = reader.getAttributeAsFloat("a34");
+        _Mtrx[2][0] = reader.getAttribute<double>("a31");
+        _Mtrx[2][1] = reader.getAttribute<double>("a32");
+        _Mtrx[2][2] = reader.getAttribute<double>("a33");
+        _Mtrx[2][3] = reader.getAttribute<double>("a34");
 
-        _Mtrx[3][0] = reader.getAttributeAsFloat("a41");
-        _Mtrx[3][1] = reader.getAttributeAsFloat("a42");
-        _Mtrx[3][2] = reader.getAttributeAsFloat("a43");
-        _Mtrx[3][3] = reader.getAttributeAsFloat("a44");
+        _Mtrx[3][0] = reader.getAttribute<double>("a41");
+        _Mtrx[3][1] = reader.getAttribute<double>("a42");
+        _Mtrx[3][2] = reader.getAttribute<double>("a43");
+        _Mtrx[3][3] = reader.getAttribute<double>("a44");
     }
 }
 
