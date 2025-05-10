@@ -110,16 +110,8 @@ GENERATE_QM = {
 locations = [
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
     ["Arch", "../Mod/BIM/Resources/translations", "../Mod/BIM/Resources/Arch.qrc"],
-    [
-    	"App",
-    	"../App/Resources/translations",
-    	"../App/Resources/App.qrc"
-    ],
-    [
-    	"Arch",
-    	"../Mod/BIM/Resources/translations",
-    	"../Mod/BIM/Resources/Arch.qrc"
-    ],
+    ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
+    ["Arch", "../Mod/BIM/Resources/translations", "../Mod/BIM/Resources/Arch.qrc"],
     [
         "Assembly",
         "../Mod/Assembly/Gui/Resources/translations",
