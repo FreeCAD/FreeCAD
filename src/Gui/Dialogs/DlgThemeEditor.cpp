@@ -21,6 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+
 #include "DlgThemeEditor.h"
 #include "ui_DlgThemeEditor.h"
 #include "StyleParameters.h"
@@ -102,7 +104,7 @@ struct StyleParametersModel::GroupItem: Item
 
 struct StyleParametersModel::ParameterItem: Item
 {
-    ParameterItem(const QString& name, StyleParameters::Token token)
+    ParameterItem(const QString& name, StyleParameters::Parameter token)
         : name(name)
         , token(std::move(token))
     {}
@@ -113,7 +115,7 @@ struct StyleParametersModel::ParameterItem: Item
     }
 
     QString name;
-    StyleParameters::Token token;
+    StyleParameters::Parameter token;
     QFlags<Qt::ItemFlag> flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 };
 
@@ -317,8 +319,8 @@ void StyleParametersModel::refresh()
     auto builtinParameters =
         std::make_unique<Node>(std::make_unique<GroupItem>(tr("Built-in Parameters")));
 
-    for (const auto& name : manager->tokens()) {
-        const auto& parameter = manager->token(name);
+    for (const auto& name : manager->parameters()) {
+        const auto& parameter = manager->parameter(name);
 
         auto item = std::make_unique<Node>(
             std::make_unique<ParameterItem>(QString::fromStdString(name), parameter));
@@ -385,8 +387,8 @@ QVariant StyleParametersModel::headerData(int section, Qt::Orientation orientati
 
 QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
 {
-    if (auto tokenItem = item<ParameterItem>(index)) {
-        const auto& [name, token, _] = *tokenItem;
+    if (auto parameterItem = item<ParameterItem>(index)) {
+        const auto& [name, token, _] = *parameterItem;
         const auto& value = manager->resolve(name.toStdString());
 
         if (role == Qt::DisplayRole) {
@@ -411,9 +413,9 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
         }
     }
 
-    if (auto headerItem = item<GroupItem>(index)) {
+    if (auto groupItem = item<GroupItem>(index)) {
         if (role == Qt::DisplayRole && index.column() == ParameterName) {
-            return headerItem->title;
+            return groupItem->title;
         }
     }
 
@@ -426,11 +428,11 @@ bool StyleParametersModel::setData(const QModelIndex& index, const QVariant& val
         if (index.column() == ParameterName) {
             QString newName = value.toString();
 
-            StyleParameters::Token newToken = parameterItem->token;
+            StyleParameters::Parameter newToken = parameterItem->token;
             newToken.name = newName.toStdString();
 
             manager->remove(parameterItem->token);
-            manager->set(newToken);
+            manager->define(newToken);
 
             parameterItem->name = newName;
             parameterItem->token = newToken;
@@ -439,10 +441,10 @@ bool StyleParametersModel::setData(const QModelIndex& index, const QVariant& val
         if (index.column() == ParameterExpression) {
             QString newValue = value.toString();
 
-            StyleParameters::Token newToken = parameterItem->token;
+            StyleParameters::Parameter newToken = parameterItem->token;
             newToken.value = newValue.toStdString();
 
-            manager->set(newToken);
+            manager->define(newToken);
 
             parameterItem->token = newToken;
         }
@@ -456,9 +458,9 @@ bool StyleParametersModel::setData(const QModelIndex& index, const QVariant& val
                 return false;
             }
 
-            StyleParameters::Token token { .name = newName.toStdString() };
+            StyleParameters::Parameter token { .name = newName.toStdString() };
 
-            manager->set(token);
+            manager->define(token);
 
             int start = rowCount(index.parent());
 

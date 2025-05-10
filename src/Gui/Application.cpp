@@ -2476,7 +2476,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
 QString Application::replaceVariablesInQss(QString qssText)
 {
-    for (const auto& token : themeTokenManager.tokens()) {
+    for (const auto& token : themeTokenManager.parameters()) {
         qssText = qssText.replace(QStringLiteral("@%1").arg(QString::fromStdString(token)),
                                   QString::fromStdString(themeTokenManager.resolve(token).toString()));
     }

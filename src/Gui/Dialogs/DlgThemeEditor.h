@@ -24,10 +24,11 @@
 #ifndef DLGTHEMEEDITOR_H
 #define DLGTHEMEEDITOR_H
 
-#include <QAbstractTableModel>
 #include <QDialog>
 
 #include "StyleParameters.h"
+
+#include <QTreeView>
 
 namespace Gui {
 
@@ -39,6 +40,14 @@ class ParameterManager;
 QT_BEGIN_NAMESPACE
 namespace Ui { class DlgThemeEditor; }
 QT_END_NAMESPACE
+
+class GuiExport TokenTreeView : public QTreeView
+{
+    Q_OBJECT
+public:
+
+    using QTreeView::QTreeView;
+};
 
 class GuiExport StyleParametersModel: public QAbstractItemModel
 {

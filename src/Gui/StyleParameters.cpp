@@ -65,11 +65,11 @@ struct Expr
     virtual ~Expr() = default;
 };
 
-struct Parameter: public Expr
+struct ParameterReference: public Expr
 {
     std::string name;
 
-    explicit Parameter(std::string name)
+    explicit ParameterReference(std::string name)
         : name(std::move(name))
     {}
 
@@ -366,7 +366,7 @@ private:
         if (start == pos) {
             throw std::runtime_error("Expected parameter name after '@'");
         }
-        return std::make_unique<Parameter>(input.substr(start, pos - start));
+        return std::make_unique<ParameterReference>(input.substr(start, pos - start));
     }
 
     bool peekFunction()
@@ -454,7 +454,7 @@ private:
     }
 };
 
-Value Parameter::evaluate(const EvaluationContext& context) const
+Value ParameterReference::evaluate(const EvaluationContext& context) const
 {
     return context.manager->resolve(name);
 }
@@ -531,12 +531,12 @@ ParameterManager::ParameterManager()
 
 void ParameterManager::reload()
 {
-    _tokens = {};
+    _parameters = {};
 
     const auto addUserColor = [this](const std::string& name, unsigned long fallback) {
         unsigned long color = hGrp->GetUnsigned(name.c_str(), fallback);
 
-        _tokens[name] = {
+        _parameters[name] = {
             .name = name,
             .value = fmt::format("#{:0>6x}", 0x00FFFFFF & (color >> 8)),
             .source = ParameterSource::Predefined,
@@ -544,7 +544,7 @@ void ParameterManager::reload()
     };
 
     for (const auto& [token, value] : hUserTokensGrp->GetASCIIMap()) {
-        _tokens[token] = {
+        _parameters[token] = {
             .name = token,
             .value = value,
             .source = ParameterSource::User,
@@ -552,7 +552,7 @@ void ParameterManager::reload()
     }
 
     for (const auto& [token, value] : hThemeTokensGrp->GetASCIIMap()) {
-        _tokens[token] = {
+        _parameters[token] = {
             .name = token,
             .value = value,
             .source = ParameterSource::Theme,
@@ -614,12 +614,12 @@ std::string ParameterManager::replacePlaceholders(const std::string& expression,
 
 std::string ParameterManager::expression(const std::string& name) const
 {
-    return _tokens.at(name).value;
+    return _parameters.at(name).value;
 }
 
 Value ParameterManager::resolve(const std::string& name, ResolveContext context) const
 {
-    if (!_tokens.contains(name)) {
+    if (!_parameters.contains(name)) {
         Base::Console().warning("Requested non-existent design token '%s'.", name);
         return std::string {};
     }
@@ -629,7 +629,7 @@ Value ParameterManager::resolve(const std::string& name, ResolveContext context)
         return expression(name);
     }
 
-    const Token& token = _tokens.at(name);
+    const Parameter& token = _parameters.at(name);
 
     if (!_resolved.contains(token.name)) {
         context.visited.insert(token.name);
@@ -652,38 +652,38 @@ Value ParameterManager::evaluate(const std::string& expression, ResolveContext c
     return parser.parse()->evaluate({.manager = this, .context = context});
 }
 
-Token ParameterManager::token(const std::string& token) const
+Parameter ParameterManager::parameter(const std::string& parameter) const
 {
-    return _tokens.at(token);
+    return _parameters.at(parameter);
 }
 
-void ParameterManager::remove(const Token& token)
+void ParameterManager::remove(const Parameter& parameter)
 {
-    switch (token.source) {
+    switch (parameter.source) {
         case ParameterSource::Theme:
-            hThemeTokensGrp->RemoveASCII(token.name.c_str());
+            hThemeTokensGrp->RemoveASCII(parameter.name.c_str());
             break;
         case ParameterSource::User:
-            hUserTokensGrp->RemoveASCII(token.name.c_str());
+            hUserTokensGrp->RemoveASCII(parameter.name.c_str());
             break;
     }
 
-    _tokens.erase(token.name);
+    _parameters.erase(parameter.name);
     _resolved = {};
 }
 
-void ParameterManager::set(const Token& token)
+void ParameterManager::define(const Parameter& parameter)
 {
-    switch (token.source) {
+    switch (parameter.source) {
         case ParameterSource::Theme:
-            hThemeTokensGrp->SetASCII(token.name.c_str(), token.value.c_str());
+            hThemeTokensGrp->SetASCII(parameter.name.c_str(), parameter.value.c_str());
             break;
         case ParameterSource::User:
-            hUserTokensGrp->SetASCII(token.name.c_str(), token.value.c_str());
+            hUserTokensGrp->SetASCII(parameter.name.c_str(), parameter.value.c_str());
             break;
     }
 
-    _tokens[token.name] = token;
+    _parameters[parameter.name] = parameter;
     _resolved = {};
 }
 

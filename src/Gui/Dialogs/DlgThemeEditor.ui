@@ -131,7 +131,7 @@
       </widget>
      </item>
      <item row="0" column="0" colspan="3">
-      <widget class="QTreeView" name="tokensTreeView">
+      <widget class="Gui::TokenTreeView" name="tokensTreeView">
        <property name="mouseTracking">
         <bool>true</bool>
        </property>
@@ -227,6 +227,11 @@
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::TokenTreeView</class>
+   <extends>QTreeView</extends>
+   <header location="global">Gui/Dialogs/DlgThemeEditor.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
