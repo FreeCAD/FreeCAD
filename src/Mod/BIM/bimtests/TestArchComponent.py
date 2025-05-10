@@ -139,10 +139,14 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
         # Create wire with automatic face creation
         wire = Draft.makeWire(points, closed=True, face=True)
+        if not wire:
+            self.fail(f"Wire creation failed with points: {points}\n")
         doc.recompute()
 
         # Extrude the wire
-        extrudedObj = Draft.extrude(wire, App.Vector(0, baseWidth, 0))
+        extrudedObj = Draft.extrude(wire, App.Vector(0, baseWidth, 0), solid=True)
+        if not extrudedObj:
+            self.fail("Extrusion failed - no object created\n")
         extrudedObj.Label = "Extruded house"
         doc.recompute()
 
