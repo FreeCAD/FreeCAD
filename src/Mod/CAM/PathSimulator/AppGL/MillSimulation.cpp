@@ -484,22 +484,18 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             break;
 
         case eGuiItemFaster:
-            mSimSpeed = 5;
-            guiDisplay.UpdateSimSpeed(mSimSpeed);
-            break;
-
-        case eGuiItemFaster1:
-            mSimSpeed = 10;
-            guiDisplay.UpdateSimSpeed(mSimSpeed);
-            break;
-
-        case eGuiItemFaster2:
-            mSimSpeed = 25;
-            guiDisplay.UpdateSimSpeed(mSimSpeed);
-            break;
-
-        case eGuiItemFaster3:
-            mSimSpeed = 50;
+            if (mSimSpeed == 1) {
+                mSimSpeed = 5;
+            }
+            else if (mSimSpeed == 5) {
+                mSimSpeed = 10;
+            }
+            else if (mSimSpeed == 10) {
+                mSimSpeed = 25;
+            }
+            else {
+                mSimSpeed = 50;
+            }
             guiDisplay.UpdateSimSpeed(mSimSpeed);
             break;
 
