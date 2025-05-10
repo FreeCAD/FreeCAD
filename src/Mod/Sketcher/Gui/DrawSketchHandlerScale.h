@@ -75,6 +75,16 @@ public:
         , length(0.0)
         , scaleFactor(0.0)
     {}
+    explicit DrawSketchHandlerScale(std::vector<int> listOfGeoIds,
+                                    double scaleFactor,
+                                    Base::Vector2d referencePoint)
+        : listOfGeoIds(listOfGeoIds)
+        , referencePoint(referencePoint)
+        , deleteOriginal(true)
+        , refLength(0.0)
+        , length(0.0)
+        , scaleFactor(scaleFactor)
+    {}
 
     DrawSketchHandlerScale(const DrawSketchHandlerScale&) = delete;
     DrawSketchHandlerScale(DrawSketchHandlerScale&&) = delete;
@@ -83,32 +93,7 @@ public:
 
     ~DrawSketchHandlerScale() override = default;
 
-private:
-    void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
-    {
-        switch (state()) {
-            case SelectMode::SeekFirst: {
-                referencePoint = onSketchPos;
-            } break;
-            case SelectMode::SeekSecond: {
-                refLength = (onSketchPos - referencePoint).Length();
-
-                startPoint = onSketchPos;
-
-                CreateAndDrawShapeGeometry();
-            } break;
-            case SelectMode::SeekThird: {
-                length = (onSketchPos - referencePoint).Length();
-                endPoint = onSketchPos;
-                scaleFactor = length / refLength;
-
-                CreateAndDrawShapeGeometry();
-            } break;
-            default:
-                break;
-        }
-    }
-
+public:
     void executeCommands() override
     {
         try {
@@ -136,6 +121,33 @@ private:
                        "Notifications",
                        "Tool execution aborted") "\n")  // This prevents constraints from being
                                                         // applied on non existing geometry
+        }
+    }
+
+
+private:
+    void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
+    {
+        switch (state()) {
+            case SelectMode::SeekFirst: {
+                referencePoint = onSketchPos;
+            } break;
+            case SelectMode::SeekSecond: {
+                refLength = (onSketchPos - referencePoint).Length();
+
+                startPoint = onSketchPos;
+
+                CreateAndDrawShapeGeometry();
+            } break;
+            case SelectMode::SeekThird: {
+                length = (onSketchPos - referencePoint).Length();
+                endPoint = onSketchPos;
+                scaleFactor = length / refLength;
+
+                CreateAndDrawShapeGeometry();
+            } break;
+            default:
+                break;
         }
     }
 
@@ -354,9 +366,6 @@ private:
                 }
                 else if ((cstr->Type == Block || cstr->Type == Weight) && firstIndex >= 0) {
                     newConstr->First = firstCurveCreated + firstIndex;
-                }
-                else {
-                    continue;
                 }
 
                 ShapeConstraints.push_back(std::move(newConstr));

@@ -42,12 +42,17 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
+#include <Gui/View3DInventor.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Sketcher/App/PythonConverter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
+#include <Gui/Application.h>
+#include <Base/ServiceProvider.h>
+#include <App/Services.h>
 
+#include "CommandSketcherTools.h"
 #include "DrawSketchHandler.h"
 #include "SketchRectangularArrayDialog.h"
 #include "Utils.h"
@@ -2522,3 +2527,27 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherPaste());
 }
 // clang-format on
+
+void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
+{
+    std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
+    std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
+
+
+    auto doc = Gui::Application::Instance->activeDocument();
+    SketcherGui::ViewProviderSketch* vp =
+        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    DrawSketchHandlerScale scaler(allGeoIds, scale_factor, Base::Vector2d(0.0, 0.0));
+    scaler.setSketchGui(vp);
+    scaler.executeCommands();
+
+    auto view3d = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
+    if (view3d) {
+        auto viewer = view3d->getViewer();
+        bool isAnimating = viewer->isAnimationEnabled();
+
+        viewer->setAnimationEnabled(false);
+        viewer->scale(scale_factor);
+        viewer->setAnimationEnabled(isAnimating);
+    }
+}
