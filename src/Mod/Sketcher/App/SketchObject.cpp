@@ -4817,43 +4817,109 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                                               perpscale * -displacement.x,
                                               0};
 
+    auto isLooseInternalGeo = [&](int geoId) -> bool {
+        const Part::Geometry* geo = getGeometry(geoId);
+        auto gf = GeometryFacade::getFacade(geo);
+
+        if (!gf->isInternalAligned() || moveOnly) {
+            return false;
+        }
+
+        auto constrIt = std::ranges::find_if(constrVals, [&geoId](auto c) {
+            return (c->Type == Sketcher::InternalAlignment && c->First == geoId);
+        });
+        int definedGeo = (constrIt != constrVals.end()) ? (*constrIt)->Second : GeoEnum::GeoUndef;
+
+        return std::ranges::find(newGeoIdList, definedGeo) == newGeoIdList.end();
+    };
+
+    auto handleFirstCopy = [&]() {
+        const Part::Geometry* geo = getGeometry(newGeoIdList.front());
+
+        auto gf = GeometryFacade::getFacade(geo);
+
+        // only add this geometry if the corresponding geometry it defines is also in the list.
+        if (isLooseInternalGeo(newGeoIdList.front())) {
+            // the first element setting the reference is an internal alignment geometry, wherein
+            // the geometry it defines is not part of the copy operation.
+            THROWM(Base::ValueError,
+                   "A move/copy/array operation on an internal alignment geometry is "
+                   "only possible together with the geometry it defines.");
+        }
+
+        refGeoId = newGeoIdList.front();
+        currentRowFirstGeoId = refGeoId;
+        iterFirstGeoId = refGeoId;
+        refPosId = (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>())
+            ? Sketcher::PointPos::mid
+            : Sketcher::PointPos::start;
+    };
+
+    auto addNewConstraintWithOneGeom = [&](const Constraint* constr, int newGeoId) {
+        if ((constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)
+            && constr->FirstPos != Sketcher::PointPos::none) {
+            return;
+        }
+        // if it is not a point locking DistanceX/Y
+        if (clone
+            && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
+                || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Diameter
+                || constr->Type == Sketcher::Weight || constr->Type == Sketcher::Radius)) {
+            // Distances on a single Element are mapped to equality constraints in clone mode
+            Constraint* constNew = constr->copy();
+            constNew->Type = Sketcher::Equal;
+            constNew->isDriving = true;
+            // first is already (constr->First)
+            constNew->Second = newGeoId;
+            newConstrVals.push_back(constNew);
+            return;
+        }
+        if (!(constr->Type == Sketcher::Angle && clone)) {
+            Constraint* constNew = constr->copy();
+            constNew->First = newGeoId;
+            newConstrVals.push_back(constNew);
+            return;
+        }
+        if (getGeometry(constr->First)->is<Part::GeomLineSegment>()) {
+            // Angles on a single Element are mapped to parallel constraints in clone mode
+            Constraint* constNew = constr->copy();
+            constNew->Type = Sketcher::Parallel;
+            constNew->isDriving = true;
+            // first is already (constr->First)
+            constNew->Second = newGeoId;
+            newConstrVals.push_back(constNew);
+        }
+    };
+
+    auto addNewConstraintWithTwoGeoms =
+        [&](const Constraint* constr, int newFirstGeoId, int newSecondGeoId) {
+            if (clone && (constr->First == constr->Second)
+                && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
+                    || constr->Type == Sketcher::Distance)) {
+                // Distances on a two Elements, which must be points of the same line are mapped to
+                // equality constraints in clone mode
+                Constraint* constNew = constr->copy();
+                constNew->Type = Sketcher::Equal;
+                constNew->isDriving = true;
+                constNew->FirstPos = Sketcher::PointPos::none;
+                // first is already (constr->First)
+                constNew->Second = newFirstGeoId;
+                constNew->SecondPos = Sketcher::PointPos::none;
+                newConstrVals.push_back(constNew);
+                return;
+            }
+            // remaining, this includes InternalAlignment constraints
+            Constraint* constNew = constr->copy();
+            constNew->First = newFirstGeoId;
+            constNew->Second = newSecondGeoId;
+            newConstrVals.push_back(constNew);
+        };
+
     auto makeCopyAtRowColumn = [&](int x, int y) {
         // the reference for constraining array elements is the first valid point of the first
         // element
         if (x == 0 && y == 0) {
-            const Part::Geometry* geo = getGeometry(*(newGeoIdList.begin()));
-
-            auto gf = GeometryFacade::getFacade(geo);
-
-            if (gf->isInternalAligned() && !moveOnly) {
-                // only add this geometry if the corresponding geometry it defines is also in
-                // the list.
-
-                auto constrIt = std::ranges::find_if(constrVals, [&newGeoIdList](auto c) {
-                    return (c->Type == Sketcher::InternalAlignment
-                            && c->First == *(newGeoIdList.begin()));
-                });
-
-                int definedGeo =
-                    (constrIt != constrVals.end()) ? (*constrIt)->Second : GeoEnum::GeoUndef;
-
-                if (std::ranges::find(newGeoIdList, definedGeo) == newGeoIdList.end()) {
-                    // the first element setting the reference is an internal alignment
-                    // geometry, wherein the geometry it defines is not part of the copy
-                    // operation.
-                    THROWM(Base::ValueError,
-                           "A move/copy/array operation on an internal alignment geometry is "
-                           "only possible together with the geometry it defines.");
-                }
-            }
-
-            refGeoId = *(newGeoIdList.begin());
-            currentRowFirstGeoId = refGeoId;
-            iterFirstGeoId = refGeoId;
-            refPosId = (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>())
-                ? Sketcher::PointPos::mid
-                : Sketcher::PointPos::start;
-
+            handleFirstCopy();
             return;  // the first element is already in place
         }
 
@@ -4866,31 +4932,16 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             currentRowFirstGeoId = cGeoId;
         }
 
-        int index = 0;
-        for (auto it = newGeoIdList.cbegin(); it != newGeoIdList.cend(); ++it, ++index) {
-            const Part::Geometry* geo = getGeometry(*it);
+        for (const int geoId : geoIdList) {
+            const Part::Geometry* geo = getGeometry(geoId);
 
             Part::Geometry* geoCopy = nullptr;
 
             auto gf = GeometryFacade::getFacade(geo);
 
-            if (gf->isInternalAligned() && !moveOnly) {
-                // only add this geometry if the corresponding geometry it defines is also in
-                // the list.
-                int definedGeo = GeoEnum::GeoUndef;
-
-                auto constrIt = std::ranges::find_if(constrVals, [&it](auto c) {
-                    return (c->Type == Sketcher::InternalAlignment && c->First == *it);
-                });
-                if (constrIt != constrVals.end()) {
-                    definedGeo = (*constrIt)->Second;
-                }
-
-                if (std::ranges::find(newGeoIdList, definedGeo) == newGeoIdList.end()) {
-                    // we should not copy internal alignment geometry, unless the element they
-                    // define is also mirrored
-                    continue;
-                }
+            // only add this geometry if the corresponding geometry it defines is also in the list.
+            if (isLooseInternalGeo(geoId)) {
+                continue;
             }
 
             // We have already cloned all geometry and constraints, we only need a copy if not
@@ -4900,7 +4951,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 generateId(geoCopy);
             }
             else {
-                geoCopy = newGeoVals[*it];
+                geoCopy = newGeoVals[geoId];
             }
 
             // Handle Geometry
@@ -4996,14 +5047,13 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 continue;
             }
 
-            if (it == newGeoIdList.begin()) {
+            if (geoId == newGeoIdList.front()) {
                 iterFirstPoint = iterPoint;
             }
 
             if (!moveOnly) {  // we are copying
                 newGeoVals.push_back(geoCopy);
-                geoIdMap.insert(std::make_pair(*it, cGeoId));
-                cGeoId++;
+                geoIdMap.insert(std::make_pair(geoId, cGeoId++));
             }
         }
 
@@ -5021,41 +5071,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
 
             // First of constraint is in geoIdList
             if (constr->Second == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
-                if ((constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)
-                    && constr->FirstPos != Sketcher::PointPos::none) {
-                    continue;
-                }
-                // if it is not a point locking DistanceX/Y
-                if (clone
-                    && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
-                        || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Diameter
-                        || constr->Type == Sketcher::Weight || constr->Type == Sketcher::Radius)) {
-                    // Distances on a single Element are mapped to equality
-                    // constraints in clone mode
-                    Constraint* constNew = constr->copy();
-                    constNew->Type = Sketcher::Equal;
-                    constNew->isDriving = true;
-                    // first is already (constr->First)
-                    constNew->Second = firstIt->second;
-                    newConstrVals.push_back(constNew);
-                    continue;
-                }
-                if (!(constr->Type == Sketcher::Angle && clone)) {
-                    Constraint* constNew = constr->copy();
-                    constNew->First = firstIt->second;
-                    newConstrVals.push_back(constNew);
-                    continue;
-                }
-                if (getGeometry(constr->First)->is<Part::GeomLineSegment>()) {
-                    // Angles on a single Element are mapped to parallel
-                    // constraints in clone mode
-                    Constraint* constNew = constr->copy();
-                    constNew->Type = Sketcher::Parallel;
-                    constNew->isDriving = true;
-                    // first is already (constr->First)
-                    constNew->Second = firstIt->second;
-                    newConstrVals.push_back(constNew);
-                }
+                addNewConstraintWithOneGeom(constr, firstIt->second);
                 continue;
             }
 
@@ -5068,27 +5084,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
 
             // Second is also in the list
             if (constr->Third == GeoEnum::GeoUndef) {
-                if (clone && (constr->First == constr->Second)
-                    && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
-                        || constr->Type == Sketcher::Distance)) {
-                    // Distances on a two Elements, which must be points of the
-                    // same line are mapped to equality constraints in clone
-                    // mode
-                    Constraint* constNew = constr->copy();
-                    constNew->Type = Sketcher::Equal;
-                    constNew->isDriving = true;
-                    constNew->FirstPos = Sketcher::PointPos::none;
-                    // first is already (constr->First)
-                    constNew->Second = firstIt->second;
-                    constNew->SecondPos = Sketcher::PointPos::none;
-                    newConstrVals.push_back(constNew);
-                    continue;
-                }
-                // remaining, this includes InternalAlignment constraints
-                Constraint* constNew = constr->copy();
-                constNew->First = firstIt->second;
-                constNew->Second = secondIt->second;
-                newConstrVals.push_back(constNew);
+                addNewConstraintWithTwoGeoms(constr, firstIt->second, secondIt->second);
                 continue;
             }
 
