@@ -2476,31 +2476,10 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
 QString Application::replaceVariablesInQss(QString qssText)
 {
-    // First we fetch the colors from preferences,
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
-    unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", 0);
-    unsigned long longAccentColor2 = hGrp->GetUnsigned("ThemeAccentColor2", 0);
-    unsigned long longAccentColor3 = hGrp->GetUnsigned("ThemeAccentColor3", 0);
-
-    // convert them to hex.
-    // Note: the ulong contains alpha channels so 8 hex characters when we need 6 here.
-    QString accentColor1 = QStringLiteral("#%1")
-                               .arg(longAccentColor1, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
-    QString accentColor2 = QStringLiteral("#%1")
-                               .arg(longAccentColor2, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
-    QString accentColor3 = QStringLiteral("#%1")
-                               .arg(longAccentColor3, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
-
-    qssText = qssText.replace(QStringLiteral("@ThemeAccentColor1"), accentColor1);
-    qssText = qssText.replace(QStringLiteral("@ThemeAccentColor2"), accentColor2);
-    qssText = qssText.replace(QStringLiteral("@ThemeAccentColor3"), accentColor3);
+    for (const auto& token : themeTokenManager.parameters()) {
+        qssText = qssText.replace(QStringLiteral("@%1").arg(QString::fromStdString(token)),
+                                  QString::fromStdString(themeTokenManager.resolve(token).toString()));
+    }
 
     // Base::Console().warning("%s\n", qssText.toStdString());
     return qssText;

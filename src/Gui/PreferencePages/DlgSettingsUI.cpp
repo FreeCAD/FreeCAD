@@ -31,6 +31,8 @@
 #include "DlgSettingsUI.h"
 #include "ui_DlgSettingsUI.h"
 
+#include "Dialogs/DlgThemeEditor.h"
+
 
 using namespace Gui::Dialog;
 
@@ -45,6 +47,10 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     , ui(new Ui_DlgSettingsUI)
 {
     ui->setupUi(this);
+
+    connect(ui->themeEditorButton, &QPushButton::clicked, [this]() {
+        openThemeEditor();
+    });
 }
 
 /**
@@ -114,13 +120,14 @@ void DlgSettingsUI::loadStyleSheet()
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
 }
 
-void DlgSettingsUI::populateStylesheets(const char *key,
-                                        const char *path,
-                                        PrefComboBox *combo,
-                                        const char *def,
+void DlgSettingsUI::populateStylesheets(const char* key,
+                                        const char* path,
+                                        PrefComboBox* combo,
+                                        const char* def,
                                         QStringList filter)
 {
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
     // List all .qss/.css files
     QMap<QString, QString> cssFiles;
     QDir dir;
@@ -170,6 +177,12 @@ void DlgSettingsUI::populateStylesheets(const char *key,
 
     combo->setCurrentIndex(index);
     combo->onRestore();
+}
+
+void DlgSettingsUI::openThemeEditor()
+{
+    Gui::DlgThemeEditor editor;
+    editor.exec();
 }
 
 /**
