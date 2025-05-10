@@ -39,6 +39,7 @@ class ifc_object:
     """Base class for all IFC-based objects"""
 
     def __init__(self, otype=None):
+        self.generated_type = None
         self.cached = True  # this marks that the object is freshly created and its shape should be taken from cache
         self.virgin_placement = True  # this allows one to set the initial placement without triggering any placement change
         if otype:
@@ -115,6 +116,35 @@ class ifc_object:
                 QtCore.QTimer.singleShot(100, obj.touch)
             QtCore.QTimer.singleShot(100, obj.Document.recompute)
             QtCore.QTimer.singleShot(100, self.fit_all)
+
+    def Classification(self, obj):
+        """
+        Assigns Classification to an IFC object in two cases:
+
+        1. If the object references a Type that has a Classification property,
+           it assigns that Classification to the object.
+
+        2. If the object is currently being converted to a Type, it copies the 
+           Classification from the original object to the new Type object.
+        """
+        
+        if (not hasattr(obj, "Type") or not obj.Type) and not obj.Proxy.generated_type:
+            return
+
+        # This means we are currently converting the IFC object to a type
+        # and we may hold Classification property, so just move that property to the type
+        # that we are currently creating
+        if obj.Proxy.generated_type and hasattr(obj, "Classification"):
+            obj.Proxy.generated_type.addProperty("App::PropertyString", "Classification", "IFC")
+            obj.Proxy.generated_type.Classification = obj.Classification
+            obj.Proxy.generated_type.recompute()
+            obj.Proxy.generated_type = None
+        else:
+            type_obj = obj.Type
+            if hasattr(type_obj, "Classification") and type_obj.Classification:
+                obj.addProperty("App::PropertyString", "Classification", "IFC")
+                obj.Classification = type_obj.Classification
+                obj.recompute()
 
     def fit_all(self):
         """Fits the view"""
