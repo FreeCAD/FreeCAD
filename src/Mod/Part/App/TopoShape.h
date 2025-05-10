@@ -1360,7 +1360,7 @@ public:
      */
     TopoShape& makeElementGeneralFuse(const std::vector<TopoShape>& sources,
                                       std::vector<std::vector<TopoShape>>& modified,
-                                      double tol = -1.0,
+                                      double tol = 1e-6,
                                       const char* op = nullptr);
 
     /** Make a fusion of input shapes
@@ -1377,7 +1377,7 @@ public:
      */
     TopoShape& makeElementFuse(const std::vector<TopoShape>& sources,
                                const char* op = nullptr,
-                               double tol = -1.0);
+                               double tol = 1e-6);
     /** Make a fusion of this shape and an input shape
      *
      * @param source: the source shape
@@ -1388,7 +1388,7 @@ public:
      * @return Return the new shape. The TopoShape itself is not modified.
      */
     TopoShape
-    makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
+    makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = 1e-6) const
     {
         return TopoShape(0, Hasher).makeElementFuse({*this, source}, op, tol);
     }
@@ -1406,7 +1406,7 @@ public:
      *         for the same shape in the same line of code.
      */
     TopoShape&
-    makeElementCut(const std::vector<TopoShape>& sources, const char* op = nullptr, double tol = -1.0);
+    makeElementCut(const std::vector<TopoShape>& sources, const char* op = nullptr, double tol = 1e-6);
     /** Make a boolean cut of this shape with an input shape
      *
      * @param source: the source shape
@@ -1417,7 +1417,7 @@ public:
      * @return Return the new shape. The TopoShape itself is not modified.
      */
     TopoShape
-    makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
+    makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = 1e-6) const
     {
         return TopoShape(0, Hasher).makeElementCut({*this, source}, op, tol);
     }
@@ -1881,7 +1881,7 @@ public:
     TopoShape& makeElementBoolean(const char* maker,
                                   const std::vector<TopoShape>& sources,
                                   const char* op = nullptr,
-                                  double tol = -1.0);
+                                  double tol = 1.e-6);
     /** Generalized shape making with mapped element name from shape history
      *
      * @param maker: op code from TopoShapeOpCodes
@@ -1899,7 +1899,7 @@ public:
     TopoShape& makeElementBoolean(const char* maker,
                                   const TopoShape& source,
                                   const char* op = nullptr,
-                                  double tol = -1.0);
+                                  double tol = 1.e-6);
 
     /** Generalized shape making with mapped element name from shape history
      *
@@ -1913,7 +1913,7 @@ public:
      *         is not modified.
      */
     TopoShape
-    makeElementBoolean(const char* maker, const char* op = nullptr, double tol = -1.0) const
+    makeElementBoolean(const char* maker, const char* op = nullptr, double tol = 1e-6) const
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
     }
