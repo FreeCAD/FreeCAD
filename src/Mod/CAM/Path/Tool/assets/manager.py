@@ -358,15 +358,11 @@ class AssetManager:
             return await asyncio.gather(*tasks, return_exceptions=True)
 
         try:
-            logger.debug(
-                "GetBulk: Starting asyncio.run for bulk data fetching."
-            )
+            logger.debug("GetBulk: Starting bulk data fetching")
             all_construction_data_list = asyncio.run(
                 _fetch_all_construction_data_bulk_async()
             )
-            logger.debug(
-                "GetBulk: asyncio.run for bulk data fetching completed."
-            )
+            logger.debug("GetBulk: bulk data fetching completed")
         except (
             Exception
         ) as e:  # Should ideally not happen if gather returns exceptions
@@ -394,9 +390,7 @@ class AssetManager:
             elif (
                 data_or_exc is None
             ):  # From _fetch_... returning None for not found
-                logger.warning(
-                    f"GetBulk: Asset '{original_uri_input}' not found."
-                )
+                logger.debug(f"GetBulk: Asset '{original_uri_input}' not found")
                 assets.append(None)
             else:  # Should not happen
                 logger.error(
