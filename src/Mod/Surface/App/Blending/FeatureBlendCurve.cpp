@@ -140,8 +140,7 @@ BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub& link,
                                          link.getSubValues()[0].c_str(),
                                          nullptr,
                                          nullptr,
-                                         Part::Feature::NeedSubElement 
-                                             | Part::Feature::ResolveLink
+                                         Part::Feature::NeedSubElement | Part::Feature::ResolveLink
                                              | Part::Feature::Transform);
     }
     else {

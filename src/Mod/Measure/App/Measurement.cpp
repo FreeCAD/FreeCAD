@@ -130,8 +130,7 @@ MeasureType Measurement::findType()
                                         (*subEl).c_str(),
                                         nullptr,
                                         nullptr,
-                                        Part::Feature::NeedSubElement 
-                                            | Part::Feature::ResolveLink
+                                        Part::Feature::NeedSubElement | Part::Feature::ResolveLink
                                             | Part::Feature::Transform);
 
             if (refSubShape.IsNull()) {
@@ -764,8 +763,7 @@ bool Measurement::planesAreParallel() const
                                         subElements[i].c_str(),
                                         nullptr,
                                         nullptr,
-                                        Part::Feature::NeedSubElement 
-                                            | Part::Feature::ResolveLink
+                                        Part::Feature::NeedSubElement | Part::Feature::ResolveLink
                                             | Part::Feature::Transform);
 
             if (refSubShape.IsNull()) {
