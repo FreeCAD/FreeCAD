@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -46,12 +46,12 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def __init__(self, obj):
         super().__init__(obj)
 
-        # self.parameter_widget = FreeCADGui.PySideUic.loadUi(
-        #     FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshDistance.ui"
-        # )
-        # self.parameter_widget.setWindowTitle("Distance threshold settings")
-        # self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
-        # self._init_parameter_widget()
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
+             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshTransfiniteCurve.ui"
+        )
+        self.parameter_widget.setWindowTitle("Structured transfinite curve mesh")
+        self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
+        self._init_parameter_widget()
 
         # geometry selection widget
         # only allow valid distance objects!
@@ -62,45 +62,46 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.selection_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
 
         # form made from param and selection widget
-        self.form = [self.selection_widget]
+        self.form = [self.parameter_widget, self.selection_widget]
 
     def _init_parameter_widget(self):
 
-        # check which picture to use
-        # Note: Does work only with system theme, not with stylesheets.
-        #       It is unknown how to detect the correct color from stylesheets
         ui = self.parameter_widget
-        palette = ui.palette()
-        if palette.color(QtGui.QPalette.Text).lightness() > palette.color(QtGui.QPalette.Window).lightness():
-            pixmap = QtGui.QPixmap(":images/FEM_MeshDistanceThresholdLight.svg")
+
+        # There is no known way to access the colors set by stylesheets. It is hence not posssible to make a universal
+        # correct desicion on which image to use. Workaround is to check stylesheet name if one ist set for "dark" and "ligth"
+        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet")
+        if "dark" in stylesheet.lower():
+            lightness = "Light"
+        elif "light" in stylesheet.lower():
+            lightness = "Dark"
         else:
-            pixmap = QtGui.QPixmap(":images/FEM_MeshDistanceThresholdDark.svg")
-        ui.Diagram.setPixmap(pixmap)
+            # use the qt style background and text color to detect the image to use
+            palette = ui.palette()
+            if palette.color(QtGui.QPalette.Text).lightness() > palette.color(QtGui.QPalette.Window).lightness():
+                lightness = "Light"
+            else:
+                lightness = "Dark"
 
-        ui.SizeMin.setProperty("value", self.obj.SizeMinimum)
-        FreeCADGui.ExpressionBinding(ui.SizeMin).bind(self.obj, "SizeMinimum")
-        ui.SizeMin.valueChanged.connect(self.sizeMinChanged)
+        ui.Diagram.setPixmap(QtGui.QPixmap(f":images/FEM_MeshTransfiniteCurve{lightness}.svg"))
 
-        ui.SizeMax.setProperty("value", self.obj.SizeMaximum)
-        FreeCADGui.ExpressionBinding(ui.SizeMax).bind(self.obj, "SizeMaximum")
-        ui.SizeMax.valueChanged.connect(self.sizeMaxChanged)
+        ui.Nodes.setProperty("value", FreeCAD.Units.Quantity(self.obj.Nodes))
+        FreeCADGui.ExpressionBinding(ui.Nodes).bind(self.obj, "Nodes")
+        ui.Nodes.valueChanged.connect(self.nodesChanged)
 
-        ui.DistMin.setProperty("value", self.obj.DistanceMinimum)
-        FreeCADGui.ExpressionBinding(ui.DistMin).bind(self.obj, "DistanceMinimum")
-        ui.DistMin.valueChanged.connect(self.distMinChanged)
+        ui.Coefficient.setProperty("value", FreeCAD.Units.Quantity(self.obj.Coefficient))
+        FreeCADGui.ExpressionBinding(ui.Coefficient).bind(self.obj, "Coefficient")
+        ui.Coefficient.valueChanged.connect(self.coefficientChanged)
 
+        ui.Distribution.setId(ui.Constant, 0)
+        ui.Distribution.setId(ui.Bump, 1)
+        ui.Distribution.setId(ui.Progression, 2)
+        distributions = self.obj.getEnumerationsOfProperty("Distribution")
+        ui.Distribution.button(distributions.index(self.obj.Distribution)).setChecked(True)
+        ui.Distribution.idToggled.connect(self.distributionChanged)
 
-        ui.DistMax.setProperty("value", self.obj.DistanceMaximum)
-        FreeCADGui.ExpressionBinding(ui.DistMax).bind(self.obj, "DistanceMaximum")
-        ui.DistMax.valueChanged.connect(self.distMaxChanged)
-
-        ui.Sampling.setProperty("value", FreeCAD.Units.Quantity(self.obj.Sampling))
-        FreeCADGui.ExpressionBinding(ui.Sampling).bind(self.obj, "Sampling")
-        ui.Sampling.valueChanged.connect(self.samplingChanged)
-
-        ui.Linear.setChecked(self.obj.LinearInterpolation)
-        ui.Linear.toggled.connect(self.linearChanged)
-
+        ui.Invert.setChecked(self.obj.Invert)
+        ui.Invert.toggled.connect(self.invertChanged)
 
     def accept(self):
         self.obj.References = self.selection_widget.references
@@ -111,28 +112,21 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.selection_widget.finish_selection()
         return super().reject()
 
-    @QtCore.Slot(FreeCAD.Units.Quantity)
-    def distMaxChanged(self, value):
-        self.obj.DistanceMaximum = value
-
-    @QtCore.Slot(FreeCAD.Units.Quantity)
-    def distMinChanged(self, value):
-        self.obj.DistanceMinimum = value
-
-    @QtCore.Slot(FreeCAD.Units.Quantity)
-    def sizeMaxChanged(self, value):
-        self.obj.SizeMaximum = value
-
-    @QtCore.Slot(FreeCAD.Units.Quantity)
-    def sizeMinChanged(self, value):
-        self.obj.SizeMinimum = value
-
-    @QtCore.Slot(FreeCAD.Units.Quantity)
-    def samplingChanged(self, value):
-        self.obj.Sampling = int(value)
+    @QtCore.Slot(int, bool)
+    def distributionChanged(self, id, value):
+        if value:
+            self.obj.Distribution = id
 
     @QtCore.Slot(bool)
-    def linearChanged(self, value):
-        self.obj.LinearInterpolation = value
+    def invertChanged(self, value):
+        self.obj.Invert = value
+
+    @QtCore.Slot(FreeCAD.Units.Quantity)
+    def nodesChanged(self, value):
+        self.obj.Nodes = int(value)
+
+    @QtCore.Slot(FreeCAD.Units.Quantity)
+    def coefficientChanged(self, value):
+        self.obj.Coefficient = float(value)
 
 

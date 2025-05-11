@@ -446,6 +446,9 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
     Resources/ui/MeshDistance.ui
+    Resources/ui/MeshTransfiniteVolume.ui
+    Resources/ui/MeshTransfiniteSurface.ui
+    Resources/ui/MeshTransfiniteCurve.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui
     Resources/ui/SolverCalculiX.ui

@@ -66,16 +66,24 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def _init_parameter_widget(self):
 
-        # check which picture to use
-        # Note: Does work only with system theme, not with stylesheets.
-        #       It is unknown how to detect the correct color from stylesheets
         ui = self.parameter_widget
-        palette = ui.palette()
-        if palette.color(QtGui.QPalette.Text).lightness() > palette.color(QtGui.QPalette.Window).lightness():
-            pixmap = QtGui.QPixmap(":images/FEM_MeshDistanceThresholdLight.svg")
+
+        # There is no known way to access the colors set by stylesheets. It is hence not posssible to make a universal
+        # correct desicion on which image to use. Workaround is to check stylesheet name if one ist set for "dark" and "ligth"
+        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet")
+        if "dark" in stylesheet.lower():
+            lightness = "Light"
+        elif "light" in stylesheet.lower():
+            lightness = "Dark"
         else:
-            pixmap = QtGui.QPixmap(":images/FEM_MeshDistanceThresholdDark.svg")
-        ui.Diagram.setPixmap(pixmap)
+            # use the qt style background and text color to detect the image to use
+            palette = ui.palette()
+            if palette.color(QtGui.QPalette.Text).lightness() > palette.color(QtGui.QPalette.Window).lightness():
+                lightness = "Light"
+            else:
+                lightness = "Dark"
+
+        ui.Diagram.setPixmap(QtGui.QPixmap(f":images/FEM_MeshDistanceThreshold{lightness}.svg"))
 
         ui.SizeMin.setProperty("value", self.obj.SizeMinimum)
         FreeCADGui.ExpressionBinding(ui.SizeMin).bind(self.obj, "SizeMinimum")
