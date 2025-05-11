@@ -417,7 +417,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     return TopoDS_Face();
 }
 
-TopoShape ProfileBased::getProfileShape() const
+TopoShape ProfileBased::getProfileShape(int subShapeOptions) const
 {
     TopoShape shape;
     const auto& subs = Profile.getSubValues();
@@ -432,9 +432,7 @@ TopoShape ProfileBased::getProfileShape() const
                                                          sub.c_str(),
                                                          nullptr,
                                                          nullptr,
-                                                         Part::Feature::NeedSubElement
-                                                             | Part::Feature::ResolveLink
-                                                             | Part::Feature::Transform));
+                                                         subShapeOptions));
         }
         shape = TopoShape(shape.Tag).makeElementCompound(shapes);
     }

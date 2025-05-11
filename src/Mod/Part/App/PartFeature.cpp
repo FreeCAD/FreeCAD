@@ -1303,7 +1303,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                                hiddens,
                                lastLink, 
                                options);
-    if (options & NeedSubElement && shape.shapeType(true) == TopAbs_COMPOUND) {
+    if (options & NeedSubElement && !(options & DontSimplifyCompound) && shape.shapeType(true) == TopAbs_COMPOUND) {
         shape = simplifyCompound(shape);
     }
 

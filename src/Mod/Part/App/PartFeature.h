@@ -59,7 +59,7 @@ public:
         ResolveLink = 2,
         Transform = 4,
         NoElementMap = 8,
-        TrySimplifyCompound = 16
+        DontSimplifyCompound = 16
     };
 
 public:
