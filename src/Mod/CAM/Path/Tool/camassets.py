@@ -68,7 +68,7 @@ def ensure_assets_initialized(asset_manager: AssetManager, store = "local"):
 
 def _on_asset_path_changed(group, key, value):
     Path.Log.info(f"CAM asset directory changed in preferences: {group} {key} {value}")
-    cam_asset_store.set_dir(Preferences.getToolBitPath())
+    cam_asset_store.set_dir(Preferences.getAssetPath())
     ensure_assets_initialized(cam_assets)
 
 
