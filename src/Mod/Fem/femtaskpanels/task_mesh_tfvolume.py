@@ -90,6 +90,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         info = FreeCADGui.getIcon("info.svg")
         ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32,32)))
 
+        ui.Mixed.setChecked(self.obj.MixedElements)
+        ui.Mixed.toggled.connect(self.mixedChanged)
+
 
     def accept(self):
         self.obj.References = self.selection_widget.references
@@ -100,3 +103,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.selection_widget.finish_selection()
         return super().reject()
 
+    @QtCore.Slot(bool)
+    def mixedChanged(self, value):
+        self.obj.MixedElements = value
