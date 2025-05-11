@@ -21,69 +21,41 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM distance document object"
+__title__ = "FreeCAD FEM transfinite surface document object"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
-## @package mesh_distance
+## @package mesh_tfsurface
 #  \ingroup FEM
-#  \brief  object defining mesh size by distance to object and size transitions
+#  \brief  object defining mesh size and strucutre by transfinite surface
 
 from . import base_femmeshelement
 from . import base_fempythonobject
 _PropHelper = base_fempythonobject._PropHelper
 
-class MeshDistance(base_femmeshelement.BaseFemMeshElement):
+class MeshTransfiniteSurface(base_femmeshelement.BaseFemMeshElement):
     """
-    The FemMeshDistance object
+    The FemMeshTransfiniteSurface object
     """
 
-    Type = "Fem::MeshDistance"
+    Type = "Fem::MeshTransfiniteSurface"
 
     def _get_properties(self):
 
         props = [
             _PropHelper(
-                type="App::PropertyLength",
-                name="DistanceMinimum",
-                group="DistanceSizeField",
-                doc="Distance up to which the mesh size will be SizeMinimum",
-                value="10mm",
-            ),
-            _PropHelper(
-                type="App::PropertyLength",
-                name="DistanceMaximum",
-                group="DistanceSizeField",
-                doc="Distance at which the mesh size will be SizeMaximum",
-                value="100mm",
-            ),
-            _PropHelper(
-                type="App::PropertyLength",
-                name="SizeMinimum",
-                group="DistanceSizeField",
-                doc="Mesh size when distance < DistanceMinimum",
-                value="3mm",
-            ),
-            _PropHelper(
-                type="App::PropertyLength",
-                name="SizeMaximum",
-                group="DistanceSizeField",
-                doc="Mesh size when distance = DistanceMaximum",
-                value="20mm",
+                type="App::PropertyEnumeration",
+                name="TriangleOrientation",
+                group="Transfinite",
+                doc="Define how the triangles are oriented within the transfinite mesh (if not recombined)",
+                value=["Left", "Right",  "AlternateRight", "AlternateLeft"],
             ),
             _PropHelper(
                 type="App::PropertyBool",
-                name="LinearInterpolation",
-                group="DistanceSizeField",
-                doc="Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function",
-                value=True,
-            ),
-            _PropHelper(
-                type="App::PropertyIntegerConstraint",
-                name="Sampling",
-                group="DistanceSizeField",
-                doc="Sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.",
-                value=(20, 0, 1000, 1),
+                name="Recombine",
+                group="Transfinite",
+                doc="Define if the triangles on the surface shall be recombined into quads",
+                value=False,
             ),
         ]
 
