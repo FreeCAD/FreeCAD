@@ -66,6 +66,9 @@
         <file>icons/FEM_MeshNetgenFromShape.svg</file>
         <file>icons/FEM_MeshRegion.svg</file>
         <file>icons/FEM_MeshDistance.svg</file>
+        <file>icons/FEM_MeshTransfiniteCurve.svg</file>
+        <file>icons/FEM_MeshTransfiniteSurface.svg</file>
+        <file>icons/FEM_MeshTransfiniteVolume.svg</file>
 
         <!-- gui command icons: materials -->
         <file>icons/FEM_MaterialFluid.svg</file>
