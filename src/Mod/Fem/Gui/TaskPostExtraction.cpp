@@ -59,11 +59,14 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
 
     Base::PyGILStateLocker lock;
 
-    Py::Module mod(PyImport_ImportModule("femguiutils.data_extraction"), true);
-    if (mod.isNull())
-        throw Base::ImportError("Unable to import data extraction widget");
 
     try {
+        Py::Module mod(PyImport_ImportModule("femguiutils.data_extraction"), true);
+        if (mod.isNull()) {
+            Base::Console().error("Unable to import data extraction widget\n");
+            return;
+        }
+
         Py::Callable method(mod.getAttr(std::string("DataExtraction")));
         Py::Tuple args(1);
         args.setItem(0, Py::Object(view->getPyObject()));
@@ -93,8 +96,9 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
             }
         }
     }
+
     // if we are here something went wrong!
-    throw Base::ImportError("Unable to import data extraction widget");
+    Base::Console().error("Unable to import data extraction widget\n");
 };
 
 TaskPostExtraction::~TaskPostExtraction() {

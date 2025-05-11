@@ -139,7 +139,7 @@ class DataExtraction(_BasePostTaskPanel):
 
         # add the points
         points = algo.GetOutputDataObject(0).GetPoints().GetData()
-        table.InsertColumn(points, 0)
+        table.AddColumn(points)
 
         # split the components
         splitter = vtkSplitColumnComponents()
