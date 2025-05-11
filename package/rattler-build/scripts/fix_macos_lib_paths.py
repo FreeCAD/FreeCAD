@@ -52,9 +52,9 @@ def change_reexport_dylib(file_path, reexport_dylib):
 
 def scan_directory(directory, recursive=False):
     if recursive:
-        print(f"Recursively scanning dir: {scan_path}")
+        print(f"Recursively scanning dir: {directory}")
     else:
-        print(f"Scanning dir: {scan_path}")
+        print(f"Scanning dir: {directory}")
 
     for filename in os.listdir(directory):
         full_path = os.path.join(directory, filename)
