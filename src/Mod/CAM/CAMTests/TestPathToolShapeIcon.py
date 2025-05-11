@@ -27,41 +27,24 @@ class TestToolBitShapeIconBase(PathTestWithAssets):
         print(f"DEBUG: DISPLAY='{os.environ.get('DISPLAY')}'", file=sys.stderr)
 
         # Ensure a QApplication exists for QPixmap tests
-        if not QtGui.QApplication.instance():
+        self.app = QtGui.QApplication.instance()
+        if not self.app:
             print("DEBUG: TestPathToolShapeIcon.setUp: No QApplication instance found, creating one.", file=sys.stderr)
-            try:
-                self.app = QtGui.QApplication([])
-                print("DEBUG: TestPathToolShapeIcon.setUp: QApplication created successfully.", file=sys.stderr)
-                if self.app:
-                    print(f"DEBUG: TestPathToolShapeIcon.setUp: QApplication platformName: {self.app.platformName()}", file=sys.stderr)
-                else:
-                    print("DEBUG: TestPathToolShapeIcon.setUp: QApplication object is None after creation attempt.", file=sys.stderr)
-            except Exception as e:
-                print(f"DEBUG: TestPathToolShapeIcon.setUp: EXCEPTION during QApplication creation: {e}", file=sys.stderr)
-                # It's possible the segfault happens here and this print isn't reached
-                # Or if it's not a Python exception, this won't catch it.
-                raise # Re-raise to ensure test fails clearly if this is a Python exception
-        else:
-            self.app = QtGui.QApplication.instance()
-            print("DEBUG: TestPathToolShapeIcon.setUp: Existing QApplication instance found.", file=sys.stderr)
-            if self.app:
-                print(f"DEBUG: TestPathToolShapeIcon.setUp: Existing QApplication platformName: {self.app.platformName()}", file=sys.stderr)
+            self.app = QtGui.QApplication(['-platform', 'offscreen'])
 
-        print("DEBUG: TestPathToolShapeIcon.setUp:Fetching shape", file=sys.stderr)
         self.test_shape = self.assets.get("toolbitshape://ballend")
-        print("DEBUG: TestPathToolShapeIcon.setUp:Fetched shape", file=sys.stderr)
         self.test_svg = self.test_shape.icon
         assert self.test_svg is not None
         self.icon = self.ICON_CLASS("test_icon_base", b"")
 
+    def tearDown(self):
+        self.app = None
+        return super().tearDown()
+
     def test_create_instance(self):
-        print(f"DEBUG: TestPathToolShapeIcon.test_create_instance: Starting for {type(self).__name__}", file=sys.stderr)
-        print(f"DEBUG: TestPathToolShapeIcon.test_create_instance: ICON_CLASS is {self.ICON_CLASS}", file=sys.stderr)
         # Test basic instance creation
         icon_id = "test_icon_123.dat"
-        print(f"DEBUG: TestPathToolShapeIcon.test_create_instance: About to create icon: {self.ICON_CLASS}('{icon_id}', b'')", file=sys.stderr)
         icon = self.ICON_CLASS(icon_id, b"")
-        print("DEBUG: TestPathToolShapeIcon.test_create_instance: Icon created.", file=sys.stderr)
         self.assertEqual(icon.get_id(), icon_id)
         self.assertEqual(icon.data, b"")
         self.assertIsInstance(icon.abbreviations, dict)
