@@ -89,7 +89,7 @@ class CAMWorkbench(Workbench):
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(
-            PathPreferencesTools.ToolsPreferencesPage,
+            PathPreferencesTools.AssetPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(

@@ -114,14 +114,14 @@ def getBuiltinToolBitPath() -> pathlib.Path:
     return getBuiltinToolPath() / "Bit"
 
 
-def getDefaultToolPath():
+def getDefaultAssetPath():
     config = pathlib.Path(FreeCAD.ConfigGet("UserConfigPath"))
     return config / "Mod" / "CAM" / "Tools"
 
 
 def getAssetPath() -> pathlib.Path:
     pref = tool_preferences()
-    default = getDefaultToolPath()
+    default = getDefaultAssetPath()
     path = pref.GetString(ToolPath, str(default))
     return pathlib.Path(path or default)
 

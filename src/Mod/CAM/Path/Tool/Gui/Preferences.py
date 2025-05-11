@@ -43,47 +43,43 @@ def _is_writable_dir(path: pathlib.Path) -> bool:
         return False
 
 
-class ToolsPreferencesPage:
+class AssetPreferencesPage:
     def __init__(self, parent=None):
         self.form = QtGui.QToolBox()
-        self.form.setWindowTitle(translate("CAM_PreferencesTools", "Tools"))
+        self.form.setWindowTitle(translate("CAM_PreferencesAssets", "Assets"))
 
-        # Tool Library Path UI
-        tool_path_widget = QtGui.QWidget()
-        main_layout = QtGui.QHBoxLayout(tool_path_widget)
-
-        # main_layout.addWidget(self.tool_path_label, 0, QtCore.Qt.AlignTop)
+        asset_path_widget = QtGui.QWidget()
+        main_layout = QtGui.QHBoxLayout(asset_path_widget)
 
         # Create widgets
-        self.tool_path_label = QtGui.QLabel(translate("CAM_PreferencesTools", "Tool Directory:"))
-        self.tool_path_edit = QtGui.QLineEdit()
-        self.tool_path_note_label = QtGui.QLabel(
+        self.asset_path_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Asset Directory:"))
+        self.asset_path_edit = QtGui.QLineEdit()
+        self.asset_path_note_label = QtGui.QLabel(
             translate(
-                "CAM_PreferencesTools",
+                "CAM_PreferencesAssets",
                 "Note: Select the directory that will contain the "
-                "Bit/, Shape/, and Library/ subfolders for your "
-                "tool library.",
+                "Bit/, Shape/, and Library/ subfolders.",
             )
         )
-        self.tool_path_note_label.setWordWrap(True)
+        self.asset_path_note_label.setWordWrap(True)
         self.select_path_button = QtGui.QToolButton()
         self.select_path_button.setIcon(QtGui.QIcon.fromTheme("folder-open"))
-        self.select_path_button.clicked.connect(self.selectToolPath)
-        self.reset_path_button = QtGui.QPushButton(translate("CAM_PreferencesTools", "Reset"))
+        self.select_path_button.clicked.connect(self.selectAssetPath)
+        self.reset_path_button = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Reset"))
         self.reset_path_button.clicked.connect(self.resetAssetPath)
 
         # Set note label font to italic
-        font = self.tool_path_note_label.font()
+        font = self.asset_path_note_label.font()
         font.setItalic(True)
-        self.tool_path_note_label.setFont(font)
+        self.asset_path_note_label.setFont(font)
 
-        # Layout for tool path section
+        # Layout for asset path section
         edit_button_layout = QtGui.QGridLayout()
-        edit_button_layout.addWidget(self.tool_path_label, 0, 0, QtCore.Qt.AlignVCenter)
-        edit_button_layout.addWidget(self.tool_path_edit, 0, 1, QtCore.Qt.AlignVCenter)
+        edit_button_layout.addWidget(self.asset_path_label, 0, 0, QtCore.Qt.AlignVCenter)
+        edit_button_layout.addWidget(self.asset_path_edit, 0, 1, QtCore.Qt.AlignVCenter)
         edit_button_layout.addWidget(self.select_path_button, 0, 2, QtCore.Qt.AlignVCenter)
         edit_button_layout.addWidget(self.reset_path_button, 0, 3, QtCore.Qt.AlignVCenter)
-        edit_button_layout.addWidget(self.tool_path_note_label, 1, 1, 1, 1, QtCore.Qt.AlignTop)
+        edit_button_layout.addWidget(self.asset_path_note_label, 1, 1, 1, 1, QtCore.Qt.AlignTop)
         edit_button_layout.addItem(
             QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding),
             2,
@@ -94,42 +90,41 @@ class ToolsPreferencesPage:
 
         main_layout.addLayout(edit_button_layout, QtCore.Qt.AlignTop)
 
-        self.form.addItem(tool_path_widget, translate("CAM_PreferencesTools", "Tool Library"))
+        self.form.addItem(asset_path_widget, translate("CAM_PreferencesAssets", "Assets"))
 
-    def selectToolPath(self):
+    def selectAssetPath(self):
         # Implement directory selection dialog
         path = QtGui.QFileDialog.getExistingDirectory(
             self.form,
-            translate("CAM_PreferencesTools", "Select Tool Library Directory"),
-            self.tool_path_edit.text(),
+            translate("CAM_PreferencesAssets", "Select Asset Directory"),
+            self.asset_path_edit.text(),
         )
         if path:
-            self.tool_path_edit.setText(str(path))
+            self.asset_path_edit.setText(str(path))
 
     def resetAssetPath(self):
         # Implement resetting path to default
-        default_path = Path.Preferences.getDefaultToolPath()
-        self.tool_path_edit.setText(str(default_path))
+        default_path = Path.Preferences.getDefaultAssetPath()
+        self.asset_path_edit.setText(str(default_path))
 
     def saveSettings(self):
         # Check path is writable, then call Path.Preferences.setAssetPath()
-        tool_path = pathlib.Path(self.tool_path_edit.text())
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Path").GetBool(
-            "CheckToolPathWritable", True
-        ):
-            if not _is_writable_dir(tool_path):
+        asset_path = pathlib.Path(self.asset_path_edit.text())
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Path")
+        if param.GetBool("CheckAssetPathWritable", True):
+            if not _is_writable_dir(asset_path):
                 QtGui.QMessageBox.warning(
                     self.form,
-                    translate("CAM_PreferencesTools", "Warning"),
+                    translate("CAM_PreferencesAssets", "Warning"),
                     translate(
-                        "CAM_PreferencesTools", "The selected tool library path is not writable."
+                        "CAM_PreferencesAssets", "The selected asset path is not writable."
                     ),
                 )
                 return False
-        Path.Preferences.setAssetPath(tool_path)
+        Path.Preferences.setAssetPath(asset_path)
         return True
 
     def loadSettings(self):
         # use getAssetPath() to initialize UI
-        tool_path = Path.Preferences.getAssetPath()
-        self.tool_path_edit.setText(str(tool_path))
+        asset_path = Path.Preferences.getAssetPath()
+        self.asset_path_edit.setText(str(asset_path))
