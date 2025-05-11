@@ -3,12 +3,14 @@ import logging
 import asyncio
 import threading
 import pathlib
-from typing import Dict, Any, Type, Optional, List, Sequence, Union, Set, Mapping
+import hashlib # Added
+from typing import Dict, Any, Type, Optional, List, Sequence, Union, Set, Mapping, Tuple # Added Tuple
 from dataclasses import dataclass, field
 from PySide import QtCore, QtGui
 from .store.base import AssetStore
 from .asset import Asset
 from .uri import AssetUri
+from .cache import AssetCache, CacheKey # Added
 
 
 logger = logging.getLogger(__name__)
@@ -22,23 +24,27 @@ class _AssetConstructionData:
     asset_class_type: Type[Asset]
     asset_id: str
     # Stores AssetConstructionData for dependencies, keyed by their AssetUri
-    dependencies_data: Dict[AssetUri, Optional["_AssetConstructionData"]] = (
-        field(default_factory=dict)
-    )
+    dependencies_data: Optional[Dict[AssetUri, Optional["_AssetConstructionData"]]] = None
 
 
 class AssetManager:
-    def __init__(self):
+    def __init__(self, cache_max_size_bytes: int = 100 * 1024 * 1024):
         self.stores: Dict[str, AssetStore] = {}
         self._asset_classes: Dict[str, Type[Asset]] = {}
+        self.asset_cache = AssetCache(max_size_bytes=cache_max_size_bytes)
+        self._cacheable_stores: Set[str] = set()
         logger.debug(
             f"AssetManager initialized (Thread: {threading.current_thread().name})"
         )
 
-    def register_store(self, store: AssetStore):
+    def register_store(self, store: AssetStore, cacheable: bool = False):
         """Registers an AssetStore with the manager."""
-        logger.debug(f"Registering store: {store.name}")
+        logger.debug(
+            f"Registering store: {store.name}, cacheable: {cacheable}"
+        )
         self.stores[store.name] = store
+        if cacheable:
+            self._cacheable_stores.add(store.name)
 
     def register_asset(self, asset_class: Type[Asset]):
         """Registers an Asset class with the manager."""
@@ -172,26 +178,62 @@ class AssetManager:
             dependencies_data=deps_construction_data_map, # Can be None or Dict
         )
 
+    def _calculate_cache_key_from_construction_data(
+        self,
+        construction_data: _AssetConstructionData,
+        store_name_for_cache: str,
+    ) -> Optional[CacheKey]:
+        if not construction_data or not construction_data.raw_data:
+            return None
+
+        if construction_data.dependencies_data is None:
+            deps_signature_tuple: Tuple = ("shallow_children",)
+        else:
+            deps_signature_tuple = tuple(
+                sorted(
+                    str(uri)
+                    for uri in construction_data.dependencies_data.keys()
+                )
+            )
+
+        raw_data_hash = int(
+            hashlib.sha256(construction_data.raw_data).hexdigest(), 16
+        )
+
+        return CacheKey(
+            store_name=store_name_for_cache,
+            asset_uri_str=str(construction_data.uri),
+            raw_data_hash=raw_data_hash,
+            dependency_signature=deps_signature_tuple,
+        )
+
     def _build_asset_tree_from_data_sync(
-        self, construction_data: Optional[_AssetConstructionData]
+        self,
+        construction_data: Optional[_AssetConstructionData],
+        store_name_for_cache: str,
     ) -> Asset | None:
         """
-        Synchronously and recursively builds an asset instance (and its dependencies)
-        from the provided _AssetConstructionData.
-        This method calls Asset.from_bytes and is intended to run in the
-        thread where UI operations are safe (typically the main UI thread).
+        Synchronously and recursively builds an asset instance.
+        Integrates caching logic.
         """
         if not construction_data:
             return None
+
+        cache_key: Optional[CacheKey] = None
+        if store_name_for_cache in self._cacheable_stores:
+            cache_key = self._calculate_cache_key_from_construction_data(
+                construction_data, store_name_for_cache
+            )
+            if cache_key:
+                cached_asset = self.asset_cache.get(cache_key)
+                if cached_asset is not None:
+                    return cached_asset
+
         logger.debug(
-            f"BuildAssetTreeSync: Instantiating '{construction_data.uri.asset_id}' "
-            f"of type '{construction_data.asset_class_type.__name__}' "
-            f"(Thread: {threading.current_thread().name})."
+            f"BuildAssetTreeSync: Instantiating '{construction_data.uri}' "
+            f"of type '{construction_data.asset_class_type.__name__}'"
         )
 
-        # If construction_data.dependencies_data is None (due to depth limit),
-        # then resolved_dependencies passed to from_bytes should also be None.
-        # Otherwise, build them.
         resolved_dependencies: Optional[Mapping[AssetUri, Any]] = None
         if construction_data.dependencies_data is not None:
             resolved_dependencies = {}
@@ -199,17 +241,40 @@ class AssetManager:
                 dep_uri,
                 dep_data_node,
             ) in construction_data.dependencies_data.items():
+                # Assuming dependencies are fetched from the same store context
+                # for caching purposes. If a dependency *could* be from a
+                # different store and that store has different cacheability,
+                # this would need more complex store_name propagation.
+                # For now, use the parent's store_name_for_cache.
                 resolved_dependencies[dep_uri] = (
-                    self._build_asset_tree_from_data_sync(dep_data_node)
+                    self._build_asset_tree_from_data_sync(
+                        dep_data_node, store_name_for_cache
+                    )
                 )
 
-        # Now, instantiate the current asset using its data and resolved_dependencies
         asset_class = construction_data.asset_class_type
-        return asset_class.from_bytes(
+        final_asset = asset_class.from_bytes(
             construction_data.raw_data,
             construction_data.asset_id,
             resolved_dependencies,
         )
+
+        if final_asset is not None and cache_key:
+            # This check implies store_name_for_cache was in _cacheable_stores
+            direct_deps_uris_strs: Set[str] = set()
+            if construction_data.dependencies_data is not None:
+                direct_deps_uris_strs = {
+                    str(uri)
+                    for uri in construction_data.dependencies_data.keys()
+                }
+            raw_data_size = len(construction_data.raw_data)
+            self.asset_cache.put(
+                cache_key,
+                final_asset,
+                raw_data_size,
+                direct_deps_uris_strs,
+            )
+        return final_asset
 
     def get(
         self,
@@ -266,14 +331,22 @@ class AssetManager:
 
         # Step 2: Synchronously build the asset tree (and call from_bytes)
         # This happens in the current thread (which is assumed to be the main UI thread)
-        deps = all_construction_data.dependencies_data
-        found_deps = sum(1 for d in deps.values() if d is None)
+        deps_count = 0
+        found_deps_count = 0
+        if all_construction_data.dependencies_data is not None:
+            deps_count = len(all_construction_data.dependencies_data)
+            found_deps_count = sum(
+                1
+                for d in all_construction_data.dependencies_data.values()
+                if d is not None  # Count actual data, not None placeholders
+            )
+
         logger.debug(
             f"Get: Starting synchronous asset tree build for '{asset_uri_obj}' "
-            f"and {len(deps)} dependencies ({found_deps} found)"
+            f"and {deps_count} dependencies ({found_deps_count} resolved)."
         )
         final_asset = self._build_asset_tree_from_data_sync(
-            all_construction_data
+            all_construction_data, store_name_for_cache=store
         )
         logger.debug(
             f"Get: Synchronous asset tree build for '{asset_uri_obj}' completed."
@@ -317,7 +390,9 @@ class AssetManager:
         logger.debug(
             f"get_async: Building asset tree for '{asset_uri_obj}', depth {depth} in current async context."
         )
-        return self._build_asset_tree_from_data_sync(all_construction_data)
+        return self._build_asset_tree_from_data_sync(
+            all_construction_data, store_name_for_cache=store
+        )
 
     def get_raw(
         self, uri: Union[AssetUri, str], store: str = "local"
@@ -411,7 +486,9 @@ class AssetManager:
             elif isinstance(data_or_exc, _AssetConstructionData):
                 # Build asset instance synchronously. Exceptions during build should propagate.
                 assets.append(
-                    self._build_asset_tree_from_data_sync(data_or_exc)
+                    self._build_asset_tree_from_data_sync(
+                        data_or_exc, store_name_for_cache=store
+                    )
                 )
             elif (
                 data_or_exc is None
@@ -452,7 +529,9 @@ class AssetManager:
         for i, data_or_exc in enumerate(all_construction_data_list):
             if isinstance(data_or_exc, _AssetConstructionData):
                 assets.append(
-                    self._build_asset_tree_from_data_sync(data_or_exc)
+                    self._build_asset_tree_from_data_sync(
+                        data_or_exc, store_name_for_cache=store
+                    )
                 )
             elif (
                 isinstance(data_or_exc, FileNotFoundError)
@@ -569,6 +648,9 @@ class AssetManager:
         except FileNotFoundError:
             logger.debug(f"AddRawAsync: Asset not found, creating new asset with {asset_type} and {asset_id}")
             uri = await selected_store.create(asset_type, asset_id, data)
+
+        if store in self._cacheable_stores:
+            self.asset_cache.invalidate_for_uri(str(uri)) # Invalidate after add/update
         return uri
 
     def add_raw(self, asset_type: str, asset_id: str, data: bytes, store: str = "local") -> AssetUri:
@@ -603,6 +685,8 @@ class AssetManager:
         async def _do_delete_async():
             selected_store = self.stores[store]
             await selected_store.delete(asset_uri_obj)
+            if store in self._cacheable_stores:
+                self.asset_cache.invalidate_for_uri(str(asset_uri_obj))
 
         asyncio.run(_do_delete_async())
 
@@ -613,6 +697,8 @@ class AssetManager:
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
         selected_store = self.stores[store]
         await selected_store.delete(asset_uri_obj)
+        if store in self._cacheable_stores:
+            self.asset_cache.invalidate_for_uri(str(asset_uri_obj))
 
     async def is_empty_async(
         self, asset_type: Optional[str] = None, store: str = "local"

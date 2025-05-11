@@ -62,13 +62,11 @@ from CAMTests.TestPathStock import TestPathStock
 from CAMTests.TestPathTapGenerator import TestPathTapGenerator
 from CAMTests.TestPathThreadMilling import TestPathThreadMilling
 from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
-from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
-from CAMTests.TestPathToolAssetStore import (
-    TestPathToolFileStore,
-    TestPathToolMemoryStore,
-)
 from CAMTests.TestPathToolAsset import TestPathToolAsset
+from CAMTests.TestPathToolAssetCache import TestPathToolAssetCache, TestPathToolAssetCacheIntegration
 from CAMTests.TestPathToolAssetManager import TestPathToolAssetManager
+from CAMTests.TestPathToolAssetStore import TestPathToolFileStore, TestPathToolMemoryStore
+from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
 from CAMTests.TestPathToolBit import TestPathToolBit
 from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
 from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
