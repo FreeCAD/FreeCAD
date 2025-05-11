@@ -3,11 +3,9 @@ import logging
 import asyncio
 import threading
 import pathlib
-from typing import Dict, Any, Type, Optional, List, Sequence, Union, Set, Tuple
+from typing import Dict, Any, Type, Optional, List, Sequence, Union, Set
 from dataclasses import dataclass, field
-from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import QThread
-
+from PySide import QtCore, QtGui
 from .store.base import AssetStore
 from .asset import Asset
 from .uri import AssetUri
@@ -213,8 +211,8 @@ class AssetManager:
             f"AssetManager.get(uri='{uri}', store='{store}') called from thread: {calling_thread_name}"
         )
         if (
-            QApplication.instance()
-            and QThread.currentThread() is not QApplication.instance().thread()
+            QtGui.QApplication.instance()
+            and QtCore.QThread.currentThread() is not QtGui.QApplication.instance().thread()
         ):
             logger.warning(
                 "AssetManager.get() called from a non-main thread! UI in from_bytes may fail!"
