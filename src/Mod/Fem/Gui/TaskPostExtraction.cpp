@@ -93,7 +93,7 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
             }
         }
     }
-    // if we are here somethign went wrong!
+    // if we are here something went wrong!
     throw Base::ImportError("Unable to import data extraction widget");
 };
 
