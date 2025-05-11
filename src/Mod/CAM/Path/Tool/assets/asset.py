@@ -23,6 +23,21 @@ class Asset(ABC):
         )
 
     @classmethod
+    def resolve_name(cls, identifier: str) -> AssetUri:
+        """
+        Resolves an identifier (id, name, or URI) to an AssetUri object.
+        """
+        # 1. If the input is a url string, return the Uri object for it.
+        if AssetUri.is_uri(identifier):
+            return AssetUri(identifier)
+
+        # 2. Construct the Uri using Uri.build() and return it
+        return AssetUri.build(
+            asset_type=cls.asset_type,
+            asset_id=identifier,
+        )
+
+    @classmethod
     def get_uri_from_id(cls, asset_id):
         return AssetUri.build(cls.asset_type, asset_id=asset_id)
 

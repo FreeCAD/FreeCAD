@@ -368,8 +368,8 @@ class CAMSanity:
                 )
                 continue  # skip old-style tools
             tooldata = data.setdefault(str(TC.ToolNumber), {})
-            bitshape = tooldata.setdefault("ShapeFile", "")
-            if bitshape not in ["", TC.Tool.ShapeFile]:
+            bitshape = tooldata.setdefault("ShapeType", "")
+            if bitshape not in ["", TC.Tool.ShapeType]:
                 data["squawkData"].append(
                     self.squawk(
                         "CAMSanity",
@@ -379,17 +379,17 @@ class CAMSanity:
                         squawkType="CAUTION",
                     )
                 )
-            tooldata["bitShape"] = TC.Tool.ShapeFile
+            tooldata["bitShape"] = TC.Tool.ShapeType
             tooldata["description"] = TC.Tool.Label
             tooldata["manufacturer"] = ""
             tooldata["url"] = ""
             tooldata["inspectionNotes"] = ""
             tooldata["diameter"] = str(TC.Tool.Diameter)
-            tooldata["shape"] = TC.Tool.ShapeFile
+            tooldata["shape"] = TC.Tool.ShapeType
 
             tooldata["partNumber"] = ""
 
-            if os.path.isfile(TC.Tool.ShapeFile):
+            if os.path.isfile(TC.Tool.ShapeType):
                 imagedata = TC.Tool.Proxy.get_thumbnail()
             else:
                 imagedata = None

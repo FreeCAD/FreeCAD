@@ -33,7 +33,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from ...assets import Asset, AssetUri
 from ...camassets import cam_assets
-from ...shape import ToolBitShape, ToolBitShapeIcon
+from ...shape import ToolBitShape, ToolBitShapeEndmill, ToolBitShapeIcon
 from ..docobject import DetachedDocumentObject
 from ..util import to_json
 
@@ -67,7 +67,7 @@ class ToolBit(Asset, ABC):
 
         self._create_base_properties()
         self.obj.ToolBitID = self.get_id()
-        self.obj.ShapeFile = str(tool_bit_shape.get_uri())
+        self.obj.ShapeID = tool_bit_shape.get_id()
         self.obj.Label = tool_bit_shape.label or f"New {tool_bit_shape.name}"
 
         # Initialize properties
@@ -173,16 +173,29 @@ class ToolBit(Asset, ABC):
 
     def _create_base_properties(self):
         # Create the properties in the Base group.
-        if not hasattr(self.obj, "ShapeFile"):
+        if not hasattr(self.obj, "ShapeID"):
             self.obj.addProperty(
-                "App::PropertyFile",
-                "ShapeFile",
+                "App::PropertyString",
+                "ShapeID",
                 "Base",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The file defining the tool shape (.fcstd)",
+                    "The unique ID of the tool shape (.fcstd)",
                 ),
             )
+        if not hasattr(self.obj, "ShapeType"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "ShapeType",
+                "Base",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The tool shape type",
+                ),
+            )
+            names = [c.name for c in ToolBitShape.__subclasses__()]
+            self.obj.ShapeType = names
+            self.obj.ShapeType = ToolBitShapeEndmill.name
         if not hasattr(self.obj, "BitBody"):
             self.obj.addProperty(
                 "App::PropertyLink",
@@ -198,7 +211,10 @@ class ToolBit(Asset, ABC):
                 "App::PropertyString",
                 "ToolBitID",
                 "Base",
-                QT_TRANSLATE_NOOP("App::Property", "The unique ID of the toolbit"),
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The unique ID of the toolbit"
+                ),
             )
 
         # Create the ToolBit properties that are shared by all tool bits
@@ -305,46 +321,58 @@ class ToolBit(Asset, ABC):
 
         return toolbit
 
-    def _ensure_ids(self):
+    def _promote_toolbit(self):
         """
-        Ensure obj.ShapeFile and obj.ToolBitID are set, handling legacy cases.
+        Updates the toolbit properties for backward compatibility.
+        Ensure obj.ShapeID and obj.ToolBitID are set, handling legacy cases.
         """
-        # Ensure ShapeFile is set (handling legacy BitShape/ShapeName)
+        Path.Log.track(f"Promoting tool bit {self.obj.Label}")
+
+        # Ensure ShapeID is set (handling legacy BitShape/ShapeName)
         name = None
-        if hasattr(self.obj, "BitShape") and self.obj.BitShape:
-            name = pathlib.Path(self.obj.BitShape).name
+        if hasattr(self.obj, "ShapeID") and self.obj.ShapeID:
+            name = self.obj.ShapeID
         elif hasattr(self.obj, "ShapeFile") and self.obj.ShapeFile:
-            name = pathlib.Path(self.obj.ShapeFile).name
+            name = pathlib.Path(self.obj.ShapeFile).stem
+        elif hasattr(self.obj, "BitShape") and self.obj.BitShape:
+            name = pathlib.Path(self.obj.BitShape).stem
         elif hasattr(self.obj, "ShapeName") and self.obj.ShapeName:
-            name = pathlib.Path(self.obj.ShapeName).name
+            name = pathlib.Path(self.obj.ShapeName).stem
         if name is None:
             raise ValueError("ToolBit is missing a shape ID")
 
         uri = ToolBitShape.resolve_name(name)
         if uri is None:
-            raise ValueError(f"Failed to identify shape of ToolBit from name '{name}'")
-        self.obj.ShapeFile = str(uri)
+            raise ValueError(f"Failed to identify ID of ToolBit from '{name}'")
+        self.obj.ShapeID = uri.asset_id
+
+        # Ensure ShapeType is set
+        if hasattr(self.obj, "ShapeType") and self.obj.ShapeType:
+            thetype = self.obj.ShapeType
+        elif hasattr(self.obj, "ShapeFile") and self.obj.ShapeFile:
+            thetype = pathlib.Path(self.obj.ShapeFile).stem
+        elif hasattr(self.obj, "BitShape") and self.obj.BitShape:
+            thetype = pathlib.Path(self.obj.BitShape).stem
+        elif hasattr(self.obj, "ShapeName") and self.obj.ShapeName:
+            thetype = pathlib.Path(self.obj.ShapeName).stem
+        if thetype is None:
+            raise ValueError("ToolBit is missing a shape type")
+
+        shape_class = ToolBitShape.get_subclass_by_name(thetype)
+        if shape_class is None:
+            raise ValueError(f"Failed to identify shape of ToolBit from '{thetype}'")
+        self.obj.ShapeType = shape_class.name
 
         # Ensure ToolBitID is set
         if hasattr(self.obj, "File"):
             self.id = pathlib.Path(self.obj.File).stem
-        self.obj.ToolBitID = self.get_id()
+        self.obj.ToolBitID = self.id
         Path.Log.debug(f"Set ToolBitID to {self.obj.ToolBitID}")
-
-    def _promote_bit_v1_to_v2(self):
-        """
-        Promotes a legacy tool bit (v1) to the new format (v2).
-        Legacy tools have a filename in the BitShape attribute.
-        New tools use ShapeFile for the shape ID.
-        """
-        Path.Log.track(self.obj.Label)
-        Path.Log.info(f"Promoting tool bit {self.obj.Label} ({self.obj.ShapeFile}) from v1 to v2")
 
         # Update SpindleDirection:
         # Old tools may still have "CCW", "CW", "Off", "None".
         # New tools use "None", "Forward", "Reverse".
-        old_direction = self.obj.SpindleDirection
-        normalized_direction = "None"  # Default to None
+        normalized_direction = old_direction = self.obj.SpindleDirection
 
         if isinstance(old_direction, str):
             lower_direction = old_direction.lower()
@@ -362,25 +390,18 @@ class ToolBit(Asset, ABC):
                 f"Promoted tool bit {self.obj.Label}: SpindleDirection from {old_direction} to {self.obj.SpindleDirection}"
             )
 
-        # Remove the old BitShape property
-        try:
-            self.obj.removeProperty("BitShape")
-            Path.Log.debug("Removed obsolete BitShape property.")
-        except Exception as e:
-            Path.Log.error(f"Failed removing obsolete BitShape property: {e}")
-
-        # Remove the old File property
-        if hasattr(self.obj, "File"):
-            try:
-                self.obj.removeProperty("File")
-                Path.Log.debug("Removed obsolete File property.")
-            except Exception as e:
-                Path.Log.error(f"Failed removing obsolete File property: {e}")
+        # Drop legacy properties.
+        legacy = "ShapeFile", "File", "BitShape", "ShapeName"
+        for name in legacy:
+            if hasattr(self.obj, name):
+                value = getattr(self.obj, name)
+                self.obj.removeProperty(name)
+                Path.Log.debug(f"Removed obsolete property '{name}' ('{value}').")
 
         # Get the schema properties from the current shape
-        shape_cls = ToolBitShape.get_subclass_by_name(self.obj.ShapeName)
+        shape_cls = ToolBitShape.get_subclass_by_name(self.obj.ShapeType)
         if not shape_cls:
-            raise ValueError(f"Failed to find shape class named '{self.obj.ShapeName}'")
+            raise ValueError(f"Failed to find shape class named '{self.obj.ShapeType}'")
         shape_schema_props = shape_cls.schema().keys()
 
         # Move properties that are part of the shape schema to the "Shape" group
@@ -426,23 +447,25 @@ class ToolBit(Asset, ABC):
         self._update_timer = None
 
         self._create_base_properties()
-        self._ensure_ids()
+        self._promote_toolbit()
 
-        self.obj.setEditorMode("ShapeFile", 1)
-        self.obj.setEditorMode("BitBody", 2)
+        # 0 = read/write, 1 = read only, 2 = hide
+        self.obj.setEditorMode("ShapeID", 1)
+        self.obj.setEditorMode("ShapeType", 1)
         self.obj.setEditorMode("ToolBitID", 1)
+        self.obj.setEditorMode("BitBody", 2)
         self.obj.setEditorMode("Shape", 2)
 
-        # Get the shape instance based on the ShapeFile. For backward
+        # Get the shape instance based on the ShapeType. For backward
         # compatibility, we try two approaches to find the shape and shape
         # class from the file.
         # First, translate the filename to an asset ID, then:
         #   1. try to find the shape file
         #   2. otherwise create a new empty instance
-        uri = ToolBitShape.resolve_name(self.obj.ShapeFile)
+        uri = ToolBitShape.resolve_name(self.obj.ShapeType)
         if uri is None:
             raise ValueError(
-                f"Failed to identify URI of ToolBitShape from name '{self.obj.ShapeFile}'"
+                f"Failed to identify URI of ToolBitShape from '{self.obj.ShapeType}'"
             )
 
         try:
@@ -481,12 +504,6 @@ class ToolBit(Asset, ABC):
 
         # Ensure property state is correct after restore.
         self._update_tool_properties()
-
-        # Promote legacy tool bits to the new format. This requires properties
-        # to be initialized before AND after the promotion.
-        if hasattr(self.obj, "BitShape"):
-            self._promote_bit_v1_to_v2()
-            self._update_tool_properties()
 
     def attach_to_doc(
         self, doc: FreeCAD.Document, label: Optional[str] = None

@@ -397,7 +397,7 @@ class ToolBitShape(Asset):
         """
         Resolves an identifier (alias, name, filename, or URI) to a Uri object.
         """
-        # 1. If the input is a url string, return the Uri object for it.
+        # 1. If the input is a url string, return the AssetUri for it.
         if AssetUri.is_uri(identifier):
             return AssetUri(identifier)
 
@@ -413,10 +413,7 @@ class ToolBitShape(Asset):
         if shape_class:
             asset_name = shape_class.name.lower()
 
-        # 4. Construct the Uri using Uri.build() and return it
-        # The URI structure for toolbitshapes will be
-        #   toolbitshape://toolbitshape/<asset_name>/<version>
-        # For toolbitshapes, the domain is empty, and asset_type is "toolbitshape".
+        # 4. Construct the Uri using AssetUri.build() and return it
         return AssetUri.build(
             asset_type="toolbitshape",
             asset_id=asset_name,
