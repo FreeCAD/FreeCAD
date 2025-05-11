@@ -61,7 +61,12 @@ class AssetManager:
         self._asset_classes[asset_type_name] = asset_class
 
     async def _fetch_single_dependency_data(
-        self, dep_uri: AssetUri, store_name: str, visited_uris_copy: Set[AssetUri], next_depth: Optional[int], parent_uri: AssetUri
+        self,
+        dep_uri: AssetUri,
+        store_name: str,
+        visited_uris_copy: Set[AssetUri],
+        next_depth: Optional[int],
+        parent_uri: AssetUri,
     ) -> Optional[_AssetConstructionData]:
         """Helper to fetch data for a single dependency and handle errors."""
         try:
@@ -276,7 +281,10 @@ class AssetManager:
         return final_asset
 
     async def get_async(
-        self, uri: Union[AssetUri, str], store: str = "local", depth: Optional[int] = None
+        self,
+        uri: Union[AssetUri, str],
+        store: str = "local",
+        depth: Optional[int] = None,
     ) -> Optional[Asset]:
         """
         Retrieves an asset by its URI (asynchronous), to a specified depth.

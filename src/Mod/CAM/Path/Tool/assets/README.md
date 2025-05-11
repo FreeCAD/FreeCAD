@@ -132,7 +132,7 @@ classDiagram
         _asset_classes: Mapping[str, Asset]   // maps asset type to Asset
         register_store(store: AssetStore)
         register_asset(asset: Asset)
-        get(uri: AssetUri, store: str) Asset | None
+        get(uri: AssetUri, store: str, depth: Optional[int]) Asset | None
         get_raw(uri: AssetUri | str, store: str) bytes | None
         add(obj: Any, store: str) AssetUri // Returns URI of created asset
         add_raw(asset_type: str, asset_id: str, data: bytes, store: str) AssetUri
@@ -140,8 +140,8 @@ classDiagram
         is_empty(store: str | None, asset_type: str | None) bool
         list_assets(asset_type: str | None, limit: int | None, offset: int | None, store: str) List[AssetUri]
         list_versions(uri: AssetUri | str, store: str) List[AssetUri]
-        get_bulk(uris: List[AssetUri | str], store: str) Dict[AssetUri, Any]
-        fetch(asset_type: str | None, limit: int | None, offset: int | None, store: str) List[Asset]
+        get_bulk(uris: List[AssetUri | str], store: str, depth: Optional[int]) Dict[AssetUri, Any]
+        fetch(asset_type: str | None, limit: int | None, offset: int | None, store: str, depth: Optional[int]) List[Asset]
     }
 
     class AssetStore["AssetStore
