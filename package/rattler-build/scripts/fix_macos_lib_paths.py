@@ -5,7 +5,7 @@ import sys
 
 if len(sys.argv) < 1 or "-h" in sys.argv:
     print("""Usage: python fix_macos_paths.py <scan_path> [-r] [-s]
-          
+
           Options:
             -r      scan the directory recursively
             -s      scan only without fixing absolute paths in LC_RPATH or LC_REEXPORT_DYLIB
@@ -55,7 +55,7 @@ def scan_directory(directory, recursive=False):
         print(f"Recursively scanning dir: {scan_path}")
     else:
         print(f"Scanning dir: {scan_path}")
-    
+
     for filename in os.listdir(directory):
         full_path = os.path.join(directory, filename)
         if recursive and os.path.isdir(full_path):
@@ -80,7 +80,7 @@ def scan_directory(directory, recursive=False):
         for reexport_dylib in reexport_dylibs:
             if os.path.isabs(reexport_dylib):
                 if scanmode:
-                    print(f'\nFound absolute path inLC_REEXPORT_DYLIB: {reexport_dylib}\nIn: {full_path}')
+                    print(f'\nFound absolute path in LC_REEXPORT_DYLIB: {reexport_dylib}\nIn: {full_path}')
                 else:
                     change_reexport_dylib(full_path, reexport_dylib)
 
