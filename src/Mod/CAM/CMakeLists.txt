@@ -369,14 +369,17 @@ SET(Tools_SRCS
 )
 
 SET(Tools_Bit_SRCS
+    Tools/Bit/30degree_Vbit.fctb
     Tools/Bit/375-16_Tap.fctb
     Tools/Bit/45degree_chamfer.fctb
+    Tools/Bit/45degree_Vbit.fctb
     Tools/Bit/5mm-thread-cutter.fctb
     Tools/Bit/5mm_Drill.fctb
     Tools/Bit/5mm_Endmill.fctb
     Tools/Bit/60degree_Vbit.fctb
     Tools/Bit/6mm_Ball_End.fctb
     Tools/Bit/6mm_Bullnose.fctb
+    Tools/Bit/90degree_Vbit.fctb
     Tools/Bit/probe.fctb
     Tools/Bit/slittingsaw.fctb
 )
