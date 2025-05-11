@@ -164,6 +164,12 @@
         <!-- images -->
         <file>images/FEM_MeshDistanceThresholdDark.svg</file>
         <file>images/FEM_MeshDistanceThresholdLight.svg</file>
+        <file>images/FEM_MeshTransfiniteVolumeLight.svg</file>
+        <file>images/FEM_MeshTransfiniteVolumeDark.svg</file>
+        <file>images/FEM_MeshTransfiniteSurfaceLight.svg</file>
+        <file>images/FEM_MeshTransfiniteSurfaceDark.svg</file>
+        <file>images/FEM_MeshTransfiniteCurveLight.svg</file>
+        <file>images/FEM_MeshTransfiniteCurveDark.svg</file>
 
     </qresource>
 </RCC>

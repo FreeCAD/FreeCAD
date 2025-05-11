@@ -45,7 +45,7 @@ class MeshTransfiniteCurve(base_femmeshelement.BaseFemMeshElement):
         props = [
             _PropHelper(
                 type="App::PropertyInteger",
-                name="Number",
+                name="Nodes",
                 group="Transfinite",
                 doc="The number of nodes distributed over each edge",
                 value=10,
