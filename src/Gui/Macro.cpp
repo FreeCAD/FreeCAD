@@ -239,17 +239,17 @@ void MacroManager::open(MacroType eType, const char *sName)
 #endif
 
     macroFile.open(sName);
-    Base::Console().Log("CmdM: Open macro: %s\n", sName);
+    Base::Console().log("CmdM: Open macro: %s\n", sName);
 }
 
 void MacroManager::commit()
 {
     QString macroName = macroFile.fileName();
     if (macroFile.commit()) {
-        Base::Console().Log("Commit macro: %s\n", (const char*)macroName.toUtf8());
+        Base::Console().log("Commit macro: %s\n", (const char*)macroName.toUtf8());
     }
     else {
-        Base::Console().Error("Cannot open file to write macro: %s\n",
+        Base::Console().error("Cannot open file to write macro: %s\n",
             (const char*)macroName.toUtf8());
         cancel();
     }
@@ -258,7 +258,7 @@ void MacroManager::commit()
 void MacroManager::cancel()
 {
     QString macroName = macroFile.fileName();
-    Base::Console().Log("Cancel macro: %s\n",(const char*)macroName.toUtf8());
+    Base::Console().log("Cancel macro: %s\n",(const char*)macroName.toUtf8());
     macroFile.cancel();
 }
 
@@ -389,7 +389,7 @@ void MacroManager::run(MacroType eType, const char *sName)
         throw;
     }
     catch (const Base::PyException& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const Base::Exception& e) {
         qWarning("%s",e.what());

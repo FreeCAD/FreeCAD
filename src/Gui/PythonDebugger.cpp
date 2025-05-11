@@ -225,7 +225,7 @@ Py::Object PythonDebugStderr::write(const Py::Tuple& args)
 
     if (strlen(msg) > 0)
     {
-        Base::Console().Error("%s", msg);
+        Base::Console().error("%s", msg);
     }
 
     return Py::None();
@@ -414,7 +414,7 @@ void PythonDebugger::runFile(const QString& fn)
         //PySys_WriteStderr("Exception: %s\n", e.what());
     }
     catch (...) {
-        Base::Console().Warning("Unknown exception thrown during macro debugging\n");
+        Base::Console().warning("Unknown exception thrown during macro debugging\n");
     }
 }
 

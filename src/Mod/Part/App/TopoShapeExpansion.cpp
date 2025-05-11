@@ -860,7 +860,7 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
     for (auto type : types) {
         auto& shapeMap = _cache->getAncestry(type);
         auto& otherMap = other._cache->getAncestry(type);
-        if ((shapeMap.count() == 0) || (otherMap.count() == 0)) {
+        if ((shapeMap.empty()) || (otherMap.empty())) {
             continue;
         }
 
@@ -1450,7 +1450,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 continue;
             }
             auto& otherMap = incomingShape._cache->getAncestry(info.type);
-            if (otherMap.count() == 0) {
+            if (otherMap.empty()) {
                 continue;
             }
             for (int i = 1; i <= otherMap.count(); i++) {
@@ -4206,7 +4206,7 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
         if (profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
-            Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last "
+            Base::Console().message("TopoShape::makeLoft: can't close Loft with Vertex as last "
                                     "profile. 'Closed' ignored.\n");
         }
         else {

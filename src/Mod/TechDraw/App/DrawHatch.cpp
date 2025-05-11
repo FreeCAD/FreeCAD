@@ -126,7 +126,7 @@ bool DrawHatch::affectsFace(int i)
 //remove a subElement(Face) from Source PropertyLinkSub
 bool DrawHatch::removeSub(std::string toRemove)
 {
-//    Base::Console().Message("DH::removeSub(%s)\n", toRemove.c_str());
+//    Base::Console().message("DH::removeSub(%s)\n", toRemove.c_str());
     bool removed = false;
     const std::vector<std::string> &sourceNames = Source.getSubValues();
     std::vector<std::string> newList;
@@ -146,7 +146,7 @@ bool DrawHatch::removeSub(std::string toRemove)
 
 bool DrawHatch::removeSub(int i)
 {
-//    Base::Console().Message("DH::removeSub(%d)\n", i);
+//    Base::Console().message("DH::removeSub(%d)\n", i);
     std::stringstream ss;
     ss << "Face" << i;
     return removeSub(ss.str());
@@ -160,7 +160,7 @@ bool DrawHatch::empty(void)
 
 void DrawHatch::replaceFileIncluded(std::string newHatchFileName)
 {
-//    Base::Console().Message("DH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+//    Base::Console().message("DH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
     if (newHatchFileName.empty()) {
         return;
     }
@@ -175,13 +175,13 @@ void DrawHatch::replaceFileIncluded(std::string newHatchFileName)
 
 void DrawHatch::setupObject()
 {
-//    Base::Console().Message("DH::setupObject()\n");
+//    Base::Console().message("DH::setupObject()\n");
     replaceFileIncluded(HatchPattern.getValue());
 }
 
 void DrawHatch::unsetupObject(void)
 {
-//    Base::Console().Message("DH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+//    Base::Console().message("DH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
     DrawView* dv = freecad_cast<DrawView*>(source);
     if (dv) {

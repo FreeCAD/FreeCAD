@@ -68,8 +68,8 @@ void Library::validate(const Library& remote) const
         throw InvalidLibrary("Library names don't match");
     }
     if (getIconPath() != remote.getIconPath()) {
-        Base::Console().Log("Icon path 1 '%s'\n", getIconPath().toStdString().c_str());
-        Base::Console().Log("Icon path 2 '%s'\n", remote.getIconPath().toStdString().c_str());
+        Base::Console().log("Icon path 1 '%s'\n", getIconPath().toStdString().c_str());
+        Base::Console().log("Icon path 2 '%s'\n", remote.getIconPath().toStdString().c_str());
         throw InvalidLibrary("Library icon paths don't match");
     }
 

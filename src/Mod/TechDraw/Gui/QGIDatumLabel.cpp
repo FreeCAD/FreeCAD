@@ -259,7 +259,7 @@ void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");
+    //    Base::Console().message("QGIDL::mouseReleaseEvent()\n");
     m_ctrl = false;
     if (m_dragState == DragState::Dragging) {
         m_dragState = DragState::NoDrag;
@@ -530,7 +530,7 @@ double QGIDatumLabel::getTolAdjust()
 
 void QGIDatumLabel::setPrettySel()
 {
-    //    Base::Console().Message("QGIDL::setPrettySel()\n");
+    //    Base::Console().message("QGIDL::setPrettySel()\n");
     m_dimText->setPrettySel();
     m_tolTextOver->setPrettySel();
     m_tolTextUnder->setPrettySel();
@@ -541,7 +541,7 @@ void QGIDatumLabel::setPrettySel()
 
 void QGIDatumLabel::setPrettyPre()
 {
-    //    Base::Console().Message("QGIDL::setPrettyPre()\n");
+    //    Base::Console().message("QGIDL::setPrettyPre()\n");
     m_dimText->setPrettyPre();
     m_tolTextOver->setPrettyPre();
     m_tolTextUnder->setPrettyPre();
@@ -552,7 +552,7 @@ void QGIDatumLabel::setPrettyPre()
 
 void QGIDatumLabel::setPrettyNormal()
 {
-    //    Base::Console().Message("QGIDL::setPrettyNormal()\n");
+    //    Base::Console().message("QGIDL::setPrettyNormal()\n");
     m_dimText->setPrettyNormal();
     m_tolTextOver->setPrettyNormal();
     m_tolTextUnder->setPrettyNormal();
@@ -563,7 +563,7 @@ void QGIDatumLabel::setPrettyNormal()
 
 void QGIDatumLabel::setColor(QColor color)
 {
-    //    Base::Console().Message("QGIDL::setColor(%s)\n", qPrintable(c.name()));
+    //    Base::Console().message("QGIDL::setColor(%s)\n", qPrintable(c.name()));
     m_colNormal = color;
     m_dimText->setColor(m_colNormal);
     m_tolTextOver->setColor(m_colNormal);

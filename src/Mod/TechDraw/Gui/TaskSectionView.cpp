@@ -437,7 +437,7 @@ bool TaskSectionView::apply(bool forceUpdate)
         //this should never happen
         std::string msg =
             tr("Nothing to apply. No section direction picked yet").toStdString();
-        Base::Console().Error((msg + "\n").c_str());
+        Base::Console().error((msg + "\n").c_str());
         return false;
     }
     if (!m_section) {

@@ -54,7 +54,7 @@ extern PyObject* initModule();
 PyMOD_INIT_FUNC(Mesh)
 {
     PyObject* meshModule = Mesh::initModule();
-    Base::Console().Log("Loading Mesh module... done\n");
+    Base::Console().log("Loading Mesh module... done\n");
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.

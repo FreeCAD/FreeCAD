@@ -130,7 +130,7 @@ TEST_F(TestMaterialValue, TestQuantityType)
     EXPECT_EQ(variant.toString().size(), 0);
     auto quantity = variant.value<Base::Quantity>();
     EXPECT_FALSE(quantity.isValid());
-    EXPECT_EQ(quantity.getUserString(), "nan ");
+    EXPECT_EQ(quantity.getUserString(), "nan");
     EXPECT_TRUE(std::isnan(quantity.getValue()));
 
     // Test a copy
@@ -146,7 +146,7 @@ TEST_F(TestMaterialValue, TestQuantityType)
     EXPECT_EQ(variant.toString().size(), 0);
     quantity = variant.value<Base::Quantity>();
     EXPECT_FALSE(quantity.isValid());
-    EXPECT_EQ(quantity.getUserString(), "nan ");
+    EXPECT_EQ(quantity.getUserString(), "nan");
     EXPECT_TRUE(std::isnan(quantity.getValue()));
 }
 

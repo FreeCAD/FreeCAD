@@ -219,10 +219,10 @@ void myCopyResultsMesh(std::string oldName, std::string newName)
 {
     int error = 0;
 
-    Base::Console().Warning("copy: %s and %s\n", oldName.c_str(), newName.c_str());
+    Base::Console().warning("copy: %s and %s\n", oldName.c_str(), newName.c_str());
     if (oldName.compare(newName) == 0 && error == 0) {
         error = 1;
-        Base::Console().Warning("Can't copy ResultMesh to ResultMesh: %s and %s\n",
+        Base::Console().warning("Can't copy ResultMesh to ResultMesh: %s and %s\n",
                                 oldName.c_str(),
                                 newName.c_str());
         QMessageBox::warning(
@@ -234,7 +234,7 @@ void myCopyResultsMesh(std::string oldName, std::string newName)
     if ((oldName.find("Result") == std::string::npos || newName.find("Result") == std::string::npos)
         && error == 0) {
         error = 1;
-        Base::Console().Warning("Mesh must be results: %s\n", oldName.c_str());
+        Base::Console().warning("Mesh must be results: %s\n", oldName.c_str());
         QMessageBox::warning(
             Gui::getMainWindow(),
             //        QMessageBox::warning(Gui::MainWindow(),
@@ -746,7 +746,7 @@ void TaskCreateElementSet::DefineNodes(const Base::Polygon2d& polygon,
         erase = nElements - keepElement;
     }
     if (keepElement > 0) {
-        Base::Console().Warning("Number of Elements Kept: %d, Number of Elements Erased: %d\n",
+        Base::Console().warning("Number of Elements Kept: %d, Number of Elements Erased: %d\n",
                                 keepElement,
                                 erase);
         writeToFile(inp_file, newMeshDS, nodeNumbers, nodeCoords, maxNode, requiredType);

@@ -221,7 +221,8 @@ void ViewProviderFemPostPipeline::setupTaskDialog(TaskDlgPost* dlg)
     // add the function box
     assert(dlg->getView() == this);
     ViewProviderFemPostObject::setupTaskDialog(dlg);
-    dlg->appendBox(new TaskPostFrames(this));
+    auto panel = new TaskPostFrames(this);
+    dlg->addTaskBox(panel->windowIcon().pixmap(32), panel);
 }
 
 

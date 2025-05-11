@@ -133,13 +133,13 @@ ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
         deleteColorBar();
     }
     catch (Base::Exception& e) {
-        Base::Console().DestructorError(
+        Base::Console().destructorError(
             "ViewProviderMeshCurvature",
             "ViewProviderMeshCurvature::deleteColorBar() threw an exception: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().DestructorError(
+        Base::Console().destructorError(
             "ViewProviderInspection",
             "ViewProviderInspection destructor threw an unknown exception");
     }
@@ -554,7 +554,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
                  && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint* point = n->getPickedPoint();
             if (!point) {
-                Base::Console().Message("No facet picked.\n");
+                Base::Console().message("No facet picked.\n");
                 return;
             }
 

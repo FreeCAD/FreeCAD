@@ -217,7 +217,7 @@ double EditableDatumLabel::getValue() const
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
     if (!spinBox) {
-        Base::Console().DeveloperWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
+        Base::Console().developerWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
         return;
     }
 
@@ -234,7 +234,7 @@ void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 void EditableDatumLabel::setFocusToSpinbox()
 {
     if (!spinBox) {
-        Base::Console().DeveloperWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
+        Base::Console().developerWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
         return;
     }
     if (!spinBox->hasFocus()) {

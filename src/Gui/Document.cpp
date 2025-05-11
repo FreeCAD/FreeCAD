@@ -946,7 +946,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
         }
         catch(Base::Exception &e){
-            e.ReportException();
+            e.reportException();
         }
 #ifndef FC_DEBUG
         catch(...){
@@ -957,7 +957,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
         try {
             pcProvider->reattach(const_cast<App::DocumentObject*>(&Obj));
         } catch(Base::Exception &e){
-            e.ReportException();
+            e.reportException();
         }
     }
 
@@ -1047,7 +1047,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
                     && (Prop.isDerivedFrom<App::PropertyPlacement>()
                         // Issue ID 0004230 : getName() can return null in which case strstr() crashes
                         || (Prop.getName() && strstr(Prop.getName(),"Scale")))
-                    && d->_editObjs.count(&Obj))
+                    && d->_editObjs.contains(&Obj))
             {
                 Base::Matrix4D mat;
                 auto sobj = d->_editViewProviderParent->getObject()->getSubObject(
@@ -1062,7 +1062,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
         }
         catch(Base::Exception& e){
-            e.ReportException();
+            e.reportException();
         }
         catch(const std::exception& e){
             FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
@@ -1294,7 +1294,7 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
         auto &d = paths[info.canonicalFilePath()];
         d.push_back(doc);
         if (!warn && d.size() > 1) {
-            if (docs.count(d.front()) || docs.count(d.back()))
+            if (docs.contains(d.front()) || docs.contains(d.back()))
                 warn = true;
         }
     }
@@ -1315,7 +1315,7 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
     for (auto &v : paths) {
         if (v.second.size() <= 1) continue;
         for (auto doc : v.second) {
-            if (docs.count(doc)) {
+            if (docs.contains(doc)) {
                 FC_WARN("Physical path: " << v.first.toUtf8().constData());
                 for (auto d : v.second)
                     FC_WARN("  Document: " << docName(d).toUtf8().constData()
@@ -1441,7 +1441,7 @@ bool Document::save()
             }
         }
         catch (const Base::FileException& e) {
-            e.ReportException();
+            e.reportException();
             return askIfSavingFailed(QString::fromUtf8(e.what()));
         }
         catch (const Base::Exception& e) {
@@ -1489,7 +1489,7 @@ bool Document::saveAs()
             getMainWindow()->appendRecentFile(fi.filePath());
         }
         catch (const Base::FileException& e) {
-            e.ReportException();
+            e.reportException();
             return askIfSavingFailed(QString::fromUtf8(e.what()));
         }
         catch (const Base::Exception& e) {
@@ -1511,7 +1511,7 @@ void Document::saveAll()
         docs = App::Document::getDependentDocuments(App::GetApplication().getDocuments(),true);
     }
     catch(Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         int ret = QMessageBox::critical(getMainWindow(), QObject::tr("Failed to save document"),
                 QObject::tr("Documents contains cyclic dependencies. Do you still want to save them?"),
                 QMessageBox::Yes,QMessageBox::No);
@@ -1722,7 +1722,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Base::Console().error("%s\n", e.what());
             }
         }
     }
@@ -2181,7 +2181,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
 void Document::onUpdate()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Base::Console().Log("Acti: Gui::Document::onUpdate()");
+    Base::Console().log("Acti: Gui::Document::onUpdate()");
 #endif
 
     std::list<Gui::BaseView*>::iterator it;
@@ -2198,7 +2198,7 @@ void Document::onUpdate()
 void Document::onRelabel()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Base::Console().Log("Acti: Gui::Document::onRelabel()");
+    Base::Console().log("Acti: Gui::Document::onRelabel()");
 #endif
 
     std::list<Gui::BaseView*>::iterator it;
@@ -2256,8 +2256,7 @@ bool Document::canClose (bool checkModify, bool checkLink)
 
     bool ok = true;
     if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
-        const char *docName = getDocument()->Label.getValue();
-        int res = getMainWindow()->confirmSave(docName, getActiveView());
+        int res = getMainWindow()->confirmSave(getDocument(), getActiveView());
         switch (res)
         {
         case MainWindow::ConfirmSaveResult::Cancel:
@@ -2267,11 +2266,14 @@ bool Document::canClose (bool checkModify, bool checkLink)
         case MainWindow::ConfirmSaveResult::Save:
             ok = save();
             if (!ok) {
+                const QString docName = QString::fromStdString(getDocument()->Label.getStrValue());
+                const QString text = (!docName.isEmpty()
+                                      ? QObject::tr("Failed to save document '%1'. Would you like to cancel the closure?").arg(docName)
+                                      : QObject::tr("Document saving failed. Would you like to cancel the closure?"));
                 int ret = QMessageBox::question(
                     getActiveView(),
-                    QObject::tr("Document not saved"),
-                    QObject::tr("The document%1 could not be saved. Do you want to cancel closing it?")
-                    .arg(docName?(QStringLiteral(" ")+QString::fromUtf8(docName)):QString()),
+                    QObject::tr("Unable to save document"),
+                    text,
                     QMessageBox::Discard | QMessageBox::Cancel,
                     QMessageBox::Discard);
                 if (ret == QMessageBox::Discard)

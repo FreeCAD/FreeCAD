@@ -1312,8 +1312,8 @@ void ViewProviderPartExt::updateVisual()
 
 #   ifdef FC_DEBUG
         // printing some information
-        Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeElapsed::diffTimeF(start_time,Base::TimeElapsed()));
-        Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
+        Base::Console().log("ViewProvider update time: %f s\n",Base::TimeElapsed::diffTimeF(start_time,Base::TimeElapsed()));
+        Base::Console().log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
 #   else
     (void)numEdges;
 #   endif

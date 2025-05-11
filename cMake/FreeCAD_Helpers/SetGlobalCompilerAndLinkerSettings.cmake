@@ -20,12 +20,12 @@ macro(SetGlobalCompilerAndLinkerSettings)
     endif()
 
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-        # Only add -Og if no -O* optimization flag exists
+        # Only add -O0 if no -O* optimization flag exists
         if (NOT "${CMAKE_C_FLAGS_DEBUG}" MATCHES "-O[a-z0-9]+")
-            set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Og")
+            set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
         endif()
         if (NOT "${CMAKE_CXX_FLAGS_DEBUG}" MATCHES "-O[a-z0-9]+")
-            set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og")
+            set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
         endif()
     endif()
     if(MSVC)

@@ -87,7 +87,7 @@ class Dimension(gui_base_original.Creator):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Dimension", "Dimension"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension.\n\n- Pick three points to create a simple linear dimension.\n- Select a straight line to create a linear dimension linked to that line.\n- Select an arc or circle to create a radius or diameter dimension linked to that arc.\n- Select two straight lines to create an angular dimension between them.\nCTRL to snap, SHIFT to constrain, ALT to select an edge or arc.\n\nYou may select a single line or single circular arc before launching this command\nto create the corresponding linked dimension.\nYou may also select an 'App::MeasureDistance' object before launching this command\nto turn it into a 'Draft Dimension' object.")}
 
-    def Activated(self):
+    def Activated(self, dir_vec=None):
         """Execute when the command is called."""
         if self.chain and not self.contMode:
             self.finish()
@@ -103,6 +103,7 @@ class Dimension(gui_base_original.Creator):
                 self.dimtrack = trackers.dimTracker()
                 self.arctrack = trackers.arcTracker()
                 self.link = None
+                self.dir = dir_vec
                 self.edges = []
                 self.angles = []
                 self.angledata = None

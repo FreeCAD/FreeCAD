@@ -59,8 +59,6 @@ echo -e "################"
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 
-export tag="weekly-builds" # should retrieve from git tag
-
 curl -LO https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$(uname -m).AppImage
 chmod a+x appimagetool-$(uname -m).AppImage
 
@@ -71,7 +69,7 @@ chmod a+x ./AppDir/AppRun
   --comp zstd \
   --mksquashfs-opt -Xcompression-level \
   --mksquashfs-opt 22 \
-  -u "gh-releases-zsync|FreeCAD|FreeCAD-Bundle|$tag|FreeCAD*$(uname -m)*.AppImage.zsync" \
+  -u "gh-releases-zsync|FreeCAD|FreeCAD|${BUILD_TAG}|FreeCAD*$(uname -m)*.AppImage.zsync" \
   AppDir ${version_name}.AppImage
   # -s --sign-key ${GPG_KEY_ID} \
 
@@ -79,6 +77,5 @@ echo -e "\nCreate hash"
 sha256sum ${version_name}.AppImage > ${version_name}.AppImage-SHA256.txt
 
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
-    gh release create ${BUILD_TAG} --title "Weekly Build ${BUILD_TAG}" --notes "Weekly Build ${BUILD_TAG}" --prerelease || true
     gh release upload --clobber ${BUILD_TAG} "${version_name}.AppImage" "${version_name}.AppImage-SHA256.txt"
 fi

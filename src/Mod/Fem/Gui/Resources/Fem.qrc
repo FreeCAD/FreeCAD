@@ -82,6 +82,7 @@
         <file>icons/FEM_PostFilterDataAtPoint.svg</file>
         <file>icons/FEM_PostFilterLinearizedStresses.svg</file>
         <file>icons/FEM_PostFilterWarp.svg</file>
+        <file>icons/FEM_PostFilterGlyph.svg</file>
         <file>icons/FEM_PostFrames.svg</file>
         <file>icons/FEM_PostBranchFilter.svg</file>
         <file>icons/FEM_PostPipelineFromResult.svg</file>
@@ -150,5 +151,6 @@
         <file>ui/ResultShow.ui</file>
         <file>ui/SolverCalculiX.ui</file>
         <file>ui/SolverCcxTools.ui</file>
+        <file>ui/TaskPostGlyph.ui</file>
     </qresource>
 </RCC>

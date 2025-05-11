@@ -636,14 +636,14 @@ void PropertyItem::setPropertyValue(const std::string& value)
         Gui::Command::runCommand(Gui::Command::App, cmd.c_str());
     }
     catch (Base::PyException& e) {
-        e.ReportException();
-        Base::Console().Error("Stack Trace: %s\n", e.getStackTrace().c_str());
+        e.reportException();
+        Base::Console().error("Stack Trace: %s\n", e.getStackTrace().c_str());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (...) {
-        Base::Console().Error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
+        Base::Console().error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
     }
 }
 
@@ -811,7 +811,7 @@ QString PropertyItem::expressionAsString() const
             return QString::fromStdString(result->toString());
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
 

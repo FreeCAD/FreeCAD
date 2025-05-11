@@ -79,6 +79,9 @@ void MillSimulation::SimNext()
 
     if (mCurStep < mNTotalSteps) {
         mCurStep += mSimSpeed;
+        if (mCurStep > mNTotalSteps) {
+            mCurStep = mNTotalSteps;
+        }
         CalcSegmentPositions();
         simDisplay.updateDisplay = true;
     }

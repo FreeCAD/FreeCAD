@@ -388,7 +388,7 @@ bool LocalCoordinateSystem::extensionGetSubObject(DocumentObject*& ret,
         return true;
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return false;
     }
 }

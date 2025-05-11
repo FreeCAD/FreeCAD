@@ -205,7 +205,7 @@ void QGSPage::addChildrenToPage()
 
 void QGSPage::attachTemplate(TechDraw::DrawTemplate* obj)
 {
-    //    Base::Console().Message("QGSP::attachTemplate()\n");
+    //    Base::Console().message("QGSP::attachTemplate()\n");
     setPageTemplate(obj);
 }
 
@@ -324,7 +324,7 @@ int QGSPage::addQView(QGIView* view)
 
         view->updateView(true);
     } else {
-        Base::Console().Message("QGSP::addQView - qview already exists\n");
+        Base::Console().message("QGSP::addQView - qview already exists\n");
     }
     return 0;
 }
@@ -667,7 +667,7 @@ QGIView* QGSPage::addViewDimension(TechDraw::DrawViewDimension* dimFeat)
 
 void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 {
-    //    Base::Console().Message("QGSP::addDimToParent()\n");
+    //    Base::Console().message("QGSP::addDimToParent()\n");
     assert(dim);
     assert(parent);//blow up if we don't have Dimension or Parent
     QPointF posRef(0., 0.);
@@ -1141,11 +1141,11 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     QDomDocument exportDoc(QStringLiteral("SvgDoc"));
     QFile file(temporaryFile.fileName());
     if (!file.open(QIODevice::ReadOnly)) {
-        Base::Console().Error("QGSPage::ppsvg - tempfile open error\n");
+        Base::Console().error("QGSPage::ppsvg - tempfile open error\n");
         return;
     }
     if (!exportDoc.setContent(&file)) {
-        Base::Console().Error("QGSPage::ppsvg - xml error\n");
+        Base::Console().error("QGSPage::ppsvg - xml error\n");
         file.close();
         return;
     }
@@ -1220,7 +1220,7 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     // Time to save our product
     QFile outFile(fileName);
     if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        Base::Console().Error("QGSP::ppxml - failed to open file for writing: %s\n",
+        Base::Console().error("QGSP::ppxml - failed to open file for writing: %s\n",
                               qPrintable(fileName));
     }
 

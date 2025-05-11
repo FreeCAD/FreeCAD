@@ -211,7 +211,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -219,7 +219,7 @@ private:
             str += "FreeCAD exception thrown (";
             str += e.what();
             str += ")";
-            e.ReportException();
+            e.reportException();
             throw Py::RuntimeError(str);
         }
         catch (const std::exception &e) {
@@ -227,7 +227,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::RuntimeError(str);
         }
     }
@@ -284,7 +284,7 @@ private:
         }
 
         if (sortedWires.empty()) {
-            Base::Console().Warning("ATDP::edgeWalker: Wire detection failed\n");
+            Base::Console().warning("ATDP::edgeWalker: Wire detection failed\n");
             return Py::None();
         }
         else {
@@ -322,7 +322,7 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Message("ATDP::findOuterWire: input is empty\n");
+            Base::Console().message("ATDP::findOuterWire: input is empty\n");
             return Py::None();
         }
 
@@ -343,7 +343,7 @@ private:
         }
 
         if(sortedWires.empty()) {
-            Base::Console().Warning("ATDP::findOuterWire: Outline wire detection failed\n");
+            Base::Console().warning("ATDP::findOuterWire: Outline wire detection failed\n");
             return Py::None();
         } else {
             outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
@@ -372,7 +372,7 @@ private:
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
         if (!pShape) {
-            Base::Console().Message("TRACE - AATDP::findShapeOutline - input shape is null\n");
+            Base::Console().message("TRACE - AATDP::findShapeOutline - input shape is null\n");
             return Py::None();
         }
 
@@ -408,7 +408,7 @@ private:
         }
 
         if(sortedWires.empty()) {
-            Base::Console().Warning("ATDP::findShapeOutline: Outline wire detection failed\n");
+            Base::Console().warning("ATDP::findShapeOutline: Outline wire detection failed\n");
             return Py::None();
         } else {
             outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
@@ -435,7 +435,7 @@ private:
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 if (!gObj) {
-                    Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+                    Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
                     return Py::String();
                 }
                 TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
@@ -498,7 +498,7 @@ private:
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 if (!gObj) {
-                    Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+                    Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
                     return Py::String();
                 }
 
@@ -568,7 +568,7 @@ private:
         TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
         if (!gObj) {
             // this test might be redundant here since we already checked hasGeometry.
-            Base::Console().Message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+            Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
             return;
         }
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
@@ -849,7 +849,7 @@ private:
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
         if (!pShape) {
-            Base::Console().Error("ShapeUtils::findCentroid - input shape is null\n");
+            Base::Console().error("ShapeUtils::findCentroid - input shape is null\n");
             return Py::None();
         }
 
@@ -1020,7 +1020,7 @@ private:
         }
         Base::FileInfo fi(patFile);
         if (!fi.isReadable()) {
-            Base::Console().Error(".pat File: %s is not readable\n", patFile.c_str());
+            Base::Console().error(".pat File: %s is not readable\n", patFile.c_str());
             return Py::None();
         }
         std::vector<TechDraw::PATLineSpec> specs = TechDraw::DrawGeomHatch::getDecodedSpecsFromFile(patFile, patName);

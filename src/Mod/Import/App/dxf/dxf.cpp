@@ -434,7 +434,7 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     std::stringstream outString;
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Message("dxf unable to open %s!\n", fileSpec.c_str());
+        Base::Console().message("dxf unable to open %s!\n", fileSpec.c_str());
     }
     else {
         string line;
@@ -2689,7 +2689,7 @@ bool CDxfRead::ReadSection()
 }
 void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
 {
-    if (object->Layers.count(object->m_record_data) == 0) {
+    if (!object->Layers.contains(object->m_record_data)) {
         object->ImportError("First reference to missing Layer '%s'", object->m_record_data);
         // Synthesize the Layer so we don't get the same error again.
         // We need to take copies of the string arguments because MakeLayer uses them as move
@@ -2912,7 +2912,7 @@ bool CDxfRead::ReadEntitiesSection()
                 }
             }
             catch (const Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (...) {
                 ImportError("CDxfRead::ReadEntity raised unknown exception\n");

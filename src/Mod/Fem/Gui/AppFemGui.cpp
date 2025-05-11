@@ -104,7 +104,7 @@ PyMOD_INIT_FUNC(FemGui)
     }
 
     PyObject* mod = FemGui::initModule();
-    Base::Console().Log("Loading GUI of Fem module... done\n");
+    Base::Console().log("Loading GUI of Fem module... done\n");
 
     // instantiating the commands
     CreateFemCommands();
@@ -161,6 +161,8 @@ PyMOD_INIT_FUNC(FemGui)
 #ifdef FC_USE_VTK
     FemGui::ViewProviderFemPostObject                           ::init();
     FemGui::ViewProviderFemPostPipeline                         ::init();
+    FemGui::ViewProviderFemPostFilterPythonBase                 ::init();
+    FemGui::ViewProviderPostFilterPython                        ::init();
     FemGui::ViewProviderFemPostBranchFilter                     ::init();
     FemGui::ViewProviderFemPostCalculator                       ::init();
     FemGui::ViewProviderFemPostClip                             ::init();

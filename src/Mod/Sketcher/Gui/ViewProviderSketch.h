@@ -857,6 +857,8 @@ private:
 
     int defaultFontSizePixels() const;
 
+    qreal getDevicePixelRatio() const;
+
     int getApplicationLogicalDPIX() const;
 
     double getRotation(SbVec3f pos0, SbVec3f pos1) const;

@@ -54,6 +54,7 @@ class Arch_Profile:
         import ArchProfile
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        self.doc = FreeCAD.ActiveDocument
         self.Profile = None
         self.Categories = []
         self.Presets = ArchProfile.readPresets()
@@ -118,7 +119,7 @@ class Arch_Profile:
         if not self.Profile:
             return
         pt = "FreeCAD.Vector("+str(point.x)+","+str(point.y)+","+str(point.z)+")"
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Profile"))
+        self.doc.openTransaction(translate("Arch","Create Profile"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
         FreeCADGui.addModule('WorkingPlane')
@@ -126,8 +127,8 @@ class Arch_Profile:
         FreeCADGui.doCommand('p.Placement.Base = ' + pt)
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(p)")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
 
     def setCategory(self,i):
 

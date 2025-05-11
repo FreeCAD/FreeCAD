@@ -765,7 +765,7 @@ void Document::onChanged(const Property* prop)
         if (!TransDirNew.exists()) {
             if (TransDirOld.exists()) {
                 if (!TransDirOld.renameFile(new_dir.c_str())) {
-                    Base::Console().Warning("Failed to rename '%s' to '%s'\n",
+                    Base::Console().warning("Failed to rename '%s' to '%s'\n",
                                             old_dir.c_str(),
                                             new_dir.c_str());
                 }
@@ -775,7 +775,7 @@ void Document::onChanged(const Property* prop)
             }
             else {
                 if (!TransDirNew.createDirectories()) {
-                    Base::Console().Warning("Failed to create '%s'\n", new_dir.c_str());
+                    Base::Console().warning("Failed to create '%s'\n", new_dir.c_str());
                 }
                 else {
                     this->TransientDir.setValue(new_dir);
@@ -788,7 +788,7 @@ void Document::onChanged(const Property* prop)
             // make sure that the uuid is unique
             std::string uuid = this->Uid.getValueStr();
             Base::Uuid id;
-            Base::Console().Warning("Document with the UUID '%s' already exists, change to '%s'\n",
+            Base::Console().warning("Document with the UUID '%s' already exists, change to '%s'\n",
                                     uuid.c_str(),
                                     id.getValue().c_str());
             // recursive call of onChanged()
@@ -846,7 +846,7 @@ Document::Document(const char* documentName)
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().Log("+App::Document: %p\n", this);
+    Console().log("+App::Document: %p\n", this);
 #endif
     std::string CreationDateString = Base::Tools::currentDateTimeString();
     std::string Author = App::GetApplication()
@@ -877,13 +877,8 @@ Document::Document(const char* documentName)
                       "Additional tag to save the name of the company");
     ADD_PROPERTY_TYPE(UnitSystem, (""), 0, Prop_None, "Unit system to use in this project");
     // Set up the possible enum values for the unit system
-    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-    std::vector<std::string> enumValsAsVector;
-    for (int i = 0; i < num; i++) {
-        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
-        enumValsAsVector.emplace_back(item.toStdString());
-    }
-    UnitSystem.setEnums(enumValsAsVector);
+
+    UnitSystem.setEnums(Base::UnitsApi::getDescriptions());
     // Get the preferences/General unit system as the default for a new document
     ParameterGrp::handle hGrpu =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
@@ -947,7 +942,7 @@ Document::Document(const char* documentName)
 Document::~Document()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Console().Log("-App::Document: %s %p\n", getName(), this);
+    Console().log("-App::Document: %s %p\n", getName(), this);
 #endif
 
     try {
@@ -957,7 +952,7 @@ Document::~Document()
     }
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().Log("-Delete Features of %s \n", getName());
+    Console().log("-Delete Features of %s \n", getName());
 #endif
 
     d->clearDocument();
@@ -1097,7 +1092,7 @@ void Document::Restore(Base::XMLReader& reader)
                 addObject(type.c_str(), name.c_str(), /*isNew=*/false);
             }
             catch (Base::Exception&) {
-                Base::Console().Message("Cannot create object '%s'\n", name.c_str());
+                Base::Console().message("Cannot create object '%s'\n", name.c_str());
             }
         }
         reader.readEndElement("Features");
@@ -1133,7 +1128,7 @@ void Document::Restore(Base::XMLReader& reader)
 void DocumentP::checkStringHasher(const Base::XMLReader& reader)
 {
     if (reader.hasReadFailed("StringHasher.Table.txt")) {
-        Base::Console().Error(QT_TRANSLATE_NOOP(
+        Base::Console().error(QT_TRANSLATE_NOOP(
             "Notifications",
             "\nIt is recommended that the user right-click the root of "
             "the document and select Mark to recompute.\n"
@@ -1533,7 +1528,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
+            Base::Console().error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
         }
     }
     if (!testStatus(Status::Importing)) {
@@ -1562,25 +1557,25 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             // Try to continue only for certain exception types if not handled
             // by the feature type. For all other exception types abort the process.
             catch (const Base::UnicodeError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::ValueError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::IndexError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::RuntimeError& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (const Base::XMLAttributeError& e) {
-                e.ReportException();
+                e.reportException();
             }
 
             pObj->setStatus(ObjectStatus::Restore, false);
 
             if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
-                Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result "
+                Base::Console().error("Object \"%s\" was subject to a partial restore. As a result "
                                       "geometry may have changed or be incomplete.\n",
                                       name.c_str());
                 reader.clearPartialRestoreDocumentObject();
@@ -1866,7 +1861,7 @@ private:
                 }
 
                 if (!fi.renameFile(fn.c_str())) {
-                    Base::Console().Warning("Cannot rename project file to backup file\n");
+                    Base::Console().warning("Cannot rename project file to backup file\n");
                 }
             }
             else {
@@ -1946,13 +1941,13 @@ private:
                                 try {
                                     if (!it.deleteFile()) {
                                         backupManagementError = true;
-                                        Base::Console().Warning("Cannot remove backup file : %s\n",
+                                        Base::Console().warning("Cannot remove backup file : %s\n",
                                                                 it.fileName().c_str());
                                     }
                                 }
                                 catch (...) {
                                     backupManagementError = true;
-                                    Base::Console().Warning("Cannot remove backup file : %s\n",
+                                    Base::Console().warning("Cannot remove backup file : %s\n",
                                                             it.fileName().c_str());
                                 }
                             }
@@ -2014,7 +2009,7 @@ private:
                     }
 
                     if (ext >= numberOfFiles + 10) {
-                        Base::Console().Error(
+                        Base::Console().error(
                             "File not saved: Cannot rename project file to backup file\n");
                         // throw Base::FileException("File not saved: Cannot rename project file to
                         // backup file", fi);
@@ -2026,7 +2021,7 @@ private:
                     fi.deleteFile();
                 }
                 catch (...) {
-                    Base::Console().Warning("Cannot remove backup file: %s\n",
+                    Base::Console().warning("Cannot remove backup file: %s\n",
                                             fi.fileName().c_str());
                     backupManagementError = true;
                 }
@@ -2325,7 +2320,7 @@ void Document::restore(const char* filename,
         Document::Restore(reader);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        Base::Console().error("Invalid Document.xml: %s\n", e.what());
         setStatus(Document::RestoreError, true);
     }
 
@@ -2343,7 +2338,7 @@ void Document::restore(const char* filename,
 
     if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
         setStatus(Document::PartialRestore, true);
-        Base::Console().Error("There were errors while loading the file. Some data might have been "
+        Base::Console().error("There were errors while loading the file. Some data might have been "
                               "modified or not recovered at all. Look above for more specific "
                               "information about the objects involved.\n");
     }
@@ -2465,7 +2460,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             // partial document touched, signal full reload
             return false;
         }
-        else if (!d->touchedObjs.count(obj)) {
+        else if (!d->touchedObjs.contains(obj)) {
             obj->purgeTouched();
         }
 
@@ -3065,7 +3060,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
             for (size_t i = 0; i < topoSortedObjects.size(); ++i) {
                 auto obj = topoSortedObjects[i];
                 obj->setStatus(ObjectStatus::Recompute2, false);
-                if (!filter.count(obj) && obj->isTouched()) {
+                if (!filter.contains(obj) && obj->isTouched()) {
                     if (passes > 0) {
                         FC_ERR(obj->getFullName() << " still touched after recompute");
                     }
@@ -3082,7 +3077,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
     FC_TIME_LOG(t2, "Recompute");
@@ -3105,7 +3100,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                 if (it->isError()) {
                     const char* text = getErrorDescription(it);
                     if (text) {
-                        Base::Console().Error("%s: %s\n", it->Label.getValue(), text);
+                        Base::Console().error("%s: %s\n", it->Label.getValue(), text);
                     }
                 }
             }
@@ -3122,7 +3117,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                 }
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("error when removing object " << o.getDocumentName() << '#'
                                                      << o.getObjectName());
             }
@@ -3331,7 +3326,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         }
     }
     catch (Base::AbortException& e) {
-        e.ReportException();
+        e.reportException();
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog("User abort", Feat);
         return -1;
@@ -3342,7 +3337,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         return 1;
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog(e.what(), Feat);
         return 1;

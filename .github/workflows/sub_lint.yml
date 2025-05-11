@@ -208,7 +208,7 @@ jobs:
 
     # Generic lints steps
       - name: Check File Case Sensitivity
-        uses: credfeto/action-case-checker@v1.3.0
+        uses: credfeto/action-case-checker@cb652aeab29ed363bbdb7d9ee1bfcc010c46cac5 # v1.3.0
 
       - name: Check for non Unix line ending
         if: inputs.checkLineendings && always()
@@ -305,7 +305,7 @@ jobs:
         continue-on-error: ${{ inputs.codespellFailSilent }}
         run: |
           python3 tools/lint/codespell.py \
-            --files "${{ inputs.changedFiles }}" \
+            --files ${{ inputs.changedFiles }} \
             --ignore-words "${{ inputs.listIgnoredMisspelling }}" \
             --skip "${{ inputs.spellingIgnore }}" \
             --log-dir "${{ env.logdir }}" \

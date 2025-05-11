@@ -54,7 +54,7 @@ Array3D::Array3D(const QString& propertyName,
         _property = material->getAppearanceProperty(propertyName);
     }
     else {
-        Base::Console().Log("Property '%s' not found\n", propertyName.toStdString().c_str());
+        Base::Console().log("Property '%s' not found\n", propertyName.toStdString().c_str());
         _property = nullptr;
     }
     if (_property) {

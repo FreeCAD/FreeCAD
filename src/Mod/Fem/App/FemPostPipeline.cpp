@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <cmath>
 #include <Python.h>
 #include <vtkAppendFilter.h>
 #include <vtkDataSetReader.h>
@@ -313,9 +314,22 @@ void FemPostPipeline::read(std::vector<Base::FileInfo>& files,
                            std::string& frame_type)
 {
     if (files.size() != values.size()) {
-        Base::Console().Error("Result files and frame values have different length.\n");
-        return;
+        throw Base::ValueError("Result files and frame values have different length");
     }
+
+    // make sure we do not have invalid values
+    for (auto& value : values) {
+        if (!std::isfinite(value)) {
+            throw Base::ValueError("Values need to be finite");
+        }
+    }
+
+    // ensure no double values for frames
+    std::set<double> value_set(values.begin(), values.end());
+    if (value_set.size() != values.size()) {
+        throw Base::ValueError("Values need to be unique");
+    }
+
 
     // setup the time information for the multiblock
     vtkStringArray* TimeInfo = vtkStringArray::New();
@@ -619,11 +633,11 @@ unsigned int FemPostPipeline::getFrameNumber()
 void FemPostPipeline::load(FemResultObject* res)
 {
     if (!res->Mesh.getValue()) {
-        Base::Console().Log("Result mesh object is empty.\n");
+        Base::Console().log("Result mesh object is empty.\n");
         return;
     }
     if (!res->Mesh.getValue()->isDerivedFrom<Fem::FemMeshObject>()) {
-        Base::Console().Log("Result mesh object is not derived from Fem::FemMeshObject.\n");
+        Base::Console().log("Result mesh object is not derived from Fem::FemMeshObject.\n");
         return;
     }
 
@@ -650,8 +664,20 @@ void FemPostPipeline::load(std::vector<FemResultObject*>& res,
 {
 
     if (res.size() != values.size()) {
-        Base::Console().Error("Result values and frame values have different length.\n");
-        return;
+        throw Base::ValueError("Result values and frame values have different length");
+    }
+
+    // make sure we do not have invalid values
+    for (auto& value : values) {
+        if (!std::isfinite(value)) {
+            throw Base::ValueError("Values need to be finite");
+        }
+    }
+
+    // ensure no double values for frames
+    std::set<double> value_set(values.begin(), values.end());
+    if (value_set.size() != values.size()) {
+        throw Base::ValueError("Values need to be unique");
     }
 
     // setup the time information for the multiblock
@@ -664,8 +690,7 @@ void FemPostPipeline::load(std::vector<FemResultObject*>& res,
     for (ulong i = 0; i < res.size(); i++) {
 
         if (!res[i]->Mesh.getValue()->isDerivedFrom<FemMeshObject>()) {
-            Base::Console().Error("Result mesh object is not derived from Fem::FemMeshObject.\n");
-            return;
+            throw Base::ValueError("Result mesh object is not derived from Fem::FemMeshObject");
         }
 
         // first copy the mesh over

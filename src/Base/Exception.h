@@ -21,172 +21,126 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_EXCEPTION_H
 #define BASE_EXCEPTION_H
 
 #include <csignal>
+#include <source_location>
 #include <string>
+
 #include "BaseClass.h"
 #include "FileInfo.h"
 
+using PyObject = struct _object;  // NOLINT
 
-using PyObject = struct _object;
+// Remove once all used compilers support this
+#if defined(__cpp_lib_source_location)
+#define HAVE_STD_SOURCE_LOCATION 1
+#else
+#undef HAVE_STD_SOURCE_LOCATION
+#endif
+// std::source_location is implemented, but buggy in Clang 15
+#if defined(__clang__) && __clang_major__ <= 15
+#undef HAVE_STD_SOURCE_LOCATION
+#endif
 
-/* MACROS FOR THROWING EXCEPTIONS */
-
-/// the macros do NOT mark any message for translation
+/// The macros do NOT mark any message for translation
 /// If you want to mark text for translation, use the QT_TRANSLATE_NOOP macro
-/// with the context "Exceptions" and the right throwing macro from below (the one ending in T)
+/// with the context "Exceptions" and the right throwing macro from below (the one ending with T)
 /// example:
 /// THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased
 /// beyond the degree of the B-Spline."));
 ///
 /// N.B.: The QT_TRANSLATE_NOOP macro won't translate your string. It will just allow lupdate to
 /// identify that string for translation so that if you ask for a translation (and the translator
-/// have provided one) at that time it gets translated (e.g. in the UI before showing the message of
-/// the exception).
+/// have provided one) at that time it gets translated (e.g. in the UI before showing the message
+/// of the exception).
 
-// NOLINTBEGIN
-#ifdef _MSC_VER
-
-#define THROW(exception)                                                                           \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        throw myexcp;                                                                              \
-    }
-#define THROWM(exception, message)                                                                 \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        throw myexcp;                                                                              \
-    }
-#define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        throw myexcp;                                                                              \
-    }
-
-#define THROWT(exception)                                                                          \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMT(exception, message)                                                                \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __FUNCSIG__);                               \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-
-#elif defined(__GNUC__)
-
-#define THROW(exception)                                                                           \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        throw myexcp;                                                                              \
-    }
-#define THROWM(exception, message)                                                                 \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        throw myexcp;                                                                              \
-    }
-#define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        throw myexcp;                                                                              \
-    }
-
-#define THROWT(exception)                                                                          \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMT(exception, message)                                                                \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __PRETTY_FUNCTION__);                       \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-
-#else
-
-#define THROW(exception)                                                                           \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        throw myexcp;                                                                              \
-    }
-#define THROWM(exception, message)                                                                 \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        throw myexcp;                                                                              \
-    }
-#define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        throw myexcp;                                                                              \
-    }
-
-#define THROWT(exception)                                                                          \
-    {                                                                                              \
-        exception myexcp;                                                                          \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMT(exception, message)                                                                \
-    {                                                                                              \
-        exception myexcp(message);                                                                 \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-#define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
-    {                                                                                              \
-        FileException myexcp(message, filenameorfileinfo);                                         \
-        myexcp.setDebugInformation(__FILE__, __LINE__, __func__);                                  \
-        myexcp.setTranslatable(true);                                                              \
-        throw myexcp;                                                                              \
-    }
-
-
-#endif
-
-#define FC_THROWM(_exception, _msg)                                                                \
+#if defined(HAVE_STD_SOURCE_LOCATION)
+// NOLINTBEGIN(*-macro-usage)
+#define THROWM(exc, msg) Base::setupAndThrowException<exc>((msg), std::source_location::current());
+#define THROWMT(exc, msg)                                                                          \
+    Base::setupAndThrowException<exc>((msg), std::source_location::current(), true);
+#define FC_THROWM(exception, msg)                                                                  \
     do {                                                                                           \
         std::stringstream ss;                                                                      \
-        ss << _msg;                                                                                \
-        THROWM(_exception, ss.str().c_str());                                                      \
+        ss << msg;                                                                                 \
+        THROWM(exception, ss.str());                                                               \
     } while (0)
-// NOLINTEND
+// NOLINTEND(*-macro-usage)
+
+namespace Base
+{
+template<typename ExceptionType>
+[[noreturn]] void setupAndThrowException(const std::string message,
+                                         const std::source_location location,
+                                         const bool translatable = false)
+{
+    ExceptionType exception {message};
+    exception.setTranslatable(translatable);
+    exception.setDebugInformation(location);
+    throw exception;
+}  // NOLINT // unreachable
+}  // namespace Base
+
+#else  // HAVE_STD_SOURCE_LOCATION
+
+#ifdef _MSC_VER
+#define FC_THROW_INFO __FILE__, __LINE__, __FUNCSIG__
+#elif __GNUC__
+#define FC_THROW_INFO __FILE__, __LINE__, __PRETTY_FUNCTION__
+#else
+#define FC_THROW_INFO __FILE__, __LINE__, __func__
+#endif
+
+#define THROWM(exc, msg) Base::setupAndThrowException<exc>(msg, FC_THROW_INFO);
+#define THROWMT(exc, msg) Base::setupAndThrowException<exc>(msg, FC_THROW_INFO, true);
+#define FC_THROWM(exception, msg)                                                                  \
+    do {                                                                                           \
+        std::stringstream ss;                                                                      \
+        ss << msg;                                                                                 \
+        THROWM(exception, ss.str());                                                               \
+    } while (0)
+namespace Base
+{
+template<typename ExceptionType>
+[[noreturn]] void setupAndThrowException(const std::string message,
+                                         const char* file,
+                                         const int line,
+                                         const char* func,
+                                         const bool translatable = false)
+{
+    ExceptionType exception {message};
+    exception.setTranslatable(translatable);
+    exception.setDebugInformation(file, line, func);
+    throw exception;
+}  // NOLINT // unreachable
+}  // namespace Base
+
+#endif  // HAVE_STD_SOURCE_LOCATION
+
+//--------------------------------------------------------------------------------------------------
+
+template<typename Exception>
+constexpr void THROWM_(const std::string& msg,
+                       const std::source_location location = std::source_location::current())
+{
+    Base::setupAndThrowException<Exception>(msg, location);
+}
+
+template<typename Exception>
+constexpr void THROWMT_(const std::string& msg,
+                        const std::source_location location = std::source_location::current())
+{
+    Base::setupAndThrowException<Exception>(msg, location, true);
+}
+
+template<typename Exception>
+constexpr void FC_THROWM_(const std::string& raw_msg,
+                          const std::source_location location = std::source_location::current())
+{
+    THROWM_<Exception>(raw_msg, location);
+}
 
 namespace Base
 {
@@ -196,18 +150,16 @@ class BaseExport Exception: public BaseClass
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
+    explicit Exception(std::string message = "FreeCAD Exception");
     ~Exception() noexcept override = default;
 
     Exception& operator=(const Exception& inst);
     Exception& operator=(Exception&& inst) noexcept;
 
     virtual const char* what() const noexcept;
+    virtual void reportException() const;  // once only
 
-    /// Reports exception. It includes a mechanism to only report an exception once.
-    virtual void ReportException() const;
-
-    inline void setMessage(const char* sMessage);
-    inline void setMessage(const std::string& sMessage);
+    inline void setMessage(const std::string& message);
     // what may differ from the message given by the user in
     // derived classes
     inline std::string getMessage() const;
@@ -215,212 +167,104 @@ public:
     inline int getLine() const;
     inline std::string getFunction() const;
     inline bool getTranslatable() const;
-    inline bool getReported() const
-    {
-        return _isReported;
-    }
+    inline bool getReported() const;
+    inline void setReported(bool reported) const;
 
-    /// setter methods for including debug information
-    /// intended to use via macro for autofilling of debugging information
-    inline void setDebugInformation(const std::string& file, int line, const std::string& function);
+#if defined(HAVE_STD_SOURCE_LOCATION)
+    inline void setDebugInformation(const std::source_location& location);
+#else
+    inline void setDebugInformation(const char* file, int line, const char* func);
+#endif
 
     inline void setTranslatable(bool translatable);
 
-    inline void setReported(bool reported)
-    {
-        _isReported = reported;
-    }
+    PyObject* getPyObject() override;             // exception data
+    void setPyObject(PyObject* pydict) override;  // set the exception data
 
-    /// returns a Python dictionary containing the exception data
-    PyObject* getPyObject() override;
-    /// returns sets the exception data from a Python dictionary
-    void setPyObject(PyObject* pydict) override;
-
-    /// returns the corresponding python exception type
     virtual PyObject* getPyExceptionType() const;
-    /// Sets the Python error indicator and an error message
     virtual void setPyException() const;
 
 protected:
-    /* sMessage may be:
-     * - a UI compliant string susceptible to being translated and shown to the user in the UI
-     * - a very technical message not intended to be translated or shown to the user in the UI
-     * The preferred way of throwing an exception is using the macros above.
-     * This way, the file, line, and function are automatically inserted. */
-    explicit Exception(const char* sMessage);
-    explicit Exception(std::string sMessage);
-    Exception();
     Exception(const Exception& inst);
     Exception(Exception&& inst) noexcept;
 
-protected:
-    std::string _sErrMsg;
-    std::string _file;
-    int _line;
-    std::string _function;
-    bool _isTranslatable;
-    mutable bool _isReported;
+private:
+    std::string errorMessage;
+    std::string fileName;
+    int lineNum {0};
+    std::string functionName;
+    bool isTranslatable {false};
+    mutable bool hasBeenReported {false};
 };
 
-
-/**
- * The AbortException is thrown if a pending operation was aborted.
- * @author Werner Mayer
- */
 class BaseExport AbortException: public Exception
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    /// Construction
-    explicit AbortException(const char* sMessage);
-    /// Construction
-    AbortException();
-    AbortException(const AbortException&) = default;
-    AbortException(AbortException&&) = default;
+    explicit AbortException(const std::string& message = "Aborted operation");
 
-    /// Destruction
-    ~AbortException() noexcept override = default;
-    AbortException& operator=(const AbortException&) = default;
-    AbortException& operator=(AbortException&&) = default;
-
-    /// Description of the exception
     const char* what() const noexcept override;
-    /// returns the corresponding python exception type
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The XMLBaseException can be used to indicate any kind of XML related errors.
- * @author Werner Mayer
- */
 class BaseExport XMLBaseException: public Exception
 {
 public:
-    /// Construction
-    XMLBaseException();
-    explicit XMLBaseException(const char* sMessage);
-    explicit XMLBaseException(const std::string& sMessage);
-    XMLBaseException(const XMLBaseException&) = default;
-    XMLBaseException(XMLBaseException&&) = default;
-
-    /// Destruction
-    ~XMLBaseException() noexcept override = default;
-    XMLBaseException& operator=(const XMLBaseException&) = default;
-    XMLBaseException& operator=(XMLBaseException&&) = default;
+    explicit XMLBaseException(const std::string& message = "XML base exception");
 
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The XMLParseException is thrown if parsing an XML failed.
- * @author Werner Mayer
- */
 class BaseExport XMLParseException: public XMLBaseException
 {
 public:
-    /// Construction
-    explicit XMLParseException(const char* sMessage);
-    /// Construction
-    explicit XMLParseException(const std::string& sMessage);
-    /// Construction
-    XMLParseException();
-    XMLParseException(const XMLParseException&) = default;
-    XMLParseException(XMLParseException&&) = default;
+    explicit XMLParseException(const std::string& message = "XML parse exception");
 
-    /// Destruction
-    ~XMLParseException() noexcept override = default;
-    XMLParseException& operator=(const XMLParseException&) = default;
-    XMLParseException& operator=(XMLParseException&&) = default;
-
-    /// Description of the exception
     const char* what() const noexcept override;
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The XMLAttributeError is thrown if a requested attribute doesn't exist.
- * @author Werner Mayer
- */
 class BaseExport XMLAttributeError: public XMLBaseException
 {
 public:
-    /// Construction
-    explicit XMLAttributeError(const char* sMessage);
-    /// Construction
-    explicit XMLAttributeError(const std::string& sMessage);
-    /// Construction
-    XMLAttributeError();
-    XMLAttributeError(const XMLAttributeError&) = default;
-    XMLAttributeError(XMLAttributeError&&) = default;
+    explicit XMLAttributeError(const std::string& message = "XML attribute error");
 
-    /// Destruction
-    ~XMLAttributeError() noexcept override = default;
-    XMLAttributeError& operator=(const XMLAttributeError&) = default;
-    XMLAttributeError& operator=(XMLAttributeError&&) = default;
-
-    /// Description of the exception
     const char* what() const noexcept override;
     PyObject* getPyExceptionType() const override;
 };
 
-/** File exception handling class
- * This class is specialized to go with exception thrown in case of File IO Problems.
- * @author Juergen Riegel
- */
 class BaseExport FileException: public Exception
 {
 public:
-    /// With massage and file name
-    explicit FileException(const char* sMessage, const char* sFileName = nullptr);
-    /// With massage and file name
-    FileException(const char* sMessage, const FileInfo& File);
-    /// standard construction
-    FileException();
-    FileException(const FileException&) = default;
-    FileException(FileException&&) = default;
-    /// Destruction
-    ~FileException() noexcept override = default;
-    /// Assignment operator
-    FileException& operator=(const FileException&) = default;
-    FileException& operator=(FileException&&) = default;
+    explicit FileException(const std::string& message = "Unknown file exception happened",
+                           const std::string& fileName = "");
+    FileException(const std::string& message, const FileInfo& File);
 
-    /// Description of the exception
     const char* what() const noexcept override;
-    /// Report generation
-    void ReportException() const override;
-    /// Get file name for use with translatable message
+    void reportException() const override;
     std::string getFileName() const;
-    /// returns a Python dictionary containing the exception data
     PyObject* getPyObject() override;
-    /// returns sets the exception data from a Python dictionary
+
     void setPyObject(PyObject* pydict) override;
 
     PyObject* getPyExceptionType() const override;
 
-protected:
+private:
     FileInfo file;
     // necessary   for what() legacy behaviour as it returns a buffer that
     // can not be of a temporary object to be destroyed at end of what()
     std::string _sErrMsgAndFileName;
-    void setFileName(const char* sFileName = nullptr);
+    void setFileName(const std::string& fileName);
 };
 
-/**
- * The FileSystemError can be used to indicate errors on file system
- * e.g. if renaming of a file failed.
- * @author Werner Mayer
- */
 class BaseExport FileSystemError: public Exception
 {
 public:
-    /// Construction
-    FileSystemError();
-    explicit FileSystemError(const char* sMessage);
-    explicit FileSystemError(const std::string& sMessage);
+    explicit FileSystemError(const std::string& message = "File system error");
     FileSystemError(const FileSystemError&) = default;
     FileSystemError(FileSystemError&&) = default;
-    /// Destruction
+
     ~FileSystemError() noexcept override = default;
     FileSystemError& operator=(const FileSystemError&) = default;
     FileSystemError& operator=(FileSystemError&&) = default;
@@ -428,580 +272,267 @@ public:
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The BadFormatError can be used to indicate errors in a data structure.
- * @author Werner Mayer
- */
+/** errors in a data structure */
 class BaseExport BadFormatError: public Exception
 {
 public:
-    /// Construction
-    BadFormatError();
-    explicit BadFormatError(const char* sMessage);
-    explicit BadFormatError(const std::string& sMessage);
+    explicit BadFormatError(const std::string& message = "Bad format error");
     BadFormatError(const BadFormatError&) = default;
     BadFormatError(BadFormatError&&) = default;
-    /// Destruction
+
     ~BadFormatError() noexcept override = default;
     BadFormatError& operator=(const BadFormatError&) = default;
     BadFormatError& operator=(BadFormatError&&) = default;
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The MemoryException is thrown if not enough memory can be allocated.
- * @author Werner Mayer
- */
 #if defined(__GNUC__)
-// It seems that the calling instance of our new handler expects a bad_alloc exception
+// calling instance of our new handler expects a bad_alloc exception
 class BaseExport MemoryException: public Exception, virtual public std::bad_alloc
 #else
 class BaseExport MemoryException: public Exception
 #endif
 {
 public:
-    /// Construction
-    MemoryException();
-    /// Construction
-    MemoryException(const MemoryException& inst);
-    MemoryException(MemoryException&& inst) noexcept;
-    /// Destruction
-    ~MemoryException() noexcept override = default;
-    /// Assignment operator
-    MemoryException& operator=(const MemoryException& inst);
-    MemoryException& operator=(MemoryException&& inst) noexcept;
+    explicit MemoryException(const std::string& = "Not enough memory available");
+
 #if defined(__GNUC__)
-    /// Description of the exception
     const char* what() const noexcept override;
 #endif
+
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The AccessViolation can be used in an own signal handler.
- * @author Werner Mayer
- */
+/** can be used in an own signal handler */
 class BaseExport AccessViolation: public Exception
 {
 public:
-    /// Construction
-    AccessViolation();
-    explicit AccessViolation(const char* sMessage);
-    explicit AccessViolation(const std::string& sMessage);
-    AccessViolation(const AccessViolation&) = default;
-    AccessViolation(AccessViolation&&) = default;
-    /// Destruction
-    ~AccessViolation() noexcept override = default;
-    AccessViolation& operator=(const AccessViolation&) = default;
-    AccessViolation& operator=(AccessViolation&&) = default;
+    explicit AccessViolation(const std::string& message = "Access violation");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The AbnormalProgramTermination can be used in an own signal handler.
- * @author Werner Mayer
- */
+/** can be used in an own signal handler */
 class BaseExport AbnormalProgramTermination: public Exception
 {
 public:
-    /// Construction
-    AbnormalProgramTermination();
-    /// Construction
-    explicit AbnormalProgramTermination(const char* sMessage);
-    explicit AbnormalProgramTermination(const std::string& sMessage);
-    AbnormalProgramTermination(const AbnormalProgramTermination&) = default;
-    AbnormalProgramTermination(AbnormalProgramTermination&&) = default;
-    /// Destruction
-    ~AbnormalProgramTermination() noexcept override = default;
-    AbnormalProgramTermination& operator=(const AbnormalProgramTermination&) = default;
-    AbnormalProgramTermination& operator=(AbnormalProgramTermination&&) = default;
+    explicit AbnormalProgramTermination(
+        const std::string& message = "Abnormal program termination");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The UnknownProgramOption can be used to indicate an unknown program option.
- * @author Werner Mayer
- */
 class BaseExport UnknownProgramOption: public Exception
 {
 public:
-    /// Construction
-    UnknownProgramOption();
-    explicit UnknownProgramOption(const char* sMessage);
-    explicit UnknownProgramOption(const std::string& sMessage);
-    UnknownProgramOption(const UnknownProgramOption&) = default;
-    UnknownProgramOption(UnknownProgramOption&&) = default;
-    /// Destruction
-    ~UnknownProgramOption() noexcept override = default;
-    UnknownProgramOption& operator=(const UnknownProgramOption&) = default;
-    UnknownProgramOption& operator=(UnknownProgramOption&&) = default;
+    explicit UnknownProgramOption(const std::string& message = "Unknown program option");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The ProgramInformation can be used to show information about the program.
- * @author Werner Mayer
- */
 class BaseExport ProgramInformation: public Exception
 {
 public:
-    /// Construction
-    ProgramInformation();
-    explicit ProgramInformation(const char* sMessage);
-    explicit ProgramInformation(const std::string& sMessage);
-    ProgramInformation(const ProgramInformation&) = default;
-    ProgramInformation(ProgramInformation&&) = default;
-
-    /// Destruction
-    ~ProgramInformation() noexcept override = default;
-    ProgramInformation& operator=(const ProgramInformation&) = default;
-    ProgramInformation& operator=(ProgramInformation&&) = default;
+    explicit ProgramInformation(const std::string& message = "Program information");
 };
 
-/**
- * The TypeError can be used to indicate the usage of a wrong type.
- * @author Werner Mayer
- */
 class BaseExport TypeError: public Exception
 {
 public:
-    /// Construction
-    TypeError();
-    explicit TypeError(const char* sMessage);
-    explicit TypeError(const std::string& sMessage);
-    TypeError(const TypeError&) = default;
-    TypeError(TypeError&&) = default;
-    /// Destruction
-    ~TypeError() noexcept override = default;
-    TypeError& operator=(const TypeError&) = default;
-    TypeError& operator=(TypeError&&) = default;
+    explicit TypeError(const std::string& message = "Type error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The ValueError can be used to indicate the usage of a wrong value.
- * @author Werner Mayer
- */
 class BaseExport ValueError: public Exception
 {
 public:
-    /// Construction
-    ValueError();
-    explicit ValueError(const char* sMessage);
-    explicit ValueError(const std::string& sMessage);
-    ValueError(const ValueError&) = default;
-    ValueError(ValueError&&) = default;
-    /// Destruction
-    ~ValueError() noexcept override = default;
-    ValueError& operator=(const ValueError&) = default;
-    ValueError& operator=(ValueError&&) = default;
+    explicit ValueError(const std::string& message = "Value error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The IndexError can be used when a sequence subscript is out of range.
- * @author Werner Mayer
- */
+/** sequence subscript is out of range */
 class BaseExport IndexError: public Exception
 {
 public:
-    /// Construction
-    IndexError();
-    explicit IndexError(const char* sMessage);
-    explicit IndexError(const std::string& sMessage);
-    IndexError(const IndexError&) = default;
-    IndexError(IndexError&&) = default;
-    /// Destruction
-    ~IndexError() noexcept override = default;
-    IndexError& operator=(const IndexError&) = default;
-    IndexError& operator=(IndexError&&) = default;
+    explicit IndexError(const std::string& message = "Index error");
     PyObject* getPyExceptionType() const override;
 };
 
 class BaseExport NameError: public Exception
 {
 public:
-    /// Construction
-    NameError();
-    explicit NameError(const char* sMessage);
-    explicit NameError(const std::string& sMessage);
-    NameError(const NameError&) = default;
-    NameError(NameError&&) = default;
-    /// Destruction
-    ~NameError() noexcept override = default;
-    NameError& operator=(const NameError&) = default;
-    NameError& operator=(NameError&&) = default;
+    explicit NameError(const std::string& message = "Name error");
     PyObject* getPyExceptionType() const override;
 };
 
 class BaseExport ImportError: public Exception
 {
 public:
-    /// Construction
-    ImportError();
-    explicit ImportError(const char* sMessage);
-    explicit ImportError(const std::string& sMessage);
-    ImportError(const ImportError&) = default;
-    ImportError(ImportError&&) = default;
-    /// Destruction
-    ~ImportError() noexcept override = default;
-    ImportError& operator=(const ImportError&) = default;
-    ImportError& operator=(ImportError&&) = default;
+    explicit ImportError(const std::string& message = "Import error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The AttributeError can be used to indicate the usage of a wrong value.
- * @author Werner Mayer
- */
 class BaseExport AttributeError: public Exception
 {
 public:
-    /// Construction
-    AttributeError();
-    explicit AttributeError(const char* sMessage);
-    explicit AttributeError(const std::string& sMessage);
-    AttributeError(const AttributeError&) = default;
-    AttributeError(AttributeError&&) = default;
-    /// Destruction
-    ~AttributeError() noexcept override = default;
-    AttributeError& operator=(const AttributeError&) = default;
-    AttributeError& operator=(AttributeError&&) = default;
+    explicit AttributeError(const std::string& message = "Attribute error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The PropertyError can be used to indicate the usage of a wrong property name or value.
- * @author Mario Passaglia
- */
 class BaseExport PropertyError: public AttributeError
 {
 public:
-    /// Construction
-    PropertyError();
-    explicit PropertyError(const char* sMessage);
-    explicit PropertyError(const std::string& sMessage);
-    PropertyError(const PropertyError&) = default;
-    PropertyError(PropertyError&&) = default;
-    /// Destruction
-    ~PropertyError() noexcept override = default;
-    PropertyError& operator=(const PropertyError&) = default;
-    PropertyError& operator=(PropertyError&&) = default;
+    explicit PropertyError(const std::string& message = "Property error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The RuntimeError can be used to indicate an unknown exception at runtime.
- * @author Werner Mayer
- */
 class BaseExport RuntimeError: public Exception
 {
 public:
-    /// Construction
-    RuntimeError();
-    explicit RuntimeError(const char* sMessage);
-    explicit RuntimeError(const std::string& sMessage);
-    RuntimeError(const RuntimeError&) = default;
-    RuntimeError(RuntimeError&&) = default;
-    /// Destruction
-    ~RuntimeError() noexcept override = default;
-    RuntimeError& operator=(const RuntimeError&) = default;
-    RuntimeError& operator=(RuntimeError&&) = default;
+    explicit RuntimeError(const std::string& message = "Runtime error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The BadGraphError can be used to indicate that a graph is e.g. not a DAG.
- * @author Werner Mayer
- */
 class BaseExport BadGraphError: public RuntimeError
 {
 public:
-    /// Construction
-    BadGraphError();
-    explicit BadGraphError(const char* sMessage);
-    explicit BadGraphError(const std::string& sMessage);
-    BadGraphError(const BadGraphError&) = default;
-    BadGraphError(BadGraphError&&) = default;
-    /// Destruction
-    ~BadGraphError() noexcept override = default;
-    BadGraphError& operator=(const BadGraphError&) = default;
-    BadGraphError& operator=(BadGraphError&&) = default;
+    explicit BadGraphError(const std::string& message = "Bad graph error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The NotImplementedError can be used to indicate that an invoked function is not implemented.
- * @author Werner Mayer
- */
 class BaseExport NotImplementedError: public Exception
 {
 public:
-    /// Construction
-    NotImplementedError();
-    explicit NotImplementedError(const char* sMessage);
-    explicit NotImplementedError(const std::string& sMessage);
-    NotImplementedError(const NotImplementedError&) = default;
-    NotImplementedError(NotImplementedError&&) = default;
-    /// Destruction
-    ~NotImplementedError() noexcept override = default;
-    NotImplementedError& operator=(const NotImplementedError&) = default;
-    NotImplementedError& operator=(NotImplementedError&&) = default;
+    explicit NotImplementedError(const std::string& message = "Not implemented error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The ZeroDivisionError can be used to indicate a division by zero.
- * @author Werner Mayer
- */
 class BaseExport ZeroDivisionError: public Exception
 {
 public:
-    /// Construction
-    ZeroDivisionError();
-    explicit ZeroDivisionError(const char* sMessage);
-    explicit ZeroDivisionError(const std::string& sMessage);
-    ZeroDivisionError(const ZeroDivisionError&) = default;
-    ZeroDivisionError(ZeroDivisionError&&) = default;
-    /// Destruction
-    ~ZeroDivisionError() noexcept override = default;
-    ZeroDivisionError& operator=(const ZeroDivisionError&) = default;
-    ZeroDivisionError& operator=(ZeroDivisionError&&) = default;
+    explicit ZeroDivisionError(const std::string& message = "Zero division error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The ReferenceError can be used to indicate a reference counter has the wrong value.
- * @author Werner Mayer
- */
 class BaseExport ReferenceError: public Exception
 {
 public:
-    /// Construction
-    ReferenceError();
-    explicit ReferenceError(const char* sMessage);
-    explicit ReferenceError(const std::string& sMessage);
-    ReferenceError(const ReferenceError&) = default;
-    ReferenceError(ReferenceError&&) = default;
-    /// Destruction
-    ~ReferenceError() noexcept override = default;
-    ReferenceError& operator=(const ReferenceError&) = default;
-    ReferenceError& operator=(ReferenceError&&) = default;
+    explicit ReferenceError(const std::string& message = "Reference error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The ExpressionError can be used to indicate erroneous.input
- * to the expression engine.
- * @author Werner Mayer
- */
 class BaseExport ExpressionError: public Exception
 {
 public:
-    /// Construction
-    ExpressionError();
-    explicit ExpressionError(const char* sMessage);
-    explicit ExpressionError(const std::string& sMessage);
-    ExpressionError(const ExpressionError&) = default;
-    ExpressionError(ExpressionError&&) = default;
-    /// Destruction
-    ~ExpressionError() noexcept override = default;
-    ExpressionError& operator=(const ExpressionError&) = default;
-    ExpressionError& operator=(ExpressionError&&) = default;
+    explicit ExpressionError(const std::string& message = "Expression error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The ParserError can be used to indicate the parsing error.
- * @author Werner Mayer
- */
 class BaseExport ParserError: public Exception
 {
 public:
-    /// Construction
-    ParserError();
-    explicit ParserError(const char* sMessage);
-    explicit ParserError(const std::string& sMessage);
-    ParserError(const ParserError&) = default;
-    ParserError(ParserError&&) = default;
-    /// Destruction
-    ~ParserError() noexcept override = default;
-    ParserError& operator=(const ParserError&) = default;
-    ParserError& operator=(ParserError&&) = default;
+    explicit ParserError(const std::string& message = "Parser error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The UnicodeError can be used to indicate unicode encoding/decoding error.
- * @author Werner Mayer
- */
 class BaseExport UnicodeError: public Exception
 {
 public:
-    /// Construction
-    UnicodeError();
-    explicit UnicodeError(const char* sMessage);
-    explicit UnicodeError(const std::string& sMessage);
-    UnicodeError(const UnicodeError&) = default;
-    UnicodeError(UnicodeError&&) = default;
-    /// Destruction
-    ~UnicodeError() noexcept override = default;
-    UnicodeError& operator=(const UnicodeError&) = default;
-    UnicodeError& operator=(UnicodeError&&) = default;
+    explicit UnicodeError(const std::string& message = "Unicode error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The OverflowError can be used to indicate overflows of numbers.
- * @author Werner Mayer
- */
 class BaseExport OverflowError: public Exception
 {
 public:
-    /// Construction
-    OverflowError();
-    explicit OverflowError(const char* sMessage);
-    explicit OverflowError(const std::string& sMessage);
-    OverflowError(const OverflowError&) = default;
-    OverflowError(OverflowError&&) = default;
-    /// Destruction
-    ~OverflowError() noexcept override = default;
-    OverflowError& operator=(const OverflowError&) = default;
-    OverflowError& operator=(OverflowError&&) = default;
+    explicit OverflowError(const std::string& message = "Overflow error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The UnderflowError can be used to indicate underflows of numbers.
- * @author Werner Mayer
- */
 class BaseExport UnderflowError: public Exception
 {
 public:
-    /// Construction
-    UnderflowError();
-    explicit UnderflowError(const char* sMessage);
-    explicit UnderflowError(const std::string& sMessage);
-    UnderflowError(const UnderflowError&) = default;
-    UnderflowError(UnderflowError&&) = default;
-    /// Destruction
-    ~UnderflowError() noexcept override = default;
-    UnderflowError& operator=(const UnderflowError&) = default;
-    UnderflowError& operator=(UnderflowError&&) = default;
+    explicit UnderflowError(const std::string& message = "Underflow error");
     PyObject* getPyExceptionType() const override;
 };
 
-/**
- * The UnitsMismatchError can be used to indicate that quantities with different units are used.
- * @author Werner Mayer
- */
 class BaseExport UnitsMismatchError: public Exception
 {
 public:
-    /// Construction
-    UnitsMismatchError();
-    explicit UnitsMismatchError(const char* sMessage);
-    explicit UnitsMismatchError(const std::string& sMessage);
-    UnitsMismatchError(const UnitsMismatchError&) = default;
-    UnitsMismatchError(UnitsMismatchError&&) = default;
-    /// Destruction
-    ~UnitsMismatchError() noexcept override = default;
-    UnitsMismatchError& operator=(const UnitsMismatchError&) = default;
-    UnitsMismatchError& operator=(UnitsMismatchError&&) = default;
+    explicit UnitsMismatchError(const std::string& message = "Units mismatch error");
     PyObject* getPyExceptionType() const override;
 };
 
-/* The CADKernelError can be used to indicate an exception originating in the CAD Kernel
- * allowing to propagate the error messages of, for example, OCC Standard_Failure exception to
- * the FreeCAD application without making the FreeCAD application depend on OCC.
- * @author Abdullah Tahiri
- */
 class BaseExport CADKernelError: public Exception
 {
 public:
-    /// Construction
-    CADKernelError();
-    explicit CADKernelError(const char* sMessage);
-    explicit CADKernelError(const std::string& sMessage);
-    CADKernelError(const CADKernelError&) = default;
-    CADKernelError(CADKernelError&&) = default;
-    /// Destruction
-    ~CADKernelError() noexcept override = default;
-    CADKernelError& operator=(const CADKernelError&) = default;
-    CADKernelError& operator=(CADKernelError&&) = default;
+    explicit CADKernelError(const std::string& message = "CAD kernel error");
     PyObject* getPyExceptionType() const override;
 };
 
-/* The RestoreError can be used to try to do a best recovery effort when an error during restoring
- * occurs. The best recovery effort may be to ignore the element altogether or to insert a
- * placeholder depending on where the actual element being restored is used.
- *
- * For example, if it is part of an array (e.g. PropertyList) and the order in the array is
- * relevant, it is better to have a placeholder than to fail to restore the whole array.
- */
 class BaseExport RestoreError: public Exception
 {
 public:
-    /// Construction
-    RestoreError();
-    explicit RestoreError(const char* sMessage);
-    explicit RestoreError(const std::string& sMessage);
-    RestoreError(const RestoreError&) = default;
-    RestoreError(RestoreError&&) = default;
-    /// Destruction
-    ~RestoreError() noexcept override = default;
-    RestoreError& operator=(const RestoreError&) = default;
-    RestoreError& operator=(RestoreError&&) = default;
+    explicit RestoreError(const std::string& message = "Restore error");
     PyObject* getPyExceptionType() const override;
 };
 
-
-inline void Exception::setMessage(const char* sMessage)
+inline void Exception::setMessage(const std::string& message)
 {
-    _sErrMsg = sMessage;
-}
-
-inline void Exception::setMessage(const std::string& sMessage)
-{
-    _sErrMsg = sMessage;
+    errorMessage = message;
 }
 
 inline std::string Exception::getMessage() const
 {
-    return _sErrMsg;
+    return errorMessage;
 }
 
 inline std::string Exception::getFile() const
 {
-    return _file;
+    return fileName;
 }
 
 inline int Exception::getLine() const
 {
-    return _line;
+    return lineNum;
 }
 
 inline std::string Exception::getFunction() const
 {
-    return _function;
+    return functionName;
 }
 
 inline bool Exception::getTranslatable() const
 {
-    return _isTranslatable;
+    return isTranslatable;
 }
 
-inline void
-Exception::setDebugInformation(const std::string& file, int line, const std::string& function)
+inline bool Exception::getReported() const
 {
-    _file = file;
-    _line = line;
-    _function = function;
+    return hasBeenReported;
 }
 
-inline void Exception::setTranslatable(bool translatable)
+inline void Exception::setReported(const bool reported) const
 {
-    _isTranslatable = translatable;
+    hasBeenReported = reported;
+}
+
+#if defined(HAVE_STD_SOURCE_LOCATION)
+inline void Exception::setDebugInformation(const std::source_location& location)
+{
+    fileName = location.file_name();
+    lineNum = static_cast<int>(location.line());
+    functionName = location.function_name();
+}
+#else
+inline void Exception::setDebugInformation(const char* file, int line, const char* func)
+{
+    fileName = file;
+    lineNum = line;
+    functionName = func;
+}
+#endif
+
+inline void Exception::setTranslatable(const bool translatable)
+{
+    isTranslatable = translatable;
 }
 
 #if defined(__GNUC__) && defined(FC_OS_LINUX)
@@ -1014,11 +545,9 @@ public:
 private:
     static void throw_signal(int signum);
 
-private:
-    // clang-format off
-    struct sigaction new_action {}, old_action {};
+    struct sigaction new_action {};  // NOLINT (keep struct)
+    struct sigaction old_action {};  // NOLINT (keep struct)
     bool ok {false};
-    // clang-format on
 };
 #endif
 

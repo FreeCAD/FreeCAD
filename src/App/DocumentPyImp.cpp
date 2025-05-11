@@ -381,7 +381,7 @@ PyObject* DocumentPy::addObject(PyObject* args, PyObject* kwd)
                 }
                 catch (Py::Exception&) {
                     Base::PyException e;
-                    e.ReportException();
+                    e.reportException();
                 }
             }
 

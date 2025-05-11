@@ -138,7 +138,7 @@ void ModelLoader::showYaml(const YAML::Node& yaml) const
 
     out << yaml;
     std::string logData = out.str();
-    Base::Console().Log("%s\n", logData.c_str());
+    Base::Console().log("%s\n", logData.c_str());
 }
 
 void ModelLoader::dereference(const QString& uuid,
@@ -163,7 +163,7 @@ void ModelLoader::dereference(const QString& uuid,
     auto childProperties = childYaml[childBase];
     for (auto it = childProperties.begin(); it != childProperties.end(); it++) {
         std::string name = it->first.as<std::string>();
-        if (exclude.count(QString::fromStdString(name)) == 0) {
+        if (!exclude.contains(QString::fromStdString(name))) {
             // showYaml(it->second);
             if (!parentProperties[name]) {
                 parentProperties[name] = it->second;
@@ -198,7 +198,7 @@ void ModelLoader::dereference(std::shared_ptr<ModelEntry> model,
                 dereference(model->getUUID(), model, child, inheritances);
             }
             catch (const std::out_of_range&) {
-                Base::Console().Log("Unable to find '%s' in model map\n",
+                Base::Console().log("Unable to find '%s' in model map\n",
                                     nodeName.toStdString().c_str());
             }
         }
@@ -261,7 +261,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
     auto yamlProperties = yamlModel[base];
     for (auto it = yamlProperties.begin(); it != yamlProperties.end(); it++) {
         std::string propName = it->first.as<std::string>();
-        if (exclude.count(QString::fromStdString(propName)) == 0) {
+        if (!exclude.contains(QString::fromStdString(propName))) {
             // showYaml(it->second);
             auto yamlProp = yamlProperties[propName];
             auto propDisplayName = yamlValue(yamlProp, "DisplayName", "");
@@ -304,7 +304,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
             }
 
             auto key = std::pair<QString, QString>(uuid, QString::fromStdString(propName));
-            if (inheritances->count(key) > 0) {
+            if (inheritances->contains(key)) {
                 property.setInheritance((*inheritances)[key]);
             }
 
@@ -333,7 +333,7 @@ void ModelLoader::loadLibrary(std::shared_ptr<ModelLibraryLocal> library)
                     // showYaml(model->getModel());
                 }
                 catch (InvalidModel const&) {
-                    Base::Console().Log("Invalid model '%s'\n", pathname.toStdString().c_str());
+                    Base::Console().log("Invalid model '%s'\n", pathname.toStdString().c_str());
                 }
             }
         }

@@ -452,7 +452,7 @@ void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
         editedObject->FillType.setValue(static_cast<long>(fillType));
         editedObject->recomputeFeature();
         if (!editedObject->isValid()) {
-            Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
+            Base::Console().error("Surface filling: %s", editedObject->getStatusString());
         }
     }
 }

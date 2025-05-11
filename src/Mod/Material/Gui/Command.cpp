@@ -36,6 +36,7 @@
 #include "MaterialSave.h"
 #include "MaterialsEditor.h"
 #include "ModelSelect.h"
+#include "TaskMigrateExternal.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -187,6 +188,37 @@ bool CmdInspectMaterial::isActive()
     return (Gui::Control().activeDialog() == nullptr);
 }
 
+//===========================================================================
+// Materials_MigrateToDatabase
+//===========================================================================
+
+#if defined(BUILD_MATERIAL_EXTERNAL)
+DEF_STD_CMD_A(CmdMigrateToExternal)
+
+CmdMigrateToExternal::CmdMigrateToExternal()
+    : Command("Materials_MigrateToExternal")
+{
+    sGroup = "Standard-View";
+    sMenuText = QT_TR_NOOP("Migrate...");
+    sToolTipText = QT_TR_NOOP("Migrate the materials to the external materials manager");
+    sWhatsThis = "Materials_MigrateToDatabase";
+    sStatusTip = QT_TR_NOOP("Migrate existing materials to the external materials manager");
+    // sPixmap = "Materials_Edit";
+}
+
+void CmdMigrateToExternal::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    MatGui::TaskMigrateExternal* dlg = new MatGui::TaskMigrateExternal();
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdMigrateToExternal::isActive()
+{
+    return true;
+}
+#endif
+
 //---------------------------------------------------------------
 
 void CreateMaterialCommands()
@@ -198,4 +230,7 @@ void CreateMaterialCommands()
     rcCmdMgr.addCommand(new StdCmdSetMaterial());
     rcCmdMgr.addCommand(new CmdInspectAppearance());
     rcCmdMgr.addCommand(new CmdInspectMaterial());
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    rcCmdMgr.addCommand(new CmdMigrateToExternal());
+#endif
 }

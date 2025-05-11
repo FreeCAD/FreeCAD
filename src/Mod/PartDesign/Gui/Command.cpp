@@ -405,7 +405,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         updateActive();
         commitCommand();
     } catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
                 QObject::tr("Sub-Shape Binder"), QApplication::translate("Exception", e.what()));
         abortCommand();
@@ -609,13 +609,13 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
             continue;
         }
 
-        //Base::Console().Error("Checking sketch %s\n", (*s)->getNameInDocument());
+        //Base::Console().error("Checking sketch %s\n", (*s)->getNameInDocument());
         // Check whether this sketch is already being used by another feature
         // Body features don't count...
         std::vector<App::DocumentObject*> inList = (*s)->getInList();
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
-            //Base::Console().Error("Inlist: %s\n", (*o)->getNameInDocument());
+            //Base::Console().error("Inlist: %s\n", (*o)->getNameInDocument());
             if ((*o)->isDerivedFrom<PartDesign::Body>())
                 o = inList.erase(o); //ignore bodies
             else if (!(  (*o)->isDerivedFrom<PartDesign::Feature>()  ))
@@ -1288,7 +1288,7 @@ void CmdPartDesignGroove::activated(int iMsg)
                 FCMD_OBJ_CMD(Feat,"Reversed = 1");
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
 
         finishProfileBased(cmd, sketch, Feat);

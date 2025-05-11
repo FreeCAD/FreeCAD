@@ -142,7 +142,7 @@ private:
                                                 AutoConstraint::CURVE);
                 }
                 catch (Base::ValueError& e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             } break;
             default:

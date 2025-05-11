@@ -162,7 +162,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
         brep_hlr->Hide();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
+        Base::Console().error("GO::projectShape - OCC error - %s - while projecting shape\n",
                               e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShape - OCC error");
     }
@@ -250,7 +250,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
 //convert the hlr output into TD Geometry
 void GeometryObject::makeTDGeometry()
 {
-//    Base::Console().Message("GO::makeTDGeometry()\n");
+//    Base::Console().message("GO::makeTDGeometry()\n");
     extractGeometry(EdgeClass::HARD,                   //always show the hard&outline visible lines
                         true);
     extractGeometry(EdgeClass::OUTLINE,
@@ -289,7 +289,7 @@ void GeometryObject::makeTDGeometry()
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis)
 {
-//    Base::Console().Message("GO::projectShapeWithPolygonAlgo()\n");
+//    Base::Console().message("GO::projectShapeWithPolygonAlgo()\n");
     // Clear previous Geometry
     clear();
 
@@ -329,7 +329,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
         brep_hlrPoly->Update();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "GO::projectShapeWithPolygonAlgo - OCC error - %s - while projecting shape\n",
             e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - OCC error");
@@ -377,7 +377,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
         hidOutline =ShapeUtils::invertGeometry(hidOutline);
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "GO::projectShapeWithPolygonAlgo - OCC error - %s - while extracting edges\n",
             e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - OCC error occurred "
@@ -397,7 +397,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
 //TODO: allow use of perspective projector
 TopoDS_Shape GeometryObject::projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS)
 {
-    //    Base::Console().Message("GO::()\n");
+    //    Base::Console().message("GO::()\n");
     if (shape.IsNull()) {
         throw Base::ValueError("GO::projectSimpleShape - input shape is NULL");
     }
@@ -431,7 +431,7 @@ TopoDS_Shape GeometryObject::simpleProjection(const TopoDS_Shape& shape, const g
 
 TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2& CS)
 {
-    //    Base::Console().Message("GO::projectFace()\n");
+    //    Base::Console().message("GO::projectFace()\n");
     if (face.IsNull()) {
         throw Base::ValueError("GO::projectFace - input Face is NULL");
     }
@@ -454,7 +454,7 @@ TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2&
 //!add edges meeting filter criteria for category, visibility
 void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
 {
-    //    Base::Console().Message("GO::extractGeometry(%d, %d)\n", category, hlrVisible);
+    //    Base::Console().message("GO::extractGeometry(%d, %d)\n", category, hlrVisible);
     TopoDS_Shape filtEdges;
     if (hlrVisible) {
         switch (category) {
@@ -474,7 +474,7 @@ void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
                 filtEdges = visIso;
                 break;
             default:
-                Base::Console().Warning(
+                Base::Console().warning(
                     "GeometryObject::ExtractGeometry - unsupported hlrVisible EdgeClass: %d\n",
                     static_cast<int>(category));
                 return;
@@ -498,7 +498,7 @@ void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
                 filtEdges = hidIso;
                 break;
             default:
-                Base::Console().Warning(
+                Base::Console().warning(
                     "GeometryObject::ExtractGeometry - unsupported hidden EdgeClass: %d\n",
                     static_cast<int>(category));
                 return;
@@ -512,7 +512,7 @@ void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass category,
                                          bool hlrVisible)
 {
-//    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
+//    Base::Console().message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
         return;    // There is no OpenCascade Geometry to be calculated
     }
@@ -669,7 +669,7 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 // insertGeomForCE(ce)
 int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge(%X) 0\n", ce);
+    //    Base::Console().message("GO::addCosmeticEdge(%X) 0\n", ce);
     double scale = m_parent->getScale();
     TechDraw::BaseGeomPtr e = ce->scaledGeometry(scale);
     e->setCosmetic(true);
@@ -684,7 +684,7 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 //this should be made obsolete and the variant with tag used instead
 int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
+    //    Base::Console().message("GO::addCosmeticEdge() 1 - deprec?\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
@@ -700,7 +700,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end)
 
 int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end, std::string tagString)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge() 2\n");
+    //    Base::Console().message("GO::addCosmeticEdge() 2\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
@@ -716,7 +716,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end, st
 
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base, std::string tagString)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
+    //    Base::Console().message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
     base->setCosmetic(true);
     base->setHlrVisible(true);
     base->source(SourceType::COSMETICEDGE);
@@ -730,7 +730,7 @@ int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base, std::string tagS
 int GeometryObject::addCenterLine(TechDraw::BaseGeomPtr base, std::string tag)
 //                                    int s, int si)
 {
-    //    Base::Console().Message("GO::addCenterLine()\n");
+    //    Base::Console().message("GO::addCenterLine()\n");
     base->setCosmetic(true);
     base->setCosmeticTag(tag);
     base->source(SourceType::CENTERLINE);
@@ -802,7 +802,7 @@ bool GeometryObject::isWithinArc(double theta, double first, double last, bool c
 //note bbx is scaled
 Base::BoundBox3d GeometryObject::calcBoundingBox() const
 {
-    //    Base::Console().Message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());
+    //    Base::Console().message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());
     Bnd_Box testBox;
     testBox.SetGap(0.0);
     if (!edgeGeom.empty()) {

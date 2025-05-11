@@ -72,7 +72,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
         return QString::fromLatin1(obj->getNameInDocument());
     }
 
-    // Hide the TNP string from the user. ie show "Body.Pad.Face6"  and not : 
+    // Hide the TNP string from the user. ie show "Body.Pad.Face6"  and not :
     // "Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
     App::ElementNamePair el;
     App::GeoFeature::resolveElement(obj, sub.c_str(), el, true);
@@ -419,7 +419,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     for (size_t i = 0; i < names.size(); ++i) {
         App::DocumentObject* obj = doc->getObject(names[i].c_str());
         if (!obj) {
-            Base::Console().TranslatedUserError("TaskAttacher",
+            Base::Console().translatedUserError("TaskAttacher",
                 "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group '%s'.\n",
                 attachingObj->getFullLabel(), subObj->getFullLabel(), group->getFullLabel());
             rootObj = nullptr;
@@ -441,7 +441,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
         }
 
         // In case the attaching object is in a link to a part.
-        // For instance : 
+        // For instance :
         // - Part1
         // - - LinkToPart2
         // - - - Cube
@@ -454,7 +454,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     }
 
     // if we reach this point it means that attaching object's group is outside of
-    // the scope of the attached object. For instance: 
+    // the scope of the attached object. For instance:
     // - Part1
     // - - Part2
     // - - - Cube
@@ -952,7 +952,7 @@ void TaskAttacher::updateListOfModes()
     //first up, remember currently selected mode.
     eMapMode curMode = mmDeactivated;
     auto sel = ui->listOfModes->selectedItems();
-    if (sel.count() > 0)
+    if (!sel.isEmpty())
         curMode = modesInList[ui->listOfModes->row(sel[0])];
 
     //obtain list of available modes:
@@ -1054,7 +1054,7 @@ void TaskAttacher::selectMapMode(eMapMode mmode) {
 Attacher::eMapMode TaskAttacher::getActiveMapMode()
 {
     auto sel = ui->listOfModes->selectedItems();
-    if (sel.count() > 0)
+    if (!sel.isEmpty())
         return modesInList[ui->listOfModes->row(sel[0])];
     else {
         if (this->lastSuggestResult.message == SuggestResult::srOK)
@@ -1200,11 +1200,11 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             visAutoFunc(opening_not_closing, ObjectName, ViewProvider, editObj, editSubName);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (const Py::Exception&) {
             Base::PyException e;
-            e.ReportException();
+            e.reportException();
         }
     }
     else {
@@ -1214,7 +1214,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             visAutoFunc(opening_not_closing, objName, nullptr, nullptr, std::string());
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
 }
@@ -1224,7 +1224,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox, 
+TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox,
     std::function<void()> onAccept, std::function<void()> onReject)
     : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr), onAccept(onAccept), onReject(onReject), accepted(false)
 {

@@ -219,7 +219,7 @@ void View3DInventor::onRename(Gui::Document *pDoc)
 void View3DInventor::onUpdate()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Base::Console().Log("Acti: Gui::View3DInventor::onUpdate()");
+    Base::Console().log("Acti: Gui::View3DInventor::onUpdate()");
 #endif
     update();
     _viewer->redraw();

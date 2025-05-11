@@ -389,7 +389,7 @@ SubShapeBinder::~SubShapeBinder() {
         clearCopiedObjects();
     }
     catch (const Base::ValueError& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -452,7 +452,7 @@ void SubShapeBinder::setupCopyOnChange() {
                         removeDynamicProperty(prop->getName());
                     }
                     catch (Base::Exception& e) {
-                        e.ReportException();
+                        e.reportException();
                     }
                     catch (...) {
                     }
@@ -678,7 +678,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 }
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR(getFullName() << " failed to obtain shape from "
                     << obj->getFullName() << '.' << sub);
                 if (errMsg.empty()) {
@@ -817,7 +817,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             catch (...) {
                 std::ostringstream msg;
                 msg << Label.getValue() << ": failed to make 2D offset" << std::endl;
-                Base::Console().Error(msg.str().c_str());
+                Base::Console().error(msg.str().c_str());
             }
         }
 
@@ -864,7 +864,7 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
             update();
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
 }

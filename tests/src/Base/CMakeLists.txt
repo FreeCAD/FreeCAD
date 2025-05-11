@@ -15,6 +15,7 @@ target_sources(Tests_run PRIVATE
         Quantity.cpp
         Reader.cpp
         Rotation.cpp
+        SchemaTests.cpp
         ServiceProvider.cpp
         Stream.cpp
         TimeInfo.cpp

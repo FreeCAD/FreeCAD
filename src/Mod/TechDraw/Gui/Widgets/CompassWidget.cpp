@@ -170,7 +170,7 @@ void CompassWidget::paintEvent(QPaintEvent* event)
 // set the compass dial and spinbox to a new angle
 void CompassWidget::setDialAngle(double newAngle)
 {
-    //    Base::Console().Message("CW::setDialAngle(%.3f)\n", newAngle);
+    //    Base::Console().message("CW::setDialAngle(%.3f)\n", newAngle);
     m_angle = newAngle;
     if (compassDial) {
         compassDial->setAngle(m_angle);
@@ -183,7 +183,7 @@ void CompassWidget::setDialAngle(double newAngle)
 //slot for updates from spinbox on Enter/Return press.
 void CompassWidget::slotSpinBoxEnter(double newAngle)
 {
-    //    Base::Console().Message("CW::slotSpinBoxEnter(%.3f)\n", newAngle);
+    //    Base::Console().message("CW::slotSpinBoxEnter(%.3f)\n", newAngle);
     if (dsbAngle) {
         m_angle = newAngle;
         Q_EMIT angleChanged(m_angle);

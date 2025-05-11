@@ -103,8 +103,8 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         gcode = self.post.export()[0][1]
         if debug:
             print(f"--------{nl}{gcode}--------{nl}")
-        # there are 4 lines of "other stuff" before the line we are interested in
-        self.assertEqual(gcode.splitlines()[4], expected)
+        # there are 3 lines of "other stuff" before the line we are interested in
+        self.assertEqual(gcode.splitlines()[3], expected)
 
     def multi_compare(self, path, expected, args, debug=False):
         """Perform a test with multiple lines of gcode comparison."""
@@ -144,12 +144,12 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         self.job.PostProcessorArgs = "--axis-modal"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], "G0 Y30.000")
+        self.assertEqual(gcode.splitlines()[4], "G0 Y30.000")
 
         self.job.PostProcessorArgs = "--no-axis-modal"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], "G0 X10.000 Y30.000 Z30.000")
+        self.assertEqual(gcode.splitlines()[4], "G0 X10.000 Y30.000 Z30.000")
 
     #############################################################################
 
@@ -172,7 +172,6 @@ G54
 (Block-name: TC: Default Tool)
 (Block-expand: 0)
 (Block-enable: 1)
-M6 T1
 (Block-name: Profile)
 (Block-expand: 0)
 (Block-enable: 1)
@@ -187,7 +186,6 @@ M6 T1
             """G90
 G21
 G54
-M6 T1
 """,
             "--no-bcnc",
         )
@@ -211,7 +209,6 @@ M6 T1
             """G90
 G21
 G54
-M6 T1
 G0 X1.000 Y2.000
 G0 Z8.000
 G90
@@ -238,7 +235,6 @@ G90
             """G90
 G21
 G54
-M6 T1
 G0 X1.000 Y2.000
 G0 Z8.000
 G90
@@ -274,7 +270,6 @@ G90
             """G90
 G20
 G54
-M6 T1
 G0 X1.0000 Y2.0000
 G0 Z8.0000
 G90
@@ -439,14 +434,14 @@ G54
         # print(f"--------{nl}{gcode}--------{nl}")
         # Note:  The "internal" F speed is in mm/s,
         #        while the output F speed is in mm/min.
-        self.assertEqual(gcode.splitlines()[4], "G1 X10.000 Y20.000 Z30.000 F7387.407")
+        self.assertEqual(gcode.splitlines()[3], "G1 X10.000 Y20.000 Z30.000 F7387.407")
 
         self.job.PostProcessorArgs = "--feed-precision=2"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
         # Note:  The "internal" F speed is in mm/s,
         #        while the output F speed is in mm/min.
-        self.assertEqual(gcode.splitlines()[4], "G1 X10.000 Y20.000 Z30.000 F7387.41")
+        self.assertEqual(gcode.splitlines()[3], "G1 X10.000 Y20.000 Z30.000 F7387.41")
 
     #############################################################################
 
@@ -522,13 +517,11 @@ G54
         self.assertEqual(split_gcode[4], "G90")
         self.assertEqual(split_gcode[5], "G21")
         self.assertEqual(split_gcode[6], "G54")
-        self.assertEqual(split_gcode[7], "M6 T1")
 
         # Test without comments or header.
         expected = """G90
 G21
 G54
-M6 T1
 """
         self.job.PostProcessorArgs = "--no-comments --no-header"
         gcode = self.post.export()[0][1]
@@ -539,7 +532,7 @@ M6 T1
 
     def test00160(self):
         """Test Line Numbers."""
-        self.single_compare("G0 X10 Y20 Z30", "N140 G0 X10.000 Y20.000 Z30.000", "--line-numbers")
+        self.single_compare("G0 X10 Y20 Z30", "N130 G0 X10.000 Y20.000 Z30.000", "--line-numbers")
 
     #############################################################################
 
@@ -555,7 +548,7 @@ M6 T1
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode.splitlines()[1], "G20")
         self.assertEqual(
-            gcode.splitlines()[4],
+            gcode.splitlines()[3],
             "G0 X0.3937 Y0.7874 Z1.1811 A10.0000 B20.0000 C30.0000 U0.3937 V0.7874 W1.1811",
         )
 
@@ -575,11 +568,11 @@ M6 T1
         self.job.PostProcessorArgs = "--modal"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], "X10.000 Y30.000 Z30.000")
+        self.assertEqual(gcode.splitlines()[4], "X10.000 Y30.000 Z30.000")
         self.job.PostProcessorArgs = "--no-modal"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], "G0 X10.000 Y30.000 Z30.000")
+        self.assertEqual(gcode.splitlines()[4], "G0 X10.000 Y30.000 Z30.000")
 
     #############################################################################
 
@@ -743,7 +736,7 @@ M6 T1
 
         self.profile_op.Path = Path.Path([c, c2])
 
-        self.job.PostProcessorArgs = "--tlo"
+        self.job.PostProcessorArgs = "--tlo --tool_change"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
@@ -752,7 +745,7 @@ M6 T1
         self.assertEqual(split_gcode[7], "M3 S3000")
 
         # suppress TLO
-        self.job.PostProcessorArgs = "--no-tlo"
+        self.job.PostProcessorArgs = "--no-tlo --tool_change"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
@@ -769,19 +762,30 @@ M6 T1
         c2 = Path.Command("M3 S3000")
         self.profile_op.Path = Path.Path([c, c2])
 
-        self.job.PostProcessorArgs = "--tool_change"
+        self.job.PostProcessorArgs = "--no-comments --no-tool_change"
+        gcode = self.post.export()[0][1]
+        split_gcode = gcode.splitlines()
+        # print(f"--------{nl}{gcode}--------{nl}")
+        self.assertEqual(split_gcode[2], "G54")
+        self.assertEqual(split_gcode[3], "M3 S3000")
+
+        self.job.PostProcessorArgs = "--no-comments --tool_change"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(split_gcode[4], "M6 T2")
-        self.assertEqual(split_gcode[5], "M3 S3000")
 
         self.job.PostProcessorArgs = "--comments --no-tool_change"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(split_gcode[13], "(M6 T2)")
-        self.assertEqual(split_gcode[14], "M3 S3000")
+
+        self.job.PostProcessorArgs = "--comments --tool_change"
+        gcode = self.post.export()[0][1]
+        split_gcode = gcode.splitlines()
+        # print(f"--------{nl}{gcode}--------{nl}")
+        self.assertEqual(split_gcode[13], "M6 T2")
 
     #############################################################################
 
@@ -795,14 +799,14 @@ M6 T1
         self.job.PostProcessorArgs = ""
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[4], "M3 S3000")
+        self.assertEqual(gcode.splitlines()[3], "M3 S3000")
 
         self.job.PostProcessorArgs = "--wait-for-spindle=1.23456"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(split_gcode[4], "M3 S3000")
-        self.assertEqual(split_gcode[5], "G4 P1.23456")
+        self.assertEqual(split_gcode[3], "M3 S3000")
+        self.assertEqual(split_gcode[4], "G4 P1.23456")
 
         c = Path.Command("M4 S3000")
         self.profile_op.Path = Path.Path([c])
@@ -812,11 +816,11 @@ M6 T1
         self.job.PostProcessorArgs = ""
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[4], "M4 S3000")
+        self.assertEqual(gcode.splitlines()[3], "M4 S3000")
 
         self.job.PostProcessorArgs = "--wait-for-spindle=1.23456"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(split_gcode[4], "M4 S3000")
-        self.assertEqual(split_gcode[5], "G4 P1.23456")
+        self.assertEqual(split_gcode[3], "M4 S3000")
+        self.assertEqual(split_gcode[4], "G4 P1.23456")

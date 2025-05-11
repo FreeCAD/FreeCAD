@@ -89,7 +89,7 @@ void WorkbenchManipulatorPython::modifyMenuBar(MenuItem* menuBar)
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -194,7 +194,7 @@ void WorkbenchManipulatorPython::modifyContextMenu(const char* recipient, MenuIt
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -232,7 +232,7 @@ void WorkbenchManipulatorPython::modifyToolBars(ToolBarItem* toolBar)
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -340,7 +340,7 @@ void WorkbenchManipulatorPython::modifyDockWindows(DockWindowItems* dockWindow)
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 

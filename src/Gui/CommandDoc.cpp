@@ -1365,7 +1365,7 @@ void StdCmdDelete::activated(int iMsg)
             for(auto &sel : sels) {
                 auto obj = sel.getObject();
                 if (obj == nullptr){
-                    Base::Console().DeveloperWarning("StdCmdDelete::activated",
+                    Base::Console().developerWarning("StdCmdDelete::activated",
                                                      "App::DocumentObject pointer is nullptr\n");
                     continue;
                 }
@@ -1443,7 +1443,7 @@ void StdCmdDelete::activated(int iMsg)
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QString::fromLatin1(e.what()));
-        e.ReportException();
+        e.reportException();
     } catch (...) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QStringLiteral("Unknown error"));
@@ -1954,7 +1954,7 @@ protected:
             abortCommand();
             QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
                 QString::fromLatin1(e.what()));
-            e.ReportException();
+            e.reportException();
         }
     }
 

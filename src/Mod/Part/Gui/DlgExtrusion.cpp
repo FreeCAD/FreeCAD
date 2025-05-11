@@ -227,7 +227,7 @@ void DlgExtrusion::onSelectEdgeClicked()
             QByteArray code_2 = code.arg(features_to_hide).toLatin1();
             Base::Interpreter().runString(code_2.constData());
         } catch (Base::PyException &e){
-            e.ReportException();
+            e.reportException();
         }
     } else {
         Gui::Selection().rmvSelectionGate();
@@ -238,7 +238,7 @@ void DlgExtrusion::onSelectEdgeClicked()
         try{
             Base::Interpreter().runString("del(tv)");
         } catch (Base::PyException &e){
-            e.ReportException();
+            e.reportException();
         }
     }
 }

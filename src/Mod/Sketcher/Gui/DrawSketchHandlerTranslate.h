@@ -126,7 +126,7 @@ private:
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to translate"));
@@ -240,7 +240,7 @@ private:
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
     }
 

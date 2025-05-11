@@ -343,7 +343,7 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
 void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
 {
     if (file.empty()) {
-        Base::Console().Warning("PagePrinter - no file specified\n");
+        Base::Console().warning("PagePrinter - no file specified\n");
         return;
     }
 
@@ -398,7 +398,7 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
 void PagePrinter::saveSVG(ViewProviderPage* vpPage, const std::string& file)
 {
     if (file.empty()) {
-        Base::Console().Warning("PagePrinter - no file specified\n");
+        Base::Console().warning("PagePrinter - no file specified\n");
         return;
     }
     auto filespec = Base::Tools::escapeEncodeFilename(file);

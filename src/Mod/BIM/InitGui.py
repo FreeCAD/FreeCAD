@@ -103,11 +103,14 @@ class BIMWorkbench(Workbench):
             "Arch_AxisSystem",
             "Arch_Grid",
             "Arch_SectionPlane",
-            "BIM_DrawingView",
-            "BIM_Shape2DView",
-            "BIM_Shape2DCut",
             "BIM_TDPage",
             "BIM_TDView",
+        ]
+
+        self.create_2dviews = [
+             "BIM_DrawingView",
+             "BIM_Shape2DView",
+             "BIM_Shape2DCut",
         ]
 
         self.bimtools = [
@@ -255,7 +258,6 @@ class BIMWorkbench(Workbench):
         ]
 
         # create generic tools command
-
         class BIM_GenericTools:
             def __init__(self, tools):
                 self.tools = tools
@@ -270,6 +272,22 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         self.bimtools.append("BIM_GenericTools")
 
+        # create create 2D views command
+        class BIM_Create2DViews:
+            def __init__(self, tools):
+                self.tools = tools
+            def GetCommands(self):
+                return self.tools
+            def GetResources(self):
+                t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D views")
+                return { "MenuText": t, "ToolTip": t, "Icon": "BIM_DrawingView"}
+            def IsActive(self):
+                v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                return v
+        FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
+        insert_at_index = self.annotationtools.index("BIM_TDPage")
+        self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
+        
         # load rebar tools (Reinforcement addon)
 
         try:
@@ -488,6 +506,7 @@ class BIMWorkbench(Workbench):
         import BimStatus
         from nativeifc import ifc_observer
         from draftutils import grid_observer
+        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -497,6 +516,7 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.show()
         WorkingPlane._view_observer_start()
         grid_observer._view_observer_setup()
+        doc_observer._doc_observer_start()
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
@@ -559,7 +579,6 @@ class BIMWorkbench(Workbench):
 
         Log("BIM workbench activated\n")
 
-
     def Deactivated(self):
 
         from draftutils import todo
@@ -568,6 +587,7 @@ class BIMWorkbench(Workbench):
         import WorkingPlane
         from nativeifc import ifc_observer
         from draftutils import grid_observer
+        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -581,6 +601,7 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.hide()
         WorkingPlane._view_observer_stop()
         grid_observer._view_observer_setup()
+        doc_observer._doc_observer_stop()
 
         # print("Deactivating status icon")
         todo.ToDo.delay(BimStatus.setStatusIcons, False)

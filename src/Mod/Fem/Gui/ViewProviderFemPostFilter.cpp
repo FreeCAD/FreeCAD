@@ -30,9 +30,42 @@
 
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostFilter.h"
+#include "ViewProviderFemPostFilterPy.h"
 
 
 using namespace FemGui;
+
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostFilterPythonBase, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostFilterPythonBase::ViewProviderFemPostFilterPythonBase()
+{}
+
+ViewProviderFemPostFilterPythonBase::~ViewProviderFemPostFilterPythonBase() = default;
+
+std::vector<std::string> ViewProviderFemPostFilterPythonBase::getDisplayModes() const
+{
+    return std::vector<std::string>();
+}
+
+namespace Gui
+{
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderPostFilterPython,
+                         FemGui::ViewProviderFemPostFilterPythonBase)
+
+template<>
+PyObject* FemGui::ViewProviderPostFilterPython::getPyObject()
+{
+    if (!pyViewObject) {
+        pyViewObject = new ViewProviderFemPostFilterPy(this);
+    }
+    pyViewObject->IncRef();
+    return pyViewObject;
+}
+
+// explicit template instantiation
+template class FemGuiExport ViewProviderFeaturePythonT<FemGui::ViewProviderFemPostFilterPythonBase>;
+
+}  // namespace Gui
 
 // ***************************************************************************
 // in the following, the different filters sorted alphabetically
@@ -54,7 +87,8 @@ void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(new TaskPostDataAlongLine(this));
+    auto panel = new TaskPostDataAlongLine(this);
+    dlg->addTaskBox(panel->getIcon(), panel);
 }
 
 
@@ -102,7 +136,8 @@ void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(new TaskPostDataAtPoint(this));
+    auto panel = new TaskPostDataAtPoint(this);
+    dlg->addTaskBox(panel->getIcon(), panel);
 }
 
 
@@ -123,8 +158,9 @@ void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg)
 
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(
-        new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function));
+    auto panel =
+        new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function);
+    dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
@@ -146,7 +182,8 @@ void ViewProviderFemPostContours::setupTaskDialog(TaskDlgPost* dlg)
 {
     // the filter-specific task panel
     assert(dlg->getView() == this);
-    dlg->appendBox(new TaskPostContours(this));
+    auto panel = new TaskPostContours(this);
+    dlg->addTaskBox(panel->getIcon(), panel);
 }
 
 
@@ -165,8 +202,9 @@ void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(
-        new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function));
+    auto panel =
+        new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function);
+    dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
@@ -188,7 +226,8 @@ void ViewProviderFemPostScalarClip::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(new TaskPostScalarClip(this));
+    auto panel = new TaskPostScalarClip(this);
+    dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
@@ -210,7 +249,8 @@ void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(new TaskPostWarpVector(this));
+    auto panel = new TaskPostWarpVector(this);
+    dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
@@ -245,7 +285,8 @@ void ViewProviderFemPostCalculator::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(new TaskPostCalculator(this));
+    auto panel = new TaskPostCalculator(this);
+    dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);

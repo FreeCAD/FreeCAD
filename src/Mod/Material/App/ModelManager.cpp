@@ -95,7 +95,7 @@ void ModelManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::Me
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
     if (strcmp(Reason, "UseExternal") == 0) {
-        Base::Console().Log("Use external changed\n");
+        Base::Console().log("Use external changed\n");
         _useExternal = rGrp.GetBool("UseExternal", false);
         // _dbManager->refresh();
     }

@@ -1069,7 +1069,7 @@ class _ViewProviderSite:
                     self.windroseswitch.whichChild = -1
         elif prop == 'Visibility':
             if vobj.Visibility:
-                self.updateCompassVisibility(self.Object)
+                self.updateCompassVisibility(vobj)
             else:
                 self.compass.hide()
         elif prop == 'Orientation':

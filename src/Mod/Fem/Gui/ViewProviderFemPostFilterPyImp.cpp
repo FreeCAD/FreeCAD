@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
- *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+ *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,41 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#include <algorithm>
-#include <array>
-#endif
 
-#include "Quantity.h"
-#include "Unit.h"
-#include "UnitsSchemaFemMilliMeterNewton.h"
+// clang-format off
+#include <Gui/Control.h>
+#include <Gui/PythonWrapper.h>
+#include "ViewProviderFemPostFilter.h"
+#include "TaskPostBoxes.h"
+// inclusion of the generated files (generated out of ViewProviderFemPostFilterPy.xml)
+#include "ViewProviderFemPostFilterPy.h"
+#include "ViewProviderFemPostFilterPy.cpp"
+#include <Base/PyWrapParseTupleAndKeywords.h>
+// clang-format on
 
-using namespace Base;
 
-std::string UnitsSchemaFemMilliMeterNewton::schemaTranslate(const Quantity& quant,
-                                                            double& factor,
-                                                            std::string& unitString)
+using namespace FemGui;
+
+// returns a string which represents the object e.g. when printed in python
+std::string ViewProviderFemPostFilterPy::representation() const
 {
-    static std::array<std::pair<Unit, std::pair<std::string, double>>, 2> unitSpecs {{
-        {Unit::Length, {"mm", 1.0}},
-        {Unit::Mass, {"t", 1e3}},
-    }};
+    return {"<ViewProviderFemPostFilter object>"};
+}
 
-    const auto unit = quant.getUnit();
-    const auto spec = std::find_if(unitSpecs.begin(), unitSpecs.end(), [&](const auto& pair) {
-        return pair.first == unit;
-    });
-
-    if (spec != std::end(unitSpecs)) {
-        unitString = spec->second.first;
-        factor = spec->second.second;
-    }
-    else {
-        unitString = quant.getUnit().getString();
-        factor = 1.0;
+PyObject* ViewProviderFemPostFilterPy::createDisplayTaskWidget(PyObject* args)
+{
+    // we take no arguments
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
     }
 
-    return toLocale(quant, factor, unitString);
+    auto panel = new TaskPostDisplay(getViewProviderFemPostObjectPtr());
+
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
+        return Py::new_reference_to(wrap.fromQWidget(panel));
+    }
+
+    PyErr_SetString(PyExc_TypeError, "creating the panel failed");
+    return nullptr;
+}
+
+PyObject* ViewProviderFemPostFilterPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int ViewProviderFemPostFilterPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
 }

@@ -122,8 +122,6 @@ class _ArchPipe(ArchComponent.Component):
         import DraftGeomUtils
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
-            return
         pl = obj.Placement
         w = self.getWire(obj)
         if not w:

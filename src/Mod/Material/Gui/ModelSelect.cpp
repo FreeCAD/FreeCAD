@@ -240,8 +240,12 @@ void ModelSelect::addModels(
     for (auto& mod : *modelTree) {
         std::shared_ptr<Materials::ModelTreeNode> nodePtr = mod.second;
         if (nodePtr->getType() == Materials::ModelTreeNode::NodeType::DataNode) {
+            QString uuid = nodePtr->getUUID();
             auto model = nodePtr->getData();
-            QString uuid = model->getUUID();
+            if (!model) {
+                model = Materials::ModelManager::getManager().getModel(uuid);
+                nodePtr->setData(model);
+            }
 
             auto card = new QStandardItem(icon, model->getName());
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled

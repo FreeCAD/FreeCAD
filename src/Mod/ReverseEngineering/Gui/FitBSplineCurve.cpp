@@ -149,7 +149,7 @@ void FitBSplineCurveWidget::tryCommand(const QString& cmd)
     }
     catch (const Base::Exception& e) {
         Gui::Command::abortCommand();
-        e.ReportException();
+        e.reportException();
     }
 }
 

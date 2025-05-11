@@ -277,7 +277,7 @@ void TaskHoleParameters::threadedChanged()
 
     ui->ThreadGroupBox->setVisible(isChecked);
     ui->ClearanceWidget->setHidden(isChecked);
-    // run modelThreadChanged 
+    // run modelThreadChanged
     // it will handle the visibility of the model options
     modelThreadChanged();
     recomputeFeature();
@@ -781,7 +781,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     }
     bool ro = Prop.isReadOnly();
 
-    Base::Console().Log("Parameter %s was updated\n", Prop.getName());
+    Base::Console().log("Parameter %s was updated\n", Prop.getName());
 
     auto updateCheckable = [&](QCheckBox* widget, bool value) {
         [[maybe_unused]] QSignalBlocker blocker(widget);
@@ -1182,7 +1182,7 @@ void TaskHoleParameters::Observer::slotChangedObject(const App::DocumentObject& 
                                                      const App::Property& Prop)
 {
     if (&Obj == hole) {
-        Base::Console().Log("Parameter %s was updated with a new value\n", Prop.getName());
+        Base::Console().log("Parameter %s was updated with a new value\n", Prop.getName());
         if (Obj.getDocument()) {
             owner->changedObject(*Obj.getDocument(), Prop);
         }

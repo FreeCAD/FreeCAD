@@ -87,7 +87,7 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     catch (Py::Exception&)                                                                         \
     {                                                                                              \
         Base::PyException e;                                                                       \
-        e.ReportException();                                                                       \
+        e.reportException();                                                                       \
     }
 
 #define EXTENSION_PROXY_NOARG(function)                                                            \

@@ -62,11 +62,11 @@ DrawWeldSymbol::DrawWeldSymbol()
 //but if this is a restore of an existing DWS, the tiles will loaded elsewhere
 void DrawWeldSymbol::onSettingDocument()
 {
-//    Base::Console().Message("DWS::onSettingDocument() - doc: %s\n", getDocument()->getName());
+//    Base::Console().message("DWS::onSettingDocument() - doc: %s\n", getDocument()->getName());
     App::Document* doc = getDocument();
 
     if (doc->testStatus(App::Document::Status::Restoring)) {
-//        Base::Console().Message("DWS::onSettingDocument() - restoring!\n");
+//        Base::Console().message("DWS::onSettingDocument() - restoring!\n");
         return;
     }
 
@@ -113,7 +113,7 @@ short DrawWeldSymbol::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawWeldSymbol::execute()
 {
-//    Base::Console().Message("DWS::execute()\n");
+//    Base::Console().message("DWS::execute()\n");
     if (!keepUpdated()) {
         return DrawView::execute();
     }
@@ -124,7 +124,7 @@ App::DocumentObjectExecReturn *DrawWeldSymbol::execute()
 
 std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles() const
 {
-//    Base::Console().Message("DWS::getTiles()\n");
+//    Base::Console().message("DWS::getTiles()\n");
     std::vector<DrawTileWeld*> result;
 
     std::vector<App::DocumentObject*> tiles = getInList();

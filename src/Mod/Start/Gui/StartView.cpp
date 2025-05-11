@@ -378,13 +378,13 @@ void StartView::fileCardSelected(const QModelIndex& index)
         Gui::ModuleIO::verifyAndOpenFile(filename);
     }
     catch (Base::PyException& e) {
-        Base::Console().Error(e.getMessage().c_str());
+        Base::Console().error(e.getMessage().c_str());
     }
     catch (Base::Exception& e) {
-        Base::Console().Error(e.getMessage().c_str());
+        Base::Console().error(e.getMessage().c_str());
     }
     catch (...) {
-        Base::Console().Error("An unknown error occurred");
+        Base::Console().error("An unknown error occurred");
     }
 }
 

@@ -491,8 +491,8 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
                                 this->ui->checkBoxTVSectionView->isChecked() ? "True" : "False");
     }
     catch (Base::PyException& e) {
-        Base::Console().DeveloperError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
-        e.ReportException();
+        Base::Console().developerError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
+        e.reportException();
         errMsg = QString::fromLatin1(e.what());
     }
     catch (...) {

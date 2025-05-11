@@ -450,7 +450,7 @@ void SheetView::confirmAliasChanged(const QString& text)
             std::string current_alias;
             (void)cell->getAlias(current_alias);
             if (text != QString::fromUtf8(current_alias.c_str())) {
-                Base::Console().Error("Unable to set alias: %s\n", text.toStdString().c_str());
+                Base::Console().error("Unable to set alias: %s\n", text.toStdString().c_str());
             }
         }
         else {

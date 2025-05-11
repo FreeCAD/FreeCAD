@@ -287,7 +287,7 @@ void SoFCColorBar::customize(SoFCColorBarBase* child)
         return child->customize(this);
     }
     catch (const Base::ValueError& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

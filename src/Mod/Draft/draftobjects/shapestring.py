@@ -146,7 +146,7 @@ class ShapeString(DraftObject):
             if not os.path.isfile(font_file):
                 _err(obj.Label + ": " + translate("draft", "Specified font file is not a file"))
                 return
-            if not os.path.splitext(font_file)[1].upper() in (".TTF", ".OTF", ".PFB"):
+            if not os.path.splitext(font_file)[1].lower() in (".ttc", ".ttf", ".otf", ".pfb"):
                 _err(obj.Label + ": " + translate("draft", "Specified font type is not supported"))
                 return
 

@@ -248,7 +248,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                 }
                 xSourceShapes.push_back(shape);
             } else {
-                Base::Console().Message("SE::getXShapes - no shape from getXShape\n");
+                Base::Console().message("SE::getXShapes - no shape from getXShape\n");
             }
         }
     } else {
@@ -297,7 +297,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
             }
         }
         catch (...) {
-            Base::Console().Error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
+            Base::Console().error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
             return TopoDS_Shape();
         }
         if (checkShape(linkedObject, ts.getShape())) {
@@ -361,7 +361,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
             FCBRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone()) {
-                Base::Console().Error("SE - Fusion failed\n");
+                Base::Console().error("SE - Fusion failed\n");
                 return baseShape;
             }
             fusedShape = mkFuse.Shape();
@@ -496,7 +496,7 @@ bool ShapeExtractor::checkShape(const App::DocumentObject* shapeObj, TopoDS_Shap
         }
         // this is ok for devs, but there must be a better way to inform the user from somewhere deep in the
         // call stack. notification area from App?
-        Base::Console().Warning(
+        Base::Console().warning(
             "ShapeExtractor found a problem shape in %s.  Results may be incorrect.\n",
             shapeObj->getNameInDocument());
         return false;

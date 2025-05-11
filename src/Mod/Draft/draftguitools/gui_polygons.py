@@ -57,7 +57,7 @@ class Polygon(gui_base_original.Creator):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Polygon", "Polygon"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Polygon", "Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.\nCTRL to snap, SHIFT to constrain")}
 
-    def Activated(self):
+    def Activated(self, numVertices=None):
         """Execute when the command is called."""
         super().Activated(name="Polygon")
         if self.ui:
@@ -72,8 +72,10 @@ class Polygon(gui_base_original.Creator):
             self.ui.numFaces.show()
             self.ui.numFacesLabel.show()
             self.altdown = False
+            self.numVertices = numVertices if numVertices is not None else 3
+            self.ui.numFaces.setValue(self.numVertices)
             self.ui.sourceCmd = self
-            self.arctrack = trackers.arcTracker()
+            self.polygonTrack = trackers.polygonTracker(sides=self.numVertices)
             self.call = self.view.addEventCallback("SoEvent", self.action)
             _toolmsg(translate("draft", "Pick center point"))
 
@@ -88,10 +90,10 @@ class Polygon(gui_base_original.Creator):
         """
         self.end_callbacks(self.call)
         if self.ui:
-            self.arctrack.finalize()
+            self.polygonTrack.finalize()
         super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
-            self.Activated()
+            self.Activated(self.numVertices)
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -105,12 +107,15 @@ class Polygon(gui_base_original.Creator):
             from the 3D view.
         """
         import DraftGeomUtils
-
+        if self.ui.numFaces.value() != self.numVertices:
+            self.polygonTrack.setNumVertices(self.ui.numFaces.value())
+            self.numVertices = self.ui.numFaces.value()
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
+            self.polygonTrack.update(ctrlPoint)
 
             # this is to make sure radius is what you see on screen
             if self.center and DraftVecUtils.dist(self.point, self.center) > 0:
@@ -134,14 +139,12 @@ class Polygon(gui_base_original.Creator):
                                                            self.point)
                     _c = DraftGeomUtils.findClosestCircle(self.point, cir)
                     self.center = _c.Center
-                    self.arctrack.setCenter(self.center)
                 elif self.tangents and self.tanpoints:
                     cir = DraftGeomUtils.circleFrom1tan2pt(self.tangents[0],
                                                            self.tanpoints[0],
                                                            self.point)
                     _c = DraftGeomUtils.findClosestCircle(self.point, cir)
                     self.center = _c.Center
-                    self.arctrack.setCenter(self.center)
                 if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     if not self.altdown:
                         self.altdown = True
@@ -158,7 +161,6 @@ class Polygon(gui_base_original.Creator):
                             cl = DraftGeomUtils.findClosestCircle(self.point, cir)
                             self.center = cl.Center
                             self.rad = cl.Radius
-                            self.arctrack.setCenter(self.center)
                         else:
                             self.rad = self.center.add(DraftGeomUtils.findDistance(self.center,ed).sub(self.center)).Length
                     else:
@@ -168,7 +170,6 @@ class Polygon(gui_base_original.Creator):
                         self.altdown = False
                     self.rad = DraftVecUtils.dist(self.point, self.center)
                 self.ui.setRadiusValue(self.rad, 'Length')
-                self.arctrack.setRadius(self.rad)
 
             gui_tool_utils.redraw3DView()
 
@@ -190,7 +191,7 @@ class Polygon(gui_base_original.Creator):
                             ed = ob.Shape.Edges[num]
                             self.tangents.append(ed)
                             if len(self.tangents) == 2:
-                                self.arctrack.on()
+                                self.polygonTrack.on()
                                 self.ui.radiusUi()
                                 self.step = 1
                                 _toolmsg(translate("draft", "Pick radius"))
@@ -200,8 +201,8 @@ class Polygon(gui_base_original.Creator):
                         else:
                             self.center = self.point
                             self.node = [self.point]
-                            self.arctrack.setCenter(self.center)
-                        self.arctrack.on()
+                            self.polygonTrack.setOrigin(self.center)
+                        self.polygonTrack.on()
                         self.ui.radiusUi()
                         self.step = 1
                         _toolmsg(translate("draft", "Pick radius"))
@@ -260,8 +261,7 @@ class Polygon(gui_base_original.Creator):
         """
         self.center = App.Vector(numx, numy, numz)
         self.node = [self.center]
-        self.arctrack.setCenter(self.center)
-        self.arctrack.on()
+        self.polygonTrack.on()
         self.ui.radiusUi()
         self.step = 1
         self.ui.radiusValue.setFocus()

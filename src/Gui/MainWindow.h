@@ -238,7 +238,7 @@ public Q_SLOTS:
     bool closeAllDocuments (bool close=true);
     /** Pop up a message box asking for saving document
      */
-    int confirmSave(const char *docName, QWidget *parent=nullptr, bool addCheckBox=false);
+    int confirmSave(App::Document *doc, QWidget *parent = nullptr, bool addCheckBox = false);
     /**
      * Activates the next window in the child window chain.
      */
@@ -388,11 +388,11 @@ public:
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+    void sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                  Base::IntendedRecipient recipient, Base::ContentType content) override;
 
     /// name of the observer
-    const char *Name() override {return "StatusBar";}
+    const char *name() override {return "StatusBar";}
 
     friend class MainWindow;
 private:

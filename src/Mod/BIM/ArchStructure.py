@@ -287,6 +287,7 @@ class _CommandStructure:
 
     def Activated(self):
 
+        self.doc = FreeCAD.ActiveDocument
         self.Width = params.get_param_arch("StructureWidth")
         if self.beammode:
             self.Height = params.get_param_arch("StructureLength")
@@ -307,20 +308,21 @@ class _CommandStructure:
                 FreeCADGui.runCommand("Arch_StructuralSystem")
                 return
             elif not(ax) and not(st):
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
+                self.doc.openTransaction(translate("Arch","Create Structure"))
                 FreeCADGui.addModule("Arch")
                 for obj in sel:
                     FreeCADGui.doCommand("obj = Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
                     FreeCADGui.addModule("Draft")
                     FreeCADGui.doCommand("Draft.autogroup(obj)")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
+                self.doc.commitTransaction()
+                self.doc.recompute()
                 return
 
         # interactive mode
         import WorkingPlane
-        self.wp = WorkingPlane.get_working_plane()
 
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        self.wp = WorkingPlane.get_working_plane()
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -335,7 +337,6 @@ class _CommandStructure:
             title=translate("Arch","First point of the beam")+":"
         else:
             title=translate("Arch","Base point of column")+":"
-        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
         FreeCADGui.draftToolBar.continueCmd.show()
 
@@ -345,19 +346,19 @@ class _CommandStructure:
 
         self.bmode = self.modeb.isChecked()
         if point is None:
-            self.tracker.finalize()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
+            self.tracker.finalize()
             return
         if self.bmode and (self.bpoint is None):
             self.bpoint = point
             FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
-        self.tracker.off()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
+        self.tracker.off()
         horiz = True # determines the type of rotation to apply to the final object
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
+        self.doc.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("WorkingPlane")
         if self.bmode:
@@ -419,8 +420,8 @@ class _CommandStructure:
 
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(s)")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
         if FreeCADGui.draftToolBar.continueCmd.isChecked():

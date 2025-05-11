@@ -212,7 +212,7 @@ public:
     bool newFaceFinder();
     bool isUnsetting() { return nowUnsetting; }
 
-    virtual TopoDS_Shape getSourceShape(bool fuse = false) const;
+    virtual TopoDS_Shape getSourceShape(bool fuse = false, bool allow2d = true) const;
     virtual TopoDS_Shape getShapeForDetail() const;
     std::vector<App::DocumentObject*> getAllSources() const;
 

@@ -343,7 +343,7 @@ void SelectionView::select(QListWidgetItem* item)
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -366,7 +366,7 @@ void SelectionView::deselect()
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -418,7 +418,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -457,7 +457,7 @@ void SelectionView::preselect(QListWidgetItem* item)
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -468,7 +468,7 @@ void SelectionView::zoom()
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewSelection\")");
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -479,7 +479,7 @@ void SelectionView::treeSelect()
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand(\"Std_TreeSelection\")");
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -499,7 +499,7 @@ void SelectionView::touch()
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -535,7 +535,7 @@ void SelectionView::toPython()
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -560,7 +560,7 @@ void SelectionView::showPart()
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
             }
             catch (const Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
             }
         }
     }

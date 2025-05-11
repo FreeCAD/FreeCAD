@@ -813,7 +813,7 @@ void StringHasher::Restore(Base::XMLReader& reader)
             restoreStreamNew(reader.beginCharStream(), count);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             FC_ERR("Failed to restore string table: full-document recompute strongly recommended.");
         }
         reader.readEndElement("StringHasher2");

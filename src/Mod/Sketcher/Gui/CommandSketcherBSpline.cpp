@@ -414,7 +414,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
             // particularly B-spline GeoID might have changed.
         }
         catch (const Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             if (e.getTranslatable()) {
                 Gui::TranslatedUserError(Obj,
                                          QObject::tr("CAD Kernel Error"),
@@ -423,7 +423,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
             getSelection().clearSelection();
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             if (e.getTranslatable()) {
                 Gui::TranslatedUserError(Obj,
                                          QObject::tr("Input Error"),
@@ -789,7 +789,7 @@ public:
             // particularly B-spline GeoID might have changed.
         }
         catch (const Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             if (e.getTranslatable()) {
                 Gui::TranslatedUserError(Obj,
                                          QObject::tr("CAD Kernel Error"),
@@ -797,7 +797,7 @@ public:
             }
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             if (e.getTranslatable()) {
                 Gui::TranslatedUserError(Obj,
                                          QObject::tr("Input Error"),

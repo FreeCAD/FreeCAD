@@ -255,7 +255,7 @@ void TaskMeasure::update()
 
         std::string mod = Base::Type::getModuleName(sub->getTypeId().getName());
         if (!App::MeasureManager::hasMeasureHandler(mod.c_str())) {
-            Base::Console().Message("No measure handler available for geometry of module: %s\n",
+            Base::Console().message("No measure handler available for geometry of module: %s\n",
                                     mod);
             clearSelection();
             return;

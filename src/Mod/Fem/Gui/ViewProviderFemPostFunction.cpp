@@ -343,7 +343,8 @@ bool ViewProviderFemPostFunction::setEdit(int ModNum)
         }
         else {
             postDlg = new TaskDlgPost(this);
-            postDlg->appendBox(new TaskPostFunction(this));
+            auto panel = new TaskPostFunction(this);
+            postDlg->addTaskBox(panel->windowIcon().pixmap(32), panel);
             Gui::Control().showDialog(postDlg);
         }
 

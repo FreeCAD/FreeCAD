@@ -21,7 +21,7 @@ requirements:
     - ninja
     - noqt5
     - python>=3.11,<3.12
-    - qt6-main<6.9
+    - qt6-main>=6.7,<6.8
     - swig
 
     - if: linux and x86_64
@@ -109,7 +109,7 @@ requirements:
     - pybind11
     - pyside6
     - python>=3.11,<3.12
-    - qt6-main<6.9
+    - qt6-main>=6.7,<6.8
     - six
     - smesh
     - vtk
@@ -164,7 +164,7 @@ requirements:
     - python>=3.11,<3.12
     - pythonocc-core
     - pyyaml
-    - qt6-main<6.9
+    - qt6-main>=6.7,<6.8
     - requests
     - scipy
     - sympy

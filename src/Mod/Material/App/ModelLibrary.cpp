@@ -87,7 +87,7 @@ ModelLibrary::getModelTree(ModelFilter filter) const
             std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> node = modelTree;
             for (auto& itp : list) {
                 // Add the folder only if it's not already there
-                if (node->count(itp) == 0) {
+                if (!node->contains(itp)) {
                     auto mapPtr =
                         std::make_shared<std::map<QString, std::shared_ptr<ModelTreeNode>>>();
                     std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();

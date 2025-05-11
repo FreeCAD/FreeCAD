@@ -23,11 +23,36 @@
 #ifndef FEM_VIEWPROVIDERFEMPOSTFILTER_H
 #define FEM_VIEWPROVIDERFEMPOSTFILTER_H
 
+#include <Gui/ViewProviderFeaturePython.h>
 #include "ViewProviderFemPostObject.h"
-
 
 namespace FemGui
 {
+
+// ***************************************************************************
+// Special classes to enable python filter view providers
+// ***************************************************************************
+
+// Special class for the python view providers, which need some special behaviour
+class FemGuiExport ViewProviderFemPostFilterPythonBase: public ViewProviderFemPostObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFilterPythonBase);
+
+public:
+    /// constructor.
+    ViewProviderFemPostFilterPythonBase();
+    ~ViewProviderFemPostFilterPythonBase() override;
+
+    // we do not use default display modes but let the python implementation choose
+    // Python view provider needs to return a sublist of PostObject supporter DisplayModes
+    std::vector<std::string> getDisplayModes() const override;
+};
+
+
+// Viewprovider for the python filters
+using ViewProviderPostFilterPython =
+    Gui::ViewProviderFeaturePythonT<ViewProviderFemPostFilterPythonBase>;
+
 
 // ***************************************************************************
 // in the following, the different filters sorted alphabetically

@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
- *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+ *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,27 +20,59 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
-#define BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
 
-#include "UnitsSchema.h"
+#ifndef MATGUI_TASKMIGRATEEXTERNAL_H
+#define MATGUI_TASKMIGRATEEXTERNAL_H
 
-namespace Base
+#include <memory>
+
+#include <QPushButton>
+
+#include <Gui/TaskView/TaskDialog.h>
+
+#include <Mod/Material/App/ModelManager.h>
+#include <Mod/Material/App/MaterialManager.h>
+
+namespace MatGui {
+
+class Ui_TaskMigrateExternal;
+
+class DlgMigrateExternal: public QWidget
 {
+    Q_OBJECT
 
-/*  Milli metric / Newton / Seconds unit schema for use in FEM.
- *  Lengths are always in mm.
- *  Mass is in t.
- *  TimeSpann in S.
- *  Thus the Force is in Newton
- */
-class UnitsSchemaFemMilliMeterNewton: public UnitsSchema
-{
 public:
-    std::string
-    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
+    explicit DlgMigrateExternal(QWidget* parent = nullptr);
+    ~DlgMigrateExternal() override = default;
+    void migrate();
+    void statusUpdate(const QString& status);
+
+private:
+    void showLibraries();
+
+    std::shared_ptr<Ui_TaskMigrateExternal> ui;
 };
 
-}  // namespace Base
+class TaskMigrateExternal: public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
 
-#endif  // BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
+public:
+    TaskMigrateExternal();
+
+public:
+    bool accept() override;
+    bool reject() override;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
+    void modifyStandardButtons(QDialogButtonBox*) override;
+    void onMigrate(bool checked);
+
+private:
+    DlgMigrateExternal* _widget;
+    QPushButton* _migrateButton;
+    QPushButton* _closeButton;
+};
+
+} // namespace MatGui
+
+#endif  // MATGUI_TASKMIGRATEEXTERNAL_H

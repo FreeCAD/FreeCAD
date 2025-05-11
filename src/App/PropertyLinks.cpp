@@ -189,7 +189,7 @@ void PropertyLinkBase::checkLabelReferences(const std::vector<std::string>& subs
 
 std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject* parent,
                                                    const char* subname,
-                                                   App::DocumentObject* obj,
+                                                   const App::DocumentObject* obj,
                                                    const std::string& ref,
                                                    const char* newLabel)
 {
@@ -288,7 +288,7 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
                 prop->updateElementReference(feature, reverse, true);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("Failed to update element reference of " << propertyName(prop));
             }
             catch (std::exception& e) {
@@ -788,14 +788,14 @@ void PropertyLink::Restore(Base::XMLReader& reader)
         DocumentObject* object = document ? document->getObject(name.c_str()) : nullptr;
         if (!object) {
             if (reader.isVerbose()) {
-                Base::Console().Warning("Lost link to '%s' while loading, maybe "
+                Base::Console().warning("Lost link to '%s' while loading, maybe "
                                         "an object was not loaded correctly\n",
                                         name.c_str());
             }
         }
         else if (parent == object) {
             if (reader.isVerbose()) {
-                Base::Console().Warning("Object '%s' links to itself, nullify it\n", name.c_str());
+                Base::Console().warning("Object '%s' links to itself, nullify it\n", name.c_str());
             }
             object = nullptr;
         }
@@ -2107,7 +2107,7 @@ adjustLinkSubs(App::PropertyLinkBase* prop,
                 break;
             }
             if (!newLink) {
-                if (inList.count(sobj)) {
+                if (inList.contains(sobj)) {
                     continue;
                 }
                 newLink = sobj;
@@ -2138,7 +2138,7 @@ bool PropertyLinkSub::adjustLink(const std::set<App::DocumentObject*>& inList)
     if (_pcScope == LinkScope::Hidden) {
         return false;
     }
-    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument() || !inList.count(_pcLinkSub)) {
+    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument() || !inList.contains(_pcLinkSub)) {
         return false;
     }
     auto subs = _cSubList;
@@ -2878,7 +2878,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
             }
         }
         else if (reader.isVerbose()) {
-            Base::Console().Warning("Lost link to '%s' while loading, maybe "
+            Base::Console().warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",
                                     name.c_str());
         }
@@ -3229,7 +3229,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLis
     for (std::string& sub : subs) {
         ++idx;
         auto& link = links[idx];
-        if (!link || !link->isAttachedToDocument() || !inList.count(link)) {
+        if (!link || !link->isAttachedToDocument() || !inList.contains(link)) {
             continue;
         }
         touched = true;
@@ -3240,7 +3240,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLis
                 pos = std::string::npos;
                 break;
             }
-            if (!inList.count(sobj)) {
+            if (!inList.contains(sobj)) {
                 link = sobj;
                 sub = sub.substr(pos + 1);
                 break;
@@ -4657,7 +4657,7 @@ bool PropertyXLink::adjustLink(const std::set<App::DocumentObject*>& inList)
     if (_pcScope == LinkScope::Hidden) {
         return false;
     }
-    if (!_pcLink || !_pcLink->isAttachedToDocument() || !inList.count(_pcLink)) {
+    if (!_pcLink || !_pcLink->isAttachedToDocument() || !inList.contains(_pcLink)) {
         return false;
     }
     auto subs = _SubList;
@@ -5479,7 +5479,7 @@ bool PropertyXLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLi
             ++count;
             continue;
         }
-        if (inList.count(obj) && adjustLinkSubs(this, inList, obj, l._SubList, &values)) {
+        if (inList.contains(obj) && adjustLinkSubs(this, inList, obj, l._SubList, &values)) {
             touched = true;
         }
     }
@@ -5849,7 +5849,7 @@ void PropertyXLinkContainer::_onBreakLink(DocumentObject* obj)
         onBreakLink(obj);
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         FC_ERR("Exception on breaking link property " << getFullName());
     }
     catch (std::exception& e) {

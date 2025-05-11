@@ -31,10 +31,13 @@
 #include <vtkUnstructuredGrid.h>
 #endif
 
+#include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 
 #include "FemPostFilter.h"
+#include "FemPostFilterPy.h"
+
 #include "FemPostPipeline.h"
 #include "FemPostBranchFilter.h"
 
@@ -52,22 +55,42 @@ FemPostFilter::FemPostFilter()
                       "Data",
                       App::Prop_ReadOnly,
                       "The step used to calculate the data");
+
+    // the default pipeline: just a passthrough
+    // this is used to simplify the python filter handling,
+    // as those do not have filter pipelines setup till later
+    // in the document loading process.
+    auto filter = vtkPassThrough::New();
+    auto pipeline = FemPostFilter::FilterPipeline();
+    pipeline.algorithmStorage.push_back(filter);
+    pipeline.source = filter;
+    pipeline.target = filter;
+    addFilterPipeline(pipeline, "__passthrough__");
 }
 
 FemPostFilter::~FemPostFilter() = default;
 
+
 void FemPostFilter::addFilterPipeline(const FemPostFilter::FilterPipeline& p, std::string name)
 {
     m_pipelines[name] = p;
+
+    if (m_activePipeline.empty()) {
+        m_activePipeline = name;
+    }
 }
 
 FemPostFilter::FilterPipeline& FemPostFilter::getFilterPipeline(std::string name)
 {
-    return m_pipelines[name];
+    return m_pipelines.at(name);
 }
 
 void FemPostFilter::setActiveFilterPipeline(std::string name)
 {
+    if (m_pipelines.count(name) == 0) {
+        throw Base::ValueError("Not a filter pipline name");
+    }
+
     if (m_activePipeline != name && isValid()) {
 
         // disable all inputs of current pipeline
@@ -129,6 +152,7 @@ void FemPostFilter::onChanged(const App::Property* prop)
 {
 
     if (prop == &Placement) {
+
         if (Placement.getValue().isIdentity() && m_use_transform) {
             // remove transform from pipeline
             if (m_transform_location == TransformLocation::output) {
@@ -191,7 +215,6 @@ DocumentObjectExecReturn* FemPostFilter::execute()
 
         Data.setValue(output->GetOutputDataObject(0));
     }
-
     return StdReturn;
 }
 
@@ -203,8 +226,19 @@ vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData()
     }
 
     vtkAlgorithmOutput* output = active.source->GetInputConnection(0, 0);
+    if (!output) {
+        return nullptr;
+    }
     vtkAlgorithm* algo = output->GetProducer();
-    algo->Update();
+    if (!algo) {
+        return nullptr;
+    }
+    if (Frame.getValue() > 0) {
+        algo->UpdateTimeStep(Frame.getValue());
+    }
+    else {
+        algo->Update();
+    }
     return vtkDataSet::SafeDownCast(algo->GetOutputDataObject(0));
 }
 
@@ -250,6 +284,45 @@ void FemPostFilter::setTransformLocation(TransformLocation loc)
 {
     m_transform_location = loc;
 }
+
+PyObject* FemPostFilter::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FemPostFilterPy(this), true);
+    }
+
+    return Py::new_reference_to(PythonObject);
+}
+
+
+// Python Filter feature ---------------------------------------------------------
+
+namespace App
+{
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Fem::PostFilterPython, Fem::FemPostFilter)
+template<>
+const char* Fem::PostFilterPython::getViewProviderName(void) const
+{
+    return "FemGui::ViewProviderPostFilterPython";
+}
+template<>
+PyObject* Fem::PostFilterPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new App::FeaturePythonPyT<FemPostFilterPy>(this), true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
+/// @endcond
+
+// explicit template instantiation
+template class FemExport FeaturePythonT<Fem::FemPostFilter>;
+}  // namespace App
+
 
 // ***************************************************************************
 // in the following, the different filters sorted alphabetically

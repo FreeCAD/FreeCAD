@@ -414,12 +414,12 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             }
             catch (Base::Exception &e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().Error("PositionBySupport: %s\n",e.what());
+                Base::Console().error("PositionBySupport: %s\n",e.what());
                 //set error message - how?
             }
             catch (Standard_Failure &e){
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().Error("PositionBySupport: %s\n",e.GetMessageString());
+                Base::Console().error("PositionBySupport: %s\n",e.GetMessageString());
             }
 
             updateSinglePropertyStatus(bAttached);

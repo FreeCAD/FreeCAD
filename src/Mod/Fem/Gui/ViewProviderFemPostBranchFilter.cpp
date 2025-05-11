@@ -25,6 +25,7 @@
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostBranchFilter.h"
 #include <Mod/Fem/App/FemPostGroupExtension.h>
+#include <Gui/BitmapFactory.h>
 
 
 using namespace FemGui;
@@ -46,7 +47,8 @@ ViewProviderFemPostBranchFilter::~ViewProviderFemPostBranchFilter()
 void ViewProviderFemPostBranchFilter::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the branch ui
-    dlg->appendBox(new TaskPostBranch(this));
+    auto panel = new TaskPostBranch(this);
+    dlg->addTaskBox(panel->windowIcon().pixmap(32), panel);
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);

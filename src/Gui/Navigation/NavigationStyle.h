@@ -105,7 +105,7 @@ public:
         Trackball,
         FreeTurntable,
         TrackballClassic,
-        RoundedArcball,
+        RoundedArcball
     };
 
     enum class RotationCenterMode {

@@ -130,7 +130,7 @@ short DrawLeaderLine::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawLeaderLine::execute()
 {
-     // Base::Console().Message("DLL::execute()\n");
+     // Base::Console().message("DLL::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -166,7 +166,7 @@ bool DrawLeaderLine::keepUpdated()
 
 double DrawLeaderLine::getBaseScale() const
 {
-//    Base::Console().Message("DLL::getBaseScale()\n");
+//    Base::Console().message("DLL::getBaseScale()\n");
     DrawView* parent = getBaseView();
     if (!parent) {
         return 1.0;
@@ -176,7 +176,7 @@ double DrawLeaderLine::getBaseScale() const
 
 double DrawLeaderLine::getScale() const
 {
-//    Base::Console().Message("DLL::getScale()\n");
+//    Base::Console().message("DLL::getScale()\n");
     if (!Scalable.getValue()) {
         return 1.0;
     }
@@ -296,9 +296,9 @@ Base::Vector3d DrawLeaderLine::lastSegmentDirection() const
 //! pagePoints are in mm from bottom left of page.
 DrawLeaderLine* DrawLeaderLine::makeLeader(DrawViewPart* parent, std::vector<Base::Vector3d> pagePoints, int iStartSymbol, int iEndSymbol)
 {
-    Base::Console().Message("DLL::makeLeader(%s, %d, %d, %d)\n", parent->getNameInDocument(), pagePoints.size(), iStartSymbol, iEndSymbol);
+    Base::Console().message("DLL::makeLeader(%s, %d, %d, %d)\n", parent->getNameInDocument(), pagePoints.size(), iStartSymbol, iEndSymbol);
     if (pagePoints.size() < 2) {
-        Base::Console().Message("DLL::makeLeader - not enough pagePoints\n");
+        Base::Console().message("DLL::makeLeader - not enough pagePoints\n");
         return {};
     }
 
@@ -364,7 +364,7 @@ std::vector<Base::Vector3d>  DrawLeaderLine::getScaledAndRotatedPoints(bool doSc
     auto dvp = getBaseView();
     if (!dvp) {
         // document is restoring?
-        // Base::Console().Message("DLL::getScaledAndRotatedPoints - no DV\n");
+        // Base::Console().message("DLL::getScaledAndRotatedPoints - no DV\n");
         return {};
     }
 
@@ -455,7 +455,7 @@ bool DrawLeaderLine::isParentReady() const
     if (!parent || (dvp && !dvp->hasGeometry()))  {
         // still restoring or
         // we are attached to a dvp that has no geometry, so don't bother trying to draw yet
-        Base::Console().Message("DLL:: - no parent or geometry\n");
+        Base::Console().message("DLL:: - no parent or geometry\n");
         return false;
     }
     return true;
@@ -468,9 +468,9 @@ bool DrawLeaderLine::getDefAuto() const
 
 void DrawLeaderLine::dumpWaypoints(const std::vector<Base::Vector3d> &points, const std::string &label)
 {
-    Base::Console().Message("DLL::dumpWaypoints - %s\n", label.c_str());
+    Base::Console().message("DLL::dumpWaypoints - %s\n", label.c_str());
     for (auto& p : points) {
-        Base::Console().Message(">>>> a point: %s\n", DU::formatVector(p).c_str());
+        Base::Console().message(">>>> a point: %s\n", DU::formatVector(p).c_str());
     }
 }
 

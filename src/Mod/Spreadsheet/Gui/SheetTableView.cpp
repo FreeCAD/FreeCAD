@@ -817,7 +817,7 @@ void SheetTableView::pasteClipboard()
         GetApplication().getActiveDocument()->recompute();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
                               QObject::tr("Copy & Paste failed"),
                               QString::fromLatin1(e.what()));

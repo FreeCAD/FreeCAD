@@ -624,7 +624,7 @@ void ComplexGeoData::restoreStream(std::istream& stream, std::size_t count)
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         _restoreFailed = true;
         _elementMap.reset();
     }

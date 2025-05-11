@@ -81,7 +81,7 @@ std::vector<App::DocumentObject*> MeasureBase::getSubject() const
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return {};
     }
 
@@ -116,7 +116,7 @@ void MeasureBase::parseSelection(const App::MeasureSelection& selection)
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -136,7 +136,7 @@ std::vector<std::string> MeasureBase::getInputProps()
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return {};
     }
     Py::Sequence propsPy(ret);
@@ -168,7 +168,7 @@ QString MeasureBase::getResultString()
         }
         catch (Py::Exception&) {
             Base::PyException e;
-            e.ReportException();
+            e.reportException();
             return QString();
         }
         return QString::fromStdString(ret.as_string());

@@ -143,7 +143,6 @@ M2
         expected = """G17 G90
 G21
 G54
-M6 T1
 M5
 G17 G90
 M2

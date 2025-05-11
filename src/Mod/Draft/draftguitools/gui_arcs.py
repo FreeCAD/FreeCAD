@@ -498,11 +498,10 @@ class Arc_3Points(gui_base.GuiCommandBase):
 
         Gui.Snapper.getPoint(callback=self.getPoint,
                              movecallback=self.drawArc)
-        self.ui = Gui.Snapper.ui  ## self must have a ui for _finish_command_on_doc_close in doc_observer.py.
-        self.ui.sourceCmd = self
-        self.ui.setTitle(title=translate("draft", "Arc by 3 points"),
-                         icon="Draft_Arc_3Points")
-        self.ui.continueCmd.show()
+        Gui.Snapper.ui.sourceCmd = self
+        Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
+                                icon="Draft_Arc_3Points")
+        Gui.Snapper.ui.continueCmd.show()
 
     def getPoint(self, point, info):
         """Get the point by clicking on the 3D view.
@@ -543,11 +542,10 @@ class Arc_3Points(gui_base.GuiCommandBase):
             Gui.Snapper.getPoint(last=self.points[-1],
                                  callback=self.getPoint,
                                  movecallback=self.drawArc)
-            self.ui = Gui.Snapper.ui
-            self.ui.sourceCmd = self
-            self.ui.setTitle(title=translate("draft", "Arc by 3 points"),
-                             icon="Draft_Arc_3Points")
-            self.ui.continueCmd.show()
+            Gui.Snapper.ui.sourceCmd = self
+            Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
+                                    icon="Draft_Arc_3Points")
+            Gui.Snapper.ui.continueCmd.show()
 
         else:
             # If three points were already picked in the 3D view

@@ -140,7 +140,7 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
+        Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
                                 "Instead, the linked object(s) reside within '%s'.\n",
                                 getTypeId().getName(),
                                 objnames.c_str(),
@@ -148,7 +148,7 @@ void DocumentObject::printInvalidLinks() const
                                 scopenames.c_str());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -581,7 +581,7 @@ bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* check
 
 bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 {
-    return this == linkTo || getInListEx(true).count(linkTo);
+    return this == linkTo || getInListEx(true).contains(linkTo);
 }
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
@@ -644,7 +644,7 @@ bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject*>&
     auto inLists = getInListEx(true);
     inLists.emplace(const_cast<DocumentObject*>(this));
     for (auto obj : linksTo) {
-        if (inLists.count(obj)) {
+        if (inLists.contains(obj)) {
             return false;
         }
     }
@@ -1212,6 +1212,20 @@ void DocumentObject::onDocumentRestored()
     }
     if (Visibility.testStatus(Property::Output)) {
         Visibility.setStatus(Property::NoModify, true);
+    }
+}
+
+void DocumentObject::restoreFinished()
+{
+    // some link type property cannot restore link information until other
+    // objects has been restored. For example, PropertyExpressionEngine and
+    // PropertySheet with expression containing label reference.
+    // So on document load they are handled in Document::afterRestore, but if the user
+    // use dumpContent and restoreContent then they need to be handled here.
+    std::vector<App::Property*> props;
+    getPropertyList(props);
+    for (auto prop : props) {
+        prop->afterRestore();
     }
 }
 

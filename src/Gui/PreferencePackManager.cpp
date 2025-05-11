@@ -96,7 +96,7 @@ bool PreferencePack::apply() const
             Base::Interpreter().runFile(Base::FileInfo::pathToString(preMacroPath).c_str(), false);
         }
         catch (...) {
-            Base::Console().Message("PreferencePack application aborted by the preferencePack's pre.FCMacro");
+            Base::Console().message("PreferencePack application aborted by the preferencePack's pre.FCMacro");
             return false;
         }
     }
@@ -120,7 +120,7 @@ bool PreferencePack::apply() const
             Base::Interpreter().runFile(Base::FileInfo::pathToString(postMacroPath).c_str(), false);
         }
         catch (...) {
-            Base::Console().Message("PreferencePack application reverted by the preferencePack's post.FCMacro");
+            Base::Console().message("PreferencePack application reverted by the preferencePack's post.FCMacro");
             App::GetApplication().GetUserParameter().LoadDocument(Base::FileInfo::pathToString(backupFile).c_str());
             return false;
         }
@@ -284,7 +284,7 @@ std::vector<std::string> Gui::PreferencePackManager::getPacksFromDirectory(const
         }
         catch (...) {
             // Failed to read the metadata, or to create the preferencePack based on it...
-            Base::Console().Error(("Failed to read " + packageMetadataFile.string()).c_str());
+            Base::Console().error(("Failed to read " + packageMetadataFile.string()).c_str());
         }
     }
     return results;
@@ -296,12 +296,12 @@ void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path &mo
         TryFindPreferencePacksInPackage(mod);
     }
     catch (const std::exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
     }
     catch (...) {
         // Failed to read the metadata, or to create the preferencePack based on it...
         auto packageMetadataFile = mod / "package.xml";
-        Base::Console().Error("Failed to read %s\n", Base::FileInfo::pathToString(packageMetadataFile).c_str());
+        Base::Console().error("Failed to read %s\n", Base::FileInfo::pathToString(packageMetadataFile).c_str());
     }
 }
 

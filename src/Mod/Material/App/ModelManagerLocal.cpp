@@ -121,7 +121,7 @@ void ModelManagerLocal::createLibrary(const QString& libraryName,
 void ModelManagerLocal::renameLibrary(const QString& libraryName, const QString& newName)
 {
     for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
+        if (library->isName(libraryName)) {
             library->setName(newName);
             return;
         }
@@ -133,7 +133,7 @@ void ModelManagerLocal::renameLibrary(const QString& libraryName, const QString&
 void ModelManagerLocal::changeIcon(const QString& libraryName, const QString& icon)
 {
     for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
+        if (library->isName(libraryName)) {
             library->setIconPath(icon);
             return;
         }
@@ -145,7 +145,7 @@ void ModelManagerLocal::changeIcon(const QString& libraryName, const QString& ic
 void ModelManagerLocal::removeLibrary(const QString& libraryName)
 {
     for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
+        if (library->isName(libraryName)) {
             _libraryList->remove(library);
 
             // At this point we should rebuild the model map
@@ -163,7 +163,7 @@ ModelManagerLocal::libraryModels(const QString& libraryName)
 
     for (auto& it : *_modelMap) {
         // This is needed to resolve cyclic dependencies
-        if (it.second->getLibrary()->getName() == libraryName) {
+        if (it.second->getLibrary()->isName(libraryName)) {
             models->push_back(
                 std::tuple<QString, QString, QString>(it.first, it.second->getDirectory(), it.second->getName()));
         }
@@ -217,7 +217,7 @@ std::shared_ptr<Model> ModelManagerLocal::getModelByPath(const QString& path,
 std::shared_ptr<ModelLibrary> ModelManagerLocal::getLibrary(const QString& name) const
 {
     for (auto& library : *_libraryList) {
-        if (library->getName() == name) {
+        if (library->isName(name)) {
             return library;
         }
     }

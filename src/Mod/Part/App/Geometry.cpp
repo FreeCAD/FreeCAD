@@ -326,7 +326,7 @@ void Geometry::Restore(Base::XMLReader &reader)
                 extensions.push_back(std::shared_ptr<GeometryExtension>(newExtension));
             }
             else {
-                Base::Console().Warning("Cannot restore geometry extension of type: %s\n", TypeName);
+                Base::Console().warning("Cannot restore geometry extension of type: %s\n", TypeName);
             }
         }
 
@@ -6338,7 +6338,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             }
         }
         catch (Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             THROWM(Base::CADKernelError,
                    "Unable to determine the parameter of the first selected curve at the reference "
                    "point.")
@@ -6350,7 +6350,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             }
         }
         catch (Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             THROWM(Base::CADKernelError,
                    "Unable to determine the parameter of the second selected curve at the "
                    "reference point.")
@@ -6423,7 +6423,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
                 }
             }
             catch (Base::CADKernelError& e) {
-                e.ReportException();
+                e.reportException();
                 THROWMT(Base::CADKernelError,
                     QT_TRANSLATE_NOOP("Exceptions",
                         "Unable to guess intersection of curves. Try adding "
@@ -6449,7 +6449,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             }
         }
         catch (Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             THROWM(Base::CADKernelError,
                    "Unable to determine the parameter of the first selected curve at the "
                    "intersection of the curves.")
@@ -6461,7 +6461,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             }
         }
         catch (Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             THROWM(Base::CADKernelError,
                    "Unable to determine the parameter of the second selected curve at the "
                    "intersection of the curves.")
@@ -6549,7 +6549,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             }
         }
         catch (Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             THROWM(Base::CADKernelError, "Unable to find intersection between offset curves.")
         }
 
@@ -6568,7 +6568,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             }
         }
         catch (Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             THROWM(Base::CADKernelError, "Unable to determine the starting point of the arc.")
         }
 
@@ -6578,7 +6578,7 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             }
         }
         catch (Base::CADKernelError& e) {
-            e.ReportException();
+            e.reportException();
             THROWM(Base::CADKernelError, "Unable to determine the end point of the arc.")
         }
 

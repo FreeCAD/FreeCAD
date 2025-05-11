@@ -49,6 +49,7 @@ class BIM_ImagePlane:
         from PySide import QtGui
         import draftguitools.gui_trackers as DraftTrackers
 
+        self.doc = FreeCAD.ActiveDocument
         self.tracker = DraftTrackers.rectangleTracker()
         self.basepoint = None
         self.opposite = None
@@ -115,17 +116,15 @@ class BIM_ImagePlane:
             diagonal = self.opposite.sub(self.basepoint)
             length = DraftVecUtils.project(diagonal, wp.u).Length
             height = DraftVecUtils.project(diagonal, wp.v).Length
-            FreeCAD.ActiveDocument.openTransaction("Create image plane")
-            image = FreeCAD.ActiveDocument.addObject(
-                "Image::ImagePlane", "ImagePlane"
-            )
+            self.doc.openTransaction("Create image plane")
+            image = self.doc.addObject("Image::ImagePlane", "ImagePlane")
             image.Label = os.path.splitext(os.path.basename(self.filename))[0]
             image.ImageFile = self.filename
             image.Placement = FreeCAD.Placement(midpoint, rotation)
             image.XSize = length
             image.YSize = height
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            self.doc.commitTransaction()
+            self.doc.recompute()
 
 
 FreeCADGui.addCommand("BIM_ImagePlane", BIM_ImagePlane())

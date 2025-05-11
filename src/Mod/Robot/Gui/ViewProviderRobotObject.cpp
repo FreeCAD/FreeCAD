@@ -445,7 +445,7 @@ void ViewProviderRobotObject::DraggerMotionCallback(SoDragger* dragger)
     SbVec3f center(Tcp.getPosition().x, Tcp.getPosition().y, Tcp.getPosition().z);
     M.getTransform(translation, rotation, scaleFactor, scaleOrientation);
     rotation.getValue(q0, q1, q2, q3);
-    // Base::Console().Message("M %f %f %f\n", M[3][0], M[3][1], M[3][2]);
+    // Base::Console().message("M %f %f %f\n", M[3][0], M[3][1], M[3][2]);
     Base::Rotation rot(q0, q1, q2, q3);
     Base::Vector3d pos(translation[0], translation[1], translation[2]);
     robObj->Tcp.setValue(Base::Placement(pos, rot));

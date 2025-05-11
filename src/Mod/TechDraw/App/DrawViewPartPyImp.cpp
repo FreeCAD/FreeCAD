@@ -620,7 +620,7 @@ PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
 
 PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCosmeticEdgeBySelection()\n");
+//    Base::Console().message("DVPPI::getCosmeticEdgeBySelection()\n");
     char* name;
     if (!PyArg_ParseTuple(args, "s", &name)) {
         return nullptr;
@@ -640,7 +640,7 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::removeCosmeticEdge()\n");
+//    Base::Console().message("DVPPI::removeCosmeticEdge()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -656,7 +656,7 @@ PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 
 PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::makeCenterLine()\n");
+//    Base::Console().message("DVPPI::makeCenterLine()\n");
     PyObject* pSubs;
     CenterLine::Mode mode = CenterLine::Mode::VERTICAL;
     std::vector<std::string> subs;
@@ -719,7 +719,7 @@ PyObject* DrawViewPartPy::getCenterLine(PyObject *args)
 
 PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCenterLineBySelection()\n");
+//    Base::Console().message("DVPPI::getCenterLineBySelection()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -738,7 +738,7 @@ PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::removeCenterLine()\n");
+//    Base::Console().message("DVPPI::removeCenterLine()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -754,7 +754,7 @@ PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
 
 PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::formatGeometricEdge()\n");
+//    Base::Console().message("DVPPI::formatGeometricEdge()\n");
     int idx = -1;
     int style = Qt::SolidLine;
     Base::Color color = LineFormat::getDefEdgeColor();

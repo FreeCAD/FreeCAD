@@ -461,7 +461,7 @@ void DlgBooleanOperation::accept()
         activeDoc->recompute();
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

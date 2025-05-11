@@ -62,7 +62,7 @@ XERCES_CPP_NAMESPACE_USE
 PyMOD_INIT_FUNC(Cloud)
 {
     PyObject* mod = Cloud::initModule();
-    Base::Console().Log("Loading Cloud module... done\n");
+    Base::Console().log("Loading Cloud module... done\n");
     PyMOD_Return(mod);
 }
 
@@ -1495,7 +1495,7 @@ bool Cloud::Module::cloudRestore(const char* BucketName)
         doc->Restore(reader);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        Base::Console().error("Invalid Document.xml: %s\n", e.what());
     }
 
     // Special handling for Gui document, the view representations must already

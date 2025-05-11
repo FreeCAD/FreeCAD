@@ -2523,7 +2523,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     Temp += Temp2;
     Temp += "\")";
 
-    Base::Console().Message("%s\n",Temp2.c_str());
+    Base::Console().message("%s\n",Temp2.c_str());
     getGuiApplication()->macroManager()->addLine(MacroManager::Gui,Temp.c_str());
 }
 
@@ -2612,7 +2612,7 @@ public:
     {
         if (currentSelectionHandler)
         {
-            Base::Console().Message("SelectionCallbackHandler: A selection handler already active.");
+            Base::Console().message("SelectionCallbackHandler: A selection handler already active.");
             return;
         }
 

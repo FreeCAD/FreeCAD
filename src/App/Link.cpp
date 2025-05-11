@@ -429,11 +429,11 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
             }
             catch (Py::Exception&) {
                 Base::PyException e;
-                e.ReportException();
+                e.reportException();
                 return new App::DocumentObjectExecReturn(errMsg);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 return new App::DocumentObjectExecReturn(errMsg);
             }
         }
@@ -451,7 +451,7 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
                         parent->removeDynamicProperty(prop->getName());
                     }
                     catch (Base::Exception& e) {
-                        e.ReportException();
+                        e.reportException();
                     }
                     catch (...) {
                     }
@@ -538,7 +538,7 @@ void LinkBaseExtension::setOnChangeCopyObject(App::DocumentObject* obj, OnChange
                 obj->addDynamicProperty("App::PropertyMap", "_CopyOnChangeControl"));
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         if (!prop) {
             FC_ERR("Failed to setup copy on change object " << obj->getFullName());
@@ -880,7 +880,7 @@ bool LinkBaseExtension::setupCopyOnChange(
             if (!gname || !boost::starts_with(gname, _GroupPrefix)) {
                 continue;
             }
-            if (!newProps.count(prop)) {
+            if (!newProps.contains(prop)) {
                 parent->removeDynamicProperty(prop->getName());
             }
         }
@@ -1833,7 +1833,7 @@ void LinkBaseExtension::updateGroup()
         }
     }
     for (auto it = plainGroupConns.begin(); it != plainGroupConns.end();) {
-        if (!groupSet.count(it->first)) {
+        if (!groupSet.contains(it->first)) {
             it = plainGroupConns.erase(it);
         }
         else {

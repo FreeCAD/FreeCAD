@@ -115,9 +115,6 @@ protected:
         return nullptr;
     }
 
-    static const char* nullString() {
-        return nullptr;
-    }
     SelectionFilterGate();
 
 protected:

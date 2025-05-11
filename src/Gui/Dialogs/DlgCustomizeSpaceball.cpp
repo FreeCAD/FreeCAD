@@ -186,7 +186,7 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
    catch (const std::exception& e)
    {
       // We don't mind not finding the file to be opened
-      Base::Console().Warning("%s\n", e.what());
+      Base::Console().warning("%s\n", e.what());
    }
 }
 
@@ -201,7 +201,7 @@ QVariant ButtonModel::data (const QModelIndex &index, int role) const
     GroupVector groupVector = spaceballButtonGroup()->GetGroups();
     if (index.row() >= (int)groupVector.size())
     {
-        Base::Console().Log("index error in ButtonModel::data\n");
+        Base::Console().log("index error in ButtonModel::data\n");
         return {};
     }
     if (role == Qt::DisplayRole)
@@ -913,7 +913,7 @@ QStringList DlgCustomizeSpaceball::getModels()
     catch (const std::exception& e)
     {
        // We don't mind not finding the file to be opened
-       Base::Console().Warning("%s\n", e.what());
+       Base::Console().warning("%s\n", e.what());
     }
 
     return modelList;

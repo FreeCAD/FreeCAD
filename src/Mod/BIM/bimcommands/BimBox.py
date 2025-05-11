@@ -51,6 +51,7 @@ class BIM_Box:
         import draftguitools.gui_trackers as DraftTrackers
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        self.doc = FreeCAD.ActiveDocument
         self.wp = WorkingPlane.get_working_plane()
         # here we will store our points
         self.points = []
@@ -276,15 +277,14 @@ class BIM_Box:
             if self.HeightValue > 0.0:
                 pla = DraftGeomUtils.placement_from_points(p1, p3, p2)
                 self.LengthValue, self.WidthValue = self.WidthValue, self.LengthValue
-        doc = FreeCAD.ActiveDocument
-        doc.openTransaction(translate("Arch","Create Box"))
-        cube = doc.addObject("Part::Box", "Cube")
+        self.doc.openTransaction(translate("Arch","Create Box"))
+        cube = self.doc.addObject("Part::Box", "Box")
         cube.Placement = pla
         cube.Length = self.LengthValue
         cube.Width = self.WidthValue
         cube.Height = abs(self.HeightValue)
-        doc.commitTransaction()
-        doc.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
 
     def _finish(self):
         self.wp._restore()

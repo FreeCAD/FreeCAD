@@ -48,7 +48,7 @@ True if Draft_rc.__name__ else False
 class ShapeStringTaskPanel:
     """Base class for Draft_ShapeString task panel."""
 
-    def __init__(self, point=None, size=10, string="", font=""):
+    def __init__(self, point=None, size=None, string="", font=""):
 
         self.form = Gui.PySideUic.loadUi(":/ui/TaskShapeString.ui")
         self.form.setObjectName("ShapeStringTaskPanel")
@@ -75,12 +75,14 @@ class ShapeStringTaskPanel:
         self.display_point(self.point)
         self.pointPicked = False
 
-        self.form.sbHeight.setProperty("rawValue", size)
-        self.string = string if string else translate("draft", "Default")
-        self.form.leString.setText(self.string)
+        self.height = size if size is not None else params.get_param("ShapeStringHeight")
+        self.form.sbHeight.setProperty("rawValue", self.height)
+        self.text = string if string else params.get_param("ShapeStringText")
+        self.form.leText.setText(self.text)
         self.platform_win_dialog("Overwrite")
-        self.font_file = font if font else params.get_param("FontFile")
+        self.font_file = font if font else params.get_param("ShapeStringFontFile")
         self.form.fcFontFile.setFileName(self.font_file)
+
         # Prevent cyclic processing of point values:
         self.display_point_active = False
         # Default for the "DontUseNativeFontDialog" preference:
@@ -92,8 +94,10 @@ class ShapeStringTaskPanel:
         self.form.sbY.valueChanged.connect(self.set_point_y)
         self.form.sbZ.valueChanged.connect(self.set_point_z)
         self.form.cbGlobalMode.stateChanged.connect(self.set_global_mode)
-        self.form.fcFontFile.fileNameSelected.connect(self.set_file)
         self.form.pbReset.clicked.connect(self.reset_point)
+        self.form.sbHeight.valueChanged.connect(self.set_height)
+        self.form.leText.textEdited.connect(self.set_text)
+        self.form.fcFontFile.fileNameSelected.connect(self.set_file)
 
     def action(self, arg):
         """scene event handler"""
@@ -157,12 +161,17 @@ class ShapeStringTaskPanel:
     def set_file(self, val):
         """Assign the selected font file."""
         self.font_file = val
+        params.set_param("ShapeStringFontFile", self.font_file)
 
     def set_global_mode(self, val):
         self.global_mode = bool(val)
         params.set_param("GlobalMode", self.global_mode)
         self.change_coord_labels()
         self.display_point(self.point)
+
+    def set_height(self, val):
+        self.height = App.Units.Quantity(val).Value
+        params.set_param("ShapeStringHeight", self.height)
 
     def set_point_coord(self, coord, val):
         """Change self.point based on  X, Y or Z value entered in the task panel.
@@ -190,6 +199,10 @@ class ShapeStringTaskPanel:
     def set_point_z(self, val):
         self.set_point_coord("z", val)
 
+    def set_text(self, val):
+        self.text = val
+        params.set_param("ShapeStringText", self.text)
+
 
 class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
     """Task panel for Draft_ShapeString."""
@@ -206,15 +219,12 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
 
     def create_object(self):
         """Create object in the current document."""
-        string = self.escape_string(self.form.leString.text())
-        size = App.Units.Quantity(self.form.sbHeight.text()).Value
-
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
         cmd = "Draft.make_shapestring("
-        cmd += "String=\"" + string + "\", "
-        cmd += "FontFile=\"" + self.font_file + "\", "
-        cmd += "Size=" + str(size) + ", "
+        cmd += "String=\"" + self.escape_string(self.text) + "\", "
+        cmd += "FontFile=\"" + self.escape_string(self.font_file) + "\", "
+        cmd += "Size=" + str(self.height) + ", "
         cmd += "Tracking=0.0"
         cmd += ")"
         self.sourceCmd.commit(
@@ -249,13 +259,10 @@ class ShapeStringTaskPanelEdit(ShapeStringTaskPanel):
 
     def accept(self):
 
-        string = self.escape_string(self.form.leString.text())
-        size = App.Units.Quantity(self.form.sbHeight.text()).Value
-
         Gui.doCommand("ss = FreeCAD.ActiveDocument.getObject(\"" + self.obj.Name + "\")")
-        Gui.doCommand("ss.String=\"" + string + "\"")
-        Gui.doCommand("ss.FontFile=\"" + self.font_file + "\"")
-        Gui.doCommand("ss.Size=" + str(size))
+        Gui.doCommand("ss.String=\"" + self.escape_string(self.text) + "\"")
+        Gui.doCommand("ss.FontFile=\"" + self.escape_string(self.font_file) + "\"")
+        Gui.doCommand("ss.Size=" + str(self.height))
         Gui.doCommand("ss.Placement.Base=" + toString(self.point))
         Gui.doCommand("FreeCAD.ActiveDocument.recompute()")
 

@@ -22,7 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <cmath>
 #include <limits>
+#include <optional>
+#include <sstream>
+#include <string>
+#include <vector>
 #endif
 
 #include "Unit.h"
@@ -33,7 +38,7 @@
 
 #include "UnitPy.h"
 
-using namespace Base;
+using Base::Quantity;
 
 // returns a string which represents the object e.g. when printed in python
 std::string QuantityPy::representation() const
@@ -181,84 +186,128 @@ PyObject* QuantityPy::getUserPreferred(PyObject* /*args*/) const
 
 PyObject* QuantityPy::getValueAs(PyObject* args) const
 {
-    Quantity quant;
-    quant.setInvalid();
-
-    // first try Quantity
-    if (!quant.isValid()) {
+    auto tryQuantity = [&]() -> std::optional<Quantity> {
         PyObject* object {};
-        if (PyArg_ParseTuple(args, "O!", &(QuantityPy::Type), &object)) {
-            quant = *static_cast<QuantityPy*>(object)->getQuantityPtr();
+        if (!PyArg_ParseTuple(args, "O!", &(QuantityPy::Type), &object)) {
+            return std::nullopt;
         }
-    }
 
-    if (!quant.isValid()) {
+        return *getQuantityPtr();
+    };
+
+    auto tryUnit = [&]() -> std::optional<Quantity> {
         PyObject* object {};
-        PyErr_Clear();
-        if (PyArg_ParseTuple(args, "O!", &(UnitPy::Type), &object)) {
-            quant.setUnit(*static_cast<UnitPy*>(object)->getUnitPtr());
-            quant.setValue(1.0);
+        if (!PyArg_ParseTuple(args, "O!", &(UnitPy::Type), &object)) {
+            return std::nullopt;
         }
-    }
 
-    if (!quant.isValid()) {
+        return Quantity {1.0, *static_cast<UnitPy*>(object)->getUnitPtr()};
+    };
+
+    auto tryUnitAndValue = [&]() -> std::optional<Quantity> {
         PyObject* object {};
         double value {};
-        PyErr_Clear();
-        if (PyArg_ParseTuple(args, "dO!", &value, &(UnitPy::Type), &object)) {
-            quant.setUnit(*static_cast<UnitPy*>(object)->getUnitPtr());
-            quant.setValue(value);
+        if (!PyArg_ParseTuple(args, "dO!", &value, &(UnitPy::Type), &object)) {
+            return std::nullopt;
         }
-    }
 
-    if (!quant.isValid()) {
+        return Quantity {value, *static_cast<UnitPy*>(object)->getUnitPtr()};
+    };
+
+    auto tryUnitPartsAndValue = [&]() -> std::optional<Quantity> {
         double f = std::numeric_limits<double>::max();
-        int i1 = 0;
-        int i2 = 0;
-        int i3 = 0;
-        int i4 = 0;
-        int i5 = 0;
-        int i6 = 0;
-        int i7 = 0;
-        int i8 = 0;
+        int i1 {0};
+        int i2 {0};
+        int i3 {0};
+        int i4 {0};
+        int i5 {0};
+        int i6 {0};
+        int i7 {0};
+        int i8 {0};
         PyErr_Clear();
-        if (PyArg_ParseTuple(args, "d|iiiiiiii", &f, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
-            if (f < std::numeric_limits<double>::max()) {
-                quant = Quantity(f,
-                                 Unit {static_cast<int8_t>(i1),
-                                       static_cast<int8_t>(i2),
-                                       static_cast<int8_t>(i3),
-                                       static_cast<int8_t>(i4),
-                                       static_cast<int8_t>(i5),
-                                       static_cast<int8_t>(i6),
-                                       static_cast<int8_t>(i7),
-                                       static_cast<int8_t>(i8)});
+        if (!PyArg_ParseTuple(args, "d|iiiiiiii", &f, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
+            return std::nullopt;
+        }
+
+        if (f >= std::numeric_limits<double>::max()) {
+            return std::nullopt;
+        }
+
+        auto re = [](auto val) {
+            return static_cast<int8_t>(val);
+        };
+
+        return Quantity {f, Unit {re(i1), re(i2), re(i3), re(i4), re(i5), re(i6), re(i7), re(i8)}};
+    };
+
+    auto tryString = [&]() -> std::optional<Quantity> {
+        char* string {};
+        if (!PyArg_ParseTuple(args, "et", "utf-8", &string)) {
+            return std::nullopt;
+        }
+
+        const std::string str {string};
+        PyMem_Free(string);
+        return Quantity::parse(str);
+    };
+
+    const std::vector<std::function<std::optional<Quantity>()>> funcs = {tryQuantity,
+                                                                         tryUnit,
+                                                                         tryUnitAndValue,
+                                                                         tryUnitPartsAndValue,
+                                                                         tryString};
+
+    auto tryFuncs = [&]() -> std::optional<Quantity> {
+        for (const auto& func : funcs) {
+            PyErr_Clear();
+            if (auto quant = func(); quant.has_value()) {
+                return quant;
             }
         }
+        return std::nullopt;
+    };
+
+    auto checkQuant = [&](const Quantity& quant) -> bool {
+        auto err = [&](const std::string& str) {
+            PyErr_SetString(PyExc_ValueError, str.c_str());
+        };
+
+        const auto* qPtr = getQuantityPtr();
+        if (!qPtr) {
+            err("QuantityPtr is null");
+            return false;
+        }
+
+        const auto qpUnit = qPtr->getUnit();
+        if (qpUnit.isEmpty()) {
+            err("QuantityPtr returned empty unit");
+            return false;
+        }
+
+        if (const auto qUnit = quant.getUnit(); qUnit != qpUnit) {
+            err("Unit mismatch (`" + qUnit.getString() + "` != `" + qpUnit.getString() + "`)");
+            return false;
+        }
+
+        return true;
+    };
+
+    //----------------------------------------------------------------------------------------------
+
+    const auto optQuant = tryFuncs();
+    if (!optQuant.has_value()) {
+        PyErr_SetString(PyExc_TypeError, "Expected quantity, string, float or unit");
+        return nullptr;
     }
 
-    if (!quant.isValid()) {
-        PyErr_Clear();
-        char* string {};
-        if (PyArg_ParseTuple(args, "et", "utf-8", &string)) {
-            std::string str(string);
-            PyMem_Free(string);
-            quant = Quantity::parse(str);
+    const auto quant = optQuant.value();
+    if (quant.isQuantity()) {
+        if (!checkQuant(quant)) {
+            return nullptr;
         }
     }
 
-    if (!quant.isValid()) {
-        PyErr_SetString(PyExc_TypeError, "Either quantity, string, float or unit expected");
-        return nullptr;
-    }
-
-    if (getQuantityPtr()->getUnit() != quant.getUnit() && quant.isQuantity()) {
-        PyErr_SetString(PyExc_ValueError, "Unit mismatch");
-        return nullptr;
-    }
-
-    quant = Quantity(getQuantityPtr()->getValueAs(quant));
-    return new QuantityPy(new Quantity(quant));
+    return new QuantityPy(new Quantity(getQuantityPtr()->getValue() / quant.getValue()));
 }
 
 PyObject* QuantityPy::__round__(PyObject* args) const

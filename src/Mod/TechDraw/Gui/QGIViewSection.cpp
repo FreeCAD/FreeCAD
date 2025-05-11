@@ -48,7 +48,7 @@ void QGIViewSection::draw()
 
 void QGIViewSection::drawSectionFace()
 {
-    // Base::Console().Message("QGIVS::drawSectionFace()\n");
+    // Base::Console().message("QGIVS::drawSectionFace()\n");
     auto section( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
     if (!section) {
         return;
@@ -118,7 +118,7 @@ void QGIViewSection::drawSectionFace()
                 }
             }
         } else {
-            Base::Console().Warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
+            Base::Console().warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
                                     section->CutSurfaceDisplay.getValue());
         }
 

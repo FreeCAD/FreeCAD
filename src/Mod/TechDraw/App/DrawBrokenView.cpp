@@ -151,7 +151,7 @@ App::DocumentObjectExecReturn* DrawBrokenView::execute()
 
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
-        Base::Console().Message("DBV::execute - %s - Source shape is Null.\n", getNameInDocument());
+        Base::Console().message("DBV::execute - %s - Source shape is Null.\n", getNameInDocument());
         return DrawView::execute();     // NOLINT
     }
 
@@ -188,7 +188,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
 {
     auto breakPoints = breakPointsFromObj(breakObj);
     if (breakPoints.first.IsEqual(breakPoints.second, EWTOLERANCE)) {
-        Base::Console().Message("DBV::apply1Break - break points are equal\n");
+        Base::Console().message("DBV::apply1Break - break points are equal\n");
         return inShape;
     }
 
@@ -203,7 +203,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     auto halfSpace0 = makeHalfSpace(breakPoints.first, moveDir0, breakPoints.second);
     FCBRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
     if (!mkCut0.IsDone()) {
-        Base::Console().Message("DBV::apply1Break - cut0 failed\n");
+        Base::Console().message("DBV::apply1Break - cut0 failed\n");
     }
     TopoDS_Shape cut0 = mkCut0.Shape();
 
@@ -215,7 +215,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     auto halfSpace1 = makeHalfSpace(breakPoints.second, moveDir1, breakPoints.first);
     FCBRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
     if (!mkCut1.IsDone()) {
-        Base::Console().Message("DBV::apply1Break - cut1 failed\n");
+        Base::Console().message("DBV::apply1Break - cut1 failed\n");
     }
     TopoDS_Shape cut1 = mkCut1.Shape();
 
@@ -402,7 +402,7 @@ bool DrawBrokenView::isBreakObjectSketch(const App::DocumentObject& breakObj)
     }
     // there should be 2
     if (sketchEdges.size() != 2) {
-        Base::Console().Message("DBV::isBreakObjectSketch - wrong number of edges\n");
+        Base::Console().message("DBV::isBreakObjectSketch - wrong number of edges\n");
         return false;
     }
     // they should both have the same orientation
@@ -553,7 +553,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromEdge(co
     }
 
     if (!DU::fpCompare(fabs(direction.Dot(stdY)), 1.0, EWTOLERANCE) ) {
-        Base::Console().Message("DBV::breakBoundsFromEdge - direction is not X or Y\n");
+        Base::Console().message("DBV::breakBoundsFromEdge - direction is not X or Y\n");
         // TODO: throw? return nonsense?
     }
 
@@ -596,7 +596,7 @@ double DrawBrokenView::breaklineLengthFromSketch(const App::DocumentObject& brea
 
     if (sketchEdges.size() < 2)  {
         // need 2 edges
-        Base::Console().Message("DBV::breaklineLengthFromSketch - not enough edges\n");
+        Base::Console().message("DBV::breaklineLengthFromSketch - not enough edges\n");
     }
 
     std::pair<Base::Vector3d, Base::Vector3d> ends0 = SU::getEdgeEnds(sketchEdges.front());
@@ -1158,9 +1158,9 @@ bool DrawBrokenView::isDirectionReversed(Base::Vector3d direction) const
 
 void DrawBrokenView::printBreakList(const std::string& text, const BreakList& inBreaks) const
 {
-    Base::Console().Message("DBV - %s\n", text.c_str());
+    Base::Console().message("DBV - %s\n", text.c_str());
     for (auto& entry : inBreaks) {
-        Base::Console().Message("   > label: %s  >  low: %.3f  >  high: %.3f  >  net: %.3f\n", entry.breakObj->Label.getValue(),
+        Base::Console().message("   > label: %s  >  low: %.3f  >  high: %.3f  >  net: %.3f\n", entry.breakObj->Label.getValue(),
                                 entry.lowLimit, entry.highLimit, entry.netRemoved);
     }
 }
