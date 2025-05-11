@@ -196,8 +196,12 @@ class GmshTools(ObjectTools):
         self.dist_element_set = set()   # set to remove duplicated element edge or faces
 
         # transfinite meshes
-        self.transfinite_curve_settings = []      # list of dict, one entry per curve
-        self.transfinite_curve_elements = set()   # set to remove duplicated element edge or faces
+        self.transfinite_curve_settings = []       # list of dict, one entry per curve definition
+        self.transfinite_curve_elements = set()    # set to remove duplicated element edge or faces
+        self.transfinite_surface_settings = []     # list of dict, one entry per surface definition
+        self.transfinite_surface_elements = set()  # set to remove duplicated element vertex or faces
+        self.transfinite_volume_settings = []      # list of dict, one entry per volume definition
+        self.transfinite_volume_elements = set()   # set to remove duplicated volumes
 
         # other initializations
         self.temp_file_geometry = ""
@@ -486,13 +490,12 @@ class GmshTools(ObjectTools):
                 search_ele_in_shape_to_mesh = True
 
             for element in sub[1]:
-                # print(elems)  # elems --> element
                 if search_ele_in_shape_to_mesh:
                     # we're going to try to find the element in the
                     # Shape to mesh and use the found element as elems
                     # the method getElement(element)
                     # does not return Solid elements
-                    ele_shape = geomtools.get_element(sub[0], elems)
+                    ele_shape = geomtools.get_element(sub[0], element)
                     found_element = geomtools.find_element_in_shape(
                         self.part_obj.Shape, ele_shape
                     )
@@ -505,7 +508,6 @@ class GmshTools(ObjectTools):
                                 mr_obj.Name
                             )
                         )
-                # print(elems)  # element
                 elements.add(element)
 
         if duplicates_set:
@@ -560,7 +562,7 @@ class GmshTools(ObjectTools):
                     or femutils.is_of_type(part, "FeatureXOR")
                 )
             ):
-                self.outputCompoundWarning
+                self.outputCompoundWarning()
             for mr_obj in mesh_region_list:
                 if mr_obj.Suppressed:
                     continue
@@ -606,7 +608,7 @@ class GmshTools(ObjectTools):
             if self.part_obj.Shape.ShapeType == "Compound":
                 # see https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
                 # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
-                self.outputCompoundWarning
+                self.outputCompoundWarning()
 
             boundary_layer_set = False
             for mr_obj in mesh_boundary_list:
@@ -735,7 +737,7 @@ class GmshTools(ObjectTools):
                     or femutils.is_of_type(part, "FeatureXOR")
                 )
             ):
-                self.outputCompoundWarning
+                self.outputCompoundWarning()
             for mr_obj in mesh_distance_list:
                 if mr_obj.Suppressed:
                     continue
@@ -800,7 +802,7 @@ class GmshTools(ObjectTools):
                     or femutils.is_of_type(part, "FeatureXOR")
                 )
             ):
-                self.outputCompoundWarning
+                self.outputCompoundWarning()
 
             for mr_obj in transfinite_curve_list:
                 if mr_obj.Suppressed:
@@ -816,9 +818,6 @@ class GmshTools(ObjectTools):
                         continue
 
                     idx_dict = self._element_list_to_shape_idx_dict(elements)
-                    #if mr_obj.in
-
-                    #if mr_obj.Invert
                     if idx_dict["Edge"]:
                         settings = {}
                         prefix = ""
@@ -831,7 +830,7 @@ class GmshTools(ObjectTools):
                                 coef = 1.0/coef
 
                         settings["tag"] = ",".join(str(prefix+i) for i in idx_dict["Edge"])
-                        settings["numNodes"] = mr_obj.Number
+                        settings["numNodes"] = mr_obj.Nodes
                         if mr_obj.Distribution != "Constant":
                             settings["meshType"] = mr_obj.Distribution
                             settings["coef"] = coef
@@ -843,6 +842,104 @@ class GmshTools(ObjectTools):
                         "The transfinite curve {} is not used to create the mesh "
                         "because the reference list is empty.\n".format(mr_obj.Name)
                     )
+
+
+        # transfinite surfaces
+        transfinite_surface_list = self._get_definitions_of_type("Fem::MeshTransfiniteSurface")
+        if not transfinite_surface_list:
+            pass
+        else:
+            part = self.part_obj
+            if (
+                transfinite_surface_list
+                and part.Shape.ShapeType == "Compound"
+                and (
+                    femutils.is_of_type(part, "FeatureBooleanFragments")
+                    or femutils.is_of_type(part, "FeatureSlice")
+                    or femutils.is_of_type(part, "FeatureXOR")
+                )
+            ):
+                self.outputCompoundWarning()
+
+            for mr_obj in transfinite_surface_list:
+                if mr_obj.Suppressed:
+                    continue
+
+                if mr_obj.References:
+
+                    # collect all elements!
+                    elements = self._get_reference_elements(mr_obj, self.transfinite_surface_elements)
+                    if not elements:
+                        Console.PrintError( ("The transfinite surface {} is not used because no unique"
+                                             "elements are selected.\n").format(mr_obj.Name))
+                        continue
+
+                    idx_dict = self._element_list_to_shape_idx_dict(elements)
+                    if idx_dict["Face"]:
+                        settings = {}
+                        settings["surfaces"] = ",".join(str(i) for i in idx_dict["Face"])
+                        if idx_dict["Vertex"]:
+                            settings["nodes"] = ",".join(str(i) for i in idx_dict["Vertex"])
+                        if mr_obj.Recombine:
+                            settings["recombine"] = True
+                        else:
+                            settings["orientation"] = mr_obj.TriangleOrientation
+
+                        self.transfinite_surface_settings.append(settings)
+
+                else:
+                    Console.PrintError(
+                        "The transfinite surface {} is not used to create the mesh "
+                        "because the reference list is empty.\n".format(mr_obj.Name)
+                    )
+
+        # transfinite volumes
+        transfinite_volume_list = self._get_definitions_of_type("Fem::MeshTransfiniteVolume")
+        if not transfinite_volume_list:
+            pass
+        else:
+            part = self.part_obj
+            if (
+                transfinite_volume_list
+                and part.Shape.ShapeType == "Compound"
+                and (
+                    femutils.is_of_type(part, "FeatureBooleanFragments")
+                    or femutils.is_of_type(part, "FeatureSlice")
+                    or femutils.is_of_type(part, "FeatureXOR")
+                )
+            ):
+                self.outputCompoundWarning()
+
+            for mr_obj in transfinite_volume_list:
+                if mr_obj.Suppressed:
+                    continue
+
+                if mr_obj.References:
+
+                    # collect all elements!
+                    elements = self._get_reference_elements(mr_obj, self.transfinite_volume_elements)
+                    if not elements:
+                        Console.PrintError( ("The transfinite volume {} is not used because no unique"
+                                             "elements are selected.\n").format(mr_obj.Name))
+                        continue
+
+                    idx_dict = self._element_list_to_shape_idx_dict(elements)
+                    if idx_dict["Solid"]:
+                        settings = {}
+                        settings["volumes"] = ",".join(str(i) for i in idx_dict["Solid"])
+                        if idx_dict["Vertex"]:
+                            settings["nodes"] = ",".join(str(i) for i in idx_dict["Vertex"])
+                        if mr_obj.MixedElements:
+                            settings["mixed"] = True
+
+                        self.transfinite_volume_settings.append(settings)
+
+                else:
+                    Console.PrintError(
+                        "The transfinite volume {} is not used to create the mesh "
+                        "because the reference list is empty.\n".format(mr_obj.Name)
+                    )
+
 
 
     def write_groups(self, geo):
@@ -984,6 +1081,8 @@ class GmshTools(ObjectTools):
 
         geo.write("\n")
         geo.write("// Transfinite elements\n")
+
+        # write curves
         for setting in self.transfinite_curve_settings:
             geo.write("Transfinite Curve {")
             geo.write(f"{setting["tag"]} }} = {setting["numNodes"]}")
@@ -992,6 +1091,32 @@ class GmshTools(ObjectTools):
                 geo.write(f" Using {setting["meshType"]} {setting["coef"]}")
             geo.write(";\n")
 
+        geo.write("\n")
+
+        # write surfaces
+        for setting in self.transfinite_surface_settings:
+            geo.write(f"Transfinite Surface {{ {setting["surfaces"]} }}")
+            if "nodes" in setting:
+                geo.write( f" = {{ {setting["nodes"]} }}" )
+            if "orientation" in setting:
+                geo.write(f" {setting["orientation"]}")
+            if "recombine" in setting:
+                geo.write(";\n")
+                geo.write(f"Recombine Surface {{ {setting["surfaces"]} }}")
+
+            geo.write(";\n")
+
+        # write volumes
+        for setting in self.transfinite_volume_settings:
+            geo.write(f"Transfinite Volume {{ {setting["volumes"]} }}")
+            if "nodes" in setting:
+                geo.write(f" = {{ {setting["nodes"]} }}")
+            geo.write(";\n")
+            geo.write(f"Recombine Volume {{ {setting["volumes"]} }};\n")
+            if "mixed" in setting:
+                geo.write(f"TransfQuadTri {{ {setting["volumes"]} }};\n")
+
+        geo.write("// Transfinite elements finished\n")
         geo.write("\n")
 
 
