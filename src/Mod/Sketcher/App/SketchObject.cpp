@@ -4173,6 +4173,72 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
     std::vector<Part::Geometry*> symgeos =
         getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
 
+    auto addNewConstraintWithOneGeom = [&](const Constraint* constr, int newGeoId) {
+        if (refIsAxisAligned
+            && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)) {
+            // In this case we want to keep the Vertical, Horizontal constraints. DistanceX and
+            // DistanceY constraints should also be possible to keep in this case, but keeping
+            // them causes segfault, not sure why.
+            return;
+        }
+
+        if (!refIsAxisAligned
+            && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
+                || constr->Type == Sketcher::Vertical || constr->Type == Sketcher::Horizontal)) {
+            // this includes all non-directional single GeoId constraints, as radius, diameter,
+            // weight,...
+            return;
+        }
+
+        Constraint* constNew = constr->copy();
+        constNew->Name = "";
+        constNew->First = newGeoId;
+        newconstrVals.push_back(constNew);
+    };
+
+    auto flipStartEndIfRelevant = [&isStartEndInverted](int geoId,
+                                                        const Sketcher::PointPos posId,
+                                                        Sketcher::PointPos& posIdNew) {
+        if (!isStartEndInverted[geoId]) {
+            return;
+        }
+
+        if (posId == Sketcher::PointPos::start) {
+            posIdNew = Sketcher::PointPos::end;
+        }
+        else if (posId == Sketcher::PointPos::end) {
+            posIdNew = Sketcher::PointPos::start;
+        }
+    };
+
+    auto addNewConstraintWithTwoGeoms =
+        [&](const Constraint* constr, int newFirstGeoId, int newSecondGeoId) {
+            if (!(constr->Type == Sketcher::Coincident || constr->Type == Sketcher::Perpendicular
+                  || constr->Type == Sketcher::Parallel || constr->Type == Sketcher::Tangent
+                  || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Equal
+                  || constr->Type == Sketcher::Angle || constr->Type == Sketcher::PointOnObject
+                  || constr->Type == Sketcher::InternalAlignment)) {
+                return;
+            }
+
+            Constraint* constNew = constr->copy();
+            constNew->Name = "";
+            constNew->First = newFirstGeoId;
+            constNew->Second = newSecondGeoId;
+            flipStartEndIfRelevant(constr->First, constr->FirstPos, constNew->FirstPos);
+            flipStartEndIfRelevant(constr->Second, constr->SecondPos, constNew->SecondPos);
+
+            if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
+                AutoLockTangencyAndPerpty(constNew, true);
+            }
+
+            if ((constr->Type == Sketcher::Angle) && (refPosId == Sketcher::PointPos::none)) {
+                constNew->setValue(-constr->getValue());
+            }
+
+            newconstrVals.push_back(constNew);
+        };
+
     {
         addGeometry(symgeos);
 
@@ -4192,28 +4258,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
             }
 
             if (constr->Second == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
-                if (refIsAxisAligned
-                    && (constr->Type == Sketcher::DistanceX
-                        || constr->Type == Sketcher::DistanceY)) {
-                    // In this case we want to keep the Vertical, Horizontal constraints.
-                    // DistanceX and DistanceY constraints should also be possible to keep in
-                    // this case, but keeping them causes segfault, not sure why.
-
-                    continue;
-                }
-                if (!refIsAxisAligned
-                    && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
-                        || constr->Type == Sketcher::Vertical
-                        || constr->Type == Sketcher::Horizontal)) {
-                    // this includes all non-directional single GeoId constraints, as radius,
-                    // diameter, weight,...
-                    continue;
-                }
-                Constraint* constNew = constr->copy();
-                constNew->Name = "";
-                constNew->First = firstIt->second;
-                newconstrVals.push_back(constNew);
-
+                addNewConstraintWithOneGeom(constr, firstIt->second);
                 continue;
             }
 
@@ -4226,45 +4271,8 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
 
             // Second is also in the list
 
-            auto flipStartEndIfRelevant = [&isStartEndInverted](int geoId,
-                                                                const Sketcher::PointPos posId,
-                                                                Sketcher::PointPos& posIdNew) {
-                if (isStartEndInverted[geoId]) {
-                    if (posId == Sketcher::PointPos::start) {
-                        posIdNew = Sketcher::PointPos::end;
-                    }
-                    else if (posId == Sketcher::PointPos::end) {
-                        posIdNew = Sketcher::PointPos::start;
-                    }
-                }
-            };
-
             if (constr->Third == GeoEnum::GeoUndef) {
-                if (!(constr->Type == Sketcher::Coincident
-                      || constr->Type == Sketcher::Perpendicular
-                      || constr->Type == Sketcher::Parallel || constr->Type == Sketcher::Tangent
-                      || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Equal
-                      || constr->Type == Sketcher::Angle || constr->Type == Sketcher::PointOnObject
-                      || constr->Type == Sketcher::InternalAlignment)) {
-                    continue;
-                }
-
-                Constraint* constNew = constr->copy();
-                constNew->Name = "";
-                constNew->First = firstIt->second;
-                constNew->Second = secondIt->second;
-                flipStartEndIfRelevant(constr->First, constr->FirstPos, constNew->FirstPos);
-                flipStartEndIfRelevant(constr->Second, constr->SecondPos, constNew->SecondPos);
-
-                if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
-                    AutoLockTangencyAndPerpty(constNew, true);
-                }
-
-                if ((constr->Type == Sketcher::Angle) && (refPosId == Sketcher::PointPos::none)) {
-                    constNew->setValue(-constr->getValue());
-                }
-
-                newconstrVals.push_back(constNew);
+                addNewConstraintWithTwoGeoms(constr, firstIt->second, secondIt->second);
                 continue;
             }
 
@@ -4312,6 +4320,16 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
                 symConstr->ThirdPos = refPosId;
                 newconstrVals.push_back(symConstr);
             };
+        auto createSymConstrAtBothEnds = [&](int geoId1, int geoId2) {
+            if (isStartEndInverted[geoId1]) {
+                createSymConstr(geoId1, geoId2, PointPos::start, PointPos::end);
+                createSymConstr(geoId1, geoId2, PointPos::end, PointPos::start);
+            }
+            else {
+                createSymConstr(geoId1, geoId2, PointPos::start, PointPos::start);
+                createSymConstr(geoId1, geoId2, PointPos::end, PointPos::end);
+            }
+        };
         auto createEqualityConstr = [&](int first, int second) {
             auto* symConstr = new Constraint();
             symConstr->Type = Equal;
@@ -4327,34 +4345,19 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
 
             if (geo->is<Part::GeomLineSegment>()) {
                 auto gf = GeometryFacade::getFacade(geo);
+                // NOTE: Internal aligned lines (ellipse, parabola, hyperbola) are causing
+                // redundant constraint.
                 if (!gf->isInternalAligned()) {
-                    // Note internal aligned lines (ellipse, parabola, hyperbola) are causing
-                    // redundant constraint.
-                    createSymConstr(geoId1,
-                                    geoId2,
-                                    PointPos::start,
-                                    isStartEndInverted[geoId1] ? PointPos::end : PointPos::start);
-                    createSymConstr(geoId1,
-                                    geoId2,
-                                    PointPos::end,
-                                    isStartEndInverted[geoId1] ? PointPos::start : PointPos::end);
+                    createSymConstrAtBothEnds(geoId1, geoId2);
                 }
             }
             else if (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>()) {
                 createEqualityConstr(geoId1, geoId2);
                 createSymConstr(geoId1, geoId2, PointPos::mid, PointPos::mid);
             }
-            else if (geo->is<Part::GeomArcOfCircle>() || geo->is<Part::GeomArcOfEllipse>()
-                     || geo->is<Part::GeomArcOfHyperbola>() || geo->is<Part::GeomArcOfParabola>()) {
+            else if (geo->isDerivedFrom<Part::GeomArcOfConic>()) {
                 createEqualityConstr(geoId1, geoId2);
-                createSymConstr(geoId1,
-                                geoId2,
-                                PointPos::start,
-                                isStartEndInverted[geoId1] ? PointPos::end : PointPos::start);
-                createSymConstr(geoId1,
-                                geoId2,
-                                PointPos::end,
-                                isStartEndInverted[geoId1] ? PointPos::start : PointPos::end);
+                createSymConstrAtBothEnds(geoId1, geoId2);
             }
             else if (geo->is<Part::GeomPoint>()) {
                 auto gf = GeometryFacade::getFacade(geo);
@@ -4364,6 +4367,10 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
             }
             // Note bspline has symmetric by the internal aligned circles.
         }
+    }
+
+    if (newconstrVals.size() > constrvals.size()) {
+        Constraints.setValues(std::move(newconstrVals));
     }
 
     // we delayed update, so trigger it now.
@@ -5151,8 +5158,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             // it is the first added element of this row in the perpendicular to
             // displacementvector direction
             if (y == 1) {
-                rowRefGeoId = cGeoId;
-                cGeoId++;
+                rowRefGeoId = cGeoId++;
 
                 // add length (or equal if perpscale==1) and perpendicular
                 if (perpscale == 1.0) {
@@ -5225,8 +5231,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
 
             if (y == 0 && x == 1) {
                 // first element of the first row
-                colRefGeoId = cGeoId;
-                cGeoId++;
+                colRefGeoId = cGeoId++;
 
                 // add length and Angle
                 constNew = new Constraint();
