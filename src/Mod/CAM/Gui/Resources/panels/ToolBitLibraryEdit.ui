@@ -88,26 +88,6 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QPushButton" name="libraryOpen">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Select a working path for the tool library editor.</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="../../../../../Gui/Icons/resource.qrc">
-            <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="addToolTable">
           <property name="maximumSize">
            <size>
@@ -133,6 +113,7 @@
           </property>
          </widget>
         </item>
+        <!-- The libraryOpen button item was here -->
         <item>
          <widget class="QPushButton" name="libraryExport">
           <property name="toolTip">

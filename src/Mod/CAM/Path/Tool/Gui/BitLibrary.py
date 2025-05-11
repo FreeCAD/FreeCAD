@@ -22,27 +22,24 @@
 # ***************************************************************************
 
 
-import pathlib
 import FreeCAD
 import FreeCADGui
 import Path
-from Path.Tool import ToolBitFactory
-import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
 import PySide
 from PySide.QtGui import QStandardItem, QStandardItemModel, QPixmap
 from PySide.QtCore import Qt
-import json
 import os
-import shutil
 import uuid as UUID
 from functools import partial
+from typing import List, Tuple
+from ..assets import AssetUri
+from ..camassets import cam_assets, ensure_assets_initialized
 from ..shape.ui.shapeselector import ShapeSelector
-from ..toolbit.models.base import Declaration
-from ..toolbit.util import get_toolbit_filepath_from_name
-from ..shape.util import ensure_toolbitshape_store_initialized
+from ..toolbit.models.base import ToolBit
+from ..library import Library
 
 
 if False:
@@ -58,27 +55,6 @@ _LibraryRole = PySide.QtCore.Qt.UserRole + 3
 
 
 translate = FreeCAD.Qt.translate
-
-
-def ensureLibrary():
-    """Create a default library if none exists"""
-    # TODO: Should file handling be done in the Gui modules? No.
-
-    # Create the Library dir if it does not exist.
-    libdir = Path.Preferences.getLibraryPath()
-    libdir.mkdir(parents=True, exist_ok=True)
-    if not any(libdir.iterdir()):
-        srcdir = Path.Preferences.getBuiltinToolPath() / "Library"
-        for filepath in srcdir.glob("*.fctl"):
-            shutil.copy(filepath, libdir / filepath.name)
-
-    # Create the Bit dir if it does not exist.
-    bitdir = Path.Preferences.getToolBitPath()
-    bitdir.mkdir(parents=True, exist_ok=True)
-    if not any(bitdir.iterdir()):
-        srcdir = Path.Preferences.getBuiltinToolPath() / "Bit"
-        for filepath in srcdir.glob("*.fctb"):
-            shutil.copy(filepath, bitdir / filepath.name)
 
 
 class _TableView(PySide.QtGui.QTableView):
@@ -165,48 +141,58 @@ class ModelFactory:
         Returns a QStandardItemModel.
         """
         Path.Log.track()
-        path = Path.Preferences.getLibraryPath()
         model.clear()
 
-        if path.is_dir():
-            for libFile in sorted(path.glob("*.fctl")):
-                libItem = QStandardItem(libFile.stem)
-                libItem.setToolTip(libFile.root)
-                libItem.setData(libFile.name, _LibraryRole)
-                libItem.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
-                model.appendRow(libItem)
+        # Use AssetManager to fetch library assets (depth=0 for shallow fetch)
+        try:
+            # Fetch library assets themselves, not their deep dependencies (tools).
+            # depth=0 means "fetch this asset, but not its dependencies"
+            # The 'fetch' method returns actual Asset objects.
+            libraries = cam_assets.fetch(asset_type="toolbitlibrary", depth=0)
+        except Exception as e:
+            Path.Log.error(f"Failed to fetch toolbit libraries: {e}")
+            return model # Return empty model on error
+
+        # Sort by label for consistent ordering, falling back to asset_id if label is missing
+        def get_sort_key(library):
+            label = getattr(library, 'label', None)
+            return label if label else library.get_id()
+
+        for library in sorted(libraries, key=get_sort_key):
+            lib_uri_str = str(library.get_uri())
+            libItem = QStandardItem(library.label or library.get_id())
+            libItem.setToolTip(f"ID: {library.get_id()}\nURI: {lib_uri_str}")
+            libItem.setData(lib_uri_str, _LibraryRole) # Store the URI string
+            libItem.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
+            model.appendRow(libItem)
 
         Path.Log.debug("model rows: {}".format(model.rowCount()))
         return model
 
     @staticmethod
-    def __library_load(library: str, data_model: QStandardItemModel):
-        Path.Log.track(library)
+    def __library_load(library_uri: str, data_model: QStandardItemModel):
+        Path.Log.track(library_uri)
 
-        if library:
-            Path.Preferences.setLastToolLibrary(library)
-        libpath = Path.Preferences.getLibraryPath() / library
+        if library_uri:
+            # Store the AssetUri string, not just the name
+            Path.Preferences.setLastToolLibrary(library_uri)
 
         try:
-            with open(libpath) as fp:
-                library = json.load(fp)
+            # Load the library asset using AssetManager
+            loaded_library = cam_assets.get(AssetUri(library_uri))
         except Exception as e:
-            Path.Log.error(f"Failed to load library from {libpath}: {e}")
-            return
+            Path.Log.error(f"Failed to load library from {library_uri}: {e}")
+            raise
 
-        for tool_bit in library.get("tools", []):
-            try:
-                nr = tool_bit["nr"]
-                bit = get_toolbit_filepath_from_name(tool_bit["path"])
-                if bit:
-                    Path.Log.track(bit)
-                    tool = Declaration(bit)
-                    data_model.appendRow(ModelFactory._tool_add(nr, tool, bit))
-                else:
-                    Path.Log.error(f"Could not find tool #{nr}: {tool_bit['path']}")
-            except Exception as e:
-                msg = f"Error loading tool: {tool_bit['path']} : {e}"
-                FreeCAD.Console.PrintError(msg)
+        # Iterate over the loaded ToolBit asset instances
+        for tool_no, tool_bit in sorted(loaded_library.tool_nos.items()):
+            data_model.appendRow(
+                ModelFactory._tool_add(
+                    tool_no,
+                    tool_bit.to_dict(),
+                    str(tool_bit.get_uri())
+                )
+            )
 
     @staticmethod
     def _generate_tooltip(toolbit: dict) -> str:
@@ -260,38 +246,13 @@ class ModelFactory:
         return [tool_nr, tool_name, tool_shape]
 
     @staticmethod
-    def new_tool(datamodel: QStandardItemModel, path: str):
+    def library_open(model: QStandardItemModel, library_uri: str) -> QStandardItemModel:
         """
-        Adds a toolbit item to a model.
-        """
-        Path.Log.track()
-
-        try:
-            nr = (
-                max(
-                    (
-                        int(datamodel.item(row, 0).data(Qt.EditRole))
-                        for row in range(datamodel.rowCount())
-                    ),
-                    default=0,
-                )
-                + 1
-            )
-            tool = Declaration(path)
-        except Exception as e:
-            Path.Log.error(e)
-            return
-
-        datamodel.appendRow(ModelFactory._tool_add(nr, tool, path))
-
-    @staticmethod
-    def library_open(model: QStandardItemModel, lib) -> QStandardItemModel:
-        """
-        Opens the tools in a library.
+        Opens the tools in a library using its AssetUri.
         Returns a QStandardItemModel.
         """
-        Path.Log.track(lib)
-        ModelFactory.__library_load(lib, model)
+        Path.Log.track(library_uri)
+        ModelFactory.__library_load(library_uri, model)
         Path.Log.debug("model rows: {}".format(model.rowCount()))
         return model
 
@@ -300,8 +261,7 @@ class ToolBitSelector(object):
     """Controller for displaying a library and creating ToolControllers"""
 
     def __init__(self):
-        ensure_toolbitshape_store_initialized()
-        ensureLibrary()
+        ensure_assets_initialized(cam_assets)
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitSelector.ui")
         self.factory = ModelFactory()
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
@@ -400,38 +360,52 @@ class ToolBitSelector(object):
         library.open()
         self.loadToolLibraries()
 
-    def selectedOrAllTools(self):
+    def selectedOrAllTools(self) -> List[Tuple[int, ToolBit]]:
         """
-        Iterate the selection and add individual tools
-        If a group is selected, iterate and add children
+        Iterate the selection and get individual toolbit assets
+        If a group is selected, iterate and get children
         """
-
+        Path.Log.track()
         itemsToProcess = []
         for index in self.form.tools.selectedIndexes():
             item = index.model().itemFromIndex(index)
 
             if item.hasChildren():
-                for i in range(item.rowCount() - 1):
-                    if item.child(i).column() == 0:
-                        itemsToProcess.append(item.child(i))
+                for i in range(item.rowCount()): # Iterate through all children
+                    child_item = item.child(i, 0) # Assuming tool number is in column 0
+                    if child_item:
+                         itemsToProcess.append(child_item)
 
-            elif item.column() == 0:
+            elif item.column() == 0: # Ensure it's the tool number column
                 itemsToProcess.append(item)
 
         tools = []
         for item in itemsToProcess:
             toolNr = int(item.data(PySide.QtCore.Qt.EditRole))
-            toolPath = item.data(_PathRole)
-            tools.append((toolNr, ToolBitFactory.create_bit_from_file(toolPath)))
+            tool_uri_string = item.data(_PathRole)
+            if tool_uri_string:
+                try:
+                    toolbit = cam_assets.get(AssetUri(tool_uri_string))
+                    toolbit.attach_to_doc(FreeCAD.ActiveDocument)
+                    tools.append((toolNr, toolbit))
+                except Exception as e:
+                    Path.Log.error(f"Failed to load toolbit asset {tool_uri_string}: {e}")
+                    # Optionally inform the user with a QMessageBox
         return tools
 
     def selectedOrAllToolControllers(self, index=None):
         """
         if no jobs, don't do anything, otherwise all TCs for all
-        selected toolbits
+        selected toolbit assets
         """
+        Path.Log.track()
         jobs = PathUtilsGui.PathUtils.GetJobs()
         if len(jobs) == 0:
+            PySide.QtGui.QMessageBox.information(
+                self.form,
+                translate("CAM_ToolBit", "No Job Found"),
+                translate("CAM_ToolBit", "Please create a Job first."),
+            )
             return
         elif len(jobs) == 1:
             job = jobs[0]
@@ -442,10 +416,11 @@ class ToolBitSelector(object):
         if job is None:  # user may have canceled
             return
 
-        tools = self.selectedOrAllTools()
+        # Get the selected toolbit assets
+        selected_tools = self.selectedOrAllTools()
 
-        for tool in tools:
-            tc = PathToolControllerGui.Create("TC: {}".format(tool[1].Label), tool[1], tool[0])
+        for toolNr, toolbit in selected_tools:
+            tc = PathToolControllerGui.Create(f"TC: {toolbit.get_label()}", toolbit.obj, toolNr)
             job.Proxy.addToolController(tc)
             FreeCAD.ActiveDocument.recompute()
 
@@ -475,10 +450,9 @@ class ToolBitLibrary(object):
 
     def __init__(self):
         Path.Log.track()
-        ensure_toolbitshape_store_initialized()
-        ensureLibrary()
+        ensure_assets_initialized(cam_assets)
         self.factory = ModelFactory()
-        self.temptool = None
+        self.editing_toolbit = None # Store the ToolBit asset being edited
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
         self.listModel = PySide.QtGui.QStandardItemModel()
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitLibraryEdit.ui")
@@ -489,61 +463,173 @@ class ToolBitLibrary(object):
         self.title = self.form.windowTitle()
 
     def toolBitNew(self):
-        """Create a new toolbit"""
+        """Create a new toolbit asset and add it to the current library"""
         Path.Log.track()
 
-        # select the shape file
+        if not self.current_library:
+            PySide.QtGui.QMessageBox.warning(
+                self.form,
+                translate("CAM_ToolBit", "No Library Loaded"),
+                translate("CAM_ToolBit", "Load or create a tool library first."),
+            )
+            return
+
+        # Select the shape for the new toolbit
         selector = ShapeSelector()
         shape = selector.show()
         if shape is None:  # user canceled
             return
 
-        # select the bit file location and filename
-        filename = PathToolBitGui.GetNewToolFile()
-        if filename is None:
-            return
+        try:
+            # Find the appropriate ToolBit subclass based on the shape name
+            tool_bit_classes = {b.SHAPE_CLASS.name: b for b in ToolBit.__subclasses__()}
+            tool_bit_class = tool_bit_classes.get(shape.name)
 
-        # Parse out the name of the file and write the structure
-        loc, fil = os.path.split(filename)
-        fname = os.path.splitext(fil)[0]
-        fullpath = pathlib.Path("{}{}{}.fctb".format(loc, os.path.sep, fname))
+            if not tool_bit_class:
+                raise ValueError(f"No ToolBit subclass found for shape '{shape.name}'")
 
-        Path.Log.debug(f"Attempting to create tool bit with name: {fullpath}")
-        self.temptool = ToolBitFactory.create_bit(filepath=fullpath,
-                                                  shapefile=shape.get_id())
-        self.temptool.Proxy.unloadBitBody()
-        self.temptool.Label = fname
-        self.temptool.Proxy.saveToFile(fullpath)
-        self.temptool.Document.removeObject(self.temptool.Name)
-        self.temptool = None
+            # Create a new ToolBit instance using the subclass constructor
+            # The constructor will generate a UUID
+            toolbit = tool_bit_class(shape)
 
-        # add it to the model
-        self.factory.new_tool(self.toolModel, fullpath)
-        self.librarySave()
+            # 1. Save the individual toolbit asset first.
+            tool_asset_uri = cam_assets.add(toolbit)
+            Path.Log.debug(f"toolBitNew: Saved tool with URI: {tool_asset_uri}")
+
+            # 2. Add the toolbit (which now has a persisted URI) to the current library's model
+            tool_no = self.current_library.add_tool(toolbit)
+            Path.Log.debug(
+                f"toolBitNew: Added toolbit {toolbit.get_id()} (URI: {toolbit.get_uri()}) "
+                f"to current_library with tool number {tool_no}."
+            )
+
+            # 3. Add the new tool directly to the UI model
+            new_row_items = ModelFactory._tool_add(
+                tool_no,
+                toolbit.to_dict(),
+                str(toolbit.get_uri()) # URI of the persisted toolbit
+            )
+            self.toolModel.appendRow(new_row_items)
+            
+            # 4. Save the library (which now references the saved toolbit)
+            self.librarySave()
+            Path.Log.info(f"toolBitNew: Library saved. Tool ID: {toolbit.get_id()}")
+
+        except Exception as e:
+            Path.Log.error(f"Failed to create or add new toolbit: {e}")
+            PySide.QtGui.QMessageBox.critical(
+                self.form,
+                translate("CAM_ToolBit", "Error Creating Toolbit"),
+                str(e),
+            )
 
     def toolBitExisting(self):
-        """Add an existing toolbit to the library"""
+        """Add an existing toolbit asset to the current library"""
+        Path.Log.track()
 
-        filenames = PathToolBitGui.GetToolFiles()
-
-        if len(filenames) == 0:
+        if not self.current_library:
+            PySide.QtGui.QMessageBox.warning(
+                self.form,
+                translate("CAM_ToolBit", "No Library Loaded"),
+                translate("CAM_ToolBit", "Load or create a tool library first."),
+            )
             return
 
-        for f in filenames:
+        try:
+            # List available toolbit assets
+            all_toolbit_uris = cam_assets.list_assets(asset_type="toolbit")
+        except Exception as e:
+            Path.Log.error(f"Failed to list toolbit assets: {e}")
+            PySide.QtGui.QMessageBox.critical(
+                self.form,
+                translate("CAM_ToolBit", "Error Listing Toolbits"),
+                str(e),
+            )
+            return
 
-            loc, fil = os.path.split(f)
-            fname = os.path.splitext(fil)[0]
-            fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
+        # Get URIs of toolbits already in the current library
+        toolbits_in_library_uris = {toolbit.get_uri() for toolbit in self.current_library}
 
-            self.factory.new_tool(self.toolModel, fullpath)
+        # Filter out toolbits already in the library
+        available_toolbit_uris = [
+            uri for uri in all_toolbit_uris if str(uri) not in toolbits_in_library_uris
+        ]
+
+        if not available_toolbit_uris:
+            PySide.QtGui.QMessageBox.information(
+                self.form,
+                translate("CAM_ToolBit", "No New Toolbits Found"),
+                translate("CAM_ToolBit", "No new toolbit assets found in asset manager."),
+            )
+            return
+
+        # Show a dialog to select a toolbit asset
+        toolbit_names = [uri.asset_id for uri in available_toolbit_uris]
+        selected_name, ok = PySide.QtGui.QInputDialog.getItem(
+            self.form,
+            translate("CAM_ToolBit", "Select Toolbit to Add"),
+            translate("CAM_ToolBit", "Choose a toolbit to add:"),
+            toolbit_names,
+            0, # current index
+            False, # not editable
+        )
+
+        if not ok or not selected_name:
+            return
+
+        # Find the selected toolbit URI
+        selected_uri = None
+        for uri in available_toolbit_uris:
+            if uri.asset_id == selected_name:
+                selected_uri = uri
+                break
+
+        if not selected_uri:
+            return
+
+        # Load the toolbit asset
+        toolbit = cam_assets.get(selected_uri)
+
+        # Add the existing toolbit to the current library's model
+        # The add_tool method handles assigning a tool number and returns it.
+        tool_no = self.current_library.add_tool(toolbit)
+
+        # Add the new tool directly to the UI model
+        new_row_items = ModelFactory._tool_add(
+            tool_no,
+            toolbit.to_dict(),
+            str(toolbit.get_uri()) # URI of the persisted toolbit
+        )
+        self.toolModel.appendRow(new_row_items)
+        
+        # Save the library (which now references the added toolbit)
         self.librarySave()
 
     def toolDelete(self):
         """Delete a tool"""
         Path.Log.track()
-        selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
-        for row in sorted(list(selectedRows), key=lambda r: -r):
+        selected_indices = self.toolTableView.selectedIndexes()
+        if not selected_indices:
+            return
+
+        if not self.current_library:
+            Path.Log.error("toolDelete: No current_library loaded. Cannot delete tools.")
+            return
+
+        # Collect unique rows to process, as selectedIndexes can return multiple indices per row
+        selected_rows = sorted(list(set(index.row() for index in selected_indices)), reverse=True)
+
+        # Remove the rows from the library model.
+        for row in selected_rows:
+            item_tool_nr_or_uri = self.toolModel.item(row, 0) # Column 0 stores _PathRole
+            tool_uri_string = item_tool_nr_or_uri.data(_PathRole)
+            tool_uri = AssetUri(tool_uri_string)
+            tool = self.current_library.get_tool_by_uri(tool_uri)
+            self.current_library.remove_tool(tool)
             self.toolModel.removeRows(row, 1)
+
+        Path.Log.info(f"toolDelete: Removed {len(selected_rows)} rows from UI model.")
+
         self.librarySave()
 
     def toolSelect(self, selected, deselected):
@@ -554,46 +640,49 @@ class ToolBitLibrary(object):
         """loads the tools for the selected tool table"""
         Path.Log.track()
         item = index.model().itemFromIndex(index)
-        library = item.data(_LibraryRole)
-        libpath = Path.Preferences.getLibraryPath() / library
-        self.loadData(libpath)
-        self.path = libpath
+        library_uri_string = item.data(_LibraryRole)
+        self._loadSelectedLibraryTools(library_uri_string)
 
     def open(self):
         Path.Log.track()
         return self.form.exec_()
 
-    def libraryPath(self):
-        """Select and load a tool library"""
-        Path.Log.track()
-        path = PySide.QtGui.QFileDialog.getExistingDirectory(
-            self.form, "Tool Library Path", Path.Preferences.lastPathToolLibrary()
-        )
-        if len(path) == 0:
-            return
-
-        Path.Preferences.setLastPathToolLibrary(path)
-        self.loadData()
 
     def cleanupDocument(self):
-        """Clean up the document"""
-        # This feels like a hack.  Remove the toolbit object
-        # remove the editor from the dialog
-        # re-enable all the controls
-        self.temptool.Proxy.unloadBitBody()
-        self.temptool.Document.removeObject(self.temptool.Name)
-        self.temptool = None
+        """Clean up the tool editing state"""
+        Path.Log.track()
+        # Remove the editor from the dialog
         widget = self.form.toolTableGroup.children()[-1]
         widget.setParent(None)
         self.editor = None
+        self.editing_toolbit = None
         self.lockoff()
 
     def accept(self):
-        """Handle accept signal"""
-        self.editor.accept()
-        self.temptool.Proxy.saveToFile(self.temptool.File)
+        """Handle accept signal for tool editing"""
+        Path.Log.track()
+        if not self.editor or not self.editing_toolbit:
+            self.cleanupDocument()
+            return
+
+        try:
+            # Assuming editor.accept() updates the editing_toolbit
+            self.editor.accept()
+            # Save the modified toolbit asset
+            cam_assets.add(self.editing_toolbit)
+            Path.Log.info(f"Toolbit {self.editing_toolbit.get_id()} saved.")
+        except Exception as e:
+            Path.Log.error(f"Failed to save toolbit {self.editing_toolbit.get_id()}: {e}")
+            PySide.QtGui.QMessageBox.critical(
+                self.form,
+                translate("CAM_ToolBit", "Error Saving Toolbit"),
+                str(e),
+            )
+            raise
+
+        # Refresh the display and save the library (which contains the updated toolbit reference)
+        self._loadSelectedLibraryTools(self.current_library.get_uri() if self.current_library else None)
         self.librarySave()
-        self.loadData()
         self.cleanupDocument()
 
     def reject(self):
@@ -626,75 +715,102 @@ class ToolBitLibrary(object):
         self.form.librarySave.setEnabled(True)
 
     def toolEdit(self, selected):
-        """Edit the selected tool bit"""
+        """Edit the selected tool bit asset"""
         Path.Log.track()
         item = self.toolModel.item(selected.row(), 0)
 
-        if self.temptool is not None:
-            self.temptool.Document.removeObject(self.temptool.Name)
+        if self.editing_toolbit is not None:
+            Path.Log.warning("Already editing a toolbit. Please finish or cancel the current edit.")
+            return # Prevent multiple editors
 
-        if selected.column() == 0:  # editing Nr
-            pass
-        else:
-            tbpath = item.data(_PathRole)
-            self.temptool = ToolBitFactory.create_bit_from_file(tbpath)
+        if selected.column() == 0:
+            return  # Assuming tool number editing is handled directly in the table model
+
+        toolbit_uri_string = item.data(_PathRole)
+        if not toolbit_uri_string:
+            Path.Log.error("No toolbit URI found for selected item.")
+            return
+        toolbit_uri = AssetUri(toolbit_uri_string)
+
+        # Load the toolbit asset for editing
+        try:
+            self.editing_toolbit = cam_assets.get(toolbit_uri)
+
+            # Initialize the editor with the toolbit asset
+            # Assuming PathToolBitEdit.ToolBitEditor can accept a ToolBit asset instance
             self.editor = PathToolBitEdit.ToolBitEditor(
-                self.temptool, self.form.toolTableGroup, loadBitBody=False
+                self.editing_toolbit, self.form.toolTableGroup, loadBitBody=False
             )
+        except Exception as e:
+            Path.Log.error(f"Failed to load or edit toolbit asset {toolbit_uri_string}: {e}")
+            PySide.QtGui.QMessageBox.critical(
+                self.form,
+                translate("CAM_ToolBit", "Error Editing Toolbit"),
+                str(e),
+            )
+            self.cleanupDocument() # Clean up if editor initialization fails
+            raise
 
-            QBtn = PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
-            buttonBox = PySide.QtGui.QDialogButtonBox(QBtn)
-            buttonBox.accepted.connect(self.accept)
-            buttonBox.rejected.connect(self.reject)
+        QBtn = PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
+        buttonBox = PySide.QtGui.QDialogButtonBox(QBtn)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
 
-            layout = self.editor.form.layout()
-            layout.addWidget(buttonBox)
-            self.lockon()
-            self.editor.setupUI()
-
-    def toolEditDone(self, success=True):
-        FreeCAD.ActiveDocument.removeObject("temptool")
-        print("all done")
+        layout = self.editor.form.layout()
+        layout.addWidget(buttonBox)
+        self.lockon()
+        self.editor.setupUI()
 
     def libraryNew(self):
-        """Create a new tool library"""
-        TooltableTypeJSON = translate("CAM_ToolBit", "Tooltable JSON (*.fctl)")
+        """Create a new tool library asset"""
+        Path.Log.track()
 
-        filename = PySide.QtGui.QFileDialog.getSaveFileName(
+        # Get the desired library name (label) from the user
+        library_label, ok = PySide.QtGui.QInputDialog.getText(
             self.form,
-            translate("CAM_ToolBit", "Save toolbit library"),
-            Path.Preferences.lastPathToolLibrary(),
-            "{}".format(TooltableTypeJSON),
+            translate("CAM_ToolBit", "New Tool Library"),
+            translate("CAM_ToolBit", "Enter a name for the new library:"),
         )
+        if not ok or not library_label:
+            return
 
-        if not (filename and filename[0]):
-            self.loadData()
+        # Create a new Library asset instance, UUID will be auto-generated
+        new_library = Library(library_label)
+        uri = cam_assets.add(new_library)
+        Path.Log.info(f"New library created: {uri}")
 
-        path = filename[0] if filename[0].endswith(".fctl") else "{}.fctl".format(filename[0])
-        library = {}
-        tools = []
-        library["version"] = 1
-        library["tools"] = tools
-        with open(path, "w") as fp:
-            json.dump(library, fp, sort_keys=True, indent=2)
+        # Refresh the list of libraries in the UI
+        self._refreshLibraryListModel()
+        self._loadSelectedLibraryTools(uri)
 
-        self.loadData()
+        # Attempt to select the newly added library in the list
+        for i in range(self.listModel.rowCount()):
+            item = self.listModel.item(i)
+            if item and item.data(_LibraryRole) == str(uri):
+                curIndex = self.listModel.indexFromItem(item)
+                self.form.TableList.setCurrentIndex(curIndex)
+                Path.Log.debug(f"libraryNew: Selected new library '{str(uri)}' in TableList.")
+                break
+
+    def _refreshLibraryListModel(self):
+        """Clears and repopulates the self.listModel with available libraries."""
+        Path.Log.track()
+        self.listModel.clear()
+        self.factory.find_libraries(self.listModel)
+        self.listModel.setHorizontalHeaderLabels(["Library"])
 
     def librarySave(self):
-        """Save the tool library"""
-        library = {}
-        tools = []
-        library["version"] = 1
-        library["tools"] = tools
-        for row in range(self.toolModel.rowCount()):
-            toolNr = self.toolModel.data(self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole)
-            toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
-            bitPath = pathlib.Path(toolPath).name
-            tools.append({"nr": toolNr, "path": bitPath})
-
-        if self.path is not None:
-            with open(self.path, "w") as fp:
-                json.dump(library, fp, sort_keys=True, indent=2)
+        """Save the current tool library asset"""
+        Path.Log.track()
+        if not self.current_library:
+            Path.Log.warning("No library asset loaded to save.")
+            return
+        
+        try:
+            cam_assets.add(self.current_library)
+        except Exception as e:
+            Path.Log.error(f"Failed to save library {self.current_library.get_uri()}: {e}")
+            raise
 
     def libraryOk(self):
         self.librarySave()
@@ -707,51 +823,78 @@ class ToolBitLibrary(object):
             translate("CAM_ToolBit", "Shape"),
         ]
 
-    def loadData(self, path=None):
-        """Load tooltable data"""
-        Path.Log.track(path)
+    def _loadSelectedLibraryTools(self, library_uri: AssetUri | str | None = None):
+        """Loads tools for the given library_uri into self.toolModel and selects it in the list."""
+        Path.Log.track(library_uri)
+        self.toolModel.clear()
+        # library_uri is now expected to be a string URI or None when called from setupUI/tableSelected.
+        # AssetUri object conversion is handled by cam_assets.get() if needed.
+
+        self.current_library = None # Reset current_library before loading
+
+        if not library_uri:
+            self.form.setWindowTitle("Tool Library Editor - No Library Selected")
+            return
+
+        # Fetch the library from the asset manager
+        try:
+            self.current_library = cam_assets.get(library_uri)
+        except Exception as e:
+            Path.Log.error(f"Failed to load library asset {library_uri}: {e}")
+            self.form.setWindowTitle("Tool Library Editor - Error")
+            return
+
+        # Success! Add the tools to the toolModel.
         self.toolTableView.setUpdatesEnabled(False)
-        self.form.TableList.setUpdatesEnabled(False)
-
-        library = Path.Preferences.getLastToolLibrary()
-        if path is None:
-            self.toolModel.clear()
-            self.listModel.clear()
-            self.factory.library_open(self.toolModel, library)
-            self.factory.find_libraries(self.listModel)
-
-        else:
-            self.toolModel.clear()
-            self.factory.library_open(self.toolModel, library)
-
-        self.path = Path.Preferences.getLibraryPath() / library
         self.form.setWindowTitle(
-            "{}".format(Path.Preferences.getLastToolLibrary() or "Tool Library Editor")
+            f"Tool Library Editor - {self.current_library.label}"
         )
+        for tool_no, tool_bit in sorted(self.current_library.tool_nos.items()):
+            self.toolModel.appendRow(
+                ModelFactory._tool_add(
+                    tool_no,
+                    tool_bit.to_dict(),
+                    str(tool_bit.get_uri())
+                )
+            )
+
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
-        self.listModel.setHorizontalHeaderLabels(["Library"])
-
-        # Select the current library in the list of tables
-        curIndex = None
-        for i in range(self.listModel.rowCount()):
-            item = self.listModel.item(i)
-            if item.data(_LibraryRole) == library:
-                curIndex = self.listModel.indexFromItem(item)
-
-        if curIndex:
-            sm = self.form.TableList.selectionModel()
-            sm.select(curIndex, PySide.QtCore.QItemSelectionModel.Select)
-
         self.toolTableView.setUpdatesEnabled(True)
-        self.form.TableList.setUpdatesEnabled(True)
 
     def setupUI(self):
         """Setup the form and load the tool library data"""
         Path.Log.track()
+
         self.form.TableList.setModel(self.listModel)
+        self._refreshLibraryListModel()
+
         self.toolTableView.setModel(self.toolModel)
 
-        self.loadData()
+        # Find the last used library.
+        last_used_lib_identifier = Path.Preferences.getLastToolLibrary()
+        Path.Log.debug(f"setupUI: Last used library identifier from prefs: '{last_used_lib_identifier}'")
+        last_used_lib_uri = Library.resolve_name(last_used_lib_identifier)
+
+        # Find it in the list.
+        index = 0
+        for i in range(self.listModel.rowCount()):
+            item = self.listModel.item(i)
+            if item and item.data(_LibraryRole) == str(last_used_lib_uri):
+                index = i
+                break
+
+        # Select it. 
+        if index <= self.listModel.rowCount():
+            item = self.listModel.item(index)
+            if item:  # Should always be true, but...
+                library_uri_str = item.data(_LibraryRole)
+                self.form.TableList.setCurrentIndex(self.listModel.index(index, 0))
+
+                # Load tools for the selected library.
+                self._loadSelectedLibraryTools(library_uri_str)
+        # No libraries in list, or something went wrong. Load with None.
+        #Path.Log.debug("setupUI: No libraries in list or no initial selection. Loading empty tool model.")
+        #self._loadSelectedLibraryTools(None)
 
         self.toolTableView.resizeColumnsToContents()
         self.toolTableView.selectionModel().selectionChanged.connect(self.toolSelect)
@@ -765,165 +908,6 @@ class ToolBitLibrary(object):
 
         self.form.addToolTable.clicked.connect(self.libraryNew)
 
-        self.form.libraryOpen.clicked.connect(self.libraryPath)
         self.form.librarySave.clicked.connect(self.libraryOk)
-        self.form.libraryExport.clicked.connect(self.librarySaveAs)
 
         self.toolSelect([], [])
-
-    def librarySaveAs(self, path):
-        """Save the tooltable to a format to use with an external system"""
-        TooltableTypeJSON = translate("CAM_ToolBit", "Tooltable JSON (*.fctl)")
-        TooltableTypeLinuxCNC = translate("CAM_ToolBit", "LinuxCNC tooltable (*.tbl)")
-        TooltableTypeCamotics = translate("CAM_ToolBit", "CAMotics tooltable (*.json)")
-
-        filename = PySide.QtGui.QFileDialog.getSaveFileName(
-            self.form,
-            translate("CAM_ToolBit", "Save toolbit library"),
-            Path.Preferences.lastPathToolLibrary(),
-            "{};;{};;{}".format(TooltableTypeJSON, TooltableTypeLinuxCNC, TooltableTypeCamotics),
-        )
-        if filename and filename[0]:
-            if filename[1] == TooltableTypeLinuxCNC:
-                path = filename[0] if filename[0].endswith(".tbl") else "{}.tbl".format(filename[0])
-                self.libararySaveLinuxCNC(path)
-            elif filename[1] == TooltableTypeCamotics:
-                path = (
-                    filename[0] if filename[0].endswith(".json") else "{}.json".format(filename[0])
-                )
-                self.libararySaveCamotics(path)
-            else:
-                path = (
-                    filename[0] if filename[0].endswith(".fctl") else "{}.fctl".format(filename[0])
-                )
-                self.path = path
-                self.librarySave()
-
-    def libararySaveLinuxCNC(self, path):
-        """Export the tool table to a file for use with linuxcnc"""
-        LIN = "T{} P{} X{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{}; {}"
-        with open(path, "w") as fp:
-            fp.write(";\n")
-
-            for row in range(self.toolModel.rowCount()):
-                toolNr = self.toolModel.data(
-                    self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole
-                )
-                toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
-
-                bit = ToolBitFactory.create_bit_from_file(toolPath)
-                if bit:
-                    Path.Log.track(bit)
-
-                    pocket = bit.Pocket if hasattr(bit, "Pocket") else "0"
-                    xoffset = bit.Xoffset if hasattr(bit, "Xoffset") else "0"
-                    yoffset = bit.Yoffset if hasattr(bit, "Yoffset") else "0"
-                    zoffset = bit.Zoffset if hasattr(bit, "Zoffset") else "0"
-                    aoffset = bit.Aoffset if hasattr(bit, "Aoffset") else "0"
-                    boffset = bit.Boffset if hasattr(bit, "Boffset") else "0"
-                    coffset = bit.Coffset if hasattr(bit, "Coffset") else "0"
-                    uoffset = bit.Uoffset if hasattr(bit, "Uoffset") else "0"
-                    voffset = bit.Voffset if hasattr(bit, "Voffset") else "0"
-                    woffset = bit.Woffset if hasattr(bit, "Woffset") else "0"
-
-                    diameter = (
-                        bit.Diameter.getUserPreferred()[0].split()[0]
-                        if hasattr(bit, "Diameter")
-                        else "0"
-                    )
-                    frontangle = bit.FrontAngle if hasattr(bit, "FrontAngle") else "0"
-                    backangle = bit.BackAngle if hasattr(bit, "BackAngle") else "0"
-                    orientation = bit.Orientation if hasattr(bit, "Orientation") else "0"
-                    remark = bit.Label
-
-                    fp.write(
-                        LIN.format(
-                            toolNr,
-                            pocket,
-                            xoffset,
-                            yoffset,
-                            zoffset,
-                            aoffset,
-                            boffset,
-                            coffset,
-                            uoffset,
-                            voffset,
-                            woffset,
-                            diameter,
-                            frontangle,
-                            backangle,
-                            orientation,
-                            remark,
-                        )
-                        + "\n"
-                    )
-
-                    FreeCAD.ActiveDocument.removeObject(bit.Name)
-
-                else:
-                    Path.Log.error("Could not find tool #{} ".format(toolNr))
-
-    def libararySaveCamotics(self, path):
-        """Export the tool table to a file for use with camotics"""
-
-        SHAPEMAP = {
-            "ballend": "Ballnose",
-            "endmill": "Cylindrical",
-            "vbit": "Conical",
-            "chamfer": "Snubnose",
-        }
-
-        tooltemplate = {
-            "units": "metric",
-            "shape": "cylindrical",
-            "length": 10,
-            "diameter": 3.125,
-            "description": "",
-        }
-        toollist = {}
-
-        unitstring = "imperial" if FreeCAD.Units.getSchema() in [2, 3, 5, 7] else "metric"
-
-        for row in range(self.toolModel.rowCount()):
-            toolNr = self.toolModel.data(self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole)
-
-            toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
-            Path.Log.debug(toolPath)
-            try:
-                bit = ToolBitFactory.create_bit_from_file(toolPath)
-            except FileNotFoundError as e:
-                FreeCAD.Console.PrintError(e)
-                continue
-            except Exception as e:
-                raise e
-
-            if not bit:
-                continue
-
-            Path.Log.track(bit)
-
-            toolitem = tooltemplate.copy()
-
-            toolitem["diameter"] = (
-                float(bit.Diameter.getUserPreferred()[0].split()[0])
-                if hasattr(bit, "Diameter")
-                else 2
-            )
-            toolitem["description"] = bit.Label
-            toolitem["length"] = (
-                float(bit.Length.getUserPreferred()[0].split()[0]) if hasattr(bit, "Length") else 10
-            )
-
-            if hasattr(bit, "Camotics"):
-                toolitem["shape"] = bit.Camotics
-            else:
-                toolitem["shape"] = SHAPEMAP.get(bit.ShapeName, "Cylindrical")
-
-            toolitem["units"] = unitstring
-            FreeCAD.ActiveDocument.removeObject(bit.Name)
-
-            toollist[toolNr] = toolitem
-
-        if len(toollist) > 0:
-            with open(path, "w") as fp:
-                fp.write(json.dumps(toollist, indent=2))

@@ -21,12 +21,12 @@
 # ***************************************************************************
 
 from PySide import QtCore, QtGui
+import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.PropertyEditor as PathPropertyEditor
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.Util as PathUtil
-import os
 import re
 
 
@@ -83,9 +83,8 @@ class ToolBitEditor(object):
             parentWidget.layout().addWidget(self.form)
 
         self.tool = tool
+        tool.attach_to_doc(FreeCAD.ActiveDocument)
         self.loadbitbody = loadBitBody
-        if not tool.ShapeFile:
-            self.tool.ShapeFile = "endmill.fcstd"
 
         if self.loadbitbody:
             self.tool.Proxy.loadBitBody(self.tool)
@@ -100,7 +99,36 @@ class ToolBitEditor(object):
         self.setupTool(self.tool)
         self.setupAttributes(self.tool)
 
-    def setupTool(self, tool):
+    def add_property_widget(self, ui, obj, prop_name: str):
+        """Create an appropriate widget based on the property type."""
+        prop_value = obj.getPropertyByName(prop_name)
+        prop_type = obj.getTypeIdOfProperty(prop_name)
+        
+        # Check for Quantity type (float with units)
+        if isinstance(prop_value, FreeCAD.Units.Quantity):
+            spinbox = ui.createWidget("Gui::QuantitySpinBox")
+            return spinbox, PathGuiUtil.QuantitySpinBox(spinbox, obj, prop_name)
+        
+        # Check for Boolean type
+        elif isinstance(prop_value, bool):
+            combobox = QtGui.QComboBox()
+            return combobox, PathGuiUtil.BooleanComboBox(combobox, obj, prop_name)
+        
+        elif isinstance(prop_value, int):
+            spinbox = QtGui.QSpinBox()
+            return spinbox, PathGuiUtil.IntegerSpinBox(spinbox, obj, prop_name)
+        
+        # Check for Enumeration type
+        if prop_type == "App::PropertyEnumeration":
+            combobox = QtGui.QComboBox()
+            return combobox, PathGuiUtil.EnumerationComboBox(combobox, obj, prop_name)
+
+        # Default case
+        else:
+            label = QtGui.QLabel(str(prop_value))
+            return label, PathGuiUtil.PropertyLabel(label, obj, prop_name)
+
+    def setupTool(self, toolbit):
         Path.Log.track()
         # Can't delete and add fields to the form because of dangling references in case of
         # a focus change. see https://forum.freecad.org/viewtopic.php?f=10&t=52246#p458583
@@ -117,25 +145,24 @@ class ToolBitEditor(object):
         # or create additional ones for them if not enough have already been
         # created.
         usedRows = 0
-        for nr, name in enumerate(tool.Proxy._get_props(("Shape", "Attributes"))):
+        for nr, name in enumerate(toolbit._get_props(("Shape", "Attributes"))):
             if nr < len(self.widgets):
                 Path.Log.debug("reuse row: {} [{}]".format(nr, name))
-                label, qsb, editor = self.widgets[nr]
+                label, widget, editor = self.widgets[nr]
                 label.setText(labelText(name))
-                editor.attachTo(tool, name)
+                editor.attachTo(toolbit.obj, name)
                 label.show()
-                qsb.show()
+                widget.show()
             else:
-                qsb = ui.createWidget("Gui::QuantitySpinBox")
-                editor = PathGuiUtil.QuantitySpinBox(qsb, tool, name)
+                widget, editor = self.add_property_widget(ui, toolbit.obj, name)
                 label = QtGui.QLabel(labelText(name))
-                self.widgets.append((label, qsb, editor))
-                Path.Log.debug("create row: {} [{}]  {}".format(nr, name, type(qsb)))
-                if hasattr(qsb, "editingFinished"):
-                    qsb.editingFinished.connect(self.updateTool)
+                self.widgets.append((label, widget, editor))
+                Path.Log.debug("create row: {} [{}]  {}".format(nr, name, type(widget)))
+                if hasattr(widget, "editingFinished"):
+                    widget.editingFinished.connect(self.updateTool)
 
             if nr >= layout.rowCount():
-                layout.addRow(label, qsb)
+                layout.addRow(label, widget)
             usedRows = usedRows + 1
 
         # hide all rows which aren't being used
@@ -147,12 +174,13 @@ class ToolBitEditor(object):
             editor.attachTo(None)
             Path.Log.debug("  hide row: {}".format(i))
 
-        icon = tool.Proxy.get_icon()
+        icon = toolbit.get_icon()
         size = QtCore.QSize(150, 150)
         pixmap = icon.get_qpixmap(size) if icon else QtGui.QPixmap()
         self.form.image.setPixmap(pixmap)
 
-    def setupAttributes(self, tool):
+    def setupAttributes(self, toolbit):
+        """Populates the attributes shown in the Attribute tab"""
         Path.Log.track()
 
         setup = True
@@ -164,7 +192,7 @@ class ToolBitEditor(object):
             self.model.removeRows(0, self.model.rowCount())
             setup = False
 
-        attributes = tool.Proxy.toolGroupsAndProperties(False)
+        attributes = toolbit.toolGroupsAndProperties(False)
         for name in attributes:
             group = QtGui.QStandardItem()
             group.setData(name, QtCore.Qt.EditRole)
@@ -174,12 +202,13 @@ class ToolBitEditor(object):
                 label.setData(prop, QtCore.Qt.EditRole)
                 label.setEditable(False)
 
-                value = QtGui.QStandardItem()
-                value.setData(PathUtil.getPropertyValueString(tool, prop), QtCore.Qt.DisplayRole)
-                value.setData(tool, _Delegate.ObjectRole)
-                value.setData(prop, _Delegate.PropertyRole)
+                value = PathUtil.getPropertyValueString(toolbit.obj, prop)
+                value_item = QtGui.QStandardItem()
+                value_item.setData(value, QtCore.Qt.DisplayRole)
+                value_item.setData(toolbit.obj, _Delegate.ObjectRole)
+                value_item.setData(prop, _Delegate.PropertyRole)
 
-                group.appendRow([label, value])
+                group.appendRow([label, value_item])
             self.model.appendRow(group)
 
         if setup:
@@ -193,59 +222,29 @@ class ToolBitEditor(object):
     def accept(self):
         Path.Log.track()
         self.refresh()
-        self.tool.Proxy.unloadBitBody()
+        self.tool.unloadBitBody()
 
     def reject(self):
         Path.Log.track()
-        self.tool.Proxy.unloadBitBody()
+        self.tool.unloadBitBody()
 
     def updateUI(self):
         Path.Log.track()
-        self.form.toolName.setText(self.tool.Label)
-        self.form.shapePath.setText(self.tool.ShapeFile)
+        self.form.toolName.setText(self.tool.obj.Label)
+        self.form.shapeID.setText(self.tool.get_id())
 
         for lbl, qsb, editor in self.widgets:
-            editor.updateSpinBox()
-
-    def _updateShapeFile(self, shapePath):
-        # Only need to go through this exercise if the shape actually changed.
-        if self.tool.ShapeFile != shapePath:
-            # Before setting a new  shape file we need to make sure that none of
-            # editors fires an event and tries to access its old property, which
-            # might not exist anymore.
-            for lbl, qsb, editor in self.widgets:
-                editor.attachTo(self.tool, "File")
-            self.tool.ShapeFile = shapePath
-            self.setupTool(self.tool)
-            self.form.toolName.setText(self.tool.Label)
-            if self.tool.BitBody and self.tool.BitBody.ViewObject:
-                if not self.tool.BitBody.ViewObject.Visibility:
-                    self.tool.BitBody.ViewObject.Visibility = True
-            self.setupAttributes(self.tool)
-            return True
-        return False
-
-    def updateShape(self):
-        Path.Log.track()
-        shapePath = str(self.form.shapePath.text())
-        # Only need to go through this exercise if the shape actually changed.
-        if self._updateShapeFile(shapePath):
-            for lbl, qsb, editor in self.widgets:
-                editor.updateSpinBox()
+            editor.updateWidget()
 
     def updateTool(self):
         Path.Log.track()
 
         label = str(self.form.toolName.text())
-        shape = str(self.form.shapePath.text())
-        if self.tool.Label != label:
-            self.tool.Label = label
-        self._updateShapeFile(shape)
+        if self.tool.obj.Label != label:
+            self.tool.obj.Label = label
 
         for lbl, qsb, editor in self.widgets:
             editor.updateProperty()
-
-        self.tool.Proxy._updateShapeFile()
 
     def refresh(self):
         Path.Log.track()
@@ -254,21 +253,8 @@ class ToolBitEditor(object):
         self.updateUI()
         self.form.blockSignals(False)
 
-    def selectShape(self):
-        Path.Log.track()
-        path = self.tool.ShapeFile
-        if not path:
-            path = Path.Preferences.lastPathToolShape()
-        foo = QtGui.QFileDialog.getOpenFileName(self.form, "Path - Tool Shape", path, "*.fcstd")
-        if foo and foo[0]:
-            Path.Preferences.setLastPathToolShape(os.path.dirname(foo[0]))
-            self.form.shapePath.setText(foo[0])
-            self.updateShape()
-
     def setupUI(self):
         Path.Log.track()
         self.updateUI()
 
         self.form.toolName.editingFinished.connect(self.refresh)
-        self.form.shapePath.editingFinished.connect(self.updateShape)
-        self.form.shapeSet.clicked.connect(self.selectShape)

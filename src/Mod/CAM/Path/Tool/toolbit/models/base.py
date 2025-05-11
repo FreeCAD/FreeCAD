@@ -24,7 +24,6 @@ import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
 import json
-import os
 import uuid
 import pathlib
 from abc import ABC
@@ -32,14 +31,14 @@ from lazy_loader.lazy_loader import LazyLoader
 from typing import List, Optional, Tuple, Type, Union, Mapping, Any
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
-from ...assets import asset_manager
+from ...assets import Asset, AssetUri
+from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeIcon
 from ..docobject import DetachedDocumentObject
 from ..util import to_json
 
 Part = LazyLoader("Part", globals(), "Part")
 GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
-
 
 PropertyGroupShape = "Shape"
 
@@ -49,17 +48,17 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-
-class ToolBit(ABC):
+class ToolBit(Asset, ABC):
+    asset_type: str = "toolbit"
     SHAPE_CLASS: Type[ToolBitShape]  # Abstract class attribute
 
     def __init__(
         self,
         tool_bit_shape: ToolBitShape,
-        path: Optional[pathlib.Path] = None,
+        id: str | None = None
     ):
-        Path.Log.track("ToolBit __init__ called", tool_bit_shape, path)
-        self.id = str(uuid.uuid4())
+        Path.Log.track("ToolBit __init__ called")
+        self.id = id if id is not None else str(uuid.uuid4())
         self.obj = DetachedDocumentObject()
         self.obj.Proxy = self
         self._tool_bit_shape = tool_bit_shape
@@ -67,33 +66,94 @@ class ToolBit(ABC):
         self._in_update = False
 
         self._create_base_properties()
-        self.obj.File = str(path) if path else ""
-        self.obj.ShapeFile = self._tool_bit_shape.get_id()   #TODO: use a Uri
+        self.obj.ToolBitID = self.get_id()
+        self.obj.ShapeFile = str(tool_bit_shape.get_uri())
+        self.obj.Label = tool_bit_shape.label or f"New {tool_bit_shape.name}"
 
         # Initialize properties
         self._update_tool_properties()
 
+    @staticmethod
+    def _find_subclass_for_shape(shape: ToolBitShape) -> Type["ToolBit"]:
+        """
+        Finds the appropriate ToolBit subclass for a given ToolBitShape instance.
+        """
+        for subclass in ToolBit.__subclasses__():
+            if isinstance(shape, subclass.SHAPE_CLASS):
+                return subclass
+        raise ValueError(
+            f"No ToolBit subclass found for shape {type(shape).__name__}"
+        )
+
     @classmethod
-    def create(
-        cls,
-        doc: FreeCAD.Document,
-        tool_bit_shape: ToolBitShape,
-        path: Optional[pathlib.Path] = None,
-    ) -> "ToolBit":
+    def from_dict(cls, attrs: Mapping) -> 'ToolBit':
         """
-        Creates a ToolBit instance attached to a real FreeCAD DocumentObject.
+        Creates and populates a ToolBit instance from a dictionary.
         """
-        try:
-            obj = doc.addObject("Part::FeaturePython", tool_bit_shape.name)
-        except Exception as e:
-            Path.Log.error(f"Failed to create DocumentObject '{tool_bit_shape.name}': {e}")
-            raise
+        shape_id = attrs.get("shape")
+        if not shape_id:
+            raise ValueError("ToolBit dictionary is missing 'shape' key")
 
-        # Create the ToolBit instance and attach it to the DocumentObject
-        tool_bit = cls(tool_bit_shape, path=path)
-        tool_bit.attach(obj)
+        shape_asset_uri = ToolBitShape.resolve_name(shape_id)
+        tool_bit_shape = cam_assets.get(shape_asset_uri)
 
-        return tool_bit
+        selected_toolbit_subclass = cls._find_subclass_for_shape(tool_bit_shape)
+        toolbit = selected_toolbit_subclass(
+            tool_bit_shape, id=attrs.get("id")
+        )
+
+        toolbit.set_label(attrs.get("name") or tool_bit_shape.label)
+
+        # Update parameters and attributes
+        for param_name, param_value in attrs.get("parameter", {}).items():
+            if hasattr(toolbit.obj, param_name):
+                PathUtil.setProperty(
+                    toolbit.obj, param_name, param_value
+                )
+            else:
+                Path.Log.warning(
+                    f"Parameter '{param_name}' not found on tool bit "
+                    f"'{toolbit.obj.Label}'. Skipping."
+                )
+
+        for attr_name, attr_value in attrs.get("attribute", {}).items():
+             if hasattr(toolbit.obj, attr_name):
+                PathUtil.setProperty(
+                    toolbit.obj, attr_name, attr_value
+                )
+             else:
+                Path.Log.warning(
+                    f"Attribute '{attr_name}' not found on tool bit "
+                    f"'{toolbit.obj.Label}'. Skipping."
+                )
+
+        return toolbit
+
+    @classmethod
+    def from_shape_id(cls, shape_id: str, label: Optional[str] = None) -> 'ToolBit':
+        """
+        Creates and populates a ToolBit instance from a shape ID.
+        """
+        attrs = {"shape": shape_id, "name": label}
+        return cls.from_dict(attrs)
+
+    @classmethod
+    def from_file(cls, path: Union[str, pathlib.Path]) -> 'ToolBit':
+        """
+        Creates and populates a ToolBit instance from a .fctb file.
+        """
+        path = pathlib.Path(path)
+        with open(path, "r") as fp:
+            attrs_map = json.load(fp)
+        return cls.from_dict(attrs_map)
+
+    @classmethod
+    def dependencies(cls, data: bytes) -> List[AssetUri]:
+        """Returns a list of AssetUri dependencies parsed from the serialized data."""
+        data_dict = json.loads(data.decode('utf-8'))
+        shape_id = data_dict["shape"]
+        shape_uri = ToolBitShape.resolve_name(shape_id)
+        return [shape_uri]
 
     def get_label(self) -> str:
         """Returns the label of the tool bit."""
@@ -133,12 +193,12 @@ class ToolBit(ABC):
                     "The parametrized body representing the tool bit",
                 ),
             )
-        if not hasattr(self.obj, "File"):
+        if not hasattr(self.obj, "ToolBitID"):
             self.obj.addProperty(
-                "App::PropertyFile",
-                "File",
+                "App::PropertyString",
+                "ToolBitID",
                 "Base",
-                QT_TRANSLATE_NOOP("App::Property", "The toolbit file (.fctb)"),
+                QT_TRANSLATE_NOOP("App::Property", "The unique ID of the toolbit"),
             )
 
         # Create the ToolBit properties that are shared by all tool bits
@@ -171,11 +231,85 @@ class ToolBit(ABC):
                 break
         return None
 
-    def _ensure_shape_file(self):
+    def get_id(self) -> str:
+        """Returns the unique ID of the tool bit."""
+        return self.id
+
+    def to_bytes(self) -> bytes:
+        """Serializes the ToolBit instance to bytes."""
+        return json.dumps(self.to_dict()).encode('utf-8')
+
+    @classmethod
+    def from_bytes(
+        cls, data: bytes, id: str, dependencies: Optional[Mapping[AssetUri, Any]]
+    ) -> "ToolBit":
         """
-        Ensure obj.ShapeFile is set even for legacy tools
+        Creates a ToolBit instance from serialized data and resolved
+        dependencies.
+
+        Args:
+            data (bytes): The raw bytes of the .fctb file.
+            id (str): The unique identifier for the tool bit.
+            dependencies (Optional[Mapping[AssetUri, Any]]): A mapping of resolved
+                                                  dependencies. If None, shallow load was attempted.
+
+        Returns:
+            ToolBit: An instance of the appropriate ToolBit subclass.
         """
-        # Get file name. BitShape is legacy.
+        if dependencies is None:
+            raise ValueError(
+                f"ToolBit asset type '{cls.asset_type}' (id: {id}) does not support shallow loading (dependencies is None)."
+            )
+
+        data_dict = json.loads(data.decode('utf-8'))
+        shape_id = data_dict.get("shape")
+        if not shape_id:
+            Path.Log.warning("ToolBit data is missing 'shape' key, defaulting to 'endmill'")
+            shape_id = 'endmill'
+
+        shape_uri = ToolBitShape.resolve_name(shape_id)
+        shape = dependencies.get(shape_uri)
+
+        if not isinstance(shape, ToolBitShape):
+             raise ValueError(
+                f"Dependency for shape '{shape_id}' not found or "
+                "is not a ToolBitShape instance."
+            )
+
+        # Find the correct ToolBit subclass for the shape
+        selected_toolbit_subclass = cls._find_subclass_for_shape(shape)
+
+        # Create the tool bit instance
+        toolbit = selected_toolbit_subclass(shape, id=id)
+
+        # Populate properties from the data dictionary
+        toolbit.set_label(data_dict.get("name") or shape.label)
+
+        for param_name, param_value in data_dict.get("parameter", {}).items():
+            if hasattr(toolbit.obj, param_name):
+                PathUtil.setProperty(toolbit.obj, param_name, param_value)
+            else:
+                Path.Log.warning(
+                    f"Parameter '{param_name}' not found on tool bit "
+                    f"'{toolbit.obj.Label}'. Skipping."
+                )
+
+        for attr_name, attr_value in data_dict.get("attribute", {}).items():
+             if hasattr(toolbit.obj, attr_name):
+                PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
+             else:
+                Path.Log.warning(
+                    f"Attribute '{attr_name}' not found on tool bit "
+                    f"'{toolbit.obj.Label}'. Skipping."
+                )
+
+        return toolbit
+
+    def _ensure_ids(self):
+        """
+        Ensure obj.ShapeFile and obj.ToolBitID are set, handling legacy cases.
+        """
+        # Ensure ShapeFile is set (handling legacy BitShape/ShapeName)
         name = None
         if hasattr(self.obj, "BitShape") and self.obj.BitShape:
             name = pathlib.Path(self.obj.BitShape).name
@@ -190,6 +324,12 @@ class ToolBit(ABC):
         if uri is None:
             raise ValueError(f"Failed to identify shape of ToolBit from name '{name}'")
         self.obj.ShapeFile = str(uri)
+
+        # Ensure ToolBitID is set
+        if hasattr(self.obj, "File"):
+            self.id = pathlib.Path(self.obj.File).stem
+        self.obj.ToolBitID = self.get_id()
+        Path.Log.debug(f"Set ToolBitID to {self.obj.ToolBitID}")
 
     def _promote_bit_v1_to_v2(self):
         """
@@ -228,6 +368,14 @@ class ToolBit(ABC):
             Path.Log.debug("Removed obsolete BitShape property.")
         except Exception as e:
             Path.Log.error(f"Failed removing obsolete BitShape property: {e}")
+
+        # Remove the old File property
+        if hasattr(self.obj, "File"):
+            try:
+                self.obj.removeProperty("File")
+                Path.Log.debug("Removed obsolete File property.")
+            except Exception as e:
+                Path.Log.error(f"Failed removing obsolete File property: {e}")
 
         # Get the schema properties from the current shape
         shape_cls = ToolBitShape.get_subclass_by_name(self.obj.ShapeName)
@@ -278,14 +426,14 @@ class ToolBit(ABC):
         self._update_timer = None
 
         self._create_base_properties()
-        self._ensure_shape_file()
+        self._ensure_ids()
 
         self.obj.setEditorMode("ShapeFile", 1)
         self.obj.setEditorMode("BitBody", 2)
-        self.obj.setEditorMode("File", 1)
+        self.obj.setEditorMode("ToolBitID", 1)
         self.obj.setEditorMode("Shape", 2)
 
-        # Get the shape instance based on the potentially ShapeFile. For backward
+        # Get the shape instance based on the ShapeFile. For backward
         # compatibility, we try two approaches to find the shape and shape
         # class from the file.
         # First, translate the filename to an asset ID, then:
@@ -299,7 +447,7 @@ class ToolBit(ABC):
 
         try:
             # Best case: we directly find the shape file in our assets.
-            self._tool_bit_shape = asset_manager.get(uri, store="shapestore")
+            self._tool_bit_shape = cam_assets.get(uri)
         except FileNotFoundError:
             # Otherwise, try to at least identify the type of the shape.
             shape_class = ToolBitShape.get_subclass_by_name(uri.asset_id)
@@ -340,30 +488,47 @@ class ToolBit(ABC):
             self._promote_bit_v1_to_v2()
             self._update_tool_properties()
 
-    def attach(self, obj: FreeCAD.DocumentObject):
+    def attach_to_doc(
+        self, doc: FreeCAD.Document, label: Optional[str] = None
+    ) -> FreeCAD.DocumentObject:
         """
-        Attaches the ToolBit instance to a FreeCAD DocumentObject.
+        Creates a new FreeCAD DocumentObject in the given document and attaches
+        this ToolBit instance to it.
+        """
+        label = label or self.get_label() or self._tool_bit_shape.label
+        tool_doc_obj = doc.addObject("Part::FeaturePython", label)
+        self.attach_to_obj(tool_doc_obj, label=label)
+        return tool_doc_obj
+
+    def attach_to_obj(
+        self, tool_doc_obj: FreeCAD.DocumentObject, label: Optional[str] = None
+    ):
+        """
+        Attaches the ToolBit instance to an existing FreeCAD DocumentObject.
 
         Transfers properties from the internal DetachedDocumentObject to the
-        new obj and updates the visual representation.
+        tool_doc_obj and updates the visual representation.
         """
         if not isinstance(self.obj, DetachedDocumentObject):
             Path.Log.warning(
                 f"ToolBit {self.obj.Label} is already attached to a "
-                "DocumentObject. Skipping attach."
+                "DocumentObject. Skipping attach_to_obj."
             )
             return
 
-        Path.Log.track(f"Attaching ToolBit to {obj.Label}")
+        Path.Log.track(f"Attaching ToolBit to {tool_doc_obj.Label}")
 
-        temp_obj = self.obj  # Store the detached object
-        self.obj = obj  # Set the real DocumentObject
-        self.obj.Proxy = self # Set the document object's proxy to this ToolBit instance
+        temp_obj = self.obj
+        self.obj = tool_doc_obj
+        self.obj.Proxy = self
 
         self._create_base_properties()
 
         # Transfer property values from the detached object to the real object
         temp_obj.copy_to(self.obj)
+
+        # Ensure label is set
+        self.obj.Label = label or self.get_label() or self._tool_bit_shape.label
 
         # Update the visual representation now that it's attached
         self._update_tool_properties()
@@ -664,98 +829,4 @@ class ToolBit(ABC):
         return True
 
 
-def Declaration(path):
-    Path.Log.track(path)
-    with open(path, "r") as fp:
-        return json.load(fp)
-
-
-class ToolBitFactory(object):
-    def create_bit_from_dict(self, attrs: Mapping, filepath: Optional[pathlib.Path] = None) -> Any:
-        """
-        Given a dictionary as read from json.loads('file.fctb'), this method creates
-        a new ToolBit attached to a DocumentObject and returns the DocumentObject.
-        """
-        Path.Log.track(attrs)
-        shape_file = attrs.get("shape", "endmill.fcstd")
-        params_dict = attrs.get("parameter", {})
-        attributes = attrs.get("attribute", {})
-
-        # Create the tool bit shape.
-        try:
-            uri = ToolBitShape.resolve_name(shape_file)
-            tool_bit_shape = asset_manager.get(uri, store='shapestore')
-            tool_bit_shape.set_parameters(**params_dict)
-        except Exception as e:
-            Path.Log.error(
-                f"Failed to create shape from attributes for '{shape_file}': {e}."
-                " Tool bit creation failed."
-            )
-            raise
-        Path.Log.debug(
-            f"Create shape from attributes for '{shape_file}' with ID {tool_bit_shape.get_id()}."
-        )
-
-        # Find the correct ToolBit subclass based on the shape name
-        tool_bit_classes = {b.SHAPE_CLASS.name: b for b in ToolBit.__subclasses__()}
-        tool_bit_class = tool_bit_classes[tool_bit_shape.name]
-
-        # Create the ToolBit instance attached to a DocumentObject
-        # Assuming FreeCAD.ActiveDocument is available in this context
-        if FreeCAD.ActiveDocument is None:
-             raise RuntimeError("Cannot create attached ToolBit: No active document.")
-
-        tool_bit = tool_bit_class.create(
-            FreeCAD.ActiveDocument,
-            tool_bit_shape,
-            path=filepath
-        )
-
-        # Set additional attributes on the ToolBit object using the proxy
-        # TODO: This should probably be cleaned up
-        for att in attributes:
-            # Check if the property exists before setting it
-            if hasattr(tool_bit.obj, att):
-                PathUtil.setProperty(tool_bit.obj, att, attributes[att])
-            else:
-                Path.Log.warning(
-                    f"Attribute '{att}' not found on tool bit '{tool_bit.obj.Label}'. Skipping."
-                )
-
-        return tool_bit.obj
-
-    def create_bit_from_file(self, path):
-        Path.Log.track(path)
-
-        if not os.path.isfile(path):
-            raise FileNotFoundError(f"{path} not found")
-        try:
-            data = Declaration(path)
-        except (OSError, IOError) as e:
-            Path.Log.error("%s not a valid tool file (%s)" % (path, e))
-            raise
-
-        return Factory.create_bit_from_dict(data, filepath=path)
-
-    def create_bit(
-        self,
-        filepath: Optional[pathlib.Path] = None,
-        shapefile: str = "endmill.fcstd",
-    ):
-        """
-        path is a path to the tool file
-        shape_path is a path to the file that defines a shape (built-in or not)
-        """
-        Path.Log.track(filepath, shapefile)
-
-        # Construct the attributes dictionary for create_bit_from_dict
-        attrs = {
-            "shape": shapefile,
-            "parameter": {},
-            "attribute": {},
-        }
-
-        return self.create_bit_from_dict(attrs, filepath=filepath)
-
-
-Factory = ToolBitFactory()
+cam_assets.register_asset(ToolBit)

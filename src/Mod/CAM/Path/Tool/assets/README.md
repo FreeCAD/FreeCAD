@@ -16,7 +16,7 @@ Essentially, something similar to what Blender has:
 
 ![Blender Asset Manager](docs/blender-assets.jpg)
 
-### What are assets in CAM?
+## What are assets in CAM?
 
 Assets are arbitrary data, such as FreeCAD models, Tools, and many more.
 Specifically in the context of CAM, assets are:
@@ -34,53 +34,44 @@ Specifically in the context of CAM, assets are:
 and a ToolBit requires a ToolBitShape (which is a FreeCAD model).
 
 
-## Development
+## Challenges
 
-The biggest challenge was that all CAM objects are big monoliths that
-handle everything: in-memory data, serialization, storage. They are
-tightly coupled to files, and make assumptions about how other objects
-are stored.
+In the current codebase, CAM objects are monoliths that handle everything:
+in-memory data, serialization, deserialization, storage. They are tightly
+coupled to files, and make assumptions about how other objects are stored.
 
 Examples:
 
 - Tool bits have "File" attributes that they use to collect dependencies
   such as ToolBit files and shape files.
-- GuiToolBit has serialization code directly in UI functions
+- It also writes directly to the disk.
+- GuiToolBit performs serialization directly in UI functions.
+- ToolBits could not be created without an active document.
 
-### Progress
+As the code base grows, separation of concerns becomes more important.
+Managing dependencies between asset becomes a hassle if every object tries
+to resolve them in their own way.
+
+
+# Solution
 
 The main effort went into two key areas:
 
 1. **The generic AssetManager:**
-    - **Manages dependencies** including detection of cyclic dependencies
     - **Manages storage** while existing FreeCAD tool library file structures retained
+    - **Manages dependencies** including detection of cyclic dependencies, deep vs. shallow fetching
     - **Manages threading** for asynchronous storage, while FreeCAD objects are assembled in the main UI thread
     - **Defining a generic asset interface** that classes can implement to become "storable"
 
-2. **Refactoring exiting CAM objects for clear separation of concerns:**
-    - **View**: Should handle user interface only. I removed existing file system access methods, but went minimally invasive here, so the UI code is largely unchanged. There is still legacy code left.
-    - **Object Model**: In-memory representation of an object, for example a ToolBit, Icon, or a ToolBitShape. I finished the work of for ToolBitShape and icons by giving them `from_bytes()` and `to_bytes()` methods; the objects do no longer need to know where they are stored.
+2. **Refactoring existing CAM objects for clear separation of concerns:**
+    - **View**: Should handle user interface only. Existing file system access methods were removed.
+    - **Object Model**: In-memory representation of an object, for example a ToolBit, Icon, or a ToolBitShape. By giving all classes `from_bytes()` and `to_bytes()` methods; the objects no longer need to handle storage themselves.
+    - **Storage**: Persisting an object to a file system, database system, or API. This is now handled by the AssetManager
     - **Serialization** A serialization protocol needs to be defined. This will allow for better import/export mechanisms in the future
-    - **Storage**: Persisting an object to a file system or database
 
-FreeCAD is now fully usable with the changes in place, but only ToolBitShape and icons are managed by the AssetManager.
+FreeCAD is now fully usable with the changes in place. Work remains to be done on the serializers.
 
-### What's next
-
-- ToolBits need to be refactored for better separation of concerns.
-- Library objects need to adopt the Asset interface
-
-At that point, the storage of existing objects would be complete and unified.
-
-
-### Potential future extensions
-
-- Adding a generic AssetManager UI, to allow for browsing and searching stores for all kinds of assets (Machines, Fixtures, Libraries, Tools, Shapes, Post Processors, ...).
-- Adding a GitStore, to connect to things like the FreeCAD library.
-- Adding an HttpStore for connectivity to online databases.
-
-
-## API usage example
+## Asset Manager API usage example
 
 ```python
 import pathlib
@@ -102,7 +93,7 @@ class Material(Asset):
         return []
 
     @classmethod
-    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]) -> Material:
+    def from_bytes(cls, data: bytes, id: str, dependencies: Optional[Mapping[AssetUri, Asset]]) -> Material:
         return cls(data.decode('utf-8'))
 
     def to_bytes(self) -> bytes:
@@ -201,7 +192,7 @@ classDiagram
         
         get_id() str  // Returns a unique ID of the asset
         to_bytes() bytes // Converts object to bytes
-        from_bytes(data: bytes, id: str, dependencies: Mapping[AssetUri, Any]) Any  // Creates object from bytes and resolved dependencies
+        from_bytes(data: bytes, id: str, dependencies: Mapping[AssetUri, Asset]) Asset  // Creates object from bytes and resolved dependencies
         dependencies(data: bytes) List[AssetUri]  // Finds dependency URIs in bytes
     }
     Asset *-- AssetManager: creates
@@ -220,7 +211,7 @@ classDiagram
         asset_type: str = "toolbitshape"
 
         get_id() str  // Returns a unique ID
-        from_bytes(data: bytes, id: str, dependencies: Dict[AssetUri, Any]) ToolBitShape
+        from_bytes(data: bytes, id: str, dependencies: Dict[AssetUri, Asset]) ToolBitShape
         to_bytes(obj: ToolBitShape) bytes
         dependencies(data: bytes) List[AssetUri]
     }
@@ -231,7 +222,7 @@ classDiagram
         asset_type: str = "toolbit"
 
         get_id() str  // Returns a unique ID
-        from_bytes(data: bytes, id: str, dependencies: Dict[AssetUri, Any]) ToolBit
+        from_bytes(data: bytes, id: str, dependencies: Dict[AssetUri, Asset]) ToolBit
         to_bytes(obj: ToolBit) bytes
         dependencies(data: bytes) List[AssetUri]
     }
@@ -250,7 +241,7 @@ classDiagram
 
         get_id() str  // Returns a unique ID
         dependencies(data: bytes) List[AssetUri]
-        from_bytes(data: bytes, id: str, dependencies: Dict[AssetUri, Any]) Material
+        from_bytes(data: bytes, id: str, dependencies: Dict[AssetUri, Asset]) Material
         to_bytes(obj: Material) bytes
     }
     Material ..|> Asset: is
@@ -260,3 +251,22 @@ classDiagram
         class Material
     }
 ```
+
+# What's next
+
+## Shorter term
+
+- Improving the integration of serializers. Ideally the asset manager could help here too:
+  We can define a common serializer protocol for **all** assets. It could then become the
+  central point for imports and exports.
+
+
+## Potential future extensions (longer term)
+
+- Adding a AssetManager UI, to allow for browsing and searching stores for all kinds of
+  assets (Machines, Fixtures, Libraries, Tools, Shapes, Post Processors, ...)
+  from all kings of sources (online DB, git repository, etc.).
+
+- Adding a GitStore, to connect to things like the [FreeCAD library](https://github.com/FreeCAD/FreeCAD-library).
+
+- Adding an HttpStore for connectivity to online databases.

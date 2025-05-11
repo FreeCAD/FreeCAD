@@ -369,41 +369,38 @@ class FileStore(AssetStore):
 
     async def update(self, uri: AssetUri, data: bytes) -> AssetUri:
         """Update the asset at the given URI with new data, creating a new version."""
-        path_format_str = self._get_path_format_for_uri_type(uri.asset_type)
-        is_versioned_pattern = "{version}" in path_format_str
-
-        if not is_versioned_pattern:
-            raise ValueError(
-                f"Cannot update asset {uri.asset_type}://{uri.asset_id}: "
-                f"Pattern '{path_format_str}' is unversioned. Update creates a new version file."
-            )
-
+        # Get a Uri without the version number, use it to find all versions.
         query_uri = AssetUri.build(
             asset_type=uri.asset_type, asset_id=uri.asset_id, params=uri.params
         )
         existing_versions = await self.list_versions(query_uri)
-
         if not existing_versions:
             raise FileNotFoundError(
                 f"No versions for asset {uri.asset_type}://{uri.asset_id} to update."
             )
 
-        latest_version_uri = existing_versions[-1]  # AssetUri with params
+        # Create a Uri for the NEXT version number.
+        latest_version_uri = existing_versions[-1]
         latest_version_num = int(cast(str, latest_version_uri.version))
         next_version_str = str(latest_version_num + 1)
-
         next_uri = AssetUri.build(
             asset_type=uri.asset_type,
             asset_id=uri.asset_id,
             version=next_version_str,
-            params=uri.params,  # Preserve params from original URI
+            params=uri.params,
         )
         asset_path = self._uri_to_path(next_uri)
 
-        if asset_path.exists():
+        # If the file is versioned, then the new version should not yet exist.
+        # Double check to be sure.
+        path_format_str = self._get_path_format_for_uri_type(uri.asset_type)
+        is_versioned_pattern = "{version}" in path_format_str
+        if asset_path.exists() and is_versioned_pattern:
             raise FileExistsError(
                 f"Asset path for new version {asset_path} already exists."
             )
+
+        # Done. Write to disk.
         asset_path.parent.mkdir(parents=True, exist_ok=True)
         with open(asset_path, mode="wb") as f:
             f.write(data)

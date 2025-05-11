@@ -102,6 +102,10 @@ def getBuiltinToolPath() -> pathlib.Path:
     return home / "Mod" / "CAM" / "Tools"
 
 
+def getBuiltinLibraryPath() -> pathlib.Path:
+    return getBuiltinToolPath() / "Library"
+
+
 def getBuiltinShapePath() -> pathlib.Path:
     return getBuiltinToolPath() / "Shape"
 
@@ -115,30 +119,22 @@ def getDefaultToolPath():
     return config / "Mod" / "CAM" / "Tools"
 
 
-def getToolPath() -> pathlib.Path:
+def getAssetPath() -> pathlib.Path:
     pref = tool_preferences()
     default = getDefaultToolPath()
     path = pref.GetString(ToolPath, str(default))
     return pathlib.Path(path or default)
 
 
-def setToolPath(path: pathlib.Path):
-    assert path.is_dir(), f"Cannot put a non-initialized tool directory into preferences: {path}"
+def setAssetPath(path: pathlib.Path):
+    assert path.is_dir(), f"Cannot put a non-initialized asset directory into preferences: {path}"
     pref = tool_preferences()
     pref.SetString(ToolPath, str(path))
     _emit_change(ToolGroup, ToolPath, path)
 
 
-def getShapePath() -> pathlib.Path:
-    return getToolPath() / "Shape"
-
-
-def getLibraryPath() -> pathlib.Path:
-    return getToolPath() / "Library"
-
-
 def getToolBitPath() -> pathlib.Path:
-    return getToolPath() / "Bit"
+    return getAssetPath() / "Bit"
 
 
 def getLastToolLibrary() -> Optional[str]:

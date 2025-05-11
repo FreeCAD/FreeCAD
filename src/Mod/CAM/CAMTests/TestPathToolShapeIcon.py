@@ -3,23 +3,22 @@ import unittest
 import unittest.mock
 import pathlib
 from tempfile import NamedTemporaryFile
-from Path.Tool.assets import asset_manager
-from Path.Tool.assets import MemoryStore
-from Path.Tool.shape.util import ensure_toolbitshape_store_initialized
+from PySide import QtCore, QtGui
+from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.shape import ToolBitShape
 from Path.Tool.shape.models.icon import (
     ToolBitShapeIcon,
     ToolBitShapeSvgIcon,
     ToolBitShapePngIcon,
 )
-from PySide import QtCore, QtGui
 
 
-class TestToolBitShapeIconBase(unittest.TestCase):
+class TestToolBitShapeIconBase(PathTestWithAssets):
     """Base class for ToolBitShapeIcon tests."""
     ICON_CLASS = ToolBitShapeIcon
 
     def setUp(self):
+        super().setUp()
         # Set up any necessary test environment
         # Ensure a QApplication exists for QPixmap tests
         if not QtGui.QApplication.instance():
@@ -27,12 +26,7 @@ class TestToolBitShapeIconBase(unittest.TestCase):
         else:
             self.app = QtGui.QApplication.instance()
 
-        toolbitshape_store = MemoryStore("testshapes")
-        asset_manager.register_store(toolbitshape_store)
-        ensure_toolbitshape_store_initialized(toolbitshape_store.name)
-
-        uri = ToolBitShape.resolve_name("ballend")
-        self.test_shape = asset_manager.get(uri, store='testshapes')
+        self.test_shape = self.assets.get("toolbitshape://ballend")
         self.test_svg = self.test_shape.icon
         assert self.test_svg is not None
         self.icon = self.ICON_CLASS("test_icon_base", b"")

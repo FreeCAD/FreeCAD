@@ -91,22 +91,15 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="shapePath">
+              <widget class="QLineEdit" name="shapeID">
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
                <property name="toolTip">
-                <string>The file which defines the type and shape of the Tool Bit.</string>
+                <string>The ID of the Tool Bit.</string>
                </property>
                <property name="placeholderText">
-                <string>path</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="shapeSet">
-               <property name="toolTip">
-                <string>Change file defining type and shape of Tool Bit.</string>
-               </property>
-               <property name="text">
-                <string notr="true">...</string>
+                <string>Tool ID</string>
                </property>
               </widget>
              </item>

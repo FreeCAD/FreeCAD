@@ -20,16 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-import os
-import pathlib
 import FreeCAD
 import Part
 import Path.Main.Job as PathJob
 import Path.Op.Vcarve as PathVcarve
-from Path.Tool import ToolBitFactory
-from Path.Tool.toolbit.util import get_toolbit_filepath_from_name
 import math
-from CAMTests.PathTestUtils import PathTestBase
+from CAMTests.PathTestUtils import PathTestWithAssets
 
 
 class VbitTool(object):
@@ -44,14 +40,12 @@ class VbitTool(object):
 Scale45 = 2.414214
 Scale60 = math.sqrt(3)
 
-TestToolDir = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
-TestToolBitDir = TestToolDir / "Bit"
 
-
-class TestPathVcarve(PathTestBase):
+class TestPathVcarve(PathTestWithAssets):
     """Test Vcarve milling basics."""
 
     def tearDown(self):
+        super().tearDown()
         if hasattr(self, "doc"):
             FreeCAD.closeDocument(self.doc.Name)
 
@@ -61,8 +55,8 @@ class TestPathVcarve(PathTestBase):
         rect = Part.makePolygon([(0, 0, 0), (5, 0, 0), (5, 10, 0), (0, 10, 0), (0, 0, 0)])
         part.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
         job = PathJob.Create("Job", [part])
-        tool_file = get_toolbit_filepath_from_name("60degree_Vbit.fctb", TestToolBitDir)
-        loaded_tool = ToolBitFactory.create_bit_from_file(tool_file)
+        toolbit = self.assets.get("toolbit://60degree_Vbit")
+        loaded_tool = toolbit.attach_to_doc(doc=job.Document)
         job.Tools.Group[0].Tool = loaded_tool
 
         op = PathVcarve.Create("TestVCarve")

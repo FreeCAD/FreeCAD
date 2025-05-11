@@ -1,9 +1,7 @@
-import unittest
 import json
-import pathlib
 import FreeCAD
-from Path.Tool.shape.store import toolbitshape_store
-from Path.Tool.toolbit import ToolBit, TOOLBIT_REGISTRY
+from CAMTests.PathTestUtils import PathTestWithAssets
+from Path.Tool.toolbit import ToolBit
 from Path.Tool.toolbit.serializers import (
     ToolBitSerializer,
     CamoticsToolBitSerializer,
@@ -12,14 +10,16 @@ from Path.Tool.toolbit.serializers import (
 )
 
 
-class BaseToolBitSerializerTestCase(unittest.TestCase):
+class _BaseToolBitSerializerTestCase(PathTestWithAssets):
     """Base test case for ToolBit Serializers."""
+    __test__ = False
 
     serializer_class = None
     test_tool_bit = None
 
     def setUp(self):
         """Create serializer instance and a tool bit for each test."""
+        super().setUp()
         if self.serializer_class is None or not issubclass(
             self.serializer_class, ToolBitSerializer
         ):
@@ -28,12 +28,7 @@ class BaseToolBitSerializerTestCase(unittest.TestCase):
             )
         self.serializer = self.serializer_class()
 
-        # Create a ToolBit instance that serializers can use
-        tool_dir = pathlib.Path(__file__).parent.parent / "Tools"
-        toolbitshape_store.set_dir(tool_dir / "Shape")
-        TOOLBIT_REGISTRY.set_dir(tool_dir / "Bit")
-
-        self.test_tool_bit = TOOLBIT_REGISTRY.get_bit_from_filename("5mm_Endmill.fctb")
+        self.test_tool_bit = self.assets.get("toolbit://5mm_Endmill")
         self.test_tool_bit.set_label("Test Tool")
         self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("4.12 mm"))
         self.test_tool_bit.set_length(FreeCAD.Units.Quantity("15.0 mm"))
@@ -46,7 +41,7 @@ class BaseToolBitSerializerTestCase(unittest.TestCase):
         self.assertIsInstance(serialized_data, bytes)
 
 
-class TestCamoticsToolBitSerializer(BaseToolBitSerializerTestCase):
+class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
     serializer_class = CamoticsToolBitSerializer
 
     def test_serialize_toolbit(self):
@@ -78,7 +73,7 @@ class TestCamoticsToolBitSerializer(BaseToolBitSerializerTestCase):
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
 
 
-class TestFCTBSerializer(BaseToolBitSerializerTestCase):
+class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
     serializer_class = FCTBSerializer
 
     def test_serialize_toolbit(self):
@@ -106,7 +101,7 @@ class TestFCTBSerializer(BaseToolBitSerializerTestCase):
         self.assertEqual(str(deserialized_bit.get_length()), "15.0 mm")
 
 
-class TestLinuxCNCToolBitSerializer(BaseToolBitSerializerTestCase):
+class TestLinuxCNCToolBitSerializer(_BaseToolBitSerializerTestCase):
     serializer_class = LinuxCNCToolBitSerializer
 
     def test_serialize_toolbit(self):

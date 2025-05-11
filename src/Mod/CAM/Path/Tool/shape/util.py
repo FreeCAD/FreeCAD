@@ -1,8 +1,7 @@
+# -*- coding: utf-8 -*-
 import pathlib
 from typing import Optional
 import FreeCAD
-from Path.Preferences import getBuiltinShapePath
-from ..assets import asset_manager
 import tempfile
 import os
 from .doc import ShapeDocFromBytes
@@ -93,33 +92,3 @@ def create_thumbnail_from_data(shape_data: bytes, w: int = 200, h: int = 200) ->
         # Clean up temporary PNG file
         if temp_png_path and temp_png_path.exists():
             os.remove(temp_png_path)
-
-
-def _add_file_to_store(filepath: pathlib.Path, store_name: str, asset_type: str):
-    with open(filepath, "rb") as f:
-        raw_data = f.read()
-    asset_manager.add_raw(
-        store=store_name,
-        asset_type=asset_type,
-        asset_id=filepath.stem,
-        data=raw_data
-    )
-
-
-def ensure_toolbitshape_store_initialized(store_name: str = "shapestore"):
-    """
-    Ensures the toolbitshape store is initialized with built-in shapes
-    if it is currently empty.
-    """
-    builtin_shape_path = getBuiltinShapePath()
-
-    is_empty = asset_manager.is_empty(store=store_name)
-    if is_empty:
-        for shape_file in builtin_shape_path.glob("*.fcstd"):
-            _add_file_to_store(shape_file, store_name, "toolbitshape")
-
-        for shape_file in builtin_shape_path.glob("*.svg"):
-            _add_file_to_store(shape_file, store_name, "toolbitshapesvg")
-
-        for shape_file in builtin_shape_path.glob("*.png"):
-            _add_file_to_store(shape_file, store_name, "toolbitshapepng")

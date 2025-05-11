@@ -1,11 +1,17 @@
+# -*- coding: utf-8 -*-
 import uuid
+import json
 import FreeCAD
 from FreeCAD import Base
-from typing import Optional, Union
+from typing import Optional, Union, Mapping, List
+from ...assets import Asset, AssetUri
+from ...camassets import cam_assets
 
-
-class Machine(object):
+class Machine(Asset):
     """Represents a machine with various operational parameters."""
+    
+    asset_type: str = "machine"
+    API_VERSION = 1
 
     UNIT_CONVERSIONS = {
         "hp": 745.7,  # hp to W
@@ -125,6 +131,66 @@ class Machine(object):
                 if peak_rpm_for_calc
                 else float("inf")
             )
+
+    def get_id(self) -> str:
+        """Returns the unique identifier for the Machine instance."""
+        return self.id
+
+    def to_dict(self) -> dict:
+        """Returns a dictionary representation of the Machine."""
+        return {
+            "version": self.API_VERSION,
+            "id": self.id,
+            "label": self.label,
+            "max_power": self._max_power,  # W
+            "min_rpm": self._min_rpm,      # 1/s
+            "max_rpm": self._max_rpm,      # 1/s
+            "max_torque": self._max_torque,  # Nm
+            "peak_torque_rpm": self._peak_torque_rpm,  # 1/s
+            "min_feed": self._min_feed,    # mm/min
+            "max_feed": self._max_feed     # mm/min
+        }
+
+    def to_bytes(self) -> bytes:
+        """Serializes the Machine object to bytes using to_dict."""
+        data_dict = self.to_dict()
+        json_str = json.dumps(data_dict)
+        return json_str.encode('utf-8')
+
+    @classmethod
+    def from_dict(cls, data_dict: dict, id: str) -> 'Machine':
+        """Creates a Machine instance from a dictionary."""
+        machine = cls(
+            label=data_dict.get("label", "Machine"),
+            max_power=data_dict.get("max_power", 2000.0),  # W
+            min_rpm=data_dict.get("min_rpm", 3000 * cls.UNIT_CONVERSIONS["rpm"]),  # 1/s
+            max_rpm=data_dict.get("max_rpm", 60000 * cls.UNIT_CONVERSIONS["rpm"]),  # 1/s
+            max_torque=data_dict.get("max_torque", None),  # Nm
+            peak_torque_rpm=data_dict.get("peak_torque_rpm", None),  # 1/s
+            min_feed=data_dict.get("min_feed", 1.0),  # mm/min
+            max_feed=data_dict.get("max_feed", 2000.0),  # mm/min
+            id=id
+        )
+        return machine
+
+    @classmethod
+    def from_bytes(
+        cls,
+        data: bytes,
+        id: str,
+        dependencies: Optional[Mapping[AssetUri, Asset]],
+    ) -> "Machine":
+        """
+        Deserializes bytes into a Machine instance using from_dict.
+        """
+        # If dependencies is None, it's fine as Machine doesn't use it.
+        data_dict = json.loads(data.decode('utf-8'))
+        return cls.from_dict(data_dict, id)
+
+    @classmethod
+    def dependencies(cls, data: bytes) -> List[AssetUri]:
+        """Returns a list of AssetUri dependencies parsed from the serialized data."""
+        return []  # Machine has no dependencies
 
     @property
     def max_power(self) -> FreeCAD.Units.Quantity:
@@ -391,3 +457,6 @@ class Machine(object):
         if do_print:
             print(output)
         return output
+
+
+cam_assets.register_asset(Machine)

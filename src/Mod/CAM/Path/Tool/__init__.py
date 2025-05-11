@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
-from .toolbit import ToolBit, ToolBitFactory
+from .camassets import cam_assets
+from .toolbit import ToolBit
 
 # For backward compatibility with files saved before the toolbit rename
 # This makes the Path.Tool.toolbit.base module available as Path.Tool.Bit.
@@ -12,5 +13,5 @@ sys.modules[__name__ + ".Bit"] = Bit
 # Define __all__ for explicit public interface
 __all__ = [
     "ToolBit",
-    "ToolBitFactory",
+    "cam_assets",
 ]

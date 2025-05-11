@@ -25,9 +25,8 @@ import FreeCADGui
 import Path
 import Path.Tool
 import os
-from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from Path.Tool import ToolBitFactory
+from Path.Tool.toolbit import ToolBit
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -55,7 +54,9 @@ class CommandToolBitCreate:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        obj = ToolBitFactory.create_bit()
+        # Create a default endmill tool bit and attach it to a new DocumentObject
+        toolbit = ToolBit.from_shape_id("endmill.fcstd")
+        obj = toolbit.attach_to_doc(FreeCAD.ActiveDocument)
         obj.ViewObject.Proxy.setCreate(obj.ViewObject)
 
 

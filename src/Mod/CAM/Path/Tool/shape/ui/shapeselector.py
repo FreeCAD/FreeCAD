@@ -2,7 +2,7 @@ from typing import Optional, cast
 import FreeCADGui
 from functools import partial
 from PySide import QtGui
-from ...assets import asset_manager
+from ...camassets import cam_assets
 from .. import ToolBitShape
 from .flowlayout import FlowLayout
 from .shapebutton import ShapeButton
@@ -44,10 +44,7 @@ class ShapeSelector:
 
     def update_shapes(self):
         # Retrieve each shape asset
-        shapes = set(asset_manager.fetch(
-            store="shapestore",
-            asset_type="toolbitshape"
-        ))
+        shapes = set(cam_assets.fetch(asset_type="toolbitshape"))
 
         builtin = set(s for s in shapes if cast(ToolBitShape, s).is_builtin)
         self._add_shapes(self.form.standardTools, builtin)

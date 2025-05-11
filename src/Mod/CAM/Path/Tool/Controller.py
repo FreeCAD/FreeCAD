@@ -25,7 +25,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-from Path.Tool import ToolBitFactory
+from Path.Tool.toolbit import ToolBit
 import Path.Base.Generator.toolchange as toolchange
 
 
@@ -182,13 +182,11 @@ class ToolController:
                     obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
                 if template.get(ToolControllerTemplate.Tool):
                     self.ensureToolBit(obj)
-                    toolVersion = template.get(ToolControllerTemplate.Tool).get(
-                        ToolControllerTemplate.Version
-                    )
+                    tool_data = template.get(ToolControllerTemplate.Tool)
+                    toolVersion = tool_data.get(ToolControllerTemplate.Version)
                     if toolVersion == 2:
-                        obj.Tool = ToolBitFactory.create_bit_from_dict(
-                            template.get(ToolControllerTemplate.Tool)
-                        )
+                        toolbit_instance = ToolBit.from_dict(tool_data)
+                        obj.Tool = toolbit_instance.attach_to_doc(doc=obj.Document)
                     else:
                         obj.Tool = None
                         if toolVersion == 1:
@@ -297,7 +295,10 @@ def Create(
 
     if assignTool:
         if not tool:
-            tool = ToolBitFactory.create_bit()
+            # Create a default endmill tool bit and attach it to a new DocumentObject
+            toolbit = ToolBit.from_shape_id("endmill.fcstd")
+            Path.Log.info(f"Controller.Create: Created toolbit with ID: {toolbit.id}")
+            tool = toolbit.attach_to_doc(doc=FreeCAD.ActiveDocument)
             if tool.ViewObject:
                 tool.ViewObject.Visibility = False
         obj.Tool = tool

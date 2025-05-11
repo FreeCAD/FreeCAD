@@ -21,9 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
-from Path.Tool import ToolBitFactory
+from Path.Tool.toolbit import ToolBit
 import Path.Tool.Controller as PathToolController
-
 from CAMTests.PathTestUtils import PathTestBase
 
 
@@ -41,9 +40,11 @@ class TestPathToolController(PathTestBase):
             "name": name or "t1",
             "shape": "endmill.fcstd",
             "parameter": {"Diameter": diameter},
-            "attribute": [],
+            "attribute": {},
         }
-        return ToolBitFactory.create_bit_from_dict(attrs)
+        print(f"Debug: attrs['attribute'] is {attrs['attribute']}")
+        toolbit = ToolBit.from_dict(attrs)
+        return toolbit.attach_to_doc(doc=FreeCAD.ActiveDocument)
 
     def test00(self):
         """Verify ToolController templateAttrs"""

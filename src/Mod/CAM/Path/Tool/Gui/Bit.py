@@ -20,17 +20,14 @@
 # *                                                                         *
 # ***************************************************************************
 
-import os
-import pathlib
-from typing import Mapping, Optional
-from PySide import QtCore, QtGui
+from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.IconViewProvider as PathIconViewProvider
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
-from Path.Tool import ToolBitFactory
+from Path.Tool.toolbit import ToolBit
 
 
 __title__ = "Tool Bit UI"
@@ -163,38 +160,20 @@ class TaskPanel:
         self.editor.setupUI()
 
 
-class ToolBitGuiFactory(Path.Tool.toolbit.models.base.ToolBitFactory):
-    def create_bit_from_dict(self, attrs: Mapping, filepath: Optional[pathlib.Path] = None):
-        """
-        Creates a new tool bit from attributes.
-        This method is overridden to attach the ViewProvider.
-        """
-        Path.Log.track(attrs)
-
-        # Use the base class factory to create the tool bit object
-        tool = super().create_bit_from_dict(attrs, filepath)
-        if not tool:
-            raise Exception("failed to create tool from {attrs} ({filepath})")
-
-        # Attach the ViewProvider if the tool object has a ViewObject
-        if hasattr(tool, "ViewObject") and tool.ViewObject:
-            PathIconViewProvider.Attach(tool.ViewObject, tool.Label)
-        else:
-            FreeCAD.Console.PrintWarning(
-                f"WARNING: ViewObject not available for tool {tool.Label}. "
-                "ViewProvider not attached.\n"
-            )
-
-        return tool
-
-    def create_bit(self, path: str, shape_path=None):
-        """
-        Creates a new tool bit.
-        It is assumed the tool will be edited immediately so the internal bit
-        body is still attached.
-        """
-        Path.Log.track(path, shape_path)
-        return super().create_bit(path, shape_path)
+def setup_toolbit_gui(tool_document_object: FreeCAD.DocumentObject):
+    """
+    Encapsulates GUI-specific setup logic for a ToolBit document object.
+    Attaches the ViewProvider if the object has a ViewObject.
+    """
+    if hasattr(tool_document_object, "ViewObject") and tool_document_object.ViewObject:
+        PathIconViewProvider.Attach(
+            tool_document_object.ViewObject, tool_document_object.Label
+        )
+    else:
+        FreeCAD.Console.PrintWarning(
+            f"WARNING: ViewObject not available for tool {tool_document_object.Label}. "
+            "ViewProvider not attached.\n"
+        )
 
 
 def isValidFileName(filename):
@@ -251,17 +230,20 @@ def LoadTool(parent=None):
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
     """
     foo = GetToolFile(parent)
-    return ToolBitFactory.create_bit_from_file(foo) if foo else foo
+    if foo:
+        toolbit = ToolBit.from_file(foo)
+        return toolbit.attach_to_doc(doc=FreeCAD.ActiveDocument)
+    return None
 
 
 def LoadTools(parent=None):
     """
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
     """
-    return [ToolBitFactory.create_bit_from_file(foo) for foo in GetToolFiles(parent)]
+    return [
+        ToolBit.from_file(foo).attach_to_doc(doc=FreeCAD.ActiveDocument)
+        for foo in GetToolFiles(parent)
+    ]
 
-
-# Set the factory so all tools are created with UI
-Path.Tool.toolbit.models.base.Factory = ToolBitGuiFactory()
 
 PathIconViewProvider.RegisterViewProvider("ToolBit", ViewProvider)

@@ -67,5 +67,3 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
             str(Path.Preferences.getBuiltinShapePath()),
         )
         self.assertEqual(Path.Preferences.getToolBitPath().name, "Bit")
-        self.assertEqual(Path.Preferences.getLibraryPath().name, "Library")
-        self.assertEqual(Path.Preferences.getShapePath().name, "Shape")

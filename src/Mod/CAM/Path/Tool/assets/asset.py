@@ -1,7 +1,7 @@
 from __future__ import annotations
 import abc
 from abc import ABC
-from typing import Mapping, List
+from typing import Mapping, List, Optional, Any
 from .uri import AssetUri
 
 class Asset(ABC):
@@ -33,8 +33,16 @@ class Asset(ABC):
 
     @classmethod
     @abc.abstractmethod
-    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset]) -> Asset:
-        """Creates an object from serialized data and resolved dependencies."""
+    def from_bytes(
+        cls,
+        data: bytes,
+        id: str,
+        dependencies: Optional[Mapping[AssetUri, Any]],
+    ) -> Asset:
+        """
+        Creates an object from serialized data and resolved dependencies.
+        If dependencies is None, it indicates a shallow load where dependencies were not resolved.
+        """
         pass
 
     @abc.abstractmethod

@@ -21,10 +21,18 @@
 # ***************************************************************************
 
 import FreeCAD
+import os
 import Part
 import Path
 import math
+import pathlib
 import unittest
+from Path.Tool.assets import AssetManager, MemoryStore
+from Path.Tool.camassets import ensure_assets_initialized
+from Path.Tool.library import Library
+from Path.Tool.toolbit import ToolBit
+from Path.Tool.shape import ToolBitShape
+from Path.Tool.shape.models.icon import ToolBitShapeSvgIcon, ToolBitShapePngIcon
 
 from FreeCAD import Vector
 
@@ -196,3 +204,42 @@ class PathTestBase(unittest.TestCase):
         failed_objects = [o.Name for o in objs if "Invalid" in o.State]
         if len(failed_objects) > 0:
             self.fail(msg or f"Recompute failed for {failed_objects}")
+
+
+class PathTestWithAssets(PathTestBase):
+    """
+    A base class that create an AssetManager, so test can easily fetch
+    test data. Examples:
+
+        toolbit = self.asset.get("toolbit://ballend")
+        toolbit = self.asset.get("toolbitshape://chamfer")
+    """
+    __tool_dir = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
+
+    def setUp(self):
+        # Set up the manager with an in-memory store.
+        self.assets = AssetManager()
+        self.asset_store = MemoryStore("local")
+        self.assets.register_store(self.asset_store)
+
+        # Register some asset classes.
+        self.assets.register_asset(Library)
+        self.assets.register_asset(ToolBit)
+        self.assets.register_asset(ToolBitShape)
+        self.assets.register_asset(ToolBitShapeSvgIcon)
+        self.assets.register_asset(ToolBitShapePngIcon)
+
+        # Include the built-in assets from src/Mod/CAM/Tools.
+        # These functions only copy if there are no assets, so this
+        # must be done BEFORE adding the additional test assets below.
+        ensure_assets_initialized(self.assets, self.asset_store.name)
+
+        # Additional test assets.
+        for path in pathlib.Path(self.__tool_dir / "Bit").glob("*.fctb"):
+            self.assets.add_file("toolbit", path)
+        for path in pathlib.Path(self.__tool_dir / "Shape").glob("*.fcstd"):
+            self.assets.add_file("toolbitshape", path)
+
+    def tearDown(self):
+        self.asset_store = None
+        self.assets = None

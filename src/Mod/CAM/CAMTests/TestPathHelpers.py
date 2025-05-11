@@ -25,7 +25,7 @@ import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
 import Path.Base.MachineState as PathMachineState
-from Path.Tool import ToolBitFactory
+from Path.Tool.toolbit import ToolBit
 import Path.Tool.Controller as PathToolController
 import PathScripts.PathUtils as PathUtils
 
@@ -37,9 +37,10 @@ def createTool(name="t1", diameter=1.75):
         "name": name or "t1",
         "shape": "endmill.fcstd",
         "parameter": {"Diameter": diameter},
-        "attribute": [],
+        "attribute": {},
     }
-    return ToolBitFactory.create_bit_from_dict(attrs)
+    toolbit = ToolBit.from_dict(attrs)
+    return toolbit.attach_to_doc(doc=FreeCAD.ActiveDocument)
 
 
 class TestPathHelpers(PathTestBase):

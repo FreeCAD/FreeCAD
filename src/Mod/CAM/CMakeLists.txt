@@ -114,6 +114,7 @@ SET(PathPythonMainSanity_SRCS
 
 SET(PathPythonTools_SRCS
     Path/Tool/__init__.py
+    Path/Tool/camassets.py
     Path/Tool/Controller.py
 )
 
@@ -145,7 +146,6 @@ SET(PathPythonToolsGui_SRCS
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
     Path/Tool/toolbit/docobject.py
-    Path/Tool/toolbit/registry.py
     Path/Tool/toolbit/util.py
 )
 
@@ -182,6 +182,7 @@ SET(PathPythonToolsToolBitSerializers_SRCS
 
 SET(PathPythonToolsLibrary_SRCS
     Path/Tool/library/__init__.py
+    Path/Tool/library/util.py
 )
 
 SET(PathPythonToolsLibraryModels_SRCS
@@ -200,7 +201,6 @@ SET(PathPythonToolsMachineModels_SRCS
 
 SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/__init__.py
-    Path/Tool/shape/store.py
     Path/Tool/shape/util.py
     Path/Tool/shape/doc.py
 )

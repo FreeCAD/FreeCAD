@@ -70,7 +70,7 @@ class ToolsPreferencesPage:
         self.select_path_button.setIcon(QtGui.QIcon.fromTheme("folder-open"))
         self.select_path_button.clicked.connect(self.selectToolPath)
         self.reset_path_button = QtGui.QPushButton(translate("CAM_PreferencesTools", "Reset"))
-        self.reset_path_button.clicked.connect(self.resetToolPath)
+        self.reset_path_button.clicked.connect(self.resetAssetPath)
 
         # Set note label font to italic
         font = self.tool_path_note_label.font()
@@ -106,13 +106,13 @@ class ToolsPreferencesPage:
         if path:
             self.tool_path_edit.setText(str(path))
 
-    def resetToolPath(self):
+    def resetAssetPath(self):
         # Implement resetting path to default
         default_path = Path.Preferences.getDefaultToolPath()
         self.tool_path_edit.setText(str(default_path))
 
     def saveSettings(self):
-        # Check path is writable, then call Path.Preferences.setToolPath()
+        # Check path is writable, then call Path.Preferences.setAssetPath()
         tool_path = pathlib.Path(self.tool_path_edit.text())
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Path").GetBool(
             "CheckToolPathWritable", True
@@ -126,10 +126,10 @@ class ToolsPreferencesPage:
                     ),
                 )
                 return False
-        Path.Preferences.setToolPath(tool_path)
+        Path.Preferences.setAssetPath(tool_path)
         return True
 
     def loadSettings(self):
-        # use getToolPath() to initialize UI
-        tool_path = Path.Preferences.getToolPath()
+        # use getAssetPath() to initialize UI
+        tool_path = Path.Preferences.getAssetPath()
         self.tool_path_edit.setText(str(tool_path))

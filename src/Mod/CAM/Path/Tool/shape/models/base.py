@@ -5,12 +5,13 @@ import pathlib
 import FreeCAD
 import Path
 import os
-from typing import Dict, List, Any, Mapping, Optional, Tuple, Type
+from typing import Dict, List, Any, Mapping, Optional, Tuple, Type, cast
 import zipfile
 import xml.etree.ElementTree as ET
 import io
 import tempfile
-from ...assets import Asset, AssetUri, asset_manager
+from ...assets import Asset, AssetUri
+from ...camassets import cam_assets
 from ..doc import (
     find_shape_object,
     get_object_properties,
@@ -210,7 +211,12 @@ class ToolBitShape(Asset):
             return []
 
     @classmethod
-    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Type]) -> "ToolBitShape":
+    def from_bytes(
+        cls,
+        data: bytes,
+        id: str,
+        dependencies: Optional[Mapping[AssetUri, Asset]],
+    ) -> "ToolBitShape":
         """
         Create a ToolBitShape instance from the raw bytes of an FCStd file.
 
@@ -220,7 +226,8 @@ class ToolBitShape(Asset):
         Args:
             data (bytes): The raw bytes of the .FCStd file.
             id (str): The unique identifier for the shape.
-            dependencies (Mapping[AssetUri, Type]): A mapping of resolved dependencies.
+            dependencies (Optional[Mapping[AssetUri, Any]]): A mapping of
+                  resolved dependencies. If None, shallow load was attempted.
 
         Returns:
             ToolBitShape: An instance of the appropriate ToolBitShape subclass.
@@ -231,6 +238,16 @@ class ToolBitShape(Asset):
                         shape name.
             Exception: For other potential FreeCAD errors during loading.
         """
+        if dependencies is None:
+            # ToolBitShape currently relies on its icon dependency being resolved.
+            # If we need to support truly shallow ToolBitShape, this logic would need adjustment,
+            # potentially by making self.icon Optional and only loading it if dependencies are present.
+            # For now, consistent with ToolBit, we state it doesn't support shallow loading
+            # if dependencies are entirely absent.
+            raise ValueError(
+                f"ToolBitShape asset type '{cls.asset_type}' (id: {id}) does not support shallow loading (dependencies is None)."
+            )
+
         # Open the shape data temporarily to get the Body label and parameters
         with ShapeDocFromBytes(data) as temp_doc:
             if not temp_doc:
@@ -273,13 +290,13 @@ class ToolBitShape(Asset):
                 asset_type="toolbitshapesvg",
                 asset_id=id,
             )
-            instance.icon = dependencies.get(icon_uri)
+            instance.icon = cast(ToolBitShapeIcon, dependencies.get(icon_uri))
             if not instance.icon:
                 icon_uri = AssetUri.build(
                     asset_type="toolbitshapepng",
                     asset_id=id,
                 )
-                instance.icon = dependencies.get(icon_uri)
+                instance.icon = cast(ToolBitShapeIcon, dependencies.get(icon_uri))
 
             # Update instance parameters, prioritizing loaded defaults but not
             # overwriting parameters that may already be set during __init__
@@ -600,4 +617,4 @@ class ToolBitShape(Asset):
         return None
 
 
-asset_manager.register_asset(ToolBitShape)
+cam_assets.register_asset(ToolBitShape)

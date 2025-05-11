@@ -20,7 +20,6 @@ from .models.icon import (
     ToolBitShapePngIcon,
     ToolBitShapeSvgIcon,
 )
-from .store import toolbitshape_store
 
 # A list of the name of each ToolBitShape
 TOOL_BIT_SHAPE_NAMES = sorted([cls.name for cls in ToolBitShape.__subclasses__()])
@@ -44,5 +43,4 @@ __all__ = [
     "ToolBitShapeIcon",
     "ToolBitShapeSvgIcon",
     "ToolBitShapePngIcon",
-    "toolbitshape_store",
 ]

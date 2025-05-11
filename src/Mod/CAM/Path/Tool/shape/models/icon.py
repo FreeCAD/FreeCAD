@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import pathlib
 import xml.etree.ElementTree as ET
-from typing import Mapping, Optional, Type, List
+from typing import Mapping, Optional, List
 from functools import cached_property
-from ...assets import Asset, AssetUri, asset_manager
+from ...assets import Asset, AssetUri
+from ...camassets import cam_assets
 import Path.Tool.shape.util as util
 from PySide import QtCore, QtGui, QtSvg
 
@@ -43,7 +44,7 @@ class ToolBitShapeIcon(Asset):
 
     @classmethod
     def from_bytes(
-        cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Type]
+        cls, data: bytes, id: str, dependencies: Optional[Mapping[AssetUri, Asset]]
     ) -> "ToolBitShapeIcon":
         """
         Create a ToolBitShapeIcon instance from raw bytes.
@@ -51,7 +52,7 @@ class ToolBitShapeIcon(Asset):
         Args:
             data (bytes): The raw bytes of the icon file.
             id (str): The ID of the asset, including extension.
-            dependencies (Mapping[AssetUri, Type]): A mapping of resolved dependencies (not used).
+            dependencies (Optional[Mapping[AssetUri, Asset]]): A mapping of resolved dependencies (not used for icons).
 
         Returns:
             ToolBitShapeIcon: An instance of ToolBitShapeIcon.
@@ -279,5 +280,5 @@ class ToolBitShapePngIcon(ToolBitShapeIcon):
 
 
 # Register the asset with the asset manager
-asset_manager.register_asset(ToolBitShapeSvgIcon)
-asset_manager.register_asset(ToolBitShapePngIcon)
+cam_assets.register_asset(ToolBitShapeSvgIcon)
+cam_assets.register_asset(ToolBitShapePngIcon)

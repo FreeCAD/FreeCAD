@@ -20,52 +20,46 @@
 # *                                                                         *
 # ***************************************************************************
 
-import CAMTests.PathTestUtils as PathTestUtils
-import FreeCAD
+from typing import cast
 import os
+import uuid
 import pathlib
-from Path.Tool.toolbit.util import (
-    get_toolbit_filepath_from_name,
-    get_tool_library_from_name,
-)
-from Path.Tool.toolbit import ToolBitBullnose
-
-TestToolDir = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
-TestToolBitDir = TestToolDir / "Bit"
+import FreeCAD
+from CAMTests.PathTestUtils import PathTestWithAssets
+from Path.Tool.library import Library
+from Path.Tool.shape import ToolBitShapeBullnose
+from Path.Tool.toolbit import ToolBitEndmill, ToolBitBullnose
 
 
-class TestPathToolBit(PathTestUtils.PathTestBase):
-    def setUp(self):
-        """Create a new document for each test."""
-        FreeCAD.newDocument("TestToolBitDoc")
-        self.doc = FreeCAD.ActiveDocument
+TOOL_DIR = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
+SHAPE_DIR = TOOL_DIR / "Shape"
+BIT_DIR = TOOL_DIR / "Bit"
 
-    def tearDown(self):
-        """Close the document after each test."""
-        FreeCAD.closeDocument("TestToolBitDoc")
-        self.doc = None
 
+class TestPathToolBit(PathTestWithAssets):
     def testGetToolBit(self):
         """Find a tool bit from file name"""
-        path = get_toolbit_filepath_from_name("5mm_Endmill.fctb", TestToolBitDir)
-        self.assertIsNot(path, None)
-        self.assertNotEqual(path, "5mm_Endmill.fctb")
+        toolbit = self.assets.get("toolbit://5mm_Endmill")
+        self.assertIsInstance(toolbit, ToolBitEndmill)
+        self.assertEqual(toolbit.id, "5mm_Endmill")
 
     def testGetLibrary(self):
         """Find a tool library from file name"""
-        path = get_tool_library_from_name("Default.fctl")
-        self.assertIsNot(path, None)
-        self.assertNotEqual(path, "Default.fctl")
+        library = self.assets.get("toolbitlibrary://Default")
+        self.assertIsInstance(library, Library)
+        self.assertEqual(library.id, "Default")
 
     def testBullnose(self):
         """Test ToolBitBullnose basic parameters"""
-        bullnose_shape = ToolBitBullnose.SHAPE_CLASS.from_file(
-            TestToolDir / "Shape" / "bullnose.fcstd"
-        )
-        bullnose_bit = ToolBitBullnose.create(
-            doc=self.doc,
-            tool_bit_shape=bullnose_shape
-        )
-        self.assertEqual(bullnose_bit.obj.ShapeFile, "bullnose")
+        shape = self.assets.get("toolbitshape://bullnose")
+        shape = cast(ToolBitShapeBullnose, shape)
+
+        bullnose_bit = ToolBitBullnose(shape, id="mybullnose")
+        self.assertEqual(bullnose_bit.get_id(), "mybullnose")
+
+        bullnose_bit = ToolBitBullnose(shape)
+        uuid.UUID(bullnose_bit.get_id())  # will raise if not valid UUID
+
+        # Parameters should be loaded from the shape file and set on the tool bit's object
         self.assertEqual(bullnose_bit.obj.Diameter, FreeCAD.Units.Quantity("5.0 mm"))
         self.assertEqual(bullnose_bit.obj.FlatRadius, FreeCAD.Units.Quantity("1.5 mm"))
