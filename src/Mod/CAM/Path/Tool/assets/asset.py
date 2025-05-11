@@ -1,6 +1,7 @@
+from __future__ import annotations
 import abc
 from abc import ABC
-from typing import Any, Mapping, List
+from typing import Mapping, List
 from .uri import AssetUri
 
 class Asset(ABC):
@@ -22,7 +23,7 @@ class Asset(ABC):
         )
 
     @classmethod
-    def get_url_from_id(cls, asset_id):
+    def get_uri_from_id(cls, asset_id):
         return AssetUri.build(cls.asset_type, asset_id=asset_id)
 
     @classmethod
@@ -32,7 +33,7 @@ class Asset(ABC):
 
     @classmethod
     @abc.abstractmethod
-    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]) -> Any:
+    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset]) -> Asset:
         """Creates an object from serialized data and resolved dependencies."""
         pass
 

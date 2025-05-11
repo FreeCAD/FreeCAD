@@ -7,7 +7,6 @@ from Path.Tool.assets import (
     AssetUri,
     AssetStore,
     MemoryStore,
-    FlatFileStore,
     FileStore,
 )
 
@@ -181,13 +180,140 @@ class BaseTestPathToolAssetStore(unittest.TestCase):
 
         asyncio.run(async_test())
 
+    def test_create_with_empty_data(self):
+        async def async_test():
+            data = b""
+            asset_type = "shape"
+            asset_id = f"asset_{uuid4()}"
+            uri = await self.store.create(asset_type, asset_id, data)
+
+            self.assertIsInstance(uri, AssetUri)
+            retrieved_data = await self.store.get(uri)
+            self.assertEqual(retrieved_data, data)
+        asyncio.run(async_test())
+
+    def test_list_assets_non_existent_type(self):
+        async def async_test():
+            assets = await self.store.list_assets(asset_type=f"non_existent_type_{uuid4()}")
+            self.assertEqual(len(assets), 0)
+        asyncio.run(async_test())
+
+    def test_list_assets_pagination_offset_too_high(self):
+        async def async_test():
+            await self.store.create("shape", f"asset1_{uuid4()}", b"data")
+            assets = await self.store.list_assets(offset=100) # Assuming less than 100 assets
+            self.assertEqual(len(assets), 0)
+        asyncio.run(async_test())
+    
+    def test_list_assets_pagination_limit_zero(self):
+        async def async_test():
+            await self.store.create("shape", f"asset1_{uuid4()}", b"data")
+            assets = await self.store.list_assets(limit=0)
+            self.assertEqual(len(assets), 0)
+        asyncio.run(async_test())
+
+    def test_create_delete_recreate(self):
+        async def async_test():
+            asset_type = "shape"
+            asset_id = f"asset_{uuid4()}"
+            data1 = b"first data"
+            data2 = b"second data"
+
+            uri1 = await self.store.create(asset_type, asset_id, data1)
+            self.assertEqual(await self.store.get(uri1), data1)
+            # For versioned stores, this would be version "1"
+            # For stores that don't deeply track versions, it's important what happens on recreate
+
+            await self.store.delete(uri1)
+            with self.assertRaises(FileNotFoundError):
+                await self.store.get(uri1)
+
+            uri2 = await self.store.create(asset_type, asset_id, data2)
+            self.assertEqual(await self.store.get(uri2), data2)
+            
+            # Behavior of uri1.version vs uri2.version depends on store implementation
+            # For a fully versioned store that starts fresh:
+            self.assertEqual(uri2.version, "1", "Recreating should yield version 1 for a fresh start")
+            
+            # Ensure only the new asset exists if the store fully removes old versions
+            versions = await self.store.list_versions(AssetUri.build(asset_type=asset_type, asset_id=asset_id))
+            self.assertEqual(len(versions), 1)
+            self.assertEqual(versions[0].version, "1")
+
+        asyncio.run(async_test())
+
+    def test_get_non_existent_specific_version(self):
+        async def async_test():
+            asset_type = "shape"
+            asset_id = f"asset_{uuid4()}"
+            await self.store.create(asset_type, asset_id, b"data_v1")
+
+            non_existent_version_uri = AssetUri.build(
+                asset_type=asset_type,
+                asset_id=asset_id,
+                version="99" # Assuming version 99 won't exist
+            )
+            with self.assertRaises(FileNotFoundError):
+                await self.store.get(non_existent_version_uri)
+        asyncio.run(async_test())
+
+    def test_delete_last_version(self):
+        async def async_test():
+            asset_type = "shape"
+            asset_id = f"asset_{uuid4()}"
+            
+            uri_v1 = await self.store.create(asset_type, asset_id, b"v1_data")
+            uri_v2 = await self.store.update(uri_v1, b"v2_data")
+
+            await self.store.delete(uri_v2) # Delete latest version
+            with self.assertRaises(FileNotFoundError):
+                await self.store.get(uri_v2)
+
+            # v1 should still exist
+            self.assertEqual(await self.store.get(uri_v1), b"v1_data")
+            versions_after_v2_delete = await self.store.list_versions(uri_v1)
+            self.assertEqual(len(versions_after_v2_delete), 1)
+            self.assertEqual(versions_after_v2_delete[0].version, "1")
+
+            await self.store.delete(uri_v1) # Delete the now last version (v1)
+            with self.assertRaises(FileNotFoundError):
+                await self.store.get(uri_v1)
+
+            versions_after_all_delete = await self.store.list_versions(uri_v1)
+            self.assertEqual(len(versions_after_all_delete), 0)
+
+            # Asset should not appear in list_assets
+            listed_assets = await self.store.list_assets(asset_type=asset_type)
+            self.assertFalse(any(a.asset_id == asset_id for a in listed_assets))
+            self.assertTrue(await self.store.is_empty(asset_type))
+
+        asyncio.run(async_test())
+
+    def test_get_latest_on_non_existent_asset(self):
+        async def async_test():
+            latest_uri = AssetUri.build(
+                asset_type="shape",
+                asset_id=f"non_existent_id_for_latest_{uuid4()}",
+                version="latest"
+            )
+            with self.assertRaises(FileNotFoundError): # Or custom NoVersionsFoundError if that's how store behaves
+                await self.store.get(latest_uri)
+        asyncio.run(async_test())
+
 
 class TestPathToolFileStore(BaseTestPathToolAssetStore):
     """Test suite for FileStore with full versioning support."""
 
     def setUp(self):
         super().setUp()
-        self.store = FileStore("versioned", self.tmp_path)
+        asset_type_map = {
+            "*": "{asset_type}/{asset_id}/{version}",
+            "special1": "Especial/{asset_id}/{version}",
+            "special2": "my/super/{asset_id}.spcl",
+        }
+        self.store = FileStore("versioned",
+                               self.tmp_path,
+                               asset_type_map)
 
     def test_get_latest_version(self):
         async def async_test():
@@ -219,98 +345,6 @@ class TestPathToolFileStore(BaseTestPathToolAssetStore):
             
             with self.assertRaises(FileNotFoundError):
                 await self.store.get(uri1)
-
-        asyncio.run(async_test())
-
-
-class TestPathToolFlatFileStore(BaseTestPathToolAssetStore):
-    """Test suite for FlatFileStore with limited versioning support."""
-
-    def setUp(self):
-        super().setUp()
-        self.expected_store_name = "flat_test"
-        self.type_to_extension = {
-            "shape": ".fcs",
-            "delete_type": ".del",
-            "type1": ".tp1",
-            "type2": ".tp2",
-            "type3": ".tp3"
-        }
-        self.store = FlatFileStore(
-            name=self.expected_store_name,
-            base_dir=self.tmp_path,
-            type_to_extension=self.type_to_extension
-        )
-
-    def test_create_and_get(self):  # Override due to fixed version
-        async def async_test():
-            for asset_type in self.type_to_extension:
-                asset_id = f"asset_{uuid4()}"
-                data = f"data_{asset_type}".encode('utf-8')
-                
-                uri = await self.store.create(asset_type, asset_id, data)
-                self.assertIsInstance(uri, AssetUri)
-                self.assertEqual(uri.asset_type, asset_type)
-                self.assertEqual(uri.asset_id, asset_id)
-                self.assertEqual(uri.version, "1")  # Fixed version
-                
-                self.assertEqual(await self.store.get(uri), data)
-
-        asyncio.run(async_test())
-
-    def test_update_versioning(self):  # Override due to no version increment
-        async def async_test():
-            asset_type = "shape"
-            asset_id = f"asset_{uuid4()}"
-            initial_data = b"initial"
-            updated_data = b"updated"
-
-            uri1 = await self.store.create(asset_type, asset_id, initial_data)
-            uri2 = await self.store.update(uri1, updated_data)
-
-            self.assertEqual(uri1, uri2)  # URI remains identical
-            self.assertEqual(uri1.version, "1")
-            self.assertEqual(await self.store.get(uri1), updated_data)
-
-        asyncio.run(async_test())
-
-    def test_list_versions(self):  # Override due to single version
-        async def async_test():
-            asset_type = "shape"
-            asset_id = f"asset_{uuid4()}"
-            data = b"data"
-
-            uri = await self.store.create(asset_type, asset_id, data)
-            versions = await self.store.list_versions(uri)
-            
-            self.assertEqual(len(versions), 1)
-            self.assertEqual(versions[0].version, "1")
-            self.assertEqual(versions[0].asset_id, asset_id)
-            self.assertEqual(versions[0].asset_type, asset_type)
-
-            non_existent_uri = AssetUri.build(
-                asset_type="non_existent",
-                asset_id="missing"
-            )
-            self.assertEqual(await self.store.list_versions(non_existent_uri), [])
-
-        asyncio.run(async_test())
-
-    def test_get_latest_version(self):  # Override to ensure fixed version
-        async def async_test():
-            asset_type = "shape"
-            asset_id = f"asset_{uuid4()}"
-            data = b"data"
-
-            uri = await self.store.create(asset_type, asset_id, data)
-            latest_uri = AssetUri.build(
-                asset_type=asset_type,
-                asset_id=asset_id,
-                version="latest"
-            )
-            
-            self.assertEqual(await self.store.get(latest_uri), data)
-            self.assertEqual(uri.version, "1")
 
         asyncio.run(async_test())
 

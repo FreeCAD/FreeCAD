@@ -181,21 +181,6 @@ classDiagram
     }
     FileStore <|-- AssetStore: is
 
-    class FlatFileStore["FlatFileStore
-    <small>Stores/Retrieves assets in a flat local directory, using a mapping
-    of asset types to file extensions.</small>"] {
-        __init__(name: str, filepath: pathlib.Path, type_to_extension: Mapping[str, str])
-        set_dir(new_dir: pathlib.Path)
-        async get(uri: AssetUri) bytes
-        async delete(uri: AssetUri)
-        async create(asset_type: str, asset_id: str, data: bytes) AssetUri
-        async update(uri: AssetUri, data: bytes) AssetUri
-        async list_assets(asset_type: str | None, limit: int | None, offset: int | None) List[AssetUri]
-        async list_versions(uri: AssetUri) List[AssetUri]
-        async is_empty(asset_type: str | None) bool
-    }
-    FlatFileStore <|-- AssetStore: is
-
     class MemoryStore["MemoryStore
     <small>In-memory store, mostly for testing/demonstration</small>"] {
         __init__(name: str)
@@ -225,7 +210,6 @@ classDiagram
         class AssetManager
         class AssetStore
         class FileStore
-        class FlatFileStore
         class MemoryStore
         class Asset
     }

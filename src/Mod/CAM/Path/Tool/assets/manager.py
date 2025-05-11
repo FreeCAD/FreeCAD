@@ -2,6 +2,7 @@
 import logging
 import asyncio
 import threading
+import pathlib
 from typing import Dict, Any, Type, Optional, List, Sequence, Union, Set, Tuple
 from dataclasses import dataclass, field
 from PySide2.QtWidgets import QApplication
@@ -440,12 +441,9 @@ class AssetManager:
     ) -> List[Asset]:
         """Fetches asset instances based on type, limit, and offset (synchronous)."""
         logger.debug(f"Fetch(type='{asset_type}', store='{store}')")
-        # list_assets is sync, uses asyncio.run internally for its async part
         asset_uris = self.list_assets(asset_type, limit, offset, store)
-        # get_bulk is sync, uses asyncio.run internally for its async part
         results = self.get_bulk(asset_uris, store)
         # Filter out non-Asset objects (e.g., None for not found, or exceptions if collected)
-        # Note: get_bulk should now re-raise exceptions, so we might not see them here.
         return [asset for asset in results if isinstance(asset, Asset)]
 
     async def fetch_async(
@@ -513,6 +511,7 @@ class AssetManager:
 
         data = obj.to_bytes()
         return await self.add_raw_async(uri.asset_type, uri.asset_id, data, store)
+
     def add(self, obj: Asset, store: str = "local") -> AssetUri:
         """Synchronous wrapper for adding an asset to the store."""
         logger.debug(f"Add: Adding {type(obj).__name__} to store '{store}' from T:{threading.current_thread().name}")
@@ -548,6 +547,22 @@ class AssetManager:
             logger.error(f"AddRaw: Error for type='{asset_type}', id='{asset_id}': {e}", exc_info=False)
             raise
 
+    def add_file(
+        self,
+        asset_type: str,
+        path: pathlib.Path,
+        store: str = "local",
+        asset_id: str | None = None,
+    ) -> AssetUri:
+        """
+        Convenience wrapper around add_raw().
+        If asset_id is None, the path.stem is used as the id.
+        """
+        return self.add_raw(asset_type,
+                            asset_id or path.stem,
+                            path.read_bytes(),
+                            store=store)
+
     def delete(self, uri: Union[AssetUri, str], store: str = "local") -> None:
         logger.debug(f"Delete URI '{uri}' from store '{store}'")
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
@@ -566,8 +581,6 @@ class AssetManager:
         selected_store = self.stores[store]
         await selected_store.delete(asset_uri_obj)
 
-
-    # --- Is Empty ---
     async def is_empty_async(
         self, asset_type: Optional[str] = None, store: str = "local"
     ) -> bool:
@@ -597,7 +610,6 @@ class AssetManager:
             )  # Changed exc_info to False
             raise
 
-    # --- List Versions ---
     async def list_versions_async(
         self, uri: Union[AssetUri, str], store: str = "local"
     ) -> List[AssetUri]:

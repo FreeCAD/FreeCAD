@@ -32,22 +32,42 @@ class MemoryStore(AssetStore):
     async def delete(self, uri: AssetUri) -> None:
         asset_type = uri.asset_type
         asset_id = uri.asset_id
+        version = uri.version # Capture the version from the URI
 
         if asset_type not in self._data or \
            asset_id not in self._data[asset_type]:
             # Deleting non-existent asset should not raise an error
             return
 
-        del self._data[asset_type][asset_id]
-        if asset_type in self._versions and \
-           asset_id in self._versions[asset_type]:
-            del self._versions[asset_type][asset_id]
+        if version:
+            # If a version is specified, try to delete only that version
+            if version in self._data[asset_type][asset_id]:
+                del self._data[asset_type][asset_id][version]
+                # Remove version from the versions list
+                if asset_type in self._versions and \
+                   asset_id in self._versions[asset_type] and \
+                   version in self._versions[asset_type][asset_id]:
+                    self._versions[asset_type][asset_id].remove(version)
 
-        if not self._data[asset_type]:
+                # If no versions left for this asset_id, clean up
+                if not self._data[asset_type][asset_id]:
+                    del self._data[asset_type][asset_id]
+                    if asset_type in self._versions and \
+                       asset_id in self._versions[asset_type]:
+                        del self._versions[asset_type][asset_id]
+        else:
+            # If no version is specified, delete the entire asset
+            del self._data[asset_type][asset_id]
+            if asset_type in self._versions and \
+               asset_id in self._versions[asset_type]:
+                del self._versions[asset_type][asset_id]
+
+
+        # Clean up empty asset types
+        if asset_type in self._data and not self._data[asset_type]:
             del self._data[asset_type]
         if asset_type in self._versions and not self._versions[asset_type]:
             del self._versions[asset_type]
-
 
     async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
         if asset_type not in self._data:
@@ -85,7 +105,6 @@ class MemoryStore(AssetStore):
         self._versions[asset_type][asset_id].append(version)
 
         return AssetUri(f"{asset_type}://{asset_id}/{version}")
-
 
     async def list_assets(self,
                           asset_type: str | None = None,
