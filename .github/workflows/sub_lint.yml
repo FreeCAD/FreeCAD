@@ -207,6 +207,8 @@ jobs:
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
     # Generic lints steps
+      - name: Check File Case Sensitivity
+        uses: credfeto/action-case-checker@v1.3.0
 
       - name: Check for non Unix line ending
         if: inputs.checkLineendings && always()

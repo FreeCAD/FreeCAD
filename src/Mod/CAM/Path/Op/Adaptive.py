@@ -738,7 +738,7 @@ def Execute(op, obj):
             # stepping down depths like this. If we don't, it will keep history
             # from the last region we did.
 
-            # TODO: QThread/QRunnable trigger Python's global interpretor lock
+            # TODO: QThread/QRunnable trigger Python's global interpreter lock
             # (GIL). To calculate toolpaths in parallel, making a C++ shim that
             # takes in the array of regions/stock paths and parallelizes in
             # C++-land is probably the way to do it.
@@ -1237,7 +1237,7 @@ def _getWorkingEdges(op, obj):
     depths = [d for d in depthParams.data if d < op.stock.Shape.BoundBox.ZMax]
 
     # Get the stock outline at each stepdown. Used to calculate toolpaths and
-    # for calcuating cut regions in some instances
+    # for calculating cut regions in some instances
     # NOTE: See note in _workingEdgeHelperRoughing- tl;dr slice stock lower
     # than cut depth to effectively leave (at least) obj.ZStockToLeave
     # NOTE: Stock is handled DIFFERENTLY than inside and outside regions!

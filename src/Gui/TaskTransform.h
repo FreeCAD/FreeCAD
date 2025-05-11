@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef TASKCSYSDRAGGER_H
-#define TASKCSYSDRAGGER_H
+#ifndef TASK_TRANSFORM_DRAGGER_H
+#define TASK_TRANSFORM_DRAGGER_H
 
 #include "TaskView/TaskDialog.h"
 #include "TaskView/TaskView.h"
@@ -43,7 +43,7 @@ namespace Gui
 class QuantitySpinBox;
 class SoTransformDragger;
 class ViewProviderDragger;
-class Ui_TaskCSysDragger;
+class Ui_TaskTransformDialog;
 
 class TaskTransform : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
@@ -136,7 +136,7 @@ private:
 
     CoinPtr<SoTransformDragger> dragger;
 
-    Ui_TaskCSysDragger *ui;
+    Ui_TaskTransformDialog *ui;
 
     SelectionMode selectionMode { SelectionMode::None };
     PlacementMode placementMode { PlacementMode::ObjectOrigin };
@@ -150,13 +150,13 @@ private:
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
 };
 
-class TaskCSysDragger: public Gui::TaskView::TaskDialog
+class TaskTransformDialog: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskCSysDragger(ViewProviderDragger* vp, SoTransformDragger* dragger);
-    ~TaskCSysDragger() override = default;
+    TaskTransformDialog(ViewProviderDragger* vp, SoTransformDragger* dragger);
+    ~TaskTransformDialog() override = default;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
@@ -173,4 +173,4 @@ private:
 };
 }  // namespace Gui
 
-#endif  // TASKCSYSDRAGGER_H
+#endif  // TASK_TRANSFORM_DRAGGER_H

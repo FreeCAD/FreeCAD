@@ -631,7 +631,7 @@ void Application::open(const char* FileName, const char* Module)
     // in case of an automatically created empty document at startup
     App::Document* act = App::GetApplication().getActiveDocument();
     Gui::Document* gui = this->getDocument(act);
-    if (act && act->countObjects() == 0 && gui && !gui->isModified()) {
+    if (act && act->countObjects() == 0 && gui && !gui->isModified() && act->isAutoCreated()) {
         Command::doCommand(Command::App, "App.closeDocument('%s')", act->getName());
         qApp->processEvents();  // an update is needed otherwise the new view isn't shown
     }

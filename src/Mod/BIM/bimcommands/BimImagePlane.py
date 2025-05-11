@@ -86,6 +86,7 @@ class BIM_ImagePlane:
     def PointCallback(self, point, snapinfo):
         import os
         import DraftVecUtils
+        import WorkingPlane
 
         if not point:
             # cancelled
@@ -109,10 +110,11 @@ class BIM_ImagePlane:
             midpoint = self.basepoint.add(
                 self.opposite.sub(self.basepoint).multiply(0.5)
             )
-            rotation = FreeCAD.DraftWorkingPlane.getRotation().Rotation
+            wp = WorkingPlane.get_working_plane()
+            rotation = wp.get_placement().Rotation
             diagonal = self.opposite.sub(self.basepoint)
-            length = DraftVecUtils.project(diagonal, FreeCAD.DraftWorkingPlane.u).Length
-            height = DraftVecUtils.project(diagonal, FreeCAD.DraftWorkingPlane.v).Length
+            length = DraftVecUtils.project(diagonal, wp.u).Length
+            height = DraftVecUtils.project(diagonal, wp.v).Length
             FreeCAD.ActiveDocument.openTransaction("Create image plane")
             image = FreeCAD.ActiveDocument.addObject(
                 "Image::ImagePlane", "ImagePlane"

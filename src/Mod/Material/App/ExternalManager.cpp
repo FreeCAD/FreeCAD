@@ -116,7 +116,7 @@ void ExternalManager::instantiate()
 
         Py::Callable managerClass(mod.getAttr(_className));
         _managerObject = managerClass.apply();
-        if (_managerObject.hasAttr("APIVersion")) {
+        if (!_managerObject.isNull() && _managerObject.hasAttr("APIVersion")) {
             _instantiated = true;
         }
 

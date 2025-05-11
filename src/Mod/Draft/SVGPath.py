@@ -602,10 +602,10 @@ class SvgPathElement:
                     _d1 = pole1.distanceToLine(last_v, next_v)
                     _d2 = pole2.distanceToLine(last_v, next_v)
                     if _d1 < _tol and _d2 < _tol:
-                        # poles and endpints are all on a line
+                        # poles and endpoints are all on a line
                         if equals(last_v, next_v, self.precision):
                             # in this case we don't accept (nearly) zero
-                            # distance betwen start and end (skip it).
+                            # distance between start and end (skip it).
                             next_v = last_v
                         else:
                             seg = LineSegment(last_v, next_v).toShape()

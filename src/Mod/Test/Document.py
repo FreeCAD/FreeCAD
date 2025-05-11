@@ -2664,3 +2664,46 @@ class FeatureTestAttribute(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument("TestAttribute")
+
+
+class DocumentAutoCreatedCases(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestDoc")
+
+    def tearDown(self):
+        for doc_name in FreeCAD.listDocuments().keys():
+            FreeCAD.closeDocument(doc_name)
+
+    def test_set_get_auto_created(self):
+        self.doc.setAutoCreated(True)
+        self.assertTrue(self.doc.isAutoCreated(), "autoCreated flag should be True")
+
+        self.doc.setAutoCreated(False)
+        self.assertFalse(self.doc.isAutoCreated(), "autoCreated flag should be False")
+
+    def test_auto_created_document_closes_on_opening_existing_document(self):
+        self.doc.setAutoCreated(True)
+        self.assertEqual(len(self.doc.Objects), 0)
+        saved_doc = FreeCAD.newDocument("SavedDoc")
+        file_path = tempfile.gettempdir() + os.sep + "SavedDoc.FCStd"
+        saved_doc.saveAs(file_path)
+        FreeCAD.closeDocument("SavedDoc")
+        FreeCAD.setActiveDocument("TestDoc")
+        FreeCAD.open(file_path)
+        if self.doc.isAutoCreated() and len(self.doc.Objects) == 0:
+            FreeCAD.closeDocument("TestDoc")
+        self.assertNotIn("TestDoc", FreeCAD.listDocuments())
+
+    def test_manual_document_does_not_close_on_opening_existing_document(self):
+        self.assertFalse(self.doc.isAutoCreated())
+        self.assertEqual(len(self.doc.Objects), 0)
+        saved_doc = FreeCAD.newDocument("SavedDoc")
+        file_path = tempfile.gettempdir() + os.sep + "SavedDoc.FCStd"
+        saved_doc.saveAs(file_path)
+        FreeCAD.closeDocument("SavedDoc")
+        FreeCAD.setActiveDocument("TestDoc")
+        FreeCAD.open(file_path)
+        if self.doc.isAutoCreated() and len(self.doc.Objects) == 0:
+            FreeCAD.closeDocument("TestDoc")
+        self.assertIn("TestDoc", FreeCAD.listDocuments())
+        self.assertIn("SavedDoc", FreeCAD.listDocuments())

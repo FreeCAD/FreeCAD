@@ -45,7 +45,7 @@
 #include "Inventor/Draggers/SoTransformDragger.h"
 #include "Inventor/SoFCPlacementIndicatorKit.h"
 #include "SoFCUnifiedSelection.h"
-#include "TaskCSysDragger.h"
+#include "TaskTransform.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDragger.h"
 #include "Utilities.h"
@@ -109,7 +109,7 @@ void ViewProviderDragger::onChanged(const App::Property* property)
 
 TaskView::TaskDialog* ViewProviderDragger::getTransformDialog()
 {
-    return new TaskCSysDragger(this, transformDragger);
+    return new TaskTransformDialog(this, transformDragger);
 }
 
 bool ViewProviderDragger::doubleClicked()

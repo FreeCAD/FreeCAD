@@ -573,17 +573,19 @@ class BIM_ProjectManager:
     def saveTemplate(self):
         """saves the contents of the current file as a template"""
 
+        import WorkingPlane
+
         d = FreeCAD.ActiveDocument
         if not d:
             d = FreeCAD.newDocument()
 
         # build list of useful settings to store
+        wp = WorkingPlane.get_working_plane()
         values = {}
-        if hasattr(FreeCAD, "DraftWorkingPlane"):
-            values["wpposition"] = str(FreeCAD.DraftWorkingPlane.position)
-            values["wpu"] = str(FreeCAD.DraftWorkingPlane.u)
-            values["wpv"] = str(FreeCAD.DraftWorkingPlane.v)
-            values["wpaxis"] = str(FreeCAD.DraftWorkingPlane.axis)
+        values["wpposition"] = str(wp.position)
+        values["wpu"] = str(wp.u)
+        values["wpv"] = str(wp.v)
+        values["wpaxis"] = str(wp.axis)
         values["unit"] = str(
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
                 "UserSchema", 0
@@ -672,8 +674,10 @@ class BIM_ProjectManager:
     def loadTemplate(self):
         """loads the contents of a template into the current file"""
 
-        import FreeCADGui
         from PySide import QtGui
+        import FreeCADGui
+        import WorkingPlane
+        from FreeCAD import Vector  # required for following eval calls
 
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
@@ -698,17 +702,16 @@ class BIM_ProjectManager:
                 FreeCAD.ActiveDocument = d
                 values = d.Meta
             bimunit = 0
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                from FreeCAD import Vector
-
-                if "wppos" in values:
-                    FreeCAD.DraftWorkingPlane.position = eval(values["wpposition"])
-                if "wpu" in values:
-                    FreeCAD.DraftWorkingPlane.u = eval(values["wpu"])
-                if "wpv" in values:
-                    FreeCAD.DraftWorkingPlane.v = eval(values["wpv"])
-                if "wpaxis" in values:
-                    FreeCAD.DraftWorkingPlane.axis = eval(values["wpaxis"])
+            wp = WorkingPlane.get_working_plane()
+            if "wpposition" in values:
+                wp.position = eval(values["wpposition"])
+            if "wpu" in values:
+                wp.u = eval(values["wpu"])
+            if "wpv" in values:
+                wp.v = eval(values["wpv"])
+            if "wpaxis" in values:
+                wp.axis = eval(values["wpaxis"])
+            wp._handle_custom(_hist_add=True)  # update the widget
             if "unit" in values:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").SetInt(
                     "UserSchema", int(values["unit"])

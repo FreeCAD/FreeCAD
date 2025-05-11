@@ -38,7 +38,9 @@ class BIM_TDView:
             "MenuText": QT_TRANSLATE_NOOP("BIM_TDView", "Insert view"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDView",
-                "Inserts a drawing view on a page",
+                "Inserts a drawing view on a page.\n"
+                "To choose where to insert the view when multiple pages are available,\n"
+                "select both the view and the page before you execute the command.",
             ),
             'Accel': "V, I",
         }

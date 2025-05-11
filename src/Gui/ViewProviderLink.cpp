@@ -75,7 +75,7 @@
 #include "LinkViewPy.h"
 #include "Selection.h"
 #include "SoFCUnifiedSelection.h"
-#include "TaskCSysDragger.h"
+#include "TaskTransform.h"
 #include "TaskElementColors.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
