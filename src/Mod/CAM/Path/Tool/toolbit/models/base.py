@@ -68,6 +68,7 @@ class ToolBit(Asset, ABC):
         self._create_base_properties()
         self.obj.ToolBitID = self.get_id()
         self.obj.ShapeID = tool_bit_shape.get_id()
+        self.obj.ShapeType = tool_bit_shape.name
         self.obj.Label = tool_bit_shape.label or f"New {tool_bit_shape.name}"
 
         # Initialize properties
@@ -86,26 +87,53 @@ class ToolBit(Asset, ABC):
         )
 
     @classmethod
-    def from_dict(cls, attrs: Mapping) -> 'ToolBit':
+    def from_dict(cls, attrs: Mapping, shallow: bool = False) -> 'ToolBit':
         """
         Creates and populates a ToolBit instance from a dictionary.
         """
+        # Find the shape ID.
         shape_id = attrs.get("shape")
         if not shape_id:
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
-        shape_asset_uri = ToolBitShape.resolve_name(shape_id)
-        tool_bit_shape = cam_assets.get(shape_asset_uri)
+        # Find the shape type.
+        shape_type = attrs.get("shape-type")
+        shape_class = None
+        if shape_type is None:
+            shape_name = pathlib.Path(shape_id).stem
+            shape_class = ToolBitShape.get_subclass_by_name(shape_name)
+            if not shape_class:
+                Path.Log.error(f'failed to infer shape type from {shape_id}; using "endmill"')
+                shape_class = ToolBitShapeEndmill
+            shape_type = shape_class.name
 
+        # Try to load the shape, if the asset exists.
+        tool_bit_shape = None
+        if not shallow:  # Shallow means: skip loading of child assets
+            shape_asset_uri = ToolBitShape.resolve_name(shape_id)
+            try:
+                tool_bit_shape = cam_assets.get(shape_asset_uri)
+            except FileNotFoundError:
+                pass  # Rely on the fallback below
+
+        # Create a new instance from scratch.
+        params = attrs.get("parameter", {})
+        if tool_bit_shape is None:
+            if not shape_class:
+                shape_class = ToolBitShape.get_subclass_by_name(shape_type)
+            if not shape_class:
+                raise ValueError(f'failed to get shape class from {shape_id}')
+            tool_bit_shape = shape_class(shape_id, **params)
+
+        # Now that we have a shape, create the toolbit instance.
         selected_toolbit_subclass = cls._find_subclass_for_shape(tool_bit_shape)
         toolbit = selected_toolbit_subclass(
             tool_bit_shape, id=attrs.get("id")
         )
-
         toolbit.set_label(attrs.get("name") or tool_bit_shape.label)
 
         # Update parameters and attributes
-        for param_name, param_value in attrs.get("parameter", {}).items():
+        for param_name, param_value in params.items():
             if hasattr(toolbit.obj, param_name):
                 PathUtil.setProperty(
                     toolbit.obj, param_name, param_value
@@ -272,12 +300,16 @@ class ToolBit(Asset, ABC):
         Returns:
             ToolBit: An instance of the appropriate ToolBit subclass.
         """
-        if dependencies is None:
-            raise ValueError(
-                f"ToolBit asset type '{cls.asset_type}' (id: {id}) does not support shallow loading (dependencies is None)."
-            )
-
         data_dict = json.loads(data.decode('utf-8'))
+        data_dict['id'] = id # Ensure id is available for from_dict
+
+        if dependencies is None:
+            # Shallow load: dependencies are not resolved.
+            # Delegate to from_dict with shallow=True.
+            return cls.from_dict(data_dict, shallow=True)
+
+        # Full load: dependencies are resolved.
+        # Proceed with existing logic to use the resolved shape.
         shape_id = data_dict.get("shape")
         if not shape_id:
             Path.Log.warning("ToolBit data is missing 'shape' key, defaulting to 'endmill'")
@@ -287,7 +319,7 @@ class ToolBit(Asset, ABC):
         shape = dependencies.get(shape_uri)
 
         if not isinstance(shape, ToolBitShape):
-             raise ValueError(
+            raise ValueError(
                 f"Dependency for shape '{shape_id}' not found or "
                 "is not a ToolBitShape instance."
             )
@@ -311,9 +343,9 @@ class ToolBit(Asset, ABC):
                 )
 
         for attr_name, attr_value in data_dict.get("attribute", {}).items():
-             if hasattr(toolbit.obj, attr_name):
+            if hasattr(toolbit.obj, attr_name):
                 PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
-             else:
+            else:
                 Path.Log.warning(
                     f"Attribute '{attr_name}' not found on tool bit "
                     f"'{toolbit.obj.Label}'. Skipping."
@@ -805,6 +837,7 @@ class ToolBit(Asset, ABC):
 
         if self._tool_bit_shape:
             attrs["shape"] = self._tool_bit_shape.get_id() + ".fcstd"
+            attrs["shape-type"] = self._tool_bit_shape.name
             attrs["parameter"] = {
                 name: to_json(getattr(self.obj, name))
                 for name in self._tool_bit_shape.get_parameters()

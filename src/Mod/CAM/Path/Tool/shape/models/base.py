@@ -498,7 +498,8 @@ class ToolBitShape(Asset):
                 f"Shape '{self.name}' was given an invalid parameter '{name}'. Has {self._params}\n"
             )
             # Log to confirm this path is taken when an invalid parameter is given
-            Path.Log.info(f"DEBUG: Invalid parameter '{name}' for shape '{self.name}', returning without raising KeyError.")
+            Path.Log.debug(f"DEBUG: Invalid parameter '{name}' for shape "
+                           f"'{self.name}', returning without raising KeyError.")
             return
 
         self._params[name] = value

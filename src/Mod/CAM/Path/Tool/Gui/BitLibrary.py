@@ -145,7 +145,7 @@ class ModelFactory:
 
         # Use AssetManager to fetch library assets (depth=0 for shallow fetch)
         try:
-            # Fetch library assets themselves, not their deep dependencies (tools).
+            # Fetch library assets themselves, not their deep dependencies (toolbits).
             # depth=0 means "fetch this asset, but not its dependencies"
             # The 'fetch' method returns actual Asset objects.
             libraries = cam_assets.fetch(asset_type="toolbitlibrary", depth=0)
@@ -179,7 +179,7 @@ class ModelFactory:
 
         try:
             # Load the library asset using AssetManager
-            loaded_library = cam_assets.get(AssetUri(library_uri))
+            loaded_library = cam_assets.get(AssetUri(library_uri), depth=1)
         except Exception as e:
             Path.Log.error(f"Failed to load library from {library_uri}: {e}")
             raise
@@ -647,7 +647,6 @@ class ToolBitLibrary(object):
         Path.Log.track()
         return self.form.exec_()
 
-
     def cleanupDocument(self):
         """Clean up the tool editing state"""
         Path.Log.track()
@@ -836,7 +835,7 @@ class ToolBitLibrary(object):
 
         # Fetch the library from the asset manager
         try:
-            self.current_library = cam_assets.get(library_uri)
+            self.current_library = cam_assets.get(library_uri, depth=1)
         except Exception as e:
             Path.Log.error(f"Failed to load library asset {library_uri}: {e}")
             self.form.setWindowTitle("Tool Library Editor - Error")
