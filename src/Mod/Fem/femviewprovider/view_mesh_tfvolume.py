@@ -21,22 +21,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM mesh distance ViewProvider for the document object"
+__title__ = "FreeCAD FEM mesh volume ViewProvider for the document object"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
-## @package view_mesh_distance
+## @package view_mesh_tfvolume
 #  \ingroup FEM
-#  \brief view provider for mesh distance object
+#  \brief view provider for transfinite mesh volume object
 
-from femtaskpanels import task_mesh_distance
+from femtaskpanels import task_mesh_tfvolume
 from . import view_base_femmeshelement
 
 
-class VPMeshDistance(view_base_femmeshelement.VPBaseFemMeshElement):
+class VPMeshTransfiniteVolume(view_base_femmeshelement.VPBaseFemMeshElement):
     """
-    A View Provider for the FemMeshDistance object
+    A View Provider for the FemMeshTransfiniteVolume object
     """
 
     def setEdit(self, vobj, mode=0):
-        return super().setEdit(vobj, mode, task_mesh_distance._TaskPanel)
+        return super().setEdit(vobj, mode, task_mesh_tfvolume._TaskPanel)
