@@ -462,6 +462,7 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
         if not hasattr(self, "_plot") or not self._plot:
             main = FreeCADGui.getMainWindow()
             self._plot = Plot.Plot()
+            self._plot.setWindowTitle(self.Object.Label)
             self._plot.setParent(main)
             self._plot.setWindowFlags(QtGui.Qt.Dialog)
             self._plot.resize(main.size().height()/2, main.size().height()/3) # keep the aspect ratio
