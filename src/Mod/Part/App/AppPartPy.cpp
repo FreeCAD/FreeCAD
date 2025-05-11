@@ -2288,9 +2288,14 @@ private:
         Base::Matrix4D mat;
         if(pyMat)
             mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
-        auto shape = Feature::getTopoShape(obj,subname,Base::asBoolean(needSubElement),
-                &mat,&subObj,retType==2,Base::asBoolean(transform),
-                Base::asBoolean(noElementMap));
+
+        bool resolveLink = (retType == 2);
+        auto shape = Feature::getTopoShape(obj, subname, &mat, &subObj, 
+                                (Feature::ResolveLink * resolveLink) | 
+                                (Feature::NeedSubElement * Base::asBoolean(needSubElement) | 
+                                (Feature::Transform * Base::asBoolean(transform)) | 
+                                (Feature::NoElementMap * Base::asBoolean(noElementMap))));
+
         if (Base::asBoolean(refine)) {
             shape = TopoShape(0, shape.Hasher).makeElementRefine(shape);
         }

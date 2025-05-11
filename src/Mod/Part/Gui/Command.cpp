@@ -279,8 +279,7 @@ bool hasShapesInSelection()
     bool hasShapes = false;
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     for (auto it : docobjs) {
-        // Only check for the existence of a shape but don't perform a transformation
-        if (!Part::Feature::getTopoShape(it, nullptr, false, nullptr, nullptr, true, false, false).isNull()) {
+        if (!Part::Feature::getTopoShape(it, nullptr, nullptr, nullptr, Part::Feature::ResolveLink).isNull()) {
             hasShapes = true;
             break;
         }
@@ -1972,11 +1971,24 @@ void CmdPartRuledSurface::activated(int iMsg)
             }
             if (ok && subnames1.size() <= 2) {
                 if (!subnames1.empty()) {
-                    curve1 = Part::Feature::getTopoShape(docobj1, subnames1[0].c_str(), true /*need element*/).getShape();
+                    curve2 = Part::Feature::getTopoShape(docobj1,
+                                                         subnames1[0].c_str(),
+                                                         nullptr,
+                                                         nullptr,
+                                                         Part::Feature::NeedSubElement
+                                                             | Part::Feature::ResolveLink
+                                                             | Part::Feature::Transform).getShape();                                 
+
                     link1 = subnames1[0];
                 }
                 if (subnames1.size() == 2) {
-                    curve2 = Part::Feature::getTopoShape(docobj1, subnames1[1].c_str(), true /*need element*/).getShape();
+                    curve2 = Part::Feature::getTopoShape(docobj1,
+                                                         subnames1[1].c_str(),
+                                                         nullptr,
+                                                         nullptr,
+                                                         Part::Feature::NeedSubElement
+                                                             | Part::Feature::ResolveLink
+                                                             | Part::Feature::Transform).getShape();                                 
                     link2 = subnames1[1];
                 }
                 if (subnames1.empty()) {
@@ -1996,7 +2008,14 @@ void CmdPartRuledSurface::activated(int iMsg)
                 ok = false;
             }
             if (ok && subnames2.size() == 1) {
-                curve2 = Part::Feature::getTopoShape(docobj2, subnames2[0].c_str(), true /*need element*/).getShape();
+                curve2 = Part::Feature::getTopoShape(docobj2,
+                                                     subnames2[0].c_str(),
+                                                     nullptr,
+                                                     nullptr,
+                                                     Part::Feature::NeedSubElement
+                                                         | Part::Feature::ResolveLink
+                                                         | Part::Feature::Transform).getShape();                             
+
                 link2 = subnames2[0];
             } else {
                 if (subnames2.empty()) {

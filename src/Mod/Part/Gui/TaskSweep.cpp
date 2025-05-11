@@ -298,7 +298,13 @@ bool SweepWidget::accept()
         topoShape = Part::Feature::getTopoShape(docobj);
         if (!topoShape.isNull()) {
             for (std::vector<std::string>::const_iterator it = subnames.begin(); it != subnames.end(); ++it) {
-                subShapes.push_back(Part::Feature::getTopoShape(docobj, subnames[0].c_str(), true /*need element*/));
+                subShapes.push_back(Part::Feature::getTopoShape(docobj,
+                                                                subnames[0].c_str(),
+                                                                nullptr,
+                                                                nullptr,
+                                                                Part::Feature::NeedSubElement
+                                                                    | Part::Feature::ResolveLink
+                                                                    | Part::Feature::Transform));
             }
             for (const auto & it : subShapes) {
                 TopoDS_Shape dsShape = it.getShape();

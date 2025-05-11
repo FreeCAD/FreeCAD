@@ -98,7 +98,8 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         return {};
     }
 
-    Part::TopoShape shape = Part::Feature::getTopoShape(obj, subject.getElementName(), false, mat, nullptr, true);
+    Part::TopoShape shape = Part::Feature::getTopoShape(obj, subject.getElementName(), mat, nullptr);
+
     if (shape.isNull()) {
         Base::Console().log("Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n", obj->getNameInDocument(), subject.getElementName());
         return {};
@@ -121,7 +122,14 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 
 App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* subName)
 {
-    TopoDS_Shape shape = Part::Feature::getShape(ob, subName, true);
+    TopoDS_Shape shape = Part::Feature::getShape(ob,
+                                                 subName,
+                                                 nullptr,
+                                                 nullptr,
+                                                 Feature::NeedSubElement 
+                                                    | Feature::ResolveLink
+                                                    | Feature::Transform);
+
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message("Part::PartMeasureTypeCb did not retrieve shape for %s, %s\n", ob->getNameInDocument(), subName);
@@ -176,8 +184,14 @@ bool getShapeFromStrings(TopoDS_Shape &shapeOut, const App::SubObjectT& subject,
     if (!obj) {
         return {};
      }
-    shapeOut = Part::Feature::getShape(obj, subject.getElementName(), true, mat);
-    return !shapeOut.IsNull();
+     shapeOut = Part::Feature::getShape(obj,
+                                        subject.getElementName(),
+                                        mat,
+                                        nullptr,
+                                        Feature::NeedSubElement 
+                                            | Feature::ResolveLink
+                                            | Feature::Transform);
+     return !shapeOut.IsNull();
 }
 
 

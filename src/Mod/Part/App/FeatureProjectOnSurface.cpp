@@ -108,7 +108,11 @@ TopoDS_Face ProjectOnSurface::getSupportFace() const
         throw Base::ValueError("Expect exactly one support face");
     }
 
-    auto topoSupport = Feature::getTopoShape(support, subStrings[0].c_str(), true);
+    auto topoSupport = Feature::getTopoShape(support,
+                                             subStrings[0].c_str(),
+                                             nullptr,
+                                             nullptr,
+                                             NeedSubElement | ResolveLink | Transform);
     return TopoDS::Face(topoSupport.getShape());
 }
 
@@ -122,7 +126,11 @@ std::vector<TopoDS_Shape> ProjectOnSurface::getProjectionShapes() const
     }
 
     for (std::size_t index = 0; index < objects.size(); index++) {
-        auto topoSupport = Feature::getTopoShape(objects[index], subvalues[index].c_str(), true);
+        auto topoSupport = Feature::getTopoShape(objects[index],
+                                                 subvalues[index].c_str(),
+                                                 nullptr,
+                                                 nullptr,
+                                                 NeedSubElement | ResolveLink | Transform);
         shapes.push_back(topoSupport.getShape());
     }
 

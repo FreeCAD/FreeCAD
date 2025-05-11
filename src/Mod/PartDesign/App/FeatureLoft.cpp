@@ -83,7 +83,13 @@ Loft::getSectionShape(const char *name,
                           << name << " " << App::SubObjectT(obj, "").getSubObjectFullName(obj->getDocument()->getName()));
     } else {
         for (const auto &sub : subs) {
-            shapes.push_back(Part::Feature::getTopoShape(obj, sub.c_str(), /*needSubElement*/true));
+            shapes.push_back(Part::Feature::getTopoShape(obj,
+                                                         sub.c_str(),
+                                                         nullptr,
+                                                         nullptr,
+                                                         Part::Feature::NeedSubElement
+                                                             | Part::Feature::ResolveLink
+                                                             | Part::Feature::Transform));
             if (shapes.back().isNull())
                 FC_THROWM(Part::NullShapeException, "Failed to get shape of " << name << " "
                                                                               << App::SubObjectT(obj, sub.c_str()).getSubObjectFullName(obj->getDocument()->getName()));

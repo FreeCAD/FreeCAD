@@ -443,7 +443,13 @@ void TaskCheckGeometryResults::goCheck()
             baseStream << " (" << label.c_str() << ")";
         }
 
-        TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
+        TopoDS_Shape shape = Part::Feature::getShape(
+            sel.pObject,
+            sel.SubName,
+            nullptr,
+            nullptr,
+            Part::Feature::NeedSubElement | Part::Feature::ResolveLink | Part::Feature::Transform);
+            
         if (shape.IsNull()) {
             ResultEntry *entry = new ResultEntry();
             entry->parent = theRoot;

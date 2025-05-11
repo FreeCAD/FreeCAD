@@ -170,7 +170,13 @@ App::DocumentObjectExecReturn *Mirroring::execute()
             bool isEdge = false; //will be true if user selected edge subobject or if object only has 1 edge
             TopoDS_Shape shape;
             if (!subStrings.empty() && subStrings[0].length() > 0){
-                shape = Feature::getTopoShape(linked, subStrings[0].c_str(), true).getShape();
+
+                shape = Feature::getTopoShape(linked,
+                                              subStrings[0].c_str(),
+                                              nullptr,
+                                              nullptr,
+                                              NeedSubElement | ResolveLink | Transform).getShape();
+                            
                 if (strstr(subStrings[0].c_str(), "Face")){
                     isFace = true; //was face subobject, e.g. Face3
                 } else {

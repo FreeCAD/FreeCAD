@@ -100,7 +100,14 @@ public:
             bool isEdge = false; //will be true if user selected edge subobject or if object only has 1 edge
             TopoDS_Shape shape;
             if (subString.length() > 0){
-                shape = Part::Feature::getTopoShape(pObj, subString.c_str(), true).getShape();
+                shape = Part::Feature::getTopoShape(pObj,
+                                                    sSubName,
+                                                    nullptr,
+                                                    nullptr,
+                                                    Part::Feature::NeedSubElement
+                                                        | Part::Feature::ResolveLink
+                                                        | Part::Feature::Transform).getShape();                            
+
                 if (strstr(subString.c_str(), "Face")){
                     isFace = true; //was face subobject, e.g. Face3
                 } else {

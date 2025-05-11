@@ -140,7 +140,11 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
                 return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
             }
             else {
-                shapes.push_back(getTopoShape(link->getValue(), subs.front().c_str(), true));
+                shapes.push_back(getTopoShape(link->getValue(),
+                                              subs.front().c_str(),
+                                              nullptr,
+                                              nullptr,
+                                              NeedSubElement | ResolveLink | Transform));
             }
             if (shapes.back().isNull()) {
                 return new App::DocumentObjectExecReturn("Invalid link.");

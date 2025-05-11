@@ -514,7 +514,14 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 if (sub.empty() && subs.size() > 1) {
                     continue;
                 }
-                TopoShape shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
+                TopoShape shape = Part::Feature::getTopoShape(obj,
+                                                              sub.c_str(),
+                                                              nullptr,
+                                                              nullptr,
+                                                              Part::Feature::NeedSubElement
+                                                                  | Part::Feature::ResolveLink
+                                                                  | Part::Feature::Transform);
+
                 if (shape.isNull()) {
                     FC_ERR(getFullName()
                            << ": failed to get profile shape " << obj->getFullName() << "." << sub);

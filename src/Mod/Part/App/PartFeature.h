@@ -53,6 +53,16 @@ class PartExport Feature : public App::GeoFeature
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Feature);
 
 public:
+    enum GetShapeOptions
+    {
+        NeedSubElement = 1,
+        ResolveLink = 2,
+        Transform = 4,
+        NoElementMap = 8,
+        TrySimplifyCompound = 16
+    };
+
+public:
     /// Constructor
     Feature();
     ~Feature() override;
@@ -130,15 +140,16 @@ public:
      * @param transform: if true, apply obj's transformation. Set to false
      * if pmat already include obj's transformation matrix.
      */
-    static TopoDS_Shape getShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true);
+     static TopoDS_Shape getShape(const App::DocumentObject *obj,
+            const char *subname=nullptr, Base::Matrix4D *pmat=nullptr,
+            App::DocumentObject **owner=nullptr, int options = ResolveLink | Transform);
 
-    static TopoShape getTopoShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true,
-            bool noElementMap=false);
+    static TopoShape getTopoShape(const App::DocumentObject* obj, 
+                                    const char* subname=nullptr, Base::Matrix4D* pmat=nullptr, 
+                                    App::DocumentObject**owner=nullptr, 
+                                    int options = ResolveLink | Transform);
 
+    static TopoShape simplifyCompound(TopoShape compoundShape);
     static void clearShapeCache();
 
     static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr);
