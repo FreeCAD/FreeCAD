@@ -105,7 +105,9 @@ class BIM_Library:
                 # save file paths with forward slashes even on windows
                 pr.SetString("destination", addondir.replace("\\", "/"))
                 libok = True
-        FreeCADGui.Control.showDialog(BIM_Library_TaskPanel(offlinemode=libok))
+        task = FreeCADGui.Control.showDialog(BIM_Library_TaskPanel(offlinemode=libok))
+        task.setDocumentName(FreeCAD.ActiveDocument.Name)
+        task.setAutoCloseOnDeletedDocument(True)
 
 
 class BIM_Library_TaskPanel:
