@@ -4393,6 +4393,9 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
     bool refIsLine = refPosId == Sketcher::PointPos::none;
     int cgeoid = getHighestCurveIndex() + 1;
 
+    Base::Vector3d refStart;
+    Base::Vector3d vectLine;
+
     auto shouldCopyGeometry = [&](auto* geo, int geoId) -> bool {
         auto gf = GeometryFacade::getFacade(geo);
         if (!gf->isInternalAligned()) {
@@ -4410,6 +4413,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
         return std::ranges::find(geoIdList, definedGeo) != geoIdList.end();
     };
 
+    std::function<Base::Vector3d(const Base::Vector3d&)> getReflectedPoint;
+
     if (refIsLine) {
         const Part::Geometry* georef = getGeometry(refGeoId);
         if (!georef->is<Part::GeomLineSegment>()) {
@@ -4418,18 +4423,21 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 
         auto* refGeoLine = static_cast<const Part::GeomLineSegment*>(georef);
         // line
-        Base::Vector3d refstart = refGeoLine->getStartPoint();
-        Base::Vector3d vectline = refGeoLine->getEndPoint() - refstart;
+        refStart = refGeoLine->getStartPoint();
+        vectLine = refGeoLine->getEndPoint() - refStart;
+
+        getReflectedPoint = [&refStart, &vectLine](const auto& pt) {
+            return pt + 2.0 * (pt.Perpendicular(refStart, vectLine) - pt);
+        };
 
         for (auto geoId : geoIdList) {
             const Part::Geometry* geo = getGeometry(geoId);
-            Part::Geometry* geosym;
 
             if (!shouldCopyGeometry(geo, geoId)) {
                 continue;
             }
 
-            geosym = geo->copy();
+            Part::Geometry* geosym = geo->copy();
 
             // Handle Geometry
             if (geosym->is<Part::GeomLineSegment>()) {
@@ -4437,36 +4445,27 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 Base::Vector3d sp = geosymline->getStartPoint();
                 Base::Vector3d ep = geosymline->getEndPoint();
 
-                geosymline->setPoints(
-                    sp + 2.0 * (sp.Perpendicular(refGeoLine->getStartPoint(), vectline) - sp),
-                    ep + 2.0 * (ep.Perpendicular(refGeoLine->getStartPoint(), vectline) - ep));
+                geosymline->setPoints(getReflectedPoint(sp), getReflectedPoint(ep));
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else if (geosym->is<Part::GeomCircle>()) {
                 auto* geosymcircle = static_cast<Part::GeomCircle*>(geosym);
                 Base::Vector3d cp = geosymcircle->getCenter();
 
-                geosymcircle->setCenter(
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp));
+                geosymcircle->setCenter(getReflectedPoint(cp));
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else if (geosym->is<Part::GeomArcOfCircle>()) {
                 auto* geoaoc = static_cast<Part::GeomArcOfCircle*>(geosym);
-                Base::Vector3d sp = geoaoc->getStartPoint(true);
-                Base::Vector3d ep = geoaoc->getEndPoint(true);
-                Base::Vector3d cp = geoaoc->getCenter();
 
-                Base::Vector3d ssp =
-                    sp + 2.0 * (sp.Perpendicular(refGeoLine->getStartPoint(), vectline) - sp);
-                Base::Vector3d sep =
-                    ep + 2.0 * (ep.Perpendicular(refGeoLine->getStartPoint(), vectline) - ep);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d ssp = getReflectedPoint(geoaoc->getStartPoint(true));
+                Base::Vector3d sep = getReflectedPoint(geoaoc->getEndPoint(true));
+                Base::Vector3d scp = getReflectedPoint(geoaoc->getCenter());
 
                 double theta1 =
-                    Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * std::numbers::pi);
+                    Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.F * std::numbers::pi);
                 double theta2 =
-                    Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * std::numbers::pi);
+                    Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.F * std::numbers::pi);
 
                 geoaoc->setCenter(scp);
                 geoaoc->setRange(theta1, theta2, true);
@@ -4482,10 +4481,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 double df = sqrt(majord * majord - minord * minord);
                 Base::Vector3d f1 = cp + df * majdir;
 
-                Base::Vector3d sf1 =
-                    f1 + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d sf1 = getReflectedPoint(f1);
+                Base::Vector3d scp = getReflectedPoint(cp);
 
                 geosymellipse->setMajorAxisDir(sf1 - scp);
 
@@ -4502,10 +4499,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 double df = sqrt(majord * majord - minord * minord);
                 Base::Vector3d f1 = cp + df * majdir;
 
-                Base::Vector3d sf1 =
-                    f1 + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d sf1 = getReflectedPoint(f1);
+                Base::Vector3d scp = getReflectedPoint(cp);
 
                 geosymaoe->setMajorAxisDir(sf1 - scp);
 
@@ -4534,10 +4529,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 double df = sqrt(majord * majord + minord * minord);
                 Base::Vector3d f1 = cp + df * majdir;
 
-                Base::Vector3d sf1 =
-                    f1 + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d sf1 = getReflectedPoint(f1);
+                Base::Vector3d scp = getReflectedPoint(cp);
 
                 geosymaoe->setMajorAxisDir(sf1 - scp);
 
@@ -4554,14 +4547,11 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             }
             else if (geosym->is<Part::GeomArcOfParabola>()) {
                 auto* geosymaoe = static_cast<Part::GeomArcOfParabola*>(geosym);
+                Base::Vector3d f1 = geosymaoe->getFocus();
                 Base::Vector3d cp = geosymaoe->getCenter();
 
-                Base::Vector3d f1 = geosymaoe->getFocus();
-
-                Base::Vector3d sf1 =
-                    f1 + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d sf1 = getReflectedPoint(f1);
+                Base::Vector3d scp = getReflectedPoint(cp);
 
                 geosymaoe->setXAxisDir(sf1 - scp);
                 geosymaoe->setCenter(scp);
@@ -4581,8 +4571,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
 
                 for (auto& pole : poles) {
-                    pole = pole
-                        + 2.0 * (pole.Perpendicular(refGeoLine->getStartPoint(), vectline) - pole);
+                    pole = getReflectedPoint(pole);
                 }
 
                 geosymbsp->setPoles(poles);
@@ -4593,8 +4582,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 auto* geosympoint = static_cast<Part::GeomPoint*>(geosym);
                 Base::Vector3d cp = geosympoint->getPoint();
 
-                geosympoint->setPoint(
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp));
+                geosympoint->setPoint(getReflectedPoint(cp));
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else {
@@ -4611,40 +4599,38 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
     }
 
     // reference is a point
-    Vector3d refpoint;
     const Part::Geometry* georef = getGeometry(refGeoId);
 
     if (georef->is<Part::GeomPoint>()) {
-        refpoint = static_cast<const Part::GeomPoint*>(georef)->getPoint();
+        refStart = static_cast<const Part::GeomPoint*>(georef)->getPoint();
     }
     else if (refGeoId == -1 && refPosId == Sketcher::PointPos::start) {
-        refpoint = Vector3d(0, 0, 0);
+        refStart = Vector3d(0, 0, 0);
     }
     else {
         if (refPosId == Sketcher::PointPos::none) {
             Base::Console().error("Wrong PointPosId.\n");
             return {};
         }
-        refpoint = getPoint(georef, refPosId);
+        refStart = getPoint(georef, refPosId);
     }
 
     for (auto geoId : geoIdList) {
         const Part::Geometry* geo = getGeometry(geoId);
-        Part::Geometry* geosym;
 
         if (!shouldCopyGeometry(geo, geoId)) {
             continue;
         }
 
-        geosym = geo->copy();
+        Part::Geometry* geosym = geo->copy();
 
         // Handle Geometry
         if (geosym->is<Part::GeomLineSegment>()) {
             auto* geosymline = static_cast<Part::GeomLineSegment*>(geosym);
             Base::Vector3d sp = geosymline->getStartPoint();
             Base::Vector3d ep = geosymline->getEndPoint();
-            Base::Vector3d ssp = sp + 2.0 * (refpoint - sp);
-            Base::Vector3d sep = ep + 2.0 * (refpoint - ep);
+            Base::Vector3d ssp = sp + 2.0 * (refStart - sp);
+            Base::Vector3d sep = ep + 2.0 * (refStart - ep);
 
             geosymline->setPoints(ssp, sep);
             isStartEndInverted.insert(std::make_pair(geoId, false));
@@ -4653,7 +4639,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             auto* geosymcircle = static_cast<Part::GeomCircle*>(geosym);
             Base::Vector3d cp = geosymcircle->getCenter();
 
-            geosymcircle->setCenter(cp + 2.0 * (refpoint - cp));
+            geosymcircle->setCenter(cp + 2.0 * (refStart - cp));
             isStartEndInverted.insert(std::make_pair(geoId, false));
         }
         else if (geosym->is<Part::GeomArcOfCircle>()) {
@@ -4662,9 +4648,9 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             Base::Vector3d ep = geoaoc->getEndPoint(true);
             Base::Vector3d cp = geoaoc->getCenter();
 
-            Base::Vector3d ssp = sp + 2.0 * (refpoint - sp);
-            Base::Vector3d sep = ep + 2.0 * (refpoint - ep);
-            Base::Vector3d scp = cp + 2.0 * (refpoint - cp);
+            Base::Vector3d ssp = sp + 2.0 * (refStart - sp);
+            Base::Vector3d sep = ep + 2.0 * (refStart - ep);
+            Base::Vector3d scp = cp + 2.0 * (refStart - cp);
 
             double theta1 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * pi);
             double theta2 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * pi);
@@ -4683,8 +4669,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             double df = sqrt(majord * majord - minord * minord);
             Base::Vector3d f1 = cp + df * majdir;
 
-            Base::Vector3d sf1 = f1 + 2.0 * (refpoint - f1);
-            Base::Vector3d scp = cp + 2.0 * (refpoint - cp);
+            Base::Vector3d sf1 = f1 + 2.0 * (refStart - f1);
+            Base::Vector3d scp = cp + 2.0 * (refStart - cp);
 
             geosymellipse->setMajorAxisDir(sf1 - scp);
 
@@ -4701,8 +4687,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             double df = sqrt(majord * majord - minord * minord);
             Base::Vector3d f1 = cp + df * majdir;
 
-            Base::Vector3d sf1 = f1 + 2.0 * (refpoint - f1);
-            Base::Vector3d scp = cp + 2.0 * (refpoint - cp);
+            Base::Vector3d sf1 = f1 + 2.0 * (refStart - f1);
+            Base::Vector3d scp = cp + 2.0 * (refStart - cp);
 
             geosymaoe->setMajorAxisDir(sf1 - scp);
 
@@ -4719,8 +4705,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             double df = sqrt(majord * majord + minord * minord);
             Base::Vector3d f1 = cp + df * majdir;
 
-            Base::Vector3d sf1 = f1 + 2.0 * (refpoint - f1);
-            Base::Vector3d scp = cp + 2.0 * (refpoint - cp);
+            Base::Vector3d sf1 = f1 + 2.0 * (refStart - f1);
+            Base::Vector3d scp = cp + 2.0 * (refStart - cp);
 
             geosymaoe->setMajorAxisDir(sf1 - scp);
 
@@ -4732,8 +4718,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             Base::Vector3d cp = geosymaoe->getCenter();
             Base::Vector3d f1 = geosymaoe->getFocus();
 
-            Base::Vector3d sf1 = f1 + 2.0 * (refpoint - f1);
-            Base::Vector3d scp = cp + 2.0 * (refpoint - cp);
+            Base::Vector3d sf1 = f1 + 2.0 * (refStart - f1);
+            Base::Vector3d scp = cp + 2.0 * (refStart - cp);
 
             geosymaoe->setXAxisDir(sf1 - scp);
             geosymaoe->setCenter(scp);
@@ -4746,7 +4732,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
 
             for (auto& pole : poles) {
-                pole = pole + 2.0 * (refpoint - pole);
+                pole = pole + 2.0 * (refStart - pole);
             }
 
             geosymbsp->setPoles(poles);
@@ -4755,7 +4741,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             auto* geosympoint = static_cast<Part::GeomPoint*>(geosym);
             Base::Vector3d cp = geosympoint->getPoint();
 
-            geosympoint->setPoint(cp + 2.0 * (refpoint - cp));
+            geosympoint->setPoint(cp + 2.0 * (refStart - cp));
             isStartEndInverted.insert(std::make_pair(geoId, false));
         }
         else {
