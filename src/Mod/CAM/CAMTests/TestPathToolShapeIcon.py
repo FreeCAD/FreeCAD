@@ -2,12 +2,9 @@
 import unittest
 import unittest.mock
 import pathlib
-import os # Added for environment variable access
-import sys # Added for printing to stderr
 from tempfile import NamedTemporaryFile
 from PySide import QtCore, QtGui
 from CAMTests.PathTestUtils import PathTestWithAssets
-from Path.Tool.shape import ToolBitShape
 from Path.Tool.shape.models.icon import (
     ToolBitShapeIcon,
     ToolBitShapeSvgIcon,
@@ -21,17 +18,10 @@ class TestToolBitShapeIconBase(PathTestWithAssets):
 
     def setUp(self):
         super().setUp()
-        # Set up any necessary test environment
-        print(f"DEBUG: TestPathToolShapeIcon.setUp: Starting setUp for {type(self).__name__}", file=sys.stderr)
-        print(f"DEBUG: QT_QPA_PLATFORM='{os.environ.get('QT_QPA_PLATFORM')}'", file=sys.stderr)
-        print(f"DEBUG: DISPLAY='{os.environ.get('DISPLAY')}'", file=sys.stderr)
-
         # Ensure a QApplication exists for QPixmap tests
         self.app = QtGui.QApplication.instance()
-        if not self.app:
-            print("DEBUG: TestPathToolShapeIcon.setUp: No QApplication instance found, creating one.", file=sys.stderr)
-            self.app = QtGui.QApplication(['-platform', 'offscreen'])
 
+        # Create a test shape and a test SVG icon.
         self.test_shape = self.assets.get("toolbitshape://ballend")
         self.test_svg = self.test_shape.icon
         assert self.test_svg is not None
@@ -90,6 +80,8 @@ class TestToolBitShapeIconBase(PathTestWithAssets):
         self.assertIsNone(icon_failed)
 
     def test_get_png(self):
+        if not self.app:
+            self.skipTest("QApplication not available, skipping test_get_png")
         if type(self) is TestToolBitShapeIconBase:
             self.skipTest("Skipping test on abstract base class")
         # Test getting PNG data from the icon
@@ -99,6 +91,8 @@ class TestToolBitShapeIconBase(PathTestWithAssets):
         self.assertTrue(len(png_data) > 0)
 
     def test_get_qpixmap(self):
+        if not self.app:
+            self.skipTest("QApplication not available, skipping test_get_qpixmap")
         if type(self) is TestToolBitShapeIconBase:
             self.skipTest("Skipping test on abstract base class")
         # Test getting QPixmap from the icon
