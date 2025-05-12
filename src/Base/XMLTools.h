@@ -172,7 +172,7 @@ inline XStr::~XStr()
 }
 
 // Uses the compiler to create a cache of transcoded string literals so that each subsequent call
-// can re-use the data from the lambda's initial creation. Permits the same usage as
+// can reuse the data from the lambda's initial creation. Permits the same usage as
 // XStr("literal").unicodeForm()
 #define XStrLiteral(literal)                                                                       \
     ([]() -> const XStr& {                                                                         \
@@ -217,7 +217,7 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
 inline XUTF8Str::~XUTF8Str() = default;
 
 // Uses the compiler to create a cache of transcoded string literals so that each subsequent call
-// can re-use the data from the lambda's initial creation. Permits the same usage as
+// can reuse the data from the lambda's initial creation. Permits the same usage as
 // XStr("literal").unicodeForm()
 #define XUTF8StrLiteral(literal)                                                                   \
     ([]() -> const XUTF8Str& {                                                                     \

@@ -380,7 +380,7 @@ class CommandManager:
         # like add_obj_on_gui_selobj_noset_edit but the selection is kept
         # and the selobj is expanded in the tree to see the added obj
 
-        # check if we should use python fitler
+        # check if we should use python filter
         if vtk_compatibility_abort(True):
             return
 

@@ -180,7 +180,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         holes = PathUtils.sort_locations(holes, ["x", "y"])
 
         # This section is technical debt. The computation of the
-        # target shapes should be factored out for re-use.
+        # target shapes should be factored out for reuse.
         # This will likely mean refactoring upstream CircularHoleBase to pass
         # spot shapes instead of holes.
 

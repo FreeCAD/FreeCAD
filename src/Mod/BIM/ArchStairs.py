@@ -1289,7 +1289,7 @@ class _Stairs(ArchComponent.Component):
 
         if structure == "Massive":
             if structureThickness:
-                # TODO Why 're-use' vBase?
+                # TODO Why 'reuse' vBase?
                 # '# Massive Structure to respect 'align' attribute'
                 vBase = vBasedAligned.add(vRiserThickness)
 
