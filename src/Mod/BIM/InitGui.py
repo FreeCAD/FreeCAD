@@ -252,8 +252,8 @@ class BIMWorkbench(Workbench):
         from draftutils import init_tools
         self.snapbar = init_tools.get_draft_snap_commands()
         self.snapmenu = self.snapbar + [
-            "BIM_SetWPTop",
             "BIM_SetWPFront",
+            "BIM_SetWPTop",
             "BIM_SetWPSide",
             "Draft_SelectPlane",
         ]
