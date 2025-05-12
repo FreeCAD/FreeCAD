@@ -304,7 +304,7 @@ void EditDatumDialog::formEditorOpened(bool state)
     }
 }
 
-bool isVisible(Gui::Document* doc, App::DocumentObject* obj) 
+bool isVisible(Gui::Document* doc, App::DocumentObject* obj)
 {
     while (obj) {
         auto parentviewprovider = doc->getViewProvider(obj);
