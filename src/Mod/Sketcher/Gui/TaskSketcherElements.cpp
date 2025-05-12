@@ -557,7 +557,7 @@ private:
 ElementView::ElementView(QWidget* parent)
     : QListWidget(parent)
 {
-    ElementItemDelegate* elementItemDelegate = new ElementItemDelegate(this);
+    auto* elementItemDelegate = new ElementItemDelegate(this);
     setItemDelegate(elementItemDelegate);
 
     QObject::connect(
@@ -1097,7 +1097,7 @@ bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
 
 ElementItem* ElementItemDelegate::getElementItem(const QModelIndex& index) const
 {
-    ElementView* elementView = static_cast<ElementView*>(parent());
+    auto* elementView = static_cast<ElementView*>(parent());
     return elementView->itemFromIndex(index);
 }
 
@@ -1338,7 +1338,7 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
 
 void TaskSketcherElements::setItemVisibility(QListWidgetItem* it)
 {
-    ElementItem* item = static_cast<ElementItem*>(it);
+    auto* item = static_cast<ElementItem*>(it);
 
     if (ui->filterBox->checkState() == Qt::Unchecked) {
         item->setHidden(false);
@@ -1450,7 +1450,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
             QString expr = QString::fromLatin1(msg.pSubName);
             std::string shapetype(msg.pSubName);
             // if-else edge vertex
-            if (boost::starts_with(shapetype, "Edge")) {
+            if (shapetype.starts_with("Edge")) {
                 QRegularExpression rx(QStringLiteral("^Edge(\\d+)$"));
                 QRegularExpressionMatch match;
                 boost::ignore_unused(expr.indexOf(rx, 0, &match));
@@ -1467,7 +1467,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                 // Perhaps we should also maintain a map so that we can look up items
                 // by element number.
                 for (int i = 0; i < countItems; i++) {
-                    ElementItem* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                     if (item->ElementNbr == ElementId) {
                         item->isLineSelected = select;
                         modified_item = item;
@@ -1476,7 +1476,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                     }
                 }
             }
-            else if (boost::starts_with(shapetype, "ExternalEdge")) {
+            else if (shapetype.starts_with("ExternalEdge")) {
                 QRegularExpression rx(QStringLiteral("^ExternalEdge(\\d+)$"));
                 QRegularExpressionMatch match;
                 boost::ignore_unused(expr.indexOf(rx, 0, &match));
@@ -1490,7 +1490,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
                 int countItems = ui->listWidgetElements->count();
                 for (int i = 0; i < countItems; i++) {
-                    ElementItem* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                     if (item->ElementNbr == ElementId) {
                         item->isLineSelected = select;
                         modified_item = item;
@@ -1498,7 +1498,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                     }
                 }
             }
-            else if (boost::starts_with(shapetype, "Vertex")) {
+            else if (shapetype.starts_with("Vertex")) {
                 QRegularExpression rx(QStringLiteral("^Vertex(\\d+)$"));
                 QRegularExpressionMatch match;
                 boost::ignore_unused(expr.indexOf(rx, 0, &match));
@@ -1517,7 +1517,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
 
                 int countItems = ui->listWidgetElements->count();
                 for (int i = 0; i < countItems; i++) {
-                    ElementItem* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                     if (item->ElementNbr == GeoId) {
                         modified_item = item;
                         switch (PosId) {
@@ -1552,7 +1552,7 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
     if (!it)
         return;
 
-    ElementItem* itf = static_cast<ElementItem*>(it);
+    auto* itf = static_cast<ElementItem*>(it);
     bool rightClickOnSelected = itf->rightClicked
         && (itf->isLineSelected || itf->isStartingPointSelected || itf->isEndPointSelected
             || itf->isMidPointSelected);
@@ -1584,7 +1584,7 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
         Gui::Selection().clearSelection();
 
         for (int i = 0; i < ui->listWidgetElements->count(); i++) {
-            ElementItem* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+            auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
 
             if (!multipleselection && !multipleconsecutiveselection) {
                 // if not multiple selection, then all are disabled but the one that was just
@@ -1596,7 +1596,6 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
             }
 
             if (item == itf) {
-
                 if (item->clickedOn == SubElementType::mid
                     && (item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()
                         || item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()
@@ -1665,7 +1664,6 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
             // now the scene
             std::stringstream ss;
 
-
             if (item->isLineSelected) {
                 if (item->ElementNbr >= 0) {
                     ss << "Edge" << item->ElementNbr + 1;
@@ -1731,7 +1729,7 @@ void TaskSketcherElements::onListWidgetElementsMouseMoveOnItem(QListWidgetItem* 
         return;
     }
 
-    ElementItem* item = static_cast<ElementItem*>(it);
+    auto* item = static_cast<ElementItem*>(it);
 
     if (!item
         || (ui->listWidgetElements->row(item) == previouslyHoveredItemIndex
@@ -1845,7 +1843,7 @@ void TaskSketcherElements::slotElementsChanged()
                 return QStringLiteral("(Edge%1#ID%2)").arg(i).arg(i - 1);
         };
 
-        ElementItem* itemN = new ElementItem(
+        auto* itemN = new ElementItem(
             i - 1,
             sketchView->getSketchObject()->getVertexIndexGeoPos(i - 1, Sketcher::PointPos::start),
             sketchView->getSketchObject()->getVertexIndexGeoPos(i - 1, Sketcher::PointPos::mid),
@@ -1986,7 +1984,7 @@ void TaskSketcherElements::slotElementsChanged()
 
             GeometryState state = GeometryState::External;
 
-            ElementItem* itemN = new ElementItem(
+            auto* itemN = new ElementItem(
                 -j,
                 sketchView->getSketchObject()->getVertexIndexGeoPos(-j, Sketcher::PointPos::start),
                 sketchView->getSketchObject()->getVertexIndexGeoPos(-j, Sketcher::PointPos::mid),
@@ -2044,7 +2042,7 @@ void TaskSketcherElements::clearWidget()
     // update widget
     int countItems = ui->listWidgetElements->count();
     for (int i = 0; i < countItems; i++) {
-        ElementItem* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+        auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
 
         item->isLineSelected = false;
         item->isStartingPointSelected = false;
@@ -2064,7 +2062,7 @@ void TaskSketcherElements::changeEvent(QEvent* e)
 /* Settings menu ==================================================*/
 void TaskSketcherElements::createSettingsButtonActions()
 {
-    QAction* action = new QAction(tr("Extended information"), this);
+    auto* action = new QAction(tr("Extended information"), this);
 
     action->setCheckable(true);
 
