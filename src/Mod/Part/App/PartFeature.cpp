@@ -1287,7 +1287,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                 if (powner) {
                     *powner = const_cast<App::DocumentObject*>(obj);
                 }
-                if (pmat && options & Transform) {
+                if (pmat && (options & Transform)) {
                     *pmat = static_cast<const Part::Feature*>(obj)->Placement.getValue().toMatrix();
                 }
                 return ts;
