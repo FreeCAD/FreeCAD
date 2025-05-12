@@ -2,8 +2,9 @@
 # Unit tests for the Path.Tool.Shape module and its utilities.
 
 from pathlib import Path
+import pathlib
 from typing import Mapping, Tuple
-import tempfile
+from tempfile import TemporaryDirectory
 import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.shape import (
@@ -166,13 +167,17 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         """Test ToolBitShape.validate success path."""
         # Get a shape from the asset manager and serialize it to a temporary file
         shape = self.assets.get("toolbitshape://ballend")
-        with tempfile.NamedTemporaryFile(suffix=".fcstd") as tmp:
-            temp_file_path = Path(tmp.name)
-            tmp.write(shape.to_bytes())
-            tmp.flush() # Ensure data is written to disk
+        # We cannot use NamedTemporaryFile on Windows, because there
+        # we may not have permission to read the tempfile while it is
+        # still open.
+        # So we use TemporaryDirectory instead, to ensure cleanup while
+        # still having a the temporary file inside it.
+        with TemporaryDirectory() as thedir:
+            tempfile = pathlib.Path(thedir, "test.fcstd")
+            tempfile.write_bytes(shape.to_bytes())
 
             # Validate the temporary file
-            result = DummyShape.validate(temp_file_path)
+            result = DummyShape.validate(tempfile)
             self.assertIsNone(result)  # validate returns None on success
 
     def test_base_validate_file_not_found(self):
