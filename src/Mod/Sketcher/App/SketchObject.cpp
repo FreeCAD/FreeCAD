@@ -4525,9 +4525,11 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             return false;
         }
 
-        auto constrIt = std::ranges::find_if(constrVals, [&geoId](auto c) {
-            return (c->Type == Sketcher::InternalAlignment && c->First == geoId);
-        });
+        auto constrIt = std::ranges::find(constrVals,
+                                          std::tuple {Sketcher::InternalAlignment, geoId},
+                                          [](auto* c) {
+                                              return std::tuple {c->Type, c->First};
+                                          });
         int definedGeo = (constrIt != constrVals.end()) ? (*constrIt)->Second : GeoEnum::GeoUndef;
 
         return std::ranges::find(newGeoIdList, definedGeo) == newGeoIdList.end();
@@ -4558,13 +4560,12 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
     auto addNewConstraintWithOneGeom = [&](const Constraint* constr, int newGeoId) {
         if ((constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)
             && constr->FirstPos != Sketcher::PointPos::none) {
-            return;
+            // skip if it is a point locking DistanceX/Y
         }
-        // if it is not a point locking DistanceX/Y
-        if (clone
-            && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
-                || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Diameter
-                || constr->Type == Sketcher::Weight || constr->Type == Sketcher::Radius)) {
+        else if (clone
+                 && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
+                     || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Diameter
+                     || constr->Type == Sketcher::Weight || constr->Type == Sketcher::Radius)) {
             // Distances on a single Element are mapped to equality constraints in clone mode
             Constraint* constNew = constr->copy();
             constNew->Type = Sketcher::Equal;
@@ -4572,15 +4573,13 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             // first is already (constr->First)
             constNew->Second = newGeoId;
             newConstrVals.push_back(constNew);
-            return;
         }
-        if (!(constr->Type == Sketcher::Angle && clone)) {
+        else if (!(constr->Type == Sketcher::Angle && clone)) {
             Constraint* constNew = constr->copy();
             constNew->First = newGeoId;
             newConstrVals.push_back(constNew);
-            return;
         }
-        if (getGeometry(constr->First)->is<Part::GeomLineSegment>()) {
+        else if (getGeometry(constr->First)->is<Part::GeomLineSegment>()) {
             // Angles on a single Element are mapped to parallel constraints in clone mode
             Constraint* constNew = constr->copy();
             constNew->Type = Sketcher::Parallel;
@@ -4632,6 +4631,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             currentRowFirstGeoId = cGeoId;
         }
 
+        auto totalDisplacement = double(x) * displacement + double(y) * perpendicularDisplacement;
+
         for (const int geoId : geoIdList) {
             const Part::Geometry* geo = getGeometry(geoId);
 
@@ -4655,100 +4656,12 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             }
 
             // Handle Geometry
-            Base::Vector3d iterPoint;
-            if (geoCopy->is<Part::GeomLineSegment>()) {
-                auto* geoCopyLine = static_cast<Part::GeomLineSegment*>(geoCopy);
-                Base::Vector3d ssp = geoCopyLine->getStartPoint() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-                Base::Vector3d sep = geoCopyLine->getEndPoint() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-
-                geoCopyLine->setPoints(ssp, sep);
-
-                iterPoint = ssp;
-            }
-            else if (geoCopy->is<Part::GeomCircle>()) {
-                auto* geoCopyCircle = static_cast<Part::GeomCircle*>(geoCopy);
-                Base::Vector3d scp = geoCopyCircle->getCenter() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-
-                geoCopyCircle->setCenter(scp);
-
-                iterPoint = scp;
-            }
-            else if (geoCopy->is<Part::GeomArcOfCircle>()) {
-                auto* geoaoc = static_cast<Part::GeomArcOfCircle*>(geoCopy);
-                Base::Vector3d scp = geoaoc->getCenter() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-
-                geoaoc->setCenter(scp);
-
-                iterPoint = geoaoc->getStartPoint(true);
-            }
-            else if (geoCopy->is<Part::GeomEllipse>()) {
-                auto* geoCopyellipse = static_cast<Part::GeomEllipse*>(geoCopy);
-                Base::Vector3d scp = geoCopyellipse->getCenter() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-
-                geoCopyellipse->setCenter(scp);
-
-                iterPoint = scp;
-            }
-            else if (geoCopy->is<Part::GeomArcOfEllipse>()) {
-                auto* geoaoe = static_cast<Part::GeomArcOfEllipse*>(geoCopy);
-                Base::Vector3d scp = geoaoe->getCenter() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-
-                geoaoe->setCenter(scp);
-
-                iterPoint = geoaoe->getStartPoint(true);
-            }
-            else if (geoCopy->is<Part::GeomArcOfHyperbola>()) {
-                auto* geoaoe = static_cast<Part::GeomArcOfHyperbola*>(geoCopy);
-                Base::Vector3d scp = geoaoe->getCenter() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-
-                geoaoe->setCenter(scp);
-
-                iterPoint = geoaoe->getStartPoint(true);
-            }
-            else if (geoCopy->is<Part::GeomArcOfParabola>()) {
-                auto* geoaoe = static_cast<Part::GeomArcOfParabola*>(geoCopy);
-                Base::Vector3d scp = geoaoe->getCenter() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-
-                geoaoe->setCenter(scp);
-
-                iterPoint = geoaoe->getStartPoint(true);
-            }
-            else if (geoCopy->is<Part::GeomBSplineCurve>()) {
-                auto* geobsp = static_cast<Part::GeomBSplineCurve*>(geoCopy);
-
-                std::vector<Base::Vector3d> poles = geobsp->getPoles();
-
-                for (auto& pole : poles) {
-                    pole = pole + double(x) * displacement + double(y) * perpendicularDisplacement;
-                }
-
-                geobsp->setPoles(poles);
-
-                iterPoint = geobsp->getStartPoint();
-            }
-            else if (geoCopy->is<Part::GeomPoint>()) {
-                auto* geopoint = static_cast<Part::GeomPoint*>(geoCopy);
-                Base::Vector3d scp = geopoint->getPoint() + double(x) * displacement
-                    + double(y) * perpendicularDisplacement;
-                geopoint->setPoint(scp);
-
-                iterPoint = scp;
-            }
-            else {
-                Base::Console().error("Unsupported Geometry!! Just skipping it.\n");
-                continue;
-            }
+            geoCopy->translate(totalDisplacement);
 
             if (geoId == newGeoIdList.front()) {
-                iterFirstPoint = iterPoint;
+                iterFirstPoint = geoCopy->isDerivedFrom<Part::GeomBoundedCurve>()
+                    ? getPoint(geoCopy, PointPos::start)
+                    : getPoint(geoCopy, PointPos::mid);
             }
 
             if (!moveOnly) {  // we are copying
@@ -4942,25 +4855,24 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 newConstrVals.push_back(constNew);
             }
             else {
-                // any other element
-                cGeoId++;
-
                 // all other elements get an equality and parallel constraint
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Equal;
                 constNew->First = colRefGeoId;
                 constNew->FirstPos = Sketcher::PointPos::none;
-                constNew->Second = cGeoId - 1;
+                constNew->Second = cGeoId;
                 constNew->SecondPos = Sketcher::PointPos::none;
                 newConstrVals.push_back(constNew);
 
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Parallel;
-                constNew->First = cGeoId - 1;
+                constNew->First = cGeoId;
                 constNew->FirstPos = Sketcher::PointPos::none;
                 constNew->Second = colRefGeoId;
                 constNew->SecondPos = Sketcher::PointPos::none;
                 newConstrVals.push_back(constNew);
+
+                cGeoId++;
             }
         }
 
