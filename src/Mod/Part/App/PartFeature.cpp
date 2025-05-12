@@ -1314,7 +1314,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
     if (options & Transform) {
         obj->getSubObject(nullptr, nullptr, &topMat);
     }
-    if ((pmat || options & Transform) && !shape.isNull()) {
+    if ((pmat || (options & Transform)) && !shape.isNull()) {
+
         shape.transformShape(topMat, false, true);
     }
     if (pmat) {
