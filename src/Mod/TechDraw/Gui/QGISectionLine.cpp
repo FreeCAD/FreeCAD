@@ -321,7 +321,7 @@ void QGISectionLine::extensionEndsISO()
 
 void QGISectionLine::makeChangePointMarks()
 {
-//    Base::Console().Message("QGISL::makeChangePointMarks()\n");
+//    Base::Console().message("QGISL::makeChangePointMarks()\n");
     double segmentLength = 0.50 * QGIArrow::getPrefArrowSize();
     QPen cPointPen;
     //TODO: this should really be 2.0 * thickLineWidth, but we only have one

@@ -27,6 +27,7 @@
 #include "Shader.h"
 #include "TextureLoader.h"
 #include "GlUtils.h"
+#include <QString>
 
 namespace MillSim
 {
@@ -61,6 +62,7 @@ struct GuiItem
     unsigned int flags {};
     bool mouseOver {};
     TextureItem texItem {};
+    QString toolTip;
 
     int posx()
     {
@@ -82,6 +84,7 @@ struct GuiItem
 
 #define GUIITEM_CHECKABLE 0x01
 #define GUIITEM_CHECKED 0x02
+#define GUIITEM_STRETCHED 0x04
 
 
 struct Vertex2D
@@ -117,8 +120,10 @@ public:
 private:
     void UpdateProjection();
     bool GenerateGlItem(GuiItem* guiItem);
+    bool HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidth);
     void DestroyGlItem(GuiItem* guiItem);
     void RenderItem(int itemId);
+    void SetupTooltips();
 
     vec3 mStdColor = {0.8f, 0.8f, 0.4f};
     vec3 mToggleColor = {0.9f, 0.6f, 0.2f};

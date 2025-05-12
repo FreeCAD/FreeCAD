@@ -412,7 +412,7 @@ public:
                 Shiboken::Object::setValidCpp(sbk_ptr, false);
             }
             else {
-                Base::Console().DeveloperError("WrapperManager", "A QObject has just been destroyed after its Pythonic wrapper.\n");
+                Base::Console().developerError("WrapperManager", "A QObject has just been destroyed after its Pythonic wrapper.\n");
             }
             Py_DECREF (pyobj);
         };
@@ -601,7 +601,7 @@ qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return 0;
     }
 }

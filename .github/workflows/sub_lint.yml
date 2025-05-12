@@ -208,7 +208,7 @@ jobs:
 
     # Generic lints steps
       - name: Check File Case Sensitivity
-        uses: credfeto/action-case-checker@v1.3.0
+        uses: credfeto/action-case-checker@cb652aeab29ed363bbdb7d9ee1bfcc010c46cac5 # v1.3.0
 
       - name: Check for non Unix line ending
         if: inputs.checkLineendings && always()

@@ -280,6 +280,8 @@ private:
 
     int defaultApplicationFontSizePixels() const;
 
+    double getDevicePixelRatio() const;
+
     int getApplicationLogicalDPIX() const;
 
     void updateInventorNodeSizes();

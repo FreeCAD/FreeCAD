@@ -154,7 +154,7 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/CAM");
         if (!hGrp->GetBool("WarningsSuppressAllSpeeds", true)) {
-            Base::Console().Warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
+            Base::Console().warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
         }
         return 0;
     }

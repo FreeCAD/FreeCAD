@@ -219,7 +219,7 @@ void DrawGuiUtil::loadLineGroupChoices(QComboBox* combo)
 QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
                                TechDraw::LineGenerator* generator)
 {
-    //    Base::Console().Message("DGU::iconForLine(lineNumber: %d)\n", lineNumber);
+    //    Base::Console().message("DGU::iconForLine(lineNumber: %d)\n", lineNumber);
     constexpr int iconSize {64};
     constexpr int borderSize {4};
     constexpr double iconLineWeight {1.0};
@@ -443,7 +443,7 @@ bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -474,7 +474,7 @@ bool DrawGuiUtil::isArchObject(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -505,7 +505,7 @@ bool DrawGuiUtil::isArchSection(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -565,24 +565,24 @@ bool DrawGuiUtil::needView(Gui::Command* cmd, bool partOnly)
 
 void DrawGuiUtil::dumpRectF(const char* text, const QRectF& r)
 {
-    Base::Console().Message("DUMP - dumpRectF - %s\n", text);
+    Base::Console().message("DUMP - dumpRectF - %s\n", text);
     double left = r.left();
     double right = r.right();
     double top = r.top();
     double bottom = r.bottom();
-    Base::Console().Message("Extents: L: %.3f, R: %.3f, T: %.3f, B: %.3f\n",
+    Base::Console().message("Extents: L: %.3f, R: %.3f, T: %.3f, B: %.3f\n",
                             left,
                             right,
                             top,
                             bottom);
-    Base::Console().Message("Size: W: %.3f H: %.3f\n", r.width(), r.height());
-    Base::Console().Message("Centre: (%.3f, %.3f)\n", r.center().x(), r.center().y());
+    Base::Console().message("Size: W: %.3f H: %.3f\n", r.width(), r.height());
+    Base::Console().message("Centre: (%.3f, %.3f)\n", r.center().x(), r.center().y());
 }
 
 void DrawGuiUtil::dumpPointF(const char* text, const QPointF& p)
 {
-    Base::Console().Message("DUMP - dumpPointF - %s\n", text);
-    Base::Console().Message("Point: (%.3f, %.3f)\n", p.x(), p.y());
+    Base::Console().message("DUMP - dumpPointF - %s\n", text);
+    Base::Console().message("Point: (%.3f, %.3f)\n", p.x(), p.y());
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
@@ -647,7 +647,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
 
     auto ts = Part::Feature::getShape(obj, faceName.c_str(), true);
     if (ts.IsNull() || ts.ShapeType() != TopAbs_FACE) {
-        Base::Console().Warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
+        Base::Console().warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
         return dirs;
     }
 
@@ -813,7 +813,7 @@ void DrawGuiUtil::rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const 
 {
     QGIViewPart* view = static_cast<QGIViewPart*>(p1->parentItem());
     if(view != static_cast<QGIViewPart*>(p2->parentItem())) {
-        Base::Console().Error("Vertexes have to be from the same view!");
+        Base::Console().error("Vertexes have to be from the same view!");
     }
 
     Base::Vector2d oldDirection = p2->vector2dBetweenPoints(p1);

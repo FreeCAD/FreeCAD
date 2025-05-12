@@ -57,14 +57,14 @@ ListEdit::ListEdit(const QString& propertyName,
         _property = material->getAppearanceProperty(propertyName);
     }
     else {
-        Base::Console().Log("Property '%s' not found\n", propertyName.toStdString().c_str());
+        Base::Console().log("Property '%s' not found\n", propertyName.toStdString().c_str());
         _property = nullptr;
     }
     if (_property) {
         _value = _property->getList();
     }
     else {
-        Base::Console().Log("No value loaded\n");
+        Base::Console().log("No value loaded\n");
     }
 
     setupListView();

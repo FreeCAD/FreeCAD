@@ -94,7 +94,7 @@ App::DocumentObjectExecReturn* Feature::recompute()
     }
     catch (Base::Exception& e) {
         failed = true;
-        e.ReportException();
+        e.reportException();
         FC_ERR("Failed to recompute suppressed feature " << getFullName());
     }
 

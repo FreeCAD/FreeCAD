@@ -1157,7 +1157,7 @@ void SoFCMeshObjectShape::generatePrimitives(SoAction* action)
         }
     }
     catch (const Base::MemoryException&) {
-        Base::Console().Log("Not enough memory to generate primitives\n");
+        Base::Console().log("Not enough memory to generate primitives\n");
     }
 
     endShape();
@@ -1582,7 +1582,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
         }
     }
     catch (const Base::MemoryException&) {
-        Base::Console().Log("Not enough memory to generate primitives\n");
+        Base::Console().log("Not enough memory to generate primitives\n");
     }
 
     endShape();

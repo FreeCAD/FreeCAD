@@ -24,6 +24,10 @@
 #include "OpenGlWrapper.h"
 #include "MillSimulation.h"
 #include <cstddef>
+#include <QToolTip>
+#include <QPoint>
+#include <QCoreApplication>
+
 
 using namespace MillSim;
 
@@ -69,6 +73,9 @@ void GuiDisplay::UpdateProjection()
     mat4x4_ortho(projmat, 0, gWindowSizeW, gWindowSizeH, 0, -1, 1);
     mShader.Activate();
     mShader.UpdateProjectionMat(projmat);
+    mThumbMaxMotion = guiItems[eGuiItemView].posx() - guiItems[eGuiItemSlider].posx()
+        - guiItems[eGuiItemThumb].texItem.w;
+    HStretchGlItem(&(guiItems[eGuiItemSlider]), mThumbMaxMotion, 10.0f);
 }
 
 bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
@@ -108,6 +115,63 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
     return true;
 }
 
+bool MillSim::GuiDisplay::HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidth)
+{
+    if (guiItem->vbo == 0) {
+        return false;
+    }
+
+    DestroyGlItem(guiItem);
+    Vertex2D verts[12];
+
+    int x = guiItem->texItem.tx;
+    int y = guiItem->texItem.ty;
+    int h = guiItem->texItem.h;
+    int w = guiItem->texItem.w;
+
+    // left edge
+    verts[0] = {0, (float)h, mTexture.getTexX(x), mTexture.getTexY(y + h)};
+    verts[1] = {edgeWidth, (float)h, mTexture.getTexX(x + edgeWidth), mTexture.getTexY(y + h)};
+    verts[2] = {0, 0, mTexture.getTexX(x), mTexture.getTexY(y)};
+    verts[3] = {edgeWidth, 0, mTexture.getTexX(x + edgeWidth), mTexture.getTexY(y)};
+
+    // right edge
+    float px = newWidth - edgeWidth;
+    verts[4] = {px, (float)h, mTexture.getTexX(x + w - edgeWidth), mTexture.getTexY(y + h)};
+    verts[5] = {newWidth, (float)h, mTexture.getTexX(x + w), mTexture.getTexY(y + h)};
+    verts[6] = {px, 0, mTexture.getTexX(x + w - edgeWidth), mTexture.getTexY(y)};
+    verts[7] = {newWidth, 0, mTexture.getTexX(x + w), mTexture.getTexY(y)};
+
+    // center
+    verts[8] = {edgeWidth, (float)h, mTexture.getTexX(x + edgeWidth), mTexture.getTexY(y + h)};
+    verts[9] = {px, (float)h, mTexture.getTexX(x + w - edgeWidth), mTexture.getTexY(y + h)};
+    verts[10] = {edgeWidth, 0, mTexture.getTexX(x + edgeWidth), mTexture.getTexY(y)};
+    verts[11] = {px, 0, mTexture.getTexX(x + w - edgeWidth), mTexture.getTexY(y)};
+
+    guiItem->flags |= GUIITEM_STRETCHED;
+
+    // vertex buffer
+    glGenBuffers(1, &(guiItem->vbo));
+    glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
+    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(Vertex2D), verts, GL_STATIC_DRAW);
+
+    glGenVertexArrays(1, &(guiItem->vao));
+    glBindVertexArray(guiItem->vao);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1,
+                          2,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          sizeof(Vertex2D),
+                          (void*)offsetof(Vertex2D, tx));
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
+    glBindVertexArray(0);
+
+    return true;
+}
+
 void GuiDisplay::DestroyGlItem(GuiItem* guiItem)
 {
     GLDELETE_BUFFER((guiItem->vbo));
@@ -120,10 +184,11 @@ bool GuiDisplay::InitGui()
         return true;
     }
     // index buffer
+    SetupTooltips();
     glGenBuffers(1, &mIbo);
-    GLshort indices[6] = {0, 2, 3, 0, 3, 1};
+    GLshort indices[18] = {0, 2, 3, 0, 3, 1, 4, 6, 7, 4, 7, 5, 8, 10, 11, 8, 11, 9};
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 18 * sizeof(GLushort), indices, GL_STATIC_DRAW);
     TextureLoader tLoader(":/gl_simulator/", guiFileNames, TEX_SIZE);
     unsigned int* buffer = tLoader.GetRawData();
     if (buffer == nullptr) {
@@ -186,11 +251,35 @@ void GuiDisplay::RenderItem(int itemId)
 
     glBindVertexArray(item->vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
+    int nTriangles = (item->flags & GUIITEM_STRETCHED) == 0 ? 6 : 18;
+    glDrawElements(GL_TRIANGLES, nTriangles, GL_UNSIGNED_SHORT, nullptr);
+}
+
+void MillSim::GuiDisplay::SetupTooltips()
+{
+    guiItems[eGuiItemPause].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Pause simulation", nullptr);
+    guiItems[eGuiItemPlay].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Play simulation", nullptr);
+    guiItems[eGuiItemSingleStep].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Single step simulation", nullptr);
+    guiItems[eGuiItemFaster].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Change simulation speed", nullptr);
+    guiItems[eGuiItemPath].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Show/Hide tool path", nullptr);
+    guiItems[eGuiItemRotate].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
+                                                                   "Toggle turn table animation",
+                                                                   nullptr);
+    guiItems[eGuiItemAmbientOclusion].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient oclusion", nullptr);
+    guiItems[eGuiItemView].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
+                                                                 "Toggle view simulation/model",
+                                                                 nullptr);
 }
 
 void GuiDisplay::MouseCursorPos(int x, int y)
 {
+    GuiItem* prevMouseOver = mMouseOverItem;
     mMouseOverItem = nullptr;
     for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
         GuiItem* g = &(guiItems[i]);
@@ -204,6 +293,16 @@ void GuiDisplay::MouseCursorPos(int x, int y)
 
         if (g->mouseOver) {
             mMouseOverItem = g;
+        }
+    }
+    if (mMouseOverItem != prevMouseOver) {
+        if (mMouseOverItem != nullptr && !mMouseOverItem->toolTip.isEmpty()) {
+            QPoint pos(x, y);
+            QPoint globPos = CAMSimulator::DlgCAMSimulator::GetInstance()->mapToGlobal(pos);
+            QToolTip::showText(globPos, mMouseOverItem->toolTip);
+        }
+        else {
+            QToolTip::hideText();
         }
     }
 }

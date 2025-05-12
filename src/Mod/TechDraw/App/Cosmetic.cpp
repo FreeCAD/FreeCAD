@@ -76,7 +76,7 @@ CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) :
 
 CosmeticEdge::CosmeticEdge(const TechDraw::BaseGeomPtr g)
 {
-//    Base::Console().Message("CE::CE(bg)\n");
+//    Base::Console().message("CE::CE(bg)\n");
     m_geometry = g;
     //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
@@ -192,8 +192,8 @@ std::string CosmeticEdge::toString() const
 
 void CosmeticEdge::dump(const char* title) const
 {
-    Base::Console().Message("CE::dump - %s \n", title);
-    Base::Console().Message("CE::dump - %s \n", toString().c_str());
+    Base::Console().message("CE::dump - %s \n", title);
+    Base::Console().message("CE::dump - %s \n", toString().c_str());
 }
 
 // Persistence implementers
@@ -223,7 +223,7 @@ void CosmeticEdge::Save(Base::Writer &writer) const
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->inverted()->Save(writer);
     } else {
-        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
+        Base::Console().warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
 
     writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
@@ -235,7 +235,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     if (!CosmeticVertex::restoreCosmetic()) {
         return;
     }
-//    Base::Console().Message("CE::Restore - reading elements\n");
+//    Base::Console().message("CE::Restore - reading elements\n");
     reader.readElement("Style");
     m_format.setStyle(reader.getAttributeAsInteger("value"));
     reader.readElement("Weight");
@@ -275,7 +275,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaEnd   = aoc->center;
         permaRadius = aoc->radius;
     } else {
-        Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+        Base::Console().warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
     }
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
@@ -294,7 +294,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
 
 CosmeticEdge* CosmeticEdge::clone() const
 {
-    Base::Console().Message("CE::clone()\n");
+    Base::Console().message("CE::clone()\n");
     CosmeticEdge* cpy = new CosmeticEdge();
     cpy->m_geometry = m_geometry->copy();
     cpy->m_format = m_format;
@@ -352,8 +352,8 @@ GeomFormat::~GeomFormat()
 
 void GeomFormat::dump(const char* title) const
 {
-    Base::Console().Message("GF::dump - %s \n", title);
-    Base::Console().Message("GF::dump - %s \n", toString().c_str());
+    Base::Console().message("GF::dump - %s \n", title);
+    Base::Console().message("GF::dump - %s \n", toString().c_str());
 }
 
 std::string GeomFormat::toString() const

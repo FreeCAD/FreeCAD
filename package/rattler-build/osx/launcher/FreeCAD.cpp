@@ -28,10 +28,8 @@ int main(int argc, char *argv[], char *const *envp) {
     env["PYTHONHOME"]           = prefix;
     env["FONTCONFIG_FILE"]      = "/etc/fonts/fonts.conf";
     env["FONTCONFIG_PATH"]      = "/etc/fonts";
-    env["LANG"]                 = "UTF-8";                       // https://forum.freecad.org/viewtopic.php?f=22&t=42644
     env["SSL_CERT_FILE"]        = prefix + "/ssl/cacert.pem";    // https://forum.freecad.org/viewtopic.php?f=3&t=42825
     env["GIT_SSL_CAINFO"]       = prefix + "/ssl/cacert.pem";
-    env["QT_MAC_WANTS_LAYER"]   = "1";
 
     char **new_env = new char*[env.size() + 1];
     int i = 0;

@@ -596,7 +596,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             unit = vobj.UnitOverride
 
         # Special representation if we use 'Building US' scheme
-        if (params.get_param("UserSchema", path="Units") == 5) or (unit == "arch"):
+        if (not unit and params.get_param("UserSchema", path="Units") == 5) or (unit == "arch"):
             self.string = App.Units.Quantity(length, App.Units.Length).UserString
             if self.string.count('"') > 1:
                 # multiple inch tokens

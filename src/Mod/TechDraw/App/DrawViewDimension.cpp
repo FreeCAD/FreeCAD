@@ -481,7 +481,7 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
     }
     if (!m_referencesCorrect) {
         // this test needs Phase 2 of auto correct to be useful
-        Base::Console().Log("The references for %s have changed and autocorrect could not match the geometry\n", Label.getValue());
+        Base::Console().log("The references for %s have changed and autocorrect could not match the geometry\n", Label.getValue());
     }
 
     resetLinear();
@@ -549,26 +549,26 @@ bool DrawViewDimension::okToProceed()
         // TODO: translate these messages and figure out how to present them to
         // the user since we can't pop up a message box here.
         // this case is probably temporary during restore
-        // Base::Console().Message("DVD::okToProceed - no view for dimension\n");
+        // Base::Console().message("DVD::okToProceed - no view for dimension\n");
         return false;
     }
 
     if (!(has2DReferences() || has3DReferences())) {
         // no references, can't do anything
-        // Base::Console().Message("DVD::okToProceed - Dimension object has no valid references\n");
+        // Base::Console().message("DVD::okToProceed - Dimension object has no valid references\n");
         return false;
     }
 
     if (!getViewPart()->hasGeometry()) {
         // can't do anything until Source has geometry
-        // Base::Console().Message("DVD::okToProceed - Dimension object has no geometry\n");
+        // Base::Console().message("DVD::okToProceed - Dimension object has no geometry\n");
         return false;
     }
 
     // is this check still relevant or is it replaced by the autocorrect and
     // validate methods?
     if (References3D.getValues().empty() && !checkReferences2D()) {
-        // Base::Console().Warning("%s has invalid 2D References\n", getNameInDocument());
+        // Base::Console().warning("%s has invalid 2D References\n", getNameInDocument());
         return false;
     }
     return validateReferenceForm();
@@ -667,7 +667,7 @@ double DrawViewDimension::getDimValue()
     if (MeasureType.isValue("True")) {
         // True Values
         if (!measurement->has3DReferences()) {
-            Base::Console().Warning("%s - True dimension has no 3D References\n",
+            Base::Console().warning("%s - True dimension has no 3D References\n",
                                     getNameInDocument());
             return result;
         }
@@ -676,7 +676,7 @@ double DrawViewDimension::getDimValue()
     else {
         // Projected Values
         if (!checkReferences2D()) {
-            Base::Console().Warning("DVD::getDimValue - %s - 2D references are corrupt (5)\n",
+            Base::Console().warning("DVD::getDimValue - %s - 2D references are corrupt (5)\n",
                                     getNameInDocument());
             return result;
         }
@@ -1094,7 +1094,7 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
         else {
             // fubar - can't have non-circular spline as target of Diameter dimension, but this is
             // already checked, so something has gone badly wrong.
-            Base::Console().Error("%s: can not make a Circle from this B-spline edge\n",
+            Base::Console().error("%s: can not make a Circle from this B-spline edge\n",
                                   getNameInDocument());
             throw Base::RuntimeError("Bad B-spline geometry for arc dimension");
         }
@@ -1535,7 +1535,7 @@ RefType DrawViewDimension::getRefType() const
 
     if (subNames.empty()) {
         // something went wrong, there were no subNames.
-        Base::Console().Message("DVD::getRefType - %s - there are no subNames.\n",
+        Base::Console().message("DVD::getRefType - %s - there are no subNames.\n",
                                 getNameInDocument());
         return RefType::invalidRef;
     }
@@ -1927,14 +1927,14 @@ void DrawViewDimension::clear3DMeasurements()
 
 void DrawViewDimension::dumpRefs2D(const char* text) const
 {
-    Base::Console().Message("DUMP - %s\n", text);
+    Base::Console().message("DUMP - %s\n", text);
     const std::vector<App::DocumentObject*>& objects = References2D.getValues();
     const std::vector<std::string>& subElements = References2D.getSubValues();
     auto objIt = objects.begin();
     auto subIt = subElements.begin();
     int i = 0;
     for (; objIt != objects.end(); objIt++, subIt++, i++) {
-        Base::Console().Message("DUMP - ref: %d object: %s subElement: %s\n",
+        Base::Console().message("DUMP - ref: %d object: %s subElement: %s\n",
                                 i,
                                 (*objIt)->getNameInDocument(),
                                 (*subIt).c_str());
@@ -2142,7 +2142,7 @@ Base::BoundBox3d DrawViewDimension::getSavedBox()
     if (bbxCorners.empty()) {
         // need to advise caller if BoxCorners not filled in yet.  zero length
         // diagonal?
-        Base::Console().Message("DVD::getSavedBox - no corners!\n");
+        Base::Console().message("DVD::getSavedBox - no corners!\n");
         return Base::BoundBox3d();
     }
     return Base::BoundBox3d(bbxCorners.front().x,

@@ -63,6 +63,9 @@ def setupPipeline(doc, analysis, results_name, result_data):
     import ObjectsFem
     from . import importToolsFem
 
+    if not "BUILD_FEM_VTK" in FreeCAD.__cmake__:
+        return
+
     # create a results pipeline if not already existing
     pipeline_name = "Pipeline_" + results_name
     pipeline_obj = doc.getObject(pipeline_name)

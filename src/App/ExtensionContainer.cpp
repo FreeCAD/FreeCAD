@@ -74,15 +74,15 @@ void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext)
     _extensions[extension] = ext;
 }
 
-bool ExtensionContainer::hasExtension(Base::Type t, bool derived) const
+bool ExtensionContainer::hasExtension(Base::Type type, bool derived) const
 {
 
     // check for the exact type
-    bool found = _extensions.find(t) != _extensions.end();
+    bool found = _extensions.find(type) != _extensions.end();
     if (!found && derived) {
         // and for types derived from it, as they can be cast to the extension
         for (const auto& entry : _extensions) {
-            if (entry.first.isDerivedFrom(t)) {
+            if (entry.first.isDerivedFrom(type)) {
                 return true;
             }
         }
@@ -397,17 +397,17 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const
             ext->extensionSave(writer);
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
         catch (const std::exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().Error("%s\n", e);
+            Base::Console().error("%s\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error(
+            Base::Console().error(
                 "ExtensionContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
         }
 #endif
@@ -469,17 +469,17 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
             throw;  // re-throw
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
         catch (const std::exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().Error("%s\n", e);
+            Base::Console().error("%s\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown\n");
+            Base::Console().error("ExtensionContainer::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 

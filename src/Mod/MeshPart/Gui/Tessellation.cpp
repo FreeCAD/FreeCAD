@@ -347,7 +347,7 @@ void Tessellation::process(int method,
     }
     catch (const Base::Exception& e) {
         doc->abortTransaction();
-        Base::Console().Error(e.what());
+        Base::Console().error(e.what());
     }
 }
 

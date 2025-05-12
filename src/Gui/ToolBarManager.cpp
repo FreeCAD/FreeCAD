@@ -78,7 +78,7 @@ const std::string & ToolBarItem::command() const
 
 bool ToolBarItem::hasItems() const
 {
-    return _items.count() > 0;
+    return !_items.isEmpty();
 }
 
 ToolBarItem* ToolBarItem::findItem(const std::string& name)

@@ -384,7 +384,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
             self->update(PartDesign::SubShapeBinder::UpdateForced);
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         return;
     }
@@ -398,7 +398,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         return;
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Standard_Failure& e) {
         std::ostringstream str;

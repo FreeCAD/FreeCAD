@@ -325,16 +325,16 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception& e) {
         // reported by code analyzers
         e.clear();
-        Base::Console().Warning("Unexpected PyCXX exception\n");
+        Base::Console().warning("Unexpected PyCXX exception\n");
     }
     catch (const boost::exception&) {
         // reported by code analyzers
-        Base::Console().Warning("Unexpected boost exception\n");
+        Base::Console().warning("Unexpected boost exception\n");
     }
 
     return result;

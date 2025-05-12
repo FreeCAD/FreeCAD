@@ -150,20 +150,10 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.h
     UnitsSchema.h
     UnitsSchema.cpp
-    UnitsSchemaInternal.h
-    UnitsSchemaInternal.cpp
-    UnitsSchemaMKS.h
-    UnitsSchemaMKS.cpp
-    UnitsSchemaImperial1.h
-    UnitsSchemaImperial1.cpp
-    UnitsSchemaCentimeters.h
-    UnitsSchemaCentimeters.cpp
-    UnitsSchemaMmMin.h
-    UnitsSchemaMmMin.cpp
-    UnitsSchemaFemMilliMeterNewton.h
-    UnitsSchemaFemMilliMeterNewton.cpp
-    UnitsSchemaMeterDecimal.h
-    UnitsSchemaMeterDecimal.cpp
+    UnitsSchemas.cpp
+    UnitsSchemas.h
+    UnitsSchemasData.h
+    UnitsSchemasSpecs.h
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp

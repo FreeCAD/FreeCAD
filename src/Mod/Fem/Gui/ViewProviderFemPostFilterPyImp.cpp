@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
- *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+ *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,27 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
-#define BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
+#include "PreCompiled.h"
 
-#include "UnitsSchema.h"
+// clang-format off
+#include <Gui/Control.h>
+#include <Gui/PythonWrapper.h>
+#include "ViewProviderFemPostFilter.h"
+#include "TaskPostBoxes.h"
+// inclusion of the generated files (generated out of ViewProviderFemPostFilterPy.xml)
+#include "ViewProviderFemPostFilterPy.h"
+#include "ViewProviderFemPostFilterPy.cpp"
+#include <Base/PyWrapParseTupleAndKeywords.h>
+// clang-format on
 
-namespace Base
+
+using namespace FemGui;
+
+// returns a string which represents the object e.g. when printed in python
+std::string ViewProviderFemPostFilterPy::representation() const
 {
+    return {"<ViewProviderFemPostFilter object>"};
+}
 
-/*  Milli metric / Newton / Seconds unit schema for use in FEM.
- *  Lengths are always in mm.
- *  Mass is in t.
- *  TimeSpann in S.
- *  Thus the Force is in Newton
- */
-class UnitsSchemaFemMilliMeterNewton: public UnitsSchema
+PyObject* ViewProviderFemPostFilterPy::createDisplayTaskWidget(PyObject* args)
 {
-public:
-    std::string
-    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
-};
+    // we take no arguments
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
 
-}  // namespace Base
+    auto panel = new TaskPostDisplay(getViewProviderFemPostObjectPtr());
 
-#endif  // BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
+        return Py::new_reference_to(wrap.fromQWidget(panel));
+    }
+
+    PyErr_SetString(PyExc_TypeError, "creating the panel failed");
+    return nullptr;
+}
+
+PyObject* ViewProviderFemPostFilterPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int ViewProviderFemPostFilterPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}

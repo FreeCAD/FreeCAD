@@ -45,7 +45,7 @@ using namespace Base;
 
 PyException::PyException(const Py::Object& obj)
 {
-    _sErrMsg = obj.as_string();
+    setMessage(obj.as_string());
     // WARNING: we are assuming that python type object will never be
     // destroyed, so we don't keep reference here to save book-keeping in
     // our copy constructor and destructor
@@ -64,7 +64,7 @@ PyException::PyException()
     std::string prefix = PP_last_error_type; /* exception name text */
     std::string error = PP_last_error_info;  /* exception data text */
 
-    _sErrMsg = error;
+    setMessage(error);
     _errorType = prefix;
 
     // NOLINTNEXTLINE
@@ -89,10 +89,10 @@ PyException::PyException()
 
 PyException::~PyException() noexcept = default;
 
-void PyException::ThrowException()
+void PyException::throwException()
 {
     PyException myexcp;
-    myexcp.ReportException();
+    myexcp.reportException();
     myexcp.raiseException();
 }
 
@@ -106,35 +106,35 @@ void PyException::raiseException()
 
         std::string exceptionname;
         if (_exceptionType == Base::PyExc_FC_FreeCADAbort) {
-            edict.setItem("sclassname", Py::String(typeid(Base::AbortException).name()));
+            edict.setItem("sclassname", Py::String(typeid(AbortException).name()));
         }
-        if (_isReported) {
+        if (getReported()) {
             edict.setItem("breported", Py::True());
         }
         Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }
 
-    if (_exceptionType == Base::PyExc_FC_FreeCADAbort) {
-        Base::AbortException exc(_sErrMsg.c_str());
-        exc.setReported(_isReported);
+    if (_exceptionType == PyExc_FC_FreeCADAbort) {
+        AbortException exc(getMessage());
+        exc.setReported(getReported());
         throw exc;
     }
 
     throw *this;
 }
 
-void PyException::ReportException() const
+void PyException::reportException() const
 {
-    if (!_isReported) {
-        _isReported = true;
+    if (!getReported()) {
+        setReported(true);
         // set sys.last_vars to make post-mortem debugging work
         PyGILStateLocker locker;
         PySys_SetObject("last_traceback", PP_last_traceback);
-        Base::Console().DeveloperError("pyException",
-                                       "%s%s: %s\n",
-                                       _stackTrace.c_str(),
-                                       _errorType.c_str(),
-                                       what());
+        Console().developerError("pyException",
+                                 "%s%s: %s\n",
+                                 _stackTrace.c_str(),
+                                 _errorType.c_str(),
+                                 what());
     }
 }
 
@@ -187,7 +187,7 @@ SystemExitException::SystemExitException()
         }
     }
 
-    _sErrMsg = errMsg;
+    setMessage(errMsg);
     _exitCode = errCode;
 }
 
@@ -252,7 +252,7 @@ std::string InterpreterSingleton::runString(const char* sCmd)
             throw SystemExitException();
         }
 
-        PyException::ThrowException();
+        PyException::throwException();
         return {};  // just to quieten code analyzers
     }
 
@@ -296,7 +296,7 @@ std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
             throw SystemExitException();
         }
 
-        PyException::ThrowException();
+        PyException::throwException();
         return {};  // just to quieten code analyzers
     }
     Py_DECREF(presult);
@@ -656,8 +656,8 @@ std::string InterpreterSingleton::init(int argc, char* argv[])
         }
         return getPythonPath();
     }
-    catch (const Base::Exception& e) {
-        e.ReportException();
+    catch (const Exception& e) {
+        e.reportException();
         throw;
     }
 }

@@ -328,15 +328,15 @@ int main(int argc, char** argv)
         exit(e.getExitCode());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         exit(1);
     }
     catch (const std::exception& e) {
-        Base::Console().Error("Application unexpectedly terminated: %s\n", e.what());
+        Base::Console().error("Application unexpectedly terminated: %s\n", e.what());
         exit(1);
     }
     catch (...) {
-        Base::Console().Error("Application unexpectedly terminated\n");
+        Base::Console().error("Application unexpectedly terminated\n");
         exit(1);
     }
 
@@ -345,12 +345,12 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().Log("%s terminating...\n", App::Application::Config()["ExeName"].c_str());
+    Base::Console().log("%s terminating...\n", App::Application::Config()["ExeName"].c_str());
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().Log("%s completely terminated\n",
+    Base::Console().log("%s completely terminated\n",
                         App::Application::Config()["ExeName"].c_str());
 
     return 0;
@@ -383,14 +383,14 @@ public:
         , threadId(GetCurrentThreadId())
     {
         std::string name = App::Application::Config()["UserAppData"] + "crash.log";
-        Base::Console().AttachObserver(new Base::ConsoleObserverFile(name.c_str()));
+        Base::Console().attachObserver(new Base::ConsoleObserverFile(name.c_str()));
     }
     MyStackWalker(DWORD dwProcessId, HANDLE hProcess)
         : StackWalker(dwProcessId, hProcess)
     {}
     virtual void OnOutput(LPCSTR szText)
     {
-        Base::Console().Log("Id: %ld: %s", threadId, szText);
+        Base::Console().log("Id: %ld: %s", threadId, szText);
         // StackWalker::OnOutput(szText);
     }
 };
@@ -411,10 +411,10 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
 #endif
     MyStackWalker sw;
     sw.ShowCallstack(GetCurrentThread(), pEx->ContextRecord);
-    Base::Console().Log("*** Unhandled Exception!\n");
-    Base::Console().Log("   ExpCode: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionCode);
-    Base::Console().Log("   ExpFlags: %d\n", pEx->ExceptionRecord->ExceptionFlags);
-    Base::Console().Log("   ExpAddress: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionAddress);
+    Base::Console().log("*** Unhandled Exception!\n");
+    Base::Console().log("   ExpCode: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionCode);
+    Base::Console().log("   ExpFlags: %d\n", pEx->ExceptionRecord->ExceptionFlags);
+    Base::Console().log("   ExpAddress: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionAddress);
 
     bool bFailed = true;
     HANDLE hFile;

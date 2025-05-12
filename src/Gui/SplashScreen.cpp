@@ -65,7 +65,7 @@ public:
         , alignment(Qt::AlignBottom | Qt::AlignLeft)
         , textColor(Qt::black)
     {
-        Base::Console().AttachObserver(this);
+        Base::Console().attachObserver(this);
 
         // allow to customize text position and color
         const std::map<std::string, std::string>& cfg = App::Application::Config();
@@ -107,13 +107,13 @@ public:
     }
     ~SplashObserver() override
     {
-        Base::Console().DetachObserver(this);
+        Base::Console().detachObserver(this);
     }
-    const char* Name() override
+    const char* name() override
     {
         return "SplashObserver";
     }
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  Base::LogStyle level,
                  Base::IntendedRecipient recipient,

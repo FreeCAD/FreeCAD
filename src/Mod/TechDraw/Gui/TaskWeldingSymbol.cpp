@@ -96,7 +96,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if (!obj ||
         !obj->isDerivedFrom<TechDraw::DrawLeaderLine>() )  {
-        Base::Console().Error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
+        Base::Console().error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
         return;
     }
 
@@ -162,7 +162,7 @@ void TaskWeldingSymbol::changeEvent(QEvent *event)
 
 void TaskWeldingSymbol::setUiPrimary()
 {
-//    Base::Console().Message("TWS::setUiPrimary()\n");
+//    Base::Console().message("TWS::setUiPrimary()\n");
     setWindowTitle(QObject::tr("Create Welding Symbol"));
     m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
@@ -181,7 +181,7 @@ void TaskWeldingSymbol::setUiPrimary()
 
 void TaskWeldingSymbol::setUiEdit()
 {
-//    Base::Console().Message("TWS::setUiEdit()\n");
+//    Base::Console().message("TWS::setUiEdit()\n");
     setWindowTitle(QObject::tr("Edit Welding Symbol"));
 
     m_currDir = PreferencesGui::weldingDirectory();
@@ -370,14 +370,14 @@ void TaskWeldingSymbol::onWeldingChanged()
 
 void TaskWeldingSymbol::onDirectorySelected(const QString& newDir)
 {
-//    Base::Console().Message("TWS::onDirectorySelected(%s)\n", qPrintable(newDir));
+//    Base::Console().message("TWS::onDirectorySelected(%s)\n", qPrintable(newDir));
     m_currDir = newDir + QStringLiteral("/");
 }
 
 void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
                                          QString source)
 {
-//    Base::Console().Message("TWS::onSymbolSelected(%s) - source: %s\n",
+//    Base::Console().message("TWS::onSymbolSelected(%s) - source: %s\n",
 //                            qPrintable(symbolPath), qPrintable(source));
     QIcon targetIcon(symbolPath);
     QSize iconSize(32, 32);
@@ -399,7 +399,7 @@ void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
 
 void TaskWeldingSymbol::collectArrowData()
 {
-//    Base::Console().Message("TWS::collectArrowData()\n");
+//    Base::Console().message("TWS::collectArrowData()\n");
     m_arrowOut.toBeSaved = true;
     m_arrowOut.arrowSide = false;
     m_arrowOut.row = 0;
@@ -413,7 +413,7 @@ void TaskWeldingSymbol::collectArrowData()
 
 void TaskWeldingSymbol::collectOtherData()
 {
-//    Base::Console().Message("TWS::collectOtherData()\n");
+//    Base::Console().message("TWS::collectOtherData()\n");
     m_otherOut.toBeSaved = true;
     m_otherOut.arrowSide = false;
     m_otherOut.row = -1;
@@ -427,7 +427,7 @@ void TaskWeldingSymbol::collectOtherData()
 
 void TaskWeldingSymbol::getTileFeats()
 {
-//    Base::Console().Message("TWS::getTileFeats()\n");
+//    Base::Console().message("TWS::getTileFeats()\n");
     std::vector<TechDraw::DrawTileWeld*> tiles = m_weldFeat->getTiles();
     m_arrowFeat = nullptr;
     m_otherFeat = nullptr;
@@ -455,7 +455,7 @@ void TaskWeldingSymbol::getTileFeats()
 //******************************************************************************
 TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol()
 {
-//    Base::Console().Message("TWS::createWeldingSymbol()\n");
+//    Base::Console().message("TWS::createWeldingSymbol()\n");
     App::Document *doc = Application::Instance->activeDocument()->getDocument();
     auto weldSymbol = doc->addObject<TechDraw::DrawWeldSymbol>("WeldSymbol");
     if (!weldSymbol) {
@@ -486,11 +486,11 @@ void TaskWeldingSymbol::updateWeldingSymbol()
 
 void TaskWeldingSymbol::updateTiles()
 {
-//    Base::Console().Message("TWS::updateTiles()\n");
+//    Base::Console().message("TWS::updateTiles()\n");
     getTileFeats();
 
     if (!m_arrowFeat) {
-        Base::Console().Message("TWS::updateTiles - no arrow tile!\n");
+        Base::Console().message("TWS::updateTiles - no arrow tile!\n");
     } else {
         collectArrowData();
         if (m_arrowOut.toBeSaved) {
@@ -514,7 +514,7 @@ void TaskWeldingSymbol::updateTiles()
     }
 
     if (!m_otherFeat) {
-//        Base::Console().Message("TWS::updateTiles - no other tile!\n");
+//        Base::Console().message("TWS::updateTiles - no other tile!\n");
     } else {
         if (m_otherDirty) {
             collectOtherData();
@@ -556,7 +556,7 @@ void TaskWeldingSymbol::enableTaskButtons(bool enable)
 
 bool TaskWeldingSymbol::accept()
 {
-//    Base::Console().Message("TWS::accept()\n");
+//    Base::Console().message("TWS::accept()\n");
     if (m_createMode) {
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create WeldSymbol"));
         m_weldFeat = createWeldingSymbol();
@@ -572,7 +572,7 @@ bool TaskWeldingSymbol::accept()
             updateTiles();
         }
         catch (...) {
-            Base::Console().Error("TWS::accept - failed to update symbol\n");
+            Base::Console().error("TWS::accept - failed to update symbol\n");
         }
 
         Gui::Command::updateActive();
@@ -587,7 +587,7 @@ bool TaskWeldingSymbol::accept()
 
 bool TaskWeldingSymbol::reject()
 {
-//    Base::Console().Message("TWS::reject()\n");
+//    Base::Console().message("TWS::reject()\n");
       //nothing to remove.
 
     Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");

@@ -2,6 +2,7 @@ name: Weekly Build
 on:
   schedule:
    - cron: "42 18 * * 1"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -25,6 +26,8 @@ jobs:
       - name: Tag Build
         id: tag_build
         shell: bash -l {0}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
@@ -32,6 +35,7 @@ jobs:
           gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" -F .github/workflows/weekly-build-notes.md --prerelease || true
 
       - name: Upload Source
+        shell: bash -l {0}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -67,7 +71,7 @@ jobs:
       # prevent running out of disk space on Ubuntu runners.
       - name: Maximize build space
         if: runner.os == 'Linux'
-        uses: AdityaGarg8/remove-unwanted-software@v5
+        uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793 # v5
         with:
           verbose: 'true'
           remove-android: 'true'      # (frees ~9 GB)

@@ -98,39 +98,39 @@ public:
 
     void log() const {
         if (isPress(1))
-            Base::Console().Log("button1 press ");
+            Base::Console().log("button1 press ");
         if (isPress(2))
-            Base::Console().Log("button2 press ");
+            Base::Console().log("button2 press ");
         if (isPress(3))
-            Base::Console().Log("button3 press ");
+            Base::Console().log("button3 press ");
         if (isRelease(1))
-            Base::Console().Log("button1 release ");
+            Base::Console().log("button1 release ");
         if (isRelease(2))
-            Base::Console().Log("button2 release ");
+            Base::Console().log("button2 release ");
         if (isRelease(3))
-            Base::Console().Log("button3 release ");
+            Base::Console().log("button3 release ");
         if (isMouseButtonEvent())
-            Base::Console().Log("%x", modifiers);
+            Base::Console().log("%x", modifiers);
         if (isGestureEvent()){
-            Base::Console().Log("Gesture ");
+            Base::Console().log("Gesture ");
             switch(asGestureEvent()->state){
             case SoGestureEvent::SbGSStart:
-                Base::Console().Log("start ");
+                Base::Console().log("start ");
             break;
             case SoGestureEvent::SbGSEnd:
-                Base::Console().Log("end ");
+                Base::Console().log("end ");
             break;
             case SoGestureEvent::SbGSUpdate:
-                Base::Console().Log("data ");
+                Base::Console().log("data ");
             break;
             default:
-                Base::Console().Log("??? ");
+                Base::Console().log("??? ");
             }
 
-            Base::Console().Log(inventor_event->getTypeId().getName().getString());
+            Base::Console().log(inventor_event->getTypeId().getName().getString());
         }
         if (isMouseButtonEvent() || isGestureEvent()){
-            Base::Console().Log("(%i,%i)\n", inventor_event->getPosition()[0],inventor_event->getPosition()[1]);
+            Base::Console().log("(%i,%i)\n", inventor_event->getPosition()[0],inventor_event->getPosition()[1]);
         }
     }
 
@@ -243,7 +243,7 @@ public:
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::IDLE);
         if (ns.logging)
-            Base::Console().Log(" -> IdleState\n");
+            Base::Console().log(" -> IdleState\n");
     }
     virtual ~IdleState() = default;
 
@@ -355,7 +355,7 @@ public:
     {
         auto &ns = this->outermost_context().ns;
         if (ns.logging)
-            Base::Console().Log(" -> AwaitingMoveState\n");
+            Base::Console().log(" -> AwaitingMoveState\n");
         ns.setViewingMode(NavigationStyle::IDLE);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         this->since = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getTime();
@@ -498,7 +498,7 @@ public:
         ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos = inventorEvent->getPosition();
         if (ns.logging)
-            Base::Console().Log(" -> RotateState\n");
+            Base::Console().log(" -> RotateState\n");
     }
     virtual ~RotateState() = default;
 
@@ -540,7 +540,7 @@ public:
         ns.setViewingMode(NavigationStyle::PANNING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
-            Base::Console().Log(" -> PanState\n");
+            Base::Console().log(" -> PanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
@@ -587,7 +587,7 @@ public:
         ns.setViewingMode(NavigationStyle::PANNING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
-            Base::Console().Log(" -> StickyPanState\n");
+            Base::Console().log(" -> StickyPanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
@@ -634,7 +634,7 @@ public:
         ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
-            Base::Console().Log(" -> TiltState\n");
+            Base::Console().log(" -> TiltState\n");
         ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~TiltState() = default;
@@ -684,7 +684,7 @@ public:
         ns.setViewingMode(NavigationStyle::PANNING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
-            Base::Console().Log(" -> GestureState\n");
+            Base::Console().log(" -> GestureState\n");
         ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         enableTilt = !(App::GetApplication().GetParameterGroupByPath
@@ -703,7 +703,7 @@ public:
             ev.flags->processed = true;
             if (ev.mbstate() == 0){
                 //a fail-safe: if gesture end event doesn't arrive, a mouse click should be able to stop this mode.
-                Base::Console().Warning("leaving gesture state by mouse-click (fail-safe)\n");
+                Base::Console().warning("leaving gesture state by mouse-click (fail-safe)\n");
                 return transit<NS::IdleState>();
             }
         }
@@ -763,7 +763,7 @@ public:
     {
         auto &ns = this->outermost_context().ns;
         if (ns.logging)
-            Base::Console().Log(" -> AwaitingReleaseState\n");
+            Base::Console().log(" -> AwaitingReleaseState\n");
     }
     virtual ~AwaitingReleaseState() = default;
 
@@ -814,7 +814,7 @@ public:
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::INTERACT);
         if (ns.logging)
-            Base::Console().Log(" -> InteractState\n");
+            Base::Console().log(" -> InteractState\n");
     }
     virtual ~InteractState() = default;
 
@@ -988,12 +988,12 @@ void GestureNavigationStyle::onRollGesture(int direction)
     std::string cmd;
     if (direction == +1){
         if (logging)
-            Base::Console().Log("Roll forward gesture\n");
+            Base::Console().log("Roll forward gesture\n");
         cmd = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View")->GetASCII("GestureRollFwdCommand");
     } else if (direction == -1) {
         if (logging)
-            Base::Console().Log("Roll backward gesture\n");
+            Base::Console().log("Roll backward gesture\n");
         cmd = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View")->GetASCII("GestureRollBackCommand");
     }
@@ -1004,9 +1004,9 @@ void GestureNavigationStyle::onRollGesture(int direction)
     try {
         Base::Interpreter().runString(code.str().c_str());
     } catch (Base::PyException& exc) {
-        exc.ReportException();
+        exc.reportException();
     } catch (...) {
-        Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
+        Base::Console().error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
    }
 
 }
@@ -1016,7 +1016,7 @@ void GestureNavigationStyle::EventQueue::post(const NS::Event& ev)
     ev.flags->processed = true;
     this->push(*ev.asMouseButtonEvent());
     if (ns.logging){
-        Base::Console().Log("postponed: ");
+        Base::Console().log("postponed: ");
         ev.log();
     }
 }

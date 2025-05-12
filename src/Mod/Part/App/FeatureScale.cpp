@@ -88,7 +88,7 @@ TopoShape Scale::scaleShape(const TopoShape& source, const Scale::ScaleParameter
 
 TopoShape Scale::uniformScale(const TopoShape& source, const double& factor)
 {
-//    Base::Console().Message("FS::uniformScale()\n");
+//    Base::Console().message("FS::uniformScale()\n");
     TopoDS_Shape transShape;
     TopoShape transTopo;
     try {
@@ -107,7 +107,7 @@ TopoShape Scale::uniformScale(const TopoShape& source, const double& factor)
 
 TopoShape Scale::nonuniformScale(const TopoShape& source, const Scale::ScaleParameters& params)
 {
-//    Base::Console().Message("FS::nonuniformScale()\n");
+//    Base::Console().message("FS::nonuniformScale()\n");
     Base::Matrix4D matScale;
     matScale.scale(params.XScale, params.YScale, params.ZScale);
 
@@ -136,7 +136,7 @@ TopoShape Scale::nonuniformScale(const TopoShape& source, const Scale::ScalePara
         transTopo.setShape(mkTrf.Shape());
     }
     catch (...) {
-        Base::Console().Warning("FeatureScale failed on nonuniform scale\n");
+        Base::Console().warning("FeatureScale failed on nonuniform scale\n");
         return transTopo;
     }
     return transTopo;
@@ -144,7 +144,7 @@ TopoShape Scale::nonuniformScale(const TopoShape& source, const Scale::ScalePara
 
 App::DocumentObjectExecReturn* Scale::execute()
 {
-//    Base::Console().Message("FS::execute()\n");
+//    Base::Console().message("FS::execute()\n");
     App::DocumentObject* link = Base.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");

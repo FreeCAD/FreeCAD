@@ -374,7 +374,7 @@ void TaskTransformedParameters::onFeatureDeleted()
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     int currentRow = ui->listWidgetFeatures->currentRow();
     if (currentRow < 0) {
-        Base::Console().Error("PartDesign Pattern: No feature selected for removing.\n");
+        Base::Console().error("PartDesign Pattern: No feature selected for removing.\n");
         return;  // no current row selected
     }
     originals.erase(originals.begin() + currentRow);
@@ -424,7 +424,7 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part
             combolinks.addLink(orig->getZ(), "", tr("Base Z axis"));
         }
         catch (const Base::Exception& ex) {
-            Base::Console().Error("%s\n", ex.what());
+            Base::Console().error("%s\n", ex.what());
         }
     }
 
@@ -460,7 +460,7 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks& combolinks, Part::Pa
             combolinks.addLink(orig->getXZ(), "", tr("Base XZ plane"));
         }
         catch (const Base::Exception& ex) {
-            Base::Console().Error("%s\n", ex.what());
+            Base::Console().error("%s\n", ex.what());
         }
     }
 
@@ -531,7 +531,7 @@ void TaskTransformedParameters::hideObject()
         FCMD_OBJ_HIDE(getTopTransformedObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -541,7 +541,7 @@ void TaskTransformedParameters::showObject()
         FCMD_OBJ_SHOW(getTopTransformedObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -551,7 +551,7 @@ void TaskTransformedParameters::hideBase()
         FCMD_OBJ_HIDE(getBaseObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -561,7 +561,7 @@ void TaskTransformedParameters::showBase()
         FCMD_OBJ_SHOW(getBaseObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -574,7 +574,7 @@ void TaskTransformedParameters::exitSelectionMode()
         showObject();
     }
     catch (Base::Exception& exc) {
-        exc.ReportException();
+        exc.reportException();
     }
 }
 

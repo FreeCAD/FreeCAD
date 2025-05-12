@@ -109,7 +109,7 @@ QGILeaderLine::QGILeaderLine()
 
 void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)
 {
-    //    Base::Console().Message("QGILL::setLeaderFeature()\n");
+    //    Base::Console().message("QGILL::setLeaderFeature()\n");
     setViewFeature(static_cast<TechDraw::DrawView*>(feat));
 
     float x = Rez::guiX(feat->X.getValue());
@@ -124,7 +124,7 @@ void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)
 
 QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant& value)
 {
-    //    Base::Console().Message("QGILL::itemChange(%d)\n", change);
+    //    Base::Console().message("QGILL::itemChange(%d)\n", change);
     if (change == ItemSelectedHasChanged && scene()) {
         if (isSelected()) {
             setPrettySel();
@@ -168,7 +168,7 @@ void QGILeaderLine::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 
 void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
-    //    Base::Console().Message("QGILL::hoverEnter() - selected; %d\n", isSelected());
+    //    Base::Console().message("QGILL::hoverEnter() - selected; %d\n", isSelected());
     m_hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
@@ -178,7 +178,7 @@ void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 
 void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
-    //    Base::Console().Message("QGILL::hoverLeave() - selected; %d\n", isSelected());
+    //    Base::Console().message("QGILL::hoverLeave() - selected; %d\n", isSelected());
     m_hasHover = false;
     if (!isSelected()) {
         setPrettyNormal();
@@ -188,7 +188,7 @@ void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 
 void QGILeaderLine::setNormalColorAll()
 {
-    //    Base::Console().Message("QGILL::setNormalColorAll - normal color: %s\n", qPrintable(getNormalColor().name()));
+    //    Base::Console().message("QGILL::setNormalColorAll - normal color: %s\n", qPrintable(getNormalColor().name()));
     QColor qc = prefNormalColor();
     m_line->setNormalColor(qc);
     m_editPath->setNormalColor(qc);
@@ -200,7 +200,7 @@ void QGILeaderLine::setNormalColorAll()
 
 void QGILeaderLine::setPrettyNormal()
 {
-    //    Base::Console().Message("QGILL::setPrettyNormal()\n");
+    //    Base::Console().message("QGILL::setPrettyNormal()\n");
     m_line->setPrettyNormal();
     m_arrow1->setPrettyNormal();
     m_arrow2->setPrettyNormal();
@@ -208,7 +208,7 @@ void QGILeaderLine::setPrettyNormal()
 
 void QGILeaderLine::setPrettyPre()
 {
-    //    Base::Console().Message("QGILL::setPrettyPre()\n");
+    //    Base::Console().message("QGILL::setPrettyPre()\n");
     m_line->setPrettyPre();
     m_arrow1->setPrettyPre();
     m_arrow2->setPrettyPre();
@@ -216,7 +216,7 @@ void QGILeaderLine::setPrettyPre()
 
 void QGILeaderLine::setPrettySel()
 {
-    //    Base::Console().Message("QGILL::setPrettySel()\n");
+    //    Base::Console().message("QGILL::setPrettySel()\n");
     m_line->setPrettySel();
     m_arrow1->setPrettySel();
     m_arrow2->setPrettySel();
@@ -225,7 +225,7 @@ void QGILeaderLine::setPrettySel()
 
 void QGILeaderLine::closeEdit()
 {
-    //    Base::Console().Message("QGIL::closeEdit()\n");
+    //    Base::Console().message("QGIL::closeEdit()\n");
     if (m_editPath) {
         m_editPath->onEndEdit();//tell QEPath that edit session ended
     }
@@ -236,7 +236,7 @@ void QGILeaderLine::closeEdit()
 //! signaled from QEPath
 void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF> scenePoints)
 {
-    // Base::Console().Message("QGILL::onLineEditFinished(%s, %d)\n",
+    // Base::Console().message("QGILL::onLineEditFinished(%s, %d)\n",
     //                        TechDraw::DrawUtil::formatVector(tipDisplace).c_str(),
     //                        scenePoints.size());
 
@@ -299,7 +299,7 @@ void QGILeaderLine::startPathEdit()
 
 void QGILeaderLine::saveState()
 {
-    //    Base::Console().Message("QGILL::saveState()\n");
+    //    Base::Console().message("QGILL::saveState()\n");
     auto featLeader = getLeaderFeature();
     if (featLeader) {
         m_savePoints = featLeader->WayPoints.getValues();
@@ -310,7 +310,7 @@ void QGILeaderLine::saveState()
 
 void QGILeaderLine::restoreState()
 {
-    //    Base::Console().Message("QGILL::restoreState()\n");
+    //    Base::Console().message("QGILL::restoreState()\n");
     auto featLeader = getLeaderFeature();
     if (featLeader) {
         featLeader->WayPoints.setValues(m_savePoints);
@@ -324,11 +324,11 @@ void QGILeaderLine::restoreState()
 
 void QGILeaderLine::updateView(bool update)
 {
-    // Base::Console().Message("QGILL::updateView()\n");
+    // Base::Console().message("QGILL::updateView()\n");
     Q_UNUSED(update);
     auto featLeader(dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()));
     if (!featLeader) {
-        Base::Console().Warning("QGILL::updateView - no feature!\n");
+        Base::Console().warning("QGILL::updateView - no feature!\n");
         return;
     }
 
@@ -391,7 +391,7 @@ void QGILeaderLine::draw()
 
     std::vector<QPointF> qPoints = getWayPointsFromFeature();
     if (qPoints.empty() ) {
-        Base::Console().Message("QGILL::draw - no points\n");
+        Base::Console().message("QGILL::draw - no points\n");
         return;
     }
 
@@ -416,7 +416,7 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
     QPainterPath result;
     DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
-        // Base::Console().Message("QGILL::makeLeaderPath - featLeader is nullptr\n");
+        // Base::Console().message("QGILL::makeLeaderPath - featLeader is nullptr\n");
         return result;
     }
 
@@ -466,7 +466,7 @@ QPointF QGILeaderLine::getAttachFromFeature()
 {
     TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
-        // Base::Console().Message("QGIL::getAttachFromLeader - no feature\n");
+        // Base::Console().message("QGIL::getAttachFromLeader - no feature\n");
         return {};
     }
     double x = Rez::guiX(featLeader->X.getValue());
@@ -479,7 +479,7 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
 {
     DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
-        // Base::Console().Message("QGILL::getWayPointsFromFeature - featLeader is nullptr\n");
+        // Base::Console().message("QGILL::getWayPointsFromFeature - featLeader is nullptr\n");
         return {};
     }
 
@@ -505,7 +505,7 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
     }
 
     if (qPoints.empty()) {
-        Base::Console().Warning("QGILeaderLine::getWayPointsFromFeature - no points\n");
+        Base::Console().warning("QGILeaderLine::getWayPointsFromFeature - no points\n");
     }
     return qPoints;
 }
@@ -602,7 +602,7 @@ Base::Vector3d  QGILeaderLine::getAttachPoint()
 
 void QGILeaderLine::abandonEdit()
 {
-    //    Base::Console().Message("QGIL::abandonEdit()\n");
+    //    Base::Console().message("QGIL::abandonEdit()\n");
     m_editPath->clearMarkers();
     m_editPath->hide();
     restoreState();
@@ -629,7 +629,7 @@ double QGILeaderLine::getEdgeFuzz() const
 
 QColor QGILeaderLine::prefNormalColor()
 {
-    //    Base::Console().Message("QGILL::getNormalColor()\n");
+    //    Base::Console().message("QGILL::getNormalColor()\n");
     setNormalColor(PreferencesGui::leaderQColor());
 
     auto vp = freecad_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));

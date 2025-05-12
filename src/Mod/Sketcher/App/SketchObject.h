@@ -354,7 +354,7 @@ public:
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
-    int moveGeometries(std::vector<GeoElementId> geoEltIds,
+    int moveGeometries(const std::vector<GeoElementId>& geoEltIds,
                        const Base::Vector3d& toPoint,
                        bool relative = false,
                        bool updateGeoBeforeMoving = false);
@@ -917,6 +917,7 @@ protected:
 
     void onDocumentRestored() override;
     void restoreFinished() override;
+    void onSketchRestore();
 
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr);

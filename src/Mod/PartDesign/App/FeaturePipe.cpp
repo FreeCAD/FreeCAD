@@ -494,9 +494,9 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
     TopExp::MapShapesAndAncestors(TopShape.getShape(), TopAbs_EDGE, TopAbs_EDGE, mapEdgeEdge);
     TopExp::MapShapes(TopShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
-    Base::Console().Message("Initial edges:\n");
+    Base::Console().message("Initial edges:\n");
     for (int i=0; i<SubNames.size(); ++i)
-        Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
+        Base::Console().message("Subname: %s\n", SubNames[i].c_str());
 
     unsigned int i = 0;
     while(i < SubNames.size())
@@ -531,9 +531,9 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
         }
     }
 
-    Base::Console().Message("Final edges:\n");
+    Base::Console().message("Final edges:\n");
     for (int i=0; i<SubNames.size(); ++i)
-        Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
+        Base::Console().message("Subname: %s\n", SubNames[i].c_str());
     */
 }
 

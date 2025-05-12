@@ -76,7 +76,7 @@ bool TaskDlgCreateElementSet::accept()
         return true;
     }
     catch (const Base::Exception& e) {
-        Base::Console().Warning("TaskDlgCreateElementSet::accept(): %s\n", e.what());
+        Base::Console().warning("TaskDlgCreateElementSet::accept(): %s\n", e.what());
     }
 
     return false;

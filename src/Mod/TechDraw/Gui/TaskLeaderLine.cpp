@@ -87,7 +87,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 
     m_basePage = m_lineFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().Error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
         return;
     }
     App::DocumentObject* obj = m_lineFeat->LeaderParent.getValue();
@@ -108,7 +108,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 
     //TODO: when/if leaders are allowed to be parented to Page, check for m_baseFeat will be removed
     if (!m_baseFeat || !m_basePage) {
-        Base::Console().Error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
         return;
     }
 
@@ -420,16 +420,16 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 
 void TaskLeaderLine::dumpTrackerPoints(std::vector<Base::Vector3d>& tPoints) const
 {
-    Base::Console().Message("TTL::dumpTrackerPoints(%d)\n", tPoints.size());
-    Base::Console().Message("TTL::dumpTrackerPoints - attach point: %s\n", DU::formatVector(m_attachPoint).c_str());
+    Base::Console().message("TTL::dumpTrackerPoints(%d)\n", tPoints.size());
+    Base::Console().message("TTL::dumpTrackerPoints - attach point: %s\n", DU::formatVector(m_attachPoint).c_str());
     for (auto& point : tPoints) {
-        Base::Console().Message("TTL::dumpTrackerPoints - a point: %s\n", DU::formatVector(point).c_str());
+        Base::Console().message("TTL::dumpTrackerPoints - a point: %s\n", DU::formatVector(point).c_str());
     }
 }
 
 void TaskLeaderLine::updateLeaderFeature()
 {
-//    Base::Console().Message("TTL::updateLeaderFeature()\n");
+//    Base::Console().message("TTL::updateLeaderFeature()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x, y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
@@ -458,7 +458,7 @@ void TaskLeaderLine::commonFeatureUpdate()
 
 void TaskLeaderLine::removeFeature()
 {
-//    Base::Console().Message("TTL::removeFeature()\n");
+//    Base::Console().message("TTL::removeFeature()\n");
     if (!m_lineFeat) {
         return;
     }
@@ -472,7 +472,7 @@ void TaskLeaderLine::removeFeature()
                                         m_lineFeat->getNameInDocument());
         }
         catch (...) {
-            Base::Console().Message("TTL::removeFeature - failed to delete feature\n");
+            Base::Console().message("TTL::removeFeature - failed to delete feature\n");
             return;
         }
     } else {
@@ -488,7 +488,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
 {
     Q_UNUSED(clicked);
     if (!m_vpp->getMDIViewPage()) {
-        Base::Console().Message("TLL::onTrackerClicked - no Mdi, no Tracker!\n");
+        Base::Console().message("TLL::onTrackerClicked - no Mdi, no Tracker!\n");
         return;
     }
 
@@ -557,7 +557,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
 
             if (!qgLead) {
                 //tarfu
-                Base::Console().Error("TaskLeaderLine - can't find leader graphic\n");
+                Base::Console().error("TaskLeaderLine - can't find leader graphic\n");
                 //now what? throw will generate "unknown unhandled exception"
             } else {
                 m_qgLeader = qgLead;
@@ -595,7 +595,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
 
 void TaskLeaderLine::startTracker()
 {
-//    Base::Console().Message("TTL::startTracker()\n");
+//    Base::Console().message("TTL::startTracker()\n");
     if (!m_vpp->getQGSPage()) {
         return;
     }
@@ -624,9 +624,9 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> trackerScenePoints, 
 {
     //in this case, we already know who the parent is.  We don't need QGTracker to tell us.
     (void) qgParent;
-    //    Base::Console().Message("TTL::onTrackerFinished() - parent: %X\n", qgParent);
+    //    Base::Console().message("TTL::onTrackerFinished() - parent: %X\n", qgParent);
     if (trackerScenePoints.empty()) {
-        Base::Console().Error("TaskLeaderLine - no points available\n");
+        Base::Console().error("TaskLeaderLine - no points available\n");
         return;
     }
 
@@ -636,7 +636,7 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> trackerScenePoints, 
         m_attachPoint = Base::Vector3d(mapped.x(), mapped.y(), 0.0);
         m_sceneDeltas = scenePointsToDeltas(trackerScenePoints);
     } else {
-        Base::Console().Message("TTL::onTrackerFinished - can't find parent graphic!\n");
+        Base::Console().message("TTL::onTrackerFinished - can't find parent graphic!\n");
         //blow up!?
         throw Base::RuntimeError("TaskLeaderLine - can not find parent graphic");
     }
@@ -663,7 +663,7 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> trackerScenePoints, 
 // this is called at every possible exit path?
 void TaskLeaderLine::removeTracker()
 {
-//    Base::Console().Message("TTL::removeTracker()\n");
+//    Base::Console().message("TTL::removeTracker()\n");
     if (!m_vpp->getQGSPage()) {
         return;
     }
@@ -677,7 +677,7 @@ void TaskLeaderLine::removeTracker()
 void TaskLeaderLine::onCancelEditClicked(bool clicked)
 {
     Q_UNUSED(clicked);
-//    Base::Console().Message("TTL::onCancelEditClicked() m_pbTrackerState: %d\n",
+//    Base::Console().message("TTL::onCancelEditClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
     abandonEditSession();
     if (m_lineFeat) {
@@ -752,7 +752,7 @@ std::vector<Base::Vector3d> TaskLeaderLine::scenePointsToDeltas(std::vector<QPoi
 //! point edit session completed.  reset ui to initial state.
 void TaskLeaderLine::onPointEditComplete()
 {
-//    Base::Console().Message("TTL::onPointEditComplete()\n");
+//    Base::Console().message("TTL::onPointEditComplete()\n");
     m_inProgressLock = false;
 
     m_pbTrackerState = TrackerAction::EDIT;
@@ -767,7 +767,7 @@ void TaskLeaderLine::onPointEditComplete()
 //! start editing points again.  leave the existing tracker instance in place.
 void TaskLeaderLine::abandonEditSession()
 {
-//    Base::Console().Message("TTL::abandonEditSession()\n");
+//    Base::Console().message("TTL::abandonEditSession()\n");
     constexpr int MessageDuration{4000};
     if (m_qgLeader) {
         // tell the graphics item that we are giving up so it should do any clean up it needs.
@@ -803,7 +803,7 @@ void TaskLeaderLine::enableTaskButtons(bool enable)
 
 bool TaskLeaderLine::accept()
 {
-//    Base::Console().Message("TTL::accept()\n");
+//    Base::Console().message("TTL::accept()\n");
     if (m_inProgressLock) {
         //accept() button shouldn't be available if there is an edit in progress.
         abandonEditSession();
@@ -836,7 +836,7 @@ bool TaskLeaderLine::accept()
 bool TaskLeaderLine::reject()
 {
     if (m_inProgressLock) {
-//        Base::Console().Message("TTL::reject - edit in progress!!\n");
+//        Base::Console().message("TTL::reject - edit in progress!!\n");
         //reject() button shouldn't be available if there is an edit in progress.
         abandonEditSession();
         removeTracker();

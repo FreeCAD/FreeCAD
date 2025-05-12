@@ -125,7 +125,7 @@ void Type::importModule(const char* typeName)
     // lets load the module
     Interpreter().loadModule(mod.c_str());
 #ifdef FC_LOGLOADMODULE
-    Console().Log("Act: Module %s loaded through class %s \n", Mod.c_str(), typeName);
+    Console().log("Act: Module %s loaded through class %s \n", Mod.c_str(), typeName);
 #endif
     loadModuleSet.insert(mod);
 }
