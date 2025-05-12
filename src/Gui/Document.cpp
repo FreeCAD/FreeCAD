@@ -1652,7 +1652,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
     localreader->FileVersion = reader.getFileVersion();
 
     localreader->readElement("Document");
-    long scheme = localreader->getAttributeAsInteger("SchemaVersion");
+    long scheme = localreader->getAttribute<long>("SchemaVersion");
     localreader->DocumentSchema = scheme;
 
     bool hasExpansion = localreader->hasAttribute("HasExpansion");
@@ -1672,14 +1672,14 @@ void Document::RestoreDocFile(Base::Reader &reader)
     if (scheme == 1) {
         // read the viewproviders itself
         localreader->readElement("ViewProviderData");
-        int Cnt = localreader->getAttributeAsInteger("Count");
+        int Cnt = localreader->getAttribute<long>("Count");
         for (int i=0; i<Cnt; i++) {
             localreader->readElement("ViewProvider");
-            std::string name = localreader->getAttribute("name");
+            std::string name = localreader->getAttribute<const char*>("name");
 
             bool expanded = false;
             if (!hasExpansion && localreader->hasAttribute("expanded")) {
-                const char* attr = localreader->getAttribute("expanded");
+                const char* attr = localreader->getAttribute<const char*>("expanded");
                 if (strcmp(attr,"1") == 0) {
                     expanded = true;
                 }
@@ -1687,7 +1687,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
 
             int treeRank = -1;
             if (localreader->hasAttribute("treeRank")) {
-                treeRank = int(localreader->getAttributeAsInteger("treeRank"));
+                treeRank = localreader->getAttribute<int>("treeRank");
             }
 
             auto pObj = freecad_cast<ViewProviderDocumentObject*>(getViewProviderByName(name.c_str()));
@@ -1709,7 +1709,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
 
         // read camera settings
         localreader->readElement("Camera");
-        const char* ppReturn = localreader->getAttribute("settings");
+        const char* ppReturn = localreader->getAttribute<const char*>("settings");
         cameraSettings.clear();
         if(!Base::Tools::isNullOrEmpty(ppReturn)) {
             saveCameraSettings(ppReturn);
@@ -1902,7 +1902,7 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     // We must create an XML parser to read from the input stream
     std::shared_ptr<Base::XMLReader> localreader = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
     localreader->readElement("Document");
-    long scheme = localreader->getAttributeAsInteger("SchemaVersion");
+    long scheme = localreader->getAttribute<long>("SchemaVersion");
 
     // At this stage all the document objects and their associated view providers exist.
     // Now we must restore the properties of the view providers only.
@@ -1911,20 +1911,20 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     if (scheme == 1) {
         // read the viewproviders itself
         localreader->readElement("ViewProviderData");
-        int Cnt = localreader->getAttributeAsInteger("Count");
+        int Cnt = localreader->getAttribute<long>("Count");
         auto it = obj.begin();
         for (int i=0;i<Cnt&&it!=obj.end();++i,++it) {
             // The stored name usually doesn't match with the current name anymore
             // thus we try to match by type. This should work because the order of
             // objects should not have changed
             localreader->readElement("ViewProvider");
-            std::string name = localreader->getAttribute("name");
+            std::string name = localreader->getAttribute<const char*>("name");
             auto jt = nameMapping.find(name);
             if (jt != nameMapping.end())
                 name = jt->second;
             bool expanded = false;
             if (localreader->hasAttribute("expanded")) {
-                const char* attr = localreader->getAttribute("expanded");
+                const char* attr = localreader->getAttribute<const char*>("expanded");
                 if (strcmp(attr,"1") == 0) {
                     expanded = true;
                 }

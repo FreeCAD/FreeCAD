@@ -205,13 +205,13 @@ void PropertyGeometryList::tryRestoreGeometry(Geometry * geom, Base::XMLReader &
 {
     // Not all geometry classes implement Restore() and throw an exception instead
     try {
-        if (!reader.getAttributeAsInteger("migrated", "0") && reader.hasAttribute("id")) {
+        if (!reader.getAttribute<long>("migrated", 0) && reader.hasAttribute("id")) {
             auto ext = std::make_unique<GeometryMigrationExtension>();
-            ext->setId(reader.getAttributeAsInteger("id"));
+            ext->setId(reader.getAttribute<long>("id"));
             if(reader.hasAttribute("ref")) {
-                const char *ref = reader.getAttribute("ref");
-                int index = reader.getAttributeAsInteger("refIndex", "1");
-                unsigned long flags = (unsigned long)reader.getAttributeAsUnsigned("flags");
+                const char *ref = reader.getAttribute<const char*>("ref");
+                int index = reader.getAttribute<long>("refIndex", 1);
+                unsigned long flags = (unsigned long)reader.getAttribute<unsigned long>("flags");
                 ext->setReference(ref, index, flags);
             }
             geom->setExtension(std::move(ext));
@@ -253,12 +253,12 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     reader.clearPartialRestoreObject();
     reader.readElement("GeometryList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
     std::vector<Geometry*> values;
     values.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("Geometry");
-        const char* TypeName = reader.getAttribute("type");
+        const char* TypeName = reader.getAttribute<const char*>("type");
         Geometry *newG = static_cast<Geometry *>(Base::Type::fromName(TypeName).createInstance());
         tryRestoreGeometry(newG, reader);
 

@@ -14,6 +14,7 @@
 #include <random>
 #include <string>
 #include <xercesc/util/PlatformUtils.hpp>
+#include <QString>
 
 namespace fs = std::filesystem;
 
@@ -276,14 +277,14 @@ TEST_F(ReaderTest, readNextStartElement)
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
     EXPECT_STREQ(xml.Reader()->localName(), "node1");
-    EXPECT_STREQ(xml.Reader()->getAttribute("attr"), "1");
+    EXPECT_STREQ(xml.Reader()->getAttribute<const char*>("attr"), "1");
     xml.Reader()->readEndElement("node1");
     EXPECT_TRUE(xml.Reader()->isEndOfElement());
 
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
     EXPECT_STREQ(xml.Reader()->localName(), "node2");
-    EXPECT_STREQ(xml.Reader()->getAttribute("attr"), "2");
+    EXPECT_STREQ(xml.Reader()->getAttribute<const char*>("attr"), "2");
     xml.Reader()->readEndElement("node2");
     EXPECT_TRUE(xml.Reader()->isEndOfElement());
     xml.Reader()->readEndElement("document");
@@ -292,9 +293,28 @@ TEST_F(ReaderTest, readNextStartElement)
 
 TEST_F(ReaderTest, readNextStartEndElement)
 {
+    // Arrange
+    enum class TimesIGoToBed
+    {
+        Late,
+        Later,
+        VeryLate,
+        FreeCADDevLate  // https://user-images.githubusercontent.com/12400097/235325792-606bffd6-6607-4542-a7d9-a04f12120666.png
+    };
+
     auto xmlBody = R"(
 <node1 attr='1'/>
 <node2 attr='2'/>
+<node3 attr='3'/>
+<node4 attr='1'/>
+<node5 attr='0'/>
+<node5b attr='0xFF'/>
+<node6 attr='asdaf'/>
+<node7 attr="const char* is faster :'("/>
+<node8 attr='8'/>
+<node9 attr='9'/>
+<node10 attr='10'/>
+<node11 attr='11'/>
 )";
 
     ReaderXML xml;
@@ -308,12 +328,64 @@ TEST_F(ReaderTest, readNextStartEndElement)
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
     EXPECT_STREQ(xml.Reader()->localName(), "node1");
-    EXPECT_STREQ(xml.Reader()->getAttribute("attr"), "1");
+    EXPECT_STREQ(xml.Reader()->getAttribute<const char*>("attr"), "1");
 
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
     EXPECT_STREQ(xml.Reader()->localName(), "node2");
-    EXPECT_STREQ(xml.Reader()->getAttribute("attr"), "2");
+    EXPECT_STREQ(xml.Reader()->getAttribute<const char*>("attr"), "2");
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node3");
+    EXPECT_EQ(xml.Reader()->getAttribute<TimesIGoToBed>("attr"), TimesIGoToBed::FreeCADDevLate);
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node4");
+    EXPECT_EQ(xml.Reader()->getAttribute<bool>("attr"), true);
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node5");
+    EXPECT_EQ(xml.Reader()->getAttribute<bool>("attr"), false);
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node5b");
+    EXPECT_EQ(xml.Reader()->getAttribute<bool>("attr"), true);
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node6");
+    EXPECT_EQ(xml.Reader()->getAttribute<bool>("attr"), true);
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node7");
+    EXPECT_EQ(xml.Reader()->getAttribute<std::string>("attr"),
+              std::string("const char* is faster :'("));
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node8");
+    EXPECT_EQ(xml.Reader()->getAttribute<long>("attr"), 8);
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node9");
+    EXPECT_EQ(xml.Reader()->getAttribute<unsigned long>("attr"), 9);
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node10");
+    EXPECT_EQ(xml.Reader()->getAttribute<int>("attr"), 10);
+
+    // next element
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node11");
+    EXPECT_EQ(xml.Reader()->getAttribute<QString>("attr"), QStringLiteral("11"));
+
     EXPECT_FALSE(xml.Reader()->readNextElement());
     EXPECT_TRUE(xml.Reader()->isEndOfDocument());
 }
@@ -340,6 +412,14 @@ TEST_F(ReaderTest, charStreamBase64Encoded)
 TEST_F(ReaderTest, validDefaults)
 {
     // Arrange
+    enum class TimesIGoToBed
+    {
+        Late,
+        Later,
+        VeryLate,
+        FreeCADDevLate  // https://user-images.githubusercontent.com/12400097/235325792-606bffd6-6607-4542-a7d9-a04f12120666.png
+    };
+
     auto xmlBody = R"(
 <node1 attr='1'/>
 <node2 attr='2'/>
@@ -349,41 +429,33 @@ TEST_F(ReaderTest, validDefaults)
     xml.givenDataAsXMLStream(xmlBody);
 
     // Act
-    const char* value2 = xml.Reader()->getAttribute("missing", "expected value");
-    int value4 = xml.Reader()->getAttributeAsInteger("missing", "-123");
-    unsigned value6 = xml.Reader()->getAttributeAsUnsigned("missing", "123");
-    double value8 = xml.Reader()->getAttributeAsFloat("missing", "1.234");
+    const char* value2 = xml.Reader()->getAttribute<const char*>("missing", "expected value");
+    int value4 = xml.Reader()->getAttribute<long>("missing", -123);
+    unsigned value6 = xml.Reader()->getAttribute<unsigned long>("missing", 123);
+    double value8 = xml.Reader()->getAttribute<double>("missing", 1.234);
+    bool value12 = xml.Reader()->getAttribute<bool>("missing", 0);
+    bool value14 = xml.Reader()->getAttribute<bool>("missing", 1);
+    bool value16 = xml.Reader()->getAttribute<bool>("missing", -10);
+    bool value18 = xml.Reader()->getAttribute<bool>("missing", 10);
+    TimesIGoToBed value20 =
+        xml.Reader()->getAttribute<TimesIGoToBed>("missing", TimesIGoToBed::Late);
 
     // Assert
-    EXPECT_THROW({ xml.Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
+    EXPECT_THROW({ xml.Reader()->getAttribute<const char*>("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value2, "expected value");
-    EXPECT_THROW({ xml.Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
+    EXPECT_THROW({ xml.Reader()->getAttribute<long>("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value4, -123);
-    EXPECT_THROW({ xml.Reader()->getAttributeAsUnsigned("missing"); }, Base::XMLBaseException);
+    EXPECT_THROW({ xml.Reader()->getAttribute<unsigned long>("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value6, 123);
-    EXPECT_THROW({ xml.Reader()->getAttributeAsFloat("missing"); }, Base::XMLBaseException);
+    EXPECT_THROW({ xml.Reader()->getAttribute<double>("missing"); }, Base::XMLBaseException);
     EXPECT_NEAR(value8, 1.234, 0.001);
-}
-
-TEST_F(ReaderTest, invalidDefaults)
-{
-    // Arrange
-    auto xmlBody = R"(
-<node1 attr='1'/>
-<node2 attr='2'/>
-)";
-
-    ReaderXML xml;
-    xml.givenDataAsXMLStream(xmlBody);
-
-    // Act / Assert
-    EXPECT_THROW(
-        { xml.Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
-        std::invalid_argument);
-    EXPECT_THROW(
-        { xml.Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
-        std::invalid_argument);
-    EXPECT_THROW(
-        { xml.Reader()->getAttributeAsInteger("missing", "Not a Float"); },
-        std::invalid_argument);
+    EXPECT_THROW({ xml.Reader()->getAttribute<int>("missing"); }, Base::XMLBaseException);
+    EXPECT_NEAR(value8, 1.234, 0.001);
+    EXPECT_THROW({ xml.Reader()->getAttribute<bool>("missing"); }, Base::XMLBaseException);
+    EXPECT_EQ(value12, false);
+    EXPECT_EQ(value14, true);
+    EXPECT_EQ(value16, true);
+    EXPECT_EQ(value18, true);
+    EXPECT_THROW({ xml.Reader()->getAttribute<TimesIGoToBed>("missing"); }, Base::XMLBaseException);
+    EXPECT_EQ(value20, TimesIGoToBed::Late);
 }
