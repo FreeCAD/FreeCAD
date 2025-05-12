@@ -52,7 +52,7 @@ class Asset(ABC):
         cls,
         data: bytes,
         id: str,
-        dependencies: Optional[Mapping[AssetUri, Any]],
+        dependencies: Optional[Mapping[AssetUri, Asset]],
     ) -> Asset:
         """
         Creates an object from serialized data and resolved dependencies.

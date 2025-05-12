@@ -178,9 +178,8 @@ class ToolBit(Asset, ABC):
     def dependencies(cls, data: bytes) -> List[AssetUri]:
         """Returns a list of AssetUri dependencies parsed from the serialized data."""
         data_dict = json.loads(data.decode('utf-8'))
-        shape_id = data_dict["shape"]
-        shape_uri = ToolBitShape.resolve_name(shape_id)
-        return [shape_uri]
+        shape = data_dict["shape"]
+        return [ToolBitShape.resolve_name(shape)]
 
     def get_label(self) -> str:
         """Returns the label of the tool bit."""
@@ -314,10 +313,15 @@ class ToolBit(Asset, ABC):
         shape_uri = ToolBitShape.resolve_name(shape_id)
         shape = dependencies.get(shape_uri)
 
-        if not isinstance(shape, ToolBitShape):
+        if shape is None:
             raise ValueError(
-                f"Dependency for shape '{shape_id}' not found or "
-                "is not a ToolBitShape instance."
+                f"Dependency for shape '{shape_id}' not found by uri {shape_uri}"
+                f" {dependencies}"
+            )
+        elif not isinstance(shape, ToolBitShape):
+            raise ValueError(
+                f"Dependency for shape '{shape_id}' found by uri {shape_uri} "
+                f"is not a ToolBitShape instance. {dependencies}"
             )
 
         # Find the correct ToolBit subclass for the shape

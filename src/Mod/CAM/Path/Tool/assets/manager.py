@@ -22,7 +22,6 @@ class _AssetConstructionData:
     uri: AssetUri
     raw_data: bytes
     asset_class_type: Type[Asset]
-    asset_id: str
     # Stores AssetConstructionData for dependencies, keyed by their AssetUri
     dependencies_data: Optional[Dict[AssetUri, Optional["_AssetConstructionData"]]] = None
 
@@ -66,60 +65,6 @@ class AssetManager:
         )
         self._asset_classes[asset_type_name] = asset_class
 
-    async def _fetch_single_dependency_data(
-        self,
-        dep_uri: AssetUri,
-        store_name: str,
-        visited_uris_copy: Set[AssetUri],
-        next_depth: Optional[int],
-        parent_uri: AssetUri,
-    ) -> Optional[_AssetConstructionData]:
-        """Helper to fetch data for a single dependency and handle errors."""
-        try:
-            return await self._fetch_asset_construction_data_recursive_async(
-                dep_uri, store_name, visited_uris_copy, next_depth
-            )
-        except FileNotFoundError:
-            logger.warning(f"Optional dependency '{dep_uri}' for '{parent_uri}' not found.")
-            return None
-        except Exception as e:
-            logger.error(f"Error fetching data for dependency '{dep_uri}' of '{parent_uri}'.", exc_info=e)
-            raise # Re-raise other exceptions to be caught by asyncio.gather if needed
-
-    async def _fetch_dependencies_concurrently(
-        self,
-        dependency_uris: List[AssetUri],
-        store_name: str,
-        visited_uris: Set[AssetUri], # The original visited_uris set for creating copies
-        next_depth: Optional[int],
-        parent_uri: AssetUri
-    ) -> Dict[AssetUri, Optional[_AssetConstructionData]]:
-        """Fetches all dependencies concurrently and populates the map."""
-        deps_map: Dict[AssetUri, Optional[_AssetConstructionData]] = {}
-        if not dependency_uris:
-            return deps_map
-
-        tasks = {
-            dep_uri: self._fetch_single_dependency_data(
-                dep_uri, store_name, visited_uris.copy(), next_depth, parent_uri
-            )
-            for dep_uri in dependency_uris
-        }
-
-        if not tasks: # Should not happen if dependency_uris is not empty, but as a safeguard
-            return deps_map
-
-        results = await asyncio.gather(*tasks.values(), return_exceptions=True)
-
-        for dep_uri, result_or_exc in zip(tasks.keys(), results):
-            if isinstance(result_or_exc, Exception) and not isinstance(result_or_exc, FileNotFoundError):
-                # Error already logged in _fetch_single_dependency_data, re-raise to stop processing.
-                raise result_or_exc
-            # result_or_exc is either _AssetConstructionData, None (for FileNotFoundError), or an Exception to be raised.
-            # If it's an exception that wasn't FileNotFoundError, it would have been raised above.
-            deps_map[dep_uri] = result_or_exc if not isinstance(result_or_exc, Exception) else None
-        return deps_map
-
     async def _fetch_asset_construction_data_recursive_async(
         self,
         uri: AssetUri,
@@ -127,55 +72,54 @@ class AssetManager:
         visited_uris: Set[AssetUri],
         depth: Optional[int] = None,
     ) -> Optional[_AssetConstructionData]:
+        logger.debug(f"_fetch_asset_construction_data_recursive_async called {store_name} {uri} {depth}")
+
         if uri in visited_uris:
             logger.error(f"Cyclic dependency detected for URI: {uri}")
             raise RuntimeError(f"Cyclic dependency encountered for URI: {uri}")
+    
+        # Check arguments
+        store = self.stores.get(store_name)
+        if not store:
+            raise ValueError(f"No store registered for name: {store_name}")
+        asset_class = self._asset_classes.get(uri.asset_type)
+        if not asset_class:
+            raise ValueError(f"No asset class registered for asset type: {asset_class}")
 
-        logger.debug(f"AsyncFetchData: URI '{uri}', store '{store_name}', depth '{depth}'.")
+        # Fetch the requested asset
+        try:
+            raw_data = await store.get(uri)
+        except FileNotFoundError:
+            return None # Primary asset not found
         visited_uris.add(uri)
 
-        try:
-            selected_store = self.stores[store_name]
-            raw_data = await selected_store.get(uri)
-            asset_class_type = self._asset_classes[uri.asset_type]
-        except KeyError as e:
-            # Ensure URI is removed from visited set before raising
-            if uri in visited_uris: visited_uris.remove(uri)
-            key_str = str(e).strip("'")
-            if key_str == store_name:
-                raise ValueError(f"No store registered for name: {store_name}") from e
-            elif key_str == uri.asset_type:
-                raise ValueError(f"No asset class registered for asset type: {uri.asset_type}") from e
-            raise # Re-raise other KeyErrors
-        except FileNotFoundError:
-            if uri in visited_uris: visited_uris.remove(uri)
-            return None # Primary asset not found
+        if depth == 0:
+            return None  # None indicates that no attempt was made to fetch deps.
+
+        # Extract the list of dependencies (non-recursive)
+        dependency_uris = asset_class.dependencies(raw_data)
 
         # Initialize deps_construction_data_map. It will be None if depth is 0,
         # indicating dependencies were intentionally not fetched.
         # Otherwise, it will be a dict (possibly empty if no dependencies or none found).
-        deps_construction_data_map: Optional[Dict[AssetUri, Optional[_AssetConstructionData]]] = {}
+        deps_construction_data: Dict[AssetUri, Optional[_AssetConstructionData]] = {}
 
-        if depth == 0: # Depth limit reached for this asset's dependencies
-            deps_construction_data_map = None
-            logger.debug(f"AsyncFetchData: Depth 0 reached for {uri}, dependencies_data will be None.")
-        elif depth is None or depth > 0: # Fetch dependencies if depth allows
-            dependency_uris = asset_class_type.dependencies(raw_data)
-            if dependency_uris:
-                next_depth = None if depth is None else depth - 1
-                deps_construction_data_map = await self._fetch_dependencies_concurrently(
-                    dependency_uris, store_name, visited_uris, next_depth, uri
-                )
-        
-        if uri in visited_uris:
-            visited_uris.remove(uri)
-            
+        for dep_uri in dependency_uris:
+            dep_data = await self._fetch_asset_construction_data_recursive_async(
+                dep_uri,
+                store_name,
+                visited_uris,
+                None if depth is None else depth-1,
+            )
+            deps_construction_data[dep_uri] = dep_data
+
+        logger.debug(f"ToolBitShape '{uri.asset_id}' dependencies_data: {deps_construction_data is None}")
+
         return _AssetConstructionData(
             uri=uri,
             raw_data=raw_data,
-            asset_class_type=asset_class_type,
-            asset_id=uri.asset_id,
-            dependencies_data=deps_construction_data_map, # Can be None or Dict
+            asset_class_type=asset_class,
+            dependencies_data=deps_construction_data, # Can be None or Dict
         )
 
     def _calculate_cache_key_from_construction_data(
@@ -255,7 +199,7 @@ class AssetManager:
         asset_class = construction_data.asset_class_type
         final_asset = asset_class.from_bytes(
             construction_data.raw_data,
-            construction_data.asset_id,
+            construction_data.uri.asset_id,
             resolved_dependencies,
         )
 

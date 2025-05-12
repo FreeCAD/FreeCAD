@@ -26,7 +26,7 @@ class MockAsset(Asset):
         return []
 
     @classmethod
-    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]) -> "MockAsset":
+    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset] | None) -> "MockAsset":
         # Create instance with provided id
         return cls(data, id)
 
