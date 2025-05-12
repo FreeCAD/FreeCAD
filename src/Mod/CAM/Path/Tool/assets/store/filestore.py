@@ -452,6 +452,24 @@ class FileStore(AssetStore):
         end = start + limit if limit is not None else len(result_uris)
         return result_uris[start:end]
 
+    async def count_assets(self, asset_type: Optional[str] = None) -> int:
+        """
+        Counts assets in the store, optionally filtered by asset type.
+        """
+        unique_assets: set[Tuple[str, str]] = set()
+
+        for path_obj in self._base_dir.rglob("*"):
+            parsed_uri = self._path_to_uri(path_obj)
+            if parsed_uri:
+                if (
+                    asset_type is not None
+                    and parsed_uri.asset_type != asset_type
+                ):
+                    continue
+                unique_assets.add((parsed_uri.asset_type, parsed_uri.asset_id))
+
+        return len(unique_assets)
+
     async def list_versions(self, uri: AssetUri) -> List[AssetUri]:
         """
         Lists available version identifiers for a specific asset URI.

@@ -555,6 +555,33 @@ class AssetManager:
             raise ValueError(f"No store registered for name: {store}")
         return await selected_store.list_assets(asset_type, limit, offset)
 
+    def count_assets(
+        self,
+        asset_type: Optional[str] = None,
+        store: str = "local",
+    ) -> int:
+        logger.debug(f"CountAssets(type='{asset_type}', store='{store}')")
+        return asyncio.run(
+            self.count_assets_async(asset_type, store)
+        )
+
+    async def count_assets_async(
+        self,
+        asset_type: Optional[str] = None,
+        store: str = "local",
+    ) -> int:
+        logger.debug(
+            f"CountAssetsAsync executing for type='{asset_type}', store='{store}'"
+        )
+        logger.debug(
+            f"CountAssetsAsync: Looking up store '{store}'. Available stores: {list(self.stores.keys())}"
+        )
+        try:
+            selected_store = self.stores[store]
+        except KeyError:
+            raise ValueError(f"No store registered for name: {store}")
+        return await selected_store.count_assets(asset_type)
+
     def _is_registered_type(self, obj: Asset) -> bool:
         """Helper to extract asset_type, id, and data from an object instance."""
         for registered_class_type in self._asset_classes.values():

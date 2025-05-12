@@ -336,6 +336,35 @@ class TestPathToolAssetManager(unittest.TestCase):
             "No store registered for name:", str(cm.exception)
         )
 
+    def test_count_assets(self):
+        # Setup AssetManager with a real MemoryStore
+        memory_store = MemoryStore("memory_count")
+        manager = AssetManager()
+        manager.register_store(memory_store)
+
+        # Test when store is empty
+        self.assertEqual(manager.count_assets(store="memory_count"), 0)
+        self.assertEqual(manager.count_assets(store="memory_count", asset_type="type1"), 0)
+
+        # Add assets and test counts
+        manager.add_raw("type1", "asset1", b"data1", "memory_count")
+        self.assertEqual(manager.count_assets(store="memory_count"), 1)
+        self.assertEqual(manager.count_assets(store="memory_count", asset_type="type1"), 1)
+        self.assertEqual(manager.count_assets(store="memory_count", asset_type="type2"), 0)
+
+        manager.add_raw("type2", "asset2", b"data2", "memory_count")
+        manager.add_raw("type1", "asset3", b"data3", "memory_count")
+        self.assertEqual(manager.count_assets(store="memory_count"), 3)
+        self.assertEqual(manager.count_assets(store="memory_count", asset_type="type1"), 2)
+        self.assertEqual(manager.count_assets(store="memory_count", asset_type="type2"), 1)
+
+        # Test error handling (store not found)
+        with self.assertRaises(ValueError) as cm:
+            manager.count_assets(store="non_existent_store")
+        self.assertIn(
+            "No store registered for name:", str(cm.exception)
+        )
+
     def test_get_bulk(self):
         # Setup AssetManager with a real MemoryStore and MockAsset class
         memory_store = MemoryStore("memory_bulk")

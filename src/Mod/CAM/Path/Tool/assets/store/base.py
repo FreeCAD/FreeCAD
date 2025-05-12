@@ -104,6 +104,19 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    async def count_assets(self, asset_type: str | None = None) -> int:
+        """
+        Counts assets in the store, optionally filtered by asset type.
+
+        Args:
+            asset_type: Optional filter for asset type.
+
+        Returns:
+            The number of assets.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     async def list_versions(self, uri: AssetUri) -> List[AssetUri]:
         """
         Lists available version identifiers for a specific asset URI.

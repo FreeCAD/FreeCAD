@@ -99,6 +99,35 @@ class BaseTestPathToolAssetStore(unittest.TestCase):
 
         asyncio.run(async_test())
 
+    def test_count_assets(self):
+        async def async_test():
+            self.assertEqual(await self.store.count_assets(), 0)
+            self.assertEqual(await self.store.count_assets("type1"), 0)
+
+            uri1 = await self.store.create("type1", f"asset1_{uuid4()}", b"data1")
+            self.assertEqual(await self.store.count_assets(), 1)
+            self.assertEqual(await self.store.count_assets("type1"), 1)
+            self.assertEqual(await self.store.count_assets("type2"), 0)
+
+            uri2 = await self.store.create("type2", f"asset2_{uuid4()}", b"data2")
+            uri3 = await self.store.create("type1", f"asset3_{uuid4()}", b"data3")
+            self.assertEqual(await self.store.count_assets(), 3)
+            self.assertEqual(await self.store.count_assets("type1"), 2)
+            self.assertEqual(await self.store.count_assets("type2"), 1)
+
+            await self.store.delete(uri1)
+            self.assertEqual(await self.store.count_assets(), 2)
+            self.assertEqual(await self.store.count_assets("type1"), 1)
+            self.assertEqual(await self.store.count_assets("type2"), 1)
+
+            await self.store.delete(uri2)
+            await self.store.delete(uri3)
+            self.assertEqual(await self.store.count_assets(), 0)
+            self.assertEqual(await self.store.count_assets("type1"), 0)
+            self.assertEqual(await self.store.count_assets("type2"), 0)
+
+        asyncio.run(async_test())
+
     def test_list_assets(self):
         async def async_test():
             asset_typedata = [

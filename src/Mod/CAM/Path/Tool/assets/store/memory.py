@@ -99,7 +99,7 @@ class MemoryStore(AssetStore):
 
         # Update should create a new version
         latest_version = self._get_latest_version(asset_type, asset_id)
-        version = str(int(latest_version) + 1)
+        version = str(int(latest_version or 0) + 1)
 
         self._data[asset_type][asset_id][version] = data
         self._versions[asset_type][asset_id].append(version)
@@ -123,6 +123,20 @@ class MemoryStore(AssetStore):
         start = offset if offset is not None else 0
         end = start + limit if limit is not None else len(all_uris)
         return all_uris[start:end]
+
+    async def count_assets(self, asset_type: str | None = None) -> int:
+        """
+        Counts assets in the store, optionally filtered by asset type.
+        """
+        if asset_type is None:
+            count = 0
+            for assets_by_id in self._data.values():
+                count += len(assets_by_id)
+            return count
+        else:
+            if asset_type in self._data:
+                return len(self._data[asset_type])
+            return 0
 
     async def list_versions(self, uri: AssetUri) -> List[AssetUri]:
         asset_type = uri.asset_type
