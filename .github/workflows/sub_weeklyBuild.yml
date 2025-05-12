@@ -24,7 +24,6 @@ jobs:
           submodules: 'recursive'
 
       - name: Tag Build
-        id: tag_build
         shell: bash -l {0}
         env:
           GH_TOKEN: ${{ github.token }}
@@ -35,6 +34,7 @@ jobs:
           gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" -F .github/workflows/weekly-build-notes.md --prerelease || true
 
       - name: Upload Source
+        id: upload_source
         shell: bash -l {0}
         env:
           GH_TOKEN: ${{ github.token }}
@@ -54,7 +54,7 @@ jobs:
           gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz" "freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt"
 
   build:
-    needs: tag_build
+    needs: upload_source
     strategy:
       matrix:
         include:
@@ -93,12 +93,6 @@ jobs:
             echo 'PIXI_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
             echo 'RATTLER_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
           fi
-
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-          submodules: 'recursive'
 
       - uses: prefix-dev/setup-pixi@19eac09b398e3d0c747adc7921926a6d802df4da # v0.8.8
         with:
@@ -152,6 +146,7 @@ jobs:
           TARGET_PLATFORM: ${{ matrix.target }}
           UPLOAD_RELEASE: "true"
         run: |
+          wget -O- https://github.com/FreeCAD/FreeCAD/releases/download/${BUILD_TAG}/freecad_source_${BUILD_TAG}.tar.gz | tar xf -
           cd package/rattler-build
           pixi install
           pixi run -e package create_bundle
