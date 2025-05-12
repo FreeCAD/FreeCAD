@@ -37,6 +37,7 @@ import os
 import tempfile
 
 import FreeCAD
+import Arch
 import ArchCommands
 import ArchIFC
 import Draft
@@ -938,7 +939,7 @@ class ViewProviderBuildingPart:
                     no = Draft.clone(o)
                     Draft.move(no,FreeCAD.Vector(0,0,height))
                     ng.append(no)
-            nobj = makeBuildingPart()
+            nobj = Arch.makeBuildingPart()
             Draft.formatObject(nobj,self.Object)
             nobj.Placement = self.Object.Placement
             nobj.Placement.move(FreeCAD.Vector(0,0,height))
