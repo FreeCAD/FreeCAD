@@ -277,8 +277,8 @@ void Matrix4D::rotLine(const Vector3d& vec, double fAngle)
     double fsin {};
 
     // set all entries to "0"
-    for (short iz = 0; iz < 4; iz++) {
-        for (short is = 0; is < 4; is++) {
+    for (int iz = 0; iz < 4; iz++) {
+        for (int is = 0; is < 4; is++) {
             clMA.dMtrx4D[iz][is] = 0;
             clMB.dMtrx4D[iz][is] = 0;
             clMC.dMtrx4D[iz][is] = 0;
@@ -313,8 +313,8 @@ void Matrix4D::rotLine(const Vector3d& vec, double fAngle)
     clMC.dMtrx4D[2][0] = -fsin * clRotAxis.y;
     clMC.dMtrx4D[2][1] = fsin * clRotAxis.x;
 
-    for (short iz = 0; iz < 3; iz++) {
-        for (short is = 0; is < 3; is++) {
+    for (int iz = 0; iz < 3; iz++) {
+        for (int is = 0; is < 3; is++) {
             clMRot.dMtrx4D[iz][is] =
                 clMA.dMtrx4D[iz][is] + clMB.dMtrx4D[iz][is] + clMC.dMtrx4D[iz][is];
         }
@@ -522,14 +522,14 @@ void Matrix4D::inverse()
 
     /**** Herausnehmen und Inversion der TranslationsMatrix
     aus der TransformationMatrix                      ****/
-    for (short iz = 0; iz < 3; iz++) {
+    for (int iz = 0; iz < 3; iz++) {
         clInvTrlMat.dMtrx4D[iz][3] = -dMtrx4D[iz][3];
     }
 
     /**** Herausnehmen und Inversion der RotationsMatrix
     aus der TransformationMatrix                      ****/
-    for (short iz = 0; iz < 3; iz++) {
-        for (short is = 0; is < 3; is++) {
+    for (int iz = 0; iz < 3; iz++) {
+        for (int is = 0; is < 3; is++) {
             clInvRotMat.dMtrx4D[iz][is] = dMtrx4D[is][iz];
         }
     }
@@ -651,8 +651,8 @@ void Matrix4D::inverseGauss()
 
 void Matrix4D::getMatrix(double dMtrx[16]) const
 {
-    for (short iz = 0; iz < 4; iz++) {
-        for (short is = 0; is < 4; is++) {
+    for (int iz = 0; iz < 4; iz++) {
+        for (int is = 0; is < 4; is++) {
             dMtrx[4 * iz + is] = dMtrx4D[iz][is];
         }
     }
@@ -660,8 +660,8 @@ void Matrix4D::getMatrix(double dMtrx[16]) const
 
 void Matrix4D::setMatrix(const double dMtrx[16])
 {
-    for (short iz = 0; iz < 4; iz++) {
-        for (short is = 0; is < 4; is++) {
+    for (int iz = 0; iz < 4; iz++) {
+        for (int is = 0; is < 4; is++) {
             dMtrx4D[iz][is] = dMtrx[4 * iz + is];
         }
     }
@@ -669,8 +669,8 @@ void Matrix4D::setMatrix(const double dMtrx[16])
 
 void Matrix4D::getGLMatrix(double dMtrx[16]) const
 {
-    for (short iz = 0; iz < 4; iz++) {
-        for (short is = 0; is < 4; is++) {
+    for (int iz = 0; iz < 4; iz++) {
+        for (int is = 0; is < 4; is++) {
             dMtrx[iz + 4 * is] = dMtrx4D[iz][is];
         }
     }
@@ -678,8 +678,8 @@ void Matrix4D::getGLMatrix(double dMtrx[16]) const
 
 void Matrix4D::setGLMatrix(const double dMtrx[16])
 {
-    for (short iz = 0; iz < 4; iz++) {
-        for (short is = 0; is < 4; is++) {
+    for (int iz = 0; iz < 4; iz++) {
+        for (int is = 0; is < 4; is++) {
             dMtrx4D[iz][is] = dMtrx[iz + 4 * is];
         }
     }
@@ -693,7 +693,7 @@ unsigned long Matrix4D::getMemSpace()
 void Matrix4D::Print() const
 {
     // NOLINTBEGIN
-    for (short i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         printf("%9.3f %9.3f %9.3f %9.3f\n",
                dMtrx4D[i][0],
                dMtrx4D[i][1],
@@ -788,8 +788,8 @@ std::string Matrix4D::analyse() const
                 trp.transpose();
                 trp = trp * sub;
                 bool ortho = true;
-                for (unsigned short i = 0; i < 4 && ortho; i++) {
-                    for (unsigned short j = 0; j < 4 && ortho; j++) {
+                for (unsigned int i = 0; i < 4 && ortho; i++) {
+                    for (unsigned int j = 0; j < 4 && ortho; j++) {
                         if (i != j) {
                             if (fabs(trp[i][j]) > eps) {
                                 ortho = false;

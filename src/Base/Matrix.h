@@ -106,13 +106,13 @@ public:
     /// Comparison
     inline bool operator==(const Matrix4D& mat) const;
     /// Index operator
-    inline double* operator[](unsigned short usNdx);
+    inline double* operator[](unsigned int usNdx);
     /// Index operator
-    inline const double* operator[](unsigned short usNdx) const;
+    inline const double* operator[](unsigned int usNdx) const;
     /// Get vector of row
-    inline Vector3d getRow(unsigned short usNdx) const;
+    inline Vector3d getRow(unsigned int usNdx) const;
     /// Get vector of column
-    inline Vector3d getCol(unsigned short usNdx) const;
+    inline Vector3d getCol(unsigned int usNdx) const;
     /// Get vector of diagonal
     inline Vector3d diagonal() const;
     /// Get trace of the 3x3 matrix
@@ -120,9 +120,9 @@ public:
     /// Get trace of the 4x4 matrix
     inline double trace() const;
     /// Set row to vector
-    inline void setRow(unsigned short usNdx, const Vector3d& vec);
+    inline void setRow(unsigned int usNdx, const Vector3d& vec);
     /// Set column to vector
-    inline void setCol(unsigned short usNdx, const Vector3d& vec);
+    inline void setCol(unsigned int usNdx, const Vector3d& vec);
     /// Set diagonal to vector
     inline void setDiagonal(const Vector3d& vec);
     /// Compute the determinant of the matrix
@@ -380,8 +380,8 @@ inline void Matrix4D::multVec(const Vector3f& src, Vector3f& dst) const
 inline Matrix4D Matrix4D::operator*(double scalar) const
 {
     Matrix4D matrix;
-    for (unsigned short i = 0; i < 4; i++) {
-        for (unsigned short j = 0; j < 4; j++) {
+    for (unsigned int i = 0; i < 4; i++) {
+        for (unsigned int j = 0; j < 4; j++) {
             matrix.dMtrx4D[i][j] = dMtrx4D[i][j] * scalar;
         }
     }
@@ -392,8 +392,8 @@ inline Matrix4D Matrix4D::operator*(double scalar) const
 inline Matrix4D& Matrix4D::operator*=(double scalar)
 {
     // NOLINTBEGIN
-    for (unsigned short i = 0; i < 4; i++) {
-        for (unsigned short j = 0; j < 4; j++) {
+    for (unsigned int i = 0; i < 4; i++) {
+        for (unsigned int j = 0; j < 4; j++) {
             dMtrx4D[i][j] *= scalar;
         }
     }
@@ -425,22 +425,22 @@ inline Vector3f& operator*=(Vector3f& vec, const Matrix4D& mat)
     return vec;
 }
 
-inline double* Matrix4D::operator[](unsigned short usNdx)
+inline double* Matrix4D::operator[](unsigned int usNdx)
 {
     return dMtrx4D[usNdx];
 }
 
-inline const double* Matrix4D::operator[](unsigned short usNdx) const
+inline const double* Matrix4D::operator[](unsigned int usNdx) const
 {
     return dMtrx4D[usNdx];
 }
 
-inline Vector3d Matrix4D::getRow(unsigned short usNdx) const
+inline Vector3d Matrix4D::getRow(unsigned int usNdx) const
 {
     return Vector3d(dMtrx4D[usNdx][0], dMtrx4D[usNdx][1], dMtrx4D[usNdx][2]);
 }
 
-inline Vector3d Matrix4D::getCol(unsigned short usNdx) const
+inline Vector3d Matrix4D::getCol(unsigned int usNdx) const
 {
     return Vector3d(dMtrx4D[0][usNdx], dMtrx4D[1][usNdx], dMtrx4D[2][usNdx]);
 }
@@ -460,14 +460,14 @@ inline double Matrix4D::trace() const
     return dMtrx4D[0][0] + dMtrx4D[1][1] + dMtrx4D[2][2] + dMtrx4D[3][3];
 }
 
-inline void Matrix4D::setRow(unsigned short usNdx, const Vector3d& vec)
+inline void Matrix4D::setRow(unsigned int usNdx, const Vector3d& vec)
 {
     dMtrx4D[usNdx][0] = vec.x;
     dMtrx4D[usNdx][1] = vec.y;
     dMtrx4D[usNdx][2] = vec.z;
 }
 
-inline void Matrix4D::setCol(unsigned short usNdx, const Vector3d& vec)
+inline void Matrix4D::setCol(unsigned int usNdx, const Vector3d& vec)
 {
     dMtrx4D[0][usNdx] = vec.x;
     dMtrx4D[1][usNdx] = vec.y;
