@@ -69,7 +69,6 @@ private:
     UnitsSchemasDataPack pack;
     std::unique_ptr<UnitsSchema> current {std::make_unique<UnitsSchema>(spec())};
     std::size_t denominator;
-    std::size_t decimals;
 };
 
 
