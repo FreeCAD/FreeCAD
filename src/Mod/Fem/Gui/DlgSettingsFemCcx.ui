@@ -672,8 +672,8 @@
            <string>Pipeline only</string>
           </property>
           <property name="toolTip">
-           <string>Load results as pipeline instead of Result Object.
-By uncheck this option, CalculiX command behave like SolverCalculiXCcxTools</string>
+           <string>Load results as pipeline instead of CCX_Results objects.
+After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -697,7 +697,7 @@ By uncheck this option, CalculiX command behave like SolverCalculiXCcxTools</str
          <widget class="Gui::PrefCheckBox" name="ckb_result_format">
           <property name="toolTip">
            <string>Save result in binary format.
-Only ta  kes effect if 'Pipeline only' is enabled</string>
+Only takes effect if 'Pipeline only' is enabled</string>
           </property>
           <property name="text">
            <string>Use binary format</string>
