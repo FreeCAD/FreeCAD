@@ -1065,7 +1065,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
     }
 
     // nothing can be done if there is sub-element references
-    if (options & Feature::NeedSubElement && subelement && *subelement) {
+    if ((options & Feature::NeedSubElement) && subelement && *subelement) {
         return shape;
     }
 
