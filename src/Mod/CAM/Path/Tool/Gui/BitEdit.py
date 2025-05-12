@@ -83,7 +83,7 @@ class ToolBitEditor(object):
             parentWidget.layout().addWidget(self.form)
 
         self.tool = tool
-        tool.attach_to_doc(FreeCAD.ActiveDocument)
+        # tool.attach_to_doc(FreeCAD.ActiveDocument)
         self.loadbitbody = loadBitBody
 
         if self.loadbitbody:
