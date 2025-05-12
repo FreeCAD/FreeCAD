@@ -2,9 +2,7 @@
 # Unit tests for the Path.Tool.Shape module and its utilities.
 
 from pathlib import Path
-import pathlib
 from typing import Mapping, Tuple
-from tempfile import TemporaryDirectory
 import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.shape import (
@@ -162,31 +160,6 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         # Test unknown name - should return the input name
         self.assertEqual(ToolBitShape.resolve_name("nonexistent").asset_id, "nonexistent")
         self.assertEqual(ToolBitShape.resolve_name("UnknownShape").asset_id, "UnknownShape")
-
-    def test_base_validate_success(self):
-        """Test ToolBitShape.validate success path."""
-        # Get a shape from the asset manager and serialize it to a temporary file
-        shape = self.assets.get("toolbitshape://ballend")
-        # We cannot use NamedTemporaryFile on Windows, because there
-        # we may not have permission to read the tempfile while it is
-        # still open.
-        # So we use TemporaryDirectory instead, to ensure cleanup while
-        # still having a the temporary file inside it.
-        with TemporaryDirectory() as thedir:
-            tempfile = pathlib.Path(thedir, "test.fcstd")
-            tempfile.write_bytes(shape.to_bytes())
-
-            # Validate the temporary file
-            result = DummyShape.validate(tempfile)
-            self.assertIsNone(result)  # validate returns None on success
-
-    def test_base_validate_file_not_found(self):
-        """Test ToolBitShape.validate file not found."""
-        filepath = Path("/fake/nonexistent.fcstd")
-        result = DummyShape.validate(filepath)
-        self.assertIsNotNone(result)
-        if result is not None:
-            self.assertIn("File not found", result)
 
     def test_concrete_classes_instantiation(self):
         """Test that all concrete classes can be instantiated."""

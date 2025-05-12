@@ -525,35 +525,6 @@ class ToolBitShape(Asset):
         """
         return list(cls.schema().keys())
 
-    @classmethod
-    def validate(cls, filepath: pathlib.Path) -> Optional[str]:
-        """
-        Check if an FCStd file contains a suitable object with all the
-        expected parameters for this shape class based on the class schema.
-
-        Args:
-            filepath (pathlib.Path): Path to the .FCStd file.
-
-        Returns:
-            bool: True if the file is valid for this shape type, False otherwise.
-        """
-        doc = None
-        try:
-            if not filepath.exists():
-                err = f"Validation Error: File not found: {filepath}"
-                FreeCAD.Console.PrintError(err + "\n")
-                return err
-
-            cls.from_file(filepath)
-        except Exception as e:
-            err = f"Validation Error for {filepath}: {e}"
-            FreeCAD.Console.PrintError(err + "\n")
-            return err
-        finally:
-            # Ensure the temporary document is closed
-            if doc:
-                FreeCAD.closeDocument(doc.Name)
-
     def make_body(self, doc: "FreeCAD.Document"):
         """
         Generates the body of the ToolBitShape and copies it to the provided

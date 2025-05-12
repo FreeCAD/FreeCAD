@@ -218,8 +218,8 @@ class PathTestWithAssets(PathTestBase):
 
     def setUp(self):
         # Set up the manager with an in-memory store.
-        self.assets = AssetManager()
-        self.asset_store = MemoryStore("local")
+        self.assets: AssetManager = AssetManager()
+        self.asset_store: MemoryStore = MemoryStore("local")
         self.assets.register_store(self.asset_store)
 
         # Register some asset classes.
@@ -241,5 +241,5 @@ class PathTestWithAssets(PathTestBase):
             self.assets.add_file("toolbitshape", path)
 
     def tearDown(self):
-        self.asset_store = None
-        self.assets = None
+        del self.assets
+        del self.asset_store
