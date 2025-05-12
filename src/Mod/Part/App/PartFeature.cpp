@@ -1266,7 +1266,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
     // transformation for easy shape caching, i.e.  with `transform` set
     // to false. So we manually apply the top level transform if asked.
 
-    if (options & NeedSubElement && (!pmat || *pmat == Base::Matrix4D())
+    if ((options & NeedSubElement) && (!pmat || *pmat == Base::Matrix4D())
         && obj->isDerivedFrom<Part::Feature>()
         && !obj->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())) {
         // Some OCC shape making is very sensitive to shape transformation. So
