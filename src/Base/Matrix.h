@@ -241,9 +241,9 @@ inline Matrix4D Matrix4D::operator+(const Matrix4D& mat) const
 {
     Matrix4D clMat;
 
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            clMat.dMtrx4D[iz][is] = dMtrx4D[iz][is] + mat[iz][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            clMat.dMtrx4D[i][j] = dMtrx4D[i][j] + mat[i][j];
         }
     }
 
@@ -252,9 +252,9 @@ inline Matrix4D Matrix4D::operator+(const Matrix4D& mat) const
 
 inline Matrix4D& Matrix4D::operator+=(const Matrix4D& mat)
 {
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            dMtrx4D[iz][is] += mat[iz][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dMtrx4D[i][j] += mat[i][j];
         }
     }
 
@@ -265,9 +265,9 @@ inline Matrix4D Matrix4D::operator-(const Matrix4D& mat) const
 {
     Matrix4D clMat;
 
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            clMat.dMtrx4D[iz][is] = dMtrx4D[iz][is] - mat[iz][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            clMat.dMtrx4D[i][j] = dMtrx4D[i][j] - mat[i][j];
         }
     }
 
@@ -276,9 +276,9 @@ inline Matrix4D Matrix4D::operator-(const Matrix4D& mat) const
 
 inline Matrix4D& Matrix4D::operator-=(const Matrix4D& mat)
 {
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            dMtrx4D[iz][is] -= mat[iz][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dMtrx4D[i][j] -= mat[i][j];
         }
     }
 
@@ -289,11 +289,11 @@ inline Matrix4D& Matrix4D::operator*=(const Matrix4D& mat)
 {
     Matrix4D clMat;
 
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            clMat.dMtrx4D[iz][is] = 0;
-            for (int ie = 0; ie < 4; ie++) {
-                clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] * mat.dMtrx4D[ie][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            clMat.dMtrx4D[i][j] = 0;
+            for (int e = 0; e < 4; e++) {
+                clMat.dMtrx4D[i][j] += dMtrx4D[i][e] * mat.dMtrx4D[e][j];
             }
         }
     }
@@ -307,11 +307,11 @@ inline Matrix4D Matrix4D::operator*(const Matrix4D& mat) const
 {
     Matrix4D clMat;
 
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            clMat.dMtrx4D[iz][is] = 0;
-            for (int ie = 0; ie < 4; ie++) {
-                clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] * mat.dMtrx4D[ie][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            clMat.dMtrx4D[i][j] = 0;
+            for (int e = 0; e < 4; e++) {
+                clMat.dMtrx4D[i][j] += dMtrx4D[i][e] * mat.dMtrx4D[e][j];
             }
         }
     }
@@ -325,9 +325,9 @@ inline Matrix4D& Matrix4D::operator=(const Matrix4D& mat)
         return *this;
     }
 
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            dMtrx4D[iz][is] = mat.dMtrx4D[iz][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dMtrx4D[i][j] = mat.dMtrx4D[i][j];
         }
     }
 
@@ -403,9 +403,9 @@ inline Matrix4D& Matrix4D::operator*=(double scalar)
 
 inline bool Matrix4D::operator==(const Matrix4D& mat) const
 {
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            if (fabs(dMtrx4D[iz][is] - mat.dMtrx4D[iz][is]) > traits_type::epsilon()) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (fabs(dMtrx4D[i][j] - mat.dMtrx4D[i][j]) > traits_type::epsilon()) {
                 return false;
             }
         }

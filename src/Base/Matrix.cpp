@@ -277,11 +277,11 @@ void Matrix4D::rotLine(const Vector3d& vec, double fAngle)
     double fsin {};
 
     // set all entries to "0"
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            clMA.dMtrx4D[iz][is] = 0;
-            clMB.dMtrx4D[iz][is] = 0;
-            clMC.dMtrx4D[iz][is] = 0;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            clMA.dMtrx4D[i][j] = 0;
+            clMB.dMtrx4D[i][j] = 0;
+            clMC.dMtrx4D[i][j] = 0;
         }
     }
 
@@ -313,10 +313,9 @@ void Matrix4D::rotLine(const Vector3d& vec, double fAngle)
     clMC.dMtrx4D[2][0] = -fsin * clRotAxis.y;
     clMC.dMtrx4D[2][1] = fsin * clRotAxis.x;
 
-    for (int iz = 0; iz < 3; iz++) {
-        for (int is = 0; is < 3; is++) {
-            clMRot.dMtrx4D[iz][is] =
-                clMA.dMtrx4D[iz][is] + clMB.dMtrx4D[iz][is] + clMC.dMtrx4D[iz][is];
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            clMRot.dMtrx4D[i][j] = clMA.dMtrx4D[i][j] + clMB.dMtrx4D[i][j] + clMC.dMtrx4D[i][j];
         }
     }
 
@@ -522,15 +521,15 @@ void Matrix4D::inverse()
 
     /**** Herausnehmen und Inversion der TranslationsMatrix
     aus der TransformationMatrix                      ****/
-    for (int iz = 0; iz < 3; iz++) {
-        clInvTrlMat.dMtrx4D[iz][3] = -dMtrx4D[iz][3];
+    for (int i = 0; i < 3; i++) {
+        clInvTrlMat.dMtrx4D[i][3] = -dMtrx4D[i][3];
     }
 
     /**** Herausnehmen und Inversion der RotationsMatrix
     aus der TransformationMatrix                      ****/
-    for (int iz = 0; iz < 3; iz++) {
-        for (int is = 0; is < 3; is++) {
-            clInvRotMat.dMtrx4D[iz][is] = dMtrx4D[is][iz];
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            clInvRotMat.dMtrx4D[i][j] = dMtrx4D[j][i];
         }
     }
 
@@ -651,36 +650,36 @@ void Matrix4D::inverseGauss()
 
 void Matrix4D::getMatrix(double dMtrx[16]) const
 {
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            dMtrx[4 * iz + is] = dMtrx4D[iz][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dMtrx[4 * i + j] = dMtrx4D[i][j];
         }
     }
 }
 
 void Matrix4D::setMatrix(const double dMtrx[16])
 {
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            dMtrx4D[iz][is] = dMtrx[4 * iz + is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dMtrx4D[i][j] = dMtrx[4 * i + j];
         }
     }
 }
 
 void Matrix4D::getGLMatrix(double dMtrx[16]) const
 {
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            dMtrx[iz + 4 * is] = dMtrx4D[iz][is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dMtrx[i + 4 * j] = dMtrx4D[i][j];
         }
     }
 }
 
 void Matrix4D::setGLMatrix(const double dMtrx[16])
 {
-    for (int iz = 0; iz < 4; iz++) {
-        for (int is = 0; is < 4; is++) {
-            dMtrx4D[iz][is] = dMtrx[iz + 4 * is];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            dMtrx4D[i][j] = dMtrx[i + 4 * j];
         }
     }
 }
