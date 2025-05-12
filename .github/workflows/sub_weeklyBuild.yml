@@ -24,6 +24,7 @@ jobs:
           submodules: 'recursive'
 
       - name: Tag Build
+        id: tag_build
         shell: bash -l {0}
         env:
           GH_TOKEN: ${{ github.token }}
@@ -54,7 +55,7 @@ jobs:
           gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz" "freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt"
 
   build:
-    needs: upload_source
+    needs: tag_build
     strategy:
       matrix:
         include:
