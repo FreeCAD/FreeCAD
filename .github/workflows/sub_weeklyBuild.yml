@@ -72,7 +72,7 @@ jobs:
         uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
         with:
           egress-policy: audit
-    
+
       # prevent running out of disk space on Ubuntu runners.
       - name: Maximize build space
         if: runner.os == 'Linux'
