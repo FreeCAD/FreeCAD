@@ -269,8 +269,6 @@ class TestPathToolAssetCacheIntegration(unittest.TestCase):
         self.assertIsInstance(asset_full, MockAsset)
         self.assertEqual(len(asset_full.resolved_dependencies), 1)
         # asset_depth (MockAsset) built twice (once shallow, once full)
-        print(f"DEBUG: MockAsset._build_counter before assertion line 272: {MockAsset._build_counter}")
-        print(f"DEBUG: MockAssetB._build_counter before assertion line 274: {MockAssetB._build_counter}")
         self.assertEqual(MockAsset._build_counter, 2)
         # dep_b (MockAssetB) built once as a dependency of the full asset_depth
         self.assertEqual(MockAssetB._build_counter, 1)

@@ -73,7 +73,7 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             @classmethod
             def from_bytes(
-                cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]
+                cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset] | None
             ) -> "AnotherMockAsset":
                 return cls()
 

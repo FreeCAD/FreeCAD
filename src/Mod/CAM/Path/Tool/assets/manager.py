@@ -91,26 +91,33 @@ class AssetManager:
             raw_data = await store.get(uri)
         except FileNotFoundError:
             return None # Primary asset not found
-        visited_uris.add(uri)
 
         if depth == 0:
-            return None  # None indicates that no attempt was made to fetch deps.
+            return _AssetConstructionData(
+                uri=uri,
+                raw_data=raw_data,
+                asset_class_type=asset_class,
+                dependencies_data=None,  # Indicates that no attempt was made to fetch deps
+            )
 
         # Extract the list of dependencies (non-recursive)
         dependency_uris = asset_class.dependencies(raw_data)
 
-        # Initialize deps_construction_data_map. It will be None if depth is 0,
-        # indicating dependencies were intentionally not fetched.
-        # Otherwise, it will be a dict (possibly empty if no dependencies or none found).
+        # Initialize deps_construction_data_map. Any dependencies mapped to None
+        # indicate that dependencies were intentionally not fetched.
         deps_construction_data: Dict[AssetUri, Optional[_AssetConstructionData]] = {}
 
         for dep_uri in dependency_uris:
-            dep_data = await self._fetch_asset_construction_data_recursive_async(
-                dep_uri,
-                store_name,
-                visited_uris,
-                None if depth is None else depth-1,
-            )
+            visited_uris.add(uri)
+            try:
+                dep_data = await self._fetch_asset_construction_data_recursive_async(
+                    dep_uri,
+                    store_name,
+                    visited_uris,
+                    None if depth is None else depth-1,
+                )
+            finally:
+                visited_uris.remove(uri)
             deps_construction_data[dep_uri] = dep_data
 
         logger.debug(f"ToolBitShape '{uri.asset_id}' dependencies_data: {deps_construction_data is None}")
@@ -247,7 +254,7 @@ class AssetManager:
 
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
 
-        # Step 1: Fetch all data using asyncio.run (creates a new event loop for the async part)
+        # Step 1: Fetch all data using asyncio.run
         try:
             logger.debug(
                 f"Get: Starting asyncio.run for data fetching of '{asset_uri_obj}', depth {depth}."
