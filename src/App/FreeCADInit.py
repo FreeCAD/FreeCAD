@@ -916,6 +916,7 @@ class Scheme(IntEnum):
     MmMin = 6
     ImperialCivil = 7
     FemMilliMeterNewton = 8
+    MeterDecimal = 9
 
 App.Units.Scheme = Scheme
 
