@@ -61,7 +61,7 @@ class Offset(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Offset',
                 'Accel': "O, S",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Offset", "Offset"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Offset", "Offsets of the selected object.\nIt can also create an offset copy of the original object.\nCTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Offset", "Offsets of the selected object.\nIt can also create an offset copy of the original object.\nSHIFT to constrain. Hold ALT and click to create a copy with each click.")}
 
     def Activated(self):
         """Execute when the command is called."""
