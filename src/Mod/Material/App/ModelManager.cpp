@@ -158,7 +158,8 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocal
     return _localManager->getLibraries();
 }
 
-void ModelManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+void ModelManager::createLibrary([[maybe_unused]] const QString& libraryName, [[maybe_unused]] const QString& icon,
+    [[maybe_unused]] bool readOnly)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
     _externalManager->createLibrary(libraryName, icon, readOnly);
@@ -221,7 +222,7 @@ ModelManager::libraryModels(const QString& libraryName)
     return _localManager->libraryModels(libraryName);
 }
 
-bool ModelManager::isLocalLibrary(const QString& libraryName)
+bool ModelManager::isLocalLibrary([[maybe_unused]] const QString& libraryName)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
