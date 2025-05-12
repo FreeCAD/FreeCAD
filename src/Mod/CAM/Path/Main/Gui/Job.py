@@ -643,16 +643,22 @@ class StockFromExistingEdit(StockEdit):
         return sorted(solids, key=lambda c: c.Label)
 
     def setFields(self, obj):
-        self.form.stockExisting.clear()
-        stockName = obj.Stock.Label if obj.Stock else None
-        index = -1
-        for i, solid in enumerate(self.candidates(obj)):
-            self.form.stockExisting.addItem(solid.Label, solid)
-            label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
+        # Block signal propagation during stock dropdown population. This prevents
+        # the `currentIndexChanged` signal from being emitted while populating the
+        # dropdown list. This is important because the `currentIndexChanged` signal
+        # will in the end result in the stock object being recreated in `getFields`
+        # method, discarding any changes made (like position in respect to origin).
+        with QtCore.QSignalBlocker(self.form.stockExisting):
+            self.form.stockExisting.clear()
+            stockName = obj.Stock.Label if obj.Stock else None
+            index = -1
+            for i, solid in enumerate(self.candidates(obj)):
+                self.form.stockExisting.addItem(solid.Label, solid)
+                label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
 
-            if label == stockName:
-                index = i
-        self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
+                if label == stockName:
+                    index = i
+            self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
 
         if not self.IsStock(obj):
             self.getFields(obj)
