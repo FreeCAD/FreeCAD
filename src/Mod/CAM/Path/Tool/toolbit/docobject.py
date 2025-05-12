@@ -1,5 +1,6 @@
 import FreeCAD
 import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class DetachedDocumentObject:
@@ -11,18 +12,24 @@ class DetachedDocumentObject:
     and accessed in a detached state.
     """
 
-    def __init__(self, label="DetachedObject"):
-        self.Label = label
-        self.Name = label.replace(" ", "_")
-        self.PropertiesList = []
-        self._properties = {}
-        self._property_groups = {}
-        self._property_types = {}
-        self._property_docs = {}
-        self._editor_modes = {}
-        self._property_enums = {}  # Stores list of choices for enum properties
+    def __init__(self, label: str = "DetachedObject"):
+        self.Label: str = label
+        self.Name: str = label.replace(" ", "_")
+        self.PropertiesList: List[str] = []
+        self._properties: Dict[str, Any] = {}
+        self._property_groups: Dict[str, Optional[str]] = {}
+        self._property_types: Dict[str, Optional[str]] = {}
+        self._property_docs: Dict[str, Optional[str]] = {}
+        self._editor_modes: Dict[str, int] = {}
+        self._property_enums: Dict[str, List[str]] = {}
 
-    def addProperty(self, thetype, name, group, doc):
+    def addProperty(
+        self,
+        thetype: Optional[str],
+        name: str,
+        group: Optional[str],
+        doc: Optional[str],
+    ) -> None:
         """Mimics FreeCAD DocumentObject.addProperty."""
         if name not in self._properties:
             self.PropertiesList.append(name)
@@ -31,17 +38,15 @@ class DetachedDocumentObject:
             self._property_types[name] = thetype
             self._property_docs[name] = doc
 
-    def getPropertyByName(self, name):
+    def getPropertyByName(self, name: str) -> Any:
         """Mimics FreeCAD DocumentObject.getPropertyByName."""
         return self._properties.get(name)
 
-    def setPropertyByName(self, name, value):
+    def setPropertyByName(self, name: str, value: Any) -> None:
         """Mimics FreeCAD DocumentObject.setPropertyByName."""
-        if name not in self._properties:
-            self.addProperty(None, name, None, None)
         self._properties[name] = value
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any) -> None:
         """
         Intercept attribute assignment. This is done to behave like
         FreeCAD's DocumentObject, which may have any property assigned,
@@ -82,7 +87,7 @@ class DetachedDocumentObject:
             f"value {value} (type: {type(value)})"
         )
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Any:
         """Intercept attribute access."""
         if name in self._properties:
             return self._properties[name]
@@ -91,28 +96,28 @@ class DetachedDocumentObject:
             f"'{type(self).__name__}' object has no attribute '{name}'"
         )
 
-    def setEditorMode(self, name, mode):
+    def setEditorMode(self, name: str, mode: int) -> None:
         """Stores editor mode settings in detached state."""
         self._editor_modes[name] = mode
 
-    def getGroupOfProperty(self, name):
+    def getGroupOfProperty(self, name: str) -> Optional[str]:
         """Returns the stored group for a property in detached state."""
         return self._property_groups.get(name)
 
-    def getTypeIdOfProperty(self, name):
+    def getTypeIdOfProperty(self, name: str) -> Optional[str]:
         """Returns the stored type string for a property in detached state."""
         return self._property_types.get(name)
 
-    def getEnumerationsOfProperty(self, name):
+    def getEnumerationsOfProperty(self, name: str) -> List[str]:
         """Returns the stored enumeration list for a property."""
         return self._property_enums.get(name, [])
 
     @property
-    def ExpressionEngine(self):
+    def ExpressionEngine(self) -> List[Any]:
         """Mimics the ExpressionEngine attribute of a real DocumentObject."""
-        return [] # Return an empty list to satisfy iteration
+        return []  # Return an empty list to satisfy iteration
 
-    def copy_to(self, obj):
+    def copy_to(self, obj: FreeCAD.DocumentObject) -> None:
         """
         Copies properties from this detached object to a real DocumentObject.
         """

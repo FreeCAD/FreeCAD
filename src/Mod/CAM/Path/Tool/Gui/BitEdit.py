@@ -103,21 +103,21 @@ class ToolBitEditor(object):
         """Create an appropriate widget based on the property type."""
         prop_value = obj.getPropertyByName(prop_name)
         prop_type = obj.getTypeIdOfProperty(prop_name)
-        
+
         # Check for Quantity type (float with units)
         if isinstance(prop_value, FreeCAD.Units.Quantity):
             spinbox = ui.createWidget("Gui::QuantitySpinBox")
             return spinbox, PathGuiUtil.QuantitySpinBox(spinbox, obj, prop_name)
-        
+
         # Check for Boolean type
         elif isinstance(prop_value, bool):
             combobox = QtGui.QComboBox()
             return combobox, PathGuiUtil.BooleanComboBox(combobox, obj, prop_name)
-        
+
         elif isinstance(prop_value, int):
             spinbox = QtGui.QSpinBox()
             return spinbox, PathGuiUtil.IntegerSpinBox(spinbox, obj, prop_name)
-        
+
         # Check for Enumeration type
         if prop_type == "App::PropertyEnumeration":
             combobox = QtGui.QComboBox()

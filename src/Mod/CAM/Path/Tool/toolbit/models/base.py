@@ -62,7 +62,6 @@ class ToolBit(Asset, ABC):
         self.obj = DetachedDocumentObject()
         self.obj.Proxy = self
         self._tool_bit_shape = tool_bit_shape
-        self._update_timer = None
         self._in_update = False
 
         self._create_base_properties()
@@ -245,6 +244,13 @@ class ToolBit(Asset, ABC):
                 ),
             )
 
+        # 0 = read/write, 1 = read only, 2 = hide
+        self.obj.setEditorMode("ShapeID", 1)
+        self.obj.setEditorMode("ShapeType", 1)
+        self.obj.setEditorMode("ToolBitID", 1)
+        self.obj.setEditorMode("BitBody", 2)
+        self.obj.setEditorMode("Shape", 2)
+
         # Create the ToolBit properties that are shared by all tool bits
         if not hasattr(self.obj, "SpindleDirection"):
             self.obj.addProperty(
@@ -264,16 +270,6 @@ class ToolBit(Asset, ABC):
             )
             self.obj.Material = ["HSS", "Carbide"]
             self.obj.Material = "HSS"  # Default value
-
-    def dumps(self):
-        return None
-
-    def loads(self, state):
-        for obj in FreeCAD.ActiveDocument.Objects:
-            if hasattr(obj, "Proxy") and obj.Proxy == self:
-                self.obj = obj
-                break
-        return None
 
     def get_id(self) -> str:
         """Returns the unique ID of the tool bit."""
@@ -468,50 +464,36 @@ class ToolBit(Asset, ABC):
                 self._in_update = False
 
     def onDocumentRestored(self, obj):
+        Path.Log.track(obj.Label)
+
         # Assign self.obj to the restored object
         self.obj = obj
         self.obj.Proxy = self
-        Path.Log.track(self.obj.Label)
 
-        # The way FreeCAD loads documents is to construct the object from C++,
-        # and there is no guarantee that the constructor will have been (re-)executed.
-        # So we must ensure to properly update/re-setup the properties.
-        self._update_timer = None
-
+        # Our constructor previously created the base properties in the
+        # DetachedDocumentObject, which was now replaced.
+        # So here we need to ensure to set them up in the new (real) DocumentObject
+        # as well.
         self._create_base_properties()
         self._promote_toolbit()
 
-        # 0 = read/write, 1 = read only, 2 = hide
-        self.obj.setEditorMode("ShapeID", 1)
-        self.obj.setEditorMode("ShapeType", 1)
-        self.obj.setEditorMode("ToolBitID", 1)
-        self.obj.setEditorMode("BitBody", 2)
-        self.obj.setEditorMode("Shape", 2)
-
-        # Get the shape instance based on the ShapeType. For backward
-        # compatibility, we try two approaches to find the shape and shape
-        # class from the file.
-        # First, translate the filename to an asset ID, then:
-        #   1. try to find the shape file
-        #   2. otherwise create a new empty instance
-        uri = ToolBitShape.resolve_name(self.obj.ShapeType)
-        if uri is None:
-            raise ValueError(
-                f"Failed to identify URI of ToolBitShape from '{self.obj.ShapeType}'"
-            )
-
+        # Get the shape instance based on the ShapeType. We try two approaches
+        # to find the shape and shape class:
+        #   1. If the asset with the given type exists, use that.
+        #   2. Otherwise create a new empty instance
+        shape_uri = ToolBitShape.resolve_name(self.obj.ShapeType)
         try:
             # Best case: we directly find the shape file in our assets.
-            self._tool_bit_shape = cam_assets.get(uri)
+            self._tool_bit_shape = cam_assets.get(shape_uri)
         except FileNotFoundError:
             # Otherwise, try to at least identify the type of the shape.
-            shape_class = ToolBitShape.get_subclass_by_name(uri.asset_id)
+            shape_class = ToolBitShape.get_subclass_by_name(shape_uri.asset_id)
             if not shape_class:
                 raise ValueError(
                     "Failed to identify class of ToolBitShape from name "
-                    f"'{self.obj.ShapeFile}' (asset id {uri.asset_id})"
+                    f"'{self.obj.ShapeType}' (asset id {shape_uri.asset_id})"
                 )
-            self._tool_bit_shape = shape_class(uri.asset_id)
+            self._tool_bit_shape = shape_class(shape_uri.asset_id)
 
         # If BitBody exists and is in a different document after document restore,
         # it means a shallow copy occurred. We need to re-initialize the visual
