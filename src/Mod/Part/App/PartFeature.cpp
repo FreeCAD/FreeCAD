@@ -1303,7 +1303,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                                hiddens,
                                lastLink, 
                                options);
-    if (options & NeedSubElement && !(options & DontSimplifyCompound) && shape.shapeType(true) == TopAbs_COMPOUND) {
+    if ((options & NeedSubElement) && !(options & DontSimplifyCompound) && shape.shapeType(true) == TopAbs_COMPOUND) {
         shape = simplifyCompound(shape);
     }
 
@@ -1326,7 +1326,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
 }
 TopoShape Feature::simplifyCompound(TopoShape compoundShape)
 {
-    std::array<TopAbs_ShapeEnum, 7> simplificationPriority = {  
+    std::initializer_list<TopAbs_ShapeEnum> simplificationOrder = {  
                                             TopAbs_SOLID,
                                             TopAbs_COMPSOLID,
                                             TopAbs_FACE,
@@ -1335,10 +1335,13 @@ TopoShape Feature::simplifyCompound(TopoShape compoundShape)
                                             TopAbs_WIRE,
                                             TopAbs_VERTEX};
 
-    for (TopAbs_ShapeEnum simplification : simplificationPriority) {
-        if (compoundShape.countSubShapes(simplification) == 1) {
-            return compoundShape.getSubTopoShape(simplification, 1);
-        }
+    auto foundSimplification =
+        std::ranges::find_if(simplificationOrder,
+                             [&](TopAbs_ShapeEnum topType) {
+                                 return compoundShape.countSubShapes(topType) == 1;
+                             });
+    if (foundSimplification != simplificationOrder.end()) {
+        return compoundShape.getSubTopoShape(*foundSimplification, 1);
     }
     return compoundShape;
 }
