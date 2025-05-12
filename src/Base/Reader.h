@@ -228,7 +228,7 @@ public:
     bool hasAttribute(const char* AttrName) const;
 
 private:
-    // all explicit template instatiations - this is for getting
+    // all explicit template instantiations - this is for getting
     // a compile error, rather than linker error.
     template<typename T>
     static constexpr bool instantiated =
@@ -237,7 +237,7 @@ private:
 
 public:
     /// return the named attribute as T (does type checking); if missing return defaultValue.
-    /// If defaultValue is not set, it will default to the default initilization of the
+    /// If defaultValue is not set, it will default to the default initialization of the
     /// corresponding type; bool: false, int: 0, ... as if one had used defaultValue=bool{}
     /// or defaultValue=int{}
     // General template, mark delete as it's not implemented, and should not be used!

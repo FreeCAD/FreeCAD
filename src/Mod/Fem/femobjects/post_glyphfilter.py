@@ -106,7 +106,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 name="MaskMode",
                 group="Masking",
                 doc="Which vertices are used as glyph locations",
-                value=["Use All", "Every Nth", "Uniform Samping"],
+                value=["Use All", "Every Nth", "Uniform Sampling"],
             ),
             _PropHelper(
                 type="App::PropertyIntegerConstraint",

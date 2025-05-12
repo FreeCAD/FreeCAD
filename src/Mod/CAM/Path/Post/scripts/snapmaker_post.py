@@ -544,7 +544,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             self.values["MOD_KITS_INSTALLED"] = []
             if args.boundaries:  # may override machine boundaries, which is expected
                 self.values["BOUNDARIES"] = args.boundaries
-                self.values["MACHINE_NAME"] += " Boundaries overide=" + str(args.boundaries)
+                self.values["MACHINE_NAME"] += " Boundaries override=" + str(args.boundaries)
             else:
                 compatible_modkit_combos = [
                     bt["mods"]

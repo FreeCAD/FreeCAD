@@ -76,7 +76,7 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     auto unitSpecs = spec.translationSpecs.at(unitName);
     const auto unitSpec = std::find_if(unitSpecs.begin(), unitSpecs.end(), isSuitable);
     if (unitSpec == unitSpecs.end()) {
-        throw RuntimeError("Suitable threshhold not found. Schema: " + spec.name
+        throw RuntimeError("Suitable threshold not found. Schema: " + spec.name
                            + " value: " + std::to_string(value));
     }
 

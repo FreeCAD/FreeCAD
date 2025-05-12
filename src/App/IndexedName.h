@@ -48,10 +48,10 @@ namespace Data
 /// string. For example "EDGE1" or "FACE345" might be the names of elements that use an IndexedName.
 /// If there is then an "EDGE2", only a pointer to the original stored name "EDGE" is retained.
 ///
-/// The memory efficiency of the class comes from re-using the same character storage for names that
+/// The memory efficiency of the class comes from reusing the same character storage for names that
 /// match, while retaining their differing indices. This is achieved by either using user-provided
 /// const char * names (provided as a list of typeNames and presumed to never be deallocated), or by
-/// maintaining an internal list of names that have been used before, and can be re-used later.
+/// maintaining an internal list of names that have been used before, and can be reused later.
 class AppExport IndexedName
 {
 public:
@@ -83,7 +83,7 @@ public:
     /// that list, only a pointer to the character storage in the list is retained: the memory
     /// locations pointed at by the list must never be destroyed once they have been used to create
     /// names. If allowOthers is true (the default) then a requested name that is not in the list
-    /// will be added to a static internal storage table, and its memory then re-used for later
+    /// will be added to a static internal storage table, and its memory then reused for later
     /// objects with the same name. If allowOthers is false, then the name request is rejected, and
     /// the name is treated as null.
     ///
@@ -92,7 +92,7 @@ public:
     /// entire run of the program.
     /// \param allowOthers Whether a name not in allowedTypeNames is permitted. If true (the
     /// default) then a name not in allowedTypeNames is added to a static internal storage vector
-    /// so that it can be re-used later without additional memory allocation.
+    /// so that it can be reused later without additional memory allocation.
     IndexedName(const char* name,
                 const std::vector<const char*>& allowedTypeNames,
                 bool allowOthers = true)
@@ -114,13 +114,13 @@ public:
         set(data.constData(), data.size());
     }
 
-    /// Given constant name and an index, re-use the existing memory for the name, not making a copy
+    /// Given constant name and an index, reuse the existing memory for the name, not making a copy
     /// of it, or scanning any existing storage for it. The name must never become invalid for the
-    /// lifetime of the object it names. This memory will never be re-used by another object.
+    /// lifetime of the object it names. This memory will never be reused by another object.
     ///
     /// \param name The name of the object. This memory is NOT copied and must be persistent.
     /// \param index A positive, non-zero integer
-    /// \return An IndexedName with the given name and index, re-using the existing memory for name
+    /// \return An IndexedName with the given name and index, reusing the existing memory for name
     static IndexedName fromConst(const char* name, int index)
     {
         assert(index >= 0);
