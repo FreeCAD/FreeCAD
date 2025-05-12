@@ -57,6 +57,8 @@
 #include "SketchRectangularArrayDialog.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+
 
 #include "DrawSketchHandlerTranslate.h"
 #include "DrawSketchHandlerOffset.h"

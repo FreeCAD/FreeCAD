@@ -304,25 +304,32 @@ void EditDatumDialog::formEditorOpened(bool state)
     }
 }
 
-bool visualScaleFeaturePresent(App::DocumentObject* obj)
+bool isVisible(Gui::Document* doc, App::DocumentObject* obj) 
 {
-    if (!obj) {
-        return false;
-    }
-
-    App::DocumentObject* parent = obj;
-    auto doc = Gui::Application::Instance->activeDocument();
-
-    while (parent) {
-        auto parentviewprovider = doc->getViewProvider(parent);
+    while (obj) {
+        auto parentviewprovider = doc->getViewProvider(obj);
 
         if (!parentviewprovider->isVisible()) {
             return false;
         }
-        parent = parent->getFirstParent();
+        obj = obj->getFirstParent();
     }
-    auto parentviewprovider = doc->getViewProvider(obj);
-    return parentviewprovider->getBoundingBox().IsValid();
+    return true;
+}
+bool visualScaleFeaturePresent(App::DocumentObject* obj)
+{
+    auto doc = Gui::Application::Instance->activeDocument();
+    auto allObjects = doc->getDocument()->getObjects();
+
+    for (auto object : allObjects) {
+        if (object == obj) {
+            continue;
+        }
+        if (isVisible(doc, object) && doc->getViewProvider(object)->getBoundingBox().IsValid()) {
+            return true;
+        }
+    }
+    return false;
 }
 void EditDatumDialog::performAutoScale(double newDatum)
 {
@@ -335,8 +342,7 @@ void EditDatumDialog::performAutoScale(double newDatum)
     // if there are external geometries, it is safe to assume that the sketch
     // was drawn with these geometries as scale references (use <= 2 because
     // the sketch axis are considered as external geometries)
-    if ((autoScaleMode == 0
-         || (autoScaleMode == 2 && !visualScaleFeaturePresent(sketch->getFirstParent())))
+    if ((autoScaleMode == 0 || (autoScaleMode == 2 && !visualScaleFeaturePresent(sketch)))
         && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
         double oldDatum = sketch->getDatum(ConstrNbr);
         double scale_factor = newDatum / oldDatum;

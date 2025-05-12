@@ -306,7 +306,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
         </item>
         <item>
          <property name="text">
-          <string>Only if no item is visible</string>
+          <string>Only if there is no visual scale indicator</string>
          </property>
         </item>
        </widget>
