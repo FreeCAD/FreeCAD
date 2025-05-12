@@ -60,7 +60,6 @@ SET(PathPythonDressup_SRCS
     Path/Dressup/__init__.py
     Path/Dressup/Utils.py
     Path/Dressup/Array.py
-    Path/Dressup/Base.py
     Path/Dressup/Boundary.py
     Path/Dressup/DogboneII.py
     Path/Dressup/Tags.py
