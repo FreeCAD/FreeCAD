@@ -309,7 +309,6 @@ class ToolBitShape(Asset):
         Serializes a ToolBitShape object to bytes (e.g., an fcstd file).
         This is required by the Asset interface.
         """
-        temp_file_path = None
         doc = None
         try:
             # Create a new temporary document
@@ -322,22 +321,20 @@ class ToolBitShape(Asset):
             doc.recompute()
 
             # Save the temporary document to a temporary file
-            with tempfile.NamedTemporaryFile(suffix=".FCStd", delete=False) as tmp_file:
-                temp_file_path = pathlib.Path(tmp_file.name)
+            # We cannot use NamedTemporaryFile on Windows, because there
+            # doc.saveAs() may not have permission to access the tempfile
+            # while the NamedTemporaryFile is open.
+            # So we use TemporaryDirectory instead, to ensure cleanup while
+            # still having a the temporary file inside it.
+            with tempfile.TemporaryDirectory() as thedir:
+                temp_file_path = pathlib.Path(thedir, "temp.FCStd")
                 doc.saveAs(str(temp_file_path))
-
-            # Read the bytes from the temporary file
-            with open(temp_file_path, 'rb') as f:
-                return f.read()
+                return temp_file_path.read_bytes()
 
         finally:
             # Clean up the temporary document
             if doc:
                 FreeCAD.closeDocument(doc.Name)
-
-            # Clean up the temporary file
-            if temp_file_path and temp_file_path.exists():
-                os.remove(temp_file_path)
 
     @classmethod
     def from_file(cls, filepath: pathlib.Path, **kwargs: Any) -> "ToolBitShape":

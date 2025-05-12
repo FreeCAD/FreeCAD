@@ -2,7 +2,7 @@
 import unittest
 import unittest.mock
 import pathlib
-from tempfile import NamedTemporaryFile
+from tempfile import TemporaryDirectory
 from PySide import QtCore, QtGui
 from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.shape.models.icon import (
@@ -131,11 +131,17 @@ class TestToolBitShapeSvgIcon(TestToolBitShapeIconBase):
         self.assertIsInstance(deserialized_svg.abbreviations, dict)
 
     def test_from_file_svg(self):
-        with NamedTemporaryFile(suffix=".svg") as f:
-            f.write(self.test_svg.data)
+        # We cannot use NamedTemporaryFile on Windows, because there
+        # we may not have permission to read the tempfile while it is
+        # still open.
+        # So we use TemporaryDirectory instead, to ensure cleanup while
+        # still having a the temporary file inside it.
+        with TemporaryDirectory() as thedir:
+            tempfile = pathlib.Path(thedir, "test.svg")
+            tempfile.write_bytes(self.test_svg.data)
 
             icon_id = "dummy_icon"
-            icon = ToolBitShapeIcon.from_file(pathlib.Path(f.name), icon_id)
+            icon = ToolBitShapeIcon.from_file(tempfile, icon_id)
             self.assertIsInstance(icon, ToolBitShapeSvgIcon)
             self.assertEqual(icon.get_id(), icon_id)
             self.assertEqual(icon.data, self.test_svg.data)
@@ -209,12 +215,17 @@ class TestToolBitShapePngIcon(TestToolBitShapeIconBase):
 
     def test_from_file_png(self):
         png_data = b"\\x89PNG\\r\\n\\x1a\\n"
-        with NamedTemporaryFile(suffix=".png") as f:
-            f.write(png_data)
-            f.flush()
+        # We cannot use NamedTemporaryFile on Windows, because there
+        # we may not have permission to read the tempfile while it is
+        # still open.
+        # So we use TemporaryDirectory instead, to ensure cleanup while
+        # still having a the temporary file inside it.
+        with TemporaryDirectory() as thedir:
+            tempfile = pathlib.Path(thedir, "test.png")
+            tempfile.write_bytes(png_data)
 
             icon_id = "dummy_icon"
-            icon = ToolBitShapeIcon.from_file(pathlib.Path(f.name), icon_id)
+            icon = ToolBitShapeIcon.from_file(tempfile, icon_id)
             self.assertIsInstance(icon, ToolBitShapePngIcon)
             self.assertEqual(icon.get_id(), icon_id)
             self.assertEqual(icon.data, png_data)
