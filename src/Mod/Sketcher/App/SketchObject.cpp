@@ -2109,11 +2109,14 @@ int SketchObject::setConstruction(int GeoId, bool on)
     return 0;
 }
 
-int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
-                                             const std::vector<ExternalGeometryExtension::Flag> &flags)
+// clang-format on
+int SketchObject::toggleExternalGeometryFlag(
+    const std::vector<int>& geoIds,
+    const std::vector<ExternalGeometryExtension::Flag>& flags)
 {
-    if (flags.empty())
+    if (flags.empty()) {
         return 0;
+    }
     auto flag = flags.front();
 
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -2124,10 +2127,10 @@ int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
     auto geos = ExternalGeo.getValues();
     std::set<int> idSet(geoIds.begin(), geoIds.end());
     for (auto geoId : geoIds) {
-        if (geoId > GeoEnum::RefExt || -geoId-1>=ExternalGeo.getSize()) {
+        if (geoId > GeoEnum::RefExt || -geoId - 1 >= ExternalGeo.getSize()) {
             continue;
         }
-        if (idSet.count(geoId) == 0) {
+        if (!idSet.contains(geoId)) {
             continue;
         }
         idSet.erase(geoId);
@@ -2144,18 +2147,16 @@ int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
                 auto& relatedGeometry = geos[relatedIndex];
                 relatedGeometry = relatedGeometry->clone();
                 auto relatedFacade = ExternalGeometryFacade::getFacade(relatedGeometry);
-                relatedFacade->setFlag(flag, value);
-                for (size_t i = 1; i < flags.size(); ++i) {
-                    relatedFacade->setFlag(flags[i], value);
+                for (auto& _flag : flags) {
+                    relatedFacade->setFlag(_flag, value);
                 }
                 idSet.erase(relatedGeoId);
             }
         }
         geo = geo->clone();
         egf->setGeometry(geo);
-        egf->setFlag(flag, value);
-        for (size_t i=1; i<flags.size(); ++i) {
-            egf->setFlag(flags[i], value);
+        for (auto& _flag : flags) {
+            egf->setFlag(_flag, value);
         }
         update = update || (value || flag != ExternalGeometryExtension::Frozen);
         touched = true;
@@ -2170,6 +2171,7 @@ int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
     }
     return 0;
 }
+// clang-format off
 
 void SketchObject::addGeometryState(const Constraint* cstr) const
 {
@@ -7179,21 +7181,22 @@ int SketchObject::addExternal(App::DocumentObject* Obj,
         if (!(Objects[i] == Obj && std::string(SubName) == SubElements[i])) {
             continue;
         }
-        if (Types[i] == (int)ExtType::Both
-            || (Types[i] == (int)ExtType::Projection && !intersection)
-            || (Types[i] == (int)ExtType::Intersection && intersection)) {
+        if (Types[i] == static_cast<int>(ExtType::Both)
+            || (Types[i] == static_cast<int>(ExtType::Projection) && !intersection)
+            || (Types[i] == static_cast<int>(ExtType::Intersection) && intersection)) {
             Base::Console().error("Link to %s already exists in this sketch.\n", SubName);
             return -1;
         }
         // Case where projections are already there when adding intersections.
         add = false;
-        Types[i] = (int)ExtType::Both;
+        Types[i] = static_cast<int>(ExtType::Both);
     }
     if (add) {
         // add the new ones
         Objects.push_back(Obj);
         SubElements.emplace_back(SubName);
-        Types.push_back((int)(intersection ? ExtType::Intersection : ExtType::Projection));
+        Types.push_back(
+            static_cast<int>(intersection ? ExtType::Intersection : ExtType::Projection));
         if (intersection) {}
 
         // set the Link list.
