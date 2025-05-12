@@ -721,6 +721,17 @@ def add_properties(
                 obj.addProperty("App::PropertyString", attr, "IFC", locked=True)
             if value is not None:
                 setattr(obj, attr, str(value))
+
+            # Extract classification and reference properly from the file, as it
+            # could be set in file from StandardCode, and during conversion
+            # from BIM Object to IFC Object we have to preserve it
+            classifications = ifcfile.by_type("IfcClassification")
+            references = ifcfile.by_type("IfcClassificationReference")
+
+            if (classifications and references) and not hasattr(obj, "Classification"):
+                obj.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
+                classification = classifications[0].Name + " " + references[0].Identification
+                setattr(obj, "Classification", classification)
     # annotation properties
     if ifcentity.is_a("IfcGridAxis"):
         axisdata = ifc_export.get_axis(ifcentity)
