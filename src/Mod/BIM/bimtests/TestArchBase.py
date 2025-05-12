@@ -30,21 +30,6 @@ import FreeCAD
 class TestArchBase(unittest.TestCase):
 
     def setUp(self):
-        import Draft
-        from importlib import reload
-
-        # Restore original Draft.extrude function if mocked
-        # This is a workaround for the issue where the Draft.extrude function
-        # is replaced with a mock function (drafttests.auxiliary.fake_function)
-        # during testing.
-        # See https://github.com/FreeCAD/FreeCAD/pull/21134#issuecomment-2868570722
-        if hasattr(Draft, 'extrude'):
-            extrude_code = getattr(Draft.extrude, '__code__', None)
-            if extrude_code and 'auxiliary.py' in extrude_code.co_filename:
-                reload(Draft)
-                from Draft import extrude
-                Draft.extrude = extrude
-
         self.document = FreeCAD.newDocument(self.__class__.__name__)
 
     def tearDown(self):
