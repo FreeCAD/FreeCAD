@@ -861,7 +861,7 @@ private:
             shape = static_cast<GeometryPy *>(pcObj)->getGeometryPtr()->toShape();
         else if (PyObject_TypeCheck(pcObj, &App::DocumentObjectPy::Type)) {
             auto obj = static_cast<App::DocumentObjectPy *>(pcObj)->getDocumentObjectPtr();
-            shape = Feature::getTopoShape(obj);
+            shape = Feature::getTopoShape(obj, Feature::GetShapeOption::ResolveLink | Feature::GetShapeOption::Transform);
         } else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         }
@@ -2290,11 +2290,14 @@ private:
             mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
 
         bool resolveLink = (retType == 2);
-        auto shape = Feature::getTopoShape(obj, subname, &mat, &subObj, 
-                                (Feature::ResolveLink * resolveLink) | 
-                                (Feature::NeedSubElement * Base::asBoolean(needSubElement) | 
-                                (Feature::Transform * Base::asBoolean(transform)) | 
-                                (Feature::NoElementMap * Base::asBoolean(noElementMap))));
+        auto shape = Feature::getTopoShape(obj,
+                                             (resolveLink ? Feature::GetShapeOption::ResolveLink : Feature::GetShapeOption::NoFlag)
+                                           | (Base::asBoolean(needSubElement) ? Feature::GetShapeOption::NeedSubElement : Feature::GetShapeOption::NoFlag)
+                                           | (Base::asBoolean(transform) ? Feature::GetShapeOption::Transform : Feature::GetShapeOption::NoFlag)
+                                           | (Base::asBoolean(noElementMap) ? Feature::GetShapeOption::NoElementMap : Feature::GetShapeOption::NoFlag),
+                                           subname,
+                                           &mat,
+                                           &subObj);
 
         if (Base::asBoolean(refine)) {
             shape = TopoShape(0, shape.Hasher).makeElementRefine(shape);

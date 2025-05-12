@@ -127,11 +127,10 @@ MeasureType Measurement::findType()
         try {
             refSubShape =
                 Part::Feature::getShape(*obj,
-                                        (*subEl).c_str(),
-                                        nullptr,
-                                        nullptr,
-                                        Part::Feature::NeedSubElement | Part::Feature::ResolveLink
-                                            | Part::Feature::Transform);
+                                            Part::Feature::GetShapeOption::NeedSubElement
+                                          | Part::Feature::GetShapeOption::ResolveLink
+                                          | Part::Feature::GetShapeOption::Transform,
+                                        (*subEl).c_str());
 
             if (refSubShape.IsNull()) {
                 return MeasureType::Invalid;
@@ -760,11 +759,10 @@ bool Measurement::planesAreParallel() const
         try {
             refSubShape =
                 Part::Feature::getShape(objects[i],
-                                        subElements[i].c_str(),
-                                        nullptr,
-                                        nullptr,
-                                        Part::Feature::NeedSubElement | Part::Feature::ResolveLink
-                                            | Part::Feature::Transform);
+                                            Part::Feature::GetShapeOption::NeedSubElement
+                                          | Part::Feature::GetShapeOption::ResolveLink
+                                          | Part::Feature::GetShapeOption::Transform,
+                                        subElements[i].c_str());
 
             if (refSubShape.IsNull()) {
                 return false;

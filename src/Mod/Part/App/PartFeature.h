@@ -27,6 +27,7 @@
 #include <App/GeoFeature.h>
 #include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
+#include <Base/Bitmask.h>
 
 #include <TopoDS_Face.hxx>
 
@@ -53,14 +54,16 @@ class PartExport Feature : public App::GeoFeature
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Feature);
 
 public:
-    enum GetShapeOptions
+    enum class GetShapeOption
     {
+        NoFlag = 0,
         NeedSubElement = 1,
         ResolveLink = 2,
         Transform = 4,
         NoElementMap = 8,
         DontSimplifyCompound = 16
     };
+    using GetShapeOptions = Base::Flags<GetShapeOption>;
 
 public:
     /// Constructor
@@ -140,14 +143,13 @@ public:
      * @param transform: if true, apply obj's transformation. Set to false
      * if pmat already include obj's transformation matrix.
      */
-     static TopoDS_Shape getShape(const App::DocumentObject *obj,
+     static TopoDS_Shape getShape(const App::DocumentObject *obj, GetShapeOptions options,
             const char *subname=nullptr, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, int options = ResolveLink | Transform);
+            App::DocumentObject **owner=nullptr);
 
-    static TopoShape getTopoShape(const App::DocumentObject* obj, 
+    static TopoShape getTopoShape(const App::DocumentObject* obj, GetShapeOptions options,
                                     const char* subname=nullptr, Base::Matrix4D* pmat=nullptr, 
-                                    App::DocumentObject**owner=nullptr, 
-                                    int options = ResolveLink | Transform);
+                                    App::DocumentObject**owner=nullptr);
 
     static TopoShape simplifyCompound(TopoShape compoundShape);
     static void clearShapeCache();
@@ -293,6 +295,7 @@ bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
 
 } //namespace Part
 
+ENABLE_BITMASK_OPERATORS(Part::Feature::GetShapeOption)
 
 #endif // PART_FEATURE_H
 

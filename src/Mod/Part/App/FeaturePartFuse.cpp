@@ -93,7 +93,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
 
     std::vector<App::DocumentObject*>::iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
-        shapes.push_back(Feature::getTopoShape(*it));
+        shapes.push_back(Feature::getTopoShape(*it, Feature::GetShapeOption::ResolveLink | Feature::GetShapeOption::Transform));
     }
 
     bool argumentsAreInCompound = false;

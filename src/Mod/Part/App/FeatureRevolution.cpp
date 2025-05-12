@@ -92,12 +92,12 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     TopoDS_Shape axEdge;
     if (!axisLink.getSubValues().empty()  &&  axisLink.getSubValues()[0].length() > 0){
         axEdge = Feature::getTopoShape(linked,
-                                       axisLink.getSubValues()[0].c_str(),
-                                       nullptr,
-                                       nullptr,
-                                       NeedSubElement | ResolveLink | Transform).getShape();
+                                          GetShapeOption::NeedSubElement
+                                        | GetShapeOption::ResolveLink
+                                        | GetShapeOption::Transform,
+                                       axisLink.getSubValues()[0].c_str()).getShape();
     } else {
-        axEdge = Feature::getShape(linked);
+        axEdge = Feature::getShape(linked, Feature::GetShapeOption::ResolveLink | Feature::GetShapeOption::Transform);
     }
 
     if (axEdge.IsNull())
@@ -153,7 +153,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
             angle = angle_edge;
 
         //apply "midplane" symmetry
-        TopoShape sourceShape = Feature::getTopoShape(link);
+        TopoShape sourceShape = Feature::getTopoShape(link, Feature::GetShapeOption::ResolveLink | Feature::GetShapeOption::Transform);
         if (Symmetric.getValue()) {
             //rotate source shape backwards by half angle, to make resulting revolution symmetric to the profile
             gp_Trsf mov;

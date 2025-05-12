@@ -77,18 +77,16 @@ public:
         std::string element(sSubName);
         if (element.substr(0,4) != "Edge")
             return false;
-        Part::TopoShape part = Part::Feature::getTopoShape(pObj);
+        Part::TopoShape part = Part::Feature::getTopoShape(pObj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
         if (part.isNull()) {
             return false;
         }
         try {
             TopoDS_Shape sub = Part::Feature::getTopoShape(pObj,
-                                                           sSubName,
-                                                           nullptr,
-                                                           nullptr,
-                                                           Part::Feature::NeedSubElement
-                                                               | Part::Feature::ResolveLink
-                                                               | Part::Feature::Transform).getShape();                                   
+                                                             Part::Feature::GetShapeOption::NeedSubElement
+                                                           | Part::Feature::GetShapeOption::ResolveLink
+                                                           | Part::Feature::GetShapeOption::Transform,
+                                                           sSubName).getShape();                                   
 
             if (!sub.IsNull() && sub.ShapeType() == TopAbs_EDGE) {
                 const TopoDS_Edge& edge = TopoDS::Edge(sub);
@@ -357,7 +355,7 @@ void DlgExtrusion::autoSolid()
 {
     try{
         App::DocumentObject* dobj = &this->getShapeToExtrude();
-        Part::TopoShape shape = Part::Feature::getTopoShape(dobj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(dobj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
         if (shape.isNull()) {
             return;
         }
@@ -395,7 +393,7 @@ void DlgExtrusion::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
         if (topoShape.isNull()) {
             continue;
         }
@@ -474,7 +472,7 @@ void DlgExtrusion::apply()
         for (App::DocumentObject* sourceObj: objects) {
             assert(sourceObj);
 
-            if (Part::Feature::getTopoShape(sourceObj).isNull()){
+            if (Part::Feature::getTopoShape(sourceObj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform).isNull()){
                 FC_ERR("Object " << sourceObj->getFullName()
                         << " is not Part object (has no OCC shape). Can't extrude it.");
                 continue;

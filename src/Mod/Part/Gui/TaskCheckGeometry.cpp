@@ -445,10 +445,10 @@ void TaskCheckGeometryResults::goCheck()
 
         TopoDS_Shape shape = Part::Feature::getShape(
             sel.pObject,
-            sel.SubName,
-            nullptr,
-            nullptr,
-            Part::Feature::NeedSubElement | Part::Feature::ResolveLink | Part::Feature::Transform);
+              Part::Feature::GetShapeOption::NeedSubElement 
+            | Part::Feature::GetShapeOption::ResolveLink
+            | Part::Feature::GetShapeOption::Transform,
+            sel.SubName);
             
         if (shape.IsNull()) {
             ResultEntry *entry = new ResultEntry();

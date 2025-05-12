@@ -109,10 +109,10 @@ TopoDS_Face ProjectOnSurface::getSupportFace() const
     }
 
     auto topoSupport = Feature::getTopoShape(support,
-                                             subStrings[0].c_str(),
-                                             nullptr,
-                                             nullptr,
-                                             NeedSubElement | ResolveLink | Transform);
+                                                  GetShapeOption::NeedSubElement
+                                                | GetShapeOption::ResolveLink
+                                                | GetShapeOption::Transform,
+                                             subStrings[0].c_str());
     return TopoDS::Face(topoSupport.getShape());
 }
 
@@ -127,10 +127,10 @@ std::vector<TopoDS_Shape> ProjectOnSurface::getProjectionShapes() const
 
     for (std::size_t index = 0; index < objects.size(); index++) {
         auto topoSupport = Feature::getTopoShape(objects[index],
-                                                 subvalues[index].c_str(),
-                                                 nullptr,
-                                                 nullptr,
-                                                 NeedSubElement | ResolveLink | Transform);
+                                                    GetShapeOption::NeedSubElement
+                                                  | GetShapeOption::ResolveLink
+                                                  | GetShapeOption::Transform,
+                                                 subvalues[index].c_str());
         shapes.push_back(topoSupport.getShape());
     }
 
