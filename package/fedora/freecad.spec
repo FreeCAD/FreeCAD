@@ -10,6 +10,8 @@
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
 # Some configuration options for other environments
+# rpmbuild --without=init_submodules:  don't update/initialize git submodules before building
+%global init_submodules %{?_without_init_submodules: 0} %{?!_without_init_submodules: 1}
 # rpmbuild --with=bundled_zipios:  use bundled version of zipios++
 %global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 1}
 # rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
@@ -179,6 +181,12 @@ rm -rf src/zipios++
 %build
 rm -rf build && mkdir build && cd build
 
+# Update submodules so they are available
+# when rpkg fetches git source from remote
+%if %{init_submodules}
+{{{git_submodule_update_init}}}
+%endif
+
 # Deal with cmake projects that tend to link excessively.
 CXXFLAGS='-Wno-error=cast-function-type'; export CXXFLAGS
 LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
@@ -187,6 +195,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
 %cmake \
        -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
+       -DCMAKE_INSTALL_BINDIR=%{_libdir}/%{name}/bin \
        -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
        -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
        -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
@@ -353,3 +362,4 @@ fi
 %changelog
 * Mon Mar 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.1.0-1
 - Adding support for building with Qt6 and PySide6 for Fedora 40+
+{{{git_dir_changelog}}}
