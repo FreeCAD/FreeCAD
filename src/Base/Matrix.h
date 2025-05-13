@@ -239,15 +239,8 @@ private:
 
 inline Matrix4D Matrix4D::operator+(const Matrix4D& mat) const
 {
-    Matrix4D clMat;
-
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            clMat.dMtrx4D[i][j] = dMtrx4D[i][j] + mat[i][j];
-        }
-    }
-
-    return clMat;
+    Matrix4D newMat(*this);
+    return newMat += mat;
 }
 
 inline Matrix4D& Matrix4D::operator+=(const Matrix4D& mat)
@@ -263,15 +256,8 @@ inline Matrix4D& Matrix4D::operator+=(const Matrix4D& mat)
 
 inline Matrix4D Matrix4D::operator-(const Matrix4D& mat) const
 {
-    Matrix4D clMat;
-
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            clMat.dMtrx4D[i][j] = dMtrx4D[i][j] - mat[i][j];
-        }
-    }
-
-    return clMat;
+    Matrix4D newMat(*this);
+    return newMat -= mat;
 }
 
 inline Matrix4D& Matrix4D::operator-=(const Matrix4D& mat)
@@ -287,19 +273,7 @@ inline Matrix4D& Matrix4D::operator-=(const Matrix4D& mat)
 
 inline Matrix4D& Matrix4D::operator*=(const Matrix4D& mat)
 {
-    Matrix4D clMat;
-
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            clMat.dMtrx4D[i][j] = 0;
-            for (int e = 0; e < 4; e++) {
-                clMat.dMtrx4D[i][j] += dMtrx4D[i][e] * mat.dMtrx4D[e][j];
-            }
-        }
-    }
-
-    (*this) = clMat;
-
+    (*this) = (*this) * mat;
     return *this;
 }
 
@@ -336,23 +310,16 @@ inline Matrix4D& Matrix4D::operator=(const Matrix4D& mat)
 
 inline Vector3f Matrix4D::operator*(const Vector3f& vec) const
 {
-    // clang-format off
-    double sx = static_cast<double>(vec.x);
-    double sy = static_cast<double>(vec.y);
-    double sz = static_cast<double>(vec.z);
-    return Vector3f(static_cast<float>(dMtrx4D[0][0] * sx + dMtrx4D[0][1] * sy + dMtrx4D[0][2] * sz + dMtrx4D[0][3]),
-                    static_cast<float>(dMtrx4D[1][0] * sx + dMtrx4D[1][1] * sy + dMtrx4D[1][2] * sz + dMtrx4D[1][3]),
-                    static_cast<float>(dMtrx4D[2][0] * sx + dMtrx4D[2][1] * sy + dMtrx4D[2][2] * sz + dMtrx4D[2][3]));
-    // clang-format on
+    Vector3f dst;
+    multVec(vec, dst);
+    return dst;
 }
 
 inline Vector3d Matrix4D::operator*(const Vector3d& vec) const
 {
-    // clang-format off
-    return Vector3d((dMtrx4D[0][0] * vec.x + dMtrx4D[0][1] * vec.y + dMtrx4D[0][2] * vec.z + dMtrx4D[0][3]),
-                    (dMtrx4D[1][0] * vec.x + dMtrx4D[1][1] * vec.y + dMtrx4D[1][2] * vec.z + dMtrx4D[1][3]),
-                    (dMtrx4D[2][0] * vec.x + dMtrx4D[2][1] * vec.y + dMtrx4D[2][2] * vec.z + dMtrx4D[2][3]));
-    // clang-format on
+    Vector3d dst;
+    multVec(vec, dst);
+    return dst;
 }
 
 inline void Matrix4D::multVec(const Vector3d& src, Vector3d& dst) const
@@ -379,14 +346,8 @@ inline void Matrix4D::multVec(const Vector3f& src, Vector3f& dst) const
 
 inline Matrix4D Matrix4D::operator*(double scalar) const
 {
-    Matrix4D matrix;
-    for (unsigned int i = 0; i < 4; i++) {
-        for (unsigned int j = 0; j < 4; j++) {
-            matrix.dMtrx4D[i][j] = dMtrx4D[i][j] * scalar;
-        }
-    }
-
-    return matrix;
+    Matrix4D newMat(*this);
+    return newMat *= scalar;
 }
 
 inline Matrix4D& Matrix4D::operator*=(double scalar)
@@ -421,7 +382,7 @@ inline bool Matrix4D::operator!=(const Matrix4D& mat) const
 
 inline Vector3f& operator*=(Vector3f& vec, const Matrix4D& mat)
 {
-    vec = mat * vec;
+    mat.multVec(vec, vec);
     return vec;
 }
 

@@ -277,13 +277,9 @@ void Matrix4D::rotLine(const Vector3d& vec, double fAngle)
     double fsin {};
 
     // set all entries to "0"
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            clMA.dMtrx4D[i][j] = 0;
-            clMB.dMtrx4D[i][j] = 0;
-            clMC.dMtrx4D[i][j] = 0;
-        }
-    }
+    clMA.nullify();
+    clMB.nullify();
+    clMC.nullify();
 
     // ** normalize the rotation axis
     clRotAxis.Normalize();
@@ -623,7 +619,7 @@ void Matrix4D::inverseOrthogonal()
 {
     Base::Vector3d vec(dMtrx4D[0][3], dMtrx4D[1][3], dMtrx4D[2][3]);
     transpose();
-    vec = this->operator*(vec);
+    multVec(vec, vec);
     dMtrx4D[0][3] = -vec.x;
     dMtrx4D[3][0] = 0;
     dMtrx4D[1][3] = -vec.y;
