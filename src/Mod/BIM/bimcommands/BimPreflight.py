@@ -632,7 +632,7 @@ class BIM_Preflight_TaskPanel:
                     msg += (
                         translate(
                             "BIM",
-                            "The following BIM objects have the "Undefined" type:",
+                            "The following BIM objects have the 'Undefined' type:",
                         )
                         + "\n\n"
                     )

@@ -1388,7 +1388,7 @@ def explore(filename=None):
     "explore the contents of an ifc file in a Qt dialog"
     if not filename:
         from PySide import QtGui
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'Open IFC file',None,"Ifc files (*.ifc *.IFC)')
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),"Open IFC file",None,"Ifc files (*.ifc *.IFC)")
         if filename:
             filename = filename[0]
     if filename:

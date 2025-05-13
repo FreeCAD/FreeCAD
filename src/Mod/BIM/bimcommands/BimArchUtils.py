@@ -185,7 +185,7 @@ class Arch_SelectNonSolidMeshes:
     "the Arch SelectNonSolidMeshes command definition"
 
     def GetResources(self):
-        return {"Pixmap": "Arch_SelectNonManifold.svg',
+        return {"Pixmap": "Arch_SelectNonManifold.svg",
                 "MenuText": QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
                 "ToolTip": QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Selects all non-manifold meshes from the document or from the selected groups")}
 

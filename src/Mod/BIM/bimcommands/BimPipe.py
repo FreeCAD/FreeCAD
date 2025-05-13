@@ -114,10 +114,10 @@ class Arch_PipeConnector:
 class Arch_PipeGroupCommand:
 
     def GetCommands(self):
-        return tuple(["Arch_Pipe',"Arch_PipeConnector'])
+        return tuple(["Arch_Pipe","Arch_PipeConnector"])
     def GetResources(self):
-        return { "MenuText": QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools'),
-                 "ToolTip": QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools')
+        return { "MenuText": QT_TRANSLATE_NOOP("Arch_PipeTools","Pipe tools"),
+                 "ToolTip": QT_TRANSLATE_NOOP("Arch_PipeTools","Pipe tools")
                }
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")

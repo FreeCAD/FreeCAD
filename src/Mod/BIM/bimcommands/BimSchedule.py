@@ -38,7 +38,7 @@ class Arch_Schedule:
     "the Arch Schedule command definition"
 
     def GetResources(self):
-        return {"Pixmap": "Arch_Schedule',
+        return {"Pixmap": "Arch_Schedule",
                 "MenuText": QT_TRANSLATE_NOOP("Arch_Schedule","Schedule"),
                 "ToolTip": QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
 
