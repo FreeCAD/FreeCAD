@@ -39,6 +39,7 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <App/Datums.h>
 
 #include "EditDatumDialog.h"
 #include "CommandSketcherTools.h"
@@ -318,14 +319,45 @@ bool isVisible(Gui::Document* doc, App::DocumentObject* obj)
 }
 bool visualScaleFeaturePresent(App::DocumentObject* obj)
 {
-    auto doc = Gui::Application::Instance->activeDocument();
-    auto allObjects = doc->getDocument()->getObjects();
+    // Try to find geometric objects in the viewport that would create a sense of
+    // scale which the designer would presumably use to draw their sketch
 
+
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    Gui::Document* objectDoc = nullptr;
+    std::vector<App::DocumentObject*> allObjects = doc->getDocument()->getObjects();
+
+    // Iterate over all objects of the document and filter out invalid objects (annotations, datums, )
     for (auto object : allObjects) {
-        if (object == obj) {
+        objectDoc = doc;
+
+        // Parts and such don't need to be evaluated for visibility, since their children will
+        if (object == obj || object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
             continue;
         }
-        if (isVisible(doc, object) && doc->getViewProvider(object)->getBoundingBox().IsValid()) {
+
+        // Evaluate visibility flag recursively
+        bool visible = isVisible(objectDoc, object);
+        if (!visible) {
+            continue;
+        }
+        
+        // If an object is linked (such as a body in an assembly), evaluate it instead of
+        // the link. No need to skip GeoFeatureGroupExtension here, because it's children
+        // wond be included
+        App::DocumentObject* linkedObject = object->getLinkedObject();
+        if (linkedObject) {
+            object = linkedObject;
+            objectDoc = Gui::Application::Instance->getDocument(object->getDocument());
+        }
+
+        // Avoid counting annotations
+        if (!object->isDerivedFrom<App::GeoFeature>()) {
+            continue;
+        }
+
+        // Check if there are geometries on screen
+        if (objectDoc->getViewProvider(object)->getBoundingBox().IsValid()) {
             return true;
         }
     }
