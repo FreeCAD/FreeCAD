@@ -24,13 +24,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <atomic>
 #include <cassert>
+#include <CXX/Objects.hxx>
 #endif
 
-#include <atomic>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
-#include <CXX/Objects.hxx>
 
 #include "Property.h"
 #include "ObjectIdentifier.h"

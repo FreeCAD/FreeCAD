@@ -31,10 +31,10 @@
 #include <map>
 #include <string>
 #include <vector>
-#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

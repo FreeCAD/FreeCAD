@@ -29,9 +29,10 @@
 #ifndef _PreComp_
 #include <cstdlib>
 #include <limits>
-#endif
-
 #include <boost/regex.hpp>
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
+#endif
 
 #include "ComplexGeoData.h"
 #include "ElementMap.h"
@@ -42,9 +43,6 @@
 #include <Base/Reader.h>
 #include <Base/Rotation.h>
 #include <Base/Writer.h>
-
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
 
 
 using namespace Data;
