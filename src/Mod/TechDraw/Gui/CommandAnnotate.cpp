@@ -1424,15 +1424,14 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
     }
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                 QObject::tr("You must select a View and/or lines."));
         return;
     }
 
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if (!baseFeat) {
+    auto* baseFeat =  static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    if (!baseFeat->isDerivedFrom<TechDraw::DrawViewPart>()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                 QObject::tr("No View in Selection."));
         return;
@@ -1440,13 +1439,6 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
 
     std::vector<std::string> subNames;
 
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
-            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
-        }
-    }
     std::vector<std::string> edgeNames;
     for (auto& s: subNames) {
         std::string geomType = DrawUtil::getGeomTypeFromName(s);
