@@ -33,21 +33,21 @@ namespace Gui {
 class GuiExport SoFCPlacementIndicatorKit : public SoBaseKit {
     using inherited = SoBaseKit;
 
-    static constexpr double planeIndicatorRadius = 0.4f;
-    static constexpr double planeIndicatorMargin = 0.2f;
-    static constexpr double planeIndicatorTransparency = 0.3f;
+    static constexpr float planeIndicatorRadius = 0.4F;
+    static constexpr double planeIndicatorMargin = 0.2;
+    static constexpr float planeIndicatorTransparency = 0.3F;
 
-    static constexpr double axisMargin = 0.0f;
-    static constexpr double axisLengthDefault = 0.6f;
-    static constexpr double axisThickness = 0.065f;
+    static constexpr double axisMargin = 0.0;
+    static constexpr float axisLengthDefault = 0.6F;
+    static constexpr float axisThickness = 0.065F;
 
-    static constexpr double arrowHeadRadius = axisThickness * 1.25f;
-    static constexpr double arrowHeadHeight = arrowHeadRadius * 3.f;
+    static constexpr float arrowHeadRadius = axisThickness * 1.25F;
+    static constexpr float arrowHeadHeight = arrowHeadRadius * 3.F;
 
-    static constexpr double labelOffset = 0.4f;
+    static constexpr double labelOffset = 0.4;
     static constexpr int labelFontSize = 9;
 
-    static constexpr double scaleFactorDefault = 40.f;
+    static constexpr float scaleFactorDefault = 40.F;
 
     SO_KIT_HEADER(SoFCPlacementIndicatorKit);
 
