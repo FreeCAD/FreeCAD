@@ -107,13 +107,6 @@ inline manipulator<int> blanks(int n)
 
 // ----------------------------------------------------------------------------
 
-template<class T>
-    requires std::is_arithmetic_v<T>
-inline T clamp(T num, T lower, T upper)
-{
-    return std::clamp<T>(num, lower, upper);
-}
-
 /// Returns -1, 0 or 1 depending on if the value is negative, zero or positive
 /// As this function might be used in hot paths, it uses branchless implementation
 template<typename T>
