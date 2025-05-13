@@ -21,9 +21,10 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
+#ifdef _PreComp_
 #include <boost/graph/graphviz.hpp>
 #include <random>
+#endif
 
 #include "Application.h"
 #include "Document.h"

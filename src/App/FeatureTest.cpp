@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
+#include <CXX/Objects.hxx>
 #include <sstream>
 #endif
 
@@ -31,7 +32,6 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Unit.h>
-#include <CXX/Objects.hxx>
 
 #include "FeatureTest.h"
 #include "Material.h"

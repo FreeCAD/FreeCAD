@@ -26,12 +26,11 @@
 #include <boost/core/ignore_unused.hpp>
 #include <memory>
 #include <sstream>
-#endif
-
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/sax/HandlerBase.hpp>
+#endif
 
 #include "App/Application.h"
 #include "App/Expression.h"

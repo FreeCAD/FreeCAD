@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifdef _PreComp_
 #ifdef __GNUC__
 # include <unistd.h>
 #endif
@@ -39,6 +40,7 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#endif
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>

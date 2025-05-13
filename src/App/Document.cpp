@@ -23,33 +23,41 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <algorithm>
 #include <bitset>
-#include <stack>
 #include <boost/filesystem.hpp>
 #include <deque>
-#include <iostream>
-#include <utility>
-#include <set>
-#include <memory>
-#include <string>
-#include <map>
-#include <vector>
-#include <list>
-#include <algorithm>
 #include <filesystem>
-#endif
+#include <iostream>
+#include <list>
+#include <map>
+#include <memory>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
 #include <boost/graph/strong_components.hpp>
-
 #include <boost/regex.hpp>
-#include <random>
-#include <unordered_map>
-#include <unordered_set>
 
-#include <QCryptographicHash>
+
+#ifdef _MSC_VER
+#include <zipios++/zipios-config.h>
+#endif
+#include <zipios++/meta-iostreams.h>
+#include <zipios++/zipfile.h>
+#include <zipios++/zipinputstream.h>
+#include <zipios++/zipoutputstream.h>
+
 #include <QCoreApplication>
+#include <QCryptographicHash>
+#endif
 
 #include <App/DocumentPy.h>
 #include <Base/Interpreter.h>
@@ -77,14 +85,6 @@
 #include "MergeDocuments.h"
 #include "StringHasher.h"
 #include "Transactions.h"
-
-#ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipfile.h>
-#include <zipios++/zipinputstream.h>
-#include <zipios++/zipoutputstream.h>
-#include <zipios++/meta-iostreams.h>
 
 
 FC_LOG_LEVEL_INIT("App", true, true, true)

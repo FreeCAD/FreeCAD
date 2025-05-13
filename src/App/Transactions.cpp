@@ -25,10 +25,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <atomic>
 #include <cassert>
 #endif
 
-#include <atomic>
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>

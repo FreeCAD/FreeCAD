@@ -22,9 +22,10 @@
 
 
 #include "PreCompiled.h"
-
+#ifndef _PreComp_
 #include <iostream>
 #include <boost/regex.hpp>
+#endif
 
 #include <Base/Base64.h>
 #include <Base/Console.h>

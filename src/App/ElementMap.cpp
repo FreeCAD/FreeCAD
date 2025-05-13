@@ -4,6 +4,9 @@
 #ifndef FC_DEBUG
 #include <random>
 #endif
+
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
 #endif
 
 #include "ElementMap.h"
@@ -13,9 +16,6 @@
 #include "Base/Console.h"
 #include "Document.h"
 #include "DocumentObject.h"
-
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
 
 
 FC_LOG_LEVEL_INIT("ElementMap", true, 2);  // NOLINT

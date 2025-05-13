@@ -25,9 +25,9 @@
 #ifndef _PreComp_
 #include <cassert>
 #include <limits>
-#endif
-
 #include <boost/algorithm/string/predicate.hpp>
+#include <CXX/Objects.hxx>
+#endif
 
 #include <App/DocumentObjectPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -36,7 +36,6 @@
 #include <Base/QuantityPy.h>
 #include <Base/Console.h>
 #include <Base/Reader.h>
-#include <CXX/Objects.hxx>
 
 #include "ObjectIdentifier.h"
 #include "Application.h"

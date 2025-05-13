@@ -48,6 +48,16 @@
 # include <tuple>
 # include <vector>
 # include <fmt/format.h>
+
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
+#include <QProcessEnvironment>
+#include <QRegularExpression>
+#include <QSettings>
+#include <QStandardPaths>
+#include <Inventor/C/basic.h>
+#include <LibraryVersions.h>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -59,16 +69,6 @@
 #include <sys/param.h>
 #include <sys/sysctl.h>
 #endif
-
-#include <QCoreApplication>
-#include <QDir>
-#include <QFileInfo>
-#include <QProcessEnvironment>
-#include <QRegularExpression>
-#include <QSettings>
-#include <QStandardPaths>
-#include <Inventor/C/basic.h>
-#include <LibraryVersions.h>
 
 #include <App/MaterialPy.h>
 #include <App/MetadataPy.h>

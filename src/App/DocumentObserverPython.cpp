@@ -24,9 +24,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <functional>
+#include <CXX/Objects.hxx>
 #endif
 
-#include <CXX/Objects.hxx>
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"

@@ -341,6 +341,11 @@ SET(FreeCADApp_SRCS
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     ADD_MSVC_PRECOMPILED_HEADER(FreeCADApp PreCompiled.h PreCompiled.cpp FreeCADApp_CPP_SRCS)
+    target_precompile_headers(
+        FreeCADApp
+        PUBLIC
+        $<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/PreCompiled.h>
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADApp PRIVATE ${FreeCADApp_SRCS})

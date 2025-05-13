@@ -143,6 +143,7 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/regex.hpp>
+#include <boost/signals2.hpp>
 #include <boost/tokenizer.hpp>
 
 // zipios++

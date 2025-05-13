@@ -22,8 +22,9 @@
 
 
 #include "PreCompiled.h"
-
+#ifndef _PreComp_
 #include <QFile>
+#endif
 
 #include "Branding.h"
 

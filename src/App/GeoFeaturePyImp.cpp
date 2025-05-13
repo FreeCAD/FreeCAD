@@ -22,12 +22,14 @@
 
 
 #include "PreCompiled.h"
+#ifdef _PreComp_
+#include <CXX/Objects.hxx>
+#endif
 
 // inclusion of the generated files (generated out of GeoFeaturePy.xml)
 #include "GeoFeaturePy.h"
 #include "GeoFeaturePy.cpp"
 #include <Base/PlacementPy.h>
-#include <CXX/Objects.hxx>
 
 using namespace App;
 

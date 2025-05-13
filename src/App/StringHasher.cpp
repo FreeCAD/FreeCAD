@@ -21,15 +21,9 @@
  **************************************************************************************************/
 
 #include "PreCompiled.h"
-
-#include <QCryptographicHash>
+#ifndef _PreComp_
 #include <QHash>
 #include <deque>
-
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -38,6 +32,14 @@
 #include <boost/bimap/unordered_set_of.hpp>
 #include <boost/io/ios_state.hpp>
 #include <boost/iostreams/stream.hpp>
+
+#include <QCryptographicHash>
+#endif
+
+#include <Base/Console.h>
+#include <Base/Reader.h>
+#include <Base/Stream.h>
+#include <Base/Writer.h>
 
 #include "MappedElement.h"
 #include "StringHasher.h"
