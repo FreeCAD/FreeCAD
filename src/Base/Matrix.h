@@ -106,9 +106,9 @@ public:
     /// Comparison
     inline bool operator==(const Matrix4D& mat) const;
     /// Index operator
-    inline double* operator[](unsigned int usNdx);
+    inline std::array<double, 4>& operator[](unsigned int usNdx);
     /// Index operator
-    inline const double* operator[](unsigned int usNdx) const;
+    inline const std::array<double, 4>& operator[](unsigned int usNdx) const;
     /// Get vector of row
     inline Vector3d getRow(unsigned int usNdx) const;
     /// Get vector of column
@@ -234,7 +234,8 @@ public:
     void fromString(const std::string& str);
 
 private:
-    double dMtrx4D[4][4];
+    using Array2d = std::array<std::array<double, 4>, 4>;
+    Array2d dMtrx4D;
 };
 
 inline Matrix4D Matrix4D::operator+(const Matrix4D& mat) const
@@ -386,12 +387,12 @@ inline Vector3f& operator*=(Vector3f& vec, const Matrix4D& mat)
     return vec;
 }
 
-inline double* Matrix4D::operator[](unsigned int usNdx)
+inline std::array<double, 4>& Matrix4D::operator[](unsigned int usNdx)
 {
     return dMtrx4D[usNdx];
 }
 
-inline const double* Matrix4D::operator[](unsigned int usNdx) const
+inline const std::array<double, 4>& Matrix4D::operator[](unsigned int usNdx) const
 {
     return dMtrx4D[usNdx];
 }
