@@ -654,7 +654,7 @@ class _ViewProviderAxis:
 
 class _AxisTaskPanel:
 
-    '''The editmode TaskPanel for Axis objects'''
+    """The editmode TaskPanel for Axis objects"""
 
     def __init__(self):
 

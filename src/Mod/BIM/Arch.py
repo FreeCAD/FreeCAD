@@ -34,7 +34,7 @@ __url__    = "https://www.freecad.org"
 #  such as convenience tools to build walls, windows or structures, and
 #  IFC import/export capabilities.
 
-'''The Arch module provides tools specialized in BIM modeling.'''
+"""The Arch module provides tools specialized in BIM modeling."""
 
 import FreeCAD
 

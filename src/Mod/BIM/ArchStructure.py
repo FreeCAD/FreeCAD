@@ -74,10 +74,10 @@ for pre in Presets:
 
 def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
 
-    '''makeStructure([baseobj],[length],[width],[height],[name]): creates a
+    """makeStructure([baseobj],[length],[width],[height],[name]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
-    length and width for a cubic object.'''
+    length and width for a cubic object."""
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -139,8 +139,8 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
 
 def makeStructuralSystem(objects=[],axes=[],name=None):
 
-    '''makeStructuralSystem([objects],[axes],[name]): makes a structural system
-    based on the given objects and axes'''
+    """makeStructuralSystem([objects],[axes],[name]): makes a structural system
+    based on the given objects and axes"""
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -195,7 +195,7 @@ def placeAlongEdge(p1,p2,horizontal=False):
 
 
 class CommandStructuresFromSelection:
-    """ The Arch Structures from selection command definition. """
+    """The Arch Structures from selection command definition."""
 
     def __init__(self):
         pass
@@ -233,7 +233,7 @@ class CommandStructuresFromSelection:
 
 
 class CommandStructuralSystem:
-    """ The Arch Structural System command definition. """
+    """The Arch Structural System command definition."""
 
     def __init__(self):
         pass
@@ -1086,7 +1086,7 @@ class _Structure(ArchComponent.Component):
     def onChanged(self,obj,prop):
 
         # check the flag indicating if we are currently in the process of
-        # restoring document; if not, no further code is run as getExtrusionData() 
+        # restoring document; if not, no further code is run as getExtrusionData()
         # below return error when some properties are not added by onDocumentRestored()
         if FreeCAD.ActiveDocument.Restoring:
             return

@@ -1812,7 +1812,7 @@ def createCurveWithArcs(ifcfile,wire,scaling=1.0):
 
 
 def getEdgesAngle(edge1, edge2):
-    """ getEdgesAngle(edge1, edge2): returns a angle between two edges."""
+    """getEdgesAngle(edge1, edge2): returns a angle between two edges."""
 
     vec1 = vec(edge1)
     vec2 = vec(edge2)
@@ -1822,7 +1822,7 @@ def getEdgesAngle(edge1, edge2):
 
 
 def checkRectangle(edges):
-    """ checkRectangle(edges=[]): This function checks whether the given form is a rectangle
+    """checkRectangle(edges=[]): This function checks whether the given form is a rectangle
        or not. It will return True when edges form a rectangular shape or return False
        when edges do not form a rectangular shape."""
 

@@ -167,14 +167,14 @@ class _Equipment(ArchComponent.Component):
         self.addSketchArchFeatures(obj)
 
     def addSketchArchFeatures(self,obj,linkObj=None,mode=None):
-        '''
+        """
            To add features in the SketchArch External Add-on, if present (https://github.com/paullee0/FreeCAD_SketchArch)
            -  import ArchSketchObject module, and
            -  set properties that are common to ArchObjects (including Links) and ArchSketch
               to support the additional features
 
            To install SketchArch External Add-on, see https://github.com/paullee0/FreeCAD_SketchArch#iv-install
-        '''
+        """
 
         try:
             import ArchSketchObject
@@ -232,13 +232,13 @@ class _Equipment(ArchComponent.Component):
         self.executeSketchArchFeatures(obj)
 
     def executeSketchArchFeatures(self, obj, linkObj=None, index=None, linkElement=None):
-        '''
+        """
            To execute features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
            -  import ArchSketchObject module, and
            -  execute features that are common to ArchObjects (including Links) and ArchSketch
 
            To install SketchArch External Add-on, see https://github.com/paullee0/FreeCAD_SketchArch#iv-install
-        '''
+        """
 
         # To execute features in SketchArch External Add-on, if present
         try:
@@ -250,11 +250,11 @@ class _Equipment(ArchComponent.Component):
             pass
 
     def appLinkExecute(self, obj, linkObj, index, linkElement):
-        '''
+        """
             Default Link Execute method() -
             See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
             @realthunder added support to Links to run Linked Scripted Object's methods()
-        '''
+        """
 
         # Add features in the SketchArch External Add-on, if present
         self.addSketchArchFeatures(obj, linkObj)

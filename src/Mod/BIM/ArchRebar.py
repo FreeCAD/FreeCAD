@@ -503,7 +503,7 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
 
 def CalculatePlacement(baramount, barnumber, bardiameter, size, axis, rotation, offsetstart, offsetend, RebarShape = ""):
 
-    """ CalculatePlacement([baramount, barnumber, bardiameter, size, axis, rotation, offsetstart, offsetend, RebarShape]):
+    """CalculatePlacement([baramount, barnumber, bardiameter, size, axis, rotation, offsetstart, offsetend, RebarShape]):
     Calculate the placement of the bar from given values."""
     if baramount == 1:
         interval = offsetstart
@@ -520,7 +520,7 @@ def CalculatePlacement(baramount, barnumber, bardiameter, size, axis, rotation, 
 
 def CustomSpacingPlacement(spacinglist, barnumber, axis, rotation, offsetstart, offsetend):
 
-    """ CustomSpacingPlacement(spacinglist, barnumber, axis, rotation, offsetstart, offsetend):
+    """CustomSpacingPlacement(spacinglist, barnumber, axis, rotation, offsetstart, offsetend):
     Calculate placement of the bar from custom spacing list."""
     if barnumber == 1:
         bardistance = offsetstart
@@ -535,7 +535,7 @@ def CustomSpacingPlacement(spacinglist, barnumber, axis, rotation, offsetstart, 
 
 def strprocessOfCustomSpacing(span_string):
 
-    """ strprocessOfCustomSpacing(span_string): This function take input
+    """strprocessOfCustomSpacing(span_string): This function take input
     in specific syntax and return output in the form of list. For eg.
     Input: "3@100+2@200+3@100"
     Output: [100, 100, 100, 200, 200, 100, 100, 100]"""
@@ -560,7 +560,7 @@ def strprocessOfCustomSpacing(span_string):
 
 def getLengthOfRebar(rebar):
 
-    """ getLengthOfRebar(RebarObject): Calculates the length of the rebar."""
+    """getLengthOfRebar(RebarObject): Calculates the length of the rebar."""
     base = rebar.Base
     # When rebar is derived from DWire
     if hasattr(base, "Length"):

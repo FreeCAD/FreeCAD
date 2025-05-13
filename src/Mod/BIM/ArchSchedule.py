@@ -731,7 +731,7 @@ class _ViewProviderArchSchedule:
 
 class ArchScheduleTaskPanel:
 
-    '''The editmode TaskPanel for Schedules'''
+    """The editmode TaskPanel for Schedules"""
 
     def __init__(self,obj=None):
 

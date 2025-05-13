@@ -330,7 +330,7 @@ def buildRelColors(ifcfile, prodrepr):
         # FIXME: style_entity_id = { style_entity_id: product_id } not material_id ???
         # see https://forum.freecad.org/viewtopic.php?f=39&t=37940&start=10#p329491
         # last code change in these color code https://github.com/FreeCAD/FreeCAD/commit/2d1f6ab1
-        '''
+        """
         if r.Item:
             # print(r.id())
             # print(r.Item)  # IfcRepresentationItem or IfcShapeRepresentation
@@ -339,7 +339,7 @@ def buildRelColors(ifcfile, prodrepr):
                     style_material_id[r.id()] = p
                     # print(p)
                     # print(ifcfile[p])  # product
-        '''
+        """
 
     # A much faster version for Nova style_material_id with product_ids
     # no material colors, Nova ifc files often do not have materials at all
@@ -662,7 +662,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
 
 
 def getIfcPsetProperties(ifcfile, pid):
-    """ directly build the property table from pid and ifcfile for FreeCAD"""
+    """directly build the property table from pid and ifcfile for FreeCAD"""
 
     return getIfcProperties(ifcfile, pid, getIfcPropertySets(ifcfile, pid), {})
 

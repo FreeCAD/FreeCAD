@@ -1176,7 +1176,7 @@ class _ViewProviderSectionPlane:
 
 class SectionPlaneTaskPanel:
 
-    '''A TaskPanel for all the section plane object'''
+    """A TaskPanel for all the section plane object"""
 
     def __init__(self):
 

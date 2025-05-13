@@ -60,7 +60,7 @@ else:
 
 
 def adjust_list_len (lst, newLn, val):
-    '''Returns a clone of lst with length newLn, val is appended if required'''
+    """Returns a clone of lst with length newLn, val is appended if required"""
     ln = len(lst)
     if ln > newLn:
         return lst[0:newLn]
@@ -69,9 +69,9 @@ def adjust_list_len (lst, newLn, val):
 
 
 def find_inters (edge1, edge2, infinite1=True, infinite2=True):
-    '''Future wrapper for DraftGeomUtils.findIntersection. The function now
+    """Future wrapper for DraftGeomUtils.findIntersection. The function now
     contains a modified copy of getLineIntersections from that function.
-    '''
+    """
     def getLineIntersections(pt1, pt2, pt3, pt4, infinite1, infinite2):
         # if pt1:
             ## first check if we don't already have coincident endpoints ######## we do not want that here ########
@@ -150,7 +150,7 @@ def face_from_points(ptLst):
 
 
 class _Roof(ArchComponent.Component):
-    '''The Roof object'''
+    """The Roof object"""
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
@@ -242,22 +242,22 @@ class _Roof(ArchComponent.Component):
         return newEdges
 
     def calcHeight(self, id):
-        '''Get the height from run and angle of the given roof profile'''
+        """Get the height from run and angle of the given roof profile"""
         htRel = self.profilsDico[id]["run"] * (math.tan(math.radians(self.profilsDico[id]["angle"])))
         return htRel
 
     def calcRun(self, id):
-        '''Get the run from height and angle of the given roof profile'''
+        """Get the run from height and angle of the given roof profile"""
         runRel = self.profilsDico[id]["height"] / (math.tan(math.radians(self.profilsDico[id]["angle"])))
         return runRel
 
     def calcAngle(self, id):
-        '''Get the angle from height and run of the given roof profile'''
+        """Get the angle from height and run of the given roof profile"""
         ang = math.degrees(math.atan(self.profilsDico[id]["height"] / self.profilsDico[id]["run"]))
         return ang
 
     def getPerpendicular(self, vec, rotEdge, l):
-        '''Get the perpendicular vec of given edge on xy plane'''
+        """Get the perpendicular vec of given edge on xy plane"""
         norm = Vector(0.0, 0.0, 1.0)
         if hasattr(self, "normal"):
             if self.normal:
@@ -318,10 +318,10 @@ class _Roof(ArchComponent.Component):
         return profilCurr["run"]
 
     def calcApex(self, i, numEdges):
-        '''Recalculate the run and height if there is an opposite roof segment
+        """Recalculate the run and height if there is an opposite roof segment
         with a parallel edge, and if the sum of the runs of the segments is
         larger than the distance between the edges of the segments.
-        '''
+        """
         profilCurr = self.findProfil(i)
         if 0 <= profilCurr["idrel"] < numEdges: # no apex calculation if idrel is used
             return
@@ -745,7 +745,7 @@ class _Roof(ArchComponent.Component):
             FreeCAD.Console.PrintMessage(translate("Arch", "Unable to create a roof"))
 
     def getSubVolume(self, obj):
-        '''returns a volume to be subtracted'''
+        """returns a volume to be subtracted"""
         custom_subvolume = getattr(obj, 'Subvolume', None)
         if custom_subvolume:
             return custom_subvolume.Shape
@@ -796,7 +796,7 @@ class _Roof(ArchComponent.Component):
 
 
     def computeAreas(self, obj):
-        '''computes border and ridge roof edges length'''
+        """computes border and ridge roof edges length"""
         if hasattr(obj, "RidgeLength") and hasattr(obj, "BorderLength"):
             rl = 0
             bl = 0
@@ -840,7 +840,7 @@ class _Roof(ArchComponent.Component):
 
 
 class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
-    '''A View Provider for the Roof object'''
+    """A View Provider for the Roof object"""
     def __init__(self, vobj):
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
@@ -869,7 +869,7 @@ class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
 
 
 class _RoofTaskPanel:
-    '''The editmode TaskPanel for Roof objects'''
+    """The editmode TaskPanel for Roof objects"""
     def __init__(self):
         self.updating = False
         self.obj = None
@@ -906,7 +906,7 @@ class _RoofTaskPanel:
         return QtGui.QDialogButtonBox.Close
 
     def update(self):
-        '''fills the treewidget'''
+        """fills the treewidget"""
         self.updating = True
         if self.obj:
             root = self.tree.invisibleRootItem()
@@ -936,7 +936,7 @@ class _RoofTaskPanel:
         setattr(self.obj, prop, val_list)
 
     def edit(self, item, column):
-        '''transfers an edited value from the widget to the object'''
+        """transfers an edited value from the widget to the object"""
         if self.updating:
             return
         row = int(item.text(0))

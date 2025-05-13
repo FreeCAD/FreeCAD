@@ -309,7 +309,7 @@ class ViewProviderArchGrid:
 
 class ArchGridTaskPanel:
 
-    '''A TaskPanel for the Arch Grid'''
+    """A TaskPanel for the Arch Grid"""
 
     def __init__(self,obj):
 

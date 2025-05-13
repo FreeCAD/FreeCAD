@@ -1723,7 +1723,7 @@ class WallHandler(BaseHandler):
 
         Returns:
             Rectangle, Rectangle, spine: both section and the arc for the wall
-        # """
+        """
         (start, end, _, _, _, _) = wall_details
 
         a1, a2, (invert_angle, center, radius) = self._get_normal_angles(wall_details)
