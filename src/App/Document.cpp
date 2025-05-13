@@ -4312,3 +4312,17 @@ bool Document::mustExecute() const
     }
     return false;
 }
+
+void Document::queueRecomputedObject(DocumentObject* obj)
+{
+    d->pendingRecomputedObjects.push_back(obj);
+}
+
+void Document::processPendingSignals()
+{
+    for (auto obj : d->pendingRecomputedObjects) {
+        // Emit the recomputed signal for each queued object.
+        signalRecomputedObject(*obj);
+    }
+    d->pendingRecomputedObjects.clear();
+}

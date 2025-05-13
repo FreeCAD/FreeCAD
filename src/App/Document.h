@@ -192,6 +192,10 @@ public:
     //@}
     // NOLINTEND
 
+    /// Queue a document object for an asynchronous recomputed signal.
+    void queueRecomputedObject(DocumentObject* obj);
+    /// Process all pending recomputed signals.
+    void processPendingSignals();
 
     void clearDocument();
 
