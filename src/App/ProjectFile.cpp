@@ -23,7 +23,7 @@
 
 
 #include "PreCompiled.h"
-
+#ifdef _PreComp_
 #include <cassert>
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XercesVersion.hpp>
@@ -46,6 +46,7 @@
 #include <zipios++/zipinputstream.h>
 #include <zipios++/zipoutputstream.h>
 #include <zipios++/meta-iostreams.h>
+#endif
 
 #include "ProjectFile.h"
 #include "DocumentObject.h"
