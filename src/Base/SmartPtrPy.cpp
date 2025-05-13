@@ -23,11 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <CXX/Objects.hxx>
 #endif
 
 #include "SmartPtrPy.h"
 #include "Interpreter.h"
-#include <CXX/Objects.hxx>
 
 
 namespace Py

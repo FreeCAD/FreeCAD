@@ -27,11 +27,13 @@
 #include <set>
 #include <vector>
 #include <string>
-#endif
-
 #include <limits>
 #include <locale>
 #include <iomanip>
+
+#include <boost/iostreams/filtering_stream.hpp>
+#include <zipios++/zipinputstream.h>
+#endif
 
 #include "Writer.h"
 #include "Base64.h"
@@ -42,8 +44,6 @@
 #include "Stream.h"
 #include "Tools.h"
 
-#include <boost/iostreams/filtering_stream.hpp>
-#include <zipios++/zipinputstream.h>
 
 using namespace Base;
 
