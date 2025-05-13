@@ -39,10 +39,10 @@ class Arch_Frame:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Frame',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
-                'Accel': "F, R",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.")}
+        return {"Pixmap": "Arch_Frame",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
+                "Accel": "F, R",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.")}
 
     def IsActive(self):
 
@@ -56,10 +56,10 @@ class Arch_Frame:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Frame"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.addModule("Draft")
-            FreeCADGui.doCommand("obj = Arch.makeFrame(FreeCAD.ActiveDocument."+s[0].Name+",FreeCAD.ActiveDocument."+s[1].Name+")")
+            FreeCADGui.doCommand("obj = Arch.makeFrame(FreeCAD.ActiveDocument." + s[0].Name + ",FreeCAD.ActiveDocument." + s[1].Name + ")")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
 
-FreeCADGui.addCommand('Arch_Frame',Arch_Frame())
+FreeCADGui.addCommand("Arch_Frame",Arch_Frame())

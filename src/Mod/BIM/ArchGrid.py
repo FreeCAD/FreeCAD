@@ -286,7 +286,7 @@ class ViewProviderArchGrid:
         return True
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
@@ -511,13 +511,13 @@ class ArchGridTaskPanel:
 
     def editHorizontalHeader(self, index):
 
-        val,ok = QtGui.QInputDialog.getText(None,'Edit size','New size')
+        val,ok = QtGui.QInputDialog.getText(None,"Edit size","New size")
         if ok:
             self.table.setHorizontalHeaderItem(index,QtGui.QTableWidgetItem(val))
 
     def editVerticalHeader(self, index):
 
-        val,ok = QtGui.QInputDialog.getText(None,'Edit size','New size')
+        val,ok = QtGui.QInputDialog.getText(None,"Edit size","New size")
         if ok:
             self.table.setVerticalHeaderItem(index,QtGui.QTableWidgetItem(val))
 

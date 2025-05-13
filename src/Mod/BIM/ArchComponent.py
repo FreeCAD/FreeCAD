@@ -732,11 +732,11 @@ class Component(ArchIFC.IfcProduct):
         for o in obj.Additions:
 
             if not base:
-                if hasattr(o,'Shape'):
+                if hasattr(o,"Shape"):
                     base = o.Shape
             else:
                 if base.isNull():
-                    if hasattr(o,'Shape'):
+                    if hasattr(o,"Shape"):
                         base = o.Shape
                 else:
                     # special case, both walls with coinciding endpoints
@@ -748,7 +748,7 @@ class Component(ArchIFC.IfcProduct):
                             # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                             add.Placement = placement.multiply(add.Placement)
                         base = base.fuse(add)
-                    elif hasattr(o,'Shape'):
+                    elif hasattr(o,"Shape"):
                         if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
                             ## TODO use Part.Shape() instead?
                             s = o.Shape.copy()
@@ -804,7 +804,7 @@ class Component(ArchIFC.IfcProduct):
                             base = Part.makeCompound([sol.cut(subvolume) for sol in base.Solids])
                         else:
                             base = base.cut(subvolume)
-                elif hasattr(o,'Shape'):
+                elif hasattr(o,"Shape"):
                     # no subvolume, we subtract the whole shape
                     if o.Shape:
                         if not o.Shape.isNull():
@@ -856,7 +856,7 @@ class Component(ArchIFC.IfcProduct):
                     if hasattr(obj.Axis.Proxy,"getPoints"):
                         points = obj.Axis.Proxy.getPoints(obj.Axis)
                 if not points:
-                    if hasattr(obj.Axis,'Shape'):
+                    if hasattr(obj.Axis,"Shape"):
                         points = [v.Point for v in obj.Axis.Shape.Vertexes]
         if points:
             shps = []
@@ -1238,14 +1238,14 @@ class ViewProviderComponent:
         if prop == "Material":
             if obj.Material and ( (not hasattr(obj.ViewObject,"UseMaterialColor")) or obj.ViewObject.UseMaterialColor):
                 if hasattr(obj.Material,"Material"):
-                    if 'DiffuseColor' in obj.Material.Material:
-                        if "(" in obj.Material.Material['DiffuseColor']:
-                            c = tuple([float(f) for f in obj.Material.Material['DiffuseColor'].strip("()").split(",")])
+                    if "DiffuseColor" in obj.Material.Material:
+                        if "(" in obj.Material.Material["DiffuseColor"]:
+                            c = tuple([float(f) for f in obj.Material.Material["DiffuseColor"].strip("()").split(",")])
                             if obj.ViewObject:
                                 if obj.ViewObject.ShapeColor != c:
                                     obj.ViewObject.ShapeColor = c
-                    if 'Transparency' in obj.Material.Material:
-                        t = int(obj.Material.Material['Transparency'])
+                    if "Transparency" in obj.Material.Material:
+                        t = int(obj.Material.Material["Transparency"])
                         if obj.ViewObject:
                             if obj.ViewObject.Transparency != t:
                                 obj.ViewObject.Transparency = t
@@ -1328,7 +1328,7 @@ class ViewProviderComponent:
                     vobj.DiffuseColor = d
         elif prop == "Visibility":
             for host in vobj.Object.Proxy.getHosts(vobj.Object):
-                if hasattr(host, 'ViewObject'):
+                if hasattr(host, "ViewObject"):
                     host.ViewObject.Visibility = vobj.Visibility
 
         return
@@ -1533,7 +1533,7 @@ class ViewProviderComponent:
             The context menu already assembled prior to this method being
             called.
         """
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         self.contextMenuAddEdit(menu)
         self.contextMenuAddToggleSubcomponents(menu)
@@ -2025,7 +2025,7 @@ class ComponentTaskPanel:
 
         # get presets
         self.ptypes = list(ArchIFCSchema.IfcTypes)
-        self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
+        self.plabels = ["".join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")
         if os.path.exists(psetspath):
@@ -2033,7 +2033,7 @@ class ComponentTaskPanel:
                 reader = csv.reader(csvfile, delimiter=';')
                 for row in reader:
                     self.psetdefs[row[0]] = row[1:]
-        self.psetkeys = [''.join(map(lambda x: x if x.islower() else " "+x, t[5:]))[1:] for t in self.psetdefs.keys()]
+        self.psetkeys = ["".join(map(lambda x: x if x.islower() else " "+x, t[5:]))[1:] for t in self.psetdefs.keys()]
         self.psetkeys.sort()
         self.ifcEditor = FreeCADGui.PySideUic.loadUi(":/ui/dialogIfcPropertiesRedux.ui")
 

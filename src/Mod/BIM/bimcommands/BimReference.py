@@ -39,10 +39,10 @@ class Arch_Reference:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Reference',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Reference","External reference"),
-                'Accel': "E, X",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Reference","Creates an external reference object")}
+        return {"Pixmap": "Arch_Reference",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Reference","External reference"),
+                "Accel": "E, X",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Reference","Creates an external reference object")}
 
     def IsActive(self):
 
@@ -61,4 +61,4 @@ class Arch_Reference:
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
 
 
-FreeCADGui.addCommand('Arch_Reference', Arch_Reference())
+FreeCADGui.addCommand("Arch_Reference", Arch_Reference())

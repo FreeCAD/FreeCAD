@@ -90,7 +90,7 @@ class ifc_vp_object:
         from . import ifc_types
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
@@ -423,7 +423,7 @@ class ifc_vp_document(ifc_vp_object):
 
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         ifc_menu = super().setupContextMenu(vobj, menu)
@@ -606,7 +606,7 @@ class ifc_vp_material:
         from . import ifc_psets
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")

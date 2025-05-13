@@ -50,10 +50,10 @@ class Arch_Panel:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Panel',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Panel","Panel"),
-                'Accel': "P, A",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel","Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)")}
+        return {"Pixmap": "Arch_Panel",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Panel","Panel"),
+                "Accel": "P, A",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Panel","Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)")}
 
     def IsActive(self):
 
@@ -117,14 +117,14 @@ class Arch_Panel:
         FreeCADGui.addModule("Arch")
         if self.Profile:
             pr = Presets[self.Profile]
-            FreeCADGui.doCommand('p = Arch.makeProfile('+str(pr[2])+','+str(pr[3])+','+str(pr[4])+','+str(pr[5])+')')
-            FreeCADGui.doCommand('s = Arch.makePanel(p,thickness='+str(self.Thickness)+')')
-            #FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
+            FreeCADGui.doCommand("p = Arch.makeProfile(" + str(pr[2]) + "," + str(pr[3]) + "," + str(pr[4]) + "," + str(pr[5]) + ")")
+            FreeCADGui.doCommand("s = Arch.makePanel(p,thickness=" + str(self.Thickness) + ")")
+            #FreeCADGui.doCommand("s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)")
         else:
-            FreeCADGui.doCommand('s = Arch.makePanel(length='+str(self.Length)+',width='+str(self.Width)+',thickness='+str(self.Thickness)+')')
-        FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
+            FreeCADGui.doCommand("s = Arch.makePanel(length=" + str(self.Length) + ",width=" + str(self.Width) + ",thickness=" + str(self.Thickness) + ")")
+        FreeCADGui.doCommand("s.Placement.Base = "+DraftVecUtils.toString(point))
         if self.rotated:
-            FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1.00,0.00,0.00),90.00)')
+            FreeCADGui.doCommand("s.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1.00,0.00,0.00),90.00)")
         self.doc.commitTransaction()
         self.doc.recompute()
         if FreeCADGui.draftToolBar.continueCmd.isChecked():
@@ -234,10 +234,10 @@ class Arch_PanelCut:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Panel_Cut',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Panel_Cut","Panel Cut"),
-                'Accel': "P, C",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel_Cut","Creates 2D views of selected panels")}
+        return {"Pixmap": "Arch_Panel_Cut",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Panel_Cut","Panel Cut"),
+                "Accel": "P, C",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Panel_Cut","Creates 2D views of selected panels")}
 
     def IsActive(self):
 
@@ -263,10 +263,10 @@ class Arch_PanelSheet:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Panel_Sheet',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Panel Sheet"),
-                'Accel': "P, S",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Creates a 2D sheet which can contain panel cuts")}
+        return {"Pixmap": "Arch_Panel_Sheet",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Panel Sheet"),
+                "Accel": "P, S",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Creates a 2D sheet which can contain panel cuts")}
 
     def IsActive(self):
 
@@ -299,10 +299,10 @@ class Arch_Nest:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Nest',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Nest","Nest"),
-                'Accel': "N, E",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Nest","Nests a series of selected shapes in a container")}
+        return {"Pixmap": "Arch_Nest",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Nest","Nest"),
+                "Accel": "N, E",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Nest","Nests a series of selected shapes in a container")}
 
     def IsActive(self):
 
@@ -366,7 +366,7 @@ class NestTaskPanel:
         import Draft
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 1:
-            if hasattr(s[0],'Shape'):
+            if hasattr(s[0],"Shape"):
                 if len(s[0].Shape.Faces) == 1:
                     if not (s[0] in self.shapes):
                         self.form.Container.clear()
@@ -383,7 +383,7 @@ class NestTaskPanel:
 
         s = FreeCADGui.Selection.getSelection()
         for o in s:
-            if hasattr(o,'Shape'):
+            if hasattr(o,"Shape"):
                 if not o in self.shapes:
                     if o != self.container:
                         self.addObject(o,self.form.Shapes)
@@ -467,11 +467,11 @@ class NestTaskPanel:
 class Arch_PanelGroup:
 
     def GetCommands(self):
-        return tuple(['Arch_Panel','Arch_Panel_Cut','Arch_Panel_Sheet','Arch_Nest'])
+        return tuple(["Arch_Panel',"Arch_Panel_Cut',"Arch_Panel_Sheet',"Arch_Nest'])
 
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools'),
-                 'ToolTip': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools')
+        return { "MenuText": QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools'),
+                 "ToolTip": QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools')
                }
 
     def IsActive(self):
@@ -479,8 +479,8 @@ class Arch_PanelGroup:
         return v
 
 
-FreeCADGui.addCommand('Arch_Panel',Arch_Panel())
-FreeCADGui.addCommand('Arch_Panel_Cut',Arch_PanelCut())
-FreeCADGui.addCommand('Arch_Panel_Sheet',Arch_PanelSheet())
-FreeCADGui.addCommand('Arch_Nest',Arch_Nest())
-FreeCADGui.addCommand('Arch_PanelTools', Arch_PanelGroup())
+FreeCADGui.addCommand("Arch_Panel",Arch_Panel())
+FreeCADGui.addCommand("Arch_Panel_Cut",Arch_PanelCut())
+FreeCADGui.addCommand("Arch_Panel_Sheet",Arch_PanelSheet())
+FreeCADGui.addCommand("Arch_Nest",Arch_Nest())
+FreeCADGui.addCommand("Arch_PanelTools', Arch_PanelGroup())

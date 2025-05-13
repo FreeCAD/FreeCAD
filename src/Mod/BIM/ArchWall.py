@@ -184,7 +184,7 @@ class _Wall(ArchComponent.Component):
             obj.setEditorMode("Area",1)
         if not "Align" in lp:
             obj.addProperty("App::PropertyEnumeration","Align","Wall",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information."), locked=True)
-            obj.Align = ['Left','Right','Center']
+            obj.Align = ["Left","Right","Center"]
         if not "Normal" in lp:
             obj.addProperty("App::PropertyVector","Normal","Wall",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"), locked=True)
         if not "Face" in lp:
@@ -195,7 +195,7 @@ class _Wall(ArchComponent.Component):
         # See getExtrusionData(), removeSplitters are no longer used
         #if not "Refine" in lp:
         #    obj.addProperty("App::PropertyEnumeration","Refine","Wall",QT_TRANSLATE_NOOP("App::Property","Select whether or not and the method to remove splitter of the Wall. Currently Draft removeSplitter and Part removeSplitter available but may not work on complex sketch."), locked=True)
-        #    obj.Refine = ['No','DraftRemoveSplitter','PartRemoveSplitter']
+        #    obj.Refine = ["No","DraftRemoveSplitter","PartRemoveSplitter"]
         # TODO - To implement in Arch Component ?
 
         if not "MakeBlocks" in lp:
@@ -223,9 +223,9 @@ class _Wall(ArchComponent.Component):
             obj.addProperty("App::PropertyStringList","ArchSketchEdges","Wall",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."), locked=True)
         if not hasattr(obj,"ArchSketchPropertySet"):
             obj.addProperty("App::PropertyEnumeration","ArchSketchPropertySet","Wall",QT_TRANSLATE_NOOP("App::Property","Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch "), locked=True)
-            obj.ArchSketchPropertySet = ['Default']
+            obj.ArchSketchPropertySet = ["Default"]
         if not hasattr(self,"ArchSkPropSetPickedUuid"):  # 'obj.Proxy', 'self' not works ?
-            self.ArchSkPropSetPickedUuid = ''
+            self.ArchSkPropSetPickedUuid = ""
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
         self.connectEdges = []
@@ -242,12 +242,12 @@ class _Wall(ArchComponent.Component):
         super().loads(state)  # do nothing as of 2024.11.28
         if state == None:
             return
-        elif state[0] == 'W':  # state[1] == 'a', behaviour before 2024.11.28
+        elif state[0] == "W":  # state[1] == "a", behaviour before 2024.11.28
             return
-        elif state[0] == 'Wall':
+        elif state[0] == "Wall":
             self.ArchSkPropSetPickedUuid = state[1]
             self.ArchSkPropSetListPrev = state[2]
-        elif state[0] != 'Wall':  # model before merging super.dumps/loads()
+        elif state[0] != "Wall":  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
 
@@ -366,9 +366,9 @@ class _Wall(ArchComponent.Component):
             if propSetListCur:
                 if propSetListPrev != propSetListCur:
                     obj.ArchSketchPropertySet = propSetListCur
-                    obj.ArchSketchPropertySet = 'Default'
+                    obj.ArchSketchPropertySet = "Default"
                 #else:  # Seems no need ...
-                    #obj.PropertySet = 'Default'
+                    #obj.PropertySet = "Default"
 
         extdata = self.getExtrusionData(obj)
         if extdata:
@@ -406,7 +406,7 @@ class _Wall(ArchComponent.Component):
                 bplates.Placement = extdata[2].multiply(bplates.Placement)
                 base = bplates.extrude(extv)
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.isValid():
@@ -548,7 +548,7 @@ class _Wall(ArchComponent.Component):
 
         # set the length property
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape.Edges:
                     if not obj.Base.Shape.Faces:
                         if hasattr(obj.Base.Shape,"Length"):
@@ -605,7 +605,7 @@ class _Wall(ArchComponent.Component):
             if (obj.Base and obj.Length.Value
                     and hasattr(self,"oldLength") and (self.oldLength is not None)
                     and (self.oldLength != obj.Length.Value)):
-                if hasattr(obj.Base,'Shape'):
+                if hasattr(obj.Base,"Shape"):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
                         e = obj.Base.Shape.Edges[0]
@@ -727,8 +727,8 @@ class _Wall(ArchComponent.Component):
         # (Adding support in SketchFeaturePython, DWire...)
         widths = []  # [] or None are both False
         if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
-            if hasattr(obj.Base, 'Proxy'):  # TODO Any need to test ?
-                if hasattr(obj.Base.Proxy, 'getWidths'):
+            if hasattr(obj.Base, "Proxy"):  # TODO Any need to test ?
+                if hasattr(obj.Base.Proxy, "getWidths"):
                     # Return a list of Width corresponding to indexes of sorted
                     # edges of Sketch.
                     widths = obj.Base.Proxy.getWidths(obj.Base,
@@ -761,18 +761,18 @@ class _Wall(ArchComponent.Component):
                 #print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
                 return None
 
-        # Set 'default' width - for filling in any item in the list == 0 or None
+        # Set  width - for filling in any item in the list == 0 or None
         if obj.Width.Value:
             width = obj.Width.Value
         else:
-            width = 200  # 'Default' width value
+            width = 200  # "Default" width value
 
         # Get align of each edge segment from Base Objects if they store it.
         # (Adding support in SketchFeaturePython, DWire...)
         aligns = []
         if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
-            if hasattr(obj.Base, 'Proxy'):
-                if hasattr(obj.Base.Proxy, 'getAligns'):
+            if hasattr(obj.Base, "Proxy"):
+                if hasattr(obj.Base.Proxy, "getAligns"):
                     # Return a list of Align corresponds to indexes of sorted
                     # edges of Sketch.
                     aligns = obj.Base.Proxy.getAligns(obj.Base,
@@ -809,8 +809,8 @@ class _Wall(ArchComponent.Component):
         # (Adding support in SketchFeaturePython, DWire...)
         offsets = []  # [] or None are both False
         if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
-            if hasattr(obj.Base, 'Proxy'):
-                if hasattr(obj.Base.Proxy, 'getOffsets'):
+            if hasattr(obj.Base, "Proxy"):
+                if hasattr(obj.Base.Proxy, "getOffsets"):
                     # Return a list of Offset corresponding to indexes of sorted
                     # edges of Sketch.
                     offsets = obj.Base.Proxy.getOffsets(obj.Base,
@@ -822,7 +822,7 @@ class _Wall(ArchComponent.Component):
                 if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getOffsets() not implemented yet):-
                     # sort the offset list in OverrideOffset to correspond to indexes of sorted edges of Sketch
-                    if hasattr(ArchSketchObject, 'sortSketchOffset'):
+                    if hasattr(ArchSketchObject, "sortSketchOffset"):
                         offsets = ArchSketchObject.sortSketchOffset(obj.Base, obj.OverrideOffset, obj.ArchSketchEdges)
                     else:
                         offsets = obj.OverrideOffset
@@ -843,7 +843,7 @@ class _Wall(ArchComponent.Component):
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):
-            if obj.Base and hasattr(obj.Base,'Shape'):
+            if obj.Base and hasattr(obj.Base,"Shape"):
                 normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
                 if normal is None:
                     normal = Vector(0,0,1)
@@ -876,7 +876,7 @@ class _Wall(ArchComponent.Component):
 
         # Check if there is obj.Base and its validity to proceed
         if self.ensureBase(obj):
-            if hasattr(obj.Base,'Shape'):
+            if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
                         return None
@@ -912,13 +912,13 @@ class _Wall(ArchComponent.Component):
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
 
-                    elif hasattr(obj.Base, 'Proxy') and obj.ArchSketchData and \
-                    hasattr(obj.Base.Proxy, 'getWallBaseShapeEdgesInfo'):
+                    elif hasattr(obj.Base, "Proxy") and obj.ArchSketchData and \
+                    hasattr(obj.Base.Proxy, "getWallBaseShapeEdgesInfo"):
                         wallBaseShapeEdgesInfo = obj.Base.Proxy.getWallBaseShapeEdgesInfo(obj.Base,
                                                  propSetUuid=propSetUuid)
                         #get wall edges (not wires); use original edges if getWallBaseShapeEdgesInfo() provided none
                         if wallBaseShapeEdgesInfo:
-                            self.basewires = wallBaseShapeEdgesInfo.get('wallAxis')  # 'wallEdges'  # widths, aligns, offsets?
+                            self.basewires = wallBaseShapeEdgesInfo.get("wallAxis")  # 'wallEdges'  # widths, aligns, offsets?
 
                     # Sort Sketch edges consistently with below procedures
                     # without using Sketch.Shape.Edges - found the latter order
@@ -1005,7 +1005,7 @@ class _Wall(ArchComponent.Component):
                         self.connectEdges = []
                         for i,wire in enumerate(self.basewires):
 
-                            # Check number of edges per 'wire' and get the 1st edge
+                            # Check number of edges per "Wire" and get the 1st edge
                             if isinstance(wire,Part.Wire):
                                 edgeNum = len(wire.Edges)
                                 e = wire.Edges[0]
@@ -1019,7 +1019,7 @@ class _Wall(ArchComponent.Component):
                                 # align entry and with same number of items as
                                 # number of edges
                                 try:
-                                    if aligns[n] not in ['Left', 'Right', 'Center']:
+                                    if aligns[n] not in ["Left", "Right", "Center"]:
                                         aligns[n] = align
                                 except Exception:
                                     aligns.append(align)
@@ -1310,7 +1310,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
         from pivy import coin
         tex = coin.SoTexture2()
-        image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+        image = Draft.loadTexture(Draft.svgpatterns()["simple"][1], 128)
         if not image is None:
             tex.image = image
         texcoords = coin.SoTextureCoordinatePlane()
@@ -1354,11 +1354,11 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                             for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
                                 c = (c[0],c[1],c[2],1.0-obj.ViewObject.Transparency/100.0)
-                                if 'DiffuseColor' in mat.Material:
-                                    if "(" in mat.Material['DiffuseColor']:
-                                        c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                                if 'Transparency' in mat.Material:
-                                    c = (c[0],c[1],c[2],1.0-float(mat.Material['Transparency']))
+                                if "DiffuseColor" in mat.Material:
+                                    if "(" in mat.Material["DiffuseColor"]:
+                                        c = tuple([float(f) for f in mat.Material["DiffuseColor"].strip("()").split(",")])
+                                if "Transparency" in mat.Material:
+                                    c = (c[0],c[1],c[2],1.0-float(mat.Material["Transparency"]))
                                 cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
                             obj.ViewObject.DiffuseColor = cols
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
@@ -1427,7 +1427,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def setupContextMenu(self, vobj, menu):
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         super().contextMenuAddEdit(menu)

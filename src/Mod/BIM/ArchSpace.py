@@ -268,7 +268,7 @@ class _Space(ArchComponent.Component):
                         if hasattr(obj.Zone.ViewObject.Proxy,"claimChildren"):
                             obj.Zone.ViewObject.Proxy.claimChildren()
         if hasattr(obj,"Area"):
-            obj.setEditorMode('Area',1)
+            obj.setEditorMode("Area",1)
         ArchComponent.Component.onChanged(self,obj,prop)
 
     def addSubobjects(self,obj,subobjects):
@@ -331,7 +331,7 @@ class _Space(ArchComponent.Component):
         else:
             bb = None
             for b in obj.Boundaries:
-                if hasattr(b[0],'Shape'):
+                if hasattr(b[0],"Shape"):
                     if not bb:
                         bb = b[0].Shape.BoundBox
                     else:
@@ -350,7 +350,7 @@ class _Space(ArchComponent.Component):
         # 3: identifying boundary faces
         goodfaces = []
         for b in obj.Boundaries:
-            if hasattr(b[0],'Shape'):
+            if hasattr(b[0],"Shape"):
                 for sub in b[1]:
                     if "Face" in sub:
                         fn = int(sub[4:])-1

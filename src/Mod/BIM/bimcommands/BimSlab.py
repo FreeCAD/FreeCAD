@@ -81,8 +81,8 @@ class BIM_Slab:
                 + sel[0].Name
                 + ",height=200)"
             )
-            FreeCADGui.doCommand('s.Label = "' + translate("BIM", "Slab") + '"')
-            FreeCADGui.doCommand('s.IfcType = "Slab"')
+            FreeCADGui.doCommand("s.Label = '" + translate("BIM", "Slab") + "'")
+            FreeCADGui.doCommand("s.IfcType = 'Slab'")
             FreeCADGui.doCommand("s.Normal = FreeCAD.Vector(0,0,-1)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
@@ -102,4 +102,4 @@ class BIM_Slab:
             FreeCADGui.draftToolBar.offUi()
 
 
-FreeCADGui.addCommand('BIM_Slab', BIM_Slab())
+FreeCADGui.addCommand("BIM_Slab", BIM_Slab())

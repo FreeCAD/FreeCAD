@@ -37,7 +37,7 @@ class Arch_Roof:
     """the Arch Roof command definition"""
 
     def GetResources(self):
-        return {"Pixmap"  : "Arch_Roof",
+        return {"Pixmap": "Arch_Roof",
                 "MenuText": QT_TRANSLATE_NOOP("Arch_Roof", "Roof"),
                 "Accel"   : "R, F",
                 "ToolTip" : QT_TRANSLATE_NOOP("Arch_Roof", "Creates a roof object from the selected wire.")}

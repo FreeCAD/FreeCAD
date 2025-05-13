@@ -39,10 +39,10 @@ class Arch_Pipe:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Pipe',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Pipe","Pipe"),
-                'Accel': "P, I",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Pipe","Creates a pipe object from a given Wire or Line")}
+        return {"Pixmap": "Arch_Pipe",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Pipe","Pipe"),
+                "Accel": "P, I",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Pipe","Creates a pipe object from a given Wire or Line")}
 
     def IsActive(self):
 
@@ -54,12 +54,12 @@ class Arch_Pipe:
         s = FreeCADGui.Selection.getSelection()
         if s:
             for obj in s:
-                if hasattr(obj,'Shape'):
+                if hasattr(obj,"Shape"):
                     if len(obj.Shape.Wires) == 1:
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Pipe"))
                         FreeCADGui.addModule("Arch")
                         FreeCADGui.addModule("Draft")
-                        FreeCADGui.doCommand("obj = Arch.makePipe(FreeCAD.ActiveDocument."+obj.Name+")")
+                        FreeCADGui.doCommand("obj = Arch.makePipe(FreeCAD.ActiveDocument." + obj.Name + ")")
                         FreeCADGui.doCommand("Draft.autogroup(obj)")
                         FreeCAD.ActiveDocument.commitTransaction()
         else:
@@ -78,10 +78,10 @@ class Arch_PipeConnector:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_PipeConnector',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_PipeConnector","Connector"),
-                'Accel': "P, C",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeConnector","Creates a connector between 2 or 3 selected pipes")}
+        return {"Pixmap": "Arch_PipeConnector",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_PipeConnector","Connector"),
+                "Accel": "P, C",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_PipeConnector","Creates a connector between 2 or 3 selected pipes")}
 
     def IsActive(self):
 
@@ -105,7 +105,7 @@ class Arch_PipeConnector:
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Connector"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
-        FreeCADGui.doCommand("obj = Arch.makePipeConnector("+o+")")
+        FreeCADGui.doCommand("obj = Arch.makePipeConnector(" + o + ")")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -114,16 +114,16 @@ class Arch_PipeConnector:
 class Arch_PipeGroupCommand:
 
     def GetCommands(self):
-        return tuple(['Arch_Pipe','Arch_PipeConnector'])
+        return tuple(["Arch_Pipe',"Arch_PipeConnector'])
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools'),
-                 'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools')
+        return { "MenuText": QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools'),
+                 "ToolTip": QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools')
                }
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
 
 
-FreeCADGui.addCommand('Arch_Pipe',Arch_Pipe())
-FreeCADGui.addCommand('Arch_PipeConnector',Arch_PipeConnector())
-FreeCADGui.addCommand('Arch_PipeTools', Arch_PipeGroupCommand())
+FreeCADGui.addCommand("Arch_Pipe",Arch_Pipe())
+FreeCADGui.addCommand("Arch_PipeConnector",Arch_PipeConnector())
+FreeCADGui.addCommand("Arch_PipeTools", Arch_PipeGroupCommand())

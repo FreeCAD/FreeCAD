@@ -46,10 +46,10 @@ class Arch_Window:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Window',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
-                'Accel': "W, N",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
+        return {"Pixmap": "Arch_Window",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Window","Window"),
+                "Accel": "W, N",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
 
     def IsActive(self):
 
@@ -85,7 +85,7 @@ class Arch_Window:
         if FreeCADGui.Selection.getSelectionEx():
             FreeCADGui.draftToolBar.offUi()
             obj = self.sel[0]
-            if hasattr(obj,'Shape'):
+            if hasattr(obj,"Shape"):
                 if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
                     FreeCADGui.Control.closeDialog()
                     host = None
@@ -104,15 +104,15 @@ class Arch_Window:
 
                     self.doc.openTransaction(translate("Arch","Create Window"))
                     FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument." + obj.Name + ")")
                     if host and self.Include:
-                        FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
+                        FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument." + host.Name + "]")
                         siblings = host.Proxy.getSiblings(host)
                         sibs = [host]
                         for sibling in siblings:
                             if not sibling in sibs:
                                 sibs.append(sibling)
-                                FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
+                                FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument." + sibling.Name + "]")
                     self.doc.commitTransaction()
                     self.doc.recompute()
                     return
@@ -123,7 +123,7 @@ class Arch_Window:
                     # we consider the selected object as a type
                     self.doc.openTransaction(translate("Arch","Create Window"))
                     FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument." + obj.Name + ")")
                     self.doc.commitTransaction()
                     self.doc.recompute()
                     return
@@ -230,8 +230,8 @@ class Arch_Window:
             import ArchSketchObject
 
             if (host and Draft.getType(host.Base) == "ArchSketch" and
-                hasattr(ArchSketchObject, 'attachToHost') and 
-                hasattr(FreeCAD, 'ArchSketchLock') and 
+                hasattr(ArchSketchObject, 'attachToHost') and
+                hasattr(FreeCAD, "ArchSketchLock") and
                 FreeCAD.ArchSketchLock):
                 # Window sketch's stay at orgin is good if addon exists
                 FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")
@@ -489,4 +489,4 @@ class Arch_Window:
                 getattr(self,"val"+param).setEnabled(False)
 
 
-FreeCADGui.addCommand('Arch_Window', Arch_Window())
+FreeCADGui.addCommand("Arch_Window", Arch_Window())

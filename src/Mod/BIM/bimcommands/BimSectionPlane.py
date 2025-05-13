@@ -39,10 +39,10 @@ class Arch_SectionPlane:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_SectionPlane_Tree',
-                'Accel': "S, E",
-                'MenuText': QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
+        return {"Pixmap": "Arch_SectionPlane_Tree",
+                "Accel": "S, E",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
     def IsActive(self):
 
@@ -60,7 +60,7 @@ class Arch_SectionPlane:
         ss += "]"
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Section Plane"))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
+        FreeCADGui.doCommand("section = Arch.makeSectionPlane(" + ss + ")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         if len(sel) == 1 and getattr(sel[0], "IfcClass", None) == "IfcProject":
@@ -68,8 +68,8 @@ class Arch_SectionPlane:
             FreeCADGui.doCommand("section.Objects = []")
             #FreeCADGui.addModule("nativeifc.ifc_tools")
             #p = "FreeCAD.ActiveDocument."+sel[0].Name
-            #FreeCADGui.doCommand("nativeifc.ifc_tools.aggregate(section,"+p+")")
+            #FreeCADGui.doCommand("nativeifc.ifc_tools.aggregate(section," + p + ")")
 
 
 
-FreeCADGui.addCommand('Arch_SectionPlane', Arch_SectionPlane())
+FreeCADGui.addCommand("Arch_SectionPlane", Arch_SectionPlane())

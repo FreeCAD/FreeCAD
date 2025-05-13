@@ -524,7 +524,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    'The following Building Storey (BuildingParts with their IFC role set as "Building Storey") objects have been found to not be included in any Building. You can resolve the situation by creating a Building object, if none is present in your model, and drag and drop the Building Storey objects into it in the tree view:',
+                                    "The following Building Storey (BuildingParts with their IFC role set as 'Building Storey') objects have been found to not be included in any Building. You can resolve the situation by creating a Building object, if none is present in your model, and drag and drop the Building Storey objects into it in the tree view:",
                                 )
                                 + "\n\n"
                             )
@@ -585,7 +585,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    'The following BIM objects have been found to not be included in any Building Storey (BuildingParts with their IFC role set as "Building Storey"). You can resolve the situation by creating a Building Storey object, if none is present in your model, and drag and drop these objects into it in the tree view:',
+                                    "The following BIM objects have been found to not be included in any Building Storey (BuildingParts with their IFC role set as 'Building Storey'). You can resolve the situation by creating a Building Storey object, if none is present in your model, and drag and drop these objects into it in the tree view:",
                                 )
                                 + "\n\n"
                             )
@@ -632,7 +632,7 @@ class BIM_Preflight_TaskPanel:
                     msg += (
                         translate(
                             "BIM",
-                            'The following BIM objects have the "Undefined" type:',
+                            "The following BIM objects have the "Undefined" type:",
                         )
                         + "\n\n"
                     )

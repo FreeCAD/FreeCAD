@@ -61,7 +61,7 @@ class TestArchWall(TestArchBase.TestArchBase):
         wallWire = Arch.makeWall(wire)
         wallWire.Material = matMulti
         # wall based on sketch:
-        sketch = App.activeDocument().addObject('Sketcher::SketchObject','Sketch')
+        sketch = App.activeDocument().addObject('Sketcher::SketchObject',"Sketch")
         sketch.addGeometry([Part.LineSegment(pts[0], pts[1]),
                             Part.LineSegment(pts[1], pts[2]),
                             Part.LineSegment(pts[2], pts[3])])

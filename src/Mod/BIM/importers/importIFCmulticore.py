@@ -156,7 +156,7 @@ def writeProgress(count=None,total=None,starttime=None):
             eta = "%02d:%02d" % (divmod(rest, 60))
         else:
             eta = "--:--"
-        hashes = '#'*int(r*10)+' '*int(10-r*10)
+        hashes = '#'*int(r*10)+" "*int(10-r*10)
         fstring = '\rImporting '+str(total)+' products [{0}] {1}%, ETA: {2}'
         sys.stdout.write(fstring.format(hashes, int(r*100),eta))
 

@@ -108,7 +108,7 @@ def addComponents(objectsList,host):
         if hasattr(host,"Axes"):
             x = host.Axes
         for o in objectsList:
-            if hasattr(o,'Shape'):
+            if hasattr(o,"Shape"):
                 if Draft.getType(o) == "Window":
                     if hasattr(o,"Hosts"):
                         if not host in o.Hosts:
@@ -246,7 +246,7 @@ def makeComponent(baseobj=None,name=None,delete=False):
         ArchComponent.ViewProviderComponent(obj.ViewObject)
     if baseobj:
         import Part
-        if hasattr(baseobj,'Shape'):
+        if hasattr(baseobj,"Shape"):
             obj.Shape = baseobj.Shape
             obj.Placement = baseobj.Placement
             if delete:
@@ -692,7 +692,7 @@ def download(url,force=False):
     except ImportError:
         from urllib2 import urlopen
     import os
-    name = url.split('/')[-1]
+    name = url.split("/")[-1]
     macropath = FreeCAD.getUserMacroDir(True)
     filepath = os.path.join(macropath,name)
     if os.path.exists(filepath) and not(force):
@@ -701,7 +701,7 @@ def download(url,force=False):
         FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
         response = urlopen(url)
         s = response.read()
-        f = open(filepath,'wb')
+        f = open(filepath,"wb")
         f.write(s)
         f.close()
     except Exception:
@@ -716,7 +716,7 @@ def check(objectslist,includehidden=False):
         objs = Draft.removeHidden(objs)
     bad = []
     for o in objs:
-        if not hasattr(o,'Shape'):
+        if not hasattr(o,"Shape"):
             bad.append([o,"is not a Part-based object"])
         else:
             s = o.Shape
@@ -874,7 +874,7 @@ def survey(callback=False):
                         newsels.append(o)
                 if newsels:
                     for o in newsels:
-                        if hasattr(o.Object, 'Shape'):
+                        if hasattr(o.Object,"Shape"):
                             n = o.Object.Label
                             showUnit = params.get_param_arch("surveyUnits")
                             t = ""
@@ -1212,7 +1212,7 @@ def cleanArchSplitter(objects=None):
     if not isinstance(objects,list):
         objects = [objects]
     for obj in objects:
-        if hasattr(obj,'Shape'):
+        if hasattr(obj,"Shape"):
             if hasattr(obj,"Base"):
                 if obj.Base:
                     print("Attempting to clean splitters from ", obj.Label)
@@ -1234,7 +1234,7 @@ def rebuildArchShape(objects=None):
         objects = [objects]
     for obj in objects:
         success = False
-        if hasattr(obj,'Shape'):
+        if hasattr(obj,"Shape"):
             if hasattr(obj,"Base"):
                 if obj.Base:
                     try:
@@ -1365,21 +1365,21 @@ def makeIfcSpreadsheet(archobj=None):
         if obj.Name == "IfcPropertiesContainer" :
             ifc_container = obj
     if not ifc_container :
-        ifc_container = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup','IfcPropertiesContainer')
+        ifc_container = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","IfcPropertiesContainer")
     import Spreadsheet
-    ifc_spreadsheet = FreeCAD.ActiveDocument.addObject('Spreadsheet::Sheet','IfcProperties')
-    ifc_spreadsheet.set('A1', translate("Arch","Category"))
-    ifc_spreadsheet.set('B1', translate("Arch","Key"))
-    ifc_spreadsheet.set('C1', translate("Arch","Type"))
-    ifc_spreadsheet.set('D1', translate("Arch","Value"))
-    ifc_spreadsheet.set('E1', translate("Arch","Unit"))
+    ifc_spreadsheet = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","IfcProperties")
+    ifc_spreadsheet.set("A1", translate("Arch","Category"))
+    ifc_spreadsheet.set("B1", translate("Arch","Key"))
+    ifc_spreadsheet.set("C1", translate("Arch","Type"))
+    ifc_spreadsheet.set("D1", translate("Arch","Value"))
+    ifc_spreadsheet.set("E1", translate("Arch","Unit"))
     ifc_container.addObject(ifc_spreadsheet)
     if archobj :
         if hasattr(obj,"IfcProperties") :
             archobj.IfcProperties = ifc_spreadsheet
             return ifc_spreadsheet
         else :
-            FreeCAD.Console.PrintWarning(translate("Arch", "The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:")+ ' ' + archobj.Label)
+            FreeCAD.Console.PrintWarning(translate("Arch", "The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:")+ " " + archobj.Label)
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else :
         return ifc_spreadsheet

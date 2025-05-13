@@ -450,7 +450,7 @@ class _ArchSchedule:
                             v = fs.format(FreeCAD.Units.Quantity(d,tp).getValueAs(unit).Value)
                             print(v,unit)
                         elif isinstance(d, str):
-                            if d.replace('.', '', 1).isdigit():
+                            if d.replace(".", "", 1).isdigit():
                                 print(fs.format(d))
                             else:
                                 print(d)
@@ -488,7 +488,7 @@ class _ArchSchedule:
                     v = fs.format(FreeCAD.Units.Quantity(val,tp).getValueAs(unit).Value)
                     print("TOTAL:"+34*" "+v+" "+unit)
                 elif isinstance(val, str):
-                    if val.replace('.', '', 1).isdigit():
+                    if val.replace(".", "", 1).isdigit():
                         v = fs.format(val)
                         print("TOTAL:"+34*" "+v)
                     else:
@@ -537,7 +537,7 @@ class _ArchSchedule:
                         self.data["B"+str(self.li)] = str(elval)
                         if VERBOSE:
                             print("#"+str(el.id())+"."+val+" = "+str(elval))
-                    if isinstance(elval, str) and elval.replace('.', '', 1).isdigit():
+                    if isinstance(elval, str) and elval.replace(".", "", 1).isdigit():
                         total += float(elval)
                     elif isinstance(elval, (int, float)):
                         total += elval
@@ -681,7 +681,7 @@ class _ViewProviderArchSchedule:
 
     def setupContextMenu(self, vobj, menu):
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
@@ -833,7 +833,7 @@ class ArchScheduleTaskPanel:
             filename = filename[0]
             self.form.list.clearContents()
             import csv
-            with open(filename,'r') as csvfile:
+            with open(filename,"r") as csvfile:
                 r = 0
                 for row in csv.reader(csvfile):
                     self.form.list.insertRow(r)
@@ -902,7 +902,7 @@ class ArchScheduleTaskPanel:
         """Exports the results as a CSV/TSV file"""
 
         import csv
-        with open(filename, 'w') as csvfile:
+        with open(filename, "w") as csvfile:
             csvfile = csv.writer(csvfile,delimiter=delimiter)
             csvfile.writerow([translate("Arch","Operation"),translate("Arch","Value"),translate("Arch","Unit")])
             if self.obj.DetailedResults:
@@ -921,7 +921,7 @@ class ArchScheduleTaskPanel:
 
         """Exports the results as a Markdown file"""
 
-        with open(filename, 'w') as mdfile:
+        with open(filename, "w") as mdfile:
             mdfile.write("| "+translate("Arch","Operation")+" | "+translate("Arch","Value")+" | "+translate("Arch","Unit")+" |\n")
             mdfile.write("| --- | --- | --- |\n")
             if self.obj.DetailedResults:

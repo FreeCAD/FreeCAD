@@ -39,10 +39,10 @@ class Arch_Truss:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Truss',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Truss","Truss"),
-                'Accel': "T, U",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Truss","Creates a truss object from selected line or from scratch")}
+        return {"Pixmap": "Arch_Truss",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Truss","Truss"),
+                "Accel": "T, U",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Truss","Creates a truss object from selected line or from scratch")}
 
     def IsActive(self):
 
@@ -97,13 +97,13 @@ class Arch_Truss:
         if not basename:
             if self.points:
                 cmd = "base = Draft.makeLine(FreeCAD."
-                cmd += str(self.points[0])+",FreeCAD."+str(self.points[1])+")"
+                cmd += str(self.points[0]) + ",FreeCAD." + str(self.points[1]) + ")"
                 FreeCADGui.doCommand(cmd)
                 basename = "base"
-        FreeCADGui.doCommand("obj = Arch.makeTruss("+basename+")")
+        FreeCADGui.doCommand("obj = Arch.makeTruss(" + basename + ")")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         self.doc.commitTransaction()
         self.doc.recompute()
 
 
-FreeCADGui.addCommand('Arch_Truss', Arch_Truss())
+FreeCADGui.addCommand("Arch_Truss", Arch_Truss())

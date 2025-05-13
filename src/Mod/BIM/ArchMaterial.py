@@ -89,7 +89,7 @@ class _ViewProviderArchMaterialContainer:
         self.Object = vobj.Object
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         actionMergeByName = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),
                                           translate("Arch", "Merge duplicates"),
@@ -194,17 +194,17 @@ class _ArchMaterial:
         d = obj.Material
         if prop == "Material":
             if "SectionColor" in obj.Material:
-                c = tuple([float(f) for f in obj.Material['SectionColor'].strip("()").strip("[]").split(",")])
+                c = tuple([float(f) for f in obj.Material["SectionColor"].strip("()").strip("[]").split(",")])
                 if hasattr(obj,"SectionColor"):
                     if not self.isSameColor(obj.SectionColor,c):
                         obj.SectionColor = c
             if "DiffuseColor" in obj.Material:
-                c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").strip("[]").split(",")])
+                c = tuple([float(f) for f in obj.Material["DiffuseColor"].strip("()").strip("[]").split(",")])
                 if hasattr(obj,"Color"):
                     if not self.isSameColor(obj.Color,c):
                         obj.Color = c
             if "Transparency" in obj.Material:
-                t = int(obj.Material['Transparency'])
+                t = int(obj.Material["Transparency"])
                 if hasattr(obj,"Transparency"):
                     if obj.Transparency != t:
                         obj.Transparency = t
@@ -232,13 +232,13 @@ class _ArchMaterial:
         elif prop == "SectionColor":
             if hasattr(obj,"SectionColor"):
                 if "SectionColor" in d:
-                    if self.isSameColor(tuple([float(f) for f in d['SectionColor'].strip("()").strip("[]").split(",")]),obj.SectionColor[:3]):
+                    if self.isSameColor(tuple([float(f) for f in d["SectionColor"].strip("()").strip("[]").split(",")]),obj.SectionColor[:3]):
                         return
                 d["SectionColor"] = str(obj.SectionColor[:3])
         elif prop == "Color":
             if hasattr(obj,"Color"):
                 if "DiffuseColor" in d:
-                    if self.isSameColor(tuple([float(f) for f in d['DiffuseColor'].strip("()").strip("[]").split(",")]),obj.Color[:3]):
+                    if self.isSameColor(tuple([float(f) for f in d["DiffuseColor"].strip("()").strip("[]").split(",")]),obj.Color[:3]):
                         return
                 d["DiffuseColor"] = str(obj.Color[:3])
         elif prop == "Transparency":
@@ -280,7 +280,7 @@ class _ArchMaterial:
         if obj.Material:
             if FreeCAD.GuiUp:
                 if "DiffuseColor" in obj.Material:
-                    c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").strip("[]").split(",")])
+                    c = tuple([float(f) for f in obj.Material["DiffuseColor"].strip("()").strip("[]").split(",")])
                     for p in obj.InList:
                         if hasattr(p,"Material") and ( (not hasattr(p.ViewObject,"UseMaterialColor")) or p.ViewObject.UseMaterialColor):
                             if p.Material.Name == obj.Name:
@@ -367,7 +367,7 @@ class _ViewProviderArchMaterial:
         return True
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
@@ -442,25 +442,25 @@ class _ArchMaterialTaskPanel:
 
     def setFields(self):
         "sets the task box contents from self.material"
-        if 'Name' in self.material:
-            self.form.FieldName.setText(self.material['Name'])
+        if "Name" in self.material:
+            self.form.FieldName.setText(self.material["Name"])
         elif self.obj:
             self.form.FieldName.setText(self.obj.Label)
-        if 'Description' in self.material:
-            self.form.FieldDescription.setText(self.material['Description'])
-        if 'DiffuseColor' in self.material:
+        if "Description" in self.material:
+            self.form.FieldDescription.setText(self.material["Description"])
+        if "DiffuseColor" in self.material:
             self.form.ButtonColor.setIcon(self.getColorIcon(self.material["DiffuseColor"]))
-        elif 'ViewColor' in self.material:
+        elif "ViewColor" in self.material:
             self.form.ButtonColor.setIcon(self.getColorIcon(self.material["ViewColor"]))
-        elif 'Color' in self.material:
+        elif "Color" in self.material:
             self.form.ButtonColor.setIcon(self.getColorIcon(self.material["Color"]))
-        if 'SectionColor' in self.material:
+        if "SectionColor" in self.material:
             self.form.ButtonSectionColor.setIcon(self.getColorIcon(self.material["SectionColor"]))
-        if 'StandardCode' in self.material:
-            self.form.FieldCode.setText(self.material['StandardCode'])
-        if 'ProductURL' in self.material:
-            self.form.FieldUrl.setText(self.material['ProductURL'])
-        if 'Transparency' in self.material:
+        if "StandardCode" in self.material:
+            self.form.FieldCode.setText(self.material["StandardCode"])
+        if "ProductURL" in self.material:
+            self.form.FieldUrl.setText(self.material["ProductURL"])
+        if "Transparency" in self.material:
             self.form.SpinBox_Transparency.setValue(int(self.material["Transparency"]))
         if "Father" in self.material:
             father = self.material["Father"]
@@ -493,15 +493,15 @@ class _ArchMaterialTaskPanel:
 
     def getFields(self):
         "sets self.material from the contents of the task box"
-        self.material['Name'] = self.form.FieldName.text()
-        self.material['Description'] = self.form.FieldDescription.text()
-        self.material['DiffuseColor'] = self.getColorFromIcon(self.form.ButtonColor.icon())
-        self.material['ViewColor'] = self.material['DiffuseColor']
-        self.material['Color'] = self.material['DiffuseColor']
-        self.material['SectionColor'] = self.getColorFromIcon(self.form.ButtonSectionColor.icon())
-        self.material['StandardCode'] = self.form.FieldCode.text()
-        self.material['ProductURL'] = self.form.FieldUrl.text()
-        self.material['Transparency'] = str(self.form.SpinBox_Transparency.value())
+        self.material["Name"] = self.form.FieldName.text()
+        self.material["Description"] = self.form.FieldDescription.text()
+        self.material["DiffuseColor"] = self.getColorFromIcon(self.form.ButtonColor.icon())
+        self.material["ViewColor"] = self.material["DiffuseColor"]
+        self.material["Color"] = self.material["DiffuseColor"]
+        self.material["SectionColor"] = self.getColorFromIcon(self.form.ButtonSectionColor.icon())
+        self.material["StandardCode"] = self.form.FieldCode.text()
+        self.material["ProductURL"] = self.form.FieldUrl.text()
+        self.material["Transparency"] = str(self.form.SpinBox_Transparency.value())
 
     def getColorFromIcon(self,icon):
         "gets pixel color from the given icon"
@@ -513,7 +513,7 @@ class _ArchMaterialTaskPanel:
         if self.obj:
             if hasattr(self.obj,"Material"):
                 self.obj.Material = self.material
-                self.obj.Label = self.material['Name']
+                self.obj.Label = self.material["Name"]
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
@@ -609,8 +609,8 @@ class _ArchMaterialTaskPanel:
     def openUrl(self):
         self.getFields()
         if self.material:
-            if 'ProductURL' in self.material:
-                QtGui.QDesktopServices.openUrl(self.material['ProductURL'])
+            if "ProductURL" in self.material:
+                QtGui.QDesktopServices.openUrl(self.material["ProductURL"])
 
     def getCode(self):
         FreeCADGui.Selection.addSelection(self.obj)
@@ -669,7 +669,7 @@ class _ViewProviderArchMultiMaterial:
         self.edit()
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)

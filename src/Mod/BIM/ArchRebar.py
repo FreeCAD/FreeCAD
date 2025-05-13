@@ -269,7 +269,7 @@ class _Rebar(ArchComponent.Component):
                     if obj in obj.InList[0].Armatures:
                         father = obj.InList[0]
         if father:
-            if hasattr(father,'Shape'):
+            if hasattr(father,"Shape"):
                 fathershape = father.Shape
 
         import Part

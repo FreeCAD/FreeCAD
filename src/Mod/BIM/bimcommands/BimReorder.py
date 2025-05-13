@@ -36,7 +36,7 @@ class BIM_Reorder:
         return {
             "Pixmap": "BIM_Reorder",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Reorder", "Reorder children"),
-            # 'Accel': "R, D",
+            # "Accel": "R, D",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Reorder", "Reorder children of selected object"
             ),
