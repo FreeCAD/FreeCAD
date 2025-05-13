@@ -327,12 +327,14 @@ bool visualScaleFeaturePresent(App::DocumentObject* obj)
     Gui::Document* objectDoc = nullptr;
     std::vector<App::DocumentObject*> allObjects = doc->getDocument()->getObjects();
 
-    // Iterate over all objects of the document and filter out invalid objects (annotations, datums, )
+    // Iterate over all objects of the document and filter out invalid objects (annotations, datums,
+    // )
     for (auto object : allObjects) {
         objectDoc = doc;
 
         // Parts and such don't need to be evaluated for visibility, since their children will
-        if (object == obj || object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+        if (object == obj
+            || object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
             continue;
         }
 
@@ -341,7 +343,7 @@ bool visualScaleFeaturePresent(App::DocumentObject* obj)
         if (!visible) {
             continue;
         }
-        
+
         // If an object is linked (such as a body in an assembly), evaluate it instead of
         // the link. No need to skip GeoFeatureGroupExtension here, because it's children
         // wond be included
