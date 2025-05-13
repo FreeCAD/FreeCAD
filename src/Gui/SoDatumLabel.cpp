@@ -552,7 +552,7 @@ private:
         float startangle = atan2f(vc1[1], vc1[0]);
         float endangle = atan2f(vc2[1], vc2[0]);
         if (endangle < startangle) {
-            endangle += 2. * std::numbers::pi;
+            endangle += 2.F * std::numbers::pi_v<float>;
         }
 
         SbVec3f textCenter;
@@ -697,7 +697,7 @@ SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVe
     float endangle = atan2f(vc2[1], vc2[0]);
 
     if (endangle < startangle) {
-        endangle += 2. * std::numbers::pi;
+        endangle += 2.F * std::numbers::pi_v<float>;
     }
 
     // Text location

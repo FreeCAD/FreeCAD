@@ -313,11 +313,11 @@ void Geometry::Restore(Base::XMLReader &reader)
 
     if(strcmp(reader.localName(),"GeoExtensions") == 0) { // new format
 
-        long count = reader.getAttributeAsInteger("count");
+        long count = reader.getAttribute<long>("count");
 
         for (long index = 0; index < count; index++) {
             reader.readElement("GeoExtension");
-            const char* TypeName = reader.getAttribute("type");
+            const char* TypeName = reader.getAttribute<const char*>("type");
             Base::Type type = Base::Type::fromName(TypeName);
             auto *newExtension = static_cast<GeometryPersistenceExtension *>(type.createInstance());
             if (newExtension) {
@@ -334,7 +334,7 @@ void Geometry::Restore(Base::XMLReader &reader)
     }
     else if(strcmp(reader.localName(),"Construction") == 0) { // legacy
 
-        bool construction = (int)reader.getAttributeAsInteger("value") != 0;
+        bool construction = (int)reader.getAttribute<long>("value") != 0;
 
         // prepare migration
         if(!this->hasExtension(GeometryMigrationExtension::getClassTypeId()))
@@ -636,9 +636,9 @@ void GeomPoint::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("GeomPoint");
     // get the value of my Attribute
-    X = reader.getAttributeAsFloat("X");
-    Y = reader.getAttributeAsFloat("Y");
-    Z = reader.getAttributeAsFloat("Z");
+    X = reader.getAttribute<double>("X");
+    Y = reader.getAttribute<double>("Y");
+    Z = reader.getAttribute<double>("Z");
 
     // set the read geometry
     setPoint(Base::Vector3d(X,Y,Z) );
@@ -1252,17 +1252,17 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
 
     reader.readElement("BezierCurve");
     // get the value of my attribute
-    int polescount = reader.getAttributeAsInteger("PolesCount");
+    int polescount = reader.getAttribute<long>("PolesCount");
 
     TColgp_Array1OfPnt poleArray(1,polescount);
     TColStd_Array1OfReal weightArray(1,polescount);
 
     for (int index = 1; index <= polescount; index++) {
         reader.readElement("Pole");
-        double X = reader.getAttributeAsFloat("X");
-        double Y = reader.getAttributeAsFloat("Y");
-        double Z = reader.getAttributeAsFloat("Z");
-        double W = reader.getAttributeAsFloat("Weight");
+        double X = reader.getAttribute<double>("X");
+        double Y = reader.getAttribute<double>("Y");
+        double Z = reader.getAttribute<double>("Z");
+        double W = reader.getAttribute<double>("Weight");
         poleArray.SetValue(index, gp_Pnt(X,Y,Z));
         weightArray.SetValue(index, W);
     }
@@ -2006,10 +2006,10 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
     reader.readElement("BSplineCurve");
     // get the value of my attribute
-    int polescount = reader.getAttributeAsInteger("PolesCount");
-    int knotscount = reader.getAttributeAsInteger("KnotsCount");
-    int degree = reader.getAttributeAsInteger("Degree");
-    bool isperiodic = (bool) reader.getAttributeAsInteger("IsPeriodic");
+    int polescount = reader.getAttribute<long>("PolesCount");
+    int knotscount = reader.getAttribute<long>("KnotsCount");
+    int degree = reader.getAttribute<long>("Degree");
+    bool isperiodic = reader.getAttribute<bool>("IsPeriodic");
 
     // Handle(Geom_BSplineCurve) spline = new
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
@@ -2023,18 +2023,18 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
     for (int i = 1; i <= polescount; i++) {
         reader.readElement("Pole");
-        double X = reader.getAttributeAsFloat("X");
-        double Y = reader.getAttributeAsFloat("Y");
-        double Z = reader.getAttributeAsFloat("Z");
-        double W = reader.getAttributeAsFloat("Weight");
+        double X = reader.getAttribute<double>("X");
+        double Y = reader.getAttribute<double>("Y");
+        double Z = reader.getAttribute<double>("Z");
+        double W = reader.getAttribute<double>("Weight");
         p.SetValue(i, gp_Pnt(X,Y,Z));
         w.SetValue(i, W);
     }
 
     for (int i = 1; i <= knotscount; i++) {
         reader.readElement("Knot");
-        double val = reader.getAttributeAsFloat("Value");
-        Standard_Integer mult = reader.getAttributeAsInteger("Mult");
+        double val = reader.getAttribute<double>("Value");
+        Standard_Integer mult = reader.getAttribute<long>("Mult");
         k.SetValue(i, val);
         m.SetValue(i, mult);
     }
@@ -2746,15 +2746,15 @@ void GeomCircle::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Circle");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
     if (reader.hasAttribute("AngleXU"))
-        AngleXU = reader.getAttributeAsFloat("AngleXU");
-    Radius = reader.getAttributeAsFloat("Radius");
+        AngleXU = reader.getAttribute<double>("AngleXU");
+    Radius = reader.getAttribute<double>("Radius");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
@@ -2996,17 +2996,17 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("ArcOfCircle");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
     if (reader.hasAttribute("AngleXU"))
-        AngleXU = reader.getAttributeAsFloat("AngleXU");
-    Radius = reader.getAttributeAsFloat("Radius");
-    StartAngle = reader.getAttributeAsFloat("StartAngle");
-    EndAngle = reader.getAttributeAsFloat("EndAngle");
+        AngleXU = reader.getAttribute<double>("AngleXU");
+    Radius = reader.getAttribute<double>("Radius");
+    StartAngle = reader.getAttribute<double>("StartAngle");
+    EndAngle = reader.getAttribute<double>("EndAngle");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
@@ -3257,18 +3257,18 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Ellipse");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
 
     // This is for backwards compatibility
     if(reader.hasAttribute("AngleXU"))
-        AngleXU = reader.getAttributeAsFloat("AngleXU");
+        AngleXU = reader.getAttribute<double>("AngleXU");
     else
         AngleXU = 0;
 
@@ -3545,17 +3545,17 @@ void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("ArcOfEllipse");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
-    StartAngle = reader.getAttributeAsFloat("StartAngle");
-    EndAngle = reader.getAttributeAsFloat("EndAngle");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
+    AngleXU = reader.getAttribute<double>("AngleXU");
+    StartAngle = reader.getAttribute<double>("StartAngle");
+    EndAngle = reader.getAttribute<double>("EndAngle");
 
 
     // set the read geometry
@@ -3724,15 +3724,15 @@ void GeomHyperbola::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Hyperbola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
+    AngleXU = reader.getAttribute<double>("AngleXU");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
@@ -4000,17 +4000,17 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("ArcOfHyperbola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
-    StartAngle = reader.getAttributeAsFloat("StartAngle");
-    EndAngle = reader.getAttributeAsFloat("EndAngle");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
+    AngleXU = reader.getAttribute<double>("AngleXU");
+    StartAngle = reader.getAttribute<double>("StartAngle");
+    EndAngle = reader.getAttribute<double>("EndAngle");
 
 
     // set the read geometry
@@ -4159,14 +4159,14 @@ void GeomParabola::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Parabola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    Focal = reader.getAttributeAsFloat("Focal");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    Focal = reader.getAttribute<double>("Focal");
+    AngleXU = reader.getAttribute<double>("AngleXU");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
@@ -4366,16 +4366,16 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("ArcOfParabola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    Focal = reader.getAttributeAsFloat("Focal");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
-    StartAngle = reader.getAttributeAsFloat("StartAngle");
-    EndAngle = reader.getAttributeAsFloat("EndAngle");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    Focal = reader.getAttribute<double>("Focal");
+    AngleXU = reader.getAttribute<double>("AngleXU");
+    StartAngle = reader.getAttribute<double>("StartAngle");
+    EndAngle = reader.getAttribute<double>("EndAngle");
 
 
     // set the read geometry
@@ -4508,12 +4508,12 @@ void GeomLine::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("GeomLine");
     // get the value of my Attribute
-    PosX = reader.getAttributeAsFloat("PosX");
-    PosY = reader.getAttributeAsFloat("PosY");
-    PosZ = reader.getAttributeAsFloat("PosZ");
-    DirX = reader.getAttributeAsFloat("DirX");
-    DirY = reader.getAttributeAsFloat("DirY");
-    DirZ = reader.getAttributeAsFloat("DirZ");
+    PosX = reader.getAttribute<double>("PosX");
+    PosY = reader.getAttribute<double>("PosY");
+    PosZ = reader.getAttribute<double>("PosZ");
+    DirX = reader.getAttribute<double>("DirX");
+    DirY = reader.getAttribute<double>("DirY");
+    DirZ = reader.getAttribute<double>("DirZ");
 
     // set the read geometry
     setLine(Base::Vector3d(PosX,PosY,PosZ),Base::Vector3d(DirX,DirY,DirZ) );
@@ -4665,12 +4665,12 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
     // read my Element
     reader.readElement("LineSegment");
     // get the value of my Attribute
-    StartX = reader.getAttributeAsFloat("StartX");
-    StartY = reader.getAttributeAsFloat("StartY");
-    StartZ = reader.getAttributeAsFloat("StartZ");
-    EndX   = reader.getAttributeAsFloat("EndX");
-    EndY   = reader.getAttributeAsFloat("EndY");
-    EndZ   = reader.getAttributeAsFloat("EndZ");
+    StartX = reader.getAttribute<double>("StartX");
+    StartY = reader.getAttribute<double>("StartY");
+    StartZ = reader.getAttribute<double>("StartZ");
+    EndX   = reader.getAttribute<double>("EndX");
+    EndY   = reader.getAttribute<double>("EndY");
+    EndZ   = reader.getAttribute<double>("EndZ");
 
     Base::Vector3d start(StartX,StartY,StartZ);
     Base::Vector3d end(EndX,EndY,EndZ);

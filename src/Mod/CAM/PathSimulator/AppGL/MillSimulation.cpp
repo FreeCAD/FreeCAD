@@ -467,15 +467,34 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             mSingleStep = true;
             break;
 
-        case eGuiItemFaster:
-            if (mSimSpeed == 1) {
+        case eGuiItemSlower:
+            if (mSimSpeed == 50) {
+                mSimSpeed = 25;
+            }
+            else if (mSimSpeed == 25) {
                 mSimSpeed = 10;
             }
             else if (mSimSpeed == 10) {
-                mSimSpeed = 40;
+                mSimSpeed = 5;
             }
             else {
                 mSimSpeed = 1;
+            }
+            guiDisplay.UpdateSimSpeed(mSimSpeed);
+            break;
+
+        case eGuiItemFaster:
+            if (mSimSpeed == 1) {
+                mSimSpeed = 5;
+            }
+            else if (mSimSpeed == 5) {
+                mSimSpeed = 10;
+            }
+            else if (mSimSpeed == 10) {
+                mSimSpeed = 25;
+            }
+            else {
+                mSimSpeed = 50;
             }
             guiDisplay.UpdateSimSpeed(mSimSpeed);
             break;

@@ -105,6 +105,10 @@ class _Window(ArchComponent.Component):
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj)
 
+        # Initialize those two values later on during first onChanged call
+        self.baseSill = None
+        self.basePos = None
+
     def addSketchArchFeatures(self,obj,linkObj=None,mode=None):
         '''
            To add features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
@@ -137,6 +141,8 @@ class _Window(ArchComponent.Component):
             obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window"), locked=True)
         if not "Height" in lp:
             obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window"), locked=True)
+        if not "Sill" in lp:
+            obj.addProperty("App::PropertyLength","Sill","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window's sill"), locked=True)
         if not "Normal" in lp:
             obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"), locked=True)
         if not "Preset" in lp:
@@ -183,7 +189,15 @@ class _Window(ArchComponent.Component):
     def onChanged(self,obj,prop):
 
         self.hideSubobjects(obj,prop)
-        if not "Restore" in obj.State:
+        if prop == "Sill":
+            val = getattr(obj,prop).Value
+            if getattr(self, 'baseSill', None) is None and getattr(self, 'basePos', None) is None:
+                self.baseSill = val
+                self.basePos = obj.Base.Placement.Base
+                return
+
+            obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
+        elif not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
                 touchhosts = False

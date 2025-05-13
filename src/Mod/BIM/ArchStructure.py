@@ -772,7 +772,6 @@ class _Structure(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
         # set a flag to indicate onDocumentRestored() is run
-        self.onDocRestoredDone = True
 
 
     def execute(self,obj):
@@ -1086,10 +1085,10 @@ class _Structure(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
 
-        # check the flag indicating if onDocumentRestored() has been run; if
-        # not, no further code is run - as getExtrusionData() below return
-        # error when some properties are not added by onDocumentRestored()
-        if not hasattr(self,"onDocRestoredDone"):
+        # check the flag indicating if we are currently in the process of
+        # restoring document; if not, no further code is run as getExtrusionData() 
+        # below return error when some properties are not added by onDocumentRestored()
+        if FreeCAD.ActiveDocument.Restoring:
             return
 
         if hasattr(obj,"IfcType"):

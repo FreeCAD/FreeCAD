@@ -55,8 +55,7 @@ class DraftDXF(test_base.DraftTestCaseDoc):
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
-        Draft.import_dxf = aux.fake_function
-        obj = Draft.import_dxf(in_file)
+        obj = aux.fake_function(in_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_export_dxf(self):
@@ -69,8 +68,7 @@ class DraftDXF(test_base.DraftTestCaseDoc):
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
 
-        Draft.export_dxf = aux.fake_function
-        obj = Draft.export_dxf(out_file)
+        obj = aux.fake_function(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
 ## @}

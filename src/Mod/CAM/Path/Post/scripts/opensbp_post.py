@@ -181,9 +181,12 @@ def export(objectslist, filename, argstring):
     print("done postprocessing.")
 
     # Write the output
-    gfile = pyopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
+
+    return final
 
 
 def move(command):

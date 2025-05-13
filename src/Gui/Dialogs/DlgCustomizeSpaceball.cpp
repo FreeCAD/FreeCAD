@@ -210,7 +210,7 @@ QVariant ButtonModel::data (const QModelIndex &index, int role) const
     {
         static QPixmap icon(BitmapFactory().pixmap("spaceball_button").scaled
                             (32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        return {icon};
+        return QVariant(QIcon(icon));  // Cannot make a QPixmap into a QVariant, so convert to a QIcon first
     }
     if (role == Qt::UserRole)
         return {QString::fromStdString(groupVector.at(index.row())->GetASCII("Command"))};

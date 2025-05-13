@@ -54,8 +54,7 @@ class DraftDWG(test_base.DraftTestCaseDoc):
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
-        Draft.import_dwg = aux.fake_function
-        obj = Draft.import_dwg(in_file)
+        obj = aux.fake_function(in_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_export_dwg(self):
@@ -68,8 +67,7 @@ class DraftDWG(test_base.DraftTestCaseDoc):
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
 
-        Draft.export_dwg = aux.fake_function
-        obj = Draft.export_dwg(out_file)
+        obj = aux.fake_function(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
 ## @}

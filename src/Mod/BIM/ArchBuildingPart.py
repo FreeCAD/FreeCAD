@@ -37,6 +37,7 @@ import os
 import tempfile
 
 import FreeCAD
+import Arch
 import ArchCommands
 import ArchIFC
 import Draft
@@ -481,6 +482,7 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"), locked=True)
         if not "DoubleClickActivates" in pl:
             vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree activates it"), locked=True)
+            vobj.DoubleClickActivates = True
 
         # inventor saving
         if not "SaveInventor" in pl:
@@ -937,7 +939,7 @@ class ViewProviderBuildingPart:
                     no = Draft.clone(o)
                     Draft.move(no,FreeCAD.Vector(0,0,height))
                     ng.append(no)
-            nobj = makeBuildingPart()
+            nobj = Arch.makeBuildingPart()
             Draft.formatObject(nobj,self.Object)
             nobj.Placement = self.Object.Placement
             nobj.Placement.move(FreeCAD.Vector(0,0,height))

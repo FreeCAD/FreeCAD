@@ -336,6 +336,8 @@ class _Stairs(ArchComponent.Component):
         self.risers = []
 
         self.pseudosteps = []
+        self.pseudorisers = []
+        
         self.structures = []
         pl = obj.Placement
         landings = 0 # TODO Any use? 2018.7.15
@@ -488,6 +490,16 @@ class _Stairs(ArchComponent.Component):
                     #self.makeMultiEdgesLanding(obj,edges)
                     self.makeMultiEdgesLanding(obj,edge)
 
+        steps = risers = None
+        if self.steps:
+            steps = self.steps
+        elif self.pseudosteps:
+            steps = self.pseudosteps
+        if self.risers:
+            risers = self.risers
+        elif self.pseudorisers:
+            risers = self.pseudorisers
+
         if self.structures or self.steps or self.risers:
             base = Part.makeCompound(self.structures + self.steps + self.risers)
         elif self.pseudosteps:
@@ -503,6 +515,8 @@ class _Stairs(ArchComponent.Component):
             obj.Shape = Part.Shape()
             # TODO Clear Railings also
             # return ?
+
+
 
         base = self.processSubShapes(obj,base,pl)
         if base:
@@ -1112,13 +1126,13 @@ class _Stairs(ArchComponent.Component):
 
 
     def makeStraightStairs(self,obj,edge,s1,s2,numOfSteps=None,
-                           downstartstairs=None,endstairsup=None,h=None,
-                           vWidth=None,align=None,vLength=None,vHeight=None,	# hstep=None):
+                           downstartstairs=None,endstairsup=None,hgt=None,
+                           vWidth=None,align=None,vLength=None,vHeight=None,
                            vNose=None,vRiserThickness=None,
                            vTreadThickness=None,structure=None,
                            structureThickness=None,downSlabThickness=None,
                            upSlabThickness=None,structureOffset=None,
-                           stringerWidth=None):
+                           stringerWidth=None,stringerOverlap=None):
 
         "builds a simple, straight staircase from a straight edge"
 
@@ -1131,7 +1145,7 @@ class _Stairs(ArchComponent.Component):
         numOfSteps            : Numbers of Steps
         downstartstairs       : (to be clarified)
         endstairsup           : "toFlightThickness", "toSlabThickness"
-        h                     : Height of flight
+        hgt                   : Height of flight
         vWidth                : Vector - Width of flight/tread
         align                 : Align of flight/tread
         vLength               : Vector - Depth/Length of tread
@@ -1141,10 +1155,11 @@ class _Stairs(ArchComponent.Component):
         vTreadThickness       : Vector - Thickness of tread
         structure             : "Massive", "One stringer", "Two stringers"
         structureThickness    : (to be clarified)
-        structureOffset       : Value - (to be confired)
-        downSlabThickness     : Value - (to be confired)
-        upSlabThickness       : Value - (to be confired)
-        stringerWidth         : Value - (to be confired)
+        structureOffset       : Value - (to be clarified)
+        downSlabThickness     : Value - (to be clarified)
+        upSlabThickness       : Value - (to be clarified)
+        stringerWidth         : Value - (to be clarified)
+        stringerOverlap       : (to be clarified)
 
         (TODO : To support custom input of tread, riser, structure, stringer etc.
                 and output of these parts individually)
@@ -1174,12 +1189,12 @@ class _Stairs(ArchComponent.Component):
         if not endstairsup:
             endstairsup = obj.ConnectionEndStairsUp
 
-        # setup h (flight height)
-        if not h:
+        # setup hgt (flight height)
+        if not hgt:
             if round(v.z,Draft.precision()) != 0:
-                h = v.z
+                hgt = v.z
             else:
-                h = obj.Height.Value
+                hgt = obj.Height.Value
 
         # setup vWidth (flight/tread width)
         if not vWidth:
@@ -1195,7 +1210,7 @@ class _Stairs(ArchComponent.Component):
 
         # setup vHeight (tread height)
         if not vHeight:
-            vHeight = Vector(0,0,float(h)/numOfSteps)
+            vHeight = Vector(0,0,float(hgt)/numOfSteps)
 
         # setup vBase: Based on edge provided
         vBase = edge.Vertexes[0].Point
@@ -1204,14 +1219,14 @@ class _Stairs(ArchComponent.Component):
             if obj.LastSegment:  # TODO
                 lastSegmentAbsTop = obj.LastSegment.AbsTop  # TODO
                 vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)  # TODO # use Last Segment top's z-coordinate
-            obj.AbsTop = vBase.add(Vector(0,0,h))  # TODO
+            obj.AbsTop = vBase.add(Vector(0,0,hgt))  # TODO
 
         # setup vNose (nosing length)
         if not vNose:
             vNose = DraftVecUtils.scaleTo(v_proj,-abs(obj.Nosing.Value))
 
-        # TODO Review
-        a = math.atan(vHeight.Length/vLength.Length)
+        # setup ang
+        ang = math.atan(vHeight.Length/vLength.Length)
 
         # setup vBasedAligned
         vBasedAligned = self.align(vBase,align,vWidth)
@@ -1253,8 +1268,12 @@ class _Stairs(ArchComponent.Component):
             if vRiserThickness.Length:
                 riser = riser.extrude(vRiserThickness)    #Vector(0,100,0))
                 self.steps.append(riser)
+                # Separate risers from steps, keep above in the meantime
+                self.risers.append(riser)
             else:
                 self.pseudosteps.append(riser)
+                # Separate risers from steps, keep above in the meantime
+                self.pseudorisers.append(riser)
 
         # structure
         lProfile = []
@@ -1285,8 +1304,9 @@ class _Stairs(ArchComponent.Component):
                     lProfile.append(lProfile[-1].add(vLength))
 
                 lProfile[-1] = lProfile[-1].add(-vRiserThickness)
-                resHeight1 = structureThickness/math.cos(a)
-                dh = s2 - float(h)/numOfSteps
+                resHeight1 = structureThickness/math.cos(ang)
+                dh = s2 - float(hgt)/numOfSteps
+                
                 resHeight2 = ((numOfSteps-1)*vHeight.Length) - dh
 
                 if endstairsup == "toFlightThickness":
@@ -1299,7 +1319,8 @@ class _Stairs(ArchComponent.Component):
                     resLength = (vLength.Length/vHeight.Length) * resHeight2
                     h = DraftVecUtils.scaleTo(vLength,-resLength)
                     th = (resHeight1 + vTreadThickness.z) - dh
-                    resLength2 = th / math.tan(a)
+                    resLength2 = th / math.tan(ang)
+
                     lProfile.append(lProfile[-1].add(Vector(0,0,vTreadThickness.z - dh)))
                     lProfile.append(lProfile[-1].add(DraftVecUtils.scaleTo(vLength,resLength2)))
 
@@ -1323,7 +1344,7 @@ class _Stairs(ArchComponent.Component):
                     resHeight2 = resHeight2 + s1
                     resLength = (vLength.Length/vHeight.Length) * resHeight2
                     th = (resHeight1 - s1) + vTreadThickness.z
-                    resLength2 = th / math.tan(a)
+                    resLength2 = th / math.tan(ang)
                     lProfile.append(lProfile[-1].add(DraftVecUtils.scaleTo(vLength,-resLength)).add(Vector(0,0,-resHeight2)))
                     lProfile.append(lProfile[-1].add(DraftVecUtils.scaleTo(vLength,-resLength2)))
                 else:
@@ -1352,10 +1373,10 @@ class _Stairs(ArchComponent.Component):
                 # setup stringerOverlap
                 if not stringerOverlap:
                     stringerOverlap = obj.StringerOverlap.Value
-                h1 = Vector(vHeight).multiply(numOfSteps-1).add(Vector(0,0,-vTreadThickness+stringerOverlap))
+                h1 = Vector(vHeight).multiply(numOfSteps-1).add(Vector(0,0,-vTreadThickness.Length+stringerOverlap))
                 p1 = vBase.add(l1).add(h1)
                 p1 = self.align(p1,align,vWidth)
-                if stringerOverlap <= float(h)/numOfSteps:
+                if stringerOverlap <= float(hgt)/numOfSteps:
                     lProfile.append(p1)
                 else:
                     p1b = vBase.add(l1).add(Vector(0,0,float(h)))
@@ -1522,9 +1543,8 @@ class _Stairs(ArchComponent.Component):
             lastSegmentAbsTop = obj.LastSegment.AbsTop
             p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)  # use Last Segment top's z-coordinate
         obj.AbsTop = p1.add(Vector(0,0,h))
-
-        p2 = p1.add(DraftVecUtils.scale(vLength,landingStep-1).add(Vector(0,0,landingStep*hstep)))
-
+        p2h = landingStep*hstep
+        p2 = p1.add(DraftVecUtils.scale(vLength,landingStep-1).add(Vector(0,0,p2h)))
         edgeP1p2 = Part.LineSegment(p1,p2).toShape()
 
         if hasLanding:
@@ -1553,14 +1573,13 @@ class _Stairs(ArchComponent.Component):
                 if p3r:
                     p4r = p3r.add(DraftVecUtils.scale(-vLength,numOfSteps-(landingStep+1)).add(Vector(0,0,(numOfSteps-landingStep)*hstep)))
 
-
                 # TODO To support DownSlabThickness, UpSlabThickness per flight
                 self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),
                                         hstep,obj.UpSlabThickness.Value,
                                         numOfSteps-landingStep,
-                                        "HorizontalVerticalCut",None,h=h,
-                                        vWidth=vWidth,align=align,
-                                        vLength=vLength,vHeight=vHeight)
+                                        "HorizontalVerticalCut",None,hgt=h,
+                                        vWidth=-vWidth,align=align,
+                                        vLength=-vLength,vHeight=vHeight)
             else:
                 #p4 = p3.add(DraftVecUtils.scale(vLength,numOfSteps-(landingStep+1)).add(Vector(0,0,(numOfSteps-landingStep)*hstep)))
                 p4 = p3.add(DraftVecUtils.scale(vLength,numOfSteps-(
@@ -1571,7 +1590,7 @@ class _Stairs(ArchComponent.Component):
                 self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),
                                         hstep,obj.UpSlabThickness.Value,
                                         numOfSteps-landingStep,
-                                        "HorizontalVerticalCut",None,h=h,
+                                        "HorizontalVerticalCut",None,hgt=h,
                                         vWidth=vWidth,align=align,
                                         vLength=vLength,vHeight=vHeight)
 
@@ -1581,14 +1600,15 @@ class _Stairs(ArchComponent.Component):
             # TODO To support DownSlabThickness, UpSlabThickness per flight
             self.makeStraightStairs(obj,edgeP1p2,obj.DownSlabThickness.Value,
                                     hstep,landingStep,None,'toSlabThickness',
-                                    h=h,vWidth=vWidth,align=align,
+                                    vWidth=vWidth,align=align,
                                     vLength=vLength,vHeight=vHeight)
+                                    # Remark: work without h=h, review
 
         else:
             # TODO To support DownSlabThickness, UpSlabThickness per flight
             self.makeStraightStairs(obj,edgeP1p2,obj.DownSlabThickness.Value,
                                     obj.UpSlabThickness.Value,landingStep,None,
-                                    None,h=h,vWidth=vWidth,align=align,
+                                    None,hgt=h,vWidth=vWidth,align=align,
                                     vLength=vLength,vHeight=vHeight)
 
         # TODO To review

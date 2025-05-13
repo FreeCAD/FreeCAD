@@ -35,8 +35,12 @@ def check_trailing_whitespace(file_paths):
     for path in file_paths:
         try:
             with open(path, "r", encoding="utf-8") as f:
-                lines = files.read().splitlines()
-                error_lines = [idx if line.endswith(" ") for idx, line in enumerate(lines, start=1)]
+                lines = f.read().splitlines()
+                error_lines = [
+                    idx
+                    for idx, line in enumerate(lines, start=1)
+                    if line != line.rstrip()
+                ]
                 if error_lines:
                     issues[path] = error_lines
         except Exception as e:
@@ -53,8 +57,10 @@ def check_tabs(file_paths):
     for path in file_paths:
         try:
             with open(path, "r", encoding="utf-8") as f:
-                lines = f.readlines()
-                tab_lines = [idx if "\t" in line for idx, line in enumerate(lines, start=1)]
+                lines = f.read().splitlines()
+                tab_lines = [
+                    idx for idx, line in enumerate(lines, start=1) if "\t" in line
+                ]
                 if tab_lines:
                     issues[path] = tab_lines
         except Exception as e:

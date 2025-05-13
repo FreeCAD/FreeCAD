@@ -32,17 +32,20 @@
 using namespace MillSim;
 
 GuiItem guiItems[] = {
-    {eGuiItemSlider, 0, 0, 240, -36, 0},
-    {eGuiItemThumb, 0, 0, 328, -50, 1},
+    {eGuiItemSlider, 0, 0, 40, -80, 0},
+    {eGuiItemThumb, 0, 0, 328, -94, 1},
     {eGuiItemPause, 0, 0, 40, -50, 'P', true},
     {eGuiItemPlay, 0, 0, 40, -50, 'S', false},
     {eGuiItemSingleStep, 0, 0, 80, -50, 'T'},
-    {eGuiItemFaster, 0, 0, 120, -50, 'F'},
+    {eGuiItemSlower, 0, 0, 125, -50, ' '},
+    {eGuiItemFaster, 0, 0, 170, -50, 'F'},
+    {eGuiItemX, 0, 0, 220, -45, 0, false, 0},
+    {eGuiItem1, 0, 0, 242, -50, 0, false, 0},
+    {eGuiItem5, 0, 0, 242, -50, 0, true, 0},
+    {eGuiItem10, 0, 0, 242, -50, 0, true, 0},
+    {eGuiItem25, 0, 0, 242, -50, 0, true, 0},
+    {eGuiItem50, 0, 0, 242, -50, 0, true, 0},
     {eGuiItemRotate, 0, 0, -140, -50, ' ', false, GUIITEM_CHECKABLE},
-    {eGuiItemCharXImg, 0, 0, 160, -50, 0, false, 0},  // 620
-    {eGuiItemChar0Img, 0, 0, 200, -50, 0, false, 0},
-    {eGuiItemChar1Img, 0, 0, 185, -50, 0, false, 0},
-    {eGuiItemChar4Img, 0, 0, 180, -50, 0, true, 0},
     {eGuiItemPath, 0, 0, -100, -50, 'L', false, GUIITEM_CHECKABLE},
     {eGuiItemAmbientOclusion, 0, 0, -60, -50, 'A', false, GUIITEM_CHECKABLE},
     {eGuiItemView, 0, 0, -180, -50, 'V', false},
@@ -56,12 +59,15 @@ std::vector<std::string> guiFileNames = {"Slider.png",
                                          "Pause.png",
                                          "Play.png",
                                          "SingleStep.png",
+                                         "Slower.png",
                                          "Faster.png",
-                                         "Rotate.png",
-                                         "X.png",
-                                         "0.png",
+                                         "x.png",
                                          "1.png",
-                                         "4.png",
+                                         "5.png",
+                                         "10.png",
+                                         "25.png",
+                                         "50.png",
+                                         "Rotate.png",
                                          "Path.png",
                                          "AmbientOclusion.png",
                                          "View.png"};
@@ -73,8 +79,9 @@ void GuiDisplay::UpdateProjection()
     mat4x4_ortho(projmat, 0, gWindowSizeW, gWindowSizeH, 0, -1, 1);
     mShader.Activate();
     mShader.UpdateProjectionMat(projmat);
-    mThumbMaxMotion = guiItems[eGuiItemView].posx() - guiItems[eGuiItemSlider].posx()
-        - guiItems[eGuiItemThumb].texItem.w;
+    mThumbMaxMotion = guiItems[eGuiItemAmbientOclusion].posx()
+        + guiItems[eGuiItemAmbientOclusion].texItem.w
+        - guiItems[eGuiItemSlider].posx();  // - guiItems[eGuiItemThumb].texItem.w;
     HStretchGlItem(&(guiItems[eGuiItemSlider]), mThumbMaxMotion, 10.0f);
 }
 
@@ -263,8 +270,10 @@ void MillSim::GuiDisplay::SetupTooltips()
         QCoreApplication::translate("CAM:Simulator:Tooltips", "Play simulation", nullptr);
     guiItems[eGuiItemSingleStep].toolTip =
         QCoreApplication::translate("CAM:Simulator:Tooltips", "Single step simulation", nullptr);
+    guiItems[eGuiItemSlower].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Decrease simulation speed", nullptr);
     guiItems[eGuiItemFaster].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Change simulation speed", nullptr);
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Increase simulation speed", nullptr);
     guiItems[eGuiItemPath].toolTip =
         QCoreApplication::translate("CAM:Simulator:Tooltips", "Show/Hide tool path", nullptr);
     guiItems[eGuiItemRotate].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
@@ -366,9 +375,11 @@ void GuiDisplay::UpdatePlayState(bool isRunning)
 
 void MillSim::GuiDisplay::UpdateSimSpeed(int speed)
 {
-    guiItems[eGuiItemChar0Img].hidden = speed == 1;
-    guiItems[eGuiItemChar1Img].hidden = speed == 40;
-    guiItems[eGuiItemChar4Img].hidden = speed != 40;
+    guiItems[eGuiItem1].hidden = speed != 1;
+    guiItems[eGuiItem5].hidden = speed != 5;
+    guiItems[eGuiItem10].hidden = speed != 10;
+    guiItems[eGuiItem25].hidden = speed != 25;
+    guiItems[eGuiItem50].hidden = speed != 50;
 }
 
 void MillSim::GuiDisplay::HandleKeyPress(int key)

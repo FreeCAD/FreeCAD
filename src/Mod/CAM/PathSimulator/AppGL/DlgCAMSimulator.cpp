@@ -29,6 +29,7 @@
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QPoint>
+#include <App/Document.h>
 
 QOpenGLContext* gOpenGlContext;
 
@@ -329,7 +330,9 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         mInstance->setModality(Qt::ApplicationModal);
         mInstance->setMinimumWidth(700);
         mInstance->setMinimumHeight(400);
-        mInstance->setTitle(tr("FreeCAD CAM Simulator"));
+
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        mInstance->setTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
     }
     return mInstance;
 }

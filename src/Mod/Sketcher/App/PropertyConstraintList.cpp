@@ -341,7 +341,7 @@ void PropertyConstraintList::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("ConstraintList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
 
     std::vector<Constraint*> values;
     values.reserve(count);
