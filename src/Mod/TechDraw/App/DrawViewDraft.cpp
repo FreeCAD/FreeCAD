@@ -84,6 +84,13 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute()
         return App::DocumentObject::StdReturn;
     }
 
+    QMetaObject::invokeMethod(qApp, [this]() { updateVisual(); }, Qt::QueuedConnection);
+
+    overrideKeepUpdated(false);
+    return DrawView::execute();
+}
+
+void DrawViewDraft::updateVisual() {
     App::DocumentObject* sourceObj = Source.getValue();
     if (sourceObj) {
         std::string svgFrag;
@@ -107,19 +114,16 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute()
                  << ", techdraw=True"
                  << ", override=" << (OverrideStyle.getValue() ? "True" : "False");
 
-// this is ok for a starting point, but should eventually make dedicated Draft functions that build the svg for all the special cases
-// (Arch section, etc)
-// like Draft.makeDrawingView, but we don't need to create the actual document objects in Draft, just the svg.
+        // this is ok for a starting point, but should eventually make dedicated Draft functions that build the svg for all the special cases
+        // (Arch section, etc)
+        // like Draft.makeDrawingView, but we don't need to create the actual document objects in Draft, just the svg.
         Base::Interpreter().runString("import Draft");
         Base::Interpreter().runStringArg("svgBody = Draft.get_svg(App.activeDocument().%s %s)",
-                                         SourceName.c_str(), paramStr.str().c_str());
-//        Base::Interpreter().runString("print svgBody");
+                                        SourceName.c_str(), paramStr.str().c_str());
+        // Base::Interpreter().runString("print svgBody");
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
-                                          FeatName.c_str(), svgHead.c_str(), svgTail.c_str());
-        }
-
-    overrideKeepUpdated(false);
-    return DrawView::execute();
+                                        FeatName.c_str(), svgHead.c_str(), svgTail.c_str());
+    }
 }
 
 std::string DrawViewDraft::getSVGHead()

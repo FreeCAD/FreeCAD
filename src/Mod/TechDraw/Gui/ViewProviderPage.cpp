@@ -505,12 +505,14 @@ void ViewProviderPage::dropObject(App::DocumentObject* docObj)
 //! Redo the whole visual page
 void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp)
 {
-    if (dp == getDrawPage()) {
-        //this signal is for us
-        if (!getDrawPage()->isUnsetting()) {
-            m_graphicsScene->fixOrphans();
+    QMetaObject::invokeMethod(qApp, [this, dp]() {
+        if (dp == getDrawPage()) {
+            //this signal is for us
+            if (!getDrawPage()->isUnsetting()) {
+                m_graphicsScene->fixOrphans();
+            }
         }
-    }
+    }, Qt::QueuedConnection);
 }
 
 TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
