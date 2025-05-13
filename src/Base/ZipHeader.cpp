@@ -22,10 +22,12 @@
 
 
 #include "PreCompiled.h"
-
-#include "ZipHeader.h"
+#ifndef _PreComp_
 #include <zipios++/backbuffer.h>
 #include <zipios++/zipinputstream.h>
+#endif
+
+#include "ZipHeader.h"
 
 using zipios::ConstEntryPointer;
 using zipios::FileCollection;

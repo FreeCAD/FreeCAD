@@ -20,13 +20,14 @@
  ************************************************************************/
 
 #include "PreCompiled.h"
-
+#ifndef _PreComp_
 #include <iomanip>
 #include <sstream>
 #include <string>
 
 #include <QLocale>
 #include <QString>
+#endif
 
 #include "Quantity.h"
 #include "UnitsSchema.h"

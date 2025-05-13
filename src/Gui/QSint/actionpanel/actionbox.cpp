@@ -7,6 +7,7 @@
 
 #include "actionbox.h"
 
+#undef QT_NO_CAST_FROM_ASCII
 #include <QVariant>
 
 namespace QSint

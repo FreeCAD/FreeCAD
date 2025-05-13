@@ -30,17 +30,23 @@
 
 // Python
 #include <Python.h>
+#include <CXX/Objects.hxx>
+#include <CXX/Extensions.hxx>
 
 // standard
-#include <fcntl.h>
-#include <cstdio>
 #include <cassert>
-#include <ctime>
+#include <cfloat>
 #include <chrono>
+#include <cstdio>
+#include <csignal>
+#include <cstring>
+#include <ctime>
+#include <fcntl.h>
 #include <cmath>
 #include <codecvt>
 
 #ifdef FC_OS_WIN32
+#define _USE_MATH_DEFINES
 #include <direct.h>
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
@@ -61,9 +67,11 @@
 // STL
 #include <algorithm>
 #include <bitset>
+#include <filesystem>
 #include <iomanip>
-#include <list>
 #include <limits>
+#include <list>
+#include <locale>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -72,10 +80,15 @@
 #include <queue>
 #include <set>
 #include <stack>
-#include <string>
+#include <stdexcept>
 #include <string_view>
+#include <string>
 #include <unordered_map>
 #include <vector>
+
+// libfmt
+#include <fmt/format.h>
+#include <fmt/printf.h>
 
 // streams
 #include <iostream>
@@ -87,55 +100,84 @@
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMImplementationLS.hpp>
 #include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/dom/DOMElement.hpp>
+#include <xercesc/dom/DOMImplementation.hpp>
+#include <xercesc/dom/DOMImplementationLS.hpp>
 #include <xercesc/dom/DOMText.hpp>
-#include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/MemBufFormatTarget.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/framework/MemoryManager.hpp>
+#include <xercesc/framework/StdOutFormatTarget.hpp>
+#include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/util/XMLUni.hpp>
-#include <xercesc/util/XMLUniDefs.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/SAXException.hpp>
+#include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
-#include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/util/XercesVersion.hpp>
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/util/XMLUni.hpp>
+#include <xercesc/util/XMLUniDefs.hpp>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/filesystem/exception.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/iostreams/categories.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/math/special_functions/round.hpp>
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/mem_fun.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
 #include <boost/regex.hpp>
 #include <boost/tokenizer.hpp>
 
+// zipios++
+#include <zipios++/backbuffer.h>
+#include <zipios++/zipinputstream.h>
+#include <zipios++/zipios-config.h>
+#include <zipios++/zipoutputstream.h>
+
 // QtCore
+#include <QAtomicInt>
 #include <QBuffer>
 #include <QByteArray>
 #include <QCoreApplication>
-#include <QEvent>
-#include <QIODevice>
 #include <QDataStream>
 #include <QDateTime>
+#include <QDir>
 #include <QElapsedTimer>
-#include <QWriteLocker>
+#include <QEvent>
+#include <QFileInfo>
+#include <QIODevice>
+#include <QLocale>
+#include <QLockFile>
 #include <QReadLocker>
 #include <QReadWriteLock>
+#include <QString>
 #include <QTime>
 #include <QUuid>
+#include <QWriteLocker>
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <QTextCodec>
+#else
+#include <QStringDecoder>
+#include <QStringEncoder>
+#endif
 
 
 #endif  //_PreComp_
