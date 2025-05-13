@@ -67,6 +67,8 @@ public:
     short mustExecute() const override;
 
 protected:
+    void updateVisual();
+
 /*    virtual void onChanged(const App::Property* prop) override;*/
     Base::BoundBox3d bbox;
     std::string getSVGHead();
