@@ -18,9 +18,11 @@ jobs:
         with:
           egress-policy: audit
 
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Checkout Source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 2
+          fetch-tags: true
           submodules: 'recursive'
 
       - name: Tag Build
@@ -96,13 +98,15 @@ jobs:
           fi
 
       - name: Checkout Source
-        shell: bash -l {0}
-        run: |
-          wget -O- https://github.com/FreeCAD/FreeCAD/releases/download/${BUILD_TAG}/freecad_source_${BUILD_TAG}.tar.gz | tar -C ${GITHUB_WORKSPACE} xf -
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 2
+          fetch-tags: true
+          submodules: 'recursive'
 
       - uses: prefix-dev/setup-pixi@19eac09b398e3d0c747adc7921926a6d802df4da # v0.8.8
         with:
-          pixi-version: v0.42.1
+          pixi-version: v0.46.0
           cache: false
 
       - name: Install the Apple certificate and provisioning profile
@@ -152,6 +156,8 @@ jobs:
           TARGET_PLATFORM: ${{ matrix.target }}
           UPLOAD_RELEASE: "true"
         run: |
+          python3 package/rattler-build/scripts/make_version_file.py ../freecad_version.txt
+          git apply package/rattler-build/scripts/disable_git_info.patch
           cd package/rattler-build
           pixi install
           pixi run -e package create_bundle

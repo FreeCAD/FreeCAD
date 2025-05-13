@@ -17,10 +17,10 @@ i = open("src/Build/Version.h.cmake")
 content = []
 for line in i.readlines():
 	line = line.replace("-${PACKAGE_VERSION_SUFFIX}",gitDescription)
-    line = line.replace("${PACKAGE_WCREF}",gitInfo.rev)
-    line = line.replace("${PACKAGE_WCDATE}",gitInfo.date)
-    line = line.replace("${PACKAGE_WCURL}",gitInfo.url)
-    content.append(line)
+	line = line.replace("${PACKAGE_WCREF}",gitInfo.rev)
+	line = line.replace("${PACKAGE_WCDATE}",gitInfo.date)
+	line = line.replace("${PACKAGE_WCURL}",gitInfo.url)
+	content.append(line)
 
 with open("src/Build/Version.h.cmake", "w") as o:
 	content.append('// Git relevant stuff\n')
