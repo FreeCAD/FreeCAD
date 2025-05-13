@@ -33,14 +33,10 @@
 #include <numbers>
 #include <ostream>
 #include <string>
-#include <vector>
-#include <fastsignals/signal.h>
-
-class QString;
-
 #include <string_view>
 #include <vector>
-#include <fastsignals/signal.h>
+
+class QString;
 
 namespace Base
 {
@@ -346,18 +342,6 @@ private:
     bool oldValue;
 };
 
-// ----------------------------------------------------------------------------
-
-class ConnectionBlocker
-{
-    fastsignals::shared_connection_block blocker;
-
-public:
-    ConnectionBlocker(fastsignals::advanced_connection& c)
-        : blocker(c)
-    {}
-    ~ConnectionBlocker() = default;
-};
 // NOLINTEND
 
 // ----------------------------------------------------------------------------
