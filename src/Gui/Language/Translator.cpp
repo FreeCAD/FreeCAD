@@ -115,6 +115,47 @@ public:
 };
 }
 
+class Translator::ParameterObserver : public ParameterGrp::ObserverType
+{
+public:
+    ParameterObserver(Translator* client) : client(client)
+    {
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+        hGrp->Attach(this);
+    }
+
+    void OnChange(Base::Subject<const char*>& caller, const char* creason) override
+    {
+        (void) caller;
+
+        std::string_view reason = creason;
+        if (reason == "UseLocaleFormatting") {
+            int format = hGrp->GetInt("UseLocaleFormatting");
+            if (format == 0) {
+                client->setLocale(); // Defaults to system locale
+            }
+            else if (format == 1) {
+                // Language must need to be set before locale. How do we ensure this?
+                std::string language = hGrp->GetASCII("Language");
+                client->setLocale(language);
+            }
+            else if (format == 2) {
+                client->setLocale("C");
+            }
+            else {
+                throw Base::ValueError("Parameter \"UseLocaleFormatting\" value out of bounds for Translator::formattingOptions");
+            }
+        }
+        else if (reason == "SubstituteDecimalSeparator") {
+            bool value = hGrp->GetBool("SubstituteDecimal");
+            client->enableDecimalPointConversion(value);
+        }
+    }
+
+    Translator* client;
+    static ParameterGrp::handle hGrp;
+};
+
 Translator* Translator::instance()
 {
     if (!_pcSingleton)
@@ -131,6 +172,8 @@ void Translator::destruct ()
 
 Translator::Translator()
 {
+    observer = new Translator::ParameterObserver(this);
+
     // This is needed for Qt's lupdate
     // clang-format off
     d = new TranslatorP;
@@ -203,6 +246,7 @@ Translator::Translator()
 Translator::~Translator()
 {
     removeTranslators();
+    delete observer;
     delete d;
 }
 
