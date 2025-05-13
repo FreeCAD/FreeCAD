@@ -286,6 +286,8 @@ void MillSim::GuiDisplay::SetupTooltips()
     guiItems[eGuiItemView].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
                                                                  "Toggle view simulation/model",
                                                                  nullptr);
+    guiItems[eGuiItemHome].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Reset camera", nullptr);
 }
 
 void GuiDisplay::MouseCursorPos(int x, int y)
