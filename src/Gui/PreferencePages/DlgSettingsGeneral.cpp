@@ -85,6 +85,9 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
 
     recreatePreferencePackMenu();
 
+    for(const char* option : Translator::formattingOptions) {
+        ui->UseLocaleFormatting->addItem(tr(option));
+    }
 
     ui->themesCombobox->setEnabled(true);
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -172,28 +175,7 @@ void DlgSettingsGeneral::setNumberLocale(bool force/* = false*/)
     if (localeIndex == localeFormat && (!force || localeFormat == 0)) {
         return;
     }
-
-    if (localeFormat == 0) {
-        Translator::instance()->setLocale(); // Defaults to system locale
-    }
-    else if (localeFormat == 1) {
-        QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
-        Translator::instance()->setLocale(current.constData());
-    }
-    else if (localeFormat == 2) {
-        Translator::instance()->setLocale("C");
-    }
-    else {
-        return; // Prevent localeIndex updating if localeFormat is out of range
-    }
     localeIndex = localeFormat;
-}
-
-void DlgSettingsGeneral::setDecimalPointConversion(bool on)
-{
-    if (Translator::instance()->isEnabledDecimalPointConversion() != on) {
-        Translator::instance()->enableDecimalPointConversion(on);
-    }
 }
 
 void DlgSettingsGeneral::saveUnitSystemSettings()
@@ -256,7 +238,6 @@ void DlgSettingsGeneral::saveSettings()
     bool force = setLanguage();
     // In case type is "Selected language", we need to force locale change
     setNumberLocale(force);
-    setDecimalPointConversion(ui->SubstituteDecimal->isChecked());
 
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QVariant size = ui->toolbarIconSize->itemData(ui->toolbarIconSize->currentIndex());
