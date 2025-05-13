@@ -33,16 +33,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/signals2/shared_connection_block.hpp>
-
-namespace boost
-{
-namespace signals2
-{
-class connection;
-}
-}  // namespace boost
-
 
 class QString;
 
@@ -84,22 +74,6 @@ public:
     }
 };
 
-inline std::ostream& tabsN(std::ostream& os, int n)
-{
-    for (int i = 0; i < n; i++) {
-        os << "\t";
-    }
-    return os;
-}
-
-inline std::ostream& blanksN(std::ostream& os, int n)
-{
-    for (int i = 0; i < n; i++) {
-        os << " ";
-    }
-    return os;
-}
-
 inline manipulator<int> tabs(int n)
 {
     return {&tabsN, n};
@@ -111,13 +85,6 @@ inline manipulator<int> blanks(int n)
 }
 
 // ----------------------------------------------------------------------------
-
-template<class T>
-    requires std::is_arithmetic_v<T>
-inline T clamp(T num, T lower, T upper)
-{
-    return std::clamp<T>(num, lower, upper);
-}
 
 /// Returns -1, 0 or 1 depending on if the value is negative, zero or positive
 /// As this function might be used in hot paths, it uses branchless implementation
@@ -283,20 +250,6 @@ private:
     bool oldValue;
 };
 
-// ----------------------------------------------------------------------------
-
-class ConnectionBlocker
-{
-    using Connection = boost::signals2::connection;
-    using ConnectionBlock = boost::signals2::shared_connection_block;
-    ConnectionBlock blocker;
-
-public:
-    ConnectionBlocker(Connection& c)
-        : blocker(c)
-    {}
-    ~ConnectionBlocker() = default;
-};
 // NOLINTEND
 
 // ----------------------------------------------------------------------------

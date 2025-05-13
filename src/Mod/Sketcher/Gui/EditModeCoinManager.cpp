@@ -369,7 +369,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
     double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.0);
-    viewScalingFactor = Base::clamp<double>(viewScalingFactor, 0.5, 5.0);
+    viewScalingFactor = std::clamp<double>(viewScalingFactor, 0.5, 5.0);
 
     int markerSize = hGrp->GetInt("MarkerSize", 7);
 

@@ -64,7 +64,7 @@ void ToolBarAreaWidget::addWidget(QWidget* widget)
     QString name = widget->objectName();
 
     if (!name.isEmpty()) {
-        Base::ConnectionBlocker block(_conn);
+        boost::signals2::shared_connection_block blocker(_conn);
         _hParam->SetInt(widget->objectName().toUtf8().constData(), _layout->count() - 1);
     }
 }
@@ -103,7 +103,7 @@ void ToolBarAreaWidget::removeWidget(QWidget* widget)
 
     QString name = widget->objectName();
     if (!name.isEmpty()) {
-        Base::ConnectionBlocker block(_conn);
+        boost::signals2::shared_connection_block blocker(_conn);
         _hParam->RemoveInt(name.toUtf8().constData());
     }
 
@@ -119,7 +119,7 @@ void ToolBarAreaWidget::adjustParent()
 
 void ToolBarAreaWidget::saveState()
 {
-    Base::ConnectionBlocker block(_conn);
+    boost::signals2::shared_connection_block blocker(_conn);
 
     for (auto &v : _hParam->GetIntMap()) {
         _hParam->RemoveInt(v.first.c_str());
