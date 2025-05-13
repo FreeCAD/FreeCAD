@@ -85,12 +85,12 @@ public:
     bool isValid() const {return Ast ? true : false;}
 
 protected:
+    bool parse();
+
     std::string Filter;
     std::string Errors;
-    bool parse();
-    App::DocumentObject* container;
-
     std::shared_ptr<Node_Block> Ast;
+    App::DocumentObject* container;
 };
 
 /** Filter object for the SelectionSengleton
