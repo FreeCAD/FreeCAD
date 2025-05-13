@@ -27,9 +27,8 @@
 #include <limits>
 #include <numbers>
 #include <string>
-#endif
-
 #include <fmt/format.h>
+#endif
 
 #include "Exception.h"
 #include "Quantity.h"

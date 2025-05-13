@@ -325,11 +325,17 @@ if(FREECAD_USE_EXTERNAL_ZIPIOS)
 else()
     list(APPEND FreeCADBase_SRCS ${zipios_SRCS})
     SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
+    set_source_files_properties(${zipios_SRCS} PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
+    target_precompile_headers(
+        FreeCADBase
+        PUBLIC
+        $<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/PreCompiled.h>
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADBase PRIVATE ${FreeCADBase_SRCS})

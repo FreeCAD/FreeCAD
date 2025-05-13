@@ -25,9 +25,9 @@
 
 #ifndef _PreComp_
 #include <limits>
+#include <boost/algorithm/string/predicate.hpp>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
 #include "Base/Exception.h"
 #include "Base/Tools.h"
 

@@ -27,9 +27,8 @@
 #ifndef _PreComp_
 #include <cassert>
 #include <iostream>
-#endif
-
 #include <QAtomicInt>
+#endif
 
 #include "Handle.h"
 

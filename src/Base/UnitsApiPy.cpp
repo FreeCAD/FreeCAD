@@ -23,9 +23,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <memory>
-#endif
-
 #include <CXX/Objects.hxx>
+#endif
 
 #include "UnitsApi.h"
 #include "Quantity.h"

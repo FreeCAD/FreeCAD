@@ -31,11 +31,11 @@
 #endif
 #include <cstring>
 #include <functional>
+#include <QCoreApplication>
 #endif
 
 #include "Console.h"
 #include "PyObjectBase.h"
-#include <QCoreApplication>
 
 
 using namespace Base;

@@ -23,15 +23,16 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
 #include <istream>
-
 #include <qglobal.h>
-#if QT_VERSION < 0x060000
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QTextCodec>
 #else
 #include <QByteArray>
 #include <QStringDecoder>
 #include <QStringEncoder>
+#endif
 #endif
 
 #include "InputSource.h"
@@ -52,7 +53,7 @@ using namespace std;
 //  StdInputStream: Constructors and Destructor
 // ---------------------------------------------------------------------------
 
-#if QT_VERSION < 0x060000
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 struct StdInputStream::TextCodec
 {
     QTextCodec::ConverterState state;

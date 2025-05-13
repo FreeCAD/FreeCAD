@@ -877,6 +877,7 @@ SET(qsintActionPanel_SRCS
     QSint/actionpanel/taskheader_p.cpp
     QSint/actionpanel/taskheader_p.h
 )
+set_source_files_properties(${qsintActionPanel_SRCS} PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
     QSint/actionpanel/actionbox.h
@@ -980,6 +981,7 @@ SET(Quarter_SRCS
     ${Quarter_H_SRC}
     ${Quarter_MOC_SRCS}
 )
+set_source_files_properties(${Quarter_SRCS} PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 SOURCE_GROUP("Quarter" FILES ${Quarter_SRCS})
 
 # The view provider sources
