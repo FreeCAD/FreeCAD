@@ -23,6 +23,8 @@
 #ifndef DIMENSIONFORMATTER_H
 #define DIMENSIONFORMATTER_H
 
+#include <QString>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 //#include <DrawViewDimension.h> Cyclic dependency issue!
@@ -57,7 +59,6 @@ public:
     std::string getDefaultFormatSpec(bool isToleranceFormat) const;
 
 private:
-    bool isTooSmall(double value, const QString& formatSpec) const;
     QString formatValueToSpec(double value, QString formatSpecifier) const;
     bool isNumericFormat(const QString& formatSpecifier) const;
 

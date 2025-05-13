@@ -51,6 +51,7 @@ using DF = DimensionFormatter;
 
 //TODO: Cyclic dependency issue with DimensionFormatter
 
+//NOLINTBEGIN
 class TechDrawExport DrawViewDimension: public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
@@ -98,6 +99,7 @@ public:
     App::PropertyBool UseActualArea;
 
     App::PropertyBool ShowUnits;
+//NOLINTEND
 
     enum class RefType
     {
@@ -129,8 +131,10 @@ public:
     virtual std::string getFormattedToleranceValue(DF::Format partial);
     virtual std::pair<std::string, std::string> getFormattedToleranceValues(DF::Format partial = DF::Format::UNALTERED);
     virtual std::string getFormattedDimensionValue(DF::Format partial = DF::Format::UNALTERED);
-    virtual std::string
-    formatValue(qreal value, QString qFormatSpec, DF::Format partial = DF::Format::UNALTERED, bool isDim = true);
+    virtual std::string formatValue(qreal value,
+                                    const QString& qFormatSpec,
+                                    DF::Format partial = DF::Format::UNALTERED,
+                                    bool isDim = true);
 
     virtual bool haveTolerance();
 
@@ -171,7 +175,7 @@ public:
         m_linearPoints.first(point0);
         m_linearPoints.second(point1);
     };
-    virtual void setLinearPoints(pointPair newPair)
+    virtual void setLinearPoints(const pointPair& newPair)
     {
         m_linearPoints = newPair;
     }
@@ -193,7 +197,7 @@ public:
     bool isMultiValueSchema() const;
 
     pointPair getArrowPositions();
-    void saveArrowPositions(const Base::Vector2d positions[]);
+    void saveArrowPositions(const Base::Vector2d positions[]);  //NOLINT
 
     bool showUnits() const;
     bool useDecimals() const;
@@ -215,15 +219,15 @@ public:
 
     // autocorrect support methods
     void saveFeatureBox();
-    Base::BoundBox3d getSavedBox();
-    Base::BoundBox3d getFeatureBox();
+    Base::BoundBox3d getSavedBox() const;
+    Base::BoundBox3d getFeatureBox() const;
 
     static double getActualArea(const TopoDS_Face& face);
     static double getFilledArea(const TopoDS_Face& face);
     static Base::Vector3d getFaceCenter(const TopoDS_Face& face);
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader&, const char*, App::Property*) override;
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* typeName, App::Property* propss) override;
     void Restore(Base::XMLReader& reader) override;
     void onChanged(const App::Property* prop) override;
     void onDocumentRestored() override;
@@ -235,18 +239,17 @@ protected:
     virtual pointPair getPointsEdgeVert(ReferenceVector references);
 
     virtual arcPoints getArcParameters(ReferenceVector references);
-    virtual arcPoints arcPointsFromBaseGeom(BaseGeomPtr base);
-    virtual arcPoints arcPointsFromEdge(TopoDS_Edge occEdge);
+    virtual arcPoints arcPointsFromBaseGeom(const BaseGeomPtr& base);
+    virtual arcPoints arcPointsFromEdge(const TopoDS_Edge& occEdge);
 
     virtual anglePoints getAnglePointsTwoEdges(ReferenceVector references);
     virtual anglePoints getAnglePointsThreeVerts(ReferenceVector references);
 
     virtual areaPoint getAreaParameters(ReferenceVector references);
 
-    Measure::Measurement* measurement;
     double
     dist2Segs(Base::Vector3d s1, Base::Vector3d e1, Base::Vector3d s2, Base::Vector3d e2) const;
-    pointPair closestPoints(TopoDS_Shape s1, TopoDS_Shape s2) const;
+    pointPair closestPoints(const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;
 
     void resetLinear();
     void resetAngular();
@@ -260,8 +263,9 @@ protected:
     bool autocorrectReferences();
 
 private:
-    static const char* TypeEnums[];
-    static const char* MeasureTypeEnums[];
+    Measure::Measurement* measurement;
+    static const char* TypeEnums[];         //NOLINT
+    static const char* MeasureTypeEnums[];  //NOLINT
     void dumpRefs2D(const char* text) const;
     // Dimension "geometry"
     pointPair m_linearPoints;
