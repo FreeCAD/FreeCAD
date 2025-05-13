@@ -1039,54 +1039,57 @@ void Document::beforeDelete() {
 }
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
-{
-    ViewProvider* viewProvider = getViewProvider(&Obj);
-    if (viewProvider) {
-        try {
-            viewProvider->update(&Prop);
-            if(d->_editingViewer
-                    && d->_editingObject
-                    && d->_editViewProviderParent
-                    && (Prop.isDerivedFrom<App::PropertyPlacement>()
-                        // Issue ID 0004230 : getName() can return null in which case strstr() crashes
-                        || (Prop.getName() && strstr(Prop.getName(),"Scale")))
-                    && d->_editObjs.contains(&Obj))
-            {
-                Base::Matrix4D mat;
-                auto sobj = d->_editViewProviderParent->getObject()->getSubObject(
-                                                        d->_editSubname.c_str(),nullptr,&mat);
-                if(sobj == d->_editingObject && d->_editingTransform!=mat) {
-                    d->_editingTransform = mat;
-                    d->_editingViewer->setEditingTransform(d->_editingTransform);
+{    
+    // Handle view provider in the UI thread.
+    QMetaObject::invokeMethod(qApp, [this, &Obj, &Prop]() {
+        ViewProvider* viewProvider = getViewProvider(&Obj);
+        if (viewProvider) {
+            try {
+                viewProvider->update(&Prop);
+                if(d->_editingViewer
+                        && d->_editingObject
+                        && d->_editViewProviderParent
+                        && (Prop.isDerivedFrom<App::PropertyPlacement>()
+                            // Issue ID 0004230 : getName() can return null in which case strstr() crashes
+                            || (Prop.getName() && strstr(Prop.getName(),"Scale")))
+                        && d->_editObjs.contains(&Obj))
+                {
+                    Base::Matrix4D mat;
+                    auto sobj = d->_editViewProviderParent->getObject()->getSubObject(
+                                                            d->_editSubname.c_str(),nullptr,&mat);
+                    if(sobj == d->_editingObject && d->_editingTransform!=mat) {
+                        d->_editingTransform = mat;
+                        d->_editingViewer->setEditingTransform(d->_editingTransform);
+                    }
                 }
             }
-        }
-        catch(const Base::MemoryException& e) {
-            FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
-        }
-        catch(Base::Exception& e){
-            e.reportException();
-        }
-        catch(const std::exception& e){
-            FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
-        }
-        catch (...) {
-            FC_ERR("Cannot update representation for " << Obj.getFullName());
+            catch(const Base::MemoryException& e) {
+                FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
+            }
+            catch(Base::Exception& e){
+                e.reportException();
+            }
+            catch(const std::exception& e){
+                FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
+            }
+            catch (...) {
+                FC_ERR("Cannot update representation for " << Obj.getFullName());
+            }
+    
+            handleChildren3D(viewProvider);
+    
+            if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>())
+                signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
         }
 
-        handleChildren3D(viewProvider);
-
-        if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>())
-            signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
-    }
+        getMainWindow()->updateActions(true);
+    }, Qt::QueuedConnection);
 
     // a property of an object has changed
     if(!Prop.testStatus(App::Property::NoModify) && !isModified()) {
         FC_LOG(Prop.getFullName() << " modified");
         setModified(true);
     }
-
-    getMainWindow()->updateActions(true);
 }
 
 void Document::slotRelabelObject(const App::DocumentObject& Obj)
