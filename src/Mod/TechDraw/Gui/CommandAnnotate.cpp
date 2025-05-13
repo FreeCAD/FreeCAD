@@ -1430,14 +1430,25 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
         return;
     }
 
-    auto* baseFeat =  static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if (!baseFeat->isDerivedFrom<TechDraw::DrawViewPart>()) {
+    TechDraw::DrawViewPart* baseFeat = nullptr;
+    std::vector<std::string> subNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
+            subNames = (*itSel).getSubNames();
+            if (!subNames.empty()) {
+                baseFeat = static_cast<TechDraw::DrawViewPart*>((*itSel).getObject());
+                break;
+            }
+        }
+    }
+
+    if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                 QObject::tr("No View in Selection."));
         return;
     }
-
-    std::vector<std::string> subNames;
 
     std::vector<std::string> edgeNames;
     for (auto& s: subNames) {
