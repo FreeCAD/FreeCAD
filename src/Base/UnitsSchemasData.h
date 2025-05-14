@@ -581,8 +581,8 @@ inline const UnitsSchemaSpec s7
         { "Length", {
             { 0.00000254      , "in"       , 25.4              },
             { 2.54            , "thou"     , 0.0254            },
-            { 304.8           , "″"        , 25.4              },
-            { 914.4           , "′"        , 304.8             },
+            { 304.8           , "\""       , 25.4              },
+            { 914.4           , "'"        , 304.8             },
             { 1'609'344.0     , "yd"       , 914.4             },
             { 1'609'344'000.0 , "mi"       , 1'609'344.0       },
             { 0               , "in"       , 25.4              }}
@@ -649,7 +649,7 @@ inline std::size_t greatestCommonDenominator(const std::size_t a, const std::siz
 }
 
 /**
- * double -> [feet′][inches[-fraction]″], e.g.: 3′4-1/4″
+ * double -> [feet'][inches[-fraction]"], e.g.: 3'4-1/4"
  */
 inline std::string toFractional(const double value)
 {
@@ -676,19 +676,19 @@ inline std::string toFractional(const double value)
     if (inches > 0) {
         resultParts.push_back(fmt::format("{}", inches));
         if (numerator == 0) {
-            resultParts.emplace_back("″");
+            resultParts.emplace_back("\"");
         }
     }
     if (numerator > 0) {
         if (inches > 0) {
             resultParts.emplace_back("-");
         }
-        resultParts.push_back(fmt::format("{}/{}″", numerator, denominator));
+        resultParts.push_back(fmt::format("{}/{}\"", numerator, denominator));
     }
 
     return fmt::format("{}{}{}",
                        value < 0 ? "-" : "",
-                       feet > 0 ? fmt::format("{}′", feet) : "",
+                       feet > 0 ? fmt::format("{}'", feet) : "",
                        fmt::join(resultParts, ""));
 }
 
