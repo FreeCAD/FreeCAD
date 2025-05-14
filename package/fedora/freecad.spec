@@ -97,7 +97,7 @@ BuildRequires:  openmpi-devel
 BuildRequires:  med-devel
 BuildRequires:  libkdtree++-devel
 
-%if ! %{pcl_enabled}
+%if %{pcl_enabled}
 BuildRequires:  pcl-devel
 %endif
 BuildRequires:  python3
@@ -217,7 +217,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
        -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
        -DUSE_OCC=TRUE \
-%if ! %{pcl_enabled}
+%if %{pcl_enabled}
        -DFREECAD_USE_PCL:BOOL=ON \
 %else
        -DFREECAD_USE_PCL:BOOL=OFF \
