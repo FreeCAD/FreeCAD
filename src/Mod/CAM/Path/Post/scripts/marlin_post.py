@@ -36,6 +36,7 @@ import Path
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 Revised = "2020-11-03"  # Revision date for this file.
 
@@ -450,8 +451,10 @@ def export(objectslist, filename, argstring):
     print("Done postprocessing.")
 
     # Write the file:
-    with open(filename, "w") as fp:
-        fp.write(final)
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
 
     return final
 
