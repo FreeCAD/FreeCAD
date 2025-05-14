@@ -1570,7 +1570,7 @@ bool GeometryUtils::getCircleParms(const TopoDS_Edge& occEdge, double& radius, B
         center = Base::convertTo<Base::Vector3d>(circleFromParms->Circ().Location());
         return true;
     }
-    catch (Standard_Failure& err) {
+    catch (Standard_Failure&) {
         Base::Console().message("Geo::getCircleParms - failed to make a circle\n");
     }
 
