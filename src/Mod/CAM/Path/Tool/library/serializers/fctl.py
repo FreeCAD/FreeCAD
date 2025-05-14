@@ -61,7 +61,7 @@ class FCTLSerializer(AssetSerializer):
                 if not isinstance(tool, ToolBit):
                      Path.Log.warning(f"Dependency for tool '{tool_id}' is not a ToolBit instance. Skipping.")
                      continue
-                library.add_tool(tool, tool_no=tool_no)
+                library.add_bit(tool, bit_no=tool_no)
             else:
                 # This should not happen if dependencies were resolved correctly,
                 # but as a safeguard, log a warning and skip the tool.

@@ -12,9 +12,9 @@ class TestPathToolLibrary(unittest.TestCase):
     def test_init(self):
         library = Library("Test Library")
         self.assertEqual(library.label, "Test Library")
-        self.assertIsNotNone(library.id)
-        self.assertEqual(len(library.tools), 0)
-        self.assertEqual(len(library.tool_nos), 0)
+        self.assertIsNone(library.id)
+        self.assertEqual(len(library._bits), 0)
+        self.assertEqual(len(library._bit_nos), 0)
 
     def test_str(self):
         library = Library("My Library", "123-abc")
@@ -46,19 +46,19 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipAngle=118.0,
         )
-        tool1 = ToolBitEndmill(shape1)
-        tool2 = ToolBitDrill(shape2)
-        library.add_tool(tool1)
-        library.add_tool(tool2)
-        tools_list = list(library)
-        self.assertEqual(len(tools_list), 2)
-        self.assertIn(tool1, tools_list)
-        self.assertIn(tool2, tools_list)
+        bit1 = ToolBitEndmill(shape1)
+        bit2 = ToolBitDrill(shape2)
+        library.add_bit(bit1)
+        library.add_bit(bit2)
+        _bits_list = list(library)
+        self.assertEqual(len(_bits_list), 2)
+        self.assertIn(bit1, _bits_list)
+        self.assertIn(bit2, _bits_list)
 
-    def test_get_next_tool_no(self):
+    def test_get_next_bit_no(self):
         library = Library("Test Library")
-        self.assertEqual(library.get_next_tool_no(), 1)
-        # Using ToolBit instances in tool_nos with ToolBitShape
+        self.assertEqual(library.get_next_bit_no(), 1)
+        # Using ToolBit instances in _bit_nos with ToolBitShape
         shape_a = ToolBitShapeEndmill(
             id="dummy_a",
             CuttingEdgeHeight=1.0,
@@ -86,16 +86,16 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipDiameter=1.0,
         )
-        library.tool_nos = {
+        library._bit_nos = {
             1: ToolBitEndmill(shape_a),
             5: ToolBitDrill(shape_b),
             2: ToolBitVBit(shape_c),
         }
-        self.assertEqual(library.get_next_tool_no(), 6)
-        library.tool_nos = {}
-        self.assertEqual(library.get_next_tool_no(), 1)
+        self.assertEqual(library.get_next_bit_no(), 6)
+        library._bit_nos = {}
+        self.assertEqual(library.get_next_bit_no(), 1)
 
-    def test_get_tool_no_from_tool(self):
+    def test_get_bit_no_from_bit(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
             id="dummy_endmill_1",
@@ -113,12 +113,12 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipAngle=118.0,
         )
-        tool1 = ToolBitEndmill(shape1)
-        tool2 = ToolBitDrill(shape2)
-        library.add_tool(tool1, 1)
-        library.add_tool(tool2, 2)
-        self.assertEqual(library.get_tool_no_from_tool(tool1), 1)
-        self.assertEqual(library.get_tool_no_from_tool(tool2), 2)
+        bit1 = ToolBitEndmill(shape1)
+        bit2 = ToolBitDrill(shape2)
+        library.add_bit(bit1, 1)
+        library.add_bit(bit2, 2)
+        self.assertEqual(library.get_bit_no_from_bit(bit1), 1)
+        self.assertEqual(library.get_bit_no_from_bit(bit2), 2)
         shape_cutter = ToolBitShapeVBit(
             id="dummy_cutter_1",
             Diameter=3.0,
@@ -131,10 +131,10 @@ class TestPathToolLibrary(unittest.TestCase):
             TipDiameter=1.0,
         )
         self.assertIsNone(
-            library.get_tool_no_from_tool(ToolBitVBit(shape_cutter))
+            library.get_bit_no_from_bit(ToolBitVBit(shape_cutter))
         )
 
-    def test_assign_new_tool_no(self):
+    def test_assign_new_bit_no(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
             id="dummy_endmill_2",
@@ -152,47 +152,47 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipAngle=118.0,
         )
-        tool1 = ToolBitEndmill(shape1)
-        tool2 = ToolBitDrill(shape2)
+        bit1 = ToolBitEndmill(shape1)
+        bit2 = ToolBitDrill(shape2)
 
-        # Assign tool1 without specifying number (should get 1)
-        library.add_tool(tool1)
-        self.assertEqual(len(library.tools), 1)
-        self.assertEqual(len(library.tool_nos), 1)
-        self.assertIn(1, library.tool_nos)
-        self.assertEqual(library.tool_nos[1], tool1)
+        # Assign bit1 without specifying number (should get 1)
+        library.add_bit(bit1)
+        self.assertEqual(len(library._bits), 1)
+        self.assertEqual(len(library._bit_nos), 1)
+        self.assertIn(1, library._bit_nos)
+        self.assertEqual(library._bit_nos[1], bit1)
 
-        # Assign tool2 to number 1 (should reassign tool1)
-        library.add_tool(tool2, 1)
-        self.assertEqual(len(library.tools), 2)
-        self.assertEqual(len(library.tool_nos), 2)
-        self.assertIn(1, library.tool_nos)
-        self.assertEqual(library.tool_nos[1], tool2)
-        # Check if tool1 was reassigned to a new tool number (should be 2)
-        self.assertIn(2, library.tool_nos)
-        self.assertEqual(library.tool_nos[2], tool1)
+        # Assign bit2 to number 1 (should reassign bit1)
+        library.add_bit(bit2, 1)
+        self.assertEqual(len(library._bits), 2)
+        self.assertEqual(len(library._bit_nos), 2)
+        self.assertIn(1, library._bit_nos)
+        self.assertEqual(library._bit_nos[1], bit2)
+        # Check if bit1 was reassigned to a new bit number (should be 2)
+        self.assertIn(2, library._bit_nos)
+        self.assertEqual(library._bit_nos[2], bit1)
 
-        # Assign tool2 to number 10
-        library.assign_new_tool_no(tool2, 10)
-        self.assertEqual(len(library.tools), 2)
-        self.assertEqual(len(library.tool_nos), 2)
-        self.assertIn(10, library.tool_nos)
-        self.assertEqual(library.tool_nos[10], tool2)
-        self.assertNotIn(1, library.tool_nos)  # tool2 should no longer be at 1
-        self.assertIn(2, library.tool_nos)
-        self.assertEqual(library.tool_nos[2], tool1)
+        # Assign bit2 to number 10
+        library.assign_new_bit_no(bit2, 10)
+        self.assertEqual(len(library._bits), 2)
+        self.assertEqual(len(library._bit_nos), 2)
+        self.assertIn(10, library._bit_nos)
+        self.assertEqual(library._bit_nos[10], bit2)
+        self.assertNotIn(1, library._bit_nos)  # bit2 should no longer be at 1
+        self.assertIn(2, library._bit_nos)
+        self.assertEqual(library._bit_nos[2], bit1)
 
-        # Assign tool1 to number 5
-        library.assign_new_tool_no(tool1, 5)
-        self.assertEqual(len(library.tools), 2)
-        self.assertEqual(len(library.tool_nos), 2)
-        self.assertIn(5, library.tool_nos)
-        self.assertEqual(library.tool_nos[5], tool1)
-        self.assertNotIn(2, library.tool_nos)  # tool1 should no longer be at 2
-        self.assertIn(10, library.tool_nos)
-        self.assertEqual(library.tool_nos[10], tool2)
+        # Assign bit1 to number 5
+        library.assign_new_bit_no(bit1, 5)
+        self.assertEqual(len(library._bits), 2)
+        self.assertEqual(len(library._bit_nos), 2)
+        self.assertIn(5, library._bit_nos)
+        self.assertEqual(library._bit_nos[5], bit1)
+        self.assertNotIn(2, library._bit_nos)  # bit1 should no longer be at 2
+        self.assertIn(10, library._bit_nos)
+        self.assertEqual(library._bit_nos[10], bit2)
 
-    def test_add_tool(self):
+    def test_add_bit(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
             id="dummy_endmill_3",
@@ -210,39 +210,39 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipAngle=118.0,
         )
-        tool1 = ToolBitEndmill(shape1)
-        tool2 = ToolBitDrill(shape2)
+        bit1 = ToolBitEndmill(shape1)
+        bit2 = ToolBitDrill(shape2)
 
-        library.add_tool(tool1)
-        self.assertEqual(len(library.tools), 1)
-        self.assertIn(tool1, library.tools)
-        self.assertEqual(len(library.tool_nos), 1)
-        self.assertIn(1, library.tool_nos)
-        self.assertEqual(library.tool_nos[1], tool1)
+        library.add_bit(bit1)
+        self.assertEqual(len(library._bits), 1)
+        self.assertIn(bit1, library._bits)
+        self.assertEqual(len(library._bit_nos), 1)
+        self.assertIn(1, library._bit_nos)
+        self.assertEqual(library._bit_nos[1], bit1)
 
-        library.add_tool(tool2, 5)
-        self.assertEqual(len(library.tools), 2)
-        self.assertIn(tool1, library.tools)
-        self.assertIn(tool2, library.tools)
-        self.assertEqual(len(library.tool_nos), 2)
-        self.assertIn(1, library.tool_nos)
-        self.assertEqual(library.tool_nos[1], tool1)
-        self.assertIn(5, library.tool_nos)
-        self.assertEqual(library.tool_nos[5], tool2)
+        library.add_bit(bit2, 5)
+        self.assertEqual(len(library._bits), 2)
+        self.assertIn(bit1, library._bits)
+        self.assertIn(bit2, library._bits)
+        self.assertEqual(len(library._bit_nos), 2)
+        self.assertIn(1, library._bit_nos)
+        self.assertEqual(library._bit_nos[1], bit1)
+        self.assertIn(5, library._bit_nos)
+        self.assertEqual(library._bit_nos[5], bit2)
 
-        # Add tool1 again (should not increase tool count in tools list)
-        library.add_tool(tool1, 10)
-        self.assertEqual(len(library.tools), 2)
-        self.assertIn(tool1, library.tools)
-        self.assertIn(tool2, library.tools)
-        self.assertEqual(len(library.tool_nos), 2)  # tool_nos count remains 2
-        self.assertIn(10, library.tool_nos)
-        self.assertEqual(library.tool_nos[10], tool1)
-        self.assertIn(5, library.tool_nos)
-        self.assertEqual(library.tool_nos[5], tool2)
-        self.assertNotIn(1, library.tool_nos)  # tool1 should no longer be at 1
+        # Add bit1 again (should not increase bit count in _bits list)
+        library.add_bit(bit1, 10)
+        self.assertEqual(len(library._bits), 2)
+        self.assertIn(bit1, library._bits)
+        self.assertIn(bit2, library._bits)
+        self.assertEqual(len(library._bit_nos), 2)  # _bit_nos count remains 2
+        self.assertIn(10, library._bit_nos)
+        self.assertEqual(library._bit_nos[10], bit1)
+        self.assertIn(5, library._bit_nos)
+        self.assertEqual(library._bit_nos[5], bit2)
+        self.assertNotIn(1, library._bit_nos)  # bit1 should no longer be at 1
 
-    def test_get_tools(self):
+    def test_get_bits(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
             id="dummy_endmill_4",
@@ -260,17 +260,17 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipAngle=118.0,
         )
-        tool1 = ToolBitEndmill(shape1)
-        tool2 = ToolBitDrill(shape2)
-        self.assertEqual(library.get_tools(), [])
-        library.add_tool(tool1)
-        library.add_tool(tool2)
-        tools_list = library.get_tools()
-        self.assertEqual(len(tools_list), 2)
-        self.assertIn(tool1, tools_list)
-        self.assertIn(tool2, tools_list)
+        bit1 = ToolBitEndmill(shape1)
+        bit2 = ToolBitDrill(shape2)
+        self.assertEqual(library.get_bits(), [])
+        library.add_bit(bit1)
+        library.add_bit(bit2)
+        _bits_list = library.get_bits()
+        self.assertEqual(len(_bits_list), 2)
+        self.assertIn(bit1, _bits_list)
+        self.assertIn(bit2, _bits_list)
 
-    def test_has_tool(self):
+    def test_has_bit(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
             id="dummy_endmill_5",
@@ -288,11 +288,11 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipAngle=118.0,
         )
-        tool1 = ToolBitEndmill(shape1)
-        tool2 = ToolBitDrill(shape2)
-        library.add_tool(tool1)
-        self.assertTrue(library.has_tool(tool1))
-        self.assertFalse(library.has_tool(tool2))
+        bit1 = ToolBitEndmill(shape1)
+        bit2 = ToolBitDrill(shape2)
+        library.add_bit(bit1)
+        self.assertTrue(library.has_bit(bit1))
+        self.assertFalse(library.has_bit(bit2))
         # Create a new ToolBit with the same properties but different instance
         shape1_copy = ToolBitShapeEndmill(
             id="dummy_endmill_5_copy", # Use a different ID for the copy
@@ -302,10 +302,10 @@ class TestPathToolLibrary(unittest.TestCase):
             Length=50.0,
             ShankDiameter=10.0,
         )
-        tool1_copy = ToolBitEndmill(shape1_copy)
-        self.assertFalse(library.has_tool(tool1_copy))
+        bit1_copy = ToolBitEndmill(shape1_copy)
+        self.assertFalse(library.has_bit(bit1_copy))
 
-    def test_remove_tool(self):
+    def test_remove_bit(self):
         library = Library("Test Library")
         shape1 = ToolBitShapeEndmill(
             id="dummy_endmill_6",
@@ -334,38 +334,38 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipDiameter=1.0,
         )
-        tool1 = ToolBitEndmill(shape1)
-        tool2 = ToolBitDrill(shape2)
-        tool3 = ToolBitVBit(shape3)
+        bit1 = ToolBitEndmill(shape1)
+        bit2 = ToolBitDrill(shape2)
+        bit3 = ToolBitVBit(shape3)
 
-        library.add_tool(tool1, 1)
-        library.add_tool(tool2, 2)
-        library.add_tool(tool3, 3)
-        self.assertEqual(len(library.tools), 3)
-        self.assertEqual(len(library.tool_nos), 3)
+        library.add_bit(bit1, 1)
+        library.add_bit(bit2, 2)
+        library.add_bit(bit3, 3)
+        self.assertEqual(len(library._bits), 3)
+        self.assertEqual(len(library._bit_nos), 3)
 
-        library.remove_tool(tool2)
-        self.assertEqual(len(library.tools), 2)
-        self.assertNotIn(tool2, library.tools)
-        self.assertEqual(len(library.tool_nos), 2)
-        self.assertNotIn(2, library.tool_nos)
-        self.assertNotIn(tool2, library.tool_nos.values())
+        library.remove_bit(bit2)
+        self.assertEqual(len(library._bits), 2)
+        self.assertNotIn(bit2, library._bits)
+        self.assertEqual(len(library._bit_nos), 2)
+        self.assertNotIn(2, library._bit_nos)
+        self.assertNotIn(bit2, library._bit_nos.values())
 
-        library.remove_tool(tool1)
-        self.assertEqual(len(library.tools), 1)
-        self.assertNotIn(tool1, library.tools)
-        self.assertEqual(len(library.tool_nos), 1)
-        self.assertNotIn(1, library.tool_nos)
-        self.assertNotIn(tool1, library.tool_nos.values())
+        library.remove_bit(bit1)
+        self.assertEqual(len(library._bits), 1)
+        self.assertNotIn(bit1, library._bits)
+        self.assertEqual(len(library._bit_nos), 1)
+        self.assertNotIn(1, library._bit_nos)
+        self.assertNotIn(bit1, library._bit_nos.values())
 
-        library.remove_tool(tool3)
-        self.assertEqual(len(library.tools), 0)
-        self.assertNotIn(tool3, library.tools)
-        self.assertEqual(len(library.tool_nos), 0)
-        self.assertNotIn(3, library.tool_nos)
-        self.assertNotIn(tool3, library.tool_nos.values())
+        library.remove_bit(bit3)
+        self.assertEqual(len(library._bits), 0)
+        self.assertNotIn(bit3, library._bits)
+        self.assertEqual(len(library._bit_nos), 0)
+        self.assertNotIn(3, library._bit_nos)
+        self.assertNotIn(bit3, library._bit_nos.values())
 
-        # Removing a non-existent tool should not raise an error
+        # Removing a non-existent bit should not raise an error
         shape_nonexistent = ToolBitShapeEndmill(
             id="dummy_nonexistent_6",
             CuttingEdgeHeight=99.0,
@@ -374,9 +374,9 @@ class TestPathToolLibrary(unittest.TestCase):
             Length=99.0,
             ShankDiameter=99.0,
         )
-        library.remove_tool(ToolBitEndmill(shape_nonexistent))
-        self.assertEqual(len(library.tools), 0)
-        self.assertEqual(len(library.tool_nos), 0)
+        library.remove_bit(ToolBitEndmill(shape_nonexistent))
+        self.assertEqual(len(library._bits), 0)
+        self.assertEqual(len(library._bit_nos), 0)
 
 
 if __name__ == "__main__":

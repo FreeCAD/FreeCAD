@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import uuid
 import pathlib
 from typing import Mapping, Union, Optional
 import Path
@@ -11,10 +10,11 @@ class Library(Asset):
     API_VERSION = 1
 
     def __init__(self, label, id=None):
-        self.id = id or str(uuid.uuid1())
+        self.id = id
         self.label = label
-        self.tools = []
-        self.tool_nos = {}  # Maps tool_no number to tool
+        self._bits = []
+        self._bit_nos = {}   # Maps ToolBit number to ToolBit
+        self._bit_urls = {}  # Maps ToolBit URL to ToolBit
 
     def get_id(self) -> str:
         """Returns the unique identifier for the Library instance."""
@@ -91,69 +91,69 @@ class Library(Asset):
         return self.id == other.id
 
     def __iter__(self):
-        return self.tools.__iter__()
+        return self._bits.__iter__()
 
-    def get_next_tool_no(self):
-        tool_nolist = sorted(self.tool_nos, reverse=True)
-        return tool_nolist[0]+1 if tool_nolist else 1
+    def get_next_bit_no(self):
+        bit_nolist = sorted(self._bit_nos, reverse=True)
+        return bit_nolist[0]+1 if bit_nolist else 1
 
-    def get_tool_no_from_tool(self, tool):
-        for tool_no, thetool in self.tool_nos.items():
-            if tool == thetool:
-                return tool_no
+    def get_bit_no_from_bit(self, bit):
+        for bit_no, thebit in self._bit_nos.items():
+            if bit == thebit:
+                return bit_no
         return None
 
     def get_tool_by_uri(self, uri: AssetUri):
         for tool in self.tool_nos.values():
-            if tool.id == uri.asset_id:
+            if tool.get_uri() == uri:
                 return tool
         return None
 
-    def assign_new_tool_no(self, tool, tool_no=None):
-        if tool not in self.tools:
+    def assign_new_bit_no(self, bit, bit_no=None):
+        if bit not in self._bits:
             return
 
-        # If no specific tool_no was requested, assign a new one.
-        if tool_no is None:
-            tool_no = self.get_next_tool_no()
-        elif self.tool_nos.get(tool_no) == tool:
+        # If no specific bit_no was requested, assign a new one.
+        if bit_no is None:
+            bit_no = self.get_next_bit_no()
+        elif self._bit_nos.get(bit_no) == bit:
             return
 
-        # Otherwise, add the tool. Since the requested tool_no may already
+        # Otherwise, add the bit. Since the requested bit_no may already
         # be in use, we need to account for that. In this case, we will
-        # add the removed tool into a new tool_no.
-        old_tool = self.tool_nos.pop(tool_no, None)
-        old_tool_no = self.get_tool_no_from_tool(tool)
-        if old_tool_no:
-            del self.tool_nos[old_tool_no]
-        self.tool_nos[tool_no] = tool
-        if old_tool:
-            self.assign_new_tool_no(old_tool)
-        return tool_no
+        # add the removed bit into a new bit_no.
+        old_bit = self._bit_nos.pop(bit_no, None)
+        old_bit_no = self.get_bit_no_from_bit(bit)
+        if old_bit_no:
+            del self._bit_nos[old_bit_no]
+        self._bit_nos[bit_no] = bit
+        if old_bit:
+            self.assign_new_bit_no(old_bit)
+        return bit_no
 
-    def add_tool(self, tool, tool_no=None):
-        if tool not in self.tools:
-            self.tools.append(tool)
-        return self.assign_new_tool_no(tool, tool_no)
+    def add_bit(self, bit, bit_no=None):
+        if bit not in self._bits:
+            self._bits.append(bit)
+        self.assign_new_bit_no(bit, bit_no)
 
-    def get_tools(self):
-        return self.tools
+    def get_bits(self):
+        return self._bits
 
-    def has_tool(self, tool):
-        for t in self.tools:
-            if tool.id == t.id:
+    def has_bit(self, bit):
+        for t in self._bits:
+            if bit.id == t.id:
                 return True
         return False
 
-    def remove_tool(self, tool):
-        self.tools = [t for t in self.tools if t.id != tool.id]
-        self.tool_nos = {k: v for (k, v) in self.tool_nos.items() if v.id != tool.id}
+    def remove_bit(self, bit):
+        self._bits = [t for t in self._bits if t.id != bit.id]
+        self._bit_nos = {k: v for (k, v) in self._bit_nos.items() if v.id != bit.id}
 
     def dump(self, summarize=False):
         title = 'Library "{}" ({}) (instance {})'.format(self.label, self.id, id(self))
         print("-"*len(title))
         print(title)
         print("-"*len(title))
-        for tool in self.tools:
-            tool.dump(summarize=summarize)
+        for bit in self._bits:
+            bit.dump(summarize=summarize)
             print()
