@@ -78,7 +78,6 @@ from CAMTests.TestPathToolShapeIcon import (
 from CAMTests.TestPathToolBitSerializer import (
     TestCamoticsToolBitSerializer,
     TestFCTBSerializer,
-    TestLinuxCNCToolBitSerializer,
 )
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator

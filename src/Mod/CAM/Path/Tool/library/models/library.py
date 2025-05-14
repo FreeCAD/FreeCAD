@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import uuid
-import json
 import pathlib
-from typing import List, Mapping, Union, Optional
+from typing import Mapping, Union, Optional
 import Path
 from ...assets import Asset, AssetUri
-from ...camassets import cam_assets
 
 
 class Library(Asset):
@@ -22,26 +20,26 @@ class Library(Asset):
         """Returns the unique identifier for the Library instance."""
         return self.id
 
-    @staticmethod
-    def resolve_name(name_or_uri: Union[str, AssetUri, pathlib.Path]) -> AssetUri:
+    @classmethod
+    def resolve_name(cls, identifier: Union[str, AssetUri, pathlib.Path]) -> AssetUri:
         """
         Resolves various forms of library identifiers to a canonical AssetUri string.
         Handles direct AssetUri objects, URI strings, asset IDs, or legacy filenames.
         Returns the canonical URI string or None if resolution fails.
         """
-        if isinstance(name_or_uri, AssetUri):
-            return name_or_uri
+        if isinstance(identifier, AssetUri):
+            return identifier
         
-        if AssetUri.is_uri(name_or_uri):
-            return AssetUri(name_or_uri)
+        if isinstance(identifier, str) and AssetUri.is_uri(identifier):
+            return AssetUri(identifier)
 
-        if isinstance(name_or_uri, pathlib.Path): # Handle direct Path objects (legacy filenames)
-            name_or_uri = name_or_uri.stem # Use the filename stem as potential ID
+        if isinstance(identifier, pathlib.Path): # Handle direct Path objects (legacy filenames)
+            identifier = identifier.stem # Use the filename stem as potential ID
 
-        if not isinstance(name_or_uri, str):
-            raise ValueError("Failed to resolve {name_or_uri} to a Uri")
+        if not isinstance(identifier, str):
+            raise ValueError("Failed to resolve {identifier} to a Uri")
             
-        return AssetUri.build(asset_type=Library.asset_type, asset_id=name_or_uri)
+        return AssetUri.build(asset_type=Library.asset_type, asset_id=identifier)
 
     def to_dict(self) -> dict:
         """Returns a dictionary representation of the Library in the specified format."""
@@ -56,12 +54,6 @@ class Library(Asset):
             "tools": tools_list,
             "version": self.API_VERSION
         }
-
-    def to_bytes(self) -> bytes:
-        """Serializes the Library object to bytes using to_dict."""
-        data_dict = self.to_dict()
-        json_str = json.dumps(data_dict)
-        return json_str.encode('utf-8')
 
     @classmethod
     def from_dict(
@@ -91,28 +83,6 @@ class Library(Asset):
             else:
                 raise ValueError(f"Tool with id {tool_id} not found in dependencies")
         return library
-
-    @classmethod
-    def from_bytes(
-        cls,
-        data: bytes,
-        id: str,
-        dependencies: Optional[Mapping[AssetUri, Asset]],
-    ) -> "Library":  # Signature updated
-        """
-        Deserializes bytes into a Library instance using from_dict.
-        If dependencies is None, it indicates a shallow load.
-        """
-        data_dict = json.loads(data.decode('utf-8'))
-        return cls.from_dict(data_dict, id, dependencies)
-
-    @classmethod
-    def dependencies(cls, data: bytes) -> List[AssetUri]:
-        """Returns a list of AssetUri dependencies parsed from the serialized data."""
-        data_dict = json.loads(data.decode('utf-8'))
-        tools_list = data_dict.get("tools", [])
-        tool_ids = [pathlib.Path(tool["path"]).stem for tool in tools_list]
-        return [AssetUri(f"toolbit://{tool_id}") for tool_id in tool_ids]
 
     def __str__(self):
         return '{} "{}"'.format(self.id, self.label)
@@ -179,13 +149,6 @@ class Library(Asset):
         self.tools = [t for t in self.tools if t.id != tool.id]
         self.tool_nos = {k: v for (k, v) in self.tool_nos.items() if v.id != tool.id}
 
-    def serialize(self, serializer, filename=None):
-        return serializer.serialize_library(self, filename=filename)
-
-    @classmethod
-    def deserialize(cls, serializer, id):
-        return serializer.deserialize_library(id)
-
     def dump(self, summarize=False):
         title = 'Library "{}" ({}) (instance {})'.format(self.label, self.id, id(self))
         print("-"*len(title))
@@ -194,6 +157,3 @@ class Library(Asset):
         for tool in self.tools:
             tool.dump(summarize=summarize)
             print()
-
-
-cam_assets.register_asset(Library)

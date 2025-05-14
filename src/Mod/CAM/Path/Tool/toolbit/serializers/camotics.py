@@ -1,11 +1,13 @@
 import json
-from typing import Optional
+from typing import Optional, Mapping
 import FreeCAD
 import Path
 from ...camassets import cam_assets
 from ..mixins import RotaryToolBitMixin
 from ..models.base import ToolBit
-from .base import ToolBitSerializer
+from ...assets.serializer import AssetSerializer
+from ...assets.uri import AssetUri
+from ...assets.asset import Asset
 
 SHAPEMAP = {
     "ballend": "Ballnose",
@@ -24,25 +26,37 @@ tooltemplate = {
 }
 
 
-class CamoticsToolBitSerializer(ToolBitSerializer):
-    NAME = "Camotics"
-    EXTENSIONS = ()  # Camotics does not have tool files; tools are rows in tool tables
+class CamoticsToolBitSerializer(AssetSerializer):
+    for_class = ToolBit
+    extensions = ()  # Camotics does not have tool files; tools are rows in tool tables
+    mime_type = "application/json"
 
-    def serialize_toolbit(self, bit: ToolBit) -> bytes:
-        if not isinstance(bit, RotaryToolBitMixin):
-            lbl = bit.get_label()
-            name = bit.get_shape_name()
+    @classmethod
+    def extract_dependencies(cls, data: bytes) -> list[AssetUri]:
+        return []
+
+    @classmethod
+    def serialize(cls, asset: Asset) -> bytes:
+        if not isinstance(asset, RotaryToolBitMixin):
+            lbl = asset.get_label()
+            name = asset.get_shape_name()
             Path.Log.info(
                 f"Skipping export of toolbit {lbl} ({name}) because it is not a rotary tool."
             )
         toolitem = tooltemplate.copy()
-        toolitem["diameter"] = bit.get_diameter().Value or 2
-        toolitem["description"] = bit.get_label()
-        toolitem["length"] = bit.get_length().Value or 10
-        toolitem["shape"] = SHAPEMAP.get(bit.get_shape_name(), "Cylindrical")
+        toolitem["diameter"] = asset.get_diameter().Value or 2
+        toolitem["description"] = asset.get_label()
+        toolitem["length"] = asset.get_length().Value or 10
+        toolitem["shape"] = SHAPEMAP.get(asset.get_shape_name(), "Cylindrical")
         return json.dumps(toolitem).encode("ascii", "ignore")
 
-    def deserialize_toolbit(self, data: bytes) -> Optional[ToolBit]:
+    @classmethod
+    def deserialize(
+        cls,
+        data: bytes,
+        id: str,
+        dependencies: Optional[Mapping[AssetUri, Asset]],
+    ) -> Asset:
         # Create an instance of the ToolBitShape class
         data = json.loads(data.decode("ascii", "ignore"))
         shape = cam_assets.get("toolbitshape://endmill")

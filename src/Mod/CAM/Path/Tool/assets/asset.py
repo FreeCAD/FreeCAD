@@ -1,8 +1,12 @@
 from __future__ import annotations
 import abc
 from abc import ABC
-from typing import Mapping, List, Optional, Any
+from typing import Mapping, List, Optional, TYPE_CHECKING
 from .uri import AssetUri
+
+if TYPE_CHECKING:
+    from .serializer import AssetSerializer
+
 
 class Asset(ABC):
     asset_type: str
@@ -42,25 +46,26 @@ class Asset(ABC):
         return AssetUri.build(cls.asset_type, asset_id=asset_id)
 
     @classmethod
-    def dependencies(cls, data: bytes) -> List[AssetUri]:
+    def extract_dependencies(
+        cls, data: bytes, serializer: "AssetSerializer"
+    ) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
-        return []
+        return serializer.extract_dependencies(data)
 
     @classmethod
-    @abc.abstractmethod
     def from_bytes(
         cls,
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Asset]],
+        serializer: AssetSerializer,
     ) -> Asset:
         """
         Creates an object from serialized data and resolved dependencies.
         If dependencies is None, it indicates a shallow load where dependencies were not resolved.
         """
-        pass
+        return serializer.deserialize(data, id, dependencies)
 
-    @abc.abstractmethod
-    def to_bytes(self) -> bytes:
+    def to_bytes(self, serializer: AssetSerializer) -> bytes:
         """Serializes an object into bytes."""
-        pass
+        return serializer.serialize(self)

@@ -4,8 +4,8 @@ import json
 import FreeCAD
 from FreeCAD import Base
 from typing import Optional, Union, Mapping, List
-from ...assets import Asset, AssetUri
-from ...camassets import cam_assets
+from ...assets import Asset, AssetUri, AssetSerializer
+
 
 class Machine(Asset):
     """Represents a machine with various operational parameters."""
@@ -151,7 +151,7 @@ class Machine(Asset):
             "max_feed": self._max_feed     # mm/min
         }
 
-    def to_bytes(self) -> bytes:
+    def to_bytes(self, serializer: AssetSerializer) -> bytes:
         """Serializes the Machine object to bytes using to_dict."""
         data_dict = self.to_dict()
         json_str = json.dumps(data_dict)
@@ -457,6 +457,3 @@ class Machine(Asset):
         if do_print:
             print(output)
         return output
-
-
-cam_assets.register_asset(Machine)

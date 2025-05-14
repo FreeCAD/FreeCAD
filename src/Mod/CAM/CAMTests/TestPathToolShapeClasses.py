@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Mapping, Tuple
 import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
+from Path.Tool.assets import DummyAssetSerializer
 from Path.Tool.shape import (
     ToolBitShape,
     ToolBitShapeBallend,
@@ -173,15 +174,11 @@ class TestPathToolShapeClasses(PathTestWithAssets):
                 continue
 
             with self.subTest(uri=uri):
-                try:
-                    instance = self.assets.get(uri)
-                    self.assertIsInstance(instance, ToolBitShape)
-                    # Check if default params were set by checking if the
-                    # parameters dictionary is not empty.
-                    self.assertTrue(instance.get_parameters())
-
-                except Exception as e:
-                    self.fail(f"Failed to instantiate shape from {uri}: {e}")
+                instance = self.assets.get(uri)
+                self.assertIsInstance(instance, ToolBitShape)
+                # Check if default params were set by checking if the
+                # parameters dictionary is not empty.
+                self.assertTrue(instance.get_parameters())
 
     def test_get_shape_class(self):
         """Test the get_shape_class function."""
@@ -375,7 +372,7 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         original_shape = ToolBitShape.from_file(fixture_path)
 
         # Serialize the shape using the to_bytes method
-        serialized_data = original_shape.to_bytes()
+        serialized_data = original_shape.to_bytes(DummyAssetSerializer)
 
         # Assert that the serialized data is bytes and not empty
         self.assertIsInstance(serialized_data, bytes)
@@ -384,7 +381,7 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         # Deserialize the data using the from_bytes classmethod
         # Provide an empty dependencies mapping for this test
         deserialized_shape = ToolBitShape.from_bytes(
-            serialized_data, id=original_shape.get_id(), dependencies={}
+            serialized_data, original_shape.get_id(), {}, DummyAssetSerializer
         )
 
         # Assert that the deserialized object is a ToolBitShape instance

@@ -10,6 +10,8 @@ from Path.Tool.assets import (
     Asset,
     AssetUri,
     MemoryStore,
+    AssetSerializer,
+    DummyAssetSerializer,
 )
 
 
@@ -22,15 +24,16 @@ class MockAsset(Asset):
         self._id = id
 
     @classmethod
-    def dependencies(cls, data: bytes) -> List[AssetUri]:
+    def extract_dependencies(cls, data: bytes, serializer: AssetSerializer) -> List[AssetUri]:
+        # Mock implementation doesn't use data or format for dependencies
         return []
 
     @classmethod
-    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset] | None) -> "MockAsset":
+    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset] | None, serializer: AssetSerializer) -> "MockAsset":
         # Create instance with provided id
         return cls(data, id)
 
-    def to_bytes(self) -> bytes:
+    def to_bytes(self, serializer: AssetSerializer) -> bytes:
         return self._data
 
     def get_id(self) -> str:
@@ -60,7 +63,7 @@ class TestPathToolAssetManager(unittest.TestCase):
     def test_register_asset(self):
         manager = AssetManager()
         # Register the actual MockAsset class
-        manager.register_asset(MockAsset)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
         self.assertEqual(manager._asset_classes[MockAsset.asset_type], MockAsset)
 
         # Test registering a different actual Asset class
@@ -73,28 +76,28 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             @classmethod
             def from_bytes(
-                cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset] | None
+                cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset] | None, serializer: AssetSerializer
             ) -> "AnotherMockAsset":
                 return cls()
 
-            def to_bytes(self) -> bytes:
+            def to_bytes(self, serializer: AssetSerializer) -> bytes:
                 return b""
 
             def get_id(self) -> str:
                 return "another_mock_id"
 
-        manager.register_asset(AnotherMockAsset)
+        manager.register_asset(AnotherMockAsset, DummyAssetSerializer)
         self.assertEqual(manager._asset_classes[AnotherMockAsset.asset_type], AnotherMockAsset)
 
         # Test overwriting
-        manager.register_asset(MockAsset) # Registering again should overwrite
+        manager.register_asset(MockAsset, DummyAssetSerializer) # Registering again should overwrite
         self.assertEqual(manager._asset_classes[MockAsset.asset_type], MockAsset)
 
         # Test registering non-Asset class
         with self.assertRaises(TypeError):
             class NotAnAsset(Asset): # Inherit from Asset
                 pass
-            manager.register_asset(NotAnAsset)
+            manager.register_asset(NotAnAsset, DummyAssetSerializer)
 
     def test_get(self):
         # Setup AssetManager with a real LocalStore and the MockAsset class
@@ -105,7 +108,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             manager.register_store(local_store)
 
             # Register the MockAsset class
-            manager.register_asset(MockAsset)
+            manager.register_asset(MockAsset, DummyAssetSerializer)
 
             # Create a test asset file via AssetManager
             test_data = b"test asset data"
@@ -188,7 +191,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             manager.register_store(local_store)
 
             # Register the MockAsset class
-            manager.register_asset(MockAsset)
+            manager.register_asset(MockAsset, DummyAssetSerializer)
 
             # Create a MockAsset instance with a specific id
             test_obj = MockAsset(b"object data", id="mocked_asset_id")
@@ -202,7 +205,7 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             # Verify the asset was created
             retrieved_data = asyncio.run(local_store.get(created_uri))
-            self.assertEqual(retrieved_data, test_obj.to_bytes())
+            self.assertEqual(retrieved_data, test_obj.to_bytes(DummyAssetSerializer))
 
             # Test error handling (store not found)
             with self.assertRaises(ValueError) as cm:
@@ -217,7 +220,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             manager.register_store(local_store)
 
             # Register the MockAsset class
-            manager.register_asset(MockAsset)
+            manager.register_asset(MockAsset, DummyAssetSerializer)
 
             # First, create an asset
             initial_data = b"initial data"
@@ -239,8 +242,8 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             # Verify the asset was updated
             obj = manager.get(updated_uri, store="local")
-            self.assertEqual(updated_data, test_obj.to_bytes())
-            self.assertEqual(updated_data, obj.to_bytes())
+            self.assertEqual(updated_data, test_obj.to_bytes(DummyAssetSerializer))
+            self.assertEqual(updated_data, obj.to_bytes(DummyAssetSerializer))
 
             # Test error handling (store not found)
             with self.assertRaises(ValueError) as cm:
@@ -370,7 +373,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         memory_store = MemoryStore("memory_bulk")
         manager = AssetManager()
         manager.register_store(memory_store)
-        manager.register_asset(MockAsset)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
 
         # Create some assets in the memory store
         data1 = b"data for id1"
@@ -389,13 +392,13 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Assert the retrieved assets are MockAsset instances with correct data
         self.assertIsInstance(retrieved_assets[0], MockAsset)
         self.assertEqual(
-            retrieved_assets[0].to_bytes(),
+            retrieved_assets[0].to_bytes(DummyAssetSerializer),
             data1,
         )
 
         self.assertIsInstance(retrieved_assets[1], MockAsset)
         self.assertEqual(
-            retrieved_assets[1].to_bytes(),
+            retrieved_assets[1].to_bytes(DummyAssetSerializer),
             data2,
         )
 
@@ -414,7 +417,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         memory_store = MemoryStore("memory_fetch")
         manager = AssetManager()
         manager.register_store(memory_store)
-        manager.register_asset(MockAsset)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
 
         # Create some assets in the memory store
         data1 = b"data for id1"
@@ -436,7 +439,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         memory_store_filtered = MemoryStore("memory_fetch_filtered")
         manager_filtered = AssetManager()
         manager_filtered.register_store(memory_store_filtered)
-        manager_filtered.register_asset(MockAsset)
+        manager_filtered.register_asset(MockAsset, DummyAssetSerializer)
 
         # Create assets again
         manager_filtered.add_raw(MockAsset.asset_type, "id1", data1, "memory_fetch_filtered")
@@ -453,13 +456,13 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Assert the retrieved assets are MockAsset instances with correct data
         self.assertIsInstance(retrieved_assets_filtered[0], MockAsset)
         self.assertEqual(
-            retrieved_assets_filtered[0].to_bytes().decode("utf-8"),
+            retrieved_assets_filtered[0].to_bytes(DummyAssetSerializer).decode("utf-8"),
             data1.decode("utf-8"),
         )
 
         self.assertIsInstance(retrieved_assets_filtered[1], MockAsset)
         self.assertEqual(
-            retrieved_assets_filtered[1].to_bytes().decode("utf-8"),
+            retrieved_assets_filtered[1].to_bytes(DummyAssetSerializer).decode("utf-8"),
             data2.decode("utf-8"),
         )
 

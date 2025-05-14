@@ -27,7 +27,9 @@ import Path
 import math
 import pathlib
 import unittest
-from Path.Tool.assets import AssetManager, MemoryStore
+from Path.Tool.assets import AssetManager, MemoryStore, DummyAssetSerializer
+from Path.Tool.library.serializers import FCTLSerializer
+from Path.Tool.toolbit.serializers import FCTBSerializer
 from Path.Tool.camassets import ensure_assets_initialized
 from Path.Tool.library import Library
 from Path.Tool.toolbit import ToolBit
@@ -223,11 +225,11 @@ class PathTestWithAssets(PathTestBase):
         self.assets.register_store(self.asset_store)
 
         # Register some asset classes.
-        self.assets.register_asset(Library)
-        self.assets.register_asset(ToolBit)
-        self.assets.register_asset(ToolBitShape)
-        self.assets.register_asset(ToolBitShapeSvgIcon)
-        self.assets.register_asset(ToolBitShapePngIcon)
+        self.assets.register_asset(Library, FCTLSerializer)
+        self.assets.register_asset(ToolBit, FCTBSerializer)
+        self.assets.register_asset(ToolBitShape, DummyAssetSerializer)
+        self.assets.register_asset(ToolBitShapeSvgIcon, DummyAssetSerializer)
+        self.assets.register_asset(ToolBitShapePngIcon, DummyAssetSerializer)
 
         # Include the built-in assets from src/Mod/CAM/Tools.
         # These functions only copy if there are no assets, so this

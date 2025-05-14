@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 import pathlib
 import xml.etree.ElementTree as ET
-from typing import Mapping, Optional, List
+from typing import Mapping, Optional
 from functools import cached_property
-from ...assets import Asset, AssetUri
-from ...camassets import cam_assets
+from ...assets import Asset, AssetUri, AssetSerializer, DummyAssetSerializer
 import Path.Tool.shape.util as util
 from PySide import QtCore, QtGui, QtSvg
 
@@ -35,16 +34,12 @@ class ToolBitShapeIcon(Asset):
         return self.id
 
     @classmethod
-    def dependencies(cls, data: bytes) -> List[AssetUri]:
-        """
-        Extracts URIs of dependencies from serialized data.
-        ToolBitShapeIcon files do not have external dependencies.
-        """
-        return []
-
-    @classmethod
     def from_bytes(
-        cls, data: bytes, id: str, dependencies: Optional[Mapping[AssetUri, Asset]]
+        cls,
+        data: bytes,
+        id: str,
+        dependencies: Optional[Mapping[AssetUri, Asset]],
+        serializer: AssetSerializer,
     ) -> "ToolBitShapeIcon":
         """
         Create a ToolBitShapeIcon instance from raw bytes.
@@ -57,12 +52,14 @@ class ToolBitShapeIcon(Asset):
         Returns:
             ToolBitShapeIcon: An instance of ToolBitShapeIcon.
         """
+        assert serializer == DummyAssetSerializer, "ToolBitShapeIcon supports only native import"
         return cls(id=id, data=data)
 
-    def to_bytes(self) -> bytes:
+    def to_bytes(self, serializer: AssetSerializer) -> bytes:
         """
         Serializes a ToolBitShapeIcon object to bytes.
         """
+        assert serializer == DummyAssetSerializer, "ToolBitShapeIcon supports only native export"
         return self.data
 
     @classmethod
@@ -277,8 +274,3 @@ class ToolBitShapePngIcon(ToolBitShapeIcon):
                 QtCore.Qt.SmoothTransformation,
             )
         return pixmap
-
-
-# Register the asset with the asset manager
-cam_assets.register_asset(ToolBitShapeSvgIcon)
-cam_assets.register_asset(ToolBitShapePngIcon)

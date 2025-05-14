@@ -10,8 +10,7 @@ import zipfile
 import xml.etree.ElementTree as ET
 import io
 import tempfile
-from ...assets import Asset, AssetUri
-from ...camassets import cam_assets
+from ...assets import Asset, AssetUri, AssetSerializer, DummyAssetSerializer
 from ..doc import (
     find_shape_object,
     get_object_properties,
@@ -23,8 +22,8 @@ from .icon import ToolBitShapeIcon
 
 class ToolBitShape(Asset):
     """Abstract base class for tool bit shapes."""
-
     asset_type: str = "toolbitshape"
+
     # The name is used...
     #   1. as a base for the default filename. E.g. if the name is
     #      "Endmill", then by default the file is "endmill.fcstd".
@@ -176,12 +175,16 @@ class ToolBitShape(Asset):
         return None
 
     @classmethod
-    def dependencies(cls, data: bytes) -> List[AssetUri]:
+    def extract_dependencies(cls, data: bytes, serializer: AssetSerializer) -> List[AssetUri]:
         """
         Extracts URIs of dependencies from the raw bytes of an FCStd file.
         For ToolBitShape, this is the associated ToolBitShapeIcon, identified
         by the same ID as the shape asset.
         """
+        Path.Log.debug(f"ToolBitShape.extract_dependencies called for {cls.__name__}")
+        assert serializer == DummyAssetSerializer, \
+               f"ToolBitShape supports only native import, not {serializer}"
+
         # A ToolBitShape asset depends on a ToolBitShapeIcon asset with the same ID.
         # We need to extract the shape ID from the FCStd data.
         try:
@@ -216,6 +219,7 @@ class ToolBitShape(Asset):
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Asset]],
+        serializer: AssetSerializer
     ) -> "ToolBitShape":
         """
         Create a ToolBitShape instance from the raw bytes of an FCStd file.
@@ -238,6 +242,7 @@ class ToolBitShape(Asset):
                         shape name.
             Exception: For other potential FreeCAD errors during loading.
         """
+        assert serializer == DummyAssetSerializer, "ToolBitShape supports only native import"
         if dependencies is None:
             # ToolBitShape currently relies on its icon dependency being resolved.
             # If we need to support truly shallow ToolBitShape, this logic would need adjustment,
@@ -304,11 +309,12 @@ class ToolBitShape(Asset):
 
             return instance
 
-    def to_bytes(self) -> bytes:
+    def to_bytes(self, serializer: AssetSerializer) -> bytes:
         """
         Serializes a ToolBitShape object to bytes (e.g., an fcstd file).
         This is required by the Asset interface.
         """
+        assert serializer == DummyAssetSerializer, "ToolBitShape supports only native export"
         doc = None
         try:
             # Create a new temporary document
@@ -366,7 +372,7 @@ class ToolBitShape(Asset):
             shape_id = filepath.stem
             # Pass an empty dictionary for dependencies when loading from a single file
             # TODO: pass ToolBitShapeIcon as a dependency
-            instance = cls.from_bytes(data, id=shape_id, dependencies={})
+            instance = cls.from_bytes(data, shape_id, {}, DummyAssetSerializer)
             # Apply kwargs parameters after loading from bytes
             if kwargs:
                  instance.set_parameters(**kwargs)
@@ -581,6 +587,3 @@ class ToolBitShape(Asset):
             except KeyError:
                 pass
         return None
-
-
-cam_assets.register_asset(ToolBitShape)

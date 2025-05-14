@@ -3,12 +3,15 @@ import unittest
 import asyncio
 import hashlib
 from typing import Any, Type, Optional, List, Mapping
-
 from Path.Tool.assets.cache import AssetCache, CacheKey
-from Path.Tool.assets.manager import AssetManager
-from Path.Tool.assets.asset import Asset
-from Path.Tool.assets.uri import AssetUri
-from Path.Tool.assets.store.memory import MemoryStore
+from Path.Tool.assets import (
+    AssetManager,
+    Asset,
+    AssetUri,
+    AssetSerializer,
+    DummyAssetSerializer,
+    MemoryStore,
+)
 
 
 class MockAsset(Asset):
@@ -34,7 +37,9 @@ class MockAsset(Asset):
     # get_uri() is inherited from Asset and uses self.asset_type and self.get_id()
 
     @classmethod
-    def dependencies(cls, data: bytes) -> List[AssetUri]:  # Match signature
+    def extract_dependencies(cls, data: bytes, serializer: AssetSerializer) -> List[AssetUri]:
+        """Extracts URIs of dependencies from serialized data."""
+        # This mock implementation handles the simple "dep:" format
         data_str = data.decode()
         if data_str.startswith("dep:"):
             try:
@@ -60,15 +65,16 @@ class MockAsset(Asset):
         return []
 
     @classmethod
-    def from_bytes( # Match signature
+    def from_bytes(
         cls: Type["MockAsset"],
-        data: bytes, # Parameter name 'data'
-        id: str, # Parameter name 'id'
+        data: bytes,
+        id: str,
         dependencies: Optional[Mapping[AssetUri, Any]],
+        serializer: AssetSerializer
     ) -> "MockAsset":
         return cls(asset_id=id, raw_data=data, dependencies=dependencies)
 
-    def to_bytes(self) -> bytes:  # Implement abstract method
+    def to_bytes(self, serializer: AssetSerializer) -> bytes:  # Implement abstract method
         return self.raw_data_content
 
 
@@ -93,7 +99,7 @@ class MockAssetB(Asset): # New mock asset class for type 'mock_asset_b'
         return self._asset_id
 
     @classmethod
-    def dependencies(cls, data: bytes) -> List[AssetUri]:
+    def extract_dependencies(cls, data: bytes, serializer: AssetSerializer) -> List[AssetUri]:
         # Keep simple, or adapt if MockAssetB has different dep logic
         return []
 
@@ -103,10 +109,11 @@ class MockAssetB(Asset): # New mock asset class for type 'mock_asset_b'
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Any]],
+        serializer: AssetSerializer,
     ) -> "MockAssetB":
         return cls(asset_id=id, raw_data=data, dependencies=dependencies)
 
-    def to_bytes(self) -> bytes:
+    def to_bytes(self, serializer: AssetSerializer) -> bytes:
         return self.raw_data_content
 
 
@@ -219,8 +226,8 @@ class TestPathToolAssetCacheIntegration(unittest.TestCase):
         self.store_name = "test_store"
         self.store = MemoryStore(name=self.store_name)
         self.manager.register_store(self.store, cacheable=True)
-        self.manager.register_asset(MockAsset)
-        self.manager.register_asset(MockAssetB) # Register the new mock type
+        self.manager.register_asset(MockAsset, DummyAssetSerializer)
+        self.manager.register_asset(MockAssetB, DummyAssetSerializer) # Register the new mock type
         MockAsset._build_counter = 0
         MockAssetB._build_counter = 0
 

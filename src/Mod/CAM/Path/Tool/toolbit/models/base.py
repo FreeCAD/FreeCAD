@@ -28,10 +28,10 @@ import uuid
 import pathlib
 from abc import ABC
 from lazy_loader.lazy_loader import LazyLoader
-from typing import List, Optional, Tuple, Type, Union, Mapping, Any
+from typing import List, Optional, Tuple, Type, Union, Mapping
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
-from ...assets import Asset, AssetUri
+from ...assets import Asset
 from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeEndmill, ToolBitShapeIcon
 from ..docobject import DetachedDocumentObject
@@ -47,6 +47,7 @@ if False:
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
 
 class ToolBit(Asset, ABC):
     asset_type: str = "toolbit"
@@ -174,13 +175,6 @@ class ToolBit(Asset, ABC):
             attrs_map = json.load(fp)
         return cls.from_dict(attrs_map)
 
-    @classmethod
-    def dependencies(cls, data: bytes) -> List[AssetUri]:
-        """Returns a list of AssetUri dependencies parsed from the serialized data."""
-        data_dict = json.loads(data.decode('utf-8'))
-        shape = data_dict["shape"]
-        return [ToolBitShape.resolve_name(shape)]
-
     def get_label(self) -> str:
         """Returns the label of the tool bit."""
         return self.obj.Label
@@ -274,85 +268,6 @@ class ToolBit(Asset, ABC):
         """Returns the unique ID of the tool bit."""
         return self.id
 
-    def to_bytes(self) -> bytes:
-        """Serializes the ToolBit instance to bytes."""
-        return json.dumps(self.to_dict()).encode('utf-8')
-
-    @classmethod
-    def from_bytes(
-        cls, data: bytes, id: str, dependencies: Optional[Mapping[AssetUri, Any]]
-    ) -> "ToolBit":
-        """
-        Creates a ToolBit instance from serialized data and resolved
-        dependencies.
-
-        Args:
-            data (bytes): The raw bytes of the .fctb file.
-            id (str): The unique identifier for the tool bit.
-            dependencies (Optional[Mapping[AssetUri, Any]]): A mapping of resolved
-                                                  dependencies. If None, shallow load was attempted.
-
-        Returns:
-            ToolBit: An instance of the appropriate ToolBit subclass.
-        """
-        data_dict = json.loads(data.decode('utf-8'))
-        data_dict['id'] = id # Ensure id is available for from_dict
-
-        if dependencies is None:
-            # Shallow load: dependencies are not resolved.
-            # Delegate to from_dict with shallow=True.
-            return cls.from_dict(data_dict, shallow=True)
-
-        # Full load: dependencies are resolved.
-        # Proceed with existing logic to use the resolved shape.
-        shape_id = data_dict.get("shape")
-        if not shape_id:
-            Path.Log.warning("ToolBit data is missing 'shape' key, defaulting to 'endmill'")
-            shape_id = 'endmill'
-
-        shape_uri = ToolBitShape.resolve_name(shape_id)
-        shape = dependencies.get(shape_uri)
-
-        if shape is None:
-            raise ValueError(
-                f"Dependency for shape '{shape_id}' not found by uri {shape_uri}"
-                f" {dependencies}"
-            )
-        elif not isinstance(shape, ToolBitShape):
-            raise ValueError(
-                f"Dependency for shape '{shape_id}' found by uri {shape_uri} "
-                f"is not a ToolBitShape instance. {dependencies}"
-            )
-
-        # Find the correct ToolBit subclass for the shape
-        selected_toolbit_subclass = cls._find_subclass_for_shape(shape)
-
-        # Create the tool bit instance
-        toolbit = selected_toolbit_subclass(shape, id=id)
-
-        # Populate properties from the data dictionary
-        toolbit.set_label(data_dict.get("name") or shape.label)
-
-        for param_name, param_value in data_dict.get("parameter", {}).items():
-            if hasattr(toolbit.obj, param_name):
-                PathUtil.setProperty(toolbit.obj, param_name, param_value)
-            else:
-                Path.Log.warning(
-                    f"Parameter '{param_name}' not found on tool bit "
-                    f"'{toolbit.obj.Label}'. Skipping."
-                )
-
-        for attr_name, attr_value in data_dict.get("attribute", {}).items():
-            if hasattr(toolbit.obj, attr_name):
-                PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
-            else:
-                Path.Log.warning(
-                    f"Attribute '{attr_name}' not found on tool bit "
-                    f"'{toolbit.obj.Label}'. Skipping."
-                )
-
-        return toolbit
-
     def _promote_toolbit(self):
         """
         Updates the toolbit properties for backward compatibility.
@@ -379,6 +294,7 @@ class ToolBit(Asset, ABC):
         self.obj.ShapeID = uri.asset_id
 
         # Ensure ShapeType is set
+        thetype = None
         if hasattr(self.obj, "ShapeType") and self.obj.ShapeType:
             thetype = self.obj.ShapeType
         elif hasattr(self.obj, "ShapeFile") and self.obj.ShapeFile:
@@ -741,11 +657,6 @@ class ToolBit(Asset, ABC):
             docstring = item[0]
             prop_type = item[1]
 
-            try:
-                value = self._tool_bit_shape.get_parameter(name)
-            except KeyError:
-                continue  # Retain existing property value.
-
             if not prop_type:
                 Path.Log.error(
                     f"No property type for parameter '{name}' in shape "
@@ -758,11 +669,16 @@ class ToolBit(Asset, ABC):
             # Add new property
             if not hasattr(self.obj, name):
                 self.obj.addProperty(prop_type, name, "Shape", docstring)
-                setattr(self.obj, name, value)
                 Path.Log.debug(f"Added new shape property: {name}")
 
             # Ensure editor mode is correct
             self.obj.setEditorMode(name, 0)
+
+            try:
+                value = self._tool_bit_shape.get_parameter(name)
+            except KeyError:
+                continue  # Retain existing property value.
+            setattr(self.obj, name, value)
 
         # 2. Remove obsolete shape properties
         # These are properties currently listed AND in the Shape group,
@@ -863,6 +779,3 @@ class ToolBit(Asset, ABC):
         This mostly exists as a safe-hold for probes, which should never rotate.
         """
         return True
-
-
-cam_assets.register_asset(ToolBit)

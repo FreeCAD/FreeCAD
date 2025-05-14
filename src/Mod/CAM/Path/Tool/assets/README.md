@@ -112,6 +112,34 @@ retrieved_asset = manager.get(asset_uri)
 print(f"Retrieved: {retrieved_asset}")
 ```
 
+## The Serializer Protocol
+
+The serializer protocol defines how assets are converted to and from bytes and how their
+dependencies are identified. This separation of concerns allows assets to be stored and
+retrieved independently of their specific serialization format.
+
+The core components of the protocol are the [`Asset`](src/Mod/CAM/Path/Tool/assets/asset.py:11)
+and [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8) classes.
+
+- The [`Asset`](src/Mod/CAM/Path/Tool/assets/asset.py:11) class represents an asset object in
+  memory. It provides methods like [`to_bytes()`](src/Mod/CAM/Path/Tool/assets/asset.py:69)
+  and [`from_bytes()`](src/Mod/CAM/Path/Tool/assets/asset.py:56) which delegate the actual
+  serialization and deserialization to an [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8)
+  instance. It also has an [`extract_dependencies()`](src/Mod/CAM/Path/Tool/assets/asset.py:49)
+  method that uses the serializer to find dependencies within the raw asset data.
+
+- The [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8) is an abstract base
+  class that defines the interface for serializers. Concrete implementations of
+  [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8) are responsible for the
+  specific logic of converting an asset object to bytes ([`serialize()`](src/Mod/CAM/Path/Tool/assets/serializer.py:21)),
+  converting bytes back to an asset object ([`deserialize()`](src/Mod/CAM/Path/Tool/assets/serializer.py:27)),
+  and extracting dependency URIs from the raw byte data
+  ([`extract_dependencies()`](src/Mod/CAM/Path/Tool/assets/serializer.py:15)).
+
+This design allows the AssetManager to work with various asset types and serialization formats
+by simply registering the appropriate [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8)
+for each asset type.
+
 ## Class diagram
 
 ```mermaid
@@ -129,9 +157,9 @@ classDiagram
     class AssetManager["AssetManager
     <small>Creates, assembles or deletes assets from URIs</small>"] {
         stores: Mapping[str, AssetStore]   // maps protocol to store
-        _asset_classes: Mapping[str, Asset]   // maps asset type to Asset
         register_store(store: AssetStore)
         register_asset(asset: Asset)
+        register_serializer(serializer: AssetSerializer)
         get(uri: AssetUri, store: str, depth: Optional[int]) Asset | None
         get_raw(uri: AssetUri | str, store: str) bytes | None
         add(obj: Any, store: str) AssetUri // Returns URI of created asset
@@ -186,14 +214,26 @@ classDiagram
     }
     MemoryStore <|-- AssetStore: is
 
+    class AssetSerializer["AssetSerializer<br/><small>Abstract base class for asset serializers</small>"] {
+        <<abstract>>
+        for_class: Type[Asset]
+        extensions: Tuple[str]
+        mime_type: str
+        extract_dependencies(data: bytes) List[AssetUri]
+        serialize(asset: Asset) bytes
+        deserialize(data: bytes, id: str, dependencies: Mapping[AssetUri, Asset]) Asset
+    }
+    AssetSerializer *-- AssetManager: has many
+    Asset --> AssetSerializer: uses
+
     class Asset["Asset<br/><small>Common interface for all asset types</small>"] {
         <<abstract>>
         asset_type: str  // type of the asset type, e.g., toolbit
         
         get_id() str  // Returns a unique ID of the asset
-        to_bytes() bytes // Converts object to bytes
-        from_bytes(data: bytes, id: str, dependencies: Mapping[AssetUri, Asset]) Asset  // Creates object from bytes and resolved dependencies
-        dependencies(data: bytes) List[AssetUri]  // Finds dependency URIs in bytes
+        to_bytes(serializer: AssetSerializer) bytes
+        from_bytes(data: bytes, id: str, dependencies: Mapping[AssetUri, Asset], serializer: AssetSerializer) Asset
+        extract_dependencies(data: bytes, serializer: AssetSerializer) List[AssetUri]  // Extracts dependency URIs from bytes
     }
     Asset *-- AssetManager: creates
 
@@ -202,6 +242,7 @@ classDiagram
         class AssetStore
         class FileStore
         class MemoryStore
+        class AssetSerializer
         class Asset
     }
 

@@ -1,61 +1,98 @@
 import json
 import Path
-from ...camassets import cam_assets
+from typing import Mapping, List, Optional
+from ...assets import Asset, AssetUri, AssetSerializer
+from ...shape import ToolBitShape
 from ..models.base import ToolBit
-from .base import ToolBitSerializer
 from Path.Base import Util as PathUtil
 
 
-class FCTBSerializer(ToolBitSerializer):
-    NAME = "FreeCAD"
-    EXTENSIONS = ('.fctb',)
+class FCTBSerializer(AssetSerializer):
+    for_class = ToolBit
+    mime_type = "application/x-freecad-toolbit"
+    extensions = ('.fctb',)
 
-    def serialize_toolbit(self, bit: ToolBit) -> bytes:
-        attrs = bit.to_dict()
+    @classmethod
+    def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
+        """Extracts URIs of dependencies from serialized data."""
+        Path.Log.info(f"FCTBSerializer.extract_dependencies: raw data = {data!r}")
+        data_dict = json.loads(data.decode('utf-8'))
+        shape = data_dict["shape"]
+        return [ToolBitShape.resolve_name(shape)]
+
+    @classmethod
+    def serialize(cls, asset: Asset) -> bytes:
+        # Ensure the asset is a ToolBit instance before serializing
+        if not isinstance(asset, ToolBit):
+            raise TypeError(f"Expected ToolBit instance, got {type(asset).__name__}")
+        attrs = asset.to_dict()
         return json.dumps(attrs, sort_keys=True, indent=2).encode("utf-8")
 
-    def deserialize_toolbit(self, data: bytes) -> ToolBit:
-        # Create the ToolBitShape instance. This loads default parameters
-        # from the shape file.
+    @classmethod
+    def deserialize(
+        cls,
+        data: bytes,
+        id: str,
+        dependencies: Optional[Mapping[AssetUri, Asset]],
+    ) -> Asset:
+        """
+        Creates a ToolBit instance from serialized data and resolved
+        dependencies.
+        """
         attrs = json.loads(data.decode("utf-8", "ignore"))
-        shape = cam_assets.get("toolbitshape://endmill")
+        attrs['id'] = id # Ensure id is available for from_dict
 
-        # Update shape parameters from the JSON 'parameter' dictionary.
-        shape.set_parameters(**attrs.get('parameter', {}))
+        if dependencies is None:
+            # Shallow load: dependencies are not resolved.
+            # Delegate to from_dict with shallow=True.
+            return ToolBit.from_dict(attrs, shallow=True)
 
-        # Populate attributes from the JSON data
-        tool_bit = ToolBit.from_shape_id(shape.get_id())
-        tool_bit.set_label(attrs.get('name', shape.name))
+        # Full load: dependencies are resolved.
+        # Proceed with existing logic to use the resolved shape.
+        shape_id = attrs.get("shape")
+        if not shape_id:
+            Path.Log.warning("ToolBit data is missing 'shape' key, defaulting to 'endmill'")
+            shape_id = 'endmill'
 
-        # Set parameters from the JSON 'parameter' dictionary using PathUtil.setProperty
+        shape_uri = ToolBitShape.resolve_name(shape_id)
+        shape = dependencies.get(shape_uri)
+
+        if shape is None:
+            raise ValueError(
+                f"Dependency for shape '{shape_id}' not found by uri {shape_uri}"
+                f" {dependencies}"
+            )
+        elif not isinstance(shape, ToolBitShape):
+            raise ValueError(
+                f"Dependency for shape '{shape_id}' found by uri {shape_uri} "
+                f"is not a ToolBitShape instance. {dependencies}"
+            )
+
+        # Find the correct ToolBit subclass for the shape
+        selected_toolbit_subclass = ToolBit._find_subclass_for_shape(shape)
+
+        # Create the tool bit instance
+        toolbit = selected_toolbit_subclass(shape, id=id)
+
+        # Populate properties from the data dictionary
+        toolbit.set_label(attrs.get("name") or shape.label)
+
         for param_name, param_value in attrs.get("parameter", {}).items():
-            if hasattr(tool_bit.obj, param_name):
-                PathUtil.setProperty(
-                    tool_bit.obj, param_name, param_value
-                )
+            if hasattr(toolbit.obj, param_name):
+                PathUtil.setProperty(toolbit.obj, param_name, param_value)
             else:
                 Path.Log.warning(
                     f"Parameter '{param_name}' not found on tool bit "
-                    f"'{tool_bit.obj.Label}'. Skipping."
+                    f"'{toolbit.obj.Label}'. Skipping."
                 )
 
-        # Set additional attributes from the JSON 'attribute' dictionary.
-        # These are stored as properties on the ToolBit's obj.
-        for key, value in attrs.get('attribute', {}).items():
-            # Check if the property exists on the object before setting.
-            if not hasattr(tool_bit.obj, key):
+        for attr_name, attr_value in attrs.get("attribute", {}).items():
+            if hasattr(toolbit.obj, attr_name):
+                PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
+            else:
                 Path.Log.warning(
-                    f"Attribute '{key}' not found on tool bit "
-                    f"'{tool_bit.obj.Label}'. Skipping."
-                )
-                continue
-
-            try:
-                setattr(tool_bit.obj, key, value)
-            except Exception as e:
-                Path.Log.warning(
-                    f"Failed to set attribute '{key}' with value '{value}' "
-                    f"on tool bit '{tool_bit.obj.Label}': {e}"
+                    f"Attribute '{attr_name}' not found on tool bit "
+                    f"'{toolbit.obj.Label}'. Skipping."
                 )
 
-        return tool_bit
+        return toolbit

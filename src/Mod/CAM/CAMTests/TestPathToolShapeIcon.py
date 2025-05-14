@@ -5,6 +5,7 @@ import pathlib
 from tempfile import TemporaryDirectory
 from PySide import QtCore, QtGui
 from CAMTests.PathTestUtils import PathTestWithAssets
+from Path.Tool.assets import DummyAssetSerializer
 from Path.Tool.shape.models.icon import (
     ToolBitShapeIcon,
     ToolBitShapeSvgIcon,
@@ -44,7 +45,7 @@ class TestToolBitShapeIconBase(PathTestWithAssets):
         icon_id = "test_to_bytes.bin"
         icon_data = b"some_binary_data"
         icon = ToolBitShapeIcon(icon_id, icon_data)
-        self.assertEqual(icon.to_bytes(), icon_data)
+        self.assertEqual(icon.to_bytes(DummyAssetSerializer), icon_data)
 
     def test_get_size_in_bytes(self):
         # Test getting icon data length
@@ -114,7 +115,9 @@ class TestToolBitShapeSvgIcon(TestToolBitShapeIconBase):
 
     def test_from_bytes_svg(self):
         # Test creating instance from bytes with SVG
-        icon_svg = ToolBitShapeSvgIcon.from_bytes(self.test_svg.data, "test_from_bytes.svg", {})
+        icon_svg = ToolBitShapeSvgIcon.from_bytes(
+            self.test_svg.data, "test_from_bytes.svg", {}, DummyAssetSerializer
+        )
         self.assertEqual(icon_svg.get_id(), "test_from_bytes.svg")
         self.assertEqual(icon_svg.data, self.test_svg.data)
         self.assertIsInstance(icon_svg.abbreviations, dict)
@@ -123,8 +126,10 @@ class TestToolBitShapeSvgIcon(TestToolBitShapeIconBase):
         # Test serialization and deserialization round trip for SVG
         svg_id = "round_trip_svg.svg"
         icon_svg = ToolBitShapeSvgIcon(svg_id, self.test_svg.data)
-        serialized_svg = icon_svg.to_bytes()
-        deserialized_svg = ToolBitShapeSvgIcon.from_bytes(serialized_svg, svg_id, {})
+        serialized_svg = icon_svg.to_bytes(DummyAssetSerializer)
+        deserialized_svg = ToolBitShapeSvgIcon.from_bytes(
+            serialized_svg, svg_id, {}, DummyAssetSerializer
+        )
         self.assertEqual(deserialized_svg.get_id(), svg_id)
         self.assertEqual(deserialized_svg.data, self.test_svg.data)
         # Abbreviations are extracted on access, so we don't check the dict directly
@@ -199,16 +204,22 @@ class TestToolBitShapePngIcon(TestToolBitShapeIconBase):
 
     def test_from_bytes_png(self):
         # Test creating instance from bytes with PNG
-        icon_png = ToolBitShapePngIcon.from_bytes(self.png_data, "test_from_bytes.png", {})
+        icon_png = ToolBitShapePngIcon.from_bytes(
+            self.png_data, "test_from_bytes.png", {}, DummyAssetSerializer
+        )
         self.assertEqual(icon_png.get_id(), "test_from_bytes.png")
         self.assertEqual(icon_png.data, self.png_data)
-        self.assertEqual(icon_png.abbreviations, {}) # No abbreviations for PNG
+        self.assertEqual(
+            icon_png.abbreviations, {}
+        )  # No abbreviations for PNG
 
     def test_round_trip_serialization_png(self):
         # Test serialization and deserialization round trip for PNG
         png_id = "round_trip_png.png"
-        serialized_png = self.icon.to_bytes()
-        deserialized_png = ToolBitShapePngIcon.from_bytes(serialized_png, png_id, {})
+        serialized_png = self.icon.to_bytes(DummyAssetSerializer)
+        deserialized_png = ToolBitShapePngIcon.from_bytes(
+            serialized_png, png_id, {}, DummyAssetSerializer
+        )
         self.assertEqual(deserialized_png.get_id(), png_id)
         self.assertEqual(deserialized_png.data, self.png_data)
         self.assertEqual(deserialized_png.abbreviations, {})

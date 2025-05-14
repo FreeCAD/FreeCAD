@@ -72,7 +72,7 @@ def _on_asset_path_changed(group, key, value):
     ensure_assets_initialized(cam_assets)
 
 
-# Set up the CAM asset manager.
+# Set up the local CAM asset storage.
 cam_asset_store = FileStore(
     name="local",
     base_dir=Preferences.getAssetPath(),
@@ -86,6 +86,7 @@ cam_asset_store = FileStore(
     },
 )
 
+# Set up the CAM asset manager.
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 cam_assets = AssetManager()
 cam_assets.register_store(cam_asset_store)

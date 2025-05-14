@@ -3,14 +3,15 @@ import logging
 import asyncio
 import threading
 import pathlib
-import hashlib # Added
-from typing import Dict, Any, Type, Optional, List, Sequence, Union, Set, Mapping, Tuple # Added Tuple
-from dataclasses import dataclass, field
+import hashlib
+from typing import Dict, Any, Type, Optional, List, Sequence, Union, Set, Mapping, Tuple
+from dataclasses import dataclass
 from PySide import QtCore, QtGui
 from .store.base import AssetStore
 from .asset import Asset
+from .serializer import AssetSerializer
 from .uri import AssetUri
-from .cache import AssetCache, CacheKey # Added
+from .cache import AssetCache, CacheKey
 
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ class _AssetConstructionData:
     """Holds raw data and type info needed to construct an asset instance."""
     uri: AssetUri
     raw_data: bytes
-    asset_class_type: Type[Asset]
+    asset_class: Type[Asset]
     # Stores AssetConstructionData for dependencies, keyed by their AssetUri
     dependencies_data: Optional[Dict[AssetUri, Optional["_AssetConstructionData"]]] = None
 
@@ -29,6 +30,7 @@ class _AssetConstructionData:
 class AssetManager:
     def __init__(self, cache_max_size_bytes: int = 100 * 1024 * 1024):
         self.stores: Dict[str, AssetStore] = {}
+        self._serializers: List[Tuple[AssetSerializer, Asset]] = []
         self._asset_classes: Dict[str, Type[Asset]] = {}
         self.asset_cache = AssetCache(max_size_bytes=cache_max_size_bytes)
         self._cacheable_stores: Set[str] = set()
@@ -45,12 +47,19 @@ class AssetManager:
         if cacheable:
             self._cacheable_stores.add(store.name)
 
-    def register_asset(self, asset_class: Type[Asset]):
+    def get_serializer_for_class(self, asset_class: Type[Asset]):
+        for serializer, theasset_class in self._serializers:
+            if issubclass(asset_class, theasset_class):
+                return serializer
+        raise ValueError(f"No serializer found for class {asset_class}")
+
+    def register_asset(self, asset_class: Type[Asset], serializer: AssetSerializer):
         """Registers an Asset class with the manager."""
         if not issubclass(asset_class, Asset):
-            raise TypeError(
-                f"Registered item '{asset_class.__name__}' must be a subclass of Asset."
-            )
+            raise TypeError(f"Item '{asset_class.__name__}' must be a subclass of Asset.")
+        if not issubclass(serializer, AssetSerializer):
+            raise TypeError(f"Item '{serializer.__name__}' must be a subclass of AssetSerializer.")
+        self._serializers.append((serializer, asset_class))
 
         asset_type_name = getattr(asset_class, "asset_type", None)
         if (
@@ -90,18 +99,20 @@ class AssetManager:
         try:
             raw_data = await store.get(uri)
         except FileNotFoundError:
+            logger.debug(f"_fetch_asset_construction_data_recursive_async: Asset not found for {uri}")
             return None # Primary asset not found
 
         if depth == 0:
             return _AssetConstructionData(
                 uri=uri,
                 raw_data=raw_data,
-                asset_class_type=asset_class,
+                asset_class=asset_class,
                 dependencies_data=None,  # Indicates that no attempt was made to fetch deps
             )
 
         # Extract the list of dependencies (non-recursive)
-        dependency_uris = asset_class.dependencies(raw_data)
+        serializer = self.get_serializer_for_class(asset_class)
+        dependency_uris = asset_class.extract_dependencies(raw_data, serializer)
 
         # Initialize deps_construction_data_map. Any dependencies mapped to None
         # indicate that dependencies were intentionally not fetched.
@@ -125,7 +136,7 @@ class AssetManager:
         return _AssetConstructionData(
             uri=uri,
             raw_data=raw_data,
-            asset_class_type=asset_class,
+            asset_class=asset_class,
             dependencies_data=deps_construction_data, # Can be None or Dict
         )
 
@@ -182,7 +193,7 @@ class AssetManager:
 
         logger.debug(
             f"BuildAssetTreeSync: Instantiating '{construction_data.uri}' "
-            f"of type '{construction_data.asset_class_type.__name__}'"
+            f"of type '{construction_data.asset_class.__name__}'"
         )
 
         resolved_dependencies: Optional[Mapping[AssetUri, Any]] = None
@@ -203,11 +214,13 @@ class AssetManager:
                     )
                 )
 
-        asset_class = construction_data.asset_class_type
+        asset_class = construction_data.asset_class
+        serializer = self.get_serializer_for_class(asset_class)
         final_asset = asset_class.from_bytes(
             construction_data.raw_data,
             construction_data.uri.asset_id,
             resolved_dependencies,
+            serializer,
         )
 
         if final_asset is not None and cache_key:
@@ -599,7 +612,8 @@ class AssetManager:
         if not self._is_registered_type(obj):
             logger.warning(f"Asset has unregistered type '{uri.asset_type}' ({type(obj).__name__})")
 
-        data = obj.to_bytes()
+        serializer = self.get_serializer_for_class(obj.__class__)
+        data = obj.to_bytes(serializer)
         return await self.add_raw_async(uri.asset_type, uri.asset_id, data, store)
 
     def add(self, obj: Asset, store: str = "local") -> AssetUri:
