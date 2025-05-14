@@ -171,7 +171,7 @@ class ToolBit(Asset, ABC):
         Creates and populates a ToolBit instance from a .fctb file.
         """
         path = pathlib.Path(path)
-        with open(path, "r") as fp:
+        with path.open("r") as fp:
             attrs_map = json.load(fp)
         return cls.from_dict(attrs_map)
 

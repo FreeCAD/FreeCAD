@@ -180,6 +180,11 @@ SET(PathPythonToolsToolBitSerializers_SRCS
     Path/Tool/toolbit/serializers/fctb.py
 )
 
+SET(PathPythonToolsToolBitUi_SRCS
+    Path/Tool/toolbit/ui/__init__.py
+    Path/Tool/toolbit/ui/dialog.py
+)
+
 SET(PathPythonToolsLibrary_SRCS
     Path/Tool/library/__init__.py
     Path/Tool/library/util.py
@@ -481,6 +486,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolShapeDoc.py
     CAMTests/TestPathToolShapeIcon.py
     CAMTests/TestPathToolLibrary.py
+    CAMTests/TestPathToolLibrarySerializer.py
     CAMTests/TestPathToolMachine.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
@@ -559,6 +565,7 @@ SET(all_files
     ${PathPythonToolsToolBitMixins_SRCS}
     ${PathPythonToolsToolBitModels_SRCS}
     ${PathPythonToolsToolBitSerializers_SRCS}
+    ${PathPythonToolsToolBitUi_SRCS}
     ${PathPythonToolsLibrary_SRCS}
     ${PathPythonToolsLibraryModels_SRCS}
     ${PathPythonToolsLibrarySerializers_SRCS}
@@ -760,6 +767,13 @@ INSTALL(
         ${PathPythonToolsToolBitSerializers_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/toolbit/serializers
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBitUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit/ui
 )
 
 INSTALL(

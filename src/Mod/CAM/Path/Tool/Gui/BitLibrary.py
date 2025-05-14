@@ -38,7 +38,8 @@ from typing import List, Tuple
 from ..assets import AssetUri
 from ..camassets import cam_assets, ensure_assets_initialized
 from ..shape.ui.shapeselector import ShapeSelector
-from ..toolbit.models.base import ToolBit
+from ..toolbit import ToolBit
+from ..toolbit.ui.dialog import ToolBitOpenDialog
 from ..library import Library
 
 
@@ -185,7 +186,7 @@ class ModelFactory:
             raise
 
         # Iterate over the loaded ToolBit asset instances
-        for tool_no, tool_bit in sorted(loaded_library.tool_nos.items()):
+        for tool_no, tool_bit in sorted(loaded_library._bit_nos.items()):
             data_model.appendRow(
                 ModelFactory._tool_add(
                     tool_no,
@@ -497,7 +498,7 @@ class ToolBitLibrary(object):
             Path.Log.debug(f"toolBitNew: Saved tool with URI: {tool_asset_uri}")
 
             # 2. Add the toolbit (which now has a persisted URI) to the current library's model
-            tool_no = self.current_library.add_tool(toolbit)
+            tool_no = self.current_library.add_bit(toolbit)
             Path.Log.debug(
                 f"toolBitNew: Added toolbit {toolbit.get_id()} (URI: {toolbit.get_uri()}) "
                 f"to current_library with tool number {tool_no}."
@@ -535,75 +536,40 @@ class ToolBitLibrary(object):
             )
             return
 
+        # Open the file dialog
+        dialog = ToolBitOpenDialog(self.form)
+        dialog_result = dialog.exec()
+        if not dialog_result:
+            return  # User canceled or error
+        file_path, toolbit = dialog_result
+
         try:
-            # List available toolbit assets
-            all_toolbit_uris = cam_assets.list_assets(asset_type="toolbit")
+            # Add the existing toolbit to the current library's model
+            # The add_bit method handles assigning a tool number and returns it.
+            cam_assets.add(toolbit)
+            tool_no = self.current_library.add_bit(toolbit)
+
+            # Add the new tool directly to the UI model
+            new_row_items = ModelFactory._tool_add(
+                tool_no,
+                toolbit.to_dict(),
+                str(toolbit.get_uri()) # URI of the persisted toolbit
+            )
+            self.toolModel.appendRow(new_row_items)
+
+            # Save the library (which now references the added toolbit)
+            self.librarySave()
+
         except Exception as e:
-            Path.Log.error(f"Failed to list toolbit assets: {e}")
+            Path.Log.error(
+                f"Failed to add imported toolbit {toolbit.get_id()} "
+                f"from {file_path} to library: {e}"
+            )
             PySide.QtGui.QMessageBox.critical(
                 self.form,
-                translate("CAM_ToolBit", "Error Listing Toolbits"),
+                translate("CAM_ToolBit", "Error Adding Imported Toolbit"),
                 str(e),
             )
-            return
-
-        # Get URIs of toolbits already in the current library
-        toolbits_in_library_uris = {toolbit.get_uri() for toolbit in self.current_library}
-
-        # Filter out toolbits already in the library
-        available_toolbit_uris = [
-            uri for uri in all_toolbit_uris if str(uri) not in toolbits_in_library_uris
-        ]
-
-        if not available_toolbit_uris:
-            PySide.QtGui.QMessageBox.information(
-                self.form,
-                translate("CAM_ToolBit", "No New Toolbits Found"),
-                translate("CAM_ToolBit", "No new toolbit assets found in asset manager."),
-            )
-            return
-
-        # Show a dialog to select a toolbit asset
-        toolbit_names = [uri.asset_id for uri in available_toolbit_uris]
-        selected_name, ok = PySide.QtGui.QInputDialog.getItem(
-            self.form,
-            translate("CAM_ToolBit", "Select Toolbit to Add"),
-            translate("CAM_ToolBit", "Choose a toolbit to add:"),
-            toolbit_names,
-            0, # current index
-            False, # not editable
-        )
-
-        if not ok or not selected_name:
-            return
-
-        # Find the selected toolbit URI
-        selected_uri = None
-        for uri in available_toolbit_uris:
-            if uri.asset_id == selected_name:
-                selected_uri = uri
-                break
-
-        if not selected_uri:
-            return
-
-        # Load the toolbit asset
-        toolbit = cam_assets.get(selected_uri)
-
-        # Add the existing toolbit to the current library's model
-        # The add_tool method handles assigning a tool number and returns it.
-        tool_no = self.current_library.add_tool(toolbit)
-
-        # Add the new tool directly to the UI model
-        new_row_items = ModelFactory._tool_add(
-            tool_no,
-            toolbit.to_dict(),
-            str(toolbit.get_uri()) # URI of the persisted toolbit
-        )
-        self.toolModel.appendRow(new_row_items)
-        
-        # Save the library (which now references the added toolbit)
-        self.librarySave()
 
     def toolDelete(self):
         """Delete a tool"""
@@ -624,8 +590,8 @@ class ToolBitLibrary(object):
             item_tool_nr_or_uri = self.toolModel.item(row, 0) # Column 0 stores _PathRole
             tool_uri_string = item_tool_nr_or_uri.data(_PathRole)
             tool_uri = AssetUri(tool_uri_string)
-            tool = self.current_library.get_tool_by_uri(tool_uri)
-            self.current_library.remove_tool(tool)
+            bit = self.current_library.get_tool_by_uri(tool_uri)
+            self.current_library.remove_bit(bit)
             self.toolModel.removeRows(row, 1)
 
         Path.Log.info(f"toolDelete: Removed {len(selected_rows)} rows from UI model.")
@@ -846,7 +812,7 @@ class ToolBitLibrary(object):
         self.form.setWindowTitle(
             f"Tool Library Editor - {self.current_library.label}"
         )
-        for tool_no, tool_bit in sorted(self.current_library.tool_nos.items()):
+        for tool_no, tool_bit in sorted(self.current_library._bit_nos.items()):
             self.toolModel.appendRow(
                 ModelFactory._tool_add(
                     tool_no,
@@ -870,7 +836,9 @@ class ToolBitLibrary(object):
         # Find the last used library.
         last_used_lib_identifier = Path.Preferences.getLastToolLibrary()
         Path.Log.debug(f"setupUI: Last used library identifier from prefs: '{last_used_lib_identifier}'")
-        last_used_lib_uri = Library.resolve_name(last_used_lib_identifier)
+        last_used_lib_uri = None
+        if last_used_lib_identifier:
+            last_used_lib_uri = Library.resolve_name(last_used_lib_identifier)
 
         # Find it in the list.
         index = 0

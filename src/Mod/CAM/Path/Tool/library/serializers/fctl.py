@@ -1,6 +1,8 @@
+import uuid
 import json
 from typing import Mapping, List, Optional
 import pathlib
+import FreeCAD
 import Path
 from ...assets import Asset, AssetUri, AssetSerializer
 from ...toolbit import ToolBit
@@ -11,6 +13,10 @@ class FCTLSerializer(AssetSerializer):
     for_class = Library
     extensions = (".fctl",)
     mime_type = "application/x-freecad-toolbit-library"
+
+    @classmethod
+    def get_label(cls) -> str:
+        return FreeCAD.Qt.translate("CAM", "FreeCAD Tool Library")
 
     @classmethod
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
@@ -34,7 +40,7 @@ class FCTLSerializer(AssetSerializer):
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Asset]],
-    ) -> Asset:
+    ) -> Library:
         """
         Creates a Library instance from serialized data and resolved
         dependencies.
@@ -67,3 +73,12 @@ class FCTLSerializer(AssetSerializer):
                 # but as a safeguard, log a warning and skip the tool.
                 Path.Log.warning(f"Tool with id {tool_id} not found in dependencies during deserialization.")
         return library
+
+    @classmethod
+    def deep_deserialize(cls, data: bytes) -> Library:
+        # TODO: attempt to fetch tools from the asset manager here
+        return cls.deserialize(
+            data,
+            str(uuid.uuid4()),
+            {}
+        )

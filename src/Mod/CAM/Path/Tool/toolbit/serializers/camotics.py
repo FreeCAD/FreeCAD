@@ -28,8 +28,12 @@ tooltemplate = {
 
 class CamoticsToolBitSerializer(AssetSerializer):
     for_class = ToolBit
-    extensions = ()  # Camotics does not have tool files; tools are rows in tool tables
+    extensions = tuple()  # Camotics does not have tool files; tools are rows in tool tables
     mime_type = "application/json"
+
+    @classmethod
+    def get_label(cls) -> str:
+        return FreeCAD.Qt.translate("CAM", "Camotics Tool")
 
     @classmethod
     def extract_dependencies(cls, data: bytes) -> list[AssetUri]:
@@ -56,7 +60,7 @@ class CamoticsToolBitSerializer(AssetSerializer):
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Asset]],
-    ) -> Asset:
+    ) -> ToolBit:
         # Create an instance of the ToolBitShape class
         data = json.loads(data.decode("ascii", "ignore"))
         shape = cam_assets.get("toolbitshape://endmill")

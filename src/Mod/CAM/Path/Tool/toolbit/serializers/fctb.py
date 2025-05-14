@@ -1,6 +1,7 @@
 import json
 import Path
-from typing import Mapping, List, Optional
+from typing import Mapping, List, Optional, cast
+import FreeCAD
 from ...assets import Asset, AssetUri, AssetSerializer
 from ...shape import ToolBitShape
 from ..models.base import ToolBit
@@ -11,6 +12,10 @@ class FCTBSerializer(AssetSerializer):
     for_class = ToolBit
     mime_type = "application/x-freecad-toolbit"
     extensions = ('.fctb',)
+
+    @classmethod
+    def get_label(cls) -> str:
+        return FreeCAD.Qt.translate("CAM", "FreeCAD Tool")
 
     @classmethod
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
@@ -34,7 +39,7 @@ class FCTBSerializer(AssetSerializer):
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Asset]],
-    ) -> Asset:
+    ) -> ToolBit:
         """
         Creates a ToolBit instance from serialized data and resolved
         dependencies.
@@ -96,3 +101,9 @@ class FCTBSerializer(AssetSerializer):
                 )
 
         return toolbit
+
+    @classmethod
+    def deep_deserialize(cls, data: bytes) -> ToolBit:
+        attrs_map = json.loads(data)
+        asset_class = cast(ToolBit, cls.for_class)
+        return asset_class.from_dict(attrs_map)

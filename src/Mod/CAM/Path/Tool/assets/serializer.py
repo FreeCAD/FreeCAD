@@ -1,6 +1,7 @@
 import abc
 from abc import ABC
 from typing import Mapping, List, Optional, Tuple, Type
+import uuid
 from .uri import AssetUri
 from .asset import Asset
 
@@ -9,6 +10,11 @@ class AssetSerializer(ABC):
     for_class: Type[Asset]
     extensions: Tuple[str] = tuple()
     mime_type: str
+
+    @classmethod
+    @abc.abstractmethod
+    def get_label(cls) -> str:
+        pass
 
     @classmethod
     @abc.abstractmethod
@@ -34,6 +40,18 @@ class AssetSerializer(ABC):
         Creates an asset object from serialized data and resolved dependencies.
         If dependencies is None, it indicates a shallow load where dependencies
         were not resolved.
+        """
+        pass
+
+    @classmethod
+    @abc.abstractmethod
+    def deep_deserialize(cls, data: bytes) -> Asset:
+        """
+        Like deserialize(), but builds dependencies itself if they are
+        sufficiently defined in the data.
+
+        This method is used for export/import, where some dependencies
+        may be embedded in the data, while others may not.
         """
         pass
 

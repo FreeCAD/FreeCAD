@@ -133,10 +133,10 @@ class Library(Asset):
             self.assign_new_bit_no(old_bit)
         return bit_no
 
-    def add_bit(self, bit: ToolBit, bit_no: Optional[int] = None):
+    def add_bit(self, bit: ToolBit, bit_no: Optional[int] = None) -> Optional[int]:
         if bit not in self._bits:
             self._bits.append(bit)
-        self.assign_new_bit_no(bit, bit_no)
+        return self.assign_new_bit_no(bit, bit_no)
 
     def get_bits(self) -> List[ToolBit]:
         return self._bits

@@ -1,3 +1,4 @@
+import uuid
 import json
 from typing import Mapping, List, Optional, Type
 import FreeCAD
@@ -27,6 +28,10 @@ class CamoticsSerializer(AssetSerializer):
     for_class: Type[Asset] = Library
     extensions: tuple[str] = (".ctbl",)
     mime_type: str = "application/json"
+
+    @classmethod
+    def get_label(cls) -> str:
+        return FreeCAD.Qt.translate("CAM", "Camotics Tool Library")
 
     @classmethod
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
@@ -139,3 +144,12 @@ class CamoticsSerializer(AssetSerializer):
             library.add_bit(tool, tool_no)
 
         return library
+
+    @classmethod
+    def deep_deserialize(cls, data: bytes) -> Library:
+        # TODO: Build tools here
+        return cls.deserialize(
+            data,
+            str(uuid.uuid4()),
+            {}
+        )
