@@ -60,6 +60,7 @@ def build_new_visualization_tree_model():
             icon = FreeCADGui.getIcon(ext.icon)
             name = ext.name.removeprefix(vis_name)
             ext_item = QtGui.QStandardItem(icon, translate("FEM", "with {}").format(name))
+            ext_item.setFlags(QtGui.Qt.ItemIsEnabled)
             ext_item.setData(ext)
             vis_item.appendRow(ext_item)
         model.appendRow(vis_item)
@@ -92,6 +93,7 @@ def build_add_to_visualization_tree_model():
                         icon = FreeCADGui.getIcon(ext.icon)
                         name = ext.name.removeprefix(vis_type)
                         ext_item = QtGui.QStandardItem(icon, translate("FEM", "Add {}").format(name))
+                        ext_item.setFlags(QtGui.Qt.ItemIsEnabled)
                         ext_item.setData(ext)
                         vis_item.appendRow(ext_item)
 
@@ -112,6 +114,7 @@ def build_post_object_item(post_object, extractions, vis_type):
         icon = FreeCADGui.getIcon(ext.icon)
         name = ext.name.removeprefix(vis_type)
         ext_item = QtGui.QStandardItem(icon, translate("FEM", "add {}").format(name))
+        ext_item.setFlags(QtGui.Qt.ItemIsEnabled)
         ext_item.setData(ext)
         post_item.appendRow(ext_item)
 
@@ -150,6 +153,54 @@ def build_add_from_data_tree_model(vis_type):
 # implementation of GUI and its functionality
 # ###########################################
 
+class _ElideToolButton(QtGui.QToolButton):
+    # tool button that elides its text, and left align icon and text
+
+    def __init__(self, icon, text, parent):
+        super().__init__(parent)
+
+        self._text = text
+        self._icon = icon
+
+    def setCustomText(self, text):
+        self._text = text
+        self.repaint()
+
+    def setCustomIcon(self, icon):
+        self._icon = icon
+        self.repaint()
+
+    def sizeHint(self):
+        button_size = super().sizeHint()
+        return QtCore.QSize(self.iconSize().width()+10, button_size.height())
+
+    def paintEvent(self, event):
+
+        # draw notmal button, without text and icon
+        super().paintEvent(event)
+
+        # add icon and elided text
+        painter = QtGui.QPainter()
+        painter.begin(self)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
+        painter.setRenderHint(QtGui.QPainter.SmoothPixmapTransform, True)
+
+        margin = (self.height() - self.iconSize().height()) / 2
+        match type(self._icon):
+            case QtGui.QPixmap:
+                painter.drawPixmap(margin, margin, self._icon.scaled(self.iconSize()))
+            case QtGui.QIcon:
+                self._icon.paint(painter, QtCore.QRect(QtCore.QPoint(margin, margin), self.iconSize()))
+
+        fm = self.fontMetrics()
+        text_size = self.width() - self.iconSize().width() - 3*margin
+        text = fm.elidedText(self._text, QtGui.Qt.ElideMiddle, text_size)
+        if text:
+            painter.drawText(2*margin+self.iconSize().width(), margin + fm.ascent(), text)
+
+        painter.end()
+
+
 class _TreeChoiceButton(QtGui.QToolButton):
 
     selection = QtCore.Signal(object,object)
@@ -167,10 +218,13 @@ class _TreeChoiceButton(QtGui.QToolButton):
 
         self.tree_view.setFrameShape(QtGui.QFrame.NoFrame)
         self.tree_view.setHeaderHidden(True)
-        self.tree_view.setEditTriggers(QtGui.QTreeView.EditTriggers.NoEditTriggers)
         self.tree_view.setSelectionBehavior(QtGui.QTreeView.SelectionBehavior.SelectRows)
         self.tree_view.expandAll()
-        self.tree_view.activated.connect(self.selectIndex)
+        self.tree_view.clicked.connect(self.selectIndex)
+
+        style = self.style()
+        if not style.styleHint(QtGui.QStyle.SH_ItemView_ActivateItemOnSingleClick):
+            self.tree_view.activated.connect(self.selectIndex)
 
         # set a complex menu
         self.popup = QtGui.QWidgetAction(self)
@@ -180,6 +234,7 @@ class _TreeChoiceButton(QtGui.QToolButton):
 
     QtCore.Slot(QtCore.QModelIndex)
     def selectIndex(self, index):
+        print("select triggered")
         item = self.model.itemFromIndex(index)
 
         if item and not item.hasChildren():
@@ -214,7 +269,13 @@ class _SettingsPopup(QtGui.QDialog):
         buttonBox.accepted.connect(self.hide)
         vbox.addWidget(buttonBox)
 
-        self.setLayout(vbox)
+        widget = QtGui.QFrame()
+        widget.setLayout(vbox)
+
+        vbox2 = QtGui.QVBoxLayout()
+        vbox2.setContentsMargins(0,0,0,0)
+        vbox2.addWidget(widget)
+        self.setLayout(vbox2)
 
     def showEvent(self, event):
         # required to get keyboard events
@@ -246,22 +307,22 @@ class _SummaryWidget(QtGui.QWidget):
         extr_repr = extractor.ViewObject.Proxy.get_preview()
 
         # build the UI
+        hbox = QtGui.QHBoxLayout()
+        hbox.setContentsMargins(6,0,6,0)
+        hbox.setSpacing(5)
 
-        self.extrButton = self._button(extr_label)
-        self.extrButton.setIcon(extractor.ViewObject.Icon)
-
-        self.viewButton = self._button(extr_repr[1])
+        self.extrButton = self._button(extractor.ViewObject.Icon, extr_label)
+        self.viewButton = self._button(extr_repr[0], extr_repr[1], 1)
         if not extr_repr[0].isNull():
             size = self.viewButton.iconSize()
             size.setWidth(size.width()*2)
             self.viewButton.setIconSize(size)
-            self.viewButton.setIcon(extr_repr[0])
         else:
             self.viewButton.setIconSize(QtCore.QSize(0,0))
 
         if st_object:
-            self.stButton = self._button(st_object.Label)
-            self.stButton.setIcon(st_object.ViewObject.Icon)
+            self.stButton = self._button(st_object.ViewObject.Icon, st_object.Label)
+            hbox.addWidget(self.stButton)
 
         else:
             # that happens if the source of the extractor was deleted and now
@@ -271,18 +332,30 @@ class _SummaryWidget(QtGui.QWidget):
 
             self.warning = QtGui.QLabel(self)
             self.warning.full_text = translate("FEM", "{}: Data source not available").format(extractor.Label)
+            hbox.addWidget(self.warning)
 
         self.rmButton = QtGui.QToolButton(self)
-        self.rmButton.setIcon(QtGui.QIcon.fromTheme("delete"))
+        self.rmButton.setIcon(FreeCADGui.getIcon("delete.svg"))
         self.rmButton.setAutoRaise(True)
 
+        hbox.addWidget(self.extrButton)
+        hbox.addWidget(self.viewButton)
+        hbox.addSpacing(15)
+        hbox.addWidget(self.rmButton)
+
         # add the separation line
+        vbox = QtGui.QVBoxLayout()
+        vbox.setContentsMargins(0,0,0,0)
+        vbox.setSpacing(5)
+        vbox.addItem(hbox)
         self.frame = QtGui.QFrame(self)
         self.frame.setFrameShape(QtGui.QFrame.HLine);
+        vbox.addWidget(self.frame)
 
-        policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
         self.setSizePolicy(policy)
-        self.setMinimumSize(self.extrButton.sizeHint()+self.frame.sizeHint()*3)
+        #self.setMinimumSize(self.extrButton.sizeHint()+self.frame.sizeHint()*3)
+        self.setLayout(vbox)
 
         # connect actions. We add functions to widget, as well as the data we need,
         # and use those as callback. This way every widget knows which objects to use
@@ -294,80 +367,21 @@ class _SummaryWidget(QtGui.QWidget):
         self.rmButton.clicked.connect(self.deleteTriggered)
 
         # make sure initial drawing happened
-        self._redraw()
+        #self._redraw()
 
 
-    def _button(self, text):
-        btn = QtGui.QPushButton(self)
-        btn.full_text = text
+    def _button(self, icon, text, stretch=2):
 
+        btn = _ElideToolButton(icon, text, self)
         btn.setMinimumWidth(0)
-        btn.setFlat(True)
-        btn.setText(text)
-        btn.setStyleSheet("text-align:left;padding:6px;min-width:20px;");
+        btn.setAutoRaise(True)
         btn.setToolTip(text)
 
+        policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        policy.setHorizontalStretch(stretch)
+        btn.setSizePolicy(policy)
         return btn
 
-    def _redraw(self):
-
-        btn_spacing = 3
-        btn_height = self.extrButton.sizeHint().height()
-
-        # total size notes:
-        #   - 5 spacing = 2x between buttons + 3 spacings to remove button
-        #   - remove btn_height as this is used as remove button square size
-        btn_total_size = self.size().width() - btn_height - 5*btn_spacing
-        btn_margin = (self.rmButton.size() - self.rmButton.iconSize()).width()
-        fm = self.fontMetrics()
-
-        if self._st_object:
-
-            min_text_width = fm.size(QtGui.Qt.TextSingleLine, "...").width()*2
-
-            pos = 0
-            btns = [self.stButton, self.extrButton, self.viewButton]
-            btn_rel_size = [0.4, 0.4, 0.2]
-            btn_elide_mode = [QtGui.Qt.ElideMiddle, QtGui.Qt.ElideMiddle, QtGui.Qt.ElideRight]
-            for i, btn in enumerate(btns):
-
-                btn_size = btn_total_size*btn_rel_size[i]
-                txt_size = btn_size - btn.iconSize().width() - btn_margin
-
-                # we elide only if there is enough space for a meaningful text
-                if txt_size >= min_text_width:
-
-                    text = fm.elidedText(btn.full_text, btn_elide_mode[i], txt_size)
-                    btn.setText(text)
-                    btn.setStyleSheet("text-align:left;padding:6px;min-width:20px;");
-                else:
-                    btn.setText("")
-                    btn.setStyleSheet("text-align:center;min-width:20px;");
-
-                rect = QtCore.QRect(pos, 0, btn_size, btn_height)
-                btn.setGeometry(rect)
-                pos += btn_size + btn_spacing
-
-        else:
-            warning_txt = fm.elidedText(self.warning.full_text, QtGui.Qt.ElideRight, btn_total_size)
-            self.warning.setText(warning_txt)
-            rect = QtCore.QRect(0,0, btn_total_size, btn_height)
-            self.warning.setGeometry(rect)
-
-
-        rmsize = btn_height
-        pos = self.size().width() - rmsize
-        self.rmButton.setGeometry(pos, 0, rmsize, rmsize)
-
-        frame_hint = self.frame.sizeHint()
-        rect = QtCore.QRect(0, btn_height+frame_hint.height(), self.size().width(), frame_hint.height())
-        self.frame.setGeometry(rect)
-
-    def resizeEvent(self, event):
-
-        # calculate the allowed text length
-        self._redraw()
-        super().resizeEvent(event)
 
     @QtCore.Slot()
     def showVisualization(self):
@@ -434,19 +448,17 @@ class _SummaryWidget(QtGui.QWidget):
 
         # update the preview
         extr_repr = self._extractor.ViewObject.Proxy.get_preview()
-        self.viewButton.setIcon(extr_repr[0])
-        self.viewButton.full_text = extr_repr[1]
+        self.viewButton.setCustomIcon(extr_repr[0])
+        self.viewButton.setCustomText(extr_repr[1])
         self.viewButton.setToolTip(extr_repr[1])
-        self._redraw()
 
     @QtCore.Slot()
     def appAccept(self):
 
         # update the preview
         extr_label = self._extractor.Proxy.get_representive_fieldname(self._extractor)
-        self.extrButton.full_text = extr_label
+        self.extrButton.setCustomText = extr_label
         self.extrButton.setToolTip(extr_label)
-        self._redraw()
 
 
 
@@ -468,8 +480,15 @@ class ExtractLinkView(QtGui.QWidget):
         self._scroll_view = QtGui.QScrollArea(self)
         self._scroll_view.setHorizontalScrollBarPolicy(QtGui.Qt.ScrollBarAlwaysOff)
         self._scroll_view.setWidgetResizable(True)
+        self._scroll_widget = QtGui.QWidget(self._scroll_view)
+        vbox = QtGui.QVBoxLayout()
+        vbox.setContentsMargins(0,6,0,0)
+        vbox.addStretch()
+        self._scroll_widget.setLayout(vbox)
+        self._scroll_view.setWidget(self._scroll_widget)
 
         hbox = QtGui.QHBoxLayout()
+        hbox.setSpacing(6)
         label = QtGui.QLabel(translate("FEM", "Data used in:"))
         if not self._is_source:
             label.setText(translate("FEM", "Data used from:"))
@@ -554,15 +573,9 @@ class ExtractLinkView(QtGui.QWidget):
                 self._widgets.append(summary)
 
         # fill the scroll area
-        vbox = QtGui.QVBoxLayout()
+        vbox = self._scroll_widget.layout()
         for widget in self._widgets:
-            vbox.addWidget(widget)
-
-        vbox.addStretch()
-        widget = QtGui.QWidget()
-        widget.setLayout(vbox)
-
-        self._scroll_view.setWidget(widget)
+            vbox.insertWidget(0, widget)
 
         # also reset the add button model
         if self._is_source:
