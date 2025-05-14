@@ -19,4 +19,4 @@ class ShapeWidget(QtGui.QWidget):
         icon = self.shape.get_icon()
         if icon:
             pixmap = icon.get_qpixmap(self.icon_size)
-            self.icon_widget.setPixmap(QtGui.QIcon(pixmap))
+            self.icon_widget.setPixmap(pixmap)
