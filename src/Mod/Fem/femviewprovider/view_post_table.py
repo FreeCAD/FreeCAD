@@ -207,7 +207,7 @@ class VPPostTableFieldData(view_base_fempostextractors.VPPostExtractor):
         return EditViewWidget(self.Object, post_dialog)
 
     def get_preview(self):
-        name = "----"
+        name = QT_TRANSLATE_NOOP("FEM", "default")
         if self.ViewObject.Name:
             name = self.ViewObject.Name
         return (QtGui.QPixmap(), name)

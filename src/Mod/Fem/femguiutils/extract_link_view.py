@@ -172,7 +172,9 @@ class _ElideToolButton(QtGui.QToolButton):
 
     def sizeHint(self):
         button_size = super().sizeHint()
-        return QtCore.QSize(self.iconSize().width()+10, button_size.height())
+        icn_size = self.iconSize()
+        min_margin = max((button_size - icn_size).height(), 6)
+        return QtCore.QSize(self.iconSize().width()+10, icn_size.height() + min_margin)
 
     def paintEvent(self, event):
 
@@ -186,17 +188,39 @@ class _ElideToolButton(QtGui.QToolButton):
         painter.setRenderHint(QtGui.QPainter.SmoothPixmapTransform, True)
 
         margin = (self.height() - self.iconSize().height()) / 2
-        match type(self._icon):
-            case QtGui.QPixmap:
-                painter.drawPixmap(margin, margin, self._icon.scaled(self.iconSize()))
-            case QtGui.QIcon:
-                self._icon.paint(painter, QtCore.QRect(QtCore.QPoint(margin, margin), self.iconSize()))
+        icn_width = self.iconSize().width()
+        if self._icon.isNull():
+            icn_width = 0;
+
 
         fm = self.fontMetrics()
-        text_size = self.width() - self.iconSize().width() - 3*margin
-        text = fm.elidedText(self._text, QtGui.Qt.ElideMiddle, text_size)
-        if text:
-            painter.drawText(2*margin+self.iconSize().width(), margin + fm.ascent(), text)
+        txt_size = self.width() - icn_width - 2*margin
+        if not self._icon.isNull():
+            # we add the margin between icon and text
+            txt_size -= margin
+
+        txt_min = fm.boundingRect("...").width()
+
+        # should we center the icon?
+        xpos = margin
+        if not self._icon.isNull() and txt_size < txt_min:
+            # center icon
+            xpos = self.width()/2 - self.iconSize().width()/2
+
+        if not self._icon.isNull():
+            match type(self._icon):
+                case QtGui.QPixmap:
+                    painter.drawPixmap(xpos, margin, self._icon.scaled(self.iconSize()))
+                    xpos += self.iconSize().width()
+                case QtGui.QIcon:
+                    self._icon.paint(painter, QtCore.QRect(QtCore.QPoint(margin, margin), self.iconSize()))
+                    xpos += self.iconSize().width()
+
+            xpos += margin # the margin to the text
+
+        if txt_size >= txt_min:
+            text = fm.elidedText(self._text, QtGui.Qt.ElideMiddle, txt_size)
+            painter.drawText(xpos, margin + fm.ascent(), text)
 
         painter.end()
 
@@ -234,7 +258,6 @@ class _TreeChoiceButton(QtGui.QToolButton):
 
     QtCore.Slot(QtCore.QModelIndex)
     def selectIndex(self, index):
-        print("select triggered")
         item = self.model.itemFromIndex(index)
 
         if item and not item.hasChildren():
@@ -251,13 +274,14 @@ class _TreeChoiceButton(QtGui.QToolButton):
         # check if we should be disabled
         self.setEnabled(bool(model.rowCount()))
 
-class _SettingsPopup(QtGui.QDialog):
+class _SettingsPopup(QtGui.QMenu):
 
     close = QtCore.Signal()
 
     def __init__(self, setting, parent):
         super().__init__(parent)
 
+        self._setting = setting
         self.setWindowFlags(QtGui.Qt.Popup)
         self.setFocusPolicy(QtGui.Qt.ClickFocus)
 
@@ -276,6 +300,9 @@ class _SettingsPopup(QtGui.QDialog):
         vbox2.setContentsMargins(0,0,0,0)
         vbox2.addWidget(widget)
         self.setLayout(vbox2)
+
+    def size(self):
+        return self._setting.sizeHint()
 
     def showEvent(self, event):
         # required to get keyboard events
@@ -309,16 +336,15 @@ class _SummaryWidget(QtGui.QWidget):
         # build the UI
         hbox = QtGui.QHBoxLayout()
         hbox.setContentsMargins(6,0,6,0)
-        hbox.setSpacing(5)
+        hbox.setSpacing(2)
 
         self.extrButton = self._button(extractor.ViewObject.Icon, extr_label)
         self.viewButton = self._button(extr_repr[0], extr_repr[1], 1)
-        if not extr_repr[0].isNull():
-            size = self.viewButton.iconSize()
-            size.setWidth(size.width()*2)
-            self.viewButton.setIconSize(size)
-        else:
-            self.viewButton.setIconSize(QtCore.QSize(0,0))
+
+        size = self.viewButton.iconSize()
+        size.setWidth(size.width()*2)
+        self.viewButton.setIconSize(size)
+
 
         if st_object:
             self.stButton = self._button(st_object.ViewObject.Icon, st_object.Label)
@@ -406,7 +432,7 @@ class _SummaryWidget(QtGui.QWidget):
         scroll = viewport.parent()
 
         top_left = summary.geometry().topLeft() + base_widget.geometry().topLeft() + viewport.geometry().topLeft()
-        delta = (summary.width() - dialog.sizeHint().width())/2
+        delta = (summary.width() - dialog.size().width())/2
         local_point = QtCore.QPoint(top_left.x()+delta, top_left.y()+summary.height())
         global_point = scroll.mapToGlobal(local_point)
 
@@ -423,7 +449,6 @@ class _SummaryWidget(QtGui.QWidget):
             # position correctly and show
             self._position_dialog(self.appDialog)
             self.appDialog.show()
-            #self.appDialog.raise_()
 
     @QtCore.Slot()
     def editView(self):
@@ -437,7 +462,6 @@ class _SummaryWidget(QtGui.QWidget):
             # position correctly and show
             self._position_dialog(self.viewDialog)
             self.viewDialog.show()
-            #self.viewDialog.raise_()
 
     @QtCore.Slot()
     def deleteTriggered(self):
@@ -457,7 +481,7 @@ class _SummaryWidget(QtGui.QWidget):
 
         # update the preview
         extr_label = self._extractor.Proxy.get_representive_fieldname(self._extractor)
-        self.extrButton.setCustomText = extr_label
+        self.extrButton.setCustomText(extr_label)
         self.extrButton.setToolTip(extr_label)
 
 
@@ -574,7 +598,7 @@ class ExtractLinkView(QtGui.QWidget):
 
         # fill the scroll area
         vbox = self._scroll_widget.layout()
-        for widget in self._widgets:
+        for widget in reversed(self._widgets):
             vbox.insertWidget(0, widget)
 
         # also reset the add button model
