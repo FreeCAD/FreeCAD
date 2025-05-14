@@ -172,7 +172,7 @@ def processArguments(argstring):
             SHOW_EDITOR = False
             print("Show editor = %r" % (SHOW_EDITOR))
         if args.precision is not None:
-            PRECISION = args.precision
+            PRECISION = int(args.precision)
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
