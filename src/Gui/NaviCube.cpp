@@ -1084,7 +1084,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
         m_Dragging = false;
     } else {
         PickId pickId = pickFace(x, y);
-        long step = Base::clamp(long(m_NaviStepByTurn), 4L, 36L);
+        long step = std::clamp(long(m_NaviStepByTurn), 4L, 36L);
         float rotStepAngle = (2 * std::numbers::pi) / step;
 
         if (m_Faces[pickId].type == ShapeId::Main || m_Faces[pickId].type == ShapeId::Edge || m_Faces[pickId].type == ShapeId::Corner) {

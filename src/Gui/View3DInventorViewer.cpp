@@ -3349,7 +3349,7 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
 
         SbVec3f curpos = campos * (1.0F - par) + pos * par;
         cam->position.setValue(curpos);
-        timer.start(Base::clamp<int>(ms, 0, 5000));  // NOLINT
+        timer.start(std::clamp<int>(ms, 0, 5000));  // NOLINT
         loop.exec(QEventLoop::ExcludeUserInputEvents);
     }
 }

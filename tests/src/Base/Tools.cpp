@@ -14,17 +14,6 @@ TEST(Tools, TestIota)
     EXPECT_EQ(vec, out);
 }
 
-TEST(Tools, TestClamp)
-{
-    EXPECT_EQ(Base::clamp<int>(2, 1, 3), 2);
-    EXPECT_EQ(Base::clamp<int>(4, 1, 3), 3);
-    EXPECT_EQ(Base::clamp<int>(0, 1, 3), 1);
-
-    EXPECT_DOUBLE_EQ(Base::clamp<double>(2, 1.5, 3.1), 2.0);
-    EXPECT_DOUBLE_EQ(Base::clamp<double>(4, 1.5, 3.1), 3.1);
-    EXPECT_DOUBLE_EQ(Base::clamp<double>(0, 1.5, 3.1), 1.5);
-}
-
 TEST(Tools, TestSignum)
 {
     EXPECT_EQ(Base::sgn<int>(0), 0);

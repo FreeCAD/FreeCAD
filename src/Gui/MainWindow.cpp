@@ -1826,7 +1826,7 @@ void MainWindowP::restoreWindowState(const QByteArray &windowState)
     } else
         getMainWindow()->restoreState(windowState);
 
-    Base::ConnectionBlocker block(connParam);
+    boost::signals2::shared_connection_block blocker(connParam);
     // as a notification for user code on window state restore
     hGrp->SetBool("WindowStateRestored", !hGrp->GetBool("WindowStateRestored", false));
 }
@@ -1848,7 +1848,7 @@ void MainWindow::saveWindowSettings(bool canDelay)
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    Base::ConnectionBlocker block(d->connParam);
+    boost::signals2::shared_connection_block blocker(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
     d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
     d->hGrp->SetASCII("MainWindowState", this->saveState().toBase64().constData());

@@ -90,7 +90,7 @@ void AutoSaver::renameFile(QString dirName, QString file, QString tmpFile)
 
 void AutoSaver::setTimeout(int ms)
 {
-    timeout = Base::clamp<int>(ms, 0, 3600000); // between 0 and 60 min
+    timeout = std::clamp<int>(ms, 0, 3600000); // between 0 and 60 min
 
     // go through the attached documents and apply the new timeout
     for (auto & it : saverMap) {

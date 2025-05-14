@@ -306,7 +306,7 @@ Vector3<float_type> Vector3<float_type>::DistanceToLineSegment(const Vector3& rc
     Vector3<float_type> p2p1 = rclP2 - rclP1;
     Vector3<float_type> pXp1 = *this - rclP1;
     float_type dot = pXp1 * p2p1;
-    float_type t = clamp<float_type>(dot / len2, 0, 1);
+    float_type t = std::clamp<float_type>(dot / len2, 0, 1);
     Vector3<float_type> dist = t * p2p1 - pXp1;
     return dist;
 }
