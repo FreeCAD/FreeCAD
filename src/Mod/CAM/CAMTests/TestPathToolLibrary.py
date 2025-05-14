@@ -12,7 +12,7 @@ class TestPathToolLibrary(unittest.TestCase):
     def test_init(self):
         library = Library("Test Library")
         self.assertEqual(library.label, "Test Library")
-        self.assertIsNone(library.id)
+        self.assertIsNotNone(library.id)
         self.assertEqual(len(library._bits), 0)
         self.assertEqual(len(library._bit_nos), 0)
 

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import uuid
 import pathlib
-from typing import Mapping, Union, Optional
+from typing import Mapping, Union, Optional, List, Dict, cast
 import Path
 from ...assets import Asset, AssetUri
+from ...toolbit import ToolBit
 
 
 class Library(Asset):
@@ -10,11 +12,11 @@ class Library(Asset):
     API_VERSION = 1
 
     def __init__(self, label, id=None):
-        self.id = id
+        self.id = id if id is not None else str(uuid.uuid4())
         self.label = label
-        self._bits = []
-        self._bit_nos = {}   # Maps ToolBit number to ToolBit
-        self._bit_urls = {}  # Maps ToolBit URL to ToolBit
+        self._bits: List[ToolBit] = []
+        self._bit_nos: Dict[int, ToolBit] = {}
+        self._bit_urls: Dict[AssetUri, ToolBit] = {}
 
     def get_id(self) -> str:
         """Returns the unique identifier for the Library instance."""
@@ -44,7 +46,7 @@ class Library(Asset):
     def to_dict(self) -> dict:
         """Returns a dictionary representation of the Library in the specified format."""
         tools_list = []
-        for tool_no, tool in self.tool_nos.items():
+        for tool_no, tool in self._bit_nos.items():
             tools_list.append({
                 "nr": tool_no,
                 "path": f"{tool.get_id()}.fctb"  # Tool ID with .fctb extension
@@ -77,9 +79,9 @@ class Library(Asset):
             tool_no = tool_data["nr"]
             tool_id = pathlib.Path(tool_data["path"]).stem  # Extract tool ID
             tool_uri = AssetUri(f"toolbit://{tool_id}")
-            tool = dependencies.get(tool_uri)
-            if tool:
-                library.add_tool(tool, tool_no=tool_no)
+            bit = cast(ToolBit, dependencies.get(tool_uri))
+            if bit:
+                library.add_bit(bit, bit_no=tool_no)
             else:
                 raise ValueError(f"Tool with id {tool_id} not found in dependencies")
         return library
@@ -97,19 +99,19 @@ class Library(Asset):
         bit_nolist = sorted(self._bit_nos, reverse=True)
         return bit_nolist[0]+1 if bit_nolist else 1
 
-    def get_bit_no_from_bit(self, bit):
+    def get_bit_no_from_bit(self, bit: ToolBit) -> Optional[int]:
         for bit_no, thebit in self._bit_nos.items():
             if bit == thebit:
                 return bit_no
         return None
 
-    def get_tool_by_uri(self, uri: AssetUri):
-        for tool in self.tool_nos.values():
+    def get_tool_by_uri(self, uri: AssetUri) -> Optional[ToolBit]:
+        for tool in self._bit_nos.values():
             if tool.get_uri() == uri:
                 return tool
         return None
 
-    def assign_new_bit_no(self, bit, bit_no=None):
+    def assign_new_bit_no(self, bit: ToolBit, bit_no: Optional[int] = None) -> Optional[int]:
         if bit not in self._bits:
             return
 
@@ -131,29 +133,29 @@ class Library(Asset):
             self.assign_new_bit_no(old_bit)
         return bit_no
 
-    def add_bit(self, bit, bit_no=None):
+    def add_bit(self, bit: ToolBit, bit_no: Optional[int] = None):
         if bit not in self._bits:
             self._bits.append(bit)
         self.assign_new_bit_no(bit, bit_no)
 
-    def get_bits(self):
+    def get_bits(self) -> List[ToolBit]:
         return self._bits
 
-    def has_bit(self, bit):
+    def has_bit(self, bit: ToolBit) -> bool:
         for t in self._bits:
             if bit.id == t.id:
                 return True
         return False
 
-    def remove_bit(self, bit):
+    def remove_bit(self, bit: ToolBit):
         self._bits = [t for t in self._bits if t.id != bit.id]
         self._bit_nos = {k: v for (k, v) in self._bit_nos.items() if v.id != bit.id}
 
-    def dump(self, summarize=False):
+    def dump(self, summarize: bool = False):
         title = 'Library "{}" ({}) (instance {})'.format(self.label, self.id, id(self))
         print("-"*len(title))
         print(title)
         print("-"*len(title))
         for bit in self._bits:
-            bit.dump(summarize=summarize)
-            print()
+            print(f"- {bit.get_label()} ({bit.get_id()})")
+        print()

@@ -383,7 +383,9 @@ class ToolBitShape(Asset):
             raise RuntimeError(f"Failed to create shape from {filepath}: {e}")
 
     @classmethod
-    def get_subclass_by_name(cls, name: str) -> Optional[Type['ToolBitShape']]:
+    def get_subclass_by_name(
+        cls, name: str, default: Type["ToolBitShape"] = None
+    ) -> Optional[Type["ToolBitShape"]]:
         """
         Retrieves a ToolBitShape class by its name or alias.
         """
@@ -393,7 +395,7 @@ class ToolBitShape(Asset):
                 or thecls.__name__.lower() == name \
                 or name in thecls.aliases:
                 return thecls
-        return None
+        return default
 
     @classmethod
     def resolve_name(cls, identifier: str) -> AssetUri:

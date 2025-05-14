@@ -80,6 +80,10 @@ from CAMTests.TestPathToolBitSerializer import (
     TestFCTBSerializer,
 )
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
+from CAMTests.TestPathToolLibrarySerializer import (
+    TestCamoticsLibrarySerializer,
+    TestLinuxCNCLibrarySerializer,
+)
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
 from CAMTests.TestPathToolMachine import TestPathToolMachine

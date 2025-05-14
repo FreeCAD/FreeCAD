@@ -193,6 +193,8 @@ SET(PathPythonToolsLibraryModels_SRCS
 SET(PathPythonToolsLibrarySerializers_SRCS
     Path/Tool/library/serializers/__init__.py
     Path/Tool/library/serializers/fctl.py
+    Path/Tool/library/serializers/camotics.py
+    Path/Tool/library/serializers/linuxcnc.py
 )
 
 SET(PathPythonToolsMachine_SRCS

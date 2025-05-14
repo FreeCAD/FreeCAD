@@ -1,4 +1,5 @@
 import json
+from typing import Type
 import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.toolbit import ToolBit
@@ -17,8 +18,8 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
     """Base test case for ToolBit Serializers."""
     __test__ = False
 
-    serializer_class: AssetSerializer = None
-    test_tool_bit: ToolBit = None
+    serializer_class: Type[AssetSerializer]
+    test_tool_bit: ToolBit
 
     def setUp(self):
         """Create a tool bit for each test."""
