@@ -123,6 +123,7 @@ SET(PathPythonToolsAssets_SRCS
     Path/Tool/assets/asset.py
     Path/Tool/assets/cache.py
     Path/Tool/assets/manager.py
+    Path/Tool/assets/serializer.py
     Path/Tool/assets/uri.py
 )
 
@@ -175,10 +176,8 @@ SET(PathPythonToolsToolBitModels_SRCS
 
 SET(PathPythonToolsToolBitSerializers_SRCS
     Path/Tool/toolbit/serializers/__init__.py
-    Path/Tool/toolbit/serializers/base.py
     Path/Tool/toolbit/serializers/camotics.py
     Path/Tool/toolbit/serializers/fctb.py
-    Path/Tool/toolbit/serializers/linuxcnc.py
 )
 
 SET(PathPythonToolsLibrary_SRCS
@@ -189,6 +188,11 @@ SET(PathPythonToolsLibrary_SRCS
 SET(PathPythonToolsLibraryModels_SRCS
     Path/Tool/library/models/__init__.py
     Path/Tool/library/models/library.py
+)
+
+SET(PathPythonToolsLibrarySerializers_SRCS
+    Path/Tool/library/serializers/__init__.py
+    Path/Tool/library/serializers/fctl.py
 )
 
 SET(PathPythonToolsMachine_SRCS
@@ -555,6 +559,7 @@ SET(all_files
     ${PathPythonToolsToolBitSerializers_SRCS}
     ${PathPythonToolsLibrary_SRCS}
     ${PathPythonToolsLibraryModels_SRCS}
+    ${PathPythonToolsLibrarySerializers_SRCS}
     ${PathPythonToolsMachine_SRCS}
     ${PathPythonToolsMachineModels_SRCS}
     ${PathPythonGui_SRCS}
@@ -767,6 +772,13 @@ INSTALL(
         ${PathPythonToolsLibraryModels_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/library/models
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsLibrarySerializers_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/library/serializers
 )
 
 INSTALL(
