@@ -452,6 +452,10 @@ def export(objectslist, filename, argstring):
     # write the code body
     for obj in objectslist:
 
+        # Skip inactive operations
+        if not PathUtil.activeForOp(obj):
+            continue
+
         # pre_op
         if OUTPUT_COMMENTS:
             gcode += append("(operation initialise: %s)\n" % obj.Label)
