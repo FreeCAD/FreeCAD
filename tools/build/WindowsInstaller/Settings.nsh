@@ -33,10 +33,10 @@ SetCompressor /SOLID lzma
 #!define APP_VERSION_PATCH 0
 
 # get version info from freecadcmd
-!system "${FILES_FREECAD}\bin\freecadcmd.exe -c $\"print(f'!define APP_VERSION_MAJOR \$\"{App.Version()[0]}\$\"')$\">${__FILEDIR__}\version.nsh" = 0
-!system "${FILES_FREECAD}\bin\freecadcmd.exe -c $\"print(f'!define APP_VERSION_MINOR \$\"{App.Version()[1]}\$\"')$\">>${__FILEDIR__}\version.nsh" = 0
-!system "${FILES_FREECAD}\bin\freecadcmd.exe -c $\"print(f'!define APP_VERSION_PATCH \$\"{App.Version()[2]}\$\"')$\">>${__FILEDIR__}\version.nsh" = 0
-!system "${FILES_FREECAD}\bin\freecadcmd.exe -c $\"print(f'!define APP_VERSION_REVISION \$\"{App.Version()[3].split()[0]}\$\"')$\">>${__FILEDIR__}\version.nsh" = 0
+!system "${FILES_FREECAD}\bin\freecadcmd.exe --safe-mode -c $\"print(f'!define APP_VERSION_MAJOR \$\"{App.Version()[0]}\$\"')$\">${__FILEDIR__}\version.nsh" = 0
+!system "${FILES_FREECAD}\bin\freecadcmd.exe --safe-mode -c $\"print(f'!define APP_VERSION_MINOR \$\"{App.Version()[1]}\$\"')$\">>${__FILEDIR__}\version.nsh" = 0
+!system "${FILES_FREECAD}\bin\freecadcmd.exe --safe-mode -c $\"print(f'!define APP_VERSION_PATCH \$\"{App.Version()[2]}\$\"')$\">>${__FILEDIR__}\version.nsh" = 0
+!system "${FILES_FREECAD}\bin\freecadcmd.exe --safe-mode -c $\"print(f'!define APP_VERSION_REVISION \$\"{App.Version()[3].split()[0]}\$\"')$\">>${__FILEDIR__}\version.nsh" = 0
 !include "${__FILEDIR__}\version.nsh"
 !delfile "${__FILEDIR__}\version.nsh"
 
