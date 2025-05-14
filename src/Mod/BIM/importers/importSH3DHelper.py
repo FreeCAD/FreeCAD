@@ -655,7 +655,7 @@ class SH3DImporter:
         self.set_property(building, "App::PropertyString", "shType", "The element type", "building")
         self.set_property(building, "App::PropertyString", "id", "The element's id", elm.get("name"))
         for property in elm.findall("property"):
-            name = re.sub("[^A-Za-z0-9]+', '", property.get("name"))
+            name = re.sub("[^A-Za-z0-9]+", "", property.get("name"))
             value = property.get("value")
             self.set_property(building, "App::PropertyString", name, "", value)
         return building
