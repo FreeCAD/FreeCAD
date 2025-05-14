@@ -284,8 +284,6 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signals2::signal<void (const App::DocumentObject&)> signalActivatedObject;
-    /// signal before recomputed document
-    boost::signals2::signal<void (const App::Document&)> signalBeforeRecomputeDocument;
     /// signal on recomputed document
     boost::signals2::signal<void (const App::Document&)> signalRecomputed;
     /// signal on recomputed document object
@@ -495,7 +493,6 @@ protected:
     void slotRedoDocument(const App::Document& doc);
     void slotRecomputedObject(const App::DocumentObject& obj);
     void slotRecomputed(const App::Document& doc);
-    void slotBeforeRecompute(const App::Document& doc);
     void slotOpenTransaction(const App::Document& doc, std::string name);
     void slotCommitTransaction(const App::Document& doc);
     void slotAbortTransaction(const App::Document& doc);
