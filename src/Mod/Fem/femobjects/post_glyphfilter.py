@@ -106,7 +106,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 name="MaskMode",
                 group="Masking",
                 doc="Which vertices are used as glyph locations",
-                value=["Use All", "Every Nth", "Uniform Samping"],
+                value=["Use All", "Every Nth", "Uniform Sampling"],
             ),
             _PropHelper(
                 type="App::PropertyIntegerConstraint",
@@ -119,7 +119,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyIntegerConstraint",
                 name="MaxNumber",
                 group="Masking",
-                doc='Defines the maximal number of vertices used for "Uniform Sampling" masking mode',
+                doc='Defines the maximum number of vertices used for "Uniform Sampling" masking mode',
                 value=(1000, 1, 999999999, 1),
             ),
         ]
