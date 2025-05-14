@@ -103,7 +103,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_4">
         <property name="toolTip">
-         <string>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</string>
+         <string>Which data field is used to scale the glyphs</string>
         </property>
         <property name="text">
          <string>Data</string>
@@ -121,7 +121,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</string>
+           <string>Which data field is used to scale the glyphs</string>
           </property>
           <item>
            <property name="text">
@@ -203,7 +203,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Which data field is used to scale the glyphs</string>
+         <string>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</string>
         </property>
         <item>
          <property name="text">
